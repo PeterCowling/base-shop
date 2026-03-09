@@ -537,7 +537,7 @@ entries:
 describe("anti-loop integration", () => {
   const trialPath = path.resolve(
     __dirname,
-    "../../ideas/lp-do-ideas-trial.ts",
+    "../ideas/lp-do-ideas-trial.ts",
   );
 
   let trialContent: string;

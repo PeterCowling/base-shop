@@ -36,28 +36,24 @@ describe("CurrencyRatesPanel", () => {
     global.fetch = originalFetch;
   });
 
-  it("renders EUR, GBP, and AUD rate inputs", () => {
-    render(
-      <CurrencyRatesPanel
-        busy={false}
-        syncReadiness={{ checking: false, ready: true }}
-        onSync={async () => ({ ok: true })}
-      />,
-    );
+  it("renders EUR, GBP, and AUD rate inputs", async () => {
+    await renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync: async () => ({ ok: true }),
+    });
 
     expect(screen.getByTestId("currency-rates-eur")).toBeInTheDocument();
     expect(screen.getByTestId("currency-rates-gbp")).toBeInTheDocument();
     expect(screen.getByTestId("currency-rates-aud")).toBeInTheDocument();
   });
 
-  it("save button is disabled when busy", () => {
-    render(
-      <CurrencyRatesPanel
-        busy
-        syncReadiness={{ checking: false, ready: true }}
-        onSync={async () => ({ ok: true })}
-      />,
-    );
+  it("save button is disabled when busy", async () => {
+    await renderPanel({
+      busy: true,
+      syncReadiness: { checking: false, ready: true },
+      onSync: async () => ({ ok: true }),
+    });
 
     expect(screen.getByTestId("currency-rates-save")).toBeDisabled();
   });

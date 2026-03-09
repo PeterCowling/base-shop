@@ -2,7 +2,6 @@ import { createHash, randomBytes } from "node:crypto";
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import { basename, dirname, join, resolve, sep } from "node:path";
-import { pathToFileURL } from "node:url";
 
 import type { RegistryV2ArtifactEntry } from "./lp-do-ideas-registry-migrate-v1-v2.js";
 import {
@@ -27,7 +26,7 @@ interface BridgeState {
   findings_hash: string | null;
 }
 
-interface SessionFinding {
+export interface SessionFinding {
   session_id: string;
   transcript_path: string;
   updated_at: string;
@@ -86,7 +85,7 @@ const DEFAULT_STATE_PATH =
   "docs/business-os/startup-loop/ideas/trial/agent-session-signal-bridge-state.json";
 const DEFAULT_ARTIFACT_PATH =
   "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json";
-const DEFAULT_TRANSCRIPTS_ROOT = join(
+export const DEFAULT_TRANSCRIPTS_ROOT = join(
   os.homedir(),
   ".claude",
   "projects",
@@ -97,6 +96,10 @@ const INTENT_PATTERN =
   /(walk\s*through|manual\s*test|simulate|qa\b|audit|review|list\s+(?:any\s+)?(?:issues|bugs|problems)|find\s+bugs|broken\s+flow)/i;
 const ISSUE_PATTERN =
   /(bug|issue|problem|broken|fails?|failing|error|missing|regression|cannot|can\'t|blocked|gap)/i;
+const META_FINDING_PATTERN =
+  /\b(let me|now let me|i don\'t know|from the skill description|wait\b|i\'ll\b|i need to check|pre-existing|the .* edit failed earlier|now run|operator[_ -]?ideas?|artifact deltas?|dispatch(?:es)?|queue items?|planning gaps?|existing backlog|operator_idea|target route|recommended route)\b/i;
+const LOW_SIGNAL_FINDING_PATTERN =
+  /(\|\s*#\s*\|\s*issue|\*\*|`|routing assessment|recommendation:|covers some ground|share the same codebase surface|material\?)/i;
 
 function hashValue(input: string): string {
   return createHash("sha1").update(input).digest("hex");
@@ -278,7 +281,7 @@ function extractFindingsFromAssistantText(text: string): string[] {
   return findings;
 }
 
-function parseSessionFile(filePath: string): SessionFinding | null {
+export function parseSessionFile(filePath: string): SessionFinding | null {
   const raw = readFileSync(filePath, "utf8");
   const lines = raw.split(/\r?\n/).filter((line) => line.trim().length > 0);
 
@@ -398,6 +401,71 @@ function createArtifact(
   };
 }
 
+function summarizeFindingForDisplay(finding: string, maxLength: number): string {
+  const normalized = normalizeFinding(finding).replace(/[.;:,]+$/g, "");
+  if (normalized.length <= maxLength) {
+    return normalized;
+  }
+  return `${normalized.slice(0, Math.max(0, maxLength - 1)).trimEnd()}…`;
+}
+
+function selectActionableFindings(findings: readonly SessionFinding[]): string[] {
+  const flattened = findings.flatMap((session) => session.findings);
+  const actionable = flattened.filter(
+    (finding) =>
+      !META_FINDING_PATTERN.test(finding) && !LOW_SIGNAL_FINDING_PATTERN.test(finding),
+  );
+  const selected = actionable.length > 0 ? actionable : flattened;
+  return selected.slice(0, 3);
+}
+
+export function buildNarrativeHints(
+  findings: readonly SessionFinding[],
+): Pick<
+  ArtifactDeltaEvent,
+  "area_anchor_hint" | "current_truth_hint" | "next_scope_now_hint" | "why_hint" | "intended_outcome_hint"
+> {
+  const actionableFindings = selectActionableFindings(findings).map((finding) =>
+    summarizeFindingForDisplay(finding, 110),
+  );
+  const primaryFinding = actionableFindings[0];
+  const findingSummary = actionableFindings.join("; ");
+
+  if (!primaryFinding || findingSummary.length === 0) {
+    return {
+      area_anchor_hint: undefined,
+      current_truth_hint: undefined,
+      next_scope_now_hint: undefined,
+      why_hint: undefined,
+      intended_outcome_hint: undefined,
+    };
+  }
+
+  return {
+    area_anchor_hint: primaryFinding,
+    current_truth_hint:
+      actionableFindings.length === 1
+        ? `Recent agent-session review surfaced: ${primaryFinding}.`
+        : `Recent agent-session reviews surfaced ${actionableFindings.length} concrete findings: ${findingSummary}.`,
+    next_scope_now_hint:
+      actionableFindings.length === 1
+        ? `Validate the reported finding and decide whether it should become a build, fact-find, or no-op: ${primaryFinding}.`
+        : `Validate the surfaced findings and split concrete follow-up work from incidental review chatter: ${findingSummary}.`,
+    why_hint:
+      actionableFindings.length === 1
+        ? "Recent walkthrough/testing activity surfaced a concrete issue that should retain its original session context in downstream idea intake."
+        : "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+    intended_outcome_hint: {
+      type: "operational",
+      statement:
+        actionableFindings.length === 1
+          ? "Produce a validated next action for the surfaced agent-session finding."
+          : "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+      source: "auto",
+    },
+  };
+}
+
 function computeFindingsHash(findings: SessionFinding[]): string {
   const normalized = findings
     .map((entry) => ({
@@ -429,11 +497,9 @@ function buildCounts(dispatches: TrialDispatchPacket[]): Record<string, number> 
     if (typeof queueState === "string" && Object.hasOwn(counts, queueState)) {
       counts[queueState] += 1;
     }
-    if (dispatch.status === "fact_find_ready") {
-      counts.fact_find_ready += 1;
-    }
-    if (dispatch.status === "micro_build_ready") {
-      counts.micro_build_ready += 1;
+    if (queueState === "enqueued") {
+      if (dispatch.status === "fact_find_ready") counts.fact_find_ready += 1;
+      if (dispatch.status === "micro_build_ready") counts.micro_build_ready += 1;
     }
   }
 
@@ -531,6 +597,7 @@ function deriveEvent(
   const evidenceRefs = findings
     .slice(0, 6)
     .map((entry) => `session:${entry.session_id}`);
+  const narrativeHints = buildNarrativeHints(findings);
 
   return {
     event: {
@@ -543,6 +610,7 @@ function deriveEvent(
       updated_by_process: "agent-session-signal-bridge",
       material_delta: true,
       evidence_refs: [`agent-session-artifact:${options.artifactPath}`, ...evidenceRefs],
+      ...narrativeHints,
     },
     nextHash,
   };
@@ -698,6 +766,17 @@ function main(): void {
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 }
 
-if (import.meta.url === pathToFileURL(process.argv[1] ?? "").href) {
+const isDirectExecution = (() => {
+  const entry = process.argv[1];
+  if (!entry) {
+    return false;
+  }
+
+  const normalizedEntry = resolve(entry);
+  return normalizedEntry.endsWith(`${sep}lp-do-ideas-agent-session-bridge.ts`) ||
+    normalizedEntry.endsWith(`${sep}lp-do-ideas-agent-session-bridge.js`);
+})();
+
+if (isDirectExecution) {
   main();
 }

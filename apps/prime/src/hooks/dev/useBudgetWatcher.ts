@@ -65,7 +65,7 @@ export function useBudgetWatcher(
     if (baselineIndexRef.current === null) {
       baselineIndexRef.current = source.getMetrics().recentQueries.length;
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- PRIME-101 source is stable ref; only run on mount [ttl=2026-12-31]
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- BRIK-2 source is stable ref; only run on mount [ttl=2026-12-31]
   }, []);
 
   // Settle effect: evaluate budget when isSettled transitions to true.
@@ -88,11 +88,14 @@ export function useBudgetWatcher(
 
     // Dynamic import ensures budgetGate.ts is excluded from production bundles
     // via dead-code elimination — this branch is never reached in production.
-    void import('@/lib/firebase/budgetGate').then(({ evaluateFirebaseFlowBudget }) => { // i18n-exempt -- PRIME-101 module path [ttl=2026-12-31]
+    let isMounted = true;
+    void import('@/lib/firebase/budgetGate').then(({ evaluateFirebaseFlowBudget }) => { // i18n-exempt -- BRIK-2 module path [ttl=2026-12-31]
+      if (!isMounted) return;
       const report = evaluateFirebaseFlowBudget(flowId, snapshot);
       if (!report.ok) {
-        console.warn('[Firebase Budget] Budget exceeded for flow:', flowId, report); // i18n-exempt -- PRIME-101 developer diagnostic [ttl=2026-12-31]
+        console.warn('[Firebase Budget] Budget exceeded for flow:', flowId, report); // i18n-exempt -- BRIK-2 developer diagnostic [ttl=2026-12-31]
       }
     });
+    return () => { isMounted = false; };
   }, [isSettled, flowId, source]);
 }

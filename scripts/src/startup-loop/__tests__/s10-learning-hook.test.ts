@@ -18,9 +18,9 @@ import {
 // Mock all imported modules
 jest.mock('node:fs');
 jest.mock('../baselines/baseline-priors');
-jest.mock('../learning-compiler');
-jest.mock('../learning-ledger');
-jest.mock('../prior-update-writer');
+jest.mock('../baselines/learning-compiler');
+jest.mock('../baselines/learning-ledger');
+jest.mock('../baselines/prior-update-writer');
 
 const mockFs = fs as jest.Mocked<typeof fs>;
 

@@ -6,7 +6,7 @@ const writeCloudDraftSnapshotMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const parseStorefrontMock = jest.fn();
 const rateLimitMock = jest.fn();
-const applyRateLimitHeadersMock = jest.fn();
+const withRateHeadersMock = jest.fn();
 const getRequestIpMock = jest.fn();
 const readJsonBodyWithLimitMock = jest.fn();
 
@@ -37,7 +37,7 @@ jest.mock("../../../../../lib/uploaderAuth", () => ({
 
 jest.mock("../../../../../lib/rateLimit", () => ({
   rateLimit: (...args: unknown[]) => rateLimitMock(...args),
-  applyRateLimitHeaders: (...args: unknown[]) => applyRateLimitHeadersMock(...args),
+  withRateHeaders: (...args: unknown[]) => withRateHeadersMock(...args),
   getRequestIp: (...args: unknown[]) => getRequestIpMock(...args),
 }));
 
@@ -54,7 +54,7 @@ describe("catalog products route branch coverage", () => {
     parseStorefrontMock.mockReturnValue("xa-b");
     getRequestIpMock.mockReturnValue("203.0.113.10");
     rateLimitMock.mockReturnValue({ allowed: true, remaining: 5, resetAt: Date.now() + 60_000 });
-    applyRateLimitHeadersMock.mockImplementation(() => {});
+    withRateHeadersMock.mockImplementation((response: unknown) => response);
     readJsonBodyWithLimitMock.mockResolvedValue({ product: { title: "x", slug: "x" } });
     readCloudDraftSnapshotMock.mockResolvedValue({
       products: [{ slug: "p1" }],
@@ -84,7 +84,7 @@ describe("catalog products route branch coverage", () => {
     const { GET } = await import("../route");
     const response = await GET(new Request("http://localhost/api/catalog/products?storefront=xa-b"));
     expect(response.status).toBe(404);
-    expect(applyRateLimitHeadersMock).not.toHaveBeenCalled();
+    expect(withRateHeadersMock).not.toHaveBeenCalled();
     expect(rateLimitMock).toHaveBeenCalledWith(
       expect.objectContaining({ key: "xa-uploader-products-get-unauth:203.0.113.10" }),
     );
@@ -105,7 +105,7 @@ describe("catalog products route branch coverage", () => {
     const { POST } = await import("../route");
     const response = await POST(new Request("http://localhost/api/catalog/products", { method: "POST" }));
     expect(response.status).toBe(404);
-    expect(applyRateLimitHeadersMock).not.toHaveBeenCalled();
+    expect(withRateHeadersMock).not.toHaveBeenCalled();
     expect(rateLimitMock).toHaveBeenCalledWith(
       expect.objectContaining({ key: "xa-uploader-products-post-unauth:203.0.113.10" }),
     );

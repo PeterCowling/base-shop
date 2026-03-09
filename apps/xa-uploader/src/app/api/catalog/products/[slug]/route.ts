@@ -15,7 +15,7 @@ import {
 } from "../../../../../lib/catalogDraftContractClient";
 import { parseStorefront } from "../../../../../lib/catalogStorefront.ts";
 import { isLocalFsRuntimeEnabled, localFsUnavailableResponse } from "../../../../../lib/localFsGuard";
-import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../../lib/rateLimit";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../../lib/rateLimit";
 import { hasUploaderSession } from "../../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -25,10 +25,6 @@ const PRODUCT_GET_MAX_REQUESTS = 120;
 const PRODUCT_DELETE_WINDOW_MS = 60 * 1000;
 const PRODUCT_DELETE_MAX_REQUESTS = 30;
 
-function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
-  applyRateLimitHeaders(response.headers, limit);
-  return response;
-}
 
 export async function GET(request: Request, context: { params: Promise<{ slug: string }> }) {
   const requestIp = getRequestIp(request) || "unknown";

@@ -9,10 +9,8 @@ import { NextResponse } from "next/server";
 import { toPositiveInt } from "@acme/lib";
 import {
   type CatalogProductDraftInput,
-  type CatalogPublishState,
   deriveCatalogPublishState,
   isCatalogPublishableState,
-  slugify,
 } from "@acme/lib/xa";
 
 import {
@@ -49,7 +47,7 @@ import {
   resolveDeployStatePaths,
 } from "../../../../lib/deployHook";
 import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
-import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import {
@@ -58,6 +56,7 @@ import {
   releaseSyncMutex,
   type UploaderKvNamespace,
 } from "../../../../lib/syncMutex";
+import { isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -110,9 +109,6 @@ function shouldExposeSyncLogs(): boolean {
   return process.env.NODE_ENV !== "production" && process.env.XA_UPLOADER_EXPOSE_SYNC_LOGS === "1";
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
 
 function parseSyncOptions(input: unknown): SyncOptions {
   if (!isRecord(input)) return {};
@@ -181,15 +177,17 @@ function getPayloadParseErrorResponse(error: unknown): NextResponse {
 async function findMissingSyncScripts(
   scripts: Array<{ id: SyncScriptId; scriptPath: string }>,
 ): Promise<SyncScriptId[]> {
-  const missing: SyncScriptId[] = [];
-  for (const script of scripts) {
-    try {
-      await fs.access(script.scriptPath, fsConstants.F_OK);
-    } catch {
-      missing.push(script.id);
-    }
-  }
-  return missing;
+  const results = await Promise.all(
+    scripts.map(async (script) => {
+      try {
+        await fs.access(script.scriptPath, fsConstants.F_OK);
+        return null;
+      } catch {
+        return script.id;
+      }
+    }),
+  );
+  return results.filter((id): id is SyncScriptId => id !== null);
 }
 
 function getSyncScripts(repoRoot: string): Array<{ id: SyncScriptId; scriptPath: string }> {
@@ -359,10 +357,6 @@ async function runOptionalPreValidation(params: {
   };
 }
 
-function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
-  applyRateLimitHeaders(response.headers, limit);
-  return response;
-}
 
 function maybeAttachLogs<T extends Record<string, unknown>>(
   payload: T,
@@ -397,17 +391,6 @@ function validateCurrencyRates(value: unknown): value is CurrencyRates {
   const rates = [record.EUR, record.GBP, record.AUD];
   return rates.every((rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0);
 }
-
-function normalizePublishState(product: CatalogProductDraftInput): CatalogPublishState {
-  return deriveCatalogPublishState(product);
-}
-
-function productIdentity(product: CatalogProductDraftInput): string {
-  const id = (product.id ?? "").trim();
-  if (id) return `id:${id}`;
-  return `slug:${slugify(product.slug || product.title)}`;
-}
-
 
 async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
   ok: true;
@@ -679,7 +662,12 @@ async function runSyncPipeline(params: {
   const { catalogOutPath, mediaOutPath } = resolveGeneratedArtifactPaths(uploaderDataDir, storefrontId);
   await fs.mkdir(path.dirname(catalogOutPath), { recursive: true });
 
-  const inputStatus = await getCatalogSyncInputStatus(productsCsvPath);
+  const [inputStatus, currencyRatesStatus, syncReadiness] = await Promise.all([
+    getCatalogSyncInputStatus(productsCsvPath),
+    getCurrencyRatesStatus(currencyRatesPath),
+    getSyncReadiness(repoRoot),
+  ]);
+
   const inputGuardResponse = buildCatalogInputGuardResponse({
     inputStatus,
     confirmEmptyInput: payload.options.confirmEmptyInput === true,
@@ -690,7 +678,6 @@ async function runSyncPipeline(params: {
     return inputGuardResponse;
   }
 
-  const currencyRatesStatus = await getCurrencyRatesStatus(currencyRatesPath);
   if ("reason" in currencyRatesStatus) {
     return NextResponse.json(
       {
@@ -704,7 +691,6 @@ async function runSyncPipeline(params: {
     );
   }
 
-  const syncReadiness = await getSyncReadiness(repoRoot);
   if (!syncReadiness.ready) {
     return NextResponse.json(
       {
@@ -840,13 +826,10 @@ async function finalizeCloudPublishStateAndDeploy(params: {
   kv: UploaderKvNamespace | null;
   warnings: string[];
 }): Promise<{ deployResult: DeployTriggerResult; deployPending: DeployPendingState | null }> {
-  const promotedIds = new Set(params.publishableProducts.map(productIdentity));
-  const promotedProducts = params.snapshot.products.map((product) => {
-    if (promotedIds.has(productIdentity(product))) {
-      return { ...product, publishState: normalizePublishState(product) };
-    }
-    return { ...product, publishState: normalizePublishState(product) };
-  });
+  const promotedProducts = params.snapshot.products.map((product) => ({
+    ...product,
+    publishState: deriveCatalogPublishState(product),
+  }));
 
   try {
     await writeCloudDraftSnapshot({
@@ -920,10 +903,9 @@ async function runCloudSyncPipeline(params: {
 }): Promise<NextResponse> {
   const { storefrontId, payload, startedAt, kv } = params;
   const snapshot = await readCloudDraftSnapshot(storefrontId);
-  const publishableProducts = snapshot.products.filter((product) => {
-    const state = normalizePublishState(product);
-    return isCatalogPublishableState(state);
-  });
+  const publishableProducts = snapshot.products.filter((product) =>
+    isCatalogPublishableState(deriveCatalogPublishState(product)),
+  );
 
   if (publishableProducts.length === 0 && !payload.options.confirmEmptyInput) {
     return NextResponse.json(

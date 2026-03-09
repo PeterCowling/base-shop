@@ -6,6 +6,7 @@ import { toPositiveInt } from "@acme/lib";
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 import type { UploaderKvNamespace } from "./syncMutex";
+import { isRecord } from "./typeGuards";
 import {
   XA_B_DEPLOY_HOOK_REQUIRED_ENV,
   XA_B_DEPLOY_HOOK_TOKEN_ENV,
@@ -276,10 +277,6 @@ function isTransientHttpStatus(status: number): boolean {
   return status === 408 || status === 425 || status === 429 || status >= 500;
 }
 
-function isObjectRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
-
 function responseDetails(text: string): string {
   return text.replace(/\s+/g, " ").trim().slice(0, 160);
 }
@@ -289,7 +286,7 @@ function parseJsonRecord(rawBodyText: string): Record<string, unknown> | null {
   if (!normalized) return null;
   try {
     const parsed = JSON.parse(normalized) as unknown;
-    return isObjectRecord(parsed) ? parsed : null;
+    return isRecord(parsed) ? parsed : null;
   } catch {
     return null;
   }

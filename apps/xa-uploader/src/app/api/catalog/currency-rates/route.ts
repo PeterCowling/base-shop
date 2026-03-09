@@ -4,9 +4,10 @@ import path from "node:path";
 import { NextResponse } from "next/server";
 
 import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
-import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
-import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
+import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
+import { isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -27,10 +28,6 @@ const MAX_RATE_VALUE = 1000.0;
 const uploaderDataDir = path.join(resolveRepoRoot(), "apps", "xa-uploader", "data");
 const ratesFilePath = path.join(uploaderDataDir, "currency-rates.json");
 
-function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
-  applyRateLimitHeaders(response.headers, limit);
-  return response;
-}
 
 function buildErrorResponse(
   error:
@@ -46,9 +43,6 @@ function buildErrorResponse(
   return NextResponse.json({ ok: false, error, reason }, { status });
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
 
 function validateRatesInput(value: unknown): { ok: true; rates: CurrencyRates } | { ok: false; reason: string } {
   if (!isRecord(value)) {
@@ -173,9 +167,6 @@ export async function PUT(request: Request) {
         buildErrorResponse("payload_too_large", 413, "payload_too_large"),
         limit,
       );
-    }
-    if (error instanceof InvalidJsonError) {
-      return withRateHeaders(buildErrorResponse("invalid", 400, "invalid_json"), limit);
     }
     return withRateHeaders(buildErrorResponse("invalid", 400, "invalid_json"), limit);
   }

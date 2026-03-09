@@ -1,18 +1,194 @@
 {
-  "last_updated": "2026-03-09T08:21:20.261Z",
+  "last_updated": "2026-03-09T10:30:00.000Z",
   "counts": {
-    "enqueued": 229,
-    "processed": 53,
+    "enqueued": 237,
+    "processed": 55,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 132,
-    "fact_find_ready": 289,
-    "micro_build_ready": 18,
-    "total": 441
+    "fact_find_ready": 295,
+    "micro_build_ready": 22,
+    "total": 451
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309103000-9302",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-cloud-parity-completion:20260309",
+      "anchor_key": "xa-uploader-cloud-parity-completion",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-cloud-parity-completion:operator:20260309",
+      "cluster_fingerprint": "xa-uploader-cloud-parity-completion-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "XA uploader cloud parity - currency-rates hosted gap",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts",
+        "apps/xa-uploader/src/lib/localFsGuard.ts",
+        "docs/plans/xa-uploader-cloud-parity-completion/fact-find.md",
+        "docs/plans/xa-uploader-cloud-parity-completion/plan.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The hosted XA uploader path is now cloud-capable for draft CRUD, bulk ingest, sync publish, submission export, and storefront freshness, but currency-rate editing still fails closed in hosted mode because it is stored in repo-local JSON and guarded behind the local filesystem runtime check.",
+      "next_scope_now": "Persist a canonical parity matrix, then implement cloud-backed currency-rate persistence so hosted mode stops returning currency_rates_local_fs_required for routine operator use.",
+      "adjacent_later": [
+        "Run a checkpoint on whether local-FS branching should remain as a dev-only lane or move into a cleanup tranche"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: take forward replatforming via lp-do-ideas -> lp-do-build workflow",
+        "code-ref: apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts - hosted mode still returns currency_rates_local_fs_required",
+        "code-ref: apps/xa-uploader/src/lib/localFsGuard.ts - local filesystem mode remains the default branch",
+        "doc-ref: docs/plans/xa-upload-display-gap-closure/plan.md - cloud sync and submission fallback already complete",
+        "doc-ref: docs/plans/xa-b-live-catalog-client-runtime/plan.md - storefront freshness no longer depends on rebuilds"
+      ],
+      "queue_state": "processed",
+      "created_at": "2026-03-09T10:30:00.000Z",
+      "why": "The remaining XA cloud replatform is no longer a broad architecture problem. Most hosted operator flows are already cloud-capable. The concrete unresolved parity break is currency-rate persistence, and that should be handled as a bounded follow-up instead of leaving the repo in an ambiguous partially-local state.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A build-ready plan exists to finish the remaining hosted parity gap in xa-uploader, starting with cloud-backed currency-rate persistence and ending with an explicit checkpoint on local-FS cleanup.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-cloud-parity-completion",
+        "target_path": "docs/plans/xa-uploader-cloud-parity-completion/fact-find.md",
+        "fact_find_slug": "xa-uploader-cloud-parity-completion",
+        "fact_find_path": "docs/plans/xa-uploader-cloud-parity-completion/fact-find.md",
+        "processed_at": "2026-03-09T10:30:00.000Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309090000-XAB-PDDECOMP-001",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "micro_build_path": "docs/plans/xa-b-product-detail-decomposition/micro-build.md",
+        "processed_at": "2026-03-09T09:15:00.000Z"
+      },
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:HBAG:PRODUCTS:xa-b-product-detail-decomposition:20260309",
+      "anchor_key": "xa-b-product-detail-decomposition",
+      "cluster_key": "HBAG:PRODUCTS:xa-b-product-detail-decomposition:operator:20260309",
+      "cluster_fingerprint": "xa-b-product-detail-decomposition-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "HBAG XaProductDetail — god component, needs focused sub-components",
+      "location_anchors": [
+        "apps/xa-b/src/components/XaProductDetail.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "XaProductDetail.tsx is a 346-line god component that computes 18+ derived values, renders 7 conditional sections for clothing/bags/jewelry, constructs social share URLs, and builds related product lists.",
+      "next_scope_now": "Extract a useProductDetailData hook for all copy/href/derivation logic. Extract sub-components for clothing/bags/jewelry detail sections, social share, and related product grids.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.87,
+      "evidence_refs": [
+        "operator-stated: xa-b simplify round 4 identified XaProductDetail as god component needing decomposition"
+      ],
+      "created_at": "2026-03-09T09:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Component mixes data preparation with conditional rendering of category-specific blocks and social share/contact sections. Separating concerns makes each piece independently maintainable.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "XaProductDetail is broken into a data hook and focused sub-components; no behaviour changes; typecheck and lint pass.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309090000-XAB-FILTERPROPS-001",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "micro_build_path": "docs/plans/xa-b-filters-drawer-prop-grouping/micro-build.md",
+        "processed_at": "2026-03-09T09:05:00.000Z"
+      },
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:HBAG:PRODUCTS:xa-b-filters-drawer-prop-grouping:20260309",
+      "anchor_key": "xa-b-filters-drawer-prop-grouping",
+      "cluster_key": "HBAG:PRODUCTS:xa-b-filters-drawer-prop-grouping:operator:20260309",
+      "cluster_fingerprint": "xa-b-filters-drawer-prop-grouping-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "HBAG XaFiltersDrawer — 15 individual props, needs grouping",
+      "location_anchors": [
+        "apps/xa-b/src/components/XaProductListing.client.tsx",
+        "apps/xa-b/src/components/filters/XaFiltersDrawer.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "XaProductListing passes 15 individual props to XaFiltersDrawer. Adding a new filter requires updating both caller and callee.",
+      "next_scope_now": "Group into 3 objects: filterConfig ({filterConfigs, facetValues}), filterState ({open, draftValues, draftInStock, draftNewIn, draftMin, draftMax}), filterActions ({onOpenChange, onToggleValue, onChangeInStock, onChangeNewIn, onChangeMin, onChangeMax, onClear, onApply}).",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.91,
+      "evidence_refs": [
+        "operator-stated: xa-b simplify round 4 identified XaFiltersDrawer prop drilling as quality issue"
+      ],
+      "created_at": "2026-03-09T09:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "15 individual props make the interface brittle. Grouped objects make the contract explicit and easier to extend.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "XaFiltersDrawer accepts 3 grouped prop objects instead of 15 individual props; no behaviour changes; typecheck and lint pass.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309090000-XAB-COLORSTRIP-001",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "micro_build_path": "docs/plans/xa-b-buybox-color-strip-extraction/micro-build.md",
+        "processed_at": "2026-03-09T09:10:00.000Z"
+      },
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:HBAG:PRODUCTS:xa-b-buybox-color-strip-extraction:20260309",
+      "anchor_key": "xa-b-buybox-color-strip-extraction",
+      "cluster_key": "HBAG:PRODUCTS:xa-b-buybox-color-strip-extraction:operator:20260309",
+      "cluster_fingerprint": "xa-b-buybox-color-strip-extraction-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "HBAG XaBuyBox — duplicate variant/color strip blocks, needs extraction",
+      "location_anchors": [
+        "apps/xa-b/src/components/XaBuyBox.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "XaBuyBox contains two near-identical inline blocks (variant strip lines 166-203, color strip lines 204-234) — both render Inline gap={2} with XaFadeImage + swatch fallback, differing only in data source.",
+      "next_scope_now": "Extract XaColorSwatchStrip component that accepts {key, label, swatch, imageUrl, imageAlt, isCurrent, href?}[] and renders uniformly. Use it for both variantProducts and colorOptions.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: xa-b simplify round 4 identified variant/color strip duplication in XaBuyBox"
+      ],
+      "created_at": "2026-03-09T09:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Duplicate inline blocks mean any visual change to the swatch strip must be made in two places.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "XaBuyBox uses a single XaColorSwatchStrip component for both variant and color displays; no behaviour changes; typecheck and lint pass.",
+        "source": "operator"
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260308133000-9301",
@@ -18426,12 +18602,22 @@
         "code-ref: apps/prime/src/lib/firebase/budgetGate.ts"
       ],
       "created_at": "2026-03-09T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "why": "Multiple implementation approaches are viable (context, interceptor, hook wrapper) with different trade-offs around accuracy, dev-overhead, and bundle impact. Needs fact-finding to pick the right one before building.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Prime app logs a dev-mode warning when any screen's Firebase read count exceeds its baseline threshold, making budget regressions visible during development.",
         "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-firebase-budget-runtime-tracking",
+        "target_path": "docs/plans/prime-firebase-budget-runtime-tracking/fact-find.md",
+        "processed_at": "2026-03-09T08:35:18.968Z",
+        "fact_find_slug": "prime-firebase-budget-runtime-tracking",
+        "fact_find_path": "docs/plans/prime-firebase-budget-runtime-tracking/fact-find.md"
       }
     },
     {
@@ -18523,6 +18709,273 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:20:57.154Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309082140-0047",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "a7490fb36f27af608b19fde31cc37c00e56b859b",
+      "after_sha": "685e19dce1d3e6170828118a2875478d1510920d",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:685e19dce1d3e6170828118a2875478d1510920d",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:685e19dce1d3e6170828118a2875478d1510920d",
+      "cluster_fingerprint": "65271c8213d11ca7ca8c302fa1377bf083c9be3c6e5e7f3cb1a9b192e0d75dc3",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (a7490fb → 685e19d)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:21:40.046Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309082218-0243",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "685e19dce1d3e6170828118a2875478d1510920d",
+      "after_sha": "e7926639ff1c30bb7cc3f554b74bc1d89c8fb34d",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:e7926639ff1c30bb7cc3f554b74bc1d89c8fb34d",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:e7926639ff1c30bb7cc3f554b74bc1d89c8fb34d",
+      "cluster_fingerprint": "380834ee7f5c2fd10b70b21b611980be4633a6e90a56e92842156e7958afaacf",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (685e19d → e792663)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:22:18.242Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309082354-0342",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "e7926639ff1c30bb7cc3f554b74bc1d89c8fb34d",
+      "after_sha": "f489db43d7f5f06fa0395f08a6d1f59771a83d82",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:f489db43d7f5f06fa0395f08a6d1f59771a83d82",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:f489db43d7f5f06fa0395f08a6d1f59771a83d82",
+      "cluster_fingerprint": "784958bae775c07c76241e8640ac9da870c0981eb7fc1335a098c3ae3ff4893c",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (e792663 → f489db4)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:23:54.341Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309083322-0755",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "f7aac9765417229a70f875c3cec9d6fc0def67a8",
+      "after_sha": "88a7c03dd50562746ab56c0429f6316046b18df5",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:88a7c03dd50562746ab56c0429f6316046b18df5",
+      "anchor_key": "inventory-uploader-import",
+      "cluster_key": "bos:unknown:inventory-uploader-import:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:88a7c03dd50562746ab56c0429f6316046b18df5",
+      "cluster_fingerprint": "c9bc54e3cb16432249d964fd7827ebe2e93f97e339c5c764e4af01259f0ee920",
+      "lineage_depth": 0,
+      "area_anchor": "inventory uploader import",
+      "location_anchors": [
+        "apps/inventory-uploader/src/components/inventory/InventoryImport.client.tsx",
+        "apps/inventory-uploader/src/components/inventory/InventoryMatrix.client.tsx",
+        "apps/xa-b/src/app/new-in/page.tsx",
+        "apps/xa-b/src/components/XaDepartmentLanding.tsx",
+        "apps/xa-b/src/components/XaProductCard.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (f7aac97 → 88a7c03)",
+      "next_scope_now": "Implement the bounded inventory uploader import change for BOS and validate it locally",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/inventory-uploader/src/components/inventory/InventoryImport.client.tsx",
+        "git-diff:M:apps/inventory-uploader/src/components/inventory/InventoryMatrix.client.tsx",
+        "git-diff:M:apps/xa-b/src/app/new-in/page.tsx",
+        "git-diff:M:apps/xa-b/src/components/XaDepartmentLanding.tsx",
+        "git-diff:M:apps/xa-b/src/components/XaProductCard.tsx"
+      ],
+      "created_at": "2026-03-09T08:33:22.754Z",
+      "queue_state": "enqueued",
+      "why": "Implement the bounded inventory uploader import change signalled by BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Ship a validated micro-build for inventory uploader import through direct lp-do-build intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309083323-0984",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "f489db43d7f5f06fa0395f08a6d1f59771a83d82",
+      "after_sha": "5583c718bc1112ecbeca1e52442e2a9c69736372",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:5583c718bc1112ecbeca1e52442e2a9c69736372",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:5583c718bc1112ecbeca1e52442e2a9c69736372",
+      "cluster_fingerprint": "0e52e388603b4ed08ee56cb9e58fbb2850dfe6d8c4bde5b1d89b0cdd9b1b329c",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (f489db4 → 5583c71)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:33:23.983Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309083502-0328",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "5583c718bc1112ecbeca1e52442e2a9c69736372",
+      "after_sha": "8d083c244e235c3b2eb23afe73bb4ffe6ad786ce",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:8d083c244e235c3b2eb23afe73bb4ffe6ad786ce",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:8d083c244e235c3b2eb23afe73bb4ffe6ad786ce",
+      "cluster_fingerprint": "e3e54fa29bf4eb24e69667b53e05bd279dbae9d90c51f65f6e56a0888ddfd6db",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (5583c71 → 8d083c2)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:35:02.327Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

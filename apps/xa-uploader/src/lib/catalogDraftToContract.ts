@@ -8,6 +8,7 @@ import {
   withAutoCatalogDraftFields,
 } from "@acme/lib/xa";
 
+import type { MediaValidationPolicy } from "./catalogCloudPublish";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 
 type CurrencyRates = { EUR: number; GBP: number; AUD: number };
@@ -93,8 +94,6 @@ type MediaIndexPayload = {
     altText: string;
   }>;
 };
-
-type MediaValidationPolicy = "warn" | "strict";
 
 function normalizeNumber(input: unknown): number {
   const parsed = Number(input);

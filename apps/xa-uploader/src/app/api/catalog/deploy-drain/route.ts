@@ -14,7 +14,7 @@ import {
   resolveDeployStatePaths,
 } from "../../../../lib/deployHook";
 import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
-import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { getUploaderKv } from "../../../../lib/syncMutex";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
@@ -25,10 +25,6 @@ export const runtime = "nodejs";
 const DEPLOY_DRAIN_WINDOW_MS = 60 * 1000;
 const DEPLOY_DRAIN_MAX_REQUESTS = 30;
 
-function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
-  applyRateLimitHeaders(response.headers, limit);
-  return response;
-}
 
 function extractBearerToken(request: Request): string {
   return request.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim() ?? "";

@@ -89,8 +89,9 @@ export async function upsertCatalogDraft(
   const normalizedSlug = slugify(update.slug);
   const normalizedId = (update.id ?? "").trim();
   const nextHeader = buildCsvHeader(header);
+  const normalizedSlugs = rows.map((row) => slugify(row.slug));
   const existingIndexById = normalizedId ? rows.findIndex((row) => row.id === normalizedId) : -1;
-  const existingIndexBySlug = rows.findIndex((row) => slugify(row.slug) === normalizedSlug);
+  const existingIndexBySlug = normalizedSlugs.indexOf(normalizedSlug);
   if (existingIndexById >= 0 && existingIndexBySlug >= 0 && existingIndexById !== existingIndexBySlug) {
     throw new Error(`Product id "${normalizedId}" is already used by a different slug.`);
   }
@@ -115,8 +116,8 @@ export async function upsertCatalogDraft(
   }
   if (!nextRow.id) nextRow.id = crypto.randomUUID();
 
-  const duplicates = rows.findIndex(
-    (row, idx) => idx !== existingIndex && slugify(row.slug) === normalizedSlug,
+  const duplicates = normalizedSlugs.findIndex(
+    (s, idx) => idx !== existingIndex && s === normalizedSlug,
   );
   if (duplicates >= 0) {
     throw new Error(`Duplicate product slug "${update.slug}".`);

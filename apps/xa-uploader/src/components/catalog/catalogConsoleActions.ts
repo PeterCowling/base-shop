@@ -6,6 +6,7 @@ import {
   splitList,
 } from "@acme/lib/xa/catalogAdminSchema";
 
+import { normalizeCatalogPath } from "../../lib/catalogPath";
 import { getStorefrontConfig } from "../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { getUploaderConfirmDelete, type UploaderLocale } from "../../lib/uploaderI18n";
@@ -53,13 +54,6 @@ export type PublishResult =
   | { status: "error"; error?: string };
 
 export type SyncActionResult = { ok: boolean; data?: SyncResponse };
-
-function normalizeCatalogPath(value: string): string {
-  const trimmed = value.trim();
-  if (!trimmed) return "";
-  if (/^https?:\/\//i.test(trimmed)) return trimmed;
-  return trimmed.replace(/^\/+/, "");
-}
 
 function parseImageTuples(draft: CatalogProductDraftInput): ImageTuple[] {
   const files = splitList(draft.imageFiles ?? "").map((entry) => normalizeCatalogPath(entry));

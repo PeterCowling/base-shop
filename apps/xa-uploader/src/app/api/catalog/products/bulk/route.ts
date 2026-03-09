@@ -8,12 +8,12 @@ import { upsertCatalogDraft } from "../../../../../lib/catalogCsv";
 import {
   CatalogDraftContractError,
   readCloudDraftSnapshot,
-  upsertProductInCloudSnapshot,
+  upsertProductsInCloudSnapshot,
   writeCloudDraftSnapshot,
 } from "../../../../../lib/catalogDraftContractClient";
 import { parseStorefront } from "../../../../../lib/catalogStorefront.ts";
 import { isLocalFsRuntimeEnabled, localFsUnavailableResponse } from "../../../../../lib/localFsGuard";
-import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../../lib/rateLimit";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../../lib/rateLimit";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../../lib/requestJson";
 import { hasUploaderSession } from "../../../../../lib/uploaderAuth";
 
@@ -31,10 +31,6 @@ type BulkDiagnostic = {
   message: string;
 };
 
-function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
-  applyRateLimitHeaders(response.headers, limit);
-  return response;
-}
 
 function getBulkPayloadMaxBytes(): number {
   const raw = Number.parseInt(process.env.XA_UPLOADER_BULK_PAYLOAD_MAX_BYTES ?? "", 10);
@@ -158,9 +154,7 @@ export async function POST(request: Request) {
     const products = validation.products;
 
     if (isLocalFsRuntimeEnabled()) {
-      for (const product of products) {
-        await upsertCatalogDraft(product, { storefront });
-      }
+      await Promise.all(products.map((product) => upsertCatalogDraft(product, { storefront })));
       return withRateHeaders(
         NextResponse.json({
           ok: true,
@@ -172,20 +166,10 @@ export async function POST(request: Request) {
     }
 
     const snapshot = await readCloudDraftSnapshot(storefront);
-    let nextProducts = snapshot.products;
-    let nextRevisions = snapshot.revisionsById;
-    for (const product of products) {
-      const updated = upsertProductInCloudSnapshot({
-        product,
-        snapshot: {
-          products: nextProducts,
-          revisionsById: nextRevisions,
-          docRevision: snapshot.docRevision,
-        },
-      });
-      nextProducts = updated.products;
-      nextRevisions = updated.revisionsById;
-    }
+    const { products: nextProducts, revisionsById: nextRevisions } = upsertProductsInCloudSnapshot({
+      products,
+      snapshot,
+    });
     const writeResult = await writeCloudDraftSnapshot({
       storefront,
       products: nextProducts,

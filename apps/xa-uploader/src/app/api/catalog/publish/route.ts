@@ -24,6 +24,7 @@ import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import { getUploaderKv } from "../../../../lib/syncMutex";
+import { isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -36,9 +37,6 @@ type PublishRequestPayload = {
   publishState?: "live" | "out_of_stock";
 };
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
 
 function parsePublishRequestPayload(input: unknown): PublishRequestPayload | null {
   if (!isRecord(input)) return null;

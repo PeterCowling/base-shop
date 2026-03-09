@@ -10,13 +10,14 @@ export type MediaValidationPolicy = "warn" | "strict";
 export type CloudBuiltArtifacts = Awaited<ReturnType<typeof buildCatalogArtifactsFromDrafts>>;
 
 const CLOUD_MEDIA_HEAD_MAX_KEYS_DEFAULT = 300;
+const ABSOLUTE_HTTP_URL_RE = /^https?:\/\//i;
 
 export function getCloudMediaHeadMaxKeys(): number {
   return toPositiveInt(process.env.XA_UPLOADER_CLOUD_MEDIA_HEAD_MAX_KEYS, CLOUD_MEDIA_HEAD_MAX_KEYS_DEFAULT, 1);
 }
 
 export function isAbsoluteHttpUrl(pathValue: string): boolean {
-  return /^https?:\/\//i.test(pathValue);
+  return ABSOLUTE_HTTP_URL_RE.test(pathValue);
 }
 
 function summarizePathsForError(paths: string[]): string {
@@ -122,17 +123,17 @@ export async function applyCloudMediaExistenceValidation(params: {
     };
   }
 
-  const missingKeys = new Set<string>();
-  for (const key of keysToCheck) {
-    try {
-      const head = await bucket.head(key);
-      if (!head) {
-        missingKeys.add(key);
+  const results = await Promise.all(
+    keysToCheck.map(async (key) => {
+      try {
+        const head = await bucket.head(key);
+        return head ? null : key;
+      } catch {
+        return key;
       }
-    } catch {
-      missingKeys.add(key);
-    }
-  }
+    }),
+  );
+  const missingKeys = new Set(results.filter((k): k is string => k !== null));
 
   if (params.policy === "strict" && missingKeys.size > 0) {
     const sortedMissing = Array.from(missingKeys).sort((left, right) => left.localeCompare(right));

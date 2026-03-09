@@ -2,7 +2,7 @@
 
 import { NextResponse } from "next/server";
 
-import type { CatalogProductDraftInput, CatalogPublishState } from "@acme/lib/xa";
+import type { CatalogProductDraftInput } from "@acme/lib/xa";
 import {
   deriveCatalogPublishState,
   splitList,
@@ -21,24 +21,25 @@ import {
   upsertProductInCloudSnapshot,
   writeCloudDraftSnapshot,
 } from "../../../../lib/catalogDraftContractClient";
+import { normalizeCatalogPath } from "../../../../lib/catalogPath";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import { isLocalFsRuntimeEnabled, localFsUnavailableResponse } from "../../../../lib/localFsGuard";
-import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
 
 type ProductsErrorCode =
+  | "conflict"
+  | "internal_error"
   | "invalid"
   | "missing_product"
-  | "conflict"
-  | "would_unpublish"
-  | "internal_error"
-  | "rate_limited"
   | "payload_too_large"
+  | "rate_limited"
   | "service_unavailable"
-  | "storage_busy";
+  | "storage_busy"
+  | "would_unpublish";
 
 const PRODUCTS_LIST_WINDOW_MS = 60 * 1000;
 const PRODUCTS_LIST_MAX_REQUESTS = 120;
@@ -87,13 +88,6 @@ function buildContractFailureReason(
   return baseReason;
 }
 
-function normalizeCatalogPath(pathValue: string): string {
-  const trimmed = pathValue.trim();
-  if (!trimmed) return "";
-  if (/^https?:\/\//i.test(trimmed)) return trimmed;
-  return trimmed.replace(/^\/+/, "");
-}
-
 function normalizePipePaths(rawValue: string | undefined): string {
   const values = splitList(rawValue ?? "");
   if (values.length === 0) return "";
@@ -104,14 +98,7 @@ function wouldUnpublish(product: CatalogProductDraftInput): boolean {
   return product.publishState === "live" && deriveCatalogPublishState(product) === "draft";
 }
 
-function derivePublishState(product: CatalogProductDraftInput): CatalogPublishState {
-  return deriveCatalogPublishState(product);
-}
 
-function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
-  applyRateLimitHeaders(response.headers, limit);
-  return response;
-}
 
 function logContractFailure(operation: "list" | "upsert", error: CatalogDraftContractError): void {
   if (error.code !== "request_failed" && error.code !== "invalid_response") return;
@@ -317,7 +304,7 @@ export async function POST(request: Request) {
     const productForSave = {
       ...productInput,
       imageFiles: normalizePipePaths(productInput.imageFiles),
-      publishState: derivePublishState(productInput),
+      publishState: deriveCatalogPublishState(productInput),
     };
     if (isLocalFsRuntimeEnabled()) {
       const result = await upsertCatalogDraft(productForSave as never, { ifMatch, storefront });

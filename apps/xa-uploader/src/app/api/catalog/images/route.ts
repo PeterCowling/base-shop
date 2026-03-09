@@ -14,7 +14,8 @@ import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
 import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { getMediaBucket } from "../../../../lib/r2Media";
-import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
+import { isErrnoCode } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -60,10 +61,6 @@ function buildUniqueFilename(ext: string): string {
   return `${nowMs}-${nonce}.${ext}`;
 }
 
-function isErrnoCode(error: unknown, code: string): boolean {
-  if (!error || typeof error !== "object") return false;
-  return (error as NodeJS.ErrnoException).code === code;
-}
 
 async function writeLocalImageWithRetry(params: {
   dirPath: string;
@@ -105,10 +102,6 @@ function isUploadFileLike(value: unknown): value is UploadFileLike {
   );
 }
 
-function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
-  applyRateLimitHeaders(response.headers, limit);
-  return response;
-}
 
 function parseUploadQueryParams(requestUrl: string): {
   ok: true;

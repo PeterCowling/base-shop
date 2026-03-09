@@ -7,7 +7,9 @@ import {
   withAutoCatalogDraftFields,
 } from "@acme/lib/xa";
 
+import { resolveContractRoot } from "./catalogContractUtils";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
+import { isRecord } from "./typeGuards";
 
 export interface CatalogContractServiceBinding {
   fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
@@ -65,51 +67,27 @@ function getCatalogContractReadToken(): string {
   return (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
 }
 
-function ensureTrailingSlash(value: string): string {
-  return value.endsWith("/") ? value : `${value}/`;
-}
 
-const CONTRACT_ROUTE_ROOT_SEGMENTS = new Set(["catalog", "drafts", "deploy", "upload"]);
-
-function resolveContractRoot(baseUrl: string): URL {
-  const base = new URL(ensureTrailingSlash(baseUrl));
-  const segments = base.pathname.split("/").filter(Boolean);
-  const routeRootIndex = segments.findIndex((segment) => CONTRACT_ROUTE_ROOT_SEGMENTS.has(segment));
-  const rootSegments = routeRootIndex < 0 ? segments : segments.slice(0, routeRootIndex);
-  base.pathname = rootSegments.length > 0 ? `/${rootSegments.join("/")}/` : "/";
-  base.search = "";
-  base.hash = "";
-  return base;
+function buildDraftUrl(storefront: XaCatalogStorefront, suffix = ""): string {
+  const baseUrl = getCatalogContractBaseUrl();
+  if (!baseUrl) {
+    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
+  }
+  let root: URL;
+  try {
+    root = resolveContractRoot(baseUrl);
+  } catch {
+    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.");
+  }
+  return new URL(`drafts/${encodeURIComponent(storefront)}${suffix}`, root).toString();
 }
 
 function resolveDraftUrl(storefront: XaCatalogStorefront): string {
-  const baseUrl = getCatalogContractBaseUrl();
-  if (!baseUrl) {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
-  }
-
-  let root: URL;
-  try {
-    root = resolveContractRoot(baseUrl);
-  } catch {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.");
-  }
-  return new URL(`drafts/${encodeURIComponent(storefront)}`, root).toString();
+  return buildDraftUrl(storefront);
 }
 
 function resolveDraftSyncLockUrl(storefront: XaCatalogStorefront): string {
-  const baseUrl = getCatalogContractBaseUrl();
-  if (!baseUrl) {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
-  }
-
-  let root: URL;
-  try {
-    root = resolveContractRoot(baseUrl);
-  } catch {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.");
-  }
-  return new URL(`drafts/${encodeURIComponent(storefront)}/sync-lock`, root).toString();
+  return buildDraftUrl(storefront, "/sync-lock");
 }
 
 function getWriteTokenHeader(): Record<string, string> {
@@ -138,7 +116,7 @@ function getReadTokenHeader(): Record<string, string> {
 }
 
 function parseSnapshotPayload(payload: unknown): CloudDraftSnapshot {
-  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+  if (!isRecord(payload)) {
     throw new CatalogDraftContractError("invalid_response", "Draft contract returned invalid payload.");
   }
   const record = payload as {
@@ -203,7 +181,11 @@ function parseOptionalString(value: unknown): string | null {
 }
 
 function createRevision(): string {
-  return crypto.randomUUID().replace(/-/g, "");
+  return crypto.randomUUID().replaceAll("-", "");
+}
+
+function getProductNormalizedSlug(product: Pick<CatalogProductDraftInput, "slug" | "title">): string {
+  return slugify(product.slug || product.title);
 }
 
 function sanitizeContractEndpoint(value: string): string {
@@ -421,7 +403,7 @@ export function upsertProductInCloudSnapshot(params: {
   revisionsById: Record<string, string>;
 } {
   const parsed = catalogProductDraftSchema.parse(params.product);
-  const normalizedSlug = slugify(parsed.slug || parsed.title);
+  const normalizedSlug = getProductNormalizedSlug(parsed);
   if (!normalizedSlug) {
     throw new Error("Product id \"\" is invalid.");
   }
@@ -439,7 +421,7 @@ export function upsertProductInCloudSnapshot(params: {
 
   const duplicateSlug = products.some((entry, index) => {
     if (index === existingIndex) return false;
-    return slugify(entry.slug || entry.title) === normalizedSlug;
+    return getProductNormalizedSlug(entry) === normalizedSlug;
   });
   if (duplicateSlug) {
     throw new Error(`Duplicate product slug "${normalizedSlug}".`);
@@ -467,6 +449,43 @@ export function upsertProductInCloudSnapshot(params: {
   };
 }
 
+export function upsertProductsInCloudSnapshot(params: {
+  products: CatalogProductDraftInput[];
+  snapshot: CloudDraftSnapshot;
+}): { products: CatalogProductDraftInput[]; revisionsById: Record<string, string> } {
+  const nextProducts = [...params.snapshot.products];
+  const nextRevisions = { ...params.snapshot.revisionsById };
+
+  for (const input of params.products) {
+    const parsed = catalogProductDraftSchema.parse(input);
+    const normalizedSlug = getProductNormalizedSlug(parsed);
+    if (!normalizedSlug) {
+      throw new Error(`Product "${parsed.id ?? ""}" has an invalid slug.`);
+    }
+
+    const id = (parsed.id ?? "").trim() || crypto.randomUUID();
+    const nextProduct: CatalogProductDraftInput = { ...parsed, id, slug: normalizedSlug };
+
+    const existingIndex = nextProducts.findIndex((e) => (e.id ?? "").trim() === id);
+    const duplicateSlug = nextProducts.some((e, i) => {
+      if (i === existingIndex) return false;
+      return getProductNormalizedSlug(e) === normalizedSlug;
+    });
+    if (duplicateSlug) {
+      throw new Error(`Duplicate product slug "${normalizedSlug}".`);
+    }
+
+    if (existingIndex >= 0) {
+      nextProducts[existingIndex] = nextProduct;
+    } else {
+      nextProducts.push(nextProduct);
+    }
+    nextRevisions[id] = createRevision();
+  }
+
+  return { products: nextProducts, revisionsById: nextRevisions };
+}
+
 export function deleteProductFromCloudSnapshot(params: {
   slug: string;
   snapshot: CloudDraftSnapshot;
@@ -478,7 +497,7 @@ export function deleteProductFromCloudSnapshot(params: {
   const normalizedSlug = slugify(params.slug);
   const products = [...params.snapshot.products];
   const index = products.findIndex(
-    (entry) => slugify(entry.slug || entry.title) === normalizedSlug,
+    (entry) => getProductNormalizedSlug(entry) === normalizedSlug,
   );
 
   if (index < 0) {

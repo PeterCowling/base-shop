@@ -117,6 +117,7 @@ packages/types/src/**/*.d.ts.map
 # ---------------------------
 # Local Claude skill/config backups (ephemeral; should not be committed)
 .claude.backup/
+.claude/worktrees/
 
 # Session learnings (may contain task details, gitignored)
 .agents/learnings/*

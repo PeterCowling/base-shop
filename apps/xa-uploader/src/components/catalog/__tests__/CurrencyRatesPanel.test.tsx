@@ -12,6 +12,16 @@ jest.mock("../../../lib/uploaderI18n.client", () => ({
 describe("CurrencyRatesPanel", () => {
   const originalFetch = global.fetch;
 
+  async function renderPanel(props: {
+    busy: boolean;
+    syncReadiness: { checking: boolean; ready: boolean };
+    onSync: () => Promise<{ ok: boolean }>;
+  }) {
+    await act(async () => {
+      render(<CurrencyRatesPanel {...props} />);
+    });
+  }
+
   beforeEach(() => {
     jest.clearAllMocks();
     global.fetch = jest.fn(() =>
@@ -60,13 +70,11 @@ describe("CurrencyRatesPanel", () => {
       } as Response),
     ) as unknown as typeof fetch;
 
-    render(
-      <CurrencyRatesPanel
-        busy={false}
-        syncReadiness={{ checking: false, ready: true }}
-        onSync={async () => ({ ok: true })}
-      />,
-    );
+    await renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync: async () => ({ ok: true }),
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent("currencyRatesLoadFailed");
@@ -88,13 +96,11 @@ describe("CurrencyRatesPanel", () => {
       } as Response),
     ) as unknown as typeof fetch;
 
-    render(
-      <CurrencyRatesPanel
-        busy={false}
-        syncReadiness={{ checking: false, ready: true }}
-        onSync={async () => ({ ok: true })}
-      />,
-    );
+    await renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync: async () => ({ ok: true }),
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent(
@@ -119,13 +125,11 @@ describe("CurrencyRatesPanel", () => {
       } as Response);
     }) as unknown as typeof fetch;
 
-    render(
-      <CurrencyRatesPanel
-        busy={false}
-        syncReadiness={{ checking: false, ready: true }}
-        onSync={onSync}
-      />,
-    );
+    await renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync,
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-eur")).toHaveValue(0.93);
@@ -153,13 +157,11 @@ describe("CurrencyRatesPanel", () => {
       } as Response);
     }) as unknown as typeof fetch;
 
-    render(
-      <CurrencyRatesPanel
-        busy={false}
-        syncReadiness={{ checking: false, ready: true }}
-        onSync={onSync}
-      />,
-    );
+    await renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync,
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-eur")).toHaveValue(0.93);
@@ -187,13 +189,11 @@ describe("CurrencyRatesPanel", () => {
       } as Response);
     }) as unknown as typeof fetch;
 
-    render(
-      <CurrencyRatesPanel
-        busy={false}
-        syncReadiness={{ checking: false, ready: false }}
-        onSync={onSync}
-      />,
-    );
+    await renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: false },
+      onSync,
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-gbp")).toHaveValue(0.79);
@@ -220,18 +220,18 @@ describe("CurrencyRatesPanel", () => {
       } as Response);
     }) as unknown as typeof fetch;
 
-    render(
-      <CurrencyRatesPanel
-        busy={false}
-        syncReadiness={{ checking: false, ready: true }}
-        onSync={async () => ({ ok: true })}
-      />,
-    );
+    await renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync: async () => ({ ok: true }),
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-aud")).toHaveValue(1.55);
     });
-    fireEvent.click(screen.getByTestId("currency-rates-save"));
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("currency-rates-save"));
+    });
 
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent("currencyRatesSaveFailed");

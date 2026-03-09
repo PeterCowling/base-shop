@@ -43,11 +43,10 @@ export function UploaderI18nProvider({
 
   const setLocale = React.useCallback((nextLocale: UploaderLocale) => {
     setLocaleState(nextLocale);
-    window.localStorage.setItem(STORAGE_KEY, nextLocale);
-    document.documentElement.lang = nextLocale === "zh" ? "zh" : "en";
   }, []);
 
   React.useEffect(() => {
+    window.localStorage.setItem(STORAGE_KEY, locale);
     document.documentElement.lang = locale === "zh" ? "zh" : "en";
   }, [locale]);
 

@@ -299,7 +299,7 @@ describe("useCatalogConsole scoped action feedback", () => {
     await clickButton("sync");
 
     await waitFor(() => {
-      expect(screen.getByTestId("sync-feedback")).toHaveTextContent("success:Sync completed.");
+      expect(screen.getByTestId("sync-feedback")).toHaveTextContent("success:Catalog published.");
     });
     expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Saved product details.");
   });
@@ -341,7 +341,7 @@ describe("useCatalogConsole scoped action feedback", () => {
     await clickButton("sync");
 
     await waitFor(() => {
-      expect(screen.getByTestId("sync-feedback")).toHaveTextContent("success:Sync completed.");
+      expect(screen.getByTestId("sync-feedback")).toHaveTextContent("success:Catalog published.");
       expect(screen.getByTestId("sync-feedback")).toHaveTextContent("Warnings:");
       expect(screen.getByTestId("sync-feedback")).toHaveTextContent(
         "Some product publish states could not be updated to live in uploader records.",

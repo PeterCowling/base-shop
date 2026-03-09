@@ -445,6 +445,28 @@ function resetAutosaveAndBaseline(state: CatalogConsoleState): void {
   state.draftImageBaselineRef.current = null;
 }
 
+function applySelectedProduct(
+  state: CatalogConsoleState,
+  product: CatalogProductDraftInput,
+  options: { resetAutosave: boolean },
+): void {
+  if (options.resetAutosave) {
+    state.resetAutosaveState();
+  }
+  const normalizedProduct = withDraftDefaults(product);
+  state.draftImageBaselineRef.current = normalizedProduct;
+  handleSelectImpl({
+    product: normalizedProduct,
+    revisionsById: state.revisionsById,
+    setSelectedSlug: state.setSelectedSlug,
+    setDraft: state.setDraft,
+    setDraftRevision: state.setDraftRevision,
+    setFieldErrors: state.setFieldErrors,
+    setActionFeedback: state.setActionFeedback,
+    setSyncOutput: state.setSyncOutput,
+  });
+}
+
 function applyAutosaveQueueSaveSuccess(
   state: CatalogConsoleState,
   result: Extract<SaveResult, { status: "saved" }>,
@@ -581,26 +603,25 @@ function useCatalogAuthHandlers(state: CatalogConsoleState) {
       loadSession: state.loadSession,
     });
 
-  const handleLogout = async () =>
-    (() => {
-      resetAutosaveAndBaseline(state);
-      return handleLogoutImpl({
-        uploaderMode: state.uploaderMode,
-        t: state.t,
-        busyLockRef: state.busyLockRef,
-        setBusy: state.setBusy,
-        setActionFeedback: state.setActionFeedback,
-        setSession: state.setSession,
-        setProducts: state.setProducts,
-        setRevisionsById: state.setRevisionsById,
-        setSelectedSlug: state.setSelectedSlug,
-        setDraft: state.setDraft,
-        setDraftRevision: state.setDraftRevision,
-        setFieldErrors: state.setFieldErrors,
-        setSyncOutput: state.setSyncOutput,
-        defaultCategory: state.storefrontConfig.defaultCategory,
-      });
-    })();
+  const handleLogout = async () => {
+    resetAutosaveAndBaseline(state);
+    return handleLogoutImpl({
+      uploaderMode: state.uploaderMode,
+      t: state.t,
+      busyLockRef: state.busyLockRef,
+      setBusy: state.setBusy,
+      setActionFeedback: state.setActionFeedback,
+      setSession: state.setSession,
+      setProducts: state.setProducts,
+      setRevisionsById: state.setRevisionsById,
+      setSelectedSlug: state.setSelectedSlug,
+      setDraft: state.setDraft,
+      setDraftRevision: state.setDraftRevision,
+      setFieldErrors: state.setFieldErrors,
+      setSyncOutput: state.setSyncOutput,
+      defaultCategory: state.storefrontConfig.defaultCategory,
+    });
+  };
 
   return { handleLogin, handleLogout };
 }
@@ -615,21 +636,20 @@ function createSaveAdvanceFeedbackHandler(state: CatalogConsoleState) {
 }
 
 function createDeleteHandler(state: CatalogConsoleState, handleNew: () => void) {
-  return async () =>
-    (() => {
-      resetAutosaveAndBaseline(state);
-      return handleDeleteImpl({
-        selectedSlug: state.selectedSlug,
-        locale: state.locale,
-        storefront: state.storefront,
-        t: state.t,
-        busyLockRef: state.busyLockRef,
-        setBusy: state.setBusy,
-        setActionFeedback: state.setActionFeedback,
-        loadCatalog: state.loadCatalog,
-        handleNew,
-      });
-    })();
+  return async () => {
+    resetAutosaveAndBaseline(state);
+    return handleDeleteImpl({
+      selectedSlug: state.selectedSlug,
+      locale: state.locale,
+      storefront: state.storefront,
+      t: state.t,
+      busyLockRef: state.busyLockRef,
+      setBusy: state.setBusy,
+      setActionFeedback: state.setActionFeedback,
+      loadCatalog: state.loadCatalog,
+      handleNew,
+    });
+  };
 }
 
 function useCatalogDraftHandlers(
@@ -640,12 +660,25 @@ function useCatalogDraftHandlers(
   const triggerAutosync = createAutosyncTrigger(state, handleAutosync);
 
   const handleSelect = (product: CatalogProductDraftInput) => {
-    state.resetAutosaveState();
-    const normalizedProduct = withDraftDefaults(product);
-    state.draftImageBaselineRef.current = normalizedProduct;
-    handleSelectImpl({
-      product: normalizedProduct,
-      revisionsById: state.revisionsById,
+    applySelectedProduct(state, product, {
+      resetAutosave: true,
+    });
+  };
+
+  const handleSelectAfterSave = (product: CatalogProductDraftInput) => {
+    applySelectedProduct(state, product, {
+      resetAutosave: false,
+    });
+  };
+
+  const handleNew = () => {
+    resetAutosaveAndBaseline(state);
+    handleNewImpl({
+      defaultCategory: state.storefrontConfig.defaultCategory,
+      preservedBrand: {
+        brandHandle: state.draft.brandHandle,
+        brandName: state.draft.brandName,
+      },
       setSelectedSlug: state.setSelectedSlug,
       setDraft: state.setDraft,
       setDraftRevision: state.setDraftRevision,
@@ -655,42 +688,23 @@ function useCatalogDraftHandlers(
     });
   };
 
-  const handleNew = () =>
-    (() => {
-      resetAutosaveAndBaseline(state);
-      handleNewImpl({
-        defaultCategory: state.storefrontConfig.defaultCategory,
-        preservedBrand: {
-          brandHandle: state.draft.brandHandle,
-          brandName: state.draft.brandName,
-        },
-        setSelectedSlug: state.setSelectedSlug,
-        setDraft: state.setDraft,
-        setDraftRevision: state.setDraftRevision,
-        setFieldErrors: state.setFieldErrors,
-        setActionFeedback: state.setActionFeedback,
-        setSyncOutput: state.setSyncOutput,
-      });
-    })();
-
-  const handleStorefrontChange = (next: XaCatalogStorefront) =>
-    (() => {
-      resetAutosaveAndBaseline(state);
-      state.setLastSyncData(null);
-      handleStorefrontChangeImpl({
-        nextStorefront: next,
-        currentStorefront: state.storefront,
-        setStorefront: state.setStorefront,
-        setProducts: state.setProducts,
-        setRevisionsById: state.setRevisionsById,
-        setSelectedSlug: state.setSelectedSlug,
-        setDraft: state.setDraft,
-        setDraftRevision: state.setDraftRevision,
-        setFieldErrors: state.setFieldErrors,
-        setActionFeedback: state.setActionFeedback,
-        setSyncOutput: state.setSyncOutput,
-      });
-    })();
+  const handleStorefrontChange = (next: XaCatalogStorefront) => {
+    resetAutosaveAndBaseline(state);
+    state.setLastSyncData(null);
+    handleStorefrontChangeImpl({
+      nextStorefront: next,
+      currentStorefront: state.storefront,
+      setStorefront: state.setStorefront,
+      setProducts: state.setProducts,
+      setRevisionsById: state.setRevisionsById,
+      setSelectedSlug: state.setSelectedSlug,
+      setDraft: state.setDraft,
+      setDraftRevision: state.setDraftRevision,
+      setFieldErrors: state.setFieldErrors,
+      setActionFeedback: state.setActionFeedback,
+      setSyncOutput: state.setSyncOutput,
+    });
+  };
 
   async function flushAutosaveQueue(): Promise<void> {
     if (state.autosaveFlushInProgressRef.current) return;
@@ -717,7 +731,7 @@ function useCatalogDraftHandlers(
           draftRevision: workingRevision,
           suppressSuccessFeedback: true,
           confirmUnpublish: () => false,
-          handleSelect,
+          handleSelect: handleSelectAfterSave,
         });
 
         if (firstAttempt.status === "saved") {
@@ -737,7 +751,7 @@ function useCatalogDraftHandlers(
           const retryResult = await retryAutosaveAfterConflict({
             state,
             pendingDraft,
-            handleSelect,
+            handleSelect: handleSelectAfterSave,
           });
 
           if (retryResult.status === "saved") {
@@ -793,7 +807,7 @@ function useCatalogDraftHandlers(
       draftRevision: state.draftRevision,
       suppressSuccessFeedback: false,
       confirmUnpublish: (message: string) => window.confirm(message),
-      handleSelect,
+      handleSelect: handleSelectAfterSave,
     });
 
     if (result.status === "busy") {
@@ -804,7 +818,7 @@ function useCatalogDraftHandlers(
         draftRevision: state.draftRevision,
         suppressSuccessFeedback: false,
         confirmUnpublish: (message: string) => window.confirm(message),
-        handleSelect,
+        handleSelect: handleSelectAfterSave,
       });
     }
 

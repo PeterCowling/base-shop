@@ -46,7 +46,7 @@ function WhatsappIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns="http://www.w3.org/2000/svg" // i18n-exempt -- XA-0014: SVG namespace URI, not user-facing copy
       {...props}
     >
       <path
@@ -62,7 +62,7 @@ function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns="http://www.w3.org/2000/svg" // i18n-exempt -- XA-0014: SVG namespace URI, not user-facing copy
       {...props}
     >
       <path
@@ -78,7 +78,7 @@ function EmailIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns="http://www.w3.org/2000/svg" // i18n-exempt -- XA-0014: SVG namespace URI, not user-facing copy
       {...props}
     >
       <path
@@ -102,7 +102,7 @@ function ChatIcon(props: React.SVGProps<SVGSVGElement>) {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      xmlns="http://www.w3.org/2000/svg" // i18n-exempt -- XA-0014: SVG namespace URI, not user-facing copy
       {...props}
     >
       <path

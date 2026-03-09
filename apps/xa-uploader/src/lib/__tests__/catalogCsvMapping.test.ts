@@ -56,20 +56,20 @@ describe("catalogCsvMapping", () => {
   it("reads canonical media_paths as ordered image files when image_files is empty", () => {
     const draft = rowToDraftInput({
       id: "id-1",
-      slug: "studio-jacket",
-      title: "Studio jacket",
+      slug: "studio-bag",
+      title: "Studio bag",
       brand_handle: "atelier-x",
-      collection_handle: "outerwear",
+      collection_handle: "bags",
       price: "189",
-      description: "A structured layer.",
+      description: "A structured bag.",
       created_at: "2025-12-01T12:00:00.000Z",
       popularity: "0",
       media_paths: "images/a.jpg|images/b.jpg",
       taxonomy_department: "women",
-      taxonomy_category: "clothing",
-      taxonomy_subcategory: "outerwear",
+      taxonomy_category: "bags",
+      taxonomy_subcategory: "crossbody",
       taxonomy_color: "black|cream",
-      taxonomy_material: "wool|cotton",
+      taxonomy_material: "leather|suede",
     });
 
     expect(draft?.imageFiles).toBe("images/a.jpg|images/b.jpg");
@@ -78,20 +78,20 @@ describe("catalogCsvMapping", () => {
   it("discards legacy role-prefixed media_paths rows", () => {
     const draft = rowToDraftInput({
       id: "id-1",
-      slug: "studio-jacket",
-      title: "Studio jacket",
+      slug: "studio-bag",
+      title: "Studio bag",
       brand_handle: "atelier-x",
-      collection_handle: "outerwear",
+      collection_handle: "bags",
       price: "189",
-      description: "A structured layer.",
+      description: "A structured bag.",
       created_at: "2025-12-01T12:00:00.000Z",
       popularity: "0",
       media_paths: "front:images/a.jpg|side:images/b.jpg",
       taxonomy_department: "women",
-      taxonomy_category: "clothing",
-      taxonomy_subcategory: "outerwear",
+      taxonomy_category: "bags",
+      taxonomy_subcategory: "crossbody",
       taxonomy_color: "black|cream",
-      taxonomy_material: "wool|cotton",
+      taxonomy_material: "leather|suede",
     });
 
     expect(draft).toBeNull();

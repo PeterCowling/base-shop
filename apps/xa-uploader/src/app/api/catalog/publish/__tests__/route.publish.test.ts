@@ -324,7 +324,7 @@ describe("catalog publish route", () => {
     expect(response.status).toBe(200);
     const payload = await response.json();
     expect(payload.ok).toBe(true);
-    expect(payload.deployStatus).toBe("triggered");
+    expect(payload.deployStatus).toBe("skipped_runtime_live_catalog");
     expect(payload.warnings).toContain("cloud_media_missing_pruned:1");
     expect(publishCatalogPayloadToContractMock).toHaveBeenCalledWith(
       expect.objectContaining({

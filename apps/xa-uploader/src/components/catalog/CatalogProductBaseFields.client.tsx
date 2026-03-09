@@ -182,6 +182,8 @@ function SizeSelector({
         className={SELECT_CLASS}
         // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
         data-testid="catalog-field-size-select"
+        // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+        data-cy="catalog-field-size-select"
       >
         <option value="">{t("fieldSizeSelectPlaceholder")}</option>
         {sizes.map((s) => (
@@ -295,6 +297,8 @@ function BrandCollectionSelectors({
           className={SELECT_CLASS}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-field-brand-select"
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          data-cy="catalog-field-brand-select"
         >
           <option value="">{t("fieldBrandSelectPlaceholder")}</option>
           {XA_BRAND_REGISTRY.map((brand) => (
@@ -314,6 +318,8 @@ function BrandCollectionSelectors({
             className={SELECT_CLASS}
             // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
             data-testid="catalog-field-collection-select"
+            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+            data-cy="catalog-field-collection-select"
           >
             <option value="">{t("fieldCollectionSelectPlaceholder")}</option>
             {collections.map((coll) => (
@@ -332,6 +338,8 @@ function BrandCollectionSelectors({
             <input
               // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
               data-testid="catalog-field-brand-handle"
+              // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+              data-cy="catalog-field-brand-handle"
               value={draft.brandHandle ?? ""}
               onChange={(event) => onChange({ ...draft, brandHandle: slugify(event.target.value) })}
               className={INPUT_CLASS}
@@ -355,6 +363,8 @@ function BrandCollectionSelectors({
             <input
               // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
               data-testid="catalog-field-collection-handle"
+              // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+              data-cy="catalog-field-collection-handle"
               value={draft.collectionHandle ?? ""}
               onChange={(event) => onChange({ ...draft, collectionHandle: slugify(event.target.value) })}
               className={INPUT_CLASS}
@@ -471,9 +481,11 @@ function MaterialColorSelectors({
         <label className="block text-xs uppercase tracking-label text-gate-muted">
           {t("fieldColors")}
           <input
-            // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
-            data-testid="catalog-field-colors"
-            value={draft.taxonomy.color ?? ""}
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          data-testid="catalog-field-colors"
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          data-cy="catalog-field-colors"
+          value={draft.taxonomy.color ?? ""}
             onChange={(event) =>
               onChange({ ...draft, taxonomy: { ...draft.taxonomy, color: event.target.value } })
             }
@@ -613,6 +625,8 @@ function TaxonomyFields({ t, draft, fieldErrors, onChange }: BaseFieldsProps & {
         <input
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
           data-testid="catalog-field-subcategory"
+          // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id
+          data-cy="catalog-field-subcategory"
           value={draft.taxonomy.subcategory ?? ""}
           onChange={(event) =>
             onChange({

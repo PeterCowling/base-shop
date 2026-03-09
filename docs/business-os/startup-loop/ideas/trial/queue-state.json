@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-09T02:54:57.660Z",
+  "last_updated": "2026-03-09T10:30:00.000Z",
   "counts": {
-    "enqueued": 219,
-    "processed": 46,
+    "enqueued": 225,
+    "processed": 47,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 132,
-    "fact_find_ready": 277,
-    "micro_build_ready": 13,
-    "total": 424
+    "fact_find_ready": 280,
+    "micro_build_ready": 17,
+    "total": 431
   },
   "dispatches": [
     {
@@ -17791,6 +17791,302 @@
         "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
         "source": "auto"
       }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309100000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-modal-mode-discriminated-unions:20260309",
+      "anchor_key": "reception-modal-mode-discriminated-unions",
+      "cluster_key": "BRIK:BOS:reception-modal-mode-discriminated-unions:operator:20260309",
+      "cluster_fingerprint": "reception-modal-mode-discriminated-unions-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception mode/modal state — boolean arrays should be discriminated unions",
+      "location_anchors": [
+        "apps/reception/src/hooks/utilities/useCheckinsModes.ts",
+        "apps/reception/src/hooks/client/till/useTillReconciliationUI.ts",
+        "apps/reception/src/components/inbox/DraftReviewPanel.tsx",
+        "apps/reception/src/components/Login.tsx",
+        "apps/reception/src/components/checkins/view/CheckinsTable.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "At least 4 components use arrays of independent boolean useState flags to track mutually exclusive modal/mode state: useCheckinsModes (3 flags: isEditMode/isDeleteMode/isAddGuestMode), useTillReconciliationUI (3 flags: showFloatForm/showExchangeForm/showTenderRemovalForm), DraftReviewPanel (4 flags: showRegenerateConfirm/showSendConfirm/showResolveConfirm/showDismissConfirm), Login (3 flags: showForgotPassword/showPinSetup/showPinUnlock). Each component manually zeroes all other flags on each toggle, and the 3 checkin flags thread through CheckinsTableView (28 props) producing substantial prop sprawl.",
+      "next_scope_now": "Replace each boolean-flag array with a typed discriminated union state variable. Map caller updates. Verify that mutual-exclusivity invariant is preserved by the type system rather than by manual nulling logic. Reduce CheckinsTableView prop count by grouping mode-related props into a single mode-state object.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.82,
+      "evidence_refs": [
+        "operator-stated: full-app simplify sweep found 4 components with mutually exclusive boolean flag arrays; discriminated unions are the correct fix",
+        "apps/reception/src/hooks/utilities/useCheckinsModes.ts",
+        "apps/reception/src/hooks/client/till/useTillReconciliationUI.ts",
+        "apps/reception/src/components/inbox/DraftReviewPanel.tsx"
+      ],
+      "why": "Arrays of independent boolean flags for mutually exclusive state create 2^N theoretical states for an N-state reality, require manual enforcement of mutual exclusivity, and inflate component prop interfaces. The pattern is present in 4 components and already cascades into 28-prop CheckinsTableView.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Each modal/mode state in reception uses a single discriminated union state variable. Illegal state combinations are impossible by construction. CheckinsTableView prop count is reduced via a grouped mode-state prop."
+      },
+      "queue_state": "processed",
+      "created_at": "2026-03-09T10:00:00.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-modal-mode-discriminated-unions",
+        "target_path": "docs/plans/reception-modal-mode-discriminated-unions/fact-find.md",
+        "processed_at": "2026-03-09T07:43:17.283Z",
+        "fact_find_slug": "reception-modal-mode-discriminated-unions",
+        "fact_find_path": "docs/plans/reception-modal-mode-discriminated-unions/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309100000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-firebase-subscription-deduplication:20260309",
+      "anchor_key": "reception-firebase-subscription-deduplication",
+      "cluster_key": "BRIK:BOS:reception-firebase-subscription-deduplication:operator:20260309",
+      "cluster_fingerprint": "reception-firebase-subscription-deduplication-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception Firebase data layer — duplicate subscriptions and N+1 listener patterns",
+      "location_anchors": [
+        "apps/reception/src/hooks/data/useCheckinsTableData.ts",
+        "apps/reception/src/hooks/orchestrations/checkin/useCheckinsData.ts",
+        "apps/reception/src/hooks/data/useActivitiesByCodeData.ts",
+        "apps/reception/src/hooks/data/useBookingMetaStatuses.ts",
+        "apps/reception/src/context/FirebaseSubscriptionCache.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Multiple distinct issues cause unnecessary Firebase connections: (1) useCheckinsData and useCheckinsTableData are near-identical orchestration hooks that both subscribe to the same 9 Firebase paths simultaneously when both are active. (2) useActivitiesByCodeData opens one Firebase onValue listener per code (useEmailProgressData alone opens 25 listeners for codes 1-25). (3) useBookingMetaStatuses opens one listener per booking ref — N+1 pattern where N can be 50+. (4) FirebaseSubscriptionCacheProvider exists and ref-counts subscriptions but standalone hooks (useBookingsData, useGuestDetails, useActivitiesData) do not use it. (5) JSON.stringify used for deep equality on every Firebase update in useActivitiesByCodeData.",
+      "next_scope_now": "Investigate which of the five sub-problems can be addressed without full architectural rework: (a) merge useCheckinsData/useCheckinsTableData, (b) switch useBookingMetaStatuses to a single /bookingMeta subtree listener, (c) switch useActivitiesByCodeData to single /activitiesByCode subtree listener with client-side filtering, (d) replace JSON.stringify equality with shallow comparison. FirebaseSubscriptionCacheProvider integration for standalone hooks may be deferred if complex.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.78,
+      "evidence_refs": [
+        "operator-stated: full-app simplify sweep found 5 distinct Firebase subscription efficiency issues including N+1 pattern and 25-listener fan-out",
+        "apps/reception/src/hooks/data/useActivitiesByCodeData.ts",
+        "apps/reception/src/hooks/data/useBookingMetaStatuses.ts",
+        "apps/reception/src/hooks/orchestrations/checkin/useCheckinsData.ts"
+      ],
+      "why": "Excessive Firebase listeners increase connection overhead, increase data transfer, and can hit Firebase connection limits. The useEmailProgressData hook opens 25 concurrent listeners. The N+1 booking meta pattern opens 50+ listeners on a loaded Checkins page.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The Checkins page opens at most 10 distinct Firebase listeners regardless of booking count. useActivitiesByCodeData uses a single subtree listener with client-side filtering. useCheckinsData and useCheckinsTableData are unified into one hook."
+      },
+      "queue_state": "processed",
+      "created_at": "2026-03-09T10:00:00.000Z",
+      "processed_by": {
+        "feature_slug": "reception-firebase-subscription-deduplication",
+        "fact_find_path": "docs/plans/reception-firebase-subscription-deduplication/fact-find.md",
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-09T10:30:00.000Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309100000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-format-euro-consolidation:20260309",
+      "anchor_key": "reception-format-euro-consolidation",
+      "cluster_key": "BRIK:BOS:reception-format-euro-consolidation:operator:20260309",
+      "cluster_fingerprint": "reception-format-euro-consolidation-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception formatEuro — 4 local definitions plus inline string literals",
+      "location_anchors": [
+        "apps/reception/src/utils/format.ts",
+        "apps/reception/src/components/stats/Statistics.tsx",
+        "apps/reception/src/components/dashboard/DashboardMetrics.tsx",
+        "apps/reception/src/components/till/ReconciliationWorkbench.tsx",
+        "apps/reception/src/components/till/TillShiftHistory.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "formatEuro is defined 4 times locally (Statistics.tsx, DashboardMetrics.tsx, ReconciliationWorkbench.tsx, TillShiftHistory.tsx) and inline as template literals (€${x.toFixed(2)}) in at least 8 more files (SafeManagement, TransactionTable, OpenShiftForm, ExchangeNotesForm, DenominationInput, VarianceSignoffModal, EodChecklistContent, CreditCardReceiptCheck). The canonical version exists at utils/format.ts but is not imported by any of these files.",
+      "next_scope_now": "Remove the 4 local formatEuro definitions and all inline €${x.toFixed(2)} literals. Import formatEuro from utils/format.ts everywhere. Verify formatting matches existing output exactly before replacing each site.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: full-app simplify sweep found 4 local formatEuro definitions and 8+ inline currency literals; utils/format.ts has the canonical version",
+        "apps/reception/src/utils/format.ts",
+        "apps/reception/src/components/stats/Statistics.tsx"
+      ],
+      "why": "Currency formatting inconsistency is a maintenance hazard — if locale or symbol changes, 12+ sites must all be updated independently.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "All euro formatting in the reception app flows through utils/format.ts formatEuro. No local redefinitions or inline template literals remain."
+      },
+      "queue_state": "processed",
+      "created_at": "2026-03-09T10:00:00.000Z",
+      "processed_by": {
+        "feature_slug": "reception-format-euro-consolidation",
+        "route": "dispatch-routed",
+        "processed_at": "2026-03-09T10:45:00.000Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309100000-0004",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-bar-menutype-dedup:20260309",
+      "anchor_key": "reception-bar-menutype-dedup",
+      "cluster_key": "BRIK:BOS:reception-bar-menutype-dedup:operator:20260309",
+      "cluster_fingerprint": "reception-bar-menutype-dedup-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception bar — MenuType declared in 3 separate files",
+      "location_anchors": [
+        "apps/reception/src/components/bar/Bar.tsx",
+        "apps/reception/src/components/bar/HeaderControls.tsx",
+        "apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "type MenuType = \"food\" | \"alcoholic\" | \"nonalcoholic\" | \"other\" is declared three times across the bar component tree. Two copies are identical; one reorders the members. No shared bar types file exists.",
+      "next_scope_now": "Create apps/reception/src/types/bar/barDomain.ts (or extend existing bar types file if one exists). Move MenuType there. Update all three import sites.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: simplify sweep found MenuType declared identically in 3 bar files",
+        "apps/reception/src/components/bar/Bar.tsx",
+        "apps/reception/src/components/bar/HeaderControls.tsx",
+        "apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx"
+      ],
+      "why": "Three copies of the same type means adding a menu category requires 3 simultaneous edits.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "MenuType is defined once in a shared bar types file and imported by all 3 consumers."
+      },
+      "queue_state": "enqueued",
+      "created_at": "2026-03-09T10:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309100000-0005",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-sort-utils-dedup:20260309",
+      "anchor_key": "reception-sort-utils-dedup",
+      "cluster_key": "BRIK:BOS:reception-sort-utils-dedup:operator:20260309",
+      "cluster_fingerprint": "reception-sort-utils-dedup-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception sort utils — parseAllocatedRoomNumber copy-pasted between two files",
+      "location_anchors": [
+        "apps/reception/src/utils/sortCheckins.ts",
+        "apps/reception/src/utils/sortCheckouts.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "sortCheckins.ts and sortCheckouts.ts both define parseAllocatedRoomNumber and getBookingMinAllocatedRoom verbatim. The two utilities implement the same group-sort-flatten pattern with only the booking-key comparator differing.",
+      "next_scope_now": "Extract parseAllocatedRoomNumber and getBookingMinAllocatedRoom to a shared utils/sortUtils.ts (or add to an existing sort/booking utils file). Import from both sort files. Optionally extract a groupAndSortBookings<T> generic helper.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: simplify sweep found parseAllocatedRoomNumber copy-pasted verbatim between sortCheckins.ts and sortCheckouts.ts",
+        "apps/reception/src/utils/sortCheckins.ts",
+        "apps/reception/src/utils/sortCheckouts.ts"
+      ],
+      "why": "Verbatim copy creates a silent maintenance risk — a bug fix or logic change in one file is never applied to the other.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "parseAllocatedRoomNumber and getBookingMinAllocatedRoom exist once and are imported by both sort files."
+      },
+      "queue_state": "enqueued",
+      "created_at": "2026-03-09T10:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309100000-0006",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-keycard-icon-dedup:20260309",
+      "anchor_key": "reception-keycard-icon-dedup",
+      "cluster_key": "BRIK:BOS:reception-keycard-icon-dedup:operator:20260309",
+      "cluster_fingerprint": "reception-keycard-icon-dedup-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception getKeycardIcon — duplicated in checkout and checkins components",
+      "location_anchors": [
+        "apps/reception/src/components/checkout/CheckoutTable.tsx",
+        "apps/reception/src/components/checkins/view/BookingRow.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "getKeycardIcon(depositType) — mapping deposit type strings to { Icon, colorClass } — is implemented separately in CheckoutTable.tsx (handles all loan item types) and BookingRow.tsx (keycard-only subset). The CASH/PASSPORT|LICENSE|ID/NO_CARD switch block is copy-pasted between them.",
+      "next_scope_now": "Extract getKeycardIcon to apps/reception/src/utils/keycardIcon.ts (or loans utils). Import in both components. The checkout version (more general) becomes the canonical one; BookingRow imports and uses the same function.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: simplify sweep found getKeycardIcon copy-pasted between CheckoutTable and BookingRow",
+        "apps/reception/src/components/checkout/CheckoutTable.tsx",
+        "apps/reception/src/components/checkins/view/BookingRow.tsx"
+      ],
+      "why": "Two copies mean a new deposit type or icon change must be applied in two places.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "getKeycardIcon exists once in a shared utils file and is imported by both CheckoutTable and BookingRow."
+      },
+      "queue_state": "enqueued",
+      "created_at": "2026-03-09T10:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309100000-0007",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-appnav-dual-source:20260309",
+      "anchor_key": "reception-appnav-dual-source",
+      "cluster_key": "BRIK:BOS:reception-appnav-dual-source:operator:20260309",
+      "cluster_fingerprint": "reception-appnav-dual-source-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception AppNav — nav items defined in AppNav plus 4 modal files",
+      "location_anchors": [
+        "apps/reception/src/components/appNav/AppNav.tsx",
+        "apps/reception/src/components/appNav/OperationsModal.tsx",
+        "apps/reception/src/components/appNav/ManagementModal.tsx",
+        "apps/reception/src/components/appNav/TillModal.tsx",
+        "apps/reception/src/hoc/withIconModal.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Navigation items and groupings are defined twice: once in the navSections array in AppNav.tsx and again independently in 4 modal files (OperationsModal, ManagementModal, TillModal, ManModal). Adding or renaming a route requires updating 5 files. This has already caused a route discrepancy: /end-of-day appears in AppNav's Till & Safe section while /eod-checklist appears in Admin — both labeled End of Day — and the same discrepancy is in the modal files. useAuth is also called twice per render (once in wrapper, once in HOC).",
+      "next_scope_now": "Investigate whether the modal files can consume navSections from AppNav rather than maintaining parallel action arrays. Understand HOC pattern (withIconModal) and whether useAuth dedup is a simple fix.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "operator-stated: simplify sweep found nav items defined in AppNav.tsx plus 4 modal files; route discrepancy between /end-of-day and /eod-checklist already present",
+        "apps/reception/src/components/appNav/AppNav.tsx",
+        "apps/reception/src/hoc/withIconModal.tsx"
+      ],
+      "why": "Dual source of truth for nav items means route changes require 5 simultaneous edits and has already produced an inconsistency. The useAuth double-call is a mild inefficiency.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Navigation items are defined once in AppNav (or a shared nav config) and consumed by both the nav bar and all modal variants. Adding a route requires one change."
+      },
+      "queue_state": "enqueued",
+      "created_at": "2026-03-09T10:00:00.000Z"
     }
   ]
 }

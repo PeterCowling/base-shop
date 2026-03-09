@@ -9,6 +9,7 @@ import type { Currency } from "@acme/platform-core/contexts/CurrencyContext";
 import type { XaProduct } from "./demoData";
 import { getAvailableStock } from "./inventoryStore";
 import type { XaCartState } from "./xaCart";
+import { getEffectivePrice } from "./xaCatalog";
 import {
   ALL_FILTER_KEYS,
   collectFacetValues,
@@ -16,7 +17,6 @@ import {
   getFilterConfigs,
   type SortKey,
 } from "./xaFilters";
-import { getEffectivePrice } from "./xaCatalog";
 import {
   cloneFilterValues,
   createEmptyFilterValues,

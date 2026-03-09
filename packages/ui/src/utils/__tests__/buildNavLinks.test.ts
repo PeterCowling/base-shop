@@ -1,5 +1,6 @@
 /* i18n-exempt file -- TEST-0001: unit test titles and literals are not user-facing */
 import { buildNavLinks } from "../buildNavLinks";
+import { translatePath } from "../translate-path";
 
 const stub = (key: string, defaultValue?: string): string => defaultValue ?? key;
 
@@ -31,12 +32,12 @@ describe("buildNavLinks", () => {
     });
 
     it("first child is the See-all sentinel pointing to the booking page", () => {
-      const { navLinks, slugs } = buildNavLinks("en", stub);
+      const { navLinks } = buildNavLinks("en", stub);
       const rooms = navLinks.find((l) => l.key === "rooms")!;
       const first = rooms.children![0];
       expect(first.key).toBe("rooms_all");
       expect(first.label).toBe("See all rooms");
-      expect(first.to).toBe(slugs["book"]);
+      expect(first.to).toBe(`/${translatePath("book", "en")}`);
     });
   });
 

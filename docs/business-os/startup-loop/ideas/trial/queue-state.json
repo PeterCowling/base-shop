@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-09T09:24:55.569Z",
+  "last_updated": "2026-03-09T09:25:50.294Z",
   "counts": {
-    "enqueued": 255,
-    "processed": 53,
+    "enqueued": 256,
+    "processed": 52,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 134,
+    "completed": 135,
     "fact_find_ready": 309,
     "micro_build_ready": 24,
-    "total": 469
+    "total": 470
   },
   "dispatches": [
     {
@@ -39,7 +39,7 @@
         "Run a checkpoint on whether local-FS branching should remain as a dev-only lane or move into a cleanup tranche"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "evidence_refs": [
@@ -49,7 +49,7 @@
         "doc-ref: docs/plans/xa-upload-display-gap-closure/plan.md - cloud sync and submission fallback already complete",
         "doc-ref: docs/plans/xa-b-live-catalog-client-runtime/plan.md - storefront freshness no longer depends on rebuilds"
       ],
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-03-09T10:30:00.000Z",
       "why": "The remaining XA cloud replatform is no longer a broad architecture problem. Most hosted operator flows are already cloud-capable. The concrete unresolved parity break is currency-rate persistence, and that should be handled as a bounded follow-up instead of leaving the repo in an ambiguous partially-local state.",
       "intended_outcome": {
@@ -66,6 +66,11 @@
         "fact_find_slug": "xa-uploader-cloud-parity-completion",
         "fact_find_path": "docs/plans/xa-uploader-cloud-parity-completion/fact-find.md",
         "processed_at": "2026-03-09T10:30:00.000Z"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-cloud-parity-completion/plan.md",
+        "completed_at": "2026-03-09T09:25:50.293Z",
+        "outcome": "Hosted currency rate parity completed; local FS cleanup deferred to future tranche."
       }
     },
     {
@@ -19752,6 +19757,50 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:24:43.244Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309092533-0013",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "2eb439e810e9c356ef88feba05b0e7a7f3b411e3",
+      "after_sha": "686c7578e291ad48a0aa93a32ef816e990438f43",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:686c7578e291ad48a0aa93a32ef816e990438f43",
+      "anchor_key": "key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files-pages-like-women-bags-page",
+      "cluster_key": "bos:unknown:key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files-pages-like-women-bags-page:BOS-BOS-AGENT_SESSION_FINDINGS:686c7578e291ad48a0aa93a32ef816e990438f43",
+      "cluster_fingerprint": "77685a29632c3ab883a240c417929b3a4e6854da4fa78de56c949af99182c890",
+      "lineage_depth": 0,
+      "area_anchor": "Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…; functions/` dir exists but is empty — ESLint errors on no-match; Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header need….",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…; functions/` dir exists but is empty — ESLint errors on no-match; Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header need….",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T09:25:33.012Z",
       "queue_state": "enqueued",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {

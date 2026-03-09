@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Products
 Workstream: Engineering
 Created: 2026-03-09
@@ -39,14 +39,14 @@ Finish the remaining hosted/cloud parity work in xa-uploader without reopening a
 ## Active tasks
 - [x] TASK-01: Capture canonical hosted-vs-local parity matrix and narrow the next slice
 - [x] TASK-02: Move currency-rate persistence off repo-local JSON for hosted mode
-- [ ] TASK-03: Run hosted parity checkpoint and decide local-FS cleanup follow-up
+- [x] TASK-03: Run hosted parity checkpoint and decide local-FS cleanup follow-up
 
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Persist canonical parity matrix and confirm the next bounded replatform slice | 94% | S | Complete (2026-03-09) | - | TASK-02,TASK-03 |
 | TASK-02 | IMPLEMENT | Add cloud-backed currency-rate persistence and consume it in hosted uploader flows | 83% | M | Complete (2026-03-09) | TASK-01 | TASK-03 |
-| TASK-03 | CHECKPOINT | Verify hosted parity after TASK-02 and decide whether local-FS cleanup becomes a new tranche | 88% | S | Pending | TASK-02 | - |
+| TASK-03 | CHECKPOINT | Verify hosted parity after TASK-02 and decide whether local-FS cleanup becomes a new tranche | 88% | S | Complete (2026-03-09) | TASK-02 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -132,11 +132,13 @@ Finish the remaining hosted/cloud parity work in xa-uploader without reopening a
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:**
   - `docs/plans/xa-uploader-cloud-parity-completion/plan.md`
+  - `docs/plans/xa-uploader-cloud-parity-completion/cloud-parity-matrix.md`
   - `docs/plans/xa-uploader-cloud-parity-completion/build-record.user.md`
   - `docs/plans/xa-uploader-cloud-parity-completion/results-review.user.md`
+  - `docs/plans/xa-uploader-cloud-parity-completion/build-event.json`
 - **Depends on:** TASK-02
 - **Blocks:** -
 - **Confidence:** 88%
@@ -147,6 +149,15 @@ Finish the remaining hosted/cloud parity work in xa-uploader without reopening a
   - Hosted parity is re-checked against the canonical matrix.
   - The plan records whether local-FS default branching stays as dev-only support or becomes a separate cleanup feature.
   - No new local-only hosted blocker remains undocumented.
+- **Validation:**
+  - `rg -n "currency_rates_local_fs_required" apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts`
+  - `rg -n "cloud-currency-rates|mode: \\\"cloud\\\"|save_currency_rates" apps/xa-uploader/src/app/api/catalog/sync/route.ts apps/xa-uploader/src/app/api/catalog/publish/route.ts`
+  - `rg -n "XA_UPLOADER_LOCAL_FS_DISABLED|return true" apps/xa-uploader/src/lib/localFsGuard.ts`
+  - `rg -n "local filesystem fallback|resolveDeployStatePaths|readCloudDraftSnapshot" apps/xa-uploader/src/app/api/catalog/images/route.ts apps/xa-uploader/src/app/api/catalog/deploy-drain/route.ts`
+- **Build completion evidence:**
+  - Refreshed the canonical parity matrix to mark hosted currency-rate editing as complete and to record that the remaining local-FS branches are dev/local support paths rather than hosted blockers.
+  - Verified hosted sync/publish now read cloud currency-rate state and that the legacy `currency_rates_local_fs_required` gate is gone from the currency-rate route.
+  - Chose not to open a local-FS removal tranche from this checkpoint because the surviving local-FS paths are cleanup work distinct from hosted parity.
 
 ## Risks & Mitigations
 - Risk: TASK-02 drifts into full local-FS removal.
@@ -159,3 +170,4 @@ Finish the remaining hosted/cloud parity work in xa-uploader without reopening a
 ## Decision Log
 - 2026-03-09: Chose parity-matrix-first scope control rather than pretending the remaining cloud replatform was still a broad architectural migration.
 - 2026-03-09: Chose currency-rate persistence as the next bounded slice because it is the clearest remaining hosted/local parity break in current repo state.
+- 2026-03-09: Closed the scoped hosted parity thread and deferred local-FS branch removal to a separate future tranche if Cloudflare-only runtime becomes an explicit product decision.

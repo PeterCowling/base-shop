@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "5e07293cdaca386d4a4145021353cfb2f8f3e032",
+  "feature_slug": "xa-uploader-cloud-parity-completion",
+  "emitted_at": "2026-03-09T09:21:18.530Z",
+  "why": "The hosted XA uploader path is mostly cloud-native now, but one remaining local-only operator flow still broke parity and kept the overall replatform state ambiguous.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "XA uploader hosted mode no longer depends on repo-local currency-rate state for routine operator flows, and the remaining local-FS cleanup question is reduced to an explicit follow-up decision.",
+    "source": "operator"
+  }
+}

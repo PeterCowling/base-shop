@@ -25,7 +25,7 @@ export function RouteErrorFallback({ error, reset, routeName }: RouteErrorFallba
             Error ID: {error.digest}
           </p>
         )}
-        <Button type="button" onClick={reset} color="primary" tone="solid">
+        <Button type="button" onClick={reset} color="primary" tone="solid" size="lg">
           Try again
         </Button>
       </div>

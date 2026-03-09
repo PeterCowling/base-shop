@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-09T10:30:00.000Z",
+  "last_updated": "2026-03-09T08:48:05.177Z",
   "counts": {
-    "enqueued": 237,
+    "enqueued": 239,
     "processed": 55,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 132,
-    "fact_find_ready": 295,
-    "micro_build_ready": 22,
-    "total": 451
+    "fact_find_ready": 296,
+    "micro_build_ready": 23,
+    "total": 453
   },
   "dispatches": [
     {
@@ -18976,6 +18976,91 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:35:02.327Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309084803-0969",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "88a7c03dd50562746ab56c0429f6316046b18df5",
+      "after_sha": "0557aaa3101520c112b65289e0e593009d34802d",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:0557aaa3101520c112b65289e0e593009d34802d",
+      "anchor_key": "xa-b-buy-box",
+      "cluster_key": "bos:unknown:xa-b-buy-box:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:0557aaa3101520c112b65289e0e593009d34802d",
+      "cluster_fingerprint": "f2bef8daa00f1055b2b04e8359095458ef3295b654e8451c81532ee41b75ba96",
+      "lineage_depth": 0,
+      "area_anchor": "xa b buy box",
+      "location_anchors": [
+        "apps/xa-b/src/components/XaBuyBox.client.tsx",
+        "apps/xa-b/src/components/XaColorSwatchStrip.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (88a7c03 → 0557aaa)",
+      "next_scope_now": "Implement the bounded xa b buy box change for BOS and validate it locally",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/xa-b/src/components/XaBuyBox.client.tsx",
+        "git-diff:A:apps/xa-b/src/components/XaColorSwatchStrip.tsx"
+      ],
+      "created_at": "2026-03-09T08:48:03.968Z",
+      "queue_state": "enqueued",
+      "why": "Implement the bounded xa b buy box change signalled by BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Ship a validated micro-build for xa b buy box through direct lp-do-build intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309084805-0173",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "8d083c244e235c3b2eb23afe73bb4ffe6ad786ce",
+      "after_sha": "b824823c95d31457b3a34370a3a95ef4048c487a",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:b824823c95d31457b3a34370a3a95ef4048c487a",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:b824823c95d31457b3a34370a3a95ef4048c487a",
+      "cluster_fingerprint": "83644664f1c96b92aa91b72513210300397e1b0c046c7129f0ae2ede62cc761d",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (8d083c2 → b824823)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:48:05.172Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

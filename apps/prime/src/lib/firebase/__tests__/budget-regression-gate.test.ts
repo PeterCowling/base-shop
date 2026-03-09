@@ -26,7 +26,7 @@ describe('firebase budget regression gate', () => {
         'guestByRoom/room-12',
         'financialsRoom/BDC-123456',
         'financialsRoom/BDC-123456',
-        'preordersData/occ_1234567890123',
+        'preorder/occ_1234567890123',
       ], 2),
     );
 
@@ -53,28 +53,31 @@ describe('firebase budget regression gate', () => {
     const preArrival = evaluateFirebaseFlowBudget(
       'portal_pre_arrival_initial',
       buildMetricsSnapshot([
-        'bookings/occ_1234567890123',
+        'occupantIndex/occ_1234567890123',
+        'bookings/BDC-123456/occ_1234567890123',
         'completedTasks/occ_1234567890123',
         'loans/room-12',
         'guestByRoom/room-12',
         'financialsRoom/BDC-123456',
-        'preordersData/occ_1234567890123',
-        'cityTaxData/BDC-123456',
+        'preorder/occ_1234567890123',
+        'cityTax/BDC-123456',
         'bagStorage/occ_1234567890123',
+        'guestsDetails/occ_1234567890123',
       ], 1),
     );
     const arrival = evaluateFirebaseFlowBudget(
       'arrival_mode_initial',
       buildMetricsSnapshot([
-        'bookings/occ_1234567890123',
+        'occupantIndex/occ_1234567890123',
+        'bookings/BDC-123456/occ_1234567890123',
         'completedTasks/occ_1234567890123',
         'loans/room-12',
         'guestByRoom/room-12',
         'financialsRoom/BDC-123456',
-        'preordersData/occ_1234567890123',
-        'cityTaxData/BDC-123456',
+        'preorder/occ_1234567890123',
+        'cityTax/BDC-123456',
         'bagStorage/occ_1234567890123',
-        'checkInCode/BRK-ABCDE',
+        'guestsDetails/occ_1234567890123',
       ], 1),
     );
 

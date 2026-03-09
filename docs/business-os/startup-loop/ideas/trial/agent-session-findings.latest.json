@@ -1,6 +1,6 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-09T10:01:39.454Z",
+  "generated_at": "2026-03-09T10:52:02.897Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
@@ -9,10 +9,37 @@
     {
       "session_id": "bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/bd0d843e-9c01-4f9f-bee6-ea55202e1d1f.jsonl",
-      "updated_at": "2026-03-09T10:01:21.947Z",
+      "updated_at": "2026-03-09T10:50:47.786Z",
       "findings": [
         "Now let me fix the clear, high-confidence issues.",
         "Let me fix the clear, bounded issues now and read the relevant files first."
+      ]
+    },
+    {
+      "session_id": "a66a30a9-2c57-4471-b5af-38cff589a683",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/a66a30a9-2c57-4471-b5af-38cff589a683.jsonl",
+      "updated_at": "2026-03-09T10:43:30.229Z",
+      "findings": [
+        "From the skill description: *\"Review changed code for reuse, quality, and efficiency, then fix any issues found.\"*",
+        "The description shown in the system prompt is the complete definition: > **simplify**: Review changed code for reuse, quality, and efficiency, then fix any issues found.",
+        "I don't know — the skill says \"changed code\" which likely means uncommitted changes (git diff), but I can't inspect the implementation to confirm how it scopes what it reviews.",
+        "Now let me aggregate and fix the clear issues, skipping false positives per the instructions.",
+        "Wait — that changed the error semantics for `listThreadsWithLatestDraft` (it originally propagated errors; now it silently returns `[]`).",
+        "route.ts` — parallelized fetches** (`Promise.all` with pre-caught prime promise): email and Prime threads now fetch concurrently. Error semantics preserved — email errors still propagate, Prime errors still fail-soft to `[]`.",
+        "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper, and verbose optional check.",
+        "Extract shared `mapAuthError` — move it from `managerReauth.ts` to a shared file, import in both**",
+        "Now update `firebaseAuth.ts` to use the shared mapper instead of the inline error handling:",
+        "Missing `error.tsx` error boundaries in `/app/`",
+        "/lp-do-build`** executed all tasks — the subagent ran through TASK-01 to TASK-07, hit a CI failure on the `authErrors.ts` import path, fixed it, pushed `f76e6356e7`, confirmed CI passed (typecheck + lint green for reception)",
+        "The background watchers caught an older failing run.",
+        "The background task output was from the older failing run — the one before the `authErrors.ts` fix.",
+        "The old task notifications were stale — they were watching the initial failing run from before the `authErrors.ts` fix.",
+        "Clean pass — no errors, no failed steps, exit code 0.",
+        "Extracted shared `mapAuthError()` — removed copy-paste between `firebaseAuth.ts` and `managerReauth.ts`",
+        "useRangeSubscription` primitive extracted; `useRoomsByDate` + `useCheckinsByDate` both use it; `loading` dep-array bug fixed",
+        "But there's a CI typecheck failure flagged: `extractSenderDomain` not exported in `admission.ts`.",
+        "extractSenderDomain` is properly exported — the CI failure the agent saw was transient.",
+        "The `extractSenderDomain` issue was transient on an older SHA."
       ]
     },
     {
@@ -71,33 +98,6 @@
         "Now let me read the specific files flagged for real bugs before deciding what to fix.",
         "import/route.ts` line 120: `req.json()` without `.catch()`** → genuine bug: malformed JSON in `application/json` path returns 500 (outer catch → `apiError`) instead of 400, inconsistent with adjustments/inflows routes ✓",
         "The one genuine bug — `req.json()` without `.catch()` in the import route returning 500 instead of 400 on malformed JSON — is now fixed and consistent with the adjustments/inflows routes."
-      ]
-    },
-    {
-      "session_id": "a66a30a9-2c57-4471-b5af-38cff589a683",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/a66a30a9-2c57-4471-b5af-38cff589a683.jsonl",
-      "updated_at": "2026-03-09T09:16:35.988Z",
-      "findings": [
-        "From the skill description: *\"Review changed code for reuse, quality, and efficiency, then fix any issues found.\"*",
-        "The description shown in the system prompt is the complete definition: > **simplify**: Review changed code for reuse, quality, and efficiency, then fix any issues found.",
-        "I don't know — the skill says \"changed code\" which likely means uncommitted changes (git diff), but I can't inspect the implementation to confirm how it scopes what it reviews.",
-        "Now let me aggregate and fix the clear issues, skipping false positives per the instructions.",
-        "Wait — that changed the error semantics for `listThreadsWithLatestDraft` (it originally propagated errors; now it silently returns `[]`).",
-        "route.ts` — parallelized fetches** (`Promise.all` with pre-caught prime promise): email and Prime threads now fetch concurrently. Error semantics preserved — email errors still propagate, Prime errors still fail-soft to `[]`.",
-        "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper, and verbose optional check.",
-        "Extract shared `mapAuthError` — move it from `managerReauth.ts` to a shared file, import in both**",
-        "Now update `firebaseAuth.ts` to use the shared mapper instead of the inline error handling:",
-        "Missing `error.tsx` error boundaries in `/app/`",
-        "/lp-do-build`** executed all tasks — the subagent ran through TASK-01 to TASK-07, hit a CI failure on the `authErrors.ts` import path, fixed it, pushed `f76e6356e7`, confirmed CI passed (typecheck + lint green for reception)",
-        "The background watchers caught an older failing run.",
-        "The background task output was from the older failing run — the one before the `authErrors.ts` fix.",
-        "The old task notifications were stale — they were watching the initial failing run from before the `authErrors.ts` fix.",
-        "Clean pass — no errors, no failed steps, exit code 0.",
-        "Extracted shared `mapAuthError()` — removed copy-paste between `firebaseAuth.ts` and `managerReauth.ts`",
-        "useRangeSubscription` primitive extracted; `useRoomsByDate` + `useCheckinsByDate` both use it; `loading` dep-array bug fixed",
-        "But there's a CI typecheck failure flagged: `extractSenderDomain` not exported in `admission.ts`.",
-        "extractSenderDomain` is properly exported — the CI failure the agent saw was transient.",
-        "The `extractSenderDomain` issue was transient on an older SHA."
       ]
     },
     {

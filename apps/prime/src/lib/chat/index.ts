@@ -2,11 +2,34 @@
  * Chat messaging safety and moderation infrastructure.
  *
  * Exports:
+ * - Message schemas (MessageSchema, RawMessagePayloadSchema) and inferred types
  * - Rate limiting (ChatRateLimiter, CHAT_RATE_LIMITS)
  * - Abuse reporting (createAbuseReport, ABUSE_REASONS)
  * - Retention policy (isMessageExpired, filterExpiredMessages, RETENTION_POLICY)
  * - Feature flags (isChatEnabled, isDirectMessagingEnabled, DEFAULT_FLAGS)
  */
+
+// Message schemas and inferred types
+export {
+  type Message,
+  type MessageAttachment,
+  type MessageAttachmentKind,
+  MessageAttachmentSchema,
+  type MessageAudience,
+  type MessageCard,
+  MessageCardSchema,
+  type MessageDraftMeta,
+  MessageDraftMetaSchema,
+  type MessageDraftSource,
+  type MessageDraftStatus,
+  type MessageKind,
+  type MessageLink,
+  MessageLinkSchema,
+  type MessageLinkVariant,
+  MessageSchema,
+  type RawMessagePayload,
+  RawMessagePayloadSchema,
+} from './messageSchema';
 
 // Rate limiting
 export {

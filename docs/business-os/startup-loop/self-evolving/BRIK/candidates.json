@@ -1,7 +1,7 @@
 {
   "schema_version": "candidate-ledger.v1",
   "business": "BRIK",
-  "updated_at": "2026-03-09T10:00:05.034Z",
+  "updated_at": "2026-03-09T10:47:41.159Z",
   "candidates": [
     {
       "candidate": {
@@ -39,7 +39,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-08T10:00:05.023Z"
+        "expiry_at": "2026-04-08T10:47:41.147Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -89,7 +89,7 @@
         "reason": "evidence_structural_only_requires_fact_find"
       },
       "source_hard_signature": "ddcad390a1288a50c69f303434c9abf5d2517fa1c9d00af069194ab974acd823",
-      "generated_at": "2026-03-09T10:00:05.023Z"
+      "generated_at": "2026-03-09T10:47:41.147Z"
     },
     {
       "candidate": {
@@ -127,7 +127,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-08T10:00:05.023Z"
+        "expiry_at": "2026-04-08T10:47:41.147Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -177,7 +177,7 @@
         "reason": "evidence_structural_only_requires_fact_find"
       },
       "source_hard_signature": "65c52360d5deb9addf345eb6668fe309ff5d38bd581a7731a885f316da8dbb0f",
-      "generated_at": "2026-03-09T10:00:05.023Z"
+      "generated_at": "2026-03-09T10:47:41.147Z"
     },
     {
       "candidate": {
@@ -215,7 +215,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-08T10:00:05.023Z"
+        "expiry_at": "2026-04-08T10:47:41.147Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -265,7 +265,7 @@
         "reason": "evidence_structural_only_requires_fact_find"
       },
       "source_hard_signature": "5f9cd3076451decc027b433313209d1fb0463a77c135371e13970ebcf23c1f6d",
-      "generated_at": "2026-03-09T10:00:05.023Z"
+      "generated_at": "2026-03-09T10:47:41.147Z"
     },
     {
       "candidate": {
@@ -303,7 +303,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-08T10:00:05.023Z"
+        "expiry_at": "2026-04-08T10:47:41.147Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -353,7 +353,7 @@
         "reason": "evidence_structural_only_requires_fact_find"
       },
       "source_hard_signature": "d82b1a6d02f032aa253035f13ce2ca644b879668902f3a7a90c2ea0495d6249e",
-      "generated_at": "2026-03-09T10:00:05.023Z"
+      "generated_at": "2026-03-09T10:47:41.147Z"
     }
   ]
 }

@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-09T10:41:17.864Z",
+  "last_updated": "2026-03-09T10:52:02.911Z",
   "counts": {
-    "enqueued": 229,
+    "enqueued": 233,
     "processed": 30,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 21,
     "completed": 196,
-    "fact_find_ready": 275,
+    "fact_find_ready": 279,
     "micro_build_ready": 11,
-    "total": 481
+    "total": 485
   },
   "dispatches": [
     {
@@ -20894,6 +20894,187 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T10:41:17.858Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309104454-0582",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "a78ff2f788572c26f6a605219b0d1d8663a0cb4b",
+      "after_sha": "7d397af5aadde17ba4c48712a0dc1045870b776b",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:7d397af5aadde17ba4c48712a0dc1045870b776b",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:7d397af5aadde17ba4c48712a0dc1045870b776b",
+      "cluster_fingerprint": "0b8f9285122f9ee8814ed0826df6dfebd3459942767bbd984b15417f8071eb27",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T10:44:54.581Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309104807-0481",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "52eef5812dd982a85c1ddcf48b9b14345ad36e48",
+      "after_sha": "9e8580c11640368660d01f4fcc5a5e38d92cbb45",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:9e8580c11640368660d01f4fcc5a5e38d92cbb45",
+      "anchor_key": "prime-chat-tests-message-schema-test",
+      "cluster_key": "bos:unknown:prime-chat-tests-message-schema-test:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:9e8580c11640368660d01f4fcc5a5e38d92cbb45",
+      "cluster_fingerprint": "917e6955d8b0d9aa52d5bc7b5fd1d653bd916ed2f829d5b1ebff3ef657446bec",
+      "lineage_depth": 0,
+      "area_anchor": "prime chat tests message schema test",
+      "location_anchors": [
+        "apps/prime/src/lib/chat/__tests__/messageSchema.test.ts",
+        "apps/prime/src/types/messenger/chat.ts",
+        "docs/business-os/_data/completed-ideas.json",
+        "docs/business-os/_data/process-improvements.json",
+        "docs/business-os/process-improvements.user.html",
+        "docs/business-os/startup-loop/ideas/trial/queue-state.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (52eef58 → 9e8580c)",
+      "next_scope_now": "Investigate implications of prime chat tests message schema test delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:A:apps/prime/src/lib/chat/__tests__/messageSchema.test.ts",
+        "git-diff:M:apps/prime/src/types/messenger/chat.ts",
+        "git-diff:M:docs/business-os/_data/completed-ideas.json",
+        "git-diff:M:docs/business-os/_data/process-improvements.json",
+        "git-diff:M:docs/business-os/process-improvements.user.html",
+        "git-diff:M:docs/business-os/startup-loop/ideas/trial/queue-state.json"
+      ],
+      "created_at": "2026-03-09T10:48:07.480Z",
+      "queue_state": "enqueued",
+      "why": "Assess prime chat tests message schema test implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for prime chat tests message schema test.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309105045-0417",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "7d397af5aadde17ba4c48712a0dc1045870b776b",
+      "after_sha": "a992ddeb3df07d160e4016be190296e3aa95d212",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:a992ddeb3df07d160e4016be190296e3aa95d212",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:a992ddeb3df07d160e4016be190296e3aa95d212",
+      "cluster_fingerprint": "c8cfb38f9554e3b5a0560f72fa77b9033baa4ce10b1f00159d04d3cd7a34ba5b",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T10:50:45.416Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309105202-0903",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "a992ddeb3df07d160e4016be190296e3aa95d212",
+      "after_sha": "5fd3b4a85841b3ebcb67926ec5633d7570158a6d",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:5fd3b4a85841b3ebcb67926ec5633d7570158a6d",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:5fd3b4a85841b3ebcb67926ec5633d7570158a6d",
+      "cluster_fingerprint": "29477f2a7884e6fe21ebceb2ac1fbafe7ee0858bd81d40904c48b900b35f551c",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T10:52:02.902Z",
       "queue_state": "enqueued",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {

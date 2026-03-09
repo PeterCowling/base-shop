@@ -1,0 +1,14 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "prime-guided-onboarding-step-config",
+  "business": "BRIK",
+  "completed_at": "2026-03-09",
+  "outcome_contract": {
+    "why": "Two separable improvements (step config extraction and radio fieldset extraction) were confirmed independently executable. The useReducer question was assessed and found unwarranted, keeping the lifecycle pattern intact.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "GuidedOnboardingFlow step configuration driven by helper functions rather than repeated if-chains, and duplicated radio fieldset JSX collapsed to a single reusable component.",
+    "why_source": "operator"
+  },
+  "plan_path": "docs/plans/prime-guided-onboarding-step-config/plan.md",
+  "build_record_path": "docs/plans/prime-guided-onboarding-step-config/build-record.user.md"
+}

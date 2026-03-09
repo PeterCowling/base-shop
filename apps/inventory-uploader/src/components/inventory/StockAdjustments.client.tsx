@@ -7,6 +7,8 @@ import {
   type AuditEntry,
   createKey,
   formatAuditDate,
+  formatQuantityDelta,
+  HISTORY_DISPLAY_LIMIT,
   type InventoryItem,
   itemKey,
   itemLabel,
@@ -269,13 +271,13 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
                 ? "Already applied"
                 : "Applied"}
           </p>
-          {result.report.items.map((item, i) => (
-            <p key={i} className="text-xs text-gate-muted">
+          {result.report.items.map((item) => (
+            <p key={item.sku} className="text-xs text-gate-muted">
               {item.sku}: {item.previousQuantity} →{" "}
               <span className="font-medium text-gate-ink">{item.nextQuantity}</span>
               {" "}
               <span className={item.delta > 0 ? "text-gate-status-ready" : "text-gate-status-incomplete"}>
-                ({item.delta > 0 ? `+${item.delta}` : item.delta})
+                ({formatQuantityDelta(item.delta)})
               </span>
             </p>
           ))}
@@ -289,7 +291,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
             Recent adjustments
           </h4>
           <ul className="divide-y divide-gate-border">
-            {history.slice(0, 10).map((ev) => (
+            {history.slice(0, HISTORY_DISPLAY_LIMIT).map((ev) => (
               <li key={ev.id} className="py-1.5">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">
@@ -302,7 +304,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
                   <span
                     className={`shrink-0 font-mono text-xs font-semibold ${ev.quantityDelta > 0 ? "text-gate-status-ready" : "text-gate-status-incomplete"}`}
                   >
-                    {ev.quantityDelta > 0 ? `+${ev.quantityDelta}` : ev.quantityDelta}
+                    {formatQuantityDelta(ev.quantityDelta)}
                   </span>
                 </div>
               </li>

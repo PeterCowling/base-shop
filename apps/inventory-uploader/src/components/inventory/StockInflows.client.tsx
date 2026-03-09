@@ -7,6 +7,7 @@ import {
   type AuditEntry,
   createKey,
   formatAuditDate,
+  HISTORY_DISPLAY_LIMIT,
   type InventoryItem,
   itemKey,
   itemLabel,
@@ -222,8 +223,8 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
           <p className="text-xs font-medium text-gate-ink">
             {result.duplicate ? "Already received (duplicate ref)" : "Received"}
           </p>
-          {result.report.items.map((item, i) => (
-            <p key={i} className="text-xs text-gate-muted">
+          {result.report.items.map((item) => (
+            <p key={item.sku} className="text-xs text-gate-muted">
               {item.sku}: {item.previousQuantity} →{" "}
               <span className="font-medium text-gate-ink">{item.nextQuantity}</span>
               {" "}
@@ -239,7 +240,7 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
             Recent inflows
           </h4>
           <ul className="divide-y divide-gate-border">
-            {history.slice(0, 10).map((ev) => (
+            {history.slice(0, HISTORY_DISPLAY_LIMIT).map((ev) => (
               <li key={ev.id} className="py-1.5">
                 <div className="flex items-center justify-between gap-2">
                   <div className="min-w-0">

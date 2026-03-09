@@ -1,3 +1,5 @@
+export const SHOP_STORAGE_KEY = "inventory-uploader:shop";
+
 export type InventoryItem = {
   sku: string;
   productId: string;
@@ -14,6 +16,17 @@ export type AuditEntry = {
   note: string | null;
   referenceId: string | null;
   createdAt: string;
+};
+
+export type LedgerEvent = {
+  id: string;
+  timestamp: string;
+  type: "adjustment" | "inflow" | "sale";
+  sku: string;
+  variantKey: string;
+  quantityDelta: number;
+  referenceId: string | null;
+  note: string | null;
 };
 
 export function createKey(): string {
@@ -33,6 +46,20 @@ export function itemLabel(item: Pick<InventoryItem, "sku" | "variantAttributes">
   return attrs.length > 0
     ? `${item.sku} (${attrs.map(([k, v]) => `${k}:${v}`).join(", ")})`
     : item.sku;
+}
+
+/** Formats variant attributes as "key: value, …". Returns `emptyLabel` when there are no attributes. */
+export function variantLabel(attrs: Record<string, string>, emptyLabel = ""): string {
+  const entries = Object.entries(attrs).sort(([a], [b]) => a.localeCompare(b));
+  if (entries.length === 0) return emptyLabel;
+  return entries.map(([k, v]) => `${k}: ${v}`).join(", ");
+}
+
+export const HISTORY_DISPLAY_LIMIT = 10;
+
+/** Formats a quantity delta with a leading + sign for positive values. */
+export function formatQuantityDelta(delta: number): string {
+  return delta > 0 ? `+${delta}` : String(delta);
 }
 
 export function formatAuditDate(iso: string): string {

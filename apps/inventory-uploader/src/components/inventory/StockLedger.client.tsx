@@ -1,9 +1,9 @@
 /* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
-import { formatAuditDate,type LedgerEvent } from "../../lib/inventory-utils";
+import { formatAuditDate, formatQuantityDelta, type LedgerEvent } from "../../lib/inventory-utils";
 
 type StockLedgerProps = {
   shop: string | null;
@@ -37,13 +37,13 @@ export function StockLedger({ shop }: StockLedgerProps) {
     return () => clearTimeout(timer);
   }, [skuFilter]);
 
-  function buildLedgerParams(limit: number, cursor?: string): URLSearchParams {
+  const buildLedgerParams = useCallback((limit: number, cursor?: string): URLSearchParams => {
     const params = new URLSearchParams({ limit: String(limit) });
     if (debouncedSkuFilter) params.set("sku", debouncedSkuFilter);
     if (typeFilter) params.set("type", typeFilter);
     if (cursor) params.set("cursor", cursor);
     return params;
-  }
+  }, [debouncedSkuFilter, typeFilter]);
 
   useEffect(() => {
     if (!shop) {
@@ -73,8 +73,7 @@ export function StockLedger({ shop }: StockLedgerProps) {
         setLoading(false);
       });
     return () => controller.abort();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- INV-001 buildLedgerParams closes over debouncedSkuFilter/typeFilter which are in deps
-  }, [shop, debouncedSkuFilter, typeFilter]);
+  }, [shop, buildLedgerParams]);
 
   async function loadMore() {
     if (!shop || !nextCursor) return;
@@ -132,7 +131,7 @@ export function StockLedger({ shop }: StockLedgerProps) {
       {events.length > 0 && (
         <ul className="divide-y divide-gate-border">
           {events.map((ev) => {
-            const delta = ev.quantityDelta > 0 ? `+${ev.quantityDelta}` : String(ev.quantityDelta);
+            const delta = formatQuantityDelta(ev.quantityDelta);
             const isPositive = ev.quantityDelta > 0;
             return (
               <li key={ev.id} className="py-2">

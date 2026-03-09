@@ -3,6 +3,8 @@
 
 import { useRef, useState } from "react";
 
+import { HISTORY_DISPLAY_LIMIT } from "../../lib/inventory-utils";
+
 type RowResult = {
   row: number;
   status: "ok" | "error";
@@ -150,10 +152,10 @@ function ImportResultPanel({ result }: ImportResultPanelProps) {
       {errorRows.length > 0 && (
          
         <ul className="mt-2 space-y-0.5">
-          {errorRows.slice(0, 10).map((r) => (
+          {errorRows.slice(0, HISTORY_DISPLAY_LIMIT).map((r) => (
             <li key={r.row}>Row {r.row}{r.sku ? ` (${r.sku})` : ""}: {r.error}</li>
           ))}
-          {errorRows.length > 10 && <li>…and {errorRows.length - 10} more</li>}
+          {errorRows.length > HISTORY_DISPLAY_LIMIT && <li>…and {errorRows.length - HISTORY_DISPLAY_LIMIT} more</li>}
         </ul>
       )}
 

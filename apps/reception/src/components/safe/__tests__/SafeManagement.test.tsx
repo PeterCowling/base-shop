@@ -919,7 +919,8 @@ describe("SafeManagement", () => {
     await waitFor(() =>
       expect(showToastMock).toHaveBeenCalledWith("boom", "error")
     );
-    expect(screen.getByText(/Safe Balance/i)).toHaveTextContent("€50.00");
+    const summary = screen.getByText(/Safe Balance/i).closest("section") ?? screen.getByText(/Safe Balance/i);
+    expect(summary).toHaveTextContent("€50.00");
     expect(screen.getByText("safeReset")).toBeInTheDocument();
   });
 

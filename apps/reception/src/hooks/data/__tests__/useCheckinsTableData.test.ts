@@ -18,15 +18,15 @@ import useLoans from "../useLoans";
 /* ------------------------------------------------------------------ */
 /*  Module mocks                                                      */
 /* ------------------------------------------------------------------ */
-jest.mock("../useBookingsData", () => ({ default: jest.fn() }));
-jest.mock("../useGuestDetails", () => ({ default: jest.fn() }));
-jest.mock("../useFinancialsRoom", () => ({ default: jest.fn() }));
-jest.mock("../useCityTax", () => ({ default: jest.fn() }));
-jest.mock("../useLoans", () => ({ default: jest.fn() }));
-jest.mock("../useActivitiesData", () => ({ default: jest.fn() }));
+jest.mock("../useBookingsData", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../useGuestDetails", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../useFinancialsRoom", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../useCityTax", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../useLoans", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../useActivitiesData", () => ({ __esModule: true, default: jest.fn() }));
 jest.mock("../useCheckins", () => ({ useCheckins: jest.fn() }));
-jest.mock("../useGuestByRoom", () => ({ default: jest.fn() }));
-jest.mock("../useActivitiesByCodeData", () => ({ default: jest.fn() }));
+jest.mock("../useGuestByRoom", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../useActivitiesByCodeData", () => ({ __esModule: true, default: jest.fn() }));
 
 /* Typed references to the mocked functions */
 const useBookingsMock = jest.mocked(useBookingsData);

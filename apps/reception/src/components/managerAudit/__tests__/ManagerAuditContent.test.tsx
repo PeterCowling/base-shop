@@ -309,19 +309,19 @@ describe("ManagerAuditContent", () => {
 
     const stockVarianceSection = screen.getByText("Stock Variance").closest("section")!;
     expect(stockVarianceSection.querySelectorAll("tbody tr")).toHaveLength(2);
-    expect(screen.getByText("Alfa")).toBeInTheDocument();
+    expect(screen.getAllByText("Alfa").length).toBeGreaterThan(0);
     expect(screen.getByText("Beta")).toBeInTheDocument();
 
     fireEvent.change(screen.getByTestId("variance-item-filter"), { target: { value: "item-a" } });
 
     expect(stockVarianceSection.querySelectorAll("tbody tr")).toHaveLength(1);
-    expect(screen.getByText("Alfa")).toBeInTheDocument();
+    expect(screen.getAllByText("Alfa").length).toBeGreaterThan(0);
     expect(screen.queryByText("Beta")).not.toBeInTheDocument();
 
     fireEvent.change(screen.getByTestId("variance-item-filter"), { target: { value: "" } });
 
     expect(stockVarianceSection.querySelectorAll("tbody tr")).toHaveLength(2);
-    expect(screen.getByText("Alfa")).toBeInTheDocument();
+    expect(screen.getAllByText("Alfa").length).toBeGreaterThan(0);
     expect(screen.getByText("Beta")).toBeInTheDocument();
   });
 

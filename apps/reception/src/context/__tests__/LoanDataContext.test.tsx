@@ -30,7 +30,7 @@ jest.mock("../../hooks/mutations/useLoansMutations", () => ({
   }),
 }));
 
-const toastMock = vi
+const toastMock = jest
   .spyOn(toastUtils, "showToast")
   .mockImplementation(() => undefined);
 

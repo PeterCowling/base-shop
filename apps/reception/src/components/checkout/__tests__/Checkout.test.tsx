@@ -36,32 +36,32 @@ jest.mock("../../../context/LoanDataContext", () => {
 
 jest.mock("../../../hooks/client/useCheckoutClient", () => {
   checkoutClientMock = jest.fn();
-  return { default: (...args: unknown[]) => checkoutClientMock(...args) };
+  return { __esModule: true, default: (...args: unknown[]) => checkoutClientMock(...args) };
 });
 
 jest.mock("../../../hooks/data/useBookingsData", () => {
   bookingsMock = jest.fn();
-  return { default: () => bookingsMock() };
+  return { __esModule: true, default: () => bookingsMock() };
 });
 jest.mock("../../../hooks/data/useGuestDetails", () => {
   guestDetailsMock = jest.fn();
-  return { default: () => guestDetailsMock() };
+  return { __esModule: true, default: () => guestDetailsMock() };
 });
 jest.mock("../../../hooks/data/useFinancialsRoom", () => {
   financialsRoomMock = jest.fn();
-  return { default: () => financialsRoomMock() };
+  return { __esModule: true, default: () => financialsRoomMock() };
 });
 jest.mock("../../../hooks/data/useLoans", () => {
   loansMock = jest.fn();
-  return { default: () => loansMock() };
+  return { __esModule: true, default: () => loansMock() };
 });
 jest.mock("../../../hooks/data/useActivitiesData", () => {
   activitiesDataMock = jest.fn();
-  return { default: () => activitiesDataMock() };
+  return { __esModule: true, default: () => activitiesDataMock() };
 });
 jest.mock("../../../hooks/data/useActivitiesByCodeData", () => {
   activitiesByCodeDataMock = jest.fn();
-  return { default: () => activitiesByCodeDataMock() };
+  return { __esModule: true, default: () => activitiesByCodeDataMock() };
 });
 jest.mock("../../../hooks/data/useCheckouts", () => {
   checkoutsMock = jest.fn();
@@ -69,11 +69,11 @@ jest.mock("../../../hooks/data/useCheckouts", () => {
 });
 jest.mock("../../../hooks/data/useGuestByRoom", () => {
   guestByRoomMock = jest.fn();
-  return { default: () => guestByRoomMock() };
+  return { __esModule: true, default: () => guestByRoomMock() };
 });
 jest.mock("../../../hooks/data/useBagStorageData", () => {
   bagStorageDataMock = jest.fn();
-  return { default: () => bagStorageDataMock() };
+  return { __esModule: true, default: () => bagStorageDataMock() };
 });
 
 jest.mock("../../../hooks/mutations/useActivitiesMutations", () => {

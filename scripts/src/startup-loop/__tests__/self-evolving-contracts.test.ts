@@ -7,6 +7,7 @@ import { describe, expect, it } from "@jest/globals";
 import {
   type ContainerContract,
   type ImprovementCandidate,
+  type ImprovementOutcome,
   type MetaObservation,
   type StartupState,
   validateContainerContract,
@@ -14,6 +15,11 @@ import {
   validateMetaObservation,
   validateStartupState,
 } from "../self-evolving/self-evolving-contracts.js";
+import {
+  appendSelfEvolvingEvent,
+  createLifecycleEvent,
+  readSelfEvolvingEvents,
+} from "../self-evolving/self-evolving-events.js";
 import {
   createStartupStateStore,
   readStartupState,
@@ -57,10 +63,28 @@ function buildValidStartupState(): StartupState {
   };
 }
 
+function buildValidImprovementOutcome(candidateId: string): ImprovementOutcome {
+  return {
+    schema_version: "outcome.v1",
+    candidate_id: candidateId,
+    implementation_status: "success",
+    promoted_at: "2026-03-03T00:00:00.000Z",
+    baseline_window: "2026-02-20/2026-02-27",
+    post_window: "2026-02-28/2026-03-06",
+    measured_impact: 0.18,
+    impact_confidence: 0.86,
+    regressions_detected: 0,
+    rollback_executed_at: null,
+    kept_or_reverted: "kept",
+    root_cause_notes: "Manual routing delays dropped after adding the lifecycle seam.",
+    follow_up_actions: ["watch next 14 days"],
+  };
+}
+
 describe("self-evolving contract validators", () => {
   it("TASK-01 TC-01 validates MetaObservation required fields", () => {
     const observation: MetaObservation = {
-      schema_version: "meta-observation.v1",
+      schema_version: "meta-observation.v2",
       observation_id: "obs-1",
       observation_type: "execution_event",
       timestamp: "2026-03-02T00:00:00.000Z",
@@ -95,8 +119,203 @@ describe("self-evolving contract validators", () => {
       measurement_window: "7d",
       traffic_segment: "all",
       evidence_refs: ["docs/e.md"],
+      evidence_grade: "measured",
+      measurement_contract_status: "verified",
     };
     expect(validateMetaObservation(observation)).toEqual([]);
+  });
+
+  it("TASK-01 TC-02 accepts legacy v1 observations without admission metadata", () => {
+    const legacyObservation: MetaObservation = {
+      schema_version: "meta-observation.v1",
+      observation_id: "obs-legacy",
+      observation_type: "execution_event",
+      timestamp: "2026-03-02T00:00:00.000Z",
+      business: "BRIK",
+      actor_type: "agent",
+      run_id: "run-1",
+      session_id: "session-1",
+      skill_id: "lp-do-build",
+      container_id: null,
+      artifact_refs: ["docs/a.md"],
+      context_path: "startup-loop/do",
+      hard_signature: "abc",
+      soft_cluster_id: null,
+      fingerprint_version: "1",
+      repeat_count_window: 3,
+      operator_minutes_estimate: 15,
+      quality_impact_estimate: 0.2,
+      detector_confidence: 0.9,
+      severity: 0.3,
+      inputs_hash: "in",
+      outputs_hash: "out",
+      toolchain_version: "v1",
+      model_version: null,
+      kpi_name: null,
+      kpi_value: null,
+      kpi_unit: null,
+      aggregation_method: null,
+      sample_size: null,
+      data_quality_status: null,
+      data_quality_reason_code: null,
+      baseline_ref: null,
+      measurement_window: null,
+      traffic_segment: "all",
+      evidence_refs: ["docs/e.md"],
+    };
+    expect(validateMetaObservation(legacyObservation)).toEqual([]);
+  });
+
+  it("TASK-01 TC-03 rejects v2 observations missing admission metadata", () => {
+    const incompleteObservation: MetaObservation = {
+      schema_version: "meta-observation.v2",
+      observation_id: "obs-missing",
+      observation_type: "execution_event",
+      timestamp: "2026-03-02T00:00:00.000Z",
+      business: "BRIK",
+      actor_type: "agent",
+      run_id: "run-1",
+      session_id: "session-1",
+      skill_id: "lp-do-build",
+      container_id: null,
+      artifact_refs: ["docs/a.md"],
+      context_path: "startup-loop/do",
+      hard_signature: "abc",
+      soft_cluster_id: null,
+      fingerprint_version: "1",
+      repeat_count_window: 3,
+      operator_minutes_estimate: 15,
+      quality_impact_estimate: 0.2,
+      detector_confidence: 0.9,
+      severity: 0.3,
+      inputs_hash: "in",
+      outputs_hash: "out",
+      toolchain_version: "v1",
+      model_version: null,
+      kpi_name: null,
+      kpi_value: null,
+      kpi_unit: null,
+      aggregation_method: null,
+      sample_size: null,
+      data_quality_status: null,
+      data_quality_reason_code: null,
+      baseline_ref: null,
+      measurement_window: null,
+      traffic_segment: "all",
+      evidence_refs: ["docs/e.md"],
+    };
+    expect(validateMetaObservation(incompleteObservation)).toContain(
+      "evidence_grade_required_v2",
+    );
+    expect(validateMetaObservation(incompleteObservation)).toContain(
+      "measurement_contract_status_required_v2",
+    );
+  });
+
+  it("TASK-01 TC-04 persists lifecycle events with linked candidate, dispatch, and outcome payloads", () => {
+    const tempRoot = mkdtempSync(path.join(os.tmpdir(), "self-evolving-events-"));
+    const businessId = "BRIK";
+    const candidateId = "cand-1";
+    const dispatchId = "IDEA-DISPATCH-20260309-0001";
+
+    appendSelfEvolvingEvent(
+      tempRoot,
+      businessId,
+      createLifecycleEvent({
+        correlation_id: candidateId,
+        event_type: "followup_dispatch_handoff",
+        lifecycle: {
+          candidate_id: candidateId,
+          dispatch_id: dispatchId,
+          plan_slug: "startup-loop-self-evolving-lifecycle-ledger",
+        },
+        run_id: "run-1",
+        session_id: "session-1",
+        source_component: "self-evolving-backbone-consume",
+        timestamp: "2026-03-09T18:15:00.000Z",
+      }),
+    );
+    appendSelfEvolvingEvent(
+      tempRoot,
+      businessId,
+      createLifecycleEvent({
+        artifact_refs: ["docs/plans/startup-loop-self-evolving-lifecycle-ledger/plan.md"],
+        correlation_id: candidateId,
+        event_type: "outcome_recorded",
+        lifecycle: {
+          candidate_id: candidateId,
+          dispatch_id: dispatchId,
+          plan_slug: "startup-loop-self-evolving-lifecycle-ledger",
+          outcome: buildValidImprovementOutcome(candidateId),
+        },
+        run_id: "run-1",
+        session_id: "session-1",
+        source_component: "lp-do-build-completion",
+        timestamp: "2026-03-09T18:20:00.000Z",
+      }),
+    );
+
+    const events = readSelfEvolvingEvents(tempRoot, businessId);
+    expect(events).toHaveLength(2);
+    expect(events[0]?.schema_version).toBe("event.v2");
+    expect(events[0]?.event_type).toBe("followup_dispatch_handoff");
+    expect(events[0]?.lifecycle?.dispatch_id).toBe(dispatchId);
+    expect(events[1]?.event_type).toBe("outcome_recorded");
+    expect(events[1]?.lifecycle?.outcome?.candidate_id).toBe(candidateId);
+    expect(events[1]?.lifecycle?.outcome?.kept_or_reverted).toBe("kept");
+
+    rmSync(tempRoot, { recursive: true, force: true });
+  });
+
+  it("TASK-01 TC-05 rejects lifecycle events that omit required stage payloads", () => {
+    expect(() =>
+      createLifecycleEvent({
+        correlation_id: "cand-2",
+        event_type: "followup_dispatch_handoff",
+        lifecycle: {
+          candidate_id: "cand-2",
+        },
+        run_id: "run-1",
+        session_id: "session-1",
+        source_component: "self-evolving-backbone-consume",
+        timestamp: "2026-03-09T18:25:00.000Z",
+      }),
+    ).toThrow("self_evolving_event_invalid:lifecycle.dispatch_id_required_for_handoff");
+  });
+
+  it("TASK-01 TC-06 reads legacy v1 event logs without lifecycle payloads", () => {
+    const tempRoot = mkdtempSync(path.join(os.tmpdir(), "self-evolving-events-legacy-"));
+    const businessId = "BRIK";
+
+    appendSelfEvolvingEvent(tempRoot, businessId, {
+      schema_version: "event.v1",
+      event_id: "event-legacy-1",
+      correlation_id: "obs-legacy",
+      run_id: "run-1",
+      session_id: "session-1",
+      timestamp: "2026-03-09T18:30:00.000Z",
+      source_component: "startup-loop/do",
+      status: "ok",
+      inputs_hash: "in",
+      outputs_hash: "out",
+      error_class: null,
+      artifact_refs: ["docs/a.md"],
+      effect_class: null,
+      effect_reversibility: null,
+      event_type: "execution_end",
+    });
+
+    const events = readSelfEvolvingEvents(tempRoot, businessId);
+    expect(events).toEqual([
+      expect.objectContaining({
+        schema_version: "event.v1",
+        correlation_id: "obs-legacy",
+        event_type: "execution_end",
+      }),
+    ]);
+    expect(events[0]?.lifecycle).toBeUndefined();
+
+    rmSync(tempRoot, { recursive: true, force: true });
   });
 
   it("TASK-02 TC-01 validates and persists StartupState", () => {

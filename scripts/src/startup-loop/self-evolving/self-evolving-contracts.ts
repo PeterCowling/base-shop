@@ -2,6 +2,8 @@ import { createHash } from "node:crypto";
 
 export type DataQualityStatus = "ok" | "degraded" | "unknown";
 export type ActorType = "operator" | "agent" | "automation";
+export type ObservationEvidenceGrade = "exploratory" | "structural" | "measured";
+export type MeasurementContractStatus = "none" | "declared" | "verified";
 export type CandidateType =
   | "new_skill"
   | "skill_refactor"
@@ -102,6 +104,8 @@ export interface MetaObservation {
   measurement_window: string | null;
   traffic_segment: string | null;
   evidence_refs: string[];
+  evidence_grade?: ObservationEvidenceGrade | null;
+  measurement_contract_status?: MeasurementContractStatus | null;
   signal_hints?: ObservationSignalHints | null;
 }
 
@@ -148,6 +152,31 @@ export interface ImprovementOutcome {
   kept_or_reverted: "kept" | "reverted";
   root_cause_notes: string;
   follow_up_actions: string[];
+}
+
+export type LifecycleReviewDecision = "approved" | "rejected" | "deferred";
+
+export interface LifecycleReviewRecord {
+  decision: LifecycleReviewDecision;
+  rationale: string;
+  reviewer_type: ActorType;
+  reviewer_id: string | null;
+  reviewed_at: string;
+}
+
+export interface OutcomeMissingRecord {
+  reason_code: string;
+  detail: string | null;
+  expected_artifact_ref: string | null;
+}
+
+export interface SelfEvolvingLifecyclePayload {
+  candidate_id: string;
+  dispatch_id?: string | null;
+  plan_slug?: string | null;
+  review?: LifecycleReviewRecord | null;
+  outcome?: ImprovementOutcome | null;
+  outcome_missing?: OutcomeMissingRecord | null;
 }
 
 export interface StartupState {
@@ -253,6 +282,7 @@ export function stableHash(input: string): string {
 
 export function validateMetaObservation(observation: MetaObservation): string[] {
   const errors: string[] = [];
+  const isV2 = observation.schema_version === "meta-observation.v2";
   if (!nonEmptyString(observation.schema_version)) errors.push("schema_version");
   if (!nonEmptyString(observation.observation_id)) errors.push("observation_id");
   if (!isIsoDate(observation.timestamp)) errors.push("timestamp");
@@ -276,6 +306,64 @@ export function validateMetaObservation(observation: MetaObservation): string[] 
   }
   if (observation.kpi_name && observation.data_quality_status === null) {
     errors.push("data_quality_status_required_with_kpi");
+  }
+  if (isV2) {
+    if (
+      observation.evidence_grade !== "exploratory" &&
+      observation.evidence_grade !== "structural" &&
+      observation.evidence_grade !== "measured"
+    ) {
+      errors.push("evidence_grade_required_v2");
+    }
+    if (
+      observation.measurement_contract_status !== "none" &&
+      observation.measurement_contract_status !== "declared" &&
+      observation.measurement_contract_status !== "verified"
+    ) {
+      errors.push("measurement_contract_status_required_v2");
+    }
+    if (
+      observation.measurement_contract_status === "declared" &&
+      !nonEmptyString(observation.measurement_window)
+    ) {
+      errors.push("measurement_window_required_with_declared_contract");
+    }
+    if (observation.measurement_contract_status === "verified") {
+      if (!nonEmptyString(observation.measurement_window)) {
+        errors.push("measurement_window_required_with_verified_contract");
+      }
+      if (!nonEmptyString(observation.baseline_ref)) {
+        errors.push("baseline_ref_required_with_verified_contract");
+      }
+      if (observation.data_quality_status === null) {
+        errors.push("data_quality_status_required_with_verified_contract");
+      }
+      if (
+        typeof observation.sample_size !== "number" ||
+        Number.isNaN(observation.sample_size) ||
+        observation.sample_size <= 0
+      ) {
+        errors.push("sample_size_required_with_verified_contract");
+      }
+    }
+    if (
+      observation.evidence_grade === "exploratory" &&
+      observation.measurement_contract_status !== "none"
+    ) {
+      errors.push("exploratory_requires_no_measurement_contract");
+    }
+    if (
+      observation.evidence_grade === "structural" &&
+      observation.measurement_contract_status !== "declared"
+    ) {
+      errors.push("structural_requires_declared_measurement_contract");
+    }
+    if (
+      observation.evidence_grade === "measured" &&
+      observation.measurement_contract_status !== "verified"
+    ) {
+      errors.push("measured_requires_verified_measurement_contract");
+    }
   }
   return errors;
 }
@@ -310,6 +398,177 @@ export function validateImprovementCandidate(candidate: ImprovementCandidate): s
     !nonEmptyArray(candidate.unblock_requirements)
   ) {
     errors.push("unblock_requirements_required");
+  }
+  return errors;
+}
+
+export function validateImprovementOutcome(outcome: ImprovementOutcome): string[] {
+  const errors: string[] = [];
+  if (!nonEmptyString(outcome.schema_version)) errors.push("schema_version");
+  if (!nonEmptyString(outcome.candidate_id)) errors.push("candidate_id");
+  if (
+    outcome.implementation_status !== "success" &&
+    outcome.implementation_status !== "failed" &&
+    outcome.implementation_status !== "reverted"
+  ) {
+    errors.push("implementation_status");
+  }
+  if (!nonEmptyString(outcome.baseline_window)) errors.push("baseline_window");
+  if (!nonEmptyString(outcome.post_window)) errors.push("post_window");
+  if (
+    typeof outcome.measured_impact !== "number" ||
+    Number.isNaN(outcome.measured_impact)
+  ) {
+    errors.push("measured_impact");
+  }
+  if (
+    typeof outcome.impact_confidence !== "number" ||
+    Number.isNaN(outcome.impact_confidence) ||
+    outcome.impact_confidence < 0 ||
+    outcome.impact_confidence > 1
+  ) {
+    errors.push("impact_confidence_range");
+  }
+  if (
+    !Number.isInteger(outcome.regressions_detected) ||
+    outcome.regressions_detected < 0
+  ) {
+    errors.push("regressions_detected");
+  }
+  if (
+    outcome.rollback_executed_at !== null &&
+    !isIsoDate(outcome.rollback_executed_at)
+  ) {
+    errors.push("rollback_executed_at");
+  }
+  if (
+    outcome.promoted_at !== null &&
+    !isIsoDate(outcome.promoted_at)
+  ) {
+    errors.push("promoted_at");
+  }
+  if (outcome.kept_or_reverted !== "kept" && outcome.kept_or_reverted !== "reverted") {
+    errors.push("kept_or_reverted");
+  }
+  if (!nonEmptyString(outcome.root_cause_notes)) {
+    errors.push("root_cause_notes");
+  }
+  if (!Array.isArray(outcome.follow_up_actions)) {
+    errors.push("follow_up_actions");
+  }
+  if (
+    outcome.implementation_status === "reverted" &&
+    outcome.rollback_executed_at === null
+  ) {
+    errors.push("rollback_executed_at_required_for_reverted_status");
+  }
+  if (
+    outcome.kept_or_reverted === "reverted" &&
+    outcome.rollback_executed_at === null
+  ) {
+    errors.push("rollback_executed_at_required_for_reverted_outcome");
+  }
+  return errors;
+}
+
+function validateLifecycleReviewRecord(review: LifecycleReviewRecord): string[] {
+  const errors: string[] = [];
+  if (
+    review.decision !== "approved" &&
+    review.decision !== "rejected" &&
+    review.decision !== "deferred"
+  ) {
+    errors.push("decision");
+  }
+  if (!nonEmptyString(review.rationale)) {
+    errors.push("rationale");
+  }
+  if (
+    review.reviewer_type !== "operator" &&
+    review.reviewer_type !== "agent" &&
+    review.reviewer_type !== "automation"
+  ) {
+    errors.push("reviewer_type");
+  }
+  if (
+    review.reviewer_id !== null &&
+    !nonEmptyString(review.reviewer_id)
+  ) {
+    errors.push("reviewer_id");
+  }
+  if (!isIsoDate(review.reviewed_at)) {
+    errors.push("reviewed_at");
+  }
+  return errors;
+}
+
+function validateOutcomeMissingRecord(outcomeMissing: OutcomeMissingRecord): string[] {
+  const errors: string[] = [];
+  if (!nonEmptyString(outcomeMissing.reason_code)) {
+    errors.push("reason_code");
+  }
+  if (
+    outcomeMissing.detail !== null &&
+    !nonEmptyString(outcomeMissing.detail)
+  ) {
+    errors.push("detail");
+  }
+  if (
+    outcomeMissing.expected_artifact_ref !== null &&
+    !nonEmptyString(outcomeMissing.expected_artifact_ref)
+  ) {
+    errors.push("expected_artifact_ref");
+  }
+  return errors;
+}
+
+export function validateLifecyclePayload(
+  lifecycle: SelfEvolvingLifecyclePayload,
+): string[] {
+  const errors: string[] = [];
+  if (!nonEmptyString(lifecycle.candidate_id)) {
+    errors.push("candidate_id");
+  }
+  if (
+    lifecycle.dispatch_id !== undefined &&
+    lifecycle.dispatch_id !== null &&
+    !nonEmptyString(lifecycle.dispatch_id)
+  ) {
+    errors.push("dispatch_id");
+  }
+  if (
+    lifecycle.plan_slug !== undefined &&
+    lifecycle.plan_slug !== null &&
+    !nonEmptyString(lifecycle.plan_slug)
+  ) {
+    errors.push("plan_slug");
+  }
+  if (lifecycle.review) {
+    errors.push(
+      ...validateLifecycleReviewRecord(lifecycle.review).map(
+        (error) => `review.${error}`,
+      ),
+    );
+  }
+  if (lifecycle.outcome) {
+    errors.push(
+      ...validateImprovementOutcome(lifecycle.outcome).map(
+        (error) => `outcome.${error}`,
+      ),
+    );
+    if (lifecycle.outcome.candidate_id !== lifecycle.candidate_id) {
+      errors.push("outcome.candidate_id_mismatch");
+    }
+  }
+  if (lifecycle.outcome_missing) {
+    errors.push(
+      ...validateOutcomeMissingRecord(lifecycle.outcome_missing).map(
+        (error) => `outcome_missing.${error}`,
+      ),
+    );
+  }
+  if (lifecycle.outcome && lifecycle.outcome_missing) {
+    errors.push("outcome_and_outcome_missing_mutually_exclusive");
   }
   return errors;
 }

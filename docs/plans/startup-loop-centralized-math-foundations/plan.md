@@ -115,8 +115,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-02 | IMPLEMENT | Harden graph, optimization, and survival modules into repo-owned helper contracts with tests | 80% | M | Complete (2026-03-09) | - | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-03 | INVESTIGATE | Define the posterior belief, utility, and policy-state contract | 75% | M | Complete (2026-03-09) | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
 | TASK-04 | INVESTIGATE | Define the outcome-closure and verified-measurement contract | 75% | M | Complete (2026-03-09) | - | TASK-06, TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
-| TASK-05 | IMPLEMENT | Implement the versioned belief-state and utility-computation layer | 75% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
-| TASK-06 | IMPLEMENT | Implement outcome closure and verified measurement feedback into self-evolving memory | 75% | M | Pending | TASK-01, TASK-02, TASK-04 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
+| TASK-05 | IMPLEMENT | Implement the versioned belief-state and utility-computation layer | 80% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
+| TASK-06 | IMPLEMENT | Implement outcome closure and verified measurement feedback into self-evolving memory | 80% | M | Pending | TASK-01, TASK-02, TASK-04 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
 | TASK-16 | IMPLEMENT | Implement decision journaling, maturity windows, and replay-ready evaluation datasets | 70% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-06 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13, TASK-14 |
 | TASK-07 | IMPLEMENT | Replace pure priority sorting with constrained portfolio optimization | 75% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-10, TASK-12, TASK-13, TASK-14 |
 | TASK-08 | IMPLEMENT | Integrate graph dependency and bottleneck analysis into policy inputs | 75% | M | Pending | TASK-02, TASK-03, TASK-05 | TASK-11, TASK-13, TASK-14 |
@@ -348,8 +348,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13
-- **Confidence:** 75%
-  - Implementation: 75% - the code seams are concrete, but the new belief and utility contracts are net-new.
+- **Confidence:** 80%
+  - Implementation: 80% - the code seams are concrete and the belief, utility, and decision-journal contracts are now fixed by prior tasks rather than still being invented.
   - Approach: 85% - this is the only way to stop optimization from hardening heuristic bias.
   - Impact: 90% - without belief state there is no mathematically serious decision core.
 - **Acceptance criteria:**
@@ -364,8 +364,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution plan:** Red -> add tests/fixtures for belief update and utility contract behavior; Green -> implement belief-state storage and utility computation; Refactor -> remove duplicated heuristic-only scoring paths where the new contract supersedes them.
 - **Planning validation (required for M/L):**
   - Checks run: traced current score calculation into ranked candidates and dashboard outputs.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: the current runtime has no place to store policy version or learned beliefs separately from startup state and score output.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/posterior-policy-contract.md`, `docs/plans/startup-loop-centralized-math-foundations/replan-notes.md`
+  - Unexpected findings: the current runtime has no place to store policy version or learned beliefs separately from startup state and score output, but the target state shape is now defined tightly enough to implement directly.
 - **Scouts:** None: the seams are specific enough once TASK-03 lands.
 - **Edge Cases & Hardening:** cold start, sparse data, stale priors, and deterministic replay of the same history.
 - **What would make this >=90%:**
@@ -390,8 +390,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts`
 - **Depends on:** TASK-01, TASK-02, TASK-04
 - **Blocks:** TASK-07, TASK-09, TASK-10, TASK-11, TASK-13
-- **Confidence:** 75%
-  - Implementation: 75% - the join seams are visible but currently disconnected.
+- **Confidence:** 80%
+  - Implementation: 80% - the join seams are visible and the closure, maturity, and verification contracts are now explicit rather than inferred.
   - Approach: 90% - no self-improving claim is credible without outcome closure.
   - Impact: 95% - this is the learning feedback path.
 - **Acceptance criteria:**
@@ -406,8 +406,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution plan:** Red -> add lifecycle/outcome join tests around completion and follow-up dispatch refs; Green -> wire candidate-aware completion feedback; Refactor -> centralize candidate/dispatch join helpers.
 - **Planning validation (required for M/L):**
   - Checks run: traced follow-up dispatch evidence refs, lifecycle event types, and queue completion writes.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: the current queue completion path knows plan and outcome, but not self-evolving lifecycle ownership.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/outcome-closure-contract.md`, `docs/plans/startup-loop-centralized-math-foundations/replan-notes.md`
+  - Unexpected findings: the current queue completion path knows plan and outcome, but not self-evolving lifecycle ownership; the required join and lifecycle shapes are now explicit enough to implement without another design pass.
 - **Scouts:** None: the closure seam is concrete once TASK-04 lands.
 - **Edge Cases & Hardening:** repeated completion attempts, stale dispatches, late-arriving outcomes, and outcomes present without verified measurement.
 - **What would make this >=90%:**

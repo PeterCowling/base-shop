@@ -4,7 +4,7 @@ Status: Active
 Created: 2026-03-09
 Last-updated: 2026-03-09
 Relates-to: docs/plans/startup-loop-centralized-math-foundations/plan.md
-Replan-round: 1
+Replan-round: 2
 ---
 
 # Replan Notes: TASK-02 Readiness (2026-03-09)
@@ -56,3 +56,43 @@ What remains uncertain is implementation detail, not task definition.
 Ready.
 
 `TASK-02` now meets the `IMPLEMENT` confidence floor and is the next runnable build task.
+
+## Round 2 Trigger
+After `TASK-02` completed, Wave 2 was structurally unblocked but still not executable because `TASK-05` and `TASK-06` were left at stale pre-contract confidence levels (`75%` each).
+
+## Round 2 Evidence Reviewed
+- `docs/plans/startup-loop-centralized-math-foundations/artifacts/posterior-policy-contract.md`
+  - now freezes the belief-state, utility, and policy-decision journal shapes that `TASK-05` must implement
+- `docs/plans/startup-loop-centralized-math-foundations/artifacts/outcome-closure-contract.md`
+  - now freezes the join keys, maturity semantics, and lifecycle write rules that `TASK-06` must implement
+- `packages/lib/src/math/graph/index.ts`
+- `packages/lib/src/math/optimization/index.ts`
+- `packages/lib/src/math/survival/index.ts`
+  - `TASK-02` now provides repo-owned helper semantics rather than raw package passthroughs, removing the math-surface ambiguity those implementation tasks depended on
+
+## Round 2 Assessment
+The work that kept `TASK-05` and `TASK-06` below threshold was primarily contract and helper-surface uncertainty. That uncertainty is now substantially lower:
+- `TASK-05` no longer needs to invent belief-state shapes, utility terms, decision-trace fields, or optimizer-facing semantics
+- `TASK-06` no longer needs to invent completion joins, maturity handling, verified measurement gates, or lifecycle payload shapes
+
+What remains is execution complexity, not missing design authority.
+
+## Round 2 Task Deltas Applied
+- `TASK-05` confidence raised from `75%` to `80%`
+  - Implementation: `80%`
+  - Approach: `85%`
+  - Impact: `90%`
+- `TASK-06` confidence raised from `75%` to `80%`
+  - Implementation: `80%`
+  - Approach: `90%`
+  - Impact: `95%`
+
+## Round 2 Sequencing Impact
+- No topology change.
+- Stable task IDs preserved.
+- No `/lp-do-sequence` run required.
+
+## Round 2 Readiness Decision
+Ready.
+
+`TASK-05` and `TASK-06` now both meet the `IMPLEMENT` confidence floor and form the next runnable wave.

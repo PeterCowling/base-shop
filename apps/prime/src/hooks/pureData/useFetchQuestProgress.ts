@@ -39,7 +39,7 @@ async function fetchQuestProgress(
     }
     return snapshot.val() as QuestProgress;
   } catch (error) {
-    logger.error('Error fetching quest progress:', error);
+    logger.error('Error fetching quest progress:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }

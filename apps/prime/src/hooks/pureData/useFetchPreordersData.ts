@@ -40,7 +40,7 @@ async function fetchPreorders(
       id: nightKey,
     }));
   } catch (err) {
-    logger.error('Error fetching preordersData:', err);
+    logger.error('Error fetching preordersData:', err); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw err;
   }
 }

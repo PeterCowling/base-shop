@@ -6,12 +6,12 @@
  */
 
 import {
-  MessageSchema,
-  RawMessagePayloadSchema,
-  MessageDraftMetaSchema,
-  MessageLinkSchema,
   MessageAttachmentSchema,
   MessageCardSchema,
+  MessageDraftMetaSchema,
+  MessageLinkSchema,
+  MessageSchema,
+  RawMessagePayloadSchema,
 } from '../messageSchema';
 
 // ──────────────────────────────────────────────

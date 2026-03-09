@@ -39,7 +39,7 @@ async function fetchGuestProfile(
     }
     return snapshot.val() as GuestProfile;
   } catch (error) {
-    logger.error('Error fetching guest profile:', error);
+    logger.error('Error fetching guest profile:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }

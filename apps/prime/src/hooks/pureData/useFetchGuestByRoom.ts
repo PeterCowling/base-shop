@@ -32,7 +32,7 @@ async function fetchGuestByRoom(
     const occupantData = snapshot.val();
     return { [occupantId]: occupantData };
   } catch (err) {
-    logger.error('Error fetching guestByRoom occupant data:', err);
+    logger.error('Error fetching guestByRoom occupant data:', err); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw err;
   }
 }

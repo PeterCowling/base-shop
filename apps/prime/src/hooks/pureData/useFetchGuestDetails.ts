@@ -33,7 +33,7 @@ async function fetchGuestDetails(
     }
     return snapshot.val() as GuestDetailsRecord;
   } catch (error) {
-    logger.error('Error fetching guestsDetails occupant data:', error);
+    logger.error('Error fetching guestsDetails occupant data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }

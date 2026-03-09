@@ -67,7 +67,7 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
     if (!uuid) {
       if (!warnTimeoutRef.current) {
         warnTimeoutRef.current = setTimeout(() => {
-          logger.warn('[useFetchCompletedTasks] UUID still unavailable after 1.5 s; listener not attached. ');
+          logger.warn('[useFetchCompletedTasks] UUID still unavailable after 1.5 s; listener not attached. '); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
           setIsLoading(false);
           setIsUuidMissing(true);
         }, 1500);
@@ -102,7 +102,7 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
         })
         .catch((error) => {
           if (!isActive) return;
-          logger.error('[useFetchCompletedTasks] Firebase one-shot error:', error);
+          logger.error('[useFetchCompletedTasks] Firebase one-shot error:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
           setIsError(true);
           setIsLoading(false);
         });
@@ -134,7 +134,7 @@ export function useFetchCompletedTasks(): UseFetchCompletedTasksResult {
         setIsError(false);
       },
       (error) => {
-        logger.error('[useFetchCompletedTasks] Firebase listener error:', error);
+        logger.error('[useFetchCompletedTasks] Firebase listener error:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
         setIsError(true);
         setIsLoading(false);
       },

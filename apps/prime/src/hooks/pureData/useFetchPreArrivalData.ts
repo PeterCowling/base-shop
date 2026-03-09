@@ -42,7 +42,7 @@ async function fetchPreArrivalData(
     }
     return snapshot.val() as PreArrivalData;
   } catch (error) {
-    logger.error('[useFetchPreArrivalData] Error fetching pre-arrival data:', error);
+    logger.error('[useFetchPreArrivalData] Error fetching pre-arrival data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }

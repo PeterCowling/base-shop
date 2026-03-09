@@ -28,7 +28,7 @@ async function fetchFinancialsRoomForBooking(
     }
     return snapshot.val() as FinancialsRoomRecord;
   } catch (error) {
-    logger.error('Error fetching financialsRoom data:', error);
+    logger.error('Error fetching financialsRoom data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }

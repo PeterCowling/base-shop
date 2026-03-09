@@ -28,7 +28,7 @@ async function fetchCityTaxForBooking(
     }
     return snapshot.val() as CityTaxBookingRecord;
   } catch (error) {
-    logger.error('Error fetching city tax data:', error);
+    logger.error('Error fetching city tax data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }

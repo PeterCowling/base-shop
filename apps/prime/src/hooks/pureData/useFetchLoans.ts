@@ -30,7 +30,7 @@ async function fetchLoansForOccupant(
     }
     return snapshot.val() as LoanOccupantRecord;
   } catch (error) {
-    logger.error('Error fetching loans data:', error);
+    logger.error('Error fetching loans data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }

@@ -3,15 +3,15 @@
 //   apps/prime/src/lib/chat/messageSchema.ts
 
 export type {
-  MessageKind,
-  MessageAudience,
-  MessageLinkVariant,
-  MessageLink,
-  MessageAttachmentKind,
-  MessageAttachment,
-  MessageCard,
-  MessageDraftStatus,
-  MessageDraftSource,
-  MessageDraftMeta,
   Message,
+  MessageAttachment,
+  MessageAttachmentKind,
+  MessageAudience,
+  MessageCard,
+  MessageDraftMeta,
+  MessageDraftSource,
+  MessageDraftStatus,
+  MessageKind,
+  MessageLink,
+  MessageLinkVariant,
 } from '../../lib/chat/messageSchema';

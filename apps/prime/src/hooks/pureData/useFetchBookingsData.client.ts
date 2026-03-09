@@ -112,7 +112,7 @@ async function fetchViaFullScan(
       logger.debug(`[bookings] Wrote occupantIndex for ${uuid} → ${reservationCode}`);
     } catch (indexErr) {
       // Non-critical — the lookup still succeeded
-      logger.warn('[bookings] Failed to write occupantIndex:', indexErr);
+      logger.warn('[bookings] Failed to write occupantIndex:', indexErr); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     }
 
     return found;

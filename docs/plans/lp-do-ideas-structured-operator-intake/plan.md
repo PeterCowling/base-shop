@@ -13,6 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
+Dispatch-ID: IDEA-DISPATCH-20260309140301-9306
 Overall-confidence: 86%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan+auto

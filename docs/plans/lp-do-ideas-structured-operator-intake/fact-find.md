@@ -16,6 +16,7 @@ Startup-Deliverable-Alias: none
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/lp-do-ideas-structured-operator-intake/plan.md
+Dispatch-ID: IDEA-DISPATCH-20260309140301-9306
 Trigger-Why: Operator intake currently burns 2-4k tokens per idea because lp-do-ideas relies on free-form inference to decide which follow-up questions to ask and which evidence fields to capture.
 Trigger-Intended-Outcome: type: operational | statement: lp-do-ideas uses a structured five-question pre-router intake for operator ideas, captures evidence through fixed prompts, and preserves the existing routing judgment path. | source: operator
 ---

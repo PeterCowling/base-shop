@@ -1,14 +1,72 @@
 {
-  "last_updated": "2026-03-09T11:51:15.280Z",
+  "last_updated": "2026-03-09T14:04:56Z",
   "counts": {
-    "completed": 215,
     "enqueued": 238,
-    "processed": 13,
-    "auto_executed": 21,
-    "logged_no_action": 3,
-    "skipped": 2
+    "processed": 0,
+    "skipped": 0,
+    "error": 0,
+    "suppressed": 0,
+    "auto_executed": 20,
+    "completed": 232,
+    "fact_find_ready": 257,
+    "micro_build_ready": 6,
+    "total": 493
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309114901-9305",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "SELL",
+      "root_event_id": "operator:HBAG:SELL:startup-loop-cap02-message-variants:20260309",
+      "anchor_key": "startup-loop-cap02-message-variants",
+      "cluster_key": "HBAG:SELL:startup-loop-cap02-message-variants:operator:20260309",
+      "cluster_fingerprint": "startup-loop-cap02-message-variants-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "HBAG message variants - CAP-02 contract and ledger",
+      "location_anchors": [
+        "docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md",
+        "docs/business-os/startup-loop/schemas/message-variants-schema.md",
+        "docs/business-os/strategy/HBAG/message-variants.user.md",
+        ".claude/skills/draft-marketing/SKILL.md",
+        ".claude/skills/lp-weekly/modules/orchestrate.md"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "CAP-02 was referenced by skills and planning discussion, but no canonical schema, seeded per-business artifact, or producer/consumer contract existed in the repo.",
+      "next_scope_now": "Define the message-variants schema, upgrade the capability contract, seed HBAG/HEAD/PET ledgers, and retrofit the main channel, marketing, outreach, and weekly consumers.",
+      "recommended_route": "lp-do-build",
+      "status": "completed",
+      "priority": "P1",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: take CAP-02 forward via lp-do-ideas -> lp-do-build workflow",
+        "doc-ref: docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md - CAP-02 still marked missing and schema undefined",
+        "skill-ref: .claude/skills/lp-channels/SKILL.md - message-variants path referenced without a canonical schema artifact",
+        "doc-ref: docs/business-os/strategy/HBAG/channel-health-log.user.md - first offline boutique signal exists and needs a message-learning host"
+      ],
+      "queue_state": "completed",
+      "created_at": "2026-03-09T11:49:01Z",
+      "why": "Message testing was half-wired into the loop but still lacked a canonical schema and standing artifact. That made boutique pitch learning, website framing, and social copy tests impossible to capture consistently across cycles.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "CAP-02 now has a canonical message-variants schema, seeded product-loop artifacts, and explicit skill consumers so message testing can be logged and reused instead of living only in chat.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "micro_build_path": "docs/plans/startup-loop-cap02-message-variants/micro-build.md",
+        "processed_at": "2026-03-09T11:49:01Z",
+        "target_kind": "build",
+        "target_slug": "startup-loop-cap02-message-variants"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/startup-loop-cap02-message-variants/micro-build.md",
+        "completed_at": "2026-03-09T11:49:01Z",
+        "outcome": "CAP-02 now has a canonical schema, product-loop ledgers, and explicit consumer skills."
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260309104500-9304",
@@ -1190,7 +1248,7 @@
       "current_truth": "EditProductFilterSelector has no browse-all or search mode — operators must navigate exclusively via brand→collection→size→color cascades to find any product; there is no flat list or search fallback. CatalogConsole injects nav buttons into the parent header via an onHeaderExtra portal pattern that breaks layout ownership and is fragile to parent restructuring.",
       "next_scope_now": "Fact-find the xa-uploader sidebar and navigation layer: (1) audit EditProductFilterSelector and determine whether a flat product list, a search input, or a 'show all' toggle is the right addition; (2) audit the onHeaderExtra pattern and determine whether inline nav or a different self-contained approach is better; (3) assess the impact on screen layout and responsiveness; (4) produce a planning brief scoped to these two navigation-layer fixes.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.88,
       "evidence_refs": [
@@ -1205,12 +1263,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T15:00:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-06T15:30:00.000Z",
         "fact_find_slug": "xa-uploader-nav-layer-fixes",
-        "fact_find_path": "docs/plans/xa-uploader-nav-layer-fixes/fact-find.md"
+        "fact_find_path": "docs/plans/xa-uploader-nav-layer-fixes/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-nav-layer-fixes",
+        "target_path": "docs/plans/xa-uploader-nav-layer-fixes/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-nav-layer-fixes/plan.md",
+        "completed_at": "2026-03-09T12:32:02.056Z",
+        "outcome": "xa-uploader now has browse-all product selection and inline catalog/currency navigation owned by CatalogConsole."
       }
     },
     {
@@ -3516,34 +3583,6 @@
     },
     {
       "schema_version": "dispatch.v1",
-      "dispatch_id": "IDEA-DISPATCH-20260226-0029",
-      "mode": "trial",
-      "business": "PWRB",
-      "trigger": "operator_idea",
-      "root_event_id": "operator:PWRB:LOGISTICS:pwrb-ipei-agreement:20260226",
-      "anchor_key": "pwrb-ipei-agreement",
-      "cluster_key": "PWRB:LOGISTICS:pwrb-ipei-agreement:20260226",
-      "cluster_fingerprint": "e5f67890123456789012345678ef",
-      "lineage_depth": 0,
-      "area_anchor": "PWRB IPEI agreement — document empty, needs drafting",
-      "location_anchors": [
-        "docs/business-os/strategy/PWRB/plan.user.md"
-      ],
-      "provisional_deliverable_family": "legal-agreement",
-      "domain": "LOGISTICS",
-      "status": "fact_find_ready",
-      "recommended_route": "lp-do-fact-find",
-      "priority": "P2",
-      "confidence": 0.9,
-      "evidence_refs": [
-        "operator-stated: PWRB-DEC-2026-01-29-06 — IPEI services/access agreement not drafted; defines scope (install, swap, troubleshooting), scheduling rules, cost-basis, and liability boundary between PWRB NewCo and IPEI"
-      ],
-      "created_at": "2026-02-26T21:30:00Z",
-      "queue_state": "skipped",
-      "skip_reason": "operator-decision: IPEI director will become a director of PWRB NewCo; formal services agreement is superseded by directorship relationship"
-    },
-    {
-      "schema_version": "dispatch.v1",
       "dispatch_id": "IDEA-DISPATCH-20260226-0030",
       "mode": "trial",
       "business": "PWRB",
@@ -5810,49 +5849,6 @@
     },
     {
       "schema_version": "dispatch.v1",
-      "dispatch_id": "IDEA-DISPATCH-20260227-0054",
-      "mode": "trial",
-      "business": "BOS",
-      "trigger": "operator_idea",
-      "root_event_id": "operator:BOS:STRATEGY:startup-loop-build-reflection-gate:20260227",
-      "anchor_key": "startup-loop-build-reflection-gate",
-      "cluster_key": "BOS:STRATEGY:startup-loop-build-reflection-gate:operator:20260227",
-      "cluster_fingerprint": "f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2",
-      "lineage_depth": 0,
-      "area_anchor": "Startup loop build reflection gate — no structured post-build step captures reuse patterns for loop or skill improvement",
-      "location_anchors": [
-        ".claude/skills/lp-do-build/SKILL.md",
-        "docs/agents/feature-workflow-guide.md",
-        "CLAUDE.md",
-        "AGENTS.md"
-      ],
-      "provisional_deliverable_family": "skill-update+loop-change",
-      "domain": "STRATEGY",
-      "status": "fact_find_ready",
-      "recommended_route": "lp-do-fact-find",
-      "priority": "P3",
-      "confidence": 0.88,
-      "evidence_refs": [
-        "operator-stated: every build is an opportunity to identify what could be done more easily next time — e.g. ensure API access or agent access is set up, not rediscovered mid-task",
-        "operator-stated: deterministic patterns should be folded into the startup loop; ad-hoc/non-deterministic patterns should become new tool-* skills"
-      ],
-      "current_truth": "The startup loop has no structured post-build reflection step. When a task or feature is completed, learnings — such as needing API access configured upfront, repeated ad-hoc data-source discoveries, or steps that could be systematised — are not captured. There is no mechanism to route deterministic patterns back into the startup loop stages, nor to trigger new tool-* skill creation for ad-hoc patterns.",
-      "next_scope_now": "Fact-find to determine: (1) where in the post-build/stage lifecycle a reflection gate should sit and what triggers it; (2) what the gate should produce — e.g. a lightweight reflection artifact with fields for data-source access gaps, repeated ad-hoc steps, and improvement opportunities; (3) routing logic: how deterministic patterns are identified and folded back into an existing loop stage or skill; (4) routing logic: criteria and process for promoting an ad-hoc pattern to a new tool-* skill; (5) data-source/API access as a canonical worked example: where does pre-flight access verification live, which loop stage owns it, and how is it recorded; (6) produce a planning brief with concrete tasks.",
-      "adjacent_later": [
-        "Retrospective sweep of completed builds to seed reflection patterns from existing work",
-        "Integration with lp-weekly to surface accumulated reflection patterns in the weekly review"
-      ],
-      "created_at": "2026-02-27T22:00:00Z",
-      "queue_state": "auto_executed",
-      "processed_by": {
-        "fact_find_slug": "startup-loop-build-reflection-gate",
-        "fact_find_path": "docs/plans/startup-loop-build-reflection-gate/fact-find.md",
-        "processed_at": "2026-02-27T22:00:00Z",
-        "route": "auto-executed"
-      }
-    },
-    {
-      "schema_version": "dispatch.v1",
       "dispatch_id": "IDEA-DISPATCH-20260227-0055",
       "mode": "trial",
       "business": "BOS",
@@ -7979,48 +7975,6 @@
     },
     {
       "schema_version": "dispatch.v2",
-      "dispatch_id": "IDEA-DISPATCH-20260303200000-0139",
-      "mode": "trial",
-      "business": "XA",
-      "trigger": "operator_idea",
-      "root_event_id": "operator:XA:PRODUCTS:xa-live-product-unpublish-safety:20260303",
-      "anchor_key": "xa-live-product-unpublish-safety",
-      "cluster_key": "XA:PRODUCTS:xa-live-product-unpublish-safety:operator:20260303",
-      "cluster_fingerprint": "d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3",
-      "lineage_depth": 0,
-      "area_anchor": "XA catalog workflow — live product edit can unpublish",
-      "location_anchors": [
-        "apps/xa-uploader/src/app/api/catalog/products/route.ts",
-        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
-        "packages/lib/src/xa/catalogWorkflow.ts"
-      ],
-      "provisional_deliverable_family": "code-change",
-      "current_truth": "When a live product is saved in an incomplete state (e.g. image paths removed), publishState is auto-derived as 'draft' by catalogWorkflow readiness logic. Next sync excludes draft products from the published catalog. There is no mechanism to keep the currently-live version while editing a draft revision. A single incomplete save can silently remove a product from the storefront.",
-      "next_scope_now": "Fact-find to design a safety model for live product editing — options include last-published snapshot preservation, edit-in-draft-copy pattern, or save-time warnings when edits would demote a live product.",
-      "adjacent_later": [
-        "Audit trail for publishState transitions",
-        "Undo/revert capability for accidental unpublish"
-      ],
-      "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
-      "priority": "P1",
-      "confidence": 0.9,
-      "evidence_refs": [
-        "operator-stated: If a live product is saved in incomplete state, it becomes draft; next sync drops it from published catalog — no keep-live-while-editing safety model",
-        "packages/lib/src/xa/catalogWorkflow.ts (readiness auto-derivation demotes live → draft on incomplete data)",
-        "apps/xa-uploader/src/app/api/catalog/sync/route.ts (sync only publishes ready/live products)"
-      ],
-      "created_at": "2026-03-03T20:00:00.000Z",
-      "queue_state": "enqueued",
-      "why": "A single accidental incomplete save can silently remove a product from the live storefront. This is a data-loss risk that grows as the catalog scales — one wrong edit during a price update session could take multiple products offline without warning.",
-      "intended_outcome": {
-        "type": "operational",
-        "statement": "Editing a live product cannot silently unpublish it — the system either preserves the live version, warns before demotion, or requires explicit confirmation to unpublish.",
-        "source": "operator"
-      }
-    },
-    {
-      "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260303200000-0140",
       "mode": "trial",
       "business": "XA",
@@ -8278,8 +8232,8 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
-      "queue_state": "processed",
+      "status": "completed",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.91,
       "current_truth": "Staff Accounts screen exists and is routable, but it is not reachable from the active MAN modal navigation. Operators must manually navigate by URL.",
@@ -8303,7 +8257,16 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T22:24:00.000Z",
         "fact_find_slug": "reception-staff-accounts-modal-entry",
-        "fact_find_path": "docs/plans/reception-staff-accounts-modal-entry/fact-find.md"
+        "fact_find_path": "docs/plans/reception-staff-accounts-modal-entry/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-staff-accounts-modal-entry",
+        "target_path": "docs/plans/reception-staff-accounts-modal-entry/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-staff-accounts-modal-entry/plan.md",
+        "completed_at": "2026-03-09T13:00:03.175Z",
+        "outcome": "Staff Accounts MAN entry already implemented in active navigation and tests."
       }
     },
     {
@@ -8325,8 +8288,8 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
-      "queue_state": "processed",
+      "status": "completed",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.86,
       "current_truth": "Staff Accounts access is currently role-based (USER_MANAGEMENT) with no explicit account-identity restriction. The requested Pete-only policy is not encoded.",
@@ -8349,7 +8312,16 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T22:24:10.000Z",
         "fact_find_slug": "reception-staff-accounts-pete-only-access",
-        "fact_find_path": "docs/plans/reception-staff-accounts-pete-only-access/fact-find.md"
+        "fact_find_path": "docs/plans/reception-staff-accounts-pete-only-access/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-staff-accounts-pete-only-access",
+        "target_path": "docs/plans/reception-staff-accounts-pete-only-access/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-staff-accounts-pete-only-access/fact-find.md",
+        "completed_at": "2026-03-09T12:54:35.631Z",
+        "outcome": "Pete-only Staff Accounts policy already implemented in UI, nav, and API layers via shared identity gating."
       }
     },
     {
@@ -8371,8 +8343,8 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
-      "queue_state": "processed",
+      "status": "completed",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.89,
       "current_truth": "Current Staff Accounts screen supports create + initial role selection only. There is no end-user flow for account removal, deactivation, or updating permissions after creation.",
@@ -8395,7 +8367,16 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T22:24:20.000Z",
         "fact_find_slug": "reception-staff-accounts-lifecycle-permissions",
-        "fact_find_path": "docs/plans/reception-staff-accounts-lifecycle-permissions/fact-find.md"
+        "fact_find_path": "docs/plans/reception-staff-accounts-lifecycle-permissions/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-staff-accounts-lifecycle-permissions",
+        "target_path": "docs/plans/reception-staff-accounts-lifecycle-permissions/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-staff-accounts-lifecycle-permissions/plan.md",
+        "completed_at": "2026-03-09T13:00:03.185Z",
+        "outcome": "Staff Accounts lifecycle and permission-management flows already implemented in UI and API."
       }
     },
     {
@@ -8419,7 +8400,7 @@
       ],
       "provisional_deliverable_family": "multi",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.9,
       "current_truth": "Statistics page is a connection-test stub. Reception reads only one RTDB URL today, while management requires year-on-year performance from current-year DB plus archived prior-year DB. Existing in-node /archive paths coexist with a separate archive database concept, so metric source boundaries are not defined.",
@@ -8440,12 +8421,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T23:30:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T18:03:19.217Z",
         "fact_find_slug": "reception-statistics-yoy-data-contract",
-        "fact_find_path": "docs/plans/reception-statistics-yoy-data-contract/fact-find.md"
+        "fact_find_path": "docs/plans/reception-statistics-yoy-data-contract/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-statistics-yoy-data-contract",
+        "target_path": "docs/plans/reception-statistics-yoy-data-contract/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-statistics-yoy-data-contract/plan.md",
+        "completed_at": "2026-03-09T13:08:01.147Z",
+        "outcome": "Shared YoY data contract, schema, provenance metadata, and deterministic helper rules now underpin the existing statistics API and UI."
       }
     },
     {
@@ -8469,7 +8459,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.88,
       "current_truth": "No server-side statistics API exists for YoY. Current hooks subscribe directly to client-side nodes and cannot safely combine dual-database sources, normalize periods, and produce consistent management aggregates.",
@@ -8489,12 +8479,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T23:30:01.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T18:03:19.218Z",
         "fact_find_slug": "reception-statistics-yoy-aggregation-api",
-        "fact_find_path": "docs/plans/reception-statistics-yoy-aggregation-api/fact-find.md"
+        "fact_find_path": "docs/plans/reception-statistics-yoy-aggregation-api/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-statistics-yoy-aggregation-api",
+        "target_path": "docs/plans/reception-statistics-yoy-aggregation-api/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-statistics-yoy-aggregation-api/plan.md",
+        "completed_at": "2026-03-09T13:00:03.194Z",
+        "outcome": "Protected YoY aggregation API already implemented with route tests."
       }
     },
     {
@@ -8517,7 +8516,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.89,
       "current_truth": "Management requested switchable performance views, but statistics UI currently has no KPI controls, no YoY cards/charts, and no standardized management narrative for period-over-period changes.",
@@ -8537,12 +8536,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T23:30:02.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T18:03:19.218Z",
         "fact_find_slug": "reception-statistics-yoy-switchable-ui",
-        "fact_find_path": "docs/plans/reception-statistics-yoy-switchable-ui/fact-find.md"
+        "fact_find_path": "docs/plans/reception-statistics-yoy-switchable-ui/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-statistics-yoy-switchable-ui",
+        "target_path": "docs/plans/reception-statistics-yoy-switchable-ui/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-statistics-yoy-switchable-ui/plan.md",
+        "completed_at": "2026-03-09T13:00:03.202Z",
+        "outcome": "Switchable YoY statistics dashboard already implemented with UI coverage."
       }
     },
     {
@@ -11382,44 +11390,6 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
-    },
-    {
-      "schema_version": "dispatch.v2",
-      "dispatch_id": "IDEA-DISPATCH-20260304122500-0001",
-      "mode": "trial",
-      "business": "BOS",
-      "trigger": "operator_idea",
-      "root_event_id": "skill-efficiency-audit-2026-03-04-batch",
-      "anchor_key": "bos:assessment-skills:modularization",
-      "cluster_key": "skill-efficiency:assessment-modularization",
-      "cluster_fingerprint": "sha256:assessment-monolith-wave-2026-03-04",
-      "lineage_depth": 0,
-      "area_anchor": "BOS assessment skills — monolith modularization wave",
-      "location_anchors": [
-        ".claude/skills/lp-do-assessment-14-logo-brief/SKILL.md",
-        ".claude/skills/lp-do-assessment-01-problem-statement/SKILL.md",
-        ".claude/skills/lp-do-assessment-13-product-naming/SKILL.md"
-      ],
-      "provisional_deliverable_family": "code-change",
-      "current_truth": "9 assessment skills exceed the 200-line SKILL.md threshold with no modules directory. The largest is lp-do-assessment-14-logo-brief at 643 lines.",
-      "next_scope_now": "Investigate shared assessment backbone module extraction to bring priority assessment orchestrators under 200 lines.",
-      "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
-      "priority": "P1",
-      "confidence": 0.85,
-      "evidence_refs": [
-        "operator-stated: Assessment skills are now the largest concentration of new monolith growth; optimization here gives highest immediate benefit.",
-        "docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md",
-        "docs/business-os/platform-capability/skill-efficiency-ideas-2026-03-04.md"
-      ],
-      "created_at": "2026-03-04T12:25:00.000Z",
-      "queue_state": "enqueued",
-      "why": "Assessment skills are now the largest concentration of new monolith growth, so optimization here gives the highest immediate benefit.",
-      "intended_outcome": {
-        "type": "operational",
-        "statement": "Create and execute a phased modularization plan that brings priority assessment skill orchestrators under 200 lines while preserving behavior.",
-        "source": "operator"
       }
     },
     {
@@ -14320,59 +14290,6 @@
     },
     {
       "schema_version": "dispatch.v2",
-      "dispatch_id": "IDEA-DISPATCH-20260306185359-0136",
-      "mode": "trial",
-      "business": "BOS",
-      "trigger": "artifact_delta",
-      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
-      "before_sha": "369a2a4a0b7cdc8f5bb63fe1f4d7f9f1399082ec",
-      "after_sha": "52edfdf2152f69820250b8ac3606e26153795df5",
-      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:52edfdf2152f69820250b8ac3606e26153795df5",
-      "anchor_key": "scripts-startup-loop-tests-lp-do",
-      "cluster_key": "bos:unknown:scripts-startup-loop-tests-lp-do:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:52edfdf2152f69820250b8ac3606e26153795df5",
-      "cluster_fingerprint": "12a38973b6d1e6c2c27677fcc6db447e5763371b4c8c2ff55cf2f5793c01a63b",
-      "lineage_depth": 0,
-      "area_anchor": "scripts startup loop tests lp do",
-      "location_anchors": [
-        "docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
-        "docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
-        "docs/business-os/startup-loop/self-evolving/BRIK/events.jsonl",
-        "docs/business-os/startup-loop/self-evolving/BRIK/observations.jsonl",
-        "scripts/package.json",
-        "scripts/src/startup-loop/__tests__/lp-do-build-results-review-extract.test.ts",
-        "scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts",
-        "scripts/src/startup-loop/build/generate-process-improvements.ts"
-      ],
-      "provisional_deliverable_family": "code-change",
-      "current_truth": "Recent codebase structural changes touched Docs business os (4 files), Scripts startup loop (3 files), and Scripts package.",
-      "next_scope_now": "Review the touched surfaces in Docs business os, Scripts startup loop, and Scripts package and turn any implicit follow-up work into concrete scoped items.",
-      "adjacent_later": [],
-      "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
-      "priority": "P2",
-      "confidence": 0.75,
-      "evidence_refs": [
-        "git-diff-range:HEAD~1..HEAD",
-        "git-diff:M:docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
-        "git-diff:M:docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
-        "git-diff:M:docs/business-os/startup-loop/self-evolving/BRIK/events.jsonl",
-        "git-diff:M:docs/business-os/startup-loop/self-evolving/BRIK/observations.jsonl",
-        "git-diff:M:scripts/package.json",
-        "git-diff:M:scripts/src/startup-loop/__tests__/lp-do-build-results-review-extract.test.ts",
-        "git-diff:M:scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts",
-        "git-diff:M:scripts/src/startup-loop/build/generate-process-improvements.ts"
-      ],
-      "created_at": "2026-03-06T18:53:59.135Z",
-      "queue_state": "enqueued",
-      "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
-      "intended_outcome": {
-        "type": "operational",
-        "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
-        "source": "auto"
-      }
-    },
-    {
-      "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260306185400-0051",
       "mode": "trial",
       "business": "BOS",
@@ -16750,7 +16667,7 @@
       "current_truth": "When a draft fails quality checks, the tool reports check names (e.g. unanswered_questions) but not which specific questions failed or what remediation is needed. Staff can't debug without regenerating.",
       "next_scope_now": "Extend quality check output to include per-check detail: which questions are unanswered, which references are missing, which policy phrases failed to match.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.8,
       "evidence_refs": [
@@ -16763,7 +16680,7 @@
         "source": "operator"
       },
       "created_at": "2026-03-07T15:37:40.310752+00:00",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "target_route": "lp-do-fact-find",
@@ -16773,6 +16690,11 @@
         "processed_at": "2026-03-07T15:47:33.826Z",
         "fact_find_slug": "reception-inbox-quality-check-debug",
         "fact_find_path": "docs/plans/reception-inbox-quality-check-debug/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-quality-check-debug/plan.md",
+        "completed_at": "2026-03-09T12:32:02.045Z",
+        "outcome": "Quality check failures now carry actionable failed-check detail across reception and MCP surfaces."
       }
     },
     {
@@ -17321,7 +17243,7 @@
         "Consider future enforcement guards after the operational rule is stable and documented."
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.94,
       "evidence_refs": [
@@ -17331,7 +17253,7 @@
         "agent-verified: writer-lock clean-stale refuses live PIDs, so long-running deploy holders remain authoritative until they exit"
       ],
       "created_at": "2026-03-07T17:00:50.279Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "A long remote deploy blocked unrelated commit work because the writer lock scope is broader than the resource it is meant to protect. We need a documented operating rule that keeps serialization around repo writes, not around network-bound deployment time.",
       "intended_outcome": {
         "type": "operational",
@@ -17347,6 +17269,11 @@
         "processed_at": "2026-03-07T17:02:37.727Z",
         "fact_find_slug": "writer-lock-scope-reduction",
         "fact_find_path": "docs/plans/writer-lock-scope-reduction/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/writer-lock-scope-reduction/plan.md",
+        "completed_at": "2026-03-09T12:32:02.032Z",
+        "outcome": "Canonical runbooks now scope the writer lock to serialized repo writes and move deploy/build work outside the lock."
       }
     },
     {
@@ -17586,43 +17513,6 @@
         "micro_build_path": "docs/plans/_archive/xa-b-hermes-nav-taxonomy/micro-build.md",
         "completed_at": "2026-03-08T10:10:07.094Z",
         "outcome": "Completed via xa-b-hermes-nav-taxonomy."
-      }
-    },
-    {
-      "schema_version": "dispatch.v2",
-      "dispatch_id": "IDEA-DISPATCH-20260308104500-9401",
-      "mode": "trial",
-      "business": "BRIK",
-      "trigger": "operator_idea",
-      "domain": "PRODUCTS",
-      "root_event_id": "operator:BRIK:PRODUCTS:reception-theme-dark-mode-base-tokens:20260308",
-      "anchor_key": "reception-theme-dark-mode-base-tokens",
-      "cluster_key": "BRIK:PRODUCTS:reception-theme-dark-mode-base-tokens:operator:20260308",
-      "cluster_fingerprint": "reception-theme-dark-mode-base-tokens-20260308",
-      "lineage_depth": 0,
-      "area_anchor": "BRIK reception — base semantic tokens missing dark override",
-      "location_anchors": [
-        "packages/themes/reception/tokens.css",
-        "packages/themes/base/tokens.css"
-      ],
-      "provisional_deliverable_family": "code-change",
-      "current_truth": "Reception forces dark mode via html.theme-dark class, but base tokens (danger, success, warning, info) only switch via @media (prefers-color-scheme: dark). On light-mode OS devices, status colors render as bright light values on dark background.",
-      "next_scope_now": "Add base token dark overrides (--color-danger, --color-success, --color-warning, --color-info and variants) to the html.theme-dark block in packages/themes/reception/tokens.css.",
-      "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
-      "priority": "P2",
-      "confidence": 0.95,
-      "evidence_refs": [
-        "operator-stated: theme audit found base semantic tokens missing dark mode override when OS preference is light"
-      ],
-      "created_at": "2026-03-08T10:45:00.000Z",
-      "queue_state": "skipped",
-      "skip_reason": "Bug does not exist. base/tokens.css already has html.theme-dark block (lines 299-367) covering all semantic tokens. CSS merges same-specificity selectors.",
-      "why": "Staff using light-mode OS devices see broken status colors (bright red/green/blue on dark background) because base theme tokens rely on prefers-color-scheme media query which does not match when reception forces dark via class.",
-      "intended_outcome": {
-        "type": "operational",
-        "statement": "All base semantic tokens (danger, success, warning, info and their light/dark/main variants) correctly resolve to dark values on reception regardless of OS color scheme preference.",
-        "source": "operator"
       }
     },
     {
@@ -19443,7 +19333,7 @@
       "current_truth": "formatEuro is defined 4 times locally (Statistics.tsx, DashboardMetrics.tsx, ReconciliationWorkbench.tsx, TillShiftHistory.tsx) and inline as template literals (€${x.toFixed(2)}) in at least 8 more files (SafeManagement, TransactionTable, OpenShiftForm, ExchangeNotesForm, DenominationInput, VarianceSignoffModal, EodChecklistContent, CreditCardReceiptCheck). The canonical version exists at utils/format.ts but is not imported by any of these files.",
       "next_scope_now": "Remove the 4 local formatEuro definitions and all inline €${x.toFixed(2)} literals. Import formatEuro from utils/format.ts everywhere. Verify formatting matches existing output exactly before replacing each site.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "evidence_refs": [
@@ -19456,12 +19346,22 @@
         "type": "operational",
         "statement": "All euro formatting in the reception app flows through utils/format.ts formatEuro. No local redefinitions or inline template literals remain."
       },
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-03-09T10:00:00.000Z",
       "processed_by": {
         "feature_slug": "reception-format-euro-consolidation",
         "route": "dispatch-routed",
-        "processed_at": "2026-03-09T10:45:00.000Z"
+        "processed_at": "2026-03-09T10:45:00.000Z",
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-format-euro-consolidation",
+        "target_path": "docs/plans/reception-format-euro-consolidation/micro-build.md",
+        "micro_build_path": "docs/plans/_archive/reception-format-euro-consolidation/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-format-euro-consolidation/micro-build.md",
+        "completed_at": "2026-03-09T12:47:10.308Z",
+        "outcome": "Extended `apps/reception/src/utils/format.ts` so `formatEuro` now supports both the existing prefix style and a localized `it-IT` currency style via an option, keeping one canonical formatter. Removed local `formatEuro` helpers from `compon"
       }
     },
     {
@@ -19486,7 +19386,7 @@
       "current_truth": "type MenuType = \"food\" | \"alcoholic\" | \"nonalcoholic\" | \"other\" is declared three times across the bar component tree. Two copies are identical; one reorders the members. No shared bar types file exists.",
       "next_scope_now": "Create apps/reception/src/types/bar/barDomain.ts (or extend existing bar types file if one exists). Move MenuType there. Update all three import sites.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.95,
       "evidence_refs": [
@@ -19500,8 +19400,22 @@
         "type": "operational",
         "statement": "MenuType is defined once in a shared bar types file and imported by all 3 consumers."
       },
-      "queue_state": "processed",
-      "created_at": "2026-03-09T10:00:00.000Z"
+      "queue_state": "completed",
+      "created_at": "2026-03-09T10:00:00.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-bar-menutype-dedup",
+        "target_path": "docs/plans/reception-bar-menutype-dedup/micro-build.md",
+        "processed_at": "2026-03-09T12:02:51.762Z",
+        "micro_build_path": "docs/plans/reception-bar-menutype-dedup/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-bar-menutype-dedup/micro-build.md",
+        "completed_at": "2026-03-09T12:47:10.307Z",
+        "outcome": "No code change was required in this cycle. Repo audit confirmed the intended extraction already exists in `apps/reception/src/types/bar/barDomain.ts`, and all three planned consumers already import that shared definition: `components/bar/Ba"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -19524,7 +19438,7 @@
       "current_truth": "sortCheckins.ts and sortCheckouts.ts both define parseAllocatedRoomNumber and getBookingMinAllocatedRoom verbatim. The two utilities implement the same group-sort-flatten pattern with only the booking-key comparator differing.",
       "next_scope_now": "Extract parseAllocatedRoomNumber and getBookingMinAllocatedRoom to a shared utils/sortUtils.ts (or add to an existing sort/booking utils file). Import from both sort files. Optionally extract a groupAndSortBookings<T> generic helper.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.93,
       "evidence_refs": [
@@ -19537,8 +19451,22 @@
         "type": "operational",
         "statement": "parseAllocatedRoomNumber and getBookingMinAllocatedRoom exist once and are imported by both sort files."
       },
-      "queue_state": "processed",
-      "created_at": "2026-03-09T10:00:00.000Z"
+      "queue_state": "completed",
+      "created_at": "2026-03-09T10:00:00.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-sort-utils-dedup",
+        "target_path": "docs/plans/reception-sort-utils-dedup/micro-build.md",
+        "processed_at": "2026-03-09T12:02:51.775Z",
+        "micro_build_path": "docs/plans/reception-sort-utils-dedup/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-sort-utils-dedup/micro-build.md",
+        "completed_at": "2026-03-09T12:47:10.307Z",
+        "outcome": "No code change was required in this cycle. Repo audit confirmed the shared extraction already exists in `apps/reception/src/utils/sortHelpers.ts`, and both `sortCheckins.ts` and `sortCheckouts.ts` already import `parseAllocatedRoomNumber` a"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -19561,7 +19489,7 @@
       "current_truth": "getKeycardIcon(depositType) — mapping deposit type strings to { Icon, colorClass } — is implemented separately in CheckoutTable.tsx (handles all loan item types) and BookingRow.tsx (keycard-only subset). The CASH/PASSPORT|LICENSE|ID/NO_CARD switch block is copy-pasted between them.",
       "next_scope_now": "Extract getKeycardIcon to apps/reception/src/utils/keycardIcon.ts (or loans utils). Import in both components. The checkout version (more general) becomes the canonical one; BookingRow imports and uses the same function.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.92,
       "evidence_refs": [
@@ -19574,8 +19502,22 @@
         "type": "operational",
         "statement": "getKeycardIcon exists once in a shared utils file and is imported by both CheckoutTable and BookingRow."
       },
-      "queue_state": "processed",
-      "created_at": "2026-03-09T10:00:00.000Z"
+      "queue_state": "completed",
+      "created_at": "2026-03-09T10:00:00.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-keycard-icon-dedup",
+        "target_path": "docs/plans/reception-keycard-icon-dedup/micro-build.md",
+        "processed_at": "2026-03-09T12:02:51.784Z",
+        "micro_build_path": "docs/plans/reception-keycard-icon-dedup/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-keycard-icon-dedup/micro-build.md",
+        "completed_at": "2026-03-09T12:47:10.308Z",
+        "outcome": "No code change was required in this cycle. Repo audit confirmed the shared utility already exists at `apps/reception/src/utils/keycardIcon.ts`, and both `CheckoutTable.tsx` and `BookingRow.tsx` already import `getKeycardIcon` from that shar"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -22035,19 +21977,30 @@
       "next_scope_now": "Extract a shared CountInputModal component. Update both AddKeycardsModal and ReturnKeycardsModal to use it. Validate with TypeScript and visual inspection.",
       "adjacent_later": [],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.92,
       "evidence_refs": [
         "operator-stated: simplify sweep round 3 identified AddKeycardsModal and ReturnKeycardsModal as 95%+ identical — only submit label differs"
       ],
       "created_at": "2026-03-09T14:35:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Duplicate modal code creates maintenance burden — any change to the pattern requires updating two files.",
       "intended_outcome": {
         "type": "code-quality",
         "statement": "Single CountInputModal component replaces both AddKeycardsModal and ReturnKeycardsModal copy-paste pair.",
         "source": "auto"
+      },
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-count-input-modal",
+        "micro_build_path": "docs/plans/_archive/reception-count-input-modal/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-count-input-modal/micro-build.md",
+        "completed_at": "2026-03-09T11:51:50.069Z",
+        "outcome": "Extracted the shared keycard count-input modal body into a new `CountInputModal` component at `apps/reception/src/components/till/CountInputModal.tsx`. The component accepts `title`, `submitLabel`, `onConfirm`, and `onCancel` props, wraps w"
       }
     },
     {
@@ -22072,19 +22025,30 @@
       "next_scope_now": "Extract a shared ManagerAuthModal component parameterised by title, note field label, and onConfirm callback. Update both callers. Validate with TypeScript and visual inspection.",
       "adjacent_later": [],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.88,
       "evidence_refs": [
         "operator-stated: simplify sweep round 3 identified DrawerOverrideModal and VarianceSignoffModal as 85%+ identical — same auth form structure, differ only in labels and returned fields"
       ],
       "created_at": "2026-03-09T14:35:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Duplicate manager-auth modal code means any UX or auth pattern change must be applied in two places — risk of divergence.",
       "intended_outcome": {
         "type": "code-quality",
         "statement": "Single ManagerAuthModal component replaces both DrawerOverrideModal and VarianceSignoffModal copy-paste pair.",
         "source": "auto"
+      },
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-manager-auth-modal",
+        "micro_build_path": "docs/plans/_archive/reception-manager-auth-modal/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-manager-auth-modal/micro-build.md",
+        "completed_at": "2026-03-09T11:51:44.077Z",
+        "outcome": "Extracted the shared manager-authentication modal body into a new `ManagerAuthModal` component at `apps/reception/src/components/till/ManagerAuthModal.tsx`. The component accepts all variable strings as props (`title`, `description`, `noteP"
       }
     },
     {
@@ -22173,6 +22137,241 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309115515-0703",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "6f1ee120c8aa1939e7a1c4f3b4dcc4ea769f433a",
+      "after_sha": "414824caf7150bb6fd660e87f9daf08df9f41494",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:414824caf7150bb6fd660e87f9daf08df9f41494",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:414824caf7150bb6fd660e87f9daf08df9f41494",
+      "cluster_fingerprint": "54ee1eb8ed9151d179c3bc518c4401fadf62b8e26e2e915464392bcc2b0961e2",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T11:55:15.702Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309122346-0379",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "414824caf7150bb6fd660e87f9daf08df9f41494",
+      "after_sha": "8cce3ed571fe8a8dad4ddc84ca492d590c3027a1",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:8cce3ed571fe8a8dad4ddc84ca492d590c3027a1",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:8cce3ed571fe8a8dad4ddc84ca492d590c3027a1",
+      "cluster_fingerprint": "b4224eb5c95ae4d509455e5172d8103096e3b4871a1876dbb22e3696e7ed03b7",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7"
+      ],
+      "created_at": "2026-03-09T12:23:46.378Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309122532-0070",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "8cce3ed571fe8a8dad4ddc84ca492d590c3027a1",
+      "after_sha": "65852d678dc051e93704b86b8d70c04cf8cbc488",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:65852d678dc051e93704b86b8d70c04cf8cbc488",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:65852d678dc051e93704b86b8d70c04cf8cbc488",
+      "cluster_fingerprint": "1ce726bc43e60503208070c1c677491e2f9de3af965c1d87992b696ba4f1c6ef",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7"
+      ],
+      "created_at": "2026-03-09T12:25:32.069Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309134052-0205",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "65852d678dc051e93704b86b8d70c04cf8cbc488",
+      "after_sha": "efec7043a66717b79c502a867006669316728d1a",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:efec7043a66717b79c502a867006669316728d1a",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:efec7043a66717b79c502a867006669316728d1a",
+      "cluster_fingerprint": "22f5a2acde3258cf889128586f97ad8dcecea5006eddcabf225c5282067f4d2b",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7"
+      ],
+      "created_at": "2026-03-09T13:40:52.204Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309140301-9306",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "STRATEGY",
+      "root_event_id": "operator:PLAT:STRATEGY:lp-do-ideas-structured-operator-intake:20260309",
+      "anchor_key": "lp-do-ideas-structured-operator-intake",
+      "cluster_key": "PLAT:STRATEGY:lp-do-ideas-structured-operator-intake:operator:20260309",
+      "cluster_fingerprint": "lp-do-ideas-structured-operator-intake-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "PLAT lp-do-ideas intake - operator idea structured pre-router",
+      "location_anchors": [
+        ".claude/skills/lp-do-ideas/SKILL.md",
+        ".claude/skills/lp-do-ideas/modules/operator-idea-structured-intake.md",
+        "docs/analysis/lp-do-ideas-build-llm-deterministic-classification.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "lp-do-ideas operator intake currently depends on free-form follow-up inference for area, evidence, and next-step context, which costs tokens and makes evidence capture less reliable.",
+      "next_scope_now": "Introduce a structured five-question pre-router intake for operator ideas, preserve Step 4 routing judgment, and make the required packet fields explicit in the skill contract.",
+      "adjacent_later": [
+        "Shadow-test structured intake against archived operator ideas",
+        "Add explicit token and evidence-completeness measurement for future operator_idea runs"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "priority": "P3",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: replace free-form operator_idea intake with a structured five-question pre-router while keeping routing judgment intact",
+        ".claude/skills/lp-do-ideas/SKILL.md",
+        ".claude/skills/lp-do-ideas/modules/operator-idea-structured-intake.md",
+        "docs/analysis/lp-do-ideas-build-llm-deterministic-classification.md"
+      ],
+      "created_at": "2026-03-09T14:03:01Z",
+      "queue_state": "completed",
+      "why": "The intake path currently spends tokens inferring follow-up questions and evidence fields that can be collected more cheaply and more consistently through a short structured questionnaire.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "lp-do-ideas uses a structured five-question pre-router intake for operator ideas, captures evidence through fixed prompts, and preserves the existing routing judgment path.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "lp-do-ideas-structured-operator-intake",
+        "target_path": "docs/plans/lp-do-ideas-structured-operator-intake/fact-find.md",
+        "processed_at": "2026-03-09T14:04:56Z",
+        "fact_find_slug": "lp-do-ideas-structured-operator-intake",
+        "fact_find_path": "docs/plans/lp-do-ideas-structured-operator-intake/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/lp-do-ideas-structured-operator-intake/plan.md",
+        "completed_at": "2026-03-09T14:04:56Z",
+        "outcome": "Structured five-question operator_idea intake module added; lp-do-ideas now captures area, location, evidence, and outcome fields explicitly before Step 4 routing."
       }
     }
   ]

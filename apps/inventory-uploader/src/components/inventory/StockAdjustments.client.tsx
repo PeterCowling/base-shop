@@ -9,9 +9,11 @@ import {
   formatAuditDate,
   formatQuantityDelta,
   HISTORY_DISPLAY_LIMIT,
+  inventoryApiUrl,
   type InventoryItem,
   itemKey,
   itemLabel,
+  parseIntQuantity,
 } from "../../lib/inventory-utils";
 
 const REASONS = [
@@ -56,7 +58,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
   const [error, setError] = useState<string | null>(null);
 
   const refreshHistory = useCallback(() => {
-    fetch(`/api/inventory/${encodeURIComponent(shop)}/adjustments`)
+    fetch(inventoryApiUrl(shop, "adjustments"))
       .then((r) => r.json())
       .then((data: unknown) => {
         setHistory(((data as { events?: AuditEntry[] }).events) ?? []);
@@ -68,8 +70,8 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
     const controller = new AbortController();
     const { signal } = controller;
     Promise.all([
-      fetch(`/api/inventory/${encodeURIComponent(shop)}`, { signal }).then((r) => r.json()),
-      fetch(`/api/inventory/${encodeURIComponent(shop)}/adjustments`, { signal }).then((r) => r.json()),
+      fetch(inventoryApiUrl(shop), { signal }).then((r) => r.json()),
+      fetch(inventoryApiUrl(shop, "adjustments"), { signal }).then((r) => r.json()),
     ])
       .then(([invData, histData]: [unknown, unknown]) => {
         setInventory(((invData as { items?: InventoryItem[] }).items) ?? []);
@@ -95,12 +97,13 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
           setError("Select an inventory row.");
           return;
         }
-        const d = Number(delta);
-        if (!Number.isFinite(d) || !Number.isInteger(d) || d === 0) {
-          setError("Quantity delta must be a non-zero integer.");
+        const parsed = parseIntQuantity(delta, "nonzero");
+        if (parsed.ok === false) {
+          setError(parsed.error);
           return;
         }
-        const url = `/api/inventory/${encodeURIComponent(shop)}/adjustments${dryRun ? "?dryRun=true" : ""}`;
+        const d = parsed.qty;
+        const url = `${inventoryApiUrl(shop, "adjustments")}${dryRun ? "?dryRun=true" : ""}`;
         const resp = await fetch(url, {
           method: "POST",
           headers: { "Content-Type": "application/json" },

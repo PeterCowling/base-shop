@@ -8,9 +8,11 @@ import {
   createKey,
   formatAuditDate,
   HISTORY_DISPLAY_LIMIT,
+  inventoryApiUrl,
   type InventoryItem,
   itemKey,
   itemLabel,
+  parseIntQuantity,
 } from "../../lib/inventory-utils";
 
 type InflowResult =
@@ -44,7 +46,7 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
   const [error, setError] = useState<string | null>(null);
 
   const refreshHistory = useCallback(() => {
-    fetch(`/api/inventory/${encodeURIComponent(shop)}/inflows`)
+    fetch(inventoryApiUrl(shop, "inflows"))
       .then((r) => r.json())
       .then((data: unknown) => {
         setHistory(((data as { events?: AuditEntry[] }).events) ?? []);
@@ -56,8 +58,8 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
     const controller = new AbortController();
     const { signal } = controller;
     Promise.all([
-      fetch(`/api/inventory/${encodeURIComponent(shop)}`, { signal }).then((r) => r.json()),
-      fetch(`/api/inventory/${encodeURIComponent(shop)}/inflows`, { signal }).then((r) => r.json()),
+      fetch(inventoryApiUrl(shop), { signal }).then((r) => r.json()),
+      fetch(inventoryApiUrl(shop, "inflows"), { signal }).then((r) => r.json()),
     ])
       .then(([invData, histData]: [unknown, unknown]) => {
         setInventory(((invData as { items?: InventoryItem[] }).items) ?? []);
@@ -83,12 +85,13 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
           setError("Select an inventory row.");
           return;
         }
-        const qty = Number(quantity);
-        if (!Number.isFinite(qty) || !Number.isInteger(qty) || qty <= 0) {
-          setError("Quantity must be a positive integer.");
+        const parsed = parseIntQuantity(quantity, "positive");
+        if (parsed.ok === false) {
+          setError(parsed.error);
           return;
         }
-        const resp = await fetch(`/api/inventory/${encodeURIComponent(shop)}/inflows`, {
+        const qty = parsed.qty;
+        const resp = await fetch(inventoryApiUrl(shop, "inflows"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

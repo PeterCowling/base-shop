@@ -1,9 +1,9 @@
 /* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-import { extractArray, type InventoryItem, variantLabel } from "../../lib/inventory-utils";
+import { extractArray, inventoryApiUrl, type InventoryItem, variantLabel } from "../../lib/inventory-utils";
 
 type InventoryEditorProps = {
   shop: string | null;
@@ -40,7 +40,7 @@ function VariantRow({
     setEdit((s) => ({ ...s, saving: true, saved: false, error: null }));
     try {
       const resp = await fetch(
-        `/api/inventory/${encodeURIComponent(shop)}/${encodeURIComponent(item.sku)}`,
+        inventoryApiUrl(shop, item.sku),
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -123,6 +123,7 @@ export function InventoryEditor({ shop, sku, onSaved }: InventoryEditorProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const exportAnchorRef = useRef<HTMLAnchorElement | null>(null);
+  const handleSaved = useCallback(() => onSaved?.(), [onSaved]);
 
   useEffect(() => {
     if (!shop || !sku) {
@@ -132,7 +133,7 @@ export function InventoryEditor({ shop, sku, onSaved }: InventoryEditorProps) {
     const controller = new AbortController();
     setLoading(true);
     setError(null);
-    fetch(`/api/inventory/${encodeURIComponent(shop)}/${encodeURIComponent(sku)}`, { signal: controller.signal })
+    fetch(inventoryApiUrl(shop, sku), { signal: controller.signal })
       .then((r) => r.json())
       .then((data: unknown) => {
         const list = extractArray<InventoryItem>(data, "variants");
@@ -167,7 +168,7 @@ export function InventoryEditor({ shop, sku, onSaved }: InventoryEditorProps) {
           onClick={() => {
             const a = exportAnchorRef.current;
             if (!a) return;
-            a.href = `/api/inventory/${encodeURIComponent(shop)}/export?format=csv`;
+            a.href = `${inventoryApiUrl(shop, "export")}?format=csv`;
             a.download = "";
             a.click();
           }}
@@ -183,7 +184,7 @@ export function InventoryEditor({ shop, sku, onSaved }: InventoryEditorProps) {
             key={`${item.sku}#${variantLabel(item.variantAttributes)}`}
             item={item}
             shop={shop}
-            onSaved={() => onSaved?.()}
+            onSaved={handleSaved}
           />
         ))}
       </div>

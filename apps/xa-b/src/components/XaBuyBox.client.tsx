@@ -2,7 +2,6 @@
 
 
 import * as React from "react";
-import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
 import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
@@ -19,7 +18,7 @@ import { formatLabel, getEffectivePrice, isProductImage, XA_COLOR_SWATCHES, XA_D
 import { xaI18n } from "../lib/xaI18n";
 import { getProductHref } from "../lib/xaRoutes";
 
-import { XaFadeImage } from "./XaFadeImage";
+import { XaColorSwatchStrip } from "./XaColorSwatchStrip";
 
 function getDeliveryWindow(daysMin = 5, daysMax = 12): string {
   const fmt = (d: Date) =>
@@ -164,73 +163,35 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         <div className="space-y-2">
           <div className="xa-pdp-label text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l200c63")}</div>
           {showVariantStrip ? (
-            <Inline gap={2} wrap={false}>
-              {variantProducts.map((variant) => {
+            <XaColorSwatchStrip
+              items={variantProducts.map((variant) => {
                 const color = variant.taxonomy.color?.[0] ?? "";
                 const label = color ? formatLabel(color) : variant.title;
-                const swatch = color
-                  ? (XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH)
-                  : XA_DEFAULT_SWATCH;
                 const media = variant.media.find(isProductImage);
-                const isCurrent = variant.id === product.id;
-                return (
-                  <Link
-                    key={`${variant.slug}-variant`}
-                    href={getProductHref(variant.slug)}
-                    className={`relative h-12 w-12 overflow-hidden rounded-none border bg-surface ${isCurrent ? "border-foreground" : "xa-border-control"}`}
-                    title={label}
-                    aria-label={label}
-                    aria-current={isCurrent ? "page" : undefined}
-                  >
-                    {media ? (
-                      <XaFadeImage
-                        src={media.url}
-                        alt={label}
-                        fill
-                        sizes="48px"
-                        className="object-contain p-1"
-                      />
-                    ) : (
-                      <span
-                        className="absolute inset-0"
-                        style={{ backgroundColor: swatch }}
-                        aria-hidden="true"
-                      />
-                    )}
-                  </Link>
-                );
+                return {
+                  key: `${variant.slug}-variant`,
+                  label,
+                  swatch: color ? (XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH) : XA_DEFAULT_SWATCH,
+                  imageUrl: media?.url,
+                  imageAlt: label,
+                  isCurrent: variant.id === product.id,
+                  href: getProductHref(variant.slug),
+                };
               })}
-            </Inline>
+            />
           ) : (
-            <Inline gap={2} wrap={false}>
-              {colorOptions.map((color, idx) => {
-                const swatch = XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH;
+            <XaColorSwatchStrip
+              items={colorOptions.map((color, idx) => {
                 const media = colorMedia[idx % Math.max(1, colorMedia.length)];
-                return (
-                  <div
-                    key={`${product.slug}-color-${color}`}
-                    className="relative h-12 w-12 overflow-hidden rounded-none border xa-border-control bg-surface"
-                    title={formatLabel(color)}
-                  >
-                    {media ? (
-                      <XaFadeImage
-                        src={media.url}
-                        alt={formatLabel(color)}
-                        fill
-                        sizes="48px"
-                        className="object-contain p-1"
-                      />
-                    ) : (
-                      <span
-                        className="absolute inset-0"
-                        style={{ backgroundColor: swatch }}
-                        aria-hidden="true"
-                      />
-                    )}
-                  </div>
-                );
+                return {
+                  key: `${product.slug}-color-${color}`,
+                  label: formatLabel(color),
+                  swatch: XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH,
+                  imageUrl: media?.url,
+                  imageAlt: formatLabel(color),
+                };
               })}
-            </Inline>
+            />
           )}
         </div>
       ) : null}

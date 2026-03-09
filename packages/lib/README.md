@@ -127,64 +127,72 @@ roundDownToIncrement(9.99, 0.5);  // 9.50
 Centralized graph and dependency-analysis adapters backed by Graphology.
 
 ```typescript
-import { DirectedGraph, dag } from "@acme/lib/math/graph";
+import { analyzeDependencyGraph } from "@acme/lib/math/graph";
 
-const graph = new DirectedGraph();
-graph.mergeNode("ideas");
-graph.mergeNode("fact-find");
-graph.mergeDirectedEdge("ideas", "fact-find");
-
-const cyclePresent = dag.hasCycle(graph);
+const summary = analyzeDependencyGraph({
+  nodes: [
+    { id: "ideas" },
+    { id: "fact-find" },
+    { id: "plan" },
+    { id: "build" },
+  ],
+  edges: [
+    { from: "ideas", to: "fact-find" },
+    { from: "fact-find", to: "plan" },
+    { from: "plan", to: "build" },
+  ],
+});
 ```
 
 **Exports:**
-- Graph classes: `Graph`, `DirectedGraph`, `UndirectedGraph`, `MultiGraph`, `MultiDirectedGraph`, `MultiUndirectedGraph`
-- DAG helpers via `dag`
-- Centrality and other graph metrics via `metrics`
-- Shortest-path helpers via `shortestPath`
+- `analyzeDependencyGraph`
+- `DependencyGraphValidationError`
+- dependency graph input and summary types
 
 #### Optimization (`@acme/lib/math/optimization`)
 
 Constrained optimization primitives for explicit portfolio and scheduling choices.
 
 ```typescript
-import { greaterEq, lessEq, solve } from "@acme/lib/math/optimization";
+import { solveBinaryPortfolio } from "@acme/lib/math/optimization";
 
-const solution = solve({
-  objective: "value",
-  direction: "maximize",
-  constraints: {
-    capacity: lessEq(2),
-    risk: lessEq(3),
-  },
-  variables: {
-    a: { value: 8, capacity: 1, risk: 1 },
-    b: { value: 10, capacity: 1, risk: 2 },
-    c: { value: 7, capacity: 1, risk: 1 },
-  },
-  binaries: true,
+const result = solveBinaryPortfolio({
+  options: [
+    { id: "a", utility: 8, coefficients: { capacity: 1, risk: 1 } },
+    { id: "b", utility: 10, coefficients: { capacity: 1, risk: 2 } },
+    { id: "c", utility: 7, coefficients: { capacity: 1, risk: 1 } },
+  ],
+  constraints: [
+    { key: "capacity", max: 2 },
+    { key: "risk", max: 3 },
+  ],
 });
 ```
 
 **Exports:**
-- Model and solution types for LP/MIP problems
-- Constraint builders: `lessEq`, `greaterEq`, `equalTo`, `inRange`
-- Solver entry point: `solve`
-- `defaultOptions`
+- `solveBinaryPortfolio`
+- `PortfolioModelValidationError`
+- binary portfolio input and result types
 
 #### Survival (`@acme/lib/math/survival`)
 
 Time-to-event analysis primitives for churn, slip, close, and escalation curves.
 
 ```typescript
-import { kaplanMeierEstimate } from "@acme/lib/math/survival";
+import { estimateKaplanMeierCurve } from "@acme/lib/math/survival";
 
-const curve = kaplanMeierEstimate([1, 4, 4, 8], [true, false, true, true]);
+const curve = estimateKaplanMeierCurve([
+  { time: 1, event: true },
+  { time: 4, event: false },
+  { time: 4, event: true },
+  { time: 8, event: true },
+]);
 ```
 
 **Exports:**
-- `kaplanMeierEstimate`
-- `KaplanMeierEstimatorResult`
+- `estimateKaplanMeierCurve`
+- `SurvivalObservationValidationError`
+- time-to-event observation and curve summary types
 
 ## Design Principles
 

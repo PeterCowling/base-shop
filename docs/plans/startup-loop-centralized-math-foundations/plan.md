@@ -25,7 +25,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 
 ## Active tasks
 - [x] TASK-01: Replace direct startup-loop math source imports with the centralized package boundary — Complete (2026-03-09)
-- [ ] TASK-02: Harden graph, optimization, and survival modules into repo-owned helper contracts with tests
+- [x] TASK-02: Harden graph, optimization, and survival modules into repo-owned helper contracts with tests — Complete (2026-03-09)
 - [x] TASK-03: Define the posterior belief, utility, and policy-state contract — Complete (2026-03-09)
 - [x] TASK-04: Define the outcome-closure and verified-measurement contract — Complete (2026-03-09)
 - [ ] TASK-05: Implement the versioned belief-state and utility-computation layer
@@ -112,7 +112,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Replace direct startup-loop math source imports with the centralized package boundary | 85% | S | Complete (2026-03-09) | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-13 |
-| TASK-02 | IMPLEMENT | Harden graph, optimization, and survival modules into repo-owned helper contracts with tests | 80% | M | Pending | - | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
+| TASK-02 | IMPLEMENT | Harden graph, optimization, and survival modules into repo-owned helper contracts with tests | 80% | M | Complete (2026-03-09) | - | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-03 | INVESTIGATE | Define the posterior belief, utility, and policy-state contract | 75% | M | Complete (2026-03-09) | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
 | TASK-04 | INVESTIGATE | Define the outcome-closure and verified-measurement contract | 75% | M | Complete (2026-03-09) | - | TASK-06, TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
 | TASK-05 | IMPLEMENT | Implement the versioned belief-state and utility-computation layer | 75% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
@@ -194,8 +194,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `packages/lib/src/math/graph/index.ts`, `packages/lib/src/math/optimization/index.ts`, `packages/lib/src/math/survival/index.ts`, `packages/lib/src/math/index.ts`, `packages/lib/src/__tests__/index.exports.test.ts`, `packages/lib/__tests__/math/**`
+- **Status:** Complete (2026-03-09)
+- **Affects:** `packages/lib/src/math/graph/index.ts`, `packages/lib/src/math/optimization/index.ts`, `packages/lib/src/math/survival/index.ts`, `packages/lib/src/math/index.ts`, `packages/lib/src/__tests__/index.exports.test.ts`, `packages/lib/__tests__/math/**`, `packages/lib/README.md`
 - **Depends on:** -
 - **Blocks:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
 - **Confidence:** 80%
@@ -229,6 +229,26 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - `packages/lib/src/math/optimization/index.ts`
   - `packages/lib/src/math/survival/index.ts`
   - `docs/plans/startup-loop-centralized-math-foundations/replan-notes.md`
+- **Build Evidence (2026-03-09):**
+  - Green: replaced the raw third-party passthroughs with repo-owned helpers:
+    - `analyzeDependencyGraph()` and `DependencyGraphValidationError`
+    - `solveBinaryPortfolio()` and `PortfolioModelValidationError`
+    - `estimateKaplanMeierCurve()` and `SurvivalObservationValidationError`
+  - Dedicated tests added:
+    - `packages/lib/__tests__/math/graph/index.test.ts`
+    - `packages/lib/__tests__/math/optimization/index.test.ts`
+    - `packages/lib/__tests__/math/survival/index.test.ts`
+    - updated `packages/lib/src/__tests__/index.exports.test.ts` to cover math subpath exposure
+  - Scope expansion: added `packages/lib/README.md` to keep the documented subpath contract aligned with the narrowed helper surface instead of leaving stale raw-package examples in place.
+  - TC-01: pass by code and local type/lint validation. `analyzeDependencyGraph()` now normalizes node/edge input, rejects missing-node and cyclic graphs, and returns deterministic topology plus bottleneck summaries on fixed fixtures.
+  - TC-02: pass by code and local type/lint validation. `solveBinaryPortfolio()` now validates input, fails closed on infeasible models, and applies a deterministic second-pass tie-break when primary utility is tied.
+  - TC-03: pass by code and local type/lint validation. `estimateKaplanMeierCurve()` now returns explicit empty results, validates invalid observations, and summarizes censored plus observed histories without leaking the raw package API.
+  - Validation:
+    - `pnpm exec tsc -p packages/lib/tsconfig.json --noEmit`
+    - `pnpm --filter @acme/lib lint`
+    - `pnpm plans:lint`
+  - Test execution note: local Jest remains out of scope under repo policy, so the new package tests were added but not run locally.
+  - Precursor completion propagation: TASK-02 is no longer a blocker for TASK-05, TASK-06, TASK-07, TASK-08, or TASK-09. The next execution gate is confidence rather than missing helper contract: TASK-05 and TASK-06 remain below the `IMPLEMENT` threshold and require replan or confidence-raising evidence before the next build cycle.
 
 ### TASK-03: Define the posterior belief, utility, and policy-state contract
 - **Type:** INVESTIGATE

@@ -54,5 +54,17 @@ describe("package root exports", () => {
     expect(mod.applyFriendlyZodMessages).toBe(zodExports.applyFriendlyZodMessages);
     expect(mod.friendlyErrorMap).toBe(zodExports.friendlyErrorMap);
   });
-});
 
+  it("exposes math helper subpaths", async () => {
+    const graphModule = await import("../math/graph/index.js");
+    const optimizationModule = await import("../math/optimization/index.js");
+    const survivalModule = await import("../math/survival/index.js");
+
+    expect(graphModule).toHaveProperty("analyzeDependencyGraph");
+    expect(graphModule).toHaveProperty("DependencyGraphValidationError");
+    expect(optimizationModule).toHaveProperty("solveBinaryPortfolio");
+    expect(optimizationModule).toHaveProperty("PortfolioModelValidationError");
+    expect(survivalModule).toHaveProperty("estimateKaplanMeierCurve");
+    expect(survivalModule).toHaveProperty("SurvivalObservationValidationError");
+  });
+});

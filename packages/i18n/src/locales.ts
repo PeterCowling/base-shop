@@ -46,6 +46,19 @@ export function resolveUiLocale(value: string | undefined): UiLocale {
   return isUiLocale(value) ? value : "en";
 }
 
+/**
+ * Normalize a raw language tag to a valid UiLocale.
+ * Strips BCP-47 subtags and lowercases the base tag before validation.
+ */
+export function normalizeUiLocale(
+  value: string | null | undefined
+): UiLocale {
+  if (!value) return "en";
+
+  const base = value.split("-")[0].toLowerCase();
+  return isUiLocale(base) ? base : "en";
+}
+
 // =============================================================================
 // LEGACY LOCALE SYSTEM (deprecated, for backward compatibility)
 // =============================================================================

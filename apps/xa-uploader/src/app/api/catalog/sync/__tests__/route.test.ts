@@ -16,6 +16,7 @@ const getCatalogSyncInputStatusMock = jest.fn();
 const publishCatalogArtifactsToContractMock = jest.fn();
 const publishCatalogPayloadToContractMock = jest.fn();
 const getCatalogContractReadinessMock = jest.fn();
+const readCloudCurrencyRatesMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
 const acquireCloudSyncLockMock = jest.fn();
@@ -86,6 +87,7 @@ jest.mock("../../../../../lib/catalogContractClient", () => ({
 }));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  readCloudCurrencyRates: (...args: unknown[]) => readCloudCurrencyRatesMock(...args),
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
   writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
   acquireCloudSyncLock: (...args: unknown[]) => acquireCloudSyncLockMock(...args),
@@ -160,6 +162,7 @@ describe("catalog sync route", () => {
       publishedAt: "2026-02-24T00:00:00.000Z",
     });
     getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
+    readCloudCurrencyRatesMock.mockResolvedValue({ EUR: 0.92, GBP: 0.78, AUD: 1.5 });
     readCloudDraftSnapshotMock.mockResolvedValue({
       products: [VALID_CLOUD_PRODUCT],
       revisionsById: {},
@@ -642,6 +645,34 @@ describe("catalog sync route", () => {
     );
     expect(spawnMock).not.toHaveBeenCalled();
     expect(publishCatalogPayloadToContractMock).toHaveBeenCalledTimes(1);
+    expect(readCloudCurrencyRatesMock).toHaveBeenCalledWith("xa-b");
+  });
+
+  it("TC-09b: blocks cloud sync when hosted currency rates are missing", async () => {
+    process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
+    readCloudCurrencyRatesMock.mockResolvedValueOnce(null);
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          options: { strict: true, dryRun: false },
+        }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "currency_rates_missing",
+        recovery: "save_currency_rates",
+        currencyRatesPath: "cloud-currency-rates://xa-b",
+      }),
+    );
   });
 
 });
@@ -651,6 +682,7 @@ describe("TASK-04: catalog sync route — cloud sync lock", () => {
     jest.clearAllMocks();
     __clearRateLimitStoreForTests();
     hasUploaderSessionMock.mockResolvedValue(true);
+    readCloudCurrencyRatesMock.mockResolvedValue({ EUR: 0.92, GBP: 0.78, AUD: 1.5 });
     readCloudDraftSnapshotMock.mockResolvedValue({
       products: [VALID_CLOUD_PRODUCT],
       revisionsById: {},

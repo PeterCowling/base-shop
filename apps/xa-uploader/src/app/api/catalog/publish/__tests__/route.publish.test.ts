@@ -4,6 +4,7 @@ import { __clearRateLimitStoreForTests } from "../../../../../lib/rateLimit";
 
 const hasUploaderSessionMock = jest.fn();
 const publishCatalogPayloadToContractMock = jest.fn();
+const readCloudCurrencyRatesMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
 const acquireCloudSyncLockMock = jest.fn();
@@ -57,6 +58,7 @@ jest.mock("../../../../../lib/catalogContractClient", () => ({
 }));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  readCloudCurrencyRates: (...args: unknown[]) => readCloudCurrencyRatesMock(...args),
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
   writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
   acquireCloudSyncLock: (...args: unknown[]) => acquireCloudSyncLockMock(...args),
@@ -99,6 +101,7 @@ describe("catalog publish route", () => {
       version: "v-cloud",
       publishedAt: "2026-03-05T00:00:00.000Z",
     });
+    readCloudCurrencyRatesMock.mockResolvedValue({ EUR: 0.92, GBP: 0.78, AUD: 1.5 });
     readCloudDraftSnapshotMock.mockResolvedValue({
       products: [{ ...VALID_CLOUD_PRODUCT }],
       revisionsById: { p1: "rev-1" },
@@ -149,6 +152,7 @@ describe("catalog publish route", () => {
     expect(buildCatalogArtifactsFromDraftsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         storefront: "xa-b",
+        currencyRates: { EUR: 0.92, GBP: 0.78, AUD: 1.5 },
         strict: false,
         mediaValidationPolicy: "warn",
         products: [expect.objectContaining({ id: "p1", publishState: "live" })],

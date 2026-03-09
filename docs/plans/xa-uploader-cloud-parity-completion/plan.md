@@ -38,14 +38,14 @@ Finish the remaining hosted/cloud parity work in xa-uploader without reopening a
 
 ## Active tasks
 - [x] TASK-01: Capture canonical hosted-vs-local parity matrix and narrow the next slice
-- [ ] TASK-02: Move currency-rate persistence off repo-local JSON for hosted mode
+- [x] TASK-02: Move currency-rate persistence off repo-local JSON for hosted mode
 - [ ] TASK-03: Run hosted parity checkpoint and decide local-FS cleanup follow-up
 
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Persist canonical parity matrix and confirm the next bounded replatform slice | 94% | S | Complete (2026-03-09) | - | TASK-02,TASK-03 |
-| TASK-02 | IMPLEMENT | Add cloud-backed currency-rate persistence and consume it in hosted uploader flows | 83% | M | Pending | TASK-01 | TASK-03 |
+| TASK-02 | IMPLEMENT | Add cloud-backed currency-rate persistence and consume it in hosted uploader flows | 83% | M | Complete (2026-03-09) | TASK-01 | TASK-03 |
 | TASK-03 | CHECKPOINT | Verify hosted parity after TASK-02 and decide whether local-FS cleanup becomes a new tranche | 88% | S | Pending | TASK-02 | - |
 
 ## Parallelism Guide
@@ -91,16 +91,19 @@ Finish the remaining hosted/cloud parity work in xa-uploader without reopening a
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:**
   - `apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts`
   - `apps/xa-uploader/src/app/api/catalog/sync/route.ts`
-  - `apps/xa-uploader/src/components/catalog/CurrencyRatesPanel.client.tsx`
-  - `apps/xa-uploader/src/lib/uploaderI18n.ts`
+  - `apps/xa-uploader/src/app/api/catalog/publish/route.ts`
   - `apps/xa-uploader/src/lib/catalogDraftContractClient.ts`
+  - `apps/xa-uploader/src/lib/catalogDraftToContract.ts`
+  - `apps/xa-uploader/src/lib/currencyRates.ts`
   - `apps/xa-drop-worker/src/index.ts`
   - `apps/xa-uploader/src/app/api/catalog/currency-rates/__tests__/route.test.ts`
-  - `apps/xa-uploader/src/components/catalog/__tests__/CurrencyRatesPanel.test.tsx`
+  - `apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.test.ts`
+  - `apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.branches.test.ts`
+  - `apps/xa-uploader/src/app/api/catalog/publish/__tests__/route.publish.test.ts`
   - `apps/xa-drop-worker/__tests__/xaDropWorker.test.ts`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03
@@ -112,6 +115,17 @@ Finish the remaining hosted/cloud parity work in xa-uploader without reopening a
   - Hosted mode no longer returns `currency_rates_local_fs_required` for GET/PUT currency-rate operations.
   - Sync reads the same canonical currency-rate source in hosted mode as the editor writes.
   - Existing local/dev behavior remains deterministic until a separate cleanup decision is made.
+- **Validation:**
+  - `pnpm --filter @apps/xa-uploader typecheck`
+  - `pnpm --filter @apps/xa-uploader lint`
+  - `pnpm --filter @apps/xa-drop-worker typecheck`
+  - `pnpm --filter @apps/xa-drop-worker lint`
+  - `bash scripts/validate-changes.sh`
+- **Build completion evidence:**
+  - Added a canonical hosted currency-rate contract path in `xa-drop-worker` and corresponding uploader contract-client helpers, keeping auth and storage within the existing catalog contract boundary.
+  - Updated hosted `GET/PUT /api/catalog/currency-rates` to use the contract path while preserving repo-local JSON behavior in local-FS mode.
+  - Routed hosted sync and hosted single-product publish through the same stored currency-rate source so operator edits and publish-time price computation no longer diverge.
+  - Added regression coverage for hosted route behavior, hosted sync missing-rates blocking, hosted publish rate injection, and worker currency-rate storage/readback.
 
 ### TASK-03: Run hosted parity checkpoint and decide local-FS cleanup follow-up
 - **Type:** CHECKPOINT

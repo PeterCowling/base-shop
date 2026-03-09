@@ -9,6 +9,7 @@ import {
 
 import { resolveContractRoot } from "./catalogContractUtils";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
+import { type CurrencyRates,parseCurrencyRatesOrNull } from "./currencyRates";
 import { isRecord } from "./typeGuards";
 
 export interface CatalogContractServiceBinding {
@@ -68,7 +69,7 @@ function getCatalogContractReadToken(): string {
 }
 
 
-function buildDraftUrl(storefront: XaCatalogStorefront, suffix = ""): string {
+function buildContractUrl(pathname: string): string {
   const baseUrl = getCatalogContractBaseUrl();
   if (!baseUrl) {
     throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
@@ -79,7 +80,11 @@ function buildDraftUrl(storefront: XaCatalogStorefront, suffix = ""): string {
   } catch {
     throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.");
   }
-  return new URL(`drafts/${encodeURIComponent(storefront)}${suffix}`, root).toString();
+  return new URL(pathname, root).toString();
+}
+
+function buildDraftUrl(storefront: XaCatalogStorefront, suffix = ""): string {
+  return buildContractUrl(`drafts/${encodeURIComponent(storefront)}${suffix}`);
 }
 
 function resolveDraftUrl(storefront: XaCatalogStorefront): string {
@@ -88,6 +93,10 @@ function resolveDraftUrl(storefront: XaCatalogStorefront): string {
 
 function resolveDraftSyncLockUrl(storefront: XaCatalogStorefront): string {
   return buildDraftUrl(storefront, "/sync-lock");
+}
+
+function resolveCurrencyRatesUrl(storefront: XaCatalogStorefront): string {
+  return buildContractUrl(`currency-rates/${encodeURIComponent(storefront)}`);
 }
 
 function getWriteTokenHeader(): Record<string, string> {
@@ -178,6 +187,26 @@ function parseSnapshotPayload(payload: unknown): CloudDraftSnapshot {
 
 function parseOptionalString(value: unknown): string | null {
   return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function parseCurrencyRatesPayload(payload: unknown): CurrencyRates | null {
+  if (!isRecord(payload)) {
+    throw new CatalogDraftContractError("invalid_response", "Currency rates contract returned invalid payload.");
+  }
+
+  if (payload.rates === null) {
+    return null;
+  }
+
+  const rates = parseCurrencyRatesOrNull(payload.rates);
+  if (!rates) {
+    throw new CatalogDraftContractError(
+      "invalid_response",
+      "Currency rates contract returned invalid rates payload.",
+    );
+  }
+
+  return rates;
 }
 
 function createRevision(): string {
@@ -386,6 +415,59 @@ export async function deleteCloudDraftSnapshot(
 
   if (!response.ok) {
     throw new CatalogDraftContractError("request_failed", "Failed to delete draft contract snapshot.", {
+      status: response.status,
+      endpoint: sanitizeContractEndpoint(url),
+    });
+  }
+}
+
+export async function readCloudCurrencyRates(
+  storefront: XaCatalogStorefront,
+): Promise<CurrencyRates | null> {
+  const url = resolveCurrencyRatesUrl(storefront);
+  const response = await requestCatalogContract(url, {
+    method: "GET",
+    headers: {
+      ...getReadTokenHeader(),
+    },
+  });
+
+  const payload = await response.json().catch(() => null);
+  if (response.status === 409) {
+    throw new CatalogDraftContractError("invalid_response", "Stored currency rates are invalid.", {
+      status: 409,
+      endpoint: sanitizeContractEndpoint(url),
+    });
+  }
+  if (!response.ok) {
+    throw new CatalogDraftContractError("request_failed", "Failed to read currency rates contract.", {
+      status: response.status,
+      endpoint: sanitizeContractEndpoint(url),
+    });
+  }
+
+  return parseCurrencyRatesPayload(payload);
+}
+
+export async function writeCloudCurrencyRates(params: {
+  storefront: XaCatalogStorefront;
+  rates: CurrencyRates;
+}): Promise<void> {
+  const url = resolveCurrencyRatesUrl(params.storefront);
+  const response = await requestCatalogContract(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getWriteTokenHeader(),
+    },
+    body: JSON.stringify({
+      storefront: params.storefront,
+      rates: params.rates,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new CatalogDraftContractError("request_failed", "Failed to write currency rates contract.", {
       status: response.status,
       endpoint: sanitizeContractEndpoint(url),
     });

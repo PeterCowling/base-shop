@@ -3,6 +3,15 @@ import path from "node:path";
 
 import { NextResponse } from "next/server";
 
+import {
+  readCloudCurrencyRates,
+  writeCloudCurrencyRates,
+} from "../../../../lib/catalogDraftContractClient";
+import { DEFAULT_STOREFRONT } from "../../../../lib/catalogStorefront";
+import {
+  serializeCurrencyRates,
+  validateCurrencyRatesInput,
+} from "../../../../lib/currencyRates";
 import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { resolveRepoRoot } from "../../../../lib/repoRoot";
@@ -11,8 +20,6 @@ import { isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
-
-type CurrencyRates = { EUR: number; GBP: number; AUD: number };
 
 type CurrencyRatesBody = {
   rates?: unknown;
@@ -23,7 +30,6 @@ const GET_MAX_REQUESTS = 60;
 const PUT_WINDOW_MS = 60 * 1000;
 const PUT_MAX_REQUESTS = 20;
 const PUT_MAX_BYTES = 4 * 1024;
-const MAX_RATE_VALUE = 1000.0;
 
 const uploaderDataDir = path.join(resolveRepoRoot(), "apps", "xa-uploader", "data");
 const ratesFilePath = path.join(uploaderDataDir, "currency-rates.json");
@@ -41,40 +47,6 @@ function buildErrorResponse(
   reason: string,
 ): NextResponse {
   return NextResponse.json({ ok: false, error, reason }, { status });
-}
-
-
-function validateRatesInput(value: unknown): { ok: true; rates: CurrencyRates } | { ok: false; reason: string } {
-  if (!isRecord(value)) {
-    return { ok: false, reason: "rates_must_be_object" };
-  }
-
-  const candidate = {
-    EUR: value.EUR,
-    GBP: value.GBP,
-    AUD: value.AUD,
-  };
-
-  for (const [code, rawValue] of Object.entries(candidate)) {
-    if (typeof rawValue !== "number" || !Number.isFinite(rawValue)) {
-      return { ok: false, reason: `${code}_must_be_finite_number` };
-    }
-    if (rawValue <= 0) {
-      return { ok: false, reason: `${code}_must_be_gt_zero` };
-    }
-    if (rawValue > MAX_RATE_VALUE) {
-      return { ok: false, reason: `${code}_must_be_lte_${MAX_RATE_VALUE}` };
-    }
-  }
-
-  return {
-    ok: true,
-    rates: {
-      EUR: candidate.EUR as number,
-      GBP: candidate.GBP as number,
-      AUD: candidate.AUD as number,
-    },
-  };
 }
 
 export async function GET(request: Request) {
@@ -96,19 +68,17 @@ export async function GET(request: Request) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
 
-  if (!isLocalFsRuntimeEnabled()) {
-    return withRateHeaders(
-      buildErrorResponse("service_unavailable", 503, "currency_rates_local_fs_required"),
-      limit,
-    );
-  }
-
   try {
+    if (!isLocalFsRuntimeEnabled()) {
+      const rates = await readCloudCurrencyRates(DEFAULT_STOREFRONT);
+      return withRateHeaders(NextResponse.json({ ok: true, rates }), limit);
+    }
+
     // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
     const raw = await fs.readFile(ratesFilePath, "utf8");
     try {
       const parsed = JSON.parse(raw) as unknown;
-      const validated = validateRatesInput(parsed);
+      const validated = validateCurrencyRatesInput(parsed);
       if (validated.ok === false) {
         console.warn(`[xa-uploader] currency-rates.json invalid shape: ${validated.reason}`);
         return withRateHeaders(
@@ -127,6 +97,18 @@ export async function GET(request: Request) {
   } catch (error) {
     if ((error as NodeJS.ErrnoException | undefined)?.code === "ENOENT") {
       return withRateHeaders(NextResponse.json({ ok: true, rates: null }), limit);
+    }
+    if (error instanceof Error && error.name === "CatalogDraftContractError") {
+      const contractError = error as Error & { code?: string };
+      const isInvalidRates = contractError.code === "invalid_response";
+      return withRateHeaders(
+        buildErrorResponse(
+          isInvalidRates ? "invalid_rates" : "service_unavailable",
+          isInvalidRates ? 409 : 503,
+          isInvalidRates ? "currency_rates_invalid" : "currency_rates_contract_unavailable",
+        ),
+        limit,
+      );
     }
     return withRateHeaders(buildErrorResponse("internal_error", 500, "currency_rates_read_failed"), limit);
   }
@@ -151,13 +133,6 @@ export async function PUT(request: Request) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
 
-  if (!isLocalFsRuntimeEnabled()) {
-    return withRateHeaders(
-      buildErrorResponse("service_unavailable", 503, "currency_rates_local_fs_required"),
-      limit,
-    );
-  }
-
   let payload: CurrencyRatesBody;
   try {
     payload = (await readJsonBodyWithLimit(request, PUT_MAX_BYTES)) as CurrencyRatesBody;
@@ -178,7 +153,7 @@ export async function PUT(request: Request) {
     );
   }
 
-  const validated = validateRatesInput(payload.rates);
+  const validated = validateCurrencyRatesInput(payload.rates);
   if (validated.ok === false) {
     return withRateHeaders(
       buildErrorResponse("invalid_rates", 400, validated.reason),
@@ -186,16 +161,30 @@ export async function PUT(request: Request) {
     );
   }
 
-  const tmpPath = `${ratesFilePath}.tmp`;
   try {
+    if (!isLocalFsRuntimeEnabled()) {
+      await writeCloudCurrencyRates({
+        storefront: DEFAULT_STOREFRONT,
+        rates: validated.rates,
+      });
+      return withRateHeaders(NextResponse.json({ ok: true }), limit);
+    }
+
+    const tmpPath = `${ratesFilePath}.tmp`;
     // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
     await fs.mkdir(uploaderDataDir, { recursive: true });
     // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
-    await fs.writeFile(tmpPath, `${JSON.stringify(validated.rates, null, 2)}\n`, "utf8");
+    await fs.writeFile(tmpPath, serializeCurrencyRates(validated.rates), "utf8");
     // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
     await fs.rename(tmpPath, ratesFilePath);
     return withRateHeaders(NextResponse.json({ ok: true }), limit);
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.name === "CatalogDraftContractError") {
+      return withRateHeaders(
+        buildErrorResponse("service_unavailable", 503, "currency_rates_contract_unavailable"),
+        limit,
+      );
+    }
     return withRateHeaders(buildErrorResponse("internal_error", 500, "internal_error"), limit);
   }
 }

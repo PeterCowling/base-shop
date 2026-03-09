@@ -9,6 +9,7 @@ import { publishCatalogPayloadToContract } from "../../../../lib/catalogContract
 import {
   acquireCloudSyncLock,
   type CloudSyncLockLease,
+  readCloudCurrencyRates,
   readCloudDraftSnapshot,
   releaseCloudSyncLock,
   writeCloudDraftSnapshot,
@@ -72,6 +73,110 @@ async function resolveDeployStateContext(storefrontId: XaCatalogStorefront) {
   return { kv, statePaths };
 }
 
+function buildPublishContractErrorResponse(error: Error & { code?: string }): NextResponse {
+  const isInvalidRates = error.code === "invalid_response";
+  return NextResponse.json(
+    {
+      ok: false,
+      error: isInvalidRates ? "currency_rates_invalid" : "catalog_publish_unconfigured",
+      recovery: isInvalidRates ? "save_currency_rates" : "configure_catalog_contract",
+    },
+    { status: isInvalidRates ? 409 : 503 },
+  );
+}
+
+async function executeCloudPublish(params: {
+  storefront: XaCatalogStorefront;
+  publishedDraft: CatalogProductDraftInput;
+}): Promise<NextResponse> {
+  const [snapshot, currencyRates] = await Promise.all([
+    readCloudDraftSnapshot(params.storefront),
+    readCloudCurrencyRates(params.storefront),
+  ]);
+  if (currencyRates === null) {
+    return NextResponse.json(
+      { ok: false, error: "currency_rates_missing", recovery: "save_currency_rates" },
+      { status: 409 },
+    );
+  }
+
+  const liveDraftId = (params.publishedDraft.id ?? "").trim();
+  const existingIndex =
+    liveDraftId.length > 0
+      ? snapshot.products.findIndex((product) => (product.id ?? "").trim() === liveDraftId)
+      : -1;
+  const mergedProducts =
+    existingIndex >= 0
+      ? snapshot.products.map((product, index) =>
+          index === existingIndex ? params.publishedDraft : product,
+        )
+      : [...snapshot.products, params.publishedDraft];
+
+  const artifacts = await buildCatalogArtifactsFromDrafts({
+    storefront: params.storefront,
+    products: mergedProducts,
+    currencyRates,
+    strict: false,
+    mediaValidationPolicy: "warn",
+  });
+
+  const validation = await applyCloudMediaExistenceValidation({
+    artifacts,
+    policy: "warn",
+  });
+  const publishArtifacts = validation.ok ? validation.artifacts : artifacts;
+  const warnings = [...publishArtifacts.warnings, ...(validation.ok ? validation.warnings : [])];
+
+  try {
+    await publishCatalogPayloadToContract({
+      storefrontId: params.storefront,
+      payload: {
+        storefront: params.storefront,
+        publishedAt: new Date().toISOString(),
+        catalog: publishArtifacts.catalog,
+        mediaIndex: publishArtifacts.mediaIndex,
+      },
+    });
+  } catch {
+    return NextResponse.json({ ok: false, error: "catalog_publish_failed" }, { status: 502 });
+  }
+
+  try {
+    await writeCloudDraftSnapshot({
+      storefront: params.storefront,
+      products: mergedProducts,
+      revisionsById: snapshot.revisionsById,
+      ifMatchDocRevision: snapshot.docRevision,
+    });
+  } catch {
+    warnings.push("publish_state_promotion_failed");
+  }
+
+  const deployStateContext = await resolveDeployStateContext(params.storefront);
+  const deployResult =
+    params.storefront === "xa-b"
+      ? { status: "skipped_runtime_live_catalog" as const, reason: "live_catalog_runtime_enabled" }
+      : await maybeTriggerXaBDeploy({
+          storefrontId: params.storefront,
+          kv: deployStateContext.kv,
+          statePaths: deployStateContext.statePaths,
+        });
+  await reconcileDeployPendingState({
+    storefrontId: params.storefront,
+    kv: deployStateContext.kv,
+    statePaths: deployStateContext.statePaths,
+    result: deployResult,
+  }).catch(() => null);
+
+  return NextResponse.json({
+    ok: true,
+    deployStatus: deployResult.status,
+    deployReason: deployResult.reason,
+    deployNextEligibleAt: deployResult.nextEligibleAt,
+    warnings,
+  });
+}
+
 export async function POST(request: Request) {
   const authenticated = await hasUploaderSession(request);
   if (!authenticated) {
@@ -111,80 +216,14 @@ export async function POST(request: Request) {
   }
 
   try {
-    const snapshot = await readCloudDraftSnapshot(storefront);
-    const liveDraftId = (publishedDraft.id ?? "").trim();
-    const existingIndex =
-      liveDraftId.length > 0
-        ? snapshot.products.findIndex((product) => (product.id ?? "").trim() === liveDraftId)
-        : -1;
-    const mergedProducts =
-      existingIndex >= 0
-        ? snapshot.products.map((product, index) => (index === existingIndex ? publishedDraft : product))
-        : [...snapshot.products, publishedDraft];
-
-    const artifacts = await buildCatalogArtifactsFromDrafts({
+    return await executeCloudPublish({
       storefront,
-      products: mergedProducts,
-      strict: false,
-      mediaValidationPolicy: "warn",
-    });
-
-    const validation = await applyCloudMediaExistenceValidation({
-      artifacts,
-      policy: "warn",
-    });
-    const publishArtifacts = validation.ok ? validation.artifacts : artifacts;
-    const warnings = [...publishArtifacts.warnings, ...(validation.ok ? validation.warnings : [])];
-
-    try {
-      await publishCatalogPayloadToContract({
-        storefrontId: storefront,
-        payload: {
-          storefront,
-          publishedAt: new Date().toISOString(),
-          catalog: publishArtifacts.catalog,
-          mediaIndex: publishArtifacts.mediaIndex,
-        },
-      });
-    } catch {
-      return NextResponse.json({ ok: false, error: "catalog_publish_failed" }, { status: 502 });
-    }
-
-    try {
-      await writeCloudDraftSnapshot({
-        storefront,
-        products: mergedProducts,
-        revisionsById: snapshot.revisionsById,
-        ifMatchDocRevision: snapshot.docRevision,
-      });
-    } catch {
-      warnings.push("publish_state_promotion_failed");
-    }
-
-    const deployStateContext = await resolveDeployStateContext(storefront);
-    const deployResult =
-      storefront === "xa-b"
-        ? { status: "skipped_runtime_live_catalog" as const, reason: "live_catalog_runtime_enabled" }
-        : await maybeTriggerXaBDeploy({
-            storefrontId: storefront,
-            kv: deployStateContext.kv,
-            statePaths: deployStateContext.statePaths,
-          });
-    await reconcileDeployPendingState({
-      storefrontId: storefront,
-      kv: deployStateContext.kv,
-      statePaths: deployStateContext.statePaths,
-      result: deployResult,
-    }).catch(() => null);
-
-    return NextResponse.json({
-      ok: true,
-      deployStatus: deployResult.status,
-      deployReason: deployResult.reason,
-      deployNextEligibleAt: deployResult.nextEligibleAt,
-      warnings,
+      publishedDraft,
     });
   } catch (internalError) {
+    if (internalError instanceof Error && internalError.name === "CatalogDraftContractError") {
+      return buildPublishContractErrorResponse(internalError as Error & { code?: string });
+    }
     const message = internalError instanceof Error ? internalError.message : String(internalError);
     return NextResponse.json({ ok: false, error: "internal_error", reason: message }, { status: 500 });
   } finally {

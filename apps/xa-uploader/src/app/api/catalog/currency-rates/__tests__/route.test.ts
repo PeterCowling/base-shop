@@ -6,10 +6,12 @@ const renameMock = jest.fn();
 const mkdirMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const rateLimitMock = jest.fn();
-const applyRateLimitHeadersMock = jest.fn();
+const withRateHeadersMock = jest.fn();
 const getRequestIpMock = jest.fn();
 const resolveRepoRootMock = jest.fn();
 const isLocalFsRuntimeEnabledMock = jest.fn();
+const readCloudCurrencyRatesMock = jest.fn();
+const writeCloudCurrencyRatesMock = jest.fn();
 
 jest.mock("node:fs/promises", () => ({
   __esModule: true,
@@ -27,7 +29,7 @@ jest.mock("../../../../../lib/uploaderAuth", () => ({
 
 jest.mock("../../../../../lib/rateLimit", () => ({
   rateLimit: (...args: unknown[]) => rateLimitMock(...args),
-  applyRateLimitHeaders: (...args: unknown[]) => applyRateLimitHeadersMock(...args),
+  withRateHeaders: (...args: unknown[]) => withRateHeadersMock(...args),
   getRequestIp: (...args: unknown[]) => getRequestIpMock(...args),
 }));
 
@@ -37,6 +39,11 @@ jest.mock("../../../../../lib/repoRoot", () => ({
 
 jest.mock("../../../../../lib/localFsGuard", () => ({
   isLocalFsRuntimeEnabled: () => isLocalFsRuntimeEnabledMock(),
+}));
+
+jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  readCloudCurrencyRates: (...args: unknown[]) => readCloudCurrencyRatesMock(...args),
+  writeCloudCurrencyRates: (...args: unknown[]) => writeCloudCurrencyRatesMock(...args),
 }));
 
 describe("currency rates route", () => {
@@ -49,13 +56,15 @@ describe("currency rates route", () => {
       remaining: 10,
       resetAt: Date.now() + 60_000,
     });
-    applyRateLimitHeadersMock.mockImplementation(() => {});
+    withRateHeadersMock.mockImplementation((response: Response) => response);
     getRequestIpMock.mockReturnValue("127.0.0.1");
     resolveRepoRootMock.mockReturnValue("/mock/root");
     isLocalFsRuntimeEnabledMock.mockReturnValue(true);
     mkdirMock.mockResolvedValue(undefined);
     writeFileMock.mockResolvedValue(undefined);
     renameMock.mockResolvedValue(undefined);
+    readCloudCurrencyRatesMock.mockResolvedValue({ EUR: 0.93, GBP: 0.79, AUD: 1.55 });
+    writeCloudCurrencyRatesMock.mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -174,22 +183,40 @@ describe("currency rates route", () => {
     expect(readFileMock).not.toHaveBeenCalled();
   });
 
-  it("GET returns 503 when local FS runtime is disabled", async () => {
+  it("GET reads cloud currency rates when local FS runtime is disabled", async () => {
     isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
 
     const { GET } = await import("../route");
     const response = await GET(new Request("http://localhost/api/catalog/currency-rates"));
 
-    expect(response.status).toBe(503);
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({
+      ok: true,
+      rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 },
+    });
+    expect(readFileMock).not.toHaveBeenCalled();
+    expect(readCloudCurrencyRatesMock).toHaveBeenCalledWith("xa-b");
+  });
+
+  it("GET returns invalid_rates when hosted contract returns invalid stored rates", async () => {
+    isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
+    readCloudCurrencyRatesMock.mockRejectedValueOnce(
+      Object.assign(new Error("invalid"), { name: "CatalogDraftContractError", code: "invalid_response" }),
+    );
+
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/currency-rates"));
+
+    expect(response.status).toBe(409);
     expect(await response.json()).toEqual({
       ok: false,
-      error: "service_unavailable",
-      reason: "currency_rates_local_fs_required",
+      error: "invalid_rates",
+      reason: "currency_rates_invalid",
     });
     expect(readFileMock).not.toHaveBeenCalled();
   });
 
-  it("PUT returns 503 when local FS runtime is disabled", async () => {
+  it("PUT writes cloud currency rates when local FS runtime is disabled", async () => {
     isLocalFsRuntimeEnabledMock.mockReturnValueOnce(false);
 
     const { PUT } = await import("../route");
@@ -201,12 +228,12 @@ describe("currency rates route", () => {
       }),
     );
 
-    expect(response.status).toBe(503);
-    expect(await response.json()).toEqual({
-      ok: false,
-      error: "service_unavailable",
-      reason: "currency_rates_local_fs_required",
-    });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ ok: true });
     expect(writeFileMock).not.toHaveBeenCalled();
+    expect(writeCloudCurrencyRatesMock).toHaveBeenCalledWith({
+      storefront: "xa-b",
+      rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 },
+    });
   });
 });

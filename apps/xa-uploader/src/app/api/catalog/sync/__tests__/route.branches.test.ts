@@ -16,6 +16,7 @@ const getCatalogSyncInputStatusMock = jest.fn();
 const publishCatalogArtifactsToContractMock = jest.fn();
 const publishCatalogPayloadToContractMock = jest.fn();
 const getCatalogContractReadinessMock = jest.fn();
+const readCloudCurrencyRatesMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
 const acquireCloudSyncLockMock = jest.fn();
@@ -86,6 +87,7 @@ jest.mock("../../../../../lib/catalogContractClient", () => ({
 }));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  readCloudCurrencyRates: (...args: unknown[]) => readCloudCurrencyRatesMock(...args),
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
   writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
   acquireCloudSyncLock: (...args: unknown[]) => acquireCloudSyncLockMock(...args),
@@ -147,6 +149,7 @@ describe("catalog sync route branch coverage", () => {
       publishedAt: "2026-02-24T00:00:00.000Z",
     });
     getCatalogContractReadinessMock.mockReturnValue({ configured: true, errors: [] });
+    readCloudCurrencyRatesMock.mockResolvedValue({ EUR: 0.92, GBP: 0.78, AUD: 1.5 });
     readCloudDraftSnapshotMock.mockResolvedValue({
       products: [VALID_CLOUD_PRODUCT],
       revisionsById: {},

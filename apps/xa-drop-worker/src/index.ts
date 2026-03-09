@@ -49,6 +49,11 @@ type DraftPayload = {
   ifMatchDocRevision?: unknown;
 };
 
+type CurrencyRatesPayload = {
+  storefront?: string;
+  rates?: unknown;
+};
+
 const TOKEN_VERSION = "v1";
 const DEFAULT_PREFIX = "submissions/";
 const DEFAULT_CATALOG_PREFIX = "catalog/";
@@ -351,6 +356,10 @@ function draftsCatalogKey(prefix: string, storefront: string): string {
   return `${prefix}drafts/${storefront}/latest.json`;
 }
 
+function currencyRatesCatalogKey(prefix: string, storefront: string): string {
+  return `${prefix}currency-rates/${storefront}.json`;
+}
+
 function isValidStorefront(value: string): boolean {
   if (value.length < 1 || value.length > 32) return false;
   if (value[0] === "-" || value[value.length - 1] === "-") return false;
@@ -477,6 +486,42 @@ async function parseDraftPayload(request: Request, maxBytes: number): Promise<Dr
   }
   if (!isObjectRecord(parsed)) return json({ ok: false }, 400);
   return parsed as DraftPayload;
+}
+
+function isValidCurrencyRates(value: unknown): value is { EUR: number; GBP: number; AUD: number } {
+  if (!isObjectRecord(value)) return false;
+  return [value.EUR, value.GBP, value.AUD].every(
+    (rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0,
+  );
+}
+
+async function parseCurrencyRatesPayload(
+  request: Request,
+  maxBytes: number,
+): Promise<CurrencyRatesPayload | Response> {
+  const lengthError = validateContentLength(request.headers, maxBytes);
+  if (lengthError) return lengthError;
+
+  let raw = "";
+  try {
+    raw = await request.text();
+  } catch {
+    return json({ ok: false }, 400);
+  }
+
+  if (!raw.trim()) return json({ ok: false }, 400);
+  const bytes = new TextEncoder().encode(raw).byteLength;
+  if (bytes > maxBytes) return json({ ok: false }, 413);
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return json({ ok: false }, 400);
+  }
+
+  if (!isObjectRecord(parsed)) return json({ ok: false }, 400);
+  return parsed as CurrencyRatesPayload;
 }
 
 async function verifyTokenOrRespond(token: string, secret: string, maxTtlSeconds: number): Promise<VerifiedToken | Response> {
@@ -789,6 +834,92 @@ async function handleDraftDelete(request: Request, env: Env, url: URL, storefron
   return json({ ok: true, storefront, deleted: true });
 }
 
+async function handleCurrencyRatesRead(
+  request: Request,
+  env: Env,
+  url: URL,
+  storefront: string,
+): Promise<Response> {
+  const auth = await requireCatalogReadToken(env, request, url);
+  if (auth instanceof Response) return auth;
+
+  const bucket = resolveCatalogBucket(env);
+  const prefix = resolveCatalogPrefix(env);
+  const key = currencyRatesCatalogKey(prefix, storefront);
+  const object = await bucket.get(key);
+  if (!object) {
+    return json({
+      ok: true,
+      storefront,
+      rates: null,
+      updatedAt: null,
+    });
+  }
+
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(await object.text());
+  } catch {
+    return json({ ok: false, error: "invalid_rates", reason: "currency_rates_invalid" }, 409);
+  }
+  if (!isObjectRecord(parsed) || !isValidCurrencyRates(parsed.rates)) {
+    return json({ ok: false, error: "invalid_rates", reason: "currency_rates_invalid" }, 409);
+  }
+
+  return json({
+    ok: true,
+    storefront,
+    rates: parsed.rates,
+    updatedAt: parseOptionalString(parsed.updatedAt),
+  });
+}
+
+async function handleCurrencyRatesWrite(
+  request: Request,
+  env: Env,
+  url: URL,
+  storefront: string,
+): Promise<Response> {
+  const auth = await requireCatalogWriteToken(env, request, url);
+  if (auth instanceof Response) return auth;
+
+  const payloadOrError = await parseCurrencyRatesPayload(request, resolveDraftsMaxBytes(env));
+  if (payloadOrError instanceof Response) return payloadOrError;
+  const payload = payloadOrError;
+
+  if (payload.storefront && payload.storefront !== storefront) {
+    return json({ ok: false }, 400);
+  }
+  if (!isValidCurrencyRates(payload.rates)) {
+    return json({ ok: false }, 400);
+  }
+
+  const updatedAt = new Date().toISOString();
+  const record = {
+    ok: true,
+    storefront,
+    updatedAt,
+    rates: payload.rates,
+  };
+
+  const bucket = resolveCatalogBucket(env);
+  const prefix = resolveCatalogPrefix(env);
+  const key = currencyRatesCatalogKey(prefix, storefront);
+  try {
+    await bucket.put(key, `${JSON.stringify(record)}\n`, {
+      httpMetadata: { contentType: "application/json" },
+      customMetadata: {
+        storefront,
+        updatedAt,
+      },
+    });
+  } catch {
+    return json({ ok: false }, 502);
+  }
+
+  return json({ ok: true, storefront, updatedAt }, 201);
+}
+
 async function handleDraftSyncLockAcquire(
   request: Request,
   env: Env,
@@ -918,6 +1049,7 @@ type RouteMatch =
   | { kind: "catalog"; storefront: string | null }
   | { kind: "publicCatalog"; storefront: string | null }
   | { kind: "drafts"; storefront: string | null }
+  | { kind: "currencyRates"; storefront: string | null }
   | { kind: "draftSyncLock"; storefront: string | null }
   | { kind: "deploy"; storefront: string | null }
   | { kind: "other" };
@@ -927,6 +1059,7 @@ function matchPairRoute(first: string, second: string): RouteMatch | null {
   if (first === "catalog") return { kind: "catalog", storefront };
   if (first === "catalog-public") return { kind: "publicCatalog", storefront };
   if (first === "drafts") return { kind: "drafts", storefront };
+  if (first === "currency-rates") return { kind: "currencyRates", storefront };
   if (first === "deploy") return { kind: "deploy", storefront };
   return null;
 }
@@ -1304,6 +1437,7 @@ async function routeRequest(params: {
       route.kind === "upload" ||
       route.kind === "catalog" ||
       route.kind === "drafts" ||
+      route.kind === "currencyRates" ||
       route.kind === "deploy"
     ) {
       if (isCorsDenied(requestHasOrigin, allowedCorsOrigin)) {
@@ -1366,6 +1500,20 @@ async function routeRequest(params: {
         return json({ ok: false }, 403);
       }
       return await handleDraftDelete(request, env, url, route.storefront);
+    }
+    return json({ ok: false }, 404);
+  }
+
+  if (route.kind === "currencyRates") {
+    if (!route.storefront) return json({ ok: false }, 400);
+    if (request.method === "GET") {
+      return await handleCurrencyRatesRead(request, env, url, route.storefront);
+    }
+    if (request.method === "PUT") {
+      if (isCorsDenied(requestHasOrigin, allowedCorsOrigin)) {
+        return json({ ok: false }, 403);
+      }
+      return await handleCurrencyRatesWrite(request, env, url, route.storefront);
     }
     return json({ ok: false }, 404);
   }

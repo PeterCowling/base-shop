@@ -28,6 +28,7 @@ import { resolveXaUploaderProductsCsvPath } from "../../../../lib/catalogCsv";
 import {
   acquireCloudSyncLock,
   type CloudSyncLockLease,
+  readCloudCurrencyRates,
   readCloudDraftSnapshot,
   releaseCloudSyncLock,
   writeCloudDraftSnapshot,
@@ -36,6 +37,7 @@ import { buildCatalogArtifactsFromDrafts } from "../../../../lib/catalogDraftToC
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
 import { getCatalogSyncInputStatus } from "../../../../lib/catalogSyncInput";
+import { type CurrencyRates,parseCurrencyRatesOrNull } from "../../../../lib/currencyRates";
 import {
   buildDisplaySyncGuidance,
   type DeployPendingState,
@@ -76,8 +78,6 @@ type SyncPayload = {
 };
 
 type SyncScriptId = "validate" | "sync";
-type CurrencyRates = { EUR: number; GBP: number; AUD: number };
-
 type ScriptRunResult = {
   code: number;
   stdout: string;
@@ -386,10 +386,7 @@ function getPublishHistoryMaxEntries(): number {
 }
 
 function validateCurrencyRates(value: unknown): value is CurrencyRates {
-  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
-  const record = value as Record<string, unknown>;
-  const rates = [record.EUR, record.GBP, record.AUD];
-  return rates.every((rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0);
+  return parseCurrencyRatesOrNull(value) !== null;
 }
 
 async function getCurrencyRatesStatus(currencyRatesPath: string): Promise<{
@@ -895,6 +892,132 @@ async function tryPublishCloudCatalogPayload(params: {
   }
 }
 
+async function loadCloudSyncInputs(params: {
+  storefrontId: XaCatalogStorefront;
+  startedAt: number;
+}): Promise<
+  | {
+      ok: true;
+      snapshot: Awaited<ReturnType<typeof readCloudDraftSnapshot>>;
+      currencyRates: CurrencyRates | null;
+    }
+  | { ok: false; errorResponse: NextResponse }
+> {
+  try {
+    const [snapshot, currencyRates] = await Promise.all([
+      readCloudDraftSnapshot(params.storefrontId),
+      readCloudCurrencyRates(params.storefrontId),
+    ]);
+    return { ok: true, snapshot, currencyRates };
+  } catch (error) {
+    if (error instanceof Error && error.name === "CatalogDraftContractError") {
+      const contractError = error as Error & { code?: string };
+      const isInvalidRates = contractError.code === "invalid_response";
+      return {
+        ok: false,
+        errorResponse: NextResponse.json(
+          {
+            ok: false,
+            error: isInvalidRates ? "currency_rates_invalid" : "catalog_publish_unconfigured",
+            recovery: isInvalidRates ? "save_currency_rates" : "configure_catalog_contract",
+            currencyRatesPath: `cloud-currency-rates://${params.storefrontId}`,
+            durationMs: Date.now() - params.startedAt,
+          },
+          { status: isInvalidRates ? 409 : 503 },
+        ),
+      };
+    }
+    throw error;
+  }
+}
+
+function buildMissingCloudCurrencyRatesResponse(params: {
+  storefrontId: XaCatalogStorefront;
+  startedAt: number;
+}): NextResponse {
+  return NextResponse.json(
+    {
+      ok: false,
+      error: "currency_rates_missing",
+      recovery: "save_currency_rates",
+      currencyRatesPath: `cloud-currency-rates://${params.storefrontId}`,
+      durationMs: Date.now() - params.startedAt,
+    },
+    { status: 409 },
+  );
+}
+
+async function completeCloudPublishAndDeploy(params: {
+  storefrontId: XaCatalogStorefront;
+  startedAt: number;
+  payload: SyncPayload;
+  kv: UploaderKvNamespace | null;
+  snapshot: Awaited<ReturnType<typeof readCloudDraftSnapshot>>;
+  publishableProducts: CatalogProductDraftInput[];
+  warnings: string[];
+  catalog: CloudBuiltArtifacts["catalog"];
+  mediaIndex: CloudBuiltArtifacts["mediaIndex"];
+}): Promise<
+  | {
+      ok: true;
+      publishResult: { version?: string; publishedAt?: string } | null;
+      publishSkipped: boolean;
+      deployResult: DeployTriggerResult | undefined;
+      deployPending: DeployPendingState | null;
+    }
+  | { ok: false; errorResponse: NextResponse }
+> {
+  let publishResult: { version?: string; publishedAt?: string } | null = null;
+  let publishSkipped = false;
+  let deployResult: DeployTriggerResult | undefined;
+  let deployPending: DeployPendingState | null = null;
+
+  if (!params.payload.options.dryRun) {
+    const contractReadiness = getCatalogContractReadiness();
+    if (!contractReadiness.configured) {
+      publishSkipped = true;
+    } else {
+      if (isDeployHookRequired() && !isDeployHookConfigured()) {
+        return { ok: false, errorResponse: buildDeployHookUnconfiguredResponse(params.startedAt) };
+      }
+      const publishOutcome = await tryPublishCloudCatalogPayload({
+        storefrontId: params.storefrontId,
+        startedAt: params.startedAt,
+        payload: {
+          storefront: params.storefrontId,
+          publishedAt: new Date().toISOString(),
+          catalog: params.catalog,
+          mediaIndex: params.mediaIndex,
+        },
+      });
+      if ("errorResponse" in publishOutcome) {
+        return { ok: false, errorResponse: publishOutcome.errorResponse };
+      }
+      publishResult = publishOutcome.result;
+    }
+
+    if (!publishSkipped) {
+      const publishFinalize = await finalizeCloudPublishStateAndDeploy({
+        storefrontId: params.storefrontId,
+        snapshot: params.snapshot,
+        publishableProducts: params.publishableProducts,
+        kv: params.kv,
+        warnings: params.warnings,
+      });
+      deployResult = publishFinalize.deployResult;
+      deployPending = publishFinalize.deployPending;
+    }
+  }
+
+  return {
+    ok: true,
+    publishResult,
+    publishSkipped,
+    deployResult,
+    deployPending,
+  };
+}
+
 async function runCloudSyncPipeline(params: {
   storefrontId: XaCatalogStorefront;
   payload: SyncPayload;
@@ -902,10 +1025,19 @@ async function runCloudSyncPipeline(params: {
   kv: UploaderKvNamespace | null;
 }): Promise<NextResponse> {
   const { storefrontId, payload, startedAt, kv } = params;
-  const snapshot = await readCloudDraftSnapshot(storefrontId);
+  const loaded = await loadCloudSyncInputs({ storefrontId, startedAt });
+  if (loaded.ok === false) {
+    return loaded.errorResponse;
+  }
+
+  const { snapshot, currencyRates } = loaded;
   const publishableProducts = snapshot.products.filter((product) =>
     isCatalogPublishableState(deriveCatalogPublishState(product)),
   );
+
+  if (currencyRates === null) {
+    return buildMissingCloudCurrencyRatesResponse({ storefrontId, startedAt });
+  }
 
   if (publishableProducts.length === 0 && !payload.options.confirmEmptyInput) {
     return NextResponse.json(
@@ -932,6 +1064,7 @@ async function runCloudSyncPipeline(params: {
     builtArtifacts = await buildCatalogArtifactsFromDrafts({
       storefront: storefrontId,
       products: publishableProducts,
+      currencyRates,
       strict: payload.options.strict === true,
       mediaValidationPolicy,
       allowedExternalImageHosts: getCloudAllowedExternalImageHosts(),
@@ -969,45 +1102,19 @@ async function runCloudSyncPipeline(params: {
     },
   };
 
-  let publishResult: { version?: string; publishedAt?: string } | null = null;
-  let publishSkipped = false;
-  let deployResult: DeployTriggerResult | undefined;
-  let deployPending: DeployPendingState | null = null;
-  if (!payload.options.dryRun) {
-    const contractReadiness = getCatalogContractReadiness();
-    if (!contractReadiness.configured) {
-      publishSkipped = true;
-    } else {
-      if (isDeployHookRequired() && !isDeployHookConfigured()) {
-        return buildDeployHookUnconfiguredResponse(startedAt);
-      }
-      const publishOutcome = await tryPublishCloudCatalogPayload({
-        storefrontId,
-        startedAt,
-        payload: {
-          storefront: storefrontId,
-          publishedAt: new Date().toISOString(),
-          catalog,
-          mediaIndex,
-        },
-      });
-      if ("errorResponse" in publishOutcome) {
-        return publishOutcome.errorResponse;
-      }
-      publishResult = publishOutcome.result;
-    }
-
-    if (!publishSkipped) {
-      const publishFinalize = await finalizeCloudPublishStateAndDeploy({
-        storefrontId,
-        snapshot,
-        publishableProducts,
-        kv,
-        warnings,
-      });
-      deployResult = publishFinalize.deployResult;
-      deployPending = publishFinalize.deployPending;
-    }
+  const publishState = await completeCloudPublishAndDeploy({
+    storefrontId,
+    startedAt,
+    payload,
+    kv,
+    snapshot,
+    publishableProducts,
+    warnings,
+    catalog,
+    mediaIndex,
+  });
+  if (publishState.ok === false) {
+    return publishState.errorResponse;
   }
 
   return NextResponse.json({
@@ -1015,17 +1122,17 @@ async function runCloudSyncPipeline(params: {
     durationMs: Date.now() - startedAt,
     dryRun: Boolean(payload.options.dryRun),
     mode: "cloud",
-    publishSkipped: publishSkipped || undefined,
-    publishedVersion: publishResult?.version,
-    publishedAt: publishResult?.publishedAt,
-    deploy: deployResult,
-    deployPending: deployPending ?? undefined,
+    publishSkipped: publishState.publishSkipped || undefined,
+    publishedVersion: publishState.publishResult?.version,
+    publishedAt: publishState.publishResult?.publishedAt,
+    deploy: publishState.deployResult,
+    deployPending: publishState.deployPending ?? undefined,
     warnings,
     counts: {
       products: catalog.products.length,
       media: mediaIndex.totals.media,
     },
-    display: buildDisplaySyncGuidance(deployResult, deployPending),
+    display: buildDisplaySyncGuidance(publishState.deployResult, publishState.deployPending),
   });
 }
 

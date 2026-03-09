@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-09T07:46:45.153Z",
+  "last_updated": "2026-03-09T07:48:34.941Z",
   "counts": {
-    "enqueued": 221,
+    "enqueued": 223,
     "processed": 52,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 132,
-    "fact_find_ready": 281,
+    "fact_find_ready": 283,
     "micro_build_ready": 17,
-    "total": 432
+    "total": 434
   },
   "dispatches": [
     {
@@ -18124,6 +18124,103 @@
         "session:45fa3df6-4baf-4a46-8295-da1c400b5f19"
       ],
       "created_at": "2026-03-09T07:46:45.147Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309074833-0560",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "81517f5810def8834a7de97dbfd836319082c6ab",
+      "after_sha": "78909b3739491311bfeb29ad1fbe2a778e772c7e",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:78909b3739491311bfeb29ad1fbe2a778e772c7e",
+      "anchor_key": "xa-b-support-dock",
+      "cluster_key": "bos:unknown:xa-b-support-dock:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:78909b3739491311bfeb29ad1fbe2a778e772c7e",
+      "cluster_fingerprint": "12064cf3671fa03f5ef7c81472408255cfbd89228ef755d21947d075fd4bdb21",
+      "lineage_depth": 0,
+      "area_anchor": "xa b support dock",
+      "location_anchors": [
+        ".claude/worktrees/agent-a281a8ee",
+        ".claude/worktrees/agent-a9211d72",
+        ".gitignore",
+        "apps/xa-b/src/components/XaSupportDock.client.tsx",
+        "apps/xa-b/src/lib/useXaListingFilters.ts",
+        "apps/xa-uploader/src/app/api/catalog/publish/__tests__/route.publish.test.ts",
+        "apps/xa-uploader/src/components/catalog/CatalogProductBaseFields.client.tsx",
+        "apps/xa-uploader/src/components/catalog/__tests__/CatalogProductBaseFields.publish-status.test.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (81517f5 → 78909b3)",
+      "next_scope_now": "Investigate implications of xa b support dock delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:D:.claude/worktrees/agent-a281a8ee",
+        "git-diff:D:.claude/worktrees/agent-a9211d72",
+        "git-diff:M:.gitignore",
+        "git-diff:M:apps/xa-b/src/components/XaSupportDock.client.tsx",
+        "git-diff:M:apps/xa-b/src/lib/useXaListingFilters.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/publish/__tests__/route.publish.test.ts",
+        "git-diff:M:apps/xa-uploader/src/components/catalog/CatalogProductBaseFields.client.tsx",
+        "git-diff:M:apps/xa-uploader/src/components/catalog/__tests__/CatalogProductBaseFields.publish-status.test.tsx"
+      ],
+      "created_at": "2026-03-09T07:48:33.559Z",
+      "queue_state": "enqueued",
+      "why": "Assess xa b support dock implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for xa b support dock.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309074834-0931",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "70f19f935730f3135d014cb4526730e480c65402",
+      "after_sha": "c80fc0729a935bae6b6c26ac53e0bdfff86f2ba0",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:c80fc0729a935bae6b6c26ac53e0bdfff86f2ba0",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:c80fc0729a935bae6b6c26ac53e0bdfff86f2ba0",
+      "cluster_fingerprint": "684ee1d264f2339a858eabc68226690aa6bf2a06ca22f6635ea6adcb2764bfd8",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (70f19f9 → c80fc07)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:84fc058e-c06a-4ea2-900f-167ecf8b9caa",
+        "session:45fa3df6-4baf-4a46-8295-da1c400b5f19"
+      ],
+      "created_at": "2026-03-09T07:48:34.930Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

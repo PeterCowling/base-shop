@@ -1,7 +1,7 @@
 /* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import {
   type AuditEntry,
@@ -53,37 +53,36 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  function refreshHistory() {
+  const refreshHistory = useCallback(() => {
     fetch(`/api/inventory/${encodeURIComponent(shop)}/adjustments`)
       .then((r) => r.json())
       .then((data: unknown) => {
         setHistory(((data as { events?: AuditEntry[] }).events) ?? []);
       })
       .catch(() => {});
-  }
-
-  useEffect(() => {
-    let cancelled = false;
-    fetch(`/api/inventory/${encodeURIComponent(shop)}`)
-      .then((r) => r.json())
-      .then((data: unknown) => {
-        if (cancelled) return;
-        setInventory(((data as { items?: InventoryItem[] }).items) ?? []);
-      })
-      .catch(() => {});
-    fetch(`/api/inventory/${encodeURIComponent(shop)}/adjustments`)
-      .then((r) => r.json())
-      .then((data: unknown) => {
-        if (cancelled) return;
-        setHistory(((data as { events?: AuditEntry[] }).events) ?? []);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
   }, [shop]);
 
-  const selectedItem = inventory.find((item) => itemKey(item) === selectedKey);
+  useEffect(() => {
+    const controller = new AbortController();
+    const { signal } = controller;
+    Promise.all([
+      fetch(`/api/inventory/${encodeURIComponent(shop)}`, { signal }).then((r) => r.json()),
+      fetch(`/api/inventory/${encodeURIComponent(shop)}/adjustments`, { signal }).then((r) => r.json()),
+    ])
+      .then(([invData, histData]: [unknown, unknown]) => {
+        setInventory(((invData as { items?: InventoryItem[] }).items) ?? []);
+        setHistory(((histData as { events?: AuditEntry[] }).events) ?? []);
+      })
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === "AbortError") return;
+      });
+    return () => controller.abort();
+  }, [shop]);
+
+  const selectedItem = useMemo(
+    () => inventory.find((item) => itemKey(item) === selectedKey),
+    [inventory, selectedKey],
+  );
 
   const submit = useCallback(
     async (dryRun: boolean) => {
@@ -139,8 +138,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
         setBusy(false);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- INV-001 refreshHistory is stable (no deps), shop captured via closure
-    [selectedItem, delta, reason, note, idempotencyKey, shop, onSaved],
+    [selectedItem, delta, reason, note, idempotencyKey, shop, onSaved, refreshHistory],
   );
 
   function startNew() {

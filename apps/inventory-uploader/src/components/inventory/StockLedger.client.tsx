@@ -3,18 +3,7 @@
 
 import { useEffect, useState } from "react";
 
-import { formatAuditDate } from "../../lib/inventory-utils";
-
-type LedgerEvent = {
-  id: string;
-  timestamp: string;
-  type: "adjustment" | "inflow" | "sale";
-  sku: string;
-  variantKey: string;
-  quantityDelta: number;
-  referenceId: string | null;
-  note: string | null;
-};
+import { formatAuditDate,type LedgerEvent } from "../../lib/inventory-utils";
 
 type StockLedgerProps = {
   shop: string | null;
@@ -48,46 +37,52 @@ export function StockLedger({ shop }: StockLedgerProps) {
     return () => clearTimeout(timer);
   }, [skuFilter]);
 
+  function buildLedgerParams(limit: number, cursor?: string): URLSearchParams {
+    const params = new URLSearchParams({ limit: String(limit) });
+    if (debouncedSkuFilter) params.set("sku", debouncedSkuFilter);
+    if (typeFilter) params.set("type", typeFilter);
+    if (cursor) params.set("cursor", cursor);
+    return params;
+  }
+
   useEffect(() => {
     if (!shop) {
       setEvents([]);
       setNextCursor(null);
       return;
     }
-    let cancelled = false;
+    const controller = new AbortController();
     setLoading(true);
     setError(null);
     setNextCursor(null);
 
-    const params = new URLSearchParams({ limit: "50" });
-    if (debouncedSkuFilter) params.set("sku", debouncedSkuFilter);
-    if (typeFilter) params.set("type", typeFilter);
-
-    fetch(`/api/inventory/${encodeURIComponent(shop)}/ledger?${params.toString()}`)
+    fetch(`/api/inventory/${encodeURIComponent(shop)}/ledger?${buildLedgerParams(50).toString()}`, {
+      signal: controller.signal,
+    })
       .then((r) => r.json())
       .then((data: unknown) => {
-        if (cancelled) return;
         const d = data as { events?: LedgerEvent[]; nextCursor?: string | null };
         setEvents(d.events ?? []);
         setNextCursor(d.nextCursor ?? null);
       })
-      .catch(() => {
-        if (!cancelled) setError("Failed to load ledger.");
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === "AbortError") return;
+        setError("Failed to load ledger.");
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        setLoading(false);
       });
-    return () => { cancelled = true; };
+    return () => controller.abort();
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- INV-001 buildLedgerParams closes over debouncedSkuFilter/typeFilter which are in deps
   }, [shop, debouncedSkuFilter, typeFilter]);
 
   async function loadMore() {
     if (!shop || !nextCursor) return;
     setLoadingMore(true);
     try {
-      const params = new URLSearchParams({ limit: "50", cursor: nextCursor });
-      if (debouncedSkuFilter) params.set("sku", debouncedSkuFilter);
-      if (typeFilter) params.set("type", typeFilter);
-      const resp = await fetch(`/api/inventory/${encodeURIComponent(shop)}/ledger?${params.toString()}`);
+      const resp = await fetch(
+        `/api/inventory/${encodeURIComponent(shop)}/ledger?${buildLedgerParams(50, nextCursor).toString()}`,
+      );
       const data = (await resp.json()) as { events?: LedgerEvent[]; nextCursor?: string | null };
       setEvents((prev) => [...prev, ...(data.events ?? [])]);
       setNextCursor(data.nextCursor ?? null);

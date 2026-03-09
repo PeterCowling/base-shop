@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { extractArray, formatAuditDate, formatQuantityDelta, inventoryApiUrl, type LedgerEvent } from "../../lib/inventory-utils";
+import { extractArray, formatAuditDate, formatQuantityDelta, inventoryApiUrl, isFetchAbortError, type LedgerEvent } from "../../lib/inventory-utils";
 
 type StockLedgerProps = {
   shop: string | null;
@@ -65,7 +65,7 @@ export function StockLedger({ shop }: StockLedgerProps) {
         setNextCursor(d.nextCursor ?? null);
       })
       .catch((err: unknown) => {
-        if (err instanceof Error && err.name === "AbortError") return;
+        if (isFetchAbortError(err)) return;
         setError("Failed to load ledger.");
       })
       .finally(() => {
@@ -89,7 +89,7 @@ export function StockLedger({ shop }: StockLedgerProps) {
       setEvents((prev) => [...prev, ...extractArray<LedgerEvent>(data, "events")]);
       setNextCursor(data.nextCursor ?? null);
     } catch (err) {
-      if (err instanceof Error && err.name === "AbortError") return;
+      if (isFetchAbortError(err)) return;
       // silently ignore other pagination errors
     } finally {
       setLoadingMore(false);

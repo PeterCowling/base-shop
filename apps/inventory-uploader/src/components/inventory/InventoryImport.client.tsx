@@ -3,7 +3,7 @@
 
 import { useMemo, useRef, useState } from "react";
 
-import { HISTORY_DISPLAY_LIMIT } from "../../lib/inventory-utils";
+import { HISTORY_DISPLAY_LIMIT, inventoryApiUrl } from "../../lib/inventory-utils";
 
 type RowResult = {
   row: number;
@@ -137,7 +137,6 @@ function ImportResultPanel({ result }: ImportResultPanelProps) {
   }, [result.results]);
 
   return (
-     
     <div className={`rounded-lg p-3 text-xs ${result.ok ? "bg-success-surface text-success-fg" : "bg-danger-surface text-danger-fg"}`}>
       {result.ok ? (
         <>
@@ -155,7 +154,6 @@ function ImportResultPanel({ result }: ImportResultPanelProps) {
       )}
 
       {errorRows.length > 0 && (
-         
         <ul className="mt-2 space-y-0.5">
           {errorRows.slice(0, HISTORY_DISPLAY_LIMIT).map((r) => (
             <li key={r.row}>Row {r.row}{r.sku ? ` (${r.sku})` : ""}: {r.error}</li>
@@ -193,7 +191,7 @@ export function InventoryImport({ shop, onImportComplete }: InventoryImportProps
     try {
       const form = new FormData();
       form.append("file", file);
-      const url = `/api/inventory/${encodeURIComponent(shop)}/import${dryRun ? "?dryRun=true" : ""}`;
+      const url = `${inventoryApiUrl(shop, "import")}${dryRun ? "?dryRun=true" : ""}`;
       const resp = await fetch(url, { method: "POST", body: form });
       const data = (await resp.json()) as ImportResult;
       setResult(data);
@@ -206,7 +204,6 @@ export function InventoryImport({ shop, onImportComplete }: InventoryImportProps
   }
 
   return (
-     
     <div className="mt-4 space-y-3 border-t border-gate-border pt-3">
       <p className="text-xs font-medium text-gate-ink">Import inventory (CSV or JSON)</p>
 

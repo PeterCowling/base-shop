@@ -62,12 +62,46 @@ export function formatQuantityDelta(delta: number): string {
   return delta > 0 ? `+${delta}` : String(delta);
 }
 
+/** Builds a client-side API URL for inventory endpoints. All path segments are URI-encoded. */
+export function inventoryApiUrl(shop: string, ...pathSegments: string[]): string {
+  const base = `/api/inventory/${encodeURIComponent(shop)}`;
+  if (pathSegments.length === 0) return base;
+  return `${base}/${pathSegments.map(encodeURIComponent).join("/")}`;
+}
+
+/**
+ * Parses a string input as a strict integer for stock operations.
+ * `"nonzero"` — accepts any non-zero integer (adjustments).
+ * `"positive"` — accepts only positive integers (inflows).
+ */
+export function parseIntQuantity(
+  value: string,
+  mode: "nonzero" | "positive",
+): { ok: true; qty: number } | { ok: false; error: string } {
+  const qty = Number(value);
+  if (mode === "positive") {
+    if (!Number.isFinite(qty) || !Number.isInteger(qty) || qty <= 0) {
+      return { ok: false, error: "Quantity must be a positive integer." };
+    }
+  } else {
+    if (!Number.isFinite(qty) || !Number.isInteger(qty) || qty === 0) {
+      return { ok: false, error: "Quantity delta must be a non-zero integer." };
+    }
+  }
+  return { ok: true, qty };
+}
+
 /** Safely extracts a typed array from a JSON response field. Returns [] when the field is missing or not an array. */
 export function extractArray<T>(data: unknown, key: string): T[] {
   if (data && typeof data === "object" && key in data && Array.isArray((data as Record<string, unknown>)[key])) {
     return (data as Record<string, unknown>)[key] as T[];
   }
   return [];
+}
+
+/** Returns true when `err` is a fetch AbortError (request was cancelled intentionally). */
+export function isFetchAbortError(err: unknown): boolean {
+  return err instanceof Error && err.name === "AbortError";
 }
 
 export function formatAuditDate(iso: string): string {

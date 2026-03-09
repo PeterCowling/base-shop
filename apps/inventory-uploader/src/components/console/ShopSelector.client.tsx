@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useState } from "react";
 
-import { extractArray, SHOP_STORAGE_KEY } from "../../lib/inventory-utils";
+import { extractArray, isFetchAbortError, SHOP_STORAGE_KEY } from "../../lib/inventory-utils";
 
 type ShopSelectorProps = {
   selectedShop: string | null;
@@ -32,7 +32,7 @@ export function ShopSelector({ selectedShop, onSelect }: ShopSelectorProps) {
         }
       })
       .catch((err: unknown) => {
-        if (err instanceof Error && err.name === "AbortError") return;
+        if (isFetchAbortError(err)) return;
         setShops([]);
       })
       .finally(() => {

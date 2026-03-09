@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { extractArray, inventoryApiUrl, type InventoryItem, itemKey, variantLabel } from "../../lib/inventory-utils";
+import { extractArray, inventoryApiUrl, type InventoryItem, isFetchAbortError, itemKey, variantLabel } from "../../lib/inventory-utils";
 
 type SortKey = "sku" | "quantity";
 
@@ -39,7 +39,7 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
         setItems(list);
       })
       .catch((err: unknown) => {
-        if (err instanceof Error && err.name === "AbortError") return;
+        if (isFetchAbortError(err)) return;
         setError("Failed to load inventory.");
       })
       .finally(() => {

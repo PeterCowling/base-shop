@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { extractArray, inventoryApiUrl, type InventoryItem, variantLabel } from "../../lib/inventory-utils";
+import { extractArray, inventoryApiUrl, type InventoryItem, isFetchAbortError, variantLabel } from "../../lib/inventory-utils";
 
 type InventoryEditorProps = {
   shop: string | null;
@@ -140,7 +140,7 @@ export function InventoryEditor({ shop, sku, onSaved }: InventoryEditorProps) {
         setVariants(list);
       })
       .catch((err: unknown) => {
-        if (err instanceof Error && err.name === "AbortError") return;
+        if (isFetchAbortError(err)) return;
         setError("Failed to load SKU variants.");
       })
       .finally(() => {

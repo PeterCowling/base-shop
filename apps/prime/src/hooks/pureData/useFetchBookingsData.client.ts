@@ -26,6 +26,8 @@ import { type BookingOccupantData,bookingOccupantDataSchema } from '../../utils/
 import { zodErrorToString } from '../../utils/zodErrorToString';
 import useUuid from '../useUuid';
 
+import type { PureDataRefetch } from './types';
+
 export interface BookingDetails extends BookingOccupantData {
   reservationCode: string;
 }
@@ -149,6 +151,6 @@ export function useFetchBookingsData(): UseFetchBookingsDataReturn {
     bookingsData: data ?? null,
     isLoading,
     error: error ?? null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

@@ -19,6 +19,8 @@ import type { GuestProfile } from '../../types/guestProfile';
 import { DEFAULT_GUEST_PROFILE } from '../../types/guestProfile';
 import useUuid from '../useUuid';
 
+import type { PureDataRefetch } from './types';
+
 /**
  * Helper function to fetch guest profile from "guestProfiles/{uuid}".
  * Returns the profile or null if not found.
@@ -94,9 +96,7 @@ export function useFetchGuestProfile(
     gcTime: 30 * 60 * 1000, // 30 minutes
   });
 
-  const refetch = async (): Promise<void> => {
-    await refetchQuery();
-  };
+  const refetch = refetchQuery as unknown as PureDataRefetch;
 
   // Staleness check: profile belongs to a different booking
   const isStale =

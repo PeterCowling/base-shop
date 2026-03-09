@@ -19,6 +19,8 @@ import type { QuestProgress } from '../../types/questProgress';
 import { DEFAULT_QUEST_PROGRESS } from '../../types/questProgress';
 import useUuid from '../useUuid';
 
+import type { PureDataRefetch } from './types';
+
 /**
  * Helper function to fetch quest progress from "questProgress/{uuid}".
  * Returns the progress or null if not found.
@@ -94,9 +96,7 @@ export function useFetchQuestProgress(
     gcTime: 30 * 60 * 1000, // 30 minutes
   });
 
-  const refetch = async (): Promise<void> => {
-    await refetchQuery();
-  };
+  const refetch = refetchQuery as unknown as PureDataRefetch;
 
   // Staleness check: progress belongs to a different booking
   const isStale =

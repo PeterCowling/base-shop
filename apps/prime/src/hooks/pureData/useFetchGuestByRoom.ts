@@ -14,6 +14,8 @@ import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestByRoom } from '../../types/guestByRoom';
 import useUuid from '../useUuid';
 
+import type { PureDataRefetch } from './types';
+
 /**
  * Fetch occupant data from "guestByRoom/{occupantId}".
  * Returns { [occupantId]: occupantRecord }.
@@ -55,6 +57,6 @@ export function useFetchGuestByRoom(options: UseFetchGuestByRoomOptions = {}) {
     error: error ?? null,
     isLoading,
     isError: error !== null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

@@ -14,6 +14,8 @@ import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { LoanOccupantRecord } from '../../types/loans';
 import useUuid from '../useUuid';
 
+import type { PureDataRefetch } from './types';
+
 /**
  * Fetch occupant loan transactions from "loans/{occupantId}".
  */
@@ -53,6 +55,6 @@ export function useFetchLoans(options: UseFetchLoansOptions = {}) {
     error: error ?? null,
     isLoading,
     isError: error !== null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

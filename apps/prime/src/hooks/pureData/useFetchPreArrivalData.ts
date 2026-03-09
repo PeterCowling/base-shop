@@ -21,6 +21,8 @@ import type { PreArrivalData } from '../../types/preArrival';
 import { DEFAULT_PRE_ARRIVAL } from '../../types/preArrival';
 import useUuid from '../useUuid';
 
+import type { PureDataRefetch } from './types';
+
 /**
  * Fetch pre-arrival data from Firebase.
  * Returns null if the record doesn't exist.
@@ -97,9 +99,7 @@ export function useFetchPreArrivalData(
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  const refetch = async (): Promise<void> => {
-    await refetchQuery();
-  };
+  const refetch = refetchQuery as unknown as PureDataRefetch;
 
   // Apply defaults when no data exists
   const effectiveData: PreArrivalData = data ?? DEFAULT_PRE_ARRIVAL;

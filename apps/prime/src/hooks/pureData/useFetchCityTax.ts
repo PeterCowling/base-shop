@@ -12,6 +12,8 @@ import { get, ref } from '@/services/firebase';
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { CityTaxBookingRecord } from '../../types/cityTax';
 
+import type { PureDataRefetch } from './types';
+
 /**
  * Fetch booking city tax data from "cityTax/{bookingRef}".
  */
@@ -53,6 +55,6 @@ export function useFetchCityTax(
     error: error ?? null,
     isLoading,
     isError: error !== null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

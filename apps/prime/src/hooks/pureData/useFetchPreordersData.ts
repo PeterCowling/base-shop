@@ -13,6 +13,8 @@ import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { PreorderNightData } from '../../types/preorder';
 import useUuid from '../useUuid';
 
+import type { PureDataRefetch } from './types';
+
 type PreorderEntry = Omit<PreorderNightData, 'id'> & { id: string };
 
 /**
@@ -59,6 +61,6 @@ export function useFetchPreordersData() {
     preordersData: data ?? [],
     isLoading,
     error: error ?? null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

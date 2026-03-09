@@ -14,6 +14,8 @@ import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestDetailsRecord } from '../../types/guestsDetails';
 import useUuid from '../useUuid';
 
+import type { PureDataRefetch } from './types';
+
 /**
  * Fetch occupant details from "guestsDetails/{bookingRef}/{occupantId}".
  */
@@ -51,6 +53,6 @@ export function useFetchGuestDetails(bookingRef: string) {
     error: error ?? null,
     isLoading,
     isError: error !== null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

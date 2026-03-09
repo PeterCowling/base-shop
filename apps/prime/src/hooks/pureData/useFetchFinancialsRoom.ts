@@ -12,6 +12,8 @@ import { type Database,get, ref } from '@/services/firebase';
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { FinancialsRoomRecord } from '../../types/financialsRoom';
 
+import type { PureDataRefetch } from './types';
+
 /**
  * Fetch booking financial info from "financialsRoom/{bookingRef}".
  */
@@ -53,6 +55,6 @@ export function useFetchFinancialsRoom(
     error: error ?? null,
     isLoading,
     isError: error !== null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

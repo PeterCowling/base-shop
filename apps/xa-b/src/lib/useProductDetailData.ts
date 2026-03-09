@@ -35,10 +35,6 @@ export function useProductDetailData(product: XaProduct, products: XaProduct[]) 
     ? toWhatsappHref(siteConfig.whatsappNumber)
     : null;
 
-  const isClothing = product.taxonomy.category === "clothing";
-  const isBags = product.taxonomy.category === "bags";
-  const isJewelry = product.taxonomy.category === "jewelry";
-
   const copy = {
     home: xaI18n.t("xaB.src.app.products.handle.page.copy.home"),
     sizeFit: xaI18n.t("xaB.src.app.products.handle.page.copy.sizeFit"),
@@ -107,9 +103,6 @@ export function useProductDetailData(product: XaProduct, products: XaProduct[]) 
     showContactInfo,
     showShare,
     whatsappHref,
-    isClothing,
-    isBags,
-    isJewelry,
     copy,
     completeLook,
     moreFromDesigner,

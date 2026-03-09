@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { readJson, removeItem, writeJson } from "../../lib/offline/storage";
+
 export interface BatchCountProgress {
   categoriesComplete: string[];
   enteredQuantities: Record<string, number>;
@@ -66,27 +68,20 @@ export default function useBatchCountProgress(userId: string, date: string) {
       return;
     }
 
-    try {
-      const raw = localStorage.getItem(storageKey);
+    const parsed = readJson<unknown>(storageKey);
 
-      if (!raw) {
-        setProgress(null);
-        return;
-      }
-
-      const parsed: unknown = JSON.parse(raw);
-
-      if (!isStoredBatchCountProgress(parsed) || parsed.sessionDate !== date) {
-        localStorage.removeItem(storageKey);
-        setProgress(null);
-        return;
-      }
-
-      setProgress(parsed.data);
-    } catch {
-      localStorage.removeItem(storageKey);
+    if (parsed === null) {
       setProgress(null);
+      return;
     }
+
+    if (!isStoredBatchCountProgress(parsed) || parsed.sessionDate !== date) {
+      removeItem(storageKey);
+      setProgress(null);
+      return;
+    }
+
+    setProgress(parsed.data);
   }, [date, storageKey]);
 
   const saveProgress = useCallback(
@@ -102,7 +97,7 @@ export default function useBatchCountProgress(userId: string, date: string) {
         data,
       };
 
-      localStorage.setItem(storageKey, JSON.stringify(payload));
+      writeJson(storageKey, payload);
     },
     [date, storageKey, userId]
   );
@@ -114,7 +109,7 @@ export default function useBatchCountProgress(userId: string, date: string) {
       return;
     }
 
-    localStorage.removeItem(storageKey);
+    removeItem(storageKey);
   }, [storageKey]);
 
   return { progress, saveProgress, clearProgress };

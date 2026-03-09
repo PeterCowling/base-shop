@@ -1,7 +1,6 @@
 import { useCallback, useState } from "react";
 import { get, ref, remove, update } from "firebase/database";
 
-import { useAuth } from "../../context/AuthContext";
 import { queueOfflineWrite } from "../../lib/offline/syncManager";
 import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
 import { useFirebaseDatabase } from "../../services/useFirebase";
@@ -22,10 +21,6 @@ export default function useLoansMutations() {
   const database = useFirebaseDatabase();
   const online = useOnlineStatus();
   const [error, setError] = useState<unknown>(null);
-
-  // We need the user’s info for logging deposit refunds and adding an activity.
-  // Renamed ‘user’ to ‘_user’ to satisfy lint rules for unused vars.
-  const { user: _user } = useAuth();
 
   // Hooks for logging activities and financial transactions
   const { logActivity } = useActivitiesMutations();

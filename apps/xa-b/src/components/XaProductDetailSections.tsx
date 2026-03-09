@@ -1,6 +1,7 @@
 import type { useProductDetailData } from "../lib/useProductDetailData";
 import { formatLabel, formatLabelList } from "../lib/xaCatalog";
 import type { XaProduct } from "../lib/xaCatalogModel";
+import type { XaCategory } from "../lib/xaTypes";
 
 import { XaSizeGuideDialog } from "./XaSizeGuideDialog.client";
 
@@ -26,17 +27,17 @@ type SectionsCopy = Pick<
 
 export function XaProductDetailSections({
   product,
-  isClothing,
-  isBags,
-  isJewelry,
+  category,
   copy,
 }: {
   product: XaProduct;
-  isClothing: boolean;
-  isBags: boolean;
-  isJewelry: boolean;
+  category: XaCategory;
   copy: SectionsCopy;
 }) {
+  const isClothing = category === "clothing";
+  const isBags = category === "bags";
+  const isJewelry = category === "jewelry";
+
   if (!isClothing && !isBags && !isJewelry) return null;
 
   return (

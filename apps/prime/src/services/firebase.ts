@@ -129,6 +129,7 @@ class FirebaseMetrics {
 
     if (durationMs > SLOW_QUERY_THRESHOLD_MS) {
       this._slowQueries.push(record);
+      if (this._slowQueries.length > 50) this._slowQueries.shift();
       logger.warn(`[firebase] Slow query (${durationMs}ms): ${path} (${(sizeBytes / 1024).toFixed(1)}KB)`);
     }
   }

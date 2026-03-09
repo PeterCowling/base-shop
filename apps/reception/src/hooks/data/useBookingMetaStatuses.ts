@@ -70,7 +70,7 @@ export default function useBookingMetaStatuses(
 
           // Only update state if something actually changed to avoid
           // triggering unnecessary re-renders.
-          if (!changed && Object.keys(prev).length === Object.keys(next).length) {
+          if (!changed && Object.keys(prev).length === bookingRefsStable.length) {
             return prev;
           }
           return next;

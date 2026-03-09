@@ -85,10 +85,16 @@ export default function useActivitiesByCodeData({
 
             const transformed = result.data as ActivitiesByCodeForOccupant;
 
-            // Per-code JSON.stringify deduplication — bounded to one code's occupant
-            // map (typically small). Reference equality cannot be used here because
-            // safeParse always constructs a new object for identical input.
-            if (JSON.stringify(next[codeStr]) !== JSON.stringify(transformed)) {
+            // Per-code shallow equality check — reference equality cannot be used here
+            // because safeParse always constructs a new object for identical input.
+            const prev_code = next[codeStr];
+            const prevKeys = prev_code ? Object.keys(prev_code) : null;
+            const nextKeys = Object.keys(transformed);
+            const isEqual =
+              prevKeys !== null &&
+              prevKeys.length === nextKeys.length &&
+              nextKeys.every((k) => (prev_code as Record<string, unknown>)[k] === (transformed as Record<string, unknown>)[k]);
+            if (!isEqual) {
               next = { ...next, [codeStr]: transformed };
             }
           }

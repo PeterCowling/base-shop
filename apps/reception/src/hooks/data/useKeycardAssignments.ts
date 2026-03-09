@@ -25,8 +25,5 @@ export function useKeycardAssignments() {
     [assignments]
   );
 
-  return useMemo(
-    () => ({ assignments, assignmentsRecord, activeAssignments, loading, error }),
-    [assignments, assignmentsRecord, activeAssignments, loading, error]
-  );
+  return { assignments, assignmentsRecord, activeAssignments, loading, error };
 }

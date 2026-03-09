@@ -30,9 +30,6 @@ export function XaProductDetail({
     showContactInfo,
     showShare,
     whatsappHref,
-    isClothing,
-    isBags,
-    isJewelry,
     copy,
     completeLook,
     moreFromDesigner,
@@ -64,9 +61,7 @@ export function XaProductDetail({
             <div className="space-y-8 pt-2">
               <XaProductDetailSections
                 product={product}
-                isClothing={isClothing}
-                isBags={isBags}
-                isJewelry={isJewelry}
+                category={product.taxonomy.category}
                 copy={copy}
               />
               <XaProductDetailShare

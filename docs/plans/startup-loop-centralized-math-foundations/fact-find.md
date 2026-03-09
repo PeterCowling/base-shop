@@ -16,25 +16,27 @@ Startup-Deliverable-Alias: none
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-do-fact-find, lp-do-ideas, startup-loop
 Dispatch-ID: IDEA-DISPATCH-20260309211000-9320
-Trigger-Why: The startup loop is asking for mathematically stronger decision-making, but the repo needs a code-true inventory of centralized math capability first. Today there is a real central math layer, but startup-loop adoption is narrow and several core decision domains still lack repo-worthy primitives.
-Trigger-Intended-Outcome: "type: operational | statement: The repo has a code-backed inventory of centralized math capability, a clear gap matrix against startup-loop self-improvement needs, and repo-admitted open-source package solutions for the math fundamentals that have clean Node/TypeScript fit. | source: operator"
+Trigger-Why: The startup loop is asking for mathematically stronger decision-making, but the repo needs more than an inventory. It needs a code-true account of what changed, what still does not affect live decisions, and what work is required before this thread can count toward self-improving status.
+Trigger-Intended-Outcome: "type: operational | statement: The repo has a code-backed inventory of centralized math capability, a hard assessment of the post-admission system, and a planning-ready set of requirements to turn centralized math foundations into live self-improving startup-loop behavior. | source: operator"
 ---
 
 # Startup Loop Centralized Math Foundations Fact-Find Brief
 
 ## Scope
 ### Summary
-The repo already has a centralized math layer in `@acme/lib/math`, but current startup-loop usage is much narrower than the available surface. The codebase contains local experimentation, forecasting, similarity, probabilistic-sketch, search, statistics, financial, geometry, and ops primitives. However, the live self-evolving runtime currently imports only `betaBinomialPosterior`, and most of the startup-loop remains heuristic rather than math-driven. Against the self-improving-loop needs, the biggest central gaps were graph analysis, constrained optimization, and survival analysis. Those are now admitted into the repo as centralized wrappers backed by `graphology`, `graphology-dag`, `graphology-shortest-path`, `graphology-metrics`, `yalps`, and `@fullstax/kaplan-meier-estimator`. The remaining gap areas are contextual bandits, causal inference, and control. Package research found candidate solutions there, but the current Node/TypeScript options are either too weak, too immature, too service-coupled, or too thinly typed to admit into `@acme/lib/math` without lowering repo quality.
+The repo does have a centralized math layer in `@acme/lib/math`, and this thread did close three genuine foundation gaps by admitting centralized graph, constrained-optimization, and survival modules. But the resulting system is still not mathematically self-improving in any honest sense. The live startup-loop runtime still uses only `betaBinomialPosterior`, the newly admitted modules are mostly thin package passthroughs, the startup-loop still bypasses the package boundary by importing directly from `packages/lib/src`, and the new modules have no dedicated tests. This fact-find therefore needs to do more than inventory capability: it must describe the current post-admission system as it actually exists in code, identify the defects that still block self-improving status, and define the concrete follow-on work needed to convert new math surface area into live decision quality.
 
 ### Goals
 - Inventory the centralized math capability that exists in code today.
-- Distinguish between available central math, actually-used startup-loop math, and missing central math.
-- Record which missing math fundamentals now have repo-admitted open-source solutions.
-- Record which remaining math fundamentals still need a dedicated follow-on fact-find because package quality is not yet good enough for direct admission.
+- Distinguish between available central math, actually-used startup-loop math, and merely admitted-but-unused math.
+- Record which missing math fundamentals now have repo-admitted open-source solutions, and where those admissions are still too thin to count as repo-owned capability.
+- Record which remaining math fundamentals still need dedicated follow-on fact-finds because package quality is not yet good enough for direct admission.
+- Define the code-level requirements for this thread to contribute to actual self-improving startup-loop behavior rather than just expanding library surface area.
 - Keep the output planning-ready for startup-loop self-improvement work rather than as a generic library audit.
 
 ### Non-goals
-- Wiring the newly admitted math modules into live startup-loop routing or policy decisions.
+- Pretending this fact-find itself makes the startup loop self-improving.
+- Wiring the newly admitted math modules into live startup-loop routing or policy decisions inside this document.
 - Claiming mathematical capability just because a package exists somewhere in the ecosystem.
 - Adding service-coupled or weakly-typed external math dependencies to make the gap matrix look complete.
 - Replacing the existing local experimentation or forecasting primitives that are already adequate as foundations.
@@ -51,9 +53,9 @@ The repo already has a centralized math layer in `@acme/lib/math`, but current s
   - For thin ecosystem areas, a held evaluation is better than a bad dependency.
 
 ## Outcome Contract
-- **Why:** The startup loop is asking for mathematically stronger decision-making, but the repo needs a code-true inventory of centralized math capability first. Today there is a real central math layer, but startup-loop adoption is narrow and several core decision domains still lack repo-worthy primitives.
+- **Why:** The startup loop is asking for mathematically stronger decision-making, but the repo needs more than a capability inventory. It needs an honest account of what changed, what still does not influence live decisions, and what must be built before this math thread can count toward self-improving status.
 - **Intended Outcome Type:** operational
-- **Intended Outcome Statement:** The repo has a code-backed inventory of centralized math capability, a clear gap matrix against startup-loop self-improvement needs, and repo-admitted open-source package solutions for the math fundamentals that have clean Node/TypeScript fit.
+- **Intended Outcome Statement:** The repo has a code-backed inventory of centralized math capability, a hard assessment of the post-admission system, and a planning-ready set of requirements to turn centralized math foundations into live self-improving startup-loop behavior.
 - **Source:** operator
 
 ## Evidence Audit (Current State)
@@ -77,10 +79,16 @@ The repo already has a centralized math layer in `@acme/lib/math`, but current s
 ### Patterns & Conventions Observed
 - The centralized math layer is broad, but live startup-loop use is extremely narrow.
   - Evidence: repo search for `@acme/lib/math` imports in `scripts/src/startup-loop` found only `betaBinomialPosterior` usage in `self-evolving-scoring.ts` and `self-evolving-dashboard.ts`.
+- The startup-loop still bypasses the central package surface and imports math directly from source files.
+  - Evidence: `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
 - The repo previously documented math modules as zero-dependency only, which became false once advanced external adapters were admitted.
   - Evidence: `packages/lib/README.md`
 - Existing local math capability already covers several fundamentals the startup loop is not using yet.
   - Evidence: `packages/lib/src/math/experimentation/index.ts`, `packages/lib/src/math/forecasting/index.ts`, `packages/lib/src/math/similarity/index.ts`
+- The newly admitted graph, optimization, and survival modules centralize imports, but do not yet expose repo-owned semantics beyond thin re-export wrappers.
+  - Evidence: `packages/lib/src/math/graph/index.ts`, `packages/lib/src/math/optimization/index.ts`, `packages/lib/src/math/survival/index.ts`
+- The new math admissions currently lack dedicated test coverage.
+  - Evidence: repo test search under `packages/lib` found no graph, optimization, or survival tests.
 - The missing central math areas do not all have equally credible Node/TypeScript packages.
   - Evidence: package research results summarized below.
 
@@ -96,6 +104,14 @@ The repo already has a centralized math layer in `@acme/lib/math`, but current s
   - Contextual bandits: `simplebandit@0.1.7`, `@vowpalwabbit/vowpalwabbit@0.0.9`
   - Causal inference: `causal-inference.js@1.0.11`
   - Control: `advanced-pid-controller@1.0.1`
+
+## Current Process Resulting From This Fact-Find
+1. `lp-do-ideas` routed the operator request into a processed `dispatch.v2` fact-find entry in `docs/business-os/startup-loop/ideas/trial/queue-state.json`.
+2. The resulting fact-find established the centralized math capability inventory and recorded package admissions plus held categories in `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`.
+3. The repo widened the centralized math surface by exporting graph, optimization, and survival modules from `packages/lib/src/math/index.ts`.
+4. The admitted modules currently act as central package adapters, but they remain thin wrappers over Graphology, YALPS, and Kaplan-Meier package APIs.
+5. The live startup-loop runtime still performs scoring and dashboard math almost entirely through the existing experimentation primitive `betaBinomialPosterior`.
+6. The practical result is a better central math substrate, not yet a stronger self-improving decision loop.
 
 ## Central Capability Matrix
 | Domain | Current centralized capability in code | Startup-loop live use observed | Gap assessment | Package solution status |
@@ -133,6 +149,44 @@ The repo already has a centralized math layer in `@acme/lib/math`, but current s
 - Game theory / mechanism design still has no selected central package path.
   - Current conclusion: leave as conceptual gap until there is an actual startup-loop policy problem that needs it.
 
+## Issues Blocking Self-Improving Status
+1. The startup-loop does not yet use the newly admitted math modules in live policy or routing decisions.
+   - Evidence: observed startup-loop imports remain limited to `betaBinomialPosterior` in `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts` and `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`.
+   - Practical consequence: this work improved library capability, not loop effectiveness.
+   - Required follow-on: wire graph, optimization, and survival into named decision seams with acceptance criteria tied to runtime behavior.
+2. The new centralized modules are mostly raw package passthroughs rather than repo-owned mathematical interfaces.
+   - Evidence: `packages/lib/src/math/graph/index.ts`, `packages/lib/src/math/optimization/index.ts`, `packages/lib/src/math/survival/index.ts`
+   - Practical consequence: the repo has centralized import paths, but not stable semantics, defaults, or validation contracts.
+   - Required follow-on: replace broad re-exports with narrower repo-level helpers and typed contracts for startup-loop use cases.
+3. The startup-loop still bypasses the intended package boundary and imports math directly from source files.
+   - Evidence: `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+   - Practical consequence: centralized capability can drift between source layout and package contract, undermining maintainability and adoption discipline.
+   - Required follow-on: move startup-loop consumers onto package entry points or a stable workspace alias.
+4. Verification is weaker than the repo now implies.
+   - Evidence: `packages/lib/README.md`; no dedicated graph, optimization, or survival tests were found under `packages/lib/__tests__` or `packages/lib/src/**/__tests__`.
+   - Practical consequence: the repo now documents advanced math capability without proving wrapper behavior, exports, or package-version assumptions through tests.
+   - Required follow-on: add dedicated tests for the new modules and export-surface coverage for the new subpaths.
+5. The process still risks stopping at discovery rather than forcing follow-through.
+   - Evidence: this fact-find recommends follow-on integration and additional fact-finds, but no child dispatches or companion plan docs were created by this thread.
+   - Practical consequence: the repo can truthfully say “we identified the gap” while leaving the actual route to self-improving behavior unowned.
+   - Required follow-on: route explicit child work items for integration, contextual bandits, and causal/control strategy.
+6. The survival admission is narrower than the surrounding ambition.
+   - Evidence: the capability matrix closes survival only “at Kaplan-Meier level”.
+   - Practical consequence: time-to-event capability exists, but hazard modelling and covariate-aware survival are still absent.
+   - Required follow-on: keep claims narrow and plan the next survival layer only when a concrete startup-loop use site needs it.
+
+## Self-Improving Status Gate For This Thread
+This thread can credibly count toward startup-loop self-improving status only when all of the following are true in code:
+
+1. At least one live startup-loop prioritization or allocation seam uses centralized optimization rather than pure heuristic score sorting.
+2. At least one live dependency or bottleneck seam uses centralized graph analysis rather than manual structural reasoning.
+3. At least one live time-to-event seam uses centralized survival analysis for slip, churn, close, or escalation forecasting.
+4. Startup-loop math consumers use the central package surface rather than direct `packages/lib/src/...` imports.
+5. The admitted graph, optimization, and survival modules expose repo-owned helper contracts with dedicated tests.
+6. Follow-on mathematical gaps that were intentionally held are explicitly routed into tracked work rather than left as narrative “later”.
+
+Until those conditions hold, the correct claim is: the repo has improved centralized mathematical foundations, but the startup-loop is not yet mathematically self-improving.
+
 ## Repo Changes Made
 - Added centralized graph-analysis wrappers in `packages/lib/src/math/graph/index.ts`.
 - Added centralized constrained-optimization wrappers in `packages/lib/src/math/optimization/index.ts`.
@@ -151,6 +205,8 @@ The repo already has a centralized math layer in `@acme/lib/math`, but current s
   - A: Yes. They were not present under `packages/lib/src/math` before this work and are now admitted.
 - Q: Did package research find clean solutions for every requested mathematical gap?
   - A: No. Contextual bandits, causal inference, and control still have weaker package fit than graph, optimization, and survival.
+- Q: Did this fact-find make the startup-loop mathematically self-improving?
+  - A: No. It created centralized foundations and a better gap map, but live startup-loop decisions still do not materially run on the newly admitted math modules.
 
 ### Open (Operator Input Required)
 None.
@@ -158,20 +214,23 @@ None.
 ## Confidence Inputs
 - Implementation: 92%
   - Basis: central wrappers and dependency admissions are now in repo and localized.
-- Approach: 88%
-  - Basis: graph, optimization, and survival package admissions are strong; causal and control remain intentionally unresolved rather than papered over.
-- Impact: 86%
-  - Basis: this closes real central capability gaps, but the startup-loop will still need downstream integration work before decisions materially improve.
-- Delivery-Readiness: 90%
-  - Basis: the fact-find is planning-ready and the repo now contains the admitted foundational modules.
-- Testability: 84%
-  - Basis: wrapper modules are easy to typecheck and lint, though no local Jest execution is permitted.
+- Approach: 90%
+  - Basis: the revised brief now separates foundation admission from real loop-effectiveness requirements and does not overclaim.
+- Impact: 68%
+  - Basis: central capability improved, but live decision quality has not yet moved because the new math is not wired into runtime seams.
+- Delivery-Readiness: 93%
+  - Basis: the fact-find is now stricter and planning-ready for the actual work required to reach self-improving status.
+- Testability: 72%
+  - Basis: wrapper modules are easy to typecheck and lint, but new dedicated tests are still missing and local Jest execution is not permitted.
 
 ## Risks
 | Risk | Likelihood | Impact | Mitigation / Open Question |
 |---|---|---|---|
 | Admitting third-party math packages without a central wrapper would scatter package APIs through the repo | Medium | High | Keep all admissions behind `@acme/lib/math/*` entry points |
 | The repo starts claiming stronger mathematical capability than startup-loop runtime actually uses | High | Medium | Keep adoption and usage explicitly separate in planning docs |
+| Thin wrapper modules get mistaken for stable repo-owned mathematical APIs | High | Medium | Harden thin re-exports into narrower helper contracts before broad adoption |
+| Direct source-file imports bypass the central package boundary and create silent contract drift | Medium | High | Move startup-loop math consumers onto exported package surfaces |
+| Missing test coverage lets third-party package changes break the admitted math surface silently | Medium | High | Add module-level and export-surface tests for graph, optimization, and survival |
 | Contextual-bandit or causal package pressure leads to admitting weak dependencies later | Medium | High | Require a concrete use-site, package-quality review, and validation plan before admission |
 | README contract drift creates false expectations for package policy | Medium | Medium | Keep central math documentation explicit about core-vs-adapter dependency policy |
 
@@ -180,7 +239,10 @@ None.
   - New mathematical capability enters through `@acme/lib/math`.
   - Prefer narrow adapters over raw package re-export sprawl in app code.
   - Treat “package found” and “package admitted” as different lifecycle states.
-- Next planning cut should likely split into:
-  - one integration-focused plan to wire optimization/graph/survival into startup-loop decisions,
+  - Do not claim self-improving status from package admission alone; require live runtime adoption plus tests.
+- Required next planning cut should split into:
+  - one integration-focused plan to wire optimization, graph, and survival into explicit startup-loop decision seams,
+  - one plan or build thread to harden the new math modules from thin wrappers into repo-owned helper contracts with tests,
+  - one small cleanup thread to remove direct startup-loop imports from `packages/lib/src/...`,
   - one fact-find on contextual bandits,
-  - one fact-find on causal inference package strategy.
+  - one fact-find on causal inference and control package strategy.

@@ -1,7 +1,7 @@
 /* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { formatAuditDate, formatQuantityDelta, type LedgerEvent } from "../../lib/inventory-utils";
 
@@ -24,6 +24,10 @@ export function StockLedger({ shop }: StockLedgerProps) {
   const [typeFilter, setTypeFilter] = useState<LedgerEvent["type"] | "">("");
   const [nextCursor, setNextCursor] = useState<string | null>(null);
   const [loadingMore, setLoadingMore] = useState(false);
+  const loadMoreControllerRef = useRef<AbortController | null>(null);
+
+  // Abort any in-flight loadMore when the component unmounts
+  useEffect(() => () => { loadMoreControllerRef.current?.abort(); }, []);
 
   // Debounce SKU filter to avoid a fetch on every keystroke
   useEffect(() => {
@@ -71,16 +75,21 @@ export function StockLedger({ shop }: StockLedgerProps) {
 
   async function loadMore() {
     if (!shop || !nextCursor) return;
+    loadMoreControllerRef.current?.abort();
+    const controller = new AbortController();
+    loadMoreControllerRef.current = controller;
     setLoadingMore(true);
     try {
       const resp = await fetch(
         `/api/inventory/${encodeURIComponent(shop)}/ledger?${buildLedgerParams(50, nextCursor).toString()}`,
+        { signal: controller.signal },
       );
       const data = (await resp.json()) as { events?: LedgerEvent[]; nextCursor?: string | null };
       setEvents((prev) => [...prev, ...(data.events ?? [])]);
       setNextCursor(data.nextCursor ?? null);
-    } catch {
-      // silently ignore pagination errors
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") return;
+      // silently ignore other pagination errors
     } finally {
       setLoadingMore(false);
     }

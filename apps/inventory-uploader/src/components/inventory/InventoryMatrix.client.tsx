@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { type InventoryItem, variantLabel } from "../../lib/inventory-utils";
+import { extractArray, type InventoryItem, variantLabel } from "../../lib/inventory-utils";
 
 type SortKey = "sku" | "quantity";
 
@@ -35,10 +35,7 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
     fetch(`/api/inventory/${encodeURIComponent(shop)}`, { signal: controller.signal })
       .then((r) => r.json())
       .then((data: unknown) => {
-        const list =
-          data && typeof data === "object" && "items" in data && Array.isArray((data as { items: unknown }).items)
-            ? ((data as { items: InventoryItem[] }).items)
-            : [];
+        const list = extractArray<InventoryItem>(data, "items");
         setItems(list);
       })
       .catch((err: unknown) => {

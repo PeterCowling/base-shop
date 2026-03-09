@@ -62,6 +62,14 @@ export function formatQuantityDelta(delta: number): string {
   return delta > 0 ? `+${delta}` : String(delta);
 }
 
+/** Safely extracts a typed array from a JSON response field. Returns [] when the field is missing or not an array. */
+export function extractArray<T>(data: unknown, key: string): T[] {
+  if (data && typeof data === "object" && key in data && Array.isArray((data as Record<string, unknown>)[key])) {
+    return (data as Record<string, unknown>)[key] as T[];
+  }
+  return [];
+}
+
 export function formatAuditDate(iso: string): string {
   try {
     return new Date(iso).toLocaleString(undefined, {

@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useState } from "react";
 
-import { SHOP_STORAGE_KEY } from "../../lib/inventory-utils";
+import { extractArray, SHOP_STORAGE_KEY } from "../../lib/inventory-utils";
 
 type ShopSelectorProps = {
   selectedShop: string | null;
@@ -19,10 +19,7 @@ export function ShopSelector({ selectedShop, onSelect }: ShopSelectorProps) {
     fetch("/api/inventory/shops", { signal: controller.signal })
       .then((r) => r.json())
       .then((data: unknown) => {
-        const list =
-          data && typeof data === "object" && "shops" in data && Array.isArray((data as { shops: unknown }).shops)
-            ? ((data as { shops: string[] }).shops)
-            : [];
+        const list = extractArray<string>(data, "shops");
         setShops(list);
 
         // Restore persisted shop if still valid

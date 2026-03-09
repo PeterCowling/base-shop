@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { type InventoryItem, variantLabel } from "../../lib/inventory-utils";
+import { extractArray, type InventoryItem, variantLabel } from "../../lib/inventory-utils";
 
 type InventoryEditorProps = {
   shop: string | null;
@@ -135,13 +135,7 @@ export function InventoryEditor({ shop, sku, onSaved }: InventoryEditorProps) {
     fetch(`/api/inventory/${encodeURIComponent(shop)}/${encodeURIComponent(sku)}`, { signal: controller.signal })
       .then((r) => r.json())
       .then((data: unknown) => {
-        const list =
-          data &&
-          typeof data === "object" &&
-          "variants" in data &&
-          Array.isArray((data as { variants: unknown }).variants)
-            ? (data as { variants: InventoryItem[] }).variants
-            : [];
+        const list = extractArray<InventoryItem>(data, "variants");
         setVariants(list);
       })
       .catch((err: unknown) => {

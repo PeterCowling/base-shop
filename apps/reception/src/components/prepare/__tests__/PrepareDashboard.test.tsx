@@ -89,8 +89,8 @@ async function loadComp(opts: LoadOpts = {}) {
     useAuth: () => ({ user: { user_name: "alice" } }),
   }));
 
-  // Simplify DateSelector rendering
-  jest.doMock("../DateSelectorPP", () => ({
+  // Simplify date selector rendering
+  jest.doMock("../../common/DateSelector", () => ({
     __esModule: true,
     default: function Mock({ selectedDate }: { selectedDate: string }) {
       return <div data-testid="date-selector">{selectedDate}</div>;
@@ -144,4 +144,3 @@ describe("PrepareDashboard", () => {
     expect(screen.getByText("Clean", { selector: "span" })).toBeInTheDocument();
   });
 });
-

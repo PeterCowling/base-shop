@@ -4,7 +4,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { formatDateForInput } from "../../../utils/dateUtils";
-import DateSel from "../DateSel";
+import DateSelector from "../../common/DateSelector";
 
 // Mock loan-related hooks for determinism
 jest.mock("../../../hooks/data/useLoans", () => ({
@@ -14,11 +14,20 @@ jest.mock("../../../hooks/data/useLoans", () => ({
 jest.mock("../../../context/LoanDataContext", () => ({
   useLoanData: () => ({ loans: {}, loading: false, error: null }),
 }));
+jest.mock("../../../context/AuthContext", () => ({
+  useAuth: () => ({ user: { user_name: "user", roles: ["owner"] } }),
+}));
 
-describe("DateSel", () => {
+describe("DateSelector", () => {
   it("calls onDateChange for quick selections", async () => {
     const onDateChange = jest.fn();
-    render(<DateSel selectedDate="" onDateChange={onDateChange} username="user" />);
+    render(
+      <DateSelector
+        selectedDate=""
+        onDateChange={onDateChange}
+        username="user"
+      />,
+    );
 
     const base = new Date();
     const today = formatDateForInput(base);
@@ -33,4 +42,3 @@ describe("DateSel", () => {
     expect(onDateChange).toHaveBeenLastCalledWith(yesterday);
   });
 });
-

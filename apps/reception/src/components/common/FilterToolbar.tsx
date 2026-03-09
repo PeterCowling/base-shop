@@ -6,8 +6,8 @@ export interface FilterToolbarProps {
    * Renders as a wrapping horizontal flex row.
    *
    * Examples of valid children:
-   * - checkins/DateSelector (role-aware, popup calendar)
-   * - checkout/DaySelector (unrestricted, inline calendar)
+   * - common/DateSelector (role-aware, popup calendar)
+   * - common/DateSelector (unrestricted, inline calendar)
    * - "Rooms Ready" toggle button
    * - Search inputs
    *

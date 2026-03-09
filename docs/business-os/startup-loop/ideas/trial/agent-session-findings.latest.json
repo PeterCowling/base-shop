@@ -1,48 +1,24 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-09T08:20:57.151Z",
+  "generated_at": "2026-03-09T10:01:39.454Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
-  "sessions_with_findings": 17,
+  "sessions_with_findings": 16,
   "findings": [
     {
-      "session_id": "d576d25b-e024-4673-abb5-b249f3191212",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/d576d25b-e024-4673-abb5-b249f3191212.jsonl",
-      "updated_at": "2026-03-09T08:20:55.681Z",
+      "session_id": "bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/bd0d843e-9c01-4f9f-bee6-ea55202e1d1f.jsonl",
+      "updated_at": "2026-03-09T10:01:21.947Z",
       "findings": [
-        "Let me check one more to confirm the signature is consistent, then fix all issues.",
-        "The sync/route.ts edit failed earlier since the file hadn't been read yet.",
-        "Let me now look at the remaining unfixed issues — the three most impactful ones from the review.",
-        "Now run typecheck and lint to catch any issues:",
-        "Now remove the local `normalizeCatalogPath` definition and add `\"would_unpublish\"` to the error code union:",
-        "Now parallelize `findMissingSyncScripts` in sync/route.ts:",
-        "Fixed `ProductsErrorCode` union** — `\"would_unpublish\"` was already present but the type was unordered; sorted alphabetically for consistency."
-      ]
-    },
-    {
-      "session_id": "0977ecdd-757b-4e3b-8eef-937c2d6171a7",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/0977ecdd-757b-4e3b-8eef-937c2d6171a7.jsonl",
-      "updated_at": "2026-03-09T08:20:55.384Z",
-      "findings": [
-        "Many page routes reference the department/category values — I need to check how they use `XaDepartment` before changing the type to avoid cascading typecheck failures.",
-        "Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page.tsx` use string literals).",
-        "Pre-existing typecheck failures in `@acme/ui` (not my changes) are blocking the commit hook.",
-        "Pre-existing issue — xa-b lint script references a `functions` dir that doesn't exist.",
-        "functions/` dir exists but is empty — ESLint errors on no-match.",
-        "Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header needs `sticky top-0 z-50`.",
-        "The token issue is a local auth problem — the first deploy used an inherited shell env var.",
-        "Key fixes: cart qty bug (critical), dead variables, memoization gaps, and redundant patterns.",
-        "Now I'll apply all the clear fixes: **Fix 1 (Critical bug): `setQty` always setting qty to 1**",
-        "Now typecheck to catch any issues before committing:",
-        "Now fix liveCatalog.ts — clear `snapshotPromise` on error so retry is possible:",
-        "Efficiency**: `liveCatalog.ts` clears `snapshotPromise` on fetch error, allowing retry on next render"
+        "Now let me fix the clear, high-confidence issues.",
+        "Let me fix the clear, bounded issues now and read the relevant files first."
       ]
     },
     {
       "session_id": "950278a6-791c-4c65-941b-e1902ae59893",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/950278a6-791c-4c65-941b-e1902ae59893.jsonl",
-      "updated_at": "2026-03-09T08:20:37.411Z",
+      "updated_at": "2026-03-09T09:44:13.802Z",
       "findings": [
         "Here's what it actually means in plain language: --- **\"central inventory is not yet a drop-in authority\"** You can't just point the caryina shop at a shared inventory store and have it work.",
         "I'll go issue by issue, roughly in order of severity.",
@@ -81,13 +57,26 @@
         "Remaining routes still using inline error handling instead of `apiError` (`health/db`, `[shop]/[sku]`, `export`, `import`, `shops`)",
         "Route files `[sku]`, `export`, `import`, `health/db` — adopt `apiError`",
         "Now check whether `[shop]/[sku]/route.ts` still needs `NextResponse` after the two catches became `apiError(err)`:",
-        "Route files** — `health/db`, `[shop]/[sku]` (×2), `export`, `import` all still had the inline `err instanceof Error ?"
+        "Route files** — `health/db`, `[shop]/[sku]` (×2), `export`, `import` all still had the inline `err instanceof Error ?",
+        "shops/route.ts`** — raw error string instead of `apiError(err)`",
+        "shops/route.ts`**: replaced raw `{ ok: false, error: \"failed\" }` with `apiError(err)` — now consistent with all other routes",
+        "TypeScript narrowing issue with `!parsed.ok` — need `parsed.ok === false` for proper narrowing.",
+        "That was the failed first attempt — already handled with the narrowing fix.",
+        "CSV export sanitization bug** — fields containing commas/quotes produce invalid CSV",
+        "Now update StockAdjustments and StockInflows to use both `Promise.allSettled` and `getApiErrorMessage`:",
+        "CSV export bug fixed** — `sanitizeCsv` now properly RFC-4180 quotes fields containing commas, double-quotes, or newlines",
+        "isFetchAbortError()` utility** — 5 identical `err instanceof Error && err.name === \"AbortError\"` guards across the codebase",
+        "The one genuine fix: **`isFetchAbortError()`** — 5 identical guard clauses.",
+        "Now applying both fixes — add `isFetchAbortError` to inventory-utils and propagate to all 5 call sites, plus remove the stray whitespace in InventoryImport:",
+        "Now let me read the specific files flagged for real bugs before deciding what to fix.",
+        "import/route.ts` line 120: `req.json()` without `.catch()`** → genuine bug: malformed JSON in `application/json` path returns 500 (outer catch → `apiError`) instead of 400, inconsistent with adjustments/inflows routes ✓",
+        "The one genuine bug — `req.json()` without `.catch()` in the import route returning 500 instead of 400 on malformed JSON — is now fixed and consistent with the adjustments/inflows routes."
       ]
     },
     {
       "session_id": "a66a30a9-2c57-4471-b5af-38cff589a683",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/a66a30a9-2c57-4471-b5af-38cff589a683.jsonl",
-      "updated_at": "2026-03-09T08:18:44.567Z",
+      "updated_at": "2026-03-09T09:16:35.988Z",
       "findings": [
         "From the skill description: *\"Review changed code for reuse, quality, and efficiency, then fix any issues found.\"*",
         "The description shown in the system prompt is the complete definition: > **simplify**: Review changed code for reuse, quality, and efficiency, then fix any issues found.",
@@ -107,15 +96,57 @@
         "Extracted shared `mapAuthError()` — removed copy-paste between `firebaseAuth.ts` and `managerReauth.ts`",
         "useRangeSubscription` primitive extracted; `useRoomsByDate` + `useCheckinsByDate` both use it; `loading` dep-array bug fixed",
         "But there's a CI typecheck failure flagged: `extractSenderDomain` not exported in `admission.ts`.",
-        "extractSenderDomain` is properly exported — the CI failure the agent saw was transient."
+        "extractSenderDomain` is properly exported — the CI failure the agent saw was transient.",
+        "The `extractSenderDomain` issue was transient on an older SHA."
       ]
     },
     {
-      "session_id": "bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/bd0d843e-9c01-4f9f-bee6-ea55202e1d1f.jsonl",
-      "updated_at": "2026-03-09T08:09:03.348Z",
+      "session_id": "0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/0977ecdd-757b-4e3b-8eef-937c2d6171a7.jsonl",
+      "updated_at": "2026-03-09T09:29:50.645Z",
       "findings": [
-        "Now let me fix the clear, high-confidence issues."
+        "Many page routes reference the department/category values — I need to check how they use `XaDepartment` before changing the type to avoid cascading typecheck failures.",
+        "Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page.tsx` use string literals).",
+        "Pre-existing typecheck failures in `@acme/ui` (not my changes) are blocking the commit hook.",
+        "Pre-existing issue — xa-b lint script references a `functions` dir that doesn't exist.",
+        "functions/` dir exists but is empty — ESLint errors on no-match.",
+        "Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header needs `sticky top-0 z-50`.",
+        "The token issue is a local auth problem — the first deploy used an inherited shell env var.",
+        "Key fixes: cart qty bug (critical), dead variables, memoization gaps, and redundant patterns.",
+        "Now I'll apply all the clear fixes: **Fix 1 (Critical bug): `setQty` always setting qty to 1**",
+        "Now typecheck to catch any issues before committing:",
+        "Now fix liveCatalog.ts — clear `snapshotPromise` on error so retry is possible:",
+        "Efficiency**: `liveCatalog.ts` clears `snapshotPromise` on fetch error, allowing retry on next render",
+        "Now I'll read the relevant files and fix the actionable issues.",
+        "Also wrap `toQuickAddErrorMessage` in `useCallback` since `handleQuickAdd` depends on it:",
+        "XaProductCard.tsx`** — `images` filter wrapped in `useMemo`; `jewelryDetail` IIFE replaced with `useMemo`; `toQuickAddErrorMessage` and `handleQuickAdd` wrapped in `useCallback`",
+        "Now run the results-review and pattern-reflection sidecars, then bug-scan, then process-improvements:",
+        "Sidecars are advisory/fail-open (path resolution issue — they looked in `scripts/docs/` which doesn't exist).",
+        "Advisory/fail-open — HBAG startup-state.json doesn't exist.",
+        "The `_slowQueries` unbounded issue and the 3-boolean sprawl are the main ones; plus the GridSection dedup:",
+        "Now let me read the full sync/route.ts and find the `CatalogDraftContractError` class:",
+        "instanceof CatalogDraftContractError` in all 3 files",
+        "Now update `buildPublishContractErrorResponse` to use the typed class directly:",
+        "Now fix sync/route.ts — add `CatalogDraftContractError` to import and fix the `instanceof` check and the `validateCurrencyRates` wrapper:",
+        "Now fix currency-rates/route.ts — add `CatalogDraftContractError` import and fix both `instanceof` checks:",
+        "Now also check the spacing issue in sync/route.ts import line 41 (space before `parseCurrencyRatesOrNull`):",
+        "publish/route.ts`: `{ error: \"currency_rates_invalid\" | \"catalog_publish_unconfigured\", recovery: ... }`"
+      ]
+    },
+    {
+      "session_id": "d576d25b-e024-4673-abb5-b249f3191212",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/d576d25b-e024-4673-abb5-b249f3191212.jsonl",
+      "updated_at": "2026-03-09T08:37:59.225Z",
+      "findings": [
+        "Let me check one more to confirm the signature is consistent, then fix all issues.",
+        "The sync/route.ts edit failed earlier since the file hadn't been read yet.",
+        "Let me now look at the remaining unfixed issues — the three most impactful ones from the review.",
+        "Now run typecheck and lint to catch any issues:",
+        "Now remove the local `normalizeCatalogPath` definition and add `\"would_unpublish\"` to the error code union:",
+        "Now parallelize `findMissingSyncScripts` in sync/route.ts:",
+        "Fixed `ProductsErrorCode` union** — `\"would_unpublish\"` was already present but the type was unordered; sorted alphabetically for consistency.",
+        "Now remove the now-unused `InvalidJsonError` import from `currency-rates/route.ts`:",
+        "Dead duplicate catch branch removed** in `currency-rates/route.ts` — the `InvalidJsonError` guard was followed by an identical fallback return, making the guard dead code."
       ]
     },
     {
@@ -645,28 +676,6 @@
         "Lint: 0 errors, 53 warnings (all pre-existing).",
         "Now self-evolving bridge, then reflection debt, bug scan, process improvements — all in parallel where possible:",
         "e9108519a5` — Wave 1: fail-closed auth (TASK-01), check-in-code auth + rate limit + crypto hardening (TASK-02), Firebase rules audit (TASK-03)"
-      ]
-    },
-    {
-      "session_id": "914cd8a3-f399-4e87-bafb-ae405a9f9b6f",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/914cd8a3-f399-4e87-bafb-ae405a9f9b6f.jsonl",
-      "updated_at": "2026-03-07T09:48:04.545Z",
-      "findings": [
-        "OKLCH colors are perceptually better for the multi-brand theming system.** The `@themes/` token packages currently use raw HSL triplets and `hsl()` wrappers (as noted in MEMORY — this caused the reception shade token bug).",
-        "OKLCH eliminates the gamut-clamping and lightness-uniformity issues inherent in HSL, which matters as brikette, reception, and future apps each have distinct palettes.",
-        "Turbopack `resolveAlias` constraints conflict with how shadcn's CSS imports work.** The memory note on Turbopack bans absolute-path aliases for `@acme/design-system` due to \"server relative imports not implemented\" errors.",
-        "Step 4 — `@theme inline` evaluation (half day, reception only first) This is the most sensitive step given the documented shade token cascade bug (MEMORY).",
-        "So the real gate is: **you can't fully adopt `@theme inline` until tokens are pre-wrapped**.",
-        "One snag: the push is blocked — there are staged uncommitted changes with lint errors in `apps/prime` from other agent activity.",
-        "Import sort errors in two files — autofix will handle them:",
-        "apps/prime` has 2 import-sort lint errors from the prime hardening agent (in `functions/api/direct-message.ts` and `direct-messages.ts`) — autofix ran but I hadn't confirmed before you interrupted",
-        "apps/prime/functions/api/direct-message.ts` — unsorted imports (lint error)",
-        "Push failed — reception lint is breaking the pre-push hook.",
-        "One thing I was mid-investigation on:** Reception lint was failing when the first push attempt ran.",
-        "Now let me verify no TypeScript errors are introduced in the affected packages:",
-        "Lint has only pre-existing warnings (no errors).",
-        "The pre-push hook is running its own contrast check that's failing.",
-        "The validator script's `normalizeColor` can't parse oklch — returns null → \"skipped\" → exit 1."
       ]
     }
   ]

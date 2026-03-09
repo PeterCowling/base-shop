@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-09T09:52:30.750Z",
+  "last_updated": "2026-03-09T10:02:15.677Z",
   "counts": {
-    "enqueued": 262,
-    "processed": 53,
+    "enqueued": 261,
+    "processed": 54,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 135,
-    "fact_find_ready": 315,
+    "completed": 136,
+    "fact_find_ready": 316,
     "micro_build_ready": 25,
-    "total": 477
+    "total": 478
   },
   "dispatches": [
     {
@@ -19893,7 +19893,7 @@
         "code-ref: apps/prime/src/components/meal-orders/EvDrinkOrderWizard.tsx"
       ],
       "created_at": "2026-03-09T14:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Two files, clear extraction pattern, no architectural decision needed. The RadioStep component shape is obvious from the existing render functions. Directly buildable.",
       "intended_outcome": {
         "type": "operational",
@@ -19904,7 +19904,9 @@
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/prime-radiostep-extraction/micro-build.md",
         "stamped_at": "2026-03-09T14:00:00.000Z"
-      }
+      },
+      "completed_at": "2026-03-09T10:55:00.000Z",
+      "outcome": "BreakfastOrderWizard and EvDrinkOrderWizard radio-group step renderers replaced by a shared RadioStep component."
     },
     {
       "schema_version": "dispatch.v2",
@@ -20008,12 +20010,22 @@
         "code-ref: apps/prime/src/hooks/pureData/"
       ],
       "created_at": "2026-03-09T14:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "why": "Cross-cutting change touching 15+ files. The right fix (shared factory vs type alias vs direct rqRefetch exposure) depends on whether callers use the return value and how React Query's refetch type is consumed downstream. Needs fact-finding before bulk-editing 15 files.",
       "intended_outcome": {
         "type": "operational",
         "statement": "pureData hook refetch boilerplate eliminated via a shared factory or type-compatible simplification, so adding a new pureData hook requires ~10 lines instead of ~50.",
         "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-refetch-boilerplate",
+        "target_path": "docs/plans/prime-refetch-boilerplate/fact-find.md",
+        "processed_at": "2026-03-09T09:57:59.896Z",
+        "fact_find_slug": "prime-refetch-boilerplate",
+        "fact_find_path": "docs/plans/prime-refetch-boilerplate/fact-find.md"
       }
     },
     {
@@ -20091,6 +20103,50 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:48:00.312Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309100139-0459",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "bc3992a1f6a9164b64ec8c38daf4e92c92452bb7",
+      "after_sha": "51bbb67b2998cf55d3432b12105fae64f2278d38",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:51bbb67b2998cf55d3432b12105fae64f2278d38",
+      "anchor_key": "but-it-has-three-issues-that-matter-before-planning-proceeds-the-underspecified-consumes-cms-integration-m",
+      "cluster_key": "bos:unknown:but-it-has-three-issues-that-matter-before-planning-proceeds-the-underspecified-consumes-cms-integration-m:BOS-BOS-AGENT_SESSION_FINDINGS:51bbb67b2998cf55d3432b12105fae64f2278d38",
+      "cluster_fingerprint": "30dfba7d11a6fe24c210e5216e3a1f7697c66fa8ddeb21b86343517ed8866cad",
+      "lineage_depth": 0,
+      "area_anchor": "But it has three issues that matter before planning proceeds: the underspecified \"consumes CMS\" integration m…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: But it has three issues that matter before planning proceeds: the underspecified \"consumes CMS\" integration m…; The round 1 fix had correctly blocked TASK-10 from depending on JSONL, but the plan's Assumptions block still…; After migration, this read returns stale/empty data → duplicate adjustments processed without error.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: But it has three issues that matter before planning proceeds: the underspecified \"consumes CMS\" integration m…; The round 1 fix had correctly blocked TASK-10 from depending on JSONL, but the plan's Assumptions block still…; After migration, this read returns stale/empty data → duplicate adjustments processed without error.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T10:01:39.458Z",
       "queue_state": "enqueued",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {

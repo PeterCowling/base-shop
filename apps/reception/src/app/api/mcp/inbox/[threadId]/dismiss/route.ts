@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { extractSenderDomain } from "@/lib/inbox/admission";
 import { parseThreadMetadata } from "@/lib/inbox/api-models.server";
 import {
   conflictResponse,
@@ -18,12 +19,6 @@ import {
 import { recordInboxEvent } from "@/lib/inbox/telemetry.server";
 
 import { requireStaffAuth } from "../../../_shared/staff-auth";
-
-function extractSenderDomain(email: string | null | undefined): string | null {
-  if (!email) return null;
-  const atIndex = email.lastIndexOf("@");
-  return atIndex >= 0 ? email.slice(atIndex + 1) : null;
-}
 
 export async function POST(
   request: Request,
@@ -75,7 +70,7 @@ export async function POST(
     );
     const latestInbound = inboundMessages.at(-1);
     const senderEmail = latestInbound?.sender_email ?? null;
-    const senderDomain = extractSenderDomain(senderEmail);
+    const senderDomain = senderEmail ? extractSenderDomain(senderEmail) : null;
 
     // Record feedback data first — this is the primary value of the dismiss action.
     // If this fails, the thread status is unchanged and the user can retry.

@@ -5,7 +5,10 @@ import type { Locale, ProductPublication, SKU } from "@acme/types";
 import { validateShopName } from "../shops";
 import type { InventoryItem } from "../types/inventory";
 
-import { readInventory } from "./inventory.server";
+import {
+  type InventoryRepositoryBackend,
+  readInventory,
+} from "./inventory.server";
 import { readRepo } from "./products.server";
 
 function localizedText(
@@ -99,11 +102,19 @@ function skuFromProduct(args: {
 export async function listShopSkus(
   shop: string,
   locale: Locale,
-  { includeDraft = false }: { includeDraft?: boolean } = {},
+  {
+    includeDraft = false,
+    inventoryBackend,
+  }: {
+    includeDraft?: boolean;
+    inventoryBackend?: InventoryRepositoryBackend;
+  } = {},
 ): Promise<SKU[]> {
   const safeShop = validateShopName(shop);
   const products = await readRepo<ProductPublication>(safeShop);
-  const inventory = await readInventory(safeShop).catch(() => [] as InventoryItem[]);
+  const inventory = await readInventory(safeShop, { backend: inventoryBackend }).catch(
+    () => [] as InventoryItem[],
+  );
 
   const visible = products.filter((p) => productIsVisible(p, { includeDraft }));
 
@@ -121,14 +132,22 @@ export async function getShopSkuBySlug(
   shop: string,
   slugOrId: string,
   locale: Locale,
-  { includeDraft = false }: { includeDraft?: boolean } = {},
+  {
+    includeDraft = false,
+    inventoryBackend,
+  }: {
+    includeDraft?: boolean;
+    inventoryBackend?: InventoryRepositoryBackend;
+  } = {},
 ): Promise<SKU | null> {
   const safeShop = validateShopName(shop);
   const products = await readRepo<ProductPublication>(safeShop);
   const product = products.find((p) => p.sku === slugOrId || p.id === slugOrId);
   if (!product) return null;
   if (!productIsVisible(product, { includeDraft })) return null;
-  const inventory = await readInventory(safeShop).catch(() => [] as InventoryItem[]);
+  const inventory = await readInventory(safeShop, { backend: inventoryBackend }).catch(
+    () => [] as InventoryItem[],
+  );
   return skuFromProduct({
     shop: safeShop,
     locale,
@@ -141,8 +160,16 @@ export async function getShopSkuById(
   shop: string,
   id: string,
   locale: Locale,
-  { includeDraft = false }: { includeDraft?: boolean } = {},
+  {
+    includeDraft = false,
+    inventoryBackend,
+  }: {
+    includeDraft?: boolean;
+    inventoryBackend?: InventoryRepositoryBackend;
+  } = {},
 ): Promise<SKU | null> {
-  return getShopSkuBySlug(shop, id, locale, { includeDraft });
+  return getShopSkuBySlug(shop, id, locale, {
+    includeDraft,
+    inventoryBackend,
+  });
 }
-

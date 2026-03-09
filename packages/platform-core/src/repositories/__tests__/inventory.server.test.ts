@@ -149,6 +149,24 @@ describe("inventory server", () => {
     expect(jsonRepo.update).toHaveBeenCalledTimes(1);
   });
 
+  it("uses explicit backend override even when INVENTORY_BACKEND points elsewhere", async () => {
+    process.env.INVENTORY_BACKEND = "json";
+
+    await writeInventory(
+      "shop",
+      [{ sku: "a", productId: "p1", quantity: 4, variantAttributes: {} }],
+      { backend: "prisma" },
+    );
+
+    expect(prismaRepo.write).toHaveBeenCalledTimes(1);
+    expect(jsonRepo.write).toHaveBeenCalledTimes(0);
+
+    const prismaItems = await readInventory("shop", { backend: "prisma" });
+    expect(prismaItems).toEqual([
+      { sku: "a", productId: "p1", quantity: 4, variantAttributes: {} },
+    ]);
+  });
+
   it("returns undefined when updating unknown SKU", async () => {
     await writeInventory("shop", [
       { sku: "a", productId: "p1", quantity: 1, variantAttributes: {} },
@@ -239,4 +257,3 @@ describe("inventory repository concurrency", () => {
     20000,
   );
 });
-

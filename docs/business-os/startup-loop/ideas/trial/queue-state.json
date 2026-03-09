@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-03-09T12:00:00.000Z",
+  "last_updated": "2026-03-09T14:52:33Z",
   "counts": {
     "enqueued": 59,
     "processed": 18,
@@ -7,8 +7,8 @@
     "error": 0,
     "suppressed": 0,
     "auto_executed": 0,
-    "completed": 234,
-    "fact_find_ready": 258,
+    "completed": 235,
+    "fact_find_ready": 257,
     "micro_build_ready": 7,
     "total": 495
   },
@@ -129,7 +129,7 @@
       "current_truth": "CAP-02 was referenced by skills and planning discussion, but no canonical schema, seeded per-business artifact, or producer/consumer contract existed in the repo.",
       "next_scope_now": "Define the message-variants schema, upgrade the capability contract, seed HBAG/HEAD/PET ledgers, and retrofit the main channel, marketing, outreach, and weekly consumers.",
       "recommended_route": "lp-do-build",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.92,
       "evidence_refs": [
@@ -2262,9 +2262,9 @@
       "lineage_depth": 0,
       "area_anchor": "HBAG Caryina checkout \u2014 inventory not decremented after successful sale",
       "domain": "SELL",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "priority": "P1",
       "confidence": 0.93,
       "provisional_deliverable_family": "code-change",
@@ -2282,7 +2282,12 @@
         "agent-verified: successful checkout (200 -> /en/success) leaves data/shops/caryina/inventory.json unchanged",
         "agent-verified: checkout success path has no inventory write call; only cart delete"
       ],
-      "created_at": "2026-03-02T10:01:20.477Z"
+      "created_at": "2026-03-02T10:01:20.477Z",
+      "completed_by": {
+        "plan_path": "docs/plans/hbag-caryina-checkout-integrity-phase2/plan.md",
+        "completed_at": "2026-03-09T14:52:33Z",
+        "outcome": "Aligned Caryina inventory reads and writes with the same Prisma backend already used by checkout holds. Added explicit inventory backend override plumbing in platform-core, routed Caryina cart/catalog/admin inventory paths through it, and validated that successful sales now decrement the live storefront stock source instead of a hidden alternate backend."
+      }
     },
     {
       "schema_version": "dispatch.v1",

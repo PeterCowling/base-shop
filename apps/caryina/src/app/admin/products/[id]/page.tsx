@@ -5,6 +5,7 @@ import { getProductById } from "@acme/platform-core/repositories/products.server
 
 import { InventoryEditor } from "@/components/admin/InventoryEditor.client";
 import { ProductForm } from "@/components/admin/ProductForm.client";
+import { CARYINA_INVENTORY_BACKEND } from "@/lib/inventoryBackend";
 
 const SHOP = "caryina";
 
@@ -18,7 +19,7 @@ export default async function AdminProductEditPage({ params }: Props) {
   const { id } = await params;
   const [product, inventory] = await Promise.all([
     getProductById(SHOP, id),
-    readInventory(SHOP),
+    readInventory(SHOP, { backend: CARYINA_INVENTORY_BACKEND }),
   ]);
 
   if (!product) {

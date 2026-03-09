@@ -166,6 +166,44 @@ describe("buildPolicyEvaluationDataset", () => {
         decision_mode: "stochastic",
       }),
       buildDecision({ decision_id: "decision-censored", candidate_id: "cand-censored" }),
+      buildDecision({
+        decision_id: "decision-portfolio",
+        candidate_id: "cand-observed",
+        decision_type: "portfolio_selection",
+        chosen_action: "selected",
+        eligible_actions: ["selected", "deferred"],
+        portfolio_selection: {
+          schema_version: "portfolio-selection.v1",
+          portfolio_id: "portfolio-1",
+          candidate_set_hash: "set-1",
+          candidate_count: 4,
+          selected_candidate_ids: ["cand-observed"],
+          solver_status: "optimal",
+          objective_value: 2.2,
+          constraint_bindings: [
+            {
+              key: "wip_cap",
+              max: 2,
+              observed_value: 1,
+              binding: false,
+            },
+          ],
+          graph_snapshot_id: "graph-1",
+          survival_snapshot_id: "survival-1",
+          signal_snapshot: {
+            graph_bottleneck_score: 0.1,
+            shared_executor_candidate_count: 0,
+            shared_constraint_candidate_count: 0,
+            structural_penalty: 0.02,
+            survival_status: "estimated",
+            median_verified_days: 7,
+            unresolved_after_hold_probability: 0.4,
+            missing_outcome_rate: 0.1,
+            survival_penalty: 0.15,
+            adjusted_utility: 2.03,
+          },
+        },
+      }),
     ];
 
     const dispatches: QueueDispatch[] = [

@@ -18,9 +18,11 @@ import type {
   StartupState,
 } from "./self-evolving-contracts.js";
 import { buildDashboardSnapshot } from "./self-evolving-dashboard.js";
+import { buildDependencyGraphSnapshot } from "./self-evolving-dependency-graph.js";
 import { buildPolicyEvaluationDataset } from "./self-evolving-evaluation.js";
 import type { SelfEvolvingEvent } from "./self-evolving-events.js";
 import { deriveBoundarySignalSnapshotFromStartupState } from "./self-evolving-signal-helpers.js";
+import { buildSurvivalPolicySignals } from "./self-evolving-survival.js";
 
 interface CliArgs {
   rootDir: string;
@@ -239,6 +241,17 @@ export function buildSelfEvolvingReportData(input: {
     lifecycle_events: input.lifecycle_events,
     now: new Date(input.generated_at),
   });
+  const dependencyGraph = buildDependencyGraphSnapshot({
+    business_id: input.business,
+    ranked_candidates: input.ranked_candidates,
+    policy_decisions: input.policy_decisions,
+    generated_at: input.generated_at,
+    snapshot_id: `report-${input.generated_at}`,
+  });
+  const survivalSignals = buildSurvivalPolicySignals({
+    evaluation_dataset: evaluation,
+    hold_window_days: input.policy_state?.active_constraint_profile.hold_window_days ?? 7,
+  });
 
   const dashboard = buildDashboardSnapshot({
     observations: input.observations,
@@ -247,6 +260,8 @@ export function buildSelfEvolvingReportData(input: {
     policy_state: input.policy_state,
     decision_records_count: input.policy_decisions.length,
     evaluation_summary: evaluation.summary,
+    dependency_graph: dependencyGraph,
+    survival_signals: survivalSignals,
   });
 
   const boundarySnapshot = deriveBoundarySignalSnapshotFromStartupState(input.startup_state);
@@ -265,6 +280,29 @@ export function buildSelfEvolvingReportData(input: {
     lifecycle_events_count: input.lifecycle_events.length,
     queue_dispatch_count: input.queue_dispatches.length,
     dashboard,
+    dependency_graph:
+      dependencyGraph == null
+        ? {
+            status: "empty",
+            node_count: 0,
+            edge_count: 0,
+            top_candidate_bottlenecks: [],
+          }
+        : {
+            status: "computed",
+            snapshot_id: dependencyGraph.snapshot_id,
+            node_count: dependencyGraph.node_count,
+            edge_count: dependencyGraph.edge_count,
+            top_candidate_bottlenecks: dependencyGraph.candidate_signals.slice(0, 5),
+            critical_path: dependencyGraph.analysis.critical_path,
+          },
+    survival_policy: {
+      snapshot_id: survivalSignals.snapshot_id,
+      total_records: survivalSignals.total_records,
+      verified_curve_status: survivalSignals.verified_outcome_curve.status,
+      closure_curve_status: survivalSignals.closure_curve.status,
+      route_profiles: survivalSignals.route_profiles,
+    },
     policy_evaluation: {
       summary: evaluation.summary,
       sample_unready_records: evaluation.records

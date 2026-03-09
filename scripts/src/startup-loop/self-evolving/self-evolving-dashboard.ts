@@ -6,11 +6,13 @@ import type {
   MetaObservation,
   SelfEvolvingPolicyState,
 } from "./self-evolving-contracts.js";
+import type { SelfEvolvingDependencyGraphSnapshot } from "./self-evolving-dependency-graph.js";
 import type { PolicyEvaluationSummary } from "./self-evolving-evaluation.js";
 import {
   type ObservationPostureSummary,
   summarizeObservationPosture,
 } from "./self-evolving-evidence-posture.js";
+import type { SurvivalPolicySignals } from "./self-evolving-survival.js";
 
 const ACTIVE_STATES: ReadonlySet<CandidateState> = new Set([
   "draft",
@@ -68,6 +70,20 @@ export interface DashboardSnapshot {
     maturity_debt_decisions: number;
     replay_ready_rate: DashboardRateMetric;
   };
+  graph: {
+    snapshot_id: string | null;
+    node_count: number;
+    edge_count: number;
+    top_candidate_bottlenecks: Array<{ candidate_id: string; bottleneck_score: number }>;
+  };
+  survival: {
+    snapshot_id: string | null;
+    total_records: number;
+    verified_curve_status: "empty" | "estimated";
+    closure_curve_status: "empty" | "estimated";
+    estimated_route_profiles: number;
+    insufficient_route_profiles: number;
+  };
 }
 
 const EMPTY_EVALUATION_SUMMARY: PolicyEvaluationSummary = {
@@ -122,6 +138,8 @@ export function buildDashboardSnapshot(input: {
   policy_state?: SelfEvolvingPolicyState | null;
   decision_records_count?: number;
   evaluation_summary?: PolicyEvaluationSummary | null;
+  dependency_graph?: SelfEvolvingDependencyGraphSnapshot | null;
+  survival_signals?: SurvivalPolicySignals | null;
 }): DashboardSnapshot {
   const candidates = input.ranked_candidates.map((entry) => entry.candidate);
   const activeCandidates = candidates.filter((candidate) =>
@@ -167,6 +185,8 @@ export function buildDashboardSnapshot(input: {
   const evaluationSummary = input.evaluation_summary ?? EMPTY_EVALUATION_SUMMARY;
   const maturityDebtDecisions =
     evaluationSummary.pending_decisions + evaluationSummary.censored_decisions;
+  const dependencyGraph = input.dependency_graph ?? null;
+  const survivalSignals = input.survival_signals ?? null;
 
   return {
     totals: {
@@ -222,6 +242,31 @@ export function buildDashboardSnapshot(input: {
         evaluationSummary.replay_ready_decisions,
         evaluationSummary.total_decisions,
       ),
+    },
+    graph: {
+      snapshot_id: dependencyGraph?.snapshot_id ?? null,
+      node_count: dependencyGraph?.node_count ?? 0,
+      edge_count: dependencyGraph?.edge_count ?? 0,
+      top_candidate_bottlenecks:
+        dependencyGraph?.candidate_signals
+          .slice(0, 5)
+          .map((signal) => ({
+            candidate_id: signal.candidate_id,
+            bottleneck_score: signal.bottleneck_score,
+          })) ?? [],
+    },
+    survival: {
+      snapshot_id: survivalSignals?.snapshot_id ?? null,
+      total_records: survivalSignals?.total_records ?? 0,
+      verified_curve_status: survivalSignals?.verified_outcome_curve.status ?? "empty",
+      closure_curve_status: survivalSignals?.closure_curve.status ?? "empty",
+      estimated_route_profiles:
+        survivalSignals?.route_profiles.filter((profile) => profile.status === "estimated")
+          .length ?? 0,
+      insufficient_route_profiles:
+        survivalSignals?.route_profiles.filter(
+          (profile) => profile.status === "insufficient_data",
+        ).length ?? 0,
     },
   };
 }

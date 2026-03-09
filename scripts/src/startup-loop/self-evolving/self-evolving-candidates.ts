@@ -30,6 +30,10 @@ export interface RankedCandidate {
     prior_family_version: string;
     belief_state_id: string;
     structural_snapshot_id: string;
+    portfolio_decision_id?: string | null;
+    portfolio_selected?: boolean | null;
+    portfolio_selected_at?: string | null;
+    portfolio_adjusted_utility?: number | null;
   };
 }
 

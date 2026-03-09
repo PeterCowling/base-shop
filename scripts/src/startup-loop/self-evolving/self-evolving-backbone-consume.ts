@@ -579,6 +579,7 @@ export function consumeBackboneQueueToIdeasWorkflow(
   const backboneEntries = readBackboneQueue(options.rootDir, options.business);
   const pendingEntries = backboneEntries.filter(
     (entry) =>
+      (entry.portfolio_selected ?? true) &&
       entry.followup_dispatch_id == null &&
       entry.consumed_at == null &&
       (!options.staleOnly || isStalePendingEntry(entry, now, staleAfterMs)),

@@ -19,6 +19,10 @@ export interface SelfEvolvingBackboneQueueEntry {
   executor_path: string;
   autonomy_cap: 1 | 2 | 3 | 4;
   priority: number;
+  portfolio_selected?: boolean | null;
+  portfolio_decision_id?: string | null;
+  portfolio_selected_at?: string | null;
+  portfolio_adjusted_utility?: number | null;
   consumed_at?: string | null;
   consumed_by?: string | null;
   followup_dispatch_id?: string | null;
@@ -94,6 +98,10 @@ function toQueueEntry(
     executor_path: candidate.candidate.executor_path,
     autonomy_cap: candidate.score.autonomy_cap,
     priority,
+    portfolio_selected: candidate.policy_context?.portfolio_selected ?? true,
+    portfolio_decision_id: candidate.policy_context?.portfolio_decision_id ?? null,
+    portfolio_selected_at: candidate.policy_context?.portfolio_selected_at ?? null,
+    portfolio_adjusted_utility: candidate.policy_context?.portfolio_adjusted_utility ?? null,
     consumed_at: existing?.consumed_at ?? null,
     consumed_by: existing?.consumed_by ?? null,
     followup_dispatch_id: existing?.followup_dispatch_id ?? null,
@@ -141,6 +149,14 @@ export function enqueueBackboneCandidates(
   const mergedEntries = [...byCandidateId.values()].sort((left, right) => {
     if (left.consumed_at == null && right.consumed_at != null) return -1;
     if (left.consumed_at != null && right.consumed_at == null) return 1;
+    if ((left.portfolio_selected ?? true) !== (right.portfolio_selected ?? true)) {
+      return (left.portfolio_selected ?? true) ? -1 : 1;
+    }
+    const leftObjective = left.portfolio_adjusted_utility ?? left.priority;
+    const rightObjective = right.portfolio_adjusted_utility ?? right.priority;
+    if (leftObjective !== rightObjective) {
+      return rightObjective - leftObjective;
+    }
     if (left.priority !== right.priority) return right.priority - left.priority;
     return Date.parse(left.queued_at) - Date.parse(right.queued_at);
   });

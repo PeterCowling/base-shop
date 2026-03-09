@@ -296,6 +296,22 @@ describe("buildSelfEvolvingReportData", () => {
           total_decisions: 1,
           replay_ready_decisions: 1,
         }),
+        graph: expect.objectContaining({
+          node_count: expect.any(Number),
+        }),
+        survival: expect.objectContaining({
+          total_records: 1,
+        }),
+      }),
+    );
+    expect(report.dependency_graph).toEqual(
+      expect.objectContaining({
+        status: "empty",
+      }),
+    );
+    expect(report.survival_policy).toEqual(
+      expect.objectContaining({
+        total_records: 1,
       }),
     );
   });

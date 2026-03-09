@@ -16,12 +16,13 @@ export interface PolicyEvaluationRecord {
   decision_context_id: string;
   business_id: string;
   candidate_id: string;
+  chosen_action: string;
   policy_version: string;
   utility_version: string;
   decision_mode: PolicyDecisionMode;
-  chosen_action: string;
   eligible_actions: string[];
   action_probability: number | null;
+  decision_created_at: string;
   dispatch_id: string | null;
   queue_state: string | null;
   completed_at: string | null;
@@ -251,6 +252,7 @@ export function buildPolicyEvaluationDataset(input: {
 
   const { byEventId, byDecisionId } = buildOutcomeEventMaps(input.lifecycle_events ?? []);
   const records = input.decisions
+    .filter((decision) => decision.decision_type === "candidate_route")
     .map((decision): PolicyEvaluationRecord => {
       const linkedDispatches = dispatchesByDecisionId.get(decision.decision_id) ?? [];
       const selectedDispatch = selectBestDispatch(linkedDispatches);
@@ -283,12 +285,13 @@ export function buildPolicyEvaluationDataset(input: {
         decision_context_id: decision.decision_context_id,
         business_id: decision.business_id,
         candidate_id: decision.candidate_id,
+        chosen_action: decision.chosen_action,
         policy_version: decision.policy_version,
         utility_version: decision.utility_version,
         decision_mode: decision.decision_mode,
-        chosen_action: decision.chosen_action,
         eligible_actions: [...decision.eligible_actions],
         action_probability: decision.action_probability,
+        decision_created_at: decision.created_at,
         dispatch_id: dispatchId,
         queue_state:
           typeof selectedDispatch?.queue_state === "string" ? selectedDispatch.queue_state : null,

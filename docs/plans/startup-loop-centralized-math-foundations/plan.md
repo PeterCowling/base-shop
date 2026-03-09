@@ -31,9 +31,9 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-05: Implement the versioned belief-state and utility-computation layer — Complete (2026-03-09)
 - [x] TASK-06: Implement outcome closure and verified measurement feedback into self-evolving memory — Complete (2026-03-09)
 - [x] TASK-16: Implement decision journaling, maturity windows, and replay-ready evaluation datasets — Complete (2026-03-09)
-- [ ] TASK-07: Replace pure priority sorting with constrained portfolio optimization
-- [ ] TASK-08: Integrate graph dependency and bottleneck analysis into policy inputs
-- [ ] TASK-09: Integrate survival and time-to-event risk into policy inputs
+- [x] TASK-07: Replace pure priority sorting with constrained portfolio optimization — Complete (2026-03-10)
+- [x] TASK-08: Integrate graph dependency and bottleneck analysis into policy inputs — Complete (2026-03-10)
+- [x] TASK-09: Integrate survival and time-to-event risk into policy inputs — Complete (2026-03-10)
 - [ ] TASK-10: Implement bounded contextual exploration with internal Thompson-style ranking
 - [ ] TASK-11: Implement the causal-evaluation contract and promotion-quality gate
 - [ ] TASK-12: Implement stability controls and anti-gaming utility governance
@@ -118,9 +118,9 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-05 | IMPLEMENT | Implement the versioned belief-state and utility-computation layer | 80% | M | Complete (2026-03-09) | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
 | TASK-06 | IMPLEMENT | Implement outcome closure and verified measurement feedback into self-evolving memory | 80% | M | Complete (2026-03-09) | TASK-01, TASK-02, TASK-04 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
 | TASK-16 | IMPLEMENT | Implement decision journaling, maturity windows, and replay-ready evaluation datasets | 80% | M | Complete (2026-03-09) | TASK-03, TASK-04, TASK-05, TASK-06 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13, TASK-14 |
-| TASK-07 | IMPLEMENT | Replace pure priority sorting with constrained portfolio optimization | 80% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-10, TASK-12, TASK-13, TASK-14 |
-| TASK-08 | IMPLEMENT | Integrate graph dependency and bottleneck analysis into policy inputs | 80% | M | Pending | TASK-02, TASK-03, TASK-05 | TASK-11, TASK-13, TASK-14 |
-| TASK-09 | IMPLEMENT | Integrate survival and time-to-event risk into policy inputs | 80% | M | Pending | TASK-02, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-11, TASK-13, TASK-14 |
+| TASK-07 | IMPLEMENT | Replace pure priority sorting with constrained portfolio optimization | 80% | M | Complete (2026-03-10) | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-10, TASK-12, TASK-13, TASK-14 |
+| TASK-08 | IMPLEMENT | Integrate graph dependency and bottleneck analysis into policy inputs | 80% | M | Complete (2026-03-10) | TASK-02, TASK-03, TASK-05 | TASK-11, TASK-13, TASK-14 |
+| TASK-09 | IMPLEMENT | Integrate survival and time-to-event risk into policy inputs | 80% | M | Complete (2026-03-10) | TASK-02, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-11, TASK-13, TASK-14 |
 | TASK-10 | IMPLEMENT | Implement bounded contextual exploration with internal Thompson-style ranking | 70% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07 | TASK-12, TASK-13, TASK-14 |
 | TASK-11 | IMPLEMENT | Implement the causal-evaluation contract and promotion-quality gate | 70% | M | Pending | TASK-04, TASK-06, TASK-16, TASK-08, TASK-09 | TASK-12, TASK-13, TASK-14 |
 | TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 75% | M | Pending | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
@@ -495,8 +495,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `packages/lib/src/math/optimization/index.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/__tests__/self-evolving-portfolio.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-evaluation.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`
 - **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16
 - **Blocks:** TASK-10, TASK-12, TASK-13, TASK-14
 - **Confidence:** 80%
@@ -529,6 +529,17 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
+- **Build Evidence (2026-03-10):**
+  - The queue path now performs explicit constrained portfolio selection through `self-evolving-portfolio.ts` instead of relying on raw descending sort alone.
+  - Candidate-set selection is bounded by real hard rules and constraints: `wip_cap`, per-route caps, guarded-trial blast-radius limits for build routes, and minimum evidence-floor enforcement for plan/build routes.
+  - Portfolio decisions now emit first-class `portfolio_selection` journal payloads in `policy-decisions.jsonl`, with candidate-set hash, selected IDs, solver status, constraint bindings, and per-candidate adjusted utility signals.
+  - Backbone entries now persist `portfolio_selected`, `portfolio_decision_id`, and `portfolio_adjusted_utility`, and the consume path only emits follow-up dispatches for portfolio-selected entries.
+  - Validation:
+    - `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
+    - targeted `pnpm exec eslint` across touched startup-loop runtime and test files
+    - `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK`
+  - Test execution note: local Jest remains out of scope under repo policy, so the new fixtures were added but not run locally.
+  - Precursor completion propagation: TASK-07 is no longer a blocker for TASK-10, TASK-12, TASK-13, or TASK-14.
 
 ### TASK-08: Integrate graph dependency and bottleneck analysis into policy inputs
 - **Type:** IMPLEMENT
@@ -537,8 +548,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone.ts`, `packages/lib/src/math/graph/index.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dependency-graph.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts`, `scripts/src/startup-loop/__tests__/self-evolving-dependency-graph.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-report.test.ts`
 - **Depends on:** TASK-02, TASK-03, TASK-05
 - **Blocks:** TASK-11, TASK-13, TASK-14
 - **Confidence:** 80%
@@ -570,6 +581,16 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-backbone.ts`
+- **Build Evidence (2026-03-10):**
+  - The runtime now builds and persists `dependency-graph.json` with the bounded first slice `trigger_observation -> candidate -> executor_path`, plus shared `constraint_refs` as structural coupling nodes.
+  - `self-evolving-dependency-graph.ts` now computes deterministic graph topology, critical path, and candidate-level bottleneck signals without making causal claims.
+  - Graph signals are exposed in the dashboard/report surface and fed into portfolio selection as a bounded structural concentration penalty, keeping the role explicitly structural rather than promotional.
+  - Validation:
+    - `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
+    - targeted `pnpm exec eslint` across touched startup-loop runtime and test files
+    - `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK`
+  - Test execution note: local Jest remains out of scope under repo policy.
+  - Precursor completion propagation: TASK-08 is no longer a blocker for TASK-11, TASK-13, or TASK-14.
 
 ### TASK-09: Integrate survival and time-to-event risk into policy inputs
 - **Type:** IMPLEMENT
@@ -578,8 +599,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `packages/lib/src/math/survival/index.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-survival.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts`, `scripts/src/startup-loop/__tests__/self-evolving-survival.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-evaluation.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-report.test.ts`
 - **Depends on:** TASK-02, TASK-04, TASK-05, TASK-06, TASK-16
 - **Blocks:** TASK-11, TASK-13, TASK-14
 - **Confidence:** 80%
@@ -611,6 +632,18 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
+- **Build Evidence (2026-03-10):**
+  - `policy-evaluation.v1` now carries `decision_created_at`, and evaluation explicitly ignores non-route journal records so later portfolio journaling does not pollute outcome readiness math.
+  - `self-evolving-survival.ts` now builds two separate Kaplan-Meier views: time to verified outcome and time to broader closure. Missing outcomes are not conflated with successful verification.
+  - Route-level survival profiles now expose explicit `empty`, `insufficient_data`, and `estimated` states, plus bounded delay/missing penalties. These are available in reporting and feed a narrow portfolio penalty rather than acting as intervention proof.
+  - The dashboard/report now surface survival status directly, making maturity debt and sparse-history conditions explicit instead of fabricating precision.
+  - Validation:
+    - `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
+    - targeted `pnpm exec eslint` across touched startup-loop runtime and test files
+    - `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK`
+  - Test execution note: local Jest remains out of scope under repo policy.
+  - Precursor completion propagation: TASK-09 is no longer a blocker for TASK-11, TASK-13, or TASK-14.
+  - Next execution gate: TASK-10 and TASK-11 remain below the `IMPLEMENT` confidence floor (`70%` each), so the next correct step is `/lp-do-replan`, not another blind build cycle.
 
 ### TASK-10: Implement bounded contextual exploration with internal Thompson-style ranking
 - **Type:** IMPLEMENT

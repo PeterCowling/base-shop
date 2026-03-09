@@ -260,6 +260,42 @@ export interface UtilityBreakdown {
   net_utility: number;
 }
 
+export interface PortfolioConstraintBinding {
+  key: string;
+  min?: number;
+  max?: number;
+  equal?: number;
+  observed_value: number;
+  binding: boolean;
+}
+
+export interface PortfolioSelectionSignalSnapshot {
+  graph_bottleneck_score: number;
+  shared_executor_candidate_count: number;
+  shared_constraint_candidate_count: number;
+  structural_penalty: number;
+  survival_status: "empty" | "insufficient_data" | "estimated";
+  median_verified_days: number | null;
+  unresolved_after_hold_probability: number | null;
+  missing_outcome_rate: number | null;
+  survival_penalty: number;
+  adjusted_utility: number;
+}
+
+export interface PortfolioSelectionContext {
+  schema_version: "portfolio-selection.v1";
+  portfolio_id: string;
+  candidate_set_hash: string;
+  candidate_count: number;
+  selected_candidate_ids: string[];
+  solver_status: string;
+  objective_value: number | null;
+  constraint_bindings: PortfolioConstraintBinding[];
+  graph_snapshot_id: string | null;
+  survival_snapshot_id: string | null;
+  signal_snapshot: PortfolioSelectionSignalSnapshot;
+}
+
 export interface PolicyDecisionRecord {
   schema_version: "policy-decision.v1";
   decision_id: string;
@@ -277,6 +313,7 @@ export interface PolicyDecisionRecord {
   chosen_action: string;
   action_probability: number | null;
   utility: UtilityBreakdown;
+  portfolio_selection?: PortfolioSelectionContext | null;
   created_at: string;
 }
 
@@ -832,6 +869,139 @@ export function validateUtilityBreakdown(utility: UtilityBreakdown): string[] {
   return errors;
 }
 
+function validatePortfolioConstraintBinding(
+  binding: PortfolioConstraintBinding,
+): string[] {
+  const errors: string[] = [];
+  if (!nonEmptyString(binding.key)) {
+    errors.push("key");
+  }
+  if (
+    typeof binding.observed_value !== "number" ||
+    Number.isNaN(binding.observed_value)
+  ) {
+    errors.push("observed_value");
+  }
+  if (typeof binding.binding !== "boolean") {
+    errors.push("binding");
+  }
+  for (const [label, value] of Object.entries({
+    min: binding.min,
+    max: binding.max,
+    equal: binding.equal,
+  })) {
+    if (
+      value !== undefined &&
+      (typeof value !== "number" || Number.isNaN(value))
+    ) {
+      errors.push(label);
+    }
+  }
+  return errors;
+}
+
+function validatePortfolioSelectionSignalSnapshot(
+  snapshot: PortfolioSelectionSignalSnapshot,
+): string[] {
+  const errors: string[] = [];
+  for (const [label, value] of Object.entries({
+    graph_bottleneck_score: snapshot.graph_bottleneck_score,
+    shared_executor_candidate_count: snapshot.shared_executor_candidate_count,
+    shared_constraint_candidate_count: snapshot.shared_constraint_candidate_count,
+    structural_penalty: snapshot.structural_penalty,
+    survival_penalty: snapshot.survival_penalty,
+    adjusted_utility: snapshot.adjusted_utility,
+  })) {
+    if (typeof value !== "number" || Number.isNaN(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    snapshot.survival_status !== "empty" &&
+    snapshot.survival_status !== "insufficient_data" &&
+    snapshot.survival_status !== "estimated"
+  ) {
+    errors.push("survival_status");
+  }
+  for (const [label, value] of Object.entries({
+    median_verified_days: snapshot.median_verified_days,
+    unresolved_after_hold_probability: snapshot.unresolved_after_hold_probability,
+    missing_outcome_rate: snapshot.missing_outcome_rate,
+  })) {
+    if (
+      value !== null &&
+      (typeof value !== "number" || Number.isNaN(value))
+    ) {
+      errors.push(label);
+    }
+  }
+  return errors;
+}
+
+function validatePortfolioSelectionContext(
+  context: PortfolioSelectionContext,
+): string[] {
+  const errors: string[] = [];
+  if (context.schema_version !== "portfolio-selection.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    portfolio_id: context.portfolio_id,
+    candidate_set_hash: context.candidate_set_hash,
+    solver_status: context.solver_status,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (!Number.isInteger(context.candidate_count) || context.candidate_count < 0) {
+    errors.push("candidate_count");
+  }
+  if (
+    context.objective_value !== null &&
+    (typeof context.objective_value !== "number" || Number.isNaN(context.objective_value))
+  ) {
+    errors.push("objective_value");
+  }
+  if (!Array.isArray(context.selected_candidate_ids)) {
+    errors.push("selected_candidate_ids");
+  }
+  if (
+    context.graph_snapshot_id !== null &&
+    !nonEmptyString(context.graph_snapshot_id)
+  ) {
+    errors.push("graph_snapshot_id");
+  }
+  if (
+    context.survival_snapshot_id !== null &&
+    !nonEmptyString(context.survival_snapshot_id)
+  ) {
+    errors.push("survival_snapshot_id");
+  }
+  for (const [index, selectedCandidateId] of context.selected_candidate_ids.entries()) {
+    if (!nonEmptyString(selectedCandidateId)) {
+      errors.push(`selected_candidate_ids.${index}`);
+    }
+  }
+  if (!Array.isArray(context.constraint_bindings)) {
+    errors.push("constraint_bindings");
+  } else {
+    for (const [index, binding] of context.constraint_bindings.entries()) {
+      errors.push(
+        ...validatePortfolioConstraintBinding(binding).map(
+          (error) => `constraint_bindings.${index}.${error}`,
+        ),
+      );
+    }
+  }
+  errors.push(
+    ...validatePortfolioSelectionSignalSnapshot(context.signal_snapshot).map(
+      (error) => `signal_snapshot.${error}`,
+    ),
+  );
+  return errors;
+}
+
 export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): string[] {
   const errors: string[] = [];
   if (record.schema_version !== "policy-decision.v1") {
@@ -882,6 +1052,16 @@ export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): stri
   errors.push(
     ...validateUtilityBreakdown(record.utility).map((error) => `utility.${error}`),
   );
+  if (record.decision_type === "portfolio_selection" && !record.portfolio_selection) {
+    errors.push("portfolio_selection");
+  }
+  if (record.portfolio_selection) {
+    errors.push(
+      ...validatePortfolioSelectionContext(record.portfolio_selection).map(
+        (error) => `portfolio_selection.${error}`,
+      ),
+    );
+  }
   return errors;
 }
 

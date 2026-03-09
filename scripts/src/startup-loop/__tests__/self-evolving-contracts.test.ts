@@ -443,6 +443,55 @@ describe("self-evolving contract validators", () => {
     rmSync(tempRoot, { recursive: true, force: true });
   });
 
+  it("TASK-07 TC-01 requires portfolio payloads on portfolio-selection decisions", () => {
+    const portfolioDecision: PolicyDecisionRecord = {
+      ...buildValidPolicyDecision(),
+      decision_id: "decision-portfolio-1",
+      decision_type: "portfolio_selection",
+      chosen_action: "selected",
+      eligible_actions: ["selected", "deferred"],
+      portfolio_selection: {
+        schema_version: "portfolio-selection.v1",
+        portfolio_id: "portfolio-1",
+        candidate_set_hash: "set-1",
+        candidate_count: 1,
+        selected_candidate_ids: ["cand-1"],
+        solver_status: "optimal",
+        objective_value: 1.3,
+        constraint_bindings: [
+          {
+            key: "wip_cap",
+            max: 1,
+            observed_value: 1,
+            binding: true,
+          },
+        ],
+        graph_snapshot_id: "graph-1",
+        survival_snapshot_id: "survival-1",
+        signal_snapshot: {
+          graph_bottleneck_score: 0.12,
+          shared_executor_candidate_count: 0,
+          shared_constraint_candidate_count: 0,
+          structural_penalty: 0.02,
+          survival_status: "estimated",
+          median_verified_days: 7,
+          unresolved_after_hold_probability: 0.4,
+          missing_outcome_rate: 0.1,
+          survival_penalty: 0.15,
+          adjusted_utility: 1.13,
+        },
+      },
+    };
+
+    expect(validatePolicyDecisionRecord(portfolioDecision)).toEqual([]);
+    expect(
+      validatePolicyDecisionRecord({
+        ...portfolioDecision,
+        portfolio_selection: null,
+      }),
+    ).toContain("portfolio_selection");
+  });
+
   it("TASK-05 TC-01 requires blocked metadata when candidate_state is blocked", () => {
     const blockedCandidate: ImprovementCandidate = {
       schema_version: "candidate.v1",

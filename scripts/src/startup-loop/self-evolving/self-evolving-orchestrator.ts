@@ -1,3 +1,7 @@
+import path from "node:path";
+
+import { readQueueStateFile } from "../ideas/lp-do-ideas-queue-state-file.js";
+
 import { mapCandidateToBackboneRoute } from "./self-evolving-backbone.js";
 import {
   DEFAULT_MATURE_BOUNDARY_THRESHOLDS,
@@ -14,6 +18,7 @@ import {
 import {
   type ImprovementCandidate,
   type MetaObservation,
+  type PolicyDecisionRecord,
   stableHash,
   type StartupState,
   throwOnContractErrors,
@@ -21,10 +26,15 @@ import {
 } from "./self-evolving-contracts.js";
 import { buildDashboardSnapshot } from "./self-evolving-dashboard.js";
 import {
+  buildDependencyGraphSnapshot,
+  writeDependencyGraphSnapshot,
+} from "./self-evolving-dependency-graph.js";
+import {
   detectRepeatWorkCandidates,
   type RepeatWorkCandidate,
   type RepeatWorkDetectorConfig,
 } from "./self-evolving-detector.js";
+import { buildPolicyEvaluationDataset } from "./self-evolving-evaluation.js";
 import {
   appendObservationAsEvent,
   appendSelfEvolvingEvent,
@@ -39,6 +49,7 @@ import {
   enforceCreationGate,
   validateTransition,
 } from "./self-evolving-lifecycle.js";
+import { buildPortfolioSelection } from "./self-evolving-portfolio.js";
 import {
   assessEvidenceProfile,
   buildPolicyDecisionRecord,
@@ -68,6 +79,7 @@ import {
   writePolicyState,
   writeStartupState,
 } from "./self-evolving-startup-state.js";
+import { buildSurvivalPolicySignals } from "./self-evolving-survival.js";
 
 const DEFAULT_DETECTOR_CONFIG: RepeatWorkDetectorConfig = {
   recurrence_threshold: 2,
@@ -92,6 +104,18 @@ const DEFAULT_BUDGET_POLICY: CandidateBudgetPolicy = {
   max_candidates_created_per_day: 20,
   blocked_sla_days: 14,
 };
+
+function resolveTrialQueueStatePath(rootDir: string): string {
+  return path.join(
+    rootDir,
+    "docs",
+    "business-os",
+    "startup-loop",
+    "ideas",
+    "trial",
+    "queue-state.json",
+  );
+}
 
 function buildScoreDimensions(observations: MetaObservation[]): ScoreDimensionsV2 {
   const count = observations.length;
@@ -417,6 +441,7 @@ export interface SelfEvolvingOrchestratorResult {
   candidate_path: string;
   policy_state_path: string;
   policy_decision_path: string;
+  dependency_graph_path: string | null;
   observations_count: number;
   repeat_candidates_detected: number;
   candidates_generated: number;
@@ -544,8 +569,9 @@ export function runSelfEvolvingOrchestrator(
     utility_version: "self-evolving-utility.v1",
     prior_family_version: "self-evolving-priors.v1",
   };
-  const decisionsBefore = readPolicyDecisionJournal(store, input.business).length;
-  const policyDecisions: ReturnType<typeof buildPolicyDecisionRecord>[] = [];
+  const priorPolicyDecisions = readPolicyDecisionJournal(store, input.business);
+  const decisionsBefore = priorPolicyDecisions.length;
+  const routePolicyDecisions: ReturnType<typeof buildPolicyDecisionRecord>[] = [];
 
   const rerankedCandidates = mergedCandidates.map((entry) => {
     const candidateObservations = allObservations.filter(
@@ -566,8 +592,65 @@ export function runSelfEvolvingOrchestrator(
       generatedAt,
     });
     nextPolicyState.candidate_beliefs[entry.candidate.candidate_id] = rebuilt.nextBelief;
-    policyDecisions.push(rebuilt.decision);
+    routePolicyDecisions.push(rebuilt.decision);
     return rebuilt.ranked;
+  });
+
+  const queueStateResult = readQueueStateFile(resolveTrialQueueStatePath(input.rootDir));
+  const queueDispatches = queueStateResult.ok ? queueStateResult.queue.dispatches : [];
+  const historicalEvaluation = buildPolicyEvaluationDataset({
+    decisions: priorPolicyDecisions,
+    queue_dispatches: queueDispatches,
+    lifecycle_events: allEvents,
+    now,
+  });
+  const survivalSignals = buildSurvivalPolicySignals({
+    evaluation_dataset: historicalEvaluation,
+    hold_window_days: nextPolicyState.active_constraint_profile.hold_window_days,
+  });
+  const dependencyGraph = buildDependencyGraphSnapshot({
+    business_id: input.business,
+    ranked_candidates: rerankedCandidates,
+    policy_decisions: routePolicyDecisions,
+    generated_at: generatedAt,
+    snapshot_id: stableHash(`${input.business}|${generatedAt}|dependency-graph`).slice(0, 16),
+  });
+  const portfolioSelection = buildPortfolioSelection({
+    business_id: input.business,
+    ranked_candidates: rerankedCandidates,
+    candidate_route_decisions: routePolicyDecisions,
+    constraint_profile: nextPolicyState.active_constraint_profile,
+    dependency_graph: dependencyGraph,
+    survival_signals: survivalSignals,
+    created_at: generatedAt,
+  });
+  const portfolioDecisionByCandidateId = new Map(
+    portfolioSelection.decision_records.map((decision) => [decision.candidate_id, decision] as const),
+  );
+  const policyDecisions: PolicyDecisionRecord[] = [
+    ...routePolicyDecisions,
+    ...portfolioSelection.decision_records,
+  ];
+  const portfolioAnnotatedCandidates = rerankedCandidates.map((rankedCandidate) => {
+    const portfolioDecision = portfolioDecisionByCandidateId.get(
+      rankedCandidate.candidate.candidate_id,
+    );
+    return {
+      ...rankedCandidate,
+      policy_context: rankedCandidate.policy_context
+        ? {
+            ...rankedCandidate.policy_context,
+            portfolio_decision_id: portfolioDecision?.decision_id ?? null,
+            portfolio_selected: portfolioSelection.selected_candidate_ids.has(
+              rankedCandidate.candidate.candidate_id,
+            ),
+            portfolio_selected_at: generatedAt,
+            portfolio_adjusted_utility:
+              portfolioDecision?.portfolio_selection?.signal_snapshot.adjusted_utility ??
+              null,
+          }
+        : rankedCandidate.policy_context,
+    };
   });
 
   if (policyDecisions.length > 0) {
@@ -598,20 +681,30 @@ export function runSelfEvolvingOrchestrator(
     );
   }
 
-  const candidatePath = writeCandidateLedger(input.rootDir, input.business, rerankedCandidates);
+  const candidatePath = writeCandidateLedger(
+    input.rootDir,
+    input.business,
+    portfolioAnnotatedCandidates,
+  );
   const policyStatePath = writePolicyState(store, nextPolicyState);
   const policyDecisionPath = appendPolicyDecisionJournal(
     store,
     input.business,
     policyDecisions,
   );
+  const dependencyGraphPath = dependencyGraph
+    ? writeDependencyGraphSnapshot(input.rootDir, dependencyGraph)
+    : null;
 
   const dashboard = buildDashboardSnapshot({
     observations: allObservations,
-    ranked_candidates: rerankedCandidates,
+    ranked_candidates: portfolioAnnotatedCandidates,
     wipCap: budgetPolicy.max_active_candidates,
     policy_state: nextPolicyState,
     decision_records_count: decisionsBefore + policyDecisions.length,
+    evaluation_summary: historicalEvaluation.summary,
+    dependency_graph: dependencyGraph,
+    survival_signals: survivalSignals,
   });
 
   const boundarySignals =
@@ -629,11 +722,12 @@ export function runSelfEvolvingOrchestrator(
     candidate_path: candidatePath,
     policy_state_path: policyStatePath,
     policy_decision_path: policyDecisionPath,
+    dependency_graph_path: dependencyGraphPath,
     observations_count: allObservations.length,
     repeat_candidates_detected: detectedRepeats.length,
     candidates_generated: generatedSeeds.length,
     candidate_rejections: rejections,
-    ranked_candidates: rerankedCandidates,
+    ranked_candidates: portfolioAnnotatedCandidates,
     dashboard,
     boundary,
   };

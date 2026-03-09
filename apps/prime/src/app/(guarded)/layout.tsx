@@ -4,6 +4,7 @@ import { type ReactNode, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 
+import { DevTools } from '../../components/dev/DevTools';
 import { ChatProvider } from '../../contexts/messaging/ChatProvider';
 import { PinAuthProvider, usePinAuth } from '../../contexts/messaging/PinAuthProvider';
 import { useSessionValidation } from '../../hooks/useSessionValidation';
@@ -107,6 +108,7 @@ export default function GuardedLayout({ children }: { children: ReactNode }) {
     <PinAuthProvider>
       <ChatProvider>
         <GuardedGate>{children}</GuardedGate>
+        <DevTools />
       </ChatProvider>
     </PinAuthProvider>
   );

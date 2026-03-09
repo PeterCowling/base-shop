@@ -476,6 +476,22 @@
     {
       "type": "idea",
       "business": "BOS",
+      "title": "New loop process — .claude/skills/lp-do-ideas/SKILL.md changed",
+      "body": "New loop process — .claude/skills/lp-do-ideas/SKILL.md changed",
+      "source": "results-review.user.md",
+      "date": "2026-03-09T14:32:03.667Z",
+      "path": "docs/plans/_archive/ideas-queue-auto-executed-state-violation/results-review.user.md",
+      "idea_key": "567fe2a6bbfa68ea9187aecd9d1702892a6a116d",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
       "title": "New loop process — Live business mapping rollout remains a follow-on operational step once a business is ready to bind KPI names to standing artifact targets.",
       "body": "New loop process — Live business mapping rollout remains a follow-on operational step once a business is ready to bind KPI names to standing artifact targets.",
       "source": "results-review.user.md",

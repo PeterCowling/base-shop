@@ -2,12 +2,12 @@
   "last_updated": "2026-03-09T12:00:00.000Z",
   "counts": {
     "enqueued": 59,
-    "processed": 19,
+    "processed": 18,
     "skipped": 180,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 0,
-    "completed": 233,
+    "completed": 234,
     "fact_find_ready": 258,
     "micro_build_ready": 7,
     "total": 495
@@ -45,7 +45,7 @@
         "skill-ref: .claude/skills/lp-do-ideas/SKILL.md Outputs \u2014 auto_executed is reserved and must not be emitted as a new queue lifecycle value"
       ],
       "created_at": "2026-03-09T12:00:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "The trial contract's state machine defines only enqueued, processed, skipped, and error as valid queue lifecycle values. auto_executed was designed for Option C (auto-invoke P1 dispatches) which has not been activated. Because the queue is entirely hand-authored, these 21 entries were set incorrectly by hand. They create false signal in queue depth counts and make it impossible to tell which entries represent work that was genuinely reviewed and confirmed vs. work that bypassed the confirmation step.",
       "intended_outcome": {
         "type": "operational",
@@ -56,6 +56,11 @@
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/ideas-queue-auto-executed-state-violation/micro-build.md",
         "processed_at": "2026-03-09T12:30:00.000Z"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/ideas-queue-auto-executed-state-violation",
+        "outcome": "All 19 auto_executed entries reclassified to processed. Counts corrected. Guard note added to SKILL.md. completed terminal state added to trial contract Section 7.",
+        "completed_at": "2026-03-09T12:30:00.000Z"
       }
     },
     {

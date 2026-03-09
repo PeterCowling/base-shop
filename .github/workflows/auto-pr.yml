@@ -1,4 +1,4 @@
-name: Auto PR (dev → staging)
+name: Auto PR (dev → main)
 
 on:
   push:
@@ -43,12 +43,12 @@ jobs:
               repo,
               state: "open",
               head,
-              base: "staging",
+              base: "main",
               per_page: 1,
             });
             let pr = pulls[0];
             if (!pr) {
-              const title = `dev → staging`;
+              const title = `dev → main`;
               const body = [
                 "Pipeline PR created automatically.",
                 "",
@@ -59,7 +59,7 @@ jobs:
                 owner,
                 repo,
                 head: branch,
-                base: "staging",
+                base: "main",
                 title,
                 body,
               });
@@ -79,7 +79,7 @@ jobs:
               {
                 name: "pipeline",
                 color: "1d76db",
-                description: "Release pipeline PRs (dev → staging, staging → main)",
+                description: "Release pipeline PRs (dev → main)",
               },
             ];
             for (const label of labels) {

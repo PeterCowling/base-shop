@@ -3,6 +3,7 @@ name: Deploy Caryina
 on:
   push:
     branches:
+      - dev
       - main
     paths:
       - "apps/caryina/**"

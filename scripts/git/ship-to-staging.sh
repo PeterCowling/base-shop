@@ -6,9 +6,9 @@ usage() {
 Usage:
   scripts/git/ship-to-staging.sh
 
-Ships the current dev branch state to staging via PR + auto-merge:
-- Pushes branch 'dev' to origin
-- Ensures an open PR dev -> staging exists
+Ships the current branch state to staging via PR + auto-merge for user testing:
+- Pushes the current branch to origin
+- Ensures an open PR <current-branch> -> staging exists
 - Enables auto-merge (MERGE) on that PR
 
 Requirements:
@@ -27,8 +27,8 @@ cd "$repo_root"
 scripts/git-hooks/require-writer-lock.sh
 
 branch="$(git rev-parse --abbrev-ref HEAD)"
-if [[ "$branch" != "dev" ]]; then
-  echo "ERROR: ship-to-staging must be run from branch 'dev' (current: ${branch})" >&2
+if [[ "$branch" == "main" || "$branch" == "master" || "$branch" == "staging" ]]; then
+  echo "ERROR: ship-to-staging must be run from a non-protected branch (current: ${branch})" >&2
   exit 1
 fi
 
@@ -49,16 +49,16 @@ gh auth status -h github.com >/dev/null 2>&1 || {
   exit 1
 }
 
-echo "Pushing dev -> origin/dev..."
-git push -u origin dev
+echo "Pushing ${branch} -> origin/${branch}..."
+git push -u origin "$branch"
 
-existing_pr_number="$(gh pr list --state open --head dev --base staging --json number --jq '.[0].number' || true)"
+existing_pr_number="$(gh pr list --state open --head "$branch" --base staging --json number --jq '.[0].number' || true)"
 
 if [[ -z "$existing_pr_number" ]]; then
-  echo "Creating PR: dev -> staging..."
-  pr_url="$(gh pr create --head dev --base staging --title \"dev → staging\" --body \"Auto-shipping dev to staging.\" )"
+  echo "Creating PR: ${branch} -> staging..."
+  pr_url="$(gh pr create --head "$branch" --base staging --title "${branch} → staging" --body "Ship ${branch} to staging for user testing.")"
 else
-  pr_url="$(gh pr view \"$existing_pr_number\" --json url --jq .url)"
+  pr_url="$(gh pr view "$existing_pr_number" --json url --jq .url)"
 fi
 
 echo "Enabling auto-merge (MERGE) for: ${pr_url}"
@@ -67,4 +67,3 @@ gh pr merge "$pr_url" --auto --merge
 echo ""
 echo "Shipped. Staging will update when CI passes and the PR auto-merges."
 echo "PR: ${pr_url}"
-

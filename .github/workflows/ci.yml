@@ -5,16 +5,16 @@ on:
     branches-ignore:
       - staging
     paths-ignore:
-      - 'apps/skylar/**'
-      - 'apps/cms/**'
-      - '.github/workflows/skylar.yml'
-      - '.github/workflows/cms.yml'
+      - "apps/skylar/**"
+      - "apps/cms/**"
+      - ".github/workflows/skylar.yml"
+      - ".github/workflows/cms.yml"
   pull_request:
     paths-ignore:
-      - 'apps/skylar/**'
-      - 'apps/cms/**'
-      - '.github/workflows/skylar.yml'
-      - '.github/workflows/cms.yml'
+      - "apps/skylar/**"
+      - "apps/cms/**"
+      - ".github/workflows/skylar.yml"
+      - ".github/workflows/cms.yml"
 
 concurrency:
   group: core-ci-${{ github.ref }}
@@ -199,12 +199,12 @@ jobs:
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
             # Auto PRs created by GitHub Actions may not trigger pull_request workflows.
-            # For dev pushes, compare against staging so CI covers the full dev→staging delta.
+            # For dev pushes, compare against main so CI covers the full dev→main release delta.
             if [ "${{ github.ref_name }}" = "dev" ]; then
-              if ! git rev-parse --verify "origin/staging" >/dev/null 2>&1; then
-                git fetch --no-tags origin "+staging:refs/remotes/origin/staging"
+              if ! git rev-parse --verify "origin/main" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+main:refs/remotes/origin/main"
               fi
-              echo "TURBO_SCM_BASE=origin/staging" >> "$GITHUB_ENV"
+              echo "TURBO_SCM_BASE=origin/main" >> "$GITHUB_ENV"
             else
               echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
             fi
@@ -302,12 +302,12 @@ jobs:
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
             # Auto PRs created by GitHub Actions may not trigger pull_request workflows.
-            # For dev pushes, compare against staging so CI covers the full dev→staging delta.
+            # For dev pushes, compare against main so CI covers the full dev→main release delta.
             if [ "${{ github.ref_name }}" = "dev" ]; then
-              if ! git rev-parse --verify "origin/staging" >/dev/null 2>&1; then
-                git fetch --no-tags origin "+staging:refs/remotes/origin/staging"
+              if ! git rev-parse --verify "origin/main" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+main:refs/remotes/origin/main"
               fi
-              echo "TURBO_SCM_BASE=origin/staging" >> "$GITHUB_ENV"
+              echo "TURBO_SCM_BASE=origin/main" >> "$GITHUB_ENV"
             else
               echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
             fi
@@ -391,12 +391,12 @@ jobs:
             echo "TURBO_SCM_BASE=origin/${{ github.base_ref }}" >> "$GITHUB_ENV"
           else
             # Auto PRs created by GitHub Actions may not trigger pull_request workflows.
-            # For dev pushes, compare against staging so CI covers the full dev→staging delta.
+            # For dev pushes, compare against main so CI covers the full dev→main release delta.
             if [ "${{ github.ref_name }}" = "dev" ]; then
-              if ! git rev-parse --verify "origin/staging" >/dev/null 2>&1; then
-                git fetch --no-tags origin "+staging:refs/remotes/origin/staging"
+              if ! git rev-parse --verify "origin/main" >/dev/null 2>&1; then
+                git fetch --no-tags origin "+main:refs/remotes/origin/main"
               fi
-              echo "TURBO_SCM_BASE=origin/staging" >> "$GITHUB_ENV"
+              echo "TURBO_SCM_BASE=origin/main" >> "$GITHUB_ENV"
             else
               echo "TURBO_SCM_BASE=${{ github.event.before }}" >> "$GITHUB_ENV"
             fi
@@ -413,7 +413,6 @@ jobs:
       - uses: codecov/codecov-action@v5
         with:
           files: ./coverage/lcov.info
-
 
   bos-mirror-guard:
     name: Business OS Mirror Guard

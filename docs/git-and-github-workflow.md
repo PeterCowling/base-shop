@@ -9,8 +9,8 @@ This repository ships through one release pipeline only:
 
 1. Commit on `dev`
 2. Push `dev`
-3. Auto PR `dev` -> `staging` (label: `pipeline`, auto-merge on green)
-4. Promote `staging` -> `main` (label: `pipeline`, auto-merge on green)
+3. Auto PR `dev` -> `main` (label: `pipeline`, auto-merge on green)
+4. Optionally ship any branch to `staging` for user testing
 
 ## Happy Path (One Change)
 
@@ -44,7 +44,7 @@ Optional local targeted-test pass before push:
 VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh
 ```
 
-### 4) Ship to staging
+### 4) Optional: ship to staging for user testing
 
 ```bash
 scripts/git/ship-to-staging.sh
@@ -53,18 +53,16 @@ scripts/git/ship-to-staging.sh
 ### 5) Promote to production
 
 ```bash
-git fetch origin --prune
-git switch staging
 scripts/git/promote-to-main.sh
 ```
 
 ## What GitHub Does
 
-### Auto PR (`dev` -> `staging`)
+### Auto PR (`dev` -> `main`)
 
 Pushing `dev` triggers `.github/workflows/auto-pr.yml`, which:
 
-- Ensures an open PR from `dev` to `staging`
+- Ensures an open PR from `dev` to `main`
 - Adds the `pipeline` label
 - Enables auto-merge (merge commit)
 
@@ -90,7 +88,7 @@ Use `keep-open` when you intentionally want a PR to stay open while red/inactive
 
 1. Confirm branch is `dev`: `git branch --show-current`
 2. Confirm push succeeded: `git log --oneline origin/dev -n 1`
-3. Check Actions run: `Auto PR (dev → staging)`
+3. Check Actions run: `Auto PR (dev → main)`
 
 ### "Git blocks commit or push"
 

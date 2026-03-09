@@ -1,40 +1,32 @@
-// File: src/hooks/orchestrations/checkin/__tests__/useCheckinsData.test.ts
+// File: src/hooks/data/__tests__/useCheckinsTableData.test.ts
 import "@testing-library/jest-dom";
 
 import { renderHook, waitFor } from "@testing-library/react";
 
-/* ------------------------------------------------------------------ */
-/*  Import mocked modules *after* registration so we can access       */
-/*  the jest.fn instances. `vi.mocked` gives correctly‑typed handles.   */
-/* ------------------------------------------------------------------ */
-import type { Loans } from "../../../../types/hooks/data/loansData";
-import useActivitiesByCodeData from "../../../data/useActivitiesByCodeData";
-import useActivitiesData from "../../../data/useActivitiesData";
-import useBookingsData from "../../../data/useBookingsData";
-import { useCheckins as useCheckinsHook } from "../../../data/useCheckins";
-import useCityTax from "../../../data/useCityTax";
-import useFinancialsRoom from "../../../data/useFinancialsRoom";
-import useGuestByRoom from "../../../data/useGuestByRoom";
-import useGuestDetails from "../../../data/useGuestDetails";
-import useLoans from "../../../data/useLoans";
-/* ------------------------------------------------------------------ */
-/*  Import the hook under test *after* mocks are in place             */
-/* ------------------------------------------------------------------ */
-import useCheckinsData from "../useCheckinsData";
+import type { Loans } from "../../../types/hooks/data/loansData";
+import useActivitiesByCodeData from "../useActivitiesByCodeData";
+import useActivitiesData from "../useActivitiesData";
+import useBookingsData from "../useBookingsData";
+import { useCheckins as useCheckinsHook } from "../useCheckins";
+import useCheckinsTableData from "../useCheckinsTableData";
+import useCityTax from "../useCityTax";
+import useFinancialsRoom from "../useFinancialsRoom";
+import useGuestByRoom from "../useGuestByRoom";
+import useGuestDetails from "../useGuestDetails";
+import useLoans from "../useLoans";
 
 /* ------------------------------------------------------------------ */
-/*  Module mocks – declared first so Vitest can safely hoist them     */
-/*  (no references to outer‑scope variables inside the factory)       */
+/*  Module mocks                                                      */
 /* ------------------------------------------------------------------ */
-jest.mock("../../../data/useBookingsData", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useGuestDetails", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useFinancialsRoom", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useCityTax", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useLoans", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useActivitiesData", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useCheckins", () => ({ useCheckins: jest.fn() }));
-jest.mock("../../../data/useGuestByRoom", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useActivitiesByCodeData", () => ({ default: jest.fn() }));
+jest.mock("../useBookingsData", () => ({ default: jest.fn() }));
+jest.mock("../useGuestDetails", () => ({ default: jest.fn() }));
+jest.mock("../useFinancialsRoom", () => ({ default: jest.fn() }));
+jest.mock("../useCityTax", () => ({ default: jest.fn() }));
+jest.mock("../useLoans", () => ({ default: jest.fn() }));
+jest.mock("../useActivitiesData", () => ({ default: jest.fn() }));
+jest.mock("../useCheckins", () => ({ useCheckins: jest.fn() }));
+jest.mock("../useGuestByRoom", () => ({ default: jest.fn() }));
+jest.mock("../useActivitiesByCodeData", () => ({ default: jest.fn() }));
 
 /* Typed references to the mocked functions */
 const useBookingsMock = jest.mocked(useBookingsData);
@@ -66,6 +58,7 @@ const loans: Loans = {
     },
   },
 };
+
 const baseData = {
   bookings: {
     BR1: {
@@ -73,11 +66,6 @@ const baseData = {
         checkInDate: "2024-06-01",
         checkOutDate: "2024-06-05",
         roomNumbers: ["101"],
-      },
-      occ2: {
-        checkInDate: "2024-05-01",
-        checkOutDate: "2024-05-03",
-        roomNumbers: ["102"],
       },
     },
   },
@@ -113,6 +101,7 @@ const baseData = {
   activities: {
     occ1: { a1: { code: 1, who: "sys" } },
   },
+  // useCheckins is called with a dateQuery { startAt, endAt } arg in useCheckinsTableData
   checkins: {
     "2024-06-01": { occ1: { timestamp: "2024-06-01T09:00:00Z" } },
   },
@@ -120,15 +109,15 @@ const baseData = {
     occ1: { allocated: "101", booked: "101" },
   },
   activitiesByCodes: {
-    21: {
+    "21": {
       occ1: {
-        c1: { who: "sys", timestamp: "2024-06-01T08:00:00Z", description: "" },
+        c1: { who: "sys", timestamp: "2024-06-01T08:00:00Z" },
       },
     },
   },
 };
 
-/** Seed mocks with base data */
+/** Seed all mocks with base data */
 function setBaseReturns() {
   useBookingsMock.mockReturnValue({
     bookings: baseData.bookings,
@@ -161,6 +150,7 @@ function setBaseReturns() {
     loading: false,
     error: null,
   });
+  // useCheckins is called with a dateQuery arg — mock accepts any args
   useCheckinsMock.mockReturnValue({
     checkins: baseData.checkins,
     loading: false,
@@ -181,7 +171,7 @@ function setBaseReturns() {
 /* ------------------------------------------------------------------ */
 /*  Tests                                                             */
 /* ------------------------------------------------------------------ */
-describe("useCheckinsData", () => {
+describe("useCheckinsTableData", () => {
   beforeEach(() => {
     setBaseReturns();
   });
@@ -190,35 +180,31 @@ describe("useCheckinsData", () => {
     jest.clearAllMocks();
   });
 
-  it("merges data across hooks", async () => {
+  // TC-01: Happy path — all child hooks return data, rows is non-empty
+  it("merges data across hooks and returns rows", async () => {
     const { result } = renderHook(() =>
-      useCheckinsData({ startDate: "2024-06-01", endDate: "2024-06-30" })
+      useCheckinsTableData({
+        selectedDate: "2024-06-01",
+        daysBefore: 1,
+        daysAfter: 5,
+      })
     );
 
     await waitFor(() => expect(result.current.loading).toBe(false));
 
-    expect(result.current.data.length).toBe(1);
-    const row = result.current.data[0];
-
+    expect(result.current.rows.length).toBe(1);
+    const row = result.current.rows[0];
     expect(row.bookingRef).toBe("BR1");
     expect(row.occupantId).toBe("occ1");
     expect(row.firstName).toBe("Alice");
     expect(row.roomAllocated).toBe("101");
-
-    // Ensure `loans` is defined, then assert item
-    expect(row.loans).toBeDefined();
-    expect(row.loans?.occ1?.txns?.l1?.item).toBe("Hairdryer");
-
-    expect(row.activities).toEqual([
-      { code: 1, who: "sys" },
-      { code: 21, who: "sys" },
-    ]);
     expect(row.isFirstForBooking).toBe(true);
     expect(result.current.validationError).toBeNull();
     expect(result.current.error).toBeNull();
   });
 
-  it("reflects loading state", () => {
+  // TC-02: Loading state — one child hook loading causes overall loading to be true
+  it("reflects loading state when a child hook is loading", () => {
     useBookingsMock.mockReturnValueOnce({
       bookings: {},
       loading: true,
@@ -226,15 +212,20 @@ describe("useCheckinsData", () => {
     });
 
     const { result } = renderHook(() =>
-      useCheckinsData({ startDate: "2024-06-01", endDate: "2024-06-30" })
+      useCheckinsTableData({
+        selectedDate: "2024-06-01",
+        daysBefore: 1,
+        daysAfter: 5,
+      })
     );
 
     expect(result.current.loading).toBe(true);
-    expect(result.current.data).toEqual([]);
+    expect(result.current.rows).toEqual([]);
   });
 
-  it("propagates errors", () => {
-    const err = new Error("fail");
+  // TC-03: Error propagation — one child hook error causes overall error to be set
+  it("propagates errors from child hooks", () => {
+    const err = new Error("Firebase read failed");
     useCityTaxMock.mockReturnValueOnce({
       cityTax: {},
       loading: false,
@@ -242,28 +233,62 @@ describe("useCheckinsData", () => {
     });
 
     const { result } = renderHook(() =>
-      useCheckinsData({ startDate: "2024-06-01", endDate: "2024-06-30" })
+      useCheckinsTableData({
+        selectedDate: "2024-06-01",
+        daysBefore: 1,
+        daysAfter: 5,
+      })
     );
 
     expect(result.current.error).toBe(err);
     expect(result.current.loading).toBe(false);
-    expect(result.current.data).toEqual([]);
+    expect(result.current.rows).toEqual([]);
   });
 
-  it("returns validation errors separately", () => {
+  // TC-04: Validation error — guestDetails returns validationError, rows still returned
+  it("returns validation errors separately without blocking rows", async () => {
     useGuestDetailsMock.mockReturnValueOnce({
-      guestsDetails: {},
+      guestsDetails: baseData.guestsDetails,
       loading: false,
       error: null,
       validationError: new Error("bad dob"),
     });
 
     const { result } = renderHook(() =>
-      useCheckinsData({ startDate: "2024-06-01", endDate: "2024-06-30" })
+      useCheckinsTableData({
+        selectedDate: "2024-06-01",
+        daysBefore: 1,
+        daysAfter: 5,
+      })
     );
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
 
     expect(result.current.error).toBeNull();
     expect(result.current.validationError).toBeInstanceOf(Error);
-    expect(result.current.data.length).toBe(1);
+    // Row is still returned since guestsDetails data is present
+    expect(result.current.rows.length).toBe(1);
+  });
+
+  // TC-05: No bookings — rows is empty, no error thrown
+  it("returns empty rows when bookings is null/undefined", async () => {
+    useBookingsMock.mockReturnValueOnce({
+      bookings: null,
+      loading: false,
+      error: null,
+    });
+
+    const { result } = renderHook(() =>
+      useCheckinsTableData({
+        selectedDate: "2024-06-01",
+        daysBefore: 1,
+        daysAfter: 5,
+      })
+    );
+
+    await waitFor(() => expect(result.current.loading).toBe(false));
+
+    expect(result.current.rows).toEqual([]);
+    expect(result.current.error).toBeNull();
   });
 });

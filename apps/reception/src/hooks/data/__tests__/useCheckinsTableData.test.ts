@@ -18,15 +18,33 @@ import useLoans from "../useLoans";
 /* ------------------------------------------------------------------ */
 /*  Module mocks                                                      */
 /* ------------------------------------------------------------------ */
-jest.mock("../useBookingsData", () => ({ __esModule: true, default: jest.fn() }));
-jest.mock("../useGuestDetails", () => ({ __esModule: true, default: jest.fn() }));
-jest.mock("../useFinancialsRoom", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../useBookingsData", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+jest.mock("../useGuestDetails", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+jest.mock("../useFinancialsRoom", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
 jest.mock("../useCityTax", () => ({ __esModule: true, default: jest.fn() }));
 jest.mock("../useLoans", () => ({ __esModule: true, default: jest.fn() }));
-jest.mock("../useActivitiesData", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../useActivitiesData", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
 jest.mock("../useCheckins", () => ({ useCheckins: jest.fn() }));
-jest.mock("../useGuestByRoom", () => ({ __esModule: true, default: jest.fn() }));
-jest.mock("../useActivitiesByCodeData", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../useGuestByRoom", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
+jest.mock("../useActivitiesByCodeData", () => ({
+  __esModule: true,
+  default: jest.fn(),
+}));
 
 /* Typed references to the mocked functions */
 const useBookingsMock = jest.mocked(useBookingsData);
@@ -205,7 +223,7 @@ describe("useCheckinsTableData", () => {
 
   // TC-02: Loading state — one child hook loading causes overall loading to be true
   it("reflects loading state when a child hook is loading", () => {
-    useBookingsMock.mockReturnValueOnce({
+    useBookingsMock.mockReturnValue({
       bookings: {},
       loading: true,
       error: null,
@@ -226,7 +244,7 @@ describe("useCheckinsTableData", () => {
   // TC-03: Error propagation — one child hook error causes overall error to be set
   it("propagates errors from child hooks", () => {
     const err = new Error("Firebase read failed");
-    useCityTaxMock.mockReturnValueOnce({
+    useCityTaxMock.mockReturnValue({
       cityTax: {},
       loading: false,
       error: err,
@@ -247,7 +265,7 @@ describe("useCheckinsTableData", () => {
 
   // TC-04: Validation error — guestDetails returns validationError, rows still returned
   it("returns validation errors separately without blocking rows", async () => {
-    useGuestDetailsMock.mockReturnValueOnce({
+    useGuestDetailsMock.mockReturnValue({
       guestsDetails: baseData.guestsDetails,
       loading: false,
       error: null,
@@ -272,7 +290,7 @@ describe("useCheckinsTableData", () => {
 
   // TC-05: No bookings — rows is empty, no error thrown
   it("returns empty rows when bookings is null/undefined", async () => {
-    useBookingsMock.mockReturnValueOnce({
+    useBookingsMock.mockReturnValue({
       bookings: null,
       loading: false,
       error: null,

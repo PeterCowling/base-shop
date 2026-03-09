@@ -250,7 +250,7 @@ describe("CloseShiftForm", () => {
     await userEvent.click(screen.getByRole("button", { name: /next/i }));
     await userEvent.click(screen.getByRole("button", { name: /go/i }));
 
-    await userEvent.click(screen.getByRole("button", { name: /manager signoff/i }));
+    await userEvent.click(screen.getByRole("button", { name: /sign off/i }));
     await userEvent.click(screen.getByRole("button", { name: /^confirm$/i }));
 
     expect(onConfirm).toHaveBeenCalledWith(
@@ -281,7 +281,9 @@ describe("CloseShiftForm", () => {
       />
     );
 
-    const heading = screen.getByRole("heading", { name: /close shift - cash/i });
+    const heading = screen.getByRole("heading", {
+      name: /close shift - cash/i,
+    });
     const container = heading.closest("div.relative") as HTMLElement;
     expect(container).toHaveClass("relative");
     document.documentElement.classList.remove("dark");

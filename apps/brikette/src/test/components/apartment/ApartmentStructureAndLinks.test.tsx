@@ -17,7 +17,7 @@ describe("WhatsApp link validity across apartment pages", () => {
   it("hub page contains WhatsApp URL with phone number", () => {
     const content = fs.readFileSync(
       path.join(APP_DIR, "ApartmentPageContent.tsx"),
-      "utf-8",
+      "utf-8"
     );
     expect(content).toContain(WHATSAPP_URL);
   });
@@ -25,11 +25,8 @@ describe("WhatsApp link validity across apartment pages", () => {
   // TC-03: Street-level page WhatsApp href
   it("street-level page contains WhatsApp URL with phone number", () => {
     const content = fs.readFileSync(
-      path.join(
-        APP_DIR,
-        "street-level-arrival/StreetLevelArrivalContent.tsx",
-      ),
-      "utf-8",
+      path.join(APP_DIR, "street-level-arrival/StreetLevelArrivalContent.tsx"),
+      "utf-8"
     );
     expect(content).toContain(WHATSAPP_NUMBER);
     // Verify no empty wa.me/ links remain
@@ -40,7 +37,7 @@ describe("WhatsApp link validity across apartment pages", () => {
   it("private-stay page contains WhatsApp URL with phone number", () => {
     const content = fs.readFileSync(
       path.join(APP_DIR, "private-stay/PrivateStayContent.tsx"),
-      "utf-8",
+      "utf-8"
     );
     expect(content).toContain(WHATSAPP_NUMBER);
     // Verify no empty wa.me/ links remain
@@ -51,35 +48,50 @@ describe("WhatsApp link validity across apartment pages", () => {
   it("booking page contains WhatsApp URL with phone number", () => {
     const content = fs.readFileSync(
       path.join(APP_DIR, "book/ApartmentBookContent.tsx"),
-      "utf-8",
+      "utf-8"
     );
     expect(content).toContain(WHATSAPP_NUMBER);
   });
 });
 
 describe("TASK-07: apartment-context CTA, legal label, and perks-route behavior", () => {
-  const UI_DIR = path.resolve(__dirname, "../../../../../../packages/ui/src/organisms");
+  const UI_DIR = path.resolve(
+    __dirname,
+    "../../../../../../packages/ui/src/organisms"
+  );
   const BRIKETTE_SRC = path.resolve(__dirname, "../../../");
-  const BANNER_FILE = path.join(BRIKETTE_SRC, "components/header/NotificationBanner.tsx");
+  const BANNER_FILE = path.join(
+    BRIKETTE_SRC,
+    "components/header/NotificationBanner.tsx"
+  );
 
   // TC-01: DesktopHeader uses apartment-aware CTA routing
   it("DesktopHeader has apartment-aware bookHref that routes to private booking route", () => {
-    const content = fs.readFileSync(path.join(UI_DIR, "DesktopHeader.tsx"), "utf-8");
+    const content = fs.readFileSync(
+      path.join(UI_DIR, "DesktopHeader.tsx"),
+      "utf-8"
+    );
     expect(content).toMatch(/isApartmentRoute/);
-    expect(content).toContain("/book-private-accommodations");
+    expect(content).toContain('translatePath("privateBooking", lang)');
   });
 
   // TC-02: MobileNav uses apartment-aware CTA routing
   it("MobileNav has apartment-aware bookHref that routes to private booking route", () => {
-    const content = fs.readFileSync(path.join(UI_DIR, "MobileNav.tsx"), "utf-8");
+    const content = fs.readFileSync(
+      path.join(UI_DIR, "MobileNav.tsx"),
+      "utf-8"
+    );
     expect(content).toMatch(/isApartmentRoute/);
-    expect(content).toContain("/book-private-accommodations");
+    expect(content).toContain('translatePath("privateBooking", lang)');
   });
 
   // TC-03: footer.json terms label is accommodation-neutral
   it("footer.json terms label does not contain hostel-specific 'Room Bookings' text", () => {
     const footerJson = JSON.parse(
-      fs.readFileSync(path.join(BRIKETTE_SRC, "locales/en/footer.json"), "utf-8"),
+      fs.readFileSync(
+        path.join(BRIKETTE_SRC, "locales/en/footer.json"),
+        "utf-8"
+      )
     );
     expect(footerJson.terms).toBeDefined();
     expect(footerJson.terms.toLowerCase()).not.toContain("room bookings");
@@ -98,7 +110,7 @@ describe("Hub page structure", () => {
   it("HeroSection appears before intent-routing cards in source", () => {
     const content = fs.readFileSync(
       path.join(APP_DIR, "ApartmentPageContent.tsx"),
-      "utf-8",
+      "utf-8"
     );
     const heroIdx = content.indexOf("<HeroSection");
     const cardIdx = content.indexOf("hub.streetLevelCard");
@@ -111,7 +123,7 @@ describe("Hub page structure", () => {
   it("hub page has both Check availability and WhatsApp CTAs", () => {
     const content = fs.readFileSync(
       path.join(APP_DIR, "ApartmentPageContent.tsx"),
-      "utf-8",
+      "utf-8"
     );
     expect(content).toContain("click_check_availability");
     expect(content).toContain("click_whatsapp");

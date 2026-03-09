@@ -1,6 +1,6 @@
 /* File: /src/hooks/data/useAlloggiatiLogs.ts */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   type AlloggiatiDateLogs,
@@ -41,5 +41,5 @@ export default function useAlloggiatiLogs(dateKey: string) {
     }
   }, [data]);
 
-  return useMemo(() => ({ logs, loading, error }), [logs, loading, error]);
+  return { logs, loading, error };
 }

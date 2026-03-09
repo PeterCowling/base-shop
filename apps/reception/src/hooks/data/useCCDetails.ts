@@ -1,6 +1,6 @@
 /* src/hook/data/useCCDetails.ts */
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { ccDataSchema } from "../../schemas/ccDataSchema";
 import type { CCData } from "../../types/hooks/data/ccData";
@@ -39,7 +39,5 @@ export default function useCCDetails() {
     }
   }, [data, subError]);
 
-  const memoData = useMemo(() => ccData, [ccData]);
-
-  return { ccData: memoData, loading, error };
+  return { ccData, loading, error };
 }

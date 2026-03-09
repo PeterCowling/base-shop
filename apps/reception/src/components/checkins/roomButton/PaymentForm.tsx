@@ -9,6 +9,8 @@ import { Banknote, CreditCard, Plus } from "lucide-react";
 
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
 
+import { formatEuro } from "../../../utils/format";
+
 import { usePaymentContext } from "./PaymentContext";
 import SplitList from "./SplitList";
 
@@ -40,9 +42,9 @@ function PaymentForm() {
   const getButtonLabel = useCallback(() => {
     if (outstanding > 0) {
       if (splitPayments.length === 1) {
-        return `€${outstanding.toFixed(2)}`;
+        return formatEuro(outstanding);
       }
-      return `Split €${outstanding.toFixed(2)}`;
+      return `Split ${formatEuro(outstanding)}`;
     }
     return "Paid";
   }, [outstanding, splitPayments]);

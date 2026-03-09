@@ -14,6 +14,7 @@ import { SimpleModal } from "@acme/ui/molecules";
 
 import { creditCardSchema } from "../../schemas/creditCardSchema";
 import { formatCreditCardNumber } from "../../utils/creditCardUtils"; // Adjust path as needed
+import { formatEuro } from "../../utils/format";
 import { showToast } from "../../utils/toastUtils";
 import { Spinner } from "../common/Spinner";
 
@@ -207,7 +208,7 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
         <p className="text-sm text-muted-foreground mb-4">
           {bookingRef && `Ref: ${bookingRef}`}
           {amountToCharge !== undefined &&
-            ` | Amount: €${amountToCharge.toFixed(2)}`}
+            ` | Amount: ${formatEuro(amountToCharge)}`}
         </p>
       )}
 

@@ -16,11 +16,13 @@ import {
 } from "@acme/ui/operations";
 
 import AuthenticatedApp from "./components/AuthenticatedApp";
+import ThemeModeDock from "./components/common/ThemeModeDock";
 import LoadingSpinner from "./components/LoadingSpinner";
 import Login from "./components/Login";
 import { useAuth } from "./context/AuthContext";
 import { OfflineSyncContext } from "./context/OfflineSyncContext";
 import useInactivityLogout from "./hooks/client/useInactivityLogoutClient";
+import { readJson, writeJson } from "./lib/offline/storage";
 import { useOfflineSync } from "./lib/offline/useOfflineSync";
 import { useFirebaseDatabase } from "./services/useFirebase";
 import type { ModalName } from "./types/ModalName";
@@ -103,17 +105,17 @@ function App({ children }: AppProps) {
 
   useEffect(() => {
     if (user && pathname !== "/") {
-      localStorage.setItem("lastPath", pathname);
+      writeJson("lastPath", pathname);
     }
   }, [user, pathname]);
 
   const handleLoginSuccess = useCallback((): void => {
-    const lastPath = localStorage.getItem("lastPath");
+    const lastPath = readJson<string>("lastPath");
     if (lastPath && lastPath !== "/") {
       router.push(lastPath);
     } else {
       router.push("/bar");
-      localStorage.setItem("lastPath", "/bar");
+      writeJson("lastPath", "/bar");
     }
   }, [router]);
 
@@ -144,6 +146,7 @@ function App({ children }: AppProps) {
     return (
       <NotificationProviderWithGlobal defaultDuration={1500}>
         <NotificationContainer position="top-center" />
+        <ThemeModeDock />
         <LoadingSpinner />
       </NotificationProviderWithGlobal>
     );
@@ -153,6 +156,7 @@ function App({ children }: AppProps) {
     <OfflineSyncContext.Provider value={offlineSyncValue}>
       <NotificationProviderWithGlobal defaultDuration={1500}>
         <NotificationContainer position="top-center" />
+        <ThemeModeDock />
         {user && legacyUser ? (
           <AuthenticatedApp
             user={legacyUser}

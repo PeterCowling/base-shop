@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { z } from "zod";
 
+import { readJson, writeJson } from "../../lib/offline/storage";
 import { getLocalToday, isToday } from "../../utils/dateUtils";
 
 import { scheduleDailyReset } from "./scheduleDailyReset";
@@ -20,24 +21,16 @@ export default function useDailyResetToggle(
 ): [boolean, (v: boolean) => void] {
 
   const [value, setValue] = useState<boolean>(() => {
-    try {
-      const raw = localStorage.getItem(key);
-      if (raw) {
-        const parsed = StoredData.safeParse(JSON.parse(raw));
-        if (parsed.success && isToday(parsed.data.date)) {
-          return parsed.data.value;
-        }
-      }
-    } catch {
-      // ignore parse errors
+    const parsed = StoredData.safeParse(readJson(key));
+    if (parsed.success && isToday(parsed.data.date)) {
+      return parsed.data.value;
     }
     return false;
   });
 
   // Persist whenever the value changes
   useEffect(() => {
-    const data: StoredData = { date: getLocalToday(), value };
-    localStorage.setItem(key, JSON.stringify(data));
+    writeJson(key, { date: getLocalToday(), value });
   }, [key, value]);
 
   // Reset at the next midnight

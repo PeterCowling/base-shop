@@ -4,7 +4,7 @@ Status: Active
 Created: 2026-03-09
 Last-updated: 2026-03-09
 Relates-to: docs/plans/startup-loop-centralized-math-foundations/plan.md
-Replan-round: 3
+Replan-round: 4
 ---
 
 # Replan Notes: TASK-02 Readiness (2026-03-09)
@@ -147,3 +147,61 @@ That is a bounded implementation task, not a hidden design task.
 Ready.
 
 `TASK-16` now meets the `IMPLEMENT` confidence floor and is the next runnable build task.
+
+## Round 4 Trigger
+After `TASK-16` completed, Wave 4 remained blocked because `TASK-07`, `TASK-08`, and `TASK-09` were still carrying stale pre-evaluation confidence levels (`75%`) even though the core utility, constraint, graph-helper, and cohort-assembly seams now exist in code.
+
+## Round 4 Evidence Reviewed
+- `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`
+  - utility computation is now explicit
+  - `ConstraintProfile` defaults are now real code, not only artifact text
+  - structural snapshots already carry `constraint_refs`
+- `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`
+  - queue ordering already consumes `score.utility.net_utility`, proving the optimizer seam is not hypothetical
+- `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`
+  - `portfolio_selection` is already a valid `PolicyDecisionType`
+- `docs/business-os/startup-loop/self-evolving/BRIK/candidates.json`
+- `docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl`
+  - current candidate-set shape is concrete enough to derive a first objective/constraint example for the optimizer task
+- `scripts/src/startup-loop/self-evolving/self-evolving-signal-helpers.ts`
+- `scripts/src/startup-loop/self-evolving/self-evolving-candidates.ts`
+  - trigger observations, candidate IDs, executor paths, and structural refs are now concrete graph-slice inputs
+- `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`
+- `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`
+  - `TASK-16` created a concrete policy-evaluation seam with explicit `observed`, `pending`, `missing`, and `censored` states
+- `packages/lib/src/math/optimization/index.ts`
+- `packages/lib/src/math/graph/index.ts`
+- `packages/lib/src/math/survival/index.ts`
+  - repo-owned helper APIs and tests already exist for the three Wave 4 math layers
+
+## Round 4 Assessment
+The earlier reason these Wave 4 tasks sat below threshold was not that the math packages were missing. It was that the startup-loop side lacked concrete first use-shapes. That ambiguity is now materially smaller:
+- `TASK-07` no longer needs to invent utility or constraints; it needs to convert the existing candidate set plus active constraint profile into explicit portfolio selection and journaling
+- `TASK-08` no longer needs to invent a dependency ontology from whole cloth; the first graph slice is now bounded to `trigger_observation -> candidate -> executor_path` plus shared `constraint_refs`
+- `TASK-09` no longer needs to invent cohort assembly; `policy-evaluation.v1` already expresses terminal vs censored states needed for a first Kaplan-Meier closure-risk layer
+
+What remains is implementation detail and first-slice discipline, not missing architectural authority.
+
+## Round 4 Task Deltas Applied
+- `TASK-07` confidence raised from `75%` to `80%`
+  - Implementation: `80%`
+  - Approach: `85%`
+  - Impact: `90%`
+- `TASK-08` confidence raised from `75%` to `80%`
+  - Implementation: `80%`
+  - Approach: `80%`
+  - Impact: `80%`
+- `TASK-09` confidence raised from `75%` to `80%`
+  - Implementation: `80%`
+  - Approach: `80%`
+  - Impact: `80%`
+
+## Round 4 Sequencing Impact
+- No topology change.
+- Stable task IDs preserved.
+- No `/lp-do-sequence` run required.
+
+## Round 4 Readiness Decision
+Ready.
+
+`TASK-07`, `TASK-08`, and `TASK-09` now all meet the `IMPLEMENT` confidence floor and form the next runnable wave.

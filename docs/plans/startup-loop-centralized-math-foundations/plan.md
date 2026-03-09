@@ -118,9 +118,9 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-05 | IMPLEMENT | Implement the versioned belief-state and utility-computation layer | 80% | M | Complete (2026-03-09) | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
 | TASK-06 | IMPLEMENT | Implement outcome closure and verified measurement feedback into self-evolving memory | 80% | M | Complete (2026-03-09) | TASK-01, TASK-02, TASK-04 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
 | TASK-16 | IMPLEMENT | Implement decision journaling, maturity windows, and replay-ready evaluation datasets | 80% | M | Complete (2026-03-09) | TASK-03, TASK-04, TASK-05, TASK-06 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13, TASK-14 |
-| TASK-07 | IMPLEMENT | Replace pure priority sorting with constrained portfolio optimization | 75% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-10, TASK-12, TASK-13, TASK-14 |
-| TASK-08 | IMPLEMENT | Integrate graph dependency and bottleneck analysis into policy inputs | 75% | M | Pending | TASK-02, TASK-03, TASK-05 | TASK-11, TASK-13, TASK-14 |
-| TASK-09 | IMPLEMENT | Integrate survival and time-to-event risk into policy inputs | 75% | M | Pending | TASK-02, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-11, TASK-13, TASK-14 |
+| TASK-07 | IMPLEMENT | Replace pure priority sorting with constrained portfolio optimization | 80% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-10, TASK-12, TASK-13, TASK-14 |
+| TASK-08 | IMPLEMENT | Integrate graph dependency and bottleneck analysis into policy inputs | 80% | M | Pending | TASK-02, TASK-03, TASK-05 | TASK-11, TASK-13, TASK-14 |
+| TASK-09 | IMPLEMENT | Integrate survival and time-to-event risk into policy inputs | 80% | M | Pending | TASK-02, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-11, TASK-13, TASK-14 |
 | TASK-10 | IMPLEMENT | Implement bounded contextual exploration with internal Thompson-style ranking | 70% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07 | TASK-12, TASK-13, TASK-14 |
 | TASK-11 | IMPLEMENT | Implement the causal-evaluation contract and promotion-quality gate | 70% | M | Pending | TASK-04, TASK-06, TASK-16, TASK-08, TASK-09 | TASK-12, TASK-13, TASK-14 |
 | TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 75% | M | Pending | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
@@ -499,8 +499,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `packages/lib/src/math/optimization/index.ts`
 - **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16
 - **Blocks:** TASK-10, TASK-12, TASK-13, TASK-14
-- **Confidence:** 75%
-  - Implementation: 75% - the selection seam is concrete, but the objective/constraint encoding must be earned.
+- **Confidence:** 80%
+  - Implementation: 80% - the selection seam, utility surface, constraint profile, and candidate-set data shape are now all concrete; the remaining work is solver wiring and portfolio journaling.
   - Approach: 85% - explicit portfolio choice is the right replacement for raw score sorting.
   - Impact: 90% - this is where mathematical decision quality becomes visible in allocation behavior.
 - **Acceptance criteria:**
@@ -514,9 +514,9 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-03: selection rationale, policy version, and candidate-set snapshot are persisted for later regret analysis.
 - **Execution plan:** Red -> add deterministic portfolio-selection fixtures; Green -> wire the optimization layer into queue selection; Refactor -> isolate objective and constraint assembly from file IO.
 - **Planning validation (required for M/L):**
-  - Checks run: traced current queue merge/sort path and required upstream belief/outcome inputs.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: today there is no explicit utility function or constraint schema anywhere in the queue path.
+  - Checks run: traced current queue merge/sort path, active policy constraint profile, policy-decision contract, and current BRIK candidate/backbone data shape.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/posterior-policy-contract.md`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `docs/business-os/startup-loop/self-evolving/BRIK/candidates.json`, `docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl`
+  - Unexpected findings: the queue path already has an explicit utility surface and a versioned constraint schema through policy state, so the remaining uncertainty is not objective invention; it is the exact portfolio assembly and `portfolio_selection` journal shape.
 - **Scouts:** None: the queue seam is specific once upstream contracts land.
 - **Edge Cases & Hardening:** infeasible model, exact ties, stale candidates, and route-cap saturation.
 - **What would make this >=90%:**
@@ -541,8 +541,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone.ts`, `packages/lib/src/math/graph/index.ts`
 - **Depends on:** TASK-02, TASK-03, TASK-05
 - **Blocks:** TASK-11, TASK-13, TASK-14
-- **Confidence:** 75%
-  - Implementation: 75% - the structural seams exist, but the graph schema is new.
+- **Confidence:** 80%
+  - Implementation: 80% - the first structural graph slice can now be defined directly from existing trigger-observation, candidate, executor-path, and constraint-ref fields rather than inventing a new dependency model.
   - Approach: 80% - graph analysis is useful only if kept structural rather than causal.
   - Impact: 80% - it should improve bottleneck visibility and portfolio weighting.
 - **Acceptance criteria:**
@@ -555,9 +555,9 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-03: promotion-quality gates cannot treat graph centrality alone as causal evidence.
 - **Execution plan:** Red -> add graph fixture tests; Green -> build the graph layer and expose structural signals; Refactor -> isolate graph construction from policy consumption.
 - **Planning validation (required for M/L):**
-  - Checks run: traced candidate generation, backbone routing, and queue-selection seams that could consume structural bottleneck signals.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: the current runtime has no explicit dependency object at all, so the graph schema must be designed deliberately.
+  - Checks run: traced candidate generation, signal-hint inference, structural snapshot creation, and backbone-routing seams that could consume structural bottleneck signals.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/posterior-policy-contract.md`, `scripts/src/startup-loop/self-evolving/self-evolving-signal-helpers.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-candidates.ts`, `packages/lib/src/math/graph/index.ts`
+  - Unexpected findings: the runtime still lacks a persisted graph view, but it no longer lacks a first graph inventory. The bounded first slice is now concrete: `trigger_observation -> candidate -> executor_path`, plus structural `constraint_refs` as shared coupling nodes.
 - **Scouts:** None: the structural role is already bounded by the fact-find.
 - **Edge Cases & Hardening:** missing nodes, disconnected subgraphs, and unstable identifiers across runs.
 - **What would make this >=90%:**
@@ -582,8 +582,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `packages/lib/src/math/survival/index.ts`
 - **Depends on:** TASK-02, TASK-04, TASK-05, TASK-06, TASK-16
 - **Blocks:** TASK-11, TASK-13, TASK-14
-- **Confidence:** 75%
-  - Implementation: 75% - the seam is clear once verified outcome histories exist.
+- **Confidence:** 80%
+  - Implementation: 80% - the seam is now clear because TASK-16 created a concrete evaluation dataset that can assemble decision-to-outcome cohorts with explicit pending, observed, missing, and censored states.
   - Approach: 80% - time-to-event risk is a useful policy input if kept within its narrow evidence scope.
   - Impact: 80% - it should improve prioritization of aging and risk-bearing candidates.
 - **Acceptance criteria:**
@@ -596,9 +596,9 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-03: survival outputs feed policy/risk reporting but do not bypass causal promotion gates.
 - **Execution plan:** Red -> add survival fixture tests; Green -> wire survival outputs into policy inputs and reporting; Refactor -> isolate cohort assembly and censor handling.
 - **Planning validation (required for M/L):**
-  - Checks run: traced current observation, outcome, and dashboard seams that would need time-to-event signals.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: the current runtime has no cohort assembly layer for time-to-event histories.
+  - Checks run: traced current observation, outcome, evaluation, and dashboard seams that would need time-to-event signals.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/outcome-closure-contract.md`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `packages/lib/src/math/survival/index.ts`
+  - Unexpected findings: the runtime now has a cohort-assembly layer through `policy-evaluation.v1`, but not yet a survival adapter. The bounded first cohort is now concrete: decision-to-closure timing where `observed` and `missing` are terminal states and `pending` / `censored` remain censored at evaluation time.
 - **Scouts:** None: the survival role is already constrained by the fact-find.
 - **Edge Cases & Hardening:** censored histories, mixed cohorts, and stale event timestamps.
 - **What would make this >=90%:**
@@ -875,6 +875,10 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - Remaining findings:
     - no new Critical findings
     - `TASK-16` was re-scoped by live code evidence from "invent journaling and replay primitives" to "assemble joined evaluation slices and expose them through reporting"
+- Round 4: credible and runnable (4.5/5)
+  - Remaining findings:
+    - no new Critical findings
+    - Wave 4 now has concrete first slices for optimization, graph, and survival, so the remaining risk is implementation quality rather than hidden contract gaps
 
 ## What would make this >=90%
 - Freeze the posterior-policy contract with one worked example that starts from a real candidate family and ends in a replayable decision journal, utility score, and authority-level decision.
@@ -939,7 +943,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 ## Overall-confidence Calculation
 - S=1, M=2, L=3
 - Weighted task confidence:
-  - `(85*1 + 75*2 + 75*2 + 75*2 + 75*2 + 75*2 + 80*2 + 75*2 + 75*2 + 75*2 + 70*2 + 70*2 + 75*2 + 75*2 + 95*1 + 95*1) / 29`
-  - `= 2215 / 29`
-  - `= 76.38%`
-- Rounded Overall-confidence: `76%`
+  - `(85*1 + 75*2 + 75*2 + 75*2 + 75*2 + 75*2 + 80*2 + 80*2 + 80*2 + 80*2 + 70*2 + 70*2 + 75*2 + 75*2 + 95*1 + 95*1) / 29`
+  - `= 2245 / 29`
+  - `= 77.41%`
+- Rounded Overall-confidence: `77%`

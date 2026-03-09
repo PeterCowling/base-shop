@@ -12,14 +12,12 @@ jest.mock("../../../lib/uploaderI18n.client", () => ({
 describe("CurrencyRatesPanel", () => {
   const originalFetch = global.fetch;
 
-  async function renderPanel(props: {
+  function renderPanel(props: {
     busy: boolean;
     syncReadiness: { checking: boolean; ready: boolean };
     onSync: () => Promise<{ ok: boolean }>;
   }) {
-    await act(async () => {
-      render(<CurrencyRatesPanel {...props} />);
-    });
+    render(<CurrencyRatesPanel {...props} />);
   }
 
   beforeEach(() => {
@@ -37,7 +35,7 @@ describe("CurrencyRatesPanel", () => {
   });
 
   it("renders EUR, GBP, and AUD rate inputs", async () => {
-    await renderPanel({
+    renderPanel({
       busy: false,
       syncReadiness: { checking: false, ready: true },
       onSync: async () => ({ ok: true }),
@@ -49,7 +47,7 @@ describe("CurrencyRatesPanel", () => {
   });
 
   it("save button is disabled when busy", async () => {
-    await renderPanel({
+    renderPanel({
       busy: true,
       syncReadiness: { checking: false, ready: true },
       onSync: async () => ({ ok: true }),
@@ -66,7 +64,7 @@ describe("CurrencyRatesPanel", () => {
       } as Response),
     ) as unknown as typeof fetch;
 
-    await renderPanel({
+    renderPanel({
       busy: false,
       syncReadiness: { checking: false, ready: true },
       onSync: async () => ({ ok: true }),
@@ -92,7 +90,7 @@ describe("CurrencyRatesPanel", () => {
       } as Response),
     ) as unknown as typeof fetch;
 
-    await renderPanel({
+    renderPanel({
       busy: false,
       syncReadiness: { checking: false, ready: true },
       onSync: async () => ({ ok: true }),
@@ -121,7 +119,7 @@ describe("CurrencyRatesPanel", () => {
       } as Response);
     }) as unknown as typeof fetch;
 
-    await renderPanel({
+    renderPanel({
       busy: false,
       syncReadiness: { checking: false, ready: true },
       onSync,
@@ -153,7 +151,7 @@ describe("CurrencyRatesPanel", () => {
       } as Response);
     }) as unknown as typeof fetch;
 
-    await renderPanel({
+    renderPanel({
       busy: false,
       syncReadiness: { checking: false, ready: true },
       onSync,
@@ -185,7 +183,7 @@ describe("CurrencyRatesPanel", () => {
       } as Response);
     }) as unknown as typeof fetch;
 
-    await renderPanel({
+    renderPanel({
       busy: false,
       syncReadiness: { checking: false, ready: false },
       onSync,
@@ -216,7 +214,7 @@ describe("CurrencyRatesPanel", () => {
       } as Response);
     }) as unknown as typeof fetch;
 
-    await renderPanel({
+    renderPanel({
       busy: false,
       syncReadiness: { checking: false, ready: true },
       onSync: async () => ({ ok: true }),

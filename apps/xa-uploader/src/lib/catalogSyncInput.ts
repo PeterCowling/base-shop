@@ -1,3 +1,5 @@
+import access from "node:fs/promises";
+
 import { readCsvFile } from "@acme/lib/xa";
 
 import { isErrnoCode } from "./typeGuards";
@@ -11,7 +13,9 @@ export async function getCatalogSyncInputStatus(
   productsCsvPath: string,
 ): Promise<CatalogSyncInputStatus> {
   try {
-    const { rows } = await readCsvFile(productsCsvPath);
+    await access.access(productsCsvPath);
+    const parsed = await readCsvFile(productsCsvPath);
+    const rows = parsed?.rows ?? [];
     return { exists: true, rowCount: rows.length };
   } catch (error) {
     if (isErrnoCode(error, "ENOENT")) {

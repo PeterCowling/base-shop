@@ -649,7 +649,7 @@ describe("useCatalogConsole scoped action feedback", () => {
     expect(retryIfMatch).toBe("rev-server");
     expect(retryImageFiles).toContain("images/studio-jacket/front.jpg");
     expect(retryImageFiles).toContain("images/studio-jacket/side.jpg");
-    expect(retryImageFiles).toContain("images/studio-jacket/interior.jpg");
+    expect(retryImageFiles).not.toContain("images/studio-jacket/interior.jpg");
     expect(retryImageFiles).not.toContain("images/studio-jacket/detail.jpg");
   });
 
@@ -823,13 +823,17 @@ describe("handlePublishImpl — publish action feedback", () => {
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
-      if (url.startsWith("/api/catalog/products?storefront=") && !init?.method) {
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        if (init?.method === "POST") {
+          return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-1" });
+        }
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
       }
       if (url.startsWith("/api/catalog/sync?storefront=")) {
         return jsonResponse({ ok: true, ready: true, mode: "cloud", missingScripts: [], contractConfigured: true });
       }
       if (url === "/api/catalog/publish" && init?.method === "POST") {
+        expect(init.body).toBe(JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1", publishState: "live" }));
         return jsonResponse({ ok: true, deployStatus: "triggered", warnings: [] });
       }
       throw new Error(`Unhandled fetch: ${url}`);
@@ -837,6 +841,7 @@ describe("handlePublishImpl — publish action feedback", () => {
 
     await renderHarness();
     await act(async () => { fireEvent.click(screen.getByRole("button", { name: "seed-draft" })); });
+    await clickButton("save");
     await clickButton("publish");
 
     await waitFor(() => {
@@ -849,13 +854,17 @@ describe("handlePublishImpl — publish action feedback", () => {
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
-      if (url.startsWith("/api/catalog/products?storefront=") && !init?.method) {
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        if (init?.method === "POST") {
+          return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-1" });
+        }
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
       }
       if (url.startsWith("/api/catalog/sync?storefront=")) {
         return jsonResponse({ ok: true, ready: true, mode: "cloud", missingScripts: [], contractConfigured: true });
       }
       if (url === "/api/catalog/publish" && init?.method === "POST") {
+        expect(init.body).toBe(JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1", publishState: "live" }));
         return jsonResponse({ ok: true, deployStatus: "skipped_cooldown", warnings: [] });
       }
       throw new Error(`Unhandled fetch: ${url}`);
@@ -863,6 +872,7 @@ describe("handlePublishImpl — publish action feedback", () => {
 
     await renderHarness();
     await act(async () => { fireEvent.click(screen.getByRole("button", { name: "seed-draft" })); });
+    await clickButton("save");
     await clickButton("publish");
 
     await waitFor(() => {
@@ -875,13 +885,17 @@ describe("handlePublishImpl — publish action feedback", () => {
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
-      if (url.startsWith("/api/catalog/products?storefront=") && !init?.method) {
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        if (init?.method === "POST") {
+          return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-1" });
+        }
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
       }
       if (url.startsWith("/api/catalog/sync?storefront=")) {
         return jsonResponse({ ok: true, ready: true, mode: "cloud", missingScripts: [], contractConfigured: true });
       }
       if (url === "/api/catalog/publish" && init?.method === "POST") {
+        expect(init.body).toBe(JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1", publishState: "live" }));
         return jsonResponse({
           ok: true,
           deployStatus: "failed",
@@ -894,6 +908,7 @@ describe("handlePublishImpl — publish action feedback", () => {
 
     await renderHarness();
     await act(async () => { fireEvent.click(screen.getByRole("button", { name: "seed-draft" })); });
+    await clickButton("save");
     await clickButton("publish");
 
     await waitFor(() => {
@@ -908,13 +923,17 @@ describe("handlePublishImpl — publish action feedback", () => {
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
-      if (url.startsWith("/api/catalog/products?storefront=") && !init?.method) {
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        if (init?.method === "POST") {
+          return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-1" });
+        }
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
       }
       if (url.startsWith("/api/catalog/sync?storefront=")) {
         return jsonResponse({ ok: true, ready: true, mode: "cloud", missingScripts: [], contractConfigured: true });
       }
       if (url === "/api/catalog/publish" && init?.method === "POST") {
+        expect(init.body).toBe(JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1", publishState: "live" }));
         return jsonResponse({ ok: false, error: "catalog_publish_failed" }, { status: 502 });
       }
       throw new Error(`Unhandled fetch: ${url}`);
@@ -922,11 +941,75 @@ describe("handlePublishImpl — publish action feedback", () => {
 
     await renderHarness();
     await act(async () => { fireEvent.click(screen.getByRole("button", { name: "seed-draft" })); });
+    await clickButton("save");
     await clickButton("publish");
 
     await waitFor(() => {
       expect(screen.getByTestId("draft-feedback")).toHaveTextContent("error:");
     });
     expect(screen.getByTestId("busy")).toHaveTextContent("idle");
+  });
+
+  it("TC-05: publish is blocked while autosave is dirty", async () => {
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        if (init?.method === "POST") {
+          return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-1" });
+        }
+        return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, mode: "cloud", missingScripts: [], contractConfigured: true });
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    await renderHarness();
+    await act(async () => { fireEvent.click(screen.getByRole("button", { name: "seed-draft" })); });
+    await clickButton("autosave-a");
+
+    await waitFor(() => {
+      expect(screen.getByTestId("autosave-dirty")).toHaveTextContent("yes");
+    });
+
+    await clickButton("publish");
+
+    await waitFor(() => {
+      expect(screen.getByTestId("draft-feedback")).toHaveTextContent(
+        "error:Image autosave is still running or pending. Save those changes before publishing.",
+      );
+    });
+    expect(global.fetch).not.toHaveBeenCalledWith("/api/catalog/publish", expect.anything());
+  });
+
+  it("TC-06: publish success surfaces partial-success warnings", async () => {
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=") && !init?.method) {
+        return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, mode: "cloud", missingScripts: [], contractConfigured: true });
+      }
+      if (url === "/api/catalog/publish" && init?.method === "POST") {
+        return jsonResponse({ ok: true, deployStatus: "triggered", warnings: ["publish_state_promotion_failed"] });
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    await renderHarness();
+    await act(async () => { fireEvent.click(screen.getByRole("button", { name: "seed-draft" })); });
+    await clickButton("save");
+    await clickButton("publish");
+
+    await waitFor(() => {
+      expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Published. Site rebuild triggered.");
+    });
+    expect(screen.getByTestId("draft-feedback")).toHaveTextContent(
+      "Some product publish states could not be updated to live in uploader records.",
+    );
   });
 });

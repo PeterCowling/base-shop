@@ -77,9 +77,9 @@ jest.mock("next/link", () => {
   return { __esModule: true, default: LinkMock };
 });
 
-// @/utils/slug: stub terms slug.
+// @/utils/slug: keep the booking route stable for widget navigation assertions.
 jest.mock("@/utils/slug", () => ({
-  getSlug: () => "terms",
+  getSlug: (key: string) => (key === "book" ? "book" : key),
 }));
 
 // ---------------------------------------------------------------------------

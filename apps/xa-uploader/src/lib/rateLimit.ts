@@ -1,3 +1,5 @@
+import type { NextResponse } from "next/server";
+
 import { toPositiveInt } from "@acme/lib";
 
 import { getTrustedRequestIp } from "./requestIp";
@@ -95,6 +97,11 @@ export function rateLimit({
     retryAfter,
     limit: max,
   };
+}
+
+export function withRateHeaders(response: NextResponse, limit: RateLimitResult): NextResponse {
+  applyRateLimitHeaders(response.headers, limit);
+  return response;
 }
 
 export function applyRateLimitHeaders(headers: Headers, result: RateLimitResult) {

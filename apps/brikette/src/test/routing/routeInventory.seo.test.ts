@@ -39,7 +39,7 @@ describe("listLocalizedCanonicalAppUrls internal-link contract", () => {
   it("keeps transactional localized booking routes as valid canonical link targets", () => {
     const urls = listLocalizedCanonicalAppUrls();
 
-    expect(urls).toContain("/en/book-dorm-bed");
+    expect(urls).toContain("/en/book");
     expect(urls).toContain("/it/prenota");
     expect(urls).toContain("/en/book-private-accommodations");
     expect(urls).toContain("/it/prenota-alloggi-privati");

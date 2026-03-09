@@ -1,7 +1,7 @@
 /** @jest-environment jsdom */
 
 import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { CurrencyRatesPanel } from "../CurrencyRatesPanel.client";
 
@@ -130,7 +130,9 @@ describe("CurrencyRatesPanel", () => {
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-eur")).toHaveValue(0.93);
     });
-    fireEvent.click(screen.getByTestId("currency-rates-save"));
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("currency-rates-save"));
+    });
 
     await waitFor(() => {
       expect(onSync).toHaveBeenCalledTimes(1);
@@ -162,7 +164,9 @@ describe("CurrencyRatesPanel", () => {
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-eur")).toHaveValue(0.93);
     });
-    fireEvent.click(screen.getByTestId("currency-rates-save"));
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("currency-rates-save"));
+    });
 
     await waitFor(() => {
       expect(onSync).toHaveBeenCalledTimes(1);
@@ -194,7 +198,9 @@ describe("CurrencyRatesPanel", () => {
     await waitFor(() => {
       expect(screen.getByTestId("currency-rates-gbp")).toHaveValue(0.79);
     });
-    fireEvent.click(screen.getByTestId("currency-rates-save"));
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("currency-rates-save"));
+    });
 
     await waitFor(() => {
       expect(onSync).not.toHaveBeenCalled();

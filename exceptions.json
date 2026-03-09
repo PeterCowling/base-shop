@@ -431,6 +431,14 @@
       "expires": "2027-06-30",
       "notes": "Prime pre-existing react-hooks/rules-of-hooks and react-hooks/exhaustive-deps suppressions: conditional SDK guard pattern and stable reference dep arrays deferred pending hooks refactor."
     },
+    "PRIME-101": {
+      "allow": [
+        "apps/prime/functions/api/review-threads.ts",
+        "apps/prime/functions/lib/prime-messaging-repositories.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Prime review API machine-readable errors, developer logs, and repository SQL literals are non-UI strings."
+    },
     "PRIME-DATE-UTILS-001": {
       "allow": ["apps/prime/src/utils/dateUtils.ts"],
       "expires": "2026-12-31",

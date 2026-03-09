@@ -178,7 +178,7 @@ describe("useCatalogConsole scoped action feedback", () => {
     jest.restoreAllMocks();
   });
 
-  it("TC-00: initial autosave status is unsaved before any action", () => {
+  it("TC-00: initial autosave status is unsaved before any action", async () => {
     global.fetch = jest.fn(async (input: RequestInfo | URL) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: false });

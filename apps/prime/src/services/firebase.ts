@@ -43,7 +43,7 @@ import {
   uploadBytes,
 } from 'firebase/storage';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 /* -------------------------------------------------------------------------- */
 /*                              Firebase config                               */

@@ -9,7 +9,7 @@
 
 import { useMemo } from 'react';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import type { BagStorageRecord } from '../../types/bagStorage';
 import type { CityTaxOccupantRecord, CityTaxRecord } from '../../types/cityTax';

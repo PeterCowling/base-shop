@@ -17,8 +17,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import { get, ref, set } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import { type BookingOccupantData,bookingOccupantDataSchema } from '../../utils/bookingsSchemas';

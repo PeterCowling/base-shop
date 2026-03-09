@@ -19,8 +19,7 @@ import { useRouter } from 'next/navigation';
 import { MessageCircle, Users } from 'lucide-react';
 
 import { Button } from '@acme/design-system/primitives';
-
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import { useGuestProfiles } from '../../../hooks/data/useGuestProfiles';
 import useUuid from '../../../hooks/useUuid';

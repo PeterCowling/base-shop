@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { z } from 'zod';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
+
 import { zodErrorToString } from '@/utils/zodErrorToString';
 
 /**

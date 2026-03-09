@@ -11,7 +11,7 @@
 
 import { useMemo } from 'react';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import {
   computeOrderDate,

@@ -4,7 +4,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getDatabase } from 'firebase/database';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import type { FirebaseConfig } from '../types/firebase';
 

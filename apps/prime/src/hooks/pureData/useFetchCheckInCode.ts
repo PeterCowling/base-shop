@@ -12,7 +12,7 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import type { CheckInCodeRecord } from '../../types/checkInCode';
 import useUuid from '../useUuid';

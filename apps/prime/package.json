@@ -17,6 +17,7 @@
   "dependencies": {
     "@acme/date-utils": "workspace:*",
     "@acme/i18n": "workspace:*",
+    "@acme/lib": "workspace:*",
     "@acme/design-system": "workspace:*",
     "@acme/next-config": "workspace:*",
     "@acme/platform-core": "workspace:*",

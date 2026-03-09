@@ -5,7 +5,7 @@ import { renderHook } from '@testing-library/react';
 import type { UseOccupantTransformInput } from './useOccupantTransform';
 import { useOccupantTransform } from './useOccupantTransform';
 
-jest.mock('@/utils/logger', () => ({
+jest.mock('@acme/lib/logger/client', () => ({
   warn: jest.fn(),
   error: jest.fn(),
 }));

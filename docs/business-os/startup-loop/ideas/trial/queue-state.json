@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-09T08:48:05.177Z",
+  "last_updated": "2026-03-09T08:52:16.226Z",
   "counts": {
-    "enqueued": 239,
-    "processed": 55,
+    "enqueued": 242,
+    "processed": 54,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 132,
-    "fact_find_ready": 296,
+    "completed": 133,
+    "fact_find_ready": 298,
     "micro_build_ready": 23,
-    "total": 453
+    "total": 456
   },
   "dispatches": [
     {
@@ -18508,7 +18508,7 @@
       "current_truth": "normalizeLocale.ts defines SUPPORTED_LOCALES = ['en', 'it'] locally. @acme/types/constants.ts exports UI_LOCALES but not in a shape compatible with prime's normalizeLocale function. The comment in the file notes this is done to avoid haste map conflicts.",
       "next_scope_now": "Audit what @acme/types/constants.ts currently exports for locales. Determine the right shared shape (array vs set vs type guard) and whether normalizeLocale itself should move to @acme/i18n or @acme/types. Map all apps that define SUPPORTED_LOCALES locally.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.79,
       "evidence_refs": [
@@ -18517,7 +18517,7 @@
         "code-ref: packages/types/src/constants.ts"
       ],
       "created_at": "2026-03-09T12:00:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "Local locale constant is a recurring copy-paste risk as supported locales expand. Cross-package refactor needs scoping before implementation to avoid breaking haste-map resolution and other apps.",
       "intended_outcome": {
         "type": "operational",
@@ -18533,6 +18533,11 @@
         "processed_at": "2026-03-09T08:21:20.260Z",
         "fact_find_slug": "prime-normalize-locale-constants",
         "fact_find_path": "docs/plans/prime-normalize-locale-constants/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-normalize-locale-constants/plan.md",
+        "completed_at": "2026-03-09T08:52:16.225Z",
+        "outcome": "Prime no longer defines SUPPORTED_LOCALES locally. normalizeLocale.ts removed; call sites import normalizeUiLocale from @acme/i18n."
       }
     },
     {
@@ -19061,6 +19066,147 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:48:05.172Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309085130-0070",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "0557aaa3101520c112b65289e0e593009d34802d",
+      "after_sha": "7e96fc29e4374e8a843b783441bae64af3aa06e2",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:7e96fc29e4374e8a843b783441bae64af3aa06e2",
+      "anchor_key": "api-catalog-currency-rates",
+      "cluster_key": "bos:unknown:api-catalog-currency-rates:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:7e96fc29e4374e8a843b783441bae64af3aa06e2",
+      "cluster_fingerprint": "7d8f2b70f6ff767e07c268a09937be308582db9f0ddd1195e434fffce65984d4",
+      "lineage_depth": 0,
+      "area_anchor": "api catalog currency rates",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/deploy-drain/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/images/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/products/[slug]/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/products/bulk/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/products/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/publish/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (0557aaa → 7e96fc2)",
+      "next_scope_now": "Investigate implications of api catalog currency rates delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/deploy-drain/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/images/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/products/[slug]/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/products/bulk/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/products/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/publish/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/sync/route.ts"
+      ],
+      "created_at": "2026-03-09T08:51:30.069Z",
+      "queue_state": "enqueued",
+      "why": "Assess api catalog currency rates implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for api catalog currency rates.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309085131-0205",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "b824823c95d31457b3a34370a3a95ef4048c487a",
+      "after_sha": "009f66244bea0ab78cb519b6b7995c446793b026",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:009f66244bea0ab78cb519b6b7995c446793b026",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:009f66244bea0ab78cb519b6b7995c446793b026",
+      "cluster_fingerprint": "ae11ad9dc474dd336534dbb486e7b352c7dba00d4646863db977a173f49e8535",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (b824823 → 009f662)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:51:31.204Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309085152-0738",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "009f66244bea0ab78cb519b6b7995c446793b026",
+      "after_sha": "1c36ac12a2d5b89cfeb1bdf682986a1f569ad757",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:1c36ac12a2d5b89cfeb1bdf682986a1f569ad757",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:1c36ac12a2d5b89cfeb1bdf682986a1f569ad757",
+      "cluster_fingerprint": "9079d76c42ce6b1b89c2483fa240c1ccdd6dc07362bea15dfa897224a27c22ed",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (009f662 → 1c36ac1)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:51:52.737Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

@@ -1,0 +1,35 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-normalize-locale-constants/fact-find.md",
+      "line": "60",
+      "message": "The outcome contract is no longer aligned with the document's own chosen default. It says `normalizeLocale.ts` should import the shared constant from `@acme`, but the resolved approach later defaults to deleting `normalizeLocale.ts` and importing `normalizeUiLocale` directly at the call site. That leaves the success condition ambiguous."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-normalize-locale-constants/fact-find.md",
+      "line": "175",
+      "message": "The confidence section is stale internally. It still says there is \"one open style question\" and \"one open style preference,\" but the Questions section now says there are no open questions and no operator input is required. That weakens the readiness/confidence framing."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-normalize-locale-constants/fact-find.md",
+      "line": "223",
+      "message": "The execution acceptance package is under-scoped on validation. This change touches both `@apps/prime` and `@acme/i18n`, but the brief only requires `pnpm --filter @apps/prime typecheck`. Per repo policy, it should include scoped `typecheck` and `lint` for each affected package, including `@acme/i18n`."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/prime-normalize-locale-constants/fact-find.md",
+      "line": "84",
+      "message": "The tsconfig-paths inventory has a minor count error. It says Prime has \"only 4 entries\" but then lists 5 path keys: `@/*`, `@acme/platform-core`, `@acme/platform-core/*`, `@acme/ui`, and `@acme/ui/*`."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "durationMs": 53651
+}

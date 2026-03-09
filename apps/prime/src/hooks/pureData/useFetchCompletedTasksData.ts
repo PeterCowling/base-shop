@@ -4,8 +4,9 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import logger from '@acme/lib/logger/client';
+
 import { get, onValue, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';

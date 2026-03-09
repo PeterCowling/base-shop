@@ -26,8 +26,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 ## Active tasks
 - [x] TASK-01: Replace direct startup-loop math source imports with the centralized package boundary — Complete (2026-03-09)
 - [ ] TASK-02: Harden graph, optimization, and survival modules into repo-owned helper contracts with tests
-- [ ] TASK-03: Define the posterior belief, utility, and policy-state contract
-- [ ] TASK-04: Define the outcome-closure and verified-measurement contract
+- [x] TASK-03: Define the posterior belief, utility, and policy-state contract — Complete (2026-03-09)
+- [x] TASK-04: Define the outcome-closure and verified-measurement contract — Complete (2026-03-09)
 - [ ] TASK-05: Implement the versioned belief-state and utility-computation layer
 - [ ] TASK-06: Implement outcome closure and verified measurement feedback into self-evolving memory
 - [ ] TASK-16: Implement decision journaling, maturity windows, and replay-ready evaluation datasets
@@ -113,8 +113,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Replace direct startup-loop math source imports with the centralized package boundary | 85% | S | Complete (2026-03-09) | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-13 |
 | TASK-02 | IMPLEMENT | Harden graph, optimization, and survival modules into repo-owned helper contracts with tests | 75% | M | Pending | - | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
-| TASK-03 | INVESTIGATE | Define the posterior belief, utility, and policy-state contract | 75% | M | Pending | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
-| TASK-04 | INVESTIGATE | Define the outcome-closure and verified-measurement contract | 75% | M | Pending | - | TASK-06, TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
+| TASK-03 | INVESTIGATE | Define the posterior belief, utility, and policy-state contract | 75% | M | Complete (2026-03-09) | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
+| TASK-04 | INVESTIGATE | Define the outcome-closure and verified-measurement contract | 75% | M | Complete (2026-03-09) | - | TASK-06, TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
 | TASK-05 | IMPLEMENT | Implement the versioned belief-state and utility-computation layer | 75% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
 | TASK-06 | IMPLEMENT | Implement outcome closure and verified measurement feedback into self-evolving memory | 75% | M | Pending | TASK-01, TASK-02, TASK-04 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
 | TASK-16 | IMPLEMENT | Implement decision journaling, maturity windows, and replay-ready evaluation datasets | 70% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-06 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13, TASK-14 |
@@ -185,7 +185,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-01: pass. Both target files now import via `@acme/lib/math/experimentation`.
   - TC-02: pass. `pnpm exec tsc -p scripts/tsconfig.json --noEmit` completed successfully.
   - TC-03: pass. `pnpm exec eslint scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts` completed successfully, and `rg -n "packages/lib/src/math/experimentation/bayesian\\.js" scripts/src/startup-loop/self-evolving -S` returned no matches.
-  - Precursor completion propagation: TASK-01 is no longer a blocker. No downstream IMPLEMENT task crossed its execution threshold from this change alone because TASK-05, TASK-07, TASK-08, TASK-09, and TASK-13 still depend on other incomplete tasks. The next runnable units are the Wave 1 INVESTIGATE tasks, TASK-03 and TASK-04.
+  - Precursor completion propagation: TASK-01 is no longer a blocker. No downstream IMPLEMENT task crossed its execution threshold from this change alone because TASK-05, TASK-07, TASK-08, TASK-09, and TASK-13 still depend on other incomplete tasks. Wave 1 contract work is now complete apart from TASK-02, which remains below the IMPLEMENT confidence threshold and needs a replan or confidence-raising evidence before it can run.
 
 ### TASK-02: Harden graph, optimization, and survival modules into repo-owned helper contracts with tests
 - **Type:** IMPLEMENT
@@ -235,7 +235,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:** `docs/plans/startup-loop-centralized-math-foundations/artifacts/posterior-policy-contract.md`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`
 - **Depends on:** -
 - **Blocks:** TASK-05, TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13
@@ -261,6 +261,17 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`
+- **Build Evidence (2026-03-09):**
+  - Artifact written: `docs/plans/startup-loop-centralized-math-foundations/artifacts/posterior-policy-contract.md`.
+  - Current-seam grounding: the contract ties directly to `StartupState`, `MetaObservation`, heuristic scoring in `self-evolving-scoring.ts`, heuristic routing in `self-evolving-orchestrator.ts`, and scalar queue priority in `self-evolving-backbone-queue.ts`.
+  - Contract decisions captured:
+    - separate `policy-state.json` from `startup-state.json`
+    - first-class candidate belief state with replayable beta and categorical posterior families
+    - explicit guarded utility breakdown instead of raw heuristic score
+    - mandatory `policy-decisions.jsonl` with deterministic vs stochastic trace requirements
+    - first-class operator override records and policy/prior versioning
+  - Acceptance check: pass. The artifact defines versioned policy/belief state, cold-start priors, update triggers, override recording, structural-vs-belief separation, and decision-trace rules for deterministic and stochastic policy paths.
+  - Downstream confidence propagation: affirming for TASK-05, TASK-07, TASK-10, TASK-12, and TASK-13 because policy-state, utility, and journaling contracts are no longer implicit. No downstream task became newly runnable from this evidence alone because TASK-02 remains incomplete and the dependent IMPLEMENT tasks remain below or at their own gating thresholds.
 
 ### TASK-04: Define the outcome-closure and verified-measurement contract
 - **Type:** INVESTIGATE
@@ -268,7 +279,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:** `docs/plans/startup-loop-centralized-math-foundations/artifacts/outcome-closure-contract.md`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-events.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `[readonly] scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`
 - **Depends on:** -
 - **Blocks:** TASK-06, TASK-07, TASK-09, TASK-10, TASK-11, TASK-13
@@ -283,7 +294,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - Which artifacts or analytics sources qualify a measurement as verified?
   - What maturity window must elapse before an outcome is treated as evaluation-ready, and how are late-arriving or censored outcomes represented?
 - **Acceptance criteria:**
-  - The artifact defines candidate/disptach/plan join keys and lifecycle event responsibilities.
+  - The artifact defines candidate/dispatch/plan join keys and lifecycle event responsibilities.
   - The artifact defines verified measurement write rules, maturity-window rules, and outcome-missing handling.
   - The artifact maps directly to the current completion and event seams.
 - **Validation contract:** the artifact is sufficient to drive TASK-06 and the later calibration/causal tasks without unresolved join ambiguity.
@@ -293,6 +304,17 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`
   - `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`
+- **Build Evidence (2026-03-09):**
+  - Artifact written: `docs/plans/startup-loop-centralized-math-foundations/artifacts/outcome-closure-contract.md`.
+  - Current-seam grounding: the contract starts from the existing `candidate_id` evidence refs and follow-up dispatch metadata in `self-evolving-backbone-consume.ts`, the generic `completed_by` writer in `lp-do-ideas-queue-state-completion.ts`, the reconcile bridge in `lp-do-ideas-completion-reconcile.ts`, and the existing lifecycle event taxonomy in `self-evolving-events.ts`.
+  - Contract decisions captured:
+    - canonical join graph `candidate_id -> decision_id -> dispatch_id -> artifact -> outcome event -> verified observation`
+    - first-class `self_evolving` metadata on queue `processed_by` and `completed_by`
+    - explicit maturity windows and pending-maturity state
+    - verified-measurement write rules and degraded-quality handling
+    - required `outcome_missing` reason codes plus a proposed `ImprovementOutcomeV2`
+  - Acceptance check: pass. The artifact defines join keys, lifecycle responsibilities, maturity rules, verified-measurement gates, and outcome-missing behavior mapped directly onto existing completion and event seams.
+  - Downstream confidence propagation: affirming for TASK-06, TASK-09, TASK-10, TASK-11, and TASK-13 because outcome closure is now concrete rather than implicit. No downstream task became newly runnable from this evidence alone because TASK-02 remains incomplete and TASK-06, TASK-09, TASK-10, TASK-11, and TASK-13 still depend on unfinished implementation work.
 
 ### TASK-05: Implement the versioned belief-state and utility-computation layer
 - **Type:** IMPLEMENT

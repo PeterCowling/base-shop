@@ -18,6 +18,7 @@ Formal artifact contracts for the four core documents produced by the feature de
 
 These contracts close two feedback paths:
 - **Layer B → Layer A feedback**: the `results-review.user.md` artifact carries observed outcomes back into standing-information layer (Layer A), completing the loop as specified in `docs/business-os/startup-loop/specifications/two-layer-model.md`.
+- **Layer B → assessment balance-sheet refresh**: deterministic post-build utilities may refresh explicitly mapped revision-mode intake fields when later assessment decisions settle a strategic fact. This path is bounded, source-mapped, and separate from `results-review.user.md`.
 - **Skill handoff integrity**: each artifact is the single authoritative input to its downstream consumer. Consumers MUST read from the canonical path defined here.
 
 Skills MUST NOT store outputs at ad-hoc paths. All loop output artifacts in this contract use the path namespace `docs/plans/<feature-slug>/`.
@@ -153,7 +154,7 @@ Deliverable-Type: <canonical type>
 **Artifact ID:** `build-record`
 **Produced by:** `/lp-do-build` on plan completion
 **Stored at:** `docs/plans/<feature-slug>/build-record.user.md`
-**Consumers:** operator, `/lp-do-replan` (if re-engagement), standing-information Layer A refresh, `lp-do-build-event-emitter.ts` (reads canonical outcome fields)
+**Consumers:** operator, `/lp-do-replan` (if re-engagement), standing-information Layer A refresh, bounded assessment post-build refresh utilities, `lp-do-build-event-emitter.ts` (reads canonical outcome fields)
 
 ### Required Sections
 
@@ -202,6 +203,7 @@ Build-Event-Ref: docs/plans/<feature-slug>/build-event.json
 - Archived alongside `plan.md`; see `_shared/plan-archiving.md`.
 - Consumed by operator before writing `results-review.user.md`.
 - `build-event.json` emitter reads the `## Outcome Contract` section immediately after `build-record.user.md` is written; this is an instruction in the build skill SKILL.md, not a code-enforced hook.
+- Bounded assessment post-build refresh utilities may read the final build scope and relevant strategy artifacts after build completion, but they must update only explicitly mapped revision-mode assessment targets and must not mutate seed-once/live-owned docs.
 
 ---
 
@@ -345,6 +347,7 @@ All artifacts in this contract share the `docs/plans/<feature-slug>/` namespace:
 | `reflection-debt.user.md` | `docs/plans/<feature-slug>/reflection-debt.user.md` | `/lp-do-build` emitter |
 | `pattern-reflection.user.md` | `docs/plans/<feature-slug>/pattern-reflection.user.md` | `/lp-do-build` (step 2.5) |
 | `pattern-reflection.entries.json` | `docs/plans/<feature-slug>/pattern-reflection.entries.json` | `/lp-do-build` (step 2.55) |
+| `signal-review-*.review-required.json` | `docs/business-os/strategy/<BIZ>/.../signal-review-*.review-required.json` | `/lp-signal-review` helper sidecar |
 
 The `.user.md` suffix marks operator-facing loop artifacts. Only `results-review.user.md` requires human-authored observation content; `build-record.user.md`, `reflection-debt.user.md`, and `pattern-reflection.user.md` are produced by `/lp-do-build`.
 
@@ -427,6 +430,59 @@ These machine-readable sidecars are emitted by `/lp-do-build` immediately after 
 - `self-evolving-from-build-output.ts` — builds observation seeds from sidecar entries; falls back to `extractPatternReflectionSeeds(markdown)` if absent or malformed.
 
 **Fallback policy:** If `pattern-reflection.entries.json` is absent, consumers fall back to the existing markdown parse path.
+
+---
+
+## Diagnostic Sidecar: `signal-review-*.review-required.json`
+
+Repeated Signal Review findings that still require a manual promote-or-close decision use the existing operator `pending-review` workflow surface in `process-improvements.user.html`. The persisted source for those items is a per-artifact sidecar written adjacent to the Signal Review markdown.
+
+**Schema version:** `signal-review.review-required.v1`
+
+**Stored at:** `docs/business-os/strategy/<BIZ>/.../signal-review-<YYYYMMDD>-<HHMM>-W<ISOweek>.review-required.json`
+
+**Produced by:** `/lp-signal-review` helper flow (`scripts/src/startup-loop/diagnostics/signal-review-review-required.ts`) after the Signal Review artifact is finalized.
+
+**Schema:**
+```json
+{
+  "schema_version": "signal-review.review-required.v1",
+  "generated_at": "<ISO timestamp>",
+  "business": "<BIZ>",
+  "source_path": "<relative path to signal-review-*.md>",
+  "items": [
+    {
+      "fingerprint": "<signal finding fingerprint>",
+      "business": "<BIZ>",
+      "title": "<finding title>",
+      "body": "<why this matters summary>",
+      "owner": "<operator owner>",
+      "workflow_status": "open",
+      "due_date": "<YYYY-MM-DD>",
+      "escalation_state": "<repeat-open|escalated|overdue>",
+      "recurrence_count": 2,
+      "first_seen_run_date": "<YYYY-MM-DD>",
+      "latest_seen_run_date": "<YYYY-MM-DD>",
+      "source_signal_review_path": "<relative path>",
+      "suggested_action": "<manual next step>"
+    }
+  ]
+}
+```
+
+**Required item fields:**
+- `fingerprint` — stable dedupe identity for the repeated finding.
+- `owner` — named operator owner for the review item.
+- `due_date` — deterministic review deadline.
+- `escalation_state` — review urgency derived from recurrence and lateness.
+- `workflow_status` — current manual-review state; v1 uses `open`.
+
+**Canonical workflow surface:** `generate-process-improvements.ts` reads these sidecars and materializes them into the existing `pending-review` section of `docs/business-os/process-improvements.user.html` and `docs/business-os/_data/process-improvements.json`. This reuses the existing operator review queue instead of creating a second backlog surface.
+
+**Consumers:**
+- `generate-process-improvements.ts` — dedupes by `business + fingerprint`, refreshes the latest item state, and exposes it on the pending-review surface.
+
+**Fallback policy:** If a Signal Review has no `.review-required.json` sidecar, the process-improvements report emits no review-required item for that artifact. Historical Signal Reviews therefore remain unchanged until explicitly refreshed.
 
 ---
 

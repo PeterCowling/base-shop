@@ -10,6 +10,7 @@ import {
   REQUIRED_REFLECTION_SECTIONS,
   validateResultsReviewFile,
 } from "./lp-do-build-reflection-debt.js";
+import { backfillSyntheticDispatch } from "../ideas/lp-do-ideas-synthetic-dispatch-narrative.js";
 import {
   MISSING_VALUE,
   classifyIdeaItem,
@@ -24,11 +25,16 @@ import {
 } from "./lp-do-build-results-review-parse.js";
 import { runCodebaseSignalsBridge } from "../ideas/lp-do-ideas-codebase-signals-bridge.js";
 import { runAgentSessionSignalsBridge } from "../ideas/lp-do-ideas-agent-session-bridge.js";
+import {
+  SIGNAL_REVIEW_REQUIRED_SCHEMA_VERSION,
+  type SignalReviewReviewRequiredItem,
+} from "../diagnostics/signal-review-review-required.js";
 
 const PROCESS_HTML_RELATIVE_PATH = "docs/business-os/process-improvements.user.html";
 const PROCESS_DATA_RELATIVE_PATH = "docs/business-os/_data/process-improvements.json";
 export const COMPLETED_IDEAS_RELATIVE_PATH = "docs/business-os/_data/completed-ideas.json";
 const PLANS_ROOT = "docs/plans";
+const STRATEGY_ROOT = "docs/business-os/strategy";
 export const QUEUE_STATE_RELATIVE_PATH = "docs/business-os/startup-loop/ideas/trial/queue-state.json";
 
 export type ProcessImprovementType = "idea" | "risk" | "pending-review";
@@ -55,6 +61,22 @@ export interface ProcessImprovementItem {
   proximity?: string | null;
   /** Reason code from the classifier decision tree. Only set for idea items. */
   reason_code?: string;
+  /** Review owner when the item is an operator work item. */
+  owner?: string;
+  /** Due date for operator review work. */
+  due_date?: string;
+  /** Review/escalation state for pending operator work. */
+  escalation_state?: string;
+  /** Stable dedupe identity for review work. */
+  fingerprint?: string;
+  /** Current workflow state for review work. */
+  workflow_status?: string;
+  /** First time the recurring issue appeared. */
+  first_seen_date?: string;
+  /** Most recent time the recurring issue appeared. */
+  latest_seen_date?: string;
+  /** Count of review occurrences observed so far. */
+  recurrence_count?: number;
 }
 
 export interface CompletedIdeaEntry {
@@ -91,8 +113,11 @@ interface ReflectionDebtLedger {
 
 interface DispatchPacket {
   dispatch_id?: string;
+  artifact_id?: string;
   business?: string;
   area_anchor?: string;
+  current_truth?: string;
+  next_scope_now?: string;
   why?: string;
   priority?: string;
   queue_state?: string;
@@ -101,6 +126,12 @@ interface DispatchPacket {
 
 interface QueueStateFile {
   dispatches?: DispatchPacket[];
+}
+
+interface SignalReviewReviewRequiredSidecarFile {
+  schema_version?: string;
+  source_path?: string;
+  items?: SignalReviewReviewRequiredItem[];
 }
 
 interface BugScanFindingItem {
@@ -261,6 +292,10 @@ function suggestedActionRank(action: string | undefined): number {
   return 4;
 }
 
+function compareDateOnly(left: string, right: string): number {
+  return left.localeCompare(right);
+}
+
 function sortItems(items: ProcessImprovementItem[]): ProcessImprovementItem[] {
   return [...items].sort((left, right) => {
     const dateOrder = right.date.localeCompare(left.date);
@@ -366,7 +401,9 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
   const completedKeys = loadCompletedIdeasRegistry(repoRoot);
 
   const absPlansRoot = path.join(repoRoot, PLANS_ROOT);
+  const absStrategyRoot = path.join(repoRoot, STRATEGY_ROOT);
   const allPaths: string[] = [];
+  const strategyPaths: string[] = [];
   try {
     listFilesRecursive(absPlansRoot, allPaths, repoRoot);
   } catch {
@@ -375,6 +412,11 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
       riskItems: [],
       pendingReviewItems: [],
     };
+  }
+  try {
+    listFilesRecursive(absStrategyRoot, strategyPaths, repoRoot);
+  } catch {
+    // Signal Review review-required sidecars are optional.
   }
 
   const resultsReviewPaths = allPaths.filter((sourcePath) =>
@@ -389,10 +431,14 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
   const bugScanPaths = allPaths.filter((sourcePath) =>
     sourcePath.endsWith("/bug-scan-findings.user.json"),
   );
+  const signalReviewRequiredPaths = strategyPaths.filter((sourcePath) =>
+    /signal-review-.*\.review-required\.json$/u.test(sourcePath),
+  );
 
   const ideaItems: ProcessImprovementItem[] = [];
   const riskItems: ProcessImprovementItem[] = [];
   const pendingReviewItems: ProcessImprovementItem[] = [];
+  const signalReviewPendingByFingerprint = new Map<string, ProcessImprovementItem>();
 
   for (const sourcePath of resultsReviewPaths) {
     if (sourcePath.includes("/_templates/")) {
@@ -580,7 +626,11 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
           if (dispatch.queue_state !== "enqueued") {
             continue;
           }
-          const title = sanitizeText(dispatch.area_anchor ?? "");
+          const enrichedDispatch = backfillSyntheticDispatch(dispatch, {
+            rootDir: repoRoot,
+          }).dispatch as DispatchPacket;
+          const title = sanitizeText(enrichedDispatch.current_truth ?? "") ||
+            sanitizeText(enrichedDispatch.area_anchor ?? "");
           if (!title) {
             continue;
           }
@@ -593,7 +643,7 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
             continue;
           }
           const business = sanitizeText(dispatch.business ?? "BOS").toUpperCase() || "BOS";
-          const body = sanitizeText(dispatch.why ?? "") || MISSING_VALUE;
+          const body = sanitizeText(enrichedDispatch.why ?? "") || MISSING_VALUE;
           const date = toIsoDate(dispatch.created_at ?? new Date().toISOString());
 
           if (title.length > 100) {
@@ -683,6 +733,75 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
       path: sourcePath,
     });
   }
+
+  for (const sourcePath of signalReviewRequiredPaths) {
+    const absPath = path.join(repoRoot, sourcePath);
+    let parsed: SignalReviewReviewRequiredSidecarFile | null = null;
+    try {
+      const raw = readFileSync(absPath, "utf8");
+      parsed = JSON.parse(raw) as SignalReviewReviewRequiredSidecarFile;
+    } catch {
+      parsed = null;
+    }
+
+    if (
+      !parsed ||
+      parsed.schema_version !== SIGNAL_REVIEW_REQUIRED_SCHEMA_VERSION ||
+      !Array.isArray(parsed.items)
+    ) {
+      continue;
+    }
+
+    for (const item of parsed.items) {
+      const fingerprint = sanitizeText(item.fingerprint);
+      if (!fingerprint) {
+        continue;
+      }
+      const business = sanitizeText(item.business).toUpperCase() || "BOS";
+      const latestSeenDate = toIsoDate(item.latest_seen_run_date);
+      const candidate: ProcessImprovementItem = {
+        type: "pending-review",
+        business,
+        title: `Review required: ${sanitizeText(item.title)}`,
+        body: sanitizeText(item.body),
+        suggested_action: sanitizeText(item.suggested_action),
+        source: "signal-review.review-required.json",
+        date: latestSeenDate,
+        path: sourcePath,
+        owner: sanitizeText(item.owner),
+        due_date: toIsoDate(item.due_date),
+        escalation_state: sanitizeText(item.escalation_state),
+        fingerprint,
+        workflow_status: sanitizeText(item.workflow_status),
+        first_seen_date: toIsoDate(item.first_seen_run_date),
+        latest_seen_date: latestSeenDate,
+        recurrence_count: item.recurrence_count,
+      };
+
+      const dedupeKey = `${candidate.business}:${fingerprint}`;
+      const existing = signalReviewPendingByFingerprint.get(dedupeKey);
+      if (!existing) {
+        signalReviewPendingByFingerprint.set(dedupeKey, candidate);
+        continue;
+      }
+
+      const pickCandidate = compareDateOnly(candidate.date, existing.date) >= 0;
+      const nextItem = pickCandidate ? candidate : existing;
+      nextItem.first_seen_date =
+        [existing.first_seen_date, candidate.first_seen_date]
+          .filter((value): value is string => typeof value === "string" && value.length > 0)
+          .sort(compareDateOnly)[0] ?? nextItem.first_seen_date;
+      nextItem.latest_seen_date =
+        [existing.latest_seen_date, candidate.latest_seen_date]
+          .filter((value): value is string => typeof value === "string" && value.length > 0)
+          .sort(compareDateOnly)
+          .at(-1) ?? nextItem.latest_seen_date;
+      nextItem.recurrence_count = Math.max(existing.recurrence_count ?? 0, candidate.recurrence_count ?? 0);
+      signalReviewPendingByFingerprint.set(dedupeKey, nextItem);
+    }
+  }
+
+  pendingReviewItems.push(...signalReviewPendingByFingerprint.values());
 
   return {
     ideaItems: sortIdeaItems(ideaItems),

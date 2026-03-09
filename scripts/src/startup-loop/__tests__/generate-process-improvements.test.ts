@@ -114,6 +114,87 @@ Feature-Slug: feature-b
     await fs.rm(repoRoot, { recursive: true, force: true });
   });
 
+  it("dedupes repeated Signal Review review-required sidecars onto one pending-review surface item", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "process-improvements-signal-review-"));
+
+    await writeFile(
+      repoRoot,
+      "docs/business-os/strategy/BRIK/marketing/signal-review-20260218-1238-W08.review-required.json",
+      `${JSON.stringify(
+        {
+          schema_version: "signal-review.review-required.v1",
+          generated_at: "2026-02-18T12:38:00.000Z",
+          business: "BRIK",
+          source_path: "docs/business-os/strategy/BRIK/marketing/signal-review-20260218-1238-W08.md",
+          items: [
+            {
+              fingerprint: "P08-S10-no-second-weekly-readout",
+              business: "BRIK",
+              title: "Feedback Loop Closure — no second weekly readout",
+              body: "Week-two readout is still absent.",
+              owner: "Pete",
+              workflow_status: "open",
+              due_date: "2026-02-25",
+              escalation_state: "repeat-open",
+              recurrence_count: 2,
+              first_seen_run_date: "2026-02-13",
+              latest_seen_run_date: "2026-02-18",
+              source_signal_review_path:
+                "docs/business-os/strategy/BRIK/marketing/signal-review-20260218-1238-W08.md",
+              suggested_action: "Produce the week-two KPCS now.",
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    await writeFile(
+      repoRoot,
+      "docs/business-os/strategy/BRIK/marketing/signal-review-20260226-1641-W09.review-required.json",
+      `${JSON.stringify(
+        {
+          schema_version: "signal-review.review-required.v1",
+          generated_at: "2026-02-26T16:41:00.000Z",
+          business: "BRIK",
+          source_path: "docs/business-os/strategy/BRIK/marketing/signal-review-20260226-1641-W09.md",
+          items: [
+            {
+              fingerprint: "P08-S10-no-second-weekly-readout",
+              business: "BRIK",
+              title: "Feedback Loop Closure — no second weekly readout",
+              body: "Day-14 gate review is now due tomorrow.",
+              owner: "Pete",
+              workflow_status: "open",
+              due_date: "2026-02-29",
+              escalation_state: "escalated",
+              recurrence_count: 3,
+              first_seen_run_date: "2026-02-13",
+              latest_seen_run_date: "2026-02-26",
+              source_signal_review_path:
+                "docs/business-os/strategy/BRIK/marketing/signal-review-20260226-1641-W09.md",
+              suggested_action: "Produce the week-two KPCS now.",
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const data = collectProcessImprovements(repoRoot);
+
+    expect(data.pendingReviewItems).toHaveLength(1);
+    expect(data.pendingReviewItems[0]?.title).toContain("Review required");
+    expect(data.pendingReviewItems[0]?.fingerprint).toBe("P08-S10-no-second-weekly-readout");
+    expect(data.pendingReviewItems[0]?.escalation_state).toBe("escalated");
+    expect(data.pendingReviewItems[0]?.recurrence_count).toBe(3);
+    expect(data.pendingReviewItems[0]?.latest_seen_date).toBe("2026-02-26");
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
   it("replaces array assignments and footer date in process improvements HTML", async () => {
     const html = `
 <div>Last cleared: 2026-01-01 — test</div>
@@ -763,6 +844,67 @@ describe("dispatch queue collection", () => {
     expect(typeof item.urgency).toBe("string");
     expect(typeof item.effort).toBe("string");
     expect(typeof item.reason_code).toBe("string");
+  });
+
+  it("TC-03B: synthetic dispatch items prefer enriched current_truth as the surfaced title", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-SYN-001",
+          artifact_id: "BOS-BOS-AGENT_SESSION_FINDINGS",
+          business: "BOS",
+          area_anchor: "bos-agent-session-findings",
+          current_truth: "Recent agent-session review surfaced: Upload button fails silently when the API times out.",
+          why: "Recent walkthrough/testing activity surfaced a concrete issue that should retain its original session context in downstream idea intake.",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(1);
+    expect(dispatchItems[0]?.title).toBe(
+      "Recent agent-session review surfaced: Upload button fails silently when the API times out.",
+    );
+  });
+
+  it("TC-03C: generic synthetic dispatch items are projected into well-formed surfaced ideas", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-SYN-002",
+          artifact_id: "BOS-BOS-REPO_MATURITY_SIGNALS",
+          business: "BOS",
+          area_anchor: "bos-repo-maturity-signals",
+          current_truth: "BOS-BOS-REPO_MATURITY_SIGNALS changed (bootstr → b2e8a4f)",
+          next_scope_now: "Investigate implications of bos-repo-maturity-signals delta for BOS",
+          why: "Assess bos-repo-maturity-signals implications from BOS-BOS-REPO_MATURITY_SIGNALS delta for BOS.",
+          intended_outcome: {
+            type: "operational",
+            statement: "Produce a validated routing outcome and scoped next action for bos-repo-maturity-signals.",
+            source: "auto",
+          },
+          evidence_refs: [
+            "repo-maturity-score:65",
+            "repo-maturity-level:Level-3-Reliable",
+            "repo-maturity-critical-control:no_ci_pipeline",
+            "repo-maturity-critical-control:no_codeowners",
+          ],
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(1);
+    expect(dispatchItems[0]?.title).toContain("Repo maturity is 65");
+    expect(dispatchItems[0]?.body).toContain("Repo maturity monitoring is only useful");
   });
 
   it("TC-04: dispatches with identical area_anchor but different dispatch_id get distinct idea_keys", async () => {

@@ -294,7 +294,7 @@
 
   <div class="page-header">
     <h1>Process Improvements</h1>
-    <p>Improvements, risks, and pending reviews from completed build cycles. Filter by business or type to focus your review. Regenerate after each build cycle completes.</p>
+    <p>Improvements, risks, and pending reviews across build completion and recurring Signal Review follow-up. Filter by business or type to focus your review. Regenerate after each build cycle or Signal Review refresh.</p>
   </div>
 
   <div id="app"></div>
@@ -4944,14 +4944,14 @@
       html += '</div>';
     }
 
-    // ── Section: Pending Results Reviews ── //
+    // ── Section: Pending Reviews ── //
     if (activeType === 'all' || activeType === 'pending-review') {
       html += '<div class="section">';
-      html += '<div class="section-header"><h2>Pending Results Reviews</h2><span class="section-count">' + pending.length + '</span></div>';
+      html += '<div class="section-header"><h2>Pending Reviews</h2><span class="section-count">' + pending.length + '</span></div>';
       if (pending.length === 0) {
         html += '<div class="empty">No pending reviews match the current filter.</div>';
       } else {
-        html += '<p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">These plans have build records but no <code>results-review.user.md</code> yet. Plans cannot be archived until the operator produces a results review.</p>';
+        html += '<p style="font-size:12px;color:var(--text-dim);margin-bottom:12px;">Pending review items include completed builds that still need <code>results-review.user.md</code> and repeated Signal Review findings that need a manual promote-or-close decision.</p>';
         pending.forEach(function (item) { html += renderItem(item); });
       }
       html += '</div>';
@@ -4974,6 +4974,10 @@
     html += '<div class="item-meta">';
     html += '<span>Source: <code>' + esc(item.source) + '</code></span>';
     if (item.date) html += '<span>Date: ' + esc(fmtDate(item.date)) + '</span>';
+    if (item.owner) html += '<span>Owner: ' + esc(item.owner) + '</span>';
+    if (item.due_date) html += '<span>Due: ' + esc(fmtDate(item.due_date)) + '</span>';
+    if (item.escalation_state) html += '<span>Escalation: ' + esc(item.escalation_state) + '</span>';
+    if (item.fingerprint) html += '<span>Fingerprint: <code>' + esc(item.fingerprint) + '</code></span>';
     if (item.path) html += '<span>Path: <code>' + esc(item.path) + '</code></span>';
     html += '</div>';
     html += '</div>';

@@ -21,7 +21,9 @@ Shared utility library for the base-shop monorepo. Provides type-safe, well-test
 
 ### Math Primitives
 
-Reusable mathematical and computational utilities. Zero external dependencies.
+Reusable mathematical and computational utilities. Core primitives favor zero
+runtime dependencies; advanced adapters may wrap vetted open-source packages
+when the central math layer needs capabilities that are not worth rebuilding.
 
 #### Geometry (`@acme/lib/math/geometry`)
 
@@ -120,13 +122,78 @@ roundDownToIncrement(9.99, 0.5);  // 9.50
 - Installments: `pmt`, `amortizationSchedule`
 - Rounding: `roundCurrency`, `roundToPrecision`, `roundDownToIncrement`, `roundUpToIncrement`
 
+#### Graph (`@acme/lib/math/graph`)
+
+Centralized graph and dependency-analysis adapters backed by Graphology.
+
+```typescript
+import { DirectedGraph, dag } from "@acme/lib/math/graph";
+
+const graph = new DirectedGraph();
+graph.mergeNode("ideas");
+graph.mergeNode("fact-find");
+graph.mergeDirectedEdge("ideas", "fact-find");
+
+const cyclePresent = dag.hasCycle(graph);
+```
+
+**Exports:**
+- Graph classes: `Graph`, `DirectedGraph`, `UndirectedGraph`, `MultiGraph`, `MultiDirectedGraph`, `MultiUndirectedGraph`
+- DAG helpers via `dag`
+- Centrality and other graph metrics via `metrics`
+- Shortest-path helpers via `shortestPath`
+
+#### Optimization (`@acme/lib/math/optimization`)
+
+Constrained optimization primitives for explicit portfolio and scheduling choices.
+
+```typescript
+import { greaterEq, lessEq, solve } from "@acme/lib/math/optimization";
+
+const solution = solve({
+  objective: "value",
+  direction: "maximize",
+  constraints: {
+    capacity: lessEq(2),
+    risk: lessEq(3),
+  },
+  variables: {
+    a: { value: 8, capacity: 1, risk: 1 },
+    b: { value: 10, capacity: 1, risk: 2 },
+    c: { value: 7, capacity: 1, risk: 1 },
+  },
+  binaries: true,
+});
+```
+
+**Exports:**
+- Model and solution types for LP/MIP problems
+- Constraint builders: `lessEq`, `greaterEq`, `equalTo`, `inRange`
+- Solver entry point: `solve`
+- `defaultOptions`
+
+#### Survival (`@acme/lib/math/survival`)
+
+Time-to-event analysis primitives for churn, slip, close, and escalation curves.
+
+```typescript
+import { kaplanMeierEstimate } from "@acme/lib/math/survival";
+
+const curve = kaplanMeierEstimate([1, 4, 4, 8], [true, false, true, true]);
+```
+
+**Exports:**
+- `kaplanMeierEstimate`
+- `KaplanMeierEstimatorResult`
+
 ## Design Principles
 
-1. **Zero runtime dependencies** for math modules
-2. **Immutable by default** - all operations return new values
-3. **Tree-shakeable** - unused functions are excluded from bundles
-4. **Well-documented** - JSDoc with examples on all exports
-5. **Thoroughly tested** - 95%+ coverage on math modules
+1. **Centralize math decisions** in `@acme/lib/math` instead of ad-hoc imports
+2. **Prefer zero-dependency core primitives**, but allow vetted adapters for advanced methods
+3. **Immutable by default** - all operations return new values
+4. **Tree-shakeable** - unused functions are excluded from bundles
+5. **Well-documented** - JSDoc with examples on all exports
+6. **Thoroughly tested** - 95%+ coverage on math modules
 
 ## Migration from Ad-hoc Implementations
 

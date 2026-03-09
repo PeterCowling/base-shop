@@ -1,8 +1,8 @@
 {
-  "last_updated": "2026-03-09T20:37:15.979Z",
+  "last_updated": "2026-03-09T21:10:30.000Z",
   "counts": {
     "enqueued": 19,
-    "processed": 6,
+    "processed": 7,
     "skipped": 0,
     "error": 0,
     "suppressed": 196,
@@ -12,7 +12,7 @@
     "plan_ready": 0,
     "micro_build_ready": 0,
     "briefing_ready": 0,
-    "total": 494
+    "total": 495
   },
   "dispatches": [
     {
@@ -22671,6 +22671,61 @@
         "target_path": "docs/plans/brikette-release-lane-separation/micro-build.md",
         "processed_at": "2026-03-09T20:37:15.978Z",
         "micro_build_path": "docs/plans/brikette-release-lane-separation/micro-build.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309211000-9320",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:PLAT:PLATFORM:startup-loop-centralized-math-foundations:20260309",
+      "anchor_key": "startup-loop-centralized-math-foundations",
+      "cluster_key": "PLAT:PLATFORM:startup-loop-centralized-math-foundations:operator:20260309",
+      "cluster_fingerprint": "startup-loop-centralized-math-foundations-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "PLAT startup loop - centralized math foundations and gap closure",
+      "location_anchors": [
+        "packages/lib/src/math/index.ts",
+        "packages/lib/package.json",
+        "scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts",
+        "scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The repo has a centralized math layer, but startup-loop runtime uses only a narrow slice of it and still lacked centralized graph analysis, constrained optimization, and survival primitives. Contextual bandits, causal inference, and control remain unresolved foundation gaps.",
+      "next_scope_now": "Produce a fact-find that inventories centralized math capability, records admitted open-source package solutions for the clean math fundamentals, and defines follow-on work for the unresolved categories.",
+      "adjacent_later": [
+        "Wire centralized optimization, graph, and survival primitives into startup-loop decision seams",
+        "Run dedicated fact-finds for contextual bandits, causal inference, and control package strategy"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P1",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "packages/lib/src/math/index.ts",
+        "packages/lib/package.json",
+        "scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts",
+        "scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts",
+        "docs/plans/startup-loop-centralized-math-foundations/fact-find.md"
+      ],
+      "created_at": "2026-03-09T21:10:00.000Z",
+      "queue_state": "processed",
+      "why": "The self-improving startup loop cannot become mathematically stronger by assertion. It needs a code-true central capability inventory, clean package admissions for the missing fundamentals, and explicit follow-on gaps for the weak categories.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The repo exposes centralized graph, optimization, and survival math modules, and the startup loop has a planning-ready gap matrix for the remaining mathematical fundamentals.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "startup-loop-centralized-math-foundations",
+        "target_path": "docs/plans/startup-loop-centralized-math-foundations/fact-find.md",
+        "processed_at": "2026-03-09T21:10:30.000Z",
+        "fact_find_slug": "startup-loop-centralized-math-foundations",
+        "fact_find_path": "docs/plans/startup-loop-centralized-math-foundations/fact-find.md"
       }
     }
   ]

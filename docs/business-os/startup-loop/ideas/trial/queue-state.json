@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-09T10:30:00.000Z",
+  "last_updated": "2026-03-09T07:46:45.153Z",
   "counts": {
-    "enqueued": 225,
-    "processed": 47,
+    "enqueued": 221,
+    "processed": 52,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 132,
-    "fact_find_ready": 280,
+    "fact_find_ready": 281,
     "micro_build_ready": 17,
-    "total": 431
+    "total": 432
   },
   "dispatches": [
     {
@@ -17971,7 +17971,7 @@
         "type": "operational",
         "statement": "MenuType is defined once in a shared bar types file and imported by all 3 consumers."
       },
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "created_at": "2026-03-09T10:00:00.000Z"
     },
     {
@@ -18008,7 +18008,7 @@
         "type": "operational",
         "statement": "parseAllocatedRoomNumber and getBookingMinAllocatedRoom exist once and are imported by both sort files."
       },
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "created_at": "2026-03-09T10:00:00.000Z"
     },
     {
@@ -18045,7 +18045,7 @@
         "type": "operational",
         "statement": "getKeycardIcon exists once in a shared utils file and is imported by both CheckoutTable and BookingRow."
       },
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "created_at": "2026-03-09T10:00:00.000Z"
     },
     {
@@ -18087,6 +18087,50 @@
       },
       "queue_state": "enqueued",
       "created_at": "2026-03-09T10:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309074645-0148",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "394a0294113b60d5d105e2da257c53c08f023d23",
+      "after_sha": "70f19f935730f3135d014cb4526730e480c65402",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:70f19f935730f3135d014cb4526730e480c65402",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:70f19f935730f3135d014cb4526730e480c65402",
+      "cluster_fingerprint": "0279d2806d1f5a4bad89ab905a75a4a0244abc2da1f31dd1e5e8d7edab532db4",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (394a029 → 70f19f9)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:84fc058e-c06a-4ea2-900f-167ecf8b9caa",
+        "session:45fa3df6-4baf-4a46-8295-da1c400b5f19"
+      ],
+      "created_at": "2026-03-09T07:46:45.147Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
     }
   ]
 }

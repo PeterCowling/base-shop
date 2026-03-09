@@ -357,6 +357,7 @@ export function onValue(
 
   const wrapped = (snapshot: DataSnapshot): void => {
     const size = JSON.stringify(snapshot.val()).length;
+    firebaseMetrics.recordQuery(path, size, 0);
     logger.debug(`[firebase] onValue snapshot ${path} bytes=${size}`);
     callback(snapshot);
   };

@@ -112,9 +112,8 @@ function TillReconciliation(): JSX.Element {
           showCloseShiftForm={props.showCloseShiftForm}
           closeShiftFormVariant={props.closeShiftFormVariant}
           showKeycardCountForm={props.showKeycardCountForm}
-          showFloatForm={props.showFloatForm}
-          showExchangeForm={props.showExchangeForm}
-          showTenderRemovalForm={props.showTenderRemovalForm}
+          cashForm={props.cashForm}
+          setCashForm={props.setCashForm}
           pinRequiredForTenderRemoval={props.pinRequiredForTenderRemoval}
           lastCloseCashCount={props.lastCloseCashCount}
           expectedCashAtClose={props.expectedCashAtClose}
@@ -130,9 +129,6 @@ function TillReconciliation(): JSX.Element {
           setShowOpenShiftForm={props.setShowOpenShiftForm}
           setShowCloseShiftForm={props.setShowCloseShiftForm}
           setShowKeycardCountForm={props.setShowKeycardCountForm}
-          setShowFloatForm={props.setShowFloatForm}
-          setShowExchangeForm={props.setShowExchangeForm}
-          setShowTenderRemovalForm={props.setShowTenderRemovalForm}
         />
         <TransactionModals
           txnToDelete={props.txnToDelete}

@@ -3,12 +3,12 @@ import { useCallback, useEffect, useState } from "react";
 import type { Transaction } from "../../../types/component/Till";
 import { useCashDrawerLimit } from "../../data/useCashDrawerLimit";
 
+export type TillCashForm = "none" | "float" | "exchange" | "tenderRemoval";
+
 export function useTillReconciliationUI() {
   const { limit: cashDrawerLimit } = useCashDrawerLimit();
 
-  const [showFloatForm, setShowFloatForm] = useState(false);
-  const [showExchangeForm, setShowExchangeForm] = useState(false);
-  const [showTenderRemovalForm, setShowTenderRemovalForm] = useState(false);
+  const [cashForm, setCashForm] = useState<TillCashForm>("none");
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [txnToDelete, setTxnToDelete] = useState<Transaction | null>(null);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -24,25 +24,20 @@ export function useTillReconciliationUI() {
   }, [cashDrawerLimit]);
 
   const closeCashForms = useCallback(() => {
-    setShowFloatForm(false);
-    setShowExchangeForm(false);
-    setShowTenderRemovalForm(false);
+    setCashForm("none");
   }, []);
 
   const handleAddChangeClick = useCallback(() => {
-    closeCashForms();
-    setShowFloatForm(true);
-  }, [closeCashForms]);
+    setCashForm("float");
+  }, []);
 
   const handleExchangeClick = useCallback(() => {
-    closeCashForms();
-    setShowExchangeForm(true);
-  }, [closeCashForms]);
+    setCashForm("exchange");
+  }, []);
 
   const handleLiftClick = useCallback(() => {
-    closeCashForms();
-    setShowTenderRemovalForm(true);
-  }, [closeCashForms]);
+    setCashForm("tenderRemoval");
+  }, []);
 
   const handleRowClickForEdit = useCallback((txn: Transaction) => {
     setTxnToEdit(txn);
@@ -55,12 +50,8 @@ export function useTillReconciliationUI() {
   }, []);
 
   return {
-    showFloatForm,
-    setShowFloatForm,
-    showExchangeForm,
-    setShowExchangeForm,
-    showTenderRemovalForm,
-    setShowTenderRemovalForm,
+    cashForm,
+    setCashForm,
     drawerLimitInput,
     setDrawerLimitInput,
     isDeleteMode,

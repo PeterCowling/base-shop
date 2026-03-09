@@ -23,6 +23,8 @@ import { useFirebaseApp } from "../services/useFirebase";
 import type { DevicePin } from "../types/domains/userDomain";
 
 const DEVICE_PIN_KEY = "reception:devicePin";
+
+type LoginPanel = "credentials" | "forgotPassword" | "pinSetup" | "pinUnlock";
 const PIN_LENGTH = 6;
 
 async function hashPin(pin: string): Promise<string> {
@@ -97,8 +99,10 @@ function Login({ onLoginSuccess }: LoginProps) {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Panel state (discriminated union)
+  const [loginPanel, setLoginPanel] = useState<LoginPanel>("credentials");
+
   // Forgot password state
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetStatus, setResetStatus] = useState<
     "idle" | "sending" | "sent" | "error"
@@ -107,8 +111,6 @@ function Login({ onLoginSuccess }: LoginProps) {
 
   // Device PIN state
   const [devicePin, setDevicePin] = useState<DevicePin | null>(null);
-  const [showPinSetup, setShowPinSetup] = useState(false);
-  const [showPinUnlock, setShowPinUnlock] = useState(false);
   const [pinInput, setPinInput] = useState("");
   const [pinError, setPinError] = useState<string | null>(null);
 
@@ -121,20 +123,20 @@ function Login({ onLoginSuccess }: LoginProps) {
     const stored = readJson<DevicePin>(DEVICE_PIN_KEY);
     if (stored) {
       setDevicePin(stored);
-      setShowPinUnlock(true);
+      setLoginPanel("pinUnlock");
     }
   }, []);
 
   // Focus appropriate input
   useEffect(() => {
-    if (showForgotPassword) {
+    if (loginPanel === "forgotPassword") {
       resetEmailRef.current?.focus();
-    } else if (showPinUnlock) {
+    } else if (loginPanel === "pinUnlock") {
       pinRef.current?.focus();
     } else {
       emailRef.current?.focus();
     }
-  }, [showPinUnlock, showForgotPassword]);
+  }, [loginPanel]);
 
   const handleEmailLogin = useCallback(
     async (e: FormEvent) => {
@@ -149,7 +151,7 @@ function Login({ onLoginSuccess }: LoginProps) {
       if (result.success) {
         // Ask if they want to set up device PIN (if not already set)
         if (!devicePin) {
-          setShowPinSetup(true);
+          setLoginPanel("pinSetup");
         } else {
           onLoginSuccess?.();
         }
@@ -179,14 +181,14 @@ function Login({ onLoginSuccess }: LoginProps) {
   );
 
   const handleBackToLogin = useCallback(() => {
-    setShowForgotPassword(false);
+    setLoginPanel("credentials");
     setResetStatus("idle");
     setResetError(null);
     setResetEmail("");
   }, []);
 
   const handleShowForgotPassword = useCallback(() => {
-    setShowForgotPassword(true);
+    setLoginPanel("forgotPassword");
     setResetEmail(email); // Pre-fill with entered email
   }, [email]);
 
@@ -203,7 +205,7 @@ function Login({ onLoginSuccess }: LoginProps) {
 
       writeJson(DEVICE_PIN_KEY, newDevicePin);
       setDevicePin(newDevicePin);
-      setShowPinSetup(false);
+      setLoginPanel("credentials");
       onLoginSuccess?.();
     },
     [onLoginSuccess]
@@ -229,14 +231,14 @@ function Login({ onLoginSuccess }: LoginProps) {
   );
 
   const handleSkipPinSetup = useCallback(() => {
-    setShowPinSetup(false);
+    setLoginPanel("credentials");
     onLoginSuccess?.();
   }, [onLoginSuccess]);
 
   const handleClearDevicePin = useCallback(() => {
     removeItem(DEVICE_PIN_KEY);
     setDevicePin(null);
-    setShowPinUnlock(false);
+    setLoginPanel("credentials");
     setPinInput("");
   }, []);
 
@@ -247,18 +249,18 @@ function Login({ onLoginSuccess }: LoginProps) {
       setPinError(null);
 
       if (digits.length === PIN_LENGTH) {
-        if (showPinSetup) {
+        if (loginPanel === "pinSetup") {
           handlePinSetup(digits);
         } else {
           handlePinUnlock(digits);
         }
       }
     },
-    [showPinSetup, handlePinSetup, handlePinUnlock]
+    [loginPanel, handlePinSetup, handlePinUnlock]
   );
 
   // Render forgot password screen
-  if (showForgotPassword) {
+  if (loginPanel === "forgotPassword") {
     return (
       <LoginContainer>
         <ProductLogo />
@@ -333,7 +335,7 @@ function Login({ onLoginSuccess }: LoginProps) {
   }
 
   // Render PIN setup screen
-  if (showPinSetup) {
+  if (loginPanel === "pinSetup") {
     return (
       <LoginContainer>
         <ProductLogo />
@@ -378,7 +380,7 @@ function Login({ onLoginSuccess }: LoginProps) {
   }
 
   // Render PIN unlock screen
-  if (showPinUnlock && devicePin) {
+  if (loginPanel === "pinUnlock" && devicePin) {
     const pinErrorId = "pin-error";
     return (
       <LoginContainer>

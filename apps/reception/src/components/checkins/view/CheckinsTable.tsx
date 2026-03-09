@@ -4,6 +4,7 @@ import { AlertTriangle, Info, UserPlus } from "lucide-react";
 import { Input } from "@acme/design-system";
 import { Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
 
+import type { CheckinMode } from "../../../hooks/utilities/useCheckinsModes";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import { FilterToolbar } from "../../common/FilterToolbar";
 import { OperationalTableScreen } from "../../common/OperationalTableScreen";
@@ -27,9 +28,7 @@ interface Props {
   finalSortedData: CheckInRow[];
   guestsByBooking: Record<string, CheckInRow[]>;
   eligibleCount: number;
-  isEditMode: boolean;
-  isDeleteMode: boolean;
-  isAddGuestMode: boolean;
+  checkinMode: CheckinMode;
   onRowClick: (booking: CheckInRow) => void;
   onNewBookingClick: React.MouseEventHandler<HTMLButtonElement>;
   onEditClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -72,9 +71,7 @@ const CheckinsTableView: React.FC<Props> = ({
   finalSortedData,
   guestsByBooking,
   eligibleCount,
-  isEditMode,
-  isDeleteMode,
-  isAddGuestMode,
+  checkinMode,
   onRowClick,
   onNewBookingClick,
   onEditClick,
@@ -105,7 +102,7 @@ const CheckinsTableView: React.FC<Props> = ({
   >
     <TableCard>
       {/* Mode banners */}
-      {isEditMode && (
+      {checkinMode === "edit" && (
         <div className="bg-info-light/80 rounded-lg px-4 py-2.5 flex items-center gap-2.5 border border-info-main/20">
           <Info className="text-info-main shrink-0" size={16} />
           <span className="text-info-main text-sm font-medium">
@@ -113,7 +110,7 @@ const CheckinsTableView: React.FC<Props> = ({
           </span>
         </div>
       )}
-      {isDeleteMode && (
+      {checkinMode === "delete" && (
         <div className="bg-error-main/10 rounded-lg px-4 py-2.5 flex items-center gap-2.5 border border-error-main/20">
           <AlertTriangle className="text-error-main shrink-0" size={16} />
           <span className="text-error-main text-sm font-medium">
@@ -121,7 +118,7 @@ const CheckinsTableView: React.FC<Props> = ({
           </span>
         </div>
       )}
-      {isAddGuestMode && (
+      {checkinMode === "addGuest" && (
         <div className="bg-success-light/80 rounded-lg px-4 py-2.5 flex items-center gap-2.5 border border-success-main/20">
           <UserPlus className="text-success-main shrink-0" size={16} />
           <span className="text-success-main text-sm font-medium">
@@ -205,7 +202,7 @@ const CheckinsTableView: React.FC<Props> = ({
                   selectedDate={selectedDate}
                   allGuests={guestsByBooking[guestRow.bookingRef] || []}
                   onRowClick={
-                    isEditMode || isDeleteMode || isAddGuestMode
+                    checkinMode !== "idle"
                       ? onRowClick
                       : undefined
                   }

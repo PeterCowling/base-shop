@@ -4,6 +4,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import TillReconciliation from "../../components/till/TillReconciliation";
+import type { TillCashForm } from "../../hooks/client/till/useTillReconciliationUI";
 import type { Transaction } from "../../types/component/Till";
 
 jest.mock("../../components/till/FormsContainer", () => ({
@@ -61,9 +62,8 @@ const baseProps = {
   showCloseShiftForm: false,
   closeShiftFormVariant: "close" as const,
   showKeycardCountForm: false,
-  showFloatForm: false,
-  showExchangeForm: false,
-  showTenderRemovalForm: false,
+  cashForm: "none" as TillCashForm,
+  setCashForm: jest.fn(),
   pinRequiredForTenderRemoval: false,
   lastCloseCashCount: 0,
   expectedCashAtClose: 0,
@@ -79,9 +79,6 @@ const baseProps = {
   setShowOpenShiftForm: jest.fn(),
   setShowCloseShiftForm: jest.fn(),
   setShowKeycardCountForm: jest.fn(),
-  setShowFloatForm: jest.fn(),
-  setShowExchangeForm: jest.fn(),
-  setShowTenderRemovalForm: jest.fn(),
   txnToDelete: null as Transaction | null,
   txnToEdit: null as Transaction | null,
   setTxnToDelete: jest.fn(),

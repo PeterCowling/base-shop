@@ -26,15 +26,18 @@ export function createStartupStateStore(rootDir: string): StartupStateStore {
   return { rootDir };
 }
 
-function resolveStatePath(store: StartupStateStore, businessId: string): string {
+export function resolveStatePath(store: StartupStateStore, businessId: string): string {
   return path.join(store.rootDir, SELF_EVOLVING_ROOT, businessId, "startup-state.json");
 }
 
-function resolvePolicyStatePath(store: StartupStateStore, businessId: string): string {
+export function resolvePolicyStatePath(store: StartupStateStore, businessId: string): string {
   return path.join(store.rootDir, SELF_EVOLVING_ROOT, businessId, "policy-state.json");
 }
 
-function resolvePolicyDecisionLogPath(store: StartupStateStore, businessId: string): string {
+export function resolvePolicyDecisionLogPath(
+  store: StartupStateStore,
+  businessId: string,
+): string {
   return path.join(store.rootDir, SELF_EVOLVING_ROOT, businessId, "policy-decisions.jsonl");
 }
 

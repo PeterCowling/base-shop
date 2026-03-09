@@ -6,6 +6,7 @@ import type {
   MetaObservation,
   SelfEvolvingPolicyState,
 } from "./self-evolving-contracts.js";
+import type { PolicyEvaluationSummary } from "./self-evolving-evaluation.js";
 import {
   type ObservationPostureSummary,
   summarizeObservationPosture,
@@ -57,7 +58,29 @@ export interface DashboardSnapshot {
     candidate_beliefs: number;
     decision_records: number;
   };
+  evaluation: {
+    total_decisions: number;
+    observed_decisions: number;
+    pending_decisions: number;
+    censored_decisions: number;
+    missing_decisions: number;
+    replay_ready_decisions: number;
+    maturity_debt_decisions: number;
+    replay_ready_rate: DashboardRateMetric;
+  };
 }
+
+const EMPTY_EVALUATION_SUMMARY: PolicyEvaluationSummary = {
+  total_decisions: 0,
+  observed_decisions: 0,
+  pending_decisions: 0,
+  censored_decisions: 0,
+  missing_decisions: 0,
+  replay_ready_decisions: 0,
+  deterministic_decisions: 0,
+  stochastic_decisions: 0,
+  policy_version_counts: {},
+};
 
 function buildRateMetric(successes: number, sampleSize: number): DashboardRateMetric {
   if (sampleSize <= 0) {
@@ -98,6 +121,7 @@ export function buildDashboardSnapshot(input: {
   wipCap: number;
   policy_state?: SelfEvolvingPolicyState | null;
   decision_records_count?: number;
+  evaluation_summary?: PolicyEvaluationSummary | null;
 }): DashboardSnapshot {
   const candidates = input.ranked_candidates.map((entry) => entry.candidate);
   const activeCandidates = candidates.filter((candidate) =>
@@ -140,6 +164,9 @@ export function buildDashboardSnapshot(input: {
     input.ranked_candidates.length - measuredEvidenceCandidateCount;
   const posture = summarizeObservationPosture(input.observations);
   const policyState = input.policy_state ?? null;
+  const evaluationSummary = input.evaluation_summary ?? EMPTY_EVALUATION_SUMMARY;
+  const maturityDebtDecisions =
+    evaluationSummary.pending_decisions + evaluationSummary.censored_decisions;
 
   return {
     totals: {
@@ -182,6 +209,19 @@ export function buildDashboardSnapshot(input: {
       authority_level: policyState?.authority_level ?? null,
       candidate_beliefs: Object.keys(policyState?.candidate_beliefs ?? {}).length,
       decision_records: input.decision_records_count ?? 0,
+    },
+    evaluation: {
+      total_decisions: evaluationSummary.total_decisions,
+      observed_decisions: evaluationSummary.observed_decisions,
+      pending_decisions: evaluationSummary.pending_decisions,
+      censored_decisions: evaluationSummary.censored_decisions,
+      missing_decisions: evaluationSummary.missing_decisions,
+      replay_ready_decisions: evaluationSummary.replay_ready_decisions,
+      maturity_debt_decisions: maturityDebtDecisions,
+      replay_ready_rate: buildRateMetric(
+        evaluationSummary.replay_ready_decisions,
+        evaluationSummary.total_decisions,
+      ),
     },
   };
 }

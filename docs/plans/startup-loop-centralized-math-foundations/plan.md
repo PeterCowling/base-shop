@@ -30,7 +30,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-04: Define the outcome-closure and verified-measurement contract — Complete (2026-03-09)
 - [x] TASK-05: Implement the versioned belief-state and utility-computation layer — Complete (2026-03-09)
 - [x] TASK-06: Implement outcome closure and verified measurement feedback into self-evolving memory — Complete (2026-03-09)
-- [ ] TASK-16: Implement decision journaling, maturity windows, and replay-ready evaluation datasets
+- [x] TASK-16: Implement decision journaling, maturity windows, and replay-ready evaluation datasets — Complete (2026-03-09)
 - [ ] TASK-07: Replace pure priority sorting with constrained portfolio optimization
 - [ ] TASK-08: Integrate graph dependency and bottleneck analysis into policy inputs
 - [ ] TASK-09: Integrate survival and time-to-event risk into policy inputs
@@ -117,7 +117,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-04 | INVESTIGATE | Define the outcome-closure and verified-measurement contract | 75% | M | Complete (2026-03-09) | - | TASK-06, TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
 | TASK-05 | IMPLEMENT | Implement the versioned belief-state and utility-computation layer | 80% | M | Complete (2026-03-09) | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
 | TASK-06 | IMPLEMENT | Implement outcome closure and verified measurement feedback into self-evolving memory | 80% | M | Complete (2026-03-09) | TASK-01, TASK-02, TASK-04 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
-| TASK-16 | IMPLEMENT | Implement decision journaling, maturity windows, and replay-ready evaluation datasets | 70% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-06 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13, TASK-14 |
+| TASK-16 | IMPLEMENT | Implement decision journaling, maturity windows, and replay-ready evaluation datasets | 80% | M | Complete (2026-03-09) | TASK-03, TASK-04, TASK-05, TASK-06 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13, TASK-14 |
 | TASK-07 | IMPLEMENT | Replace pure priority sorting with constrained portfolio optimization | 75% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-10, TASK-12, TASK-13, TASK-14 |
 | TASK-08 | IMPLEMENT | Integrate graph dependency and bottleneck analysis into policy inputs | 75% | M | Pending | TASK-02, TASK-03, TASK-05 | TASK-11, TASK-13, TASK-14 |
 | TASK-09 | IMPLEMENT | Integrate survival and time-to-event risk into policy inputs | 75% | M | Pending | TASK-02, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-11, TASK-13, TASK-14 |
@@ -442,12 +442,12 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+- **Status:** Complete (2026-03-09)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-index.ts`, `scripts/src/startup-loop/__tests__/self-evolving-evaluation.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-report.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-detector-scoring.test.ts`
 - **Depends on:** TASK-03, TASK-04, TASK-05, TASK-06
 - **Blocks:** TASK-07, TASK-09, TASK-10, TASK-11, TASK-13, TASK-14
-- **Confidence:** 70%
-  - Implementation: 70% - the required data is scattered across current seams and needs a new joined representation.
+- **Confidence:** 80%
+  - Implementation: 80% - the journal contract, policy decisions, outcome maturity markers, and lifecycle outcome events already exist in code; the remaining work is the joined evaluation layer and report/dashboard reuse.
   - Approach: 90% - replay and maturity handling are mandatory if calibration and regret claims are to mean anything.
   - Impact: 90% - this is the bridge from logged decisions to defensible policy-quality evidence.
 - **Acceptance criteria:**
@@ -460,13 +460,13 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-03: immature or censored outcomes remain excluded from final policy-quality scoring until the contract says they are ready.
 - **Execution plan:** Red -> add fixtures for journal emission and matured-vs-pending evaluation assembly; Green -> implement decision journal storage and replay dataset assembly; Refactor -> centralize maturity and replay helpers so telemetry and checkpoints reuse the same logic.
 - **Planning validation (required for M/L):**
-  - Checks run: traced reporting, dashboard, startup-state, and lifecycle seams that would otherwise leave regret and replay undefined.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`
-  - Unexpected findings: the current report path can summarize state, but it cannot reconstruct decision contexts or matured evaluation slices.
+  - Checks run: traced reporting, dashboard, startup-state, policy-decision journal, completion, lifecycle, and replay seams that would otherwise leave regret and replay undefined.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-replay.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-queue-state-completion.test.ts`
+  - Unexpected findings: the current report path can summarize state, but it cannot yet join existing policy decisions, lifecycle outcomes, and maturity metadata into reusable evaluation slices. The missing work is narrower than the original task wording suggested because the core journaling and maturity primitives are already live.
 - **Scouts:** None: the gap is concrete and currently load-bearing.
 - **Edge Cases & Hardening:** deterministic vs stochastic decisions, changed action sets across runs, censored outcomes, and late verification arrival.
 - **What would make this >=90%:**
-  - A worked replay example on one real candidate family with a clear maturity boundary.
+  - One worked joined fixture that starts from `policy-decisions.jsonl`, reaches a matured outcome event, and produces a stable replay/evaluation record consumed by report or dashboard code.
 - **Rollout / rollback:**
   - Rollout: emit journals in shadow mode first, then let replay outputs inform guarded-trial checkpoints.
   - Rollback: preserve journals as additive history even if replay scoring needs one revision cycle.
@@ -475,6 +475,18 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`
+- **Build Evidence (2026-03-09):**
+  - Green: added `self-evolving-evaluation.ts` as the bounded join layer that assembles policy decisions, queue completion state, and lifecycle outcomes into explicit `observed`, `pending`, `missing`, and `censored` evaluation records instead of leaving replay semantics implicit in the report.
+  - Green: `self-evolving-report.ts` now reads policy state, policy decisions, queue state, and lifecycle events alongside observations/candidates, and emits a `policy_evaluation` summary plus sample unready records rather than only posture summaries.
+  - Green: `self-evolving-dashboard.ts` now exposes evaluation counts, maturity debt, and replay-ready rate so later calibration/regret work can consume a stable summary surface.
+  - Hardening: exported startup-state and event-log readers needed by the report path, and exported the new evaluation module through `self-evolving-index.ts` so later math-policy tasks can reuse the same dataset contract.
+  - Tests added: `self-evolving-evaluation.test.ts` covers classification and lifecycle fallback, `self-evolving-report.test.ts` covers report assembly, and `self-evolving-detector-scoring.test.ts` now verifies dashboard evaluation metrics.
+  - Validation:
+    - `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
+    - `pnpm exec eslint scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts scripts/src/startup-loop/self-evolving/self-evolving-report.ts scripts/src/startup-loop/self-evolving/self-evolving-events.ts scripts/src/startup-loop/self-evolving/self-evolving-index.ts scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts scripts/src/startup-loop/__tests__/self-evolving-evaluation.test.ts scripts/src/startup-loop/__tests__/self-evolving-report.test.ts scripts/src/startup-loop/__tests__/self-evolving-detector-scoring.test.ts`
+    - `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK`
+  - Runtime smoke outcome: the report now executes successfully against the repo’s current BRIK self-evolving data and surfaces explicit zero-decision evaluation summaries instead of omitting the policy-evaluation seam entirely.
+  - Precursor completion propagation: TASK-16 is no longer a blocker. No downstream IMPLEMENT task crossed its execution threshold automatically because TASK-07, TASK-09, TASK-10, TASK-11, and TASK-13 still need concrete first-wave optimization, cohort, or gate examples before their confidence can be raised honestly.
 
 ### TASK-07: Replace pure priority sorting with constrained portfolio optimization
 - **Type:** IMPLEMENT
@@ -859,6 +871,10 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - Remaining findings:
     - no Critical findings
     - residual uncertainty is now contained in explicit INVESTIGATE tasks, replay instrumentation, and checkpoint gating rather than hidden in IMPLEMENT tasks
+- Round 3: credible and runnable (4.4/5)
+  - Remaining findings:
+    - no new Critical findings
+    - `TASK-16` was re-scoped by live code evidence from "invent journaling and replay primitives" to "assemble joined evaluation slices and expose them through reporting"
 
 ## What would make this >=90%
 - Freeze the posterior-policy contract with one worked example that starts from a real candidate family and ends in a replayable decision journal, utility score, and authority-level decision.
@@ -923,7 +939,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 ## Overall-confidence Calculation
 - S=1, M=2, L=3
 - Weighted task confidence:
-  - `(85*1 + 75*2 + 75*2 + 75*2 + 75*2 + 75*2 + 70*2 + 75*2 + 75*2 + 75*2 + 70*2 + 70*2 + 75*2 + 75*2 + 95*1 + 95*1) / 29`
-  - `= 2195 / 29`
-  - `= 75.69%`
+  - `(85*1 + 75*2 + 75*2 + 75*2 + 75*2 + 75*2 + 80*2 + 75*2 + 75*2 + 75*2 + 70*2 + 70*2 + 75*2 + 75*2 + 95*1 + 95*1) / 29`
+  - `= 2215 / 29`
+  - `= 76.38%`
 - Rounded Overall-confidence: `76%`

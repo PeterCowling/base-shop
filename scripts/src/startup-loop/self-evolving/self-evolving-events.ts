@@ -135,6 +135,13 @@ function readLog(rootDir: string, businessId: string): SelfEvolvingEvent[] {
   }
 }
 
+export function readSelfEvolvingEventLog(
+  rootDir: string,
+  businessId: string,
+): SelfEvolvingEvent[] {
+  return readLog(rootDir, businessId);
+}
+
 function writeLog(
   rootDir: string,
   businessId: string,

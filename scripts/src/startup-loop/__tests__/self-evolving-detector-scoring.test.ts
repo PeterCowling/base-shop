@@ -7,6 +7,7 @@ import {
   computeCooldownUntil,
   detectRepeatWorkCandidates,
 } from "../self-evolving/self-evolving-detector.js";
+import type { PolicyEvaluationSummary } from "../self-evolving/self-evolving-evaluation.js";
 import { canUseScoringV2, computeScoreResult } from "../self-evolving/self-evolving-scoring.js";
 
 function buildObservation(id: string, timestamp: string): MetaObservation {
@@ -265,6 +266,19 @@ describe("self-evolving detector + scoring", () => {
         },
       ],
       wipCap: 10,
+      evaluation_summary: {
+        total_decisions: 4,
+        observed_decisions: 1,
+        pending_decisions: 1,
+        censored_decisions: 1,
+        missing_decisions: 1,
+        replay_ready_decisions: 1,
+        deterministic_decisions: 4,
+        stochastic_decisions: 0,
+        policy_version_counts: {
+          "self-evolving-policy.v1": 4,
+        },
+      } satisfies PolicyEvaluationSummary,
     });
 
     expect(dashboard.quality.observation_annotation_coverage.observed_rate).toBe(0);
@@ -276,6 +290,9 @@ describe("self-evolving detector + scoring", () => {
     expect(dashboard.posture.declared_grade_counts.exploratory).toBe(1);
     expect(dashboard.posture.underlying_field_counts.measurement_ready).toBe(0);
     expect(dashboard.posture.policy_eligibility_counts.exploratory_fact_find_only).toBe(1);
+    expect(dashboard.evaluation.total_decisions).toBe(4);
+    expect(dashboard.evaluation.maturity_debt_decisions).toBe(2);
+    expect(dashboard.evaluation.replay_ready_rate.observed_rate).toBe(0.25);
   });
 
   it("TASK-05 TC-02 emits explicit policy provenance and cold-start utility for sparse histories", () => {

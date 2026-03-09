@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "prime-firebase-budget-runtime-tracking-2026-03-09",
+  "feature_slug": "prime-firebase-budget-runtime-tracking",
+  "emitted_at": "2026-03-09T00:00:00.000Z",
+  "why": "Multiple implementation approaches are viable (context, interceptor, hook wrapper) with different trade-offs around accuracy, dev-overhead, and bundle impact. Needs fact-finding to pick the right one before building.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Prime app logs a dev-mode warning when any screen's Firebase read count exceeds its baseline threshold, making budget regressions visible during development.",
+    "source": "operator"
+  }
+}

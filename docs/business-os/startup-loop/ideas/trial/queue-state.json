@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-09T08:53:25.109Z",
+  "last_updated": "2026-03-09T09:24:55.569Z",
   "counts": {
-    "enqueued": 243,
-    "processed": 54,
+    "enqueued": 255,
+    "processed": 53,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
-    "completed": 133,
-    "fact_find_ready": 299,
-    "micro_build_ready": 23,
-    "total": 457
+    "completed": 134,
+    "fact_find_ready": 309,
+    "micro_build_ready": 24,
+    "total": 469
   },
   "dispatches": [
     {
@@ -18598,7 +18598,7 @@
       "current_truth": "budgetBaselines.ts defines per-screen Firebase read budgets (e.g. portal_pre_arrival_initial: maxReads: 8). budgetGate.ts exists but provides no runtime counting — hooks can silently exceed their read budgets. Violations are only catchable in tests if someone writes a budget test for every screen.",
       "next_scope_now": "Design and implement lightweight runtime read tracking: determine approach (React context counter, hook wrapper, Firebase onRead interceptor, or dev-only warn), integrate with budgetBaselines.ts thresholds, and add console warnings in dev when a screen's read count exceeds its budget.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.76,
       "evidence_refs": [
@@ -18607,7 +18607,7 @@
         "code-ref: apps/prime/src/lib/firebase/budgetGate.ts"
       ],
       "created_at": "2026-03-09T12:00:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "Multiple implementation approaches are viable (context, interceptor, hook wrapper) with different trade-offs around accuracy, dev-overhead, and bundle impact. Needs fact-finding to pick the right one before building.",
       "intended_outcome": {
         "type": "operational",
@@ -18623,6 +18623,11 @@
         "processed_at": "2026-03-09T08:35:18.968Z",
         "fact_find_slug": "prime-firebase-budget-runtime-tracking",
         "fact_find_path": "docs/plans/prime-firebase-budget-runtime-tracking/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-firebase-budget-runtime-tracking/plan.md",
+        "completed_at": "2026-03-09T09:24:55.568Z",
+        "outcome": "Prime app now logs dev-mode console.warn when Firebase reads exceed baseline thresholds; useBudgetWatcher hook wired into GuardedHomeExperience."
       }
     },
     {
@@ -19256,6 +19261,502 @@
       "intended_outcome": {
         "type": "operational",
         "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309085724-0542",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "9fe673f893d79106db8026f02d2f7689de127cf4",
+      "after_sha": "96ee6a654be284fd66bb0fc559de3219ad445adb",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:96ee6a654be284fd66bb0fc559de3219ad445adb",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:96ee6a654be284fd66bb0fc559de3219ad445adb",
+      "cluster_fingerprint": "102ed61959780cc15a74159df69bea9d4b539ec127d53c666730a9b66c563d49",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (9fe673f → 96ee6a6)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:57:24.541Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309085921-0224",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "96ee6a654be284fd66bb0fc559de3219ad445adb",
+      "after_sha": "4c0d7a6948e2cccd7086073ef372059957f4ef7d",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:4c0d7a6948e2cccd7086073ef372059957f4ef7d",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:4c0d7a6948e2cccd7086073ef372059957f4ef7d",
+      "cluster_fingerprint": "bbe1de7b400dd1f4fb861490f7494094c5e4bbdd1d18620893601762fa62ba6c",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (96ee6a6 → 4c0d7a6)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:59:21.223Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309090021-0666",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "4c0d7a6948e2cccd7086073ef372059957f4ef7d",
+      "after_sha": "39864d26807525a79d03840ca17564ea1d83d7e9",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:39864d26807525a79d03840ca17564ea1d83d7e9",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:39864d26807525a79d03840ca17564ea1d83d7e9",
+      "cluster_fingerprint": "ee953aacc1132e392c1986b20b19d4cb2dd9235f48a166594222a780d068fac1",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (4c0d7a6 → 39864d2)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T09:00:21.665Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309090459-0407",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "39864d26807525a79d03840ca17564ea1d83d7e9",
+      "after_sha": "492e45d609ebedea42f7e7a6631ce2d64bbafddb",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:492e45d609ebedea42f7e7a6631ce2d64bbafddb",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:492e45d609ebedea42f7e7a6631ce2d64bbafddb",
+      "cluster_fingerprint": "d197877b497bcf878bf2430f40ca3f66ced513607a1fc158c14ec0f9554c5f19",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (39864d2 → 492e45d)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T09:04:59.406Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309090544-0207",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "492e45d609ebedea42f7e7a6631ce2d64bbafddb",
+      "after_sha": "1278691520e989fa779e0eefd4de60176f53c1e8",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:1278691520e989fa779e0eefd4de60176f53c1e8",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:1278691520e989fa779e0eefd4de60176f53c1e8",
+      "cluster_fingerprint": "0d98967230267ca6d79ba5cc740af071a8289413e53a6f4f310ee102cb8d0182",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (492e45d → 1278691)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T09:05:44.206Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309113000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-date-selector-unification:20260309",
+      "anchor_key": "reception-date-selector-unification",
+      "cluster_key": "BRIK:BOS:reception-date-selector-unification:operator:20260309",
+      "cluster_fingerprint": "reception-date-selector-unification-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception — 5 near-identical date selector components",
+      "location_anchors": [
+        "apps/reception/src/components/checkout/DaySelector.tsx",
+        "apps/reception/src/components/checkins/DateSelector.tsx",
+        "apps/reception/src/components/prepare/DateSelectorPP.tsx",
+        "apps/reception/src/components/loans/DateSel.tsx",
+        "apps/reception/src/components/man/DateSelectorAllo.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Five components implement the same 'quick date buttons + optional DayPicker calendar' pattern with near-identical state and logic. They differ only in prop names, whether username is used for privileged calendar access, and minor styling. No shared base component exists.",
+      "next_scope_now": "Read all 5 components to understand exact differences. Extract a shared DateRangeSelector base component parameterised for access level and quick-range count. Migrate all 5 callers.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.8,
+      "evidence_refs": [
+        "operator-stated: simplify sweep found 5 near-identical date selector components across checkout, checkins, prepare, loans, man"
+      ],
+      "why": "5 copies of the same component means any date selector bug or UI change requires 5 coordinated edits.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A single shared DateRangeSelector component replaces all 5 variants. Access-level and quick-range differences are parameterised."
+      },
+      "queue_state": "enqueued",
+      "created_at": "2026-03-09T11:30:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309113000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-safe-handler-param-sprawl:20260309",
+      "anchor_key": "reception-safe-handler-param-sprawl",
+      "cluster_key": "BRIK:BOS:reception-safe-handler-param-sprawl:operator:20260309",
+      "cluster_fingerprint": "reception-safe-handler-param-sprawl-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception SafeManagement — handler parameter sprawl and copy-paste handlers",
+      "location_anchors": [
+        "apps/reception/src/components/safe/SafeManagement.tsx",
+        "apps/reception/src/components/safe/SafeReconcileForm.tsx",
+        "apps/reception/src/components/safe/BankDepositForm.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "SafeManagement handlers (handleDeposit, handleBankDeposit, handleReset) all follow the same pattern (validate → run transaction steps → close modal on success → toast on error) but are implemented independently with 4-5 positional parameters each. handleReconcile takes 5 scalar params. BankDepositForm near-duplicates SafeDepositForm's form chrome with inline validation instead of using the shared safeTransactionFormSchema.",
+      "next_scope_now": "Map all handler signatures. Assess whether a generic transaction handler factory or named-param objects would reduce duplication without over-abstracting. Scope: SafeManagement.tsx handlers only; do not change the mutation hooks.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "operator-stated: simplify sweep found SafeManagement handlers with 4-5 positional params and copy-paste structure across handleDeposit/handleBankDeposit/handleReset"
+      ],
+      "why": "Copy-paste handler structure means adding a new safe transaction type requires duplicating ~30 lines. Positional params make refactoring fragile.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Safe transaction handlers share a common structure. Adding a new transaction type does not require duplicating handler boilerplate."
+      },
+      "queue_state": "enqueued",
+      "created_at": "2026-03-09T11:30:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309113000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-loans-sequential-firebase:20260309",
+      "anchor_key": "reception-loans-sequential-firebase",
+      "cluster_key": "BRIK:BOS:reception-loans-sequential-firebase:operator:20260309",
+      "cluster_fingerprint": "reception-loans-sequential-firebase-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception useLoansMutations — sequential Firebase reads/removes (3-4 round trips per op)",
+      "location_anchors": [
+        "apps/reception/src/hooks/mutations/useLoansMutations.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Each loan removal chains 3-4 sequential Firebase operations (get → check → remove → log). For bulk loan removal (e.g. 10 keycard loans at checkout), this serialises ~30 round-trips. Firebase supports atomic multi-path updates that could batch these into 1-2 round-trips.",
+      "next_scope_now": "Read useLoansMutations.ts to understand all operations. Assess which sequential reads can be batched using Firebase multi-path update(). Determine if the get() before remove() is necessary for business logic or just for optimistic tracking.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.72,
+      "evidence_refs": [
+        "operator-stated: simplify sweep found useLoansMutations chains 3-4 sequential Firebase ops per removal; bulk checkout triggers ~30 round-trips"
+      ],
+      "why": "Sequential Firebase round-trips add latency to checkout operations and increase the window for partial-failure states.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Loan removal uses Firebase multi-path atomic updates where possible. Bulk checkout completes in 1-3 round-trips rather than 30."
+      },
+      "queue_state": "enqueued",
+      "created_at": "2026-03-09T11:30:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309113000-0004",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:BRIK:BOS:reception-activity-codes-constants:20260309",
+      "anchor_key": "reception-activity-codes-constants",
+      "cluster_key": "BRIK:BOS:reception-activity-codes-constants:operator:20260309",
+      "cluster_fingerprint": "reception-activity-codes-constants-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "reception — activity codes as magic numbers scattered across components",
+      "location_anchors": [
+        "apps/reception/src/components/man/modals/ExtensionPayModal.tsx",
+        "apps/reception/src/components/alloggiati/Alloggiati.tsx",
+        "apps/reception/src/utils/sortCheckins.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Activity codes (e.g. 9=city tax, 25=delete guest, 30=key extension, 12=check-in, 23=bags dropped) appear as inline magic numbers or locally-defined constants across at least 5 files. No shared constants file exists for activity codes.",
+      "next_scope_now": "Grep for all numeric activity code literals in the app. Create apps/reception/src/constants/activityCodes.ts with named exports. Replace all magic numbers at call sites.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: simplify sweep found activity code magic numbers (9, 25, 30, 12, 23) scattered across 5+ files with no shared constants"
+      ],
+      "why": "Magic numbers make code unreadable and mean adding a new activity type or changing a code number requires a manual grep.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "All activity codes are named constants imported from a single constants/activityCodes.ts file."
+      },
+      "queue_state": "enqueued",
+      "created_at": "2026-03-09T11:30:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309092404-0968",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "1278691520e989fa779e0eefd4de60176f53c1e8",
+      "after_sha": "142bd37812c3097a862f434830569d2f79e95bf9",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:142bd37812c3097a862f434830569d2f79e95bf9",
+      "anchor_key": "key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files-pages-like-women-bags-page",
+      "cluster_key": "bos:unknown:key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files-pages-like-women-bags-page:BOS-BOS-AGENT_SESSION_FINDINGS:142bd37812c3097a862f434830569d2f79e95bf9",
+      "cluster_fingerprint": "377b4a65f077b3b97ae853671042a638fd71dd6dcc91cb53f5be28c5aa75db8c",
+      "lineage_depth": 0,
+      "area_anchor": "Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…; functions/` dir exists but is empty — ESLint errors on no-match; Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header need….",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…; functions/` dir exists but is empty — ESLint errors on no-match; Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header need….",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T09:24:04.967Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309092437-0572",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "142bd37812c3097a862f434830569d2f79e95bf9",
+      "after_sha": "c0a7b5d585b9d76863608e8413c569ab62547bed",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:c0a7b5d585b9d76863608e8413c569ab62547bed",
+      "anchor_key": "key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files-pages-like-women-bags-page",
+      "cluster_key": "bos:unknown:key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files-pages-like-women-bags-page:BOS-BOS-AGENT_SESSION_FINDINGS:c0a7b5d585b9d76863608e8413c569ab62547bed",
+      "cluster_fingerprint": "4cc427262bf66203cc7a2d638afd9a384d1cf4c3154db515552d4acc37736953",
+      "lineage_depth": 0,
+      "area_anchor": "Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…; functions/` dir exists but is empty — ESLint errors on no-match; Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header need….",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…; functions/` dir exists but is empty — ESLint errors on no-match; Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header need….",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T09:24:37.571Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309092443-0245",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "c0a7b5d585b9d76863608e8413c569ab62547bed",
+      "after_sha": "2eb439e810e9c356ef88feba05b0e7a7f3b411e3",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:2eb439e810e9c356ef88feba05b0e7a7f3b411e3",
+      "anchor_key": "key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files-pages-like-women-bags-page",
+      "cluster_key": "bos:unknown:key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files-pages-like-women-bags-page:BOS-BOS-AGENT_SESSION_FINDINGS:2eb439e810e9c356ef88feba05b0e7a7f3b411e3",
+      "cluster_fingerprint": "63adfc8076085bf85a600dd903a3b9694a78d0a71d868ff282094a286e149340",
+      "lineage_depth": 0,
+      "area_anchor": "Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…; functions/` dir exists but is empty — ESLint errors on no-match; Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header need….",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page…; functions/` dir exists but is empty — ESLint errors on no-match; Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header need….",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T09:24:43.244Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
       }
     }

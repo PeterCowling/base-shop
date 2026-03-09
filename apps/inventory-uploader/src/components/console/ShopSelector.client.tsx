@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useState } from "react";
 
-const SHOP_STORAGE_KEY = "inventory-uploader:shop";
+import { SHOP_STORAGE_KEY } from "../../lib/inventory-utils";
 
 type ShopSelectorProps = {
   selectedShop: string | null;
@@ -15,11 +15,10 @@ export function ShopSelector({ selectedShop, onSelect }: ShopSelectorProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    let cancelled = false;
-    fetch("/api/inventory/shops")
+    const controller = new AbortController();
+    fetch("/api/inventory/shops", { signal: controller.signal })
       .then((r) => r.json())
       .then((data: unknown) => {
-        if (cancelled) return;
         const list =
           data && typeof data === "object" && "shops" in data && Array.isArray((data as { shops: unknown }).shops)
             ? ((data as { shops: string[] }).shops)
@@ -35,15 +34,14 @@ export function ShopSelector({ selectedShop, onSelect }: ShopSelectorProps) {
           onSelect(list[0] ?? null);
         }
       })
-      .catch(() => {
-        if (!cancelled) setShops([]);
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === "AbortError") return;
+        setShops([]);
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        setLoading(false);
       });
-    return () => {
-      cancelled = true;
-    };
+    return () => controller.abort();
     // onSelect is stable (state setter); selectedShop intentionally excluded to run once
     // eslint-disable-next-line react-hooks/exhaustive-deps -- INV-001 mount-only effect, deps stable by design
   }, []);

@@ -5,6 +5,8 @@ import {
   listStockAdjustments,
 } from "@acme/platform-core/repositories/stockAdjustments.server";
 
+import { apiError, parseSafeLimit } from "../../../../../lib/api-helpers";
+
 export const runtime = "nodejs";
 
 export async function GET(
@@ -13,15 +15,13 @@ export async function GET(
 ) {
   const { shop } = await context.params;
   const { searchParams } = new URL(req.url);
-  const limit = Number(searchParams.get("limit") ?? "50");
-  const safeLimit = Number.isFinite(limit) ? Math.max(1, Math.min(250, Math.floor(limit))) : 50;
+  const safeLimit = parseSafeLimit(searchParams);
 
   try {
     const events = await listStockAdjustments(shop, { limit: safeLimit });
     return NextResponse.json({ ok: true, events });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    return apiError(err);
   }
 }
 
@@ -43,7 +43,6 @@ export async function POST(
     }
     return NextResponse.json(result, { status: result.duplicate ? 200 : 201 });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    return apiError(err);
   }
 }

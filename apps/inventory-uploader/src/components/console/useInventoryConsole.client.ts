@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 
-const SHOP_STORAGE_KEY = "inventory-uploader:shop";
+import { SHOP_STORAGE_KEY } from "../../lib/inventory-utils";
 
 /**
  * Pinned interface for the inventory console state.

@@ -3,18 +3,10 @@ import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@acme/platform-core/db";
 import { validateShopName } from "@acme/platform-core/shops";
 
-export const runtime = "nodejs";
+import { apiError, parseSafeLimit } from "../../../../../lib/api-helpers";
+import { type LedgerEvent } from "../../../../../lib/inventory-utils";
 
-type LedgerEvent = {
-  id: string;
-  timestamp: string;
-  type: "adjustment" | "inflow" | "sale";
-  sku: string;
-  variantKey: string;
-  quantityDelta: number;
-  referenceId: string | null;
-  note: string | null;
-};
+export const runtime = "nodejs";
 
 export async function GET(
   req: NextRequest,
@@ -27,10 +19,9 @@ export async function GET(
   const sku = searchParams.get("sku") ?? undefined;
   const type = searchParams.get("type") as LedgerEvent["type"] | null;
   const cursor = searchParams.get("cursor") ?? undefined;
-  const limit = Math.max(1, Math.min(200, Number(searchParams.get("limit") ?? "50")));
+  const limit = parseSafeLimit(searchParams);
 
   try {
-     
     const where: Record<string, unknown> = { shopId: safeShop };
     if (sku) where.sku = sku;
     if (type && (type === "adjustment" || type === "inflow")) where.type = type;
@@ -60,7 +51,6 @@ export async function GET(
 
     return NextResponse.json({ ok: true, events, nextCursor });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    return apiError(err);
   }
 }

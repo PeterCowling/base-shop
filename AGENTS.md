@@ -32,14 +32,14 @@ When you identify that the "right" solution requires significantly more work, ex
 
 ## Commands
 
-| Task                         | Command                                                                        |
-| ---------------------------- | ------------------------------------------------------------------------------ |
-| Install                      | `pnpm install`                                                                 |
-| Build                        | `pnpm build`                                                                   |
-| Typecheck                    | `pnpm --filter <pkg> typecheck`                                                |
-| Lint                         | `pnpm --filter <pkg> lint`                                                     |
-| Test feedback                | `gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')` |
-| Validate all (local default) | `bash scripts/validate-changes.sh`                                             |
+| Task | Command |
+|------|---------|
+| Install | `pnpm install` |
+| Build | `pnpm build` |
+| Typecheck | `pnpm --filter <pkg> typecheck` |
+| Lint | `pnpm --filter <pkg> lint` |
+| Test feedback | `gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')` |
+| Validate all (local default) | `bash scripts/validate-changes.sh` |
 
 ## Validation Gate (Before Every Commit)
 
@@ -53,7 +53,6 @@ bash scripts/validate-changes.sh
 If multiple packages changed, run typecheck + lint for each affected package.
 
 Only run full-repo `pnpm typecheck` / `pnpm lint` when:
-
 - The user explicitly asks for a full validation, or
 - The change is cross-cutting and impacts many packages, or
 - A targeted run fails with a non-localized error and full validation is needed to diagnose.
@@ -91,7 +90,6 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
 - **Codex attribution:** include `Co-Authored-By: Codex <noreply@openai.com>` in Codex-authored commits
 
 **Destructive / history-rewriting commands (agents: never):**
-
 - `git reset --hard`, `git clean -fd`, `git push --force` / `-f`
 - Also treat these as forbidden: `git checkout -- .` / `git restore .`, **any bulk discard** via `git checkout -- <pathspec...>` or `git restore -- <pathspec...>` (multiple files, directories, or globs), `git stash` mutations (`push` / `pop` / `apply` / `drop` / `clear`, including bare `git stash`), `git rebase` (incl. `-i`), `git commit --amend`
 
@@ -103,34 +101,31 @@ Every agent-facing failure message in this repo must satisfy this contract. Appl
 
 ### Required fields (minimum contract)
 
-| Field                         | Description                                                                                                                                               |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Failure reason**            | What failed, in plain terms — not just an error code.                                                                                                     |
-| **Retry posture**             | One of: `retry-allowed` (after the stated fix), `retry-forbidden` (this path will not work), or `escalate-now` (stop local retries, surface to operator). |
-| **Exact next step**           | One concrete command or action — not a category or description. Must be a command the agent can run or a file the agent can read.                         |
-| **Anti-retry list**           | Explicit list of commands, flags, or env-var bypasses that will NOT work for this failure. Prevents adjacent retry loops.                                 |
-| **Escalation/stop condition** | When to stop local retries and surface to the operator. Required even in `retry-allowed` cases (e.g. "after 2 retries with same error").                  |
+| Field | Description |
+|---|---|
+| **Failure reason** | What failed, in plain terms — not just an error code. |
+| **Retry posture** | One of: `retry-allowed` (after the stated fix), `retry-forbidden` (this path will not work), or `escalate-now` (stop local retries, surface to operator). |
+| **Exact next step** | One concrete command or action — not a category or description. Must be a command the agent can run or a file the agent can read. |
+| **Anti-retry list** | Explicit list of commands, flags, or env-var bypasses that will NOT work for this failure. Prevents adjacent retry loops. |
+| **Escalation/stop condition** | When to stop local retries and surface to the operator. Required even in `retry-allowed` cases (e.g. "after 2 retries with same error"). |
 
 ### Message classes
 
 Three classes are required. Each must appear in guard/preflight output with all five fields satisfied.
 
 **hard-block** — policy denies the command. Retry with the same command is forbidden regardless of state.
-
 - Retry posture: `retry-forbidden`
 - Exact next step: the only valid alternative command
 - Anti-retry list: the exact flags/invocations that triggered the block
 - Reference implementation: `.claude/hooks/pre-tool-use-git-safety.sh` → `block_with_guidance()` function (lines 57–72)
 
 **recoverable-fallback** — a prerequisite is missing or the wrong path was used. Retry is allowed after the stated fix.
-
 - Retry posture: `retry-allowed`
 - Exact next step: the command that acquires/restores the prerequisite
 - Anti-retry list: env-var bypasses and flags that skip enforcement
 - Reference implementation: `scripts/git-hooks/require-writer-lock.sh` → lock-not-held block (lines 38–57)
 
 **fail-closed-infrastructure** — internal or environment failure (missing binary, missing policy file, eval error). Retry may be possible after repair, but local retry without repair is not the right next step.
-
 - Retry posture: `escalate-now` (or `retry-allowed` only if the repair command is stated)
 - Exact next step: the command to repair the broken environment
 - Anti-retry list: retrying the original command without repair
@@ -141,13 +136,11 @@ Three classes are required. Each must appear in guard/preflight output with all 
 These surfaces must be brought into full contract compliance. All five required fields must be satisfied for every failure path.
 
 **Wave 1 (shell/guard surfaces — TASK-02):**
-
 - `scripts/agent-bin/git` — infrastructure failure paths (missing binary, evaluator, policy)
 - `.claude/hooks/pre-tool-use-git-safety.sh` — already largely compliant; verify all rule branches satisfy anti-retry list
 - `scripts/git-hooks/require-writer-lock.sh` — already largely compliant; verify escalation/stop condition is explicit
 
 **Wave 2 (structured preflight/tool-guidance — TASK-03):**
-
 - `scripts/src/startup-loop/mcp-preflight.ts` → `printHumanResult()` — add per-code recovery guidance for each `MCP_PREFLIGHT_*` failure
 - `docs/ide/agent-language-intelligence-guide.md` — already largely compliant; verify fallback and "do not retry until" conditions are explicit for all paths
 
@@ -227,20 +220,20 @@ Error: Cannot use import statement outside a module
 
 ### Available Troubleshooting Skills
 
-| Error Pattern                                  | Skill           | Location                                  |
-| ---------------------------------------------- | --------------- | ----------------------------------------- |
+| Error Pattern | Skill | Location |
+|---------------|-------|----------|
 | `Cannot use import statement outside a module` | jest-esm-issues | `.claude/skills/jest-esm-issues/SKILL.md` |
-| `git status` confusing / lost commits          | ops-git-recover | `.claude/skills/ops-git-recover/SKILL.md` |
-| `ERESOLVE` / peer dependency errors            | code-fix-deps   | `.claude/skills/code-fix-deps/SKILL.md`   |
+| `git status` confusing / lost commits | ops-git-recover | `.claude/skills/ops-git-recover/SKILL.md` |
+| `ERESOLVE` / peer dependency errors | code-fix-deps | `.claude/skills/code-fix-deps/SKILL.md` |
 
 ### When to Ask vs. When to Load Context
 
-| Situation                            | Action                                 |
-| ------------------------------------ | -------------------------------------- |
-| Error matches a trigger in manifest  | Load the skill, try the fix            |
-| Error is unclear after reading skill | Ask user with context from skill       |
-| No matching skill exists             | Ask user, then consider creating skill |
-| Ambiguous user intent                | Ask user for clarification             |
+| Situation | Action |
+|-----------|--------|
+| Error matches a trigger in manifest | Load the skill, try the fix |
+| Error is unclear after reading skill | Ask user with context from skill |
+| No matching skill exists | Ask user, then consider creating skill |
+| Ambiguous user intent | Ask user for clarification |
 
 ## User-Facing Step-by-Step Standard (Required)
 
@@ -275,23 +268,18 @@ Use this structure in user-facing instructions:
 
 ```md
 ### Step <N> — <Outcome>
-
 DO:
-
 1. Open: <URL>
 2. Click: <exact path>
 3. Enter: <exact value>
 
 SAVE:
-
 - <filename-or-value> -> <destination path>
 
 DONE WHEN:
-
 - <observable success condition>
 
 IF BLOCKED:
-
 - <fallback action>
 ```
 
@@ -375,31 +363,29 @@ Prompting policy for shared worktrees:
 
 ## Quick Reference
 
-| Scenario                                                            | Action                                                                                                                                         |
-| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Git state internally inconsistent                                   | STOP. Run `git status`, share output, ask user                                                                                                 |
-| Files/commits from other agents                                     | Normal — pull latest and proceed                                                                                                               |
-| Files deleted/moved by another agent (files you weren't working on) | Normal — ignore, proceed                                                                                                                       |
-| File deleted by another agent that you were actively editing        | FLAG to user, then stop                                                                                                                        |
-| Tests failing                                                       | Fix before commit. Never skip validation                                                                                                       |
-| Need to undo                                                        | Use `git revert`, never `reset --hard`                                                                                                         |
-| Large-scale fix needed                                              | Create plan in `docs/plans/`, don't take shortcuts                                                                                             |
-| User asks for "step-by-step" help                                   | Use mandatory `DO`/`SAVE`/`DONE WHEN`/`IF BLOCKED` format with exact URLs and click paths                                                      |
-| MCP TypeScript intelligence                                         | See `docs/ide/agent-language-intelligence-guide.md`                                                                                            |
-| Asked to check types                                                | Use MCP TypeScript tools first; run `pnpm --filter <pkg> typecheck` for affected packages (full `pnpm typecheck` only if explicitly requested) |
+| Scenario | Action |
+|----------|--------|
+| Git state internally inconsistent | STOP. Run `git status`, share output, ask user |
+| Files/commits from other agents | Normal — pull latest and proceed |
+| Files deleted/moved by another agent (files you weren't working on) | Normal — ignore, proceed |
+| File deleted by another agent that you were actively editing | FLAG to user, then stop |
+| Tests failing | Fix before commit. Never skip validation |
+| Need to undo | Use `git revert`, never `reset --hard` |
+| Large-scale fix needed | Create plan in `docs/plans/`, don't take shortcuts |
+| User asks for "step-by-step" help | Use mandatory `DO`/`SAVE`/`DONE WHEN`/`IF BLOCKED` format with exact URLs and click paths |
+| MCP TypeScript intelligence | See `docs/ide/agent-language-intelligence-guide.md` |
+| Asked to check types | Use MCP TypeScript tools first; run `pnpm --filter <pkg> typecheck` for affected packages (full `pnpm typecheck` only if explicitly requested) |
 
 ## Session Reflection (Optional)
 
 After completing significant work, consider capturing learnings to improve future agent work.
 
 **When to reflect:**
-
 - Completed a multi-task plan
 - Resolved unexpected problems with novel solutions
 - Discovered gaps in documentation or skills
 
 **How to reflect:**
-
 1. Use `/tools-meta-reflect` (or read `.claude/skills/tools-meta-reflect/SKILL.md`)
 2. Follow the skill workflow: identify friction, classify by layer, propose atomic changes to existing docs/skills
 3. All improvements go into existing target files — no separate learnings store
@@ -412,14 +398,14 @@ After completing significant work, consider capturing learnings to improve futur
 
 For comprehensive guidance, see:
 
-| Topic                   | Location                                                                                   |
-| ----------------------- | ------------------------------------------------------------------------------------------ |
-| Git safety (full rules) | [docs/git-safety.md](docs/git-safety.md)                                                   |
-| Git hooks               | [docs/git-hooks.md](docs/git-hooks.md)                                                     |
-| Testing policy          | [docs/testing-policy.md](docs/testing-policy.md)                                           |
-| Plan metadata schema    | [docs/AGENTS.docs.md](docs/AGENTS.docs.md)                                                 |
-| Business OS charter     | [docs/business-os/business-os-charter.md](docs/business-os/business-os-charter.md)         |
-| Incident details        | [docs/historical/RECOVERY-PLAN-2026-01-14.md](docs/historical/RECOVERY-PLAN-2026-01-14.md) |
-| Incident prevention     | [docs/incident-prevention.md](docs/incident-prevention.md)                                 |
+| Topic | Location |
+|-------|----------|
+| Git safety (full rules) | [docs/git-safety.md](docs/git-safety.md) |
+| Git hooks | [docs/git-hooks.md](docs/git-hooks.md) |
+| Testing policy | [docs/testing-policy.md](docs/testing-policy.md) |
+| Plan metadata schema | [docs/AGENTS.docs.md](docs/AGENTS.docs.md) |
+| Business OS charter | [docs/business-os/business-os-charter.md](docs/business-os/business-os-charter.md) |
+| Incident details | [docs/historical/RECOVERY-PLAN-2026-01-14.md](docs/historical/RECOVERY-PLAN-2026-01-14.md) |
+| Incident prevention | [docs/incident-prevention.md](docs/incident-prevention.md) |
 
 **Previous version:** [docs/historical/AGENTS-2026-01-17-pre-ralph.md](docs/historical/AGENTS-2026-01-17-pre-ralph.md)

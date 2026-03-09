@@ -48,6 +48,8 @@ nvm exec 22 codex exec \
 
 Record the exit code. Log it to the plan build evidence block.
 
+> **Current lock-scope note:** `--sandbox workspace-write` makes this an explicit shared-checkout write session. Codex may write at any time during `codex exec`, so the orchestrator must hold the writer lock for the full mutable execution window. Use this route for bounded build execution only, not for discovery/planning or other mostly read-only agent sessions.
+
 > **Do NOT use `--full-auto`** for automated build offload — it uses `-a on-request` which can pause waiting for input.
 
 > **Do NOT use `codemoot run`** for file-writing tasks. `codemoot run` is a text-generation pipeline; all step outputs are stored in the session database as text artifacts only. Files are never written to disk.
@@ -129,10 +131,10 @@ No new logic is required in the fallback path. The inline executor is the baseli
    ```
 2. `with-writer-lock.sh` exports `BASESHOP_WRITER_LOCK_TOKEN` to child processes (confirmed from `scripts/agents/with-writer-lock.sh` line 136).
 3. Codex runs as a child process and inherits the token — it does not acquire the lock itself.
-4. Claude retains the lock through post-execution verification and commit.
+4. Because `--sandbox workspace-write` can mutate the shared checkout at any time, Claude retains the lock through the full `codex exec` run and the serialized post-execution write/commit phase.
 5. Claude releases the lock after the commit gate completes.
 
-**Do not release the lock before verifying Affects files and running the commit gate.** The lock prevents concurrent writes from other agents during Codex execution.
+**Do not release the lock before Codex exits and the serialized post-execution write/commit phase completes.** In the current shared-checkout protocol, other writers must not enter while Codex-owned edits remain uncommitted in the working tree.
 
 ## Excluded Task Types
 

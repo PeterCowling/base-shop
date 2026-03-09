@@ -62,13 +62,14 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
 
 - **No worktrees.** Base-Shop runs with a single checkout to avoid cross-worktree confusion.
 - **Single writer.** With 1 human + up to 10 agents, only one process may write at a time.
-  - Start an “integrator shell” before editing, committing, or pushing: `scripts/agents/integrator-shell.sh -- codex`
-  - For long read-only discovery/planning/dry-run sessions, use guard-only mode (no writer lock): `scripts/agents/integrator-shell.sh --read-only -- codex`
+  - Use the integrator wrapper before editing, committing, or pushing; choose the narrowest mode that fits the work.
+  - For long read-only discovery/planning/dry-run sessions, use guard-only mode (no writer lock): `scripts/agents/integrator-shell.sh --read-only -- <agent-cli>` (for example `codex` or `claude`)
+  - For long-lived agent CLI sessions that will edit files directly in the shared checkout, opt in explicitly: `scripts/agents/integrator-shell.sh --agent-write-session -- <agent-cli>`
   - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
   - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
     - Wait mode is FIFO queue-ordered (first-come, first-served). In non-interactive agent runs, waiting is **poll-based** (**30s** checks) and **hard-stops after 5 minutes** with an error so the agent can report the issue (stale locks are auto-cleaned only when PID is dead on this host).
-  - **Lock scope rule:** hold the writer lock only for actual git writes and other serialized repo mutations that must not overlap (for example staged commits, queue-state writes, or a short-lived temporary tree mutation that must be restored before another writer enters).
+  - **Lock scope rule:** hold the writer lock only while the shared checkout may still be mutated by actual git writes or other serialized repo mutations that must not overlap (for example staged commits, queue-state writes, a short-lived temporary tree mutation that must be restored before another writer enters, or an explicit `--agent-write-session` that edits files directly in the shared checkout).
   - **Do not hold the lock across long non-writing work** once the required repo mutation is complete. `pnpm build`, validation reads, artifact verification, and `wrangler` deploys should run outside the lock after the artifact or write phase is prepared.
   - **Read-only default:** discovery, planning, audits, dry-runs, and other non-writing shell work should stay in `scripts/agents/integrator-shell.sh --read-only -- <command>` unless they are about to perform a serialized repo mutation.
   - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)

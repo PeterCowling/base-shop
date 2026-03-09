@@ -7,13 +7,15 @@ usage() {
   echo "  scripts/agents/integrator-shell.sh [options]            # opens an integrator subshell"
   echo ""
   echo "Integrator mode:"
-  echo "  - Default (write mode): acquires the Base-Shop writer lock"
+  echo "  - Default (write mode): acquires the Base-Shop writer lock for bounded write commands"
   echo "  - Read-only mode: enables command guards without taking writer lock"
+  echo "  - Agent write session mode: explicit opt-in for long-lived agent CLIs that edit the shared checkout"
   echo "  - Enables command guards (git safety + broad-test safety)"
   echo ""
   echo "Options:"
   echo "  --read-only       Guard-only mode (no writer lock; use for long audits/dry-runs)"
   echo "  --write           Force write mode (default)"
+  echo "  --agent-write-session  Explicitly allow a long-lived agent CLI session (for example codex or claude) to hold the writer lock"
   echo "  --timeout <sec>   Lock wait timeout in write mode (default: 300s in non-interactive agents; 0 = wait forever only in interactive shells)"
   echo "  --poll <sec>      Lock polling interval in write mode (default: 30)"
   echo "  --no-wait         Do not wait for lock in write mode"
@@ -21,9 +23,47 @@ usage() {
   echo "  -h, --help        Show this help"
   echo ""
   echo "Example:"
-  echo "  scripts/agents/integrator-shell.sh -- codex"
   echo "  scripts/agents/integrator-shell.sh --read-only -- codex"
+  echo "  scripts/agents/integrator-shell.sh --read-only -- claude"
+  echo "  scripts/agents/integrator-shell.sh --agent-write-session -- codex"
   echo "  scripts/agents/integrator-shell.sh --timeout 15 -- <write-command>"
+}
+
+long_lived_agent_cli_name() {
+  local cmd="${1:-}"
+  local base=""
+
+  if [[ -z "$cmd" ]]; then
+    return 1
+  fi
+
+  base="$(basename -- "$cmd")"
+  case "$base" in
+    codex|claude)
+      printf '%s\n' "$base"
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+block_implicit_agent_write_session() {
+  local agent="$1"
+
+  cat >&2 <<EOF
+ERROR: long-lived agent CLI sessions must opt in explicitly before they hold the writer lock.
+Failure reason: write mode would hold the Base-Shop writer lock for the full ${agent} session, which blocks unrelated repo work while the shared checkout may still be edited.
+Retry posture: retry-forbidden
+Exact next step: scripts/agents/integrator-shell.sh --read-only -- ${agent} [args...]
+Anti-retry list:
+- scripts/agents/integrator-shell.sh -- ${agent} [args...]
+- scripts/agents/integrator-shell.sh --write -- ${agent} [args...]
+- scripts/agents/integrator-shell.sh --wait-forever -- ${agent} [args...]
+Escalation/stop condition: if this ${agent} session must edit files directly in the shared checkout, rerun with scripts/agents/integrator-shell.sh --agent-write-session -- ${agent} [args...]; if that session would mostly do discovery, waiting, or external verification, stop and redesign the workflow instead of holding the lock.
+EOF
+  exit 1
 }
 
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
@@ -51,6 +91,7 @@ lock_wait="1"
 lock_timeout=""
 lock_poll=""
 command_mode="0"
+agent_write_session="0"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -60,6 +101,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --write)
       mode="write"
+      shift
+      ;;
+    --agent-write-session)
+      agent_write_session="1"
       shift
       ;;
     --timeout)
@@ -185,6 +230,12 @@ fi
 if [[ $# -eq 0 ]]; then
   usage >&2
   exit 2
+fi
+
+if [[ "$agent_write_session" != "1" ]]; then
+  if agent_name="$(long_lived_agent_cli_name "${1:-}")"; then
+    block_implicit_agent_write_session "$agent_name"
+  fi
 fi
 
 # Run the command inside both the writer lock and git guard.

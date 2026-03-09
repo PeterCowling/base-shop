@@ -3,6 +3,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { getApiErrorMessage } from "../../lib/api-helpers";
 import {
   type AuditEntry,
   createKey,
@@ -69,17 +70,17 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
-    Promise.all([
+    void Promise.allSettled([
       fetch(inventoryApiUrl(shop), { signal }).then((r) => r.json()),
       fetch(inventoryApiUrl(shop, "adjustments"), { signal }).then((r) => r.json()),
-    ])
-      .then(([invData, histData]: [unknown, unknown]) => {
-        setInventory(((invData as { items?: InventoryItem[] }).items) ?? []);
-        setHistory(((histData as { events?: AuditEntry[] }).events) ?? []);
-      })
-      .catch((err: unknown) => {
-        if (err instanceof Error && err.name === "AbortError") return;
-      });
+    ]).then(([invResult, histResult]) => {
+      if (invResult.status === "fulfilled") {
+        setInventory(((invResult.value as { items?: InventoryItem[] }).items) ?? []);
+      }
+      if (histResult.status === "fulfilled") {
+        setHistory(((histResult.value as { events?: AuditEntry[] }).events) ?? []);
+      }
+    });
     return () => controller.abort();
   }, [shop]);
 
@@ -130,7 +131,7 @@ export function StockAdjustments({ shop, onSaved }: StockAdjustmentsProps) {
           return;
         }
         if (!json.ok) {
-          setError("message" in json && json.message ? json.message : "Request failed.");
+          setError(getApiErrorMessage(json));
           return;
         }
         setResult(json);

@@ -8,13 +8,16 @@ import { apiError } from "../../../../../lib/api-helpers";
 export const runtime = "nodejs";
 
 /**
- * Sanitize a value for CSV output (formula injection protection).
- * Prefixes values starting with =, +, -, @, tab, CR with a single quote.
+ * Sanitize and properly encode a value for CSV output.
+ * Prevents formula injection (prefixes =, +, -, @, tab, CR with a single quote).
+ * Quotes fields that contain commas, double quotes, or newlines per RFC 4180.
  */
 function sanitizeCsv(value: unknown): string {
   if (value === null || value === undefined) return "";
   const str = String(value);
-  return /^[=+\-@\t\r]/.test(str) ? `'${str}` : str;
+  const safe = /^[=+\-@\t\r]/.test(str) ? `'${str}` : str;
+  if (/[",\n\r]/.test(safe)) return `"${safe.replace(/"/g, '""')}"`;
+  return safe;
 }
 
 function toCsv(items: ReturnType<typeof flattenInventoryItem>[]): string {

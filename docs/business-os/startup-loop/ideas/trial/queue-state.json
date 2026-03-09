@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-08T23:47:41.026Z",
+  "last_updated": "2026-03-09T02:54:57.660Z",
   "counts": {
-    "enqueued": 218,
+    "enqueued": 219,
     "processed": 46,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 132,
-    "fact_find_ready": 276,
+    "fact_find_ready": 277,
     "micro_build_ready": 13,
-    "total": 423
+    "total": 424
   },
   "dispatches": [
     {
@@ -17740,6 +17740,50 @@
         "session:14f7aef2-5d57-4d82-a048-137a0515b9f0"
       ],
       "created_at": "2026-03-08T23:47:21.124Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309025457-0655",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "48980fa95137baf693deb5d87b45138a9e04879e",
+      "after_sha": "394a0294113b60d5d105e2da257c53c08f023d23",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:394a0294113b60d5d105e2da257c53c08f023d23",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:394a0294113b60d5d105e2da257c53c08f023d23",
+      "cluster_fingerprint": "f53282cfb76a2789417ffa0205ccda773502531f5a50667efc8b89d687656c3d",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (48980fa → 394a029)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:84fc058e-c06a-4ea2-900f-167ecf8b9caa",
+        "session:45fa3df6-4baf-4a46-8295-da1c400b5f19",
+        "session:e96080c8-452d-4ca3-add4-39aa8e41d543",
+        "session:14f7aef2-5d57-4d82-a048-137a0515b9f0"
+      ],
+      "created_at": "2026-03-09T02:54:57.654Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

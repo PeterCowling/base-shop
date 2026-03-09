@@ -101,6 +101,7 @@ Hooks are expected to block unsafe operations.
 - Keep the lock scope narrow:
   - Hold it for actual git writes or other serialized repo mutations only.
   - Use `scripts/agents/integrator-shell.sh --read-only -- <command>` for long discovery, planning, audits, and dry-runs.
+  - For long-lived `codex` or `claude` sessions, default to `scripts/agents/integrator-shell.sh --read-only -- <agent-cli>` and use `--agent-write-session` only when the agent must edit the shared checkout directly.
   - Run `pnpm build`, artifact verification, and `wrangler` deploy outside the lock after the artifact is prepared.
 - If `scripts/git/writer-lock.sh status` shows a live holder running a long external command, wait for the owner to exit cleanly or ask them to stop that command cleanly. Do not force-release a live holder first.
 - Follow hook output; do not bypass with `--no-verify`

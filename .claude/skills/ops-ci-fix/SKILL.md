@@ -34,7 +34,7 @@ Repo root: /Users/petercowling/base-shop
 Safety rules: CODEX.md
 EOF
 
-bash scripts/agents/with-writer-lock.sh -- \
+bash scripts/agents/with-writer-lock.sh --agent-write-session -- \
   nvm exec 22 codex exec \
     -a never \
     --sandbox workspace-write \

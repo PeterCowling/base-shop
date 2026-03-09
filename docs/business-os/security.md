@@ -193,14 +193,11 @@ If security issue discovered:
 # Stop server
 pkill -f "next dev.*3020"
 
-# Acquire a writer-locked shell (recommended)
-scripts/agents/with-writer-lock.sh
-
 # Revert last commit on dev
 cd /path/to/base-shop
 git checkout dev
-git revert HEAD
-git push origin dev
+scripts/agents/integrator-shell.sh -- git revert HEAD
+scripts/agents/integrator-shell.sh -- git push origin dev
 
 # CI will auto-PR dev -> staging and auto-merge after checks.
 ```

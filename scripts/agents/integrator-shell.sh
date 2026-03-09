@@ -4,7 +4,9 @@ set -euo pipefail
 usage() {
   echo "Usage:"
   echo "  scripts/agents/integrator-shell.sh [options] -- <command> [args...]"
-  echo "  scripts/agents/integrator-shell.sh [options]            # opens an integrator subshell"
+  echo "  scripts/agents/integrator-shell.sh --read-only          # opens a guarded read-only subshell"
+  echo "  scripts/agents/integrator-shell.sh --interactive-write-shell"
+  echo "                                      # rare explicit locked integrator subshell"
   echo ""
   echo "Integrator mode:"
   echo "  - Default (write mode): acquires the Base-Shop writer lock for bounded write commands"
@@ -15,6 +17,7 @@ usage() {
   echo "Options:"
   echo "  --read-only       Guard-only mode (no writer lock; use for long audits/dry-runs)"
   echo "  --write           Force write mode (default)"
+  echo "  --interactive-write-shell  Explicitly open a locked interactive write shell (rare)"
   echo "  --agent-write-session  Explicitly allow a long-lived agent CLI session (for example codex or claude) to hold the writer lock"
   echo "  --timeout <sec>   Lock wait timeout in write mode (default: 300s in non-interactive agents; 0 = wait forever only in interactive shells)"
   echo "  --poll <sec>      Lock polling interval in write mode (default: 30)"
@@ -27,26 +30,6 @@ usage() {
   echo "  scripts/agents/integrator-shell.sh --read-only -- claude"
   echo "  scripts/agents/integrator-shell.sh --agent-write-session -- codex"
   echo "  scripts/agents/integrator-shell.sh --timeout 15 -- <write-command>"
-}
-
-long_lived_agent_cli_name() {
-  local cmd="${1:-}"
-  local base=""
-
-  if [[ -z "$cmd" ]]; then
-    return 1
-  fi
-
-  base="$(basename -- "$cmd")"
-  case "$base" in
-    codex|claude)
-      printf '%s\n' "$base"
-      return 0
-      ;;
-    *)
-      return 1
-      ;;
-  esac
 }
 
 block_implicit_agent_write_session() {
@@ -66,6 +49,21 @@ EOF
   exit 1
 }
 
+block_implicit_interactive_write_shell() {
+  cat >&2 <<'EOF'
+ERROR: interactive writer shells must opt in explicitly.
+Failure reason: opening a locked interactive integrator shell holds the Base-Shop writer lock for the full shell lifetime, which makes long-held locks easy to create accidentally.
+Retry posture: retry-forbidden
+Exact next step: scripts/agents/integrator-shell.sh -- <write-command> [args...]
+Anti-retry list:
+- scripts/agents/integrator-shell.sh
+- scripts/agents/integrator-shell.sh --write
+- scripts/agents/integrator-shell.sh --wait-forever
+Escalation/stop condition: if you genuinely need a rare interactive write shell for a bounded repair, rerun with scripts/agents/integrator-shell.sh --interactive-write-shell and exit as soon as the serialized write window closes.
+EOF
+  exit 1
+}
+
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || true)"
 if [[ -z "$repo_root" ]]; then
   echo "ERROR: not inside a git repository" >&2
@@ -76,6 +74,7 @@ cd "$repo_root"
 
 writer_lock="${repo_root}/scripts/agents/with-writer-lock.sh"
 git_guard="${repo_root}/scripts/agents/with-git-guard.sh"
+agent_guard="${repo_root}/scripts/agents/agent-session-guard.sh"
 
 if [[ ! -x "$writer_lock" ]]; then
   echo "ERROR: missing ${writer_lock}" >&2
@@ -85,6 +84,13 @@ if [[ ! -x "$git_guard" ]]; then
   echo "ERROR: missing ${git_guard}" >&2
   exit 1
 fi
+if [[ ! -f "$agent_guard" ]]; then
+  echo "ERROR: missing ${agent_guard}" >&2
+  exit 1
+fi
+
+# shellcheck source=/dev/null
+source "$agent_guard"
 
 mode="write"
 lock_wait="1"
@@ -92,6 +98,7 @@ lock_timeout=""
 lock_poll=""
 command_mode="0"
 agent_write_session="0"
+interactive_write_shell="0"
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -105,6 +112,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --agent-write-session)
       agent_write_session="1"
+      shift
+      ;;
+    --interactive-write-shell)
+      interactive_write_shell="1"
       shift
       ;;
     --timeout)
@@ -224,6 +235,9 @@ if [[ "$command_mode" == "0" ]]; then
     echo "  scripts/agents/integrator-shell.sh -- <command> [args...]" >&2
     exit 2
   fi
+  if [[ "$interactive_write_shell" != "1" ]]; then
+    block_implicit_interactive_write_shell
+  fi
   exec "$writer_lock" "${writer_lock_args[@]}" -- "$git_guard"
 fi
 
@@ -233,7 +247,7 @@ if [[ $# -eq 0 ]]; then
 fi
 
 if [[ "$agent_write_session" != "1" ]]; then
-  if agent_name="$(long_lived_agent_cli_name "${1:-}")"; then
+  if agent_name="$(detect_long_lived_agent_cli "$@")"; then
     block_implicit_agent_write_session "$agent_name"
   fi
 fi

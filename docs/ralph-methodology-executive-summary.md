@@ -115,7 +115,8 @@ Benefit: faster orientation and less context thrash.
 ### Parallel Work
 
 - Use a **single-writer** workflow: one integrator (human or designated agent) edits/commits at a time.
-- Start agents in integrator mode for any write work: `scripts/agents/integrator-shell.sh -- <agent>`
+- Start long-lived agent CLIs in read-only mode by default: `scripts/agents/integrator-shell.sh --read-only -- <agent>`
+- Only when an agent must edit the shared checkout directly, opt in explicitly: `scripts/agents/integrator-shell.sh --agent-write-session -- <agent>`
 - Keep other agents read-only: they should propose patches rather than editing the checkout directly.
 - Avoid custodian-owned files unless you are the custodian.
 

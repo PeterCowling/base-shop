@@ -127,7 +127,7 @@ No new logic is required in the fallback path. The inline executor is the baseli
 
 1. Claude acquires the writer lock **before** invoking `codex exec`:
    ```bash
-   bash scripts/agents/with-writer-lock.sh -- codex exec ...
+   bash scripts/agents/with-writer-lock.sh --agent-write-session -- nvm exec 22 codex exec ...
    ```
 2. `with-writer-lock.sh` exports `BASESHOP_WRITER_LOCK_TOKEN` to child processes (confirmed from `scripts/agents/with-writer-lock.sh` line 136).
 3. Codex runs as a child process and inherits the token — it does not acquire the lock itself.

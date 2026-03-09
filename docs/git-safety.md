@@ -849,6 +849,8 @@ Lock diagnostics:
 scripts/git/writer-lock.sh status
 scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead on this host
 scripts/agents/with-writer-lock.sh -- <git-write-command>
+# rare, explicit locked shell only:
+# scripts/agents/with-writer-lock.sh --interactive-shell
 # or: scripts/agents/integrator-shell.sh -- <command>
 ```
 
@@ -876,6 +878,12 @@ The writer lock prevents multiple agents (or a human + agents) from writing to t
 1. **Entry** — always go through a wrapper, never call `writer-lock.sh` directly:
    - `scripts/agents/integrator-shell.sh -- <cmd>` (lock + command guard)
    - `scripts/agents/with-writer-lock.sh -- <cmd>` (lock only)
+   - Rare locked interactive shells require explicit opt-in:
+     - `scripts/agents/integrator-shell.sh --interactive-write-shell`
+     - `scripts/agents/with-writer-lock.sh --interactive-shell`
+   - Long-lived locked `codex` / `claude` sessions require explicit opt-in:
+     - `scripts/agents/integrator-shell.sh --agent-write-session -- <agent-cli>`
+     - `scripts/agents/with-writer-lock.sh --agent-write-session -- <agent-cli>`
 
 2. **Queue** — if the lock is held, the wrapper joins a FIFO queue (ticket-numbered). Waiters poll until they reach the head of the queue AND the lock directory is free.
 

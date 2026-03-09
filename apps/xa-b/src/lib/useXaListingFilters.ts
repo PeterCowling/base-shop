@@ -465,12 +465,10 @@ export function useXaListingFilters({
 
   const toggleDraftValue = React.useCallback((key: FilterKey, value: string) => {
     setDraftValues((prev) => {
-      const next = cloneFilterValues(prev);
-      const bucket = new Set(next[key]);
+      const bucket = new Set(prev[key]);
       if (bucket.has(value)) bucket.delete(value);
       else bucket.add(value);
-      next[key] = bucket;
-      return next;
+      return { ...prev, [key]: bucket };
     });
   }, [setDraftValues]);
 

@@ -144,6 +144,10 @@ export function filterBySubcategory(products: XaProduct[], subcategory?: string)
   return products.filter((product) => product.taxonomy.subcategory === subcategory);
 }
 
+export function formatLabelList(values: string[], separator = " / "): string {
+  return values.map(formatLabel).join(separator);
+}
+
 export function getEffectivePrice(product: XaProduct, currency: string): number {
   return (product.prices as Record<string, number> | undefined)?.[currency] ?? product.price;
 }

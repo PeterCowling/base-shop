@@ -10,7 +10,7 @@ import { useXaCatalogSnapshot } from "../lib/liveCatalog";
 import { siteConfig } from "../lib/siteConfig";
 import {
   filterByDepartment,
-  formatLabel,
+  formatLabelList,
   getNewInProducts,
   getTrendingDesigners,
   isProductImage,
@@ -123,7 +123,7 @@ export function XaDepartmentLanding({ department }: { department: XaDepartment }
               <div className="p-4">
                 <div className="text-sm font-semibold uppercase tracking-wide">{card.label}</div>
                 <div className="mt-1 text-xs text-muted-foreground">
-                  {card.items.map(formatLabel).join(" / ")}
+                  {formatLabelList(card.items)}
                 </div>
               </div>
             </Link>

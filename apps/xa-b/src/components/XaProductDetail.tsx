@@ -8,9 +8,11 @@ import { siteConfig } from "../lib/siteConfig";
 import { toWhatsappHref } from "../lib/support";
 import {
   formatLabel,
+  formatLabelList,
   getDepartmentCategoryHref,
   getDepartmentCategorySubcategoryHref,
   getDesignerName,
+  isProductImage,
 } from "../lib/xaCatalog";
 import type { XaProduct } from "../lib/xaCatalogModel";
 import { xaI18n } from "../lib/xaI18n";
@@ -43,7 +45,7 @@ export function XaProductDetail({
   const canonicalUrl = siteConfig.domain
     ? `https://${siteConfig.domain}${getProductHref(product.slug)}`
     : "";
-  const primaryImage = product.media.find((m) => m.type === "image")?.url;
+  const primaryImage = product.media.find(isProductImage)?.url;
   const showSocialLinks = siteConfig.showSocialLinks;
   const showContactInfo = siteConfig.showContactInfo;
   const showShare = Boolean(canonicalUrl) && !siteConfig.stealthMode;
@@ -164,7 +166,7 @@ export function XaProductDetail({
                     <div className="space-y-2">
                       <div className="text-sm font-semibold">{copy.whatFits}</div>
                       <div className="text-sm text-muted-foreground">
-                        {product.details.whatFits.map(formatLabel).join(" / ")}
+                        {formatLabelList(product.details.whatFits)}
                       </div>
                     </div>
                   ) : null}
@@ -173,7 +175,7 @@ export function XaProductDetail({
                     <div className="space-y-2">
                       <div className="text-sm font-semibold">{copy.interior}</div>
                       <div className="text-sm text-muted-foreground">
-                        {product.details.interior.map(formatLabel).join(" / ")}
+                        {formatLabelList(product.details.interior)}
                       </div>
                     </div>
                   ) : null}

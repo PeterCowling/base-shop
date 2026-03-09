@@ -45,9 +45,10 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   const isWishlisted = wishlist.includes(product.id);
   const sizeCount = product.sizes.length;
   const showSizeSelect = sizeCount > 1;
-  const colorOptions = product.taxonomy.color
-    ? Array.from(new Set(product.taxonomy.color))
-    : [];
+  const colorOptions = React.useMemo(
+    () => (product.taxonomy.color ? Array.from(new Set(product.taxonomy.color)) : []),
+    [product.taxonomy.color],
+  );
   const colorMedia = product.media.filter(isProductImage);
   const variantProducts = React.useMemo(() => {
     if (!product.variantGroup) return [];
@@ -170,7 +171,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
                 const swatch = color
                   ? (XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH)
                   : XA_DEFAULT_SWATCH;
-                const media = variant.media.find((item) => item.type === "image" && item.url.trim());
+                const media = variant.media.find(isProductImage);
                 const isCurrent = variant.id === product.id;
                 return (
                   <Link

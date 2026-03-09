@@ -1,6 +1,6 @@
 {
   "schema_version": "repo-maturity-signals.v1",
-  "generated_at": "2026-03-08T23:16:49.163Z",
+  "generated_at": "2026-03-09T08:20:43.383Z",
   "root": "/Users/petercowling/base-shop",
   "maturity_level": "Level-3-Reliable",
   "overall_score": 70,
@@ -56,7 +56,7 @@
       "external_dependency_count": 3363,
       "top_level_dirs_total": 92,
       "top_level_dirs_without_readme": 64,
-      "docs_index_coverage_pct": 1.9,
+      "docs_index_coverage_pct": 1.8,
       "package_src_index_coverage_pct": 49.9,
       "setup_repo_invocations": 46,
       "max_workflow_timeout_minutes": 75,

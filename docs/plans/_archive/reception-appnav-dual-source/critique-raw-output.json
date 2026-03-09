@@ -1,0 +1,41 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-appnav-dual-source/fact-find.md",
+      "line": "322",
+      "message": "Deliverable acceptance package still scoped to '5 files' — CPI not included. Fixed in R3 revision."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-appnav-dual-source/fact-find.md",
+      "line": "264",
+      "message": "Confidence section stale: '5 files' and '5–6 files' blast radius. Fixed in R3 revision."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-appnav-dual-source/fact-find.md",
+      "line": "367",
+      "message": "Confidence-adjustments section contradicted headline values (88% vs 92%/90%). Fixed in R3 revision."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-appnav-dual-source/fact-find.md",
+      "line": "286",
+      "message": "Route-verification risk stale — routes confirmed to exist. Fixed in R3 revision."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-appnav-dual-source/fact-find.md",
+      "line": "300",
+      "message": "Planning constraint saying 'plan must verify routes' is stale. Fixed in R3 revision."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "note": "Round 3 is final per protocol. Score 4.0 = credible. All findings are internal consistency issues, now resolved."
+}

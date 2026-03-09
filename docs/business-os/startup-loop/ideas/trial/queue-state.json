@@ -1,16 +1,16 @@
 {
-  "last_updated": "2026-03-09T07:48:34.941Z",
+  "last_updated": "2026-03-09T08:21:20.261Z",
   "counts": {
-    "enqueued": 223,
-    "processed": 52,
+    "enqueued": 229,
+    "processed": 53,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
     "auto_executed": 22,
     "completed": 132,
-    "fact_find_ready": 283,
-    "micro_build_ready": 17,
-    "total": 434
+    "fact_find_ready": 289,
+    "micro_build_ready": 18,
+    "total": 441
   },
   "dispatches": [
     {
@@ -18221,6 +18221,308 @@
         "session:45fa3df6-4baf-4a46-8295-da1c400b5f19"
       ],
       "created_at": "2026-03-09T07:48:34.930Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309074941-0114",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "c80fc0729a935bae6b6c26ac53e0bdfff86f2ba0",
+      "after_sha": "c8c27ede683c118b4dcb4a982ed4fefcf5eebcd8",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:c8c27ede683c118b4dcb4a982ed4fefcf5eebcd8",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:c8c27ede683c118b4dcb4a982ed4fefcf5eebcd8",
+      "cluster_fingerprint": "f3203e61a714d5b372ff91aaa225ccf4100420d279f582b0214102519d2fcc65",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (c80fc07 → c8c27ed)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:84fc058e-c06a-4ea2-900f-167ecf8b9caa",
+        "session:45fa3df6-4baf-4a46-8295-da1c400b5f19"
+      ],
+      "created_at": "2026-03-09T07:49:41.113Z",
+      "queue_state": "enqueued",
+      "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for bos-agent-session-findings.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309120000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:prime-client-logger:20260309",
+      "anchor_key": "prime-client-logger",
+      "cluster_key": "BRIK:PRODUCTS:prime-client-logger:operator:20260309",
+      "cluster_fingerprint": "prime-client-logger-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "prime logger.ts — hand-rolled client logger, @acme/lib logger is server-only",
+      "location_anchors": [
+        "apps/prime/src/utils/logger.ts",
+        "packages/lib/src/logger/logger.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "apps/prime maintains its own 72-line logger (utils/logger.ts) with env-var reading and log-level filtering. The shared @acme/lib logger uses pino and is server-only. Prime is a PWA running in the browser and cannot use the server logger, so it reimplements the pattern independently.",
+      "next_scope_now": "Determine whether to: (a) add a client-safe logger export to @acme/lib, (b) create a new @acme/logger package with separate server/client entry points, or (c) keep prime-local but improve it. Assess which other apps have the same gap.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.82,
+      "evidence_refs": [
+        "operator-stated: shared logger is server-only (pino), prime needs a client-compatible logger — identified during simplify review 2026-03-09",
+        "code-ref: apps/prime/src/utils/logger.ts",
+        "code-ref: packages/lib/src/logger/logger.server.ts"
+      ],
+      "created_at": "2026-03-09T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Prime duplicates logger infrastructure that should be shared. The right solution depends on how many other apps need a client logger and whether @acme/lib is the right home — that's a scoping decision that needs fact-finding before building.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Prime app logger.ts is replaced by a shared client-compatible logger utility, eliminating duplicate env-var reading and log-level logic.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309120000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:prime-normalize-locale-constants:20260309",
+      "anchor_key": "prime-normalize-locale-constants",
+      "cluster_key": "BRIK:PRODUCTS:prime-normalize-locale-constants:operator:20260309",
+      "cluster_fingerprint": "prime-normalize-locale-constants-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "prime normalizeLocale.ts — SUPPORTED_LOCALES duplicated, @acme/types shape mismatch",
+      "location_anchors": [
+        "apps/prime/src/lib/i18n/normalizeLocale.ts",
+        "packages/types/src/constants.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "normalizeLocale.ts defines SUPPORTED_LOCALES = ['en', 'it'] locally. @acme/types/constants.ts exports UI_LOCALES but not in a shape compatible with prime's normalizeLocale function. The comment in the file notes this is done to avoid haste map conflicts.",
+      "next_scope_now": "Audit what @acme/types/constants.ts currently exports for locales. Determine the right shared shape (array vs set vs type guard) and whether normalizeLocale itself should move to @acme/i18n or @acme/types. Map all apps that define SUPPORTED_LOCALES locally.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.79,
+      "evidence_refs": [
+        "operator-stated: @acme/types/constants doesn't expose a UI_LOCALES in a matching shape — identified during simplify review 2026-03-09",
+        "code-ref: apps/prime/src/lib/i18n/normalizeLocale.ts",
+        "code-ref: packages/types/src/constants.ts"
+      ],
+      "created_at": "2026-03-09T12:00:00.000Z",
+      "queue_state": "processed",
+      "why": "Local locale constant is a recurring copy-paste risk as supported locales expand. Cross-package refactor needs scoping before implementation to avoid breaking haste-map resolution and other apps.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Prime normalizeLocale.ts imports SUPPORTED_LOCALES from a shared @acme package rather than defining it locally, and the shared constant is in the correct shape for the normalizeLocale utility.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-normalize-locale-constants",
+        "target_path": "docs/plans/prime-normalize-locale-constants/fact-find.md",
+        "processed_at": "2026-03-09T08:21:20.260Z",
+        "fact_find_slug": "prime-normalize-locale-constants",
+        "fact_find_path": "docs/plans/prime-normalize-locale-constants/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309120000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:prime-arrival-home-prop-sprawl:20260309",
+      "anchor_key": "prime-arrival-home-prop-sprawl",
+      "cluster_key": "BRIK:PRODUCTS:prime-arrival-home-prop-sprawl:operator:20260309",
+      "cluster_fingerprint": "prime-arrival-home-prop-sprawl-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "prime ArrivalHome — 11 props, 5 code-loading props should be one config object",
+      "location_anchors": [
+        "apps/prime/src/components/arrival/ArrivalHome.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "ArrivalHomeProps has 11 props: firstName, checkInCode, isCodeLoading, isCodeStale, isOffline, onRefreshCode, preArrivalData, cashAmounts, nights, onChecklistItemClick, keycardStatus, className. The five code-loading props (checkInCode, isCodeLoading, isCodeStale, isOffline, onRefreshCode) are logically a single domain object but passed individually.",
+      "next_scope_now": "Group checkInCode, isCodeLoading, isCodeStale, isOffline, onRefreshCode into ArrivalCodeState interface. Update all callers of ArrivalHome. No API changes, pure internal refactor.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.91,
+      "evidence_refs": [
+        "operator-stated: ArrivalHome prop sprawl — not unsafe, just verbose; deferred to dedicated refactor — identified during simplify review 2026-03-09",
+        "code-ref: apps/prime/src/components/arrival/ArrivalHome.tsx"
+      ],
+      "created_at": "2026-03-09T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "One component, one interface change, bounded callers. No architectural decision needed — the grouping is obvious from the props themselves. Directly buildable.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "ArrivalHome prop count reduced from 11 to ~7 by grouping the five code-loading props into a single ArrivalCodeState config object.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309120000-0004",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:prime-firebase-budget-runtime-tracking:20260309",
+      "anchor_key": "prime-firebase-budget-runtime-tracking",
+      "cluster_key": "BRIK:PRODUCTS:prime-firebase-budget-runtime-tracking:operator:20260309",
+      "cluster_fingerprint": "prime-firebase-budget-runtime-tracking-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "prime Firebase budget — baselines defined, no runtime enforcement against them",
+      "location_anchors": [
+        "apps/prime/src/lib/firebase/budgetBaselines.ts",
+        "apps/prime/src/lib/firebase/budgetGate.ts",
+        "apps/prime/src/hooks/dataOrchestrator/useOccupantDataSources.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "budgetBaselines.ts defines per-screen Firebase read budgets (e.g. portal_pre_arrival_initial: maxReads: 8). budgetGate.ts exists but provides no runtime counting — hooks can silently exceed their read budgets. Violations are only catchable in tests if someone writes a budget test for every screen.",
+      "next_scope_now": "Design and implement lightweight runtime read tracking: determine approach (React context counter, hook wrapper, Firebase onRead interceptor, or dev-only warn), integrate with budgetBaselines.ts thresholds, and add console warnings in dev when a screen's read count exceeds its budget.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.76,
+      "evidence_refs": [
+        "operator-stated: runtime Firebase budget tracking — valid but out of scope for a simplify pass — identified during simplify review 2026-03-09",
+        "code-ref: apps/prime/src/lib/firebase/budgetBaselines.ts",
+        "code-ref: apps/prime/src/lib/firebase/budgetGate.ts"
+      ],
+      "created_at": "2026-03-09T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Multiple implementation approaches are viable (context, interceptor, hook wrapper) with different trade-offs around accuracy, dev-overhead, and bundle impact. Needs fact-finding to pick the right one before building.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Prime app logs a dev-mode warning when any screen's Firebase read count exceeds its baseline threshold, making budget regressions visible during development.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309082055-0967",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "78909b3739491311bfeb29ad1fbe2a778e772c7e",
+      "after_sha": "f7aac9765417229a70f875c3cec9d6fc0def67a8",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:f7aac9765417229a70f875c3cec9d6fc0def67a8",
+      "anchor_key": "prime-guarded-tests-arrival-test",
+      "cluster_key": "bos:unknown:prime-guarded-tests-arrival-test:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:f7aac9765417229a70f875c3cec9d6fc0def67a8",
+      "cluster_fingerprint": "affb15986d2ab1c6be2691b0d599758abf3e191862dedb01fc03d71230195896",
+      "lineage_depth": 0,
+      "area_anchor": "prime guarded tests arrival test",
+      "location_anchors": [
+        "apps/prime/src/app/(guarded)/__tests__/arrival.test.tsx",
+        "apps/prime/src/components/arrival/ArrivalHome.tsx",
+        "apps/prime/src/components/arrival/__tests__/ArrivalHome.ds-migration.test.tsx",
+        "apps/prime/src/components/arrival/__tests__/ArrivalHome.offline-fallback.test.tsx",
+        "apps/prime/src/components/arrival/__tests__/ArrivalHome.tokens.test.tsx",
+        "apps/prime/src/components/arrival/__tests__/utility-actions.test.tsx",
+        "apps/prime/src/components/homepage/GuardedHomeExperience.tsx",
+        "apps/prime/src/components/pre-arrival/__tests__/CashPrep.test.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (78909b3 → f7aac97)",
+      "next_scope_now": "Investigate implications of prime guarded tests arrival test delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/prime/src/app/(guarded)/__tests__/arrival.test.tsx",
+        "git-diff:M:apps/prime/src/components/arrival/ArrivalHome.tsx",
+        "git-diff:M:apps/prime/src/components/arrival/__tests__/ArrivalHome.ds-migration.test.tsx",
+        "git-diff:M:apps/prime/src/components/arrival/__tests__/ArrivalHome.offline-fallback.test.tsx",
+        "git-diff:M:apps/prime/src/components/arrival/__tests__/ArrivalHome.tokens.test.tsx",
+        "git-diff:M:apps/prime/src/components/arrival/__tests__/utility-actions.test.tsx",
+        "git-diff:M:apps/prime/src/components/homepage/GuardedHomeExperience.tsx",
+        "git-diff:M:apps/prime/src/components/pre-arrival/__tests__/CashPrep.test.tsx"
+      ],
+      "created_at": "2026-03-09T08:20:55.966Z",
+      "queue_state": "enqueued",
+      "why": "Assess prime guarded tests arrival test implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for prime guarded tests arrival test.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309082057-0155",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "c8c27ede683c118b4dcb4a982ed4fefcf5eebcd8",
+      "after_sha": "a7490fb36f27af608b19fde31cc37c00e56b859b",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:a7490fb36f27af608b19fde31cc37c00e56b859b",
+      "anchor_key": "bos-agent-session-findings",
+      "cluster_key": "bos:unknown:bos-agent-session-findings:BOS-BOS-AGENT_SESSION_FINDINGS:a7490fb36f27af608b19fde31cc37c00e56b859b",
+      "cluster_fingerprint": "160693aff9e2d964c118a540d9638a159e294dd527152b57406a4bad2891d961",
+      "lineage_depth": 0,
+      "area_anchor": "bos-agent-session-findings",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "BOS-BOS-AGENT_SESSION_FINDINGS changed (c8c27ed → a7490fb)",
+      "next_scope_now": "Investigate implications of bos-agent-session-findings delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T08:20:57.154Z",
       "queue_state": "enqueued",
       "why": "Assess bos-agent-session-findings implications from BOS-BOS-AGENT_SESSION_FINDINGS delta for BOS.",
       "intended_outcome": {

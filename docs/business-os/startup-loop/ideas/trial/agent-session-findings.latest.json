@@ -1,15 +1,135 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-08T23:17:01.434Z",
+  "generated_at": "2026-03-09T08:20:57.151Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
   "sessions_with_findings": 17,
   "findings": [
     {
+      "session_id": "d576d25b-e024-4673-abb5-b249f3191212",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/d576d25b-e024-4673-abb5-b249f3191212.jsonl",
+      "updated_at": "2026-03-09T08:20:55.681Z",
+      "findings": [
+        "Let me check one more to confirm the signature is consistent, then fix all issues.",
+        "The sync/route.ts edit failed earlier since the file hadn't been read yet.",
+        "Let me now look at the remaining unfixed issues — the three most impactful ones from the review.",
+        "Now run typecheck and lint to catch any issues:",
+        "Now remove the local `normalizeCatalogPath` definition and add `\"would_unpublish\"` to the error code union:",
+        "Now parallelize `findMissingSyncScripts` in sync/route.ts:",
+        "Fixed `ProductsErrorCode` union** — `\"would_unpublish\"` was already present but the type was unordered; sorted alphabetically for consistency."
+      ]
+    },
+    {
+      "session_id": "0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/0977ecdd-757b-4e3b-8eef-937c2d6171a7.jsonl",
+      "updated_at": "2026-03-09T08:20:55.384Z",
+      "findings": [
+        "Many page routes reference the department/category values — I need to check how they use `XaDepartment` before changing the type to avoid cascading typecheck failures.",
+        "Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page.tsx` use string literals).",
+        "Pre-existing typecheck failures in `@acme/ui` (not my changes) are blocking the commit hook.",
+        "Pre-existing issue — xa-b lint script references a `functions` dir that doesn't exist.",
+        "functions/` dir exists but is empty — ESLint errors on no-match.",
+        "Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header needs `sticky top-0 z-50`.",
+        "The token issue is a local auth problem — the first deploy used an inherited shell env var.",
+        "Key fixes: cart qty bug (critical), dead variables, memoization gaps, and redundant patterns.",
+        "Now I'll apply all the clear fixes: **Fix 1 (Critical bug): `setQty` always setting qty to 1**",
+        "Now typecheck to catch any issues before committing:",
+        "Now fix liveCatalog.ts — clear `snapshotPromise` on error so retry is possible:",
+        "Efficiency**: `liveCatalog.ts` clears `snapshotPromise` on fetch error, allowing retry on next render"
+      ]
+    },
+    {
+      "session_id": "950278a6-791c-4c65-941b-e1902ae59893",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/950278a6-791c-4c65-941b-e1902ae59893.jsonl",
+      "updated_at": "2026-03-09T08:20:37.411Z",
+      "findings": [
+        "Here's what it actually means in plain language: --- **\"central inventory is not yet a drop-in authority\"** You can't just point the caryina shop at a shared inventory store and have it work.",
+        "I'll go issue by issue, roughly in order of severity.",
+        "But it has three issues that matter before planning proceeds: the underspecified \"consumes CMS\" integration model, the variant key normalization without a recommendation, and the false \"no blockers\" claim in planning readiness.",
+        "variantKey` import source unresolved** — TASK-06 notes this as a scout item but confidence is 80%. This is acceptable because the scout is explicit and CHECKPOINT-05 gates the domain work. No issue.",
+        "Process/UX**: Every UI task specifies entry point, happy path, empty state, and error state. ✓",
+        "Execution plan: Red → Green → Refactor` field missing from all 9 IMPLEMENT tasks — required by plan-lens.md.",
+        "Now run the AF-3 consistency scan on affected sections, then write the issues ledger:",
+        "Issues ledger created at `docs/plans/inventory-app-uploader-unification/critique-history.md`.",
+        "The round 1 fix had correctly blocked TASK-10 from depending on JSONL, but the plan's Assumptions block still claimed these services \"work in Workers without changes.\" That was a contradiction.",
+        "The plan correctly identifies `InventoryAuditEvent` as a missing Prisma model (prerequisite to be created, not a plan error).",
+        "After migration, this read returns stale/empty data → duplicate adjustments processed without error.",
+        "I've already spotted at least one sequencing bug introduced by the last autofix.",
+        "The surface-level rehearsal had missed several real issues.",
+        "Lint fails — hardcoded copy in the placeholder page.",
+        "0 errors, 1 warning (module path string — non-UI, acceptable).",
+        "The commit failed — need to check if it's a typecheck error on the new package:",
+        "The commit succeeded in the previous session even though the writer lock reported issues.",
+        "Now fix the other lint issues — `setHeaderExtra` unused and `enforce-layout-primitives` flex on placeholder:",
+        "Now let me run a quick lint check on the new files to catch issues early:",
+        "Let me fix the remaining issues in InventoryImport and InventoryMatrix:",
+        "Now fix the `flex` issue in InventoryMatrix:",
+        "Only warnings remain — these won't fail lint-staged (eslint only exits non-zero on errors).",
+        "0 errors, 3 warnings (tap target size — acceptable for operator tool buttons).",
+        "Let me run auto-fix first, then handle the remaining errors:",
+        "The 4 remaining lint errors need fixing: `max-lines-per-function` on both components and missing `INV-0001` in `react-hooks/exhaustive-deps` disable comments.",
+        "The only remaining issues are 13 `ds/min-tap-size` warnings on compact operator buttons.",
+        "Summary of what was found and fixed: **TypeScript**: 0 errors — all API routes, imports, and type contracts are sound.",
+        "All validation gates passed — typecheck clean, lint clean (0 errors across all changed packages), token contrast and drift checks OK.",
+        "Now run a lint check to catch any issues:",
+        "Create `api-helpers.ts` for shared route error handling and limit parsing",
+        "Now fix the ledger route — remove local `LedgerEvent` type and use `parseSafeLimit`/`apiError`:",
+        "Now also remove the unused `NextResponse` import from ledger/route.ts (since `apiError` from api-helpers wraps it), and fix the `[shop]/route.ts` and `login/route.ts`:",
+        "Now check whether `[shop]/route.ts` still needs `NextResponse` imported (it now only uses `apiError`):",
+        "Route files** — `adjustments` and `inflows` routes: `parseSafeLimit` + `apiError` replace inline clones.",
+        "Remaining routes still using inline error handling instead of `apiError` (`health/db`, `[shop]/[sku]`, `export`, `import`, `shops`)",
+        "Route files `[sku]`, `export`, `import`, `health/db` — adopt `apiError`",
+        "Now check whether `[shop]/[sku]/route.ts` still needs `NextResponse` after the two catches became `apiError(err)`:",
+        "Route files** — `health/db`, `[shop]/[sku]` (×2), `export`, `import` all still had the inline `err instanceof Error ?"
+      ]
+    },
+    {
+      "session_id": "a66a30a9-2c57-4471-b5af-38cff589a683",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/a66a30a9-2c57-4471-b5af-38cff589a683.jsonl",
+      "updated_at": "2026-03-09T08:18:44.567Z",
+      "findings": [
+        "From the skill description: *\"Review changed code for reuse, quality, and efficiency, then fix any issues found.\"*",
+        "The description shown in the system prompt is the complete definition: > **simplify**: Review changed code for reuse, quality, and efficiency, then fix any issues found.",
+        "I don't know — the skill says \"changed code\" which likely means uncommitted changes (git diff), but I can't inspect the implementation to confirm how it scopes what it reviews.",
+        "Now let me aggregate and fix the clear issues, skipping false positives per the instructions.",
+        "Wait — that changed the error semantics for `listThreadsWithLatestDraft` (it originally propagated errors; now it silently returns `[]`).",
+        "route.ts` — parallelized fetches** (`Promise.all` with pre-caught prime promise): email and Prime threads now fetch concurrently. Error semantics preserved — email errors still propagate, Prime errors still fail-soft to `[]`.",
+        "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper, and verbose optional check.",
+        "Extract shared `mapAuthError` — move it from `managerReauth.ts` to a shared file, import in both**",
+        "Now update `firebaseAuth.ts` to use the shared mapper instead of the inline error handling:",
+        "Missing `error.tsx` error boundaries in `/app/`",
+        "/lp-do-build`** executed all tasks — the subagent ran through TASK-01 to TASK-07, hit a CI failure on the `authErrors.ts` import path, fixed it, pushed `f76e6356e7`, confirmed CI passed (typecheck + lint green for reception)",
+        "The background watchers caught an older failing run.",
+        "The background task output was from the older failing run — the one before the `authErrors.ts` fix.",
+        "The old task notifications were stale — they were watching the initial failing run from before the `authErrors.ts` fix.",
+        "Clean pass — no errors, no failed steps, exit code 0.",
+        "Extracted shared `mapAuthError()` — removed copy-paste between `firebaseAuth.ts` and `managerReauth.ts`",
+        "useRangeSubscription` primitive extracted; `useRoomsByDate` + `useCheckinsByDate` both use it; `loading` dep-array bug fixed",
+        "But there's a CI typecheck failure flagged: `extractSenderDomain` not exported in `admission.ts`.",
+        "extractSenderDomain` is properly exported — the CI failure the agent saw was transient."
+      ]
+    },
+    {
+      "session_id": "bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/bd0d843e-9c01-4f9f-bee6-ea55202e1d1f.jsonl",
+      "updated_at": "2026-03-09T08:09:03.348Z",
+      "findings": [
+        "Now let me fix the clear, high-confidence issues."
+      ]
+    },
+    {
+      "session_id": "9d941471-43c3-4613-91b8-8d93acd1e16d",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/9d941471-43c3-4613-91b8-8d93acd1e16d.jsonl",
+      "updated_at": "2026-03-09T07:58:47.750Z",
+      "findings": [
+        "Let me save the final working state and check if there are any linting issues:"
+      ]
+    },
+    {
       "session_id": "84fc058e-c06a-4ea2-900f-167ecf8b9caa",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/84fc058e-c06a-4ea2-900f-167ecf8b9caa.jsonl",
-      "updated_at": "2026-03-08T23:17:00.082Z",
+      "updated_at": "2026-03-08T23:21:47.774Z",
       "findings": [
         "ContentStickyCta always routes to hostel booking regardless of page context.** This is the core structural claim driving the content-entry funnel gap finding.",
         "Hypothesis & Validation Landscape was missing** — now added. Planning will have grounded VC targets for H1 (content intent routing) and H2 (overlapping surfaces friction), both of which are currently untested hypotheses.",
@@ -43,13 +163,16 @@
         "Apartment missing**: `packages/ui/src/data/roomsData.ts` has no `apartment` room, so `RoomsSectionBase` can never show it regardless of the `includedRoomIds` filter",
         "68ef65668a` — remove broken dorm widget, link Apartment card to its detail page",
         "The constraints (no stash, no worktrees) mean I can't cherry-pick cleanly to main without switching branches.",
-        "Let me read the actual code to confirm the exact failure mode:"
+        "Let me read the actual code to confirm the exact failure mode:",
+        "The push failed — likely the writer lock timed out during the hook's long pre-push checks (47s+).",
+        "There's a pre-existing lint error in a reception file that's blocking the push.",
+        "Root cause of the first-click failure:** react-day-picker v9's `addToRange` with the default `min=0` sets both `from` and `to` to the same clicked date on the first click — producing an instant \"complete range\" `{ from: X, to: X }`."
       ]
     },
     {
       "session_id": "45fa3df6-4baf-4a46-8295-da1c400b5f19",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/45fa3df6-4baf-4a46-8295-da1c400b5f19.jsonl",
-      "updated_at": "2026-03-08T23:15:36.274Z",
+      "updated_at": "2026-03-08T23:24:59.134Z",
       "findings": [
         "Supporting-Skills` references `tools-ui-frontend-design`, which is not a registered skill — routing automation will fail on this field.",
         "Token foundation is functional; remaining problem is shell/composition drift.** — Highest decision impact; routes the entire plan away from token work and toward archetype scaffolding.",
@@ -79,29 +202,6 @@
         "This is a real usability problem for staff — they need to see at a glance whether a booking is paid, has a key deposit, has docs — and that data is effectively invisible.",
         "lint` ✅ (0 errors, 8 pre-existing warnings)",
         "Codemoot failed (0 tokens, 0 iterations) — as expected, which is why I filled the results-review inline."
-      ]
-    },
-    {
-      "session_id": "a66a30a9-2c57-4471-b5af-38cff589a683",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/a66a30a9-2c57-4471-b5af-38cff589a683.jsonl",
-      "updated_at": "2026-03-08T23:09:29.641Z",
-      "findings": [
-        "From the skill description: *\"Review changed code for reuse, quality, and efficiency, then fix any issues found.\"*",
-        "The description shown in the system prompt is the complete definition: > **simplify**: Review changed code for reuse, quality, and efficiency, then fix any issues found.",
-        "I don't know — the skill says \"changed code\" which likely means uncommitted changes (git diff), but I can't inspect the implementation to confirm how it scopes what it reviews.",
-        "Now let me aggregate and fix the clear issues, skipping false positives per the instructions.",
-        "Wait — that changed the error semantics for `listThreadsWithLatestDraft` (it originally propagated errors; now it silently returns `[]`).",
-        "route.ts` — parallelized fetches** (`Promise.all` with pre-caught prime promise): email and Prime threads now fetch concurrently. Error semantics preserved — email errors still propagate, Prime errors still fail-soft to `[]`.",
-        "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper, and verbose optional check.",
-        "Extract shared `mapAuthError` — move it from `managerReauth.ts` to a shared file, import in both**",
-        "Now update `firebaseAuth.ts` to use the shared mapper instead of the inline error handling:",
-        "Missing `error.tsx` error boundaries in `/app/`",
-        "/lp-do-build`** executed all tasks — the subagent ran through TASK-01 to TASK-07, hit a CI failure on the `authErrors.ts` import path, fixed it, pushed `f76e6356e7`, confirmed CI passed (typecheck + lint green for reception)",
-        "The background watchers caught an older failing run.",
-        "The background task output was from the older failing run — the one before the `authErrors.ts` fix.",
-        "The old task notifications were stale — they were watching the initial failing run from before the `authErrors.ts` fix.",
-        "Clean pass — no errors, no failed steps, exit code 0.",
-        "Extracted shared `mapAuthError()` — removed copy-paste between `firebaseAuth.ts` and `managerReauth.ts`"
       ]
     },
     {
@@ -174,41 +274,6 @@
         "CI failed on Lint (exceptions governance) and Unit tests.",
         "The lint exceptions governance fails because `INV-001`/`INV-0001` codes are used in inventory-uploader files but not registered in `exceptions.json`.",
         "Only Lint failed — Unit tests was cancelled (cascaded from Lint failure)."
-      ]
-    },
-    {
-      "session_id": "950278a6-791c-4c65-941b-e1902ae59893",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/950278a6-791c-4c65-941b-e1902ae59893.jsonl",
-      "updated_at": "2026-03-08T18:57:26.704Z",
-      "findings": [
-        "Here's what it actually means in plain language: --- **\"central inventory is not yet a drop-in authority\"** You can't just point the caryina shop at a shared inventory store and have it work.",
-        "I'll go issue by issue, roughly in order of severity.",
-        "But it has three issues that matter before planning proceeds: the underspecified \"consumes CMS\" integration model, the variant key normalization without a recommendation, and the false \"no blockers\" claim in planning readiness.",
-        "variantKey` import source unresolved** — TASK-06 notes this as a scout item but confidence is 80%. This is acceptable because the scout is explicit and CHECKPOINT-05 gates the domain work. No issue.",
-        "Process/UX**: Every UI task specifies entry point, happy path, empty state, and error state. ✓",
-        "Execution plan: Red → Green → Refactor` field missing from all 9 IMPLEMENT tasks — required by plan-lens.md.",
-        "Now run the AF-3 consistency scan on affected sections, then write the issues ledger:",
-        "Issues ledger created at `docs/plans/inventory-app-uploader-unification/critique-history.md`.",
-        "The round 1 fix had correctly blocked TASK-10 from depending on JSONL, but the plan's Assumptions block still claimed these services \"work in Workers without changes.\" That was a contradiction.",
-        "The plan correctly identifies `InventoryAuditEvent` as a missing Prisma model (prerequisite to be created, not a plan error).",
-        "After migration, this read returns stale/empty data → duplicate adjustments processed without error.",
-        "I've already spotted at least one sequencing bug introduced by the last autofix.",
-        "The surface-level rehearsal had missed several real issues.",
-        "Lint fails — hardcoded copy in the placeholder page.",
-        "0 errors, 1 warning (module path string — non-UI, acceptable).",
-        "The commit failed — need to check if it's a typecheck error on the new package:",
-        "The commit succeeded in the previous session even though the writer lock reported issues.",
-        "Now fix the other lint issues — `setHeaderExtra` unused and `enforce-layout-primitives` flex on placeholder:",
-        "Now let me run a quick lint check on the new files to catch issues early:",
-        "Let me fix the remaining issues in InventoryImport and InventoryMatrix:",
-        "Now fix the `flex` issue in InventoryMatrix:",
-        "Only warnings remain — these won't fail lint-staged (eslint only exits non-zero on errors).",
-        "0 errors, 3 warnings (tap target size — acceptable for operator tool buttons).",
-        "Let me run auto-fix first, then handle the remaining errors:",
-        "The 4 remaining lint errors need fixing: `max-lines-per-function` on both components and missing `INV-0001` in `react-hooks/exhaustive-deps` disable comments.",
-        "The only remaining issues are 13 `ds/min-tap-size` warnings on compact operator buttons.",
-        "Summary of what was found and fixed: **TypeScript**: 0 errors — all API routes, imports, and type contracts are sound.",
-        "All validation gates passed — typecheck clean, lint clean (0 errors across all changed packages), token contrast and drift checks OK."
       ]
     },
     {
@@ -435,20 +500,6 @@
       ]
     },
     {
-      "session_id": "0977ecdd-757b-4e3b-8eef-937c2d6171a7",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/0977ecdd-757b-4e3b-8eef-937c2d6171a7.jsonl",
-      "updated_at": "2026-03-08T14:58:03.562Z",
-      "findings": [
-        "Many page routes reference the department/category values — I need to check how they use `XaDepartment` before changing the type to avoid cascading typecheck failures.",
-        "Key insight: changing `XaDepartment` type would cascade type errors to 37 files (pages like `/women/bags/page.tsx` use string literals).",
-        "Pre-existing typecheck failures in `@acme/ui` (not my changes) are blocking the commit hook.",
-        "Pre-existing issue — xa-b lint script references a `functions` dir that doesn't exist.",
-        "functions/` dir exists but is empty — ESLint errors on no-match.",
-        "Two issues: `bg-surface` doesn't exist in the Tailwind config (should be `bg-surface-1`), and the header needs `sticky top-0 z-50`.",
-        "The token issue is a local auth problem — the first deploy used an inherited shell env var."
-      ]
-    },
-    {
       "session_id": "809f6046-3800-460c-bec0-16fe2595f597",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/809f6046-3800-460c-bec0-16fe2595f597.jsonl",
       "updated_at": "2026-03-08T08:42:33.365Z",
@@ -616,45 +667,6 @@
         "Lint has only pre-existing warnings (no errors).",
         "The pre-push hook is running its own contrast check that's failing.",
         "The validator script's `normalizeColor` can't parse oklch — returns null → \"skipped\" → exit 1."
-      ]
-    },
-    {
-      "session_id": "69d199f6-bf3f-4837-a680-8fa673ae6207",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/69d199f6-bf3f-4837-a680-8fa673ae6207.jsonl",
-      "updated_at": "2026-03-06T20:58:41.461Z",
-      "findings": [
-        "In short: it's a Codex skill that can't run in Claude Code and solves a problem you've already addressed differently.",
-        "QA Inventory before testing (biggest gap)** Build a formal checklist from 3 sources before touching the browser: user requirements, features actually implemented, and claims you intend to make in the response.",
-        "Sidecar extracts are advisory/fail-open (path resolution from `scripts/` dir) — logged and continuing.",
-        "Bug scan: 0 findings as expected for markdown-only changes."
-      ]
-    },
-    {
-      "session_id": "d2ca9aca-b116-4de3-85c4-660decda6739",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/d2ca9aca-b116-4de3-85c4-660decda6739.jsonl",
-      "updated_at": "2026-03-06T12:11:47.553Z",
-      "findings": [
-        "Biggest decision-quality failures:** - Validation approach says \"accept the change only if pilot shows net-new findings\" — but pilot is TASK-05, sequenced after all implementation tasks.",
-        "Autofix resolves the most material issues inline.",
-        "The current wording implies a gate it cannot be.",
-        "Stale reference found in `## Evidence Gap Review → Confidence Adjustments` — line 338.",
-        "Consistency scan: 1 cleanup edit applied (stale Testability note in Evidence Gap Review).",
-        "The plan has a minor error here; applying fix:",
-        "[Minor] Prior issue 1-05 (TASK-02 blast radius)** — resolved by TASK-02 Notes clarifying internal ordering. Marking confirmed resolved.",
-        "Issues ledger updated at `docs/plans/lp-do-workflow-rehearsal-reflection-boundary/critique-history.md`.",
-        "TASK-01 Inline Execution: Rehearsal Terminology Bridge** **Red phase (VC-01 pre-check):** `task-01-terminology-bridge.md` does not exist → VC-01 fails.",
-        "The four delivery lenses ask questions that Phase 7.5 cannot answer because they are about runtime/UX semantics, not code topology.",
-        "TASK-03 Red evidence:** Phase 9 immediately followed by Phase 10 with no intermediate delivery rehearsal phase — VC-01 fails pre-edit.",
-        "Plan completion sequence** — build-record, results-review, pattern-reflection, bug scan, archive, queue-state hook, final commit",
-        "Now run the build failure bridge (advisory — plan completed successfully, no failure, skip) and the self-evolving build-output bridge:"
-      ]
-    },
-    {
-      "session_id": "10ac4a80-1de3-4ec1-b5bd-f0df2e78e8e6",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/10ac4a80-1de3-4ec1-b5bd-f0df2e78e8e6.jsonl",
-      "updated_at": "2026-03-06T16:00:36.596Z",
-      "findings": [
-        "Resolved two critical issues from the critique (emitter timing — moved sidecar emission to post-authoring extractor scripts, not prefill; corrected seam location in `self-evolving-from-build-output.ts`)"
       ]
     }
   ]

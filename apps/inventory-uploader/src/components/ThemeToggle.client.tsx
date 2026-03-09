@@ -18,7 +18,7 @@ function getInitialTheme(): Theme {
 }
 
 export function ThemeToggle({ variant = "dark" }: { variant?: "light" | "dark" }) {
-  const [theme, setTheme] = React.useState<Theme>("light");
+  const [theme, setTheme] = React.useState<Theme>("dark");
 
   React.useEffect(() => {
     const initial = getInitialTheme();

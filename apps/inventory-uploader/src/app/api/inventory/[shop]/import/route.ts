@@ -7,6 +7,8 @@ import {
   type RawInventoryItem,
 } from "@acme/platform-core/utils/inventory";
 
+import { apiError } from "../../../../../lib/api-helpers";
+
 export const runtime = "nodejs";
 
 /**
@@ -185,7 +187,6 @@ export async function POST(
       results,
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    return apiError(err);
   }
 }

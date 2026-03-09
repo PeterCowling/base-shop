@@ -9,6 +9,8 @@ import {
 import { validateShopName } from "@acme/platform-core/shops";
 import { inventoryItemSchema } from "@acme/platform-core/types/inventory";
 
+import { apiError } from "../../../../../lib/api-helpers";
+
 export const runtime = "nodejs";
 
 const patchBodySchema = z.object({
@@ -32,8 +34,7 @@ export async function GET(
     }
     return NextResponse.json({ ok: true, sku, variants });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    return apiError(err);
   }
 }
 
@@ -80,7 +81,6 @@ export async function PATCH(
       variantKey: variantKey(updated.sku, updated.variantAttributes),
     });
   } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    return NextResponse.json({ ok: false, error: message }, { status: 500 });
+    return apiError(err);
   }
 }

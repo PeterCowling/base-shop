@@ -8,6 +8,7 @@ import { useProducts } from "../../../hooks/data/bar/useProducts";
 import { useBleeperMutations } from "../../../hooks/mutations/useBleeperMutations";
 import { useAddItemToOrder } from "../../../hooks/orchestrations/bar/actions/mutations/useAddItemToOrder";
 import { useBarOrder } from "../../../hooks/orchestrations/bar/actions/mutations/useBarOrder";
+import { type MenuType } from "../../../types/bar/barDomain";
 import {
   type AggregatedOrder,
   type CategoryType,
@@ -22,14 +23,29 @@ import SelectCoffeeOrTeaModal from "./modal/SelectCoffeeOrTeaModal";
 import WithMilkModal from "./modal/WithMilkModal";
 import OrderTakingScreen from "./OrderTakingScreen";
 
+const categoryToId: Record<string, number> = {
+  Sweet: 1,
+  Savory: 2,
+  Coffee: 3,
+  Tea: 4,
+  Beer: 5,
+  Wine: 6,
+  Spritz: 7,
+  "Mixed Drinks": 8,
+  Cocktails: 9,
+  Other: 10,
+  Gelato: 11,
+  Juices: 13,
+  Smoothies: 14,
+  Soda: 15,
+};
+
 /* ------------------------------------------------------------------ */
 /* Helpers                                                            */
 /* ------------------------------------------------------------------ */
 const icedCoffeeKeywords = ["iced americano", "iced latte", "iced mocha"];
 const isIcedCoffee = (n: string): boolean =>
   icedCoffeeKeywords.some((kw) => n.toLowerCase().includes(kw));
-
-type MenuType = "food" | "nonalcoholic" | "alcoholic" | "other";
 
 interface OrderTakingContainerProps {
   menuType: MenuType;
@@ -103,26 +119,6 @@ const OrderTakingContainer: FC<OrderTakingContainerProps> = memo(
         setSelectedCategory(categories[0]);
       }
     }, [categories, selectedCategory]);
-
-    const categoryToId: Record<CategoryType, number> = useMemo(
-      () => ({
-        Sweet: 1,
-        Savory: 2,
-        Coffee: 3,
-        Tea: 4,
-        Beer: 5,
-        Wine: 6,
-        Spritz: 7,
-        "Mixed Drinks": 8,
-        Cocktails: 9,
-        Other: 10,
-        Gelato: 11,
-        Juices: 13,
-        Smoothies: 14,
-        Soda: 15,
-      }),
-      []
-    );
 
     const displayedProducts: Product[] = useMemo(() => {
       const rows = getProductsByCategory(categoryToId[selectedCategory]);

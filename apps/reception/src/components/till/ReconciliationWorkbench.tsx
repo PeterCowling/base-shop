@@ -13,14 +13,9 @@ import useTerminalBatches from "../../hooks/data/till/useTerminalBatches";
 import { usePmsPostingsMutations } from "../../hooks/mutations/usePmsPostingsMutations";
 import { useTerminalBatchesMutations } from "../../hooks/mutations/useTerminalBatchesMutations";
 import { type CashCount } from "../../types/hooks/data/cashCountData";
+import { formatEuro } from "../../utils/format";
 import { showToast } from "../../utils/toastUtils";
 import { PageShell } from "../common/PageShell";
-
-/* -------------------------------------------------------------------------- */
-/* Helpers                                                                    */
-/* -------------------------------------------------------------------------- */
-
-const format = (value: number): string => `€${value.toFixed(2)}`;
 
 const diffClass = (value: number): string =>
   Math.abs(value) < 0.01 ? "text-success-main" : "text-error-main";
@@ -298,8 +293,8 @@ const ReconciliationWorkbenchContent = memo(
               {/* POS Totals */}
               <TableRow className="border-b">
                 <TableCell className="p-2">POS Totals</TableCell>
-                <TableCell className="p-2 text-end">{format(safePosCashTotal)}</TableCell>
-                <TableCell className="p-2 text-end">{format(safePosCcTotal)}</TableCell>
+                <TableCell className="p-2 text-end">{formatEuro(safePosCashTotal)}</TableCell>
+                <TableCell className="p-2 text-end">{formatEuro(safePosCcTotal)}</TableCell>
                 <TableCell className="p-2" />
                 <TableCell className="p-2" />
               </TableRow>
@@ -312,7 +307,7 @@ const ReconciliationWorkbenchContent = memo(
                     safeDrawerTotal - safePosCashTotal
                   )}`}
                 >
-                  {format(safeDrawerTotal)}
+                  {formatEuro(safeDrawerTotal)}
                 </TableCell>
                 <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
                 <TableCell
@@ -320,7 +315,7 @@ const ReconciliationWorkbenchContent = memo(
                     safeDrawerTotal - safePosCashTotal
                   )}`}
                 >
-                  {format(safeDrawerTotal - safePosCashTotal)}
+                  {formatEuro(safeDrawerTotal - safePosCashTotal)}
                 </TableCell>
                 <TableCell className="p-2" />
               </TableRow>
@@ -328,21 +323,21 @@ const ReconciliationWorkbenchContent = memo(
               {/* PMS Postings */}
               <TableRow className="border-b">
                 <TableCell className="p-2">PMS Postings</TableCell>
-                <TableCell className="p-2 text-end">{format(safePmsCashTotal)}</TableCell>
-                <TableCell className="p-2 text-end">{format(safePmsCcTotal)}</TableCell>
+                <TableCell className="p-2 text-end">{formatEuro(safePmsCashTotal)}</TableCell>
+                <TableCell className="p-2 text-end">{formatEuro(safePmsCcTotal)}</TableCell>
                 <TableCell
                   className={`p-2 text-right ${diffClass(
                     safePmsCashTotal - safePosCashTotal
                   )}`}
                 >
-                  {format(safePmsCashTotal - safePosCashTotal)}
+                  {formatEuro(safePmsCashTotal - safePosCashTotal)}
                 </TableCell>
                 <TableCell
                   className={`p-2 text-right ${diffClass(
                     safePmsCcTotal - safePosCcTotal
                   )}`}
                 >
-                  {format(safePmsCcTotal - safePosCcTotal)}
+                  {formatEuro(safePmsCcTotal - safePosCcTotal)}
                 </TableCell>
               </TableRow>
 
@@ -350,14 +345,14 @@ const ReconciliationWorkbenchContent = memo(
               <TableRow>
                 <TableCell className="p-2">Terminal Batch</TableCell>
                 <TableCell className="p-2 text-end text-muted-foreground">-</TableCell>
-                <TableCell className="p-2 text-end">{format(safeTerminalTotal)}</TableCell>
+                <TableCell className="p-2 text-end">{formatEuro(safeTerminalTotal)}</TableCell>
                 <TableCell className="p-2" />
                 <TableCell
                   className={`p-2 text-right ${diffClass(
                     safeTerminalTotal - safePosCcTotal
                   )}`}
                 >
-                  {format(safeTerminalTotal - safePosCcTotal)}
+                  {formatEuro(safeTerminalTotal - safePosCcTotal)}
                 </TableCell>
               </TableRow>
             </TableBody>

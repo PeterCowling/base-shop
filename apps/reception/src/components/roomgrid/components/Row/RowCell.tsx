@@ -3,13 +3,13 @@ import { useDrag, useDrop } from "react-dnd";
 import type { Identifier } from "dnd-core";
 
 import { TableCell } from "@acme/design-system";
+import { cn as clsx } from "@acme/design-system/utils/style";
 
 import {
   ItemTypes,
   type ReservationDragItem,
   type ReservationMovePayload,
 } from "../../../../types/dndTypes";
-import clsx from "../../../../utils/clsx";
 import { dateUtils } from "../../../../utils/dateUtils";
 import type { TDaysRange } from "../../interfaces/daysRange.interface";
 import type { TDateStatus, TDayType } from "../../interfaces/grid.interface";

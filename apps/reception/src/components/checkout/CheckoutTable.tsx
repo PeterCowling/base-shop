@@ -2,12 +2,13 @@
 
 import React from "react";
 import type { LucideIcon } from "lucide-react";
-import { Ban, CircleHelp, Cloud, CreditCard, FileText, Lock, Luggage, Umbrella, Wind } from "lucide-react";
+import { Ban, CircleHelp, Cloud, Lock, Luggage, Umbrella, Wind } from "lucide-react";
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
 
 import { type LoanMethod } from "../../types/hooks/data/loansData";
 import { formatDdMm } from "../../utils/dateUtils";
+import { getKeycardIcon } from "../../utils/keycardIcon";
 import { sortCheckoutsData } from "../../utils/sortCheckouts";
 
 /**
@@ -62,8 +63,6 @@ export function getLoanIcon(
   item: string,
   depositType?: LoanMethod | string
 ): { Icon: LucideIcon; colorClass: string } {
-  const normalized = depositType ? depositType.toUpperCase() : undefined;
-
   switch (item) {
     case "Umbrella":
       return { Icon: Umbrella, colorClass: "text-primary-main" };
@@ -74,21 +73,7 @@ export function getLoanIcon(
     case "Padlock":
       return { Icon: Lock, colorClass: "text-warning-main" };
     case "Keycard":
-      if (normalized === "CASH") {
-        return { Icon: CreditCard, colorClass: "text-success-main" };
-      }
-      if (
-        normalized === "PASSPORT" ||
-        normalized === "LICENSE" ||
-        normalized === "ID"
-      ) {
-        return { Icon: FileText, colorClass: "text-warning-main" };
-      }
-      console.warn(
-        "[getLoanIcon] Unrecognized deposit type for Keycard:",
-        depositType
-      );
-      return { Icon: CreditCard, colorClass: "text-foreground" };
+      return getKeycardIcon(depositType);
     case "No_card":
       return { Icon: Ban, colorClass: "text-error-main" };
     default:

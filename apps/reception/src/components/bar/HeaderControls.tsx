@@ -5,12 +5,8 @@ import React, { useCallback, useMemo } from "react";
 import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
 
+import { type MenuType } from "../../types/bar/barDomain";
 import { type ScreenType } from "../../types/bar/BarTypes";
-
-/* -------------------------------------------------------------------------- *
- *                                TYPE DEFS                                   *
- * -------------------------------------------------------------------------- */
-export type MenuType = "food" | "alcoholic" | "nonalcoholic" | "other";
 
 interface HeaderControlsProps {
   /** Username of the current staff member (reserved for future extensions). */

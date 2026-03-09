@@ -1,6 +1,4 @@
 import React, { type FC } from "react";
-import type { LucideIcon } from "lucide-react";
-import { Ban, CreditCard, FileText } from "lucide-react";
 
 import { Input } from "@acme/design-system";
 import { TableCell, TableRow } from "@acme/design-system/atoms";
@@ -8,6 +6,7 @@ import { TableCell, TableRow } from "@acme/design-system/atoms";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import type { Activity } from "../../../types/hooks/data/activitiesData";
 import type { LoanMethod } from "../../../types/hooks/data/loansData";
+import { getKeycardIcon } from "../../../utils/keycardIcon";
 import CityTaxPaymentButton from "../cityTaxButton/CityTaxPaymentButton";
 import DocInsertButton from "../DocInsertButton";
 import EmailBookingButton from "../EmailBookingButton";
@@ -16,23 +15,6 @@ import BookingNotesModal from "../notes/BookingNotesModal";
 import RoomPaymentButton from "../roomButton/roomPaymentButton";
 import StatusButton from "../StatusButton";
 import TooltipComponent from "../tooltip/Tooltip";
-
-function getKeycardIcon(
-  depositType?: LoanMethod
-): { Icon: LucideIcon; colorClass: string } {
-  const normalized = depositType ? depositType.toUpperCase() : undefined;
-
-  if (normalized === "NO_CARD") return { Icon: Ban, colorClass: "text-error-main" };
-  if (normalized === "CASH") return { Icon: CreditCard, colorClass: "text-success-main" };
-  if (
-    normalized === "PASSPORT" ||
-    normalized === "LICENSE" ||
-    normalized === "ID"
-  ) {
-    return { Icon: FileText, colorClass: "text-warning-main" };
-  }
-  return { Icon: CreditCard, colorClass: "text-muted-foreground" };
-}
 
 interface BookingRowViewProps {
   booking: CheckInRow;

@@ -4,17 +4,13 @@
 import React, { type FC, useCallback, useMemo, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";
+import { type MenuType } from "../../types/bar/barDomain";
 import { type ScreenType } from "../../types/bar/BarTypes";
 
 import CompScreenComponent from "./CompScreen";
 import HeaderControls from "./HeaderControls";
 import OrderTakingContainer from "./orderTaking/OrderTakingContainer";
 import SalesScreen from "./sales/SalesScreen";
-
-/**
- * Extended menu type for bar screens.
- */
-type MenuType = "food" | "alcoholic" | "nonalcoholic" | "other";
 
 /**
  * BarRoot component:

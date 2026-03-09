@@ -98,24 +98,20 @@ export function XaProductListing({
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <XaFiltersDrawer
-                open={filtersOpen}
-                onOpenChange={setFiltersOpen}
-                filterConfigs={filterConfigs}
-                facetValues={facetValues}
-                draftValues={draftValues}
-                draftInStock={draftInStock}
-                draftNewIn={draftNewIn}
-                draftMin={draftMin}
-                draftMax={draftMax}
-                onToggleValue={toggleDraftValue}
-                onChangeInStock={setDraftInStock}
-                onChangeNewIn={setDraftNewIn}
-                onChangeMin={setDraftMin}
-                onChangeMax={setDraftMax}
-                onClear={clearAllDraft}
-                onApply={() => {
-                  applyFilters();
-                  setFiltersOpen(false);
+                config={{ filterConfigs, facetValues }}
+                state={{ open: filtersOpen, draftValues, draftInStock, draftNewIn, draftMin, draftMax }}
+                actions={{
+                  onOpenChange: setFiltersOpen,
+                  onToggleValue: toggleDraftValue,
+                  onChangeInStock: setDraftInStock,
+                  onChangeNewIn: setDraftNewIn,
+                  onChangeMin: setDraftMin,
+                  onChangeMax: setDraftMax,
+                  onClear: clearAllDraft,
+                  onApply: () => {
+                    applyFilters();
+                    setFiltersOpen(false);
+                  },
                 }}
               />
 

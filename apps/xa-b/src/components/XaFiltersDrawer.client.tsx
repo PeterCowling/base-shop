@@ -25,22 +25,9 @@ import {
 } from "./filters/XaFiltersDrawerSections";
 
 export function XaFiltersDrawer({
-  open,
-  onOpenChange,
-  filterConfigs,
-  facetValues,
-  draftValues,
-  draftInStock,
-  draftNewIn,
-  draftMin,
-  draftMax,
-  onToggleValue,
-  onChangeInStock,
-  onChangeNewIn,
-  onChangeMin,
-  onChangeMax,
-  onClear,
-  onApply,
+  config: { filterConfigs, facetValues },
+  state: { open, draftValues, draftInStock, draftNewIn, draftMin, draftMax },
+  actions: { onOpenChange, onToggleValue, onChangeInStock, onChangeNewIn, onChangeMin, onChangeMax, onClear, onApply },
 }: XaFiltersDrawerProps) {
   const [sectionOpen, setSectionOpen] = React.useState<Record<string, boolean>>({});
 

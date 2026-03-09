@@ -121,8 +121,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-07 | IMPLEMENT | Replace pure priority sorting with constrained portfolio optimization | 80% | M | Complete (2026-03-10) | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-10, TASK-12, TASK-13, TASK-14 |
 | TASK-08 | IMPLEMENT | Integrate graph dependency and bottleneck analysis into policy inputs | 80% | M | Complete (2026-03-10) | TASK-02, TASK-03, TASK-05 | TASK-11, TASK-13, TASK-14 |
 | TASK-09 | IMPLEMENT | Integrate survival and time-to-event risk into policy inputs | 80% | M | Complete (2026-03-10) | TASK-02, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-11, TASK-13, TASK-14 |
-| TASK-10 | IMPLEMENT | Implement bounded contextual exploration with internal Thompson-style ranking | 70% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07 | TASK-12, TASK-13, TASK-14 |
-| TASK-11 | IMPLEMENT | Implement the causal-evaluation contract and promotion-quality gate | 70% | M | Pending | TASK-04, TASK-06, TASK-16, TASK-08, TASK-09 | TASK-12, TASK-13, TASK-14 |
+| TASK-10 | IMPLEMENT | Implement bounded contextual exploration with internal Thompson-style ranking | 80% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07 | TASK-12, TASK-13, TASK-14 |
+| TASK-11 | IMPLEMENT | Implement the causal-evaluation contract and promotion-quality gate | 80% | M | Pending | TASK-04, TASK-06, TASK-16, TASK-08, TASK-09 | TASK-12, TASK-13, TASK-14 |
 | TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 75% | M | Pending | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
 | TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 75% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
 | TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-15 |
@@ -656,8 +656,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `packages/lib/src/math/experimentation/index.ts`, `packages/lib/src/math/random/index.ts`
 - **Depends on:** TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07
 - **Blocks:** TASK-12, TASK-13, TASK-14
-- **Confidence:** 70%
-  - Implementation: 70% - the internal path is sound, but the exact contextual features and budget semantics still need sharpening.
+- **Confidence:** 80%
+  - Implementation: 80% - Wave 4 now makes the exact insertion seam concrete: exploration can rerank only the already-feasible portfolio candidate set, using persisted belief posteriors, adjusted utility, and deterministic seeded randomness.
   - Approach: 80% - bounded exploration is necessary to avoid exploit-only staleness.
   - Impact: 80% - this is the learning-while-acting layer, but it is easy to misuse.
 - **Acceptance criteria:**
@@ -668,15 +668,19 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-01: with non-zero exploration budget, the policy can surface higher-uncertainty candidates within bounds.
   - TC-02: with zero exploration budget, behavior collapses to pure exploit deterministically.
   - TC-03: exploration choices are persisted with enough metadata and probability traces for later regret and override analysis.
-- **Execution plan:** Red -> add policy fixture tests for exploit-only and bounded-explore modes; Green -> implement the internal exploration layer; Refactor -> isolate context assembly and budget governance from selection logic.
+- **Execution plan:** Red -> add policy fixture tests for exploit-only and bounded-explore modes over a fixed feasible candidate set; Green -> implement the internal exploration layer; Refactor -> isolate context assembly and budget governance from selection logic.
 - **Planning validation (required for M/L):**
-  - Checks run: traced current candidate ordering path and existing Bayesian/random primitives.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: current repo capability is sufficient for an internal path, but there is no existing exploration-budget contract.
+  - Checks run: traced current candidate ordering path, portfolio-selection outputs, stochastic decision fields, and existing Bayesian/random primitives.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `packages/lib/src/math/experimentation/thompson-sampling.ts`, `packages/lib/src/math/random/index.ts`
+  - Unexpected findings: Wave 4 removed most of the ambiguity that previously kept this below threshold. The first exploration slice is now bounded and explicit:
+    - candidate set: only candidates that already cleared hard rules and portfolio feasibility
+    - context: route, candidate type, startup stage, evidence classification, graph signal, and survival signal already carried or derivable from current policy artifacts
+    - logging seam: `decision_mode`, `action_probability`, and replay-ready decision journaling already exist
+    - remaining open item: the exploration-budget contract itself still needs implementation, but it no longer needs another design task
 - **Scouts:** None: the chosen path is already constrained.
-- **Edge Cases & Hardening:** zero budget, repeated overrides, and stale uncertainty estimates.
+- **Edge Cases & Hardening:** zero budget, repeated overrides, stale uncertainty estimates, and deterministic seeded replay of the same candidate set.
 - **What would make this >=90%:**
-  - A small fixed candidate-context fixture demonstrating the exact contextual ranking behavior.
+  - A small fixed candidate-context fixture demonstrating the exact contextual ranking behavior and logged action probabilities.
 - **Rollout / rollback:**
   - Rollout: advisory/shadow mode first, then guarded policy consumption after checkpoint evidence.
   - Rollback: revert to exploit-only ranking while preserving logged exploration telemetry.
@@ -697,8 +701,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
 - **Depends on:** TASK-04, TASK-06, TASK-16, TASK-08, TASK-09
 - **Blocks:** TASK-12, TASK-13, TASK-14
-- **Confidence:** 70%
-  - Implementation: 70% - the gating seam is concrete, but estimator details remain open by design.
+- **Confidence:** 80%
+  - Implementation: 80% - the first estimator path is now narrow enough to implement directly: experiment-hook-backed candidates only, with explicit hold/defer for anything outside that contract.
   - Approach: 85% - durable promotion without causal discipline is not defensible.
   - Impact: 85% - this prevents the loop from optimizing on ghosts.
 - **Acceptance criteria:**
@@ -709,15 +713,18 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-01: structural-only evidence cannot clear the promotion-quality gate.
   - TC-02: a candidate without declared causal-evaluation contract is held or deferred, not promoted.
   - TC-03: the gate records why promotion is blocked or allowed for later audit.
-- **Execution plan:** Red -> add gate tests for insufficient causal evidence; Green -> implement causal contract + gate plumbing; Refactor -> isolate estimator/bridge plug points from gate enforcement.
+- **Execution plan:** Red -> add gate tests for insufficient causal evidence; Green -> implement the first causal contract + gate plumbing for experiment-hook-backed promotion classes; Refactor -> isolate estimator/bridge plug points from gate enforcement.
 - **Planning validation (required for M/L):**
-  - Checks run: traced release/promotion decision seams and the distinction between structural, survival, and promotion-quality evidence.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: the current runtime has no formal place to distinguish “structurally important” from “causally justified.”
+  - Checks run: traced release/promotion decision seams, experiment decision helpers, container experiment-hook contracts, and the distinction between structural, survival, and promotion-quality evidence.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `scripts/src/startup-loop/self-evolving/self-evolving-experiment.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-containers.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`
+  - Unexpected findings: Wave 4 clarified the negative boundary this task must enforce because structural graph signals and survival risk are now first-class policy inputs. The first promotion-quality slice can therefore be concrete:
+    - eligible class: candidates with declared `experiment_hook_contract` and experiment-aware container path
+    - estimator path: use the existing experiment decision seam with target KPI, guardrail KPIs, minimum runtime, minimum sample size, and data-quality checks
+    - failure posture: everything else holds or defers; nothing promotes on structural or survival evidence alone
 - **Scouts:** None: the gate role is specific even though estimator choice remains open.
 - **Edge Cases & Hardening:** partial identification, missing control windows, and insufficient post-window data.
 - **What would make this >=90%:**
-  - A chosen first estimator path for one narrow promotion class.
+  - A worked fixture for one narrow promotion class showing promote, hold, and defer outcomes under the chosen experiment-hook contract.
 - **Rollout / rollback:**
   - Rollout: enforce gate in non-promoting advisory mode first, then let it block unsafe promotions.
   - Rollback: revert to hold-only behavior while preserving gate telemetry if the chosen estimator path is incomplete.
@@ -726,6 +733,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`
+  - Next execution gate: `TASK-10` and `TASK-11` now meet the `IMPLEMENT` confidence floor and form the next runnable wave. `TASK-12` and `TASK-13` remain below threshold pending real exploration and promotion-gate runtime evidence.
 
 ### TASK-12: Implement stability controls and anti-gaming utility governance
 - **Type:** IMPLEMENT
@@ -754,7 +762,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Planning validation (required for M/L):**
   - Checks run: traced current eligibility, queue, and release-control seams that would be prone to oscillation or gaming.
   - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: there is currently no shared governance layer across ranking, exploration, and promotion.
+  - Unexpected findings: Wave 4 created real shared policy surfaces, but this task still lacks two required upstream facts in code: live exploration behavior and live promotion gating. Without those, the shared governance layer is still partly hypothetical, so confidence is unchanged.
 - **Scouts:** None: the controls are required by the target architecture.
 - **Edge Cases & Hardening:** repeated overrides, counter-metric data gaps, and delayed guardrail observations.
 - **What would make this >=90%:**
@@ -795,7 +803,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Planning validation (required for M/L):**
   - Checks run: traced existing dashboard/report outputs and the new telemetry dependencies from belief, outcome, replay, exploration, and governance layers.
   - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: the current runtime has posterior summaries but no calibration or regret concept at all.
+  - Unexpected findings: Wave 4 materially improved the future audit seam because candidate-route decisions now have portfolio, graph, and survival context, but the runtime still lacks live stochastic exploration decisions, override records, and promotion-gate outcomes. Confidence is therefore unchanged.
 - **Scouts:** None: the audit role is already explicitly required by the fact-find.
 - **Edge Cases & Hardening:** sparse matured histories, policy version rollover, and override data missing for legacy records.
 - **What would make this >=90%:**

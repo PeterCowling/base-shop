@@ -2,9 +2,9 @@
 Type: Reference
 Status: Active
 Created: 2026-03-09
-Last-updated: 2026-03-09
+Last-updated: 2026-03-10
 Relates-to: docs/plans/startup-loop-centralized-math-foundations/plan.md
-Replan-round: 4
+Replan-round: 5
 ---
 
 # Replan Notes: TASK-02 Readiness (2026-03-09)
@@ -205,3 +205,66 @@ What remains is implementation detail and first-slice discipline, not missing ar
 Ready.
 
 `TASK-07`, `TASK-08`, and `TASK-09` now all meet the `IMPLEMENT` confidence floor and form the next runnable wave.
+
+## Round 5 Trigger
+After Wave 4 completed, `TASK-10` and `TASK-11` remained below the `IMPLEMENT` confidence floor (`70%`) and therefore blocked the next build wave. `TASK-12` and `TASK-13` also remained below threshold, but they are downstream and only move honestly if the new exploration and promotion seams are now concrete enough.
+
+## Round 5 Evidence Reviewed
+- `scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts`
+  - Wave 4 now emits an explicit feasible candidate set, adjusted utility, and replay-ready `portfolio_selection` decision records
+- `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`
+  - evaluation now carries `decision_mode`, `action_probability`, and `decision_created_at`, so stochastic choices and later regret analysis already have a storage seam
+- `packages/lib/src/math/experimentation/thompson-sampling.ts`
+  - deterministic Thompson-sampling primitives already exist in-repo; the gap is policy wiring, not math foundation
+- `packages/lib/src/math/random/index.ts`
+  - seeded reproducible randomness already exists for replay-safe stochastic ranking
+- `scripts/src/startup-loop/self-evolving/self-evolving-experiment.ts`
+  - a concrete experiment decision seam already exists for target KPI, guardrails, minimum sample size, runtime, and data-quality checks
+- `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`
+  - canary hold/promote/revert logic already exists as a promotion-side gate seam
+- `scripts/src/startup-loop/self-evolving/self-evolving-containers.ts`
+  - container contracts already distinguish `experiment_hook_contract` and explicitly mark experiment-aware paths such as `experiment-cycle-v1` and `website-v3`
+- `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`
+- `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+  - graph and survival are now explicit reporting/policy inputs, which narrows the negative boundary for causal gating: they are structural/risk context, not promotion proof
+- `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`
+  - `decision_mode`, `action_probability`, `promotion_gate`, and `override_record` are already contract-level concepts, but `override_record` still has no live writer
+
+## Round 5 Assessment
+The main ambiguity that kept `TASK-10` and `TASK-11` below threshold is materially smaller now:
+- `TASK-10` no longer needs to invent an action set, logging seam, or randomness substrate
+  - the first slice is now bounded to reranking the already-feasible portfolio candidate set
+  - the required stochastic trace fields already exist in policy decisions and evaluation datasets
+  - the repo already has in-house Thompson sampling and seeded randomness
+- `TASK-11` no longer needs to invent a first promotion-quality seam from scratch
+  - the first slice can be restricted to candidates with declared `experiment_hook_contract`
+  - the repo already has experiment decision logic and canary release controls
+  - Wave 4 made it explicit that graph and survival signals are policy inputs but not causal proof, which is exactly the negative boundary this task needs
+
+What did **not** move enough:
+- `TASK-12` still lacks real upstream exploration behavior and real promotion-gate output in code, so a shared governance layer would still be partly speculative
+- `TASK-13` still lacks live exploration decisions, override records, and promotion-gate outcomes, so calibration/regret/override telemetry remains under-specified despite the stronger Wave 4 journal surface
+
+## Round 5 Task Deltas Applied
+- `TASK-10` confidence raised from `70%` to `80%`
+  - Implementation: `80%`
+  - Approach: `80%`
+  - Impact: `80%`
+- `TASK-11` confidence raised from `70%` to `80%`
+  - Implementation: `80%`
+  - Approach: `85%`
+  - Impact: `85%`
+- `TASK-12` confidence remains `75%`
+  - no new evidence yet for the missing shared governance seam
+- `TASK-13` confidence remains `75%`
+  - no new evidence yet for live override/regret/calibration inputs
+
+## Round 5 Sequencing Impact
+- No topology change.
+- Stable task IDs preserved.
+- No `/lp-do-sequence` run required.
+
+## Round 5 Readiness Decision
+Ready.
+
+`TASK-10` and `TASK-11` now both meet the `IMPLEMENT` confidence floor and form the next runnable wave. `TASK-12` and `TASK-13` remain below threshold, but they are not the next execution gate because they are still blocked on unfinished upstream work.

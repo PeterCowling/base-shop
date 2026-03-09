@@ -1,18 +1,71 @@
 {
-  "last_updated": "2026-03-09T10:02:15.677Z",
+  "last_updated": "2026-03-09T10:41:17.864Z",
   "counts": {
-    "enqueued": 261,
-    "processed": 54,
+    "enqueued": 229,
+    "processed": 30,
     "skipped": 2,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 22,
-    "completed": 136,
-    "fact_find_ready": 316,
-    "micro_build_ready": 25,
-    "total": 478
+    "auto_executed": 21,
+    "completed": 196,
+    "fact_find_ready": 275,
+    "micro_build_ready": 11,
+    "total": 481
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309104500-9304",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:XA:PRODUCTS:xa-uploader-publish-safety-hardening:20260309",
+      "anchor_key": "xa-uploader-publish-safety-hardening",
+      "cluster_key": "XA:PRODUCTS:xa-uploader-publish-safety-hardening:operator:20260309",
+      "cluster_fingerprint": "xa-uploader-publish-safety-hardening-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "XA publish safety - saved revisions and warning visibility",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/publish/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "After the hosted-only cutover, XA publish still bypassed save/autosave safety by accepting raw browser draft JSON, and partial snapshot-write failures were only emitted as internal warnings rather than user-visible feedback.",
+      "next_scope_now": "Require publish to operate on a saved hosted revision, mint fresh revisions when publish state changes, and expose partial-success warnings directly in operator feedback.",
+      "recommended_route": "lp-do-build",
+      "status": "completed",
+      "priority": "P1",
+      "confidence": 0.91,
+      "evidence_refs": [
+        "operator-stated: use lp-do-ideas -> lp-do-build workflow and fix",
+        "code-ref: apps/xa-uploader/src/components/catalog/useCatalogConsole.client.ts - publish path lacked the dirty-autosave guard already used by sync",
+        "code-ref: apps/xa-uploader/src/app/api/catalog/publish/route.ts - publish accepted raw draft payload instead of canonical saved state",
+        "code-ref: apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts - publish warnings were returned but not surfaced in the success message"
+      ],
+      "queue_state": "completed",
+      "created_at": "2026-03-09T10:45:00.000Z",
+      "why": "The hosted-only system still had a duplicate correctness path inside publish itself: save and publish were no longer using the same source of truth or the same conflict model. That undermined the whole point of collapsing to one cloud-backed runtime.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "XA publish now requires a saved hosted revision, uses the canonical draft snapshot as the source of truth, and surfaces partial-success warnings to the operator.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "micro_build_path": "docs/plans/_archive/xa-uploader-publish-safety-hardening/micro-build.md",
+        "processed_at": "2026-03-09T10:45:00.000Z",
+        "target_kind": "build",
+        "target_slug": "xa-uploader-publish-safety-hardening"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/xa-uploader-publish-safety-hardening/micro-build.md",
+        "completed_at": "2026-03-09T10:45:00.000Z",
+        "outcome": "Publish now requires saved hosted revisions, writes fresh publish-state revisions, and surfaces partial-success warnings."
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260309103000-9302",
@@ -79,7 +132,9 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/xa-b-product-detail-decomposition/micro-build.md",
-        "processed_at": "2026-03-09T09:15:00.000Z"
+        "processed_at": "2026-03-09T09:15:00.000Z",
+        "target_kind": "build",
+        "target_slug": "xa-b-product-detail-decomposition"
       },
       "mode": "trial",
       "business": "HBAG",
@@ -98,19 +153,24 @@
       "current_truth": "XaProductDetail.tsx is a 346-line god component that computes 18+ derived values, renders 7 conditional sections for clothing/bags/jewelry, constructs social share URLs, and builds related product lists.",
       "next_scope_now": "Extract a useProductDetailData hook for all copy/href/derivation logic. Extract sub-components for clothing/bags/jewelry detail sections, social share, and related product grids.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.87,
       "evidence_refs": [
         "operator-stated: xa-b simplify round 4 identified XaProductDetail as god component needing decomposition"
       ],
       "created_at": "2026-03-09T09:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Component mixes data preparation with conditional rendering of category-specific blocks and social share/contact sections. Separating concerns makes each piece independently maintainable.",
       "intended_outcome": {
         "type": "operational",
         "statement": "XaProductDetail is broken into a data hook and focused sub-components; no behaviour changes; typecheck and lint pass.",
         "source": "operator"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/xa-b-product-detail-decomposition/micro-build.md",
+        "completed_at": "2026-03-09T08:59:25.730Z",
+        "outcome": "Completed via xa-b-product-detail-decomposition."
       }
     },
     {
@@ -119,7 +179,9 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/xa-b-filters-drawer-prop-grouping/micro-build.md",
-        "processed_at": "2026-03-09T09:05:00.000Z"
+        "processed_at": "2026-03-09T09:05:00.000Z",
+        "target_kind": "build",
+        "target_slug": "xa-b-filters-drawer-prop-grouping"
       },
       "mode": "trial",
       "business": "HBAG",
@@ -139,19 +201,24 @@
       "current_truth": "XaProductListing passes 15 individual props to XaFiltersDrawer. Adding a new filter requires updating both caller and callee.",
       "next_scope_now": "Group into 3 objects: filterConfig ({filterConfigs, facetValues}), filterState ({open, draftValues, draftInStock, draftNewIn, draftMin, draftMax}), filterActions ({onOpenChange, onToggleValue, onChangeInStock, onChangeNewIn, onChangeMin, onChangeMax, onClear, onApply}).",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.91,
       "evidence_refs": [
         "operator-stated: xa-b simplify round 4 identified XaFiltersDrawer prop drilling as quality issue"
       ],
       "created_at": "2026-03-09T09:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "15 individual props make the interface brittle. Grouped objects make the contract explicit and easier to extend.",
       "intended_outcome": {
         "type": "operational",
         "statement": "XaFiltersDrawer accepts 3 grouped prop objects instead of 15 individual props; no behaviour changes; typecheck and lint pass.",
         "source": "operator"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/xa-b-filters-drawer-prop-grouping/micro-build.md",
+        "completed_at": "2026-03-09T08:59:33.083Z",
+        "outcome": "Completed via xa-b-filters-drawer-prop-grouping."
       }
     },
     {
@@ -160,7 +227,9 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/xa-b-buybox-color-strip-extraction/micro-build.md",
-        "processed_at": "2026-03-09T09:10:00.000Z"
+        "processed_at": "2026-03-09T09:10:00.000Z",
+        "target_kind": "build",
+        "target_slug": "xa-b-buybox-color-strip-extraction"
       },
       "mode": "trial",
       "business": "HBAG",
@@ -179,19 +248,24 @@
       "current_truth": "XaBuyBox contains two near-identical inline blocks (variant strip lines 166-203, color strip lines 204-234) — both render Inline gap={2} with XaFadeImage + swatch fallback, differing only in data source.",
       "next_scope_now": "Extract XaColorSwatchStrip component that accepts {key, label, swatch, imageUrl, imageAlt, isCurrent, href?}[] and renders uniformly. Use it for both variantProducts and colorOptions.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.88,
       "evidence_refs": [
         "operator-stated: xa-b simplify round 4 identified variant/color strip duplication in XaBuyBox"
       ],
       "created_at": "2026-03-09T09:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Duplicate inline blocks mean any visual change to the swatch strip must be made in two places.",
       "intended_outcome": {
         "type": "operational",
         "statement": "XaBuyBox uses a single XaColorSwatchStrip component for both variant and color displays; no behaviour changes; typecheck and lint pass.",
         "source": "operator"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/xa-b-buybox-color-strip-extraction/micro-build.md",
+        "completed_at": "2026-03-09T08:59:33.084Z",
+        "outcome": "Completed via xa-b-buybox-color-strip-extraction."
       }
     },
     {
@@ -436,7 +510,7 @@
         "Revisit CORS and response-header policy once the session model is defined"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.96,
       "evidence_refs": [
@@ -446,13 +520,25 @@
         "code-ref: apps/prime/functions/api/check-in-code.ts exposes GET and POST door-code flows by uuid without validateGuestSessionToken()",
         "code-ref: apps/prime/functions/api/find-booking.ts issues guest deep links from bookingRef plus surname with only per-IP KV throttling"
       ],
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "created_at": "2026-03-06T19:10:00Z",
       "why": "The app has moved onto a public custom domain, and the current guest-access design still relies on a convenience-oriented token handoff rather than a strongly bounded session model. That was tolerable while the app was effectively preview-grade, but it is now the wrong security posture for guest-linked booking data, door access instructions, and any future expansion of the portal surface.",
       "intended_outcome": {
         "type": "operational",
         "statement": "A planning-ready hardening path exists for Prime guest access covering server-bound guest sessions, fail-closed portal validation, authenticated door-code retrieval, stronger booking-link issuance controls, and the browser security controls needed for a public guest portal.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-guest-access-hardening",
+        "target_path": "docs/plans/_archive/prime-guest-access-hardening/plan.md",
+        "fact_find_slug": "prime-guest-access-hardening"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-guest-access-hardening/plan.md",
+        "completed_at": "2026-03-06T21:24:36.392Z",
+        "outcome": "**Wave 1 — commit `e9108519a5`** TASK-01 (fail-closed auth): Removed the `network_error` branch from both `portal/page.tsx` and `(guarded)/layout.tsx`. Previously, a failed network call to validate the guest session would silently grant por"
       }
     },
     {
@@ -483,7 +569,7 @@
         "Review legacy draft/media migration handling after the new contract is in place"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.92,
       "evidence_refs": [
@@ -494,7 +580,7 @@
         "code-ref: apps/xa-uploader/src/app/api/catalog/products/route.ts - current publishState derivation still assumes draft/ready/live",
         "code-ref: apps/xa-uploader/src/lib/catalogDraftToContract.ts - current export still emits numeric stock and role-sorted media"
       ],
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-03-06T17:22:18Z",
       "why": "The xa-uploader UI shell is already close to the requested operator workflow, but the underlying status and image contracts are still built around concepts the operator has explicitly rejected: ready state, numeric stock, and semantic shot roles. Capturing the now-confirmed target model in a planning-ready fact-find allows the rewrite to be sequenced cleanly instead of mixing contract changes into ad hoc UI tweaks.",
       "intended_outcome": {
@@ -511,6 +597,11 @@
         "processed_at": "2026-03-06T17:24:34.438Z",
         "fact_find_slug": "xa-uploader-status-and-media-model-rewrite",
         "fact_find_path": "docs/plans/xa-uploader-status-and-media-model-rewrite/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-status-and-media-model-rewrite/plan.md",
+        "completed_at": "2026-03-09T10:34:19.275Z",
+        "outcome": "The rewrite closed the two precursor investigations first: `replan-notes.md` now records the fail-closed cleanup policy for legacy CSV/cloud/runtime rows and the status-only cart behavior that replaces numeric stock semantics. The main impl"
       }
     },
     {
@@ -540,7 +631,7 @@
         "Evaluate push sync and attachment handling only after v1 proves operational value"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.89,
       "evidence_refs": [
@@ -550,7 +641,7 @@
         "code-ref: packages/mcp-server/src/tools/gmail-shared.ts - audit and lock persistence are file-backed and local-process oriented",
         "code-ref: apps/reception/wrangler.toml - reception is deployed as a Cloudflare Worker"
       ],
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-03-06T15:37:03Z",
       "why": "The current Brikette email workflow is workable for ad hoc operator use, but it is not a clean staff-facing inbox: queue state lives in Gmail labels, the hosted reception app only exposes narrow draft routes, and the Gmail backend assumptions are still local-process oriented. Because volume is low and the workflow is explicitly draft-first, there is now a realistic path to replace Gmail as the day-to-day UI without buying a third-party help desk, provided the hosted design avoids the current local-filesystem assumptions.",
       "intended_outcome": {
@@ -567,6 +658,11 @@
         "fact_find_slug": "reception-app-native-inbox",
         "fact_find_path": "docs/plans/reception-app-native-inbox/fact-find.md",
         "processed_at": "2026-03-06T15:39:46.875Z"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-app-native-inbox/plan.md",
+        "completed_at": "2026-03-09T10:34:19.277Z",
+        "outcome": "The build established the hosted foundations first: a Worker-safe Gmail adapter, a D1 inbox schema and repository layer inside reception, deterministic admission gating, telemetry/audit logging, incremental Gmail history sync rules, and a r"
       }
     },
     {
@@ -708,7 +804,7 @@
         "Once results-review.signals.json sidecar exists, source category from structured data rather than re-parsing markdown"
       ],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.93,
       "evidence_refs": [
@@ -719,18 +815,25 @@
         "code-ref: .claude/skills/lp-do-build/SKILL.md:235 — build skill asks model to correct category classifications",
         "code-ref: .claude/skills/lp-do-build/SKILL.md:239 — no skip gate before refinement step"
       ],
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "created_at": "2026-03-06T15:30:00.000Z",
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/startup-loop-pattern-reflection-category-handoff-fix/micro-build.md",
-        "processed_at": "2026-03-06T15:30:00.000Z"
+        "processed_at": "2026-03-06T15:30:00.000Z",
+        "target_kind": "build",
+        "target_slug": "startup-loop-pattern-reflection-category-handoff-fix"
       },
       "why": "Every build cycle wastes model tokens reclassifying ideas that already have categories and refining artifacts that are already complete. Both are fixable with deterministic code changes to the prefill — no model judgment is needed for either path. The fix preserves all existing parity because refinement is only skipped when the artifact is provably complete.",
       "intended_outcome": {
         "type": "operational",
         "statement": "category, reason, and evidence_refs pass through extractCurrentIdeas() unmodified; a needs_refinement gate in lp-do-build-pattern-reflection-prefill.ts skips model execution when the artifact is already complete; reclassification and noop-refinement model calls are eliminated from every build cycle.",
         "source": "operator"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/startup-loop-pattern-reflection-category-handoff-fix/micro-build.md",
+        "completed_at": "2026-03-06T14:30:14.536Z",
+        "outcome": "Two deterministic fixes to `scripts/src/startup-loop/build/lp-do-build-pattern-reflection-prefill.ts`: **Fix 1 — Category and evidence preservation** Added `extractBulletEntries()` — a variant of `extractBulletTitles()` that also derives a "
       }
     },
     {
@@ -842,7 +945,7 @@
       "next_scope_now": "Fact-find a repo-wide failure-instruction contract for agent-facing errors and guards: define the minimum required fields for every blocked message, identify the highest-leverage guard surfaces to update first, and map exact next-step guidance that prevents retry loops and adjacent impossible actions.",
       "adjacent_later": [],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.94,
       "evidence_refs": [
@@ -850,20 +953,29 @@
         "agent-verified: AGENTS.md already enforces explicit IF BLOCKED sections for procedural guidance, proving the repo values prescriptive fallback instructions",
         "agent-verified: repo plans already use actionable failure contract language for sync/status and retry-loop prevention, but the pattern is not yet a universal agent-failure standard"
       ],
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-03-06T12:50:44.000Z",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-06T13:00:00.000Z",
         "queue_state": "processed",
         "fact_find_slug": "agent-failure-instruction-contract",
-        "fact_find_path": "docs/plans/agent-failure-instruction-contract/fact-find.md"
+        "fact_find_path": "docs/plans/agent-failure-instruction-contract/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "agent-failure-instruction-contract",
+        "target_path": "docs/plans/_archive/agent-failure-instruction-contract/plan.md"
       },
       "why": "A blocked or failed path should terminate ambiguity, not create more of it. Precise next-step instructions are an efficiency control that prevents retry loops and wasted tool exploration.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Agent-facing failure messages across guards and blocked operations follow a precise contract that says whether retry is valid, what exact next step to take, and when to stop escalating locally.",
         "source": "operator"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/agent-failure-instruction-contract/plan.md",
+        "completed_at": "2026-03-06T14:09:10.998Z",
+        "outcome": "Completed via agent-failure-instruction-contract."
       }
     },
     {
@@ -1017,7 +1129,7 @@
       "current_truth": "CatalogProductForm initialises autosaveStatus to 'saved' on fresh/new product load before any actual save has occurred, misleading the operator. The save button auto-advances to the images step after a 2-second silent timer with no toast or explanation. The delete button is isolated at the top of the form, far from the save/action area at the bottom and with no confirmation guard.",
       "next_scope_now": "Fact-find the xa-uploader product form UX: (1) audit autosaveStatus initialisation and determine the correct neutral/unsaved starting state for new products; (2) identify the auto-advance mechanism and define what visible feedback to add; (3) evaluate the delete button placement and determine whether a confirmation modal or a move to the action footer is more appropriate; (4) produce a planning brief scoped to these three form-level fixes.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "evidence_refs": [
@@ -1033,7 +1145,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T15:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-form-ux",
+        "target_path": "docs/plans/_archive/xa-uploader-form-ux/plan.md",
+        "fact_find_slug": "xa-uploader-form-ux"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-form-ux/plan.md",
+        "completed_at": "2026-03-06T12:29:59.833Z",
+        "outcome": "Completed via xa-uploader-form-ux."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -1390,7 +1514,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "PRODUCTS",
       "priority": "P1",
       "confidence": 0.88,
@@ -1415,12 +1539,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T10:05:05.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-06T10:05:05.000Z",
         "fact_find_slug": "xa-uploader-sync-status-communication",
-        "fact_find_path": "docs/plans/xa-uploader-sync-status-communication/fact-find.md"
+        "fact_find_path": "docs/plans/xa-uploader-sync-status-communication/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-sync-status-communication",
+        "target_path": "docs/plans/_archive/xa-uploader-sync-status-communication/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-sync-status-communication/plan.md",
+        "completed_at": "2026-03-06T14:02:38.911Z",
+        "outcome": "**TASK-01 — Truthful status semantics + publish blockers** Extended `getCatalogDraftWorkflowReadiness()` in `packages/lib/src/xa/catalogWorkflow.ts` to expose `missingRoles: string[]` — the specific image role names absent from a product's "
       }
     },
     {
@@ -1652,7 +1785,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "SELL",
       "priority": "P3",
       "confidence": 0.86,
@@ -1674,12 +1807,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-04T21:10:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-04T21:25:00.000Z",
         "fact_find_slug": "hbag-pdp-ga4-funnel-feed",
-        "fact_find_path": "docs/plans/hbag-pdp-ga4-funnel-feed/fact-find.md"
+        "fact_find_path": "docs/plans/hbag-pdp-ga4-funnel-feed/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "hbag-pdp-ga4-funnel-feed",
+        "target_path": "docs/plans/hbag-pdp-ga4-funnel-feed/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/hbag-pdp-ga4-funnel-feed/plan.md",
+        "completed_at": "2026-03-04T20:19:23.007Z",
+        "outcome": "Implemented a standing HBAG PDP funnel feed generator at `scripts/src/startup-loop/diagnostics/hbag-pdp-funnel-feed.ts` with a locked alias contract (`product_view -> view_item`, `checkout_started -> begin_checkout`) and deterministic 7-day"
       }
     },
     {
@@ -2119,9 +2261,9 @@
       "lineage_depth": 0,
       "area_anchor": "BRIK quote recovery email — no server sender or exact quote payload",
       "domain": "SELL",
-      "status": "briefing_ready",
+      "status": "completed",
       "recommended_route": "lp-do-briefing",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.86,
       "provisional_deliverable_family": "code-change",
@@ -2144,7 +2286,16 @@
         "processed_at": "2026-03-02T09:48:02.278Z",
         "queue_state": "processed",
         "fact_find_slug": "brik-recovery-quote-server-email-send-point",
-        "fact_find_path": "docs/briefs/brik-recovery-quote-server-email-send-point-briefing.md"
+        "fact_find_path": "docs/briefs/brik-recovery-quote-server-email-send-point-briefing.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-recovery-quote-server-email-send-point",
+        "target_path": "docs/plans/_archive/brik-recovery-quote-server-email-send-point/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-recovery-quote-server-email-send-point/plan.md",
+        "completed_at": "2026-03-02T11:54:09.159Z",
+        "outcome": "**TASK-01 — Deterministic quote contract and calculation helper (commit `c81d529726`):** `apps/brikette/src/utils/recoveryQuoteCalc.ts` was created as a pure, side-effect-free module exporting `RecoveryQuote` type, `buildRecoveryQuote()`, a"
       }
     },
     {
@@ -2414,9 +2565,9 @@
       "trigger": "operator_idea",
       "area_anchor": "HBAG checkout — no customer order confirmation email",
       "domain": "SELL",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "auto_executed",
+      "queue_state": "completed",
       "priority": "P2",
       "provisional_deliverable_family": "code-change",
       "current_truth": "According to `apps/caryina/src/app/api/checkout-session/route.ts`, current state is: payment success triggers only a merchant notification email (fire-and-forget); no customer confirmation email is sent. The success page shows a generic message with no order reference. World-class threshold (per benchmark domain `launch-readiness`) is: refunds + fulfilment notifications tested end-to-end so a real customer order cannot disappear operationally.",
@@ -2428,7 +2579,19 @@
         "operator-stated: worldclass-scan gap: launch-readiness",
         "docs/business-os/strategy/HBAG/worldclass-scan-2026-02-28.md"
       ],
-      "created_at": "2026-02-28T21:00:00Z"
+      "created_at": "2026-02-28T21:00:00Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-till-shift-history-filter-denom",
+        "target_path": "docs/plans/_archive/brik-till-shift-history-filter-denom/plan.md",
+        "fact_find_slug": "brik-till-shift-history-filter-denom"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-till-shift-history-filter-denom/plan.md",
+        "completed_at": "2026-02-28T17:29:51.171Z",
+        "outcome": "**TASK-01 — Refactored TillShiftHistory component** (`apps/reception/src/components/till/TillShiftHistory.tsx`): Replaced the hard-coded `useTillShiftsData({ limitToLast: 10 })` call with `useTillShiftsRange({ orderByChild: \"closedAt\", star"
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -2438,9 +2601,9 @@
       "trigger": "operator_idea",
       "area_anchor": "HBAG checkout — no test order workflow or Axerve sandbox mode",
       "domain": "SELL",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "priority": "P2",
       "provisional_deliverable_family": "code-change",
       "current_truth": "According to `apps/caryina/src/app/api/checkout-session/route.ts`, current state is: no sandbox or test-mode detection; route reads live AXERVE_SHOP_LOGIN and AXERVE_API_KEY from env with no test-credential variant or mode switch. No pre-launch test order checklist or test card documentation exists. World-class threshold (per benchmark domain `launch-readiness`) is: one live-like test order (including at least one failed transaction) completed before sending any real traffic.",
@@ -2457,7 +2620,16 @@
         "route": "dispatch-routed",
         "processed_at": "2026-02-28T00:00:00Z",
         "fact_find_slug": "hbag-axerve-sandbox-test-order",
-        "fact_find_path": "docs/plans/hbag-axerve-sandbox-test-order/fact-find.md"
+        "fact_find_path": "docs/plans/hbag-axerve-sandbox-test-order/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-stock-explained-variance",
+        "target_path": "docs/plans/_archive/reception-stock-explained-variance/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-stock-explained-variance/plan.md",
+        "completed_at": "2026-02-28T17:11:02.806Z",
+        "outcome": "**TASK-01: Add explained/unexplained variance split to StockManagement** Added `STOCK_VARIANCE_WINDOW_DAYS = 7` constant to `apps/reception/src/constants/stock.ts` alongside the existing shrinkage constants. In `StockManagement.tsx`, two `u"
       }
     },
     {
@@ -2526,9 +2698,9 @@
       "trigger": "operator_idea",
       "area_anchor": "HBAG PDP — no gifting cues for accessories gift buyers",
       "domain": "SELL",
-      "status": "briefing_ready",
+      "status": "completed",
       "recommended_route": "lp-do-briefing",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P3",
       "provisional_deliverable_family": "doc",
       "current_truth": "According to `apps/caryina/src/app/[lang]/product/[slug]/page.tsx` and `data/shops/caryina/site-content.generated.json`, current state is: no gift-ready packaging description, no gift message option, and no gifting-oriented copy on the PDP. The 30-day free exchange policy is present in proof bullets but not framed as a gifting benefit. World-class threshold (per benchmark domain `first-visitor-conversion`) is: gifting cues explicit (gift-ready packaging, easy returns/exchanges for gifts).",
@@ -2546,7 +2718,16 @@
         "processed_at": "2026-02-28T00:00:00.000Z",
         "queue_state": "processed",
         "fact_find_slug": "brik-eod-float-set",
-        "fact_find_path": "docs/plans/brik-eod-float-set/fact-find.md"
+        "fact_find_path": "docs/plans/brik-eod-float-set/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-eod-float-set",
+        "target_path": "docs/plans/_archive/brik-eod-float-set/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-eod-float-set/plan.md",
+        "completed_at": "2026-02-28T19:27:09.659Z",
+        "outcome": "**TASK-01 — Schema extension (Wave 1)** Added `\"openingFloat\"` to the `cashCountSchema.type` enum in `apps/reception/src/schemas/cashCountSchema.ts`. The `CashCountType` union is inferred directly from the schema, so the new type propagated"
       }
     },
     {
@@ -3863,7 +4044,7 @@
         "A/B test framework for CTA copy and placement on /book page (post SSR hardening)"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.87,
       "evidence_refs": [
@@ -3872,12 +4053,21 @@
         "docs/plans/brikette-octorate-funnel-reduction/plan.md"
       ],
       "created_at": "2026-02-25T12:00:00Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "fact_find_slug": "brikette-deeper-route-funnel-cro",
         "fact_find_path": "docs/plans/brikette-deeper-route-funnel-cro/fact-find.md",
         "processed_at": "2026-02-25T12:30:00Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-deeper-route-funnel-cro",
+        "target_path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/plan.md",
+        "completed_at": "2026-02-25T21:16:31.244Z",
+        "outcome": "**Wave 1 — Core fixes (commit `30e18fb806`):** Fixed the `ContentStickyCta` sessionStorage shared-key bug (TASK-05): the dismiss key is now per-surface (`\"content-sticky-cta-dismissed:${ctaLocation}\"`) so dismissing on one page does not sup"
       }
     },
     {
@@ -3905,7 +4095,7 @@
         "Locale-specific sitemap partitioning to give Google clearer crawl priority signals per language"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.9,
       "evidence_refs": [
@@ -3915,12 +4105,21 @@
         "docs/plans/brikette-seo-traffic-growth/plan-v1.md"
       ],
       "created_at": "2026-02-25T00:00:00Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "fact_find_slug": "brikette-seo-api-optimization-loop",
         "fact_find_path": "docs/plans/brikette-seo-api-optimization-loop/fact-find.md",
         "processed_at": "2026-02-25T00:00:00Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-seo-api-optimization-loop",
+        "target_path": "docs/plans/_archive/brikette-seo-api-optimization-loop/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brikette-seo-api-optimization-loop/plan.md",
+        "completed_at": "2026-02-25T12:34:07.784Z",
+        "outcome": "### TASK-01: gsc-auth.ts + gsc-url-inspection-batch.ts **Files created:** `scripts/src/brikette/gsc-auth.ts` — shared JWT auth module (ServiceAccountKey type, getAccessToken, loadServiceAccount, scope constants) `scripts/src/brikette/gsc-ur"
       }
     },
     {
@@ -4768,7 +4967,7 @@
         "Auto-generate Schema.org HotelRoom structured data from the extended content schema"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "evidence_refs": [
@@ -4777,13 +4976,22 @@
         "funnel_step: room_detail_view; metric_name: room_selection_rate"
       ],
       "created_at": "2026-02-27T15:00:00Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "dispatched_at": "2026-02-27T15:00:00Z",
       "processed_by": {
         "fact_find_slug": "brik-room-content-schema",
         "fact_find_path": "docs/plans/brik-room-content-schema/fact-find.md",
         "processed_at": "2026-02-27T16:00:00Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-room-content-schema",
+        "target_path": "docs/plans/_archive/brik-room-content-schema/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-room-content-schema/plan.md",
+        "completed_at": "2026-02-27T15:59:28.236Z",
+        "outcome": "**TASK-01 — Fix image path prefix (commit 8fc09fae0f)** All `imagesRaw` and `landingImage` paths in `apps/brikette/src/data/roomsData.ts` corrected from `/images/` to `/img/`. The apartment entry was additionally fixed to use flat-file path"
       }
     },
     {
@@ -4951,7 +5159,7 @@
         "Alt text strategy for each schema slot type (bed, bathroom, view, terrace, security)"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.92,
       "evidence_refs": [
@@ -4960,7 +5168,7 @@
         "operator-stated: guests must be able to review accurate room information and a complete image set before booking"
       ],
       "created_at": "2026-02-27T18:00:00Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "dispatched_at": "2026-02-27T18:00:00Z",
       "auto_executed_at": "2026-02-27T18:00:00Z",
       "fact_find_slug": "brik-room-content-schema",
@@ -4968,7 +5176,16 @@
         "route": "dispatch-routed",
         "processed_at": "2026-02-27T00:00:00Z",
         "fact_find_slug": "brik-room-content-schema",
-        "fact_find_path": "docs/plans/brik-room-content-schema/fact-find.md"
+        "fact_find_path": "docs/plans/brik-room-content-schema/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-room-content-schema",
+        "target_path": "docs/plans/_archive/brik-room-content-schema/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-room-content-schema/plan.md",
+        "completed_at": "2026-02-27T15:59:28.236Z",
+        "outcome": "**TASK-01 — Fix image path prefix (commit 8fc09fae0f)** All `imagesRaw` and `landingImage` paths in `apps/brikette/src/data/roomsData.ts` corrected from `/images/` to `/img/`. The apartment entry was additionally fixed to use flat-file path"
       }
     },
     {
@@ -4998,7 +5215,7 @@
         "Rate caching strategy to avoid Octorate API rate limits during peak traffic"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.88,
       "evidence_refs": [
@@ -5008,13 +5225,25 @@
         "worldclass-scan-2026-02-27.md: gap — booking CTA routes to external book.octorate.com domain (minor-gap)"
       ],
       "created_at": "2026-02-27T18:00:00Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "dispatched_at": "2026-02-27T18:00:00Z",
       "auto_executed_at": "2026-02-27T18:00:00Z",
       "fact_find_slug": "brik-room-octorate-live-pricing",
       "fact_find_path": "docs/plans/brik-room-octorate-live-pricing/fact-find.md",
       "processed_at": "2026-02-27T20:00:00Z",
-      "route": "dispatch-routed"
+      "route": "dispatch-routed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-room-octorate-live-pricing",
+        "target_path": "docs/plans/_archive/brik-room-octorate-live-pricing/plan.md",
+        "fact_find_slug": "brik-room-octorate-live-pricing"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-room-octorate-live-pricing/plan.md",
+        "completed_at": "2026-02-27T19:15:30.195Z",
+        "outcome": "**TASK-DP (pre-existing, Complete):** Date range picker and adult pax selector added to `RoomDetailContent`. Dates default to today + 2 nights, pax=1. Inputs sync to URL via `router.replace` so state is shareable and bookmarkable. **TASK-RP"
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -5913,7 +6142,7 @@
       "business": "BRIK",
       "area_anchor": "BRIK reception EOD — no one-tap clean close confirmation",
       "domain": "STRATEGY",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
       "priority": "P2",
       "provisional_deliverable_family": "code-change",
@@ -5928,12 +6157,21 @@
         "docs/business-os/strategy/BRIK/apps/reception/worldclass-scan-2026-02-28.md"
       ],
       "created_at": "2026-02-28T22:02:00Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-02-28T22:30:00Z",
         "fact_find_slug": "brik-eod-day-closed-confirmation",
-        "fact_find_path": "docs/plans/brik-eod-day-closed-confirmation/fact-find.md"
+        "fact_find_path": "docs/plans/brik-eod-day-closed-confirmation/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-eod-day-closed-confirmation",
+        "target_path": "docs/plans/_archive/brik-eod-day-closed-confirmation/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-eod-day-closed-confirmation/plan.md",
+        "completed_at": "2026-02-28T19:12:53.048Z",
+        "outcome": "**Wave 1 — Firebase rules and schema (TASK-01, TASK-02):** Added an explicit `eodClosures` node to `apps/reception/database.rules.json` with `.read: \"auth != null\"` (consistent with all operational nodes) and `$dateKey` write access restric"
       }
     },
     {
@@ -5944,9 +6182,9 @@
       "trigger": "operator_idea",
       "area_anchor": "BRIK/reception till close — expected balance visible to all roles",
       "domain": "STRATEGY",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "priority": "P3",
       "provisional_deliverable_family": "code-change",
       "current_truth": "3-step CloseShiftForm wizard (Cash → Receipts → Keycards) with denomination-aware entry shows expected cash balance to all staff roles during counting. No role-aware blind mode exists to hide the expected balance from non-manager roles.",
@@ -5966,7 +6204,16 @@
         "processed_at": "2026-03-01T00:00:00Z",
         "queue_state": "processed",
         "fact_find_slug": "reception-till-blind-mode",
-        "fact_find_path": "docs/plans/reception-till-blind-mode/fact-find.md"
+        "fact_find_path": "docs/plans/reception-till-blind-mode/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-till-blind-mode",
+        "target_path": "docs/plans/_archive/reception-till-blind-mode/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-till-blind-mode/plan.md",
+        "completed_at": "2026-03-01T09:03:55.576Z",
+        "outcome": "Role-aware blind mode for the BRIK reception till close workflow. During denomination counting and keycard counting, non-manager staff no longer see the expected balance upfront — it is hidden until they enter their first count. This preven"
       }
     },
     {
@@ -6073,9 +6320,9 @@
       "trigger": "operator_idea",
       "area_anchor": "BRIK/reception EOD closure — no cash/stock totals in stored record",
       "domain": "STRATEGY",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "priority": "P3",
       "provisional_deliverable_family": "code-change",
       "current_truth": "EodChecklistContent Confirm day closed button stores a closure record with confirmedBy, timestamp, date only — no variance amounts, no cash totals, no stock delta summary. A manager reviewing the stored EOD record cannot see actual cash over/short or stock delta without navigating to separate screens.",
@@ -6093,7 +6340,16 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-01T00:00:00Z",
         "fact_find_slug": "reception-eod-variance-amounts",
-        "fact_find_path": "docs/plans/reception-eod-variance-amounts/fact-find.md"
+        "fact_find_path": "docs/plans/reception-eod-variance-amounts/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-eod-variance-amounts",
+        "target_path": "docs/plans/_archive/reception-eod-variance-amounts/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-eod-variance-amounts/plan.md",
+        "completed_at": "2026-03-01T09:40:22.455Z",
+        "outcome": "**Schema enrichment (TASK-01):** Added two optional fields to `eodClosureSchema` in `apps/reception/src/schemas/eodClosureSchema.ts`: `cashVariance: z.number().optional()` — signed sum of per-shift closeDifference `stockItemsCounted: z.numb"
       }
     },
     {
@@ -6713,7 +6969,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.9,
       "current_truth": "self-evolving/ data is ALREADY per-business (BRIK/, SIMC/ subdirectories with events.jsonl, candidates.json, etc. inside each). All 17 self-evolving-*.ts scripts already write to per-business paths. Schemas already relocated to schemas/ subdirectory. BUT 6 empty per-type scaffold directories (events/, observations/, candidates/, backbone-queue/, startup-state/, reports/) remain alongside the per-business dirs — dead scaffold from an earlier convention.",
@@ -6735,12 +6991,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T07:58:46.608Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "fact_find_slug": "self-evolving-per-business-reorg",
         "fact_find_path": "docs/plans/self-evolving-per-business-reorg/fact-find.md",
         "processed_at": "2026-03-03T18:05:00.000Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "self-evolving-per-business-reorg",
+        "target_path": "docs/plans/_archive/self-evolving-per-business-reorg/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/self-evolving-per-business-reorg/plan.md",
+        "completed_at": "2026-03-03T09:57:43.675Z",
+        "outcome": "Restructured `docs/business-os/startup-loop/self-evolving/` from type-based subdirectories to per-business directories. The old structure organised files by data type (candidates/, events/, observations/, startup-state/, backbone-queue/, re"
       }
     },
     {
@@ -6808,7 +7073,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "current_truth": "scripts/src/startup-loop/ has 79 .ts files with only naming/ as a subdirectory. Self-evolving (17 files), ideas (14 files), s10 (3 files), diagnostics, and website content all share one flat directory. File prefixes (self-evolving-*, lp-do-ideas-*, s10-*) substitute for directory structure.",
@@ -6830,7 +7095,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T07:58:46.608Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "startup-loop-scripts-domain-dirs",
+        "target_path": "docs/plans/_archive/startup-loop-scripts-domain-dirs/plan.md",
+        "fact_find_slug": "startup-loop-scripts-domain-dirs"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/startup-loop-scripts-domain-dirs/plan.md",
+        "completed_at": "2026-03-03T12:15:35.967Z",
+        "outcome": "Completed via startup-loop-scripts-domain-dirs."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -7009,7 +7286,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "current_truth": "startup-baselines/ has 20 flat files (BRIK-forecast-seed.user.md, HBAG-channels.md, HEAD-offer.md, etc.) at the root alongside per-business subdirectories (BRIK/, HBAG/, HEAD/) for the same businesses. Naming is inconsistent: some files have date prefixes, some don't; some have .user. suffix, some don't; one date format has a missing hyphen. Subdirectories contain newer artifacts (demand-evidence-pack.md, S3-forecast/) while flat files are older baselines. PET has only flat files, no subdirectory. ~15 scripts read/write to this directory.",
@@ -7032,7 +7309,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-03T18:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "startup-baselines-per-business-consolidation",
+        "target_path": "docs/plans/_archive/startup-baselines-per-business-consolidation/plan.md",
+        "fact_find_slug": "startup-baselines-per-business-consolidation"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/startup-baselines-per-business-consolidation/plan.md",
+        "completed_at": "2026-03-03T15:47:31.788Z",
+        "outcome": "**TASK-01 (commit 69f80ee497):** Moved 20 flat files from `docs/business-os/startup-baselines/` root into per-business subdirectories (BRIK/, HBAG/, HEAD/, PET/). Created PET/ subdirectory. Dropped BIZ prefix from all filenames. Fixed missi"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -8129,7 +8418,7 @@
         "Unsaved-changes warning on navigation"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "evidence_refs": [
@@ -8144,7 +8433,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-04T00:15:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-auto-save-after-image",
+        "target_path": "docs/plans/_archive/xa-uploader-auto-save-after-image/plan.md",
+        "fact_find_slug": "xa-uploader-auto-save-after-image"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-auto-save-after-image/plan.md",
+        "completed_at": "2026-03-03T20:24:42.130Z",
+        "outcome": "**TASK-01: Aligned UI image roles with schema.** The `IMAGE_ROLES` array in `CatalogProductImagesFields.client.tsx` was updated from `[\"front\", \"side\", \"top\", \"detail\", \"lifestyle\", \"packaging\"]` to `[\"front\", \"side\", \"top\", \"back\", \"detail"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -8288,7 +8589,7 @@
       "next_scope_now": "Create R2 bucket, enable public access, update xa-b wrangler.toml with actual public URL, deploy both apps.",
       "adjacent_later": [],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.95,
       "evidence_refs": [
@@ -8304,7 +8605,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-04T00:15:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-r2-deployment-config",
+        "target_path": "docs/plans/_archive/xa-r2-deployment-config/plan.md",
+        "fact_find_slug": "xa-r2-deployment-config"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-r2-deployment-config/plan.md",
+        "completed_at": "2026-03-03T19:00:51.259Z",
+        "outcome": "### TASK-01: Add R2 image URL env var to xa-b CI build step Added `NEXT_PUBLIC_XA_IMAGES_BASE_URL: ${{ vars.XA_IMAGES_BASE_URL }}` to the xa-b build step in `.github/workflows/xa.yml` (line 129), alongside the existing `XA_CATALOG_CONTRACT_"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -9175,7 +9488,7 @@
       "current_truth": "The xa-b cart page displays line items in a default Table component with rounded corners (rounded-lg) and no product thumbnail images. This conflicts with the luxury-editorial design language used throughout the rest of the app and weakens the conversion funnel.",
       "next_scope_now": "Add product image thumbnails to cart line items and align cart styling with xa-b sharp-edge achromatic design language.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.9,
       "evidence_refs": [
@@ -9190,7 +9503,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-04T12:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-b-design-polish",
+        "target_path": "docs/plans/_archive/xa-b-design-polish/plan.md",
+        "fact_find_slug": "xa-b-design-polish"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-b-design-polish/plan.md",
+        "completed_at": "2026-03-04T13:13:40.164Z",
+        "outcome": "All 4 empty state locations in the xa-b storefront (product listing, cart, wishlist, designers) now use the design-system `EmptyState` component with consistent xa-b achromatic styling: `rounded-sm` border, `border-border-1`, uppercase head"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -9795,7 +10120,7 @@
       "next_scope_now": "Investigate i18n resolution failure in generateMetadata and determine whether noindex should be removed for this landing page.",
       "adjacent_later": [],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.95,
       "evidence_refs": [
@@ -9804,12 +10129,24 @@
         "first_observed_at: 2026-03-04"
       ],
       "created_at": "2026-03-04T14:30:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Private accommodation booking page is invisible to search engines due to broken meta tags (raw i18n keys) and noindex directive. This page is intended as a search landing page and funnel bridge for direct private room bookings — the highest-value conversion path.",
       "intended_outcome": {
         "type": "measurable",
         "statement": "Page serves correct meta title/description and is indexable by search engines, enabling organic discovery of private accommodation booking.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-private-accom-seo-content-regression",
+        "target_path": "docs/plans/_archive/brik-private-accom-seo-content-regression/plan.md",
+        "fact_find_slug": "brik-private-accom-seo-content-regression"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-private-accom-seo-content-regression/plan.md",
+        "completed_at": "2026-03-04T11:32:42.450Z",
+        "outcome": "**Meta tags and indexing (TASK-01):** Removed `{ optional: true }` from `getTranslations()` in `generateMetadata` so namespace load failures throw instead of silently returning raw i18n keys. Changed `isPublished: false` to `true` to remove"
       }
     },
     {
@@ -9836,7 +10173,7 @@
         "Internal cross-links to dorms comparison, experiences, location guide"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.9,
       "evidence_refs": [
@@ -9845,12 +10182,24 @@
         "first_observed_at: 2026-03-04"
       ],
       "created_at": "2026-03-04T14:30:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Without server-rendered content, the page cannot rank or engage users arriving from search. The apartment is the highest-margin product — its landing page needs descriptive copy and proper heading hierarchy to convert organic traffic.",
       "intended_outcome": {
         "type": "measurable",
         "statement": "Page has H1 heading, intro paragraph with feature highlights, and room content visible in server-rendered HTML — confirmed by crawl test showing structured headings.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-private-accom-seo-content-regression",
+        "target_path": "docs/plans/_archive/brik-private-accom-seo-content-regression/plan.md",
+        "fact_find_slug": "brik-private-accom-seo-content-regression"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-private-accom-seo-content-regression/plan.md",
+        "completed_at": "2026-03-04T11:32:42.450Z",
+        "outcome": "**Meta tags and indexing (TASK-01):** Removed `{ optional: true }` from `getTranslations()` in `generateMetadata` so namespace load failures throw instead of silently returning raw i18n keys. Changed `isPublished: false` to `true` to remove"
       }
     },
     {
@@ -9875,7 +10224,7 @@
       "next_scope_now": "Add JSON-LD structured data, fix URL spelling with redirect chain, set apartment-specific OG image, add hreflang x-default, and add in-content cross-links.",
       "adjacent_later": [],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.85,
       "evidence_refs": [
@@ -9884,12 +10233,24 @@
         "first_observed_at: 2026-03-04"
       ],
       "created_at": "2026-03-04T14:30:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Rich snippets (price, availability, rating) and correct URL spelling improve click-through from search results. The URL typo hurts keyword matching on the canonical URL for accommodation searches.",
       "intended_outcome": {
         "type": "measurable",
         "statement": "Page has JSON-LD LodgingBusiness schema, canonical URL corrected to accommodations (double m) with 301 redirect, apartment-specific OG image, and hreflang x-default tag.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-private-accom-seo-content-regression",
+        "target_path": "docs/plans/_archive/brik-private-accom-seo-content-regression/plan.md",
+        "fact_find_slug": "brik-private-accom-seo-content-regression"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-private-accom-seo-content-regression/plan.md",
+        "completed_at": "2026-03-04T11:32:42.450Z",
+        "outcome": "**Meta tags and indexing (TASK-01):** Removed `{ optional: true }` from `getTranslations()` in `generateMetadata` so namespace load failures throw instead of silently returning raw i18n keys. Changed `isPublished: false` to `true` to remove"
       }
     },
     {
@@ -10828,19 +11189,31 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.95,
       "evidence_refs": [
         "operator-stated: Edit mode has 8 data-field discrepancies vs Add/Save-as-Draft — stale brand/collection selectors, auto-derivation overwrites, createdAt reset, taxonomy merge resets, default brand bleed, read-only bag fields, stale cross-category fields, forced forSale/forRental"
       ],
       "created_at": "2026-03-04T15:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "The catalog editor's Edit mode doesn't faithfully round-trip product data — fields get overwritten, reset, or stuck after save/reload, making the editor unreliable for revising existing products.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Fix all 8 identified data-field discrepancies so Edit mode is a faithful editor of what Add/Save-as-Draft produces: brand/collection selectors sync on product switch, auto-derivation respects existing edits, timestamps preserved, taxonomy merge is non-destructive, defaults don't bleed, bag fields are editable, category changes clear stale fields, and commercial flags respect operator input.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-edit-add-parity",
+        "target_path": "docs/plans/_archive/xa-uploader-edit-add-parity/plan.md",
+        "fact_find_slug": "xa-uploader-edit-add-parity"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-edit-add-parity/plan.md",
+        "completed_at": "2026-03-04T15:46:06.054Z",
+        "outcome": "Fixed three confirmed data-field bugs in the xa-uploader catalog editor so that Edit mode (Revise Existing tab) faithfully round-trips product data. **TASK-01 — Stale selectors + SizeSelector guard (Issues 1 & 2):** Added a React `key` prop"
       }
     },
     {
@@ -14237,9 +14610,9 @@
       "business": "BRIK",
       "area_anchor": "BRIK reception inbox — N+1 query in thread list endpoint",
       "domain": "PRODUCTS",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "created_at": "2026-03-07T11:20:00.000Z",
       "why": "Thread list endpoint calls getThread() per visible thread, causing ~200 DB queries for 50 threads. Staff experience multi-second load times.",
       "intended_outcome": "Thread list loads from a single lean query returning only summary fields; detail data fetched only on thread selection.",
@@ -14247,7 +14620,19 @@
         "operator-stated: inbox thread list is very slow, clicking a thread should load near-instantly",
         "code-verified: apps/reception/src/app/api/mcp/inbox/route.ts lines 53-55 — Promise.all(visibleThreads.map(getThread))",
         "code-verified: apps/reception/src/lib/inbox/repositories.server.ts getThread() runs 4 parallel sub-queries per call"
-      ]
+      ],
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-perf-n-plus-one",
+        "target_path": "docs/plans/_archive/reception-inbox-perf-n-plus-one/plan.md",
+        "fact_find_slug": "reception-inbox-perf-n-plus-one"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-perf-n-plus-one/plan.md",
+        "completed_at": "2026-03-07T11:43:43.636Z",
+        "outcome": "**TASK-01 — Lean list query with LEFT JOIN:** Added `listThreadsWithLatestDraft()` to `repositories.server.ts` using a single SQL query with LEFT JOIN to fetch threads and their latest draft in one roundtrip. Added `buildThreadSummaryFromRo"
+      }
     },
     {
       "dispatch_id": "IDEA-DISPATCH-20260307112000-9031",
@@ -14257,16 +14642,28 @@
       "business": "BRIK",
       "area_anchor": "BRIK reception inbox — Gmail API blocks thread detail render",
       "domain": "PRODUCTS",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "created_at": "2026-03-07T11:20:00.000Z",
       "why": "getGmailThread() with format=full runs synchronously before thread detail renders, adding 100-500ms+ per click. DB-cached messages could display immediately.",
       "intended_outcome": "Thread detail renders from DB cache instantly; Gmail data fetched in background or skipped when cached messages are fresh.",
       "evidence_refs": [
         "operator-stated: clicking a message should load near-instantly",
         "code-verified: apps/reception/src/app/api/mcp/inbox/[threadId]/route.ts lines 34-40 — await getGmailThread() blocks response"
-      ]
+      ],
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-perf-n-plus-one",
+        "target_path": "docs/plans/_archive/reception-inbox-perf-n-plus-one/plan.md",
+        "fact_find_slug": "reception-inbox-perf-n-plus-one"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-perf-n-plus-one/plan.md",
+        "completed_at": "2026-03-07T11:43:43.636Z",
+        "outcome": "**TASK-01 — Lean list query with LEFT JOIN:** Added `listThreadsWithLatestDraft()` to `repositories.server.ts` using a single SQL query with LEFT JOIN to fetch threads and their latest draft in one roundtrip. Added `buildThreadSummaryFromRo"
+      }
     },
     {
       "dispatch_id": "IDEA-DISPATCH-20260307112000-9032",
@@ -14276,9 +14673,9 @@
       "business": "BRIK",
       "area_anchor": "BRIK reception inbox — no client cache, full re-fetch after actions",
       "domain": "PRODUCTS",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "created_at": "2026-03-07T11:20:00.000Z",
       "why": "useInbox hook re-fetches entire thread list (with N+1) after every action (save, regenerate, send, resolve, dismiss). No client-side cache or optimistic updates. Rapid thread clicks fire overlapping requests.",
       "intended_outcome": "Client-side thread cache with optimistic updates after actions; stale-while-revalidate pattern; AbortController for superseded requests.",
@@ -14286,7 +14683,19 @@
         "operator-stated: inbox performance is very poor",
         "code-verified: apps/reception/src/services/useInbox.ts — loadThreads() called after saveDraft/regenerateDraft/sendDraft/resolveThread/dismissThread",
         "code-verified: no SWR/React Query/deduplication in useInbox hook"
-      ]
+      ],
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-perf-n-plus-one",
+        "target_path": "docs/plans/_archive/reception-inbox-perf-n-plus-one/plan.md",
+        "fact_find_slug": "reception-inbox-perf-n-plus-one"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-perf-n-plus-one/plan.md",
+        "completed_at": "2026-03-07T11:43:43.636Z",
+        "outcome": "**TASK-01 — Lean list query with LEFT JOIN:** Added `listThreadsWithLatestDraft()` to `repositories.server.ts` using a single SQL query with LEFT JOIN to fetch threads and their latest draft in one roundtrip. Added `buildThreadSummaryFromRo"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -14522,7 +14931,7 @@
       "cluster_key": "BRIK-reception-inbox-ui",
       "area_anchor": "BRIK reception inbox — message body overflow and jargon",
       "domain": "PRODUCTS",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "feature_slug": "reception-inbox-ui-polish",
       "title": "Fix message body horizontal overflow and remove Source:D1 jargon",
@@ -14533,7 +14942,7 @@
         "apps/reception/src/components/inbox/ThreadDetailPane.tsx:101"
       ],
       "created_at": "2026-03-07T13:03:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "Email body text overflows horizontally on long URLs making content unreadable. Internal jargon 'Source: D1' is meaningless to staff.",
       "intended_outcome": {
         "type": "measurable",
@@ -14544,7 +14953,16 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
-        "outcome": "Fixed 9 inbox UI issues"
+        "outcome": "Fixed 9 inbox UI issues",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-ui-polish",
+        "target_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "fact_find_slug": "reception-inbox-ui-polish"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "completed_at": "2026-03-07T12:29:16.020Z",
+        "outcome": "Completed via reception-inbox-ui-polish."
       }
     },
     {
@@ -14558,7 +14976,7 @@
       "cluster_key": "BRIK-reception-inbox-ui",
       "area_anchor": "BRIK reception inbox — inbound/outbound message distinction",
       "domain": "PRODUCTS",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "feature_slug": "reception-inbox-ui-polish",
       "title": "Strengthen inbound vs outbound message visual distinction in dark mode",
@@ -14568,7 +14986,7 @@
         "apps/reception/src/components/inbox/ThreadDetailPane.tsx:158-179"
       ],
       "created_at": "2026-03-07T13:03:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "Staff cannot quickly distinguish sent replies from received messages when triaging inbox threads.",
       "intended_outcome": {
         "type": "measurable",
@@ -14579,7 +14997,16 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
-        "outcome": "Fixed 9 inbox UI issues"
+        "outcome": "Fixed 9 inbox UI issues",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-ui-polish",
+        "target_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "fact_find_slug": "reception-inbox-ui-polish"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "completed_at": "2026-03-07T12:29:16.020Z",
+        "outcome": "Completed via reception-inbox-ui-polish."
       }
     },
     {
@@ -14593,7 +15020,7 @@
       "cluster_key": "BRIK-reception-inbox-ui",
       "area_anchor": "BRIK reception inbox — action button visual hierarchy",
       "domain": "PRODUCTS",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "feature_slug": "reception-inbox-ui-polish",
       "title": "Improve action button visual hierarchy — Send prominent, destructive separated",
@@ -14603,7 +15030,7 @@
         "apps/reception/src/components/inbox/DraftReviewPanel.tsx:264-329"
       ],
       "created_at": "2026-03-07T13:03:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "Action buttons lack hierarchy — staff may misclick destructive action when intending to send.",
       "intended_outcome": {
         "type": "measurable",
@@ -14614,7 +15041,16 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
-        "outcome": "Fixed 9 inbox UI issues"
+        "outcome": "Fixed 9 inbox UI issues",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-ui-polish",
+        "target_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "fact_find_slug": "reception-inbox-ui-polish"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "completed_at": "2026-03-07T12:29:16.020Z",
+        "outcome": "Completed via reception-inbox-ui-polish."
       }
     },
     {
@@ -14628,7 +15064,7 @@
       "cluster_key": "BRIK-reception-inbox-ui",
       "area_anchor": "BRIK reception inbox — thread list scroll and badge labels",
       "domain": "PRODUCTS",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "feature_slug": "reception-inbox-ui-polish",
       "title": "Constrain thread list scroll height and shorten badge labels",
@@ -14639,7 +15075,7 @@
         "apps/reception/src/components/inbox/presentation.ts"
       ],
       "created_at": "2026-03-07T13:03:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "Thread list has no independent scroll — pushes detail pane below fold. Long badge labels truncate subjects.",
       "intended_outcome": {
         "type": "measurable",
@@ -14650,7 +15086,16 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
-        "outcome": "Fixed 9 inbox UI issues"
+        "outcome": "Fixed 9 inbox UI issues",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-ui-polish",
+        "target_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "fact_find_slug": "reception-inbox-ui-polish"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "completed_at": "2026-03-07T12:29:16.020Z",
+        "outcome": "Completed via reception-inbox-ui-polish."
       }
     },
     {
@@ -14664,7 +15109,7 @@
       "cluster_key": "BRIK-reception-inbox-ui",
       "area_anchor": "BRIK reception inbox — stat strip and header info dedup",
       "domain": "PRODUCTS",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "feature_slug": "reception-inbox-ui-polish",
       "title": "Remove duplicate stat display — stat strip vs header subtitle",
@@ -14674,7 +15119,7 @@
         "apps/reception/src/components/inbox/InboxWorkspace.tsx:153-206"
       ],
       "created_at": "2026-03-07T13:03:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "Same thread counts shown in 3 places wastes vertical space and adds visual noise.",
       "intended_outcome": {
         "type": "measurable",
@@ -14685,7 +15130,16 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
-        "outcome": "Fixed 9 inbox UI issues"
+        "outcome": "Fixed 9 inbox UI issues",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-ui-polish",
+        "target_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "fact_find_slug": "reception-inbox-ui-polish"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "completed_at": "2026-03-07T12:29:16.020Z",
+        "outcome": "Completed via reception-inbox-ui-polish."
       }
     },
     {
@@ -14699,7 +15153,7 @@
       "cluster_key": "BRIK-reception-inbox-ui",
       "area_anchor": "BRIK reception inbox — conversation height and timestamps",
       "domain": "PRODUCTS",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "feature_slug": "reception-inbox-ui-polish",
       "title": "Add conversation scroll constraint and use relative timestamps",
@@ -14710,7 +15164,7 @@
         "apps/reception/src/components/inbox/presentation.ts"
       ],
       "created_at": "2026-03-07T13:03:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "Long conversations push draft reply out of view. Full timestamps waste space in thread list.",
       "intended_outcome": {
         "type": "measurable",
@@ -14721,7 +15175,16 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
-        "outcome": "Fixed 9 inbox UI issues"
+        "outcome": "Fixed 9 inbox UI issues",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-ui-polish",
+        "target_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "fact_find_slug": "reception-inbox-ui-polish"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-ui-polish/plan.md",
+        "completed_at": "2026-03-07T12:29:16.020Z",
+        "outcome": "Completed via reception-inbox-ui-polish."
       }
     },
     {
@@ -14906,18 +15369,30 @@
         "apps/reception/src/lib/inbox/sync.server.ts",
         "apps/reception/src/lib/inbox/draft-core/quality-check.ts"
       ],
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
       "evidence_refs": [
         "operator-stated: No metric tracks whether AI drafts are sent as-is, edited then sent, or ignored (staff replied manually via Gmail). Aggregating this into a quality signal would identify inquiry categories where the generator fails."
       ],
       "created_at": "2026-03-07T13:19:22.493Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Draft acceptance rate is the simplest proxy for AI draft quality. Threads where drafts are consistently ignored indicate generator failure for that inquiry category.",
       "intended_outcome": {
         "type": "measurement",
         "statement": "Track per-thread draft outcome (sent-as-is / edited-then-sent / ignored) and aggregate into a quality signal surfaced in the inbox UI or ops dashboard.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-draft-acceptance-rate",
+        "target_path": "docs/plans/_archive/reception-inbox-draft-acceptance-rate/plan.md",
+        "fact_find_slug": "reception-inbox-draft-acceptance-rate"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-draft-acceptance-rate/plan.md",
+        "completed_at": "2026-03-07T13:54:19.447Z",
+        "outcome": "Completed via reception-inbox-draft-acceptance-rate."
       }
     },
     {
@@ -15203,7 +15678,7 @@
       "current_truth": "Threads stuck in In-Progress state have observability telemetry (added by email-logging-observability) but no automatic retry scheduling to unstick them. Manual reconciliation is the only recovery path.",
       "next_scope_now": "Investigate the reconciliation flow, determine how to auto-schedule retries for stuck In-Progress threads, and implement the scheduling mechanism.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.8,
       "evidence_refs": [
@@ -15217,7 +15692,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-07T14:25:47.166217+00:00",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-inprogress-recovery",
+        "target_path": "docs/plans/_archive/reception-inbox-inprogress-recovery/plan.md",
+        "fact_find_slug": "reception-inbox-inprogress-recovery"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-inprogress-recovery/plan.md",
+        "completed_at": "2026-03-07T15:50:15.048Z",
+        "outcome": "**TASK-01 (telemetry + query foundation):** Added `inbox_recovery` to the telemetry event type registry in `telemetry.server.ts`, enabling recovery actions to be logged in the D1 `thread_events` table. Added `findStaleAdmittedThreads` query"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -15239,7 +15726,7 @@
       "current_truth": "If draft_generate is called twice for the same thread before the first draft is acted on, both drafts persist. There is no dedup guard at the MCP tool boundary or the API route.",
       "next_scope_now": "Investigate current draft lifecycle in the DB layer, add a dedup check before draft creation to prevent duplicate pending drafts for the same thread.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.8,
       "evidence_refs": [
@@ -15254,7 +15741,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-07T14:25:47.166217+00:00",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-draft-dedup",
+        "target_path": "docs/plans/reception-inbox-draft-dedup/plan.md",
+        "fact_find_slug": "reception-inbox-draft-dedup"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/reception-inbox-draft-dedup/plan.md",
+        "completed_at": "2026-03-07T14:59:42.841Z",
+        "outcome": "**TASK-01 — `getPendingDraft` helper:** Added a new exported function `getPendingDraft(record)` to `api-models.server.ts` that filters the thread's drafts array by `status === \"generated\"` and returns the most recent match (or null). This i"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -15414,7 +15913,7 @@
       "current_truth": "No way to filter inbox threads by status, needsManualDraft flag, or sync freshness. Staff must scan the entire list to find threads needing attention.",
       "next_scope_now": "Add filter controls to the inbox thread list for status, needs-manual-draft, and sync age.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.8,
       "evidence_refs": [
@@ -15427,7 +15926,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-07T15:37:40.310752+00:00",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-thread-filters",
+        "target_path": "docs/plans/_archive/reception-inbox-thread-filters/plan.md",
+        "fact_find_slug": "reception-inbox-thread-filters"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-thread-filters/plan.md",
+        "completed_at": "2026-03-07T15:51:43.642Z",
+        "outcome": "Added client-side filter controls to the reception inbox ThreadList. A new `filters.ts` module defines five filter predicates (needs-draft, ready-to-send, sent, review-later, stale-sync) operating on the existing `InboxThreadSummary` type w"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -15588,7 +16099,7 @@
       "current_truth": "Guest room numbers are captured in thread metadata (guestRoomNumbers) but not passed to generateAgentDraft(). Drafts cannot reference specific rooms for personalized responses.",
       "next_scope_now": "Pass guestRoomNumbers from metadata to draft generation context so responses can reference the guest's room.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.9,
       "evidence_refs": [
@@ -15601,7 +16112,18 @@
         "source": "operator"
       },
       "created_at": "2026-03-07T15:37:40.310752+00:00",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-inbox-room-numbers-in-draft",
+        "micro_build_path": "docs/plans/_archive/reception-inbox-room-numbers-in-draft/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-inbox-room-numbers-in-draft/micro-build.md",
+        "completed_at": "2026-03-07T15:52:26.338Z",
+        "outcome": "Threaded guest room numbers from thread metadata through the entire draft generation pipeline. Added `guestRoomNumbers` to `ThreadContext` (draft-pipeline.server.ts), `DraftGenerationInput` (draft-core/generate.ts), and all three call sites"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -15624,7 +16146,7 @@
       "current_truth": "When draft generation fails, sync sets needsManualDraft=true but stores no error code or message. The UI shows 'needs manual draft' with no explanation. Staff must regenerate to discover what went wrong.",
       "next_scope_now": "Store draft failure reason in thread metadata and display it in the inbox UI so staff can act without guessing.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.8,
       "evidence_refs": [
@@ -15637,7 +16159,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-07T15:37:40.310752+00:00",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-draft-failure-reasons",
+        "target_path": "docs/plans/_archive/reception-inbox-draft-failure-reasons/plan.md",
+        "fact_find_slug": "reception-inbox-draft-failure-reasons"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-draft-failure-reasons/plan.md",
+        "completed_at": "2026-03-07T17:01:50.312Z",
+        "outcome": "TASK-01 added `deriveDraftFailureReason()` and `draftFailureReasonFromCode()` to `draft-pipeline.server.ts`. These functions extract staff-facing failure reason codes and messages from `AgentDraftResult`. The sync pipeline (`sync.server.ts`"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -15658,7 +16192,7 @@
       "current_truth": "If sync fails mid-batch (e.g. thread #30 of 50), the checkpoint still advances past all 50 threads. Threads #31-50 are permanently skipped on next sync. No retry mechanism for partially processed batches.",
       "next_scope_now": "Change checkpoint advancement to only update after all threads are successfully processed, or track per-thread progress to retry failed threads.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.75,
       "evidence_refs": [
@@ -15671,7 +16205,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-07T15:37:40.310752+00:00",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-inbox-partial-sync-recovery",
+        "target_path": "docs/plans/_archive/reception-inbox-partial-sync-recovery/plan.md",
+        "fact_find_slug": "reception-inbox-partial-sync-recovery"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-partial-sync-recovery/plan.md",
+        "completed_at": "2026-03-07T16:52:32.360Z",
+        "outcome": "**TASK-01: Per-thread error isolation and all-or-nothing checkpoint hold-back.** Extracted the entire per-thread processing body from `syncInbox()` into a new `processThread()` async helper function with a `ProcessThreadContext` parameter o"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -16271,19 +16817,30 @@
       "next_scope_now": "Replace nav taxonomy with Hermès bags-only structure: departments→iconic/everyday/mini, subcategories→Hermès bag families, secondary nav→New In/By Family/By Size, remove Brands",
       "adjacent_later": [],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.92,
       "evidence_refs": [
         "operator-stated: Hermès bags-only boutique — replace generic women/men/kids and clothing/jewelry taxonomy with Hermès bag tiers (iconic/everyday/mini) and authentic bag families"
       ],
       "created_at": "2026-03-08T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Nav taxonomy is generic fashion-retail; operator wants Hermès bags-only boutique framing with authentic Hermès bag family names across departments and subcategories.",
       "intended_outcome": {
         "type": "code-change",
         "statement": "xa-b nav displays Hermès bag taxonomy: iconic/everyday/mini departments, Hermès bag families as subcategories (Birkin/Kelly/Constance/Lindy, Evelyne/Picotin/Garden Party/Herbag, Mini Kelly/Roulis/Verrou/Egée), secondary nav without Brands link.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "xa-b-hermes-nav-taxonomy",
+        "micro_build_path": "docs/plans/_archive/xa-b-hermes-nav-taxonomy/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/xa-b-hermes-nav-taxonomy/micro-build.md",
+        "completed_at": "2026-03-08T10:10:07.094Z",
+        "outcome": "Completed via xa-b-hermes-nav-taxonomy."
       }
     },
     {
@@ -16685,7 +17242,7 @@
       "current_truth": "Brikette staging deploys take ~37.5 min (Cloudflare Pages Direct Upload dominates) plus 20-25 min of CI checks (lint/typecheck/tests/verify:*). There is no dedicated fast-staging workflow. The existing deploy_only fast path in reusable-app.yml only skips lint/typecheck/tests but still runs all verify:* steps and artifact upload/download overhead. Current staging job timeout is 15 min (too low for wrangler pages deploy). Build and deploy run in separate jobs with artifact upload/download adding unnecessary transfer overhead.",
       "next_scope_now": "Create .github/workflows/brikette-staging-fast.yml: triggered on push to staging branch and workflow_dispatch. Single job combining build + deploy (no artifact upload/download). Skip lint, typecheck, tests, post-deploy health checks. Stripped build command (no verify:* steps). Job timeout 60 minutes. Reuse existing wrangler pages deploy targeting brikette-website Cloudflare Pages project with CF_API_TOKEN + CF_ACCOUNT_ID secrets.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.93,
       "evidence_refs": [
@@ -16695,7 +17252,7 @@
         "code-ref: .github/workflows/reusable-app.yml"
       ],
       "created_at": "2026-03-08T15:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "The fact-find is complete — all analysis was provided by the operator. This is a single new workflow file with clearly scoped parameters. No architectural choices remain open. The implementation is bounded to one file, reuses existing secrets, and has a clear validation path (trigger it manually and confirm the run completes).",
       "intended_outcome": {
         "type": "operational",
@@ -16705,7 +17262,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/brikette-staging-fast-path/micro-build.md",
-        "processed_at": "2026-03-08T15:05:00.000Z"
+        "processed_at": "2026-03-08T15:05:00.000Z",
+        "target_kind": "build",
+        "target_slug": "brikette-staging-fast-path"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/brikette-staging-fast-path/micro-build.md",
+        "completed_at": "2026-03-08T16:16:49.895Z",
+        "outcome": "Completed via brikette-staging-fast-path."
       }
     },
     {
@@ -17437,7 +18001,7 @@
       "current_truth": "hooks/data hooks compose 10+ sequential Firebase subscriptions. useCheckinsTableData chains 10 independent hooks sequentially. useEndOfDayReportData stacks 6 cascading fetches. useActivitiesByCodeData creates N listeners per code in a loop. useRoomsByDate and useCheckinsByDate duplicate ~80 lines of range-subscription logic.",
       "next_scope_now": "Investigate parallelization options for independent Firebase subscriptions. Evaluate shared context providers (TillDataContext pattern) vs Promise.all for parallel reads. Assess deduplication of range subscription logic. Define migration path without breaking existing consumers.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.75,
       "evidence_refs": [
@@ -17452,7 +18016,19 @@
         "source": "auto"
       },
       "created_at": "2026-03-08T21:40:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-firebase-subscription-parallelization",
+        "target_path": "docs/plans/_archive/reception-firebase-subscription-parallelization/plan.md",
+        "fact_find_slug": "reception-firebase-subscription-parallelization"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-firebase-subscription-parallelization/plan.md",
+        "completed_at": "2026-03-09T02:55:03.409Z",
+        "outcome": "Completed via reception-firebase-subscription-parallelization."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -17997,7 +18573,7 @@
       "current_truth": "At least 4 components use arrays of independent boolean useState flags to track mutually exclusive modal/mode state: useCheckinsModes (3 flags: isEditMode/isDeleteMode/isAddGuestMode), useTillReconciliationUI (3 flags: showFloatForm/showExchangeForm/showTenderRemovalForm), DraftReviewPanel (4 flags: showRegenerateConfirm/showSendConfirm/showResolveConfirm/showDismissConfirm), Login (3 flags: showForgotPassword/showPinSetup/showPinUnlock). Each component manually zeroes all other flags on each toggle, and the 3 checkin flags thread through CheckinsTableView (28 props) producing substantial prop sprawl.",
       "next_scope_now": "Replace each boolean-flag array with a typed discriminated union state variable. Map caller updates. Verify that mutual-exclusivity invariant is preserved by the type system rather than by manual nulling logic. Reduce CheckinsTableView prop count by grouping mode-related props into a single mode-state object.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.82,
       "evidence_refs": [
@@ -18011,7 +18587,7 @@
         "type": "operational",
         "statement": "Each modal/mode state in reception uses a single discriminated union state variable. Illegal state combinations are impossible by construction. CheckinsTableView prop count is reduced via a grouped mode-state prop."
       },
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-03-09T10:00:00.000Z",
       "processed_by": {
         "route": "dispatch-routed",
@@ -18022,6 +18598,11 @@
         "processed_at": "2026-03-09T07:43:17.283Z",
         "fact_find_slug": "reception-modal-mode-discriminated-unions",
         "fact_find_path": "docs/plans/reception-modal-mode-discriminated-unions/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-modal-mode-discriminated-unions/plan.md",
+        "completed_at": "2026-03-09T10:34:19.277Z",
+        "outcome": "The reception check-ins flow now uses `CheckinMode` instead of three mutually exclusive booleans, and `CheckinsTableView` consumes a single `checkinMode` prop for its banners and row-click routing. The till cash-form flow now uses `TillCash"
       }
     },
     {
@@ -18048,7 +18629,7 @@
       "current_truth": "Multiple distinct issues cause unnecessary Firebase connections: (1) useCheckinsData and useCheckinsTableData are near-identical orchestration hooks that both subscribe to the same 9 Firebase paths simultaneously when both are active. (2) useActivitiesByCodeData opens one Firebase onValue listener per code (useEmailProgressData alone opens 25 listeners for codes 1-25). (3) useBookingMetaStatuses opens one listener per booking ref — N+1 pattern where N can be 50+. (4) FirebaseSubscriptionCacheProvider exists and ref-counts subscriptions but standalone hooks (useBookingsData, useGuestDetails, useActivitiesData) do not use it. (5) JSON.stringify used for deep equality on every Firebase update in useActivitiesByCodeData.",
       "next_scope_now": "Investigate which of the five sub-problems can be addressed without full architectural rework: (a) merge useCheckinsData/useCheckinsTableData, (b) switch useBookingMetaStatuses to a single /bookingMeta subtree listener, (c) switch useActivitiesByCodeData to single /activitiesByCode subtree listener with client-side filtering, (d) replace JSON.stringify equality with shallow comparison. FirebaseSubscriptionCacheProvider integration for standalone hooks may be deferred if complex.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.78,
       "evidence_refs": [
@@ -18062,13 +18643,23 @@
         "type": "operational",
         "statement": "The Checkins page opens at most 10 distinct Firebase listeners regardless of booking count. useActivitiesByCodeData uses a single subtree listener with client-side filtering. useCheckinsData and useCheckinsTableData are unified into one hook."
       },
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-03-09T10:00:00.000Z",
       "processed_by": {
         "feature_slug": "reception-firebase-subscription-deduplication",
         "fact_find_path": "docs/plans/reception-firebase-subscription-deduplication/fact-find.md",
         "route": "dispatch-routed",
-        "processed_at": "2026-03-09T10:30:00.000Z"
+        "processed_at": "2026-03-09T10:30:00.000Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-firebase-subscription-deduplication",
+        "target_path": "docs/plans/_archive/reception-firebase-subscription-deduplication/plan.md",
+        "fact_find_slug": "reception-firebase-subscription-deduplication"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-firebase-subscription-deduplication/plan.md",
+        "completed_at": "2026-03-09T08:23:00.503Z",
+        "outcome": "**TASK-01 — Dead code removal:** Deleted `useCheckinsData.ts` (orchestration hook with zero production call sites, confirmed by grep) and its test file. This removes 410 lines of code that duplicated logic already present in `useCheckinsTab"
       }
     },
     {
@@ -18253,7 +18844,7 @@
       "current_truth": "Navigation items and groupings are defined twice: once in the navSections array in AppNav.tsx and again independently in 4 modal files (OperationsModal, ManagementModal, TillModal, ManModal). Adding or renaming a route requires updating 5 files. This has already caused a route discrepancy: /end-of-day appears in AppNav's Till & Safe section while /eod-checklist appears in Admin — both labeled End of Day — and the same discrepancy is in the modal files. useAuth is also called twice per render (once in wrapper, once in HOC).",
       "next_scope_now": "Investigate whether the modal files can consume navSections from AppNav rather than maintaining parallel action arrays. Understand HOC pattern (withIconModal) and whether useAuth dedup is a simple fix.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.75,
       "evidence_refs": [
@@ -18266,8 +18857,20 @@
         "type": "operational",
         "statement": "Navigation items are defined once in AppNav (or a shared nav config) and consumed by both the nav bar and all modal variants. Adding a route requires one change."
       },
-      "queue_state": "enqueued",
-      "created_at": "2026-03-09T10:00:00.000Z"
+      "queue_state": "completed",
+      "created_at": "2026-03-09T10:00:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-appnav-dual-source",
+        "target_path": "docs/plans/_archive/reception-appnav-dual-source/plan.md",
+        "fact_find_slug": "reception-appnav-dual-source"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-appnav-dual-source/plan.md",
+        "completed_at": "2026-03-09T08:21:14.097Z",
+        "outcome": "Completed via reception-appnav-dual-source."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -18475,7 +19078,7 @@
       "current_truth": "apps/prime maintains its own 72-line logger (utils/logger.ts) with env-var reading and log-level filtering. The shared @acme/lib logger uses pino and is server-only. Prime is a PWA running in the browser and cannot use the server logger, so it reimplements the pattern independently.",
       "next_scope_now": "Determine whether to: (a) add a client-safe logger export to @acme/lib, (b) create a new @acme/logger package with separate server/client entry points, or (c) keep prime-local but improve it. Assess which other apps have the same gap.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.82,
       "evidence_refs": [
@@ -18484,12 +19087,24 @@
         "code-ref: packages/lib/src/logger/logger.server.ts"
       ],
       "created_at": "2026-03-09T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Prime duplicates logger infrastructure that should be shared. The right solution depends on how many other apps need a client logger and whether @acme/lib is the right home — that's a scoping decision that needs fact-finding before building.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Prime app logger.ts is replaced by a shared client-compatible logger utility, eliminating duplicate env-var reading and log-level logic.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-client-logger",
+        "target_path": "docs/plans/_archive/prime-client-logger/plan.md",
+        "fact_find_slug": "prime-client-logger"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-client-logger/plan.md",
+        "completed_at": "2026-03-09T09:05:16.633Z",
+        "outcome": "**TASK-01** — Added `packages/lib/src/logger/client.ts` to `@acme/lib`: New file exports: `LogLevel` type, `setLogLevel`, `getLogLevel`, default `logger` (variadic debug/info/warn/error) No forbidden imports (`server-only`, `pino`, `getRequ"
       }
     },
     {
@@ -18565,7 +19180,7 @@
       "current_truth": "ArrivalHomeProps has 11 props: firstName, checkInCode, isCodeLoading, isCodeStale, isOffline, onRefreshCode, preArrivalData, cashAmounts, nights, onChecklistItemClick, keycardStatus, className. The five code-loading props (checkInCode, isCodeLoading, isCodeStale, isOffline, onRefreshCode) are logically a single domain object but passed individually.",
       "next_scope_now": "Group checkInCode, isCodeLoading, isCodeStale, isOffline, onRefreshCode into ArrivalCodeState interface. Update all callers of ArrivalHome. No API changes, pure internal refactor.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.91,
       "evidence_refs": [
@@ -18573,12 +19188,23 @@
         "code-ref: apps/prime/src/components/arrival/ArrivalHome.tsx"
       ],
       "created_at": "2026-03-09T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "One component, one interface change, bounded callers. No architectural decision needed — the grouping is obvious from the props themselves. Directly buildable.",
       "intended_outcome": {
         "type": "operational",
         "statement": "ArrivalHome prop count reduced from 11 to ~7 by grouping the five code-loading props into a single ArrivalCodeState config object.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "prime-arrival-home-prop-sprawl",
+        "micro_build_path": "docs/plans/_archive/prime-arrival-home-prop-sprawl/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/prime-arrival-home-prop-sprawl/micro-build.md",
+        "completed_at": "2026-03-09T08:33:30.704Z",
+        "outcome": "Completed via prime-arrival-home-prop-sprawl."
       }
     },
     {
@@ -19559,7 +20185,7 @@
       "current_truth": "SafeManagement handlers (handleDeposit, handleBankDeposit, handleReset) all follow the same pattern (validate → run transaction steps → close modal on success → toast on error) but are implemented independently with 4-5 positional parameters each. handleReconcile takes 5 scalar params. BankDepositForm near-duplicates SafeDepositForm's form chrome with inline validation instead of using the shared safeTransactionFormSchema.",
       "next_scope_now": "Map all handler signatures. Assess whether a generic transaction handler factory or named-param objects would reduce duplication without over-abstracting. Scope: SafeManagement.tsx handlers only; do not change the mutation hooks.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.75,
       "evidence_refs": [
@@ -19570,8 +20196,20 @@
         "type": "operational",
         "statement": "Safe transaction handlers share a common structure. Adding a new transaction type does not require duplicating handler boilerplate."
       },
-      "queue_state": "enqueued",
-      "created_at": "2026-03-09T11:30:00.000Z"
+      "queue_state": "completed",
+      "created_at": "2026-03-09T11:30:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-safe-handler-param-sprawl",
+        "target_path": "docs/plans/_archive/reception-safe-handler-param-sprawl/plan.md",
+        "fact_find_slug": "reception-safe-handler-param-sprawl"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-safe-handler-param-sprawl/plan.md",
+        "completed_at": "2026-03-09T09:48:32.074Z",
+        "outcome": "**TASK-01 — BankDepositForm schema migration.** Replaced the inline `isNaN(parsedAmount) || parsedAmount <= 0` amount validation in `BankDepositForm.tsx` with a call to `safeTransactionFormSchema.safeParse({ amount: parsedAmount, keycardDif"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -19593,7 +20231,7 @@
       "current_truth": "Each loan removal chains 3-4 sequential Firebase operations (get → check → remove → log). For bulk loan removal (e.g. 10 keycard loans at checkout), this serialises ~30 round-trips. Firebase supports atomic multi-path updates that could batch these into 1-2 round-trips.",
       "next_scope_now": "Read useLoansMutations.ts to understand all operations. Assess which sequential reads can be batched using Firebase multi-path update(). Determine if the get() before remove() is necessary for business logic or just for optimistic tracking.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.72,
       "evidence_refs": [
@@ -19604,8 +20242,20 @@
         "type": "operational",
         "statement": "Loan removal uses Firebase multi-path atomic updates where possible. Bulk checkout completes in 1-3 round-trips rather than 30."
       },
-      "queue_state": "enqueued",
-      "created_at": "2026-03-09T11:30:00.000Z"
+      "queue_state": "completed",
+      "created_at": "2026-03-09T11:30:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-loans-sequential-firebase",
+        "target_path": "docs/plans/_archive/reception-loans-sequential-firebase/plan.md",
+        "fact_find_slug": "reception-loans-sequential-firebase"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-loans-sequential-firebase/plan.md",
+        "completed_at": "2026-03-09T09:51:09.289Z",
+        "outcome": "Completed via reception-loans-sequential-firebase."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -20147,6 +20797,103 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T10:01:39.458Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309104116-0536",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS",
+      "before_sha": "165449d60b68fc7d05e9d922ec48e95f687956d0",
+      "after_sha": "52eef5812dd982a85c1ddcf48b9b14345ad36e48",
+      "root_event_id": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:52eef5812dd982a85c1ddcf48b9b14345ad36e48",
+      "anchor_key": "catalog-currency-rates-tests-test",
+      "cluster_key": "bos:unknown:catalog-currency-rates-tests-test:BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS:52eef5812dd982a85c1ddcf48b9b14345ad36e48",
+      "cluster_fingerprint": "0000759e616fee0845131b79ba321467526b41ace85fdd8a4cb3c69f3318e084",
+      "lineage_depth": 0,
+      "area_anchor": "catalog currency rates tests test",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/currency-rates/__tests__/route.test.ts",
+        "apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/deploy-drain/__tests__/route.test.ts",
+        "apps/xa-uploader/src/app/api/catalog/deploy-drain/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/images/__tests__/route.test.ts",
+        "apps/xa-uploader/src/app/api/catalog/images/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/products/[slug]/__tests__/route.branches.test.ts",
+        "apps/xa-uploader/src/app/api/catalog/products/[slug]/__tests__/route.test.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS changed (165449d → 52eef58)",
+      "next_scope_now": "Investigate implications of catalog currency rates tests test delta for BOS",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "git-diff-range:HEAD~1..HEAD",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/currency-rates/__tests__/route.test.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/deploy-drain/__tests__/route.test.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/deploy-drain/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/images/__tests__/route.test.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/images/route.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/products/[slug]/__tests__/route.branches.test.ts",
+        "git-diff:M:apps/xa-uploader/src/app/api/catalog/products/[slug]/__tests__/route.test.ts"
+      ],
+      "created_at": "2026-03-09T10:41:16.535Z",
+      "queue_state": "enqueued",
+      "why": "Assess catalog currency rates tests test implications from BOS-BOS-CODEBASE_STRUCTURAL_SIGNALS delta for BOS.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated routing outcome and scoped next action for catalog currency rates tests test.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309104117-0859",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "51bbb67b2998cf55d3432b12105fae64f2278d38",
+      "after_sha": "a78ff2f788572c26f6a605219b0d1d8663a0cb4b",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:a78ff2f788572c26f6a605219b0d1d8663a0cb4b",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:a78ff2f788572c26f6a605219b0d1d8663a0cb4b",
+      "cluster_fingerprint": "50105e468f2035150baaccac82d8d353a861dea77fc98248344c642e485d84b0",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T10:41:17.858Z",
       "queue_state": "enqueued",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {

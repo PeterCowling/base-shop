@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Complete
+Status: Archived
 Domain: UI
 Workstream: Engineering
 Created: 2026-03-06
 Last-reviewed: 2026-03-06
-Last-updated: 2026-03-06
+Last-updated: 2026-03-09
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-uploader-status-and-media-model-rewrite
 Deliverable-Type: code-change

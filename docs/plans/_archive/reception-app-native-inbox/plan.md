@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Complete
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-06
 Last-reviewed: 2026-03-06
-Last-updated: 2026-03-06
+Last-updated: 2026-03-09
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-app-native-inbox
 Deliverable-Type: code-change

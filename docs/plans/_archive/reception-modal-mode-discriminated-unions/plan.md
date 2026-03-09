@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Complete
+Status: Archived
 Domain: UI
 Workstream: Engineering
 Created: 2026-03-09
@@ -126,7 +126,7 @@ Tasks are ordered so that the riskiest cross-hook interface change (`TillReconci
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:**
   - `apps/reception/src/hooks/utilities/useCheckinsModes.ts`
   - `apps/reception/src/components/checkins/CheckinsTable.tsx`
@@ -182,6 +182,10 @@ Tasks are ordered so that the riskiest cross-hook interface change (`TillReconci
   - Rollout: No feature flags. Pure type refactoring — deploy with next release.
   - Rollback: Revert commit. No data migration needed.
 - **Documentation impact:** None: no external docs reference these internals.
+- **Completion evidence (2026-03-09):**
+  - `apps/reception/src/hooks/utilities/useCheckinsModes.ts` now exports `CheckinMode` and stores a single `checkinMode` union state.
+  - `apps/reception/src/components/checkins/CheckinsTable.tsx` and `apps/reception/src/components/checkins/view/CheckinsTable.tsx` now route behavior and banners from `checkinMode` rather than three booleans.
+  - `apps/reception/src/hooks/utilities/__tests__/useCheckinsModes.test.ts` and `apps/reception/src/components/checkins/__tests__/CheckinsTable.test.tsx` now assert the union-shaped return contract.
 
 ---
 
@@ -193,7 +197,7 @@ Tasks are ordered so that the riskiest cross-hook interface change (`TillReconci
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:**
   - `apps/reception/src/hooks/client/till/useTillReconciliationUI.ts`
   - `apps/reception/src/hooks/useTillReconciliationLogic.ts`
@@ -253,6 +257,10 @@ Tasks are ordered so that the riskiest cross-hook interface change (`TillReconci
   - Rollout: No feature flags. Pure type refactoring.
   - Rollback: Revert commit.
 - **Documentation impact:** None.
+- **Completion evidence (2026-03-09):**
+  - `apps/reception/src/hooks/client/till/useTillReconciliationUI.ts` now exports `TillCashForm` and stores a single `cashForm` union state.
+  - `apps/reception/src/hooks/useTillReconciliationLogic.ts`, `apps/reception/src/components/till/TillReconciliation.tsx`, and `apps/reception/src/components/till/FormsContainer.tsx` now consume `cashForm` / `setCashForm` instead of the old boolean-setter trio.
+  - All affected till tests and parity mocks now use the union-shaped API.
 
 ---
 
@@ -264,7 +272,7 @@ Tasks are ordered so that the riskiest cross-hook interface change (`TillReconci
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:**
   - `apps/reception/src/components/inbox/DraftReviewPanel.tsx`
 - **Depends on:** -
@@ -307,6 +315,9 @@ Tasks are ordered so that the riskiest cross-hook interface change (`TillReconci
   - Rollout: No feature flags.
   - Rollback: Revert commit.
 - **Documentation impact:** None.
+- **Completion evidence (2026-03-09):**
+  - `apps/reception/src/components/inbox/DraftReviewPanel.tsx` now uses a single `confirmDialog` discriminated union for regenerate/send/resolve/dismiss confirmation state.
+  - All four `ConfirmModal` instances now derive open/close behavior from that union, eliminating impossible multi-dialog combinations.
 
 ---
 
@@ -318,7 +329,7 @@ Tasks are ordered so that the riskiest cross-hook interface change (`TillReconci
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:**
   - `apps/reception/src/components/Login.tsx`
 - **Depends on:** -
@@ -364,6 +375,9 @@ Tasks are ordered so that the riskiest cross-hook interface change (`TillReconci
   - Rollout: No feature flags.
   - Rollback: Revert commit.
 - **Documentation impact:** None.
+- **Completion evidence (2026-03-09):**
+  - `apps/reception/src/components/Login.tsx` now uses a single `loginPanel` union to drive credentials, forgot-password, pin-setup, and pin-unlock views.
+  - The mount effect, focus effect, and panel transition handlers now switch on `loginPanel` instead of maintaining three independent booleans.
 
 ---
 
@@ -375,7 +389,7 @@ Tasks are ordered so that the riskiest cross-hook interface change (`TillReconci
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:**
   - `[readonly] apps/reception/src/` — verification only; fix any residual type/lint errors
 - **Depends on:** TASK-01, TASK-02, TASK-03, TASK-04
@@ -406,6 +420,10 @@ Tasks are ordered so that the riskiest cross-hook interface change (`TillReconci
 - **What would make this >=90%:** Already at 90%.
 - **Rollout / rollback:** Not applicable — verification task.
 - **Documentation impact:** None.
+- **Completion evidence (2026-03-09):**
+  - `pnpm --filter @apps/reception typecheck` -> pass
+  - `pnpm --filter @apps/reception lint` -> pass with 13 warnings and 0 errors
+  - Repo grep confirms the completed union-state contract is present across `useCheckinsModes`, `useTillReconciliationUI`, `DraftReviewPanel`, and `Login`.
 
 ---
 

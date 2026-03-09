@@ -5,7 +5,7 @@ Domain: Platform
 Workstream: Engineering
 Created: 2026-03-09
 Last-reviewed: 2026-03-09
-Last-updated: 2026-03-09T14:10Z
+Last-updated: 2026-03-09T12:55Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: writer-lock-patch-return-offload
 Deliverable-Type: code-change
@@ -24,7 +24,7 @@ Auto-Build-Intent: plan+auto
 This plan implements the next slice identified by `writer-lock-operational-hardening`: replace shared-checkout mutable Codex offload with a patch-return pilot that keeps the writer lock around only the serialized apply and commit window. The first rollout is intentionally narrow. It validates the current Codex CLI contract, chooses a patch artifact format, updates the shared protocol, and pilots the new route on `build-biz` rather than attempting a repo-wide executor migration. Shared-checkout `workspace-write` remains as an explicit temporary fallback until the pilot proves the new contract.
 
 ## Active tasks
-- [ ] TASK-01: Spike the current Codex patch-return invocation and artifact contract
+- [x] TASK-01: Spike the current Codex patch-return invocation and artifact contract
 - [ ] TASK-02: Horizon checkpoint - confirm the pilot contract from spike evidence
 - [ ] TASK-03: Implement the shared patch-return protocol and pilot-facing executor docs
 - [ ] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
@@ -80,7 +80,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | SPIKE | Validate the current Codex CLI invocation and patch artifact contract for patch-return offload | 85% | S | Pending | - | TASK-02 |
+| TASK-01 | SPIKE | Validate the current Codex CLI invocation and patch artifact contract for patch-return offload | 85% | S | Complete (2026-03-09) | - | TASK-02 |
 | TASK-02 | CHECKPOINT | Reassess downstream implementation from TASK-01 spike evidence | 95% | S | Pending | TASK-01 | TASK-03 |
 | TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 83% | M | Pending | TASK-02 | TASK-04, TASK-05 |
 | TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 81% | M | Pending | TASK-03 | TASK-05 |
@@ -108,7 +108,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:** `docs/plans/writer-lock-patch-return-offload/spike-01-codex-patch-return.md`, `[readonly] .claude/skills/_shared/build-offload-protocol.md`, `[readonly] .claude/skills/lp-do-build/modules/build-biz.md`
 - **Depends on:** -
 - **Blocks:** TASK-02
@@ -137,6 +137,12 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Notes / references:**
   - local `codex exec --help`
   - `docs/plans/writer-lock-operational-hardening/build-offload-redesign.md`
+  - Build evidence (2026-03-09):
+    - Created `docs/plans/writer-lock-patch-return-offload/spike-01-codex-patch-return.md`.
+    - Confirmed the current local `codex exec --help` output does not expose `-a never`.
+    - Probed unified-diff patch return in two temp repos: plain `--sandbox read-only` and `--ephemeral -c 'mcp_servers={}' --sandbox read-only`.
+    - Both probes failed to emit a patch artifact before manual termination; `last-message.txt` remained empty and stderr showed MCP startup plus state DB migration warnings.
+    - Spike verdict: invalidating. TASK-02 must decide whether the next slice needs environment/runtime repair or a different runner shape before TASK-03/TASK-04 proceed.
 
 ### TASK-02: Horizon checkpoint - confirm the pilot contract from spike evidence
 - **Type:** CHECKPOINT

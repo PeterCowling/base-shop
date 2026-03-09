@@ -25,13 +25,13 @@ import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData
 import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 import { showToast } from "../../utils/toastUtils";
+import DateSelector from "../common/DateSelector";
 import { PageShell } from "../common/PageShell";
 import ReceptionSkeleton from "../common/ReceptionSkeleton";
 import { getDepositForItem } from "../loans/LoanUtils";
 
 import type { Guest } from "./CheckoutTable";
 import CheckoutTable from "./CheckoutTable";
-import DateSelector from "./DaySelector";
 
 type CheckoutProps = {
   debug?: boolean;
@@ -338,11 +338,14 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
   return (
     <PageShell title="CHECKOUTS">
       <div className="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow-lg">
-        <DateSelector
-          selectedDate={selectedDate}
-          onDateChange={setSelectedDate}
-          username={user.user_name}
-        />
+          <DateSelector
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
+            accessMode="unrestricted"
+            calendarPlacement="inline"
+            calendarColorVariant="primary"
+            username={user.user_name}
+          />
 
         {!!error && (
           <div className="font-semibold text-error-main">

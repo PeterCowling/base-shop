@@ -6,12 +6,12 @@ import { Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms
 
 import type { CheckinMode } from "../../../hooks/utilities/useCheckinsModes";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
+import DateSelector from "../../common/DateSelector";
 import { FilterToolbar } from "../../common/FilterToolbar";
 import { OperationalTableScreen } from "../../common/OperationalTableScreen";
 import ReceptionSkeleton from "../../common/ReceptionSkeleton";
 import { TableCard } from "../../common/TableCard";
 import BookingRow from "../BookingRow";
-import DateSelector from "../DateSelector";
 import ArchiveConfirmationModal from "../header/ArchiveConfirmationModal";
 import BookingModal from "../header/BookingModal";
 import CheckinsHeader from "../header/CheckinsHeader";
@@ -133,6 +133,8 @@ const CheckinsTableView: React.FC<Props> = ({
           <DateSelector
             selectedDate={selectedDate}
             onDateChange={onDateChange}
+            accessMode="role-aware-calendar"
+            calendarColorVariant="primary"
           />
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2.5 text-sm text-muted-foreground cursor-pointer select-none group">

@@ -8,9 +8,9 @@ import { useCheckoutCountsByRoomForDate } from "../../hooks/orchestrations/prepa
 import useInHouseGuestsByRoom from "../../hooks/orchestrations/prepare/useInHouseGuestsByRoom";
 import usePrepareDashboardData from "../../hooks/orchestrations/prepare/usePrepareDashboard";
 import { getLocalToday, isToday as isTodayDate } from "../../utils/dateUtils";
+import DateSelector from "../common/DateSelector";
 
 import CleaningPriorityTable from "./CleaningPriorityTable";
-import DateSelector from "./DateSelectorPP";
 import PreparePage from "./PreparePage";
 
 function PrepareDashboard(): JSX.Element {
@@ -72,6 +72,7 @@ function PrepareDashboard(): JSX.Element {
     <DateSelector
       selectedDate={selectedDate}
       onDateChange={setSelectedDate}
+      calendarColorVariant="warning"
       username={user?.user_name ?? ""}
     />
   );

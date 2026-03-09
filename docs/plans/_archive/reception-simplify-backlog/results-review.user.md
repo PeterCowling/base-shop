@@ -2,20 +2,17 @@
 Type: Results-Review
 Status: Draft
 Feature-Slug: reception-simplify-backlog
-Review-date: 2026-03-08
+Review-date: 2026-03-09
 artifact: results-review
 ---
 
 # Results Review
 
 ## Observed Outcomes
-- `BarOrderDomain.ts` created; 3 mutation files now import shared types — no more duplicate interface definitions in the bar mutation layer.
-- 6 files deleted (3 zero-logic wrapper hooks + 3 vacuous tests). `SafeManagement.tsx` now calls `useTillShiftContext()` directly.
-- `RadioOption<T>` shared component created at `components/common/RadioOption.tsx`; `DocumentTypeSelector` and `PaymentMethodSelector` each reduced by ~30 lines.
-- `SafeManagement.tsx` reduced from 9 independent boolean state vars to 1 discriminated union `useState<SafeModal>(null)` — mutual exclusivity enforced structurally.
-- `useDropdownMenu` hook extracted; `KeycardDepositButton` loses `menuOpen`, `menuVisible`, `menuPosition`, `buttonRef`, `timeoutsRef`, `setTrackedTimeout` from its body.
-- 4 `error.tsx` files added covering root, till-reconciliation, safe-management, and bar segments — previously the app had zero error boundaries.
-- TypeScript: 0 errors. ESLint: 0 errors (pre-existing warnings only). Bug scan: 0 findings.
+- 26 new `error.tsx` segment boundaries added across all unguarded reception routes in commit `f2d32b2935`.
+- TypeScript and lint both pass clean with 0 errors.
+- `find apps/reception/src/app -name "error.tsx" | wc -l` = 30 (4 existing + 26 new) — all route segments now covered.
+- Fact-find revealed clusters 1–6 of the simplify backlog were already resolved; scope correctly narrowed to error boundaries only.
 
 ## Standing Updates
 - No standing updates: no registered artifacts changed
@@ -45,7 +42,7 @@ This section is non-blocking during the warn window. After one loop cycle (~14 d
 will be promoted to a hard gate. A valid verdict keyword is required to clear the warn.
 -->
 
-- **Intended:** All 7 clusters resolved with no regressions. Shared type file `types/bar/BarOrderDomain.ts` created. Three thin hooks removed. `RadioOption` shared component created. Auth error paths confirmed (pre-existing). `SafeManagement` modal state converted to discriminated union. `useDropdownMenu` hook extracted. Error boundaries added to app segments.
-- **Observed:** All 6 implement tasks completed with typecheck and lint passing locally. Cluster 4 (auth error coverage) was confirmed complete during fact-find — no code task was needed. CI is running (Validate Reception, Core Platform CI). All TC validation contracts satisfied via grep/file checks.
+- **Intended:** All 26 unguarded reception route segments have a segment-level error boundary, limiting crash blast radius to the affected route rather than the full app.
+- **Observed:** All 26 route segments now have `error.tsx`. Root + 3 pre-existing boundaries unchanged. Commit `f2d32b2935`.
 - **Verdict:** Met
-- **Notes:** All clusters addressed. CI is pending but local validation gates all pass. No regressions introduced — this is a pure structural refactor with no logic changes.
+- **Notes:** n/a

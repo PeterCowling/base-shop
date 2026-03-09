@@ -1,7 +1,7 @@
 {
   "schema_version": "results-review.signals.v1",
-  "generated_at": "2026-03-08T20:16:54.841Z",
+  "generated_at": "2026-03-09T12:22:09.838Z",
   "plan_slug": "reception-simplify-backlog",
-  "source_path": "docs/plans/reception-simplify-backlog/results-review.user.md",
+  "source_path": "../docs/plans/reception-simplify-backlog/results-review.user.md",
   "items": []
 }

@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { formatAuditDate, formatQuantityDelta, type LedgerEvent } from "../../lib/inventory-utils";
+import { extractArray, formatAuditDate, formatQuantityDelta, inventoryApiUrl, type LedgerEvent } from "../../lib/inventory-utils";
 
 type StockLedgerProps = {
   shop: string | null;
@@ -49,18 +49,19 @@ export function StockLedger({ shop }: StockLedgerProps) {
       setNextCursor(null);
       return;
     }
+    loadMoreControllerRef.current?.abort();
     const controller = new AbortController();
     setLoading(true);
     setError(null);
     setNextCursor(null);
 
-    fetch(`/api/inventory/${encodeURIComponent(shop)}/ledger?${buildLedgerParams(50).toString()}`, {
+    fetch(`${inventoryApiUrl(shop, "ledger")}?${buildLedgerParams(50).toString()}`, {
       signal: controller.signal,
     })
       .then((r) => r.json())
       .then((data: unknown) => {
-        const d = data as { events?: LedgerEvent[]; nextCursor?: string | null };
-        setEvents(d.events ?? []);
+        const d = data as { nextCursor?: string | null };
+        setEvents(extractArray<LedgerEvent>(data, "events"));
         setNextCursor(d.nextCursor ?? null);
       })
       .catch((err: unknown) => {
@@ -81,11 +82,11 @@ export function StockLedger({ shop }: StockLedgerProps) {
     setLoadingMore(true);
     try {
       const resp = await fetch(
-        `/api/inventory/${encodeURIComponent(shop)}/ledger?${buildLedgerParams(50, nextCursor).toString()}`,
+        `${inventoryApiUrl(shop, "ledger")}?${buildLedgerParams(50, nextCursor).toString()}`,
         { signal: controller.signal },
       );
-      const data = (await resp.json()) as { events?: LedgerEvent[]; nextCursor?: string | null };
-      setEvents((prev) => [...prev, ...(data.events ?? [])]);
+      const data = (await resp.json()) as { nextCursor?: string | null };
+      setEvents((prev) => [...prev, ...extractArray<LedgerEvent>(data, "events")]);
       setNextCursor(data.nextCursor ?? null);
     } catch (err) {
       if (err instanceof Error && err.name === "AbortError") return;

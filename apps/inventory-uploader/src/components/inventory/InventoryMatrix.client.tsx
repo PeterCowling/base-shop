@@ -3,7 +3,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { extractArray, type InventoryItem, variantLabel } from "../../lib/inventory-utils";
+import { extractArray, inventoryApiUrl, type InventoryItem, itemKey, variantLabel } from "../../lib/inventory-utils";
 
 type SortKey = "sku" | "quantity";
 
@@ -32,7 +32,7 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
     const controller = new AbortController();
     setLoading(true);
     setError(null);
-    fetch(`/api/inventory/${encodeURIComponent(shop)}`, { signal: controller.signal })
+    fetch(inventoryApiUrl(shop), { signal: controller.signal })
       .then((r) => r.json())
       .then((data: unknown) => {
         const list = extractArray<InventoryItem>(data, "items");
@@ -84,9 +84,7 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
 
   if (items.length === 0) {
     return (
-      <div className="space-y-3">
-        <p className="text-sm text-gate-muted">No inventory found. Import a CSV to get started.</p>
-      </div>
+      <p className="text-sm text-gate-muted">No inventory found. Import a CSV to get started.</p>
     );
   }
 
@@ -113,7 +111,7 @@ export function InventoryMatrix({ shop, selectedSku, onSelectSku, onAdjust, onIn
       <ul className="divide-y divide-gate-border">
         {sorted.map((item) => {
           const vLabel = variantLabel(item.variantAttributes);
-          const vk = `${item.sku}#${vLabel}`;
+          const vk = itemKey(item);
           const isLowStock =
             typeof item.lowStockThreshold === "number" &&
             item.quantity <= item.lowStockThreshold;

@@ -7,6 +7,7 @@ import { getApiErrorMessage } from "../../lib/api-helpers";
 import {
   type AuditEntry,
   createKey,
+  extractArray,
   formatAuditDate,
   HISTORY_DISPLAY_LIMIT,
   inventoryApiUrl,
@@ -50,7 +51,7 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
     fetch(inventoryApiUrl(shop, "inflows"))
       .then((r) => r.json())
       .then((data: unknown) => {
-        setHistory(((data as { events?: AuditEntry[] }).events) ?? []);
+        setHistory(extractArray<AuditEntry>(data, "events"));
       })
       .catch(() => {});
   }, [shop]);
@@ -63,10 +64,10 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
       fetch(inventoryApiUrl(shop, "inflows"), { signal }).then((r) => r.json()),
     ]).then(([invResult, histResult]) => {
       if (invResult.status === "fulfilled") {
-        setInventory(((invResult.value as { items?: InventoryItem[] }).items) ?? []);
+        setInventory(extractArray<InventoryItem>(invResult.value, "items"));
       }
       if (histResult.status === "fulfilled") {
-        setHistory(((histResult.value as { events?: AuditEntry[] }).events) ?? []);
+        setHistory(extractArray<AuditEntry>(histResult.value, "events"));
       }
     });
     return () => controller.abort();

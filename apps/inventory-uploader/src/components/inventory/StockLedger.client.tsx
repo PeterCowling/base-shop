@@ -9,16 +9,10 @@ type StockLedgerProps = {
   shop: string | null;
 };
 
-const TYPE_LABELS: Record<LedgerEvent["type"], string> = {
-  adjustment: "Adjustment",
-  inflow: "Inflow",
-  sale: "Sale",
-};
-
-const TYPE_COLORS: Record<LedgerEvent["type"], string> = {
-  adjustment: "text-gate-status-draft",
-  inflow: "text-gate-status-ready",
-  sale: "text-gate-muted",
+const EVENT_TYPE_CONFIG: Record<LedgerEvent["type"], { label: string; color: string }> = {
+  adjustment: { label: "Adjustment", color: "text-gate-status-draft" },
+  inflow: { label: "Inflow", color: "text-gate-status-ready" },
+  sale: { label: "Sale", color: "text-gate-muted" },
 };
 
 export function StockLedger({ shop }: StockLedgerProps) {
@@ -144,8 +138,8 @@ export function StockLedger({ shop }: StockLedgerProps) {
                       ) : null}
                     </p>
                     <div className="flex items-center gap-1.5 text-2xs">
-                      <span className={TYPE_COLORS[ev.type] ?? "text-gate-muted"}>
-                        {TYPE_LABELS[ev.type] ?? ev.type}
+                      <span className={EVENT_TYPE_CONFIG[ev.type]?.color ?? "text-gate-muted"}>
+                        {EVENT_TYPE_CONFIG[ev.type]?.label ?? ev.type}
                       </span>
                       <span className="text-gate-muted">{formatAuditDate(ev.timestamp)}</span>
                     </div>

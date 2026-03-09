@@ -39,12 +39,11 @@ type DropZoneProps = {
 
 function DropZone({ shop, file, dragging, fileRef, onFile, onDragChange }: DropZoneProps) {
   return (
-    <div
-      role="button"
-      tabIndex={0}
+    <button
+      type="button"
       aria-label="Upload inventory file"
-       
-      className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-5 text-center transition ${
+      disabled={!shop}
+      className={`flex w-full flex-col items-center justify-center rounded-lg border-2 border-dashed px-4 py-5 text-center transition ${
         dragging ? "border-gate-accent bg-gate-accent/5" : "border-gate-border hover:border-gate-accent/50"
       } ${!shop ? "cursor-not-allowed opacity-50" : "cursor-pointer"}`}
       onDragOver={(e) => { e.preventDefault(); if (shop) onDragChange(true); }}
@@ -56,8 +55,7 @@ function DropZone({ shop, file, dragging, fileRef, onFile, onDragChange }: DropZ
         const f = e.dataTransfer.files[0];
         if (f) onFile(f);
       }}
-      onClick={() => shop && fileRef.current?.click()}
-      onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") fileRef.current?.click(); }}
+      onClick={() => fileRef.current?.click()}
     >
       <input
         ref={fileRef}
@@ -78,7 +76,7 @@ function DropZone({ shop, file, dragging, fileRef, onFile, onDragChange }: DropZ
           {shop ? "Drop CSV/JSON or click to browse" : "Select a shop first"}
         </span>
       )}
-    </div>
+    </button>
   );
 }
 

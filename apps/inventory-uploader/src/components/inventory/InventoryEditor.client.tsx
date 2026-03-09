@@ -1,15 +1,9 @@
 /* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-type VariantItem = {
-  sku: string;
-  productId: string;
-  quantity: number;
-  variantAttributes: Record<string, string>;
-  lowStockThreshold?: number;
-};
+import { type InventoryItem, variantLabel } from "../../lib/inventory-utils";
 
 type InventoryEditorProps = {
   shop: string | null;
@@ -25,17 +19,12 @@ type EditState = {
   error: string | null;
 };
 
-function variantLabel(attrs: Record<string, string>): string {
-  const entries = Object.entries(attrs).sort(([a], [b]) => a.localeCompare(b));
-  return entries.length > 0 ? entries.map(([k, v]) => `${k}: ${v}`).join(", ") : "(default)";
-}
-
 function VariantRow({
   item,
   onSaved,
   shop,
 }: {
-  item: VariantItem;
+  item: InventoryItem;
   onSaved: () => void;
   shop: string;
 }) {
@@ -79,7 +68,7 @@ function VariantRow({
 
   return (
     <div className="rounded-lg border border-gate-border bg-gate-surface p-3 space-y-2">
-      <p className="text-xs font-medium text-gate-ink">{variantLabel(item.variantAttributes)}</p>
+      <p className="text-xs font-medium text-gate-ink">{variantLabel(item.variantAttributes, "(default)")}</p>
 
       <div className="grid grid-cols-2 gap-2">
         <label className="block space-y-0.5">
@@ -89,7 +78,7 @@ function VariantRow({
             min={0}
             value={edit.quantity}
             onChange={(e) => setEdit((s) => ({ ...s, quantity: Math.max(0, Number(e.target.value)) }))}
-             
+
             className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
           />
         </label>
@@ -106,7 +95,7 @@ function VariantRow({
                 lowStockThreshold: e.target.value === "" ? "" : Math.max(0, Number(e.target.value)),
               }))
             }
-             
+
             className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
           />
         </label>
@@ -117,7 +106,7 @@ function VariantRow({
           type="button"
           disabled={!dirty || edit.saving}
           onClick={() => void save()}
-           
+
           className="rounded bg-gate-accent px-3 py-1 text-xs font-medium text-gate-on-accent hover:opacity-90 disabled:opacity-40"
         >
           {edit.saving ? "Saving…" : "Save"}
@@ -130,38 +119,39 @@ function VariantRow({
 }
 
 export function InventoryEditor({ shop, sku, onSaved }: InventoryEditorProps) {
-  const [variants, setVariants] = useState<VariantItem[]>([]);
+  const [variants, setVariants] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const exportAnchorRef = useRef<HTMLAnchorElement | null>(null);
 
   useEffect(() => {
     if (!shop || !sku) {
       setVariants([]);
       return;
     }
-    let cancelled = false;
+    const controller = new AbortController();
     setLoading(true);
     setError(null);
-    fetch(`/api/inventory/${encodeURIComponent(shop)}/${encodeURIComponent(sku)}`)
+    fetch(`/api/inventory/${encodeURIComponent(shop)}/${encodeURIComponent(sku)}`, { signal: controller.signal })
       .then((r) => r.json())
       .then((data: unknown) => {
-        if (cancelled) return;
         const list =
           data &&
           typeof data === "object" &&
           "variants" in data &&
           Array.isArray((data as { variants: unknown }).variants)
-            ? (data as { variants: VariantItem[] }).variants
+            ? (data as { variants: InventoryItem[] }).variants
             : [];
         setVariants(list);
       })
-      .catch(() => {
-        if (!cancelled) setError("Failed to load SKU variants.");
+      .catch((err: unknown) => {
+        if (err instanceof Error && err.name === "AbortError") return;
+        setError("Failed to load SKU variants.");
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        setLoading(false);
       });
-    return () => { cancelled = true; };
+    return () => controller.abort();
   }, [shop, sku]);
 
   if (!shop || !sku) {
@@ -176,18 +166,18 @@ export function InventoryEditor({ shop, sku, onSaved }: InventoryEditorProps) {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <h2 className="text-sm font-semibold text-gate-ink">{sku}</h2>
+        {/* Hidden anchor used for CSV export — avoids DOM create/destroy per click */}
+        <a ref={exportAnchorRef} className="sr-only" aria-hidden="true" />
         <button
           type="button"
           onClick={() => {
-            const url = `/api/inventory/${encodeURIComponent(shop)}/export?format=csv`;
-            const a = document.createElement("a");
-            a.href = url;
+            const a = exportAnchorRef.current;
+            if (!a) return;
+            a.href = `/api/inventory/${encodeURIComponent(shop)}/export?format=csv`;
             a.download = "";
-            document.body.appendChild(a);
             a.click();
-            document.body.removeChild(a);
           }}
-           
+
           className="rounded px-2 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink focus-visible:hover:ring-gate-accent"
         >
           Export CSV

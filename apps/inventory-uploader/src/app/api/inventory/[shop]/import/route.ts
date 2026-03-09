@@ -117,7 +117,10 @@ export async function POST(
         rows = parseCsv(text);
       }
     } else if (contentType.includes("application/json")) {
-      const body = await req.json() as unknown;
+      const body = await req.json().catch(() => null) as unknown;
+      if (body === null) {
+        return NextResponse.json({ ok: false, error: "Invalid JSON body" }, { status: 400 });
+      }
       const arr = Array.isArray(body) ? body : [body];
       rows = arr as Record<string, string>[];
       isJson = true;

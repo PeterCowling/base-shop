@@ -112,7 +112,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Replace direct startup-loop math source imports with the centralized package boundary | 85% | S | Complete (2026-03-09) | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-13 |
-| TASK-02 | IMPLEMENT | Harden graph, optimization, and survival modules into repo-owned helper contracts with tests | 75% | M | Pending | - | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
+| TASK-02 | IMPLEMENT | Harden graph, optimization, and survival modules into repo-owned helper contracts with tests | 80% | M | Pending | - | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-03 | INVESTIGATE | Define the posterior belief, utility, and policy-state contract | 75% | M | Complete (2026-03-09) | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
 | TASK-04 | INVESTIGATE | Define the outcome-closure and verified-measurement contract | 75% | M | Complete (2026-03-09) | - | TASK-06, TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
 | TASK-05 | IMPLEMENT | Implement the versioned belief-state and utility-computation layer | 75% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
@@ -198,8 +198,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Affects:** `packages/lib/src/math/graph/index.ts`, `packages/lib/src/math/optimization/index.ts`, `packages/lib/src/math/survival/index.ts`, `packages/lib/src/math/index.ts`, `packages/lib/src/__tests__/index.exports.test.ts`, `packages/lib/__tests__/math/**`
 - **Depends on:** -
 - **Blocks:** TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
-- **Confidence:** 75%
-  - Implementation: 75% - the seams are clear, but the helper surface still needs design choices.
+- **Confidence:** 80%
+  - Implementation: 80% - the helper surface is now bounded by concrete policy and outcome contracts rather than open-ended package design.
   - Approach: 80% - repo-owned helpers are mandatory if these modules will drive policy.
   - Impact: 80% - without stable helpers and tests the rest of the plan sits on package passthroughs.
 - **Acceptance criteria:**
@@ -213,8 +213,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution plan:** Red -> add helper/export tests; Green -> replace thin passthroughs with repo-owned helper contracts; Refactor -> keep third-party-specific details private to the math package.
 - **Planning validation (required for M/L):**
   - Checks run: verified current modules are thin re-exports with no dedicated tests.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: helper/test absence is broader than a documentation problem because later policy tasks would otherwise couple directly to third-party APIs.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/posterior-policy-contract.md`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/outcome-closure-contract.md`, `docs/plans/startup-loop-centralized-math-foundations/replan-notes.md`
+  - Unexpected findings: helper/test absence is broader than a documentation problem because later policy tasks would otherwise couple directly to third-party APIs, but the required optimization and survival shapes are now concrete enough to implement without another design pass.
 - **Scouts:** None: the need for helper hardening is already directly evidenced.
 - **Edge Cases & Hardening:** deterministic tie-breaking, sparse survival histories, and invalid graph input normalization.
 - **What would make this >=90%:**
@@ -228,6 +228,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - `packages/lib/src/math/graph/index.ts`
   - `packages/lib/src/math/optimization/index.ts`
   - `packages/lib/src/math/survival/index.ts`
+  - `docs/plans/startup-loop-centralized-math-foundations/replan-notes.md`
 
 ### TASK-03: Define the posterior belief, utility, and policy-state contract
 - **Type:** INVESTIGATE

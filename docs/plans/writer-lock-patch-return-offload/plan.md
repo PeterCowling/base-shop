@@ -5,7 +5,7 @@ Domain: Platform
 Workstream: Engineering
 Created: 2026-03-09
 Last-reviewed: 2026-03-09
-Last-updated: 2026-03-09T12:55Z
+Last-updated: 2026-03-09T12:58Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: writer-lock-patch-return-offload
 Deliverable-Type: code-change
@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-do-ideas
-Overall-confidence: 81%
+Overall-confidence: 78%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan+auto
 ---
@@ -21,11 +21,13 @@ Auto-Build-Intent: plan+auto
 # Writer Lock Patch-Return Offload Plan
 
 ## Summary
-This plan implements the next slice identified by `writer-lock-operational-hardening`: replace shared-checkout mutable Codex offload with a patch-return pilot that keeps the writer lock around only the serialized apply and commit window. The first rollout is intentionally narrow. It validates the current Codex CLI contract, chooses a patch artifact format, updates the shared protocol, and pilots the new route on `build-biz` rather than attempting a repo-wide executor migration. Shared-checkout `workspace-write` remains as an explicit temporary fallback until the pilot proves the new contract.
+This plan implements the next slice identified by `writer-lock-operational-hardening`: replace shared-checkout mutable Codex offload with a patch-return pilot that keeps the writer lock around only the serialized apply and commit window. The original pilot sequence was invalidated by `TASK-01`, which showed that the current local Codex runtime does not reliably emit a patch artifact in a self-contained read-only probe and that the active `codex exec -a never` guidance is stale. `TASK-02` therefore converts the runtime uncertainty into a precursor chain instead of letting protocol/helper implementation proceed on a broken assumption. The plan is still buildable, but only through the new runtime-isolation investigation and spike ahead of the protocol and helper work.
 
 ## Active tasks
 - [x] TASK-01: Spike the current Codex patch-return invocation and artifact contract
-- [ ] TASK-02: Horizon checkpoint - confirm the pilot contract from spike evidence
+- [x] TASK-02: Horizon checkpoint - confirm the pilot contract from spike evidence
+- [ ] TASK-08: Investigate an isolated Codex runner contract for patch-return offload
+- [ ] TASK-09: Spike the isolated runner and require a prompt unified-diff artifact
 - [ ] TASK-03: Implement the shared patch-return protocol and pilot-facing executor docs
 - [ ] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
 - [ ] TASK-05: Spike the serialized apply window with fingerprint checks
@@ -50,7 +52,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
   - Validation must stay scoped and respect the CI-only test execution policy.
 - Assumptions:
   - `build-biz` is the safest first executor lane.
-  - A spike is still required because the active docs use a stale Codex invocation contract.
+  - Runtime isolation must be evidenced before protocol/helper tasks are allowed to resume.
 
 ## Inherited Outcome Contract
 - **Why:** Writer-lock hardening closed the accidental-entrypoint problem, but the active build offload path still relies on shared-checkout mutable Codex sessions and an outdated CLI invocation contract, so minimum viable lock time is still not enforceable in practice.
@@ -81,10 +83,12 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | SPIKE | Validate the current Codex CLI invocation and patch artifact contract for patch-return offload | 85% | S | Complete (2026-03-09) | - | TASK-02 |
-| TASK-02 | CHECKPOINT | Reassess downstream implementation from TASK-01 spike evidence | 95% | S | Pending | TASK-01 | TASK-03 |
-| TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 83% | M | Pending | TASK-02 | TASK-04, TASK-05 |
-| TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 81% | M | Pending | TASK-03 | TASK-05 |
-| TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 82% | S | Pending | TASK-04 | TASK-06 |
+| TASK-02 | CHECKPOINT | Reassess downstream implementation from TASK-01 spike evidence | 95% | S | Complete (2026-03-09) | TASK-01 | TASK-08, TASK-09 |
+| TASK-08 | INVESTIGATE | Determine an isolated Codex runner contract that avoids default MCP and state-runtime interference | 75% | M | Pending | TASK-02 | TASK-09 |
+| TASK-09 | SPIKE | Validate the isolated runner in a temp repo and require prompt unified-diff emission | 80% | S | Pending | TASK-08 | TASK-03 |
+| TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 75% (-> 85% conditional on TASK-08, TASK-09) | M | Pending | TASK-09 | TASK-04 |
+| TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 70% (-> 82% conditional on TASK-03, TASK-09) | M | Pending | TASK-03 | TASK-05 |
+| TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 75% (-> 82% conditional on TASK-04) | S | Pending | TASK-04 | TASK-06 |
 | TASK-06 | CHECKPOINT | Reassess pilot wiring from TASK-05 apply-window evidence | 95% | S | Pending | TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Wire `build-biz` to the patch-return pilot with explicit shared-checkout fallback | 74% (-> 84% conditional on TASK-06) | M | Pending | TASK-06 | - |
 
@@ -92,12 +96,14 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
 | 1 | TASK-01 | - | Required spike to confirm current Codex CLI behavior |
-| 2 | TASK-02 | TASK-01 | Locks the invocation and patch contract before doc/code changes |
-| 3 | TASK-03 | TASK-02 | Protocol and pilot doc contract |
-| 4 | TASK-04 | TASK-03 | Helper implementation follows the protocol |
-| 5 | TASK-05 | TASK-04 | Controlled apply-window spike uses the helper output |
-| 6 | TASK-06 | TASK-05 | Confirms whether pilot wiring is safe |
-| 7 | TASK-07 | TASK-06 | Executor pilot only after both contracts are proven |
+| 2 | TASK-02 | TASK-01 | Checkpoint replan on invalidating runtime evidence |
+| 3 | TASK-08 | TASK-02 | Investigate isolated runner contract before further implementation |
+| 4 | TASK-09 | TASK-08 | Spike the isolated runner and require artifact proof |
+| 5 | TASK-03 | TASK-09 | Protocol and pilot doc contract only after runner proof |
+| 6 | TASK-04 | TASK-03 | Helper implementation follows the updated protocol |
+| 7 | TASK-05 | TASK-04 | Controlled apply-window spike uses the helper output |
+| 8 | TASK-06 | TASK-05 | Confirms whether pilot wiring is safe |
+| 9 | TASK-07 | TASK-06 | Executor pilot only after both contracts are proven |
 
 ## Tasks
 
@@ -150,10 +156,10 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** `docs/plans/writer-lock-patch-return-offload/plan.md`
+- **Status:** Complete (2026-03-09)
+- **Affects:** `docs/plans/writer-lock-patch-return-offload/plan.md`, `docs/plans/writer-lock-patch-return-offload/replan-notes.md`
 - **Depends on:** TASK-01
-- **Blocks:** TASK-03
+- **Blocks:** TASK-08, TASK-09
 - **Confidence:** 95%
   - Implementation: 95% - process is defined.
   - Approach: 95% - prevents downstream implementation from assuming the wrong CLI or patch contract.
@@ -168,7 +174,79 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Validation contract:** TASK-01 spike artifact reviewed and routing decision recorded in the plan
 - **Planning validation:** `docs/plans/writer-lock-patch-return-offload/spike-01-codex-patch-return.md`
 - **Rollout / rollback:** `None: planning control task`
-- **Documentation impact:** plan update only
+- **Documentation impact:** updates `plan.md` and records the checkpoint rationale in `replan-notes.md`
+- **Notes / references:**
+  - `docs/plans/writer-lock-patch-return-offload/spike-01-codex-patch-return.md`
+  - `docs/plans/writer-lock-patch-return-offload/replan-notes.md`
+  - Build evidence (2026-03-09):
+    - Confirmed `codex exec -a never --help` is rejected by the current local binary.
+    - Confirmed `codex mcp list` and `codex mcp get {base-shop,ts-language}` still show both default MCP servers enabled.
+    - Replanned downstream work by inserting the `TASK-08` -> `TASK-09` precursor chain ahead of protocol/helper implementation.
+    - Lowered TASK-03/TASK-04/TASK-05 below their runnable thresholds until isolated-runner evidence exists.
+
+### TASK-08: Investigate an isolated Codex runner contract for patch-return offload
+- **Type:** INVESTIGATE
+- **Deliverable:** `docs/plans/writer-lock-patch-return-offload/runtime-isolation-investigation.md`
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** code
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `docs/plans/writer-lock-patch-return-offload/runtime-isolation-investigation.md`, `[readonly] /Users/petercowling/.codex/config.toml`, `[readonly] docs/plans/writer-lock-patch-return-offload/spike-01-codex-patch-return.md`
+- **Depends on:** TASK-02
+- **Blocks:** TASK-09
+- **Confidence:** 75%
+  - Implementation: 80% - the evidence sources are direct and already partially audited.
+  - Approach: 75% - the likely solution is a dedicated isolated Codex home/config shape, but it is not yet formalized.
+  - Impact: 80% - this task determines whether the pilot has a viable runner path at all.
+- **Questions to answer:**
+  - How should patch-return offload avoid the default MCP server set and shared Codex state DB?
+  - What exact invocation contract is supported by the current local Codex binary for non-interactive read-only runs?
+  - What minimal Codex-home contents are required for the next spike to run without inheriting the noisy default runtime?
+- **Acceptance:**
+  - Names one primary isolated-runner strategy for the next spike.
+  - Specifies the exact invocation candidate the next spike should use.
+  - Explains which default runtime surfaces must be excluded or bypassed and why.
+- **Validation contract:** investigation artifact exists and directly answers all three questions with file-backed evidence
+- **Planning validation:** read-only evidence only: local help output, `codex mcp list/get`, `~/.codex` layout, and TASK-01 spike logs
+- **Rollout / rollback:** `None: non-implementation task`
+- **Documentation impact:** adds `runtime-isolation-investigation.md` as the canonical precursor artifact
+- **Notes / references:**
+  - `docs/plans/writer-lock-patch-return-offload/replan-notes.md`
+
+### TASK-09: Spike the isolated runner and require a prompt unified-diff artifact
+- **Type:** SPIKE
+- **Deliverable:** `docs/plans/writer-lock-patch-return-offload/spike-09-isolated-runner.md`
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/writer-lock-patch-return-offload/spike-09-isolated-runner.md`, `[readonly] docs/plans/writer-lock-patch-return-offload/runtime-isolation-investigation.md`
+- **Depends on:** TASK-08
+- **Blocks:** TASK-03
+- **Confidence:** 80%
+  - Implementation: 82% - the spike stays bounded to a temp repo and one patch artifact.
+  - Approach: 80% - TASK-08 should have reduced the runner uncertainty to a single candidate path.
+  - Impact: 80% - a clean pass is the prerequisite evidence for every remaining implementation task.
+- **Acceptance:**
+  - Uses the TASK-08 runner contract in a temp git repo.
+  - Records exit code, runtime behavior, and whether a unified diff artifact was emitted.
+  - Confirms the shared checkout remained unchanged.
+- **Validation contract (TC-09):**
+  - TC-01: spike artifact exists with exact command, exit code, and emitted-artifact status
+  - TC-02: spike artifact states whether MCP/state-runtime interference was eliminated
+  - TC-03: spike artifact states whether unified diff can proceed as the pilot contract
+- **Execution plan:** Red -> Green -> Refactor
+- **Scouts:** None: this task is itself the bounded runtime spike
+- **Edge Cases & Hardening:** if the isolated runner still hangs or emits no artifact, this task invalidates TASK-03/TASK-04 and requires another replan round
+- **What would make this >=90%:**
+  - a clean pass with emitted unified diff and no shared-checkout mutation
+- **Rollout / rollback:**
+  - Rollout: evidence artifact only
+  - Rollback: delete the spike note if superseded
+- **Documentation impact:** adds the second runtime precursor artifact for this plan
+- **Notes / references:**
+  - `docs/plans/writer-lock-patch-return-offload/runtime-isolation-investigation.md`
 
 ### TASK-03: Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot
 - **Type:** IMPLEMENT
@@ -179,12 +257,12 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Effort:** M
 - **Status:** Pending
 - **Affects:** `.claude/skills/_shared/build-offload-protocol.md`, `.claude/skills/lp-do-build/SKILL.md`, `.claude/skills/lp-do-build/modules/build-biz.md`, `[readonly] docs/plans/writer-lock-operational-hardening/build-offload-redesign.md`
-- **Depends on:** TASK-02
+- **Depends on:** TASK-09
 - **Blocks:** TASK-04, TASK-05
-- **Confidence:** 83%
-  - Implementation: 86% - the file targets are direct and bounded.
-  - Approach: 83% - the spike will already have reduced the CLI and artifact uncertainty.
-  - Impact: 81% - this makes the pilot contract the active one for the chosen lane.
+- **Confidence:** 75% (-> 85% conditional on TASK-08, TASK-09)
+  - Implementation: 75% - the file targets are direct, but the correct isolated runner contract is not yet evidenced.
+  - Approach: 75% - patch-return remains the right architecture, but the runner shape is still unresolved.
+  - Impact: 80% - once the runner is proven, the protocol update remains high leverage.
 - **Acceptance:**
   - Shared build-offload protocol describes the patch-return pilot contract and explicit legacy fallback.
   - `lp-do-build/SKILL.md` points business-artifact offload toward the pilot contract rather than assuming shared-checkout mutation by default.
@@ -197,8 +275,8 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Planning validation (required for M/L):**
   - Checks run: re-read TASK-01 spike result and current business-artifact executor docs
   - Validation artifacts: plan task text plus spike note
-  - Unexpected findings: `None expected beyond CLI wording drift`
-- **Scouts:** None: contract already scoped by TASK-02
+  - Unexpected findings: runtime isolation is now a precursor, not an inline assumption
+- **Scouts:** None: blocked pending precursor evidence
 - **Edge Cases & Hardening:** Legacy shared-checkout fallback must remain explicit and non-default so the pilot can roll back cleanly.
 - **What would make this >=90%:**
   - TASK-04 helper landing with no protocol gaps discovered.
@@ -209,6 +287,12 @@ This plan implements the next slice identified by `writer-lock-operational-harde
   - Active build-offload docs change.
 - **Notes / references:**
   - `docs/plans/writer-lock-patch-return-offload/spike-01-codex-patch-return.md`
+#### Re-plan Update (2026-03-09)
+- Confidence: 83% -> 75% (-> 85% conditional on TASK-08, TASK-09) (Evidence: E2)
+- Key change: protocol/docs are blocked until an isolated runner contract is investigated and spike-proven
+- Dependencies: TASK-02 -> TASK-09
+- Validation contract: unchanged
+- Notes: `docs/plans/writer-lock-patch-return-offload/replan-notes.md`
 
 ### TASK-04: Add the patch-return offload helper that materializes task packets and captures returned patch artifacts
 - **Type:** IMPLEMENT
@@ -221,10 +305,10 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Affects:** `scripts/agents/build-offload-patch-return.sh`, `[readonly] .claude/skills/_shared/build-offload-protocol.md`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-05
-- **Confidence:** 81%
-  - Implementation: 84% - helper scope is narrow if the protocol contract is already fixed.
-  - Approach: 81% - a temp packet plus captured patch artifact is a direct translation of the redesign note.
-  - Impact: 79% - helper value is realized only once the apply window and pilot lane are wired.
+- **Confidence:** 70% (-> 82% conditional on TASK-03, TASK-09)
+  - Implementation: 70% - helper scope is narrow, but the runner contract and artifact transport are not yet proven.
+  - Approach: 70% - the design is still correct, but the helper should not encode a speculative runner shape.
+  - Impact: 78% - helper value remains high once upstream runtime evidence exists.
 - **Acceptance:**
   - Helper assembles a bounded task packet outside the shared checkout.
   - Helper runs Codex using the validated TASK-02 contract and captures a returned patch artifact plus final message output.
@@ -237,8 +321,8 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Planning validation (required for M/L):**
   - Checks run: re-read TASK-03 protocol contract and `writer-lock-window.sh`
   - Validation artifacts: helper dry-run notes captured in task evidence
-  - Unexpected findings: `None expected beyond temp-path handling`
-- **Scouts:** None: helper behavior is downstream of the locked-in protocol
+  - Unexpected findings: runner isolation is now an explicit prerequisite
+- **Scouts:** None: blocked pending precursor evidence
 - **Edge Cases & Hardening:** helper must fail closed if the returned artifact touches files outside the declared allowlist.
 - **What would make this >=90%:**
   - TASK-05 proving the helper output can be applied safely through the window.
@@ -249,6 +333,12 @@ This plan implements the next slice identified by `writer-lock-operational-harde
   - minimal, limited to protocol references if needed
 - **Notes / references:**
   - `scripts/git-hooks/writer-lock-window.sh`
+#### Re-plan Update (2026-03-09)
+- Confidence: 81% -> 70% (-> 82% conditional on TASK-03, TASK-09) (Evidence: E2)
+- Key change: helper implementation is deferred until the runner contract and pilot protocol are validated
+- Dependencies: unchanged task chain, but TASK-03 now depends on TASK-09
+- Validation contract: unchanged
+- Notes: `docs/plans/writer-lock-patch-return-offload/replan-notes.md`
 
 ### TASK-05: Validate serialized apply-window behavior with fingerprints and a controlled patch artifact
 - **Type:** SPIKE
@@ -261,10 +351,10 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Affects:** `docs/plans/writer-lock-patch-return-offload/spike-05-apply-window.md`, `[readonly] scripts/agents/build-offload-patch-return.sh`, `[readonly] scripts/git-hooks/writer-lock-window.sh`
 - **Depends on:** TASK-04
 - **Blocks:** TASK-06
-- **Confidence:** 82%
-  - Implementation: 84% - the spike is bounded to a controlled patch apply path.
-  - Approach: 82% - this is the first real proof that the narrow lock window works in practice.
-  - Impact: 80% - invalidating evidence here prevents unsafe pilot wiring.
+- **Confidence:** 75% (-> 82% conditional on TASK-04)
+  - Implementation: 78% - the spike itself is bounded, but it cannot run until the helper exists.
+  - Approach: 75% - the apply-window questions are valid only after patch artifact transport is real.
+  - Impact: 80% - invalidating evidence here still remains the right gate for pilot wiring.
 - **Acceptance:**
   - Exercises repo and staged-tree fingerprints around the apply window.
   - Records whether `writer-lock-window.sh` is sufficient as-is or needs an extension.
@@ -285,6 +375,12 @@ This plan implements the next slice identified by `writer-lock-operational-harde
   - adds the second canonical spike result for this plan
 - **Notes / references:**
   - `scripts/git-hooks/writer-lock-window.sh`
+#### Re-plan Update (2026-03-09)
+- Confidence: 82% -> 75% (-> 82% conditional on TASK-04) (Evidence: E2)
+- Key change: apply-window spike is no longer the next technical unknown; runtime isolation moved ahead of it
+- Dependencies: unchanged
+- Validation contract: unchanged
+- Notes: `docs/plans/writer-lock-patch-return-offload/replan-notes.md`
 
 ### TASK-06: Horizon checkpoint - confirm apply-window behavior and actualize pilot confidence
 - **Type:** CHECKPOINT
@@ -367,6 +463,8 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 
 ## Acceptance Criteria (overall)
 - [ ] The current Codex CLI contract for patch-return offload is validated and recorded.
+- [ ] An isolated Codex runner contract is investigated and documented for the pilot.
+- [ ] A runtime isolation spike proves or invalidates prompt unified-diff emission before protocol/helper work resumes.
 - [ ] Shared build-offload docs define a patch-return pilot and explicit legacy fallback.
 - [ ] A helper exists that captures patch artifacts without mutating the shared checkout.
 - [ ] A controlled apply-window spike proves or invalidates the serialized narrow lock window.
@@ -375,13 +473,14 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 ## Decision Log
 - 2026-03-09: Chose `build-biz` as the first pilot lane instead of `build-investigate` because business-artifact tasks have cleaner validation and lower mutation risk.
 - 2026-03-09: Treated the stale `-a never` guidance as spike-gated evidence, not as a blind find-and-replace.
+- 2026-03-09: TASK-02 checkpoint added the `TASK-08` -> `TASK-09` runtime-isolation precursor chain before protocol/helper work.
 
 ## Overall-confidence Calculation
 - S=1, M=2
-- Overall-confidence = (85*1 + 95*1 + 83*2 + 81*2 + 82*1 + 95*1 + 74*2) / 10 = 81.3% -> 81%
+- Overall-confidence = (85*1 + 95*1 + 75*2 + 80*1 + 75*2 + 70*2 + 75*1 + 95*1 + 74*2) / 13 = 78.3% -> 78%
 
 ## What Would Make This >=90%
-- Complete TASK-01 and TASK-05 successfully, then actualize TASK-07 confidence above the IMPLEMENT threshold from checkpoint evidence.
+- Complete TASK-08 and TASK-09 successfully, then actualize TASK-03/TASK-04 above threshold from isolated-runner evidence.
 
 ## Section Omission Rule
 - None: all sections are relevant for this pilot implementation plan.

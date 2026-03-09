@@ -3328,22 +3328,6 @@
     {
       "type": "idea",
       "business": "BRIK",
-      "title": "GuidedOnboardingFlow.tsx is 816 lines. Step title/description are computed via repeated if-statements (3 locations). Radio fieldsets are defined TWICE — once per branch of showConfidenceBeforeMethod — with identical handler/className logic, only order differs. The component uses 6 useRef + 5 useEffect hooks for lifecycle management. Adding a step 4 requires edits in 3+ separate if-chains.",
-      "body": "Two separable improvements (step config extraction and radio fieldset extraction) can likely be executed independently. The useReducer question needs scoping — it may not be warranted if the lifecycle concerns can be addressed more surgically. Fact-find to separate and sequence the work correctly.",
-      "source": "queue-state.json",
-      "date": "2026-03-09T14:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "faa53e3ec16e111772ef0cd5052fa8213af91d07",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
       "title": "Activity codes (e.g. 9=city tax, 25=delete guest, 30=key extension, 12=check-in, 23=bags dropped) appear as inline magic numbers or locally-defined constants across at least 5 files. No shared constants file exists for activity codes.",
       "body": "Magic numbers make code unreadable and mean adding a new activity type or changing a code number requires a manual grep.",
       "source": "queue-state.json",

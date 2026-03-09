@@ -279,6 +279,11 @@ export interface ArtifactDeltaEvent {
   before_truth_fingerprint?: string;
   after_truth_fingerprint?: string;
   material_delta?: boolean;
+  area_anchor_hint?: string;
+  current_truth_hint?: string;
+  next_scope_now_hint?: string;
+  why_hint?: string;
+  intended_outcome_hint?: IntendedOutcomeV2;
 }
 
 export interface TrialDispatchPacket {
@@ -641,14 +646,16 @@ function buildRootEventId(event: ArtifactDeltaEvent): string {
   return `${normalizeArtifactId(event.artifact_id)}:${event.after_sha}`;
 }
 
+const ANCHOR_KEY_MAX_LENGTH = 80;
+
 function buildAnchorKey(
   event: ArtifactDeltaEvent,
   areaAnchor: string,
 ): string {
   if (event.anchor_key && event.anchor_key.trim().length > 0) {
-    return normalizeKeyToken(event.anchor_key);
+    return normalizeKeyToken(event.anchor_key).slice(0, ANCHOR_KEY_MAX_LENGTH);
   }
-  return normalizeKeyToken(areaAnchor);
+  return normalizeKeyToken(areaAnchor).slice(0, ANCHOR_KEY_MAX_LENGTH);
 }
 
 function buildDomainKey(event: ArtifactDeltaEvent): string {
@@ -834,6 +841,11 @@ function deriveAreaAnchor(
   event: ArtifactDeltaEvent,
   locationAnchors: readonly string[],
 ): string {
+  const hintedArea = event.area_anchor_hint?.trim();
+  if (hintedArea && hintedArea.length > 0) {
+    return hintedArea;
+  }
+
   for (const anchor of locationAnchors) {
     const fromLocation = deriveAreaAnchorFromLocationAnchor(anchor);
     if (fromLocation) {
@@ -1277,6 +1289,30 @@ export function runTrialOrchestrator(
     const dispatchId = buildDispatchId(now, sequence++);
     const beforeShort = event.before_sha.slice(0, 7);
     const afterShort = event.after_sha.slice(0, 7);
+    const currentTruth =
+      event.current_truth_hint?.trim() && event.current_truth_hint.trim().length > 0
+        ? event.current_truth_hint.trim()
+        : `${event.artifact_id} changed (${beforeShort} → ${afterShort})`;
+    const nextScopeNow =
+      event.next_scope_now_hint?.trim() && event.next_scope_now_hint.trim().length > 0
+        ? event.next_scope_now_hint.trim()
+        : directBuildReady
+          ? `Implement the bounded ${areaAnchor} change for ${event.business} and validate it locally`
+          : `Investigate implications of ${areaAnchor} delta for ${event.business}`;
+    const why =
+      event.why_hint?.trim() && event.why_hint.trim().length > 0
+        ? event.why_hint.trim()
+        : directBuildReady
+          ? `Implement the bounded ${areaAnchor} change signalled by ${event.artifact_id} for ${event.business}.`
+          : `Assess ${areaAnchor} implications from ${event.artifact_id} delta for ${event.business}.`;
+    const intendedOutcome =
+      event.intended_outcome_hint ?? {
+        type: "operational" as const,
+        statement: directBuildReady
+          ? `Ship a validated micro-build for ${areaAnchor} through direct lp-do-build intake.`
+          : `Produce a validated routing outcome and scoped next action for ${areaAnchor}.`,
+        source: "auto" as const,
+      };
 
     const packet: TrialDispatchPacket = {
       schema_version: "dispatch.v2",
@@ -1295,10 +1331,8 @@ export function runTrialOrchestrator(
       area_anchor: areaAnchor,
       location_anchors: locationAnchors,
       provisional_deliverable_family: provisionalDeliverableFamily,
-      current_truth: `${event.artifact_id} changed (${beforeShort} → ${afterShort})`,
-      next_scope_now: directBuildReady
-        ? `Implement the bounded ${areaAnchor} change for ${event.business} and validate it locally`
-        : `Investigate implications of ${areaAnchor} delta for ${event.business}`,
+      current_truth: currentTruth,
+      next_scope_now: nextScopeNow,
       adjacent_later: [],
       recommended_route: recommendedRoute,
       status,
@@ -1307,16 +1341,8 @@ export function runTrialOrchestrator(
       evidence_refs: evidenceRefs,
       created_at: now.toISOString(),
       queue_state: "enqueued",
-      why: directBuildReady
-        ? `Implement the bounded ${areaAnchor} change signalled by ${event.artifact_id} for ${event.business}.`
-        : `Assess ${areaAnchor} implications from ${event.artifact_id} delta for ${event.business}.`,
-      intended_outcome: {
-        type: "operational",
-        statement: directBuildReady
-          ? `Ship a validated micro-build for ${areaAnchor} through direct lp-do-build intake.`
-          : `Produce a validated routing outcome and scoped next action for ${areaAnchor}.`,
-        source: "auto",
-      },
+      why,
+      intended_outcome: intendedOutcome,
     };
     dispatched.push(packet);
 

@@ -1,18 +1,100 @@
 {
-  "last_updated": "2026-03-09T14:04:56Z",
+  "last_updated": "2026-03-09T12:00:00.000Z",
   "counts": {
-    "enqueued": 238,
+    "enqueued": 59,
     "processed": 0,
-    "skipped": 0,
+    "skipped": 180,
     "error": 0,
     "suppressed": 0,
-    "auto_executed": 20,
-    "completed": 232,
-    "fact_find_ready": 257,
-    "micro_build_ready": 6,
-    "total": 493
+    "auto_executed": 19,
+    "completed": 233,
+    "fact_find_ready": 258,
+    "micro_build_ready": 7,
+    "total": 495
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309120000-QSTATE-001",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:PLAT:BOS:ideas-queue-auto-executed-state-violation:20260309",
+      "anchor_key": "ideas-queue-auto-executed-state-violation",
+      "cluster_key": "PLAT:BOS:ideas-queue-auto-executed-state-violation:operator:20260309",
+      "cluster_fingerprint": "ideas-queue-auto-executed-state-violation-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "PLAT ideas trial queue — 21 entries carry auto_executed state, prohibited by trial contract Option B",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+        "docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md",
+        ".claude/skills/lp-do-ideas/SKILL.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "21 dispatches in trial/queue-state.json carry queue_state: auto_executed. The trial contract (Section 2) explicitly states auto_executed is reserved and must not be set in trial mode under Option B. The active policy is Option B (queue with confirmation). The queue is entirely hand-authored — the TS persistence layer has never written to it. These entries were hand-set incorrectly. They are stuck in a state not recognised by the contract state machine (enqueued → processed → skipped/error) and the SKILL.md reinforces that auto_executed must not be emitted as a new queue lifecycle value.",
+      "next_scope_now": "Review each of the 21 auto_executed entries in queue-state.json and reclassify each to the correct canonical state (completed if the work was done, processed if it was handed off, skipped if it was suppressed). Update the counts block to match. Add an explicit operator-facing note to SKILL.md and/or the trial contract warning against hand-setting auto_executed.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P2",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: 21 entries in trial/queue-state.json carry queue_state: auto_executed, which the trial contract Section 2 prohibits under Option B",
+        "contract-ref: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md Section 2 — auto_executed status is reserved; must not be set in trial mode under Option B",
+        "skill-ref: .claude/skills/lp-do-ideas/SKILL.md Known Issues — queue file is hand-authored; TS persistence layer never used",
+        "skill-ref: .claude/skills/lp-do-ideas/SKILL.md Outputs — auto_executed is reserved and must not be emitted as a new queue lifecycle value"
+      ],
+      "created_at": "2026-03-09T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "The trial contract's state machine defines only enqueued, processed, skipped, and error as valid queue lifecycle values. auto_executed was designed for Option C (auto-invoke P1 dispatches) which has not been activated. Because the queue is entirely hand-authored, these 21 entries were set incorrectly by hand. They create false signal in queue depth counts and make it impossible to tell which entries represent work that was genuinely reviewed and confirmed vs. work that bypassed the confirmation step.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "All 21 auto_executed entries in trial/queue-state.json are reclassified to correct canonical states; the counts block reflects the corrected states; and the operator-facing contract/skill docs include an explicit guard against hand-setting auto_executed in trial mode.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309120000-QSTATE-002",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "root_event_id": "operator:PLAT:BOS:ideas-queue-noise-stub-suppression:20260309",
+      "anchor_key": "ideas-queue-noise-stub-suppression",
+      "cluster_key": "PLAT:BOS:ideas-queue-noise-stub-suppression:operator:20260309",
+      "cluster_fingerprint": "ideas-queue-noise-stub-suppression-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "PLAT ideas trial queue — 160 noise stubs polluting queue with no actionable content",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+        "docs/business-os/startup-loop/ideas/standing-registry.json",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts",
+        "scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "160 dispatches in trial/queue-state.json are empty stubs with no current_truth, no why, and no intended_outcome. They fall into two categories: (1) ~141 repetitive artifact_delta stubs for bos-agent-session-findings, bos-codebase-structural-signals, and bos-repo-maturity-signals — all carrying identical boilerplate next_scope_now text ('Investigate implications of X delta for BOS') with no substantive content; (2) ~19 malformed entries where anchor_key is a sentence fragment (e.g. 'key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files-pages-like-women-bags-page'). The standing registry has trigger_policy: never for system_telemetry class artifacts but these entries are still being emitted. These 160 stubs inflate the nominal queue size from ~315 substantive dispatches to 450+, create false backlog signal, and make real ideas harder to locate.",
+      "next_scope_now": "Fact-find: (1) check whether bos-agent-session-findings, bos-codebase-structural-signals, and bos-repo-maturity-signals are registered in standing-registry.json with the correct artifact_class (system_telemetry) and trigger_policy (never) — if not, register them correctly; (2) trace how the repetitive stubs bypass the trigger_policy: never gate in lp-do-ideas-trial.ts and identify the fix; (3) trace how malformed sentence-fragment anchor keys are generated — whether from agent output, TS code, or a different path — and define a validation gate to reject them; (4) determine whether the 160 existing stubs should be purged from queue-state.json or marked as skipped; (5) produce a planning brief scoped to registry fix, emission filter, validation gate, and existing stub cleanup.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "completed",
+      "priority": "P2",
+      "confidence": 0.91,
+      "evidence_refs": [
+        "operator-stated: 160 stubs with no current_truth/why/outcome pollute the queue; the standing registry trigger_policy: never is not preventing emission of signal artifact stubs",
+        "operator-stated: malformed sentence-fragment anchor keys (e.g. key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files) appear in the queue — origin unknown, need to trace",
+        "data-ref: docs/business-os/startup-loop/ideas/trial/queue-state.json — bos-agent-session-findings anchor appears 141 times with identical boilerplate",
+        "contract-ref: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md Section 11.1 — system_telemetry class artifacts should carry trigger_policy: never",
+        "contract-ref: docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md Section 11.2 — trigger_policy: never cannot be bypassed"
+      ],
+      "created_at": "2026-03-09T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "160 stub dispatches make the queue an unreliable signal source. The nominal backlog appears to be 450+ items but only ~315 are substantive. Any tooling or operator review that reads queue depth, counts enqueued items, or scans for work to action is misled by a factor of ~1.4x. The root cause is dual: the standing registry may not be correctly classifying the three signal artifacts as system_telemetry/never, and malformed anchor keys suggest a validation gap in dispatch packet assembly that lets unusable entries through.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The three repetitive signal artifact anchors are suppressed at the registry/emission level so they no longer produce stub dispatches; malformed sentence-fragment anchor keys are rejected before reaching the queue; and the 160 existing stubs are removed or marked skipped so the queue accurately reflects only substantive ideas.",
+        "source": "operator"
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260309114901-9305",
@@ -37,7 +119,7 @@
       "current_truth": "CAP-02 was referenced by skills and planning discussion, but no canonical schema, seeded per-business artifact, or producer/consumer contract existed in the repo.",
       "next_scope_now": "Define the message-variants schema, upgrade the capability contract, seed HBAG/HEAD/PET ledgers, and retrofit the main channel, marketing, outreach, and weekly consumers.",
       "recommended_route": "lp-do-build",
-      "status": "completed",
+      "status": "fact_find_ready",
       "priority": "P1",
       "confidence": 0.92,
       "evidence_refs": [
@@ -917,7 +999,7 @@
       "next_scope_now": "Fact-find the minimum Bash permission surface: identify which guarded write and validation commands truly require shell execution, which discovery paths should move to Read, Glob, Grep, or MCP, and what permission or hook changes would safely reverse the recent broad allowance.",
       "adjacent_later": [],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.92,
       "evidence_refs": [
@@ -959,7 +1041,7 @@
       "next_scope_now": "Fact-find the correct Claude tool order and decision boundaries: Read for file contents, Glob for discovery, Grep for search, MCP tools for semantic TypeScript work, and Bash only for execution or guarded repo commands. Then map the rule into the right docs and permission surfaces.",
       "adjacent_later": [],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.9,
       "evidence_refs": [
@@ -2125,14 +2207,14 @@
       "lineage_depth": 0,
       "area_anchor": "HBAG Caryina inventory add — missing-record create path broken",
       "domain": "SELL",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "auto_executed",
+      "queue_state": "completed",
       "priority": "P1",
       "confidence": 0.93,
       "provisional_deliverable_family": "code-change",
-      "current_truth": "Caryina admin product creation succeeds, but inventory update for a new SKU fails with 404 not_found because /admin/api/inventory/:sku only updates existing records. Storefront still publishes the active SKU with stock=0, disabling Add to cart.",
-      "next_scope_now": "Run fact-find for an explicit create/upsert inventory path, aligned admin UX copy/error mapping, and publish-readiness guardrails so newly created products can reliably reach customer-visible in-stock state.",
+      "current_truth": "Resolved. Caryina admin inventory PATCH now creates the first stock row for valid new SKUs, and product creation now captures initial stock so newly created active products can become sellable in one step. First activation to active is also blocked when stock is still zero.",
+      "next_scope_now": "Completed. Original missing-record 404 is closed, and the follow-on create-time stock/bootstrap guardrails have shipped.",
       "adjacent_later": [
         "Map admin API machine errors (not_found/validation_error) to operator-facing copy.",
         "Evaluate whether active status should require initial inventory and media readiness."
@@ -2150,7 +2232,12 @@
         "observed: PATCH /admin/api/inventory/caryina-codex-audit-20260302 returned 404 {ok:false,error:not_found}",
         "observed: newly created active SKU rendered in /en/shop and PDP as Out of stock with Add to cart disabled"
       ],
-      "created_at": "2026-03-02T10:01:33.107Z"
+      "created_at": "2026-03-02T10:01:33.107Z",
+      "completed_by": {
+        "plan_path": "docs/plans/caryina-inventory-addition-flow-hardening/plan.md",
+        "completed_at": "2026-03-09T14:06:08Z",
+        "outcome": "**TASK-01/TASK-02:** fixed the original PATCH create-on-missing inventory contract and validated Caryina scope. **TASK-03:** added `initialStock` to Caryina product creation, bootstrapped the first inventory row during create, rolled back product creation if stock bootstrap fails, and blocked new/first activation to `active` when stock is zero."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -8987,7 +9074,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-03T18:35:26.226Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9257,7 +9344,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-03T19:08:34.680Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9301,7 +9388,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-03T19:10:21.499Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9345,7 +9432,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-03T19:19:33.932Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9389,7 +9476,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-03T19:22:17.986Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9433,7 +9520,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-03T19:22:24.947Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9570,7 +9657,7 @@
         "git-diff:M:packages/ui/src/organisms/RoomsSection.tsx"
       ],
       "created_at": "2026-03-03T20:24:07.885Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9614,7 +9701,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-03T20:24:09.334Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9658,7 +9745,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-03T20:27:29.519Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9704,7 +9791,7 @@
         "git-diff:M:apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx"
       ],
       "created_at": "2026-03-03T20:49:04.792Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9748,7 +9835,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-03T20:49:06.066Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9792,7 +9879,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-03T20:50:51.915Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9876,7 +9963,7 @@
         "git-diff:A:scripts/src/startup-loop/build/lp-do-build-results-review-prefill.ts"
       ],
       "created_at": "2026-03-04T08:41:23.171Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9920,7 +10007,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-04T08:41:24.470Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -9964,7 +10051,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-04T08:43:32.862Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -10275,7 +10362,7 @@
         "git-diff:M:scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts"
       ],
       "created_at": "2026-03-04T09:25:59.063Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -10317,7 +10404,7 @@
         "repo-maturity-critical-control:no_codeowners"
       ],
       "created_at": "2026-03-04T09:25:59.063Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Repo maturity monitoring is only useful when missing controls and cap reasons are surfaced as concrete remediation work rather than a generic monitoring stub.",
       "intended_outcome": {
         "type": "operational",
@@ -10361,7 +10448,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-04T09:26:00.429Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -10405,7 +10492,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-04T09:27:40.359Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -10449,7 +10536,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-04T09:35:12.350Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -10493,7 +10580,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-04T09:38:50.331Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -10534,7 +10621,7 @@
         "repo-maturity-score-delta:-26"
       ],
       "created_at": "2026-03-04T10:16:33.660Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Repo maturity monitoring is only useful when missing controls and cap reasons are surfaced as concrete remediation work rather than a generic monitoring stub.",
       "intended_outcome": {
         "type": "operational",
@@ -10578,7 +10665,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-04T10:21:09.809Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -10622,7 +10709,7 @@
         "session:1c9ac0e6-690f-4033-b9e6-8340eb1a23bd"
       ],
       "created_at": "2026-03-04T10:21:56.623Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -10705,7 +10792,7 @@
         "repo-maturity-cap-reason:root_zero_byte_files_present"
       ],
       "created_at": "2026-03-04T10:38:01.094Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Repo maturity monitoring is only useful when missing controls and cap reasons are surfaced as concrete remediation work rather than a generic monitoring stub.",
       "intended_outcome": {
         "type": "operational",
@@ -10900,7 +10987,7 @@
         "git-diff:M:scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts"
       ],
       "created_at": "2026-03-04T11:21:50.838Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -10944,7 +11031,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:21:52.272Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -10988,7 +11075,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:21:59.210Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11032,7 +11119,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:22:05.305Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11076,7 +11163,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:22:24.162Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11120,7 +11207,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:23:41.969Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11164,7 +11251,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:25:01.015Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11208,7 +11295,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:32:31.116Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11252,7 +11339,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:40:45.288Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11296,7 +11383,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:47:00.076Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11340,7 +11427,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:47:59.088Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11384,7 +11471,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T11:48:35.188Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11537,7 +11624,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T13:13:11.563Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11581,7 +11668,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T13:14:49.180Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11625,7 +11712,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T13:16:03.269Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11692,7 +11779,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T14:20:45.563Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11736,7 +11823,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T14:26:20.310Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11828,7 +11915,7 @@
         "git-diff:A:scripts/src/xa/seed-xa-csv.ts"
       ],
       "created_at": "2026-03-04T15:45:37.883Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11872,7 +11959,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T15:45:39.287Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11916,7 +12003,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T15:48:27.040Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -11978,7 +12065,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T19:42:19.389Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -12024,7 +12111,7 @@
         "git-diff:A:apps/xa-uploader/src/app/instructions/assets/currency-screen.png"
       ],
       "created_at": "2026-03-04T20:11:38.629Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -12068,7 +12155,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-04T21:28:43.133Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -12114,7 +12201,7 @@
         "git-diff:M:.github/workflows/test.yml"
       ],
       "created_at": "2026-03-04T21:28:59.801Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -12900,7 +12987,7 @@
         "session:09feb760-cb39-4294-8a3d-f43413dccdf0"
       ],
       "created_at": "2026-03-05T17:12:54.508Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -12946,7 +13033,7 @@
         "git-diff:M:apps/reception/src/components/checkins/header/__tests__/ReservationModal.test.tsx"
       ],
       "created_at": "2026-03-05T17:18:17.903Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13220,7 +13307,7 @@
         "session:e2754215-15ad-450e-a951-7e49351a9a42"
       ],
       "created_at": "2026-03-06T08:58:31.672Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13264,7 +13351,7 @@
         "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb"
       ],
       "created_at": "2026-03-06T09:02:44.706Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13308,7 +13395,7 @@
         "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb"
       ],
       "created_at": "2026-03-06T09:59:10.380Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13352,7 +13439,7 @@
         "session:b3165069-f318-4859-9dd9-a21a8e5fd1cb"
       ],
       "created_at": "2026-03-06T10:00:54.118Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13396,7 +13483,7 @@
         "session:b2abcfb3-3232-4889-bcf7-7a39bc86c96c"
       ],
       "created_at": "2026-03-06T11:07:36.878Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13440,7 +13527,7 @@
         "session:b986c4e2-907f-402c-b168-f7b5f89f377a"
       ],
       "created_at": "2026-03-06T12:08:34.987Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13484,7 +13571,7 @@
         "session:b986c4e2-907f-402c-b168-f7b5f89f377a"
       ],
       "created_at": "2026-03-06T12:11:25.581Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13523,7 +13610,7 @@
         "git-diff:A:apps/xa-uploader/src/components/catalog/__tests__/CatalogProductImagesFields.test.ts"
       ],
       "created_at": "2026-03-06T12:21:43.654Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13567,7 +13654,7 @@
         "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
       ],
       "created_at": "2026-03-06T12:21:44.654Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13611,7 +13698,7 @@
         "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
       ],
       "created_at": "2026-03-06T12:29:39.587Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13655,7 +13742,7 @@
         "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
       ],
       "created_at": "2026-03-06T12:29:47.099Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13699,7 +13786,7 @@
         "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
       ],
       "created_at": "2026-03-06T12:33:49.208Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13743,7 +13830,7 @@
         "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
       ],
       "created_at": "2026-03-06T12:34:22.533Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13787,7 +13874,7 @@
         "session:8781939f-edea-451b-a9fa-1fa24c8cb292"
       ],
       "created_at": "2026-03-06T12:44:43.748Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13831,7 +13918,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T13:46:03.712Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13875,7 +13962,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T13:54:37.809Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13919,7 +14006,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T14:02:24.884Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -13963,7 +14050,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T14:03:07.398Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14007,7 +14094,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T14:09:00.832Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14051,7 +14138,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T14:09:07.682Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14104,7 +14191,7 @@
         "git-diff:M:.claude/skills/lp-seo/modules/phase-base-contract.md"
       ],
       "created_at": "2026-03-06T14:10:19.036Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "The codebase signals bridge detected a concentrated set of file changes that should remain attached to the affected surfaces instead of sitting in the queue as a generic structural delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14148,7 +14235,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T14:10:19.910Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14192,7 +14279,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T14:30:04.194Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14236,7 +14323,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-06T14:58:53.136Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14280,7 +14367,7 @@
         "session:de364e8d-fdd8-4860-8c35-b00389f9b19b"
       ],
       "created_at": "2026-03-06T15:59:23.099Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14324,7 +14411,7 @@
         "session:00654e03-9371-4567-a764-5f1c336012e5"
       ],
       "created_at": "2026-03-06T18:54:00.050Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14368,7 +14455,7 @@
         "session:00654e03-9371-4567-a764-5f1c336012e5"
       ],
       "created_at": "2026-03-06T19:26:50.867Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14412,7 +14499,7 @@
         "session:11259565-4f98-4328-9d78-c886e61f8c7e"
       ],
       "created_at": "2026-03-06T20:49:55.719Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14456,7 +14543,7 @@
         "session:11259565-4f98-4328-9d78-c886e61f8c7e"
       ],
       "created_at": "2026-03-06T20:55:54.817Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14500,7 +14587,7 @@
         "session:11259565-4f98-4328-9d78-c886e61f8c7e"
       ],
       "created_at": "2026-03-06T20:57:54.885Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14544,7 +14631,7 @@
         "session:11259565-4f98-4328-9d78-c886e61f8c7e"
       ],
       "created_at": "2026-03-06T20:58:26.847Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14588,7 +14675,7 @@
         "session:11259565-4f98-4328-9d78-c886e61f8c7e"
       ],
       "created_at": "2026-03-06T21:24:30.029Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14632,7 +14719,7 @@
         "session:11259565-4f98-4328-9d78-c886e61f8c7e"
       ],
       "created_at": "2026-03-06T21:26:56.675Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14676,7 +14763,7 @@
         "session:11259565-4f98-4328-9d78-c886e61f8c7e"
       ],
       "created_at": "2026-03-06T22:31:14.299Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14833,7 +14920,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T08:06:26.074Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14877,7 +14964,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T08:10:10.011Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14921,7 +15008,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T08:21:34.122Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -14965,7 +15052,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T08:26:31.425Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15009,7 +15096,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T08:27:07.316Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15053,7 +15140,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T09:45:41.638Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15207,7 +15294,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T10:24:00.445Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15251,7 +15338,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T10:25:02.111Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15437,7 +15524,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T11:43:24.797Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15481,7 +15568,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T11:44:20.123Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15525,7 +15612,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T11:49:23.679Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15569,7 +15656,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T11:54:07.982Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15880,7 +15967,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T12:29:00.888Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15924,7 +16011,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T12:29:06.592Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -15968,7 +16055,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T12:30:17.539Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -16131,7 +16218,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T13:54:01.698Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -16175,7 +16262,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T14:03:47.577Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -16219,7 +16306,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T14:14:25.193Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -16263,7 +16350,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T14:15:18.745Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -16307,7 +16394,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T14:20:57.699Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -16499,7 +16586,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T14:52:09.891Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -16543,7 +16630,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T14:57:54.099Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -16969,7 +17056,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T15:49:42.195Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17013,7 +17100,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T15:56:53.819Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17057,7 +17144,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T16:43:58.172Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17207,7 +17294,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T17:00:08.524Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17312,7 +17399,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T17:01:39.498Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17409,7 +17496,7 @@
         "session:d2ca9aca-b116-4de3-85c4-660decda6739"
       ],
       "created_at": "2026-03-07T21:53:49.547Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17640,7 +17727,7 @@
         "session:809f6046-3800-460c-bec0-16fe2595f597"
       ],
       "created_at": "2026-03-08T10:10:00.939Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17684,7 +17771,7 @@
         "session:809f6046-3800-460c-bec0-16fe2595f597"
       ],
       "created_at": "2026-03-08T10:12:48.804Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17728,7 +17815,7 @@
         "session:809f6046-3800-460c-bec0-16fe2595f597"
       ],
       "created_at": "2026-03-08T10:21:00.842Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17772,7 +17859,7 @@
         "session:809f6046-3800-460c-bec0-16fe2595f597"
       ],
       "created_at": "2026-03-08T10:22:07.495Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17816,7 +17903,7 @@
         "session:809f6046-3800-460c-bec0-16fe2595f597"
       ],
       "created_at": "2026-03-08T12:33:41.696Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17860,7 +17947,7 @@
         "session:809f6046-3800-460c-bec0-16fe2595f597"
       ],
       "created_at": "2026-03-08T12:35:10.767Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17955,7 +18042,7 @@
         "session:8cdabe66-d407-4f59-ab5b-bf1f9dfb7918"
       ],
       "created_at": "2026-03-08T16:16:29.745Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -17999,7 +18086,7 @@
         "session:8cdabe66-d407-4f59-ab5b-bf1f9dfb7918"
       ],
       "created_at": "2026-03-08T16:16:35.366Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18043,7 +18130,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T18:16:20.186Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18087,7 +18174,7 @@
         "session:e96080c8-452d-4ca3-add4-39aa8e41d543"
       ],
       "created_at": "2026-03-08T18:17:47.835Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18131,7 +18218,7 @@
         "session:14f7aef2-5d57-4d82-a048-137a0515b9f0"
       ],
       "created_at": "2026-03-08T18:21:19.108Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18175,7 +18262,7 @@
         "session:14f7aef2-5d57-4d82-a048-137a0515b9f0"
       ],
       "created_at": "2026-03-08T18:22:18.490Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18219,7 +18306,7 @@
         "session:45fa3df6-4baf-4a46-8295-da1c400b5f19"
       ],
       "created_at": "2026-03-08T18:31:57.510Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18263,7 +18350,7 @@
         "session:45fa3df6-4baf-4a46-8295-da1c400b5f19"
       ],
       "created_at": "2026-03-08T18:35:15.102Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18307,7 +18394,7 @@
         "session:f5b67ce7-30d8-4875-a58d-4747863a3bcd"
       ],
       "created_at": "2026-03-08T18:52:08.323Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18351,7 +18438,7 @@
         "session:f5b67ce7-30d8-4875-a58d-4747863a3bcd"
       ],
       "created_at": "2026-03-08T18:52:34.948Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18395,7 +18482,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T20:11:11.787Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18439,7 +18526,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T20:12:10.873Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18483,7 +18570,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T20:17:20.329Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18527,7 +18614,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T21:25:16.722Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18571,7 +18658,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T21:29:42.630Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18615,7 +18702,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T21:30:55.213Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18924,7 +19011,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T23:07:47.635Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -18968,7 +19055,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T23:08:58.996Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -19012,7 +19099,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T23:17:01.436Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -19056,7 +19143,7 @@
         "session:950278a6-791c-4c65-941b-e1902ae59893"
       ],
       "created_at": "2026-03-08T23:19:30.642Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -19100,7 +19187,7 @@
         "session:14f7aef2-5d57-4d82-a048-137a0515b9f0"
       ],
       "created_at": "2026-03-08T23:41:27.453Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -19144,7 +19231,7 @@
         "session:14f7aef2-5d57-4d82-a048-137a0515b9f0"
       ],
       "created_at": "2026-03-08T23:47:21.124Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -19188,7 +19275,7 @@
         "session:14f7aef2-5d57-4d82-a048-137a0515b9f0"
       ],
       "created_at": "2026-03-09T02:54:57.654Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -19607,7 +19694,7 @@
         "session:45fa3df6-4baf-4a46-8295-da1c400b5f19"
       ],
       "created_at": "2026-03-09T07:46:45.147Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -19704,7 +19791,7 @@
         "session:45fa3df6-4baf-4a46-8295-da1c400b5f19"
       ],
       "created_at": "2026-03-09T07:48:34.930Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -19748,7 +19835,7 @@
         "session:45fa3df6-4baf-4a46-8295-da1c400b5f19"
       ],
       "created_at": "2026-03-09T07:49:41.113Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20049,7 +20136,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:20:57.154Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20093,7 +20180,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:21:40.046Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20137,7 +20224,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:22:18.242Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20181,7 +20268,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:23:54.341Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20272,7 +20359,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:33:23.983Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20316,7 +20403,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:35:02.327Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20401,7 +20488,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:48:05.172Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20498,7 +20585,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:51:31.204Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20542,7 +20629,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:51:52.737Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20586,7 +20673,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:53:25.103Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20630,7 +20717,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:57:24.541Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20674,7 +20761,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T08:59:21.223Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20718,7 +20805,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:00:21.665Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20762,7 +20849,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:04:59.406Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -20806,7 +20893,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:05:44.206Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21033,7 +21120,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:24:04.967Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21077,7 +21164,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:24:37.571Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21121,7 +21208,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:24:43.244Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21165,7 +21252,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:25:33.012Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21209,7 +21296,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:26:06.146Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21493,7 +21580,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T09:48:00.312Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21537,7 +21624,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T10:01:39.458Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21634,7 +21721,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T10:41:17.858Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21678,7 +21765,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T10:44:54.581Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21771,7 +21858,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T10:50:45.416Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21815,7 +21902,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T10:52:02.902Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21859,7 +21946,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T10:57:42.461Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21903,7 +21990,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T11:01:27.261Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -21947,7 +22034,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T11:06:27.185Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -22087,7 +22174,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T11:50:35.449Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -22131,7 +22218,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T11:51:15.274Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -22175,7 +22262,7 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T11:55:15.702Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -22219,7 +22306,7 @@
         "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7"
       ],
       "created_at": "2026-03-09T12:23:46.378Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -22263,7 +22350,7 @@
         "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7"
       ],
       "created_at": "2026-03-09T12:25:32.069Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",
@@ -22307,7 +22394,7 @@
         "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7"
       ],
       "created_at": "2026-03-09T13:40:52.204Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {
         "type": "operational",

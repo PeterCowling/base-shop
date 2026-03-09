@@ -5,7 +5,7 @@ Domain: Platform
 Workstream: Engineering
 Created: 2026-03-09
 Last-reviewed: 2026-03-09
-Last-updated: 2026-03-09T12:58Z
+Last-updated: 2026-03-09T13:09Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: writer-lock-patch-return-offload
 Deliverable-Type: code-change
@@ -21,12 +21,12 @@ Auto-Build-Intent: plan+auto
 # Writer Lock Patch-Return Offload Plan
 
 ## Summary
-This plan implements the next slice identified by `writer-lock-operational-hardening`: replace shared-checkout mutable Codex offload with a patch-return pilot that keeps the writer lock around only the serialized apply and commit window. The original pilot sequence was invalidated by `TASK-01`, which showed that the current local Codex runtime does not reliably emit a patch artifact in a self-contained read-only probe and that the active `codex exec -a never` guidance is stale. `TASK-02` therefore converts the runtime uncertainty into a precursor chain instead of letting protocol/helper implementation proceed on a broken assumption. The plan is still buildable, but only through the new runtime-isolation investigation and spike ahead of the protocol and helper work.
+This plan implements the next slice identified by `writer-lock-operational-hardening`: replace shared-checkout mutable Codex offload with a patch-return pilot that keeps the writer lock around only the serialized apply and commit window. The original pilot sequence was invalidated by `TASK-01`, which showed that the current local Codex runtime does not reliably emit a patch artifact in a self-contained read-only probe and that the active `codex exec -a never` guidance is stale. `TASK-02` converted that uncertainty into a precursor chain. `TASK-08` has now identified a viable isolated runner contract: a temporary dedicated `CODEX_HOME` seeded with `auth.json` plus a minimal `config.toml`, which suppresses the shared MCP/state contamination seen in the default runtime. The plan remains buildable through the isolated-runner spike ahead of the protocol and helper work.
 
 ## Active tasks
 - [x] TASK-01: Spike the current Codex patch-return invocation and artifact contract
 - [x] TASK-02: Horizon checkpoint - confirm the pilot contract from spike evidence
-- [ ] TASK-08: Investigate an isolated Codex runner contract for patch-return offload
+- [x] TASK-08: Investigate an isolated Codex runner contract for patch-return offload
 - [ ] TASK-09: Spike the isolated runner and require a prompt unified-diff artifact
 - [ ] TASK-03: Implement the shared patch-return protocol and pilot-facing executor docs
 - [ ] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
@@ -84,7 +84,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | SPIKE | Validate the current Codex CLI invocation and patch artifact contract for patch-return offload | 85% | S | Complete (2026-03-09) | - | TASK-02 |
 | TASK-02 | CHECKPOINT | Reassess downstream implementation from TASK-01 spike evidence | 95% | S | Complete (2026-03-09) | TASK-01 | TASK-08, TASK-09 |
-| TASK-08 | INVESTIGATE | Determine an isolated Codex runner contract that avoids default MCP and state-runtime interference | 75% | M | Pending | TASK-02 | TASK-09 |
+| TASK-08 | INVESTIGATE | Determine an isolated Codex runner contract that avoids default MCP and state-runtime interference | 75% | M | Complete (2026-03-09) | TASK-02 | TASK-09 |
 | TASK-09 | SPIKE | Validate the isolated runner in a temp repo and require prompt unified-diff emission | 80% | S | Pending | TASK-08 | TASK-03 |
 | TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 75% (-> 85% conditional on TASK-08, TASK-09) | M | Pending | TASK-09 | TASK-04 |
 | TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 70% (-> 82% conditional on TASK-03, TASK-09) | M | Pending | TASK-03 | TASK-05 |
@@ -190,7 +190,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-09)
 - **Affects:** `docs/plans/writer-lock-patch-return-offload/runtime-isolation-investigation.md`, `[readonly] /Users/petercowling/.codex/config.toml`, `[readonly] docs/plans/writer-lock-patch-return-offload/spike-01-codex-patch-return.md`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-09
@@ -212,6 +212,12 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Documentation impact:** adds `runtime-isolation-investigation.md` as the canonical precursor artifact
 - **Notes / references:**
   - `docs/plans/writer-lock-patch-return-offload/replan-notes.md`
+  - `docs/plans/writer-lock-patch-return-offload/runtime-isolation-investigation.md`
+  - Build evidence (2026-03-09):
+    - Confirmed the installed Codex binary exposes `CODEX_HOME` as a supported runtime path via binary string inspection.
+    - Proved a temporary dedicated `CODEX_HOME` with copied `auth.json` plus a minimal `config.toml` yields `codex mcp list -> No MCP servers configured yet`.
+    - Proved the same isolated home completes a tiny `codex exec --sandbox read-only` run promptly with `mcp startup: no servers` and no shared-home MCP/state warnings.
+    - Confirmed `auth.json` is required (`401 Unauthorized` without it), and treated `config.toml` as part of the reliable runner contract because the auth-only home did not complete promptly.
 
 ### TASK-09: Spike the isolated runner and require a prompt unified-diff artifact
 - **Type:** SPIKE
@@ -474,6 +480,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - 2026-03-09: Chose `build-biz` as the first pilot lane instead of `build-investigate` because business-artifact tasks have cleaner validation and lower mutation risk.
 - 2026-03-09: Treated the stale `-a never` guidance as spike-gated evidence, not as a blind find-and-replace.
 - 2026-03-09: TASK-02 checkpoint added the `TASK-08` -> `TASK-09` runtime-isolation precursor chain before protocol/helper work.
+- 2026-03-09: TASK-08 selected a temporary dedicated `CODEX_HOME` as the primary isolation seam for patch-return offload, seeded only with `auth.json` and a minimal `config.toml`.
 
 ## Overall-confidence Calculation
 - S=1, M=2

@@ -27,8 +27,12 @@ import {
 } from "./self-evolving-detector.js";
 import {
   appendObservationAsEvent,
+  appendSelfEvolvingEvent,
+  createLifecycleEvent,
   readMetaObservations,
+  readSelfEvolvingEvents,
 } from "./self-evolving-events.js";
+import { deriveCandidateEvidencePosture } from "./self-evolving-evidence-posture.js";
 import {
   canCreateCandidate,
   type CandidateBudgetPolicy,
@@ -36,8 +40,16 @@ import {
   validateTransition,
 } from "./self-evolving-lifecycle.js";
 import {
+  assessEvidenceProfile,
+  buildPolicyDecisionRecord,
+  buildStructuralFeatureSnapshot,
   type CandidateEvidenceGate,
+  type CandidateOutcomeSignal,
   computeScoreResult,
+  createDefaultPolicyState,
+  deriveCandidateBeliefState,
+  POLICY_VERSION,
+  type PolicyScoreInput,
   type ScoreDimensionsV2,
   type ScoreWeights,
 } from "./self-evolving-scoring.js";
@@ -49,7 +61,11 @@ import {
   isNonePlaceholderMetaObservation,
 } from "./self-evolving-signal-helpers.js";
 import {
+  appendPolicyDecisionJournal,
   createStartupStateStore,
+  readPolicyDecisionJournal,
+  readPolicyState,
+  writePolicyState,
   writeStartupState,
 } from "./self-evolving-startup-state.js";
 
@@ -148,17 +164,30 @@ function buildEvidenceGate(observations: MetaObservation[]): CandidateEvidenceGa
 
 function applyEvidenceAwareRoute(
   route: ReturnType<typeof mapCandidateToBackboneRoute>,
+  posture: ReturnType<typeof deriveCandidateEvidencePosture>,
   evidenceClassification: ReturnType<typeof computeScoreResult>["evidence"]["classification"],
 ): ReturnType<typeof mapCandidateToBackboneRoute> {
   if (route.route === "reject" || route.route === "lp-do-fact-find") {
     return route;
+  }
+  if (posture.grade === "exploratory") {
+    return {
+      route: "lp-do-fact-find",
+      reason: "evidence_posture_exploratory_fact_find_only",
+    };
+  }
+  if (!posture.stronger_route_eligible) {
+    return {
+      route: "lp-do-fact-find",
+      reason: "evidence_posture_structural_fact_find_only",
+    };
   }
   if (evidenceClassification === "measured") {
     return route;
   }
   return {
     route: "lp-do-fact-find",
-    reason: `evidence_${evidenceClassification}_requires_fact_find`,
+    reason: `evidence_fields_${evidenceClassification}_require_fact_find`,
   };
 }
 
@@ -214,6 +243,158 @@ function buildCandidateFromRepeat(input: {
   };
 }
 
+function collectOutcomeSignals(
+  candidateId: string,
+  events: ReturnType<typeof readSelfEvolvingEvents>,
+): CandidateOutcomeSignal[] {
+  return events
+    .filter(
+      (event) =>
+        event.event_type === "outcome_recorded" &&
+        event.lifecycle?.candidate_id === candidateId &&
+        event.lifecycle.outcome != null,
+    )
+    .map((event) => ({
+      event_id: event.event_id,
+      timestamp: event.timestamp,
+      outcome: event.lifecycle?.outcome as CandidateOutcomeSignal["outcome"],
+    }));
+}
+
+function buildPolicyScoreInput(input: {
+  business: string;
+  startupState: StartupState;
+  candidate: ImprovementCandidate;
+  routeHint: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build";
+  generatedAt: string;
+  policyState: ReturnType<typeof createDefaultPolicyState>;
+  outcomeSignals: readonly CandidateOutcomeSignal[];
+}): PolicyScoreInput {
+  return {
+    business_id: input.business,
+    startup_stage: input.startupState.stage,
+    route_hint: input.routeHint,
+    candidate_belief:
+      input.policyState.candidate_beliefs[input.candidate.candidate_id] ?? null,
+    outcome_signals: input.outcomeSignals,
+    captured_at: input.generatedAt,
+  };
+}
+
+function buildRankedCandidate(input: {
+  business: string;
+  startupState: StartupState;
+  candidate: ImprovementCandidate;
+  source_hard_signature: string;
+  observations: MetaObservation[];
+  scoreWeights: ScoreWeights;
+  policyState: ReturnType<typeof createDefaultPolicyState>;
+  outcomeSignals: readonly CandidateOutcomeSignal[];
+  generatedAt: string;
+}): {
+  ranked: RankedCandidate;
+  nextBelief: ReturnType<typeof createDefaultPolicyState>["candidate_beliefs"][string];
+  decision: ReturnType<typeof buildPolicyDecisionRecord>;
+} {
+  const dimensions = buildScoreDimensions(input.observations);
+  const evidence = buildEvidenceGate(input.observations);
+  const evidenceProfile = assessEvidenceProfile(evidence);
+  const posture = deriveCandidateEvidencePosture(
+    input.observations,
+    evidence.minimum_sample_size,
+  );
+  const mappedRoute = mapCandidateToBackboneRoute(input.candidate);
+  const routeHint =
+    mappedRoute.route === "reject" ? "lp-do-fact-find" : mappedRoute.route;
+  const structuralSnapshot = buildStructuralFeatureSnapshot({
+    business_id: input.business,
+    candidate: input.candidate,
+    startup_stage: input.startupState.stage,
+    route_hint: routeHint,
+    evidence_classification: evidenceProfile.classification,
+    evidence_grade:
+      evidenceProfile.classification === "measured"
+        ? "measured"
+        : evidenceProfile.classification === "insufficient"
+          ? null
+          : "structural",
+    recurrence_count_window: input.observations.length,
+    operator_minutes_estimate: Math.round(dimensions.operator_time_score * 10),
+    quality_impact_estimate: dimensions.quality_risk_reduction_score / 5,
+    captured_at: input.generatedAt,
+  });
+  const beliefState = deriveCandidateBeliefState({
+    candidate: input.candidate,
+    structural_snapshot: structuralSnapshot,
+    evidence: evidenceProfile,
+    policy_input: buildPolicyScoreInput({
+      business: input.business,
+      startupState: input.startupState,
+      candidate: input.candidate,
+      routeHint,
+      generatedAt: input.generatedAt,
+      policyState: input.policyState,
+      outcomeSignals: input.outcomeSignals,
+    }),
+  });
+  const score = computeScoreResult(
+    input.candidate,
+    dimensions,
+    input.scoreWeights,
+    evidence,
+    buildPolicyScoreInput({
+      business: input.business,
+      startupState: input.startupState,
+      candidate: input.candidate,
+      routeHint,
+      generatedAt: input.generatedAt,
+      policyState: input.policyState,
+      outcomeSignals: input.outcomeSignals,
+    }),
+  );
+  const route = applyEvidenceAwareRoute(
+    mappedRoute,
+    posture,
+    score.evidence.classification,
+  );
+  const decision = buildPolicyDecisionRecord({
+    business_id: input.business,
+    candidate_id: input.candidate.candidate_id,
+    chosen_action: route.route,
+    created_at: input.generatedAt,
+    structural_snapshot: structuralSnapshot,
+    belief_state: beliefState,
+    utility: score.utility,
+  });
+
+  const nextBelief = {
+    ...beliefState,
+    last_decision_id: decision.decision_id,
+    updated_at: input.generatedAt,
+  };
+
+  return {
+    ranked: {
+      candidate: input.candidate,
+      score,
+      route,
+      source_hard_signature: input.source_hard_signature,
+      generated_at: input.generatedAt,
+      policy_context: {
+        decision_id: decision.decision_id,
+        decision_context_id: decision.decision_context_id,
+        policy_version: decision.policy_version,
+        utility_version: decision.utility_version,
+        prior_family_version: decision.prior_family_version,
+        belief_state_id: decision.belief_state_id,
+        structural_snapshot_id: structuralSnapshot.snapshot_id,
+      },
+    },
+    nextBelief,
+    decision,
+  };
+}
+
 export interface SelfEvolvingOrchestratorInput {
   rootDir: string;
   business: string;
@@ -234,6 +415,8 @@ export interface SelfEvolvingOrchestratorResult {
   generated_at: string;
   startup_state_path: string;
   candidate_path: string;
+  policy_state_path: string;
+  policy_decision_path: string;
   observations_count: number;
   repeat_candidates_detected: number;
   candidates_generated: number;
@@ -247,12 +430,15 @@ export function runSelfEvolvingOrchestrator(
   input: SelfEvolvingOrchestratorInput,
 ): SelfEvolvingOrchestratorResult {
   const now = input.now ?? new Date();
+  const generatedAt = now.toISOString();
   const detectorConfig = input.detector_config ?? DEFAULT_DETECTOR_CONFIG;
   const scoreWeights = input.score_weights ?? DEFAULT_SCORE_WEIGHTS;
   const budgetPolicy = input.budget_policy ?? DEFAULT_BUDGET_POLICY;
 
   const store = createStartupStateStore(input.rootDir);
   const startupStatePath = writeStartupState(store, input.startup_state);
+  const priorPolicyState =
+    readPolicyState(store, input.business) ?? createDefaultPolicyState(input.business, generatedAt);
 
   const freshObservations = input.observations.filter(
     (observation) => !isNonePlaceholderMetaObservation(observation),
@@ -270,6 +456,7 @@ export function runSelfEvolvingOrchestrator(
   const allObservations = readMetaObservations(input.rootDir, input.business).filter(
     (observation) => !isNonePlaceholderMetaObservation(observation),
   );
+  const allEvents = readSelfEvolvingEvents(input.rootDir, input.business);
   const detectedRepeats = detectRepeatWorkCandidates(
     allObservations,
     detectorConfig,
@@ -278,8 +465,9 @@ export function runSelfEvolvingOrchestrator(
 
   const existingLedger = readCandidateLedger(input.rootDir, input.business);
   const existingCandidates = existingLedger.candidates.map((item) => item.candidate);
+  const existingCandidateIds = new Set(existingCandidates.map((candidate) => candidate.candidate_id));
 
-  const generated: RankedCandidate[] = [];
+  const generatedSeeds: RankedCandidate[] = [];
   const rejections: string[] = [];
   let createdTodayCount = 0;
 
@@ -313,7 +501,7 @@ export function runSelfEvolvingOrchestrator(
       continue;
     }
     const budgetGate = canCreateCandidate(
-      [...existingCandidates, ...generated.map((item) => item.candidate)],
+      [...existingCandidates, ...generatedSeeds.map((item) => item.candidate)],
       budgetPolicy,
       createdTodayCount,
     );
@@ -322,9 +510,6 @@ export function runSelfEvolvingOrchestrator(
       continue;
     }
 
-    const dimensions = buildScoreDimensions(repeatObservations);
-    const evidence = buildEvidenceGate(repeatObservations);
-    const score = computeScoreResult(candidate, dimensions, scoreWeights, evidence);
     const transition = validateTransition(candidate.candidate_state, "validated");
     const validatedCandidate: ImprovementCandidate = transition.allowed
       ? { ...candidate, candidate_state: "validated" }
@@ -334,28 +519,99 @@ export function runSelfEvolvingOrchestrator(
       validateImprovementCandidate(validatedCandidate),
     );
 
-    const route = applyEvidenceAwareRoute(
-      mapCandidateToBackboneRoute(validatedCandidate),
-      score.evidence.classification,
-    );
-
-    generated.push({
+    generatedSeeds.push({
       candidate: validatedCandidate,
-      score,
-      route,
+      score: computeScoreResult(
+        validatedCandidate,
+        buildScoreDimensions(repeatObservations),
+        scoreWeights,
+        buildEvidenceGate(repeatObservations),
+      ),
+      route: { route: "lp-do-fact-find", reason: "seed_candidate_before_policy_recompute" },
       source_hard_signature: repeat.hard_signature,
-      generated_at: now.toISOString(),
+      generated_at: generatedAt,
     });
     createdTodayCount += 1;
   }
 
-  const mergedCandidates = mergeRankedCandidates(existingLedger.candidates, generated);
-  const candidatePath = writeCandidateLedger(input.rootDir, input.business, mergedCandidates);
+  const mergedCandidates = mergeRankedCandidates(existingLedger.candidates, generatedSeeds);
+  const nextPolicyState = {
+    ...priorPolicyState,
+    candidate_beliefs: { ...priorPolicyState.candidate_beliefs },
+    updated_at: generatedAt,
+    updated_by: "self-evolving-orchestrator",
+    policy_version: POLICY_VERSION,
+    utility_version: "self-evolving-utility.v1",
+    prior_family_version: "self-evolving-priors.v1",
+  };
+  const decisionsBefore = readPolicyDecisionJournal(store, input.business).length;
+  const policyDecisions: ReturnType<typeof buildPolicyDecisionRecord>[] = [];
+
+  const rerankedCandidates = mergedCandidates.map((entry) => {
+    const candidateObservations = allObservations.filter(
+      (observation) =>
+        observation.hard_signature === entry.source_hard_signature ||
+        entry.candidate.trigger_observations.includes(observation.observation_id),
+    );
+    const outcomeSignals = collectOutcomeSignals(entry.candidate.candidate_id, allEvents);
+    const rebuilt = buildRankedCandidate({
+      business: input.business,
+      startupState: input.startup_state,
+      candidate: entry.candidate,
+      source_hard_signature: entry.source_hard_signature,
+      observations: candidateObservations,
+      scoreWeights,
+      policyState: nextPolicyState,
+      outcomeSignals,
+      generatedAt,
+    });
+    nextPolicyState.candidate_beliefs[entry.candidate.candidate_id] = rebuilt.nextBelief;
+    policyDecisions.push(rebuilt.decision);
+    return rebuilt.ranked;
+  });
+
+  if (policyDecisions.length > 0) {
+    nextPolicyState.last_decision_id = policyDecisions[policyDecisions.length - 1]?.decision_id ?? null;
+  }
+
+  for (const candidate of generatedSeeds) {
+    if (existingCandidateIds.has(candidate.candidate.candidate_id)) {
+      continue;
+    }
+    appendSelfEvolvingEvent(
+      input.rootDir,
+      input.business,
+      createLifecycleEvent({
+        correlation_id: candidate.candidate.candidate_id,
+        event_type: "candidate_generated",
+        lifecycle: {
+          candidate_id: candidate.candidate.candidate_id,
+        },
+        run_id: input.run_id,
+        session_id: input.session_id,
+        source_component: "self-evolving-orchestrator",
+        timestamp: generatedAt,
+        artifact_refs: [
+          "docs/business-os/startup-loop/self-evolving",
+        ],
+      }),
+    );
+  }
+
+  const candidatePath = writeCandidateLedger(input.rootDir, input.business, rerankedCandidates);
+  const policyStatePath = writePolicyState(store, nextPolicyState);
+  const policyDecisionPath = appendPolicyDecisionJournal(
+    store,
+    input.business,
+    policyDecisions,
+  );
 
   const dashboard = buildDashboardSnapshot({
     observations: allObservations,
-    ranked_candidates: mergedCandidates,
+    ranked_candidates: rerankedCandidates,
     wipCap: budgetPolicy.max_active_candidates,
+    policy_state: nextPolicyState,
+    decision_records_count: decisionsBefore + policyDecisions.length,
   });
 
   const boundarySignals =
@@ -368,14 +624,16 @@ export function runSelfEvolvingOrchestrator(
 
   return {
     business: input.business,
-    generated_at: now.toISOString(),
+    generated_at: generatedAt,
     startup_state_path: startupStatePath,
     candidate_path: candidatePath,
+    policy_state_path: policyStatePath,
+    policy_decision_path: policyDecisionPath,
     observations_count: allObservations.length,
     repeat_candidates_detected: detectedRepeats.length,
-    candidates_generated: generated.length,
+    candidates_generated: generatedSeeds.length,
     candidate_rejections: rejections,
-    ranked_candidates: mergedCandidates,
+    ranked_candidates: rerankedCandidates,
     dashboard,
     boundary,
   };

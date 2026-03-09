@@ -9,10 +9,14 @@ import {
   type ImprovementCandidate,
   type ImprovementOutcome,
   type MetaObservation,
+  type PolicyDecisionRecord,
+  type SelfEvolvingPolicyState,
   type StartupState,
   validateContainerContract,
   validateImprovementCandidate,
   validateMetaObservation,
+  validatePolicyDecisionRecord,
+  validatePolicyState,
   validateStartupState,
 } from "../self-evolving/self-evolving-contracts.js";
 import {
@@ -21,8 +25,12 @@ import {
   readSelfEvolvingEvents,
 } from "../self-evolving/self-evolving-events.js";
 import {
+  appendPolicyDecisionJournal,
   createStartupStateStore,
+  readPolicyDecisionJournal,
+  readPolicyState,
   readStartupState,
+  writePolicyState,
   writeStartupState,
 } from "../self-evolving/self-evolving-startup-state.js";
 
@@ -78,6 +86,88 @@ function buildValidImprovementOutcome(candidateId: string): ImprovementOutcome {
     kept_or_reverted: "kept",
     root_cause_notes: "Manual routing delays dropped after adding the lifecycle seam.",
     follow_up_actions: ["watch next 14 days"],
+  };
+}
+
+function buildValidPolicyState(): SelfEvolvingPolicyState {
+  return {
+    schema_version: "policy-state.v1",
+    business_id: "BRIK",
+    policy_state_id: "policy-state-1",
+    policy_version: "self-evolving-policy.v1",
+    utility_version: "self-evolving-utility.v1",
+    prior_family_version: "self-evolving-priors.v1",
+    authority_level: "shadow",
+    active_constraint_profile: {
+      schema_version: "constraint-profile.v1",
+      wip_cap: 10,
+      max_candidates_per_route: {
+        "lp-do-fact-find": 6,
+        "lp-do-plan": 4,
+        "lp-do-build": 3,
+      },
+      max_guarded_trial_blast_radius: "medium",
+      minimum_evidence_floor: "instrumented",
+      hold_window_days: 7,
+    },
+    maturity_windows: {
+      schema_version: "maturity-window-profile.v1",
+      immediate_days: 0,
+      short_days: 7,
+      medium_days: 28,
+      long_days: 56,
+    },
+    candidate_beliefs: {},
+    last_decision_id: null,
+    updated_at: "2026-03-09T18:35:00.000Z",
+    updated_by: "agent",
+  };
+}
+
+function buildValidPolicyDecision(): PolicyDecisionRecord {
+  return {
+    schema_version: "policy-decision.v1",
+    decision_id: "decision-1",
+    business_id: "BRIK",
+    candidate_id: "cand-1",
+    decision_type: "candidate_route",
+    decision_mode: "deterministic",
+    policy_version: "self-evolving-policy.v1",
+    utility_version: "self-evolving-utility.v1",
+    prior_family_version: "self-evolving-priors.v1",
+    decision_context_id: "context-1",
+    structural_snapshot: {
+      snapshot_id: "snap-1",
+      candidate_id: "cand-1",
+      business_id: "BRIK",
+      captured_at: "2026-03-09T18:35:00.000Z",
+      startup_stage: "traction",
+      candidate_type: "container_update",
+      recommended_route_hint: "lp-do-build",
+      recurrence_count_window: 3,
+      operator_minutes_estimate: 20,
+      quality_impact_estimate: 0.4,
+      evidence_grade: "measured",
+      evidence_classification: "measured",
+      blast_radius_tag: "small",
+      risk_level: "low",
+      estimated_effort: "M",
+      constraint_refs: ["risk:low"],
+    },
+    belief_state_id: "belief-1",
+    eligible_actions: ["lp-do-fact-find", "lp-do-plan", "lp-do-build"],
+    chosen_action: "lp-do-build",
+    action_probability: null,
+    utility: {
+      expected_reward: 3.2,
+      downside_penalty: 0.8,
+      effort_penalty: 1.1,
+      evidence_penalty: 0,
+      instability_penalty: 0,
+      exploration_bonus: 0,
+      net_utility: 1.3,
+    },
+    created_at: "2026-03-09T18:35:00.000Z",
   };
 }
 
@@ -326,6 +416,30 @@ describe("self-evolving contract validators", () => {
     const readBack = readStartupState(store, state.business_id);
     expect(outputPath).toContain("startup-state");
     expect(readBack?.business_id).toBe("BRIK");
+    rmSync(tempRoot, { recursive: true, force: true });
+  });
+
+  it("TASK-05 TC-01 validates and persists policy state plus decision journal", () => {
+    const tempRoot = mkdtempSync(path.join(os.tmpdir(), "self-evolving-policy-state-"));
+    const store = createStartupStateStore(tempRoot);
+    const state = buildValidPolicyState();
+    const decision = buildValidPolicyDecision();
+
+    expect(validatePolicyState(state)).toEqual([]);
+    expect(validatePolicyDecisionRecord(decision)).toEqual([]);
+
+    const policyPath = writePolicyState(store, state);
+    const decisionPath = appendPolicyDecisionJournal(store, state.business_id, [decision]);
+
+    expect(policyPath).toContain("policy-state");
+    expect(readPolicyState(store, state.business_id)?.policy_version).toBe(
+      "self-evolving-policy.v1",
+    );
+    expect(decisionPath).toContain("policy-decisions");
+    expect(readPolicyDecisionJournal(store, state.business_id)[0]?.decision_id).toBe(
+      "decision-1",
+    );
+
     rmSync(tempRoot, { recursive: true, force: true });
   });
 

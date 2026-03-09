@@ -59,6 +59,15 @@ export type EffectReversibility =
   | "reversible"
   | "compensatable"
   | "irreversible";
+export type PolicyAuthorityLevel = "shadow" | "advisory" | "guarded_trial";
+export type MaturityBucket = "immediate" | "short" | "medium" | "long" | "unknown";
+export type PolicyDecisionType =
+  | "candidate_route"
+  | "portfolio_selection"
+  | "exploration_rank"
+  | "promotion_gate"
+  | "override_record";
+export type PolicyDecisionMode = "deterministic" | "stochastic";
 
 export interface ObservationSignalHints {
   recurrence_key?: string | null;
@@ -141,17 +150,150 @@ export interface ImprovementCandidate {
 export interface ImprovementOutcome {
   schema_version: string;
   candidate_id: string;
+  dispatch_id?: string | null;
+  decision_id?: string | null;
+  policy_version?: string | null;
   implementation_status: "success" | "failed" | "reverted";
   promoted_at: string | null;
+  maturity_status?: "pending" | "matured";
+  measurement_status?:
+    | "pending"
+    | "verified"
+    | "verified_degraded"
+    | "missing"
+    | "insufficient_sample";
   baseline_window: string;
   post_window: string;
   measured_impact: number;
   impact_confidence: number;
   regressions_detected: number;
   rollback_executed_at: string | null;
-  kept_or_reverted: "kept" | "reverted";
+  kept_or_reverted: "kept" | "reverted" | "not_kept";
+  measurement_observation_ids?: string[];
+  outcome_source_path?: string | null;
   root_cause_notes: string;
   follow_up_actions: string[];
+}
+
+export interface ConstraintProfile {
+  schema_version: "constraint-profile.v1";
+  wip_cap: number;
+  max_candidates_per_route: Partial<
+    Record<"lp-do-fact-find" | "lp-do-plan" | "lp-do-build", number>
+  >;
+  max_guarded_trial_blast_radius: "small" | "medium" | "large";
+  minimum_evidence_floor: "instrumented" | "measured";
+  hold_window_days: number;
+}
+
+export interface MaturityWindowProfile {
+  schema_version: "maturity-window-profile.v1";
+  immediate_days: number;
+  short_days: number;
+  medium_days: number;
+  long_days: number;
+}
+
+export interface StructuralFeatureSnapshot {
+  snapshot_id: string;
+  candidate_id: string;
+  business_id: string;
+  captured_at: string;
+  startup_stage: StartupStage;
+  candidate_type: CandidateType;
+  recommended_route_hint: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build";
+  recurrence_count_window: number;
+  operator_minutes_estimate: number;
+  quality_impact_estimate: number;
+  evidence_grade: ObservationEvidenceGrade | null;
+  evidence_classification: "measured" | "instrumented" | "structural_only" | "insufficient";
+  blast_radius_tag: ImprovementCandidate["blast_radius_tag"];
+  risk_level: ImprovementCandidate["risk_level"];
+  estimated_effort: ImprovementCandidate["estimated_effort"];
+  constraint_refs: string[];
+}
+
+export interface BetaPosterior {
+  family: "beta_binomial";
+  prior_alpha: number;
+  prior_beta: number;
+  alpha: number;
+  beta: number;
+  successes: number;
+  failures: number;
+  updated_through_event_id: string | null;
+}
+
+export interface BucketPosterior {
+  family: "dirichlet_categorical";
+  buckets: [MaturityBucket, MaturityBucket, MaturityBucket, MaturityBucket, MaturityBucket];
+  prior_alpha: [number, number, number, number, number];
+  alpha: [number, number, number, number, number];
+  counts: [number, number, number, number, number];
+  updated_through_event_id: string | null;
+}
+
+export interface CandidateBeliefState {
+  schema_version: "candidate-belief.v1";
+  candidate_id: string;
+  structural_snapshot_id: string;
+  success_if_attempted: BetaPosterior;
+  positive_impact_if_attempted: BetaPosterior;
+  guardrail_breach_if_attempted: BetaPosterior;
+  time_to_effect: BucketPosterior;
+  evidence_weight: number;
+  evidence_floor_met: boolean;
+  last_verified_outcome_at: string | null;
+  last_outcome_event_id: string | null;
+  last_decision_id: string | null;
+  last_override_id: string | null;
+  updated_at: string;
+}
+
+export interface UtilityBreakdown {
+  expected_reward: number;
+  downside_penalty: number;
+  effort_penalty: number;
+  evidence_penalty: number;
+  instability_penalty: number;
+  exploration_bonus: number;
+  net_utility: number;
+}
+
+export interface PolicyDecisionRecord {
+  schema_version: "policy-decision.v1";
+  decision_id: string;
+  business_id: string;
+  candidate_id: string;
+  decision_type: PolicyDecisionType;
+  decision_mode: PolicyDecisionMode;
+  policy_version: string;
+  utility_version: string;
+  prior_family_version: string;
+  decision_context_id: string;
+  structural_snapshot: StructuralFeatureSnapshot;
+  belief_state_id: string;
+  eligible_actions: string[];
+  chosen_action: string;
+  action_probability: number | null;
+  utility: UtilityBreakdown;
+  created_at: string;
+}
+
+export interface SelfEvolvingPolicyState {
+  schema_version: "policy-state.v1";
+  business_id: string;
+  policy_state_id: string;
+  policy_version: string;
+  utility_version: string;
+  prior_family_version: string;
+  authority_level: PolicyAuthorityLevel;
+  active_constraint_profile: ConstraintProfile;
+  maturity_windows: MaturityWindowProfile;
+  candidate_beliefs: Record<string, CandidateBeliefState>;
+  last_decision_id: string | null;
+  updated_at: string;
+  updated_by: string;
 }
 
 export type LifecycleReviewDecision = "approved" | "rejected" | "deferred";
@@ -404,7 +546,11 @@ export function validateImprovementCandidate(candidate: ImprovementCandidate): s
 
 export function validateImprovementOutcome(outcome: ImprovementOutcome): string[] {
   const errors: string[] = [];
+  const isV2 = outcome.schema_version === "outcome.v2";
   if (!nonEmptyString(outcome.schema_version)) errors.push("schema_version");
+  if (outcome.schema_version !== "outcome.v1" && outcome.schema_version !== "outcome.v2") {
+    errors.push("unsupported_schema_version");
+  }
   if (!nonEmptyString(outcome.candidate_id)) errors.push("candidate_id");
   if (
     outcome.implementation_status !== "success" &&
@@ -447,7 +593,11 @@ export function validateImprovementOutcome(outcome: ImprovementOutcome): string[
   ) {
     errors.push("promoted_at");
   }
-  if (outcome.kept_or_reverted !== "kept" && outcome.kept_or_reverted !== "reverted") {
+  if (
+    outcome.kept_or_reverted !== "kept" &&
+    outcome.kept_or_reverted !== "reverted" &&
+    outcome.kept_or_reverted !== "not_kept"
+  ) {
     errors.push("kept_or_reverted");
   }
   if (!nonEmptyString(outcome.root_cause_notes)) {
@@ -467,6 +617,321 @@ export function validateImprovementOutcome(outcome: ImprovementOutcome): string[
     outcome.rollback_executed_at === null
   ) {
     errors.push("rollback_executed_at_required_for_reverted_outcome");
+  }
+  if (isV2) {
+    if (
+      outcome.measurement_status !== "pending" &&
+      outcome.measurement_status !== "verified" &&
+      outcome.measurement_status !== "verified_degraded" &&
+      outcome.measurement_status !== "missing" &&
+      outcome.measurement_status !== "insufficient_sample"
+    ) {
+      errors.push("measurement_status_required_v2");
+    }
+    if (
+      outcome.maturity_status !== "pending" &&
+      outcome.maturity_status !== "matured"
+    ) {
+      errors.push("maturity_status_required_v2");
+    }
+    if (outcome.dispatch_id !== null && outcome.dispatch_id !== undefined && !nonEmptyString(outcome.dispatch_id)) {
+      errors.push("dispatch_id");
+    }
+    if (outcome.decision_id !== null && outcome.decision_id !== undefined && !nonEmptyString(outcome.decision_id)) {
+      errors.push("decision_id");
+    }
+    if (
+      outcome.policy_version !== null &&
+      outcome.policy_version !== undefined &&
+      !nonEmptyString(outcome.policy_version)
+    ) {
+      errors.push("policy_version");
+    }
+    if (!Array.isArray(outcome.measurement_observation_ids)) {
+      errors.push("measurement_observation_ids_required_v2");
+    }
+    if (
+      outcome.outcome_source_path !== undefined &&
+      outcome.outcome_source_path !== null &&
+      !nonEmptyString(outcome.outcome_source_path)
+    ) {
+      errors.push("outcome_source_path");
+    }
+  }
+  return errors;
+}
+
+function validateBetaPosterior(posterior: BetaPosterior): string[] {
+  const errors: string[] = [];
+  if (posterior.family !== "beta_binomial") {
+    errors.push("family");
+  }
+  for (const [label, value] of Object.entries({
+    prior_alpha: posterior.prior_alpha,
+    prior_beta: posterior.prior_beta,
+    alpha: posterior.alpha,
+    beta: posterior.beta,
+  })) {
+    if (typeof value !== "number" || Number.isNaN(value) || value <= 0) {
+      errors.push(label);
+    }
+  }
+  if (!Number.isInteger(posterior.successes) || posterior.successes < 0) {
+    errors.push("successes");
+  }
+  if (!Number.isInteger(posterior.failures) || posterior.failures < 0) {
+    errors.push("failures");
+  }
+  if (
+    posterior.updated_through_event_id !== null &&
+    !nonEmptyString(posterior.updated_through_event_id)
+  ) {
+    errors.push("updated_through_event_id");
+  }
+  return errors;
+}
+
+function validateBucketPosterior(posterior: BucketPosterior): string[] {
+  const errors: string[] = [];
+  if (posterior.family !== "dirichlet_categorical") {
+    errors.push("family");
+  }
+  const buckets = posterior.buckets;
+  if (!Array.isArray(buckets) || buckets.length !== 5) {
+    errors.push("buckets");
+  }
+  for (const [label, values] of [
+    ["prior_alpha", posterior.prior_alpha],
+    ["alpha", posterior.alpha],
+    ["counts", posterior.counts],
+  ] as const) {
+    if (!Array.isArray(values) || values.length !== 5) {
+      errors.push(label);
+      continue;
+    }
+    for (const value of values) {
+      if (typeof value !== "number" || Number.isNaN(value) || value < 0) {
+        errors.push(label);
+        break;
+      }
+    }
+  }
+  if (
+    posterior.updated_through_event_id !== null &&
+    !nonEmptyString(posterior.updated_through_event_id)
+  ) {
+    errors.push("updated_through_event_id");
+  }
+  return errors;
+}
+
+export function validateConstraintProfile(profile: ConstraintProfile): string[] {
+  const errors: string[] = [];
+  if (profile.schema_version !== "constraint-profile.v1") {
+    errors.push("schema_version");
+  }
+  if (!Number.isInteger(profile.wip_cap) || profile.wip_cap <= 0) {
+    errors.push("wip_cap");
+  }
+  if (!Number.isInteger(profile.hold_window_days) || profile.hold_window_days < 0) {
+    errors.push("hold_window_days");
+  }
+  if (
+    profile.max_guarded_trial_blast_radius !== "small" &&
+    profile.max_guarded_trial_blast_radius !== "medium" &&
+    profile.max_guarded_trial_blast_radius !== "large"
+  ) {
+    errors.push("max_guarded_trial_blast_radius");
+  }
+  if (
+    profile.minimum_evidence_floor !== "instrumented" &&
+    profile.minimum_evidence_floor !== "measured"
+  ) {
+    errors.push("minimum_evidence_floor");
+  }
+  return errors;
+}
+
+export function validateMaturityWindowProfile(profile: MaturityWindowProfile): string[] {
+  const errors: string[] = [];
+  if (profile.schema_version !== "maturity-window-profile.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    immediate_days: profile.immediate_days,
+    short_days: profile.short_days,
+    medium_days: profile.medium_days,
+    long_days: profile.long_days,
+  })) {
+    if (!Number.isInteger(value) || value < 0) {
+      errors.push(label);
+    }
+  }
+  return errors;
+}
+
+export function validateCandidateBeliefState(state: CandidateBeliefState): string[] {
+  const errors: string[] = [];
+  if (state.schema_version !== "candidate-belief.v1") {
+    errors.push("schema_version");
+  }
+  if (!nonEmptyString(state.candidate_id)) errors.push("candidate_id");
+  if (!nonEmptyString(state.structural_snapshot_id)) {
+    errors.push("structural_snapshot_id");
+  }
+  if (typeof state.evidence_weight !== "number" || state.evidence_weight < 0 || state.evidence_weight > 1) {
+    errors.push("evidence_weight");
+  }
+  if (typeof state.evidence_floor_met !== "boolean") {
+    errors.push("evidence_floor_met");
+  }
+  if (
+    state.last_verified_outcome_at !== null &&
+    !isIsoDate(state.last_verified_outcome_at)
+  ) {
+    errors.push("last_verified_outcome_at");
+  }
+  for (const [label, value] of Object.entries({
+    last_outcome_event_id: state.last_outcome_event_id,
+    last_decision_id: state.last_decision_id,
+    last_override_id: state.last_override_id,
+  })) {
+    if (value !== null && !nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (!isIsoDate(state.updated_at)) {
+    errors.push("updated_at");
+  }
+  errors.push(
+    ...validateBetaPosterior(state.success_if_attempted).map((error) => `success_if_attempted.${error}`),
+  );
+  errors.push(
+    ...validateBetaPosterior(state.positive_impact_if_attempted).map(
+      (error) => `positive_impact_if_attempted.${error}`,
+    ),
+  );
+  errors.push(
+    ...validateBetaPosterior(state.guardrail_breach_if_attempted).map(
+      (error) => `guardrail_breach_if_attempted.${error}`,
+    ),
+  );
+  errors.push(
+    ...validateBucketPosterior(state.time_to_effect).map((error) => `time_to_effect.${error}`),
+  );
+  return errors;
+}
+
+export function validateUtilityBreakdown(utility: UtilityBreakdown): string[] {
+  const errors: string[] = [];
+  for (const [label, value] of Object.entries(utility)) {
+    if (typeof value !== "number" || Number.isNaN(value)) {
+      errors.push(label);
+    }
+  }
+  return errors;
+}
+
+export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): string[] {
+  const errors: string[] = [];
+  if (record.schema_version !== "policy-decision.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    decision_id: record.decision_id,
+    business_id: record.business_id,
+    candidate_id: record.candidate_id,
+    policy_version: record.policy_version,
+    utility_version: record.utility_version,
+    prior_family_version: record.prior_family_version,
+    decision_context_id: record.decision_context_id,
+    belief_state_id: record.belief_state_id,
+    chosen_action: record.chosen_action,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    record.decision_type !== "candidate_route" &&
+    record.decision_type !== "portfolio_selection" &&
+    record.decision_type !== "exploration_rank" &&
+    record.decision_type !== "promotion_gate" &&
+    record.decision_type !== "override_record"
+  ) {
+    errors.push("decision_type");
+  }
+  if (record.decision_mode !== "deterministic" && record.decision_mode !== "stochastic") {
+    errors.push("decision_mode");
+  }
+  if (!Array.isArray(record.eligible_actions) || record.eligible_actions.length === 0) {
+    errors.push("eligible_actions");
+  }
+  if (
+    record.action_probability !== null &&
+    (typeof record.action_probability !== "number" ||
+      Number.isNaN(record.action_probability) ||
+      record.action_probability < 0 ||
+      record.action_probability > 1)
+  ) {
+    errors.push("action_probability");
+  }
+  if (!isIsoDate(record.created_at)) {
+    errors.push("created_at");
+  }
+  errors.push(
+    ...validateUtilityBreakdown(record.utility).map((error) => `utility.${error}`),
+  );
+  return errors;
+}
+
+export function validatePolicyState(state: SelfEvolvingPolicyState): string[] {
+  const errors: string[] = [];
+  if (state.schema_version !== "policy-state.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    business_id: state.business_id,
+    policy_state_id: state.policy_state_id,
+    policy_version: state.policy_version,
+    utility_version: state.utility_version,
+    prior_family_version: state.prior_family_version,
+    updated_by: state.updated_by,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    state.authority_level !== "shadow" &&
+    state.authority_level !== "advisory" &&
+    state.authority_level !== "guarded_trial"
+  ) {
+    errors.push("authority_level");
+  }
+  if (
+    state.last_decision_id !== null &&
+    !nonEmptyString(state.last_decision_id)
+  ) {
+    errors.push("last_decision_id");
+  }
+  if (!isIsoDate(state.updated_at)) {
+    errors.push("updated_at");
+  }
+  errors.push(
+    ...validateConstraintProfile(state.active_constraint_profile).map(
+      (error) => `active_constraint_profile.${error}`,
+    ),
+  );
+  errors.push(
+    ...validateMaturityWindowProfile(state.maturity_windows).map(
+      (error) => `maturity_windows.${error}`,
+    ),
+  );
+  for (const [candidateId, belief] of Object.entries(state.candidate_beliefs)) {
+    errors.push(
+      ...validateCandidateBeliefState(belief).map((error) => `candidate_beliefs.${candidateId}.${error}`),
+    );
   }
   return errors;
 }

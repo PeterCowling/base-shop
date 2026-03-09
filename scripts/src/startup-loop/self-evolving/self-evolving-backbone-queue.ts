@@ -23,7 +23,7 @@ export interface SelfEvolvingBackboneQueueEntry {
   consumed_by?: string | null;
   followup_dispatch_id?: string | null;
   followup_queue_state?: "enqueued" | "processed" | "skipped" | "error" | null;
-  followup_route?: "lp-do-fact-find" | "lp-do-build" | "lp-do-briefing" | null;
+  followup_route?: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build" | "lp-do-briefing" | null;
 }
 
 export interface BackboneQueueWriteResult {
@@ -81,7 +81,10 @@ function toQueueEntry(
     return null;
   }
 
-  const priority = candidate.score.priority_score_v2 ?? candidate.score.priority_score_v1;
+  const priority =
+    candidate.score.utility?.net_utility ??
+    candidate.score.priority_score_v2 ??
+    candidate.score.priority_score_v1;
   return {
     queued_at: existing?.queued_at ?? queuedAt,
     business,

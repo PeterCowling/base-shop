@@ -11,6 +11,31 @@ export type QueueStateKey =
   | "auto_executed"
   | "completed";
 
+export interface DispatchSelfEvolvingLink {
+  candidate_id: string;
+  decision_id: string;
+  policy_version: string;
+  recommended_route_origin: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build";
+  executor_path: string;
+  handoff_emitted_at: string;
+}
+
+export interface QueueCompletedSelfEvolving {
+  candidate_id: string;
+  decision_id: string;
+  dispatch_id: string;
+  maturity_due_at: string;
+  maturity_status: "pending" | "matured";
+  measurement_status:
+    | "pending"
+    | "verified"
+    | "verified_degraded"
+    | "missing"
+    | "insufficient_sample";
+  outcome_event_id: string | null;
+  verified_observation_ids: string[];
+}
+
 export interface QueueProcessedBy {
   route?: string;
   target_route?: string;
@@ -20,13 +45,16 @@ export interface QueueProcessedBy {
   processed_at?: string;
   fact_find_slug?: string;
   fact_find_path?: string;
+  self_evolving?: DispatchSelfEvolvingLink;
   [key: string]: unknown;
 }
 
 export interface QueueCompletedBy {
-  plan_path: string;
+  plan_path?: string;
+  micro_build_path?: string;
   completed_at: string;
   outcome: string;
+  self_evolving?: QueueCompletedSelfEvolving;
 }
 
 export interface QueueDispatch {
@@ -41,6 +69,7 @@ export interface QueueDispatch {
   location_anchors?: string[];
   processed_by?: QueueProcessedBy;
   completed_by?: QueueCompletedBy;
+  self_evolving?: DispatchSelfEvolvingLink;
   [key: string]: unknown;
 }
 
@@ -142,7 +171,9 @@ export function buildCounts(dispatches: QueueDispatch[]): Record<string, number>
     auto_executed: 0,
     completed: 0,
     fact_find_ready: 0,
+    plan_ready: 0,
     micro_build_ready: 0,
+    briefing_ready: 0,
     total: dispatches.length,
   };
 
@@ -151,11 +182,13 @@ export function buildCounts(dispatches: QueueDispatch[]): Record<string, number>
     if (typeof state === "string" && (COUNT_KEYS as readonly string[]).includes(state)) {
       counts[state] += 1;
     }
-    if (dispatch.status === "fact_find_ready") {
-      counts.fact_find_ready += 1;
-    }
-    if (dispatch.status === "micro_build_ready") {
-      counts.micro_build_ready += 1;
+    // Routing status counts only reflect actionable (enqueued) entries —
+    // suppressed/completed entries with a status field must not inflate these.
+    if (state === "enqueued") {
+      if (dispatch.status === "fact_find_ready") counts.fact_find_ready += 1;
+      if (dispatch.status === "plan_ready") counts.plan_ready += 1;
+      if (dispatch.status === "micro_build_ready") counts.micro_build_ready += 1;
+      if (dispatch.status === "briefing_ready") counts.briefing_ready += 1;
     }
   }
 

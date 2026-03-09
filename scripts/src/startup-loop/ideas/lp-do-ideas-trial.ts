@@ -21,6 +21,7 @@ import {
 } from "./lp-do-ideas-classifier.js";
 import { computeClusterFingerprint } from "./lp-do-ideas-fingerprint.js";
 import type { KeywordCalibrationPriors } from "./lp-do-ideas-keyword-calibrate.js";
+import type { DispatchSelfEvolvingLink } from "./lp-do-ideas-queue-state-file.js";
 import type { RegistryV2ArtifactEntry } from "./lp-do-ideas-registry-migrate-v1-v2.js";
 
 // ---------------------------------------------------------------------------
@@ -219,6 +220,7 @@ export type DeliverableFamily =
 
 export type DispatchStatus =
   | "fact_find_ready"
+  | "plan_ready"
   | "micro_build_ready"
   | "briefing_ready"
   | "auto_executed"
@@ -226,8 +228,39 @@ export type DispatchStatus =
 
 export type RecommendedRoute =
   | "lp-do-fact-find"
+  | "lp-do-plan"
   | "lp-do-build"
   | "lp-do-briefing";
+
+export const ROUTABLE_DISPATCH_STATUS_ROUTE_MAP = {
+  fact_find_ready: "lp-do-fact-find",
+  plan_ready: "lp-do-plan",
+  micro_build_ready: "lp-do-build",
+  briefing_ready: "lp-do-briefing",
+} as const satisfies Record<string, RecommendedRoute>;
+
+export type RoutableDispatchStatus = keyof typeof ROUTABLE_DISPATCH_STATUS_ROUTE_MAP;
+
+export function isRoutableDispatchStatus(status: DispatchStatus): status is RoutableDispatchStatus {
+  return Object.hasOwn(ROUTABLE_DISPATCH_STATUS_ROUTE_MAP, status);
+}
+
+export function routeForDispatchStatus(status: RoutableDispatchStatus): RecommendedRoute {
+  return ROUTABLE_DISPATCH_STATUS_ROUTE_MAP[status];
+}
+
+export function statusForRecommendedRoute(route: RecommendedRoute): RoutableDispatchStatus {
+  switch (route) {
+    case "lp-do-fact-find":
+      return "fact_find_ready";
+    case "lp-do-plan":
+      return "plan_ready";
+    case "lp-do-build":
+      return "micro_build_ready";
+    case "lp-do-briefing":
+      return "briefing_ready";
+  }
+}
 
 export type QueueState = "enqueued" | "processed" | "skipped" | "error";
 
@@ -411,6 +444,7 @@ export interface TrialDispatchPacketV2 {
   evidence_refs: [string, ...string[]];
   created_at: string;
   queue_state: QueueState;
+  self_evolving?: DispatchSelfEvolvingLink;
   /**
    * Why this work is happening now.
    * Required, non-empty string.
@@ -1280,11 +1314,9 @@ export function runTrialOrchestrator(
       : directBuildReady
         ? "micro_build_ready"
         : "fact_find_ready";
-    const recommendedRoute: RecommendedRoute = !t1Match
-      ? "lp-do-briefing"
-      : directBuildReady
-        ? "lp-do-build"
-        : "lp-do-fact-find";
+    const recommendedRoute = isRoutableDispatchStatus(status)
+      ? routeForDispatchStatus(status)
+      : "lp-do-fact-find";
 
     const dispatchId = buildDispatchId(now, sequence++);
     const beforeShort = event.before_sha.slice(0, 7);

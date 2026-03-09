@@ -28,8 +28,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-02: Harden graph, optimization, and survival modules into repo-owned helper contracts with tests — Complete (2026-03-09)
 - [x] TASK-03: Define the posterior belief, utility, and policy-state contract — Complete (2026-03-09)
 - [x] TASK-04: Define the outcome-closure and verified-measurement contract — Complete (2026-03-09)
-- [ ] TASK-05: Implement the versioned belief-state and utility-computation layer
-- [ ] TASK-06: Implement outcome closure and verified measurement feedback into self-evolving memory
+- [x] TASK-05: Implement the versioned belief-state and utility-computation layer — Complete (2026-03-09)
+- [x] TASK-06: Implement outcome closure and verified measurement feedback into self-evolving memory — Complete (2026-03-09)
 - [ ] TASK-16: Implement decision journaling, maturity windows, and replay-ready evaluation datasets
 - [ ] TASK-07: Replace pure priority sorting with constrained portfolio optimization
 - [ ] TASK-08: Integrate graph dependency and bottleneck analysis into policy inputs
@@ -115,8 +115,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-02 | IMPLEMENT | Harden graph, optimization, and survival modules into repo-owned helper contracts with tests | 80% | M | Complete (2026-03-09) | - | TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-03 | INVESTIGATE | Define the posterior belief, utility, and policy-state contract | 75% | M | Complete (2026-03-09) | - | TASK-05, TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
 | TASK-04 | INVESTIGATE | Define the outcome-closure and verified-measurement contract | 75% | M | Complete (2026-03-09) | - | TASK-06, TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
-| TASK-05 | IMPLEMENT | Implement the versioned belief-state and utility-computation layer | 80% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
-| TASK-06 | IMPLEMENT | Implement outcome closure and verified measurement feedback into self-evolving memory | 80% | M | Pending | TASK-01, TASK-02, TASK-04 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
+| TASK-05 | IMPLEMENT | Implement the versioned belief-state and utility-computation layer | 80% | M | Complete (2026-03-09) | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13 |
+| TASK-06 | IMPLEMENT | Implement outcome closure and verified measurement feedback into self-evolving memory | 80% | M | Complete (2026-03-09) | TASK-01, TASK-02, TASK-04 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13 |
 | TASK-16 | IMPLEMENT | Implement decision journaling, maturity windows, and replay-ready evaluation datasets | 70% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-06 | TASK-07, TASK-09, TASK-10, TASK-11, TASK-13, TASK-14 |
 | TASK-07 | IMPLEMENT | Replace pure priority sorting with constrained portfolio optimization | 75% | M | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-10, TASK-12, TASK-13, TASK-14 |
 | TASK-08 | IMPLEMENT | Integrate graph dependency and bottleneck analysis into policy inputs | 75% | M | Pending | TASK-02, TASK-03, TASK-05 | TASK-11, TASK-13, TASK-14 |
@@ -344,8 +344,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+- **Status:** Complete (2026-03-09)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-candidates.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-detector-scoring.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** TASK-07, TASK-08, TASK-09, TASK-10, TASK-12, TASK-13
 - **Confidence:** 80%
@@ -378,6 +378,13 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
+- **Build Evidence (2026-03-09):**
+  - Runtime belief state is now persisted separately from startup state in `policy-state.json`, with policy decision journals written to `policy-decisions.jsonl`, via `self-evolving-startup-state.ts`.
+  - Candidate evaluation now emits explicit utility and policy provenance rather than score-only outputs; ranking and backbone queue ordering consume utility-backed outputs in `self-evolving-scoring.ts`, `self-evolving-candidates.ts`, and `self-evolving-backbone-queue.ts`.
+  - The orchestrator now rebuilds candidate belief state deterministically from cold-start priors plus recorded lifecycle outcomes, persists updated policy state, emits candidate-generated lifecycle events, and records decision-context snapshots for later replay/regret work.
+  - Controlled scope expansion was required to update candidate/backbone consumers and add contract/integration tests because the original task Affects list did not include every file that consumes or verifies ranked-candidate policy metadata.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` and targeted `pnpm exec eslint` across the touched startup-loop files both passed. Local Jest was not run per repo policy.
+  - Precursor completion propagation: TASK-05 is no longer a blocker. No downstream IMPLEMENT task became runnable immediately because TASK-16 still sits below the execution confidence threshold and TASK-07/TASK-09/TASK-10/TASK-11/TASK-12/TASK-13 remain blocked by later unfinished work or their own confidence gates.
 
 ### TASK-06: Implement outcome closure and verified measurement feedback into self-evolving memory
 - **Type:** IMPLEMENT
@@ -386,8 +393,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts`
+- **Status:** Complete (2026-03-09)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-queue-state-completion.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-completion-reconcile.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`
 - **Depends on:** TASK-01, TASK-02, TASK-04
 - **Blocks:** TASK-07, TASK-09, TASK-10, TASK-11, TASK-13
 - **Confidence:** 80%
@@ -420,6 +427,13 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`
   - `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`
+- **Build Evidence (2026-03-09):**
+  - Self-evolving follow-up dispatches now carry a first-class `self_evolving` link with `candidate_id`, `decision_id`, `policy_version`, preserved route origin, and executor path, and backbone consume emits `followup_dispatch_handoff` lifecycle events instead of relying only on evidence-ref parsing.
+  - Queue completion now stamps explicit `completed_by.self_evolving` maturity and measurement state, writes verified measurement observations when concrete measurement payloads are supplied, and emits auditable `outcome_missing` lifecycle events when mature results still lack verification.
+  - Completion reconcile now propagates direct self-evolving linkage into processed/completed queue records and finalizes matured-but-unverified closures instead of silently leaving them opaque.
+  - Controlled scope expansion was required to extend queue/dispatch type surfaces and tests, because candidate-aware closure could not be expressed inside the original narrow Affects list.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` and targeted `pnpm exec eslint` across the touched startup-loop files both passed. Local Jest was not run per repo policy.
+  - Precursor completion propagation: TASK-06 is no longer a blocker. The plan still needs a replan or confidence-raising evidence before TASK-16 can run, so Wave 3 is not yet executable despite the closure seam now existing in code.
 
 ### TASK-16: Implement decision journaling, maturity windows, and replay-ready evaluation datasets
 - **Type:** IMPLEMENT

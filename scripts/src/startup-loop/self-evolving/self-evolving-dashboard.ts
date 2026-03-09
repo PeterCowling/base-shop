@@ -1,7 +1,15 @@
 import { betaBinomialPosterior } from "@acme/lib/math/experimentation";
 
 import type { RankedCandidate } from "./self-evolving-candidates.js";
-import type { CandidateState, MetaObservation } from "./self-evolving-contracts.js";
+import type {
+  CandidateState,
+  MetaObservation,
+  SelfEvolvingPolicyState,
+} from "./self-evolving-contracts.js";
+import {
+  type ObservationPostureSummary,
+  summarizeObservationPosture,
+} from "./self-evolving-evidence-posture.js";
 
 const ACTIVE_STATES: ReadonlySet<CandidateState> = new Set([
   "draft",
@@ -40,7 +48,15 @@ export interface DashboardSnapshot {
     measured_evidence_candidate_rate: DashboardRateMetric;
     evidence_constrained_candidates: number;
   };
+  posture: ObservationPostureSummary;
   backlog_saturation: number;
+  policy: {
+    policy_version: string | null;
+    utility_version: string | null;
+    authority_level: string | null;
+    candidate_beliefs: number;
+    decision_records: number;
+  };
 }
 
 function buildRateMetric(successes: number, sampleSize: number): DashboardRateMetric {
@@ -80,6 +96,8 @@ export function buildDashboardSnapshot(input: {
   observations: MetaObservation[];
   ranked_candidates: RankedCandidate[];
   wipCap: number;
+  policy_state?: SelfEvolvingPolicyState | null;
+  decision_records_count?: number;
 }): DashboardSnapshot {
   const candidates = input.ranked_candidates.map((entry) => entry.candidate);
   const activeCandidates = candidates.filter((candidate) =>
@@ -120,6 +138,8 @@ export function buildDashboardSnapshot(input: {
   ).length;
   const evidenceConstrainedCandidates =
     input.ranked_candidates.length - measuredEvidenceCandidateCount;
+  const posture = summarizeObservationPosture(input.observations);
+  const policyState = input.policy_state ?? null;
 
   return {
     totals: {
@@ -153,7 +173,15 @@ export function buildDashboardSnapshot(input: {
       ),
       evidence_constrained_candidates: evidenceConstrainedCandidates,
     },
+    posture,
     backlog_saturation:
       input.wipCap <= 0 ? 0 : activeCandidates.length / input.wipCap,
+    policy: {
+      policy_version: policyState?.policy_version ?? null,
+      utility_version: policyState?.utility_version ?? null,
+      authority_level: policyState?.authority_level ?? null,
+      candidate_beliefs: Object.keys(policyState?.candidate_beliefs ?? {}).length,
+      decision_records: input.decision_records_count ?? 0,
+    },
   };
 }

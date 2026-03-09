@@ -30,9 +30,7 @@ import { CheckInQR } from '../check-in/CheckInQR';
 
 import KeycardStatus from './KeycardStatus';
 
-interface ArrivalHomeProps {
-  /** Guest's first name */
-  firstName: string;
+export interface ArrivalCodeState {
   /** Check-in code (if available) */
   checkInCode: string | null;
   /** Whether check-in code is loading */
@@ -43,6 +41,13 @@ interface ArrivalHomeProps {
   isOffline?: boolean;
   /** Handler to refresh the code */
   onRefreshCode?: () => void;
+}
+
+interface ArrivalHomeProps {
+  /** Guest's first name */
+  firstName: string;
+  /** Arrival code loading state */
+  codeState: ArrivalCodeState;
   /** Pre-arrival data */
   preArrivalData: PreArrivalData;
   /** Cash amounts for display */
@@ -113,11 +118,7 @@ const NextStepItem: FC<NextStepItemProps> = memo(function NextStepItem({
  */
 export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
   firstName,
-  checkInCode,
-  isCodeLoading,
-  isCodeStale = false,
-  isOffline = false,
-  onRefreshCode,
+  codeState,
   preArrivalData,
   cashAmounts,
   nights,
@@ -125,6 +126,13 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
   keycardStatus = DEFAULT_KEYCARD_STATUS,
   className = '',
 }) {
+  const {
+    checkInCode,
+    isCodeLoading,
+    isCodeStale = false,
+    isOffline = false,
+    onRefreshCode,
+  } = codeState;
   const { t } = useTranslation('PreArrival');
 
   const totalCash = cashAmounts.cityTax + cashAmounts.deposit;

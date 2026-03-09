@@ -75,8 +75,10 @@ const mockKeycardStatus: GuestKeycardStatus = {
 describe('ArrivalHome offline fallback', () => {
   const defaultProps = {
     firstName: 'John',
-    checkInCode: 'BRK-A7K9M',
-    isCodeLoading: false,
+    codeState: {
+      checkInCode: 'BRK-A7K9M',
+      isCodeLoading: false,
+    },
     preArrivalData: mockPreArrivalData,
     cashAmounts: {
       cityTax: 10,
@@ -91,9 +93,12 @@ describe('ArrivalHome offline fallback', () => {
     it('should render cached code with stale warning when offline', () => {
       const propsWithStale = {
         ...defaultProps,
-        checkInCode: 'BRK-CACHED',
-        isOffline: true,
-        isCodeStale: true,
+        codeState: {
+          checkInCode: 'BRK-CACHED',
+          isCodeLoading: false,
+          isOffline: true,
+          isCodeStale: true,
+        },
       };
 
       render(<ArrivalHome {...propsWithStale} />);
@@ -108,9 +113,12 @@ describe('ArrivalHome offline fallback', () => {
     it('should show "Code unavailable offline" when offline with no cache', () => {
       const propsWithNoCache = {
         ...defaultProps,
-        checkInCode: null,
-        isOffline: true,
-        isCodeStale: false,
+        codeState: {
+          checkInCode: null,
+          isCodeLoading: false,
+          isOffline: true,
+          isCodeStale: false,
+        },
       };
 
       render(<ArrivalHome {...propsWithNoCache} />);
@@ -126,10 +134,13 @@ describe('ArrivalHome offline fallback', () => {
     it('should show refresh button when back online with stale code', () => {
       const propsBackOnline = {
         ...defaultProps,
-        checkInCode: 'BRK-CACHED',
-        isOffline: false,
-        isCodeStale: true,
-        onRefreshCode: jest.fn(),
+        codeState: {
+          checkInCode: 'BRK-CACHED',
+          isCodeLoading: false,
+          isOffline: false,
+          isCodeStale: true,
+          onRefreshCode: jest.fn(),
+        },
       };
 
       render(<ArrivalHome {...propsBackOnline} />);
@@ -143,10 +154,13 @@ describe('ArrivalHome offline fallback', () => {
       const mockRefresh = jest.fn();
       const propsBackOnline = {
         ...defaultProps,
-        checkInCode: 'BRK-CACHED',
-        isOffline: false,
-        isCodeStale: true,
-        onRefreshCode: mockRefresh,
+        codeState: {
+          checkInCode: 'BRK-CACHED',
+          isCodeLoading: false,
+          isOffline: false,
+          isCodeStale: true,
+          onRefreshCode: mockRefresh,
+        },
       };
 
       render(<ArrivalHome {...propsBackOnline} />);
@@ -160,9 +174,12 @@ describe('ArrivalHome offline fallback', () => {
     it('should not show refresh button when online with fresh code', () => {
       const propsWithFreshCode = {
         ...defaultProps,
-        checkInCode: 'BRK-FRESH',
-        isOffline: false,
-        isCodeStale: false,
+        codeState: {
+          checkInCode: 'BRK-FRESH',
+          isCodeLoading: false,
+          isOffline: false,
+          isCodeStale: false,
+        },
       };
 
       render(<ArrivalHome {...propsWithFreshCode} />);

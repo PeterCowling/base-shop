@@ -89,8 +89,7 @@ describe('utility action surfaces', () => {
     render(
       <ArrivalHome
         firstName="Jamie"
-        checkInCode="BRK-ABCDE"
-        isCodeLoading={false}
+        codeState={{ checkInCode: 'BRK-ABCDE', isCodeLoading: false }}
         preArrivalData={defaultPreArrivalData}
         cashAmounts={{ cityTax: 18, deposit: 10 }}
         nights={3}
@@ -142,8 +141,7 @@ describe('utility action surfaces', () => {
     render(
       <ArrivalHome
         firstName="Jamie"
-        checkInCode="BRK-ABCDE"
-        isCodeLoading={false}
+        codeState={{ checkInCode: 'BRK-ABCDE', isCodeLoading: false }}
         preArrivalData={defaultPreArrivalData}
         cashAmounts={{ cityTax: 18, deposit: 10 }}
         nights={3}

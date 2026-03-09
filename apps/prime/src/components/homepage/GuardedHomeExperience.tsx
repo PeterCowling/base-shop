@@ -172,11 +172,13 @@ export default function GuardedHomeExperience() {
         <div className="mx-auto max-w-md">
           <ArrivalHome
             firstName={firstName}
-            checkInCode={checkInCode}
-            isCodeLoading={isCodeLoading}
-            isCodeStale={isCodeStale}
-            isOffline={isOffline}
-            onRefreshCode={refetchCheckInCode}
+            codeState={{
+              checkInCode,
+              isCodeLoading,
+              isCodeStale,
+              isOffline,
+              onRefreshCode: refetchCheckInCode,
+            }}
             preArrivalData={preArrivalData}
             cashAmounts={cashAmounts}
             nights={nights}

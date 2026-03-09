@@ -1,16 +1,12 @@
 {
-  "last_updated": "2026-03-09T10:52:02.911Z",
+  "last_updated": "2026-03-09T11:51:15.280Z",
   "counts": {
-    "enqueued": 233,
-    "processed": 30,
-    "skipped": 2,
-    "error": 0,
-    "suppressed": 0,
+    "completed": 215,
+    "enqueued": 238,
+    "processed": 13,
     "auto_executed": 21,
-    "completed": 196,
-    "fact_find_ready": 279,
-    "micro_build_ready": 11,
-    "total": 485
+    "logged_no_action": 3,
+    "skipped": 2
   },
   "dispatches": [
     {
@@ -311,7 +307,9 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/brikette-live-usability-first-wave/micro-build.md",
-        "processed_at": "2026-03-08T13:30:00.000Z"
+        "processed_at": "2026-03-08T13:30:00.000Z",
+        "target_kind": "build",
+        "target_slug": "brikette-live-usability-first-wave"
       },
       "completed_by": {
         "micro_build_path": "docs/plans/brikette-live-usability-first-wave/micro-build.md",
@@ -991,7 +989,11 @@
         "processed_at": "2026-03-06T17:30:00.000Z",
         "queue_state": "processed",
         "fact_find_slug": "email-logging-observability",
-        "fact_find_path": "docs/plans/email-logging-observability/fact-find.md"
+        "fact_find_path": "docs/plans/email-logging-observability/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "email-logging-observability",
+        "target_path": "docs/plans/_archive/email-logging-observability/plan.md"
       },
       "anchor_key": "email-audit-log-reconcile-recovery-not-persisted",
       "cluster_key": "BRIK:BOS:email-audit-log-reconcile-recovery-not-persisted:operator:20260306",
@@ -1034,7 +1036,11 @@
         "processed_at": "2026-03-06T17:30:00.000Z",
         "queue_state": "processed",
         "fact_find_slug": "email-logging-observability",
-        "fact_find_path": "docs/plans/email-logging-observability/fact-find.md"
+        "fact_find_path": "docs/plans/email-logging-observability/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "email-logging-observability",
+        "target_path": "docs/plans/_archive/email-logging-observability/plan.md"
       },
       "anchor_key": "email-processing-error-reason-missing-lock-released",
       "cluster_key": "BRIK:BOS:email-processing-error-reason-missing-lock-released:operator:20260306",
@@ -1079,7 +1085,11 @@
         "processed_at": "2026-03-06T17:30:00.000Z",
         "queue_state": "processed",
         "fact_find_slug": "email-logging-observability",
-        "fact_find_path": "docs/plans/email-logging-observability/fact-find.md"
+        "fact_find_path": "docs/plans/email-logging-observability/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "email-logging-observability",
+        "target_path": "docs/plans/_archive/email-logging-observability/plan.md"
       },
       "anchor_key": "gmail-label-setup-creation-failures-silently-swallowed",
       "cluster_key": "BRIK:BOS:gmail-label-setup-creation-failures-silently-swallowed:operator:20260306",
@@ -1277,7 +1287,11 @@
       "created_at": "2026-03-06T15:00:00.000Z",
       "queue_state": "completed",
       "processed_by": {
-        "fact_find_slug": "xa-uploader-image-reorder-gallery-width"
+        "fact_find_slug": "xa-uploader-image-reorder-gallery-width",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-image-reorder-gallery-width",
+        "target_path": "docs/plans/_archive/xa-uploader-image-reorder-gallery-width/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/xa-uploader-image-reorder-gallery-width/plan.md",
@@ -1484,7 +1498,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-06T10:55:55Z",
         "fact_find_slug": "lp-do-workflow-rehearsal-reflection-boundary",
-        "fact_find_path": "docs/plans/lp-do-workflow-rehearsal-reflection-boundary/fact-find.md"
+        "fact_find_path": "docs/plans/lp-do-workflow-rehearsal-reflection-boundary/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "lp-do-workflow-rehearsal-reflection-boundary",
+        "target_path": "docs/plans/_archive/lp-do-workflow-rehearsal-reflection-boundary/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/lp-do-workflow-rehearsal-reflection-boundary/plan.md",
@@ -1608,7 +1626,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T20:17:56.519Z",
         "fact_find_slug": "xa-uploader-free-tier-hardening",
-        "fact_find_path": "docs/plans/xa-uploader-free-tier-hardening/plan.md"
+        "fact_find_path": "docs/plans/xa-uploader-free-tier-hardening/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-free-tier-hardening",
+        "target_path": "docs/plans/xa-uploader-free-tier-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-uploader-free-tier-hardening/plan.md",
@@ -1663,7 +1685,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T19:23:03.831Z",
         "fact_find_slug": "xa-content-deploy-lane",
-        "fact_find_path": "docs/plans/xa-content-deploy-lane/plan.md"
+        "fact_find_path": "docs/plans/xa-content-deploy-lane/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-content-deploy-lane",
+        "target_path": "docs/plans/xa-content-deploy-lane/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-content-deploy-lane/plan.md",
@@ -1716,7 +1742,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T18:52:13.912Z",
         "fact_find_slug": "xa-uploader-sync-fast-path",
-        "fact_find_path": "docs/plans/xa-uploader-sync-fast-path/fact-find.md"
+        "fact_find_path": "docs/plans/xa-uploader-sync-fast-path/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-sync-fast-path",
+        "target_path": "docs/plans/xa-uploader-sync-fast-path/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-uploader-sync-fast-path/plan.md",
@@ -1839,7 +1869,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-04T11:00:00.000Z",
         "fact_find_slug": "build-failure-standing-data-bridge",
-        "fact_find_path": "docs/plans/build-failure-standing-data-bridge/fact-find.md"
+        "fact_find_path": "docs/plans/build-failure-standing-data-bridge/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "build-failure-standing-data-bridge",
+        "target_path": "docs/plans/_archive/build-failure-standing-data-bridge/plan.md"
       },
       "domain": "BOS",
       "why": "Build failures (infeasible tasks, confidence regressions, gate failures) are recorded in plans but never feed back to Layer A standing data, risking re-attempts of previously failed approaches.",
@@ -1904,7 +1938,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-02T21:30:00.000Z",
         "fact_find_slug": "bos-loop-assessment-registry",
-        "fact_find_path": "docs/plans/bos-loop-assessment-registry/fact-find.md"
+        "fact_find_path": "docs/plans/bos-loop-assessment-registry/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "bos-loop-assessment-registry",
+        "target_path": "docs/plans/_archive/bos-loop-assessment-registry/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/bos-loop-assessment-registry/plan.md",
@@ -1954,7 +1992,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-02T22:00:00.000Z",
         "fact_find_slug": "cass-assessment-retrieval",
-        "fact_find_path": "docs/plans/_archive/cass-assessment-retrieval/fact-find.md"
+        "fact_find_path": "docs/plans/_archive/cass-assessment-retrieval/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "cass-assessment-retrieval",
+        "target_path": "docs/plans/_archive/cass-assessment-retrieval/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/cass-assessment-retrieval/plan.md",
@@ -2337,7 +2379,11 @@
         "fact_find_slug": "brikette-funnel-test-hardening",
         "fact_find_path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
         "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
-        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md"
+        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-funnel-test-hardening",
+        "target_path": "docs/plans/brikette-funnel-test-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
@@ -2382,7 +2428,11 @@
         "fact_find_slug": "brikette-funnel-test-hardening",
         "fact_find_path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
         "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
-        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md"
+        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-funnel-test-hardening",
+        "target_path": "docs/plans/brikette-funnel-test-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
@@ -2427,7 +2477,11 @@
         "fact_find_slug": "brikette-funnel-test-hardening",
         "fact_find_path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
         "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
-        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md"
+        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-funnel-test-hardening",
+        "target_path": "docs/plans/brikette-funnel-test-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
@@ -2472,7 +2526,11 @@
         "fact_find_slug": "brikette-funnel-test-hardening",
         "fact_find_path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
         "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
-        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md"
+        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-funnel-test-hardening",
+        "target_path": "docs/plans/brikette-funnel-test-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
@@ -2518,7 +2576,11 @@
         "fact_find_slug": "brikette-funnel-test-hardening",
         "fact_find_path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
         "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
-        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md"
+        "build_record_path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-funnel-test-hardening",
+        "target_path": "docs/plans/brikette-funnel-test-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/brikette-funnel-test-hardening/plan.md",
@@ -2659,6 +2721,13 @@
         "plan_path": "docs/plans/hbag-axerve-refund-endpoint/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "HBAG Axerve refund endpoint built: admin refund workflow and API integration shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-reception-language-english-default",
+        "fact_find_slug": "brik-reception-language-english-default",
+        "target_path": "docs/plans/_archive/brik-reception-language-english-default/plan.md"
       }
     },
     {
@@ -2688,6 +2757,13 @@
         "plan_path": "docs/plans/_archive/hbag-caryina-cookie-consent-analytics/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Cookie consent banner added to Caryina: analytics blocked until consent given."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-stock-count-variance-reason-codes",
+        "fact_find_slug": "brik-stock-count-variance-reason-codes",
+        "target_path": "docs/plans/_archive/brik-stock-count-variance-reason-codes/plan.md"
       }
     },
     {
@@ -2755,6 +2831,13 @@
         "plan_path": "docs/plans/_archive/xa-uploader-design-token-migration/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "XA uploader design token exemptions (XAUP-0001) resolved via token migration."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-design-token-migration",
+        "fact_find_slug": "xa-uploader-design-token-migration",
+        "target_path": "docs/plans/_archive/xa-uploader-design-token-migration/plan.md"
       }
     },
     {
@@ -2804,6 +2887,13 @@
         "plan_path": "docs/plans/_archive/xa-uploader-sync-health-check/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "GET /api/catalog/sync extended to surface catalog contract config status; operators see clear readiness signal before triggering sync."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-sync-health-check",
+        "fact_find_slug": "xa-uploader-sync-health-check",
+        "target_path": "docs/plans/_archive/xa-uploader-sync-health-check/plan.md"
       }
     },
     {
@@ -2821,7 +2911,11 @@
         "route": "auto-executed",
         "processed_at": "2026-02-28T19:30:00Z",
         "fact_find_slug": "xa-uploader-deployment-config",
-        "fact_find_path": "docs/plans/xa-uploader-deployment-config/fact-find.md"
+        "fact_find_path": "docs/plans/xa-uploader-deployment-config/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-deployment-config",
+        "target_path": "docs/plans/_archive/xa-uploader-deployment-config/plan.md"
       },
       "priority": "P1",
       "provisional_deliverable_family": "doc",
@@ -2867,6 +2961,13 @@
         "plan_path": "docs/plans/_archive/brik-apply-room-names/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Room names applied to booking dropdown config and EN locale strings."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-apply-room-names",
+        "fact_find_slug": "brik-apply-room-names",
+        "target_path": "docs/plans/_archive/brik-apply-room-names/plan.md"
       }
     },
     {
@@ -2895,6 +2996,13 @@
         "plan_path": "docs/plans/_archive/brik-locale-propagation/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "English locale changes propagated to all non-EN locale files."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-locale-propagation",
+        "fact_find_slug": "brik-locale-propagation",
+        "target_path": "docs/plans/_archive/brik-locale-propagation/plan.md"
       }
     },
     {
@@ -2925,6 +3033,13 @@
         "plan_path": "docs/plans/_archive/hbag-pdp-trust-cues/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Trust cues added near PDP purchase CTA: review count, rating, and return policy signals."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "hbag-pdp-trust-cues",
+        "fact_find_slug": "hbag-pdp-trust-cues",
+        "target_path": "docs/plans/_archive/hbag-pdp-trust-cues/plan.md"
       }
     },
     {
@@ -2955,6 +3070,13 @@
         "plan_path": "docs/plans/_archive/hbag-pdp-return-visit-capture/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Return-visit capture added to PDP: wishlist save and recently-viewed signals implemented."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "hbag-pdp-return-visit-capture",
+        "fact_find_slug": "hbag-pdp-return-visit-capture",
+        "target_path": "docs/plans/_archive/hbag-pdp-return-visit-capture/plan.md"
       }
     },
     {
@@ -2985,6 +3107,13 @@
         "plan_path": "docs/plans/_archive/hbag-pdp-shipping-returns/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Shipping and returns information now visible on PDP."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "hbag-pdp-shipping-returns",
+        "fact_find_slug": "hbag-pdp-shipping-returns",
+        "target_path": "docs/plans/_archive/hbag-pdp-shipping-returns/plan.md"
       }
     },
     {
@@ -3040,6 +3169,13 @@
         "plan_path": "docs/plans/_archive/hbag-proof-bullets-real-copy/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Proof bullets replaced with real product copy — system text placeholders removed."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "hbag-proof-bullets-real-copy",
+        "fact_find_slug": "hbag-proof-bullets-real-copy",
+        "target_path": "docs/plans/_archive/hbag-proof-bullets-real-copy/plan.md"
       }
     },
     {
@@ -3062,6 +3198,13 @@
         "plan_path": "docs/plans/_archive/brik-room-card-cheapest-rate/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Room card cheapest rate display replaced dual buttons with price-first layout."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-room-card-cheapest-rate",
+        "fact_find_slug": "brik-room-card-cheapest-rate",
+        "target_path": "docs/plans/_archive/brik-room-card-cheapest-rate/plan.md"
       }
     },
     {
@@ -3084,6 +3227,13 @@
         "plan_path": "docs/plans/_archive/brik-header-rooms-dropdown/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Room cards now link to per-room detail pages; header nav rooms dropdown added."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-header-rooms-dropdown",
+        "fact_find_slug": "brik-header-rooms-dropdown",
+        "target_path": "docs/plans/_archive/brik-header-rooms-dropdown/plan.md"
       }
     },
     {
@@ -3108,7 +3258,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-02-27T19:45:00Z",
         "fact_find_slug": "brik-live-pricing-baseline",
-        "fact_find_path": "docs/plans/brik-live-pricing-baseline/fact-find.md"
+        "fact_find_path": "docs/plans/brik-live-pricing-baseline/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-live-pricing-baseline",
+        "target_path": "docs/plans/_archive/brik-live-pricing-baseline/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-live-pricing-baseline/plan.md",
@@ -3137,7 +3291,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-02-27T20:42:00Z",
         "fact_find_slug": "brik-live-pricing-activation",
-        "fact_find_path": "docs/plans/brik-live-pricing-activation/fact-find.md"
+        "fact_find_path": "docs/plans/brik-live-pricing-activation/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-live-pricing-activation",
+        "target_path": "docs/plans/_archive/brik-live-pricing-activation/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-live-pricing-activation/plan.md",
@@ -3232,7 +3390,11 @@
         "fact_find_slug": "coverage-manifest-scan-core",
         "fact_find_path": "docs/plans/coverage-manifest-scan-core/fact-find.md",
         "processed_at": "2026-02-26T22:05:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "coverage-manifest-scan-core",
+        "target_path": "docs/plans/_archive/coverage-manifest-scan-core/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/coverage-manifest-scan-core/plan.md",
@@ -3408,7 +3570,17 @@
       "created_at": "2026-02-26T21:30:00Z",
       "queue_state": "completed",
       "completed_at": "2026-03-02T00:00:00Z",
-      "outcome": "operator-decision: brand name selected as 'Amalfi Coast Charge'; domain amalficoastcharge.com available, no trademark overhang found"
+      "outcome": "operator-decision: brand name selected as 'Amalfi Coast Charge'; domain amalficoastcharge.com available, no trademark overhang found",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "pwrb-brand-name",
+        "fact_find_slug": "pwrb-brand-name"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-02T00:00:00Z",
+        "outcome": "operator-decision: brand name selected as 'Amalfi Coast Charge'; domain amalficoastcharge.com available, no trademark overhang found"
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -3480,7 +3652,11 @@
         "fact_find_slug": "process-improvements-completion-lifecycle",
         "fact_find_path": "docs/plans/process-improvements-completion-lifecycle/fact-find.md",
         "processed_at": "2026-02-26T18:00:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-rsc-structured-data-conversion",
+        "target_path": "docs/plans/_archive/brikette-rsc-structured-data-conversion/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/process-improvements-completion-lifecycle/plan.md",
@@ -3531,7 +3707,11 @@
         "fact_find_slug": "seo-monitoring-datepublished-baseline",
         "fact_find_path": "docs/plans/seo-monitoring-datepublished-baseline/fact-find.md",
         "processed_at": "2026-02-26T14:30:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "seo-monitoring-datepublished-baseline",
+        "target_path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/seo-monitoring-datepublished-baseline/plan.md",
@@ -3584,7 +3764,11 @@
         "fact_find_slug": "brikette-it-book-route-static-export",
         "fact_find_path": "docs/plans/brikette-it-book-route-static-export/fact-find.md",
         "processed_at": "2026-02-26T14:30:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-it-book-route-static-export",
+        "target_path": "docs/plans/_archive/brikette-it-book-route-static-export/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brikette-it-book-route-static-export/plan.md",
@@ -3631,7 +3815,11 @@
         "fact_find_slug": "brikette-smoke-view-item-list",
         "fact_find_path": "docs/plans/brikette-smoke-view-item-list/fact-find.md",
         "processed_at": "2026-02-26T14:00:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-smoke-view-item-list",
+        "target_path": "docs/plans/_archive/brikette-smoke-view-item-list/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brikette-smoke-view-item-list/plan.md",
@@ -3712,7 +3900,11 @@
         "fact_find_slug": "xa-e2e-sync-success-path",
         "fact_find_path": "docs/plans/_archive/xa-e2e-sync-success-path/fact-find.md",
         "processed_at": "2026-02-26T13:30:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-e2e-sync-success-path",
+        "target_path": "docs/plans/_archive/xa-e2e-sync-success-path/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/xa-e2e-sync-success-path/plan.md",
@@ -3762,7 +3954,11 @@
         "fact_find_slug": "process-improvements-live-update",
         "fact_find_path": "docs/plans/process-improvements-live-update/fact-find.md",
         "processed_at": "2026-02-26T12:00:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "process-improvements-live-update",
+        "target_path": "docs/plans/_archive/process-improvements-live-update/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/process-improvements-live-update/plan.md",
@@ -3851,7 +4047,11 @@
         "fact_find_slug": "reception-ui-screen-polish-phase4",
         "fact_find_path": "docs/plans/reception-ui-screen-polish-phase4/fact-find.md",
         "processed_at": "2026-02-26T02:00:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-ui-screen-polish-phase4",
+        "target_path": "docs/plans/_archive/reception-ui-screen-polish-phase4/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-ui-screen-polish-phase4/plan.md",
@@ -3901,7 +4101,11 @@
         "fact_find_slug": "reception-ui-screen-polish",
         "fact_find_path": "docs/plans/reception-ui-screen-polish/fact-find.md",
         "processed_at": "2026-02-25T16:00:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-ui-screen-polish",
+        "target_path": "docs/plans/_archive/reception-ui-screen-polish/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-ui-screen-polish/plan.md",
@@ -3953,7 +4157,11 @@
         "fact_find_slug": "lp-do-skills-token-efficiency-post-revision",
         "fact_find_path": "docs/plans/lp-do-skills-token-efficiency-post-revision/fact-find.md",
         "processed_at": "2026-02-25T15:00:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "lp-do-skills-token-efficiency-post-revision",
+        "target_path": "docs/plans/_archive/lp-do-skills-token-efficiency-post-revision/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/lp-do-skills-token-efficiency-post-revision/plan.md",
@@ -4006,7 +4214,11 @@
         "fact_find_slug": "reception-remove-light-mode",
         "fact_find_path": "docs/plans/reception-remove-light-mode/fact-find.md",
         "processed_at": "2026-02-25T14:00:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-remove-light-mode",
+        "target_path": "docs/plans/reception-remove-light-mode/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/reception-remove-light-mode/plan.md",
@@ -4193,7 +4405,11 @@
         "fact_find_slug": "brikette-rsc-structured-data-conversion",
         "fact_find_path": "docs/plans/brikette-rsc-structured-data-conversion/fact-find.md",
         "processed_at": "2026-02-26T15:00:00Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-rsc-structured-data-conversion",
+        "target_path": "docs/plans/_archive/brikette-rsc-structured-data-conversion/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/brikette-rsc-structured-data-conversion/plan.md",
@@ -4305,7 +4521,11 @@
         "processed_at": "2026-02-26T16:30:00Z",
         "completed_at": "2026-02-26T17:00:00Z",
         "route": "dispatch-routed",
-        "outcome": "Plan executed and archived. ds/no-bare-rounded ESLint rule added to @acme/eslint-plugin-ds; all bare rounded violations fixed in apps/reception/src/."
+        "outcome": "Plan executed and archived. ds/no-bare-rounded ESLint rule added to @acme/eslint-plugin-ds; all bare rounded violations fixed in apps/reception/src/.",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-rounded-lg-lint-rule",
+        "target_path": "docs/plans/_archive/reception-rounded-lg-lint-rule/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-rounded-lg-lint-rule/plan.md",
@@ -4352,6 +4572,13 @@
         "plan_path": "docs/plans/_archive/startup-loop-product-identity-gap/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Startup loop product identity gap resolved: loop positioned as operator workflow, not consumer product."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "startup-loop-product-identity-gap",
+        "fact_find_slug": "startup-loop-product-identity-gap",
+        "target_path": "docs/plans/_archive/startup-loop-product-identity-gap/plan.md"
       }
     },
     {
@@ -4428,6 +4655,13 @@
         "plan_path": "docs/plans/_archive/reflection-prioritization-policy-implementation/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Reflection prioritization policy implemented: build reflection gate and priority scoring shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reflection-prioritization-policy-implementation",
+        "fact_find_slug": "reflection-prioritization-policy-implementation",
+        "target_path": "docs/plans/_archive/reflection-prioritization-policy-implementation/plan.md"
       }
     },
     {
@@ -4475,6 +4709,13 @@
         "plan_path": "docs/plans/_archive/caryina-catalog-cart/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Caryina product catalog upload, inventory management, and cart flow built and live."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-catalog-cart",
+        "fact_find_slug": "caryina-catalog-cart",
+        "target_path": "docs/plans/_archive/caryina-catalog-cart/plan.md"
       }
     },
     {
@@ -4512,6 +4753,13 @@
         "plan_path": "docs/plans/_archive/xa-apps-ci-staging/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "XA apps CI staging pipeline built: staging branch + deploy checks wired."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-apps-ci-staging",
+        "fact_find_slug": "xa-apps-ci-staging",
+        "target_path": "docs/plans/_archive/xa-apps-ci-staging/plan.md"
       }
     },
     {
@@ -4557,6 +4805,13 @@
         "plan_path": "docs/plans/_archive/prime-account-profile-page/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Prime account profile page built with user details and history."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-account-profile-page",
+        "fact_find_slug": "prime-account-profile-page",
+        "target_path": "docs/plans/_archive/prime-account-profile-page/plan.md"
       }
     },
     {
@@ -4593,6 +4848,13 @@
         "plan_path": "docs/plans/_archive/caryina-axerve-payment-gateway/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Axerve payment gateway integrated for Caryina checkout."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-axerve-payment-gateway",
+        "fact_find_slug": "caryina-axerve-payment-gateway",
+        "target_path": "docs/plans/_archive/caryina-axerve-payment-gateway/plan.md"
       }
     },
     {
@@ -4641,6 +4903,13 @@
         "plan_path": "docs/plans/_archive/prime-meal-order-menu-wizard/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Prime meal order menu wizard built: multi-step meal ordering flow shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-meal-order-menu-wizard",
+        "fact_find_slug": "prime-meal-order-menu-wizard",
+        "target_path": "docs/plans/_archive/prime-meal-order-menu-wizard/plan.md"
       }
     },
     {
@@ -4685,6 +4954,13 @@
         "plan_path": "docs/plans/_archive/ci-only-test-execution/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Test execution restricted to CI: local test runs disabled, governed runner enforced."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "ci-only-test-execution",
+        "fact_find_slug": "ci-only-test-execution",
+        "target_path": "docs/plans/_archive/ci-only-test-execution/plan.md"
       }
     },
     {
@@ -4729,6 +5005,13 @@
         "plan_path": "docs/plans/_archive/workflow-skills-simulation-tdd/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Workflow skills simulation TDD approach documented and shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "workflow-skills-simulation-tdd",
+        "fact_find_slug": "workflow-skills-simulation-tdd",
+        "target_path": "docs/plans/_archive/workflow-skills-simulation-tdd/plan.md"
       }
     },
     {
@@ -4771,6 +5054,13 @@
         "plan_path": "docs/plans/_archive/lp-do-build-codex-offload/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "lp-do-build Codex offload protocol built: multi-task delegation patterns shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "lp-do-build-codex-offload",
+        "fact_find_slug": "lp-do-build-codex-offload",
+        "target_path": "docs/plans/_archive/lp-do-build-codex-offload/plan.md"
       }
     },
     {
@@ -4794,6 +5084,13 @@
         "plan_path": "docs/plans/_archive/xa-b-static-export/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "xa-b storefront converted to static export: SSR removed, CF free tier compatible."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-b-static-export",
+        "fact_find_slug": "xa-b-static-export",
+        "target_path": "docs/plans/_archive/xa-b-static-export/plan.md"
       }
     },
     {
@@ -4836,6 +5133,13 @@
         "plan_path": "docs/plans/_archive/prime-digital-assistant-llm-upgrade/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Prime digital assistant upgraded to OpenAI LLM with keyword fallback removed."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-digital-assistant-llm-upgrade",
+        "fact_find_slug": "prime-digital-assistant-llm-upgrade",
+        "target_path": "docs/plans/_archive/prime-digital-assistant-llm-upgrade/plan.md"
       }
     },
     {
@@ -4858,6 +5162,13 @@
         "plan_path": "docs/plans/_archive/caryina-merchant-order-notification/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Merchant order notification emails added to Caryina checkout flow."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-merchant-order-notification",
+        "fact_find_slug": "caryina-merchant-order-notification",
+        "target_path": "docs/plans/_archive/caryina-merchant-order-notification/plan.md"
       }
     },
     {
@@ -4901,6 +5212,13 @@
         "plan_path": "docs/plans/_archive/brikette-direct-booking-savings-callout/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Direct booking price comparison and savings callout implemented on book page."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-direct-booking-rate-trust",
+        "fact_find_slug": "brikette-direct-booking-rate-trust",
+        "target_path": "docs/plans/_archive/brikette-direct-booking-rate-trust/plan.md"
       }
     },
     {
@@ -4937,6 +5255,13 @@
         "plan_path": "docs/plans/_archive/brikette-direct-booking-perks-cta-positioning/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Direct booking perks repositioned above primary booking widget."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-direct-booking-perks-cta-positioning",
+        "fact_find_slug": "brikette-direct-booking-perks-cta-positioning",
+        "target_path": "docs/plans/_archive/brikette-direct-booking-perks-cta-positioning/plan.md"
       }
     },
     {
@@ -5041,6 +5366,13 @@
         "plan_path": "docs/plans/_archive/brik-octorate-live-availability/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Live Octorate availability and per-room pricing surfaced on /book page via HTML-scraping proxy. Feature-flagged. Sold-out states, loading states, and i18n strings shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-octorate-live-availability",
+        "fact_find_slug": "brik-octorate-live-availability",
+        "target_path": "docs/plans/_archive/brik-octorate-live-availability/plan.md"
       }
     },
     {
@@ -5086,6 +5418,13 @@
         "plan_path": "docs/plans/_archive/reception-rbac-migration-code/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Reception RBAC migration code shipped: role-based access for all screens."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-rbac-migration-code",
+        "fact_find_slug": "reception-rbac-migration-code",
+        "target_path": "docs/plans/_archive/reception-rbac-migration-code/plan.md"
       }
     },
     {
@@ -5130,6 +5469,13 @@
         "plan_path": "docs/plans/_archive/reception-rbac-pin-user-roles/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Reception RBAC PIN-based user role assignment shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-rbac-pin-user-roles",
+        "fact_find_slug": "reception-rbac-pin-user-roles",
+        "target_path": "docs/plans/_archive/reception-rbac-pin-user-roles/plan.md"
       }
     },
     {
@@ -5288,6 +5634,13 @@
         "plan_path": "docs/plans/_archive/brik-reception-user-provisioning/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Reception user provisioning flow built: staff account creation and role assignment."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-reception-user-provisioning",
+        "fact_find_slug": "brik-reception-user-provisioning",
+        "target_path": "docs/plans/_archive/brik-reception-user-provisioning/plan.md"
       }
     },
     {
@@ -5319,6 +5672,13 @@
         "plan_path": "docs/plans/_archive/process-improvements-transitions/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Process improvements transition automation built and shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "process-improvements-transitions",
+        "fact_find_slug": "process-improvements-transitions",
+        "target_path": "docs/plans/_archive/process-improvements-transitions/plan.md"
       }
     },
     {
@@ -5532,7 +5892,11 @@
         "fact_find_slug": "tool-skill-discovery-protocol",
         "fact_find_path": "docs/plans/tool-skill-discovery-protocol/fact-find.md",
         "processed_at": "2026-02-27T22:00:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "tool-skill-discovery-protocol",
+        "target_path": "docs/plans/tool-skill-discovery-protocol/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/tool-skill-discovery-protocol/plan.md",
@@ -5570,6 +5934,13 @@
         "plan_path": "docs/plans/_archive/ui-design-tool-chain-pipeline/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "UI design tool chain pipeline built: lp-design-spec → frontend-design → lp-design-qa flow established."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "ui-design-tool-chain-pipeline",
+        "fact_find_slug": "ui-design-tool-chain-pipeline",
+        "target_path": "docs/plans/_archive/ui-design-tool-chain-pipeline/plan.md"
       }
     },
     {
@@ -5611,6 +5982,13 @@
         "plan_path": "docs/plans/_archive/reception-alloggiati-jsonp-timeout/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Alloggiati JSONP timeout handling fixed: retry logic and timeout config shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-alloggiati-jsonp-timeout",
+        "fact_find_slug": "reception-alloggiati-jsonp-timeout",
+        "target_path": "docs/plans/_archive/reception-alloggiati-jsonp-timeout/plan.md"
       }
     },
     {
@@ -5659,7 +6037,11 @@
         "fact_find_slug": "reception-offline-sync",
         "fact_find_path": "docs/plans/reception-offline-sync/fact-find.md",
         "processed_at": "2026-02-27T23:50:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-live-pricing-baseline",
+        "target_path": "docs/plans/_archive/brik-live-pricing-baseline/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-offline-sync/plan.md",
@@ -5708,7 +6090,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-02-27T23:59:00Z",
         "fact_find_slug": "brik-sticky-book-now-room-context",
-        "fact_find_path": "docs/plans/brik-sticky-book-now-room-context/fact-find.md"
+        "fact_find_path": "docs/plans/brik-sticky-book-now-room-context/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-sticky-book-now-room-context",
+        "target_path": "docs/plans/_archive/brik-sticky-book-now-room-context/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-sticky-book-now-room-context/plan.md",
@@ -5733,7 +6119,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T10:00:00Z"
+        "processed_at": "2026-02-28T10:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-header-rooms-dropdown",
+        "fact_find_slug": "brik-header-rooms-dropdown",
+        "target_path": "docs/plans/_archive/brik-header-rooms-dropdown/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-header-rooms-dropdown/plan.md",
@@ -5778,7 +6169,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T12:00:00Z"
+        "processed_at": "2026-02-28T12:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-staging-deploy-unblock",
+        "fact_find_slug": "prime-staging-deploy-unblock",
+        "target_path": "docs/plans/_archive/prime-staging-deploy-unblock/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/prime-staging-deploy-unblock/plan.md",
@@ -5811,7 +6207,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T14:00:00Z"
+        "processed_at": "2026-02-28T14:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-stock-batch-count",
+        "fact_find_slug": "reception-stock-batch-count",
+        "target_path": "docs/plans/_archive/reception-stock-batch-count/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-stock-batch-count/plan.md",
@@ -5846,7 +6247,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T14:01:00Z"
+        "processed_at": "2026-02-28T14:01:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-manager-audit",
+        "fact_find_slug": "reception-manager-audit",
+        "target_path": "docs/plans/_archive/reception-manager-audit/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-stock-explained-variance/plan.md",
@@ -5880,7 +6286,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T14:02:00Z"
+        "processed_at": "2026-02-28T14:02:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-eod-closeout",
+        "fact_find_slug": "reception-eod-closeout",
+        "target_path": "docs/plans/_archive/reception-eod-closeout/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-eod-closeout/plan.md",
@@ -5918,7 +6329,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T18:00:00Z"
+        "processed_at": "2026-02-28T18:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-currency-conversion-rates",
+        "fact_find_slug": "xa-currency-conversion-rates",
+        "target_path": "docs/plans/_archive/xa-currency-conversion-rates/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/xa-currency-conversion-rates/plan.md",
@@ -5954,7 +6370,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T18:30:00Z"
+        "processed_at": "2026-02-28T18:30:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-date-range-picker",
+        "fact_find_slug": "brik-date-range-picker",
+        "target_path": "docs/plans/_archive/brik-date-range-picker/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-date-range-picker/plan.md",
@@ -5987,7 +6408,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T20:00:00Z"
+        "processed_at": "2026-02-28T20:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-till-shift-history-filter-denom",
+        "fact_find_slug": "brik-till-shift-history-filter-denom",
+        "target_path": "docs/plans/_archive/brik-till-shift-history-filter-denom/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-till-shift-history-filter-denom/plan.md",
@@ -6020,7 +6446,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T20:00:00Z"
+        "processed_at": "2026-02-28T20:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-stock-explained-variance",
+        "fact_find_slug": "reception-stock-explained-variance",
+        "target_path": "docs/plans/_archive/reception-stock-explained-variance/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-stock-explained-variance/plan.md",
@@ -6055,7 +6486,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T20:00:00Z"
+        "processed_at": "2026-02-28T20:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-reception-language-english-default",
+        "fact_find_slug": "brik-reception-language-english-default",
+        "target_path": "docs/plans/_archive/brik-reception-language-english-default/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-reception-language-english-default/plan.md",
@@ -6089,7 +6525,12 @@
       "queue_state": "completed",
       "processed_by": {
         "route": "auto-executed",
-        "processed_at": "2026-02-28T22:00:00Z"
+        "processed_at": "2026-02-28T22:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-stock-count-variance-reason-codes",
+        "fact_find_slug": "brik-stock-count-variance-reason-codes",
+        "target_path": "docs/plans/_archive/brik-stock-count-variance-reason-codes/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-stock-count-variance-reason-codes/plan.md",
@@ -6126,7 +6567,11 @@
         "processed_at": "2026-02-28T00:00:00.000Z",
         "queue_state": "processed",
         "fact_find_slug": "brik-eod-float-set",
-        "fact_find_path": "docs/plans/brik-eod-float-set/fact-find.md"
+        "fact_find_path": "docs/plans/brik-eod-float-set/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-eod-float-set",
+        "target_path": "docs/plans/_archive/brik-eod-float-set/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-eod-float-set/plan.md",
@@ -6244,7 +6689,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-01T00:00:00Z",
         "fact_find_slug": "reception-till-drawer-lock",
-        "fact_find_path": "docs/plans/reception-till-drawer-lock/fact-find.md"
+        "fact_find_path": "docs/plans/reception-till-drawer-lock/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-till-drawer-lock",
+        "target_path": "docs/plans/_archive/reception-till-drawer-lock/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-till-drawer-lock/plan.md",
@@ -6281,6 +6730,13 @@
         "plan_path": "docs/plans/_archive/reception-stock-count-attribution/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Reception stock counts now include submittedBy on all ledger entries."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-stock-count-attribution",
+        "fact_find_slug": "reception-stock-count-attribution",
+        "target_path": "docs/plans/_archive/reception-stock-count-attribution/plan.md"
       }
     },
     {
@@ -6310,6 +6766,13 @@
         "plan_path": "docs/plans/_archive/reception-manager-audit/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Reception manager audit: stock variance window made configurable, export added."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-stock-variance-filters",
+        "fact_find_slug": "reception-stock-variance-filters",
+        "target_path": "docs/plans/_archive/reception-stock-variance-filters/plan.md"
       }
     },
     {
@@ -6379,6 +6842,13 @@
         "plan_path": "docs/plans/_archive/reception-eod-exception-override/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "Reception EOD manager override path added: hard allDone gate bypassed with manager PIN."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-eod-exception-override",
+        "fact_find_slug": "reception-eod-exception-override",
+        "target_path": "docs/plans/_archive/reception-eod-exception-override/plan.md"
       }
     },
     {
@@ -6412,7 +6882,11 @@
         "fact_find_slug": "xa-two-lane-free-tier-hardening",
         "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
         "processed_at": "2026-03-01T12:13:03.370Z",
-        "route": "direct-inject"
+        "route": "direct-inject",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-two-lane-free-tier-hardening",
+        "target_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
@@ -6451,7 +6925,11 @@
         "fact_find_slug": "xa-two-lane-free-tier-hardening",
         "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
         "processed_at": "2026-03-01T12:13:03.370Z",
-        "route": "direct-inject"
+        "route": "direct-inject",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-two-lane-free-tier-hardening",
+        "target_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
@@ -6490,7 +6968,11 @@
         "fact_find_slug": "xa-two-lane-free-tier-hardening",
         "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
         "processed_at": "2026-03-01T12:13:03.370Z",
-        "route": "direct-inject"
+        "route": "direct-inject",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-two-lane-free-tier-hardening",
+        "target_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
@@ -6529,7 +7011,11 @@
         "fact_find_slug": "xa-two-lane-free-tier-hardening",
         "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
         "processed_at": "2026-03-01T12:13:03.370Z",
-        "route": "direct-inject"
+        "route": "direct-inject",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-two-lane-free-tier-hardening",
+        "target_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
@@ -6568,7 +7054,11 @@
         "fact_find_slug": "xa-two-lane-free-tier-hardening",
         "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
         "processed_at": "2026-03-01T12:13:03.370Z",
-        "route": "direct-inject"
+        "route": "direct-inject",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-two-lane-free-tier-hardening",
+        "target_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
@@ -6607,7 +7097,11 @@
         "fact_find_slug": "xa-two-lane-free-tier-hardening",
         "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
         "processed_at": "2026-03-01T12:13:03.370Z",
-        "route": "direct-inject"
+        "route": "direct-inject",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-two-lane-free-tier-hardening",
+        "target_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
@@ -6646,7 +7140,11 @@
         "fact_find_slug": "xa-two-lane-free-tier-hardening",
         "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
         "processed_at": "2026-03-01T12:13:03.370Z",
-        "route": "direct-inject"
+        "route": "direct-inject",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-two-lane-free-tier-hardening",
+        "target_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
@@ -6686,7 +7184,11 @@
         "fact_find_slug": "xa-two-lane-free-tier-hardening",
         "fact_find_path": "docs/plans/xa-two-lane-free-tier-hardening/fact-find.md",
         "processed_at": "2026-03-01T12:13:03.370Z",
-        "route": "direct-inject"
+        "route": "direct-inject",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-two-lane-free-tier-hardening",
+        "target_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/xa-two-lane-free-tier-hardening/plan.md",
@@ -6723,7 +7225,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-02T00:00:00Z",
         "fact_find_slug": "xa-uploader-submission-pipeline-hardening",
-        "fact_find_path": "docs/plans/xa-uploader-submission-pipeline-hardening/fact-find.md"
+        "fact_find_path": "docs/plans/xa-uploader-submission-pipeline-hardening/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-submission-pipeline-hardening",
+        "target_path": "docs/plans/_archive/xa-uploader-submission-pipeline-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/xa-uploader-submission-pipeline-hardening/plan.md",
@@ -6758,6 +7264,13 @@
         "plan_path": "docs/plans/_archive/xa-uploader-submission-ux/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "XA uploader frontend UX improved: F1 validation feedback and F5 progress indicator shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-submission-ux",
+        "fact_find_slug": "xa-uploader-submission-ux",
+        "target_path": "docs/plans/_archive/xa-uploader-submission-ux/plan.md"
       }
     },
     {
@@ -6788,6 +7301,13 @@
         "plan_path": "docs/plans/_archive/lp-do-ideas-execution-guarantee/plan.md",
         "completed_at": "2026-03-02T18:00:00.000Z",
         "outcome": "lp-do-ideas fact-find execution guarantee built: queue-check gate and auto-execution protocol shipped."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "lp-do-ideas-execution-guarantee",
+        "fact_find_slug": "lp-do-ideas-execution-guarantee",
+        "target_path": "docs/plans/_archive/lp-do-ideas-execution-guarantee/plan.md"
       }
     },
     {
@@ -6818,7 +7338,11 @@
         "fact_find_slug": "lp-do-ideas-queue-state-sync",
         "fact_find_path": "docs/plans/lp-do-ideas-queue-state-sync/fact-find.md",
         "processed_at": "2026-03-02T14:00:00.000Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "lp-do-ideas-queue-state-sync",
+        "target_path": "docs/plans/_archive/lp-do-ideas-queue-state-sync/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/lp-do-ideas-queue-state-sync/plan.md",
@@ -6855,7 +7379,11 @@
       "processed_by": {
         "fact_find_slug": "brik-live-pricing-room-matching",
         "fact_find_path": "docs/plans/brik-live-pricing-room-matching/fact-find.md",
-        "processed_at": "2026-03-02T21:30:00.000Z"
+        "processed_at": "2026-03-02T21:30:00.000Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-live-pricing-room-matching",
+        "target_path": "docs/plans/_archive/brik-live-pricing-room-matching/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/brik-live-pricing-room-matching/plan.md",
@@ -7054,6 +7582,13 @@
         "plan_path": "docs/plans/_archive/assessment-naming-workbench/plan.md",
         "completed_at": "2026-03-03T10:34:30.195Z",
         "outcome": "Intermediate naming artifacts moved to assessment/naming-workbench/ for all businesses. CLI sidecar paths updated. 6 skill files updated with new paths. Zero stale references remain."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "assessment-naming-workbench",
+        "fact_find_slug": "assessment-naming-workbench",
+        "target_path": "docs/plans/_archive/assessment-naming-workbench/plan.md"
       }
     },
     {
@@ -7152,13 +7687,18 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T10:43:54.572Z",
         "fact_find_slug": "ideas-schema-lifecycle-cleanup",
-        "fact_find_path": "docs/plans/ideas-schema-lifecycle-cleanup/fact-find.md"
+        "fact_find_path": "docs/plans/ideas-schema-lifecycle-cleanup/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "ideas-schema-lifecycle-cleanup",
+        "target_path": "docs/plans/_archive/ideas-schema-lifecycle-cleanup/plan.md"
       },
       "completed_at": "2026-03-03T11:05:14.881Z",
       "completed_by": {
         "plan_slug": "ideas-schema-lifecycle-cleanup",
         "plan_path": "docs/plans/_archive/ideas-schema-lifecycle-cleanup/plan.md",
-        "outcome": "v1 schema deprecated to _deprecated/. Active schemas moved to schemas/. IDEAS-LIFECYCLE.md documents dispatch lifecycle."
+        "outcome": "v1 schema deprecated to _deprecated/. Active schemas moved to schemas/. IDEAS-LIFECYCLE.md documents dispatch lifecycle.",
+        "completed_at": "2026-03-03T11:04:43.528Z"
       }
     },
     {
@@ -7207,12 +7747,17 @@
         "fact_find_slug": "plans-archive-consolidation",
         "fact_find_path": "docs/plans/plans-archive-consolidation/fact-find.md",
         "processed_at": "2026-03-03T11:12:40.815Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "plans-archive-consolidation",
+        "target_path": "docs/plans/_archive/plans-archive-consolidation/plan.md"
       },
       "completed_at": "2026-03-03T11:27:25.463Z",
       "completed_by": {
         "plan_path": "docs/plans/_archive/plans-archive-consolidation/plan.md",
-        "outcome": "Single clear archive system. archive/ consolidated into _archive/, _tmp/ removed, all code references updated."
+        "outcome": "Single clear archive system. archive/ consolidated into _archive/, _tmp/ removed, all code references updated.",
+        "completed_at": "2026-03-03T11:27:13.006Z"
       }
     },
     {
@@ -7261,7 +7806,16 @@
       "completed_at": "2026-03-03T11:32:59.771Z",
       "completed_by": {
         "fact_find_slug": "startup-loop-deprecation-sweep",
-        "outcome": "Infeasible — intended outcome already achieved. _deprecated/ directory exists with superseded files properly documented."
+        "outcome": "Infeasible — intended outcome already achieved. _deprecated/ directory exists with superseded files properly documented.",
+        "plan_path": "docs/plans/startup-loop-deprecation-sweep/fact-find.md",
+        "completed_at": "2026-03-03T11:32:59.771Z"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "startup-loop-deprecation-sweep",
+        "fact_find_slug": "startup-loop-deprecation-sweep",
+        "target_path": "docs/plans/startup-loop-deprecation-sweep/fact-find.md"
       }
     },
     {
@@ -7369,7 +7923,11 @@
         "fact_find_slug": "standing-data-freshness-enforcement",
         "fact_find_path": "docs/plans/standing-data-freshness-enforcement/fact-find.md",
         "processed_at": "2026-03-03T16:00:02.708Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "standing-data-freshness-enforcement",
+        "target_path": "docs/plans/_archive/standing-data-freshness-enforcement/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/standing-data-freshness-enforcement/plan.md",
@@ -7622,7 +8180,11 @@
         "fact_find_slug": "assessment-completion-registry",
         "fact_find_path": "docs/plans/assessment-completion-registry/fact-find.md",
         "processed_at": "2026-03-03T21:00:00.000Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "assessment-completion-registry",
+        "target_path": "docs/plans/_archive/assessment-completion-registry/plan.md"
       },
       "why": "Assessment completion state is invisible to the loop without manual filesystem traversal. When deciding what stage a business is at, or which assessments remain, there's no single query — you have to glob 5 directories and parse dates from filenames. This makes stage-gating unreliable and blocks automation of assessment-to-measure advancement.",
       "intended_outcome": {
@@ -7679,7 +8241,11 @@
         "fact_find_slug": "xa-uploader-r2-image-upload",
         "fact_find_path": "docs/plans/xa-uploader-r2-image-upload/fact-find.md",
         "processed_at": "2026-03-03T22:30:00.000Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-r2-image-upload",
+        "target_path": "docs/plans/_archive/xa-uploader-r2-image-upload/plan.md"
       },
       "why": "Products cannot go live without images, and there is no way to upload image files — only text path entry exists. This blocks the entire XA catalog publish workflow for any product that doesn't already have externally-hosted images.",
       "intended_outcome": {
@@ -8023,7 +8589,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T23:58:00.000Z",
         "fact_find_slug": "bos-ideas-dispatch-20260303-followthrough",
-        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md"
+        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "bos-ideas-dispatch-20260303-followthrough",
+        "target_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
@@ -8076,7 +8646,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T23:58:00.000Z",
         "fact_find_slug": "bos-ideas-dispatch-20260303-followthrough",
-        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md"
+        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "bos-ideas-dispatch-20260303-followthrough",
+        "target_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
@@ -8129,7 +8703,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T23:58:00.000Z",
         "fact_find_slug": "bos-ideas-dispatch-20260303-followthrough",
-        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md"
+        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "bos-ideas-dispatch-20260303-followthrough",
+        "target_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
@@ -8182,7 +8760,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-03T23:58:00.000Z",
         "fact_find_slug": "bos-ideas-dispatch-20260303-followthrough",
-        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md"
+        "fact_find_path": "docs/plans/bos-ideas-dispatch-20260303-followthrough/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "bos-ideas-dispatch-20260303-followthrough",
+        "target_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
@@ -8233,7 +8815,11 @@
       "queue_state": "completed",
       "processed_by": {
         "fact_find_slug": "bos-ideas-dispatch-20260303-code-signals",
-        "processed_at": "2026-03-03T19:04:40.241Z"
+        "processed_at": "2026-03-03T19:04:40.241Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "bos-ideas-dispatch-20260303-code-signals",
+        "target_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-code-signals/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-code-signals/plan.md",
@@ -8286,7 +8872,11 @@
       "queue_state": "completed",
       "processed_by": {
         "fact_find_slug": "bos-ideas-dispatch-20260303-code-signals",
-        "processed_at": "2026-03-03T19:04:40.241Z"
+        "processed_at": "2026-03-03T19:04:40.241Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "bos-ideas-dispatch-20260303-code-signals",
+        "target_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-code-signals/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-code-signals/plan.md",
@@ -8341,7 +8931,11 @@
       "queue_state": "completed",
       "processed_by": {
         "fact_find_slug": "bos-ideas-dispatch-20260303-agent-session-signals",
-        "processed_at": "2026-03-03T19:04:40.241Z"
+        "processed_at": "2026-03-03T19:04:40.241Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "bos-ideas-dispatch-20260303-agent-session-signals",
+        "target_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-agent-session-signals/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-agent-session-signals/plan.md",
@@ -8882,7 +9476,11 @@
         "fact_find_slug": "build-completion-deterministic-lifts",
         "fact_find_path": "docs/plans/build-completion-deterministic-lifts/fact-find.md",
         "processed_at": "2026-03-03T20:15:49.195Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "build-completion-deterministic-lifts",
+        "target_path": "docs/plans/_archive/build-completion-deterministic-lifts/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/build-completion-deterministic-lifts/plan.md",
@@ -9409,7 +10007,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-04T08:50:00.000Z",
         "fact_find_slug": "pattern-reflection-routing-promotion",
-        "fact_find_path": "docs/plans/pattern-reflection-routing-promotion/fact-find.md"
+        "fact_find_path": "docs/plans/pattern-reflection-routing-promotion/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "pattern-reflection-routing-promotion",
+        "target_path": "docs/plans/_archive/pattern-reflection-routing-promotion/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/pattern-reflection-routing-promotion/plan.md",
@@ -9460,7 +10062,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-04T08:50:00.000Z",
         "fact_find_slug": "pattern-reflection-routing-promotion",
-        "fact_find_path": "docs/plans/pattern-reflection-routing-promotion/fact-find.md"
+        "fact_find_path": "docs/plans/pattern-reflection-routing-promotion/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "pattern-reflection-routing-promotion",
+        "target_path": "docs/plans/_archive/pattern-reflection-routing-promotion/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/pattern-reflection-routing-promotion/plan.md",
@@ -11565,7 +12171,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "confidence": 0.9,
@@ -11582,12 +12188,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-05T16:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T16:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-hardening",
-        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-hardening",
+        "target_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md",
+        "completed_at": "2026-03-09T11:05:10.515Z",
+        "outcome": "The hardening pass closed the truthfulness and fail-closed gaps in reception’s booking email, cancellation, extension-resolution, and booking-date mutation flows. Booking email success reporting now follows the actual draft outcome, cancell"
       }
     },
     {
@@ -11609,7 +12224,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "confidence": 0.85,
@@ -11626,12 +12241,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-05T16:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T16:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-hardening",
-        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-hardening",
+        "target_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md",
+        "completed_at": "2026-03-09T11:05:10.515Z",
+        "outcome": "The hardening pass closed the truthfulness and fail-closed gaps in reception’s booking email, cancellation, extension-resolution, and booking-date mutation flows. Booking email success reporting now follows the actual draft outcome, cancell"
       }
     },
     {
@@ -11653,7 +12277,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "confidence": 0.86,
@@ -11670,12 +12294,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-05T16:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T16:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-hardening",
-        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-hardening",
+        "target_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md",
+        "completed_at": "2026-03-09T11:05:10.515Z",
+        "outcome": "The hardening pass closed the truthfulness and fail-closed gaps in reception’s booking email, cancellation, extension-resolution, and booking-date mutation flows. Booking email success reporting now follows the actual draft outcome, cancell"
       }
     },
     {
@@ -11697,7 +12330,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "confidence": 0.82,
@@ -11714,12 +12347,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-05T16:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T16:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-hardening",
-        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-hardening",
+        "target_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md",
+        "completed_at": "2026-03-09T11:05:10.515Z",
+        "outcome": "The hardening pass closed the truthfulness and fail-closed gaps in reception’s booking email, cancellation, extension-resolution, and booking-date mutation flows. Booking email success reporting now follows the actual draft outcome, cancell"
       }
     },
     {
@@ -11741,7 +12383,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "confidence": 0.8,
@@ -11758,12 +12400,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-05T16:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T16:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-hardening",
-        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-hardening",
+        "target_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md",
+        "completed_at": "2026-03-09T11:05:10.515Z",
+        "outcome": "The hardening pass closed the truthfulness and fail-closed gaps in reception’s booking email, cancellation, extension-resolution, and booking-date mutation flows. Booking email success reporting now follows the actual draft outcome, cancell"
       }
     },
     {
@@ -11785,7 +12436,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "confidence": 0.88,
@@ -11802,12 +12453,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-05T16:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T16:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-hardening",
-        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-hardening",
+        "target_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md",
+        "completed_at": "2026-03-09T11:05:10.515Z",
+        "outcome": "The hardening pass closed the truthfulness and fail-closed gaps in reception’s booking email, cancellation, extension-resolution, and booking-date mutation flows. Booking email success reporting now follows the actual draft outcome, cancell"
       }
     },
     {
@@ -11829,7 +12489,7 @@
       ],
       "provisional_deliverable_family": "multi",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "confidence": 0.84,
@@ -11846,12 +12506,21 @@
         "source": "operator"
       },
       "created_at": "2026-03-05T16:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T16:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-hardening",
-        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-hardening/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-hardening",
+        "target_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-hardening/plan.md",
+        "completed_at": "2026-03-09T11:05:10.515Z",
+        "outcome": "The hardening pass closed the truthfulness and fail-closed gaps in reception’s booking email, cancellation, extension-resolution, and booking-date mutation flows. Booking email success reporting now follows the actual draft outcome, cancell"
       }
     },
     {
@@ -11867,16 +12536,20 @@
         "apps/reception/src"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "created_at": "2026-03-05T20:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T20:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-reaudit-followup",
-        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-reaudit-followup",
+        "target_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
       },
       "dispatch_id": "IDEA-DISPATCH-20260305204000-2301",
       "root_event_id": "operator:BRIK:BOS:booking-modal-early-close-on-failed-save:20260305",
@@ -11896,6 +12569,11 @@
         "type": "operational",
         "statement": "Booking modal save is fail-closed and only closes after confirmed mutation success.",
         "source": "operator"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md",
+        "completed_at": "2026-03-09T11:05:10.516Z",
+        "outcome": "This follow-up cycle finished the second-wave reception integrity items: booking modal save behavior now stays fail closed, save is blocked when occupant identity is missing, extension date and financial divergence gained explicit compensat"
       }
     },
     {
@@ -11911,16 +12589,20 @@
         "apps/reception/src"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "created_at": "2026-03-05T20:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T20:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-reaudit-followup",
-        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-reaudit-followup",
+        "target_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
       },
       "dispatch_id": "IDEA-DISPATCH-20260305204000-2302",
       "root_event_id": "operator:BRIK:BOS:booking-modal-unknown-occupant-fallback-write-risk:20260305",
@@ -11940,6 +12622,11 @@
         "type": "operational",
         "statement": "Booking save path enforces valid occupant id and refuses invalid writes.",
         "source": "operator"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md",
+        "completed_at": "2026-03-09T11:05:10.516Z",
+        "outcome": "This follow-up cycle finished the second-wave reception integrity items: booking modal save behavior now stays fail closed, save is blocked when occupant identity is missing, extension date and financial divergence gained explicit compensat"
       }
     },
     {
@@ -11955,16 +12642,20 @@
         "apps/reception/src"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "created_at": "2026-03-05T20:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T20:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-reaudit-followup",
-        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-reaudit-followup",
+        "target_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
       },
       "dispatch_id": "IDEA-DISPATCH-20260305204000-2303",
       "root_event_id": "operator:BRIK:BOS:extension-date-financial-split-consistency-risk:20260305",
@@ -11984,6 +12675,11 @@
         "type": "operational",
         "statement": "Extension flow has compensating control to avoid unresolved financial/date divergence.",
         "source": "operator"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md",
+        "completed_at": "2026-03-09T11:05:10.516Z",
+        "outcome": "This follow-up cycle finished the second-wave reception integrity items: booking modal save behavior now stays fail closed, save is blocked when occupant identity is missing, extension date and financial divergence gained explicit compensat"
       }
     },
     {
@@ -11999,16 +12695,20 @@
         "apps/reception/src"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "created_at": "2026-03-05T20:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T20:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-reaudit-followup",
-        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-reaudit-followup",
+        "target_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
       },
       "dispatch_id": "IDEA-DISPATCH-20260305204000-2304",
       "root_event_id": "operator:BRIK:BOS:multi-occupant-extension-partial-commit-ambiguity:20260305",
@@ -12028,6 +12728,11 @@
         "type": "operational",
         "statement": "Multi-occupant extension flow surfaces partial outcomes explicitly and avoids silent drift.",
         "source": "operator"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md",
+        "completed_at": "2026-03-09T11:05:10.516Z",
+        "outcome": "This follow-up cycle finished the second-wave reception integrity items: booking modal save behavior now stays fail closed, save is blocked when occupant identity is missing, extension date and financial divergence gained explicit compensat"
       }
     },
     {
@@ -12043,16 +12748,20 @@
         "apps/reception/src"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "created_at": "2026-03-05T20:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T20:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-reaudit-followup",
-        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-reaudit-followup",
+        "target_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
       },
       "dispatch_id": "IDEA-DISPATCH-20260305204000-2305",
       "root_event_id": "operator:BRIK:BOS:booking-email-activity-scope-non-authoritative:20260305",
@@ -12072,6 +12781,11 @@
         "type": "operational",
         "statement": "Email draft activity logging uses authoritative occupant set returned by booking-email hook.",
         "source": "operator"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md",
+        "completed_at": "2026-03-09T11:05:10.516Z",
+        "outcome": "This follow-up cycle finished the second-wave reception integrity items: booking modal save behavior now stays fail closed, save is blocked when occupant identity is missing, extension date and financial divergence gained explicit compensat"
       }
     },
     {
@@ -12087,16 +12801,20 @@
         "apps/reception/src"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "created_at": "2026-03-05T20:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T20:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-reaudit-followup",
-        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-reaudit-followup",
+        "target_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
       },
       "dispatch_id": "IDEA-DISPATCH-20260305204000-2306",
       "root_event_id": "operator:BRIK:BOS:cancellation-partial-failure-contract-easy-ignore:20260305",
@@ -12116,6 +12834,11 @@
         "type": "operational",
         "statement": "Cancellation partial failure becomes fail-closed error contract.",
         "source": "operator"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md",
+        "completed_at": "2026-03-09T11:05:10.516Z",
+        "outcome": "This follow-up cycle finished the second-wave reception integrity items: booking modal save behavior now stays fail closed, save is blocked when occupant identity is missing, extension date and financial divergence gained explicit compensat"
       }
     },
     {
@@ -12131,16 +12854,20 @@
         "apps/reception/src"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "domain": "BOS",
       "priority": "P2",
       "created_at": "2026-03-05T20:40:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T20:41:00.000Z",
         "fact_find_slug": "reception-process-integrity-reaudit-followup",
-        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-reaudit-followup",
+        "target_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
       },
       "dispatch_id": "IDEA-DISPATCH-20260305204000-2307",
       "root_event_id": "operator:BRIK:BOS:reception-reaudit-failure-path-coverage-gaps:20260305",
@@ -12160,6 +12887,11 @@
         "type": "operational",
         "statement": "Failure-path regression coverage is closed for re-audit follow-up hardening.",
         "source": "operator"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md",
+        "completed_at": "2026-03-09T11:05:10.516Z",
+        "outcome": "This follow-up cycle finished the second-wave reception integrity items: booking modal save behavior now stays fail closed, save is blocked when occupant identity is missing, extension date and financial divergence gained explicit compensat"
       }
     },
     {
@@ -12301,7 +13033,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T18:10:29.650Z",
         "fact_find_slug": "reception-process-integrity-silent-failure-hardening",
-        "fact_find_path": "docs/plans/reception-process-integrity-silent-failure-hardening/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-silent-failure-hardening/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-silent-failure-hardening",
+        "target_path": "docs/plans/reception-process-integrity-silent-failure-hardening/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/reception-process-integrity-silent-failure-hardening/plan.md",
@@ -12360,7 +13096,11 @@
         "route": "dispatch-routed",
         "processed_at": "2026-03-05T18:53:21.425Z",
         "fact_find_slug": "reception-process-integrity-reaudit-opportunities",
-        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-opportunities/fact-find.md"
+        "fact_find_path": "docs/plans/reception-process-integrity-reaudit-opportunities/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-process-integrity-reaudit-opportunities",
+        "target_path": "docs/plans/reception-process-integrity-reaudit-opportunities/plan.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/reception-process-integrity-reaudit-opportunities/plan.md",
@@ -16054,7 +16794,7 @@
       "current_truth": "buildThreadContext() includes all messages in a thread for draft generation. Threads with 50+ messages risk LLM context overflow, causing drafts to miss early concerns or fail entirely.",
       "next_scope_now": "Add truncation or summarization to limit conversation history passed to draft generation (e.g. last 10 messages or 5000 chars).",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.85,
       "evidence_refs": [
@@ -16067,7 +16807,7 @@
         "source": "operator"
       },
       "created_at": "2026-03-07T15:37:40.310752+00:00",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "processed_by": {
         "route": "dispatch-routed",
         "target_route": "lp-do-fact-find",
@@ -16077,6 +16817,11 @@
         "processed_at": "2026-03-07T15:44:21.107Z",
         "fact_find_slug": "reception-inbox-context-history-bound",
         "fact_find_path": "docs/plans/reception-inbox-context-history-bound/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-inbox-context-history-bound/plan.md",
+        "completed_at": "2026-03-09T10:54:25.982Z",
+        "outcome": "The inbox thread-context bounding logic is now centralized in `apps/reception/src/lib/inbox/thread-context.ts`, with `MAX_THREAD_CONTEXT_MESSAGES` fixed at 20 and shared `boundMessages()` / `buildThreadContext()` helpers for consistent beha"
       }
     },
     {
@@ -16918,6 +17663,18 @@
         "type": "operational",
         "statement": "All reception screens consume semantic tokens for surfaces, borders, and text hierarchy — no hardcoded color values or ad-hoc style patterns.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-component-token-compliance",
+        "fact_find_slug": "reception-component-token-compliance",
+        "target_path": "docs/plans/_archive/reception-component-token-compliance/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-component-token-compliance/plan.md",
+        "completed_at": "2026-03-08T12:33:45.858Z",
+        "outcome": "### TASK-01: Fix CompScreen dynamic class and ModalPreorderDetails border Replaced the broken dynamic class interpolation `bg-${accentBase}` in CompScreen.tsx with an explicit ternary (`accent === \"success\" ? \"bg-success-main\" : \"bg-error-m"
       }
     },
     {
@@ -20150,7 +20907,7 @@
         "type": "operational",
         "statement": "A single shared DateRangeSelector component replaces all 5 variants. Access-level and quick-range differences are parameterised."
       },
-      "queue_state": "processed",
+      "queue_state": "completed",
       "created_at": "2026-03-09T11:30:00.000Z",
       "processed_by": {
         "route": "dispatch-routed",
@@ -20161,6 +20918,11 @@
         "processed_at": "2026-03-09T09:27:39.506Z",
         "fact_find_slug": "reception-date-selector-unification",
         "fact_find_path": "docs/plans/reception-date-selector-unification/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "/Users/petercowling/base-shop/docs/plans/_archive/reception-date-selector-unification/plan.md",
+        "outcome": "Single shared DateSelector component in common/ replaces all 5 variants; all callers migrated; tests updated",
+        "completed_at": "2026-03-09T11:52:58.940Z"
       }
     },
     {
@@ -20553,10 +21315,17 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/prime-radiostep-extraction/micro-build.md",
-        "stamped_at": "2026-03-09T14:00:00.000Z"
+        "stamped_at": "2026-03-09T14:00:00.000Z",
+        "target_kind": "build",
+        "target_slug": "prime-radiostep-extraction"
       },
       "completed_at": "2026-03-09T10:55:00.000Z",
-      "outcome": "BreakfastOrderWizard and EvDrinkOrderWizard radio-group step renderers replaced by a shared RadioStep component."
+      "outcome": "BreakfastOrderWizard and EvDrinkOrderWizard radio-group step renderers replaced by a shared RadioStep component.",
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/prime-radiostep-extraction/micro-build.md",
+        "completed_at": "2026-03-09T10:02:19.942Z",
+        "outcome": "Completed via prime-radiostep-extraction."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -20579,7 +21348,7 @@
       "current_truth": "ChatProvider.tsx contains 8 near-identical manual type guard functions (isMessage, isMessageKind, isMessageAudience, isMessageLinks, isMessageAttachments, isMessageCards, isMessageDraft, toMessage) spanning ~110 lines. Each re-implements field validation manually using typeof/undefined checks. Adding or renaming a Message field requires updating 8+ locations. The Message type is defined in types/messenger/chat.ts.",
       "next_scope_now": "Audit the full Message type and all validation paths in ChatProvider. Design Zod schemas for Message and its sub-types. Replace the 8 type guard functions with schema-derived type guards (z.safeParse). Verify test coverage for validation edge cases.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.84,
       "evidence_refs": [
@@ -20588,12 +21357,24 @@
         "code-ref: apps/prime/src/types/messenger/chat.ts"
       ],
       "created_at": "2026-03-09T14:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "The schema design (which sub-types to model, optional vs required fields, how to handle union variants) requires fact-finding before the migration can be executed safely. A wrong schema design would break message parsing silently.",
       "intended_outcome": {
         "type": "operational",
         "statement": "ChatProvider validation reduced from 8 manual type guard functions to Zod schema-derived guards, so Message type changes require only one schema update.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-chatprovider-zod-migration",
+        "target_path": "docs/plans/_archive/prime-chatprovider-zod-migration/plan.md",
+        "fact_find_slug": "prime-chatprovider-zod-migration"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-chatprovider-zod-migration/plan.md",
+        "completed_at": "2026-03-09T11:01:45.885Z",
+        "outcome": "Completed via prime-chatprovider-zod-migration."
       }
     },
     {
@@ -20616,7 +21397,7 @@
       "current_truth": "GuidedOnboardingFlow.tsx is 816 lines. Step title/description are computed via repeated if-statements (3 locations). Radio fieldsets are defined TWICE — once per branch of showConfidenceBeforeMethod — with identical handler/className logic, only order differs. The component uses 6 useRef + 5 useEffect hooks for lifecycle management. Adding a step 4 requires edits in 3+ separate if-chains.",
       "next_scope_now": "Fact-find to scope two separable improvements: (1) extract step config into a STEP_CONFIG lookup object to eliminate if-chains; (2) extract duplicated radio fieldsets into a reusable component. Separately assess whether useReducer is warranted or if the ref/effect complexity can be reduced more surgically.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.81,
       "evidence_refs": [
@@ -20624,12 +21405,24 @@
         "code-ref: apps/prime/src/components/portal/GuidedOnboardingFlow.tsx"
       ],
       "created_at": "2026-03-09T14:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Two separable improvements (step config extraction and radio fieldset extraction) can likely be executed independently. The useReducer question needs scoping — it may not be warranted if the lifecycle concerns can be addressed more surgically. Fact-find to separate and sequence the work correctly.",
       "intended_outcome": {
         "type": "operational",
         "statement": "GuidedOnboardingFlow step configuration driven by a lookup object rather than repeated if-chains, and duplicated radio fieldset JSX collapsed to a single reusable component.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "prime-guided-onboarding-step-config",
+        "target_path": "docs/plans/_archive/prime-guided-onboarding-step-config/prime-guided-onboarding-step-config/plan.md",
+        "fact_find_slug": "prime-guided-onboarding-step-config"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-guided-onboarding-step-config/prime-guided-onboarding-step-config/plan.md",
+        "completed_at": "2026-03-09T10:52:14.948Z",
+        "outcome": "Completed via prime-guided-onboarding-step-config."
       }
     },
     {
@@ -20652,7 +21445,7 @@
       "current_truth": "Every pureData hook wraps React Query's refetch in `refetch: async () => { await rqRefetch(); }`. This pattern appears in 15+ hooks. The wrapper exists because rqRefetch() returns Promise<QueryObserverResult<...>> but the hook interface exposes Promise<void>. The async wrapper strips the return value. Changing it cross-cuttingly requires either a shared hook factory or a type-compatible simplification across all hooks.",
       "next_scope_now": "Audit all 15+ pureData hooks for their refetch pattern. Determine whether callers ever consume the return value. Design a shared hook wrapper or factory function that centralises the React Query setup (queryKey, queryFn, enabled, staleTime, refetch wrapping) and eliminates the boilerplate. Assess whether the Promise<void> vs Promise<QueryObserverResult> mismatch is real or can be resolved with a type alias.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.83,
       "evidence_refs": [
@@ -20660,7 +21453,7 @@
         "code-ref: apps/prime/src/hooks/pureData/"
       ],
       "created_at": "2026-03-09T14:00:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "Cross-cutting change touching 15+ files. The right fix (shared factory vs type alias vs direct rqRefetch exposure) depends on whether callers use the return value and how React Query's refetch type is consumed downstream. Needs fact-finding before bulk-editing 15 files.",
       "intended_outcome": {
         "type": "operational",
@@ -20676,6 +21469,11 @@
         "processed_at": "2026-03-09T09:57:59.896Z",
         "fact_find_slug": "prime-refetch-boilerplate",
         "fact_find_path": "docs/plans/prime-refetch-boilerplate/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-refetch-boilerplate/plan.md",
+        "completed_at": "2026-03-09T10:48:32.602Z",
+        "outcome": "**TASK-01:** Created `apps/prime/src/hooks/pureData/types.ts` exporting `PureDataRefetch = () => Promise<void>`. Updated all 12 React Query-backed pureData hooks to import this type and replace their async wrapper closures with a direct `as"
       }
     },
     {
@@ -21075,6 +21873,300 @@
         "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
       ],
       "created_at": "2026-03-09T10:52:02.902Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309105742-0462",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "5fd3b4a85841b3ebcb67926ec5633d7570158a6d",
+      "after_sha": "a9429b4baf5427b3b3b26611bdc31bffc8d017b5",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:a9429b4baf5427b3b3b26611bdc31bffc8d017b5",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:a9429b4baf5427b3b3b26611bdc31bffc8d017b5",
+      "cluster_fingerprint": "1a2307ba031f95e55e990ef1c9451aa91b269070d2c7fb3f0b659f00007efb11",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T10:57:42.461Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309110127-0262",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "a9429b4baf5427b3b3b26611bdc31bffc8d017b5",
+      "after_sha": "becadc0969fcc27d357fc5fe276c0bbd5744f887",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:becadc0969fcc27d357fc5fe276c0bbd5744f887",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:becadc0969fcc27d357fc5fe276c0bbd5744f887",
+      "cluster_fingerprint": "3c674cf79700b3978c5a264238f88c8dad5d2d9c22fac2f2716e9d660bd906c0",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T11:01:27.261Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309110627-0186",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "becadc0969fcc27d357fc5fe276c0bbd5744f887",
+      "after_sha": "c00fa6ee0e2d89f6c8ac2193798ebfda14086cdc",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:c00fa6ee0e2d89f6c8ac2193798ebfda14086cdc",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:c00fa6ee0e2d89f6c8ac2193798ebfda14086cdc",
+      "cluster_fingerprint": "8ba1b0e20e4985d0870868cbd00db0fc00b02928b3291d2b8990e549dc680145",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T11:06:27.185Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309143500-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-keycard-modal-duplication:20260309",
+      "anchor_key": "reception-keycard-modal-duplication",
+      "cluster_key": "BRIK:PRODUCTS:reception-keycard-modal-duplication:operator:20260309",
+      "cluster_fingerprint": "reception-keycard-modal-duplication-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception modals — AddKeycardsModal/ReturnKeycardsModal duplication",
+      "location_anchors": [
+        "apps/reception/src/components/till/AddKeycardsModal.tsx",
+        "apps/reception/src/components/till/ReturnKeycardsModal.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "AddKeycardsModal and ReturnKeycardsModal are 95%+ identical — same modal structure (title, count input, password auth). Only the submit label differs. Both must be updated independently when the modal pattern changes.",
+      "next_scope_now": "Extract a shared CountInputModal component. Update both AddKeycardsModal and ReturnKeycardsModal to use it. Validate with TypeScript and visual inspection.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: simplify sweep round 3 identified AddKeycardsModal and ReturnKeycardsModal as 95%+ identical — only submit label differs"
+      ],
+      "created_at": "2026-03-09T14:35:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Duplicate modal code creates maintenance burden — any change to the pattern requires updating two files.",
+      "intended_outcome": {
+        "type": "code-quality",
+        "statement": "Single CountInputModal component replaces both AddKeycardsModal and ReturnKeycardsModal copy-paste pair.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309143500-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-manager-auth-modal-duplication:20260309",
+      "anchor_key": "reception-manager-auth-modal-duplication",
+      "cluster_key": "BRIK:PRODUCTS:reception-manager-auth-modal-duplication:operator:20260309",
+      "cluster_fingerprint": "reception-manager-auth-modal-duplication-20260309",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK reception modals — DrawerOverrideModal/VarianceSignoffModal duplication",
+      "location_anchors": [
+        "apps/reception/src/components/till/DrawerOverrideModal.tsx",
+        "apps/reception/src/components/till/VarianceSignoffModal.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "DrawerOverrideModal and VarianceSignoffModal are 85%+ identical — same form structure (email, password, reason/note field, error handling, submit logic). Only differ in title, field labels, and returned data fields.",
+      "next_scope_now": "Extract a shared ManagerAuthModal component parameterised by title, note field label, and onConfirm callback. Update both callers. Validate with TypeScript and visual inspection.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: simplify sweep round 3 identified DrawerOverrideModal and VarianceSignoffModal as 85%+ identical — same auth form structure, differ only in labels and returned fields"
+      ],
+      "created_at": "2026-03-09T14:35:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Duplicate manager-auth modal code means any UX or auth pattern change must be applied in two places — risk of divergence.",
+      "intended_outcome": {
+        "type": "code-quality",
+        "statement": "Single ManagerAuthModal component replaces both DrawerOverrideModal and VarianceSignoffModal copy-paste pair.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309115035-0450",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "c00fa6ee0e2d89f6c8ac2193798ebfda14086cdc",
+      "after_sha": "ccbb8f73ba25a069326be0464a00ad2fc4bcfdf3",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:ccbb8f73ba25a069326be0464a00ad2fc4bcfdf3",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:ccbb8f73ba25a069326be0464a00ad2fc4bcfdf3",
+      "cluster_fingerprint": "af6a812314ac1301345de7ce6cdca55bb4c3c2cc39a447a53f7bd57a164b9866",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T11:50:35.449Z",
+      "queue_state": "enqueued",
+      "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260309115115-0275",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "artifact_delta",
+      "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
+      "before_sha": "ccbb8f73ba25a069326be0464a00ad2fc4bcfdf3",
+      "after_sha": "6f1ee120c8aa1939e7a1c4f3b4dcc4ea769f433a",
+      "root_event_id": "BOS-BOS-AGENT_SESSION_FINDINGS:6f1ee120c8aa1939e7a1c4f3b4dcc4ea769f433a",
+      "anchor_key": "fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper",
+      "cluster_key": "bos:unknown:fixing-the-clear-atomic-wins-unused-function-two-parallel-fetch-opportunities-duplicate-auth-error-mapper:BOS-BOS-AGENT_SESSION_FINDINGS:6f1ee120c8aa1939e7a1c4f3b4dcc4ea769f433a",
+      "cluster_fingerprint": "0d6f6e04dddcb4e142c5e751b0bfab8c3f5463ccb8e4f73e362c446b10ff70d5",
+      "lineage_depth": 0,
+      "area_anchor": "Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…",
+      "location_anchors": [
+        "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json"
+      ],
+      "provisional_deliverable_family": "business-artifact",
+      "current_truth": "Recent agent-session reviews surfaced 3 concrete findings: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "next_scope_now": "Validate the surfaced findings and split concrete follow-up work from incidental review chatter: Fixing the clear atomic wins: unused function, two parallel fetch opportunities, duplicate auth error mapper,…; The background watchers caught an older failing run; Clean pass — no errors, no failed steps, exit code 0.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "agent-session-artifact:docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        "session:d576d25b-e024-4673-abb5-b249f3191212",
+        "session:a66a30a9-2c57-4471-b5af-38cff589a683",
+        "session:bd0d843e-9c01-4f9f-bee6-ea55202e1d1f",
+        "session:950278a6-791c-4c65-941b-e1902ae59893",
+        "session:0977ecdd-757b-4e3b-8eef-937c2d6171a7",
+        "session:9d941471-43c3-4613-91b8-8d93acd1e16d"
+      ],
+      "created_at": "2026-03-09T11:51:15.274Z",
       "queue_state": "enqueued",
       "why": "Recent walkthrough/testing activity surfaced multiple concrete findings that should be preserved as specific downstream work instead of a generic synthetic delta.",
       "intended_outcome": {

@@ -36,7 +36,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - [ ] TASK-02: Normalize existing suggestion seams onto canonical gap-case and prescription shapes
 - [ ] TASK-03: Add requirement posture and prescription maturity to queue and policy routing
 - [ ] TASK-04: Extend policy journaling and evaluation for prescription-choice learning
-- [ ] TASK-05: Map milestone roots to runtime producers and unify activation thresholds
+- [x] TASK-05: Map milestone roots to runtime producers and unify activation thresholds — Complete (2026-03-10)
 - [ ] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation
 - [ ] TASK-07: Widen live sensing for richer prescription evidence
 - [ ] TASK-08: Define and enforce the discovery-output contract for unknown prescriptions
@@ -118,7 +118,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 | TASK-02 | IMPLEMENT | Normalize existing suggestion seams onto canonical gap-case and prescription shapes | 80% | M | Pending | TASK-01 | TASK-03, TASK-04, TASK-07 |
 | TASK-03 | IMPLEMENT | Add requirement posture and prescription maturity to queue and policy routing | 81% | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-04 | IMPLEMENT | Extend policy journaling and evaluation for prescription-choice learning | 81% | M | Pending | TASK-01, TASK-03 | TASK-08, TASK-09 |
-| TASK-05 | INVESTIGATE | Map milestone roots to runtime producers and unify activation thresholds | 78% | M | Pending | - | TASK-06, TASK-09 |
+| TASK-05 | INVESTIGATE | Map milestone roots to runtime producers and unify activation thresholds | 78% | M | Complete (2026-03-10) | - | TASK-06, TASK-09 |
 | TASK-06 | IMPLEMENT | Add milestone-event triggers, producers, and lateral bundle generation | 80% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-05 | TASK-09, TASK-10 |
 | TASK-07 | IMPLEMENT | Widen live sensing for richer prescription evidence | 80% | M | Pending | TASK-01, TASK-02 | TASK-08, TASK-10 |
 | TASK-08 | IMPLEMENT | Define and enforce the discovery-output contract for unknown prescriptions | 80% | M | Pending | TASK-01, TASK-03, TASK-07 | TASK-09, TASK-10 |
@@ -138,7 +138,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 
 ## What would make this >=90%
 - A field-level draft for `gap-case.v1`, `prescription.v1`, and `prescription_choice` pinned to exact files and symbols.
-- A source inventory showing where milestone roots can actually be emitted from today, not just where the contracts mention them.
+- Sample milestone payloads for the non-deferred roots identified in TASK-05, especially the metric-backed `transaction_data_available` path and the planned artifact-backed roots.
 - A draft discovery-output schema for unknown-prescription fact-finds.
 - A stricter proof that `gap_case` can compile into the current candidate-centric model without dual identity drift.
 - A draft promotion proof-threshold table that separates “effective enough to nominate” from “safe enough to promote”.
@@ -326,7 +326,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Affects:** `docs/business-os/startup-loop/schemas/sales-ops-schema.md`, `docs/business-os/startup-loop/schemas/retention-schema.md`, `docs/business-os/startup-loop/process-registry-v2.md`, `docs/business-os/startup-loop/specifications/process-assignment-v2.yaml`, `scripts/src/startup-loop/**`
 - **Depends on:** -
 - **Blocks:** TASK-06, TASK-09
@@ -352,6 +352,13 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - [retention-schema.md](/Users/petercowling/base-shop/docs/business-os/startup-loop/schemas/retention-schema.md)
   - [process-registry-v2.md](/Users/petercowling/base-shop/docs/business-os/startup-loop/process-registry-v2.md)
   - [process-assignment-v2.yaml](/Users/petercowling/base-shop/docs/business-os/startup-loop/specifications/process-assignment-v2.yaml)
+  - [milestone-root-producer-map.md](/Users/petercowling/base-shop/docs/plans/startup-loop-learned-prescription-system/artifacts/milestone-root-producer-map.md)
+- **Build Evidence (2026-03-10):**
+  - Reviewed the milestone contract layer in `sales-ops-schema.md`, `retention-schema.md`, `process-registry-v2.md`, `process-assignment-v2.yaml`, the capability contract, and the weekly KPCS prompt/template layer.
+  - Reviewed runtime producer-adjacent code in `growth-metrics-adapter.ts`, `s10-growth-accounting.ts`, `funnel-metrics-extractor.ts`, plus repo-wide startup-loop searches for `sales-ops.user.md`, `retention.user.md`, `qualified lead`, `repeat signal`, `wholesale_accounts`, and weekly-packet writers.
+  - Result: only `transaction_data_available` has a real code-backed metric seam today; `qualified_lead_or_enquiry_flow_present` and `repeat_signal_present` are contract-backed but producer-missing; `wholesale_accounts_positive` is a branch selector with no structured source field; `weekly_cycles_post_launch_gte_4` remains contract-only because no launch anchor or script-side weekly-packet writer exists.
+  - Precedence resolved: CAP roots, branch selectors, and process prerequisites are now separated. `transaction_data_available` is not treated as an alias for `repeat_signal_present`, and the CAP-06 four-week backstop is explicitly capability-only.
+  - Precursor completion propagation: TASK-05 no longer blocks TASK-06 or TASK-09. The next runnable wave is TASK-02 and TASK-03; TASK-06 now has a bounded implementation surface from this artifact instead of open milestone ambiguity.
 
 ### TASK-06: Add milestone-event triggers, producers, and lateral bundle generation
 - **Type:** IMPLEMENT
@@ -380,8 +387,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution plan:** Red -> add trigger/model tests; Green -> add event family, producer adapters, and bundle generation; Refactor -> centralize root-to-alias mapping and avoid scattered milestone logic.
 - **Planning validation (required for M/L):**
   - Checks run: verified no native milestone trigger class exists today.
-  - Validation artifacts: `docs/plans/startup-loop-learned-prescription-system/fact-find.md`, TASK-05 output
-  - Unexpected findings: milestone runtime work would reintroduce fragmentation if it bypassed the canonical normalization layer, so TASK-02 is a hard dependency rather than an optional cleanup.
+  - Validation artifacts: `docs/plans/startup-loop-learned-prescription-system/fact-find.md`, `docs/plans/startup-loop-learned-prescription-system/artifacts/milestone-root-producer-map.md`
+  - Unexpected findings: milestone runtime work would reintroduce fragmentation if it bypassed the canonical normalization layer, so TASK-02 is a hard dependency rather than an optional cleanup. TASK-05 also proved the first runtime slice is asymmetric: `transaction_data_available` is metric-backed, `qualified_lead_or_enquiry_flow_present` and `repeat_signal_present` require artifact adapters, `wholesale_accounts_positive` needs a bounded structured source before runtime emission, and `weekly_cycles_post_launch_gte_4` stays explicitly deferred until a launch anchor exists.
 - **Scouts:** TASK-05
 - **Edge Cases & Hardening:** prevent duplicate milestone emissions across multiple upstream sources; keep bundle generation advisory until rollout checkpoint.
   - Keep “first sale” or “first stockist live” as optional higher-level aliases only after lower-level contract roots are observable in code.
@@ -614,11 +621,11 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 | Step | Preconditions Met | Issues Found | Resolution Required |
 |---|---|---|---|
 | TASK-01: Define canonical `gap-case.v1` and `prescription.v1` contracts | Yes | Major: identity mapping must become explicit at the contract layer or every later task risks dual live identity drift | Yes |
-| TASK-05: Map milestone roots to runtime producers and unify activation thresholds | Yes | Moderate: contract roots exist, but producer seams are not yet explicit in code | Yes |
+| TASK-05: Map milestone roots to runtime producers and unify activation thresholds | Yes | Moderate: only `transaction_data_available` has a real code-backed seam; the other milestone roots require artifact adapters, a bounded source-field addition, or explicit defer | Yes |
 | TASK-02: Normalize existing suggestion seams onto canonical shapes | Yes | Moderate: three fragmented seams preserve different operator-readable wording that must not be lost during normalization | Yes |
 | TASK-03: Add requirement posture and prescription maturity | Yes | Moderate: posture must not become a parallel opinion layer beside hard rules and governance; precedence must be explicit and testable | Yes |
 | TASK-04: Extend policy journaling and evaluation | Yes | Moderate: candidate-centric history must remain readable while prescription identity is introduced | Yes |
-| TASK-06: Add milestone-event triggers, producers, and bundle generation | Partial | Major: milestone runtime work is unsafe if TASK-05 does not pin canonical roots and producers first; event-backed producers are a hard prerequisite | Yes |
+| TASK-06: Add milestone-event triggers, producers, and bundle generation | Partial | Major: the first runtime slice is asymmetric and must respect TASK-05 boundaries instead of pretending all milestone roots are equally observable | Yes |
 | TASK-07: Widen live sensing for richer prescription evidence | Yes | Moderate: build-output widening must fail closed when richer review artifacts are absent or malformed, or the maturity wave stays underfed | Yes |
 | TASK-08: Define and enforce the discovery-output contract for unknown prescriptions | Yes | Moderate: discovery outputs must be specific enough to mature unknown prescriptions without turning narrative prose into fake structure, but light enough to remain usable | Yes |
 | TASK-09: Add a guarded promotion path for proven prescriptions | Partial | Major: promotion proof and promotion safety are easy to conflate unless guarded thresholds remain separate and reported separately | Yes |

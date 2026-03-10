@@ -34,10 +34,18 @@ The current startup-loop backlog is split across two stores:
 
 `generate-process-improvements.ts` merges both into one `IDEA_ITEMS` array for `process-improvements.user.html`, so the operator sees one backlog even though only part of it lives in queue lifecycle. That is architecturally weak. It means build-spotted ideas can appear in the visible backlog, be suppressed by `completed-ideas.json`, and influence review/calibration surfaces without ever becoming canonical queue dispatches.
 
-The corrective direction is straightforward: queue must become the only canonical actionable backlog for idea items. Build-review artifacts should remain observation/intake artifacts, but any actionable idea they produce must enter the queue through the normal ideas admission path, with regular classification, dedupe, queue state, and completion.
+The corrective direction is still queue-first, but there is one extra requirement the first draft understated: the repo does not yet have a canonical build-origin signal contract. `results-review.signals.json` and `pattern-reflection.entries.json` describe overlapping build findings with different identity rules, different routing semantics, and different failure behavior. If those are bridged directly into the queue as-is, the system will centralize the backlog while preserving ambiguous intake and duplicate admission risk.
+
+So the real target is:
+
+1. define one canonical build-origin signal contract,
+2. admit that contract into the queue through normal ideas grading,
+3. make the report queue-only for idea backlog,
+4. demote or retire `completed-ideas.json` from active backlog control.
 
 ### Goals
 
+- Define a canonical build-origin signal contract before queue admission.
 - Make `queue-state.json` the sole canonical actionable backlog for idea items.
 - Route build-generated idea candidates through normal `lp-do-ideas` admission and grading instead of direct HTML scraping.
 - Collapse closure semantics onto queue lifecycle so report suppression and completion no longer depend on a parallel results-review registry.
@@ -57,9 +65,11 @@ The corrective direction is straightforward: queue must become the only canonica
   - Existing ideas classification and queue persistence should be reused rather than reimplemented inside build scripts.
   - Queue migration must stay additive and idempotent while the trial queue remains live.
   - Historical archived build-review artifacts may lack `pattern-reflection.entries.json`, so cutover needs a compatibility rule.
+  - Build-review extraction currently fails open; queue-only backlog cannot depend on silent extractor failure.
 - Assumptions:
   - The correct architecture is “artifacts produce signals, queue owns work,” not “reports aggregate multiple work stores.”
-  - `pattern-reflection.entries.json` is the preferred structured build-intake source when present; `results-review.signals.json` is an acceptable fallback during migration.
+  - `pattern-reflection.entries.json` is not queue-ready as-is; it can only become a primary intake source after a contract-hardening step adds stable identity and queue-classifier fields.
+  - `results-review.signals.json` is the more complete current idea extraction source, but it is still not a sufficient canonical intake contract on its own.
 
 ## Access Declarations
 
@@ -96,7 +106,7 @@ The corrective direction is straightforward: queue must become the only canonica
 - `scripts/src/startup-loop/build/lp-do-build-results-review-extract.ts`
   - Classifies results-review bullets into `ProcessImprovementItem` records, but only writes sidecars; it does not enqueue them.
 - `scripts/src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts`
-  - Emits `pattern-reflection.entries.json`, which is already more structured than raw results-review bullets.
+  - Emits `pattern-reflection.entries.json`, but the current entry payload is thin and promotion-oriented rather than queue-oriented.
 - `scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts`
   - Reconciles queue completion and also persists `docs/business-os/_data/completed-ideas.json`, keeping results-review-derived ideas on a separate closure rail.
 - `scripts/src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts`
@@ -114,15 +124,23 @@ The corrective direction is straightforward: queue must become the only canonica
   - Evidence: `lp-do-build-results-review-extract.ts` only emits sidecars; repo search found no build-review-to-queue bridge analogous to the codebase or agent-session bridges.
 - Structured build reflection already exists, but it feeds self-evolving rather than the canonical ideas queue.
   - Evidence: `pattern-reflection.entries.json` is consumed by `self-evolving-from-build-output.ts`; no canonical queue consumer was found.
+- `pattern-reflection` routing semantics are not queue routing semantics.
+  - Evidence: `loop_update | skill_proposal | defer` is the current reflection routing vocabulary, while the queue only routes `lp-do-fact-find | lp-do-plan | lp-do-build | lp-do-briefing`.
+- Build-review identity is currently split across two incompatible keys.
+  - Evidence: `results-review.signals` keys ideas by `sourcePath::title`, while pattern-reflection recurrence uses a normalized-title hash.
+- Build-review extraction is fail-open today.
+  - Evidence: both results-review and pattern-reflection extractors warn and continue on parse/write failure instead of blocking downstream consumers.
 - Queue completion and results-review backlog suppression are different mechanisms.
   - Evidence: queue lifecycle lives in `queue-state.json`, while report suppression for legacy review-derived ideas is keyed by `completed-ideas.json`.
+- Self-evolving still ingests build-review artifacts directly outside queue authority.
+  - Evidence: `self-evolving-from-build-output.ts` reads both sidecar types directly, so queue unification alone would not produce a single build-origin truth path.
 
 ### Data & Contracts
 
 - Types/schemas/events:
   - `ProcessImprovementItem` is a report/render type, not a queue lifecycle contract.
   - `results-review.signals.v1` stores extracted review bullets as idea items.
-  - `pattern-reflection.entries.v1` stores structured build patterns with `routing_target` and classifier-compatible fields.
+  - `pattern-reflection.entries.v1` stores structured build patterns, but current entries only carry `pattern_summary`, `category`, `routing_target`, `occurrence_count`, and `evidence_refs`.
   - `queue-state.json` persists canonical `dispatch` lifecycle.
   - `completed-ideas.v1` persists a second completion registry keyed by results-review source path/title or queue dispatch IDs.
 - Persistence:
@@ -131,7 +149,8 @@ The corrective direction is straightforward: queue must become the only canonica
   - Parallel closure registry: `docs/business-os/_data/completed-ideas.json`
 - API/contracts:
   - `classifyIdeaItem()` and the regular ideas classifier already exist for priority, urgency, effort, and reason code assignment.
-  - `pattern-reflection` schema already carries routing metadata and classifier-compatible subsets, making it a better admission source than raw markdown scraping.
+  - The queue accepts only canonical route/status contracts; current pattern-reflection routing values are not directly admissible.
+  - A canonical build-origin signal contract does not yet exist; that is the first required design output before queue unification can be implemented safely.
 
 ### Dependency & Impact Map
 
@@ -150,6 +169,7 @@ The corrective direction is straightforward: queue must become the only canonica
   - ideas queue admission
   - process-improvements generation
   - completion/closure compatibility surfaces
+  - self-evolving build-output intake and any shared dedupe identity
   - migration/backfill utilities for historical review candidates
 
 ### Hypothesis & Validation Landscape
@@ -159,7 +179,7 @@ The corrective direction is straightforward: queue must become the only canonica
 | # | Hypothesis | Depends on | Falsification cost | Falsification time |
 |---|---|---|---|---|
 | H1 | Queue-only backlog will improve process integrity because every actionable item shares one grading and closure path. | Queue can admit build-review candidates without large noise increase. | Medium | Short |
-| H2 | `pattern-reflection.entries.json` is a better primary intake source than raw `results-review.signals.json` because it is already structured for routing. | Pattern-reflection coverage is present for current builds or has a fallback. | Low | Short |
+| H2 | `pattern-reflection.entries.json` can become the primary intake source, but only after contract hardening makes it queue-ready. | Stable identity, queue-classifier fields, and canonical route derivation are added first. | Medium | Short |
 | H3 | `completed-ideas.json` can be retired from “active backlog suppression” once queue-backed closure and report generation are unified. | Queue completion covers all actionable idea origins. | Medium | Medium |
 
 #### Existing Signal Coverage
@@ -167,12 +187,13 @@ The corrective direction is straightforward: queue must become the only canonica
 | Hypothesis | Evidence available | Source | Confidence in signal |
 |---|---|---|---|
 | H1 | Direct code evidence of dual-source backlog aggregation and parallel closure registry | `generate-process-improvements.ts`, `lp-do-ideas-completion-reconcile.ts` | High |
-| H2 | Pattern-reflection extractor and schema already exist, plus classifier compatibility was documented earlier | `lp-do-build-pattern-reflection-extract.ts`, `startup-loop-build-reflection-gate/task-01-schema-spec.md` | High |
+| H2 | Pattern-reflection extractor and schema already exist, but current persisted entries are still too thin for direct queue admission | `lp-do-build-pattern-reflection-extract.ts`, `lp-do-build-pattern-reflection-prefill.ts`, `startup-loop-build-reflection-gate/task-01-schema-spec.md` | Medium |
 | H3 | Completion-reconcile already joins queue state and completed-ideas; retirement path is plausible but not yet implemented | `lp-do-ideas-completion-reconcile.ts`, `lp-do-ideas-keyword-calibrate.ts` | Medium |
 
 #### Falsifiability Assessment
 
 - Easy to test:
+  - Whether a canonical build-origin signal can be derived deterministically from current sidecars.
   - Whether a build-review-origin idea can be admitted into queue with normal classifier output.
   - Whether `process-improvements` can render idea backlog from queue only.
   - Whether archived results-review items disappear from active backlog unless queued.
@@ -180,6 +201,7 @@ The corrective direction is straightforward: queue must become the only canonica
   - Historical migration completeness without deciding a cutover policy.
   - Whether build-review queue intake causes unacceptable queue noise without a short live trial.
 - Validation seams needed:
+  - Canonical build-origin signal contract tests.
   - Build-review-to-queue bridge tests.
   - Generator/report tests asserting queue-only idea sourcing.
   - Completion compatibility tests during registry retirement or demotion.
@@ -239,7 +261,8 @@ The corrective direction is straightforward: queue must become the only canonica
 | Scope Area | Coverage Confirmed | Issues Found | Resolution Required |
 |---|---|---|---|
 | Backlog generation path | Yes | Major: report backlog is sourced from both queue and build-review sidecars, so “backlog” is not a canonical queue view. | Yes |
-| Build-review structured signal path | Yes | Major: structured build reflection exists, but it routes to self-evolving and promotion tooling, not to canonical ideas admission. | Yes |
+| Build-review structured signal path | Yes | Critical: structured build reflection exists, but its current entry contract is not queue-ready and its routing vocabulary is incompatible with queue routing. | Yes |
+| Identity and dedupe model | Partial | Critical: results-review and pattern-reflection use different identities, so a naive bridge would duplicate or split the same idea. | Yes |
 | Completion and suppression model | Partial | Major: `completed-ideas.json` acts as a parallel closure rail for review-derived ideas and still influences active backlog visibility. | Yes |
 | Historical archive behavior | Partial | Moderate: archived results-review files remain active backlog inputs unless suppressed, so cutover needs either migration or an explicit compatibility boundary. | Yes |
 
@@ -261,9 +284,15 @@ The corrective direction is straightforward: queue must become the only canonica
 - Q: Should raw `results-review.user.md` bullets become queue entries directly?
   - A: Not as raw markdown. The repo already has structured build-review sidecars, and `pattern-reflection.entries.json` is the cleaner primary source because it carries routing semantics and classifier-compatible data.
   - Evidence: `lp-do-build-results-review-extract.ts`, `lp-do-build-pattern-reflection-extract.ts`, `startup-loop-build-reflection-gate/task-01-schema-spec.md`
+- Q: Is `pattern-reflection.entries.json` already safe to use as the primary queue intake source?
+  - A: No. The current persisted entry shape is still promotion-oriented, lacks stable queue-ready identity, and uses routing labels that are not valid queue routes.
+  - Evidence: `lp-do-build-pattern-reflection-prefill.ts`, `lp-do-build-pattern-reflection-extract.ts`, `lp-do-ideas-routing-adapter.ts`
 - Q: Should results-review be retired?
   - A: No. The narrative review artifact remains valuable as operator evidence. The change is to stop treating it as a backlog database.
   - Evidence: `startup-loop-build-reflection-gate/fact-find.md`
+- Q: Can queue unification be treated as complete while self-evolving still reads build-review artifacts directly?
+  - A: No. That would still leave two authoritative downstream interpretations of the same build-origin signals unless they share a common identity/join contract.
+  - Evidence: `self-evolving-from-build-output.ts`
 
 ### Open (Operator Input Required)
 
@@ -271,46 +300,50 @@ None.
 
 ## Confidence Inputs
 
-- **Implementation:** 84%
-  - Evidence basis: the core seams are explicit and already modular: build extraction, ideas bridges, queue generation, and completion reconcile.
+- **Implementation:** 80%
+  - Evidence basis: the seams are explicit, but the missing canonical build-origin signal contract makes the first cut larger than the initial draft implied.
   - What raises this to >=80: already satisfied.
-  - What raises this to >=90: a call-site map for every remaining `completed-ideas.json` consumer plus a chosen historical cutover strategy.
-- **Approach:** 90%
-  - Evidence basis: “artifacts as signals, queue as work” matches the repo’s better patterns and uses existing classifier/bridge infrastructure instead of inventing another store.
+  - What raises this to >=90: a call-site map for every remaining `completed-ideas.json` consumer, a chosen historical cutover strategy, and a concrete canonical build-origin signal schema.
+- **Approach:** 84%
+  - Evidence basis: “artifacts as signals, queue as work” is still correct, but the first draft overstated how ready `pattern-reflection` is to serve as primary intake.
   - What raises this to >=80: already satisfied.
-  - What raises this to >=90: confirm the preferred intake order (`pattern-reflection` primary, `results-review.signals` fallback) in plan detail and prove no missing current-build coverage.
+  - What raises this to >=90: define the canonical build-origin signal contract and prove the source precedence/dedupe rules on fixtures covering both sidecar types.
 - **Impact:** 93%
   - Evidence basis: this fixes a direct integrity problem in visible backlog state, grading, and closure reporting.
   - What raises this to >=80: already satisfied.
   - What raises this to >=90: already satisfied.
-- **Delivery-Readiness:** 85%
-  - Evidence basis: the bridge pattern and test surfaces already exist, but the cutover touches multiple queue/report/compatibility seams.
+- **Delivery-Readiness:** 80%
+  - Evidence basis: the bridge pattern and test surfaces exist, but the cutover now clearly has one extra precursor tranche: contract hardening before intake.
   - What raises this to >=80: already satisfied.
-  - What raises this to >=90: choose whether historical archive ideas are backfilled or explicitly excluded after cutover.
-- **Testability:** 83%
-  - Evidence basis: most of the hard changes are deterministic data-flow transformations with existing test harnesses nearby.
+  - What raises this to >=90: choose whether historical archive ideas are backfilled or explicitly excluded after cutover, and pin the build-origin contract fields in code.
+- **Testability:** 81%
+  - Evidence basis: the changes are still deterministic, but the identity split means test fixtures must now prove cross-source dedupe and precedence, not just one bridge path.
   - What raises this to >=80: already satisfied.
-  - What raises this to >=90: add fixture-driven historical migration tests and queue-only report drift checks in the plan.
+  - What raises this to >=90: add fixture-driven contract tests spanning `results-review.signals`, `pattern-reflection.entries`, queue admission, and queue-only report drift checks.
 
 ## Risks
 
 | Risk | Likelihood | Impact | Mitigation / Open Question |
 |---|---|---|---|
 | Naively enqueueing every build-review bullet creates queue noise | Medium | High | Use structured build sidecars and the existing ideas classifier/dedupe path; do not ingest raw markdown directly. |
+| Treating current `pattern-reflection` entries as queue-ready creates invalid or lossy routing | High | High | Add a canonical build-origin signal contract first; derive canonical queue route separately from reflection routing labels. |
+| Cross-source identity mismatch duplicates or splits one build-origin idea | High | High | Define one stable build-origin fingerprint shared by both sidecar types and by queue admission. |
+| Fail-open extraction silently drops backlog items after queue-only report cutover | Medium | High | Queue admission must fail closed or emit explicit review debt when extraction/parsing fails. |
 | Queue-only cutover breaks historical backlog visibility | Medium | Medium | Decide explicitly between bounded backfill of historical build-review ideas or an operator-visible cutover boundary. |
 | `completed-ideas.json` retirement breaks downstream consumers | High | Medium | Migrate report suppression and calibration consumers together, or demote the registry to a derived compatibility artifact before removal. |
-| Pattern-reflection and results-review sidecars could both admit the same idea | Medium | Medium | Define source precedence and stable dedupe identity in the bridge contract. |
+| Self-evolving and queue unification diverge on the same build-origin signal | Medium | Medium | Introduce a shared build-origin join key or explicitly define separate purposes with no competing authority. |
 
 ## Planning Constraints & Notes
 
 - Must-follow patterns:
   - Queue is the only canonical actionable backlog for idea items.
   - Build-review artifacts remain evidence/intake only.
-  - Prefer `pattern-reflection.entries.json` as primary queue bridge input; use `results-review.signals.json` only as compatibility fallback.
+  - Do not promote `pattern-reflection.entries.json` to primary intake until its contract is hardened for queue admission.
+  - Source precedence and dedupe must be driven by one canonical build-origin fingerprint, not by title text alone.
   - Reuse existing ideas classifier and queue persistence contracts.
   - The report may continue to source `risk` and `pending-review` from their current artifacts even after idea backlog unification.
 - Rollout/rollback expectations:
-  - Safe sequence is: add bridge -> validate queue admission -> switch report to queue-only ideas -> migrate/demote `completed-ideas.json`.
+  - Safe sequence is: define build-origin signal contract -> add bridge -> validate queue admission -> switch report to queue-only ideas -> migrate/demote `completed-ideas.json`.
   - Rollback should be possible by keeping the direct report source behind a temporary compatibility branch until queue-backed build intake is proven.
 - Observability expectations:
   - Report/data output should expose whether an idea item is queue-backed and whether its origin was build-review intake.
@@ -318,10 +351,11 @@ None.
 
 ## Suggested Task Seeds (Non-binding)
 
-1. Implement a deterministic build-review-to-queue bridge that prefers `pattern-reflection.entries.json` and falls back to `results-review.signals.json`, reusing standard ideas classification and dedupe.
-2. Change `generate-process-improvements.ts` so `ideaItems` come only from canonical queue state, not directly from results-review sidecars or markdown.
-3. Migrate or demote `completed-ideas.json` so active backlog suppression and completion are queue-derived rather than registry-derived.
-4. Define and implement a bounded historical cutover: either backfill archived build-review-origin ideas into queue or explicitly exclude pre-cutover review artifacts from active backlog.
+1. First define and implement a canonical build-origin signal contract shared across build-review sources, including stable fingerprint, source precedence, and canonical queue-route derivation.
+2. Implement a deterministic build-review-to-queue bridge against that contract, using hardened `pattern-reflection.entries.json` as primary input and `results-review.signals.json` as compatibility fallback.
+3. Change `generate-process-improvements.ts` so `ideaItems` come only from canonical queue state, not directly from results-review sidecars or markdown.
+4. Migrate or demote `completed-ideas.json` so active backlog suppression and completion are queue-derived rather than registry-derived.
+5. Define and implement a bounded historical cutover: either backfill archived build-review-origin ideas into queue or explicitly exclude pre-cutover review artifacts from active backlog.
 
 ## Execution Routing Packet
 
@@ -331,6 +365,7 @@ None.
   - `lp-do-ideas`
   - `startup-loop`
 - Deliverable acceptance package:
+  - canonical build-origin signal contract and tests
   - queue bridge code and tests
   - process-improvements generator/report update and tests
   - completion compatibility update and tests
@@ -347,16 +382,18 @@ None.
 - Confirmed the backlog report is sourced from both results-review sidecars and queue state.
 - Confirmed there is no existing build-review-to-queue bridge.
 - Confirmed structured build reflection already exists in `pattern-reflection.entries.json`.
+- Confirmed current pattern-reflection entries are not queue-ready and use incompatible routing semantics.
+- Confirmed build-review identity is split across two different keying schemes.
 - Confirmed completion/suppression still uses a parallel `completed-ideas.json` registry.
 
 ### Confidence Adjustments
 
-- Approach confidence increased because the repo already contains the right building blocks: signal bridges, classifier, pattern-reflection sidecars, and queue completion logic.
-- Delivery confidence remains below 90 because historical cutover and registry retirement are still planning choices, not solved code paths.
+- Approach remains positive because the repo contains the right building blocks, but confidence dropped from the first draft because contract hardening is now clearly a prerequisite rather than an implementation detail.
+- Delivery confidence remains below 90 because historical cutover, registry retirement, and self-evolving overlap are still planning choices, not solved code paths.
 
 ### Remaining Assumptions
 
-- Current build workflows generate enough structured reflection data for queue admission without requiring another artifact format.
+- Current build workflows generate enough structured reflection data to support a canonical build-origin signal contract without inventing a wholly new operator artifact.
 - Historical archive behavior can be handled by either bounded backfill or explicit cutover, without needing indefinite dual-read mode.
 
 ## Planning Readiness

@@ -1,4 +1,6 @@
-import { type CatalogProductDraftInput,splitList } from "@acme/lib/xa";
+// Import directly (not from the @acme/lib/xa barrel) to avoid pulling
+// server-only packages (fast-csv, node:fs) into the client bundle.
+import { type CatalogProductDraftInput, splitList } from "@acme/lib/xa/catalogAdminSchema";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */

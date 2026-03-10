@@ -40,6 +40,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-13: Implement calibration, regret, override, and policy audit telemetry — Complete (2026-03-10)
 - [x] TASK-17: Enforce the policy authority ladder at queue and promotion seams — Complete (2026-03-10)
 - [x] TASK-18: Produce real shadow-run policy artifacts and checkpoint evidence — Complete (2026-03-10)
+- [ ] TASK-19: Persist shadow handoff replay state for non-actuating policy runs
+- [ ] TASK-20: Find or prove the absence of a real-data cohort that exercises selected and exploration policy paths
 - [ ] TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - [ ] TASK-15: Final checkpoint - authoritative mathematical policy readiness
 
@@ -129,7 +131,9 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
 | TASK-17 | IMPLEMENT | Enforce the authority ladder so shadow and advisory policy cannot silently actuate queue or promotion state | 85% | M | Complete (2026-03-10) | TASK-07, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-14, TASK-15 |
 | TASK-18 | IMPLEMENT | Produce real self-evolving shadow-run policy artifacts and checkpoint evidence from repo outputs | 80% | M | Complete (2026-03-10) | TASK-13, TASK-17 | TASK-14, TASK-15 |
-| TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18 | TASK-15 |
+| TASK-19 | IMPLEMENT | Persist shadow handoff records so non-actuating runs enter replay and maturity accounting | 80% | M | Pending | TASK-18 | TASK-14, TASK-15 |
+| TASK-20 | INVESTIGATE | Find or prove the absence of a real-data cohort that exercises portfolio selection and exploration | 70% | M | Pending | TASK-18 | TASK-14, TASK-15 |
+| TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18, TASK-19, TASK-20 | TASK-15 |
 | TASK-15 | CHECKPOINT | Final checkpoint - authoritative mathematical policy readiness | 95% | S | Pending | TASK-14 | - |
 
 ## Parallelism Guide
@@ -142,7 +146,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | 5 | TASK-10, TASK-11 | TASK-07 or supporting prerequisites | Exploration and causal promotion gates sit on top of the core policy inputs |
 | 6 | TASK-12, TASK-13 | TASK-07, TASK-10, TASK-11 plus supporting prerequisites | Stabilize, govern, and audit the mathematical policy before any readiness checkpoint |
 | 7 | TASK-17, TASK-18 | TASK-13 plus supporting policy seams | Fix authority leakage and produce real checkpoint evidence before rerunning the guarded-trial gate |
-| 8 | TASK-14, TASK-15 | TASK-07 through TASK-13, TASK-17, TASK-18 | Replay/guarded-trial checkpoint first, then authoritative-claim checkpoint last |
+| 8 | TASK-19, TASK-20 | TASK-18 | Close the remaining shadow replay gap and prove whether a real-data selected/exploration cohort exists before rerunning the checkpoint |
+| 9 | TASK-14, TASK-15 | TASK-07 through TASK-13, TASK-17, TASK-20 | Replay/guarded-trial checkpoint first, then authoritative-claim checkpoint last |
 
 ## Tasks
 
@@ -1008,6 +1013,48 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-04: pass by integration coverage and live guard semantics. `self-evolving-orchestrator-integration.test.ts` now proves rerunning the same bounded input set in `skip` mode preserves `policy-state.json` / `policy-decisions.jsonl` content and never creates the legacy follow-up queue file; the live `BRIK` evidence run also enforced an unchanged `ideas/trial/queue-state.json` hash before and after execution.
   - Residual issue carried forward to TASK-14: the evidence pack is real, but it is still dominated by structural-only signals (`measurement_ready_observation_rate: 0`, `exploration_decisions: 0`, calibration/regret still `insufficient_data`), so the checkpoint must judge guarded-trial readiness against honest sparse-data outputs rather than missing artifacts.
 
+### TASK-19: Persist shadow handoff replay state for non-actuating policy runs
+- **Type:** IMPLEMENT
+- **Deliverable:** a deduped shadow-handoff ledger plus evaluation/report support so `followupConsumeMode: "skip"` decisions can enter maturity and replay accounting without mutating the canonical ideas queue
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `docs/business-os/startup-loop/self-evolving/<business>/shadow-handoffs.jsonl`, `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`
+- **Depends on:** TASK-18
+- **Blocks:** TASK-14, TASK-15
+- **Confidence:** 80%
+  - Implementation: 80% - the missing seam is now explicit: shadow decisions never produce joinable handoff state, so maturity handling cannot run on real outputs.
+  - Approach: 80% - a separate shadow ledger preserves non-actuation while still giving replay code something truthful to evaluate.
+  - Impact: 85% - without this, guarded-trial readiness cannot be judged because every real shadow decision stays censored forever.
+- **Acceptance criteria:**
+  - Shadow runs write deduped handoff records keyed by `decision_id` / `candidate_id` without touching `ideas/trial/queue-state.json`.
+  - Policy evaluation consumes those records and reports pending or matured shadow-handoff state instead of `queue_state: null` / `evaluation_status: censored` for every shadow decision.
+  - Reports and dashboards surface the shadow-handoff counts explicitly so replay debt is observable.
+- **Validation contract:**
+  - TC-01: rerunning the same bounded shadow input set dedupes `shadow-handoffs.jsonl`.
+  - TC-02: `self-evolving-report.ts` shows non-null queue or handoff state for shadow decisions when the ledger exists.
+  - TC-03: canonical queue state remains byte-for-byte unchanged in shadow mode.
+
+### TASK-20: Find or prove the absence of a real-data cohort that exercises selected and exploration policy paths
+- **Type:** INVESTIGATE
+- **Deliverable:** a bounded cohort audit artifact showing either one real repo input slice with non-zero portfolio selection / exploration activity or explicit proof that no current repo cohort can exercise those branches under present data and policy
+- **Execution-Skill:** lp-do-replan
+- **Execution-Track:** mixed
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `docs/plans/startup-loop-centralized-math-foundations/artifacts/guarded-trial-cohort-audit.md`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`
+- **Depends on:** TASK-18
+- **Blocks:** TASK-14, TASK-15
+- **Confidence:** 70%
+  - Implementation: 70% - the audit path is clear, but the result may honestly be “no qualifying cohort exists yet”.
+  - Approach: 75% - guarded-trial readiness cannot be judged from a policy that only ever selects nothing.
+  - Impact: 85% - this prevents false confidence from a mathematically elaborate but unexercised decision layer.
+- **Acceptance criteria:**
+  - The audit examines actual repo businesses and bounded input sets, not synthetic fixtures.
+  - The result identifies at least one cohort with `portfolio_selected > 0` or `exploration.total > 0`, or proves that no current cohort can do so without new live data or policy changes.
+  - The plan records the chosen cohort path or the explicit data blocker before rerunning TASK-14.
+
 ### TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - **Type:** CHECKPOINT
 - **Deliverable:** updated plan evidence via `/lp-do-replan` if replay and guarded-trial readiness is not yet met
@@ -1016,7 +1063,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Effort:** S
 - **Status:** Pending
 - **Affects:** `docs/plans/startup-loop-centralized-math-foundations/plan.md`
-- **Depends on:** TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18
+- **Depends on:** TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18, TASK-19, TASK-20
 - **Blocks:** TASK-15
 - **Confidence:** 95%
   - Implementation: 95% - checkpoint mechanics are defined.
@@ -1043,6 +1090,15 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - Fail: the authority ladder is not yet true in code. `createDefaultPolicyState()` defaults to `authority_level: "shadow"` in `self-evolving-scoring.ts`, but `consumeBackboneQueueToIdeasWorkflow()` still filters pending entries on `portfolio_selected` in `self-evolving-backbone-consume.ts`, so mathematical portfolio choice can already suppress dispatch emission before guarded-trial clearance.
   - Fail: actual repo outputs do not yet support guarded-trial evidence review. A repo search found no `policy-state.json` or `policy-decisions.jsonl` under `docs/business-os/startup-loop/self-evolving/`, and `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK` reports missing policy-state and policy-decision artifacts with audit surfaces therefore remaining `insufficient_data`.
   - Result: TASK-14 stays pending. Added TASK-17 and TASK-18; rerun this checkpoint only after both are complete.
+- **Checkpoint Attempt (2026-03-10, rerun after TASK-18): failed -> replan required**
+  - Pass: the original hard blockers are now closed.
+    - `BRIK` has real `policy-state.json` and `policy-decisions.jsonl` artifacts produced by the runtime.
+    - The authority ladder is enforced: shadow evidence generation used `followupConsumeMode: "skip"` and preserved an unchanged `ideas/trial/queue-state.json` hash.
+    - The report now loads with `warnings: []`, `policy_state_present: true`, `decision_records: 12`, and real dependency/survival/policy-audit outputs.
+  - Fail: replay and maturity handling still are not exercised on real shadow outputs. In `BRIK-shadow-run-report.json`, `replay_ready_decisions = 0`, `observed_decisions = 0`, `pending_decisions = 0`, and all four evaluation records remain `censored` with `queue_state: null` because shadow runs do not yet persist any joinable handoff record.
+  - Fail: guarded-trial policy branches remain unproven on real data. `BRIK-shadow-run-result.json` shows `backbone_queued: 0`, every ranked candidate has `portfolio_selected: false`, and the report shows `policy_decisions.exploration.total = 0`; the mathematical loop can currently prove “select nothing under current evidence,” but not that selected or exploratory branches behave correctly on actual repo inputs.
+  - Fail: repo search over `docs/business-os/startup-loop/ideas/trial/queue-state.json` found no existing `self_evolving` links to piggyback for replay, so there is no historical canonical queue cohort that closes this gap automatically.
+  - Result: TASK-14 stays pending. Added TASK-19 and TASK-20; rerun this checkpoint only after shadow handoff replay state exists and a real selected/exploration cohort is either found or explicitly proven absent.
 
 ### TASK-15: Final checkpoint - authoritative mathematical policy readiness
 - **Type:** CHECKPOINT

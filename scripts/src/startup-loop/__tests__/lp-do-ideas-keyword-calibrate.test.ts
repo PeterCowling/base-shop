@@ -26,6 +26,8 @@ const FIXED_CLOCK = () => FIXED_DATE;
 
 interface QueueStateFixture {
   dispatches: Array<{
+    dispatch_id?: string;
+    business?: string;
     trigger: string;
     queue_state: string;
     area_anchor: string;
@@ -37,6 +39,17 @@ function writeQueueState(dir: string, data: QueueStateFixture): string {
   const filePath = path.join(dir, "queue-state.json");
   writeFileSync(filePath, JSON.stringify(data));
   return filePath;
+}
+
+function writeRepoFile(rootDir: string, relativePath: string, content: string): string {
+  const filePath = path.join(rootDir, relativePath);
+  mkdirSync(path.dirname(filePath), { recursive: true });
+  writeFileSync(filePath, content, "utf-8");
+  return filePath;
+}
+
+function writeRepoJson(rootDir: string, relativePath: string, value: unknown): string {
+  return writeRepoFile(rootDir, relativePath, `${JSON.stringify(value, null, 2)}\n`);
 }
 
 function priorsPath(dir: string): string {
@@ -135,16 +148,38 @@ describe("calibrateKeywords", () => {
     expect(result.reason).toBe("no_terminal_dispatches");
   });
 
-  // TC-04b: Only operator_idea dispatches → no artifact_delta terminals
-  it("TC-04b: returns no_terminal_dispatches for operator-only queue", async () => {
+  // TC-04b: operator_idea completed dispatches are included in calibration
+  it("TC-04b: includes operator_idea completed dispatches in calibration", async () => {
+    const dispatches = Array.from({ length: 10 }, (_, i) => ({
+      trigger: "operator_idea",
+      queue_state: "completed",
+      area_anchor: `BRIK Pricing Strategy update ${i}`,
+    }));
+    const qsPath = writeQueueState(tmpDir, { dispatches });
+    const result = await calibrateKeywords(makeOptions(qsPath, priorsPath(tmpDir)));
+
+    expect(result.ok).toBe(true);
+    expect(result.priors!.priors["pricing"]).toBe(4);
+  });
+
+  // TC-04c: suppressed dispatches count as negative signal (same as skipped)
+  it("TC-04c: suppressed dispatches apply DELTA_SKIPPED (-8) signal", async () => {
     const dispatches = [
-      { trigger: "operator_idea", queue_state: "completed", area_anchor: "Some idea" },
+      ...Array.from({ length: 5 }, (_, i) =>
+        makeCompletedDispatch(`BRIK ICP Definition refresh ${i}`),
+      ),
+      ...Array.from({ length: 3 }, (_, i) => ({
+        trigger: "operator_idea",
+        queue_state: "suppressed",
+        area_anchor: `HBAG ICP minor tweak ${i}`,
+      })),
     ];
     const qsPath = writeQueueState(tmpDir, { dispatches });
     const result = await calibrateKeywords(makeOptions(qsPath, priorsPath(tmpDir)));
 
-    expect(result.ok).toBe(false);
-    expect(result.reason).toBe("no_terminal_dispatches");
+    expect(result.ok).toBe(true);
+    // (5*4 + 3*(-8)) / 8 = -0.5 → rounded to 0
+    expect(result.priors!.priors["icp"]).toBe(0);
   });
 
   // TC-05: Dry-run mode → returns priors but does not write file
@@ -249,6 +284,185 @@ describe("calibrateKeywords", () => {
 
     expect(result.ok).toBe(false);
     expect(result.reason).toBe("no_terminal_dispatches");
+  });
+
+  it("fast-track mode calibrates from reconcileable artifact_delta completions", async () => {
+    const queueStatePath = writeRepoJson(
+      tmpDir,
+      "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      {
+        queue_version: "queue.v1",
+        dispatches: Array.from({ length: 5 }, (_, index) => ({
+          dispatch_id: `IDEA-DISPATCH-20260309-FAST-${index + 1}`,
+          business: "BOS",
+          trigger: "artifact_delta",
+          queue_state: "enqueued",
+          status: "fact_find_ready",
+          area_anchor: `BOS Pricing strategy follow-up ${index + 1}`,
+          created_at: `2026-03-09T0${index}:00:00.000Z`,
+        })),
+        counts: {},
+        last_updated: "2026-03-09T00:00:00.000Z",
+      },
+    );
+    writeRepoJson(tmpDir, "docs/business-os/_data/completed-ideas.json", {
+      schema_version: "completed-ideas.v1",
+      entries: [],
+    });
+
+    for (let index = 0; index < 5; index += 1) {
+      const featureSlug = `pricing-fast-track-${index + 1}`;
+      const dispatchId = `IDEA-DISPATCH-20260309-FAST-${index + 1}`;
+      writeRepoFile(
+        tmpDir,
+        `docs/plans/_archive/${featureSlug}/fact-find.md`,
+        `---
+Feature-Slug: ${featureSlug}
+Dispatch-ID: ${dispatchId}
+---
+`,
+      );
+      writeRepoFile(
+        tmpDir,
+        `docs/plans/_archive/${featureSlug}/plan.md`,
+        `---
+Status: Archived
+Feature-Slug: ${featureSlug}
+---
+`,
+      );
+      writeRepoFile(
+        tmpDir,
+        `docs/plans/_archive/${featureSlug}/build-record.user.md`,
+        `## What Was Built
+
+Implemented pricing follow-up ${index + 1}.
+`,
+      );
+    }
+
+    const result = await calibrateKeywords(
+      makeOptions(queueStatePath, priorsPath(tmpDir), {
+        dryRun: true,
+        fastTrack: true,
+        rootDir: tmpDir,
+        completedIdeasPath: "docs/business-os/_data/completed-ideas.json",
+      }),
+    );
+
+    expect(result.ok).toBe(true);
+    expect(result.priors?.priors.pricing).toBe(4);
+    expect(result.fast_track).toEqual(
+      expect.objectContaining({
+        attempted: true,
+        reconcile_ok: true,
+        artifact_delta_terminal_dispatches: 5,
+        queue_dispatches_completed: 5,
+      }),
+    );
+  });
+
+  it("fast-track mode reports zero recovered artifact_delta terminals when none are provable", async () => {
+    const queueStatePath = writeRepoJson(
+      tmpDir,
+      "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      {
+        queue_version: "queue.v1",
+        dispatches: [
+          {
+            dispatch_id: "IDEA-DISPATCH-20260309-NOLINK-1",
+            business: "BOS",
+            trigger: "artifact_delta",
+            queue_state: "enqueued",
+            status: "fact_find_ready",
+            area_anchor: "BOS Pricing strategy follow-up",
+            created_at: "2026-03-09T00:00:00.000Z",
+          },
+        ],
+        counts: {},
+        last_updated: "2026-03-09T00:00:00.000Z",
+      },
+    );
+    writeRepoJson(tmpDir, "docs/business-os/_data/completed-ideas.json", {
+      schema_version: "completed-ideas.v1",
+      entries: [],
+    });
+
+    const result = await calibrateKeywords(
+      makeOptions(queueStatePath, priorsPath(tmpDir), {
+        dryRun: true,
+        fastTrack: true,
+        rootDir: tmpDir,
+        completedIdeasPath: "docs/business-os/_data/completed-ideas.json",
+      }),
+    );
+
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe("no_terminal_dispatches");
+    expect(result.fast_track).toEqual(
+      expect.objectContaining({
+        attempted: true,
+        reconcile_ok: true,
+        artifact_delta_terminal_dispatches: 0,
+        queue_dispatches_completed: 0,
+      }),
+    );
+  });
+
+  it("fast-track mode does not treat completed-ideas registry as terminal queue truth", async () => {
+    const queueStatePath = writeRepoJson(
+      tmpDir,
+      "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      {
+        queue_version: "queue.v1",
+        dispatches: [
+          {
+            dispatch_id: "IDEA-DISPATCH-20260309-REGISTRY-ONLY",
+            business: "BOS",
+            trigger: "artifact_delta",
+            queue_state: "enqueued",
+            status: "fact_find_ready",
+            area_anchor: "BOS Pricing strategy follow-up",
+            created_at: "2026-03-09T00:00:00.000Z",
+          },
+        ],
+        counts: {},
+        last_updated: "2026-03-09T00:00:00.000Z",
+      },
+    );
+    writeRepoJson(tmpDir, "docs/business-os/_data/completed-ideas.json", {
+      schema_version: "completed-ideas.v1",
+      entries: [
+        {
+          idea_key: "registry-only-key",
+          title: "IDEA-DISPATCH-20260309-REGISTRY-ONLY",
+          source_path: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+          plan_slug: "pricing-registry-only",
+          completed_at: "2026-03-09",
+          output_link: "docs/plans/_archive/pricing-registry-only/plan.md",
+        },
+      ],
+    });
+
+    const result = await calibrateKeywords(
+      makeOptions(queueStatePath, priorsPath(tmpDir), {
+        dryRun: true,
+        fastTrack: true,
+        rootDir: tmpDir,
+        completedIdeasPath: "docs/business-os/_data/completed-ideas.json",
+      }),
+    );
+
+    expect(result.ok).toBe(false);
+    expect(result.reason).toBe("no_terminal_dispatches");
+    expect(result.fast_track).toEqual(
+      expect.objectContaining({
+        attempted: true,
+        reconcile_ok: true,
+        artifact_delta_terminal_dispatches: 0,
+        queue_dispatches_completed: 0,
+      }),
+    );
   });
 });
 
@@ -364,6 +578,15 @@ describe("package.json script entry", () => {
     expect(pkg.scripts["startup-loop:ideas-keyword-calibrate"]).toBeDefined();
     expect(pkg.scripts["startup-loop:ideas-keyword-calibrate"]).toContain(
       "lp-do-ideas-keyword-calibrate.ts",
+    );
+  });
+
+  it("TC-03-04b: startup-loop:ideas-keyword-calibrate-fast-track script exists", () => {
+    const pkgPath = path.join(process.cwd(), "scripts", "package.json");
+    const pkg = JSON.parse(readFileSync(pkgPath, "utf-8"));
+    expect(pkg.scripts["startup-loop:ideas-keyword-calibrate-fast-track"]).toBeDefined();
+    expect(pkg.scripts["startup-loop:ideas-keyword-calibrate-fast-track"]).toContain(
+      "--fast-track",
     );
   });
 });

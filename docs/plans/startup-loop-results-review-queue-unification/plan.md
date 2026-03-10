@@ -28,7 +28,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [x] TASK-02: Harden build-review emitters around the canonical contract — Complete (2026-03-10)
 - [x] TASK-03: Implement build-review-to-queue admission and dedupe — Complete (2026-03-10)
 - [x] TASK-04: Switch process-improvements idea backlog to queue-only sourcing — Complete (2026-03-10)
-- [ ] TASK-05: Demote `completed-ideas.json` from active backlog control
+- [x] TASK-05: Demote `completed-ideas.json` from active backlog control — Complete (2026-03-10)
 - [ ] TASK-06: Determine the self-evolving build-origin alignment model
 - [ ] TASK-11: Implement the chosen self-evolving build-origin alignment
 - [ ] TASK-07: Canonical queue-path readiness checkpoint
@@ -100,7 +100,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-02 | IMPLEMENT | Harden build-review emitters around the canonical contract and fail-closed surfacing | 85% | M | Complete (2026-03-10) | TASK-01 | TASK-03, TASK-04, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-03 | IMPLEMENT | Implement build-review-to-queue admission and dedupe | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-04 | IMPLEMENT | Switch process-improvements idea backlog to queue-only sourcing | 85% | M | Complete (2026-03-10) | TASK-03 | TASK-05, TASK-07, TASK-08, TASK-10 |
-| TASK-05 | IMPLEMENT | Demote `completed-ideas.json` from active backlog control | 80% | M | Pending | TASK-03, TASK-04 | TASK-07, TASK-08, TASK-10 |
+| TASK-05 | IMPLEMENT | Demote `completed-ideas.json` from active backlog control | 80% | M | Complete (2026-03-10) | TASK-03, TASK-04 | TASK-07, TASK-08, TASK-10 |
 | TASK-06 | INVESTIGATE | Determine the self-evolving build-origin alignment model | 70% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-11 |
 | TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 75% | M | Pending | TASK-06 | TASK-07 |
 | TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11 | TASK-08, TASK-09, TASK-10, TASK-12 |
@@ -282,7 +282,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Affects:** `scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts`, `scripts/src/startup-loop/build/generate-process-improvements.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-completion-reconcile.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-keyword-calibrate.test.ts`
 - **Depends on:** TASK-03, TASK-04
 - **Blocks:** TASK-07, TASK-08, TASK-10
@@ -304,6 +304,13 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - Modified completion truth is consumed by reconcile snapshot, keyword calibration, and backlog generation.
 - **Held-back test:** no single unresolved unknown would drop this below 80 because the current consumers are already concrete and limited in number.
 - **What would make this >=90%:** a full call-site inventory proving no remaining active behavior depends on the registry.
+- **Build completion evidence (2026-03-10):**
+  - Removed active backlog suppression by `completed-ideas.json` from [generate-process-improvements.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/generate-process-improvements.ts), so queue visibility now depends on queue state and live artifact outputs rather than registry entries.
+  - Demoted the registry to compatibility-only in [lp-do-ideas-completion-reconcile.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts): reconcile still writes queue-derived completed entries into the registry, but it no longer accepts registry rows as completion evidence for open queue items.
+  - Extended regression coverage in [generate-process-improvements.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/generate-process-improvements.test.ts), [lp-do-ideas-completion-reconcile.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/lp-do-ideas-completion-reconcile.test.ts), and [lp-do-ideas-keyword-calibrate.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/lp-do-ideas-keyword-calibrate.test.ts) so active queue items survive stale registry rows and fast-track calibration ignores registry-only completion claims.
+  - Refreshed [process-improvements.user.html](/Users/petercowling/base-shop/docs/business-os/process-improvements.user.html) and [process-improvements.json](/Users/petercowling/base-shop/docs/business-os/_data/process-improvements.json) after the authority change; output remained stable at 19 idea items, 0 risks, and 12 pending reviews.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`, targeted ESLint on the generator/reconcile/tests, and `pnpm --filter scripts check-process-improvements` all passed.
+  - Outcome: affirming. Queue-derived truth now owns active backlog visibility and completion inference, while `completed-ideas.json` survives only as a derived compatibility artifact. TASK-06 is now the next runnable tranche.
 
 ### TASK-06: Determine the self-evolving build-origin alignment model
 - **Type:** INVESTIGATE

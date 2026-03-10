@@ -265,6 +265,65 @@ Feature-Slug: example-incomplete
     expect(queue.dispatches[0]?.queue_state).toBe("enqueued");
   });
 
+  it("does not treat completed-ideas registry as authoritative completion evidence", async () => {
+    await writeJson(
+      repoRoot,
+      "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      {
+        queue_version: "queue.v1",
+        dispatches: [
+          {
+            dispatch_id: "IDEA-DISPATCH-20260309-REGISTRY-ONLY",
+            business: "BOS",
+            status: "fact_find_ready",
+            queue_state: "enqueued",
+            area_anchor: "registry-only completion claim",
+            created_at: "2026-03-09T01:00:00.000Z",
+          },
+        ],
+        counts: {},
+        last_updated: "2026-03-09T00:00:00.000Z",
+      },
+    );
+    await writeJson(
+      repoRoot,
+      "docs/business-os/_data/completed-ideas.json",
+      {
+        schema_version: "completed-ideas.v1",
+        entries: [
+          {
+            idea_key: "registry-only-key",
+            title: "IDEA-DISPATCH-20260309-REGISTRY-ONLY",
+            source_path: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+            plan_slug: "registry-only-plan",
+            completed_at: "2026-03-09",
+            output_link: "docs/plans/_archive/registry-only-plan/plan.md",
+          },
+        ],
+      },
+    );
+
+    const result = runIdeaCompletionReconcile({
+      rootDir: repoRoot,
+      queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      completedIdeasPath: "docs/business-os/_data/completed-ideas.json",
+      write: true,
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.queue_dispatches_completed).toBe(0);
+    expect(result.evidentiary_matches).toBe(0);
+    expect(result.source_counts.completed_registry).toBeUndefined();
+
+    const queue = JSON.parse(
+      await fs.readFile(
+        path.join(repoRoot, "docs/business-os/startup-loop/ideas/trial/queue-state.json"),
+        "utf8",
+      ),
+    ) as { dispatches: Array<Record<string, unknown>> };
+    expect(queue.dispatches[0]?.queue_state).toBe("enqueued");
+  });
+
   it("backfills completed-registry entries for packets already marked completed via completed_by plan_path", async () => {
     await writeFile(
       repoRoot,

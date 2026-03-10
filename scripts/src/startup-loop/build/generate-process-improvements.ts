@@ -474,8 +474,6 @@ export function appendCompletedIdea(
 }
 
 export function collectProcessImprovements(repoRoot: string): ProcessImprovementsData {
-  const completedKeys = loadCompletedIdeasRegistry(repoRoot);
-
   const absPlansRoot = path.join(repoRoot, PLANS_ROOT);
   const absStrategyRoot = path.join(repoRoot, STRATEGY_ROOT);
   const allPaths: string[] = [];
@@ -547,11 +545,6 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
       const location =
         line > 0 ? `${file}:${line}${column > 0 ? `:${column}` : ""}` : file;
       const title = `Bug scan ${ruleId} at ${location}`;
-      const ideaKey = deriveIdeaKey(sourcePath, title);
-      if (completedKeys.has(ideaKey)) {
-        continue;
-      }
-
       const ideaItem: ProcessImprovementItem = {
         type: "idea",
         business,
@@ -562,7 +555,7 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
         source: "bug-scan-findings.user.json",
         date: ideaDate,
         path: sourcePath,
-        idea_key: ideaKey,
+        idea_key: deriveIdeaKey(sourcePath, title),
       };
       classifyIdeaItem(ideaItem);
       ideaItems.push(ideaItem);
@@ -595,10 +588,6 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
           if (!dispatchId) {
             continue;
           }
-          const ideaKey = deriveIdeaKey(QUEUE_STATE_RELATIVE_PATH, dispatchId);
-          if (completedKeys.has(ideaKey)) {
-            continue;
-          }
           const business = sanitizeText(dispatch.business ?? "BOS").toUpperCase() || "BOS";
           const body = sanitizeText(enrichedDispatch.why ?? "") || MISSING_VALUE;
           const date = toIsoDate(dispatch.created_at ?? new Date().toISOString());
@@ -616,7 +605,7 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
             source: "queue-state.json",
             date,
             path: QUEUE_STATE_RELATIVE_PATH,
-            idea_key: ideaKey,
+            idea_key: deriveIdeaKey(QUEUE_STATE_RELATIVE_PATH, dispatchId),
             build_origin: buildOrigin,
           };
           classifyIdeaItem(ideaItem);
@@ -859,8 +848,8 @@ function buildArrayAssignmentBlock(variableName: string, items: ProcessImproveme
  *
  * The drift check works by re-running `collectProcessImprovements` and comparing the
  * fresh output against committed files. Active idea backlog now comes from canonical
- * queue state plus bug-scan artifacts, while `completed-ideas.json` still suppresses
- * queue-visible ideas until TASK-05 retires that compatibility rail.
+ * queue state plus bug-scan artifacts; `completed-ideas.json` remains a derived
+ * compatibility artifact and no longer suppresses active backlog visibility here.
  */
 export function runCheck(repoRoot: string): void {
   const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);

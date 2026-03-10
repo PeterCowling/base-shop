@@ -39,7 +39,7 @@ interface CompletionEvidence {
   completion_path?: string;
   completed_at: string;
   outcome: string;
-  source: "dispatch_link" | "processed_by" | "completed_by" | "completed_registry";
+  source: "dispatch_link" | "processed_by" | "completed_by";
 }
 
 export interface ReconcileResult {
@@ -541,54 +541,6 @@ function completionEvidenceFromCompletedBy(
   );
 }
 
-function completionEvidenceFromCompletedRegistry(
-  rootDir: string,
-  registry: CompletedIdeasRegistry,
-  dispatch: QueueDispatch,
-): CompletionEvidence | null {
-  const dispatchId = typeof dispatch.dispatch_id === "string" ? dispatch.dispatch_id : "";
-  if (!dispatchId) {
-    return null;
-  }
-  const matched = registry.entries.find(
-    (entry) => entry.source_path === QUEUE_SOURCE_PATH && entry.title === dispatchId,
-  );
-  if (!matched) {
-    return null;
-  }
-
-  const outputLink = matched.output_link ?? "";
-  const candidates = [
-    outputLink.endsWith(".md") ? outputLink : "",
-    path.join(PLAN_ROOT, "_archive", matched.plan_slug, "plan.md"),
-    path.join(PLAN_ROOT, matched.plan_slug, "plan.md"),
-    path.join(PLAN_ROOT, "_archive", matched.plan_slug, "micro-build.md"),
-    path.join(PLAN_ROOT, matched.plan_slug, "micro-build.md"),
-  ].filter((entry) => entry.length > 0);
-
-  for (const candidate of candidates) {
-    const completion = completionEvidenceFromTarget(
-      rootDir,
-      candidate,
-      "completed_registry",
-      dispatchId,
-    );
-    if (completion) {
-      return completion;
-    }
-  }
-
-  return {
-    dispatch_id: dispatchId,
-    feature_slug: matched.plan_slug,
-    completion_kind: outputLink.endsWith("micro-build.md") ? "micro-build" : "plan",
-    completion_path: outputLink || path.join(PLAN_ROOT, "_archive", matched.plan_slug, "plan.md"),
-    completed_at: matched.completed_at,
-    outcome: `Completed via ${matched.plan_slug}.`,
-    source: "completed_registry",
-  };
-}
-
 function applyCompletionEvidence(
   rootDir: string,
   queue: QueueFileShape,
@@ -780,11 +732,6 @@ export function buildIdeaCompletionReconcileSnapshot(
     const fromCompletedBy = completionEvidenceFromCompletedBy(options.rootDir, dispatch);
     if (fromCompletedBy) {
       evidenceByDispatchId.set(dispatchId, fromCompletedBy);
-      continue;
-    }
-    const fromRegistry = completionEvidenceFromCompletedRegistry(options.rootDir, registry, dispatch);
-    if (fromRegistry) {
-      evidenceByDispatchId.set(dispatchId, fromRegistry);
     }
   }
 

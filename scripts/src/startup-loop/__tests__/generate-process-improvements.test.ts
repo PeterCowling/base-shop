@@ -351,7 +351,7 @@ describe("completion lifecycle", () => {
     expect(key1).not.toBe(keyDifferentPath);
   });
 
-  it("collectProcessImprovements skips an idea whose key is in the completed registry", async () => {
+  it("collectProcessImprovements does not let completed-ideas registry hide active queue items", async () => {
     const dispatchId = "DISPATCH-COMPLETE-001";
     const ideaKey = deriveIdeaKey(QUEUE_STATE_RELATIVE_PATH, dispatchId);
     await writeQueueState(
@@ -378,7 +378,8 @@ describe("completion lifecycle", () => {
     );
 
     const data = collectProcessImprovements(tmpDir);
-    expect(data.ideaItems).toHaveLength(0);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.title).toBe("Queue-backed build idea");
   });
 
   it("collectProcessImprovements no longer ingests markdown New Idea Candidates directly", async () => {

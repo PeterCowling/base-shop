@@ -38,6 +38,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-11: Implement the causal-evaluation contract and promotion-quality gate — Complete (2026-03-10)
 - [x] TASK-12: Implement stability controls and anti-gaming utility governance — Complete (2026-03-10)
 - [x] TASK-13: Implement calibration, regret, override, and policy audit telemetry — Complete (2026-03-10)
+- [ ] TASK-17: Enforce the policy authority ladder at queue and promotion seams
+- [ ] TASK-18: Produce real shadow-run policy artifacts and checkpoint evidence
 - [ ] TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - [ ] TASK-15: Final checkpoint - authoritative mathematical policy readiness
 
@@ -125,7 +127,9 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-11 | IMPLEMENT | Implement the causal-evaluation contract and promotion-quality gate | 80% | M | Complete (2026-03-10) | TASK-04, TASK-06, TASK-16, TASK-08, TASK-09 | TASK-12, TASK-13, TASK-14 |
 | TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 80% | M | Complete (2026-03-10) | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
 | TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
-| TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-15 |
+| TASK-17 | IMPLEMENT | Enforce the authority ladder so shadow and advisory policy cannot silently actuate queue or promotion state | 85% | M | Pending | TASK-07, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-14, TASK-15 |
+| TASK-18 | IMPLEMENT | Produce real self-evolving shadow-run policy artifacts and checkpoint evidence from repo outputs | 80% | M | Pending | TASK-13, TASK-17 | TASK-14, TASK-15 |
+| TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18 | TASK-15 |
 | TASK-15 | CHECKPOINT | Final checkpoint - authoritative mathematical policy readiness | 95% | S | Pending | TASK-14 | - |
 
 ## Parallelism Guide
@@ -137,7 +141,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | 4 | TASK-07, TASK-08, TASK-09 | TASK-05, TASK-06, TASK-16 plus relevant contracts | Integrate optimization, graph, and survival only after belief state, feedback, and replay traces exist |
 | 5 | TASK-10, TASK-11 | TASK-07 or supporting prerequisites | Exploration and causal promotion gates sit on top of the core policy inputs |
 | 6 | TASK-12, TASK-13 | TASK-07, TASK-10, TASK-11 plus supporting prerequisites | Stabilize, govern, and audit the mathematical policy before any readiness checkpoint |
-| 7 | TASK-14, TASK-15 | TASK-07 through TASK-13 | Replay/guarded-trial checkpoint first, then authoritative-claim checkpoint last |
+| 7 | TASK-17, TASK-18 | TASK-13 plus supporting policy seams | Fix authority leakage and produce real checkpoint evidence before rerunning the guarded-trial gate |
+| 8 | TASK-14, TASK-15 | TASK-07 through TASK-13, TASK-17, TASK-18 | Replay/guarded-trial checkpoint first, then authoritative-claim checkpoint last |
 
 ## Tasks
 
@@ -881,6 +886,93 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-03: covered by `self-evolving-policy-audit.test.ts` override attribution case plus report/dashboard assertions in `self-evolving-report.test.ts`.
   - Precursor completion propagation: TASK-13 is no longer a blocker for TASK-14. The next correct move is the replay and guarded-trial checkpoint rather than another build wave.
 
+### TASK-17: Enforce the policy authority ladder at queue and promotion seams
+- **Type:** IMPLEMENT
+- **Deliverable:** runtime authority gating that keeps `shadow` and `advisory` policy outputs non-actuating until `guarded_trial` is explicitly set
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-exploration.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-release-replay.test.ts`
+- **Depends on:** TASK-07, TASK-10, TASK-11, TASK-12, TASK-13
+- **Blocks:** TASK-14, TASK-15
+- **Confidence:** 85%
+  - Implementation: 80% - the affected seams are concrete, but the queue/consume behavior crosses ranking, dispatch, and promotion boundaries.
+  - Approach: 95% - this is required to make the authority ladder true in code rather than prose.
+  - Impact: 95% - without this, shadow policy is already silently actuating queue allocation.
+- **Acceptance criteria:**
+  - `shadow` mode does not filter or suppress backbone consumption based on portfolio or exploration outputs.
+  - `advisory` mode records recommendations but preserves operator or legacy queue semantics.
+  - `guarded_trial` is the first authority level allowed to change dispatch emission or promotion-facing behavior.
+- **Validation contract (TC-17):**
+  - TC-01: default `shadow` policy leaves follow-up dispatch emission identical to the non-actuating baseline.
+  - TC-02: `advisory` policy persists decision traces and recommendations without automatic queue suppression.
+  - TC-03: `guarded_trial` explicitly gates the first bounded live allocation path.
+- **Execution plan:** Red -> add authority-ladder integration tests around queue consumption and promotion seams; Green -> gate queue and promotion behavior on `authority_level`; Refactor -> centralize authority checks so report and checkpoint consumers do not infer semantics from scattered flags.
+- **Planning validation (required for M/L):**
+  - Checks run: traced `createDefaultPolicyState()` default authority, backbone enqueue ordering, and consume filtering against the plan’s authority ladder.
+  - Validation artifacts: `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`
+  - Unexpected findings:
+    - `createDefaultPolicyState()` defaults to `authority_level: "shadow"`
+    - `consumeBackboneQueueToIdeasWorkflow()` currently filters pending entries on `portfolio_selected`
+    - that means mathematical portfolio choice can already suppress dispatch emission before guarded-trial readiness is proven
+- **Scouts:** None: this is a direct correction of a code/plan contradiction discovered in TASK-14.
+- **Edge Cases & Hardening:** stale entries produced under older semantics, mixed-authority policy journals, and promotion-gate records created while queue authority is still shadow.
+- **What would make this >=90%:**
+  - One worked integration fixture showing the same candidate set under `shadow`, `advisory`, and `guarded_trial` with distinct consume behavior.
+- **Rollout / rollback:**
+  - Rollout: enforce the ladder before producing any new checkpoint evidence.
+  - Rollback: preserve decision journaling and fall back to fully non-actuating `shadow` semantics if queue interactions remain ambiguous.
+- **Documentation impact:**
+  - Update the plan evidence and any self-evolving authority documentation with the final live semantics.
+- **Notes / references:**
+  - `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`
+  - `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`
+
+### TASK-18: Produce real self-evolving shadow-run policy artifacts and checkpoint evidence
+- **Type:** IMPLEMENT
+- **Deliverable:** at least one persisted self-evolving shadow-run artifact set (`policy-state.json`, `policy-decisions.jsonl`, report/audit snapshot) produced by the live runtime from existing repo observations
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `docs/business-os/startup-loop/self-evolving/<business>/policy-state.json`, `docs/business-os/startup-loop/self-evolving/<business>/policy-decisions.jsonl`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
+- **Depends on:** TASK-13, TASK-17
+- **Blocks:** TASK-14, TASK-15
+- **Confidence:** 80%
+  - Implementation: 80% - the runtime already knows how to write the required artifacts, but no business currently has them on disk.
+  - Approach: 85% - the checkpoint needs real repo outputs, not only test fixtures.
+  - Impact: 90% - without real artifacts the guarded-trial gate has nothing operational to judge.
+- **Acceptance criteria:**
+  - At least one business under `docs/business-os/startup-loop/self-evolving/` has persisted `policy-state.json` and `policy-decisions.jsonl` produced by the runtime, not hand-authored fixtures.
+  - The report over that business no longer warns that policy-state or policy-decision artifacts are missing.
+  - The checkpoint can cite real audit output with explicit measured or `insufficient_data` statuses on actual decision records.
+- **Validation contract (TC-18):**
+  - TC-01: a bounded shadow run writes deterministic policy-state and decision-journal artifacts from existing observations.
+  - TC-02: `self-evolving-report.ts --business <business>` reads those artifacts without missing-file warnings.
+  - TC-03: the resulting report exposes non-null authority level and non-zero decision-record counts.
+- **Execution plan:** Red -> add a bounded checkpoint-evidence fixture or orchestration path for producing policy artifacts from existing observations; Green -> generate and persist one real artifact set under shadow semantics; Refactor -> document or script the evidence-generation path so TASK-14 can rerun deterministically.
+- **Planning validation (required for M/L):**
+  - Checks run: searched `docs/business-os/startup-loop/self-evolving/` for real `policy-state.json` and `policy-decisions.jsonl` artifacts and ran the report against live `BRIK` state.
+  - Validation artifacts: `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `docs/business-os/startup-loop/self-evolving/BRIK/`, `docs/business-os/startup-loop/self-evolving/SIMC/`
+  - Unexpected findings:
+    - no `policy-state.json` or `policy-decisions.jsonl` exists under the self-evolving business roots
+    - `self-evolving-report.ts --business BRIK` reports missing policy-state and policy-decision logs and therefore all audit metrics are currently `insufficient_data`
+- **Scouts:** None: this is a direct evidence-pack task created by failed checkpoint review.
+- **Edge Cases & Hardening:** businesses with observations but no candidates, empty decision journals, and deterministic reruns over the same observation set.
+- **What would make this >=90%:**
+  - One scripted checkpoint-evidence path that can regenerate the same artifact set for a bounded business fixture without manual cleanup.
+- **Rollout / rollback:**
+  - Rollout: keep the generated artifacts in shadow mode only and use them strictly for checkpoint evidence.
+  - Rollback: remove only the generated artifact set if the generation path needs redesign; keep the runtime writer surfaces.
+- **Documentation impact:**
+  - Update the checkpoint evidence section in this plan with the chosen business and generated artifact paths.
+- **Notes / references:**
+  - `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`
+  - `docs/business-os/startup-loop/self-evolving/BRIK/`
+
 ### TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - **Type:** CHECKPOINT
 - **Deliverable:** updated plan evidence via `/lp-do-replan` if replay and guarded-trial readiness is not yet met
@@ -907,6 +999,14 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Planning validation:** `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, replay/telemetry outputs from TASK-16 and TASK-13, and policy surfaces from TASK-07 through TASK-12.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** update this plan with the checkpoint result and any replan branch.
+- **Checkpoint Attempt (2026-03-10): failed -> replan required**
+  - Pass: the code now contains the load-bearing mathematical seams the checkpoint expected:
+    - posterior belief state and policy journaling
+    - maturity-aware outcome closure and evaluation datasets
+    - optimization, graph, survival, exploration, promotion-gate, governance, and policy-audit outputs
+  - Fail: the authority ladder is not yet true in code. `createDefaultPolicyState()` defaults to `authority_level: "shadow"` in `self-evolving-scoring.ts`, but `consumeBackboneQueueToIdeasWorkflow()` still filters pending entries on `portfolio_selected` in `self-evolving-backbone-consume.ts`, so mathematical portfolio choice can already suppress dispatch emission before guarded-trial clearance.
+  - Fail: actual repo outputs do not yet support guarded-trial evidence review. A repo search found no `policy-state.json` or `policy-decisions.jsonl` under `docs/business-os/startup-loop/self-evolving/`, and `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK` reports missing policy-state and policy-decision artifacts with audit surfaces therefore remaining `insufficient_data`.
+  - Result: TASK-14 stays pending. Added TASK-17 and TASK-18; rerun this checkpoint only after both are complete.
 
 ### TASK-15: Final checkpoint - authoritative mathematical policy readiness
 - **Type:** CHECKPOINT

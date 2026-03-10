@@ -911,12 +911,13 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-03: `guarded_trial` explicitly gates the first bounded live allocation path.
 - **Execution plan:** Red -> add authority-ladder integration tests around queue consumption and promotion seams; Green -> gate queue and promotion behavior on `authority_level`; Refactor -> centralize authority checks so report and checkpoint consumers do not infer semantics from scattered flags.
 - **Planning validation (required for M/L):**
-  - Checks run: traced `createDefaultPolicyState()` default authority, backbone enqueue ordering, and consume filtering against the plan’s authority ladder.
-  - Validation artifacts: `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`
+  - Checks run: traced `createDefaultPolicyState()` default authority, backbone enqueue ordering, consume filtering, and live promotion-gate decision generation against the plan’s authority ladder.
+  - Validation artifacts: `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-promotion-gate.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`
   - Unexpected findings:
     - `createDefaultPolicyState()` defaults to `authority_level: "shadow"`
     - `consumeBackboneQueueToIdeasWorkflow()` currently filters pending entries on `portfolio_selected`
     - that means mathematical portfolio choice can already suppress dispatch emission before guarded-trial readiness is proven
+    - promotion-gate decisions are already computed and attached to ranked candidates, but there is no centralized authority gate at that seam; it is safe today only because no live actuator consumes those decisions yet
 - **Scouts:** None: this is a direct correction of a code/plan contradiction discovered in TASK-14.
 - **Edge Cases & Hardening:** stale entries produced under older semantics, mixed-authority policy journals, and promotion-gate records created while queue authority is still shadow.
 - **What would make this >=90%:**
@@ -932,38 +933,41 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 
 ### TASK-18: Produce real self-evolving shadow-run policy artifacts and checkpoint evidence
 - **Type:** IMPLEMENT
-- **Deliverable:** at least one persisted self-evolving shadow-run artifact set (`policy-state.json`, `policy-decisions.jsonl`, report/audit snapshot) produced by the live runtime from existing repo observations
+- **Deliverable:** at least one persisted self-evolving shadow-run artifact set (`policy-state.json`, `policy-decisions.jsonl`, report/audit snapshot) produced by the live runtime through a bounded, operator-repeatable runner over existing repo queue or startup-loop inputs
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/self-evolving/<business>/policy-state.json`, `docs/business-os/startup-loop/self-evolving/<business>/policy-decisions.jsonl`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
+- **Affects:** `docs/business-os/startup-loop/self-evolving/<business>/policy-state.json`, `docs/business-os/startup-loop/self-evolving/<business>/policy-decisions.jsonl`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/<business>-shadow-run-report.json`, `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
 - **Depends on:** TASK-13, TASK-17
 - **Blocks:** TASK-14, TASK-15
 - **Confidence:** 80%
-  - Implementation: 80% - the runtime already knows how to write the required artifacts, but no business currently has them on disk.
-  - Approach: 85% - the checkpoint needs real repo outputs, not only test fixtures.
+  - Implementation: 80% - the runtime already knows how to write the required artifacts and there is a bounded CLI entrypoint, but the chosen evidence run still needs to be made repeatable and non-actuating.
+  - Approach: 90% - the checkpoint needs real repo outputs, not only test fixtures or synthetic joins.
   - Impact: 90% - without real artifacts the guarded-trial gate has nothing operational to judge.
 - **Acceptance criteria:**
   - At least one business under `docs/business-os/startup-loop/self-evolving/` has persisted `policy-state.json` and `policy-decisions.jsonl` produced by the runtime, not hand-authored fixtures.
+  - The evidence pack records the exact generation path, business, run ID, and report snapshot used for the checkpoint.
   - The report over that business no longer warns that policy-state or policy-decision artifacts are missing.
   - The checkpoint can cite real audit output with explicit measured or `insufficient_data` statuses on actual decision records.
 - **Validation contract (TC-18):**
-  - TC-01: a bounded shadow run writes deterministic policy-state and decision-journal artifacts from existing observations.
+  - TC-01: a bounded shadow run writes deterministic policy-state and decision-journal artifacts from existing queue or startup-loop inputs using one documented runtime path.
   - TC-02: `self-evolving-report.ts --business <business>` reads those artifacts without missing-file warnings.
   - TC-03: the resulting report exposes non-null authority level and non-zero decision-record counts.
-- **Execution plan:** Red -> add a bounded checkpoint-evidence fixture or orchestration path for producing policy artifacts from existing observations; Green -> generate and persist one real artifact set under shadow semantics; Refactor -> document or script the evidence-generation path so TASK-14 can rerun deterministically.
+  - TC-04: rerunning the same bounded input set produces a stable artifact shape without emitting shadow-mode follow-up dispatches.
+- **Execution plan:** Red -> lock the first evidence slice to one bounded runner (`self-evolving-from-ideas.ts`) and prove it can execute under shadow semantics without queue actuation; Green -> generate and persist one real artifact set plus report snapshot; Refactor -> document or script the evidence-generation path so TASK-14 can rerun deterministically.
 - **Planning validation (required for M/L):**
-  - Checks run: searched `docs/business-os/startup-loop/self-evolving/` for real `policy-state.json` and `policy-decisions.jsonl` artifacts and ran the report against live `BRIK` state.
-  - Validation artifacts: `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `docs/business-os/startup-loop/self-evolving/BRIK/`, `docs/business-os/startup-loop/self-evolving/SIMC/`
+  - Checks run: searched `docs/business-os/startup-loop/self-evolving/` for real `policy-state.json` and `policy-decisions.jsonl` artifacts, ran the report against live `BRIK` state, and traced available runtime entrypoints for generating policy artifacts.
+  - Validation artifacts: `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`, `docs/business-os/startup-loop/self-evolving/BRIK/`, `docs/business-os/startup-loop/self-evolving/SIMC/`
   - Unexpected findings:
     - no `policy-state.json` or `policy-decisions.jsonl` exists under the self-evolving business roots
     - `self-evolving-report.ts --business BRIK` reports missing policy-state and policy-decision logs and therefore all audit metrics are currently `insufficient_data`
+    - there is no direct CLI for replaying raw observation files into policy artifacts; the bounded live path that already exists is `self-evolving-from-ideas.ts` over trial queue dispatches plus startup state
 - **Scouts:** None: this is a direct evidence-pack task created by failed checkpoint review.
-- **Edge Cases & Hardening:** businesses with observations but no candidates, empty decision journals, and deterministic reruns over the same observation set.
+- **Edge Cases & Hardening:** businesses with observations but no candidates, empty decision journals, deterministic reruns over the same bounded input set, and shadow-mode runs that must not emit follow-up dispatches.
 - **What would make this >=90%:**
-  - One scripted checkpoint-evidence path that can regenerate the same artifact set for a bounded business fixture without manual cleanup.
+  - One scripted checkpoint-evidence path that can regenerate the same artifact set and report snapshot for a bounded business input without manual cleanup or queue mutation.
 - **Rollout / rollback:**
   - Rollout: keep the generated artifacts in shadow mode only and use them strictly for checkpoint evidence.
   - Rollback: remove only the generated artifact set if the generation path needs redesign; keep the runtime writer surfaces.
@@ -981,7 +985,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Effort:** S
 - **Status:** Pending
 - **Affects:** `docs/plans/startup-loop-centralized-math-foundations/plan.md`
-- **Depends on:** TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13
+- **Depends on:** TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18
 - **Blocks:** TASK-15
 - **Confidence:** 95%
   - Implementation: 95% - checkpoint mechanics are defined.
@@ -989,14 +993,15 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - Impact: 95% - this prevents premature “self-improving” claims.
 - **Acceptance criteria:**
   - `/lp-do-build` checkpoint executor run.
-  - Replay evidence, maturity handling, and guarded-trial telemetry are re-evaluated against actual code and outputs.
+  - Replay evidence, maturity handling, authority-ladder enforcement, and guarded-trial telemetry are re-evaluated against actual code and outputs.
+  - The checkpoint cites at least one real shadow-run evidence pack with policy-state, decision journal, and report snapshot paths.
   - If any load-bearing replay or guarded-trial gate is still unmet, `/lp-do-replan` updates downstream work before guarded authority expands.
 - **Horizon assumptions to validate:**
   - Belief state, outcome closure, causal gate, stability control, and calibration/regret telemetry all exist as implemented code, not just docs.
   - Optimization, graph, survival, and exploration outputs remain shadow or advisory until replay and guardrail evidence say guarded trial authority is justified.
   - Remaining open math-package gaps are non-gating because the chosen internal or bridge implementations have landed.
 - **Validation contract:** the checkpoint records a pass/fail decision against replay quality, maturity handling, guarded-trial evidence, and triggers `/lp-do-replan` on any failed gate.
-- **Planning validation:** `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, replay/telemetry outputs from TASK-16 and TASK-13, and policy surfaces from TASK-07 through TASK-12.
+- **Planning validation:** `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, replay/telemetry outputs from TASK-16 and TASK-13, policy surfaces from TASK-07 through TASK-12, authority-proof outputs from TASK-17, and evidence-pack outputs from TASK-18.
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** update this plan with the checkpoint result and any replan branch.
 - **Checkpoint Attempt (2026-03-10): failed -> replan required**
@@ -1025,11 +1030,12 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Acceptance criteria:**
   - `/lp-do-build` checkpoint executor run after TASK-14 has passed.
   - The full self-improving status gate from the fact-find is re-evaluated against actual code, replay evidence, telemetry, and guarded-trial results.
+  - The checkpoint cites real authority progression evidence rather than only policy-state fields or prose claims.
   - If any load-bearing gate is still unmet, `/lp-do-replan` updates downstream work before authoritative mathematical policy claims or expansion continue.
 - **Horizon assumptions to validate:**
   - Replay and guarded-trial checkpoints already passed with explicit evidence.
   - Policy authority progression from Shadow to Advisory to Guarded trial is evidenced in outputs, not just claimed in prose.
-  - Remaining residual uncertainty is about rollout appetite, not missing mathematical architecture or missing proof surfaces.
+  - Remaining residual uncertainty is about rollout appetite, not missing mathematical architecture, missing proof surfaces, or missing operator-repeatable evidence generation.
 - **Validation contract:** the checkpoint records a pass/fail decision against each self-improving status gate and triggers `/lp-do-replan` on any failed gate.
 - **Planning validation:** `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, checkpoint outputs from TASK-14, telemetry/report outputs from TASK-13, and policy surfaces from TASK-07 through TASK-12.
 - **Rollout / rollback:** `None: planning control task`

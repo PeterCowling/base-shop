@@ -4,7 +4,7 @@ Status: Active
 Created: 2026-03-09
 Last-updated: 2026-03-10
 Relates-to: docs/plans/startup-loop-centralized-math-foundations/plan.md
-Replan-round: 6
+Replan-round: 7
 ---
 
 # Replan Notes: TASK-02 Readiness (2026-03-09)
@@ -322,3 +322,61 @@ What did **not** move enough:
 Partially ready.
 
 `TASK-12` now meets the `IMPLEMENT` confidence floor and is the next runnable build task. `TASK-13` remains below threshold and blocked on `TASK-12`, so the next correct step is `/lp-do-build` for `TASK-12` only.
+
+## Round 7 Trigger
+After the failed `TASK-14` checkpoint added `TASK-17` and `TASK-18`, the remaining four tasks needed a real readiness pass. The plan already knew the two high-level failures. The replan job here was to make the last wave executable against the code that actually exists, not the code we had implicitly assumed existed.
+
+## Round 7 Evidence Reviewed
+- `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`
+  - default policy authority still initializes to `shadow`
+- `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`
+  - pending queue consumption still filters on `portfolio_selected`, which lets mathematical policy suppress dispatch emission before guarded-trial clearance
+- `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
+  - promotion-gate decisions are already computed and attached to ranked candidates, so the authority ladder must hold at more than one seam even though no live actuator consumes those decisions yet
+- `scripts/src/startup-loop/self-evolving/self-evolving-startup-state.ts`
+  - policy-state and policy-decision artifact paths are real runtime paths, not only plan artifacts
+- `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`
+  - current report surface still fails closed to missing-file warnings and `insufficient_data` when policy artifacts are absent
+- `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`
+  - a bounded CLI entrypoint already exists that can run the live orchestrator over existing trial queue dispatches plus startup state and therefore can produce policy artifacts without inventing a new runtime path
+- `docs/business-os/startup-loop/self-evolving/BRIK/`
+- `docs/business-os/startup-loop/self-evolving/SIMC/`
+  - neither business currently has `policy-state.json` or `policy-decisions.jsonl` on disk
+
+## Round 7 Assessment
+The remaining work no longer has a conceptual-architecture problem. It has a last-mile proof problem.
+
+- `TASK-17` is genuinely runnable now.
+  - The authority leak is concrete.
+  - The affected seams are bounded.
+  - The next build task does not need more discovery; it needs code changes and integration tests.
+- `TASK-18` is also real, but its first slice had been described too vaguely.
+  - The repo does not have a dedicated raw-observation replay CLI for checkpoint evidence generation.
+  - That does **not** require a new precursor task because there is already a bounded live path: `self-evolving-from-ideas.ts` over current trial queue dispatches plus startup state.
+  - The task therefore needs a tighter contract: use one documented runtime path, persist the resulting policy artifacts, and store the report snapshot the checkpoints will cite.
+- `TASK-14` and `TASK-15` remain straightforward checkpoint tasks, but their detailed sections were stale.
+  - `TASK-14` still referenced the old dependency set in its detailed task block even though the plan summary had already learned that `TASK-17` and `TASK-18` are mandatory precursors.
+  - `TASK-15` still needed an explicit evidence requirement around real authority progression, not just successful prior prose.
+
+What did **not** warrant another topology expansion:
+- no new precursor task is needed between `TASK-17` and `TASK-18`
+- no `/lp-do-sequence` run is needed
+- no confidence raise is honest for the two checkpoints because their job is still just to verify evidence after the implementation tasks land
+
+## Round 7 Task Delta Applied
+- `TASK-17` confidence remains `85%`
+  - evidence is strong enough that the task stays the next runnable build
+- `TASK-18` confidence remains `80%`
+  - the task is now bounded around a real runner, but still depends on `TASK-17` making shadow mode non-actuating before evidence generation is trustworthy
+- `TASK-14` detailed dependency and acceptance text updated to require both authority-proof and real evidence-pack outputs
+- `TASK-15` acceptance text updated to require real authority-progression evidence rather than only inherited checkpoint prose
+
+## Round 7 Sequencing Impact
+- No topology change.
+- Stable task IDs preserved.
+- No `/lp-do-sequence` run required.
+
+## Round 7 Readiness Decision
+Partially ready.
+
+`TASK-17` remains the next runnable build task. `TASK-18` is now tightly defined and should follow immediately after `TASK-17`. `TASK-14` and `TASK-15` remain blocked checkpoint tasks with corrected evidence requirements.

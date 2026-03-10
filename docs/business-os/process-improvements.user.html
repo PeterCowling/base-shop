@@ -314,7 +314,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-10T13:57:56.310Z";
+  var GEN_TS = "2026-03-10T14:34:44.677Z";
 
   var IDEA_ITEMS = [
     {
@@ -1203,7 +1203,7 @@
     html += '<button class="summary-pill pill-red'    + (activeTierGroup==='urgent' ?' pill-active':'') + '" data-filter-tier="urgent"><span class="count">'  + urgentCount  + '</span> Urgent (P0/P0R)</button>';
     html += '<button class="summary-pill pill-amber'  + (activeTierGroup==='high'   ?' pill-active':'') + '" data-filter-tier="high"><span class="count">'    + highCount    + '</span> High (P1/P1M)</button>';
     html += '<button class="summary-pill pill-muted'  + (activeTierGroup==='medium' ?' pill-active':'') + '" data-filter-tier="medium"><span class="count">'  + medLowCount  + '</span> Medium/Steady</button>';
-    html += '<button class="summary-pill pill-muted'  + (activeTierGroup==='backlog'?' pill-active':'') + '" data-filter-tier="backlog"><span class="count">' + backlogCount + '</span> Backlog</button>';
+    html += '<button class="summary-pill pill-muted'  + (activeTierGroup==='backlog'?' pill-active':'') + '" data-filter-tier="backlog"><span class="count">' + backlogCount + '</span> Low/Backlog (P4/P5)</button>';
     html += '<button class="summary-pill pill-amber'  + (activeType==='risk'            ?' pill-active':'') + '" data-filter-type="risk"><span class="count">'           + RISK_ITEMS.length            + '</span> Open Risks</button>';
     html += '<button class="summary-pill pill-purple' + (activeType==='pending-review'  ?' pill-active':'') + '" data-filter-type="pending-review"><span class="count">' + PENDING_REVIEW_ITEMS.length  + '</span> Pending Reviews</button>';
     html += '</div>';

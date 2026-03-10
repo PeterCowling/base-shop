@@ -23,6 +23,23 @@ async function writeFile(root: string, relativePath: string, content: string): P
   await fs.writeFile(absPath, content, "utf8");
 }
 
+async function readCanonicalProcessImprovementsHtml(): Promise<string> {
+  const candidates = [
+    path.resolve(process.cwd(), "docs/business-os/process-improvements.user.html"),
+    path.resolve(process.cwd(), "../docs/business-os/process-improvements.user.html"),
+  ];
+
+  for (const candidate of candidates) {
+    try {
+      return await fs.readFile(candidate, "utf8");
+    } catch {
+      continue;
+    }
+  }
+
+  throw new Error("Unable to locate docs/business-os/process-improvements.user.html");
+}
+
 async function writeQueueState(
   root: string,
   dispatches: Record<string, unknown>[],
@@ -759,6 +776,15 @@ Review-date: 2026-03-06
     expect(updated).toContain('"build_origin"');
     expect(updated).toContain('"build_signal_id": "build-signal-123"');
     expect(updated).toContain('"results_review_path": "docs/plans/queue-unification-task/results-review.user.md"');
+  });
+
+  it("TC-04-05: canonical report labels distinguish the P4/P5 group from the P5 tier", async () => {
+    const html = await readCanonicalProcessImprovementsHtml();
+
+    expect(html).toContain("Low/Backlog (P4/P5)");
+    expect(html).toContain("'P4':  'Low priority'");
+    expect(html).toContain("'P5':  'Backlog'");
+    expect(html).not.toContain("</span> Backlog</button>");
   });
 
   it("TC-14-01: build-origin bridge auto-admits active plan sidecars into the trial queue", async () => {

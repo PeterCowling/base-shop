@@ -2,6 +2,8 @@ import type * as React from "react";
 
 import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 
+export type AutosaveStatus = "saving" | "saved" | "unsaved";
+
 export type SyncScriptId = "validate" | "sync";
 type SyncErrorCode =
   | "sync_dependencies_missing"

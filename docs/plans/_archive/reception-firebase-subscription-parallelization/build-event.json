@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-firebase-subscription-parallelization-20260309",
+  "feature_slug": "reception-firebase-subscription-parallelization",
+  "emitted_at": "2026-03-09T00:00:00.000Z",
+  "why": "The reception app's Firebase subscription layer had redundant open connections: duplicated range-subscription boilerplate across two hooks and an implemented but unmounted cache provider.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "The reception app's Firebase subscription layer has no duplicated range-subscription boilerplate and the shared cache provider is mounted in the app tree, ready to reduce open Firebase connections on the dashboard screen.",
+    "source": "auto"
+  }
+}

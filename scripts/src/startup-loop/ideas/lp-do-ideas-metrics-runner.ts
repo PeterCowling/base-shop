@@ -48,7 +48,7 @@ export type MetricsRunnerResult =
  * Mirrors the resolveAdmissionLane logic in lp-do-ideas-trial-queue.ts:
  * - An explicit `lane` field on the packet (non-standard but tolerated) is
  *   preferred.
- * - Otherwise "fact_find_ready" and "micro_build_ready" map to DO;
+ * - Otherwise "fact_find_ready", "plan_ready", and "micro_build_ready" map to DO;
  *   everything else maps to IMPROVE.
  */
 function inferLaneFromPacket(packet: Record<string, unknown>): QueueLane {
@@ -59,7 +59,9 @@ function inferLaneFromPacket(packet: Record<string, unknown>): QueueLane {
       return normalised as QueueLane;
     }
   }
-  return packet["status"] === "fact_find_ready" || packet["status"] === "micro_build_ready"
+  return packet["status"] === "fact_find_ready" ||
+      packet["status"] === "plan_ready" ||
+      packet["status"] === "micro_build_ready"
     ? "DO"
     : "IMPROVE";
 }

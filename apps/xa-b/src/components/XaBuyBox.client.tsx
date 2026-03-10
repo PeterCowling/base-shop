@@ -2,7 +2,6 @@
 
 
 import * as React from "react";
-import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
 import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
@@ -15,11 +14,11 @@ import { useWishlist } from "../contexts/XaWishlistContext";
 import type { XaProduct } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
 import { useXaCatalogSnapshot } from "../lib/liveCatalog";
-import { formatLabel, XA_COLOR_SWATCHES, XA_DEFAULT_SWATCH } from "../lib/xaCatalog";
+import { formatLabel, getEffectivePrice, isProductImage, XA_COLOR_SWATCHES, XA_DEFAULT_SWATCH } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
 import { getProductHref } from "../lib/xaRoutes";
 
-import { XaFadeImage } from "./XaFadeImage";
+import { XaColorSwatchStrip } from "./XaColorSwatchStrip";
 
 function getDeliveryWindow(daysMin = 5, daysMax = 12): string {
   const fmt = (d: Date) =>
@@ -37,7 +36,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
-  const effectivePrice = product.prices?.[currency] ?? product.price;
+  const effectivePrice = getEffectivePrice(product, currency);
 
   const [size, setSize] = React.useState<string>(product.sizes[0] ?? "");
   const [error, setError] = React.useState<string | null>(null);
@@ -45,10 +44,11 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   const isWishlisted = wishlist.includes(product.id);
   const sizeCount = product.sizes.length;
   const showSizeSelect = sizeCount > 1;
-  const colorOptions = product.taxonomy.color
-    ? Array.from(new Set(product.taxonomy.color))
-    : [];
-  const colorMedia = product.media.filter((media) => media.type === "image" && media.url.trim());
+  const colorOptions = React.useMemo(
+    () => (product.taxonomy.color ? Array.from(new Set(product.taxonomy.color)) : []),
+    [product.taxonomy.color],
+  );
+  const colorMedia = product.media.filter(isProductImage);
   const variantProducts = React.useMemo(() => {
     if (!product.variantGroup) return [];
     const items = products.filter((item) => item.variantGroup === product.variantGroup);
@@ -111,13 +111,9 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
               ))}
             </SelectContent>
           </Select>
-          {sizeNote ? (
-            <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div>
-          ) : null}
         </div>
-      ) : (
-        sizeNote ? <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div> : null
-      )}
+      ) : null}
+      {sizeNote ? <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div> : null}
 
       <div className="xa-pdp-meta text-muted-foreground">
         {xaI18n.t("xaB.src.components.xabuybox.client.quantityFixed")}
@@ -167,73 +163,35 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         <div className="space-y-2">
           <div className="xa-pdp-label text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l200c63")}</div>
           {showVariantStrip ? (
-            <Inline gap={2} wrap={false}>
-              {variantProducts.map((variant) => {
+            <XaColorSwatchStrip
+              items={variantProducts.map((variant) => {
                 const color = variant.taxonomy.color?.[0] ?? "";
                 const label = color ? formatLabel(color) : variant.title;
-                const swatch = color
-                  ? (XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH)
-                  : XA_DEFAULT_SWATCH;
-                const media = variant.media.find((item) => item.type === "image" && item.url.trim());
-                const isCurrent = variant.id === product.id;
-                return (
-                  <Link
-                    key={`${variant.slug}-variant`}
-                    href={getProductHref(variant.slug)}
-                    className={`relative h-12 w-12 overflow-hidden rounded-none border bg-surface ${isCurrent ? "border-foreground" : "xa-border-control"}`}
-                    title={label}
-                    aria-label={label}
-                    aria-current={isCurrent ? "page" : undefined}
-                  >
-                    {media ? (
-                      <XaFadeImage
-                        src={media.url}
-                        alt={label}
-                        fill
-                        sizes="48px"
-                        className="object-contain p-1"
-                      />
-                    ) : (
-                      <span
-                        className="absolute inset-0"
-                        style={{ backgroundColor: swatch }}
-                        aria-hidden="true"
-                      />
-                    )}
-                  </Link>
-                );
+                const media = variant.media.find(isProductImage);
+                return {
+                  key: `${variant.slug}-variant`,
+                  label,
+                  swatch: color ? (XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH) : XA_DEFAULT_SWATCH,
+                  imageUrl: media?.url,
+                  imageAlt: label,
+                  isCurrent: variant.id === product.id,
+                  href: getProductHref(variant.slug),
+                };
               })}
-            </Inline>
+            />
           ) : (
-            <Inline gap={2} wrap={false}>
-              {colorOptions.map((color, idx) => {
-                const swatch = XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH;
+            <XaColorSwatchStrip
+              items={colorOptions.map((color, idx) => {
                 const media = colorMedia[idx % Math.max(1, colorMedia.length)];
-                return (
-                  <div
-                    key={`${product.slug}-color-${color}`}
-                    className="relative h-12 w-12 overflow-hidden rounded-none border xa-border-control bg-surface"
-                    title={formatLabel(color)}
-                  >
-                    {media ? (
-                      <XaFadeImage
-                        src={media.url}
-                        alt={formatLabel(color)}
-                        fill
-                        sizes="48px"
-                        className="object-contain p-1"
-                      />
-                    ) : (
-                      <span
-                        className="absolute inset-0"
-                        style={{ backgroundColor: swatch }}
-                        aria-hidden="true"
-                      />
-                    )}
-                  </div>
-                );
+                return {
+                  key: `${product.slug}-color-${color}`,
+                  label: formatLabel(color),
+                  swatch: XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH,
+                  imageUrl: media?.url,
+                  imageAlt: formatLabel(color),
+                };
               })}
-            </Inline>
+            />
           )}
         </div>
       ) : null}

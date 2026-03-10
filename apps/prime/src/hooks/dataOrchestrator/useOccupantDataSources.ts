@@ -123,6 +123,7 @@ export function useOccupantDataSources(): OccupantDataSources {
     bagStorageData,
     isLoading: isBagStorageLoading,
     error: bagStorageError,
+    refetch: refetchBagStorageData,
   } = useFetchBagStorageData({ enabled: secondaryEnabled });
 
   // ── Dependent: Requires bookingRef from bookings ───────────────────────
@@ -162,6 +163,7 @@ export function useOccupantDataSources(): OccupantDataSources {
       refetchFinancialsRoom?.(),
       refetchPreordersData?.(),
       refetchCityTax?.(),
+      refetchBagStorageData?.(),
     ]);
   }, [
     refetchBookingsData,
@@ -171,6 +173,7 @@ export function useOccupantDataSources(): OccupantDataSources {
     refetchFinancialsRoom,
     refetchPreordersData,
     refetchCityTax,
+    refetchBagStorageData,
   ]);
 
   // Primary loading: only bookings + tasks needed for initial render

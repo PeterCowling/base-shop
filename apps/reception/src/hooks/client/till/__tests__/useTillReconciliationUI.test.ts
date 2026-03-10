@@ -20,23 +20,37 @@ beforeEach(() => {
 });
 
 describe("useTillReconciliationUI", () => {
-  it("opens forms correctly", () => {
+  it("opens forms correctly via union", () => {
     const { result } = renderHook(() => useTillReconciliationUI());
 
     act(() => {
       result.current.handleAddChangeClick();
     });
-    expect(result.current.showFloatForm).toBe(true);
+    expect(result.current.cashForm).toBe("float");
 
     act(() => {
       result.current.handleExchangeClick();
     });
-    expect(result.current.showExchangeForm).toBe(true);
+    expect(result.current.cashForm).toBe("exchange");
 
     act(() => {
       result.current.handleLiftClick();
     });
-    expect(result.current.showTenderRemovalForm).toBe(true);
+    expect(result.current.cashForm).toBe("tenderRemoval");
+  });
+
+  it("closeCashForms resets cashForm to none", () => {
+    const { result } = renderHook(() => useTillReconciliationUI());
+
+    act(() => {
+      result.current.handleAddChangeClick();
+    });
+    expect(result.current.cashForm).toBe("float");
+
+    act(() => {
+      result.current.closeCashForms();
+    });
+    expect(result.current.cashForm).toBe("none");
   });
 
   it("stores transactions for edit/delete", () => {

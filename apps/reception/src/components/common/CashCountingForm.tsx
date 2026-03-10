@@ -9,6 +9,7 @@ import { Cluster, Inline } from "@acme/design-system/primitives";
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { useDenominationCalculator } from "../../hooks/client/till/useDenominationCalculator";
 import { type Denomination, DENOMINATIONS } from "../../types/component/Till";
+import { formatEuro } from "../../utils/format";
 import { DenominationInput } from "../till/DenominationInput";
 
 import { DifferenceBadge } from "./DifferenceBadge";
@@ -139,8 +140,8 @@ export const CashCountingForm = memo(function CashCountingForm({
         <div
           className={`flex flex-col items-end mt-6 text-sm ${textClass} text-right`}
         >
-          <strong className="mb-2">Total: €{totalDenomValue.toFixed(2)}</strong>
-          <div className="mb-2">Expected cash: €{expectedCash.toFixed(2)}</div>
+          <strong className="mb-2">Total: {formatEuro(totalDenomValue)}</strong>
+          <div className="mb-2">Expected cash: {formatEuro(expectedCash)}</div>
           {expectedKeycards !== undefined && (
             <div className="mb-2">Expected keycards: {expectedKeycards}</div>
           )}

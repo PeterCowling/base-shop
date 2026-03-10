@@ -1,6 +1,8 @@
 // File: /src/utils/sortCheckouts.ts
 import { type Guest } from "../components/checkout/CheckoutTable";
 
+import { getBookingMinAllocatedRoom, parseAllocatedRoomNumber } from "./sortHelpers";
+
 /**
  * Sort check-out data by grouping each bookingRef, sorting occupant rows
  * by numeric room allocated, then ordering incomplete bookings before complete,
@@ -29,30 +31,11 @@ export function sortCheckoutsData(guests: Guest[]): Guest[] {
     return rows.every((r) => r.isCompleted);
   };
 
-  // Convert roomAllocated string to a number safely
-  // Returns 9999 if the string is not numeric
-  const parseAllocatedRoomNumber = (roomStr: string): number => {
-    const num = parseInt(roomStr.trim(), 10);
-    return isNaN(num) ? 9999 : num;
-  };
-
-  // Compute the numeric "roomAllocated" for one guest,
-  // defaulting to 9999 if there's no valid numeric value
-  const occupantRoomNumber = (row: Guest): number => {
-    return parseAllocatedRoomNumber(row.roomAllocated);
-  };
-
-  // Compute the minimum allocated room for the entire booking
-  const getBookingMinAllocatedRoom = (rows: Guest[]): number => {
-    const roomNumbers = rows.map(occupantRoomNumber);
-    return Math.min(...roomNumbers);
-  };
-
   // Build array of booking objects, each containing occupant rows
   const bookingArray = Object.entries(grouped).map(([bRef, rows]) => {
     // Sort occupant rows within each booking by numeric roomAllocated
     const occupantRows = [...rows].sort(
-      (a, b) => occupantRoomNumber(a) - occupantRoomNumber(b)
+      (a, b) => parseAllocatedRoomNumber(a.roomAllocated) - parseAllocatedRoomNumber(b.roomAllocated)
     );
 
     const complete = isBookingComplete(occupantRows);

@@ -135,8 +135,6 @@ export async function GET(request: Request) {
       WHERE event_type = 'drafted'
       ${timeFilter.replace("te.", "")}
     `;
-    const totalResult = await db.prepare(totalQuery).first<{ total: number }>();
-    const totalDrafted = totalResult?.total ?? 0;
 
     // Regenerated = threads with multiple drafted events in the time window
     const regenQuery = `
@@ -150,7 +148,12 @@ export async function GET(request: Request) {
         HAVING COUNT(*) > 1
       )
     `;
-    const regenResult = await db.prepare(regenQuery).first<{ count: number }>();
+
+    const [totalResult, regenResult] = await Promise.all([
+      db.prepare(totalQuery).first<{ total: number }>(),
+      db.prepare(regenQuery).first<{ count: number }>(),
+    ]);
+    const totalDrafted = totalResult?.total ?? 0;
     const regenerated = regenResult?.count ?? 0;
 
     const rate = (n: number) => (totalDrafted > 0 ? Math.round((n / totalDrafted) * 1000) / 10 : 0);

@@ -4,7 +4,7 @@ Status: Active
 Business: HBAG
 Schema-Version: 1.0.0
 Created: 2026-02-20
-Last-updated: 2026-02-20
+Last-updated: 2026-03-09
 Owner: Pete
 Gate-Assessment: GATE-S6B-STRAT-01=PASS / GATE-S6B-ACT-01=HOLD
 Source-Intelligence: docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md
@@ -14,11 +14,13 @@ Source-Intelligence: docs/business-os/market-research/HBAG/2026-02-20-market-int
 
 ## Demand Signal Summary
 
-HBAG has **zero historical sales** (new business, pre-launch). The demand evidence is market-level:
-confirmed category demand for bag charms (12× JOOR wholesale growth H1 2025), AirPod fashion
-accessories (Hermes $930 / Chanel $950 ceiling), and in-destination Amalfi premium accessories
-(leather sandal €100–€250 precedent). This DEP documents market-level evidence and identifies
-what first-party HBAG-specific evidence must be captured before spend authorisation.
+HBAG now has **one recorded first-party sale** from an off-season boutique pilot at Luisa
+Positano (placement started approximately 2026-03-02; first recorded sale on 2026-03-08).
+The rest of the demand evidence remains market-level: confirmed category demand for bag charms
+(12× JOOR wholesale growth H1 2025), AirPod fashion accessories (Hermes $930 / Chanel $950
+ceiling), and in-destination Amalfi premium accessories (leather sandal €100–€250 precedent).
+This DEP now contains mixed evidence: one encouraging first-party offline sale plus broader
+market-level demand proof. Spend authorisation remains gated because the denominator is tiny.
 
 ---
 
@@ -26,20 +28,21 @@ what first-party HBAG-specific evidence must be captured before spend authorisat
 
 | Criterion | Status | Notes |
 |---|---|---|
-| ≥2 message variants tested | N/A — pre-launch | No HBAG-specific variants have been live; this is a market-level DEP only |
+| ≥2 message variants tested | Hold | Luisa Positano pilot proves one real transaction, but channel/message variant testing is still not structured |
 | Category demand confirmed from independent sources | Pass | Bag charm: 12× JOOR wholesale growth H1 2025; Pinterest +700%; Coach/Miu Miu/Loewe editorial coverage |
 | Artisan-tier price white space confirmed | Pass | €80–€150 white space between Etsy mid-market (€15–€60) and accessible luxury (Coach $95, Miu Miu €200+) confirmed |
 | Objection log: ≥5 tagged objections OR none_observed | Pass | 5 objections documented from competitor review analysis and category knowledge |
-| Speed-to-lead: sample_size ≥1 | Hold | No HBAG-specific inquiries yet; first Instagram/TikTok probe will generate first-party data |
+| Speed-to-lead: sample_size ≥1 | Hold | Offline sale exists, but no timestamped enquiry/reply workflow is being logged yet |
 
 **GATE-S6B-STRAT-01 (strategy design)**: **PASS** — market-level category demand is confirmed
 from multiple independent sources. Channel strategy design may proceed. Evidence: bag charm 12×
 wholesale growth, artisan-tier price white space documented, Etsy sub-market existence confirmed.
 
-**GATE-S6B-ACT-01 (spend authorization)**: **HOLD** — no first-party HBAG sales data exists.
-Photography must pass perception test (TASK-06 VC-01) and at least 10 Etsy + social sales must
-be recorded before any paid channel spend is considered. In-destination trial (TASK-10) requires
-TASK-09 checkpoint clearance.
+**GATE-S6B-ACT-01 (spend authorization)**: **HOLD** — first-party HBAG sales data now exists,
+but only as a single off-season offline sale. Photography must pass perception test (TASK-06
+VC-01) and at least 10 Etsy + social sales must still be recorded before any paid channel spend
+is considered. The Luisa Positano result upgrades confidence in the in-destination channel, but
+is not yet large enough for spend or scale decisions.
 
 ---
 
@@ -121,6 +124,18 @@ intent_events:
       Pinterest searches for bag charms grew +700% in 2025. Confirms discovery intent
       is growing on visual search channels.
 
+  - event_type: offline_boutique_sale
+    source_tag: luisa_positano_pilot_2026_03_08
+    count: 1
+    unit: "sale"
+    timestamp: "2026-03-08T12:00:00Z"
+    note: >
+      Luisa Positano boutique pilot produced one recorded sale during the off-season.
+      Placement started approximately 2026-03-02. Sale economics: EUR 29.00 retail,
+      50% commission, EUR 14.50 net revenue to Caryina, EUR 3.00 landed cost, and
+      EUR 11.50 contribution. This is a positive first-party demand signal, but still
+      below decision-grade denominator thresholds.
+
 objection_log:
   - text: "Is this actually premium quality or will it look cheap in real life?"
     frequency_count: high
@@ -152,12 +167,14 @@ speed_to_lead:
     manually. Target: respond to DM inquiries within 4 hours.
 
 operator_notes: >
-  This DEP documents market-level demand evidence for HBAG and satisfies
+  This DEP documents mixed evidence for HBAG: market-level demand plus one first-party
+  offline sale from the Luisa Positano pilot. It satisfies
   GATE-S6B-STRAT-01 (channel strategy design may proceed). It does NOT satisfy
-  GATE-S6B-ACT-01 (spend authorization) — first-party HBAG sales data is required.
-  The TASK-09 checkpoint (4-week Etsy + social probe) will generate the first-party
-  data needed for a full DEP refresh with HBAG-specific denominators and intent events.
-  Source market intelligence: docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md
+  GATE-S6B-ACT-01 (spend authorization) — more first-party HBAG sales data is still required.
+  The TASK-09 checkpoint (4-week Etsy + social probe) plus ongoing boutique logging in
+  `docs/business-os/strategy/HBAG/channel-health-log.user.md` will generate the additional
+  denominators needed for a full DEP refresh. Source market intelligence:
+  docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md
 ```
 
 ---
@@ -172,6 +189,7 @@ operator_notes: >
 | Artisan mini bag white space at €80–€150 confirmed | Competitor price audit | KILLSPENCER $55, Coach $95, Miu Miu €200+ | High |
 | Amalfi 2.3M annual visitors | Tourism data 2024 | Statista, Italy Edit | Medium |
 | Leather sandal €100–€250 Positano WTP anchor | Operator observation | In-destination research | High |
+| Luisa Positano first recorded sale on 2026-03-08 | Off-season boutique pilot | `docs/business-os/strategy/HBAG/channel-health-log.user.md` | Medium |
 | Hotel boutique distribution viable (Le Sirenuse precedent) | Emporio Sirenuse as comparable | Operator observation | Medium |
 
 ---
@@ -182,6 +200,7 @@ operator_notes: >
 |---|---|---|---|
 | First-party HBAG Etsy performance data | Views, favourites, add-to-carts, sales by listing (TASK-08 VC-01/VC-02) | Etsy Shop Manager analytics | TASK-09 checkpoint (day 28 post-launch) |
 | First-party Instagram/TikTok DM inquiry count | DM inquiries expressing purchase intent per variant (TASK-07 VC-01/VC-02) | Manual log in `docs/plans/mini-handbag-pmf/demand-log.md` | TASK-09 checkpoint (day 14 post-launch) |
+| First-party offline placement sell-through | Placement date, units placed, units sold, and partner economics by store | `docs/business-os/strategy/HBAG/channel-health-log.user.md` | Immediate and then weekly |
 | Photography perception test result | ≥3/5 cold reviewers estimate ≥€80 for H1 lead photo (TASK-06 VC-01) | Pete runs perception test on unbranded lead photo | Pre-listing launch |
 | Unit cost and margin stack | Contribution margin ≥35% confirmed at target retail price (TASK-02) | Pete gets supplier quote | Pre-listing launch |
 | Speed-to-lead | Formal response time to first DM inquiry or Etsy message | Log timestamp on receipt + reply for first 10 inquiries | First 2 weeks post-launch |
@@ -193,4 +212,5 @@ operator_notes: >
 - Market intelligence: `docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md`
 - Mini-handbag PMF fact-find: `docs/plans/mini-handbag-pmf/fact-find.md` (2026-02-17)
 - Outcome contract: `docs/business-os/strategy/HBAG/plan.user.md` §HBAG-OUT-2026Q1-01
+- Channel health log: `docs/business-os/strategy/HBAG/channel-health-log.user.md`
 - DEP schema: `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md`

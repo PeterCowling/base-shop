@@ -304,16 +304,22 @@ describe("TokenBucket", () => {
     });
 
     it("handles rapid sequential consumption", () => {
-      const bucket = new TokenBucket({ capacity: 100, refillRate: 10 });
+      const nowSpy = jest.spyOn(Date, "now").mockReturnValue(1_700_000_000_000);
 
-      for (let i = 0; i < 100; i++) {
+      try {
+        const bucket = new TokenBucket({ capacity: 100, refillRate: 10 });
+
+        for (let i = 0; i < 100; i++) {
+          const result = bucket.consume(1);
+          expect(result.allowed).toBe(true);
+        }
+
+        // Freeze time so no refill occurs during the loop on slower CI runners.
         const result = bucket.consume(1);
-        expect(result.allowed).toBe(true);
+        expect(result.allowed).toBe(false);
+      } finally {
+        nowSpy.mockRestore();
       }
-
-      // 101st should fail
-      const result = bucket.consume(1);
-      expect(result.allowed).toBe(false);
     });
   });
 });

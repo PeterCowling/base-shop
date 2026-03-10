@@ -1,0 +1,32 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-10T11:40:09.892Z",
+  "plan_slug": "reception-theme-dark-mode-base-tokens",
+  "review_cycle_key": "reception-theme-dark-mode-base-tokens",
+  "source_path": "docs/plans/reception-theme-dark-mode-base-tokens/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic — The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet.",
+      "body": "AI-to-mechanistic — The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet.",
+      "source": "results-review.user.md",
+      "date": "2026-03-08T00:00:00.000Z",
+      "path": "docs/plans/reception-theme-dark-mode-base-tokens/results-review.user.md",
+      "idea_key": "bc12be2d09081829c1cff07c3668ceb0821801cf",
+      "review_cycle_key": "reception-theme-dark-mode-base-tokens",
+      "canonical_title": "The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet.",
+      "build_signal_id": "06336770b37eda8656ba267c79896cf5bce42824",
+      "recurrence_key": "f69b52549df335c0a1a424cccd1ad712a1b006a1",
+      "build_origin_status": "ready",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
+}

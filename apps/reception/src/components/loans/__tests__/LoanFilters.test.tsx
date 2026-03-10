@@ -1,10 +1,10 @@
 import "@testing-library/jest-dom";
 
-import { type ComponentProps,useState } from "react";
+import { type ComponentProps, useState } from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import type DateSelType from "../DateSel";
+import type DateSelectorType from "../../common/DateSelector";
 import { LoanFilters } from "../LoanFilters";
 
 // Mock loan-related hooks for determinism
@@ -17,12 +17,12 @@ jest.mock("../../../context/LoanDataContext", () => ({
 }));
 
 /* eslint-disable no-var */
-var capturedProps: ComponentProps<typeof DateSelType> | null;
+var capturedProps: ComponentProps<typeof DateSelectorType> | null;
 
-jest.mock("../DateSel", () => {
+jest.mock("../../common/DateSelector", () => {
   return {
     __esModule: true,
-    default: (props: ComponentProps<typeof DateSelType>) => {
+    default: (props: ComponentProps<typeof DateSelectorType>) => {
       capturedProps = props;
       return <div data-testid="datesel" />;
     },
@@ -66,4 +66,3 @@ describe("LoanFilters", () => {
     expect(onGuestFilterChange).toHaveBeenLastCalledWith("Alice");
   });
 });
-

@@ -1,0 +1,61 @@
+---
+# Business OS Contract Migration Window (Canonical)
+#
+# This file is canonical for human review and for lint/tooling.
+# Runtime MUST NOT read this file from the filesystem.
+# Runtime uses a build-time embedded module: apps/business-os/src/lib/contract-migration.generated.ts
+#
+# Semantics:
+# - Cutoffs are inclusive through 23:59:59Z on the given date.
+# - If config is missing/invalid at runtime, legacy behavior must fail-closed
+#   (aliases + dual-read disabled) while canonical behavior continues.
+
+version: "1"
+
+timebox:
+  # Stage-key aliases are accepted (and normalized) until this cutoff.
+  alias_accept_until_utc: "2026-02-14"
+
+  # Dual-read legacy filenames until this cutoff.
+  dual_read_until_utc: "2026-02-14"
+
+  # Lint escalates from WARN to FAIL after this date.
+  lint_warn_until_utc: "2026-02-14"
+
+stage_aliases:
+  lp-do-fact-find: fact-find
+
+filename_aliases:
+  fact-finding.user.md: fact-find.user.md
+
+allowlists:
+  # Temporary allowlist for references to legacy filenames.
+  # Use only for archived docs/fixtures. Remove after the compatibility window.
+  legacy_filename_refs: []
+
+  # Temporary allowlist for legacy stage keys emitted by skills.
+  # Should be empty quickly; use only to avoid breaking unrelated work during window start.
+  legacy_stage_key_emitters: []
+
+# Stage Addressing Resolver Contract
+#
+# Business OS keeps this metadata only as documentation of the historical alias
+# migration. Runtime stage-doc normalization uses the build-time generated module
+# above and does not depend on startup-loop state.
+stage_addressing:
+  resolver_module: "scripts/src/startup-loop/stage-addressing.ts"
+  canonical_alias_source: "docs/business-os/startup-loop/_generated/stage-operator-map.json"
+  modes:
+    - id: id
+      flag: "--stage"
+      behavior: "canonical-always"
+      fallback: suggest_alias
+    - id: alias
+      flag: "--stage-alias"
+      behavior: "fail-closed"
+      fallback: deterministic_suggestions
+    - id: label
+      flag: "--stage-label"
+      behavior: "exact-match-only"
+      fallback: canonical_label_list
+---

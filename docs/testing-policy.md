@@ -47,15 +47,18 @@ gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')
 **Why:** Running tests locally consumes 2–4 GB RAM per run and destabilises the machine during bursty multi-agent workflows. CI provides isolation, sharding, and consistent pass/fail gating.
 
 **Technical enforcement (agent-mediated paths):**
+
 - `run-governed-test.sh` (the governed runner) exits 1 with a redirect message when `BASESHOP_CI_ONLY_TESTS=1` is set and `CI` is not `true`.
 - `integrator-shell.sh` exports `BASESHOP_CI_ONLY_TESTS=1` into all agent shells automatically.
 - `scripts/agent-bin/npx` and `scripts/agent-bin/pnpm` continue to block raw Jest entry points.
 - Direct-shell invocations (e.g., `pnpm test:affected`) are covered by policy only.
 
 **CI test environments:**
+
 - `CI=true` is set by GitHub Actions on all runners. The governed runner's compatibility mode respects this and will not block CI execution.
 
 **Governed telemetry attribution (incident forensics):**
+
 - Governed telemetry events in `.cache/test-governor/events.jsonl` now include:
   - `session_id` (string; primary actor/session join key)
   - `caller_pid` (number; supplemental process-level forensic key)
@@ -89,13 +92,13 @@ When mocking hooks that return objects (for example `useRouter`, `useTranslation
 
 ```typescript
 // BAD: new object each call (unstable reference)
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter: () => ({ push: jest.fn(), back: jest.fn() }),
 }));
 
 // GOOD: stable reference across calls
 const mockRouter = { push: jest.fn(), back: jest.fn() };
-jest.mock('next/navigation', () => ({
+jest.mock("next/navigation", () => ({
   useRouter: () => mockRouter,
 }));
 ```
@@ -123,6 +126,7 @@ pnpm preflight:brikette-deploy
 ```
 
 This checks:
+
 - required static-export routes include `generateStaticParams()`
 - `robots.txt` route exports `GET()`
 - required `apps/brikette/wrangler.toml` fields are present
@@ -170,6 +174,7 @@ pnpm --filter @apps/prime test:firebase-cost-gate
 ```
 
 This suite enforces:
+
 - query-budget contracts for guest-critical flows
 - listener lifecycle leak checks
 - regression-gate behavior against checked-in baseline budgets
@@ -195,13 +200,17 @@ This suite enforces:
 Location: `apps/brikette/src/test/helpers/hydrationTestUtils.ts`
 
 **Available functions:**
+
 - `renderWithHydration({ server, client })` — Simulates SSR → client hydration cycle
 - `expectNoHydrationErrors(result)` — Asserts no hydration mismatches occurred
 
 ### Usage Pattern
 
 ```tsx
-import { renderWithHydration, expectNoHydrationErrors } from "@/test/helpers/hydrationTestUtils";
+import {
+  renderWithHydration,
+  expectNoHydrationErrors,
+} from "@/test/helpers/hydrationTestUtils";
 
 it("renders consistently on server and client", () => {
   const result = renderWithHydration({
@@ -259,9 +268,10 @@ gh run view <run-id>
 ```
 
 CI pipelines that run on `dev` branch push:
+
 - **Core Platform CI** (`.github/workflows/ci.yml`): lint, typecheck, test, storybook-visual, build, e2e — triggers on all dev pushes (except `apps/cms/**` and `apps/skylar/**` paths).
 
-App-specific pipelines (`prime.yml`, `brikette.yml`, `caryina.yml`) trigger via `pull_request` events. The `ship-to-staging.sh` script always opens a PR, ensuring these pipelines run before staging merges.
+App-specific pipelines for the release path should also trigger on `dev` pushes, so `dev -> main` does not rely on an intermediate staging PR for validation coverage.
 
 ---
 
@@ -276,6 +286,7 @@ Phases 0-1 of the governor (command guard wrappers: `agent-bin/npx`, `agent-bin/
 ## Why This Matters
 
 **Reference incident (2026-01-16):**
+
 - 10+ Jest worker processes were running simultaneously
 - Combined RAM usage: 2.5GB+
 - System had only 93MB free RAM (out of 16GB)

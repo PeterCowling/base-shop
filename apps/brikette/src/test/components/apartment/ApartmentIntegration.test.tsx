@@ -44,7 +44,7 @@ describe("Apartment structured data", () => {
 
     expect(schema["@type"]).toBe("Apartment");
     expect(schema.occupancy).toBeDefined();
-    expect(schema.occupancy.value).toBe(4);
+    expect(schema.occupancy.value).toBe(5);
     expect(schema.floorSize).toBeDefined();
     expect(schema.floorSize.value).toBe(100);
     expect(schema.floorSize.unitCode).toBe("MTK");

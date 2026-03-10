@@ -1,13 +1,89 @@
 import baseConfig from "../../tailwind.config.mjs";
 
 const receptionColorBridge = {
-  darkBg: "hsl(var(--reception-dark-bg))",
-  darkSurface: "hsl(var(--reception-dark-surface))",
-  darkAccentGreen: "hsl(var(--reception-dark-accent-green))",
-  darkAccentOrange: "hsl(var(--reception-dark-accent-orange))",
-  darkBorder: "hsl(var(--reception-dark-border))",
-  "surface-dark": "hsl(var(--reception-surface-dark))",
-  "accent-hospitality": "hsl(var(--reception-accent-hospitality))",
+  darkBg: "var(--reception-dark-bg)",
+  darkSurface: "var(--reception-dark-surface)",
+  darkAccentGreen: "var(--reception-dark-accent-green)",
+  darkAccentOrange: "var(--reception-dark-accent-orange)",
+  darkBorder: "var(--reception-dark-border)",
+  "surface-dark": "var(--reception-surface-dark)",
+  "accent-hospitality": "var(--reception-accent-hospitality)",
+};
+
+const receptionSemanticColors = {
+  surface: "hsl(var(--surface-1, var(--color-bg)))",
+  "surface-1": "hsl(var(--surface-1, var(--color-bg)))",
+  "surface-2": "hsl(var(--surface-2, var(--color-bg)))",
+  "surface-3": "hsl(var(--surface-3, var(--color-bg)))",
+  panel: "hsl(var(--color-panel, var(--surface-2, var(--color-bg))))",
+  inset: "hsl(var(--color-inset, var(--surface-2, var(--color-bg))))",
+  input: "hsl(var(--surface-input, var(--surface-2, var(--color-bg))))",
+  "muted-foreground": "hsl(var(--color-fg-muted, var(--color-fg)))",
+  "border-strong": "hsl(var(--color-border-strong))",
+  "border-muted": "hsl(var(--color-border-muted))",
+  "table-row-hover": "hsl(var(--color-table-row-hover, var(--surface-2, var(--color-bg))))",
+  "table-row-alt": "hsl(var(--color-table-row-alt, var(--surface-1, var(--color-bg))))",
+  "surface-elevated": "hsl(var(--color-surface-elevated, var(--surface-2, var(--color-bg))))",
+  "primary-main": "hsl(var(--color-primary))",
+  "primary-dark": "hsl(var(--color-primary-dark, var(--color-primary)))",
+  "primary-light": "hsl(var(--color-primary-soft, var(--color-primary)))",
+  "primary-fg": "hsl(var(--color-primary-fg))",
+  "primary-hover": "hsl(var(--color-primary-hover, var(--color-primary)))",
+  "primary-active": "hsl(var(--color-primary-active, var(--color-primary)))",
+  "info-main": "hsl(var(--color-info))",
+  "info-dark": "hsl(var(--color-info-dark, var(--color-info)))",
+  "info-light": "hsl(var(--color-info-soft, var(--color-info)))",
+  "success-main": "hsl(var(--color-success))",
+  "success-dark": "hsl(var(--color-success-dark, var(--color-success)))",
+  "success-light": "hsl(var(--color-success-soft, var(--color-success)))",
+  "warning-main": "hsl(var(--color-warning))",
+  "warning-dark": "hsl(var(--color-warning-dark, var(--color-warning)))",
+  "warning-light": "hsl(var(--color-warning-soft, var(--color-warning)))",
+  "error-main": "hsl(var(--color-danger))",
+  "error-dark": "hsl(var(--color-danger-dark, var(--color-danger)))",
+  "error-light": "hsl(var(--color-danger-soft, var(--color-danger) / 0.12))",
+  "danger-fg": "hsl(var(--color-danger-fg))",
+  "success-fg": "hsl(var(--color-success-fg))",
+  "warning-fg": "hsl(var(--color-warning-fg))",
+  "info-fg": "hsl(var(--color-info-fg))",
+};
+
+const receptionShadeColors = {
+  "pinkShades-row1": "hsl(var(--color-pinkShades-row1))",
+  "pinkShades-row2": "hsl(var(--color-pinkShades-row2))",
+  "pinkShades-row3": "hsl(var(--color-pinkShades-row3))",
+  "pinkShades-row4": "hsl(var(--color-pinkShades-row4))",
+  "coffeeShades-row1": "hsl(var(--color-coffeeShades-row1))",
+  "coffeeShades-row2": "hsl(var(--color-coffeeShades-row2))",
+  "coffeeShades-row3": "hsl(var(--color-coffeeShades-row3))",
+  "beerShades-row1": "hsl(var(--color-beerShades-row1))",
+  "beerShades-row2": "hsl(var(--color-beerShades-row2))",
+  "wineShades-row1": "hsl(var(--color-wineShades-row1))",
+  "wineShades-row2": "hsl(var(--color-wineShades-row2))",
+  "wineShades-row3": "hsl(var(--color-wineShades-row3))",
+  "teaShades-row1": "hsl(var(--color-teaShades-row1))",
+  "teaShades-row2": "hsl(var(--color-teaShades-row2))",
+  "greenShades-row1": "hsl(var(--color-greenShades-row1))",
+  "greenShades-row2": "hsl(var(--color-greenShades-row2))",
+  "greenShades-row3": "hsl(var(--color-greenShades-row3))",
+  "blueShades-row1": "hsl(var(--color-blueShades-row1))",
+  "blueShades-row2": "hsl(var(--color-blueShades-row2))",
+  "blueShades-row3": "hsl(var(--color-blueShades-row3))",
+  "blueShades-row4": "hsl(var(--color-blueShades-row4))",
+  "blueShades-row5": "hsl(var(--color-blueShades-row5))",
+  "purpleShades-row1": "hsl(var(--color-purpleShades-row1))",
+  "purpleShades-row2": "hsl(var(--color-purpleShades-row2))",
+  "spritzShades-row1": "hsl(var(--color-spritzShades-row1))",
+  "spritzShades-row2": "hsl(var(--color-spritzShades-row2))",
+  "orangeShades-row1": "hsl(var(--color-orangeShades-row1))",
+  "orangeShades-row2": "hsl(var(--color-orangeShades-row2))",
+  "orangeShades-row3": "hsl(var(--color-orangeShades-row3))",
+  "orangeShades-row4": "hsl(var(--color-orangeShades-row4))",
+  "orangeShades-row5": "hsl(var(--color-orangeShades-row5))",
+  "grayishShades-row1": "hsl(var(--color-grayishShades-row1))",
+  "grayishShades-row2": "hsl(var(--color-grayishShades-row2))",
+  "grayishShades-row3": "hsl(var(--color-grayishShades-row3))",
+  "grayishShades-row4": "hsl(var(--color-grayishShades-row4))",
 };
 
 const baseTheme = baseConfig.theme ?? {};
@@ -24,6 +100,7 @@ const baseExtendScale = baseExtend.scale ?? {};
 const baseExtendTransitionDuration = baseExtend.transitionDuration ?? {};
 const baseExtendGridTemplateColumns = baseExtend.gridTemplateColumns ?? {};
 const baseExtendZIndex = baseExtend.zIndex ?? {};
+const baseExtendFontFamily = baseExtend.fontFamily ?? {};
 
 const receptionSpacing = {
   "50px": "50px",
@@ -88,6 +165,11 @@ const receptionZIndex = {
   1: "1",
 };
 
+const receptionFontFamily = {
+  heading: "var(--font-sans)",
+  body: "var(--font-sans)",
+};
+
 const theme = {
   ...baseTheme,
   extend: {
@@ -95,6 +177,12 @@ const theme = {
     colors: {
       ...baseExtendColors,
       ...receptionColorBridge,
+      ...receptionSemanticColors,
+      ...receptionShadeColors,
+    },
+    fontFamily: {
+      ...baseExtendFontFamily,
+      ...receptionFontFamily,
     },
     spacing: {
       ...baseExtendSpacing,

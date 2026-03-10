@@ -7,7 +7,7 @@ import { type CatalogProductDraftInput, slugify } from "@acme/lib/xa/catalogAdmi
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { BTN_ACCENT_OUTLINE_CLASS, INPUT_CLASS } from "./catalogStyles";
-import { getCatalogDraftWorkflowReadiness } from "./catalogWorkflow";
+import { getCatalogDraftWorkflowReadiness, getWorkflowStatusDisplay } from "./catalogWorkflow";
 
 export function CatalogProductsList({
   products,
@@ -74,24 +74,12 @@ export function CatalogProductsList({
           const readiness = getCatalogDraftWorkflowReadiness(product);
           const publishState = product.publishState ?? "draft";
           const selected = selectedSlug === slug;
-          const statusLabel =
-            !readiness.isDataReady
-              ? t("workflowDataRequired")
-              : !readiness.isPublishReady
-                ? t("workflowDraftOnly")
-                : publishState === "out_of_stock"
-                  ? t("workflowOutOfStock")
-                  : publishState === "live"
-                    ? t("workflowLive")
-                    : t("workflowReadyForLive");
-          const dotClass =
-            !readiness.isDataReady
-              ? "bg-gate-status-incomplete"
-              : !readiness.isPublishReady
-                ? "bg-gate-status-draft"
-                : publishState === "out_of_stock"
-                  ? "bg-warning"
-                  : "bg-gate-status-ready";
+          const { label: statusLabel, dotClass } = getWorkflowStatusDisplay(
+            readiness.isDataReady,
+            readiness.isPublishReady,
+            publishState,
+            t,
+          );
           return (
             <div
               key={slug || product.title}

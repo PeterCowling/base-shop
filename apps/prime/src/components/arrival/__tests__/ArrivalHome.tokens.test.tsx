@@ -42,8 +42,7 @@ describe('ArrivalHome semantic token usage', () => {
     const { container } = render(
       <ArrivalHome
         firstName="Jane"
-        checkInCode="BRK-123"
-        isCodeLoading={false}
+        codeState={{ checkInCode: 'BRK-123', isCodeLoading: false }}
         preArrivalData={preArrivalData}
         cashAmounts={{ cityTax: 18, deposit: 10 }}
         nights={3}

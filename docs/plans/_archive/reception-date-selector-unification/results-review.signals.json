@@ -1,0 +1,25 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-09T11:49:02.532Z",
+  "plan_slug": "reception-date-selector-unification",
+  "source_path": "../docs/plans/reception-date-selector-unification/results-review.user.md",
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic — Duplicate component detection (identify near-identical components by AST similarity before duplication compounds) could be mechanistic",
+      "body": "5 near-identical components accumulated before this build; earlier detection would reduce migration blast radius",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-03-09T00:00:00.000Z",
+      "path": "../docs/plans/reception-date-selector-unification/results-review.user.md",
+      "idea_key": "57600b5650f6aaa17c5a834c8b5906b7323c600f",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
+}

@@ -2,11 +2,11 @@
 Type: Contract
 Domain: Repo
 Schema: lp-do-ideas-trial-contract
-Version: 1.2.0
+Version: 1.2.1
 Mode: trial
 Status: Active
 Created: 2026-02-24
-Updated: 2026-02-26
+Updated: 2026-03-10
 Owner: startup-loop maintainers
 Related-plan: docs/plans/lp-do-ideas-startup-loop-integration/plan.md
 Primary code entrypoints: scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts, scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts
@@ -51,7 +51,7 @@ defined in `lp-do-ideas-go-live-seam.md` (TASK-07 deliverable).
 Escalation requires ALL of the following conditions met:
 - Trial review period ≥ 14 days
 - Sample size ≥ 40 dispatches
-- Dispatch precision ≥ 80% (correct route: `lp-do-fact-find` vs `lp-do-build` vs `lp-do-briefing`)
+- Dispatch precision ≥ 80% (correct route: `lp-do-fact-find` vs `lp-do-plan` vs `lp-do-build` vs `lp-do-briefing`)
 
 When conditions are met, the operator may update the policy decision artifact
 and bump `Version` to `1.1.0` to activate Option C: auto-invoke P1 dispatches,
@@ -97,17 +97,25 @@ All dispatches emitted in trial mode must:
 | Route | Required fields beyond base schema |
 |---|---|
 | `lp-do-fact-find` | `area_anchor` (non-empty), `location_anchors` (≥1 item), `provisional_deliverable_family` |
+| `lp-do-plan` | `area_anchor` (non-empty), `location_anchors` (≥1 item), `provisional_deliverable_family` |
 | `lp-do-build` | `area_anchor` (non-empty), `location_anchors` (≥1 item), `provisional_deliverable_family` |
 | `lp-do-briefing` | `area_anchor` (non-empty) |
 
 4. Carry non-empty `evidence_refs` (at least one artifact path or anchor)
-5. Include a valid `recommended_route` value: `lp-do-fact-find`, `lp-do-build`, or `lp-do-briefing`
+5. Include a valid `recommended_route` value: `lp-do-fact-find`, `lp-do-plan`, `lp-do-build`, or `lp-do-briefing`
 6. Include cluster identity fields on every emitted packet:
    - `root_event_id`
    - `anchor_key`
    - `cluster_key`
    - `cluster_fingerprint`
    - `lineage_depth`
+
+Optional provenance blocks are permitted on `operator_idea` packets when the queue item was admitted from a bounded non-live source:
+
+| Field | Purpose |
+|---|---|
+| `build_origin` | Canonical live build-review provenance from the build-origin bridge |
+| `historical_carryover` | One-time archive carry-over provenance linking the packet back to the audited historical manifest |
 
 Dispatches failing schema validation must enter `status: error` and must not be
 forwarded to any downstream skill.
@@ -159,7 +167,7 @@ See `lp-do-ideas-go-live-seam.md` Section 2.3 for the full artifact path switch 
 Queue entries follow a monotonic state machine:
 
 ```
-enqueued → processed
+enqueued → processed → completed
          → skipped   (duplicate suppression)
          → error     (schema validation failure or processing error)
 ```
@@ -167,6 +175,7 @@ enqueued → processed
 Transitions:
 - `enqueued` → `processed`: operator confirms invocation
 - `enqueued` → `error`: downstream invocation fails or validation rejects packet
+- `processed` → `completed`: downstream skill finishes execution
 - Any state → `skipped`: duplicate detection fires (idempotency guard)
 
 State transitions are append-only in the telemetry record. The queue state file

@@ -1,9 +1,9 @@
 ---
 Type: Process-Registry
 Status: Active
-Version: 2.0.3
+Version: 2.0.4
 Created: 2026-02-18
-Last-updated: 2026-02-25
+Last-updated: 2026-03-09
 Owner: startup-loop maintainers
 Taxonomy-Ref: docs/business-os/startup-loop/specifications/workstream-workflow-taxonomy-v2.yaml
 Assignment-Ref: docs/business-os/startup-loop/specifications/process-assignment-v2.yaml
@@ -313,12 +313,12 @@ Every core startup-loop stage anchor has at least one linked workstream process 
 | **Cadence** | Weekly; daily in high season or high volume |
 | **Owner role** | Channel Manager / Partnerships Lead |
 | **Inputs** | Channel policy (OFF-4); pricing (OFF-2); content updates (OFF-3); partner/platform dashboards |
-| **Outputs / artifacts** | Channel Health Report; resolved issues log; escalations |
-| **Artifact path** | `docs/business-os/strategy/<BIZ>/channel-health-log.user.md` (operator-maintained) |
+| **Outputs / artifacts** | Channel Health Report; stockist target list for pre-live and expansion tracking; resolved issues log; escalations |
+| **Artifact path** | `docs/business-os/strategy/<BIZ>/channel-health-log.user.md` (operator-maintained, live channels) + `docs/business-os/strategy/<BIZ>/stockist-target-list.user.md` (operator-maintained, conditional for physical-product retail-led businesses) |
 | **Entry criteria** | Price/rate change log available; channels active |
 | **Exit criteria** | All channels verified; issues resolved or scheduled with owners |
 | **Exception linkage** | Channel suppression or rate-parity breach can trigger Demand Shock exception (DATA-2 alert) |
-| **Profile / branch** | Mandatory for `wholesale_heavy`, `OTA_mix_high`, hospitality. Conditional for `digital_only` if using marketplaces. |
+| **Profile / branch** | Mandatory for `wholesale_heavy`, `OTA_mix_high`, hospitality. Conditional for `digital_only` if using marketplaces. Physical-product businesses using boutiques, retailers, distributors, or resort-shop pilots should maintain `stockist-target-list.user.md` before targets go live. |
 
 ### GTM-3 — Sales / Account Pipeline and Booking Deals
 

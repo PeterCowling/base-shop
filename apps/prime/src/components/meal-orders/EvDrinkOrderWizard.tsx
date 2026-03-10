@@ -11,6 +11,8 @@ import type { GuestBookingSnapshot } from '@/hooks/dataOrchestrator/useGuestBook
 import { useEvDrinkWizard } from '@/hooks/meal-orders/useEvDrinkWizard';
 import { buildEvDrinkOrderValue } from '@/lib/meal-orders/buildOrderValue';
 
+import { RadioStep } from './RadioStep';
+
 // ---------------------------------------------------------------------------
 // Modifier label key map (for i18n lookup)
 // ---------------------------------------------------------------------------
@@ -97,40 +99,15 @@ export default function EvDrinkOrderWizard({
     >
       {/* ── Step: Drink ── */}
       {activeStep === 'drink' && (
-        <section className="space-y-3">
-          <fieldset className="space-y-2">
-            <legend className="sr-only">{t('evDrinkWizard.selectDrinkLegend')}</legend>
-            {wizard.availableDrinks.map((drink) => (
-              <label
-                key={drink.value}
-                className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 ${
-                  wizard.formData.selectedDrink === drink.value
-                    ? 'border-primary bg-primary/5'
-                    : 'border-border bg-card'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="ev-drink"
-                  value={drink.value}
-                  checked={wizard.formData.selectedDrink === drink.value}
-                  onChange={() => wizard.updateField('selectedDrink', drink.value)}
-                  className="accent-primary"
-                />
-                <span className="text-sm text-foreground">{drink.label}</span>
-              </label>
-            ))}
-          </fieldset>
-
-          <button
-            type="button"
-            disabled={!wizard.canAdvance}
-            onClick={wizard.advanceStep}
-            className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
-          >
-            {t('evDrinkWizard.next')}
-          </button>
-        </section>
+        <RadioStep
+          name="ev-drink"
+          options={wizard.availableDrinks}
+          selectedValue={wizard.formData.selectedDrink ?? ''}
+          onChange={(value) => wizard.updateField('selectedDrink', value)}
+          onNext={wizard.advanceStep}
+          nextLabel={t('evDrinkWizard.next')}
+          disabled={!wizard.canAdvance}
+        />
       )}
 
       {/* ── Step: Modifier ── */}

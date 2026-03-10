@@ -664,6 +664,65 @@ describe("xa-drop-worker", () => {
     expect(authorizedWithWriteToken.status).toBe(200);
   });
 
+  it("stores and retrieves currency rates with catalog token auth", async () => {
+    const bucketState = new Map<string, string>();
+    const bucket = {
+      get: jest.fn(async (key: string) => {
+        const body = bucketState.get(key);
+        if (!body) return null;
+        return { text: jest.fn().mockResolvedValue(body) };
+      }),
+      put: jest.fn(async (key: string, body: string) => {
+        bucketState.set(key, body);
+        return { key };
+      }),
+    } as unknown as R2Bucket;
+
+    const write = await handler.fetch(
+      new Request("https://drop.example/currency-rates/xa-b", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-XA-Catalog-Token": "catalog-write-token-1234567890",
+        },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 },
+        }),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+
+    expect(write.status).toBe(201);
+    expect((bucket as any).put).toHaveBeenCalledWith(
+      "catalog/currency-rates/xa-b.json",
+      expect.any(String),
+      expect.any(Object),
+    );
+
+    const read = await handler.fetch(
+      new Request("https://drop.example/currency-rates/xa-b", {
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+
+    expect(read.status).toBe(200);
+    await expect(read.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: true,
+        storefront: "xa-b",
+        rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 },
+      }),
+    );
+  });
+
   it("returns draft conflict when ifMatchDocRevision does not match latest", async () => {
     const bucket = {
       get: jest.fn().mockResolvedValue({

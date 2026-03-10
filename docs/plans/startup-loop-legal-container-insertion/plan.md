@@ -211,7 +211,7 @@ LEGAL follows the same "container completion node" pattern as ASSESSMENT. In the
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/process-registry-v2.md`, `docs/business-os/startup-loop/process-assignment-v2.yaml`, `docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml`
+- **Affects:** `docs/business-os/startup-loop/process-registry-v2.md`, `docs/business-os/startup-loop/specifications/process-assignment-v2.yaml`, `docs/business-os/startup-loop/specifications/workstream-workflow-taxonomy-v2.yaml`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-05
 - **Confidence:** 85%

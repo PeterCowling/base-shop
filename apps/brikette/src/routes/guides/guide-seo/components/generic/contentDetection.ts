@@ -6,6 +6,7 @@
 import type { TFunction } from "i18next";
 
 import i18n from "@/i18n";
+import { isPlaceholderString } from "@/routes/guides/guide-seo/content-detection/placeholders";
 import getGuideResource from "@/routes/guides/utils/getGuideResource";
 import { ensureArray, ensureStringArray } from "@/utils/i18nSafe";
 
@@ -123,10 +124,8 @@ export function hasExplicitLocalizedContent(params: {
   const isMeaningful = (value: unknown, placeholder: string): boolean => {
     const normalized = normalizeString(value);
     if (!normalized) return false;
-    if (normalized === placeholder) return false;
+    if (isPlaceholderString(normalized, placeholder)) return false;
     if (normalized === guideKey) return false;
-    if (normalized.startsWith(`${placeholder}.`)) return false;
-    if (normalized.toLowerCase() === "traduzione in arrivo") return false;
     return true;
   };
 

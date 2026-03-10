@@ -1,8 +1,9 @@
 /**
- * Business OS Stage Documents Repository
+ * Business OS Card Documents Repository
  *
- * D1-backed repository for Business OS stage documents
- * (fact-find, plan, build, reflect docs attached to cards).
+ * D1-backed repository for Business OS card-attached documents.
+ * Legacy startup-loop stage docs remain valid, but cards are no longer limited
+ * to a fixed fact-find/plan/build/reflect set.
  *
  * Pattern: apps/product-pipeline/src/routes/api/_lib/db.ts
  *
@@ -20,9 +21,17 @@ import type { D1Database } from "../d1/types";
 // ============================================================================
 
 /**
- * Stage type enum
+ * Card document type slug
  */
-export const StageTypeSchema = z.enum(["fact-find", "plan", "build", "reflect"]);
+export const StageTypeSchema = z
+  .string()
+  .refine((value) => {
+    if (value.length === 0) {
+      return false;
+    }
+
+    return value.split("-").every((part) => /^[a-z0-9]+$/u.test(part));
+  }, "Expected kebab-case card document type");
 
 export type StageType = z.infer<typeof StageTypeSchema>;
 

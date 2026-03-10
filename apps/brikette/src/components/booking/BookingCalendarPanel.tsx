@@ -1,7 +1,8 @@
 "use client";
 
-import { type ReactNode, useEffect, useId, useState } from "react";
+import { type ReactNode, useId } from "react";
 
+import { useHasMounted } from "@/hooks/useHasMounted";
 import type { AppLanguage } from "@/i18n.config";
 import { Minus, Plus } from "@/icons";
 import { formatDisplayDate } from "@/utils/dateUtils";
@@ -45,11 +46,7 @@ export function BookingCalendarPanel({
   actionSlot,
 }: BookingCalendarPanelProps): JSX.Element {
   const guestsLabelId = useId();
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  const hasMounted = useHasMounted();
 
   const stableFrom = hasMounted ? range.from : undefined;
   const stableTo = hasMounted ? range.to : undefined;

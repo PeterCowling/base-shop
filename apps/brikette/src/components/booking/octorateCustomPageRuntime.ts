@@ -3,8 +3,10 @@
 const SCRIPT_STATE_ATTR = "data-widget-script-state";
 
 function findScriptBySrc(src: string): HTMLScriptElement | null {
-  const scripts = Array.from(document.querySelectorAll("script[src]"));
-  return scripts.find((script): script is HTMLScriptElement => script instanceof HTMLScriptElement && script.src === src) ?? null;
+  return (Array.prototype.find.call(
+    document.querySelectorAll<HTMLScriptElement>("script[src]"),
+    (s: HTMLScriptElement) => s.src === src,
+  ) as HTMLScriptElement | undefined) ?? null;
 }
 
 function waitForScript(script: HTMLScriptElement): Promise<HTMLScriptElement> {

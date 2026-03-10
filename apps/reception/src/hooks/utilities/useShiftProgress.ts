@@ -1,5 +1,7 @@
 import { useCallback, useEffect } from "react";
 
+import { readJson, removeItem, writeJson } from "../../lib/offline/storage";
+
 export interface ShiftProgress {
   step: number;
   cash: number;
@@ -23,23 +25,18 @@ export function useAutoSaveShiftProgress(
 
 export default function useShiftProgress(key: string) {
   const load = useCallback((): ShiftProgress | null => {
-    try {
-      const raw = localStorage.getItem(key);
-      return raw ? (JSON.parse(raw) as ShiftProgress) : null;
-    } catch {
-      return null;
-    }
+    return readJson<ShiftProgress>(key);
   }, [key]);
 
   const save = useCallback(
     (progress: ShiftProgress) => {
-      localStorage.setItem(key, JSON.stringify(progress));
+      writeJson(key, progress);
     },
     [key]
   );
 
   const clear = useCallback(() => {
-    localStorage.removeItem(key);
+    removeItem(key);
   }, [key]);
 
   return { load, save, clear };

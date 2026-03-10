@@ -79,7 +79,7 @@ describe('upload-csv parallel', () => {
   it('persists only one file per shop and reports throughput', async () => {
     const max = 5 * 1024 * 1024;
     const size = max - 1024;
-    const header = 'sku\n';
+    const header = 'sku,name\n';
     const makeFile = (ch: string) =>
       Buffer.concat([Buffer.from(header), Buffer.alloc(size - header.length, ch)]);
     const f1 = makeFile('1');

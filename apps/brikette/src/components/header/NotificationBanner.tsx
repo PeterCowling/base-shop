@@ -11,6 +11,8 @@ import { useSetBannerRef } from "@/context/NotificationBannerContext";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { AppLanguage } from "@/i18n.config";
 import { X } from "@/icons";
+import { writeAttribution } from "@/utils/entryAttribution";
+import { fireCtaClick } from "@/utils/ga4-events";
 import { translatePath } from "@/utils/translate-path";
 
 type NotificationBannerCopy = {
@@ -153,10 +155,36 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
     };
   }, [lang, rawMessage, rawCta]);
 
-  const openDeals = useCallback(
-    () => router.push(`/${lang}/${translatePath("deals", lang)}`),
-    [router, lang]
-  );
+  const openDeals = useCallback(() => {
+    const dealsPath = `/${lang}/${translatePath("deals", lang)}`;
+    writeAttribution({
+      source_surface: "sitewide_shell",
+      source_cta: "notification_banner",
+      resolved_intent: "hostel",
+      product_type: null,
+      decision_mode: "direct_resolution",
+      destination_funnel: "hostel_central",
+      locale: lang,
+      fallback_triggered: false,
+      next_page: dealsPath,
+    });
+    fireCtaClick(
+      { ctaId: "header_check_availability", ctaLocation: "notification_banner" },
+      undefined,
+      {
+        source_surface: "sitewide_shell",
+        source_cta: "notification_banner",
+        resolved_intent: "hostel",
+        product_type: null,
+        decision_mode: "direct_resolution",
+        destination_funnel: "hostel_central",
+        locale: lang,
+        fallback_triggered: false,
+        next_page: dealsPath,
+      }
+    );
+    router.push(dealsPath);
+  }, [router, lang]);
 
   const close = useCallback(() => {
     setIsVisible(false);

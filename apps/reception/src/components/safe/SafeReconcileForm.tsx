@@ -28,18 +28,14 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
   onConfirm,
   onCancel,
 }: SafeReconcileFormProps) {
-  const [, setCountedCash] = useState(0);
-
   const [showExpected, setShowExpected] = useState(!settings.blindClose);
   const firstUpdate = useRef(true);
 
   const onCountsChange = (
-    cash: number,
+    _cash: number,
     _cards: number,
     _map: Record<string, number>
   ) => {
-    setCountedCash(cash);
-
     if (firstUpdate.current) {
       firstUpdate.current = false;
       return;
@@ -71,42 +67,40 @@ export const SafeReconcileForm = memo(function SafeReconcileForm({
   };
 
   return (
-    <>
-      <div className="relative">
-        <Button
-          onClick={onCancel}
-          aria-label="Close"
-          className="absolute right-2 top-2 h-6 w-6 rounded-full bg-surface-2 border border-border-strong text-muted-foreground hover:bg-surface-3 text-xs"
-        >
-          ✕
-        </Button>
-        <CashCountingForm
-          idPrefix="safeRecon_"
-          title="Reconcile Safe"
-          borderClass="border-warning"
-          textClass="text-warning"
-          confirmColor="warning"
-          confirmLabel="Go"
-          expectedCash={expectedSafe}
-          expectedKeycards={expectedKeycards}
-          showExpected={showExpected}
-          showKeycards
-          onChange={onCountsChange}
-          onConfirm={handleConfirm}
-          onCancel={onCancel}
-          hideCancel
-          hideConfirm
-          submitRef={submitRef}
-        >
-          <div className="mb-5 mt-8">
-            <PasswordReauthInline
-              onSubmit={() => submitRef.current?.()}
-              submitLabel="Confirm reconcile"
-            />
-          </div>
-        </CashCountingForm>
-      </div>
-    </>
+    <div className="relative">
+      <Button
+        onClick={onCancel}
+        aria-label="Close"
+        className="absolute right-2 top-2 h-6 w-6 rounded-full bg-surface-2 border border-border-strong text-muted-foreground hover:bg-surface-3 text-xs"
+      >
+        ✕
+      </Button>
+      <CashCountingForm
+        idPrefix="safeRecon_"
+        title="Reconcile Safe"
+        borderClass="border-warning"
+        textClass="text-warning"
+        confirmColor="warning"
+        confirmLabel="Go"
+        expectedCash={expectedSafe}
+        expectedKeycards={expectedKeycards}
+        showExpected={showExpected}
+        showKeycards
+        onChange={onCountsChange}
+        onConfirm={handleConfirm}
+        onCancel={onCancel}
+        hideCancel
+        hideConfirm
+        submitRef={submitRef}
+      >
+        <div className="mb-5 mt-8">
+          <PasswordReauthInline
+            onSubmit={() => submitRef.current?.()}
+            submitLabel="Confirm reconcile"
+          />
+        </div>
+      </CashCountingForm>
+    </div>
   );
 });
 

@@ -2,7 +2,7 @@ import { memo, type ReactElement } from "react";
 
 import { Input } from "@acme/design-system";
 
-import DateSelector from "./DateSel";
+import DateSelector from "../common/DateSelector";
 
 interface LoanFiltersProps {
   username: string;
@@ -25,6 +25,7 @@ function LoanFiltersComponent({
         selectedDate={selectedDate}
         onDateChange={onDateChange}
         username={username}
+        calendarColorVariant="warning"
       />
       <div className="flex items-center gap-2">
         <label htmlFor="guestFilter" className="font-semibold">

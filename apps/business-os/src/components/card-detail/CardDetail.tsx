@@ -17,12 +17,7 @@ import { MarkdownContent } from "./MarkdownContent";
 
 interface CardDetailProps {
   card: Card;
-  stageDocs: {
-    factFind?: StageDoc;
-    plan?: StageDoc;
-    build?: StageDoc;
-    reflect?: StageDoc;
-  };
+  stageDocs: StageDoc[];
   business: Business | null;
   currentUser: User;
   history?: CommitHistoryEntry[];
@@ -110,12 +105,7 @@ export function CardDetail({
             </div>
 
             {/* Stage docs */}
-            {(stageDocs.factFind ||
-              stageDocs.plan ||
-              stageDocs.build ||
-              stageDocs.reflect) && (
-              <CardStageDocs stageDocs={stageDocs} cardId={card.ID} />
-            )}
+            {stageDocs.length > 0 && <CardStageDocs stageDocs={stageDocs} />}
 
             {/* History (BOS-28) */}
             {history.length > 0 && (

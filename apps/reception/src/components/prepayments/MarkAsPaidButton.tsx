@@ -2,6 +2,8 @@ import React, { type FC } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 
+import { formatEuro } from "../../utils/format";
+
 interface MarkAsPaidButtonProps {
   bookingRef: string;
   guestId: string;
@@ -43,7 +45,7 @@ const MarkAsPaidButton: FC<MarkAsPaidButtonProps> = ({
       tone="solid"
       size="sm"
     >
-      €{amount.toFixed(2)}
+      {formatEuro(amount)}
     </Button>
   );
 };

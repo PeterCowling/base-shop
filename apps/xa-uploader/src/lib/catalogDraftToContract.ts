@@ -8,9 +8,9 @@ import {
   withAutoCatalogDraftFields,
 } from "@acme/lib/xa";
 
+import type { MediaValidationPolicy } from "./catalogCloudPublish";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
-
-type CurrencyRates = { EUR: number; GBP: number; AUD: number };
+import { type CurrencyRates,DEFAULT_CURRENCY_RATES } from "./currencyRates";
 
 type CatalogBrand = { handle: string; name: string };
 type CatalogCollection = { handle: string; title: string; description?: string };
@@ -94,8 +94,6 @@ type MediaIndexPayload = {
   }>;
 };
 
-type MediaValidationPolicy = "warn" | "strict";
-
 function normalizeNumber(input: unknown): number {
   const parsed = Number(input);
   if (!Number.isFinite(parsed) || parsed < 0) return 0;
@@ -166,29 +164,34 @@ function buildDetails(draft: ReturnType<typeof catalogProductDraftSchema.parse>)
   return Object.keys(out).length > 0 ? out : undefined;
 }
 
-function parseCloudCurrencyRates(): CurrencyRates {
+function parseCloudCurrencyRatesFromEnv(): CurrencyRates {
   const raw = (process.env.XA_UPLOADER_CLOUD_SYNC_CURRENCY_RATES ?? "").trim();
-  if (!raw) return { EUR: 1, GBP: 1, AUD: 1 };
+  if (!raw) return DEFAULT_CURRENCY_RATES;
   try {
     const parsed = JSON.parse(raw) as { EUR?: number; GBP?: number; AUD?: number };
     const EUR = Number(parsed.EUR);
     const GBP = Number(parsed.GBP);
     const AUD = Number(parsed.AUD);
     if (![EUR, GBP, AUD].every((rate) => Number.isFinite(rate) && rate > 0)) {
-      return { EUR: 1, GBP: 1, AUD: 1 };
+      return DEFAULT_CURRENCY_RATES;
     }
     return { EUR, GBP, AUD };
   } catch {
-    return { EUR: 1, GBP: 1, AUD: 1 };
+    return DEFAULT_CURRENCY_RATES;
   }
 }
 
+const FALLBACK_CURRENCY_RATES = parseCloudCurrencyRatesFromEnv();
+
+const LEADING_SLASHES_RE = /^\/+/;
+const HTTPS_URL_RE = /^https:\/\//i;
+
 function normalizeCatalogPath(rawPath: string): string {
-  return rawPath.trim().replace(/^\/+/, "");
+  return rawPath.trim().replace(LEADING_SLASHES_RE, "");
 }
 
 function isHttpsUrl(value: string): boolean {
-  return /^https:\/\//i.test(value);
+  return HTTPS_URL_RE.test(value);
 }
 
 function parseAllowedExternalHosts(hosts: string[] | undefined): Set<string> {
@@ -355,6 +358,7 @@ function deriveProductSlug(params: {
 export function buildCatalogArtifactsFromDrafts(params: {
   storefront: XaCatalogStorefront;
   products: CatalogProductDraftInput[];
+  currencyRates?: CurrencyRates;
   strict: boolean;
   mediaValidationPolicy?: MediaValidationPolicy;
   allowedExternalImageHosts?: string[];
@@ -362,7 +366,7 @@ export function buildCatalogArtifactsFromDrafts(params: {
   const mediaValidationPolicy = params.mediaValidationPolicy === "strict" ? "strict" : "warn";
   const allowedExternalHosts = parseAllowedExternalHosts(params.allowedExternalImageHosts);
   const warnings: string[] = [];
-  const rates = parseCloudCurrencyRates();
+  const rates = params.currencyRates ?? FALLBACK_CURRENCY_RATES;
   const seenSlugs = new Set<string>();
   const seenIds = new Set<string>();
   const collectionsByHandle = new Map<string, CatalogCollection>();

@@ -2,6 +2,7 @@ import type { D1Database } from '@acme/platform-core/d1';
 
 import { errorResponse, jsonResponse } from '../lib/firebase-rest';
 import { getPrimeMessagingDb, hasPrimeMessagingDb } from '../lib/prime-messaging-db';
+import { type PrimeReviewStatus,primeReviewStatuses } from '../lib/prime-messaging-repositories';
 import { listPrimeReviewThreadSummaries } from '../lib/prime-review-api';
 import { enforceStaffOwnerApiGate } from '../lib/staff-owner-gate';
 
@@ -31,17 +32,27 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
     return gateResponse;
   }
 
-  const limit = parseLimit(new URL(request.url).searchParams.get('limit'));
+  const url = new URL(request.url);
+  const limit = parseLimit(url.searchParams.get('limit'));
   if (limit === null) {
-    return errorResponse('limit must be an integer between 1 and 200', 400);
+    return errorResponse('limit must be an integer between 1 and 200', 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
+  }
+
+  const rawStatus = url.searchParams.get('status');
+  let statusFilter: PrimeReviewStatus | undefined;
+  if (rawStatus !== null) {
+    if (!(primeReviewStatuses as readonly string[]).includes(rawStatus)) {
+      return errorResponse(`status must be one of: ${primeReviewStatuses.join(', ')}`, 400); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
+    }
+    statusFilter = rawStatus as PrimeReviewStatus;
   }
 
   if (!hasPrimeMessagingDb(env)) {
-    return errorResponse('PRIME_MESSAGING_DB binding is required for Prime review reads', 503);
+    return errorResponse('PRIME_MESSAGING_DB binding is required for Prime review reads', 503); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
   }
 
   try {
-    const threads = await listPrimeReviewThreadSummaries(getPrimeMessagingDb(env), limit);
+    const threads = await listPrimeReviewThreadSummaries(getPrimeMessagingDb(env), limit, statusFilter);
     return jsonResponse({
       success: true,
       data: threads,

@@ -5,6 +5,7 @@ import { updateInventoryItem } from "@acme/platform-core/repositories/inventory.
 import { readRepo } from "@acme/platform-core/repositories/products.server";
 
 import { updateInventorySchema } from "@/lib/adminSchemas";
+import { CARYINA_INVENTORY_BACKEND } from "@/lib/inventoryBackend";
 
 const SHOP = "caryina";
 
@@ -34,19 +35,25 @@ export async function PATCH(request: Request, { params }: RouteContext) {
   const products = await readRepo<ProductLookup>(SHOP);
   const matchingProduct = products.find((product) => product.sku === sku);
 
-  const updated = await updateInventoryItem(SHOP, sku, variantAttributes, (current) => {
-    if (!current) {
-      if (!matchingProduct) return undefined;
-      return {
-        sku,
-        productId: matchingProduct.id,
-        quantity,
-        variantAttributes,
-      } satisfies InventoryItem;
-    }
+  const updated = await updateInventoryItem(
+    SHOP,
+    sku,
+    variantAttributes,
+    (current) => {
+      if (!current) {
+        if (!matchingProduct) return undefined;
+        return {
+          sku,
+          productId: matchingProduct.id,
+          quantity,
+          variantAttributes,
+        } satisfies InventoryItem;
+      }
 
-    return { ...current, quantity } satisfies InventoryItem;
-  });
+      return { ...current, quantity } satisfies InventoryItem;
+    },
+    { backend: CARYINA_INVENTORY_BACKEND },
+  );
 
   if (!updated) {
     return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });

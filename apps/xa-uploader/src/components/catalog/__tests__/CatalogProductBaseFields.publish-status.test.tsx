@@ -73,21 +73,29 @@ const BASE_DRAFT: CatalogProductDraftInput = {
   },
 };
 
-describe("CatalogProductBaseFields — StatusSelect (TASK-03 TC-04)", () => {
-  it("TC-04: StatusSelect has draft and out_of_stock options but no live option", () => {
+describe("CatalogProductBaseFields — brand and collection selectors", () => {
+  it("renders registry-backed brand and collection selectors for recognized drafts", () => {
     render(
       <CatalogProductBaseFields
         selectedSlug="studio-jacket"
-        draft={BASE_DRAFT}
+        draft={{
+          ...BASE_DRAFT,
+          brandHandle: "hermes",
+          brandName: "Hermes",
+          collectionHandle: "kelly",
+          collectionTitle: "Kelly",
+        }}
         fieldErrors={{}}
         sections={["identity", "taxonomy"]}
         onChange={jest.fn()}
       />,
     );
 
+    expect(screen.getByTestId("catalog-field-brand-select")).toHaveValue("hermes");
+    expect(screen.getByTestId("catalog-field-collection-select")).toHaveValue("kelly");
     const options = screen.queryAllByRole("option").map((opt) => (opt as HTMLOptionElement).value);
-    expect(options).toContain("draft");
-    expect(options).toContain("out_of_stock");
+    expect(options).toContain("hermes");
+    expect(options).toContain("kelly");
     expect(options).not.toContain("live");
   });
 

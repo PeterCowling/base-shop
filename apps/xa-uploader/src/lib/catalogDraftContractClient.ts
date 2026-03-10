@@ -7,7 +7,10 @@ import {
   withAutoCatalogDraftFields,
 } from "@acme/lib/xa";
 
+import { resolveContractRoot } from "./catalogContractUtils";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
+import { type CurrencyRates,parseCurrencyRatesOrNull } from "./currencyRates";
+import { isRecord } from "./typeGuards";
 
 export interface CatalogContractServiceBinding {
   fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
@@ -53,67 +56,43 @@ export class CatalogDraftConflictError extends Error {
   override name = "CatalogDraftConflictError";
 }
 
-function getCatalogContractBaseUrl(): string {
-  return (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
+const CATALOG_CONTRACT_BASE_URL = (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
+const CATALOG_CONTRACT_WRITE_TOKEN = (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
+const CATALOG_CONTRACT_READ_TOKEN = (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
+
+
+function buildContractUrl(pathname: string): string {
+  const baseUrl = CATALOG_CONTRACT_BASE_URL;
+  if (!baseUrl) {
+    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
+  }
+  let root: URL;
+  try {
+    root = resolveContractRoot(baseUrl);
+  } catch {
+    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.");
+  }
+  return new URL(pathname, root).toString();
 }
 
-function getCatalogContractWriteToken(): string {
-  return (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
-}
-
-function getCatalogContractReadToken(): string {
-  return (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
-}
-
-function ensureTrailingSlash(value: string): string {
-  return value.endsWith("/") ? value : `${value}/`;
-}
-
-const CONTRACT_ROUTE_ROOT_SEGMENTS = new Set(["catalog", "drafts", "deploy", "upload"]);
-
-function resolveContractRoot(baseUrl: string): URL {
-  const base = new URL(ensureTrailingSlash(baseUrl));
-  const segments = base.pathname.split("/").filter(Boolean);
-  const routeRootIndex = segments.findIndex((segment) => CONTRACT_ROUTE_ROOT_SEGMENTS.has(segment));
-  const rootSegments = routeRootIndex < 0 ? segments : segments.slice(0, routeRootIndex);
-  base.pathname = rootSegments.length > 0 ? `/${rootSegments.join("/")}/` : "/";
-  base.search = "";
-  base.hash = "";
-  return base;
+function buildDraftUrl(storefront: XaCatalogStorefront, suffix = ""): string {
+  return buildContractUrl(`drafts/${encodeURIComponent(storefront)}${suffix}`);
 }
 
 function resolveDraftUrl(storefront: XaCatalogStorefront): string {
-  const baseUrl = getCatalogContractBaseUrl();
-  if (!baseUrl) {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
-  }
-
-  let root: URL;
-  try {
-    root = resolveContractRoot(baseUrl);
-  } catch {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.");
-  }
-  return new URL(`drafts/${encodeURIComponent(storefront)}`, root).toString();
+  return buildDraftUrl(storefront);
 }
 
 function resolveDraftSyncLockUrl(storefront: XaCatalogStorefront): string {
-  const baseUrl = getCatalogContractBaseUrl();
-  if (!baseUrl) {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
-  }
+  return buildDraftUrl(storefront, "/sync-lock");
+}
 
-  let root: URL;
-  try {
-    root = resolveContractRoot(baseUrl);
-  } catch {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.");
-  }
-  return new URL(`drafts/${encodeURIComponent(storefront)}/sync-lock`, root).toString();
+function resolveCurrencyRatesUrl(storefront: XaCatalogStorefront): string {
+  return buildContractUrl(`currency-rates/${encodeURIComponent(storefront)}`);
 }
 
 function getWriteTokenHeader(): Record<string, string> {
-  const writeToken = getCatalogContractWriteToken();
+  const writeToken = CATALOG_CONTRACT_WRITE_TOKEN;
   if (!writeToken) {
     throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_WRITE_TOKEN is not configured.");
   }
@@ -121,12 +100,12 @@ function getWriteTokenHeader(): Record<string, string> {
 }
 
 function getReadTokenHeader(): Record<string, string> {
-  const readToken = getCatalogContractReadToken();
+  const readToken = CATALOG_CONTRACT_READ_TOKEN;
   if (readToken) {
     return { "X-XA-Catalog-Token": readToken };
   }
 
-  const writeToken = getCatalogContractWriteToken();
+  const writeToken = CATALOG_CONTRACT_WRITE_TOKEN;
   if (writeToken) {
     return { "X-XA-Catalog-Token": writeToken };
   }
@@ -138,7 +117,7 @@ function getReadTokenHeader(): Record<string, string> {
 }
 
 function parseSnapshotPayload(payload: unknown): CloudDraftSnapshot {
-  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+  if (!isRecord(payload)) {
     throw new CatalogDraftContractError("invalid_response", "Draft contract returned invalid payload.");
   }
   const record = payload as {
@@ -202,8 +181,32 @@ function parseOptionalString(value: unknown): string | null {
   return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
+function parseCurrencyRatesPayload(payload: unknown): CurrencyRates | null {
+  if (!isRecord(payload)) {
+    throw new CatalogDraftContractError("invalid_response", "Currency rates contract returned invalid payload.");
+  }
+
+  if (payload.rates === null) {
+    return null;
+  }
+
+  const rates = parseCurrencyRatesOrNull(payload.rates);
+  if (!rates) {
+    throw new CatalogDraftContractError(
+      "invalid_response",
+      "Currency rates contract returned invalid rates payload.",
+    );
+  }
+
+  return rates;
+}
+
 function createRevision(): string {
-  return crypto.randomUUID().replace(/-/g, "");
+  return crypto.randomUUID().replaceAll("-", "");
+}
+
+function getProductNormalizedSlug(product: Pick<CatalogProductDraftInput, "slug" | "title">): string {
+  return slugify(product.slug || product.title);
 }
 
 function sanitizeContractEndpoint(value: string): string {
@@ -410,6 +413,59 @@ export async function deleteCloudDraftSnapshot(
   }
 }
 
+export async function readCloudCurrencyRates(
+  storefront: XaCatalogStorefront,
+): Promise<CurrencyRates | null> {
+  const url = resolveCurrencyRatesUrl(storefront);
+  const response = await requestCatalogContract(url, {
+    method: "GET",
+    headers: {
+      ...getReadTokenHeader(),
+    },
+  });
+
+  const payload = await response.json().catch(() => null);
+  if (response.status === 409) {
+    throw new CatalogDraftContractError("invalid_response", "Stored currency rates are invalid.", {
+      status: 409,
+      endpoint: sanitizeContractEndpoint(url),
+    });
+  }
+  if (!response.ok) {
+    throw new CatalogDraftContractError("request_failed", "Failed to read currency rates contract.", {
+      status: response.status,
+      endpoint: sanitizeContractEndpoint(url),
+    });
+  }
+
+  return parseCurrencyRatesPayload(payload);
+}
+
+export async function writeCloudCurrencyRates(params: {
+  storefront: XaCatalogStorefront;
+  rates: CurrencyRates;
+}): Promise<void> {
+  const url = resolveCurrencyRatesUrl(params.storefront);
+  const response = await requestCatalogContract(url, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      ...getWriteTokenHeader(),
+    },
+    body: JSON.stringify({
+      storefront: params.storefront,
+      rates: params.rates,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new CatalogDraftContractError("request_failed", "Failed to write currency rates contract.", {
+      status: response.status,
+      endpoint: sanitizeContractEndpoint(url),
+    });
+  }
+}
+
 export function upsertProductInCloudSnapshot(params: {
   product: CatalogProductDraftInput;
   ifMatch?: string;
@@ -421,7 +477,7 @@ export function upsertProductInCloudSnapshot(params: {
   revisionsById: Record<string, string>;
 } {
   const parsed = catalogProductDraftSchema.parse(params.product);
-  const normalizedSlug = slugify(parsed.slug || parsed.title);
+  const normalizedSlug = getProductNormalizedSlug(parsed);
   if (!normalizedSlug) {
     throw new Error("Product id \"\" is invalid.");
   }
@@ -439,7 +495,7 @@ export function upsertProductInCloudSnapshot(params: {
 
   const duplicateSlug = products.some((entry, index) => {
     if (index === existingIndex) return false;
-    return slugify(entry.slug || entry.title) === normalizedSlug;
+    return getProductNormalizedSlug(entry) === normalizedSlug;
   });
   if (duplicateSlug) {
     throw new Error(`Duplicate product slug "${normalizedSlug}".`);
@@ -467,6 +523,51 @@ export function upsertProductInCloudSnapshot(params: {
   };
 }
 
+export function upsertProductsInCloudSnapshot(params: {
+  products: CatalogProductDraftInput[];
+  snapshot: CloudDraftSnapshot;
+}): { products: CatalogProductDraftInput[]; revisionsById: Record<string, string> } {
+  const nextProducts = [...params.snapshot.products];
+  const nextRevisions = { ...params.snapshot.revisionsById };
+
+  const idToIndex = new Map<string, number>();
+  const slugToIndex = new Map<string, number>();
+  for (const [i, p] of nextProducts.entries()) {
+    const pid = (p.id ?? "").trim();
+    if (pid) idToIndex.set(pid, i);
+    const slug = getProductNormalizedSlug(p);
+    if (slug) slugToIndex.set(slug, i);
+  }
+
+  for (const input of params.products) {
+    const parsed = catalogProductDraftSchema.parse(input);
+    const normalizedSlug = getProductNormalizedSlug(parsed);
+    if (!normalizedSlug) {
+      throw new Error(`Product "${parsed.id ?? ""}" has an invalid slug.`);
+    }
+
+    const id = (parsed.id ?? "").trim() || crypto.randomUUID();
+    const nextProduct: CatalogProductDraftInput = { ...parsed, id, slug: normalizedSlug };
+
+    const existingIndex = idToIndex.get(id) ?? -1;
+    const slugIndex = slugToIndex.get(normalizedSlug) ?? -1;
+    if (slugIndex >= 0 && slugIndex !== existingIndex) {
+      throw new Error(`Duplicate product slug "${normalizedSlug}".`);
+    }
+
+    if (existingIndex >= 0) {
+      nextProducts[existingIndex] = nextProduct;
+    } else {
+      nextProducts.push(nextProduct);
+      idToIndex.set(id, nextProducts.length - 1);
+    }
+    slugToIndex.set(normalizedSlug, existingIndex >= 0 ? existingIndex : nextProducts.length - 1);
+    nextRevisions[id] = createRevision();
+  }
+
+  return { products: nextProducts, revisionsById: nextRevisions };
+}
+
 export function deleteProductFromCloudSnapshot(params: {
   slug: string;
   snapshot: CloudDraftSnapshot;
@@ -478,7 +579,7 @@ export function deleteProductFromCloudSnapshot(params: {
   const normalizedSlug = slugify(params.slug);
   const products = [...params.snapshot.products];
   const index = products.findIndex(
-    (entry) => slugify(entry.slug || entry.title) === normalizedSlug,
+    (entry) => getProductNormalizedSlug(entry) === normalizedSlug,
   );
 
   if (index < 0) {

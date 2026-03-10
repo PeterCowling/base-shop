@@ -11,6 +11,7 @@ import {
   XA_CATALOG_STOREFRONTS,
 } from "../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
+import { sleep } from "../../lib/typeGuards";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import {
@@ -32,6 +33,7 @@ import {
 import {
   type ActionFeedback,
   type ActionFeedbackState,
+  type AutosaveStatus,
   type CatalogListResponse,
   createInitialActionFeedbackState,
   errorToMessage,
@@ -59,7 +61,6 @@ type SyncReadinessState = {
   contractConfigErrors: string[];
 };
 
-type AutosaveStatus = "saving" | "saved" | "unsaved";
 
 function getUploaderRuntimeConfig(): {
   uploaderMode: "vendor" | "internal";
@@ -143,19 +144,14 @@ async function loadCatalogFromServer(params: {
   return data;
 }
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
 
 async function waitForBusyToClear(
   busyLockRef: React.MutableRefObject<boolean>,
-  maxAttempts = 250,
+  maxAttempts = 80,
 ): Promise<void> {
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     if (!busyLockRef.current) return;
-    await sleep(16);
+    await sleep(50);
   }
 }
 
@@ -445,6 +441,28 @@ function resetAutosaveAndBaseline(state: CatalogConsoleState): void {
   state.draftImageBaselineRef.current = null;
 }
 
+function applySelectedProduct(
+  state: CatalogConsoleState,
+  product: CatalogProductDraftInput,
+  options: { resetAutosave: boolean },
+): void {
+  if (options.resetAutosave) {
+    state.resetAutosaveState();
+  }
+  const normalizedProduct = withDraftDefaults(product);
+  state.draftImageBaselineRef.current = normalizedProduct;
+  handleSelectImpl({
+    product: normalizedProduct,
+    revisionsById: state.revisionsById,
+    setSelectedSlug: state.setSelectedSlug,
+    setDraft: state.setDraft,
+    setDraftRevision: state.setDraftRevision,
+    setFieldErrors: state.setFieldErrors,
+    setActionFeedback: state.setActionFeedback,
+    setSyncOutput: state.setSyncOutput,
+  });
+}
+
 function applyAutosaveQueueSaveSuccess(
   state: CatalogConsoleState,
   result: Extract<SaveResult, { status: "saved" }>,
@@ -581,26 +599,25 @@ function useCatalogAuthHandlers(state: CatalogConsoleState) {
       loadSession: state.loadSession,
     });
 
-  const handleLogout = async () =>
-    (() => {
-      resetAutosaveAndBaseline(state);
-      return handleLogoutImpl({
-        uploaderMode: state.uploaderMode,
-        t: state.t,
-        busyLockRef: state.busyLockRef,
-        setBusy: state.setBusy,
-        setActionFeedback: state.setActionFeedback,
-        setSession: state.setSession,
-        setProducts: state.setProducts,
-        setRevisionsById: state.setRevisionsById,
-        setSelectedSlug: state.setSelectedSlug,
-        setDraft: state.setDraft,
-        setDraftRevision: state.setDraftRevision,
-        setFieldErrors: state.setFieldErrors,
-        setSyncOutput: state.setSyncOutput,
-        defaultCategory: state.storefrontConfig.defaultCategory,
-      });
-    })();
+  const handleLogout = async () => {
+    resetAutosaveAndBaseline(state);
+    return handleLogoutImpl({
+      uploaderMode: state.uploaderMode,
+      t: state.t,
+      busyLockRef: state.busyLockRef,
+      setBusy: state.setBusy,
+      setActionFeedback: state.setActionFeedback,
+      setSession: state.setSession,
+      setProducts: state.setProducts,
+      setRevisionsById: state.setRevisionsById,
+      setSelectedSlug: state.setSelectedSlug,
+      setDraft: state.setDraft,
+      setDraftRevision: state.setDraftRevision,
+      setFieldErrors: state.setFieldErrors,
+      setSyncOutput: state.setSyncOutput,
+      defaultCategory: state.storefrontConfig.defaultCategory,
+    });
+  };
 
   return { handleLogin, handleLogout };
 }
@@ -615,21 +632,20 @@ function createSaveAdvanceFeedbackHandler(state: CatalogConsoleState) {
 }
 
 function createDeleteHandler(state: CatalogConsoleState, handleNew: () => void) {
-  return async () =>
-    (() => {
-      resetAutosaveAndBaseline(state);
-      return handleDeleteImpl({
-        selectedSlug: state.selectedSlug,
-        locale: state.locale,
-        storefront: state.storefront,
-        t: state.t,
-        busyLockRef: state.busyLockRef,
-        setBusy: state.setBusy,
-        setActionFeedback: state.setActionFeedback,
-        loadCatalog: state.loadCatalog,
-        handleNew,
-      });
-    })();
+  return async () => {
+    resetAutosaveAndBaseline(state);
+    return handleDeleteImpl({
+      selectedSlug: state.selectedSlug,
+      locale: state.locale,
+      storefront: state.storefront,
+      t: state.t,
+      busyLockRef: state.busyLockRef,
+      setBusy: state.setBusy,
+      setActionFeedback: state.setActionFeedback,
+      loadCatalog: state.loadCatalog,
+      handleNew,
+    });
+  };
 }
 
 function useCatalogDraftHandlers(
@@ -640,12 +656,25 @@ function useCatalogDraftHandlers(
   const triggerAutosync = createAutosyncTrigger(state, handleAutosync);
 
   const handleSelect = (product: CatalogProductDraftInput) => {
-    state.resetAutosaveState();
-    const normalizedProduct = withDraftDefaults(product);
-    state.draftImageBaselineRef.current = normalizedProduct;
-    handleSelectImpl({
-      product: normalizedProduct,
-      revisionsById: state.revisionsById,
+    applySelectedProduct(state, product, {
+      resetAutosave: true,
+    });
+  };
+
+  const handleSelectAfterSave = (product: CatalogProductDraftInput) => {
+    applySelectedProduct(state, product, {
+      resetAutosave: false,
+    });
+  };
+
+  const handleNew = () => {
+    resetAutosaveAndBaseline(state);
+    handleNewImpl({
+      defaultCategory: state.storefrontConfig.defaultCategory,
+      preservedBrand: {
+        brandHandle: state.draft.brandHandle,
+        brandName: state.draft.brandName,
+      },
       setSelectedSlug: state.setSelectedSlug,
       setDraft: state.setDraft,
       setDraftRevision: state.setDraftRevision,
@@ -655,42 +684,23 @@ function useCatalogDraftHandlers(
     });
   };
 
-  const handleNew = () =>
-    (() => {
-      resetAutosaveAndBaseline(state);
-      handleNewImpl({
-        defaultCategory: state.storefrontConfig.defaultCategory,
-        preservedBrand: {
-          brandHandle: state.draft.brandHandle,
-          brandName: state.draft.brandName,
-        },
-        setSelectedSlug: state.setSelectedSlug,
-        setDraft: state.setDraft,
-        setDraftRevision: state.setDraftRevision,
-        setFieldErrors: state.setFieldErrors,
-        setActionFeedback: state.setActionFeedback,
-        setSyncOutput: state.setSyncOutput,
-      });
-    })();
-
-  const handleStorefrontChange = (next: XaCatalogStorefront) =>
-    (() => {
-      resetAutosaveAndBaseline(state);
-      state.setLastSyncData(null);
-      handleStorefrontChangeImpl({
-        nextStorefront: next,
-        currentStorefront: state.storefront,
-        setStorefront: state.setStorefront,
-        setProducts: state.setProducts,
-        setRevisionsById: state.setRevisionsById,
-        setSelectedSlug: state.setSelectedSlug,
-        setDraft: state.setDraft,
-        setDraftRevision: state.setDraftRevision,
-        setFieldErrors: state.setFieldErrors,
-        setActionFeedback: state.setActionFeedback,
-        setSyncOutput: state.setSyncOutput,
-      });
-    })();
+  const handleStorefrontChange = (next: XaCatalogStorefront) => {
+    resetAutosaveAndBaseline(state);
+    state.setLastSyncData(null);
+    handleStorefrontChangeImpl({
+      nextStorefront: next,
+      currentStorefront: state.storefront,
+      setStorefront: state.setStorefront,
+      setProducts: state.setProducts,
+      setRevisionsById: state.setRevisionsById,
+      setSelectedSlug: state.setSelectedSlug,
+      setDraft: state.setDraft,
+      setDraftRevision: state.setDraftRevision,
+      setFieldErrors: state.setFieldErrors,
+      setActionFeedback: state.setActionFeedback,
+      setSyncOutput: state.setSyncOutput,
+    });
+  };
 
   async function flushAutosaveQueue(): Promise<void> {
     if (state.autosaveFlushInProgressRef.current) return;
@@ -717,7 +727,7 @@ function useCatalogDraftHandlers(
           draftRevision: workingRevision,
           suppressSuccessFeedback: true,
           confirmUnpublish: () => false,
-          handleSelect,
+          handleSelect: handleSelectAfterSave,
         });
 
         if (firstAttempt.status === "saved") {
@@ -737,7 +747,7 @@ function useCatalogDraftHandlers(
           const retryResult = await retryAutosaveAfterConflict({
             state,
             pendingDraft,
-            handleSelect,
+            handleSelect: handleSelectAfterSave,
           });
 
           if (retryResult.status === "saved") {
@@ -793,7 +803,7 @@ function useCatalogDraftHandlers(
       draftRevision: state.draftRevision,
       suppressSuccessFeedback: false,
       confirmUnpublish: (message: string) => window.confirm(message),
-      handleSelect,
+      handleSelect: handleSelectAfterSave,
     });
 
     if (result.status === "busy") {
@@ -804,7 +814,7 @@ function useCatalogDraftHandlers(
         draftRevision: state.draftRevision,
         suppressSuccessFeedback: false,
         confirmUnpublish: (message: string) => window.confirm(message),
-        handleSelect,
+        handleSelect: handleSelectAfterSave,
       });
     }
 
@@ -848,9 +858,28 @@ function useCatalogDraftHandlers(
 function useCatalogPublishHandlers(state: CatalogConsoleState) {
   const handlePublish = async (
     publishState: "live" | "out_of_stock" = "live",
-  ): Promise<PublishResult> =>
-    handlePublishImpl({
-      draft: state.draft,
+  ): Promise<PublishResult> => {
+    if (state.isAutosaveDirty || state.isAutosaveSaving) {
+      updateActionFeedback(state.setActionFeedback, "draft", {
+        kind: "error",
+        message: state.t("publishBlockedAutosavePending"),
+      });
+      return { status: "error", error: state.t("publishBlockedAutosavePending") };
+    }
+
+    const draftId = (state.draft.id ?? "").trim();
+    const draftRevision = (state.draftRevision ?? "").trim();
+    if (!draftId || !draftRevision) {
+      updateActionFeedback(state.setActionFeedback, "draft", {
+        kind: "error",
+        message: state.t("publishBlockedSaveRequired"),
+      });
+      return { status: "error", error: state.t("publishBlockedSaveRequired") };
+    }
+
+    return await handlePublishImpl({
+      draftId,
+      draftRevision,
       publishState,
       storefront: state.storefront,
       t: state.t,
@@ -859,6 +888,7 @@ function useCatalogPublishHandlers(state: CatalogConsoleState) {
       setActionFeedback: state.setActionFeedback,
       loadCatalog: state.loadCatalog,
     });
+  };
 
   return { handlePublish };
 }

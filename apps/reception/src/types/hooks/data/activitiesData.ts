@@ -1,10 +1,20 @@
 /* src/types/hooks/data/activitiesData.ts */
 
-export interface Activity {
-  code: number;
-  timestamp?: string;
-  who: string;
-}
+import type { z } from "zod";
+
+import type { activitySchema } from "../../../schemas/activitySchema";
+
+/**
+ * A single activity record stored under an occupant.
+ *
+ * Example:
+ *   {
+ *     code: 1,
+ *     timestamp: "2024-02-19T08:00:00.000Z",
+ *     who: "System"
+ *   }
+ */
+export type Activity = z.infer<typeof activitySchema>;
 
 /**
  * A map of activityId -> Activity record.

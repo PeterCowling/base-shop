@@ -1,0 +1,23 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-10T11:40:12.905Z",
+  "plan_slug": "meta-loop-efficiency-h4-h5",
+  "review_cycle_key": "meta-loop-efficiency-h4-h5",
+  "source_path": "docs/plans/meta-loop-efficiency-h4-h5/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": [
+    {
+      "canonical_title": "require executable audit coverage before new heuristics graduate from skill prose",
+      "pattern_summary": "New loop process — require executable audit coverage before new heuristics graduate from skill prose",
+      "category": "deterministic",
+      "routing_target": "defer",
+      "occurrence_count": 1,
+      "evidence_refs": [],
+      "review_cycle_key": "meta-loop-efficiency-h4-h5",
+      "build_signal_id": "2714dcba92e63801bc068b59f9d38002d292542a",
+      "recurrence_key": "74030f072ad5612047160ccef3f5294c07906f2d",
+      "build_origin_status": "ready"
+    }
+  ]
+}

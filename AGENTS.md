@@ -16,6 +16,7 @@ This is the universal runbook for AI agents (Claude, Codex, etc.) working in Bas
 This applies to all decisions: architecture, implementation, testing, error handling, naming, documentation. When faced with a choice between "quick fix" and "proper solution," choose the proper solution.
 
 Examples of prohibited shortcuts:
+
 - Suppressing type errors instead of fixing root causes
 - Skipping tests to ship faster
 - Copy-pasting code instead of extracting shared logic
@@ -62,13 +63,15 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
 
 - **No worktrees.** Base-Shop runs with a single checkout to avoid cross-worktree confusion.
 - **Single writer.** With 1 human + up to 10 agents, only one process may write at a time.
-  - Start an “integrator shell” before editing, committing, or pushing: `scripts/agents/integrator-shell.sh -- codex`
-  - For long read-only discovery/planning/dry-run sessions, use guard-only mode (no writer lock): `scripts/agents/integrator-shell.sh --read-only -- codex`
-  - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
+  - Use the integrator wrapper before editing, committing, or pushing; choose the narrowest mode that fits the work.
+  - For long read-only discovery/planning/dry-run sessions, use guard-only mode (no writer lock): `scripts/agents/integrator-shell.sh --read-only -- <agent-cli>` (for example `codex` or `claude`)
+  - For long-lived agent CLI sessions that will edit files directly in the shared checkout, opt in explicitly: `scripts/agents/integrator-shell.sh --agent-write-session -- <agent-cli>`
+  - For the low-level wrapper, the same rule applies: `scripts/agents/with-writer-lock.sh --agent-write-session -- <agent-cli>` for rare locked agent sessions, or `scripts/agents/with-writer-lock.sh --interactive-shell` for a rare locked interactive shell
+  - Command-mode interactive shells are forbidden: do not use `scripts/agents/integrator-shell.sh -- bash` or `scripts/agents/with-writer-lock.sh -- bash` to simulate a write session. Use `--interactive-write-shell` / `--interactive-shell` only for rare bounded repairs, then exit immediately after the serialized write window closes.
   - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
     - Wait mode is FIFO queue-ordered (first-come, first-served). In non-interactive agent runs, waiting is **poll-based** (**30s** checks) and **hard-stops after 5 minutes** with an error so the agent can report the issue (stale locks are auto-cleaned only when PID is dead on this host).
-  - **Lock scope rule:** hold the writer lock only for actual git writes and other serialized repo mutations that must not overlap (for example staged commits, queue-state writes, or a short-lived temporary tree mutation that must be restored before another writer enters).
+  - **Lock scope rule:** hold the writer lock only while the shared checkout may still be mutated by actual git writes or other serialized repo mutations that must not overlap (for example staged commits, queue-state writes, a short-lived temporary tree mutation that must be restored before another writer enters, or an explicit `--agent-write-session` that edits files directly in the shared checkout).
   - **Do not hold the lock across long non-writing work** once the required repo mutation is complete. `pnpm build`, validation reads, artifact verification, and `wrangler` deploys should run outside the lock after the artifact or write phase is prepared.
   - **Read-only default:** discovery, planning, audits, dry-runs, and other non-writing shell work should stay in `scripts/agents/integrator-shell.sh --read-only -- <command>` unless they are about to perform a serialized repo mutation.
   - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
@@ -79,10 +82,10 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
     - `scripts/agents/with-writer-lock.sh -- <git-write-command>` (or `scripts/agents/integrator-shell.sh -- <command>`)
     - If the holder PID is live and running a long external command (for example a deploy), have the owner end that command cleanly and let the lock release normally. Do not force-release a live holder first.
   - Agents must not use `SKIP_WRITER_LOCK=1`; fix lock state instead
-- **Branch flow:** `dev` → `staging` → `main`
+- **Branch flow:** `dev` → `main` (release path), with `staging` available separately for user testing
   - Commit locally on `dev`
-  - Ship `dev` to staging (PR + auto-merge): `scripts/git/ship-to-staging.sh`
-  - Promote `staging` to production (PR + auto-merge): `scripts/git/promote-to-main.sh`
+  - Ship any working branch to `staging` for user testing (PR + auto-merge): `scripts/git/ship-to-staging.sh`
+  - Promote `dev` to production via `main` (PR + auto-merge): `scripts/git/promote-to-main.sh`
 - **Commit every 30 minutes** or after completing any significant change
 - **Push `dev` every 2 hours** (or every 3 commits) — GitHub is your backup
 - **Codex attribution:** include `Co-Authored-By: Codex <noreply@openai.com>` in Codex-authored commits
@@ -167,6 +170,7 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 **Feature workflow**: `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build` → `/lp-do-replan` (when tasks are below execution threshold, blocked, or scope shifts)
 
 **Idea generation**: `/lp-do-idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-do-fact-find docs. Feeds into the feature workflow above.
+
 - Full pipeline: `/lp-do-idea-generate` → `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build`
 - Spec: `.claude/skills/idea-generate/SKILL.md`
 - Stances: `--stance=improve-data` (default) or `--stance=grow-business` (activates traction mode for market-facing L1-L2 businesses)
@@ -288,7 +292,7 @@ If any required section above is missing, the instructions are incomplete.
 - **Completed plans** keep `Status: Complete`; they may remain in place or be moved to `docs/plans/archive/` as storage policy, while keeping `Status: Complete`.
 - **Superseded plans** live in `docs/historical/plans/` (or the domain’s historical directory).
 - **When superseding a plan (v2, rewrites, etc.)**
-  - Prefer keeping the *canonical* plan path stable (create the new plan under the original name in `docs/plans/`).
+  - Prefer keeping the _canonical_ plan path stable (create the new plan under the original name in `docs/plans/`).
   - Move the prior plan to `docs/historical/plans/` and update its header to `Status: Superseded`.
   - Add a forward pointer in the superseded plan header: `Superseded-by: <path-to-new-plan>`.
   - If you must disambiguate filenames, append a date (preferred) like `-superseded-YYYY-MM-DD` rather than adding `-v2` to the current plan.
@@ -315,8 +319,8 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 ## Pull Requests & CI
 
 - PRs are pipeline artifacts:
-  - `dev` → `staging` is shipped via PR + auto-merge (`scripts/git/ship-to-staging.sh`).
-  - `staging` → `main` is promoted via PR + auto-merge (`scripts/git/promote-to-main.sh`).
+  - `dev` → `main` is shipped via PR + auto-merge (`scripts/git/promote-to-main.sh`).
+  - `staging` is an optional user-testing branch shipped separately via PR + auto-merge (`scripts/git/ship-to-staging.sh`).
 - Keep PR green and mergeable — fix CI failures promptly
 - **Never merge directly to `main`** — always use PR workflow
 - All CI checks must pass before auto-merge
@@ -337,12 +341,14 @@ Base-Shop supports multiple agents working concurrently. The writer lock system 
 - **Normal operation:** Pull the latest changes with `git fetch origin && git pull --ff-only origin dev` before starting work
 
 When to STOP and ask:
+
 - Git state is internally inconsistent (conflicts, detached HEAD, corrupt objects)
 - You're asked to perform work that conflicts with visible uncommitted changes
 - Merge conflicts appear that you cannot safely resolve
-- Branch structure doesn't match expected flow (`dev -> staging -> main`)
+- Branch structure doesn't match expected flow (`dev -> main`, with optional branch -> `staging` user-test PRs)
 
 When to proceed normally:
+
 - Files exist that you didn't create (other agents' work)
 - Recent commits from other agents on `dev`
 - Untracked files outside your work scope
@@ -350,6 +356,7 @@ When to proceed normally:
 - Files deleted, moved, or renamed by another agent that you were **not** working on
 
 Prompting policy for shared worktrees:
+
 - Do **not** pause to ask for confirmation solely because unrelated/untracked files appeared.
 - Do **not** pause to ask for confirmation because files you were **not** working on were deleted or moved by another agent. Stay calm and proceed.
 - Continue by default and keep your commit scope limited to files required for the current task.

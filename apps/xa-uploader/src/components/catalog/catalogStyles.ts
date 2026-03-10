@@ -31,6 +31,10 @@ export const BTN_SECONDARY_CLASS =
 export const BTN_ACCENT_OUTLINE_CLASS =
   "rounded-md border border-gate-accent px-3 py-2 text-xs uppercase tracking-label text-gate-accent transition hover:bg-gate-accent-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";
 
+/** Success/confirmed action (saved state) */
+export const BTN_SUCCESS_CLASS =
+  "rounded-md border border-success-fg bg-success-bg px-4 py-2 text-xs font-semibold uppercase tracking-label text-success-fg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-success-fg focus-visible:ring-offset-2";
+
 /** Danger/destructive action */
 export const BTN_DANGER_CLASS =
   "rounded-md border border-danger px-3 py-1 text-xs uppercase tracking-label text-danger-fg transition hover:bg-danger-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60";

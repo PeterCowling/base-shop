@@ -1,17 +1,18 @@
-import fs from "node:fs/promises";
-import path from "node:path";
-
 import { NextResponse } from "next/server";
 
-import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
-import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
-import { resolveRepoRoot } from "../../../../lib/repoRoot";
-import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
+import {
+  CatalogDraftContractError,
+  readCloudCurrencyRates,
+  writeCloudCurrencyRates,
+} from "../../../../lib/catalogDraftContractClient";
+import { DEFAULT_STOREFRONT } from "../../../../lib/catalogStorefront";
+import { validateCurrencyRatesInput } from "../../../../lib/currencyRates";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
+import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
+import { isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
-
-type CurrencyRates = { EUR: number; GBP: number; AUD: number };
 
 type CurrencyRatesBody = {
   rates?: unknown;
@@ -22,15 +23,6 @@ const GET_MAX_REQUESTS = 60;
 const PUT_WINDOW_MS = 60 * 1000;
 const PUT_MAX_REQUESTS = 20;
 const PUT_MAX_BYTES = 4 * 1024;
-const MAX_RATE_VALUE = 1000.0;
-
-const uploaderDataDir = path.join(resolveRepoRoot(), "apps", "xa-uploader", "data");
-const ratesFilePath = path.join(uploaderDataDir, "currency-rates.json");
-
-function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
-  applyRateLimitHeaders(response.headers, limit);
-  return response;
-}
 
 function buildErrorResponse(
   error:
@@ -44,43 +36,6 @@ function buildErrorResponse(
   reason: string,
 ): NextResponse {
   return NextResponse.json({ ok: false, error, reason }, { status });
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
-
-function validateRatesInput(value: unknown): { ok: true; rates: CurrencyRates } | { ok: false; reason: string } {
-  if (!isRecord(value)) {
-    return { ok: false, reason: "rates_must_be_object" };
-  }
-
-  const candidate = {
-    EUR: value.EUR,
-    GBP: value.GBP,
-    AUD: value.AUD,
-  };
-
-  for (const [code, rawValue] of Object.entries(candidate)) {
-    if (typeof rawValue !== "number" || !Number.isFinite(rawValue)) {
-      return { ok: false, reason: `${code}_must_be_finite_number` };
-    }
-    if (rawValue <= 0) {
-      return { ok: false, reason: `${code}_must_be_gt_zero` };
-    }
-    if (rawValue > MAX_RATE_VALUE) {
-      return { ok: false, reason: `${code}_must_be_lte_${MAX_RATE_VALUE}` };
-    }
-  }
-
-  return {
-    ok: true,
-    rates: {
-      EUR: candidate.EUR as number,
-      GBP: candidate.GBP as number,
-      AUD: candidate.AUD as number,
-    },
-  };
 }
 
 export async function GET(request: Request) {
@@ -102,37 +57,20 @@ export async function GET(request: Request) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
 
-  if (!isLocalFsRuntimeEnabled()) {
-    return withRateHeaders(
-      buildErrorResponse("service_unavailable", 503, "currency_rates_local_fs_required"),
-      limit,
-    );
-  }
-
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
-    const raw = await fs.readFile(ratesFilePath, "utf8");
-    try {
-      const parsed = JSON.parse(raw) as unknown;
-      const validated = validateRatesInput(parsed);
-      if (validated.ok === false) {
-        console.warn(`[xa-uploader] currency-rates.json invalid shape: ${validated.reason}`);
-        return withRateHeaders(
-          buildErrorResponse("invalid_rates", 409, "currency_rates_invalid"),
-          limit,
-        );
-      }
-      return withRateHeaders(NextResponse.json({ ok: true, rates: validated.rates }), limit);
-    } catch (error) {
-      console.warn("[xa-uploader] failed to parse currency-rates.json", error);
+    const rates = await readCloudCurrencyRates(DEFAULT_STOREFRONT);
+    return withRateHeaders(NextResponse.json({ ok: true, rates }), limit);
+  } catch (error) {
+    if (error instanceof CatalogDraftContractError) {
+      const isInvalidRates = error.code === "invalid_response";
       return withRateHeaders(
-        buildErrorResponse("invalid_rates", 409, "currency_rates_invalid"),
+        buildErrorResponse(
+          isInvalidRates ? "invalid_rates" : "service_unavailable",
+          isInvalidRates ? 409 : 503,
+          isInvalidRates ? "currency_rates_invalid" : "currency_rates_contract_unavailable",
+        ),
         limit,
       );
-    }
-  } catch (error) {
-    if ((error as NodeJS.ErrnoException | undefined)?.code === "ENOENT") {
-      return withRateHeaders(NextResponse.json({ ok: true, rates: null }), limit);
     }
     return withRateHeaders(buildErrorResponse("internal_error", 500, "currency_rates_read_failed"), limit);
   }
@@ -157,13 +95,6 @@ export async function PUT(request: Request) {
     return withRateHeaders(NextResponse.json({ ok: false }, { status: 404 }), limit);
   }
 
-  if (!isLocalFsRuntimeEnabled()) {
-    return withRateHeaders(
-      buildErrorResponse("service_unavailable", 503, "currency_rates_local_fs_required"),
-      limit,
-    );
-  }
-
   let payload: CurrencyRatesBody;
   try {
     payload = (await readJsonBodyWithLimit(request, PUT_MAX_BYTES)) as CurrencyRatesBody;
@@ -173,9 +104,6 @@ export async function PUT(request: Request) {
         buildErrorResponse("payload_too_large", 413, "payload_too_large"),
         limit,
       );
-    }
-    if (error instanceof InvalidJsonError) {
-      return withRateHeaders(buildErrorResponse("invalid", 400, "invalid_json"), limit);
     }
     return withRateHeaders(buildErrorResponse("invalid", 400, "invalid_json"), limit);
   }
@@ -187,7 +115,7 @@ export async function PUT(request: Request) {
     );
   }
 
-  const validated = validateRatesInput(payload.rates);
+  const validated = validateCurrencyRatesInput(payload.rates);
   if (validated.ok === false) {
     return withRateHeaders(
       buildErrorResponse("invalid_rates", 400, validated.reason),
@@ -195,16 +123,19 @@ export async function PUT(request: Request) {
     );
   }
 
-  const tmpPath = `${ratesFilePath}.tmp`;
   try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
-    await fs.mkdir(uploaderDataDir, { recursive: true });
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
-    await fs.writeFile(tmpPath, `${JSON.stringify(validated.rates, null, 2)}\n`, "utf8");
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled path rooted to repo-local uploader data dir
-    await fs.rename(tmpPath, ratesFilePath);
+    await writeCloudCurrencyRates({
+      storefront: DEFAULT_STOREFRONT,
+      rates: validated.rates,
+    });
     return withRateHeaders(NextResponse.json({ ok: true }), limit);
-  } catch {
+  } catch (error) {
+    if (error instanceof CatalogDraftContractError) {
+      return withRateHeaders(
+        buildErrorResponse("service_unavailable", 503, "currency_rates_contract_unavailable"),
+        limit,
+      );
+    }
     return withRateHeaders(buildErrorResponse("internal_error", 500, "internal_error"), limit);
   }
 }

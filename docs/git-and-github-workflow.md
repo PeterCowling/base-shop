@@ -9,8 +9,8 @@ This repository ships through one release pipeline only:
 
 1. Commit on `dev`
 2. Push `dev`
-3. Auto PR `dev` -> `staging` (label: `pipeline`, auto-merge on green)
-4. Promote `staging` -> `main` (label: `pipeline`, auto-merge on green)
+3. Auto PR `dev` -> `main` (label: `pipeline`, auto-merge on green)
+4. Optionally ship any branch to `staging` for user testing
 
 ## Happy Path (One Change)
 
@@ -44,7 +44,7 @@ Optional local targeted-test pass before push:
 VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh
 ```
 
-### 4) Ship to staging
+### 4) Optional: ship to staging for user testing
 
 ```bash
 scripts/git/ship-to-staging.sh
@@ -53,18 +53,16 @@ scripts/git/ship-to-staging.sh
 ### 5) Promote to production
 
 ```bash
-git fetch origin --prune
-git switch staging
 scripts/git/promote-to-main.sh
 ```
 
 ## What GitHub Does
 
-### Auto PR (`dev` -> `staging`)
+### Auto PR (`dev` -> `main`)
 
 Pushing `dev` triggers `.github/workflows/auto-pr.yml`, which:
 
-- Ensures an open PR from `dev` to `staging`
+- Ensures an open PR from `dev` to `main`
 - Adds the `pipeline` label
 - Enables auto-merge (merge commit)
 
@@ -90,7 +88,7 @@ Use `keep-open` when you intentionally want a PR to stay open while red/inactive
 
 1. Confirm branch is `dev`: `git branch --show-current`
 2. Confirm push succeeded: `git log --oneline origin/dev -n 1`
-3. Check Actions run: `Auto PR (dev → staging)`
+3. Check Actions run: `Auto PR (dev → main)`
 
 ### "Git blocks commit or push"
 
@@ -101,6 +99,8 @@ Hooks are expected to block unsafe operations.
 - Keep the lock scope narrow:
   - Hold it for actual git writes or other serialized repo mutations only.
   - Use `scripts/agents/integrator-shell.sh --read-only -- <command>` for long discovery, planning, audits, and dry-runs.
+  - For long-lived `codex` or `claude` sessions, default to `scripts/agents/integrator-shell.sh --read-only -- <agent-cli>` and use `--agent-write-session` only when the agent must edit the shared checkout directly.
+  - Do not use `scripts/agents/integrator-shell.sh -- bash` or similar command-mode shells to fake a locked session; wrappers reject that path. Use `--interactive-write-shell` only for a rare bounded repair, then exit immediately.
   - Run `pnpm build`, artifact verification, and `wrangler` deploy outside the lock after the artifact is prepared.
 - If `scripts/git/writer-lock.sh status` shows a live holder running a long external command, wait for the owner to exit cleanly or ask them to stop that command cleanly. Do not force-release a live holder first.
 - Follow hook output; do not bypass with `--no-verify`

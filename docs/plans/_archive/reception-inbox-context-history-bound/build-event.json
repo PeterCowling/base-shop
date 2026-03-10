@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-context-history-bound-2026-03-09",
+  "feature_slug": "reception-inbox-context-history-bound",
+  "emitted_at": "2026-03-09T12:00:00.000Z",
+  "why": "Long thread histories can overflow the processing context, producing incomplete or failed drafts for the most complex conversations that need the best responses.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Conversation history passed to draft generation is bounded to prevent context overflow while preserving the most relevant recent messages.",
+    "source": "operator"
+  }
+}

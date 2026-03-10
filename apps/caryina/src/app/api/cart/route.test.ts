@@ -33,7 +33,10 @@ const makeReq = (method: string, body?: unknown) =>
 
 describe("/api/cart route delegation", () => {
   it("initializes factory with caryina shop id", () => {
-    expect(createShopCartApi).toHaveBeenCalledWith({ shop: "caryina" });
+    expect(createShopCartApi).toHaveBeenCalledWith({
+      shop: "caryina",
+      inventoryBackend: "prisma",
+    });
   });
 });
 

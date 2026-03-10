@@ -172,7 +172,7 @@ describe("CatalogProductForm", () => {
     const firstCallProps = catalogProductBaseFieldsMock.mock.calls[0]?.[0] as {
       sections?: string[];
     };
-    expect(firstCallProps.sections).toEqual(["identity", "taxonomy"]);
+    expect(firstCallProps.sections).toEqual(["identity"]);
   });
 });
 

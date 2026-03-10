@@ -192,6 +192,7 @@ export type ValidationResult =
 
 const VALID_STATUSES: ReadonlySet<DispatchStatus> = new Set<DispatchStatus>([
   "fact_find_ready",
+  "plan_ready",
   "micro_build_ready",
   "briefing_ready",
   "auto_executed",
@@ -460,6 +461,7 @@ function resolveAdmissionLane(
 
   if (
     packet.status === "fact_find_ready" ||
+    packet.status === "plan_ready" ||
     packet.status === "micro_build_ready"
   ) {
     return "DO";

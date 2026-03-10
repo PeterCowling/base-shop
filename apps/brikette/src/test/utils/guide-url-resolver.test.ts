@@ -45,12 +45,12 @@ describe("guide URL resolver", () => {
     expect(resolveGuideKeyFromSlug(localizedSlug, "it")).toBe("positanoMainBeach");
   });
 
-  it("keeps legacy English guide aliases resolvable after canonical localization", () => {
+  it("does not invent legacy aliases when the canonical localized slug already preserves the established URL", () => {
     const legacyAlias = guideSlugAliases("ja", "amalfiPositanoBus");
     const localizedSlug = guideSlug("ja", "amalfiPositanoBus");
 
-    expect(legacyAlias).toContain("amalfi-positano-bus");
-    expect(localizedSlug).not.toBe("amalfi-positano-bus");
+    expect(legacyAlias).toEqual([]);
+    expect(localizedSlug).toBe("amalfi-positano-bus");
     expect(resolveGuideKeyFromSlug("amalfi-positano-bus", "ja")).toBe("amalfiPositanoBus");
   });
 });

@@ -108,7 +108,9 @@ const IdeaSchema = z.object({
   filePath: z.string().optional(),
 });
 
-const StageTypeSchema = z.enum(["fact-find", "plan", "build", "reflect"]);
+const StageTypeSchema = z
+  .string()
+  .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/u, "Expected kebab-case card document type");
 
 // Schema for parsing frontmatter (uses actual field names from files)
 const StageDocFrontmatterSchema = z.object({

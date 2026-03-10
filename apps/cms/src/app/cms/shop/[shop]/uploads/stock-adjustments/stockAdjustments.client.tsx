@@ -243,12 +243,19 @@ function LineItemsHeader({
   );
 }
 
+type AdjustmentSummary = {
+  id: string;
+  adjustedAt: string;
+  note: string | null;
+  itemCount: number;
+};
+
 export default function StockAdjustmentsClient({
   shop,
   recent,
 }: {
   shop: string;
-  recent: StockAdjustmentEvent[];
+  recent: AdjustmentSummary[];
 }) {
   const router = useRouter();
   const [idempotencyKey, setIdempotencyKey] = useState(() => createIdempotencyKey());
@@ -738,7 +745,6 @@ export default function StockAdjustmentsClient({
                 <TableRow>
                   <TableHead className="w-[190px]">Adjusted</TableHead>
                   <TableHead>Note</TableHead>
-                  <TableHead className="w-[150px]">Created/Updated</TableHead>
                   <TableHead className="w-[120px]">Items</TableHead>
                 </TableRow>
               </TableHeader>
@@ -755,10 +761,7 @@ export default function StockAdjustmentsClient({
                       })}
                     </TableCell>
                     <TableCell className="text-muted-foreground">{event.note || "—"}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {event.report.created}/{event.report.updated}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">{event.items.length}</TableCell>
+                    <TableCell className="text-muted-foreground">{event.itemCount}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

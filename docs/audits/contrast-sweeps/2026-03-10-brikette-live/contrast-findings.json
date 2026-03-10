@@ -1,0 +1,111 @@
+[
+  {
+    "id": "F-01",
+    "severity": "S1",
+    "type": "contrast",
+    "mode": "light",
+    "breakpoints": ["320", "375", "430", "768", "1024", "1280", "1536"],
+    "route": "/en/how-to-get-here (Filters Dialog)",
+    "component": "FiltersDialog",
+    "files": [
+      "apps/brikette/src/routes/how-to-get-here/components/FiltersDialog.tsx:98",
+      "apps/brikette/src/routes/how-to-get-here/components/FiltersDialog.tsx:131",
+      "apps/brikette/src/routes/how-to-get-here/components/FiltersDialog.tsx:166"
+    ],
+    "element": "<legend> labels (Destination, Transport, Direction fieldsets)",
+    "state": "default",
+    "textColor": "#f4d35e",
+    "textColorToken": "brand-secondary",
+    "bgColor": "#ffffff",
+    "bgColorToken": "brand-bg",
+    "measuredRatio": 1.45,
+    "requiredRatio": 4.5,
+    "pass": false,
+    "fixDirection": "Change text-brand-secondary to text-brand-primary dark:text-brand-secondary in all three legend elements"
+  },
+  {
+    "id": "F-02",
+    "severity": "S1",
+    "type": "contrast",
+    "mode": "light",
+    "breakpoints": ["320", "375", "430", "768", "1024", "1280", "1536"],
+    "route": "All guide + how-to-get-here pages with tip callout blocks",
+    "component": "calloutBlock (tip variant) / _callouts",
+    "files": [
+      "apps/brikette/src/routes/guides/blocks/handlers/calloutBlock.tsx:23",
+      "apps/brikette/src/routes/how-to-get-here/_callouts.tsx:230"
+    ],
+    "element": "Callout block title/label text",
+    "state": "default",
+    "textColor": "#f4d35e",
+    "textColorToken": "brand-secondary",
+    "bgColor": "#f0f4f7",
+    "bgColorToken": "brand-primary/5 (approx)",
+    "measuredRatio": 1.32,
+    "requiredRatio": 4.5,
+    "pass": false,
+    "fixDirection": "Change VARIANT_STYLES.tip.title from text-brand-secondary to text-brand-primary dark:text-brand-secondary; same in _callouts.tsx"
+  },
+  {
+    "id": "F-03",
+    "severity": "S1",
+    "type": "contrast",
+    "mode": "light",
+    "breakpoints": ["320", "375", "430", "768", "1024", "1280", "1536"],
+    "route": "/en/how-to-get-here/[slug]",
+    "component": "HowToGetHereContent",
+    "files": [
+      "apps/brikette/src/app/[lang]/how-to-get-here/[slug]/HowToGetHereContent.tsx:195"
+    ],
+    "element": "Hero card eyebrow text",
+    "state": "default",
+    "textColor": "#f4d35e",
+    "textColorToken": "brand-secondary",
+    "bgColor": "#f2f3f4",
+    "bgColorToken": "brand-surface",
+    "measuredRatio": 1.32,
+    "requiredRatio": 4.5,
+    "pass": false,
+    "fixDirection": "Change text-brand-secondary to text-brand-primary dark:text-brand-secondary"
+  },
+  {
+    "id": "F-04",
+    "severity": "S2",
+    "type": "contrast",
+    "mode": "dark",
+    "breakpoints": ["320", "375", "430", "768", "1024", "1280", "1536"],
+    "route": "All pages",
+    "component": "Multiple (GuideSearchBar, FiltersDialog, card borders)",
+    "files": [
+      "apps/brikette/src/styles/global.css:109",
+      "apps/brikette/src/components/guides/GuideSearchBar.tsx:31"
+    ],
+    "element": "Element borders using border-brand-outline token in dark mode",
+    "state": "default",
+    "textColor": "#1c1c1c",
+    "textColorToken": "brand-outline/40 rendered on dark-bg (brand-surface @ 40% alpha on #181818)",
+    "bgColor": "#181818",
+    "bgColorToken": "brand-bg (dark)",
+    "measuredRatio": 1.04,
+    "requiredRatio": 3.0,
+    "pass": false,
+    "fixDirection": "Redefine --color-brand-outline in .dark to a visible gray (e.g. #4d4d4d) that meets 3:1 against both brand-bg and brand-surface dark values"
+  },
+  {
+    "id": "F-05",
+    "severity": "S3",
+    "type": "uniformity",
+    "mode": "light",
+    "breakpoints": ["320", "375", "430", "768", "1024", "1280", "1536"],
+    "route": "Multiple (how-to-get-here, guides)",
+    "component": "Multiple",
+    "files": [
+      "apps/brikette/src/routes/how-to-get-here/components/FiltersDialog.tsx:98",
+      "apps/brikette/src/routes/guides/blocks/handlers/calloutBlock.tsx:23",
+      "apps/brikette/src/app/[lang]/how-to-get-here/[slug]/HowToGetHereContent.tsx:195"
+    ],
+    "element": "Eyebrow/label text — inconsistent token pattern",
+    "description": "Established pattern is text-brand-primary dark:text-brand-secondary (passes in both modes). Three locations use text-brand-secondary alone, which only passes on dark backgrounds. F-01/F-02/F-03 fixes resolve this simultaneously.",
+    "fixDirection": "Resolved when F-01, F-02, F-03 are fixed"
+  }
+]

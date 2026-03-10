@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 
 import { XaProductListing } from "../../components/XaProductListing.client";
 import { XA_PRODUCTS } from "../../lib/demoData";
-import { formatLabel, XA_DEPARTMENTS } from "../../lib/xaCatalog";
+import { filterByDepartment, formatLabel, XA_DEPARTMENTS } from "../../lib/xaCatalog";
 import type { XaDepartment } from "../../lib/xaTypes";
 
 function NewInContent() {
@@ -23,9 +23,7 @@ function NewInContent() {
   const windowParam = searchParams.get("window") ?? undefined;
   const windowDays =
     windowParam === "day" ? 1 : windowParam === "week" ? 7 : 30;
-  const baseProducts = department
-    ? XA_PRODUCTS.filter((product) => product.taxonomy.department === department)
-    : XA_PRODUCTS;
+  const baseProducts = filterByDepartment(XA_PRODUCTS, department);
   const timestamps = baseProducts.map((product) =>
     new Date(product.createdAt).getTime(),
   );

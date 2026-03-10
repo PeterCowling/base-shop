@@ -51,7 +51,7 @@ jest.mock('@acme/design-system/primitives', () => ({
   ),
 }));
 
-jest.mock('@/utils/logger', () => ({
+jest.mock('@acme/lib/logger/client', () => ({
   __esModule: true,
   default: {
     debug: jest.fn(),

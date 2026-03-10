@@ -46,7 +46,14 @@ interface BridgeResult {
   observations_generated: number;
   backbone_queue_path?: string;
   backbone_queued?: number;
+  followup_closure_state?: "closed" | "stale-repairable" | "hard-failed";
   followup_dispatches_emitted?: number;
+  followup_pending_entries?: number;
+  followup_consumed_entries?: number;
+  followup_closed_candidate_ids?: string[];
+  followup_stale_repairable_candidate_ids?: string[];
+  followup_hard_failed_candidate_ids?: string[];
+  followup_unresolved_candidate_ids?: string[];
   followup_queue_entries_written?: number;
   source_artifacts: string[];
   warnings: string[];
@@ -328,7 +335,7 @@ function buildObservation(
   ).slice(0, 16);
 
   return {
-    schema_version: "meta-observation.v1",
+    schema_version: "meta-observation.v2",
     observation_id: observationId,
     observation_type: "execution_event",
     timestamp,
@@ -360,9 +367,11 @@ function buildObservation(
     data_quality_status: null,
     data_quality_reason_code: null,
     baseline_ref: null,
-    measurement_window: null,
+    measurement_window: "next_build_cycle",
     traffic_segment: null,
     evidence_refs: seed.refs,
+    evidence_grade: "structural",
+    measurement_contract_status: "declared",
     signal_hints: signalHints,
   };
 }
@@ -398,131 +407,18 @@ export function runSelfEvolvingFromBuildOutput(options: BridgeOptions): BridgeRe
     };
   }
 
-  const resultsReviewAbs = resolvePath(options.rootDir, options.resultsReviewPath);
-  const patternReflectionAbs = resolvePath(options.rootDir, options.patternReflectionPath);
   const buildRecordAbs = resolvePath(options.rootDir, options.buildRecordPath);
 
-  const resultsReview = safeRead(resultsReviewAbs);
-  const patternReflection = safeRead(patternReflectionAbs);
   const buildRecord = safeRead(buildRecordAbs);
 
-  if (!resultsReview) warnings.push(`Missing results-review artifact: ${options.resultsReviewPath}`);
-  if (!patternReflection)
-    warnings.push(`Missing pattern-reflection artifact: ${options.patternReflectionPath}`);
   if (!buildRecord) warnings.push(`Missing build-record artifact: ${options.buildRecordPath}`);
 
-  // Sidecar-prefer: if results-review.signals.json exists, read candidates from JSON items.
-  let candidateBullets: string[];
-  const resultsSidecarAbs = path.join(path.dirname(resultsReviewAbs), "results-review.signals.json");
-  if (existsSync(resultsSidecarAbs)) {
-    try {
-      const sidecarRaw = readFileSync(resultsSidecarAbs, "utf-8");
-      const sidecarJson = JSON.parse(sidecarRaw) as { schema_version?: unknown; items?: unknown };
-      if (
-        sidecarJson.schema_version !== "results-review.signals.v1" ||
-        !Array.isArray(sidecarJson.items)
-      ) {
-        throw new Error(
-          `unrecognized schema_version "${String(sidecarJson.schema_version)}" or missing items`,
-        );
-      }
-      const items = sidecarJson.items as Array<{ title?: string }>;
-      candidateBullets = items
-        .map((item) => (typeof item.title === "string" ? item.title.trim() : ""))
-        .filter(
-          (title) => title.length > 0 && !isNonePlaceholderIdeaCandidate(title),
-        );
-    } catch (err) {
-      warnings.push(
-        `results-review sidecar parse failed (falling back to markdown): ${String(err)}`,
-      );
-      candidateBullets = extractBulletCandidates(resultsReview);
-    }
-  } else {
-    candidateBullets = extractBulletCandidates(resultsReview);
-  }
-
-  // Sidecar-prefer: if pattern-reflection.entries.json exists, build seeds from JSON entries.
-  let patternSeeds: ReturnType<typeof extractPatternReflectionSeeds>;
-  const patternSidecarAbs = path.join(
-    path.dirname(patternReflectionAbs),
-    "pattern-reflection.entries.json",
-  );
-  if (existsSync(patternSidecarAbs)) {
-    try {
-      const sidecarRaw = readFileSync(patternSidecarAbs, "utf-8");
-      const sidecarJson = JSON.parse(sidecarRaw) as {
-        schema_version?: unknown;
-        entries?: unknown;
-      };
-      if (
-        sidecarJson.schema_version !== "pattern-reflection.entries.v1" ||
-        !Array.isArray(sidecarJson.entries)
-      ) {
-        throw new Error(
-          `unrecognized schema_version "${String(sidecarJson.schema_version)}" or missing entries`,
-        );
-      }
-      // Reconstruct minimal markdown from entries so extractPatternReflectionSeeds can parse it.
-      // This avoids duplicating the entry→seed mapping logic.
-      const entriesYaml = (sidecarJson.entries as PatternReflectionFrontmatterEntry[])
-        .map((entry) => {
-          const lines: string[] = [];
-          lines.push(
-            `  - pattern_summary: ${String(entry.pattern_summary ?? "")}`,
-          );
-          if (entry.category) lines.push(`    category: ${entry.category}`);
-          if (entry.routing_target) lines.push(`    routing_target: ${entry.routing_target}`);
-          if (typeof entry.occurrence_count === "number") {
-            lines.push(`    occurrence_count: ${entry.occurrence_count}`);
-          }
-          if (Array.isArray(entry.evidence_refs) && entry.evidence_refs.length > 0) {
-            lines.push(`    evidence_refs:`);
-            for (const ref of entry.evidence_refs) {
-              lines.push(`      - ${ref}`);
-            }
-          }
-          return lines.join("\n");
-        })
-        .join("\n");
-      const reconstructedMarkdown = `---\nentries:\n${entriesYaml}\n---\n`;
-      patternSeeds = extractPatternReflectionSeeds(reconstructedMarkdown);
-    } catch (err) {
-      warnings.push(
-        `pattern-reflection sidecar parse failed (falling back to markdown): ${String(err)}`,
-      );
-      patternSeeds = extractPatternReflectionSeeds(patternReflection);
-    }
-  } else {
-    patternSeeds = extractPatternReflectionSeeds(patternReflection);
-  }
   const observationSeeds: ObservationSeed[] = [];
   if (buildRecord) {
     observationSeeds.push({
       label: "build-record",
       refs: [options.buildRecordPath],
       texts: [options.planSlug, buildRecord],
-    });
-  }
-  observationSeeds.push(
-    ...patternSeeds.map((seed) => ({
-      ...seed,
-      refs:
-        seed.refs.length > 0
-          ? uniqueRefs([options.patternReflectionPath, ...seed.refs])
-          : [options.patternReflectionPath],
-    })),
-  );
-  for (const bullet of candidateBullets) {
-    if (isNonePlaceholderIdeaCandidate(bullet)) {
-      continue;
-    }
-    observationSeeds.push({
-      label: `idea:${bullet.slice(0, 80)}`,
-      refs: [options.resultsReviewPath],
-      recurrenceKeyParts: [bullet],
-      texts: [bullet],
-      problemStatement: `Reduce recurring build-output idea work for ${bullet}.`,
     });
   }
 
@@ -569,13 +465,16 @@ export function runSelfEvolvingFromBuildOutput(options: BridgeOptions): BridgeRe
     observations_generated: observations.length,
     backbone_queue_path: queueWrite.path,
     backbone_queued: queueWrite.queued,
+    followup_closure_state: followupConsume.closure_state,
     followup_dispatches_emitted: followupConsume.emitted_dispatches,
+    followup_pending_entries: followupConsume.pending_entries,
+    followup_consumed_entries: followupConsume.consumed_entries_marked,
+    followup_closed_candidate_ids: followupConsume.closed_candidate_ids,
+    followup_stale_repairable_candidate_ids: followupConsume.stale_repairable_candidate_ids,
+    followup_hard_failed_candidate_ids: followupConsume.hard_failed_candidate_ids,
+    followup_unresolved_candidate_ids: followupConsume.unresolved_candidate_ids,
     followup_queue_entries_written: followupConsume.queue_entries_written,
-    source_artifacts: [
-      ...(buildRecord ? [options.buildRecordPath] : []),
-      ...(patternReflection ? [options.patternReflectionPath] : []),
-      ...(resultsReview ? [options.resultsReviewPath] : []),
-    ],
+    source_artifacts: [...(buildRecord ? [options.buildRecordPath] : [])],
     warnings,
     orchestrator: {
       observations_count: orchestrator.observations_count,

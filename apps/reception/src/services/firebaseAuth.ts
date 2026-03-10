@@ -20,6 +20,8 @@ import { getMeta, setMeta } from "../lib/offline/receptionDb";
 import type { User, UserProfile, UserRole } from "../types/domains/userDomain";
 import { normalizeRoles, userProfileSchema } from "../types/domains/userDomain";
 
+import { mapAuthError } from "./authErrors";
+
 let authInstance: Auth | null = null;
 const userProfileSnapshotSchema = userProfileSchema.partial({
   uid: true,
@@ -81,23 +83,7 @@ export async function loginWithEmailPassword(
 
     return { success: true, user };
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Login failed";
-
-    // Provide user-friendly error messages
-    if (message.includes("auth/invalid-credential") || message.includes("auth/wrong-password")) {
-      return { success: false, error: "Invalid email or password." };
-    }
-    if (message.includes("auth/user-not-found")) {
-      return { success: false, error: "No account found with this email." };
-    }
-    if (message.includes("auth/too-many-requests")) {
-      return { success: false, error: "Too many failed attempts. Please try again later." };
-    }
-    if (message.includes("auth/network-request-failed")) {
-      return { success: false, error: "Network error. Check your connection." };
-    }
-
-    return { success: false, error: message };
+    return { success: false, error: mapAuthError(error) };
   }
 }
 

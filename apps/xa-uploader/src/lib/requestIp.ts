@@ -76,12 +76,10 @@ function normalizeIpCandidate(raw: string | null): string {
   return isValidIpv4(withoutPort) ? withoutPort : "";
 }
 
-export function trustProxyIpHeadersEnabled(): boolean {
-  return parseBool(process.env.XA_TRUST_PROXY_IP_HEADERS);
-}
+const TRUST_PROXY_IP_HEADERS = parseBool(process.env.XA_TRUST_PROXY_IP_HEADERS);
 
 export function getTrustedRequestIpFromHeaders(headers: Headers): string {
-  if (!trustProxyIpHeadersEnabled()) return "";
+  if (!TRUST_PROXY_IP_HEADERS) return "";
 
   const cfConnectingIp = normalizeIpCandidate(headers.get("cf-connecting-ip"));
   if (cfConnectingIp) return cfConnectingIp;

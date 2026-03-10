@@ -117,7 +117,6 @@ export async function appendAuditEntry(
   // Insert audit entry (autoincrement ID)
   const result = await db
     .prepare(
-      // eslint-disable-next-line ds/no-raw-font
       `
       INSERT INTO business_os_audit_log (entity_type, entity_id, action, actor, timestamp, changes_json)
       VALUES (?, ?, ?, ?, ?, ?)
@@ -162,7 +161,6 @@ export async function listAuditEntries(
 ): Promise<AuditEntry[]> {
   const result = await db
     .prepare(
-      // eslint-disable-next-line ds/no-raw-font
       `
       SELECT id, entity_type, entity_id, action, actor, timestamp, changes_json
       FROM business_os_audit_log
@@ -198,7 +196,6 @@ export async function listRecentAuditEntries(
 ): Promise<AuditEntry[]> {
   const result = await db
     .prepare(
-      // eslint-disable-next-line ds/no-raw-font
       `
       SELECT id, entity_type, entity_id, action, actor, timestamp, changes_json
       FROM business_os_audit_log
@@ -233,7 +230,6 @@ export async function listAuditEntriesByActor(
 ): Promise<AuditEntry[]> {
   const result = await db
     .prepare(
-      // eslint-disable-next-line ds/no-raw-font
       `
       SELECT id, entity_type, entity_id, action, actor, timestamp, changes_json
       FROM business_os_audit_log

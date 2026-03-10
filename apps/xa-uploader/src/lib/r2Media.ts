@@ -1,6 +1,5 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-import { isLocalFsRuntimeEnabled } from "./localFsGuard";
 import type { UploaderR2Bucket } from "./syncMutex";
 
 /**
@@ -10,7 +9,6 @@ import type { UploaderR2Bucket } from "./syncMutex";
  * Uses the async form of getCloudflareContext — required for nodejs runtime routes.
  */
 export async function getMediaBucket(): Promise<UploaderR2Bucket | null> {
-  if (isLocalFsRuntimeEnabled()) return null;
   try {
     const { env } = await getCloudflareContext({ async: true });
     return env.XA_MEDIA_BUCKET ?? null;

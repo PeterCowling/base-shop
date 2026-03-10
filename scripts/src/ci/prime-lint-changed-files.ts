@@ -1,5 +1,5 @@
 import { execFileSync, spawnSync } from 'node:child_process';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 
 const PRIME_PATH_PREFIX = 'apps/prime/';
 
@@ -54,6 +54,7 @@ export function collectPrimeLintTargets(paths: readonly string[]): string[] {
     const normalized = normalizePath(path);
     if (!normalized) continue;
     if (!isLintablePrimePath(normalized)) continue;
+    if (!existsSync(normalized)) continue;
     unique.add(normalized);
   }
 

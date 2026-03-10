@@ -4,7 +4,7 @@
  * Pure function: routeDispatch(packet) → RouteResult
  *
  * Validates a dispatch.v1 or dispatch.v2 packet for completeness and produces
- * a typed invocation payload for lp-do-fact-find, lp-do-build, or lp-do-briefing.
+ * a typed invocation payload for lp-do-fact-find, lp-do-plan, lp-do-build, or lp-do-briefing.
  *
  * Policy:
  *   - Option B (queue-with-confirmation): adapter produces payloads only.
@@ -32,8 +32,12 @@ import type {
   DispatchStatus,
   IntendedOutcomeV2,
   RecommendedRoute,
+  RoutableDispatchStatus,
   TrialDispatchPacket,
   TrialDispatchPacketV2,
+} from "./lp-do-ideas-trial.js";
+import {
+  ROUTABLE_DISPATCH_STATUS_ROUTE_MAP,
 } from "./lp-do-ideas-trial.js";
 
 /** Union of all accepted dispatch packet types (v1 and v2). */
@@ -142,6 +146,21 @@ export interface BriefingInvocationPayload {
   intended_outcome?: IntendedOutcomeV2;
 }
 
+export interface PlanInvocationPayload {
+  skill: "lp-do-plan";
+  dispatch_id: string;
+  business: string;
+  area_anchor: string;
+  location_anchors: [string, ...string[]];
+  provisional_deliverable_family: DeliverableFamily;
+  evidence_refs: [string, ...string[]];
+  dispatch_created_at: string;
+  source_packet: AnyDispatchPacket;
+  why?: string;
+  why_source?: "operator" | "auto" | "compat-v1";
+  intended_outcome?: IntendedOutcomeV2;
+}
+
 export interface MicroBuildInvocationPayload {
   skill: "lp-do-build";
   dispatch_id: string;
@@ -161,6 +180,7 @@ export interface MicroBuildInvocationPayload {
 export type InvocationPayload =
   | FactFindInvocationPayload
   | BriefingInvocationPayload
+  | PlanInvocationPayload
   | MicroBuildInvocationPayload;
 
 // ---------------------------------------------------------------------------
@@ -210,25 +230,21 @@ function normalise(value: string): string {
 }
 
 const VALID_STATUSES: ReadonlySet<string> = new Set<DispatchStatus>([
-  "fact_find_ready",
-  "micro_build_ready",
-  "briefing_ready",
+  ...(Object.keys(ROUTABLE_DISPATCH_STATUS_ROUTE_MAP) as RoutableDispatchStatus[]),
   "auto_executed",
   "logged_no_action",
 ]);
 
 const VALID_ROUTES: ReadonlySet<string> = new Set<RecommendedRoute>([
   "lp-do-fact-find",
+  "lp-do-plan",
   "lp-do-build",
   "lp-do-briefing",
 ]);
 
 /** Canonical status→route mapping per the trial contract. */
-const STATUS_TO_ROUTE: Readonly<Record<string, RecommendedRoute>> = {
-  fact_find_ready: "lp-do-fact-find",
-  micro_build_ready: "lp-do-build",
-  briefing_ready: "lp-do-briefing",
-};
+const STATUS_TO_ROUTE: Readonly<Record<RoutableDispatchStatus, RecommendedRoute>> =
+  ROUTABLE_DISPATCH_STATUS_ROUTE_MAP;
 
 function extractDispatchId(packet: unknown): string | null {
   if (
@@ -357,7 +373,7 @@ export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
         `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} has ` +
         `status="auto_executed", which is reserved and must not be set in trial mode ` +
         `under Option B (queue-with-confirmation). ` +
-        `Only "fact_find_ready", "micro_build_ready", and "briefing_ready" statuses are routable. ` +
+        `Only "fact_find_ready", "plan_ready", "micro_build_ready", and "briefing_ready" statuses are routable. ` +
         `See trial-policy-decision.md for the escalation path to Option C.`,
       dispatch_id: dispatchId,
     };
@@ -385,7 +401,7 @@ export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
       error:
         `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} has ` +
         `unrecognised status="${packet.status}". ` +
-        `Valid routable statuses are: "fact_find_ready", "micro_build_ready", "briefing_ready". ` +
+        `Valid routable statuses are: "fact_find_ready", "plan_ready", "micro_build_ready", "briefing_ready". ` +
         `Normalised value received: "${normStatus}".`,
       dispatch_id: dispatchId,
     };
@@ -399,14 +415,15 @@ export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
       error:
         `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} has ` +
         `unrecognised recommended_route="${packet.recommended_route}". ` +
-        `Valid routes are: "lp-do-fact-find", "lp-do-build", "lp-do-briefing". ` +
+        `Valid routes are: "lp-do-fact-find", "lp-do-plan", "lp-do-build", "lp-do-briefing". ` +
         `Normalised value received: "${normRoute}".`,
       dispatch_id: dispatchId,
     };
   }
 
   // --- Status / route consistency check ---
-  const canonicalRouteForStatus = STATUS_TO_ROUTE[normStatus];
+  const canonicalRouteForStatus =
+    STATUS_TO_ROUTE[normStatus as RoutableDispatchStatus];
   if (canonicalRouteForStatus !== normRoute) {
     return {
       ok: false,
@@ -445,7 +462,7 @@ export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
       error:
         `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} has an empty ` +
         `or missing area_anchor. ` +
-        `area_anchor is required by both lp-do-fact-find and lp-do-briefing as the ` +
+        `area_anchor is required by lp-do-fact-find, lp-do-plan, and lp-do-briefing as the ` +
         `concrete area/feature/component/system anchor. ` +
         `Ensure deriveAreaAnchor() in lp-do-ideas-trial returns a non-empty string.`,
       dispatch_id: dispatchId,
@@ -513,6 +530,61 @@ export function routeDispatch(packet: AnyDispatchPacket): RouteResult {
     return {
       ok: true,
       route: "lp-do-fact-find",
+      payload,
+    };
+  }
+
+  // ---------------------------------------------------------------------------
+  // Route: lp-do-plan
+  // ---------------------------------------------------------------------------
+
+  if (normRoute === "lp-do-plan") {
+    if (!Array.isArray(packet.location_anchors) || packet.location_anchors.length === 0) {
+      return {
+        ok: false,
+        code: "MISSING_LOCATION_ANCHORS",
+        error:
+          `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} is missing ` +
+          `location_anchors (must have ≥1 item) for the lp-do-plan path. ` +
+          `Plan-ready dispatches still require bounded repository or workflow anchors for planning intake.`,
+        dispatch_id: dispatchId,
+      };
+    }
+
+    if (
+      typeof packet.provisional_deliverable_family !== "string" ||
+      packet.provisional_deliverable_family.trim() === ""
+    ) {
+      return {
+        ok: false,
+        code: "MISSING_DELIVERABLE_FAMILY",
+        error:
+          `[lp-do-ideas-routing-adapter] Dispatch ${dispatchId ?? "(unknown)"} is missing ` +
+          `provisional_deliverable_family for the lp-do-plan path. ` +
+          `Plan-ready dispatches must carry a deliverable family so planning can route onto the right execution track.`,
+        dispatch_id: dispatchId,
+      };
+    }
+
+    const compatFields =
+      packet.schema_version === "dispatch.v1" ? extractCompatV1WhyFields(packet) : {};
+
+    const payload: PlanInvocationPayload = {
+      skill: "lp-do-plan",
+      dispatch_id: packet.dispatch_id,
+      business: packet.business,
+      area_anchor: packet.area_anchor,
+      location_anchors: packet.location_anchors,
+      provisional_deliverable_family: packet.provisional_deliverable_family,
+      evidence_refs: packet.evidence_refs,
+      dispatch_created_at: packet.created_at,
+      source_packet: packet,
+      ...compatFields,
+    };
+
+    return {
+      ok: true,
+      route: "lp-do-plan",
       payload,
     };
   }

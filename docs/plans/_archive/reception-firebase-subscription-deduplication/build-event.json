@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-09T08:18:29.683Z",
+  "feature_slug": "reception-firebase-subscription-deduplication",
+  "plan_path": "docs/plans/reception-firebase-subscription-deduplication/plan.md",
+  "completed_date": "2026-03-09",
+  "why": "Excessive Firebase listeners increase connection overhead, increase data transfer, and can hit Firebase connection limits. The useEmailProgressData hook opened 25 concurrent listeners for codes 1-25. The N+1 booking meta pattern opened 50+ listeners on a loaded Checkins page.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "The Checkins page opens at most 2 distinct Firebase listeners for the activitiesByCode and bookingMeta paths regardless of booking count. useActivitiesByCodeData uses a single subtree listener with client-side filtering. useCheckinsData orchestration hook is deleted.",
+  "why_source": "operator"
+}

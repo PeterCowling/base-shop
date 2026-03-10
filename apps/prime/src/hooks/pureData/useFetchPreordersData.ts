@@ -5,12 +5,15 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import { get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { PreorderNightData } from '../../types/preorder';
 import useUuid from '../useUuid';
+
+import type { PureDataRefetch } from './types';
 
 type PreorderEntry = Omit<PreorderNightData, 'id'> & { id: string };
 
@@ -37,7 +40,7 @@ async function fetchPreorders(
       id: nightKey,
     }));
   } catch (err) {
-    logger.error('Error fetching preordersData:', err);
+    logger.error('Error fetching preordersData:', err); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw err;
   }
 }
@@ -58,6 +61,6 @@ export function useFetchPreordersData() {
     preordersData: data ?? [],
     isLoading,
     error: error ?? null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

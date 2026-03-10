@@ -265,13 +265,16 @@ function validateStrictContext(
     }
   }
 
-  const stageValue = args.current_stage;
-  if (typeof stageValue !== "string" || stageValue.length === 0) {
-    return makeContractMismatch(`Tool ${toolName} requires context field current_stage.`);
-  }
+  const stageScoped = !policy.allowedStages.includes("*");
+  if (stageScoped) {
+    const stageValue = args.current_stage;
+    if (typeof stageValue !== "string" || stageValue.length === 0) {
+      return makeContractMismatch(`Tool ${toolName} requires context field current_stage.`);
+    }
 
-  if (!policy.allowedStages.includes(stageValue)) {
-    return makeForbiddenStage(toolName, stageValue, policy.allowedStages);
+    if (!policy.allowedStages.includes(stageValue)) {
+      return makeForbiddenStage(toolName, stageValue, policy.allowedStages);
+    }
   }
 
   if (policy.permission === "guarded_write") {

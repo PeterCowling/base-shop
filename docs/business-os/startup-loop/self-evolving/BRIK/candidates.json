@@ -1,7 +1,7 @@
 {
   "schema_version": "candidate-ledger.v1",
   "business": "BRIK",
-  "updated_at": "2026-03-08T12:32:58.821Z",
+  "updated_at": "2026-03-10T08:46:13.947Z",
   "candidates": [
     {
       "candidate": {
@@ -39,7 +39,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-07T12:32:58.809Z"
+        "expiry_at": "2026-04-09T08:46:13.255Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -47,7 +47,8 @@
         "autonomy_cap": 2,
         "reasons": [
           "v2_evidence_missing_or_low_quality",
-          "evidence_class:structural_only"
+          "evidence_class:structural_only",
+          "negative_expected_utility"
         ],
         "evidence": {
           "classification": "structural_only",
@@ -82,14 +83,55 @@
             "method": "beta_binomial_jeffreys",
             "status": "measured"
           }
+        },
+        "utility": {
+          "expected_reward": 1.4453,
+          "downside_penalty": 1.1567,
+          "effort_penalty": 1.46,
+          "evidence_penalty": 0,
+          "instability_penalty": 0,
+          "exploration_bonus": 0,
+          "net_utility": -1.1714
+        },
+        "policy": {
+          "policy_version": "self-evolving-policy.v1",
+          "utility_version": "self-evolving-utility.v1",
+          "prior_family_version": "self-evolving-priors.v1",
+          "belief_state_id": "727a1f1c448e0e17",
+          "structural_snapshot_id": "880351e99f95d778",
+          "evidence_weight": 0.35,
+          "evidence_floor_met": true,
+          "fallback_reason": null
         }
       },
       "route": {
         "route": "lp-do-fact-find",
-        "reason": "evidence_structural_only_requires_fact_find"
+        "reason": "evidence_posture_exploratory_fact_find_only"
       },
       "source_hard_signature": "ddcad390a1288a50c69f303434c9abf5d2517fa1c9d00af069194ab974acd823",
-      "generated_at": "2026-03-08T12:32:58.809Z"
+      "generated_at": "2026-03-10T08:46:13.255Z",
+      "policy_context": {
+        "decision_id": "acb4001f445c142c",
+        "decision_context_id": "a5c6dad9a82c01e7",
+        "policy_version": "self-evolving-policy.v1",
+        "utility_version": "self-evolving-utility.v1",
+        "prior_family_version": "self-evolving-priors.v1",
+        "belief_state_id": "727a1f1c448e0e17",
+        "structural_snapshot_id": "880351e99f95d778",
+        "portfolio_decision_id": "8a72317f23549378",
+        "portfolio_selected": false,
+        "portfolio_selected_at": "2026-03-10T08:46:13.255Z",
+        "portfolio_adjusted_utility": -1.7939,
+        "exploration_decision_id": null,
+        "exploration_mode": null,
+        "exploration_selected": false,
+        "exploration_selected_at": "2026-03-10T08:46:13.255Z",
+        "exploration_priority_score": null,
+        "exploration_applied": false,
+        "promotion_gate_decision_id": null,
+        "promotion_gate_action": null,
+        "promotion_gate_reason": null
+      }
     },
     {
       "candidate": {
@@ -127,7 +169,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-07T12:32:58.809Z"
+        "expiry_at": "2026-04-09T08:46:13.255Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -135,7 +177,8 @@
         "autonomy_cap": 2,
         "reasons": [
           "v2_evidence_missing_or_low_quality",
-          "evidence_class:structural_only"
+          "evidence_class:structural_only",
+          "negative_expected_utility"
         ],
         "evidence": {
           "classification": "structural_only",
@@ -170,14 +213,55 @@
             "method": "beta_binomial_jeffreys",
             "status": "measured"
           }
+        },
+        "utility": {
+          "expected_reward": 1.4453,
+          "downside_penalty": 1.1567,
+          "effort_penalty": 1.46,
+          "evidence_penalty": 0,
+          "instability_penalty": 0,
+          "exploration_bonus": 0,
+          "net_utility": -1.1714
+        },
+        "policy": {
+          "policy_version": "self-evolving-policy.v1",
+          "utility_version": "self-evolving-utility.v1",
+          "prior_family_version": "self-evolving-priors.v1",
+          "belief_state_id": "c57fa69cbc1a5fef",
+          "structural_snapshot_id": "73a9149ce3b6fd0d",
+          "evidence_weight": 0.35,
+          "evidence_floor_met": true,
+          "fallback_reason": null
         }
       },
       "route": {
         "route": "lp-do-fact-find",
-        "reason": "evidence_structural_only_requires_fact_find"
+        "reason": "evidence_posture_exploratory_fact_find_only"
       },
       "source_hard_signature": "65c52360d5deb9addf345eb6668fe309ff5d38bd581a7731a885f316da8dbb0f",
-      "generated_at": "2026-03-08T12:32:58.809Z"
+      "generated_at": "2026-03-10T08:46:13.255Z",
+      "policy_context": {
+        "decision_id": "bed21ada3d255ccb",
+        "decision_context_id": "89876a6039dd48d1",
+        "policy_version": "self-evolving-policy.v1",
+        "utility_version": "self-evolving-utility.v1",
+        "prior_family_version": "self-evolving-priors.v1",
+        "belief_state_id": "c57fa69cbc1a5fef",
+        "structural_snapshot_id": "73a9149ce3b6fd0d",
+        "portfolio_decision_id": "db226e64d00e88b3",
+        "portfolio_selected": false,
+        "portfolio_selected_at": "2026-03-10T08:46:13.255Z",
+        "portfolio_adjusted_utility": -1.7158,
+        "exploration_decision_id": null,
+        "exploration_mode": null,
+        "exploration_selected": false,
+        "exploration_selected_at": "2026-03-10T08:46:13.255Z",
+        "exploration_priority_score": null,
+        "exploration_applied": false,
+        "promotion_gate_decision_id": null,
+        "promotion_gate_action": null,
+        "promotion_gate_reason": null
+      }
     },
     {
       "candidate": {
@@ -215,7 +299,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-07T12:32:58.809Z"
+        "expiry_at": "2026-04-09T08:46:13.255Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -223,7 +307,8 @@
         "autonomy_cap": 2,
         "reasons": [
           "v2_evidence_missing_or_low_quality",
-          "evidence_class:structural_only"
+          "evidence_class:structural_only",
+          "negative_expected_utility"
         ],
         "evidence": {
           "classification": "structural_only",
@@ -258,14 +343,55 @@
             "method": "beta_binomial_jeffreys",
             "status": "measured"
           }
+        },
+        "utility": {
+          "expected_reward": 1.4453,
+          "downside_penalty": 1.1567,
+          "effort_penalty": 1.46,
+          "evidence_penalty": 0,
+          "instability_penalty": 0,
+          "exploration_bonus": 0,
+          "net_utility": -1.1714
+        },
+        "policy": {
+          "policy_version": "self-evolving-policy.v1",
+          "utility_version": "self-evolving-utility.v1",
+          "prior_family_version": "self-evolving-priors.v1",
+          "belief_state_id": "e3a8bc3b8711db02",
+          "structural_snapshot_id": "a2d6578f652c8c1a",
+          "evidence_weight": 0.35,
+          "evidence_floor_met": true,
+          "fallback_reason": null
         }
       },
       "route": {
         "route": "lp-do-fact-find",
-        "reason": "evidence_structural_only_requires_fact_find"
+        "reason": "evidence_posture_exploratory_fact_find_only"
       },
       "source_hard_signature": "5f9cd3076451decc027b433313209d1fb0463a77c135371e13970ebcf23c1f6d",
-      "generated_at": "2026-03-08T12:32:58.809Z"
+      "generated_at": "2026-03-10T08:46:13.255Z",
+      "policy_context": {
+        "decision_id": "e25b61d2eda4cc59",
+        "decision_context_id": "c912b432ec622f96",
+        "policy_version": "self-evolving-policy.v1",
+        "utility_version": "self-evolving-utility.v1",
+        "prior_family_version": "self-evolving-priors.v1",
+        "belief_state_id": "e3a8bc3b8711db02",
+        "structural_snapshot_id": "a2d6578f652c8c1a",
+        "portfolio_decision_id": "525494d3d2d24200",
+        "portfolio_selected": false,
+        "portfolio_selected_at": "2026-03-10T08:46:13.255Z",
+        "portfolio_adjusted_utility": -1.7939,
+        "exploration_decision_id": null,
+        "exploration_mode": null,
+        "exploration_selected": false,
+        "exploration_selected_at": "2026-03-10T08:46:13.255Z",
+        "exploration_priority_score": null,
+        "exploration_applied": false,
+        "promotion_gate_decision_id": null,
+        "promotion_gate_action": null,
+        "promotion_gate_reason": null
+      }
     },
     {
       "candidate": {
@@ -303,7 +429,7 @@
         "blocked_reason_code": null,
         "unblock_requirements": [],
         "blocked_since": null,
-        "expiry_at": "2026-04-07T12:32:58.809Z"
+        "expiry_at": "2026-04-09T08:46:13.255Z"
       },
       "score": {
         "priority_score_v1": 3.55,
@@ -311,7 +437,8 @@
         "autonomy_cap": 2,
         "reasons": [
           "v2_evidence_missing_or_low_quality",
-          "evidence_class:structural_only"
+          "evidence_class:structural_only",
+          "negative_expected_utility"
         ],
         "evidence": {
           "classification": "structural_only",
@@ -346,14 +473,55 @@
             "method": "beta_binomial_jeffreys",
             "status": "measured"
           }
+        },
+        "utility": {
+          "expected_reward": 1.4453,
+          "downside_penalty": 1.1567,
+          "effort_penalty": 1.46,
+          "evidence_penalty": 0,
+          "instability_penalty": 0,
+          "exploration_bonus": 0,
+          "net_utility": -1.1714
+        },
+        "policy": {
+          "policy_version": "self-evolving-policy.v1",
+          "utility_version": "self-evolving-utility.v1",
+          "prior_family_version": "self-evolving-priors.v1",
+          "belief_state_id": "7633243dd5bf2499",
+          "structural_snapshot_id": "b97c6d3785ee0dda",
+          "evidence_weight": 0.35,
+          "evidence_floor_met": true,
+          "fallback_reason": null
         }
       },
       "route": {
         "route": "lp-do-fact-find",
-        "reason": "evidence_structural_only_requires_fact_find"
+        "reason": "evidence_posture_exploratory_fact_find_only"
       },
       "source_hard_signature": "d82b1a6d02f032aa253035f13ce2ca644b879668902f3a7a90c2ea0495d6249e",
-      "generated_at": "2026-03-08T12:32:58.809Z"
+      "generated_at": "2026-03-10T08:46:13.255Z",
+      "policy_context": {
+        "decision_id": "35fd6cac9220caee",
+        "decision_context_id": "5a1c318f2ab6efb8",
+        "policy_version": "self-evolving-policy.v1",
+        "utility_version": "self-evolving-utility.v1",
+        "prior_family_version": "self-evolving-priors.v1",
+        "belief_state_id": "7633243dd5bf2499",
+        "structural_snapshot_id": "b97c6d3785ee0dda",
+        "portfolio_decision_id": "0e64794f56a0bd12",
+        "portfolio_selected": false,
+        "portfolio_selected_at": "2026-03-10T08:46:13.255Z",
+        "portfolio_adjusted_utility": -1.7939,
+        "exploration_decision_id": null,
+        "exploration_mode": null,
+        "exploration_selected": false,
+        "exploration_selected_at": "2026-03-10T08:46:13.255Z",
+        "exploration_priority_score": null,
+        "exploration_applied": false,
+        "promotion_gate_decision_id": null,
+        "promotion_gate_action": null,
+        "promotion_gate_reason": null
+      }
     }
   ]
 }

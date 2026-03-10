@@ -30,7 +30,7 @@ import { XaFilterChip } from "./XaFilterChip";
 import { XaFiltersDrawer } from "./XaFiltersDrawer.client";
 import { XaProductCard } from "./XaProductCard";
 
-const SORT_LABELS: Record<string, string> = {
+const SORT_LABELS: Record<SortKey, string> = {
   newest: "Newest",
   "price-asc": "Price (low to high)",
   "price-desc": "Price (high to low)",
@@ -98,24 +98,20 @@ export function XaProductListing({
 
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
               <XaFiltersDrawer
-                open={filtersOpen}
-                onOpenChange={setFiltersOpen}
-                filterConfigs={filterConfigs}
-                facetValues={facetValues}
-                draftValues={draftValues}
-                draftInStock={draftInStock}
-                draftNewIn={draftNewIn}
-                draftMin={draftMin}
-                draftMax={draftMax}
-                onToggleValue={toggleDraftValue}
-                onChangeInStock={setDraftInStock}
-                onChangeNewIn={setDraftNewIn}
-                onChangeMin={setDraftMin}
-                onChangeMax={setDraftMax}
-                onClear={clearAllDraft}
-                onApply={() => {
-                  applyFilters();
-                  setFiltersOpen(false);
+                config={{ filterConfigs, facetValues }}
+                state={{ open: filtersOpen, draftValues, draftInStock, draftNewIn, draftMin, draftMax }}
+                actions={{
+                  onOpenChange: setFiltersOpen,
+                  onToggleValue: toggleDraftValue,
+                  onChangeInStock: setDraftInStock,
+                  onChangeNewIn: setDraftNewIn,
+                  onChangeMin: setDraftMin,
+                  onChangeMax: setDraftMax,
+                  onClear: clearAllDraft,
+                  onApply: () => {
+                    applyFilters();
+                    setFiltersOpen(false);
+                  },
                 }}
               />
 

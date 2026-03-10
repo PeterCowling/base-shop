@@ -19,13 +19,15 @@ import ContentStickyCta from "@/components/cta/ContentStickyCta";
 import FaqStructuredData from "@/components/seo/FaqStructuredData";
 import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { useEntryAttribution } from "@/hooks/useEntryAttribution";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
 import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
-import { getBookPath } from "@/utils/localizedRoutes";
+import { writeAttribution } from "@/utils/entryAttribution";
+import { resolveIntentAwareBookingSurface } from "@/utils/intentAwareBookingSurface";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 import type { AssistanceIndexI18nSeed } from "./i18n-bundle";
@@ -131,6 +133,87 @@ function seedBundle(lang: string, namespace: string, bundle: Record<string, unkn
   i18n.addResourceBundle(lang, namespace, bundle, true, true);
 }
 
+function resolveHeroIntro(t: TFunction<"assistanceSection">): string {
+  const heroIntroKey = "heroIntro" as const;
+  const heroIntroRaw = t(heroIntroKey, { defaultValue: "" }) as string;
+  if (heroIntroRaw && heroIntroRaw !== heroIntroKey) {
+    return heroIntroRaw;
+  }
+
+  return t("amaParagraph1", {
+    defaultValue:
+      "Message us to plan terrace evenings, hikes, or transfers; we’ll reply with curated tips and confirmations.",
+  }) as string;
+}
+
+function resolvePopularGuidesHeading(t: TFunction<"assistanceSection">): string {
+  const popularGuidesHeadingKey = "popularGuides" as const;
+  const popularGuidesHeadingRaw = t(popularGuidesHeadingKey, { defaultValue: "" }) as string;
+  if (
+    typeof popularGuidesHeadingRaw === "string" &&
+    popularGuidesHeadingRaw.trim().length > 0 &&
+    popularGuidesHeadingRaw !== popularGuidesHeadingKey
+  ) {
+    return popularGuidesHeadingRaw;
+  }
+
+  return "Other Popular Guides";
+}
+
+function AssistanceBookingActions({
+  bookingSurface,
+  dormsLabel,
+  privateLabel,
+  bookDirectLabel,
+  onSelect,
+}: {
+  bookingSurface: ReturnType<typeof resolveIntentAwareBookingSurface>;
+  dormsLabel: string;
+  privateLabel: string;
+  bookDirectLabel: string;
+  onSelect: (input: {
+    href: string;
+    resolvedIntent: "hostel" | "private";
+    productType: string | null;
+    decisionMode: "direct_resolution" | "chooser";
+    destinationFunnel: "hostel_central" | "private";
+  }) => void;
+}): JSX.Element {
+  if (bookingSurface.mode === "direct") {
+    return (
+      <Button asChild size="sm" className="w-full">
+        <Link
+          href={bookingSurface.primary.href}
+          onClick={() => onSelect(bookingSurface.primary)}
+        >
+          {bookingSurface.primary.resolvedIntent === "private" ? privateLabel : bookDirectLabel}
+        </Link>
+      </Button>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      <Button asChild size="sm" className="w-full">
+        <Link
+          href={bookingSurface.hostel.href}
+          onClick={() => onSelect(bookingSurface.hostel)}
+        >
+          {dormsLabel}
+        </Link>
+      </Button>
+      <Button asChild size="sm" tone="outline" className="w-full">
+        <Link
+          href={bookingSurface.private.href}
+          onClick={() => onSelect(bookingSurface.private)}
+        >
+          {privateLabel}
+        </Link>
+      </Button>
+    </div>
+  );
+}
+
 function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
   const seededRef = useRef(false);
   if (!seededRef.current && serverI18n) {
@@ -149,8 +232,8 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
     seededRef.current = true;
   }
 
-  const routeLang = useCurrentLanguage();
-  const resolvedLang = routeLang ?? lang;
+  const resolvedLang = useCurrentLanguage() ?? lang;
+  const currentAttribution = useEntryAttribution();
   usePagePreload({
     lang: resolvedLang,
     namespaces: ["assistanceSection", "assistance", "guides", "howToGetHere"],
@@ -159,6 +242,7 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
   const { t, i18n } = useTranslation("assistanceSection", { lng: resolvedLang });
   const { t: tGuides, i18n: guidesI18n } = useTranslation("guides", { lng: resolvedLang });
   const { t: tAssistance } = useTranslation("assistance", { lng: resolvedLang });
+  const { t: tHeader } = useTranslation("header", { lng: resolvedLang });
   const tGuidesEn: TFunction<"guides"> = (() => {
     const maybeFixed =
       typeof guidesI18n?.getFixedT === "function" ? guidesI18n.getFixedT("en", "guides") : undefined;
@@ -171,30 +255,10 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
       typeof i18n?.getFixedT === "function" ? i18n.getFixedT("en", "assistance") : undefined;
     return typeof maybeFixed === "function" ? (maybeFixed as TFunction) : (tAssistance as TFunction);
   })();
-
-  const heroIntroKey = "heroIntro" as const;
-  const heroIntroRaw = t(heroIntroKey, { defaultValue: "" }) as string;
-  const heroIntro =
-    heroIntroRaw && heroIntroRaw !== heroIntroKey
-      ? heroIntroRaw
-      : (t("amaParagraph1", {
-          defaultValue:
-            "Message us to plan terrace evenings, hikes, or transfers; we’ll reply with curated tips and confirmations.",
-        }) as string);
-
-  const bookingOptions = (() => {
-    return (t("bookingOptions", { returnObjects: true }) as Partial<Record<string, string>>) || {};
-  })();
-
-  const popularGuidesHeadingKey = "popularGuides" as const;
-  const popularGuidesHeadingRaw = t(popularGuidesHeadingKey, { defaultValue: "" }) as string;
-  const popularGuidesHeading =
-    typeof popularGuidesHeadingRaw === "string" &&
-    popularGuidesHeadingRaw.trim().length > 0 &&
-    popularGuidesHeadingRaw !== popularGuidesHeadingKey
-      ? popularGuidesHeadingRaw
-            : "Other Popular Guides";
-
+  const heroIntro = resolveHeroIntro(t);
+  const bookingOptions =
+    (t("bookingOptions", { returnObjects: true }) as Partial<Record<string, string>>) || {};
+  const popularGuidesHeading = resolvePopularGuidesHeading(t);
   const helpfulGuideCards = useMemo(
     () =>
       HELPFUL_GUIDE_KEYS.filter((key) => isGuideLive(key)).map((key) =>
@@ -210,6 +274,32 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
       ),
     [resolvedLang, tGuides, tGuidesEn],
   );
+
+  const bookingSurface = useMemo(
+    () => resolveIntentAwareBookingSurface(resolvedLang, currentAttribution),
+    [currentAttribution, resolvedLang],
+  );
+  const dormsLabel = (tHeader("rooms", { defaultValue: "Dorms" }) as string) || "Dorms";
+  const privateLabel = (tHeader("apartment", { defaultValue: "Private Rooms" }) as string) || "Private Rooms";
+  const handleBookingSelection = useCallback((input: {
+    href: string;
+    resolvedIntent: "hostel" | "private";
+    productType: string | null;
+    decisionMode: "direct_resolution" | "chooser";
+    destinationFunnel: "hostel_central" | "private";
+  }) => {
+    writeAttribution({
+      source_surface: "assistance",
+      source_cta: "assistance_primary_booking",
+      resolved_intent: input.resolvedIntent,
+      product_type: input.productType,
+      decision_mode: input.decisionMode,
+      destination_funnel: input.destinationFunnel,
+      locale: resolvedLang,
+      fallback_triggered: false,
+      next_page: input.href,
+    });
+  }, [resolvedLang]);
 
   const helpfulGuidesSectionItems = useMemo(
     () =>
@@ -299,11 +389,13 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
                 </div>
               </dl>
               <div className="mt-5">
-                <Button asChild size="sm" className="w-full">
-                  <Link href={getBookPath(resolvedLang)}>
-                    {t("bookDirect", { defaultValue: "Book Direct" })}
-                  </Link>
-                </Button>
+                <AssistanceBookingActions
+                  bookingSurface={bookingSurface}
+                  dormsLabel={dormsLabel}
+                  privateLabel={privateLabel}
+                  bookDirectLabel={t("bookDirect", { defaultValue: "Book Direct" }) as string}
+                  onSelect={handleBookingSelection}
+                />
               </div>
               <p className="mt-4 text-sm font-semibold text-brand-heading dark:text-brand-text">
                 {t("otherBookingOptions", { defaultValue: "Other booking options" })}

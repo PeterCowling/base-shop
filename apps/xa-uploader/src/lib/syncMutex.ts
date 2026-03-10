@@ -1,7 +1,5 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
-import { isLocalFsRuntimeEnabled } from "./localFsGuard";
-
 /**
  * Minimal KV namespace interface — subset of the Cloudflare KVNamespace API
  * used by the sync mutex. Avoids a direct devDependency on @cloudflare/workers-types.
@@ -44,7 +42,6 @@ function syncLockKey(storefrontId: string): string {
  * Uses the async form of getCloudflareContext — required for nodejs runtime routes.
  */
 export async function getUploaderKv(): Promise<UploaderKvNamespace | null> {
-  if (isLocalFsRuntimeEnabled()) return null;
   try {
     const { env } = await getCloudflareContext({ async: true });
     return env.XA_UPLOADER_KV ?? null;

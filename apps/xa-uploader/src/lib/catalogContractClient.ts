@@ -4,6 +4,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 import { toPositiveInt } from "@acme/lib";
 
+import { resolveContractRoot } from "./catalogContractUtils";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 
 type CatalogContractResponse = {
@@ -45,46 +46,23 @@ export class CatalogPublishError extends Error {
   }
 }
 
-function getCatalogContractBaseUrl(): string {
-  return (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
-}
-
-function getCatalogContractWriteToken(): string {
-  return (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
-}
+const CATALOG_CONTRACT_BASE_URL = (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
+const CATALOG_CONTRACT_WRITE_TOKEN = (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
 
 export function getCatalogContractReadiness(): { configured: boolean; errors: string[] } {
   const errors: string[] = [];
   // i18n-exempt -- XAUP-118 [ttl=2026-12-31] non-UI diagnostics for readiness payload
-  if (!getCatalogContractBaseUrl()) errors.push("XA_CATALOG_CONTRACT_BASE_URL not set");
+  if (!CATALOG_CONTRACT_BASE_URL) errors.push("XA_CATALOG_CONTRACT_BASE_URL not set");
   // i18n-exempt -- XAUP-118 [ttl=2026-12-31] non-UI diagnostics for readiness payload
-  if (!getCatalogContractWriteToken()) errors.push("XA_CATALOG_CONTRACT_WRITE_TOKEN not set");
+  if (!CATALOG_CONTRACT_WRITE_TOKEN) errors.push("XA_CATALOG_CONTRACT_WRITE_TOKEN not set");
   return { configured: errors.length === 0, errors };
 }
 
-function getCatalogContractTimeoutMs(): number {
-  return toPositiveInt(process.env.XA_CATALOG_CONTRACT_TIMEOUT_MS, 20_000, 1);
-}
+const CATALOG_CONTRACT_TIMEOUT_MS = toPositiveInt(process.env.XA_CATALOG_CONTRACT_TIMEOUT_MS, 20_000, 1);
 
-function ensureTrailingSlash(value: string): string {
-  return value.endsWith("/") ? value : `${value}/`;
-}
-
-const CONTRACT_ROUTE_ROOT_SEGMENTS = new Set(["catalog", "drafts", "deploy", "upload"]);
-
-function resolveContractRoot(baseUrl: string): URL {
-  const base = new URL(ensureTrailingSlash(baseUrl));
-  const segments = base.pathname.split("/").filter(Boolean);
-  const routeRootIndex = segments.findIndex((segment) => CONTRACT_ROUTE_ROOT_SEGMENTS.has(segment));
-  const rootSegments = routeRootIndex < 0 ? segments : segments.slice(0, routeRootIndex);
-  base.pathname = rootSegments.length > 0 ? `/${rootSegments.join("/")}/` : "/";
-  base.search = "";
-  base.hash = "";
-  return base;
-}
 
 function buildCatalogContractPublishUrl(storefrontId: XaCatalogStorefront): string {
-  const baseUrl = getCatalogContractBaseUrl();
+  const baseUrl = CATALOG_CONTRACT_BASE_URL;
   if (!baseUrl) {
     throw new CatalogPublishError(
       "unconfigured",
@@ -168,7 +146,7 @@ export async function publishCatalogPayloadToContract(params: {
     mediaIndex: unknown;
   };
 }): Promise<CatalogPublishResult> {
-  const writeToken = getCatalogContractWriteToken();
+  const writeToken = CATALOG_CONTRACT_WRITE_TOKEN;
   if (!writeToken) {
     throw new CatalogPublishError(
       "unconfigured",
@@ -179,7 +157,7 @@ export async function publishCatalogPayloadToContract(params: {
   const publishUrl = buildCatalogContractPublishUrl(params.storefrontId);
 
   const controller = new AbortController();
-  const timeoutHandle = setTimeout(() => controller.abort(), getCatalogContractTimeoutMs());
+  const timeoutHandle = setTimeout(() => controller.abort(), CATALOG_CONTRACT_TIMEOUT_MS);
 
   let response: Response;
   try {

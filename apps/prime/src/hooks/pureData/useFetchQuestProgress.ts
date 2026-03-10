@@ -9,14 +9,17 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import type { Database } from '@/services/firebase';
 import { get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { QuestProgress } from '../../types/questProgress';
 import { DEFAULT_QUEST_PROGRESS } from '../../types/questProgress';
 import useUuid from '../useUuid';
+
+import type { PureDataRefetch } from './types';
 
 /**
  * Helper function to fetch quest progress from "questProgress/{uuid}".
@@ -36,7 +39,7 @@ async function fetchQuestProgress(
     }
     return snapshot.val() as QuestProgress;
   } catch (error) {
-    logger.error('Error fetching quest progress:', error);
+    logger.error('Error fetching quest progress:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }
@@ -93,9 +96,7 @@ export function useFetchQuestProgress(
     gcTime: 30 * 60 * 1000, // 30 minutes
   });
 
-  const refetch = async (): Promise<void> => {
-    await refetchQuery();
-  };
+  const refetch = refetchQuery as unknown as PureDataRefetch;
 
   // Staleness check: progress belongs to a different booking
   const isStale =

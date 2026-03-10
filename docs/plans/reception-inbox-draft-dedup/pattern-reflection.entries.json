@@ -1,7 +1,10 @@
 {
   "schema_version": "pattern-reflection.entries.v1",
-  "generated_at": "2026-03-07T14:57:35.483Z",
+  "generated_at": "2026-03-10T11:40:15.082Z",
   "plan_slug": "reception-inbox-draft-dedup",
-  "source_path": "../docs/plans/reception-inbox-draft-dedup/pattern-reflection.user.md",
+  "review_cycle_key": "reception-inbox-draft-dedup",
+  "source_path": "docs/plans/reception-inbox-draft-dedup/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
   "entries": []
 }

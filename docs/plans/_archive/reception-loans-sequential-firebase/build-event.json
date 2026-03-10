@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "slug": "reception-loans-sequential-firebase",
+  "business": "BRIK",
+  "emitted_at": "2026-03-09T09:47:23.561Z",
+  "completed_at": "2026-03-09",
+  "why": "Sequential Firebase round-trips add latency to checkout and increase the window for partial-failure states in bulk checkout flows.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "Loan removal uses Firebase multi-path atomic updates where possible. Hook-level Firebase ops for bulk checkout (10 keycard loans) drop from ~40 to ~10 (75% reduction in ops this hook controls).",
+  "source": "operator"
+}

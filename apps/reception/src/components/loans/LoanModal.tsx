@@ -4,10 +4,8 @@ import React, {
   type ReactElement,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from "react";
-import type { LucideIcon } from "lucide-react";
 import { Banknote, FileText } from "lucide-react";
 
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
@@ -63,24 +61,12 @@ function LoanModalComponent({
    */
   const [depositType, setDepositType] = useState<LoanMethod>("CASH");
 
-  const depositIcon = useMemo(
-    (): { icon: LucideIcon; className: string } =>
-      depositType === "CASH"
-        ? { icon: Banknote, className: "text-success-main" }
-        : { icon: FileText, className: "text-warning-main" },
-    [depositType]
-  );
+  const depositIcon =
+    depositType === "CASH"
+      ? { icon: Banknote, className: "text-success-main" }
+      : { icon: FileText, className: "text-warning-main" };
 
-  /**
-   * Derive the price based on the item name.
-   */
-  const itemPrice = useMemo(() => {
-    if (item === "Hairdryer" || item === "Steamer") {
-      return 20;
-    }
-    // For Keycard or any other items, it's 10
-    return 10;
-  }, [item]);
+  const itemPrice = item === "Hairdryer" || item === "Steamer" ? 20 : 10;
 
   /**
    * When the modal opens:

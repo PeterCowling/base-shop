@@ -281,7 +281,9 @@ describe("CloseShiftForm", () => {
       />
     );
 
-    const heading = screen.getByRole("heading", { name: /close shift - cash/i });
+    const heading = screen.getByRole("heading", {
+      name: /close shift - cash/i,
+    });
     const container = heading.closest("div.relative") as HTMLElement;
     expect(container).toHaveClass("relative");
     document.documentElement.classList.remove("dark");

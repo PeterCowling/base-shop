@@ -54,16 +54,23 @@ If unclear, ask one question: "Has this already been written into a doc, or is t
 - What changed? — user describes in plain language; agent infers `changed_sections` from description if SHAs are unavailable
 
 **For operator idea:**
-- Which business? (infer from context or ask)
-- Area anchor — which system, product area, or business domain does this touch? (infer from description or confirm with one question)
-  - **Format rule:** `area_anchor` must be ≤12 words, no full sentences, no narrative prose.
-  - **Template:** `"<Business> <Artifact> — <gap in one clause>"`
-  - **Good:** `"PWRB IPEI agreement — document empty, needs drafting"` (7 words)
-  - **Good:** `"PWRB hardware SKU — no decision, needs supplier research"` (9 words)
-  - **Bad (do not do this):** `"New business registration — PWRB powerbank rental station network for Amalfi Coast tourists. Business plan backfilled from offline planning sessions dated 2026-01-29."` — this is a narrative, not an anchor.
-  - The ≤12 word limit is guidance, not schema-enforced. Exceed it only for genuinely complex multi-system area names; never use full sentences or narrative prose.
-- Domain — `MARKET | SELL | PRODUCTS | LOGISTICS | STRATEGY` (infer from area anchor; confirm only if genuinely ambiguous)
-- Routing — is this something to investigate and plan, or just understand? Apply routing intelligence to decide; only ask the user if the description is genuinely ambiguous between planning and understanding
+- Load and follow `modules/operator-idea-structured-intake.md`.
+- Run the five core questions in order. Do not rely on broad free-form inference for
+  `area_anchor`, `location_anchors`, domain, or evidence fields once the structured intake starts.
+- If the operator reports multiple distinct gaps, split them first and produce one intake
+  block per gap before routing.
+- Use the module's deterministic assembly rules to populate:
+  - `area_anchor`
+  - `location_anchors`
+  - `domain`
+  - `provisional_deliverable_family`
+  - `evidence_refs`
+  - `current_truth`
+  - `next_scope_now`
+  - `why`
+  - `intended_outcome`
+- Routing remains a Step 4 judgment call. Do not ask the operator to decide the final route
+  unless Step 4 is still genuinely ambiguous after the structured intake.
 
 ### Step 4 — Apply routing intelligence, emit, and enqueue
 
@@ -85,7 +92,12 @@ Apply routing intelligence (see below) to determine `status` and `recommended_ro
 For operator idea packets:
 - `trigger: "operator_idea"`
 - `artifact_id`, `before_sha`, `after_sha` — omit
+- `location_anchors` — must be populated from the structured intake; do not leave empty for
+  likely `fact_find_ready` or `micro_build_ready` packets
+- `provisional_deliverable_family` — populate from the structured intake enum
 - `evidence_refs` — include operator-stated rationale using the format: `"operator-stated: <one-line summary>"`
+- `why` and `intended_outcome` — preserve operator-authored values when explicitly stated;
+  otherwise use the module's route-neutral auto fallback
 - All other required fields apply as normal
 
 **Queue-with-confirmation policy (trial mode):**
@@ -195,11 +207,12 @@ revealed gap as a *separate* operator-idea dispatch with its own narrow `area_an
 
 ## Evidence Fields for Classification
 
-When gathering context in Step 3, listen for signals in the operator's description that
-indicate one or more evidence fields should be captured. These fields are used downstream
-to determine how urgently an idea is acted on and which tier it lands in. They are
-advisory — if the operator doesn't provide them, proceed without asking; the downstream
-classifier will apply automatic demotion to surface the gap.
+When gathering context in Step 3 for `operator_idea`, do not rely on passive
+"listen for signals" behavior alone. Run the conditional evidence prompts from
+`modules/operator-idea-structured-intake.md` after the five core questions.
+These fields are used downstream to determine how urgently an idea is acted on and which
+tier it lands in. They are advisory — if the operator does not have them, proceed without
+forcing a guess; the downstream classifier will apply automatic demotion to surface the gap.
 
 Capture evidence fields during Step 3 and include any provided values in the dispatch
 packet under `evidence_refs` or as structured fields alongside operator-stated rationale.
@@ -249,6 +262,8 @@ Canonical queue lifecycle values are:
 
 Legacy states in historical queue snapshots (`auto_executed`, `completed`, `logged_no_action`)
 are compatibility data and must not be emitted as new queue lifecycle values.
+
+> **Guard:** `auto_executed` is a reserved state and must never be hand-set in trial mode (Option B). Use `completed`, `processed`, `skipped`, or `error` only.
 
 ## Idempotency
 

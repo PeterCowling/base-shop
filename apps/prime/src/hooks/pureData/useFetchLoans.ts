@@ -5,13 +5,16 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import type { Database } from '@/services/firebase';
 import { get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { LoanOccupantRecord } from '../../types/loans';
 import useUuid from '../useUuid';
+
+import type { PureDataRefetch } from './types';
 
 /**
  * Fetch occupant loan transactions from "loans/{occupantId}".
@@ -27,7 +30,7 @@ async function fetchLoansForOccupant(
     }
     return snapshot.val() as LoanOccupantRecord;
   } catch (error) {
-    logger.error('Error fetching loans data:', error);
+    logger.error('Error fetching loans data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }
@@ -52,6 +55,6 @@ export function useFetchLoans(options: UseFetchLoansOptions = {}) {
     error: error ?? null,
     isLoading,
     isError: error !== null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

@@ -539,45 +539,45 @@
       "path": "docs/business-os/startup-loop/ideas/trial/codebase-signals.latest.json",
       "domain": "BOS",
       "business": "BOS",
-      "artifact_class": "source_process",
-      "trigger_policy": "eligible",
-      "propagation_mode": "source_mechanical_auto",
+      "artifact_class": "system_telemetry",
+      "trigger_policy": "never",
+      "propagation_mode": "source_task",
       "depends_on": [],
       "produces": [],
       "last_known_sha": null,
       "registered_at": "2026-03-03T23:59:00.000Z",
       "active": true,
-      "notes": "Synthetic codebase-structure signal artifact. Bridge built (dispatch 0156). Route/API/schema/dependency shifts emit dispatch candidates."
+      "notes": "Synthetic codebase-structure signal artifact. Bridge built (dispatch 0156). Reclassified system_telemetry/never (2026-03-09): artifact is a process-level signal collector, not an individually routable dispatch source."
     },
     {
       "artifact_id": "BOS-BOS-REPO_MATURITY_SIGNALS",
       "path": "docs/business-os/startup-loop/ideas/trial/repo-maturity-signals.latest.json",
       "domain": "BOS",
       "business": "BOS",
-      "artifact_class": "source_process",
-      "trigger_policy": "eligible",
-      "propagation_mode": "source_mechanical_auto",
+      "artifact_class": "system_telemetry",
+      "trigger_policy": "never",
+      "propagation_mode": "source_task",
       "depends_on": [],
       "produces": [],
       "last_known_sha": null,
       "registered_at": "2026-03-04T09:45:00.000Z",
       "active": true,
-      "notes": "Deterministic repository maturity snapshot (CI/testing/docs/governance/ops/code-quality). Dispatch emits only on score regressions or new critical missing controls."
+      "notes": "Deterministic repository maturity snapshot (CI/testing/docs/governance/ops/code-quality). Reclassified system_telemetry/never (2026-03-09): artifact is a process-level signal collector, not an individually routable dispatch source."
     },
     {
       "artifact_id": "BOS-BOS-AGENT_SESSION_FINDINGS",
       "path": "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
       "domain": "BOS",
       "business": "BOS",
-      "artifact_class": "source_process",
-      "trigger_policy": "eligible",
-      "propagation_mode": "source_mechanical_auto",
+      "artifact_class": "system_telemetry",
+      "trigger_policy": "never",
+      "propagation_mode": "source_task",
       "depends_on": [],
       "produces": [],
       "last_known_sha": null,
       "registered_at": "2026-03-03T23:59:00.000Z",
       "active": true,
-      "notes": "Synthetic agent-session signal artifact. Bridge built (dispatch 0157). Walkthrough/testing findings from agent transcripts emit dispatch candidates."
+      "notes": "Synthetic agent-session signal artifact. Bridge built (dispatch 0157). Reclassified system_telemetry/never (2026-03-09): artifact is a process-level signal collector, not an individually routable dispatch source."
     }
   ]
 }

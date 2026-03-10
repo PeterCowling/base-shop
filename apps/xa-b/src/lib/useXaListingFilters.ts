@@ -9,6 +9,7 @@ import type { Currency } from "@acme/platform-core/contexts/CurrencyContext";
 import type { XaProduct } from "./demoData";
 import { getAvailableStock } from "./inventoryStore";
 import type { XaCartState } from "./xaCart";
+import { getEffectivePrice } from "./xaCatalog";
 import {
   ALL_FILTER_KEYS,
   collectFacetValues,
@@ -24,6 +25,8 @@ import {
   toNumber,
 } from "./xaListingUtils";
 import type { XaCategory } from "./xaTypes";
+
+const EMPTY_CART: XaCartState = {};
 
 type UseXaListingFiltersArgs = {
   products: XaProduct[];
@@ -200,7 +203,7 @@ function filterAndSortProducts({
       if (delta > newInDays * 24 * 60 * 60 * 1000) return false;
     }
 
-    const effectivePrice = product.prices?.[currency] ?? product.price;
+    const effectivePrice = getEffectivePrice(product, currency);
     if (typeof appliedMin === "number" && effectivePrice < appliedMin) return false;
     if (typeof appliedMax === "number" && effectivePrice > appliedMax) return false;
 
@@ -411,10 +414,11 @@ export function useXaListingFilters({
     return resolveReferenceTimestamp(products);
   }, [products]);
 
+  const cartForStockFilter = appliedInStock ? cart : EMPTY_CART;
   const filteredProducts = React.useMemo(() => {
     return filterAndSortProducts({
       products,
-      cart,
+      cart: cartForStockFilter,
       filterConfigs,
       appliedValues,
       appliedInStock,
@@ -433,7 +437,7 @@ export function useXaListingFilters({
     appliedMin,
     appliedMax,
     appliedValues,
-    cart,
+    cartForStockFilter,
     filterConfigs,
     products,
     referenceTimestamp,
@@ -449,7 +453,7 @@ export function useXaListingFilters({
     [pathname, router],
   );
 
-  const applySort = (nextSort: SortKey) => {
+  const applySort = React.useCallback((nextSort: SortKey) => {
     const next = new URLSearchParams(queryKey);
     if (nextSort === "newest") {
       next.delete("sort");
@@ -457,18 +461,16 @@ export function useXaListingFilters({
       next.set("sort", nextSort);
     }
     setQuery(next);
-  };
+  }, [queryKey, setQuery]);
 
-  const toggleDraftValue = (key: FilterKey, value: string) => {
+  const toggleDraftValue = React.useCallback((key: FilterKey, value: string) => {
     setDraftValues((prev) => {
-      const next = cloneFilterValues(prev);
-      const bucket = new Set(next[key]);
+      const bucket = new Set(prev[key]);
       if (bucket.has(value)) bucket.delete(value);
       else bucket.add(value);
-      next[key] = bucket;
-      return next;
+      return { ...prev, [key]: bucket };
     });
-  };
+  }, [setDraftValues]);
 
   const applyFilters = () =>
     setQuery(

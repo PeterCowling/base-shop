@@ -11,37 +11,18 @@ import hotel from "@/config/hotel";
 import { useOptionalModal } from "@/context/ModalContext";
 import type { AppLanguage } from "@/i18n.config";
 import { MapPin } from "@/icons";
-
-function isI18nKeyToken(input: string): boolean {
-  // Avoid regex here: ESLint security rules can flag even safe-looking patterns.
-  // We only treat tokens like `locationSection.title` as i18n keys.
-  if (!input.includes(".")) return false;
-
-  const parts = input.split(".");
-  if (parts.some((p) => p.length === 0)) return false;
-
-  for (const part of parts) {
-    for (let i = 0; i < part.length; i += 1) {
-      const code = part.charCodeAt(i);
-      const isUpper = code >= 65 && code <= 90;
-      const isLower = code >= 97 && code <= 122;
-      const isDigit = code >= 48 && code <= 57;
-      const isUnderscore = code === 95;
-
-      if (!isUpper && !isLower && !isDigit && !isUnderscore) return false;
-    }
-  }
-
-  return true;
-}
+import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
 
 function resolveTranslatedCopy(value: unknown, fallback: string): string {
   if (typeof value !== "string") return fallback;
   const trimmed = value.trim();
   if (!trimmed) return fallback;
-  if (isI18nKeyToken(trimmed)) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
   return trimmed;
 }
+
+const { streetAddress: _streetAddress, postalCode: _postalCode, addressLocality: _addressLocality } = hotel.address;
+const MAPS_URL = `https://www.google.com/maps/place/${encodeURIComponent(`${_streetAddress}, ${_postalCode} ${_addressLocality}`)}`;
 
 const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: AppLanguage }): JSX.Element {
   const translationOptions = lang ? { lng: lang } : undefined;
@@ -54,9 +35,6 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
     }),
     "Via G. Marconi, 358, 84017 Positano SA"
   );
-
-  const { streetAddress, postalCode, addressLocality } = hotel.address;
-  const mapsUrl = `https://www.google.com/maps/place/${encodeURIComponent(`${streetAddress}, ${postalCode} ${addressLocality}`)}`;
 
   const handleDirections = useCallback(() => {
     openModal("location", { hostelAddress: address });
@@ -114,7 +92,7 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
                 )}
               </button>
               <a
-                href={mapsUrl}
+                href={MAPS_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="min-h-11 min-w-11 rounded-full border border-brand-outline/50 px-6 py-3 text-sm font-semibold text-brand-heading transition hover:border-brand-primary hover:text-brand-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-text dark:hover:text-brand-secondary"
@@ -129,7 +107,7 @@ const LocationMiniBlock = memo(function LocationMiniBlock({ lang }: { lang?: App
 
           <Stack
             as="a"
-            href={mapsUrl}
+            href={MAPS_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="group h-full justify-between rounded-3xl border border-brand-outline/30 bg-brand-surface/80 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-md border-fg-inverse/10 dark:bg-brand-surface"

@@ -16,7 +16,7 @@ export function getBuildLanguages(): AppLanguage[] {
     return i18nConfig.supportedLngs.filter(isAppLanguage);
   }
 
-  const filteredLanguages = Array.from(new Set(requestedLanguages)).filter(isAppLanguage);
+  const filteredLanguages = Array.from(new Set(requestedLanguages.filter(isAppLanguage)));
 
   return filteredLanguages.length
     ? filteredLanguages

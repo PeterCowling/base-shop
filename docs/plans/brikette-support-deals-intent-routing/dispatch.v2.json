@@ -1,0 +1,54 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260310144500-9402",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "domain": "SELL",
+  "root_event_id": "operator:BRIK:SELL:brikette-support-deals-intent-routing:20260310",
+  "anchor_key": "brikette-support-deals-intent-routing",
+  "cluster_key": "BRIK:SELL:brikette-support-deals-intent-routing:operator:20260310",
+  "cluster_fingerprint": "brikette-support-deals-intent-routing-20260310",
+  "lineage_depth": 0,
+  "area_anchor": "Brikette support and deals pages reset booking intent instead of preserving or segmenting it",
+  "location_anchors": [
+    "apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx",
+    "apps/brikette/src/app/[lang]/assistance/AssistanceIndexContent.tsx",
+    "apps/brikette/src/components/cta/ContentStickyCta.tsx",
+    "apps/brikette/src/utils/intentResolver.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Deals and support/help surfaces still default their commercial handoff to the hostel booking path. Private-intent users can be dropped back into the dorm narrative, while unknown-intent users are not given an explicit dorm-vs-private choice.",
+  "next_scope_now": "Implement intent-aware booking routing for deals and support surfaces so known private intent is preserved and unknown intent receives an explicit dorm/private chooser instead of a silent hostel default.",
+  "adjacent_later": [
+    "Extend the same intent-aware chooser model to secondary support/content CTA clusters such as AlsoHelpful.",
+    "Add dedicated GA4 breakdown for chooser branch selection on neutral support surfaces."
+  ],
+  "recommended_route": "lp-do-build",
+  "status": "micro_build_ready",
+  "priority": "P1",
+  "confidence": 0.91,
+  "evidence_refs": [
+    "operator-stated: deals and support pages should preserve private intent or explicitly segment dorm vs private",
+    "code-ref: apps/brikette/src/app/[lang]/deals/DealsPageContent.tsx",
+    "code-ref: apps/brikette/src/app/[lang]/assistance/AssistanceIndexContent.tsx",
+    "code-ref: apps/brikette/src/components/cta/ContentStickyCta.tsx"
+  ],
+  "created_at": "2026-03-10T14:45:00.000Z",
+  "queue_state": "processed",
+  "why": "Neutral commercial-support surfaces are currently optimized for the hostel funnel only, which causes private-intent leakage and weakens the coherence of the broader Brikette sales flow.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Brikette deals and support surfaces preserve known private intent and present an explicit dorm/private booking choice when intent is unknown, instead of silently defaulting to the hostel booking path.",
+    "source": "operator"
+  },
+  "processed_by": {
+    "route": "dispatch-routed",
+    "target_route": "lp-do-build",
+    "target_kind": "build",
+    "target_slug": "brikette-support-deals-intent-routing",
+    "target_path": "docs/plans/brikette-support-deals-intent-routing/micro-build.md",
+    "processed_at": "2026-03-10T14:46:00.000Z",
+    "micro_build_path": "docs/plans/brikette-support-deals-intent-routing/micro-build.md"
+  }
+}

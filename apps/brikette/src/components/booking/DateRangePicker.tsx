@@ -8,6 +8,7 @@ import {
   ar, da, de, enUS, es, fr, hi, hu, it, ja, ko, nb, pl, pt, ru, sv, vi, zhCN,
 } from "react-day-picker/locale";
 
+import { useHasMounted } from "@/hooks/useHasMounted";
 import type { AppLanguage } from "@/i18n.config";
 import {
   getMaxCheckoutForStay,
@@ -147,10 +148,7 @@ export function DateRangePicker({
   lang,
   className,
 }: DateRangePickerProps): React.JSX.Element {
-  const [hasMounted, setHasMounted] = useState(false);
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  const hasMounted = useHasMounted();
 
   const cellSize = useDayPickerCellSize();
   const dayPickerLocale = lang ? (DAYPICKER_LOCALE_MAP[lang] ?? enUS) : enUS;
@@ -221,14 +219,14 @@ export function DateRangePicker({
       <div aria-hidden="true" className="hidden">
         <input
           type="date"
-          data-testid={TEST_IDS.checkInInput}
+          data-cy={TEST_IDS.checkInInput}
           tabIndex={-1}
           value={selectedFromIso}
           onChange={(event) => handleCheckInInputChange(event.target.value)}
         />
         <input
           type="date"
-          data-testid={TEST_IDS.checkOutInput}
+          data-cy={TEST_IDS.checkOutInput}
           tabIndex={-1}
           value={selectedToIso}
           min={minCheckout}
@@ -238,6 +236,7 @@ export function DateRangePicker({
       <div className="rounded-2xl border border-brand-outline/30 bg-brand-bg px-2 py-3 sm:px-3 sm:py-4">
         <DayPicker
           mode="range"
+          min={1}
           selected={stableSelected}
           onSelect={handleSelect}
           disabled={disabledMatcher}
@@ -272,7 +271,7 @@ export function DateRangePicker({
           type="button"
           data-cy={TEST_IDS.clear}
           onClick={handleClear}
-          className="min-h-11 rounded-full border border-brand-outline/40 bg-brand-bg px-4 text-sm font-medium text-brand-primary transition-colors hover:bg-brand-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-1"
+          className="min-h-11 min-w-11 rounded-full border border-brand-outline/40 bg-brand-bg px-4 text-sm font-medium text-brand-primary transition-colors hover:bg-brand-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-1"
         >
           {clearDatesText}
         </button>

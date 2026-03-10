@@ -143,7 +143,7 @@ function StatusButton({ booking }: StatusButtonProps) {
       return "bg-warning-main/100 text-foreground hover:opacity-80";
     }
     // code=0 => not yet arrived — muted inactive state
-    return "bg-surface-3 text-foreground/60 hover:opacity-90";
+    return "bg-surface-3 text-foreground hover:opacity-90";
   }, []);
 
   /**

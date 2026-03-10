@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- TECH-000 [ttl=2026-12-31] Internal SEO audit heuristics and issue labels are operational diagnostics, not UI copy. */
 /**
  * SEO Audit Script for Guides v3.1.0
  *

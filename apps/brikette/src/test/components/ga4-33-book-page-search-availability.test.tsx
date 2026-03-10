@@ -33,6 +33,12 @@ jest.mock("@/components/rooms/RoomsSection", () => ({ __esModule: true, default:
 const BookPageContent = require("@/app/[lang]/book/BookPageContent")
   .default as typeof import("@/app/[lang]/book/BookPageContent").default;
 
+function getDateRangeInput(selector: string): HTMLInputElement {
+  const input = document.querySelector(selector);
+  expect(input).toBeInstanceOf(HTMLInputElement);
+  return input as HTMLInputElement;
+}
+
 describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
   let originalGtag: typeof window.gtag;
   let gtagMock: jest.Mock;
@@ -60,8 +66,8 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
   it("TC-01: changing dates fires search_availability after debounce with nights/lead_time_days/pax", () => {
     render(<BookPageContent lang="en" heading="Book your stay" />);
 
-    const checkinInput = screen.getByLabelText(/check in/i);
-    const checkoutInput = screen.getByLabelText(/check out/i);
+    const checkinInput = getDateRangeInput('[data-cy="date-range-checkin-input"]');
+    const checkoutInput = getDateRangeInput('[data-cy="date-range-checkout-input"]');
 
     fireEvent.change(checkinInput, { target: { value: "2026-06-10" } });
     fireEvent.change(checkoutInput, { target: { value: "2026-06-12" } });
@@ -122,13 +128,13 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
   it("TC-04: check-in change auto-adjusts checkout to preserve two-night minimum", () => {
     render(<BookPageContent lang="en" heading="Book your stay" />);
 
-    const checkinInput = screen.getByLabelText(/check in/i);
-    const checkoutInput = screen.getByLabelText(/check out/i) as HTMLInputElement;
+    const checkinInput = getDateRangeInput('[data-cy="date-range-checkin-input"]');
+    const checkoutInput = getDateRangeInput('[data-cy="date-range-checkout-input"]');
 
     fireEvent.change(checkinInput, { target: { value: "2026-06-10" } });
 
-    expect(checkoutInput.value).toBe("2026-06-12");
-    expect(checkoutInput.min).toBe("2026-06-12");
+    expect(checkoutInput?.value).toBe("2026-06-12");
+    expect(checkoutInput?.min).toBe("2026-06-12");
     expect(window.location.search).toContain("checkin=2026-06-10");
     expect(window.location.search).toContain("checkout=2026-06-12");
   });
@@ -137,12 +143,12 @@ describe("TASK-33: BookPageContent search_availability GA4 contract", () => {
     mockSearchParams = new URLSearchParams("checkin=2026-06-10&checkout=2026-06-11&pax=1");
     render(<BookPageContent lang="en" heading="Book your stay" />);
 
-    const checkinInput = screen.getByLabelText(/check in/i) as HTMLInputElement;
-    const checkoutInput = screen.getByLabelText(/check out/i) as HTMLInputElement;
+    const checkinInput = getDateRangeInput('[data-cy="date-range-checkin-input"]');
+    const checkoutInput = getDateRangeInput('[data-cy="date-range-checkout-input"]');
 
-    expect(checkinInput.value).toBe("2026-06-10");
-    expect(["", "2026-06-11"]).toContain(checkoutInput.value);
-    expect(checkoutInput.min).toBe("2026-06-12");
+    expect(checkinInput?.value).toBe("2026-06-10");
+    expect(["", "2026-06-11"]).toContain(checkoutInput?.value ?? "");
+    expect(checkoutInput?.min).toBe("2026-06-12");
 
     jest.advanceTimersByTime(1000);
     const searchCalls = gtagMock.mock.calls.filter(

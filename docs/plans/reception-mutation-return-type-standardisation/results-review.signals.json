@@ -1,0 +1,32 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-10T11:40:07.755Z",
+  "plan_slug": "reception-mutation-return-type-standardisation",
+  "review_cycle_key": "reception-mutation-return-type-standardisation",
+  "source_path": "docs/plans/reception-mutation-return-type-standardisation/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New skill — Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.",
+      "body": "New skill — Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.",
+      "source": "results-review.user.md",
+      "date": "2026-03-08T00:00:00.000Z",
+      "path": "docs/plans/reception-mutation-return-type-standardisation/results-review.user.md",
+      "idea_key": "e6d553e69ba12e20f0d12a0f1632060e8c79df48",
+      "review_cycle_key": "reception-mutation-return-type-standardisation",
+      "canonical_title": "Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.",
+      "build_signal_id": "40f93ad0fc766ff22d9595ef81376074935b77cd",
+      "recurrence_key": "3fe15b472e75d35371a30d96580fa34c83b9d93f",
+      "build_origin_status": "ready",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
+}

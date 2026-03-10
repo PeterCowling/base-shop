@@ -57,10 +57,8 @@ export default function RenderManualObject({
     const sectionsEff = normaliseManualSections(base);
 
     const tocWasProvided = Object.prototype.hasOwnProperty.call(base ?? {}, "toc");
-    const tocBase = Array.isArray(base?.toc) ? base!.toc! : [];
-    const tocEnBase = Array.isArray(manualEn?.toc)
-      ? (manualEn!.toc)
-      : [];
+    const tocBase = Array.isArray(base?.toc) ? base.toc : [];
+    const tocEnBase = Array.isArray(manualEn?.toc) ? manualEn.toc : [];
 
     const manualLabelsCollapsed = checkManualLabelsCollapsed(t, guideKey);
 

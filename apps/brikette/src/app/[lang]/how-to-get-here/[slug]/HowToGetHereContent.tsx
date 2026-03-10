@@ -192,7 +192,7 @@ export default function HowToGetHereContent({
           {hero ? (
             <header className="rounded-3xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/80">
               {hero["eyebrow"] ? (
-                <p className="text-sm font-semibold uppercase tracking-widest text-brand-secondary">
+                <p className="text-sm font-semibold uppercase tracking-widest text-brand-primary dark:text-brand-secondary">
                   {hero["eyebrow"] as ReactNode}
                 </p>
               ) : null}

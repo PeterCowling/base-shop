@@ -33,6 +33,8 @@ interface DraftReviewPanelProps {
   onDismiss: () => Promise<void>;
 }
 
+type DraftConfirmDialog = "none" | "regenerate" | "send" | "resolve" | "dismiss";
+
 function parseRecipientEmails(input: string): string[] {
   return input
     .split(",")
@@ -72,10 +74,7 @@ export default function DraftReviewPanel({
   const [recipientInput, setRecipientInput] = useState("");
   const [plainText, setPlainText] = useState("");
   const [validationError, setValidationError] = useState<string | null>(null);
-  const [showRegenerateConfirm, setShowRegenerateConfirm] = useState(false);
-  const [showSendConfirm, setShowSendConfirm] = useState(false);
-  const [showResolveConfirm, setShowResolveConfirm] = useState(false);
-  const [showDismissConfirm, setShowDismissConfirm] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState<DraftConfirmDialog>("none");
 
   useEffect(() => {
     setSubject(
@@ -172,7 +171,7 @@ export default function DraftReviewPanel({
         await handleSave();
       }
       await onSend();
-      setShowSendConfirm(false);
+      setConfirmDialog("none");
     } catch {
       // Keep the confirmation modal open so staff can correct the draft.
     }
@@ -181,7 +180,7 @@ export default function DraftReviewPanel({
   async function handleConfirmRegenerate() {
     try {
       await onRegenerate(currentDraft?.status === "edited");
-      setShowRegenerateConfirm(false);
+      setConfirmDialog("none");
     } catch {
       // Keep the confirmation modal open so staff can retry or cancel.
     }
@@ -190,7 +189,7 @@ export default function DraftReviewPanel({
   async function handleConfirmResolve() {
     try {
       await onResolve();
-      setShowResolveConfirm(false);
+      setConfirmDialog("none");
     } catch {
       // Keep the confirmation modal open so staff can retry or cancel.
     }
@@ -199,7 +198,7 @@ export default function DraftReviewPanel({
   async function handleConfirmDismiss() {
     try {
       await onDismiss();
-      setShowDismissConfirm(false);
+      setConfirmDialog("none");
     } catch {
       // Keep the confirmation modal open so staff can retry or cancel.
     }
@@ -324,7 +323,7 @@ export default function DraftReviewPanel({
                 {canRegenerateDraft && (
                   <Button
                     type="button"
-                    onClick={() => setShowRegenerateConfirm(true)}
+                    onClick={() => setConfirmDialog("regenerate")}
                     disabled={actionsDisabled}
                     color="default"
                     tone="outline"
@@ -341,7 +340,7 @@ export default function DraftReviewPanel({
               <>
                 <Button
                   type="button"
-                  onClick={() => setShowResolveConfirm(true)}
+                  onClick={() => setConfirmDialog("resolve")}
                   disabled={actionsDisabled}
                   color="default"
                   tone="outline"
@@ -353,7 +352,7 @@ export default function DraftReviewPanel({
 
                 <Button
                   type="button"
-                  onClick={() => setShowDismissConfirm(true)}
+                  onClick={() => setConfirmDialog("dismiss")}
                   disabled={actionsDisabled}
                   color="danger"
                   tone="outline"
@@ -368,7 +367,7 @@ export default function DraftReviewPanel({
             {canSendDraft && (
               <Button
                 type="button"
-                onClick={() => setShowSendConfirm(true)}
+                onClick={() => setConfirmDialog("send")}
                 disabled={
                   actionsDisabled
                   || (channelCapabilities.supportsRecipients && parsedRecipients.length === 0)
@@ -390,7 +389,7 @@ export default function DraftReviewPanel({
         <>
           {canRegenerateDraft && (
             <ConfirmModal
-              isOpen={showRegenerateConfirm}
+              isOpen={confirmDialog === "regenerate"}
               title="Regenerate draft?"
               message={
                 hasUnsavedChanges || currentDraft?.status === "edited" || currentDraft?.status === "under_review"
@@ -398,14 +397,14 @@ export default function DraftReviewPanel({
                   : "Generate a fresh agent draft for this thread?"
               }
               confirmLabel="Regenerate"
-              onCancel={() => setShowRegenerateConfirm(false)}
+              onCancel={() => setConfirmDialog("none")}
               onConfirm={handleConfirmRegenerate}
             />
           )}
 
           {canSendDraft && (
             <ConfirmModal
-              isOpen={showSendConfirm}
+              isOpen={confirmDialog === "send"}
               title={channelCapabilities.supportsSubject ? "Send this reply?" : "Send this message?"}
               message={
                 channelCapabilities.supportsRecipients
@@ -413,7 +412,7 @@ export default function DraftReviewPanel({
                   : `Send via ${threadDetail.thread.channelLabel.toLowerCase()} for this ${threadDetail.thread.lane} thread?`
               }
               confirmLabel="Send now"
-              onCancel={() => setShowSendConfirm(false)}
+              onCancel={() => setConfirmDialog("none")}
               onConfirm={handleConfirmSend}
             />
           )}
@@ -423,20 +422,20 @@ export default function DraftReviewPanel({
       {canMutateThread && (
         <>
           <ConfirmModal
-            isOpen={showResolveConfirm}
+            isOpen={confirmDialog === "resolve"}
             title="Resolve thread?"
             message="This thread will be removed from your active inbox."
             confirmLabel="Resolve"
-            onCancel={() => setShowResolveConfirm(false)}
+            onCancel={() => setConfirmDialog("none")}
             onConfirm={handleConfirmResolve}
           />
 
           <ConfirmModal
-            isOpen={showDismissConfirm}
+            isOpen={confirmDialog === "dismiss"}
             title="Mark as not relevant?"
             message="This thread will be archived. The sender details are recorded so similar emails can be reviewed later."
             confirmLabel="Not relevant"
-            onCancel={() => setShowDismissConfirm(false)}
+            onCancel={() => setConfirmDialog("none")}
             onConfirm={handleConfirmDismiss}
           />
         </>

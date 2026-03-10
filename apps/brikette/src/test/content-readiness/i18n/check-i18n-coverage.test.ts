@@ -1,6 +1,12 @@
 /* eslint-disable security/detect-non-literal-fs-filename -- Test helpers that load/write locale data from filesystem; paths constructed from known directory structure */
 import { execSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import path from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
@@ -42,19 +48,19 @@ function setupTestLocales(): void {
         sections: [{ id: "sec1", title: "Section 1", body: "Content here" }],
       },
       null,
-      2,
-    ),
+      2
+    )
   );
   writeFileSync(
     path.join(enDir, "common.json"),
-    JSON.stringify({ greeting: "Hello", farewell: "Goodbye" }, null, 2),
+    JSON.stringify({ greeting: "Hello", farewell: "Goodbye" }, null, 2)
   );
 
   const deDir = path.join(TEST_LOCALES_DIR, "de");
   mkdirSync(path.join(deDir, "guides", "content"), { recursive: true });
   writeFileSync(
     path.join(deDir, "common.json"),
-    JSON.stringify({ greeting: "Hallo" }, null, 2),
+    JSON.stringify({ greeting: "Hallo" }, null, 2)
   );
 
   const frDir = path.join(TEST_LOCALES_DIR, "fr");
@@ -68,12 +74,12 @@ function setupTestLocales(): void {
         sections: [{ id: "sec1", title: "Section 1", body: "Contenu ici" }],
       },
       null,
-      2,
-    ),
+      2
+    )
   );
   writeFileSync(
     path.join(frDir, "common.json"),
-    JSON.stringify({ greeting: "Bonjour", farewell: "Au revoir" }, null, 2),
+    JSON.stringify({ greeting: "Bonjour", farewell: "Au revoir" }, null, 2)
   );
 }
 
@@ -83,10 +89,13 @@ function cleanupTestLocales(): void {
   }
 }
 
-function runCoverageJson(args: string[], outputFile: string): CoverageReportJson {
+function runCoverageJson(
+  args: string[],
+  outputFile: string
+): CoverageReportJson {
   execSync(
     `pnpm exec tsx "${SCRIPT_PATH}" --json --output="${outputFile}" ${args.join(" ")}`,
-    { cwd: APP_ROOT, encoding: "utf8", stdio: "pipe" },
+    { cwd: APP_ROOT, encoding: "utf8", stdio: "pipe" }
   );
   return JSON.parse(readFileSync(outputFile, "utf8")) as CoverageReportJson;
 }
@@ -99,13 +108,16 @@ describe("check-i18n-coverage CLI", () => {
         const outputPath = path.join(TEST_OUTPUT_DIR, "report.json");
         const report = runCoverageJson(
           [`--locales-root="${TEST_LOCALES_DIR}"`, "--locales=de,fr"],
-          outputPath,
+          outputPath
         );
 
-        expect(report.schemaVersion).toBe(1);
+        expect(report.schemaVersion).toBe(2);
         expect(report.baselineLocale).toBe("en");
         expect(report.locales).toEqual(["de", "fr"]);
-        expect(report.summary).toEqual({ totalMissingFiles: 1, totalMissingKeys: 1 });
+        expect(report.summary).toEqual({
+          totalMissingFiles: 1,
+          totalMissingKeys: 1,
+        });
         expect(report.reports.map((r) => r.locale)).toEqual(["de", "fr"]);
 
         const de = report.reports.find((r) => r.locale === "de");
@@ -126,7 +138,7 @@ describe("check-i18n-coverage CLI", () => {
         const outputPath = path.join(TEST_OUTPUT_DIR, "report2.json");
         const report = runCoverageJson(
           [`--locales-root="${TEST_LOCALES_DIR}"`, "--locales=de,fr"],
-          outputPath,
+          outputPath
         );
 
         for (const localeReport of report.reports) {
@@ -144,7 +156,10 @@ describe("check-i18n-coverage CLI", () => {
       setupTestLocales();
       try {
         const outputPath = path.join(TEST_OUTPUT_DIR, "report3.json");
-        const report = runCoverageJson([`--locales-root="${TEST_LOCALES_DIR}"`], outputPath);
+        const report = runCoverageJson(
+          [`--locales-root="${TEST_LOCALES_DIR}"`],
+          outputPath
+        );
 
         expect(report.locales).toContain("de");
         expect(report.locales).toContain("fr");
@@ -163,9 +178,11 @@ describe("check-i18n-coverage CLI", () => {
       try {
         execSync(
           `pnpm exec tsx "${SCRIPT_PATH}" --fail-on-missing --locales-root="${TEST_LOCALES_DIR}" --locales=de,fr`,
-          { cwd: APP_ROOT, encoding: "utf8", stdio: "pipe" },
+          { cwd: APP_ROOT, encoding: "utf8", stdio: "pipe" }
         );
-        throw new Error("Expected script to exit non-zero in --fail-on-missing mode");
+        throw new Error(
+          "Expected script to exit non-zero in --fail-on-missing mode"
+        );
       } catch (error) {
         const exitCode = (error as { status?: number }).status;
         expect(exitCode).toBe(1);
@@ -182,7 +199,7 @@ describe("check-i18n-coverage CLI", () => {
         const outputPath = path.join(TEST_OUTPUT_DIR, "report4.json");
         const report = runCoverageJson(
           [`--locales-root="${TEST_LOCALES_DIR}"`, "--locales=de,fr"],
-          outputPath,
+          outputPath
         );
 
         let expectedMissingFiles = 0;
@@ -202,4 +219,3 @@ describe("check-i18n-coverage CLI", () => {
     });
   });
 });
-

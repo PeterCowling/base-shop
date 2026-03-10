@@ -839,9 +839,14 @@ For non-interactive agents:
 scripts/agents/integrator-shell.sh -- <command> [args...]
 # guard-only session for long read-only work (no writer lock)
 scripts/agents/integrator-shell.sh --read-only -- <command> [args...]
-# lock waits are queue-ordered and wait forever by default; optional fast-fail:
+# non-interactive agents hard-stop after 5 minutes by default; optional fast-fail:
 scripts/agents/integrator-shell.sh --timeout 30 -- <command> [args...]
 ```
+
+Do not use command-mode shells such as `scripts/agents/integrator-shell.sh -- bash` or
+`scripts/agents/with-writer-lock.sh -- bash`. Those forms are blocked because they still create
+long-lived locked shells. Use `--interactive-write-shell` / `--interactive-shell` only for rare,
+bounded repairs, then exit immediately after the serialized write window closes.
 
 Lock diagnostics:
 
@@ -849,6 +854,8 @@ Lock diagnostics:
 scripts/git/writer-lock.sh status
 scripts/git/writer-lock.sh clean-stale   # only if holder PID is dead on this host
 scripts/agents/with-writer-lock.sh -- <git-write-command>
+# rare, explicit locked shell only:
+# scripts/agents/with-writer-lock.sh --interactive-shell
 # or: scripts/agents/integrator-shell.sh -- <command>
 ```
 
@@ -876,6 +883,13 @@ The writer lock prevents multiple agents (or a human + agents) from writing to t
 1. **Entry** — always go through a wrapper, never call `writer-lock.sh` directly:
    - `scripts/agents/integrator-shell.sh -- <cmd>` (lock + command guard)
    - `scripts/agents/with-writer-lock.sh -- <cmd>` (lock only)
+   - Rare locked interactive shells require explicit opt-in:
+     - `scripts/agents/integrator-shell.sh --interactive-write-shell`
+     - `scripts/agents/with-writer-lock.sh --interactive-shell`
+     - Command-mode shell forms such as `-- bash`, `-- sh`, `-- zsh`, or `-- scripts/agents/with-git-guard.sh -- bash` are forbidden.
+   - Long-lived locked `codex` / `claude` sessions require explicit opt-in:
+     - `scripts/agents/integrator-shell.sh --agent-write-session -- <agent-cli>`
+     - `scripts/agents/with-writer-lock.sh --agent-write-session -- <agent-cli>`
 
 2. **Queue** — if the lock is held, the wrapper joins a FIFO queue (ticket-numbered). Waiters poll until they reach the head of the queue AND the lock directory is free.
 

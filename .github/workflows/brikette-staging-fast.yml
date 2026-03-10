@@ -2,8 +2,8 @@ name: Deploy Brikette (staging fast path)
 
 # Fast-path staging deploy: no lint, typecheck, tests, or verify:* steps.
 # Build + deploy run in a single job to eliminate artifact upload/download overhead.
-# Use this for staging-only changes where CI validation gates are not needed.
-# Production deploys always use the full brikette.yml path.
+# This is the user-testing lane for the `staging` branch.
+# Release validation happens on `dev` / `dev -> main`; production publishes from `main`.
 
 on:
   push:

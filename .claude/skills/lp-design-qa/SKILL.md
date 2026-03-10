@@ -6,7 +6,7 @@ operating_mode: AUDIT
 
 # Design QA
 
-Audit a built UI against the design spec, design system standards, and brand language for visual consistency (code-level static analysis), accessibility compliance, responsive behavior, and semantic token usage. Produces a structured issue list that feeds back into `/lp-do-build` for fixes.
+Audit a built UI against the design spec or other explicit UI baseline, design system standards, and brand language for visual consistency (code-level static analysis), accessibility compliance, responsive behavior, and semantic token usage. Produces a structured issue list that feeds back into `/lp-do-build` for fixes.
 
 **Key distinction from `/lp-launch-qa`:**
 - **lp-design-qa** focuses on visual/UI consistency via static code analysis — do token bindings, component composition, and class usage match the design spec? (No browser rendering or screenshot capture.)
@@ -16,6 +16,7 @@ Audit a built UI against the design spec, design system standards, and brand lan
 
 - **S9B (UI Regression QA)**: After `/lp-do-build` completes UI tasks, before merging to main
 - **Post-Design-Spec**: When a design spec exists and implementation is complete
+- **Follow-on UI wave**: When implementation is driven by an approved plan/fact-find with explicit UI acceptance criteria but no new design spec was written
 - **Pre-PR Review**: Before human visual/design review to catch systematic issues
 - **Responsive Audit**: Standalone audit of responsive behavior across breakpoints
 - **A11y Audit**: Standalone accessibility compliance check
@@ -54,8 +55,9 @@ Audit a built UI against the design spec, design system standards, and brand lan
 
 | Source | Path | Required |
 |--------|------|----------|
-| Design spec | `docs/plans/<slug>-design-spec.md` | Yes (feature audit) |
-| Plan doc | `docs/plans/<slug>-plan.md` | Yes (feature audit) |
+| Design spec | Preferred: `docs/plans/<slug>/design-spec.md`; legacy fallback: `docs/plans/<slug>-design-spec.md` | No, but strongly preferred |
+| Plan doc | Preferred: `docs/plans/<slug>/plan.md`; legacy fallback: `docs/plans/<slug>-plan.md` | Yes (feature audit) |
+| Fact-find | Preferred: `docs/plans/<slug>/fact-find.md`; legacy fallback: `docs/plans/<slug>-fact-find.md` | Required when no design spec exists |
 | Brand language | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` | Yes |
 | Built UI components | Paths from plan's completed tasks "Affects" lists | Yes |
 | Design system handbook | `docs/design-system-handbook.md` | Yes |
@@ -67,15 +69,15 @@ Audit a built UI against the design spec, design system standards, and brand lan
 
 ### Step 1: Resolve Context
 
-1. **For feature-slug path:** Read plan + design spec; extract built file paths from completed tasks' "Affects" lists; resolve business unit → brand language doc and theme package.
+1. **For feature-slug path:** Resolve canonical plan/design-spec/fact-find paths first, then legacy flat-path fallbacks. Read the plan doc. If a design spec exists, use it as the expected-state baseline. If it does not, use the plan's UI acceptance criteria plus fact-find outcome/approach sections as a plan-anchored baseline and record that mode explicitly in the report.
 2. **For business-scoped path:** Read `businesses.json`; read brand language + current UI components across all apps for BIZ; use brand language + design system as standard.
 3. **Load audit standards:** Brand language doc, theme tokens, design system handbook.
 
-**Outputs for report:** Business Unit, App name(s), Feature slug, Design spec reference, Scope.
+**Outputs for report:** Business Unit, App name(s), Feature slug, audit baseline (`design-spec` or `plan-anchored`), design spec reference (or `none`), scope.
 
 ### Step 2: Component Inventory
 
-1. **Feature-level:** Read all files in completed tasks' "Affects" lists; identify component hierarchy from spec's composition tree; verify actual matches planned.
+1. **Feature-level:** Read all files in completed tasks' "Affects" lists. If no completed tasks exist yet, use the active task "Affects" lists or operator-specified files/routes and mark the audit as pre-merge/partial. Identify component hierarchy from the design spec when present; otherwise derive expected hierarchy from the plan and current implementation notes.
 2. **Business-level:** Glob `apps/<app>/src/components/**/*.tsx`; filter to UI components; group by atomic layer.
 3. **Build inventory table:** Component | File Path | Expected | Actual Status.
 
@@ -105,7 +107,10 @@ Domain modules:
 
 Load `modules/report-template.md` for full report structure, issue format, severity levels, categories, and sign-off checklist.
 
-Output path: `docs/plans/<slug>-design-qa-report.md`
+Preferred output path: `docs/plans/<slug>/design-qa-report.md`
+
+Legacy fallback only when auditing a flat legacy feature bundle with no canonical folder:
+`docs/plans/<slug>-design-qa-report.md`
 
 ### Step 8: Report Completion
 
@@ -120,16 +125,16 @@ Design QA complete for <feature-slug> (<BIZ>).
 **Verdict:** <Pass | Issues-found | Critical-issues-found>
 **Blockers for merge:** <list Critical issues or "None">
 
-**Report:** `docs/plans/<slug>-design-qa-report.md`
+**Report:** `docs/plans/<slug>/design-qa-report.md` (or legacy flat fallback when applicable)
 **Next:**
 - If issues found: `/lp-do-build` to fix issues in report
 - If passed: `/lp-launch-qa` for functional/compliance readiness
-- If issues found and fixed: **re-run `/lp-design-qa`** to confirm fixes before routing to S9C sweeps. Do not proceed to `tools-ui-contrast-sweep` / `tools-ui-breakpoint-sweep` with unverified fixes.
+- If issues found and fixed: **re-run `/lp-design-qa`** to confirm fixes before routing to S9C sweeps on spec-backed work. For plan-anchored follow-on audits, runtime sweeps may proceed in parallel when the static audit cannot verify rendered behavior, but static findings must still be resolved or explicitly deferred.
 ```
 
 ## Quality Checks
 
-- [ ] Design spec read and used as expected state baseline
+- [ ] Design spec read and used as expected state baseline, or plan + fact-find used as an explicit plan-anchored baseline
 - [ ] Brand language doc read and patterns checked
 - [ ] All components in "Affects" lists audited (not a sample)
 - [ ] Every issue cites file path and line number
@@ -147,8 +152,8 @@ Design QA complete for <feature-slug> (<BIZ>).
 
 ## Red Flags (Invalid Run)
 
-1. **Design spec missing:** STOP — run `/lp-design-spec` first.
-2. **No completed build tasks:** STOP — nothing to audit yet.
+1. **No baseline artifact:** STOP only if there is neither a design spec nor a plan/fact-find pair with explicit UI expectations.
+2. **No component/file scope:** STOP only if there are no completed-task `Affects` lists, no active-task `Affects` lists, and no operator-provided route/component scope.
 3. **Issues without evidence:** Every issue must cite file:line.
 4. **False passes:** If a check cannot be verified from code, mark "Manual check required" not "Pass".
 5. **Scope mismatch:** `--scope a11y` with no a11y spec requirements — STOP and clarify.

@@ -143,9 +143,19 @@ describe("lp-do-ideas agent session bridge", () => {
       path.join(repoRoot, "docs/business-os/startup-loop/ideas/trial/queue-state.json"),
       "utf8",
     );
-    const queueState = JSON.parse(queueStateRaw) as { dispatches: Array<{ artifact_id: string }> };
+    const queueState = JSON.parse(queueStateRaw) as {
+      dispatches: Array<{
+        artifact_id: string;
+        area_anchor: string;
+        current_truth: string;
+        why: string;
+      }>;
+    };
     expect(queueState.dispatches.length).toBeGreaterThan(0);
     expect(queueState.dispatches[0]?.artifact_id).toBe("BOS-BOS-AGENT_SESSION_FINDINGS");
+    expect(queueState.dispatches[0]?.area_anchor).toContain("Upload button fails silently");
+    expect(queueState.dispatches[0]?.current_truth).toContain("Recent agent-session review surfaced");
+    expect(queueState.dispatches[0]?.why).toContain("walkthrough/testing activity");
   });
 
   it("suppresses repeat emissions when findings hash is unchanged", () => {

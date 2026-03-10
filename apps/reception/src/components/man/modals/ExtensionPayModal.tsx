@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
 
+import { ActivityCode } from "../../../constants/activities";
 import { withModalBackground } from "../../../hoc/withModalBackground";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import { useBookingDatesMutator } from "../../../hooks/mutations/useChangeBookingDatesMutator";
@@ -82,8 +83,6 @@ function ExtensionPayModalBase({
     return Number(total.toFixed(2));
   }, [cityTaxTargets, cityTaxRecords, defaultCityTaxPerGuest]);
 
-  const CITY_TAX_ACTIVITY_CODE = 9;
-  const KEY_EXTENSION_ACTIVITY_CODE = 30;
 
   const handleExtend = useCallback(async () => {
     const newCheckout = formatDate(
@@ -131,7 +130,7 @@ function ExtensionPayModalBase({
                 });
               }
               const cityTaxActivityResult = await saveActivity(id, {
-                code: CITY_TAX_ACTIVITY_CODE,
+                code: ActivityCode.CITY_TAX_PAYMENT,
               });
               if (!cityTaxActivityResult.success) {
                 throw new Error(
@@ -147,7 +146,7 @@ function ExtensionPayModalBase({
         await Promise.all(
           cityTaxTargets.map(async (id) => {
             const keyActivityResult = await saveActivity(id, {
-              code: KEY_EXTENSION_ACTIVITY_CODE,
+              code: ActivityCode.KEY_EXTENSION,
             });
             if (!keyActivityResult.success) {
               throw new Error(
@@ -191,8 +190,6 @@ function ExtensionPayModalBase({
     cityTaxRecords,
     saveCityTax,
     saveActivity,
-    CITY_TAX_ACTIVITY_CODE,
-    KEY_EXTENSION_ACTIVITY_CODE,
   ]);
 
   const amount =

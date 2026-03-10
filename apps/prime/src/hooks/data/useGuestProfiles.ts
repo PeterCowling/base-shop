@@ -7,8 +7,9 @@
 
 import { useEffect, useState } from 'react';
 
+import logger from '@acme/lib/logger/client';
+
 import { equalTo, off, onValue, orderByChild, query, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { readGuestSession } from '../../lib/auth/guestSessionGuard';
 import { useFirebaseDatabase } from '../../services/useFirebase';

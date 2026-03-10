@@ -105,16 +105,17 @@ export const ThemeToggle = memo((): JSX.Element => {
   );
   const resolveLabel = useCallback(
     (key: string): string => {
+      const sharedValue = tShared(key);
+      if (typeof sharedValue === "string" && sharedValue.trim() && sharedValue !== key) {
+        return sharedValue;
+      }
+
       const activeLang = (i18n.resolvedLanguage || i18n.language || "").split("-")[0];
       if (activeLang) {
         const localizedResource = i18n.getResource(activeLang, "translation", key);
         if (typeof localizedResource === "string" && localizedResource.trim()) {
           return localizedResource;
         }
-      }
-      const sharedValue = tShared(key);
-      if (typeof sharedValue === "string" && sharedValue.trim() && sharedValue !== key) {
-        return sharedValue;
       }
       const appValue = tApp(key);
       if (typeof appValue === "string" && appValue.trim() && appValue !== key) {

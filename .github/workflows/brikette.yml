@@ -3,8 +3,8 @@ name: Deploy Brikette
 on:
   push:
     branches:
+      - dev
       - main
-      - staging
     paths:
       - "apps/brikette/**"
       - "packages/design-system/**"
@@ -49,7 +49,7 @@ concurrency:
 jobs:
   turbopack-smoke:
     name: Turbopack smoke (Brikette dev)
-    if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/dev' || (github.event_name == 'pull_request' && github.base_ref == 'main') }}
     runs-on: ubuntu-latest
     timeout-minutes: 8
     steps:
@@ -76,7 +76,7 @@ jobs:
 
   static-export-check:
     name: Static export check (Brikette)
-    if: ${{ github.event_name == 'pull_request' || github.event_name == 'workflow_dispatch' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/dev' || (github.event_name == 'pull_request' && github.base_ref == 'main') }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -136,18 +136,25 @@ jobs:
           echo "Static export files: $file_count"
           test "$file_count" -le 100000
 
-  staging:
-    name: Deploy (staging)
+  release-ci:
+    name: Release CI
     if: >-
       ${{
-        github.event_name != 'pull_request' ||
-        github.base_ref != 'main' ||
-        !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
-        contains(github.event.pull_request.labels.*.name, 'promote-app:brikette')
+        github.ref == 'refs/heads/dev' &&
+        github.event_name != 'workflow_dispatch' &&
+        (
+          github.event_name != 'pull_request' ||
+          github.base_ref != 'main' ||
+          !contains(join(github.event.pull_request.labels.*.name, ','), 'promote-app:') ||
+          contains(github.event.pull_request.labels.*.name, 'promote-app:brikette')
+        )
       }}
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/brikette"
+      # Release CI validates the dev branch delta only. dev->main promotions
+      # rely on the already-green dev branch and keep only PR-specific
+      # smoke/export checks in this workflow.
       # Build deps with turbo, then run static export (OUTPUT_EXPORT=1 -> output:'export' in next.config)
       # Hide routes incompatible with static export before building; restore after.
       # Generate Cloudflare Pages redirects instead of recursive static aliases to
@@ -173,33 +180,21 @@ jobs:
         ([ -d "src/app/[lang]/help/_slug-off" ] && mv "src/app/[lang]/help/_slug-off" "src/app/[lang]/help/[slug]" || true);
         exit $e)
       artifact-path: "apps/brikette/out"
-      # Deploy static HTML to Cloudflare Pages (Pages static export path; no Worker runtime).
-      deploy_cmd: >
-        cd apps/brikette &&
-        pnpm exec wrangler pages deploy out
-        --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
-        --branch staging
-      deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
+      deploy_cmd: ""
+      deploy_enabled: false
       # Run Brikette Jest validation in three shards via reusable workflow.
       test-shard-count: 3
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
-      environment-name: "staging-pages"
-      environment-url: ${{ format('https://staging.{0}.pages.dev', vars.BRIKETTE_PAGES_PROJECT || 'brikette-website') }}
-      healthcheck-args: "--staging"
-      # CI gets the full post-deploy route contract checks.
-      # Keep direct `wrangler pages deploy` fast for operator hotfixes; do not
-      # copy these stricter checks into the manual deploy path.
-      healthcheck-canonical-origin: "https://hostel-positano.com"
-      healthcheck-canonical-tag-routes: "/it/prenota /it/prenota-alloggi-privati /it/camere-private/appartamento-vista-mare /en/private-rooms/sea-view-apartment /ja/annai"
-      healthcheck-sitemap-required-routes: "/it/prenota /it/prenota-alloggi-privati /it/camere-private/appartamento-vista-mare /it/camere-private/camera-doppia /en/private-rooms/sea-view-apartment /ja/annai"
-      healthcheck-404-routes: "/it/book"
-      # Use the finalized localized booking surfaces as strict zero-hop health checks.
-      healthcheck-strict-routes: "/it/prenota /it/prenota-alloggi-privati"
+      environment-name: "release-ci"
     secrets: inherit
 
   production:
     name: Deploy (production)
-    if: ${{ github.event_name == 'workflow_dispatch' && inputs.publish_to_production && github.ref == 'refs/heads/main' }}
+    if: >-
+      ${{
+        (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+        (github.event_name == 'workflow_dispatch' && inputs.publish_to_production && github.ref == 'refs/heads/main')
+      }}
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/brikette"
@@ -234,7 +229,7 @@ jobs:
         pnpm exec wrangler pages deploy out
         --project-name ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
         --branch main
-      deploy_enabled: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging') }}
+      deploy_enabled: ${{ github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch') }}
       test-shard-count: 3
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
       environment-name: "production"

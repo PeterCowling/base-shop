@@ -202,22 +202,6 @@ function LoansContainer({ username }: { username: string }): ReactElement {
     },
     [handleAddLoanTransaction]
   );
-  const onReturnLoan = useCallback(
-    (
-      bookingRef: string,
-      occupantId: string,
-      itemName: LoanItem,
-      countToRemove: number
-    ) => {
-      handleReturnLoanTransaction(
-        bookingRef,
-        occupantId,
-        itemName,
-        countToRemove
-      );
-    },
-    [handleReturnLoanTransaction]
-  );
   return (
     <PageShell title="LOANS">
       <div className="bg-surface rounded-lg shadow-lg p-6 space-y-4">
@@ -248,7 +232,7 @@ function LoansContainer({ username }: { username: string }): ReactElement {
           <LoansTable
             guests={filteredData}
             onAddLoan={onAddLoan}
-            onReturnLoan={onReturnLoan}
+            onReturnLoan={handleReturnLoanTransaction}
             buttonDisabled={buttonDisabled}
           />
         )}

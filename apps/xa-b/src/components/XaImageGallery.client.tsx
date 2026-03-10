@@ -15,15 +15,12 @@ import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 
 import type { XaProduct } from "../lib/demoData";
+import { isProductImage } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
 
 import { XaFadeImage } from "./XaFadeImage";
 
 type MediaItem = XaProduct["media"][number];
-
-function isImage(item: MediaItem): item is MediaItem & { type: "image" } {
-  return item.type === "image" && item.url.trim().length > 0;
-}
 
 export function XaImageGallery({
   title,
@@ -32,7 +29,7 @@ export function XaImageGallery({
   title: string;
   media: MediaItem[];
 }) {
-  const images = React.useMemo(() => media.filter(isImage), [media]);
+  const images = React.useMemo(() => media.filter(isProductImage), [media]);
   const [activeIndex, setActiveIndex] = React.useState(0);
 
   React.useEffect(() => setActiveIndex(0), [title]);

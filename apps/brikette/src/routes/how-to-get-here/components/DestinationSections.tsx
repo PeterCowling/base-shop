@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import type { TFunction } from "i18next";
 
 import { Button } from "@acme/design-system/primitives";
@@ -144,9 +145,10 @@ export function DestinationSections({
             className="scroll-mt-28 rounded-3xl border border-brand-outline/30 bg-brand-surface p-6 shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/60"
           >
             <div
-              className={`grid grid-cols-1 gap-5 md:items-start ${
+              className={clsx(
+                "grid grid-cols-1 gap-5 md:items-start",
                 section.image ? "md:grid-cols-2" : "md:grid-cols-1"
-              }`}
+              )}
             >
               <div>
                 <h2 className="text-2xl font-semibold text-brand-heading dark:text-brand-text">{section.name}</h2>

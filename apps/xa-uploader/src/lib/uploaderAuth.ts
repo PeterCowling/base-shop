@@ -5,11 +5,9 @@ import type { NextResponse } from "next/server";
 const COOKIE_NAME = "xa_uploader_admin";
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 
-function isVendorMode(): boolean {
-  return process.env.XA_UPLOADER_MODE === "vendor";
-}
+const IS_VENDOR_MODE = process.env.XA_UPLOADER_MODE === "vendor";
 
-function timingSafeEqual(a: string, b: string): boolean {
+export function timingSafeEqual(a: string, b: string): boolean {
   const aBuf = Buffer.from(a);
   const bBuf = Buffer.from(b);
   if (aBuf.length !== bBuf.length) return false;
@@ -59,7 +57,7 @@ function vendorToken(): string {
 }
 
 function expectedLoginToken(): string {
-  return isVendorMode() ? vendorToken() : adminToken();
+  return IS_VENDOR_MODE ? vendorToken() : adminToken();
 }
 
 function issueSessionToken(secret: string): string {

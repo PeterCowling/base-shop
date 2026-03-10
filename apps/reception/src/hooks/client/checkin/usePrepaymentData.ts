@@ -3,7 +3,7 @@
 import { useMemo } from "react";
 
 import { type Activity } from "../../../types/hooks/data/activitiesData";
-import type { OccupantDetails as GuestOccupantDetails } from "../../../types/hooks/data/occupantDetails";
+import type { OccupantDetails as GuestOccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { type RoomTransaction } from "../../../types/hooks/mutations/fiancialsRoomMutation";
 import { computeHoursElapsed, toEpochMillis } from "../../../utils/dateUtils";
 import useActivityByCode from "../../data/useActivitiesByCodeData";

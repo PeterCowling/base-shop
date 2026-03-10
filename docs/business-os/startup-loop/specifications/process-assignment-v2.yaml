@@ -1,6 +1,6 @@
 schema_version: "2.0"
 taxonomy_ref: "docs/business-os/startup-loop/specifications/workstream-workflow-taxonomy-v2.yaml"
-process_id_source: "docs/business-os/startup-loop/_deprecated/process-registry-v1.md"
+process_id_source: "docs/business-os/startup-loop/process-registry-v2.md"
 
 processes:
 

@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "inventory-app-uploader-unification-2026-03-08",
+  "feature_slug": "inventory-app-uploader-unification",
+  "emitted_at": "2026-03-08T00:00:00.000Z",
+  "why": "The repo already has enough inventory capability that a full rewrite would create avoidable duplication. The next step should consolidate and harden what exists into one coherent inventory product.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "A new standalone apps/inventory-uploader Cloudflare Worker that reuses platform-core inventory services and the XA operator shell, giving operators a single coherent inventory console for per-shop stock management without touching CMS or Caryina admin.",
+    "source": "operator"
+  }
+}

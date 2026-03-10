@@ -11,6 +11,8 @@ import { getTagMeta } from "@/utils/tags";
 
 import GuidesTagContent from "./GuidesTagContent";
 
+const LIVE_GUIDES = GUIDES_INDEX.filter((entry) => isGuideLive(entry.key));
+
 type Props = {
   params: Promise<{ lang: string; tag: string }>;
 };
@@ -19,7 +21,7 @@ export async function generateStaticParams() {
   const langParams = generateLangParams();
   // Get all unique tags from the guides index
   const allTags = new Set<string>();
-  for (const guide of GUIDES_INDEX.filter((entry) => isGuideLive(entry.key))) {
+  for (const guide of LIVE_GUIDES) {
     for (const tag of guide.tags) {
       allTags.add(tag);
     }
@@ -41,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const path = `/${validLang}/${experiencesSlug}/${tagsSlug}/${encodeURIComponent(tag)}`;
 
   // Don't index tag pages with fewer than 3 guides
-  const itemCount = GUIDES_INDEX.filter((g) => g.tags.includes(tag) && isGuideLive(g.key)).length;
+  const itemCount = LIVE_GUIDES.filter((g) => g.tags.includes(tag)).length;
   const isPublished = itemCount >= 3;
   const description =
     tagMeta.description ||

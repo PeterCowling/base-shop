@@ -1,9 +1,19 @@
 import { NextResponse } from "next/server";
 
 import { Permissions } from "../../../../lib/roles";
+import {
+  aggregateMonthlyRevenue,
+  buildYoYProvenance,
+  buildYoYSourceLabels,
+  sanitizeRevenueMode,
+  sanitizeYoYYear,
+  ytdSum,
+} from "../../../../lib/statistics/yoyContract";
+import {
+  type StatisticsYoyResponse,
+  statisticsYoyResponseSchema,
+} from "../../../../schemas/statisticsYoySchema";
 import { requireStaffAuth } from "../../mcp/_shared/staff-auth";
-
-type RevenueMode = "room-only" | "room-plus-bar";
 
 type FinancialTransaction = {
   amount?: number;
@@ -40,93 +50,6 @@ function extractBearerToken(request: Request): string {
   );
 }
 
-function monthKey(timestamp: string): string | null {
-  const parsed = new Date(timestamp);
-  if (Number.isNaN(parsed.getTime())) {
-    return null;
-  }
-
-  const year = parsed.getUTCFullYear();
-  const month = `${parsed.getUTCMonth() + 1}`.padStart(2, "0");
-  return `${year}-${month}`;
-}
-
-function isBarTransaction(transaction: FinancialTransaction): boolean {
-  const type = transaction.type?.toLowerCase() ?? "";
-  if (type.includes("bar") || type.includes("preorder")) {
-    return true;
-  }
-
-  const category = transaction.itemCategory?.toLowerCase() ?? "";
-  if (["coffee", "tea", "juices", "beer", "wine", "cocktails"].includes(category)) {
-    return true;
-  }
-
-  return false;
-}
-
-function includeTransactionByMode(
-  transaction: FinancialTransaction,
-  mode: RevenueMode,
-): boolean {
-  if (transaction.voidedAt) {
-    return false;
-  }
-
-  if (mode === "room-plus-bar") {
-    return true;
-  }
-
-  return !isBarTransaction(transaction);
-}
-
-function aggregateMonthlyRevenue(
-  transactions: FinancialTransactionMap | null,
-  year: number,
-  mode: RevenueMode,
-): Record<string, number> {
-  const monthly: Record<string, number> = {};
-  for (let month = 1; month <= 12; month += 1) {
-    monthly[`${year}-${`${month}`.padStart(2, "0")}`] = 0;
-  }
-
-  for (const transaction of Object.values(transactions ?? {})) {
-    if (!includeTransactionByMode(transaction, mode)) {
-      continue;
-    }
-
-    const ts = transaction.timestamp;
-    if (!ts) {
-      continue;
-    }
-
-    const key = monthKey(ts);
-    if (!key || !key.startsWith(`${year}-`)) {
-      continue;
-    }
-
-    const amount = Number(transaction.amount ?? 0);
-    if (!Number.isFinite(amount)) {
-      continue;
-    }
-
-    monthly[key] = (monthly[key] ?? 0) + amount;
-  }
-
-  return monthly;
-}
-
-function ytdSum(monthly: Record<string, number>, year: number): number {
-  const now = new Date();
-  const upToMonth = now.getUTCFullYear() === year ? now.getUTCMonth() + 1 : 12;
-
-  let total = 0;
-  for (let month = 1; month <= upToMonth; month += 1) {
-    total += monthly[`${year}-${`${month}`.padStart(2, "0")}`] ?? 0;
-  }
-  return total;
-}
-
 async function fetchNode<T>(
   dbUrl: string,
   token: string,
@@ -151,19 +74,6 @@ async function fetchNode<T>(
           : `Upstream fetch threw for ${path}`,
     };
   }
-}
-
-function sanitizeMode(rawMode: string | null): RevenueMode {
-  return rawMode === "room-only" ? "room-only" : "room-plus-bar";
-}
-
-function sanitizeYear(rawYear: string | null): number {
-  const nowYear = new Date().getUTCFullYear();
-  const parsed = Number(rawYear ?? nowYear);
-  if (!Number.isInteger(parsed) || parsed < 2020 || parsed > nowYear + 1) {
-    return nowYear;
-  }
-  return parsed;
 }
 
 export async function GET(request: Request): Promise<Response> {
@@ -197,33 +107,23 @@ export async function GET(request: Request): Promise<Response> {
   }
 
   const { searchParams } = new URL(request.url);
-  const mode = sanitizeMode(searchParams.get("mode"));
-  const year = sanitizeYear(searchParams.get("year"));
+  const mode = sanitizeRevenueMode(searchParams.get("mode"));
+  const year = sanitizeYoYYear(searchParams.get("year"));
   const previousYear = year - 1;
+  const hasDedicatedArchiveDb = Boolean(urls.archiveDbUrl);
 
-  const currentResult = await fetchNode<FinancialTransactionMap>(
-    urls.currentDbUrl,
-    token,
-    "allFinancialTransactions",
-  );
+  const [currentResult, previousResult] = await Promise.all([
+    fetchNode<FinancialTransactionMap>(urls.currentDbUrl, token, "allFinancialTransactions"),
+    urls.archiveDbUrl
+      ? fetchNode<FinancialTransactionMap>(urls.archiveDbUrl, token, "allFinancialTransactions")
+      : fetchNode<FinancialTransactionMap>(urls.currentDbUrl, token, "archive/allFinancialTransactions"),
+  ]);
   if (currentResult.ok === false) {
     return NextResponse.json(
       { success: false, error: currentResult.error },
       { status: 502 },
     );
   }
-
-  const previousResult = urls.archiveDbUrl
-    ? await fetchNode<FinancialTransactionMap>(
-        urls.archiveDbUrl,
-        token,
-        "allFinancialTransactions",
-      )
-    : await fetchNode<FinancialTransactionMap>(
-        urls.currentDbUrl,
-        token,
-        "archive/allFinancialTransactions",
-      );
   if (previousResult.ok === false) {
     return NextResponse.json(
       { success: false, error: previousResult.error },
@@ -268,7 +168,13 @@ export async function GET(request: Request): Promise<Response> {
       ? null
       : Number(((ytdDelta / previousYtd) * 100).toFixed(2));
 
-  return NextResponse.json({
+  const provenance = buildYoYProvenance({
+    currentTransactions: currentResult.data,
+    previousTransactions: previousResult.data,
+    hasDedicatedArchiveDb,
+  });
+
+  const payload: StatisticsYoyResponse = {
     success: true,
     mode,
     year,
@@ -280,11 +186,9 @@ export async function GET(request: Request): Promise<Response> {
       ytdDelta,
       ytdDeltaPct,
     },
-    source: {
-      current: "allFinancialTransactions",
-      previous: urls.archiveDbUrl
-        ? "archive-db:allFinancialTransactions"
-        : "current-db:archive/allFinancialTransactions",
-    },
-  });
+    source: buildYoYSourceLabels(provenance.previousSource),
+    provenance,
+  };
+
+  return NextResponse.json(statisticsYoyResponseSchema.parse(payload));
 }

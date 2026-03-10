@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-require -- TEST-000 [ttl=2026-12-31] Controlled locale fixture loading in Jest-only helper. */
 import { createRequire } from "node:module";
 import path from "node:path";
 

@@ -42,7 +42,7 @@ const ProductItem: FC<ProductItemProps> = React.memo(({ product, onAdd }) => {
       </span>
 
       {/* Price badge — primary green accent */}
-      <span className="absolute bottom-1 right-1 rounded-md bg-primary-main px-1.5 py-0.5 text-0_65rem font-bold text-primary-fg">
+      <span className="absolute bottom-1 right-1 rounded-md bg-primary-main px-1.5 py-0.5 text-xs font-bold text-primary-fg">
         €{product.price.toFixed(2)}
       </span>
     </Button>

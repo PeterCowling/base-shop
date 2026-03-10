@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react';
 
+import logger from '@acme/lib/logger/client';
+
 import { ref, set, update } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestProfile } from '../../types/guestProfile';
@@ -41,7 +42,7 @@ export function useGuestProfileMutator(): UseGuestProfileMutatorReturn {
   const updateProfile = useCallback(
     async (payload: GuestProfilePayload) => {
       if (!uuid) {
-        logger.warn('[useGuestProfileMutator] Missing uuid');
+        logger.warn('[useGuestProfileMutator] Missing uuid'); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
         return;
       }
 
@@ -58,7 +59,7 @@ export function useGuestProfileMutator(): UseGuestProfileMutatorReturn {
 
         setIsSuccess(true);
       } catch (error) {
-        logger.error('[useGuestProfileMutator] Error in updateProfile:', error);
+        logger.error('[useGuestProfileMutator] Error in updateProfile:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -70,7 +71,7 @@ export function useGuestProfileMutator(): UseGuestProfileMutatorReturn {
   const setProfile = useCallback(
     async (profile: GuestProfile) => {
       if (!uuid) {
-        logger.warn('[useGuestProfileMutator] Missing uuid');
+        logger.warn('[useGuestProfileMutator] Missing uuid'); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
         return;
       }
 
@@ -89,7 +90,7 @@ export function useGuestProfileMutator(): UseGuestProfileMutatorReturn {
 
         setIsSuccess(true);
       } catch (error) {
-        logger.error('[useGuestProfileMutator] Error in setProfile:', error);
+        logger.error('[useGuestProfileMutator] Error in setProfile:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
         setIsError(true);
       } finally {
         setIsLoading(false);

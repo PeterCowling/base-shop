@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { toPositiveInt } from "@acme/lib";
 
 import type { buildCatalogArtifactsFromDrafts } from "./catalogDraftToContract";
+import { ABSOLUTE_HTTP_URL_RE } from "./catalogPath";
 import { getMediaBucket } from "./r2Media";
 
 export type MediaValidationPolicy = "warn" | "strict";
@@ -11,12 +12,14 @@ export type CloudBuiltArtifacts = Awaited<ReturnType<typeof buildCatalogArtifact
 
 const CLOUD_MEDIA_HEAD_MAX_KEYS_DEFAULT = 300;
 
-export function getCloudMediaHeadMaxKeys(): number {
-  return toPositiveInt(process.env.XA_UPLOADER_CLOUD_MEDIA_HEAD_MAX_KEYS, CLOUD_MEDIA_HEAD_MAX_KEYS_DEFAULT, 1);
-}
+const CLOUD_MEDIA_HEAD_MAX_KEYS = toPositiveInt(
+  process.env.XA_UPLOADER_CLOUD_MEDIA_HEAD_MAX_KEYS,
+  CLOUD_MEDIA_HEAD_MAX_KEYS_DEFAULT,
+  1,
+);
 
-export function isAbsoluteHttpUrl(pathValue: string): boolean {
-  return /^https?:\/\//i.test(pathValue);
+function isAbsoluteHttpUrl(pathValue: string): boolean {
+  return ABSOLUTE_HTTP_URL_RE.test(pathValue);
 }
 
 function summarizePathsForError(paths: string[]): string {
@@ -80,7 +83,7 @@ export async function applyCloudMediaExistenceValidation(params: {
     return { ok: true, artifacts: params.artifacts, warnings: [] };
   }
 
-  const maxKeys = getCloudMediaHeadMaxKeys();
+  const maxKeys = CLOUD_MEDIA_HEAD_MAX_KEYS;
   const keysToCheck = mediaKeys.slice(0, maxKeys);
   const skippedCount = mediaKeys.length - keysToCheck.length;
   if (params.policy === "strict" && skippedCount > 0) {
@@ -122,17 +125,17 @@ export async function applyCloudMediaExistenceValidation(params: {
     };
   }
 
-  const missingKeys = new Set<string>();
-  for (const key of keysToCheck) {
-    try {
-      const head = await bucket.head(key);
-      if (!head) {
-        missingKeys.add(key);
+  const results = await Promise.all(
+    keysToCheck.map(async (key) => {
+      try {
+        const head = await bucket.head(key);
+        return head ? null : key;
+      } catch {
+        return key;
       }
-    } catch {
-      missingKeys.add(key);
-    }
-  }
+    }),
+  );
+  const missingKeys = new Set(results.filter((k): k is string => k !== null));
 
   if (params.policy === "strict" && missingKeys.size > 0) {
     const sortedMissing = Array.from(missingKeys).sort((left, right) => left.localeCompare(right));

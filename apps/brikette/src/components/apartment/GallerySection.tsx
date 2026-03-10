@@ -1,5 +1,5 @@
 // src/components/apartment/GallerySection.tsx
-import React, { memo, useId } from "react";
+import React, { memo, useId, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
@@ -19,10 +19,14 @@ function Grid({ className, ...rest }: GridProps): JSX.Element {
 function GallerySection({ lang }: { lang?: string }): JSX.Element {
   const translationOptions = lang ? { lng: lang } : undefined;
   const { t } = useTranslation("apartmentPage", translationOptions);
-  const rawAlts = t("galleryAlts", { returnObjects: true });
-  const altTexts = Array.isArray(rawAlts) ? (rawAlts as string[]) : [];
-  const rawCaptions = t("galleryCaptions", { returnObjects: true });
-  const captions = Array.isArray(rawCaptions) ? (rawCaptions as string[]) : [];
+  const { altTexts, captions } = useMemo(() => {
+    const rawAlts = t("galleryAlts", { returnObjects: true });
+    const rawCaptions = t("galleryCaptions", { returnObjects: true });
+    return {
+      altTexts: Array.isArray(rawAlts) ? (rawAlts as string[]) : [],
+      captions: Array.isArray(rawCaptions) ? (rawCaptions as string[]) : [],
+    };
+  }, [t]);
   const headingId = useId();
   return (
     <section aria-labelledby={headingId} className="space-y-4">

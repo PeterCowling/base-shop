@@ -120,7 +120,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           [action.id]: {
             ...line,
             sku: currentSku,
-            qty: isLineAvailable(currentSku) ? 1 : line.qty,
+            qty: isLineAvailable(currentSku) ? requested : line.qty,
           },
         });
         return;

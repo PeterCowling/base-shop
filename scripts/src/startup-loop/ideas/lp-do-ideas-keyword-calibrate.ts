@@ -3,16 +3,14 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
 
+import { buildIdeaCompletionReconcileSnapshot } from "./lp-do-ideas-completion-reconcile.js";
+import {
+  IDEAS_COMPLETED_IDEAS_PATH,
+  IDEAS_TRIAL_QUEUE_STATE_PATH,
+} from "./lp-do-ideas-paths.js";
 import { T1_SEMANTIC_KEYWORDS } from "./lp-do-ideas-trial.js";
 
-const DEFAULT_QUEUE_STATE_PATH = path.join(
-  "docs",
-  "business-os",
-  "startup-loop",
-  "ideas",
-  "trial",
-  "queue-state.json",
-);
+const DEFAULT_QUEUE_STATE_PATH = IDEAS_TRIAL_QUEUE_STATE_PATH;
 const DEFAULT_PRIORS_PATH = path.join(
   "docs",
   "business-os",
@@ -21,6 +19,7 @@ const DEFAULT_PRIORS_PATH = path.join(
   "trial",
   "keyword-calibration-priors.json",
 );
+const DEFAULT_COMPLETED_IDEAS_PATH = IDEAS_COMPLETED_IDEAS_PATH;
 
 const DELTA_COMPLETED = 4;
 const DELTA_SKIPPED = -8;
@@ -70,7 +69,7 @@ interface QueueStateRecord {
   dispatches?: unknown;
 }
 
-type TerminalQueueState = "completed" | "skipped";
+type TerminalQueueState = "completed" | "skipped" | "suppressed";
 
 interface TerminalDispatch {
   queue_state: TerminalQueueState;
@@ -91,13 +90,29 @@ export interface CalibrationResult {
   reason?: string;
   dry_run: boolean;
   priors?: KeywordCalibrationPriors;
+  fast_track?: KeywordCalibrationFastTrackSummary;
 }
 
 export interface KeywordCalibrationOptions {
   queueStatePath: string;
   priorsPath: string;
+  completedIdeasPath?: string;
+  rootDir?: string;
   dryRun?: boolean;
+  fastTrack?: boolean;
   now?: () => Date;
+}
+
+export interface KeywordCalibrationFastTrackSummary {
+  attempted: boolean;
+  reconcile_ok: boolean;
+  artifact_delta_terminal_dispatches: number;
+  evidentiary_matches?: number;
+  queue_dispatches_completed?: number;
+  completed_registry_added?: number;
+  unresolved_dispatches?: number;
+  source_counts?: Record<string, number>;
+  reason?: string;
 }
 
 function clamp(value: number, min: number, max: number): number {
@@ -115,13 +130,13 @@ function resolvePath(rootDir: string, value: string): string {
 }
 
 function toTerminalState(value: unknown): TerminalQueueState | null {
-  if (value === "completed" || value === "skipped") {
+  if (value === "completed" || value === "skipped" || value === "suppressed") {
     return value;
   }
   return null;
 }
 
-function readTerminalArtifactDeltaDispatches(parsed: QueueStateRecord): TerminalDispatch[] {
+function readTerminalDispatches(parsed: QueueStateRecord): TerminalDispatch[] {
   if (!Array.isArray(parsed.dispatches)) {
     return [];
   }
@@ -131,7 +146,7 @@ function readTerminalArtifactDeltaDispatches(parsed: QueueStateRecord): Terminal
     if (typeof rawDispatch !== "object" || rawDispatch === null) {
       continue;
     }
-    if (rawDispatch.trigger !== "artifact_delta") {
+    if (rawDispatch.trigger !== "artifact_delta" && rawDispatch.trigger !== "operator_idea") {
       continue;
     }
     const terminalState = toTerminalState(rawDispatch.queue_state);
@@ -225,9 +240,53 @@ export async function calibrateKeywords(
     return { ok: false, reason: "parse_error", dry_run: dryRun };
   }
 
-  const terminalDispatches = readTerminalArtifactDeltaDispatches(parsedQueueState);
+  let fastTrackSummary: KeywordCalibrationFastTrackSummary | undefined;
+  if (options.fastTrack) {
+    const rootDir = options.rootDir ?? resolveRootDir();
+    const completedIdeasPath = resolvePath(
+      rootDir,
+      options.completedIdeasPath ?? DEFAULT_COMPLETED_IDEAS_PATH,
+    );
+    const snapshotResult = buildIdeaCompletionReconcileSnapshot({
+      rootDir,
+      queueStatePath: options.queueStatePath,
+      completedIdeasPath,
+      write: false,
+    });
+
+    if (snapshotResult.ok) {
+      parsedQueueState = snapshotResult.snapshot.queue;
+      fastTrackSummary = {
+        attempted: true,
+        reconcile_ok: true,
+        artifact_delta_terminal_dispatches: 0,
+        evidentiary_matches: snapshotResult.snapshot.evidentiary_matches,
+        queue_dispatches_completed: snapshotResult.snapshot.queue_dispatches_completed,
+        completed_registry_added: snapshotResult.snapshot.completed_registry_added,
+        unresolved_dispatches: snapshotResult.snapshot.unresolved_dispatches,
+        source_counts: snapshotResult.snapshot.source_counts,
+      };
+    } else {
+      fastTrackSummary = {
+        attempted: true,
+        reconcile_ok: false,
+        artifact_delta_terminal_dispatches: 0,
+        reason: snapshotResult.error ?? "reconcile_error",
+      };
+    }
+  }
+
+  const terminalDispatches = readTerminalDispatches(parsedQueueState);
+  if (fastTrackSummary) {
+    fastTrackSummary.artifact_delta_terminal_dispatches = terminalDispatches.length;
+  }
   if (terminalDispatches.length === 0) {
-    return { ok: false, reason: "no_terminal_dispatches", dry_run: dryRun };
+    return {
+      ok: false,
+      reason: "no_terminal_dispatches",
+      dry_run: dryRun,
+      fast_track: fastTrackSummary,
+    };
   }
 
   const deltasByKeyword = new Map<string, number[]>();
@@ -272,18 +331,22 @@ export async function calibrateKeywords(
     ok: true,
     dry_run: dryRun,
     priors: calibratedPriors,
+    fast_track: fastTrackSummary,
   };
 }
 
 interface CliOptions {
   queueStatePath: string;
   priorsPath: string;
+  completedIdeasPath: string;
   dryRun: boolean;
+  fastTrack: boolean;
 }
 
 function parseCliArgs(argv: string[]): CliOptions {
+  const sanitizedArgv = argv.filter((token) => token !== "--");
   const { values } = parseArgs({
-    args: argv,
+    args: sanitizedArgv,
     options: {
       "root-dir": {
         type: "string",
@@ -294,7 +357,13 @@ function parseCliArgs(argv: string[]): CliOptions {
       "priors-path": {
         type: "string",
       },
+      "completed-ideas-path": {
+        type: "string",
+      },
       "dry-run": {
+        type: "boolean",
+      },
+      "fast-track": {
         type: "boolean",
       },
     },
@@ -311,11 +380,17 @@ function parseCliArgs(argv: string[]): CliOptions {
       : DEFAULT_QUEUE_STATE_PATH;
   const priorsValue =
     typeof values["priors-path"] === "string" ? values["priors-path"] : DEFAULT_PRIORS_PATH;
+  const completedIdeasValue =
+    typeof values["completed-ideas-path"] === "string"
+      ? values["completed-ideas-path"]
+      : DEFAULT_COMPLETED_IDEAS_PATH;
 
   return {
     queueStatePath: resolvePath(rootDir, queueStateValue),
     priorsPath: resolvePath(rootDir, priorsValue),
+    completedIdeasPath: resolvePath(rootDir, completedIdeasValue),
     dryRun: values["dry-run"] === true,
+    fastTrack: values["fast-track"] === true,
   };
 }
 
@@ -324,7 +399,9 @@ async function main(): Promise<void> {
   const result = await calibrateKeywords({
     queueStatePath: cli.queueStatePath,
     priorsPath: cli.priorsPath,
+    completedIdeasPath: cli.completedIdeasPath,
     dryRun: cli.dryRun,
+    fastTrack: cli.fastTrack,
   });
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
 }

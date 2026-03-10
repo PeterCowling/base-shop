@@ -2,7 +2,6 @@
 
 import {
   memo,
-  type MouseEvent,
   useCallback,
   useState,
 } from "react";
@@ -10,36 +9,19 @@ import { Banknote, CreditCard, Plus } from "lucide-react";
 
 import { Button, Popover, PopoverContent, PopoverTrigger } from "@acme/design-system/atoms";
 
-import type {
-  PaymentSplit,
-  PaymentType,
-} from "../../../types/component/roomButton/types";
+import { formatEuro } from "../../../utils/format";
 
-import PaymentDropdown from "./PaymentDropdown";
+import { usePaymentContext } from "./PaymentContext";
+import SplitList from "./SplitList";
 
-interface PaymentFormProps {
-  outstanding: number;
-  splitPayments: PaymentSplit[];
-  handleAmountChange: (index: number, newAmount: string) => void;
-  handleSetPayType: (index: number, newPayType: PaymentType) => void;
-  handleAddPaymentRow: () => void;
-  handleRemovePaymentRow: (index: number) => void;
-  handleImmediatePayment: (
-    event: MouseEvent<HTMLButtonElement>
-  ) => Promise<void>;
-  isDisabled: boolean;
-}
+function PaymentForm() {
+  const {
+    outstanding,
+    splitPayments,
+    isDisabled,
+    handleImmediatePayment,
+  } = usePaymentContext();
 
-function PaymentForm({
-  outstanding,
-  splitPayments,
-  handleAmountChange,
-  handleSetPayType,
-  handleAddPaymentRow,
-  handleRemovePaymentRow,
-  handleImmediatePayment,
-  isDisabled,
-}: PaymentFormProps) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleOpenChange = useCallback(
@@ -60,9 +42,9 @@ function PaymentForm({
   const getButtonLabel = useCallback(() => {
     if (outstanding > 0) {
       if (splitPayments.length === 1) {
-        return `€${outstanding.toFixed(2)}`;
+        return formatEuro(outstanding);
       }
-      return `Split €${outstanding.toFixed(2)}`;
+      return `Split ${formatEuro(outstanding)}`;
     }
     return "Paid";
   }, [outstanding, splitPayments]);
@@ -109,15 +91,17 @@ function PaymentForm({
       </div>
 
       <PopoverContent align="start" sideOffset={6} className="p-0">
-        <PaymentDropdown
-          splitPayments={splitPayments}
-          handleAmountChange={handleAmountChange}
-          handleSetPayType={handleSetPayType}
-          handleAddPaymentRow={handleAddPaymentRow}
-          handleRemovePaymentRow={handleRemovePaymentRow}
-          handleImmediatePayment={handleImmediatePayment}
-          isDisabled={isDisabled}
-        />
+        <div className="w-72 p-3">
+          <SplitList />
+          <Button
+            onClick={handleImmediatePayment}
+            disabled={isDisabled}
+            className={`w-full bg-primary-dark hover:bg-primary-main text-primary-fg rounded-lg px-3 py-1 mt-2 focus:outline-none transition-colors
+              ${isDisabled ? "cursor-not-allowed opacity-70" : ""}`}
+          >
+            Confirm Payment
+          </Button>
+        </div>
       </PopoverContent>
     </Popover>
   );

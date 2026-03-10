@@ -19,13 +19,13 @@ Follow the [Conventional Commits](https://www.conventionalcommits.org/) specific
 
 ## Branching
 
-Base-Shop uses a `dev` → `staging` → `main` release pipeline:
+Base-Shop uses a `dev` → `main` release pipeline, with `staging` reserved for optional user testing:
 
 - Do not commit directly to `main` or `staging`.
 - Day-to-day work lands on `dev` (either directly, or via feature branches that target `dev`).
 - Shipping is automated via PRs:
-  - Ship `dev` → `staging`: `scripts/git/ship-to-staging.sh`
-  - Promote `staging` → `main`: `scripts/git/promote-to-main.sh`
+  - Ship any branch → `staging` for user testing: `scripts/git/ship-to-staging.sh`
+  - Promote `dev` → `main`: `scripts/git/promote-to-main.sh`
 
 ## Linting and Tests
 
@@ -59,7 +59,7 @@ use a typed helper to keep type safety:
 ```ts
 function getModelDelegate<K extends keyof PrismaClient>(
   client: PrismaClient,
-  model: K,
+  model: K
 ): PrismaClient[K] {
   return client[model];
 }

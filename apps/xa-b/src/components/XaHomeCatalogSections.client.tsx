@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 
 import { Button } from "@acme/design-system/atoms";
@@ -8,6 +9,7 @@ import { Section } from "@acme/design-system/atoms/Section";
 
 import { useXaCatalogSnapshot } from "../lib/liveCatalog";
 import { siteConfig } from "../lib/siteConfig";
+import { getNewInProducts } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
 
 import { XaProductCard } from "./XaProductCard";
@@ -15,9 +17,10 @@ import { XaProductCard } from "./XaProductCard";
 export function XaHomeCatalogSections() {
   const { products } = useXaCatalogSnapshot();
   const catalog = siteConfig.catalog;
-  const newInProducts = [...products]
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .slice(0, 12);
+  const newInProducts = React.useMemo(
+    () => getNewInProducts(products, 12),
+    [products],
+  );
 
   return (
     <Section padding="default">

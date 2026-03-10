@@ -1,5 +1,6 @@
 import { EXPERIENCE_GUIDE_KEYS } from "@/data/guides.index";
 import { type GuideKey,TRANSPORT_LINK_KEYS } from "@/routes.guides-helpers";
+import { slugify } from "@/utils/slugify";
 
 import type {
   DestinationLink,
@@ -16,6 +17,8 @@ import type {
   SorrentoContent,
   TransportMode,
 } from "./types";
+
+export { slugify };
 
 function isRecord(candidate: unknown): candidate is Record<string, unknown> {
   return !!candidate && typeof candidate === "object";
@@ -94,16 +97,6 @@ const isRomeOption = (candidate: unknown): candidate is RomeOption => {
 };
 
 const isStringItem = (candidate: unknown): candidate is string => typeof candidate === "string";
-
-export function slugify(value: string) {
-  return value
-    .normalize("NFKD")
-    .replace(/[^\w\s-]/g, "")
-    .trim()
-    .replace(/[\s_-]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .toLowerCase();
-}
 
 export function normalizeDestinationSections(
   value: DestinationSection[] | Record<string, DestinationSection> | DestinationSection | undefined,

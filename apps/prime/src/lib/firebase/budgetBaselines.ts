@@ -19,41 +19,45 @@ const RAW_BUDGET_BASELINES: unknown = {
       maxReadsByPath: {
         '/api/guest-session': 2,
       },
-      rationale:
+      rationale: // i18n-exempt -- PRIME-101 internal dev budget config [ttl=2026-12-31]
         'Guest-link validation should remain a low-latency function call path with no realtime listeners.',
     },
     portal_pre_arrival_initial: {
-      maxReads: 8,
+      maxReads: 10,
       maxActiveListeners: 1,
       maxReadsByPath: {
+        occupantIndex: 1,
         bookings: 1,
         completedTasks: 1,
         loans: 1,
         guestByRoom: 1,
         financialsRoom: 1,
-        preordersData: 1,
-        cityTaxData: 1,
+        preorder: 1,
+        cityTax: 1,
         bagStorage: 1,
+        guestsDetails: 1,
       },
-      rationale:
-        'First guarded-home load must hydrate core guest state in one pass without duplicate fan-out reads.',
+      rationale: // i18n-exempt -- PRIME-101 internal dev budget config [ttl=2026-12-31]
+        'First guarded-home load must hydrate core guest state in one pass without duplicate fan-out reads. OPT-01 reverse-index path adds occupantIndex + bookings reads (2 total). completedTasks via onValue listener counts as 1 snapshot read post-fix. Total: 2 booking + 1 completedTasks + 7 secondary = 10.',
     },
     arrival_mode_initial: {
-      maxReads: 9,
+      maxReads: 10,
       maxActiveListeners: 1,
       maxReadsByPath: {
+        occupantIndex: 1,
         bookings: 1,
         completedTasks: 1,
         loans: 1,
         guestByRoom: 1,
         financialsRoom: 1,
-        preordersData: 1,
-        cityTaxData: 1,
+        preorder: 1,
+        cityTax: 1,
         bagStorage: 1,
-        checkInCode: 1,
+        guestsDetails: 1,
+        checkInCode: 0,
       },
-      rationale:
-        'Arrival-day mode adds check-in-code retrieval but must keep the rest of hydration at pre-arrival cost levels.',
+      rationale: // i18n-exempt -- PRIME-101 internal dev budget config [ttl=2026-12-31]
+        'Arrival-day mode uses the same Firebase reads as pre-arrival (10 total). check-in-code is retrieved via HTTP (not Firebase RTDB) so checkInCode matcher is retained for documentation only with expected count 0.',
     },
     portal_manual_refetch: {
       maxReads: 12,
@@ -63,17 +67,17 @@ const RAW_BUDGET_BASELINES: unknown = {
         loans: 2,
         guestByRoom: 2,
         financialsRoom: 2,
-        preordersData: 2,
-        cityTaxData: 2,
+        preorder: 2,
+        cityTax: 2,
       },
-      rationale:
+      rationale: // i18n-exempt -- PRIME-101 internal dev budget config [ttl=2026-12-31]
         'Manual refresh can re-hit key data once, but should not duplicate parallel reads for the same path.',
     },
     portal_cached_revisit: {
       maxReads: 0,
       maxActiveListeners: 0,
       maxReadsByPath: {},
-      rationale:
+      rationale: // i18n-exempt -- PRIME-101 internal dev budget config [ttl=2026-12-31]
         'Cached revisit inside stale window should use React Query cache and avoid new database reads/listeners.',
     },
     owner_kpi_dashboard_7day: {
@@ -82,7 +86,7 @@ const RAW_BUDGET_BASELINES: unknown = {
       maxReadsByPath: {
         ownerKpis: 7,
       },
-      rationale:
+      rationale: // i18n-exempt -- PRIME-101 internal dev budget config [ttl=2026-12-31]
         'Owner KPI dashboard 7-day view reads from pre-aggregated ownerKpis/{date} nodes only. One read per day, never scans raw bookings or preArrival data.',
     },
     owner_kpi_dashboard_30day: {
@@ -91,7 +95,7 @@ const RAW_BUDGET_BASELINES: unknown = {
       maxReadsByPath: {
         ownerKpis: 30,
       },
-      rationale:
+      rationale: // i18n-exempt -- PRIME-101 internal dev budget config [ttl=2026-12-31]
         'Owner KPI dashboard 30-day view reads from pre-aggregated ownerKpis/{date} nodes only. One read per day, never scans raw bookings or preArrival data.',
     },
   },

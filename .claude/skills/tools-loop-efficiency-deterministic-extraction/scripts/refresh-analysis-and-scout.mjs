@@ -337,6 +337,18 @@ function estimateMForScout(signal, metricValue) {
     return 2;
   }
 
+  if (signal === "H4") {
+    const deterministicSignals = Number(metricValue);
+    if (deterministicSignals >= 12) return 4;
+    return 3;
+  }
+
+  if (signal === "H5") {
+    const deltaMagnitude = Number(metricValue);
+    if (deltaMagnitude >= 40) return 4;
+    return 3;
+  }
+
   const phaseMatches = Number(metricValue);
   if (phaseMatches >= 10) {
     return 4;
@@ -346,11 +358,13 @@ function estimateMForScout(signal, metricValue) {
 
 function signalD(signal) {
   if (signal === "H1") return 5;
+  if (signal === "H4" || signal === "H5") return 5;
   if (signal === "H2") return 4;
   return 3;
 }
 
 function tierScore(tier) {
+  if (tier === "critical") return 5;
   if (tier === "high") return 5;
   if (tier === "medium") return 4;
   return 3;
@@ -367,20 +381,24 @@ function parseNewScoutEntries(auditContent, assumptions) {
   let tier = "low";
 
   for (const line of lines) {
-    if (line.startsWith("## 3. List 1")) {
+    if (/^##(?:\s+\d+\.)?\s+List 1\b/i.test(line)) {
       mode = "h1";
       continue;
     }
-    if (line.startsWith("## 4. List 2")) {
+    if (/^##(?:\s+\d+\.)?\s+List 2\b/i.test(line)) {
       mode = "h2";
       continue;
     }
-    if (line.startsWith("## ") && !line.startsWith("## 3.") && !line.startsWith("## 4.")) {
+    if (/^##(?:\s+\d+\.)?\s+List 3\b/i.test(line)) {
+      mode = "h45";
+      continue;
+    }
+    if (line.startsWith("## ")) {
       mode = "none";
       continue;
     }
 
-    const tierMatch = line.match(/^###\s+(HIGH|MEDIUM|LOW) tier/i);
+    const tierMatch = line.match(/^###\s+(CRITICAL|HIGH|MEDIUM|LOW) tier/i);
     if (tierMatch) {
       tier = tierMatch[1].toLowerCase();
       continue;
@@ -485,6 +503,82 @@ function parseNewScoutEntries(auditContent, assumptions) {
       }
       if (/wave-candidate/i.test(h3)) {
         addSignalEntry("H3");
+      }
+      continue;
+    }
+
+    if (mode === "h45" && cells.length >= 5) {
+      const skill = cells[0];
+      const status = cells[cells.length - 2];
+      const notes = cells[cells.length - 1];
+
+      if (/known/i.test(status)) {
+        continue;
+      }
+
+      if (cells[1] === "Deterministic Signals") {
+        continue;
+      }
+
+      if (cells[1] === "SKILL.md Δ") {
+        continue;
+      }
+
+      if (cells.length >= 6 && /^[-+]?\d+$/.test(cells[1]) && /^[-+]?\d+$/.test(cells[2])) {
+        const skillDelta = Number(cells[1]);
+        const totalDelta = Number(cells[2]);
+        const metricValue = Math.abs(skillDelta) + Math.abs(totalDelta);
+        const F = tier === "critical" ? 5 : tierScore("high");
+        const B = tier === "critical" ? 5 : tierScore("high");
+        const D = signalD("H5");
+        const M = estimateMForScout("H5", metricValue);
+        const score = priorityScore(F, D, B, M);
+        const payback = computePayback({ F, D, B, M }, assumptions);
+
+        entries.push({
+          key: `H5:${skill}`,
+          skill,
+          signal: "H5",
+          tier,
+          metric: `skill_delta=${skillDelta},total_delta=${totalDelta}`,
+          metricValue,
+          delta: status,
+          notes,
+          F,
+          D,
+          B,
+          M,
+          score,
+          payback,
+        });
+        continue;
+      }
+
+      if (/^\d+$/.test(cells[1])) {
+        const deterministicSignals = Number(cells[1]);
+        const F = tierScore(tier);
+        const B = tierScore(tier);
+        const D = signalD("H4");
+        const M = estimateMForScout("H4", deterministicSignals);
+        const score = priorityScore(F, D, B, M);
+        const payback = computePayback({ F, D, B, M }, assumptions);
+
+        entries.push({
+          key: `H4:${skill}`,
+          skill,
+          signal: "H4",
+          tier,
+          metric: `deterministic_signals=${deterministicSignals}`,
+          metricValue: deterministicSignals,
+          delta: status,
+          notes,
+          F,
+          D,
+          B,
+          M,
+          score,
+          payback,
+        });
       }
     }
   }

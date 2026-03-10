@@ -213,6 +213,8 @@ On build completion, the operator may optionally write `results-review.user.md` 
 
 The closed-loop update is advisory: when `results-review.user.md` is written, any high-confidence findings should be propagated to the relevant standing artifacts, subject to the anti-loop condition above.
 
+Assessment refresh is a separate bounded path. It is not driven by `results-review.user.md` prose and it does not authorize blanket re-seeding of assessment-era docs. When a build produces a later assessment decision that is explicitly mapped to revision-mode intake fields, `/lp-do-build` may run the deterministic assessment refresh utility to update only the allowed targets in `assessment-intake-packet.user.md`. Seed-once/live-owned downstream docs remain excluded unless they define their own direct update contract.
+
 **Standing information expansion.** After each build, the operator should explicitly consider two questions:
 
 1. Does this build produce outcomes that are not naturally captured by any existing Layer A domain? If yes, the operator should decide whether to add a new standing artifact or domain, and register it as a monitored trigger in the Update Triggers table above.
@@ -251,6 +253,8 @@ assessment-intake-packet.user.md ────►
 
 **R4 — Standing update scope is bounded.** results-review updates propagate to the specific standing fields that the build outcome touched. Global standing refreshes (full domain re-runs) are not triggered by a single build cycle unless the operator explicitly initiates a domain re-run.
 
+**R4A — Assessment post-build refresh is bounded and deterministic.** Later assessment decisions may refresh only explicitly mapped revision-mode assessment targets. This path is separate from standing `results-review.user.md` updates, must use an explicit source-to-target matrix, and must default unknown targets to no-op.
+
 **R5 — Aggregate pack consumed at S4 join.** The S4 baseline merge join barrier (`/lp-baseline-merge`) consumes standing aggregate packs as optional inputs alongside the existing required inputs (MARKET-06 offer, S3 forecast, SELL-01 channels). New optional inputs at S4 are: `market-pack` (MARKET-11), `sell-pack` (SELL-07), `product-pack` (PRODUCTS-07), `logistics-pack` (LOGISTICS-07, conditional). Required inputs at S4 are unchanged from current spec.
 
 **R6 — LOGISTICS consumer safety.** Any stage, skill, or template that consumes LOGISTICS artifacts must implement a presence check. LOGISTICS absence must produce a no-op or a documented skip, not an error.
@@ -259,6 +263,8 @@ assessment-intake-packet.user.md ────►
 
 **R8 — No self-referential trigger loops.** When a Layer B cycle was initiated by a standing-information update trigger (S10 confidence degradation or external event observed in a specific domain), the completed build's outcomes must NOT be automatically propagated back to that same originating domain as a standing update. The operator must confirm that the observed outcome genuinely differs from or adds to the trigger source before applying any update to the originating domain. This rule prevents a standing-info change from triggering a build cycle that then continuously re-updates the same standing info.
 
+**R8A — Seed-once assessment docs are protected.** A post-build assessment refresh must not re-seed artifacts that explicitly declare seed-once/live-owned behavior (for example `current-problem-framing.user.md`). Those docs are updated directly under their own contracts, not via intake refresh.
+
 **R9 — Standing information expansion and registration.** When a build produces outcomes not captured by any existing Layer A artifact, or surfaces a new artifact that meets the Monitoring Scope qualification criteria, the operator must explicitly decide: (a) whether to add or revise a standing artifact, and (b) whether to register the new source in the Update Triggers table as a monitored artifact. The monitoring scope is inclusive by default — any qualifying artifact not yet registered is an omission, not a deliberate exclusion. This decision must be recorded in `results-review.user.md` under `## Standing Expansion`, or as a replan note if no results-review is written. Silence is not acceptable.
 
 ### Stage Transition Events That Cross Layer Boundary
@@ -266,7 +272,7 @@ assessment-intake-packet.user.md ────►
 | Event | Layer A effect | Layer B effect |
 |---|---|---|
 | Operator decides to act on a standing-artifact signal or direct trigger | — | New Layer B cycle opens; `/lp-do-fact-find` invoked with trigger source cited per R2 |
-| Layer B build complete | Plan archived to `docs/plans/_archive/<feature-slug>/`. If results-review.user.md is written: standing fields updated per R4 (anti-loop R8 applies); standing expansion decision recorded per R9 | |
+| Layer B build complete | Plan archived to `docs/plans/_archive/<feature-slug>/`. If results-review.user.md is written: standing fields updated per R4 (anti-loop R8 applies); standing expansion decision recorded per R9. If a qualifying later assessment decision was produced: mapped intake revision fields may be refreshed per R4A / R8A | |
 | S10 confidence degradation detected | Operator triggers domain re-run (new Layer A stage cycle) | No Layer B effect unless operator promotes a new idea. Anti-loop R8 applies if a Layer B cycle is subsequently promoted from this trigger |
 | External event observed | Operator updates relevant revision-mode fields in standing artifact | Standing artifact `last_updated` refreshed; confidence re-rated. Anti-loop R8 applies to any resulting Layer B cycle |
 

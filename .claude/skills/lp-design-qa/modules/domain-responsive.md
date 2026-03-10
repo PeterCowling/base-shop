@@ -23,10 +23,14 @@
 ## RS-03: Touch Target Sizes
 
 - Grep for interactive elements (buttons, links, inputs, clickable cards)
-- Verify minimum size: `min-h-11 min-w-11` (or `h-11 w-11` for fixed)
-- Check for interactive elements below WCAG minimum (44x44px)
-- **Pass:** All interactive elements meet minimum size
-- **Fail:** Interactive elements below minimum, no size constraints
+- Verify target size through one of:
+  - DS primitive size/prop contract (for example `size="lg"` where the component API maps it to 44px)
+  - explicit utility constraints such as `min-h-11 min-w-11`, `h-11 w-11`, or `min-target-hig`
+  - another documented repo-standard minimum when justified by component contract
+- Treat clearly undersized custom interactive elements as Fail; treat ambiguous cases that rely on component internals as Warn unless rendered evidence or component docs prove they are too small
+- **Pass:** Interactive elements meet the documented size contract
+- **Fail:** Interactive elements clearly below contract, no size constraints
+- **Warn:** Size likely acceptable but cannot be proven from static code alone
 
 ## RS-04: Overflow Handling
 

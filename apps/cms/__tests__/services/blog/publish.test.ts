@@ -1,7 +1,6 @@
 /* eslint-env jest */
 
-import { nowIso } from '@acme/date-utils';
-
+import { nowIso } from '../../../src/lib/datetime';
 import { publishPost } from '../../../src/services/blog/posts/publish';
 
 jest.mock('../../../src/actions/common/auth', () => ({
@@ -18,7 +17,7 @@ jest.mock('@acme/platform-core/repositories/blog.server', () => ({
   publishPost: (...args: unknown[]) => repoPublishPost(...args),
 }));
 
-jest.mock('@acme/date-utils', () => ({
+jest.mock('../../../src/lib/datetime', () => ({
   nowIso: jest.fn(),
 }));
 
@@ -70,4 +69,3 @@ describe('publishPost', () => {
     consoleError.mockRestore();
   });
 });
-

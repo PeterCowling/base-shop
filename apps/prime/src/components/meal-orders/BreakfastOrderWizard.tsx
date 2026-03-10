@@ -19,6 +19,8 @@ import {
 import { useBreakfastWizard } from '@/hooks/meal-orders/useBreakfastWizard';
 import { buildBreakfastOrderValue } from '@/lib/meal-orders/buildOrderValue';
 
+import { RadioStep } from './RadioStep';
+
 // ---------------------------------------------------------------------------
 // Props
 // ---------------------------------------------------------------------------
@@ -27,11 +29,18 @@ interface BreakfastOrderWizardProps {
   serviceDate: string;
   onSubmit: (value: string) => void;
   isSubmitting: boolean;
-  onReset?: () => void;
 }
 
 // Step keys for i18n lookup
 const STEP_KEYS = ['food', 'eggs', 'pancakes', 'drinks', 'sugar', 'milksugar', 'time', 'confirmation'] as const;
+
+// Pre-computed radio items for options that map value === label
+const SUGAR_ITEMS = sugarOptions.map((o) => ({ value: o, label: o }));
+const MILK_ITEMS = milkOptions.map((o) => ({ value: o, label: o }));
+
+// Food type constants — avoids string literals in conditional logic
+const FOOD_VALUE_EGGS = 'Eggs';
+const FOOD_VALUE_PANCAKES = 'Pancakes';
 
 // ---------------------------------------------------------------------------
 // Component
@@ -60,42 +69,19 @@ export function BreakfastOrderWizard({
 
   function renderFoodStep() {
     return (
-      <div className="space-y-3">
-        <div className="space-y-2">
-          {breakfastOptions.map((item) => {
-            const isSelected = wizard.formData.selectedFood === item.value;
-            return (
-              <label
-                key={item.value}
-                className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 ${
-                  isSelected ? 'border-primary bg-primary/5' : 'border-border bg-card'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="breakfast-food"
-                  value={item.value}
-                  checked={isSelected}
-                  onChange={() => {
-                    wizard.updateField('selectedFood', item.value);
-                    wizard.updateField('selectedFoodLabel', item.label);
-                  }}
-                  className="accent-primary"
-                />
-                <span className="text-sm text-foreground">{item.label}</span>
-              </label>
-            );
-          })}
-        </div>
-        <button
-          type="button"
-          disabled={!wizard.canAdvance}
-          onClick={wizard.advanceStep}
-          className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
-        >
-          {t('breakfastWizard.next')}
-        </button>
-      </div>
+      <RadioStep
+        name="breakfast-food"
+        options={breakfastOptions}
+        selectedValue={wizard.formData.selectedFood ?? ''}
+        onChange={(value) => {
+          const item = breakfastOptions.find((o) => o.value === value);
+          wizard.updateField('selectedFood', value);
+          wizard.updateField('selectedFoodLabel', item?.label ?? value);
+        }}
+        onNext={wizard.advanceStep}
+        nextLabel={t('breakfastWizard.next')}
+        disabled={!wizard.canAdvance}
+      />
     );
   }
 
@@ -177,118 +163,50 @@ export function BreakfastOrderWizard({
 
   function renderPancakesStep() {
     return (
-      <div className="space-y-3">
-        <div className="space-y-2">
-          {pancakeSyrups.map((item) => {
-            const isSelected = wizard.formData.selectedSyrup === item.label;
-            return (
-              <label
-                key={item.value}
-                className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 ${
-                  isSelected ? 'border-primary bg-primary/5' : 'border-border bg-card'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="pancake-syrup"
-                  value={item.value}
-                  checked={isSelected}
-                  onChange={() => wizard.updateField('selectedSyrup', item.label)}
-                  className="accent-primary"
-                />
-                <span className="text-sm text-foreground">{item.label}</span>
-              </label>
-            );
-          })}
-        </div>
-        <button
-          type="button"
-          disabled={!wizard.canAdvance}
-          onClick={wizard.advanceStep}
-          className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
-        >
-          {t('breakfastWizard.next')}
-        </button>
-      </div>
+      <RadioStep
+        name="pancake-syrup"
+        options={pancakeSyrups}
+        selectedValue={pancakeSyrups.find((o) => o.label === wizard.formData.selectedSyrup)?.value ?? ''}
+        onChange={(value) => {
+          const item = pancakeSyrups.find((o) => o.value === value);
+          wizard.updateField('selectedSyrup', item?.label ?? value);
+        }}
+        onNext={wizard.advanceStep}
+        nextLabel={t('breakfastWizard.next')}
+        disabled={!wizard.canAdvance}
+      />
     );
   }
 
   function renderDrinksStep() {
     return (
-      <div className="space-y-3">
-        <div className="space-y-2">
-          {drinksOptions.map((item) => {
-            const isSelected = wizard.formData.selectedDrink === item.value;
-            return (
-              <label
-                key={item.value}
-                className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 ${
-                  isSelected ? 'border-primary bg-primary/5' : 'border-border bg-card'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="breakfast-drink"
-                  value={item.value}
-                  checked={isSelected}
-                  onChange={() => {
-                    wizard.updateField('selectedDrink', item.value);
-                    wizard.updateField('selectedDrinkLabel', item.label);
-                  }}
-                  className="accent-primary"
-                />
-                <span className="text-sm text-foreground">{item.label}</span>
-              </label>
-            );
-          })}
-        </div>
-        <button
-          type="button"
-          disabled={!wizard.canAdvance}
-          onClick={wizard.advanceStep}
-          className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
-        >
-          {t('breakfastWizard.next')}
-        </button>
-      </div>
+      <RadioStep
+        name="breakfast-drink"
+        options={drinksOptions}
+        selectedValue={wizard.formData.selectedDrink ?? ''}
+        onChange={(value) => {
+          const item = drinksOptions.find((o) => o.value === value);
+          wizard.updateField('selectedDrink', value);
+          wizard.updateField('selectedDrinkLabel', item?.label ?? value);
+        }}
+        onNext={wizard.advanceStep}
+        nextLabel={t('breakfastWizard.next')}
+        disabled={!wizard.canAdvance}
+      />
     );
   }
 
   function renderSugarStep() {
     return (
-      <div className="space-y-3">
-        <div className="space-y-2">
-          {sugarOptions.map((option) => {
-            const isSelected = wizard.formData.selectedSugar === option;
-            return (
-              <label
-                key={option}
-                className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 ${
-                  isSelected ? 'border-primary bg-primary/5' : 'border-border bg-card'
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="sugar"
-                  value={option}
-                  checked={isSelected}
-                  onChange={() => wizard.updateField('selectedSugar', option)}
-                  className="accent-primary"
-                />
-                <span className="text-sm text-foreground">{option}</span>
-              </label>
-            );
-          })}
-        </div>
-        <button
-          type="button"
-          disabled={!wizard.canAdvance}
-          onClick={wizard.advanceStep}
-          className="mt-2 min-h-11 w-full rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground disabled:opacity-50"
-        >
-          {t('breakfastWizard.next')}
-        </button>
-      </div>
+      <RadioStep
+        name="sugar"
+        options={SUGAR_ITEMS}
+        selectedValue={wizard.formData.selectedSugar ?? ''}
+        onChange={(value) => wizard.updateField('selectedSugar', value)}
+        onNext={wizard.advanceStep}
+        nextLabel={t('breakfastWizard.next')}
+        disabled={!wizard.canAdvance}
+      />
     );
   }
 
@@ -298,11 +216,11 @@ export function BreakfastOrderWizard({
         <div>
           <p className="mb-2 text-sm font-medium text-foreground">{t('breakfastWizard.milkLabel')}</p>
           <div className="space-y-2">
-            {milkOptions.map((option) => {
-              const isSelected = wizard.formData.selectedMilk === option;
+            {MILK_ITEMS.map((item) => {
+              const isSelected = wizard.formData.selectedMilk === item.value;
               return (
                 <label
-                  key={option}
+                  key={item.value}
                   className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 ${
                     isSelected ? 'border-primary bg-primary/5' : 'border-border bg-card'
                   }`}
@@ -310,12 +228,12 @@ export function BreakfastOrderWizard({
                   <input
                     type="radio"
                     name="milk"
-                    value={option}
+                    value={item.value}
                     checked={isSelected}
-                    onChange={() => wizard.updateField('selectedMilk', option)}
+                    onChange={() => wizard.updateField('selectedMilk', item.value)}
                     className="accent-primary"
                   />
-                  <span className="text-sm text-foreground">{option}</span>
+                  <span className="text-sm text-foreground">{item.label}</span>
                 </label>
               );
             })}
@@ -324,11 +242,11 @@ export function BreakfastOrderWizard({
         <div>
           <p className="mb-2 text-sm font-medium text-foreground">{t('breakfastWizard.sugarLabel')}</p>
           <div className="space-y-2">
-            {sugarOptions.map((option) => {
-              const isSelected = wizard.formData.selectedSugar === option;
+            {SUGAR_ITEMS.map((item) => {
+              const isSelected = wizard.formData.selectedSugar === item.value;
               return (
                 <label
-                  key={option}
+                  key={item.value}
                   className={`flex cursor-pointer items-center gap-3 rounded-lg border p-3 ${
                     isSelected ? 'border-primary bg-primary/5' : 'border-border bg-card'
                   }`}
@@ -336,12 +254,12 @@ export function BreakfastOrderWizard({
                   <input
                     type="radio"
                     name="milksugar-sugar"
-                    value={option}
+                    value={item.value}
                     checked={isSelected}
-                    onChange={() => wizard.updateField('selectedSugar', option)}
+                    onChange={() => wizard.updateField('selectedSugar', item.value)}
                     className="accent-primary"
                   />
-                  <span className="text-sm text-foreground">{option}</span>
+                  <span className="text-sm text-foreground">{item.label}</span>
                 </label>
               );
             })}
@@ -410,9 +328,9 @@ export function BreakfastOrderWizard({
 
     // Build food display string
     let foodDisplay = selectedFoodLabel ?? '';
-    if (selectedFood === 'Eggs' && selectedEggStyle) {
+    if (selectedFood === FOOD_VALUE_EGGS && selectedEggStyle) {
       foodDisplay = `Eggs (${selectedEggStyle})`;
-    } else if (selectedFood === 'Pancakes' && selectedSyrup) {
+    } else if (selectedFood === FOOD_VALUE_PANCAKES && selectedSyrup) {
       foodDisplay = `Pancakes (${selectedSyrup})`;
     }
 
@@ -433,7 +351,7 @@ export function BreakfastOrderWizard({
               </dt>
               <dd className="mt-0.5 text-sm text-foreground">{foodDisplay}</dd>
             </div>
-            {selectedFood === 'Eggs' && selectedSides.length > 0 && (
+            {selectedFood === FOOD_VALUE_EGGS && selectedSides.length > 0 && (
               <div>
                 <dt className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                   {t('breakfastWizard.confirmSides')}

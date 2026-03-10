@@ -72,12 +72,12 @@ export default async function EditCardPage({ params }: PageProps) {
               • Business cannot be changed after card creation (data integrity)
             </li>
             <li>
-              • Lane changes may trigger stage document creation (fact-find,
-              plan, etc.)
+              • Lane changes no longer create workflow-specific card documents
+              automatically
             </li>
             <li>
-              • Use &ldquo;Proposed Lane&rdquo; to suggest next stage without
-              immediately moving
+              • Use &ldquo;Proposed Lane&rdquo; to suggest the next queue state
+              without immediately moving
             </li>
             <li>
               • Changes are committed locally - remember to Sync to push to

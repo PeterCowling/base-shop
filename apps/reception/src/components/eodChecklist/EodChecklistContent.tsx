@@ -18,6 +18,7 @@ import {
   sameItalyDate,
   startOfDayIso,
 } from "../../utils/dateUtils";
+import { formatEuro } from "../../utils/format";
 
 import EodOverrideModal from "./EodOverrideModal";
 import OpeningFloatModal from "./OpeningFloatModal";
@@ -27,10 +28,7 @@ import OpeningFloatModal from "./OpeningFloatModal";
  * Positive = over (€+X.XX), negative = short (€-X.XX), zero = €0.00.
  */
 function formatCashVariance(amount: number): string {
-  if (amount >= 0) {
-    return `€+${amount.toFixed(2)}`;
-  }
-  return `€${amount.toFixed(2)}`;
+  return formatEuro(amount, { signDisplay: "always" });
 }
 
 export default function EodChecklistContent() {

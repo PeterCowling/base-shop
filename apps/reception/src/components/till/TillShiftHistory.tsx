@@ -7,10 +7,11 @@ import { useTillShiftsRange } from "../../hooks/data/till/useTillShiftsRange";
 import { DENOMINATIONS } from "../../types/component/Till";
 import type { CashCount } from "../../types/hooks/data/cashCountData";
 import { endOfDayIso, formatEnGbDateTimeFromIso, startOfDayIso } from "../../utils/dateUtils";
+import { formatEuro } from "../../utils/format";
 import ReceptionSkeleton from "../common/ReceptionSkeleton";
 
 const formatMoney = (value?: number) =>
-  typeof value === "number" ? `€${value.toFixed(2)}` : "-";
+  typeof value === "number" ? formatEuro(value) : "-";
 
 const formatValue = (value?: string) => value ?? "-";
 
@@ -66,7 +67,7 @@ function DenomBreakdownRow({ denomBreakdown }: { denomBreakdown: Record<string, 
           <Fragment key={e.label}>
             <span>{e.label}</span>
             <span className="text-right font-mono">{e.count}</span>
-            <span className="text-right font-mono">€{(e.count * e.value).toFixed(2)}</span>
+            <span className="text-right font-mono">{formatEuro(e.count * e.value)}</span>
           </Fragment>
         ))}
       </div>

@@ -2,16 +2,15 @@
 
 ## Offload Route
 
-When `CODEX_OK=1` (checked in `SKILL.md § Executor Dispatch`), offload this task to Codex. Load and follow: `../../_shared/build-offload-protocol.md`.
+Current active policy: execute this task inline. A validated patch-return Codex lane does not exist yet, so shared-checkout mutable offload is disabled as a normal default. If a future task explicitly enables a validated pilot, load and follow `../../_shared/build-offload-protocol.md`.
 
-**Track-specific prompt additions for INVESTIGATE tasks:**
+**If a validated offload pilot is explicitly enabled later, keep these track-specific prompt additions for INVESTIGATE tasks:**
 
-- Use `codex exec -a never --sandbox workspace-write` — artifact write access is required because INVESTIGATE tasks produce a deliverable file. `codex exec --sandbox read-only` cannot write the deliverable and must not be used.
 - MCP tools are available to Codex via `~/.codex/config.toml` — Codex has the same evidence sources as Claude for INVESTIGATE tasks (GA4, Firebase, BOS API, brikette MCP server).
 - Codex's own internal parallelism replaces the `build-investigate.md` subagent dispatch pattern described in the `## Subagent Dispatch` section below. Do not instruct Codex to spawn subagents — it handles parallelism internally via tool-calling.
 - Include the full evidence queries (from `Questions to answer` or acceptance criteria) in the prompt so Codex can plan its evidence collection.
 
-**Claude's post-execution verification steps (after `codex exec` returns):**
+**If a validated offload pilot is explicitly enabled later, Claude's post-execution verification steps remain:**
 
 1. Re-read all `Affects` files — confirm the deliverable artifact was written. If missing or empty: treat as task failure; do not proceed to commit.
 2. Validate artifact against task acceptance criteria — INVESTIGATE tasks are exempt from `modules/build-validate.md`, but acceptance criteria must be met.

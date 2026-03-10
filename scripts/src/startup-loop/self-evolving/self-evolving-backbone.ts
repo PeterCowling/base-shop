@@ -2,8 +2,13 @@ import type { ImprovementCandidate } from "./self-evolving-contracts.js";
 
 export interface DispatchLikePacket {
   dispatch_id: string;
-  status: "fact_find_ready" | "micro_build_ready" | "briefing_ready" | "logged_no_action";
-  recommended_route: "lp-do-fact-find" | "lp-do-build" | "lp-do-briefing";
+  status:
+    | "fact_find_ready"
+    | "plan_ready"
+    | "micro_build_ready"
+    | "briefing_ready"
+    | "logged_no_action";
+  recommended_route: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build" | "lp-do-briefing";
   area_anchor: string;
   evidence_refs: string[];
 }
@@ -47,6 +52,9 @@ export function mapDispatchToBackboneRoute(
   }
   if (packet.recommended_route === "lp-do-build") {
     return { route: "lp-do-build", reason: "dispatch_routed_to_micro_build" };
+  }
+  if (packet.recommended_route === "lp-do-plan") {
+    return { route: "lp-do-plan", reason: "dispatch_routed_to_plan" };
   }
   return { route: "reject", reason: "briefing_path_not_build_backbone" };
 }

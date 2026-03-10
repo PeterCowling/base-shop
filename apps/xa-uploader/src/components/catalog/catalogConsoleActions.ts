@@ -6,6 +6,7 @@ import {
   splitList,
 } from "@acme/lib/xa/catalogAdminSchema";
 
+import { normalizeCatalogPath } from "../../lib/catalogPath";
 import { getStorefrontConfig } from "../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { getUploaderConfirmDelete, type UploaderLocale } from "../../lib/uploaderI18n";
@@ -53,13 +54,6 @@ export type PublishResult =
   | { status: "error"; error?: string };
 
 export type SyncActionResult = { ok: boolean; data?: SyncResponse };
-
-function normalizeCatalogPath(value: string): string {
-  const trimmed = value.trim();
-  if (!trimmed) return "";
-  if (/^https?:\/\//i.test(trimmed)) return trimmed;
-  return trimmed.replace(/^\/+/, "");
-}
 
 function parseImageTuples(draft: CatalogProductDraftInput): ImageTuple[] {
   const files = splitList(draft.imageFiles ?? "").map((entry) => normalizeCatalogPath(entry));
@@ -116,6 +110,83 @@ export function mergeAutosaveImageTuples(params: {
     imageFiles,
     imageAltTexts,
   };
+}
+
+function getCatalogProcessWarningReasonMessage(
+  reason: string,
+  t: Translator,
+): string {
+  if (reason === "external_host_not_allowed") {
+    return t("syncWarningReasonExternalHostNotAllowed");
+  }
+  if (reason === "invalid_cloud_key") {
+    return t("syncWarningReasonInvalidCloudKey");
+  }
+  if (reason === "empty_path") {
+    return t("syncWarningReasonEmptyPath");
+  }
+  return t("syncWarningReasonUnknown");
+}
+
+const MISSING_PRUNED_RE = /^cloud_media_missing_pruned:(\d+)$/;
+const VALIDATION_LIMIT_RE = /^cloud_media_validation_limit_skipped:(\d+)$/;
+const ROW_EMPTY_IMAGE_PATH_RE = /^\[row (\d+)\] "([^"]+)" has an empty image path entry\.$/;
+const ROW_UNSUPPORTED_CLOUD_PATH_RE =
+  /^\[row (\d+)\] "([^"]+)" has unsupported cloud image path "([^"]+)" \(([^)]+)\)\.$/;
+
+function getCatalogProcessWarningMessage(
+  warning: string,
+  t: Translator,
+): string {
+  if (warning === "publish_state_promotion_failed") {
+    return t("syncWarningPublishStatePromotionFailed");
+  }
+
+  const missingPrunedMatch = MISSING_PRUNED_RE.exec(warning);
+  if (missingPrunedMatch) {
+    return t("syncWarningCloudMediaMissingPruned", {
+      count: Number.parseInt(missingPrunedMatch[1] ?? "0", 10),
+    });
+  }
+
+  const validationLimitMatch = VALIDATION_LIMIT_RE.exec(warning);
+  if (validationLimitMatch) {
+    return t("syncWarningCloudMediaValidationLimitSkipped", {
+      count: Number.parseInt(validationLimitMatch[1] ?? "0", 10),
+    });
+  }
+
+  const emptyImagePathMatch = ROW_EMPTY_IMAGE_PATH_RE.exec(warning);
+  if (emptyImagePathMatch) {
+    return t("syncWarningRowEmptyImagePath", {
+      row: Number.parseInt(emptyImagePathMatch[1] ?? "0", 10),
+      slug: emptyImagePathMatch[2] ?? "",
+    });
+  }
+
+  const unsupportedCloudPathMatch = ROW_UNSUPPORTED_CLOUD_PATH_RE.exec(warning);
+  if (unsupportedCloudPathMatch) {
+    return t("syncWarningRowUnsupportedCloudPath", {
+      row: Number.parseInt(unsupportedCloudPathMatch[1] ?? "0", 10),
+      slug: unsupportedCloudPathMatch[2] ?? "",
+      path: unsupportedCloudPathMatch[3] ?? "",
+      reason: getCatalogProcessWarningReasonMessage(unsupportedCloudPathMatch[4] ?? "", t),
+    });
+  }
+
+  return t("syncWarningUnknownGeneric");
+}
+
+function appendCatalogProcessWarnings(params: {
+  base: string;
+  warnings: string[] | undefined;
+  summaryKey: string;
+  t: Translator;
+}): string {
+  const warnings = (params.warnings ?? []).map((warning) => warning.trim()).filter(Boolean);
+  if (warnings.length === 0) return params.base;
+  const localizedWarnings = warnings.map((warning) => getCatalogProcessWarningMessage(warning, params.t)).join(" ");
+  return `${params.base} ${params.t(params.summaryKey, { warnings: localizedWarnings })}`;
 }
 
 export function shouldTriggerAutosync(params: {
@@ -479,67 +550,6 @@ function getSyncSuccessMessage(
   syncData: SyncResponse,
   t: Translator,
 ): string {
-  const getCloudPathReasonMessage = (reason: string): string => {
-    if (reason === "external_host_not_allowed") {
-      return t("syncWarningReasonExternalHostNotAllowed");
-    }
-    if (reason === "invalid_cloud_key") {
-      return t("syncWarningReasonInvalidCloudKey");
-    }
-    if (reason === "empty_path") {
-      return t("syncWarningReasonEmptyPath");
-    }
-    return t("syncWarningReasonUnknown");
-  };
-
-  const getWarningMessage = (warning: string): string => {
-    if (warning === "publish_state_promotion_failed") {
-      return t("syncWarningPublishStatePromotionFailed");
-    }
-
-    const missingPrunedMatch = /^cloud_media_missing_pruned:(\d+)$/.exec(warning);
-    if (missingPrunedMatch) {
-      return t("syncWarningCloudMediaMissingPruned", {
-        count: Number.parseInt(missingPrunedMatch[1] ?? "0", 10),
-      });
-    }
-
-    const validationLimitMatch = /^cloud_media_validation_limit_skipped:(\d+)$/.exec(warning);
-    if (validationLimitMatch) {
-      return t("syncWarningCloudMediaValidationLimitSkipped", {
-        count: Number.parseInt(validationLimitMatch[1] ?? "0", 10),
-      });
-    }
-
-    const emptyImagePathMatch = /^\[row (\d+)\] "([^"]+)" has an empty image path entry\.$/.exec(warning);
-    if (emptyImagePathMatch) {
-      return t("syncWarningRowEmptyImagePath", {
-        row: Number.parseInt(emptyImagePathMatch[1] ?? "0", 10),
-        slug: emptyImagePathMatch[2] ?? "",
-      });
-    }
-
-    const unsupportedCloudPathMatch =
-      /^\[row (\d+)\] "([^"]+)" has unsupported cloud image path "([^"]+)" \(([^)]+)\)\.$/.exec(warning);
-    if (unsupportedCloudPathMatch) {
-      return t("syncWarningRowUnsupportedCloudPath", {
-        row: Number.parseInt(unsupportedCloudPathMatch[1] ?? "0", 10),
-        slug: unsupportedCloudPathMatch[2] ?? "",
-        path: unsupportedCloudPathMatch[3] ?? "",
-        reason: getCloudPathReasonMessage(unsupportedCloudPathMatch[4] ?? ""),
-      });
-    }
-
-    return t("syncWarningUnknownGeneric");
-  };
-
-  const appendWarnings = (base: string): string => {
-    const warnings = (syncData.warnings ?? []).map((warning) => warning.trim()).filter(Boolean);
-    if (warnings.length === 0) return base;
-    const localizedWarnings = warnings.map((warning) => getWarningMessage(warning)).join(" ");
-    return `${base} ${t("syncWarningsSummary", { warnings: localizedWarnings })}`;
-  };
-
   let baseMessage = t("syncSucceeded");
   const deployStatus = syncData.deploy?.status ?? syncData.display?.deployStatus;
   const nextEligibleAt = syncData.deploy?.nextEligibleAt ?? syncData.display?.nextEligibleAt;
@@ -554,11 +564,17 @@ function getSyncSuccessMessage(
   } else if (syncData.display?.requiresXaBBuild === true) {
     baseMessage = t("syncSucceededRebuildRequired");
   }
-  return appendWarnings(baseMessage);
+  return appendCatalogProcessWarnings({
+    base: baseMessage,
+    warnings: syncData.warnings,
+    summaryKey: "syncWarningsSummary",
+    t,
+  });
 }
 
 export async function handlePublishImpl({
-  draft,
+  draftId,
+  draftRevision,
   publishState,
   storefront,
   t,
@@ -567,7 +583,8 @@ export async function handlePublishImpl({
   setActionFeedback,
   loadCatalog,
 }: {
-  draft: CatalogProductDraftInput;
+  draftId: string;
+  draftRevision: string;
   publishState: "live" | "out_of_stock";
   storefront: XaCatalogStorefront;
   t: Translator;
@@ -582,7 +599,7 @@ export async function handlePublishImpl({
     const response = await fetch("/api/catalog/publish", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ storefront, draft, publishState }),
+      body: JSON.stringify({ storefront, draftId, ifMatch: draftRevision, publishState }),
     });
     const data = (await response.json()) as {
       ok: boolean;
@@ -623,9 +640,15 @@ export async function handlePublishImpl({
         message = t("makeLiveSuccessUnconfigured");
       }
     }
+    const feedbackMessage = appendCatalogProcessWarnings({
+      base: message,
+      warnings: data.warnings,
+      summaryKey: "publishWarningsSummary",
+      t,
+    });
     updateActionFeedback(setActionFeedback, "draft", {
       kind: "success",
-      message,
+      message: feedbackMessage,
     });
     return { status: "published", deployStatus, publishState, warnings: data.warnings ?? [] };
   } catch (err) {

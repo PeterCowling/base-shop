@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "xa-uploader-status-and-media-model-rewrite-2026-03-06",
+  "feature_slug": "xa-uploader-status-and-media-model-rewrite",
+  "emitted_at": "2026-03-06T12:00:00.000Z",
+  "why": "The current xa-uploader product model and media workflow no longer match the confirmed operator requirements. The app already has the correct one-page shell, but the underlying status and image contracts are still built around `ready` state, numeric stock, and role-based media.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "A planning-ready implementation path exists for xa-uploader to use `draft | live | out_of_stock` status semantics, `main image + additional photos` media semantics, predetermined registry-backed product entry, and the existing one-page sidebar/editor workflow.",
+    "source": "operator"
+  }
+}

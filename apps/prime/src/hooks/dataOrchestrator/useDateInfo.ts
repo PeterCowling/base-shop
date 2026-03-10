@@ -11,7 +11,7 @@
 
 import { useMemo } from 'react';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import {
   computeOrderDate,
@@ -83,7 +83,7 @@ export function useDateInfo(input: UseDateInfoInput): UseDateInfoResult {
         return { daysUntilCheckIn: daysUntilCheckInVal, daysRemaining: null };
       }
     } catch (err) {
-      logger.error('[useDateInfo] Error parsing date info:', err);
+      logger.error('[useDateInfo] Error parsing date info:', err); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
       return { daysUntilCheckIn: null, daysRemaining: null };
     }
   }, [checkInDate, nights]);

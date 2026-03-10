@@ -8,18 +8,6 @@ import useBookings from "../../data/useBookingsData";
 import useActivitiesMutations from "../../mutations/useActivitiesMutations";
 
 /**
- * Unused function. Renamed to match the allowed unused var pattern.
- */
-function _toActivityArray(
-  occupantActivities: Activity[] | Record<string, Activity>
-): Activity[] {
-  if (Array.isArray(occupantActivities)) {
-    return occupantActivities;
-  }
-  return Object.values(occupantActivities);
-}
-
-/**
  * Get the occupant's current code in [1..4], ignoring code=21 if present.
  * If occupant has code=21 or code=4, we skip them.
  */

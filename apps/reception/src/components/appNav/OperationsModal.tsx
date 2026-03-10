@@ -1,27 +1,9 @@
-import {
-  Bed,
-  CalendarPlus,
-  DoorOpen,
-  GlassWater,
-  Inbox,
-  Lock,
-  LogIn,
-  Mail,
-} from "lucide-react";
-
 import { withIconModal } from "../../hoc/withIconModal";
-import { type ModalAction } from "../../types/component/ModalAction";
 
-const actions: ModalAction[] = [
-  { label: "Bar",            icon: GlassWater,  route: "/bar" },
-  { label: "Check-in",       icon: LogIn,        route: "/checkin" },
-  { label: "Rooms",          icon: Bed,          route: "/rooms-grid" },
-  { label: "Check-out",      icon: DoorOpen,     route: "/checkout" },
-  { label: "Loans",          icon: Lock,         route: "/loan-items" },
-  { label: "Extension",      icon: CalendarPlus, route: "/extension" },
-  { label: "Inbox",          icon: Mail,         route: "/inbox" },
-  { label: "Prime Requests", icon: Inbox,        route: "/prime-requests" },
-];
+import { navSections, SECTION_LABELS } from "./navConfig";
+
+const section = navSections.find((s) => s.label === SECTION_LABELS.OPERATIONS);
+const actions = (section?.items ?? []).filter((item) => !item.sidebarOnly);
 
 export default withIconModal({
   label: "OPERATIONS",

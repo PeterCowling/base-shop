@@ -11,13 +11,20 @@ const APARTMENT_HERO_IMAGE_SRC = "/img/677397746.jpg";
 
 interface HeroSectionProps {
   bookingUrl?: string;
+  headingTag?: "h1" | "h2";
   lang?: string;
   onBookingCtaClick?: () => void;
 }
 
-function ApartmentHeroSection({ bookingUrl, lang, onBookingCtaClick }: HeroSectionProps): JSX.Element {
+function ApartmentHeroSection({
+  bookingUrl,
+  headingTag = "h2",
+  lang,
+  onBookingCtaClick,
+}: HeroSectionProps): JSX.Element {
   const { t, ready } = useTranslation("apartmentPage", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
+  const HeadingTag = headingTag;
 
   const ctaLabel = useMemo(() => {
     if (!ready && !tokensReady) {
@@ -56,13 +63,13 @@ function ApartmentHeroSection({ bookingUrl, lang, onBookingCtaClick }: HeroSecti
 
         <div className="relative z-20 mx-auto max-w-6xl px-6 pb-8 pt-8 sm:pb-12 sm:pt-10 lg:pb-14">
           <div className="max-w-xl space-y-4">
-            <span className="block text-xs uppercase tracking-widest text-primary-fg/75 sm:text-sm">
+            <span className="block text-xs uppercase tracking-widest text-brand-on-primary/75 sm:text-sm">
               {t("heroTagline")}
             </span>
-            <h2 className="text-balance text-4xl font-semibold leading-tight tracking-tight text-primary-fg drop-shadow-lg sm:text-5xl">
+            <HeadingTag className="text-balance text-4xl font-semibold leading-tight tracking-tight text-brand-on-primary drop-shadow-lg sm:text-5xl">
               {t("heroTitle")}
-            </h2>
-            <p className="text-base text-primary-fg/90 sm:text-lg">
+            </HeadingTag>
+            <p className="text-base text-brand-on-primary/90 sm:text-lg">
               {t("heroIntro")}
             </p>
             <div className="flex flex-col gap-3 pt-2 sm:flex-row">

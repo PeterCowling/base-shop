@@ -14,6 +14,7 @@ import { Button } from "@acme/design-system/atoms";
 
 import useFinancialsRoomMutations from "../../hooks/mutations/useFinancialsRoomMutations";
 import { getCurrentIsoTimestamp } from "../../utils/dateUtils";
+import { generateTransactionId } from "../../utils/generateTransactionId";
 
 /**
  * EditableBalanceCellProps
@@ -95,7 +96,7 @@ const EditableBalanceCell: React.FC<EditableBalanceCellProps> = ({
 
     // We now create a new transaction of type "adjust"
     // that increases or decreases the net outcome
-    const transactionId = `txn_adj_${Date.now()}`;
+    const transactionId = generateTransactionId();
 
     const partialData = {
       transactions: {

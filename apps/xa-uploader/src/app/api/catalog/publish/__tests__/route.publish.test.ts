@@ -4,6 +4,7 @@ import { __clearRateLimitStoreForTests } from "../../../../../lib/rateLimit";
 
 const hasUploaderSessionMock = jest.fn();
 const publishCatalogPayloadToContractMock = jest.fn();
+const readCloudCurrencyRatesMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
 const acquireCloudSyncLockMock = jest.fn();
@@ -13,8 +14,6 @@ const getMediaBucketMock = jest.fn();
 const maybeTriggerXaBDeployMock = jest.fn();
 const reconcileDeployPendingStateMock = jest.fn();
 const getUploaderKvMock = jest.fn();
-const isLocalFsRuntimeEnabledMock = jest.fn();
-const resolveRepoRootMock = jest.fn();
 
 const kvNamespaceMock = {
   get: jest.fn(),
@@ -57,6 +56,7 @@ jest.mock("../../../../../lib/catalogContractClient", () => ({
 }));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  readCloudCurrencyRates: (...args: unknown[]) => readCloudCurrencyRatesMock(...args),
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
   writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
   acquireCloudSyncLock: (...args: unknown[]) => acquireCloudSyncLockMock(...args),
@@ -75,18 +75,9 @@ jest.mock("../../../../../lib/syncMutex", () => ({
   getUploaderKv: (...args: unknown[]) => getUploaderKvMock(...args),
 }));
 
-jest.mock("../../../../../lib/localFsGuard", () => ({
-  isLocalFsRuntimeEnabled: (...args: unknown[]) => isLocalFsRuntimeEnabledMock(...args),
-}));
-
-jest.mock("../../../../../lib/repoRoot", () => ({
-  resolveRepoRoot: (...args: unknown[]) => resolveRepoRootMock(...args),
-}));
-
 jest.mock("../../../../../lib/deployHook", () => ({
   maybeTriggerXaBDeploy: (...args: unknown[]) => maybeTriggerXaBDeployMock(...args),
   reconcileDeployPendingState: (...args: unknown[]) => reconcileDeployPendingStateMock(...args),
-  resolveDeployStatePaths: jest.requireActual("../../../../../lib/deployHook").resolveDeployStatePaths,
 }));
 
 describe("catalog publish route", () => {
@@ -99,6 +90,7 @@ describe("catalog publish route", () => {
       version: "v-cloud",
       publishedAt: "2026-03-05T00:00:00.000Z",
     });
+    readCloudCurrencyRatesMock.mockResolvedValue({ EUR: 0.92, GBP: 0.78, AUD: 1.5 });
     readCloudDraftSnapshotMock.mockResolvedValue({
       products: [{ ...VALID_CLOUD_PRODUCT }],
       revisionsById: { p1: "rev-1" },
@@ -119,8 +111,6 @@ describe("catalog publish route", () => {
     maybeTriggerXaBDeployMock.mockResolvedValue({ status: "triggered" });
     reconcileDeployPendingStateMock.mockResolvedValue(null);
     getUploaderKvMock.mockResolvedValue(kvNamespaceMock);
-    isLocalFsRuntimeEnabledMock.mockReturnValue(true);
-    resolveRepoRootMock.mockReturnValue("/repo");
   });
 
   afterEach(() => {
@@ -133,7 +123,7 @@ describe("catalog publish route", () => {
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
       }),
     );
 
@@ -149,6 +139,7 @@ describe("catalog publish route", () => {
     expect(buildCatalogArtifactsFromDraftsMock).toHaveBeenCalledWith(
       expect.objectContaining({
         storefront: "xa-b",
+        currencyRates: { EUR: 0.92, GBP: 0.78, AUD: 1.5 },
         strict: false,
         mediaValidationPolicy: "warn",
         products: [expect.objectContaining({ id: "p1", publishState: "live" })],
@@ -158,16 +149,14 @@ describe("catalog publish route", () => {
       expect.objectContaining({
         storefront: "xa-b",
         products: [expect.objectContaining({ id: "p1", publishState: "live" })],
+        revisionsById: expect.objectContaining({ p1: expect.any(String) }),
       }),
     );
     expect(maybeTriggerXaBDeployMock).not.toHaveBeenCalled();
     expect(reconcileDeployPendingStateMock).toHaveBeenCalledWith({
       storefrontId: "xa-b",
       kv: kvNamespaceMock,
-      statePaths: {
-        cooldownStatePath: "/repo/apps/xa-uploader/data/deploy-cooldown/xa-b.json",
-        pendingStatePath: "/repo/apps/xa-uploader/data/deploy-pending/xa-b.json",
-      },
+      statePaths: undefined,
       result: {
         status: "skipped_runtime_live_catalog",
         reason: "live_catalog_runtime_enabled",
@@ -184,7 +173,8 @@ describe("catalog publish route", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           storefront: "xa-b",
-          draft: VALID_CLOUD_PRODUCT,
+          draftId: "p1",
+          ifMatch: "rev-1",
           publishState: "out_of_stock",
         }),
       }),
@@ -200,9 +190,31 @@ describe("catalog publish route", () => {
     expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith(
       expect.objectContaining({
         products: [expect.objectContaining({ id: "p1", publishState: "out_of_stock" })],
+        revisionsById: expect.objectContaining({ p1: expect.any(String) }),
       }),
     );
     expect(publishCatalogPayloadToContractMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns conflict when the saved revision no longer matches", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "stale-rev" }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "conflict",
+        reason: "revision_conflict",
+      }),
+    );
+    expect(publishCatalogPayloadToContractMock).not.toHaveBeenCalled();
   });
 
   it("maps catalog publish failures to 502 catalog_publish_failed", async () => {
@@ -213,7 +225,7 @@ describe("catalog publish route", () => {
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
       }),
     );
 
@@ -240,7 +252,7 @@ describe("catalog publish route", () => {
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
       }),
     );
 
@@ -262,7 +274,7 @@ describe("catalog publish route", () => {
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
       }),
     );
 
@@ -317,14 +329,14 @@ describe("catalog publish route", () => {
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
       }),
     );
 
     expect(response.status).toBe(200);
     const payload = await response.json();
     expect(payload.ok).toBe(true);
-    expect(payload.deployStatus).toBe("triggered");
+    expect(payload.deployStatus).toBe("skipped_runtime_live_catalog");
     expect(payload.warnings).toContain("cloud_media_missing_pruned:1");
     expect(publishCatalogPayloadToContractMock).toHaveBeenCalledWith(
       expect.objectContaining({

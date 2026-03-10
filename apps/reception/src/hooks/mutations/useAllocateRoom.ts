@@ -1,14 +1,16 @@
 // File: src/hooks/mutations/useAllocateRoom.ts
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { useAuth } from "../../context/AuthContext";
 import { canAccess, Permissions } from "../../lib/roles";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 import type { SaveRoomsByDateParams } from "../../types/hooks/mutations/saveRoomsByDateParams";
 import { showToast } from "../../utils/toastUtils";
 
 import useActivitiesMutations from "./useActivitiesMutations";
 import useGuestByRoomMutations from "./useGuestByRoomMutations";
+import useMutationState from "./useMutationState";
 import useRoomsByDateMutations from "./useRoomsByDateMutations";
 
 /**
@@ -62,6 +64,10 @@ export function isUpgrade(
   return false;
 }
 
+interface UseAllocateRoomReturn extends MutationState<void> {
+  allocateRoomIfAllowed: (params: AllocateRoomParams) => Promise<string>;
+}
+
 /**
  * Hook: Allows users with ROOM_ALLOCATION permission (owners, developers, admins, managers)
  * to change a guest's allocated room, update the /roomsByDate node to reflect the new
@@ -76,12 +82,12 @@ export function isUpgrade(
  *   2) Moves the occupant in the /roomsByDate node.
  *   3) Logs an activity based on the upgrade rules.
  */
-export default function useAllocateRoom() {
+export default function useAllocateRoom(): UseAllocateRoomReturn {
   const { user } = useAuth();
   const { saveGuestByRoom } = useGuestByRoomMutations();
   const { saveRoomsByDate } = useRoomsByDateMutations();
   const { logActivity } = useActivitiesMutations();
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   const allocateRoomIfAllowed = useCallback(
     async (params: AllocateRoomParams): Promise<string> => {
@@ -112,35 +118,41 @@ export default function useAllocateRoom() {
       }
 
       try {
-        // 1. Update the occupant's allocated room in /guestByRoom.
-        const updatedRecord = await saveGuestByRoom(occupantId, {
-          allocated: newRoomValue,
-        });
-        // 2. Update the occupant's assignment in /roomsByDate.
-        await saveRoomsByDate({
-          oldDate,
-          oldRoom,
-          oldBookingRef,
-          oldGuestId,
-          newDate,
-          newRoom,
-          newBookingRef,
-          newGuestId,
-        });
-        // 3. Determine if this change is an upgrade and log the appropriate activity.
-        const upgrade = isUpgrade(oldRoom, newRoom);
-        const activityCode = upgrade ? 17 : 18;
-        await logActivity(occupantId, activityCode);
+        return await run(async () => {
+          // 1. Update the occupant's allocated room in /guestByRoom.
+          const updatedRecord = await saveGuestByRoom(occupantId, {
+            allocated: newRoomValue,
+          });
+          // 2. Update the occupant's assignment in /roomsByDate.
+          await saveRoomsByDate({
+            oldDate,
+            oldRoom,
+            oldBookingRef,
+            oldGuestId,
+            newDate,
+            newRoom,
+            newBookingRef,
+            newGuestId,
+          });
+          // 3. Determine if this change is an upgrade and log the appropriate activity.
+          const upgrade = isUpgrade(oldRoom, newRoom);
+          const activityCode = upgrade ? 17 : 18;
+          await logActivity(occupantId, activityCode);
 
-        return updatedRecord.allocated || "";
+          return updatedRecord.allocated || "";
+        });
       } catch (err) {
-        setError(err);
-        showToast(`Error updating occupant: ${String(err)}`, "error");
+        showToast(
+          err instanceof Error
+            ? err.message
+            : "Failed to update occupant room.",
+          "error"
+        );
         throw err;
       }
     },
-    [user, saveGuestByRoom, saveRoomsByDate, logActivity]
+    [user, saveGuestByRoom, saveRoomsByDate, logActivity, run]
   );
 
-  return { allocateRoomIfAllowed, error };
+  return { allocateRoomIfAllowed, error, loading };
 }

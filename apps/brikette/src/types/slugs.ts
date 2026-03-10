@@ -34,6 +34,8 @@ export type SlugMap = {
   breakfastMenu: Record<AppLanguage, string>;
   /** Public bar menu */
   barMenu: Record<AppLanguage, string>;
+  /** Double private room direct booking page */
+  doubleRoomBooking: Record<AppLanguage, string>;
 };
 
 /** Convenience helper for `keyof SlugMap` usage. */

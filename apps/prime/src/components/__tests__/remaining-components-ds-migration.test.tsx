@@ -140,7 +140,7 @@ jest.mock('qrcode', () => ({
 }));
 
 // Mock logger
-jest.mock('@/utils/logger', () => ({
+jest.mock('@acme/lib/logger/client', () => ({
   __esModule: true,
   default: { info: jest.fn(), warn: jest.fn(), error: jest.fn() },
 }));

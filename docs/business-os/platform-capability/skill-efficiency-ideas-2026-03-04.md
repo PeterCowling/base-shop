@@ -15,7 +15,6 @@ Convert the 2026-03-04 skill-efficiency findings into realistic ideas that can m
 
 | Priority | Idea | Why now | Recommended route |
 |---|---|---|---|
-| P1 | Assessment Skill Family Modularization Wave | 9 assessment monoliths >200L are now the largest new backlog driver | lp-do-fact-find |
 | P1 | Core Triad Size Budget Guardrails (`lp-do-fact-find`, `lp-do-plan`, `lp-do-build`) | These three regressed by +42 to +95 lines and are critical-path skills | lp-do-fact-find |
 | P1 | Split `startup-loop/modules/cmd-advance.md` Monolith | Single 532L module creates maintenance and token concentration risk | lp-do-fact-find |
 | P1 | Deterministic Extraction Program (TS/JSON/YAML-first) | Current signals are mostly structural; deterministic logic extraction is not explicitly enforced | lp-do-fact-find |
@@ -29,19 +28,7 @@ Convert the 2026-03-04 skill-efficiency findings into realistic ideas that can m
 
 Run each as a separate `operator_idea` submission.
 
-### 1) Assessment Skill Family Modularization Wave
-Business: BOS  
-Area anchor: BOS assessment skills — monolith modularization wave  
-Domain: STRATEGY  
-Why: Assessment skills are now the largest concentration of new monolith growth, so optimization here gives the highest immediate benefit.  
-Intended outcome: Create and execute a phased modularization plan that brings priority assessment skill orchestrators under 200 lines while preserving behavior.  
-Evidence refs:
-- docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md
-- .claude/skills/lp-do-assessment-14-logo-brief/SKILL.md
-- .claude/skills/lp-do-assessment-15-packaging-brief/SKILL.md
-- .claude/skills/lp-do-assessment-13-product-naming/SKILL.md
-
-### 2) Core Triad Size Budget Guardrails
+### 1) Core Triad Size Budget Guardrails
 Business: BOS  
 Area anchor: BOS core workflow skills — enforce size budgets  
 Domain: STRATEGY  
@@ -53,7 +40,7 @@ Evidence refs:
 - .claude/skills/lp-do-plan/SKILL.md
 - .claude/skills/lp-do-build/SKILL.md
 
-### 3) Split `startup-loop/modules/cmd-advance.md` Module Monolith
+### 2) Split `startup-loop/modules/cmd-advance.md` Module Monolith
 Business: BOS  
 Area anchor: startup-loop module — cmd-advance monolith split  
 Domain: STRATEGY  
@@ -63,7 +50,7 @@ Evidence refs:
 - docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md
 - .claude/skills/startup-loop/modules/cmd-advance.md
 
-### 4) Deterministic Extraction Program (TS/JSON/YAML-first)
+### 3) Deterministic Extraction Program (TS/JSON/YAML-first)
 Business: BOS  
 Area anchor: skill logic layer — deterministic extraction program  
 Domain: STRATEGY  
@@ -73,7 +60,7 @@ Evidence refs:
 - docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md
 - .claude/skills/meta-loop-efficiency/SKILL.md
 
-### 5) Dispatch Adoption Wave for High-Signal Orchestrators
+### 4) Dispatch Adoption Wave for High-Signal Orchestrators
 Business: BOS  
 Area anchor: BOS orchestrators — dispatch adoption expansion  
 Domain: STRATEGY  
@@ -85,7 +72,7 @@ Evidence refs:
 - .claude/skills/lp-weekly/SKILL.md
 - .claude/skills/lp-do-critique/SKILL.md
 
-### 6) Wave Eligibility Rules + False-Positive Suppression
+### 5) Wave Eligibility Rules + False-Positive Suppression
 Business: BOS  
 Area anchor: meta-loop heuristics — wave eligibility and suppression  
 Domain: STRATEGY  
@@ -95,7 +82,7 @@ Evidence refs:
 - docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md
 - .claude/skills/meta-loop-efficiency/SKILL.md
 
-### 7) Shared Assessment Modules/Template Extraction
+### 6) Shared Assessment Modules/Template Extraction
 Business: BOS  
 Area anchor: assessment skills — shared modules and template baseline  
 Domain: STRATEGY  
@@ -106,7 +93,7 @@ Evidence refs:
 - .claude/skills/lp-do-assessment-11-brand-identity/SKILL.md
 - .claude/skills/lp-do-assessment-14-logo-brief/SKILL.md
 
-### 8) Skill Efficiency KPI Instrumentation
+### 7) Skill Efficiency KPI Instrumentation
 Business: BOS  
 Area anchor: skill platform telemetry — observed efficiency KPI layer  
 Domain: STRATEGY  
@@ -116,7 +103,7 @@ Evidence refs:
 - docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md
 - docs/business-os/startup-loop/ideas/trial/telemetry.jsonl
 
-### 9) Audit-to-Ideas Autopacket Bridge
+### 8) Audit-to-Ideas Autopacket Bridge
 Business: BOS  
 Area anchor: meta-loop pipeline — auto-create dispatch packets from audits  
 Domain: STRATEGY  

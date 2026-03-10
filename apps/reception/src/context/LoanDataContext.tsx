@@ -141,8 +141,15 @@ export const LoanDataProvider: React.FC<{ children: React.ReactNode }> = ({
       txnId: string,
       itemName: string,
       _depositType?: LoanMethod | string
-    ) =>
-      removeLoanItem(bookingRef, occupantId, txnId, itemName)
+    ) => {
+      // Extract deposit and emptiness from context state to skip Firebase pre-reads
+      const txn = loansState?.[bookingRef]?.[occupantId]?.txns?.[txnId] as LoanTransaction | undefined;
+      const deposit = txn?.deposit;
+      const occupantTxns = loansState?.[bookingRef]?.[occupantId]?.txns ?? {};
+      const remainingAfterRemoval = Object.keys(occupantTxns).filter((k) => k !== txnId);
+      const isEmpty = remainingAfterRemoval.length === 0;
+
+      return removeLoanItem(bookingRef, occupantId, txnId, itemName, deposit, isEmpty)
         .then(() => {
           setLoansState((prev) => {
             if (!prev) return prev;
@@ -172,13 +179,24 @@ export const LoanDataProvider: React.FC<{ children: React.ReactNode }> = ({
         .catch((err) => {
           showToast("Failed to remove loan item", "error");
           throw err;
-        }),
-    [removeLoanItem]
+        });
+    },
+    [removeLoanItem, loansState]
   );
 
   const removeLoanTransactionsForItemAndUpdate = useCallback(
-    (bookingRef: string, occupantId: string, itemName: string) =>
-      removeLoanTransactionsForItem(bookingRef, occupantId, itemName)
+    (bookingRef: string, occupantId: string, itemName: string) => {
+      // Extract matching txn IDs and occupant emptiness from context state to skip Firebase pre-reads
+      const occupantTxns = loansState?.[bookingRef]?.[occupantId]?.txns ?? {};
+      const matchingTxnIds = Object.entries(occupantTxns)
+        .filter(([, txn]) => (txn as LoanTransaction).item === itemName && (txn as LoanTransaction).type === "Loan")
+        .map(([id]) => id);
+      const remainingAfterRemoval = Object.keys(occupantTxns).filter(
+        (id) => !matchingTxnIds.includes(id)
+      );
+      const isOccupantEmpty = remainingAfterRemoval.length === 0;
+
+      return removeLoanTransactionsForItem(bookingRef, occupantId, itemName, matchingTxnIds, isOccupantEmpty)
         .then(() => {
           setLoansState((prev) => {
             if (!prev) return prev;
@@ -215,8 +233,9 @@ export const LoanDataProvider: React.FC<{ children: React.ReactNode }> = ({
         .catch((err) => {
           showToast("Failed to remove loan records", "error");
           throw err;
-        }),
-    [removeLoanTransactionsForItem]
+        });
+    },
+    [removeLoanTransactionsForItem, loansState]
   );
 
   const updateLoanDepositTypeAndUpdate = useCallback(
@@ -279,8 +298,12 @@ export const LoanDataProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 
   const removeOccupantIfEmptyAndUpdate = useCallback(
-    (bookingRef: string, occupantId: string) =>
-      removeOccupantIfEmpty(bookingRef, occupantId)
+    (bookingRef: string, occupantId: string) => {
+      // Compute emptiness from context state to skip Firebase pre-read
+      const occupantTxns = loansState?.[bookingRef]?.[occupantId]?.txns ?? {};
+      const isEmpty = Object.keys(occupantTxns).length === 0;
+
+      return removeOccupantIfEmpty(bookingRef, occupantId, isEmpty)
         .then(() => {
           setLoansState((prev) => {
             if (!prev) return prev;
@@ -303,8 +326,9 @@ export const LoanDataProvider: React.FC<{ children: React.ReactNode }> = ({
         .catch((err) => {
           showToast("Failed to update loan data", "error");
           throw err;
-        }),
-    [removeOccupantIfEmpty]
+        });
+    },
+    [removeOccupantIfEmpty, loansState]
   );
 
   const value = useMemo(

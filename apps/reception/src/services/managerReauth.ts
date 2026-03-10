@@ -11,6 +11,7 @@ import { getDatabase } from "firebase/database";
 import { canAccess, Permissions } from "../lib/roles";
 import type { User } from "../types/domains/userDomain";
 
+import { mapAuthError } from "./authErrors";
 import { loadUserWithProfile } from "./firebaseAuth";
 import { getFirebaseConfigFromEnv } from "./useFirebase";
 
@@ -28,22 +29,6 @@ function getManagerReauthApp() {
   return initializeApp(getFirebaseConfigFromEnv(), MANAGER_REAUTH_APP_NAME);
 }
 
-function mapAuthError(error: unknown): string {
-  const message = error instanceof Error ? error.message : "Authentication failed";
-  if (message.includes("auth/invalid-credential") || message.includes("auth/wrong-password")) {
-    return "Invalid email or password.";
-  }
-  if (message.includes("auth/user-not-found")) {
-    return "No account found with this email.";
-  }
-  if (message.includes("auth/too-many-requests")) {
-    return "Too many failed attempts. Please try again later.";
-  }
-  if (message.includes("auth/network-request-failed")) {
-    return "Network error. Check your connection.";
-  }
-  return message;
-}
 
 export async function verifyManagerCredentials(
   email: string,

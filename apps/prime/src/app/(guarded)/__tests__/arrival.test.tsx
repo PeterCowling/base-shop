@@ -39,9 +39,9 @@ jest.mock('../../../components/pre-arrival/ReadinessDashboard', () => ({
 
 jest.mock('../../../components/arrival/ArrivalHome', () => ({
   __esModule: true,
-  default: ({ checkInCode, onChecklistItemClick }: any) => (
+  default: ({ codeState, onChecklistItemClick }: any) => (
     <div>
-      <div>{`arrival-home-${checkInCode ?? 'none'}`}</div>
+      <div>{`arrival-home-${codeState?.checkInCode ?? 'none'}`}</div>
       <button type="button" onClick={() => onChecklistItemClick('cashPrepared')}>
         open-cash
       </button>

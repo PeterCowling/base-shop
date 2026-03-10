@@ -11,6 +11,7 @@ import type { OffersModalCopy } from "@acme/ui/organisms/modals";
 import { resolvePrimaryCtaLabel } from "@acme/ui/shared";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { writeAttribution } from "@/utils/entryAttribution";
 import { fireCtaClick } from "@/utils/ga4-events";
 import { getBookPath } from "@/utils/localizedRoutes";
 
@@ -55,10 +56,34 @@ export function OffersGlobalModal(): JSX.Element | null {
   };
 
   const handleReserve = useCallback((): void => {
-    // TC-01: fire cta_click before navigating to /book
-    fireCtaClick({ ctaId: "offers_modal_reserve", ctaLocation: "offers_modal" });
+    const bookPath = getBookPath(lang);
+    writeAttribution({
+      source_surface: "sitewide_shell",
+      source_cta: "offers_modal",
+      resolved_intent: "hostel",
+      product_type: null,
+      decision_mode: "direct_resolution",
+      destination_funnel: "hostel_central",
+      locale: lang,
+      fallback_triggered: false,
+    });
+    // TC-01: fire enriched cta_click before navigating to /book
+    fireCtaClick(
+      { ctaId: "offers_modal_reserve", ctaLocation: "offers_modal" },
+      undefined,
+      {
+        source_surface: "sitewide_shell",
+        source_cta: "offers_modal",
+        resolved_intent: "hostel",
+        product_type: null,
+        decision_mode: "direct_resolution",
+        destination_funnel: "hostel_central",
+        locale: lang,
+        fallback_triggered: false,
+      }
+    );
     closeModal();
-    router.push(getBookPath(lang));
+    router.push(bookPath);
   }, [closeModal, router, lang]);
 
   return <OffersModal isOpen onClose={closeModal} onReserve={handleReserve} copy={offersCopy} />;

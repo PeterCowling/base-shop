@@ -4,6 +4,7 @@ import type { TenderRemovalRecord } from "../types/finance";
 import { showToast } from "../utils/toastUtils";
 import { runTransaction } from "../utils/transaction";
 
+import type { TillCashForm } from "./client/till/useTillReconciliationUI";
 import { useTillShifts } from "./client/till/useTillShifts";
 import { useCashDrawerLimit } from "./data/useCashDrawerLimit";
 import { useSafeKeycardCount } from "./data/useSafeKeycardCount";
@@ -13,11 +14,8 @@ import { useSafeLogic } from "./useSafeLogic";
 
 export interface TillReconciliationUIControls {
   closeCashForms: () => void;
-  setShowExchangeForm: (show: boolean) => void;
-  setShowTenderRemovalForm: (show: boolean) => void;
-  showFloatForm: boolean;
-  showExchangeForm: boolean;
-  showTenderRemovalForm: boolean;
+  setCashForm: (v: TillCashForm) => void;
+  cashForm: TillCashForm;
 }
 
 export function useTillReconciliationLogic(
@@ -58,10 +56,10 @@ export function useTillReconciliationLogic(
   }, [ui, closeShiftForms]);
 
   useEffect(() => {
-    if (ui.showFloatForm || ui.showExchangeForm || ui.showTenderRemovalForm) {
+    if (ui.cashForm !== "none") {
       closeShiftForms();
     }
-  }, [ui.showFloatForm, ui.showExchangeForm, ui.showTenderRemovalForm, closeShiftForms]);
+  }, [ui.cashForm, closeShiftForms]);
 
   const handleAddKeycard = useCallback(() => {
     closeAllForms();
@@ -157,7 +155,7 @@ export function useTillReconciliationLogic(
         ];
 
         await runTransaction(steps);
-        ui.setShowExchangeForm(false);
+        ui.setCashForm("none");
       } catch {
         showToast("Failed to record exchange.", "error");
       }
@@ -194,7 +192,7 @@ export function useTillReconciliationLogic(
             },
           },
         ]);
-        ui.setShowTenderRemovalForm(false);
+        ui.setCashForm("none");
       } catch {
         showToast("Failed to record tender removal.", "error");
       }

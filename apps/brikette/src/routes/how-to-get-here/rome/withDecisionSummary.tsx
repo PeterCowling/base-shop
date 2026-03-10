@@ -3,20 +3,13 @@ import { type ComponentType,memo } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
+import { resolveTranslatedCopy } from "./resolveTranslatedCopy";
 import type { ScoreResult } from "./types";
 
 type DecisionSummaryProps = {
   top: ScoreResult | null;
   className?: string;
 };
-
-function resolveTranslatedCopy(value: unknown, key: string, fallback = ""): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (trimmed === key) return fallback;
-  return trimmed;
-}
 
 export function DecisionSummary({ top, className }: DecisionSummaryProps) {
   const { t } = useTranslation("howToGetHere");

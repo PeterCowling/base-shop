@@ -335,6 +335,8 @@ describe("useCatalogConsole domain behavior", () => {
 
     await clickButton("sync");
     expect(syncPostCalls).toBe(0);
-    expect(screen.getByTestId("sync-feedback")).toHaveTextContent("");
+    expect(screen.getByTestId("sync-feedback")).toHaveTextContent(
+      "error:Sync is blocked while image autosave is pending. Wait until image changes are saved.",
+    );
   });
 });

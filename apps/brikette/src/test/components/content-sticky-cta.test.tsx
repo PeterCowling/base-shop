@@ -96,10 +96,19 @@ describe("ContentStickyCta", () => {
 
     // Verify GA4 event was fired with correct params
     await waitFor(() => {
-      expect(mockFireCtaClick).toHaveBeenCalledWith({
-        ctaId: "content_sticky_check_availability",
-        ctaLocation: "guide_detail",
-      });
+      expect(mockFireCtaClick).toHaveBeenCalledWith(
+        {
+          ctaId: "content_sticky_check_availability",
+          ctaLocation: "guide_detail",
+        },
+        undefined,
+        expect.objectContaining({
+          source_surface: "content_page",
+          source_cta: "guide_detail",
+          locale: "en",
+          next_page: "/en/book",
+        }),
+      );
     });
 
     // Verify router navigates to /book
@@ -120,10 +129,19 @@ describe("ContentStickyCta", () => {
 
     // Verify GA4 event was fired with correct location
     await waitFor(() => {
-      expect(mockFireCtaClick).toHaveBeenCalledWith({
-        ctaId: "content_sticky_check_availability",
-        ctaLocation: "about_page",
-      });
+      expect(mockFireCtaClick).toHaveBeenCalledWith(
+        {
+          ctaId: "content_sticky_check_availability",
+          ctaLocation: "about_page",
+        },
+        undefined,
+        expect.objectContaining({
+          source_surface: "content_page",
+          source_cta: "about_page",
+          locale: "en",
+          next_page: "/en/book",
+        }),
+      );
     });
 
     // Verify router navigates to /book
@@ -180,10 +198,19 @@ describe("ContentStickyCta", () => {
       fireEvent.click(ctaButton);
 
       await waitFor(() => {
-        expect(mockFireCtaClick).toHaveBeenCalledWith({
-          ctaId: "content_sticky_check_availability",
-          ctaLocation: location,
-        });
+        expect(mockFireCtaClick).toHaveBeenCalledWith(
+          {
+            ctaId: "content_sticky_check_availability",
+            ctaLocation: location,
+          },
+          undefined,
+          expect.objectContaining({
+            source_surface: "content_page",
+            source_cta: location,
+            locale: "en",
+            next_page: "/en/book",
+          }),
+        );
       });
 
       unmount();

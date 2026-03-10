@@ -21,10 +21,9 @@ import {
 } from "../../utils/dateUtils";
 import { type AlloggiatiResultDetail } from "../../utils/parseAlloggiatiResponse";
 import { showToast } from "../../utils/toastUtils";
+import DateSelector from "../common/DateSelector";
 import { PageShell } from "../common/PageShell";
 import ReceptionSkeleton from "../common/ReceptionSkeleton";
-
-import DateSelectorCI from "./DateSelectorAllo";
 
 interface OccupantData {
   reservationCode: string;
@@ -308,11 +307,12 @@ const AlloggiatiComponent: FC = () => {
   // ----------- Rendering -----------
   return (
     <PageShell title="Alloggiati">
-      <DateSelectorCI
+      <DateSelector
         selectedDate={selectedDate}
         onDateChange={setSelectedDate}
         testMode={testMode}
         onTestModeChange={setTestMode}
+        calendarColorVariant="warning"
       />
 
       {isLoading && (

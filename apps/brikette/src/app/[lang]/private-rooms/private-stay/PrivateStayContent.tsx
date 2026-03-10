@@ -12,15 +12,18 @@ import FitCheck from "@/components/apartment/FitCheck";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { getPrivateBookingPath } from "@/utils/localizedRoutes";
+import { type AppNamespaceBundles, primeAppI18nBundles } from "@/utils/primeAppI18nBundles";
 import { trackApartmentEvent } from "@/utils/trackApartmentEvent";
 
 type Props = {
   lang: AppLanguage;
+  preloadedNamespaceBundles?: AppNamespaceBundles;
 };
 
 const WHATSAPP_URL = "https://wa.me/393287073695";
 
-function PrivateStayContent({ lang }: Props) {
+function PrivateStayContent({ lang, preloadedNamespaceBundles }: Props) {
+  primeAppI18nBundles(lang, preloadedNamespaceBundles);
   const { t } = useTranslation("apartmentPage", { lng: lang });
   usePagePreload({ lang, namespaces: ["apartmentPage"] });
 
@@ -72,7 +75,7 @@ function PrivateStayContent({ lang }: Props) {
         </div>
 
         {/* Fit Check Component */}
-        <FitCheck />
+        <FitCheck lang={lang} />
 
         {/* CTAs */}
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">

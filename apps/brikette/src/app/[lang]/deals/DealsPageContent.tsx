@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { Section } from "@acme/design-system/atoms";
 
 import DealsStructuredData from "@/components/seo/DealsStructuredData";
+import { useEntryAttribution } from "@/hooks/useEntryAttribution";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
@@ -19,8 +20,11 @@ import { DEALS, PRIMARY_DEAL } from "@/routes/deals/deals";
 import { DealsPerksSection, DealsPrimaryCtaSection } from "@/routes/deals/PerksAndCtaSections";
 import { getDealStatus } from "@/routes/deals/status";
 import { useDealContent } from "@/routes/deals/useDealContent";
+import { writeAttribution } from "@/utils/entryAttribution";
 import { fireSelectPromotion, fireViewItemList, fireViewPromotion } from "@/utils/ga4-events";
+import { resolveIntentAwareBookingSurface } from "@/utils/intentAwareBookingSurface";
 import { getBookPath } from "@/utils/localizedRoutes";
+import { getPrivateRoomsPath } from "@/utils/privateRoomPaths";
 
 type Props = {
   lang: AppLanguage;
@@ -226,8 +230,10 @@ function resolvePageCopy({
 
 function DealsPageContent({ lang }: Props) {
   const { t } = useTranslation("dealsPage", { lng: lang });
+  const { t: tHeader } = useTranslation("header", { lng: lang });
   const router = useRouter();
-  usePagePreload({ lang, namespaces: ["dealsPage", "_tokens"] });
+  const currentAttribution = useEntryAttribution();
+  usePagePreload({ lang, namespaces: ["dealsPage", "header", "_tokens"] });
 
   const { translate: ft, perks, labels } = useDealContent(lang);
   const checkAvailabilityCta = resolveCheckAvailabilityLabel(labels.checkAvailabilityLabel);
@@ -330,6 +336,83 @@ function DealsPageContent({ lang }: Props) {
     defaultTitle,
     defaultSubtitle,
   });
+  const bookingSurface = useMemo(
+    () => resolveIntentAwareBookingSurface(lang, currentAttribution),
+    [currentAttribution, lang],
+  );
+  const routeDealsSelection = useCallback((input: {
+    href: string;
+    resolvedIntent: "hostel" | "private";
+    productType: string | null;
+    decisionMode: "direct_resolution" | "chooser";
+    destinationFunnel: "hostel_central" | "private";
+  }) => {
+    writeAttribution({
+      source_surface: "deals_page",
+      source_cta: "deals_primary_cta",
+      resolved_intent: input.resolvedIntent,
+      product_type: input.productType,
+      decision_mode: input.decisionMode,
+      destination_funnel: input.destinationFunnel,
+      locale: lang,
+      fallback_triggered: false,
+      next_page: input.href,
+    });
+
+    router.push(input.href);
+  }, [lang, router]);
+  const dealsActions = useMemo(() => {
+    const dormsLabel = (tHeader("rooms", { defaultValue: "Dorms" }) as string) || "Dorms";
+    const privateLabel = (tHeader("apartment", { defaultValue: "Private Rooms" }) as string) || "Private Rooms";
+
+    if (bookingSurface.mode === "direct") {
+      return [
+        {
+          label:
+            bookingSurface.primary.resolvedIntent === "private"
+              ? privateLabel
+              : checkAvailabilityCta,
+          onClick: () => routeDealsSelection(bookingSurface.primary),
+        },
+        {
+          label:
+            bookingSurface.primary.resolvedIntent === "private"
+              ? dormsLabel
+              : privateLabel,
+          tone: "outline" as const,
+          onClick: () => routeDealsSelection(
+            bookingSurface.primary.resolvedIntent === "private"
+              ? {
+                  href: getBookPath(lang),
+                  resolvedIntent: "hostel",
+                  productType: null,
+                  decisionMode: "chooser",
+                  destinationFunnel: "hostel_central",
+                }
+              : {
+                  href: getPrivateRoomsPath(lang),
+                  resolvedIntent: "private",
+                  productType: null,
+                  decisionMode: "chooser",
+                  destinationFunnel: "private",
+                },
+          ),
+        },
+      ];
+    }
+
+    return [
+      {
+        label: dormsLabel,
+        onClick: () => routeDealsSelection(bookingSurface.hostel),
+      },
+      {
+        label: privateLabel,
+        tone: "outline" as const,
+        onClick: () => routeDealsSelection(bookingSurface.private),
+      },
+    ];
+  }, [bookingSurface, checkAvailabilityCta, lang, routeDealsSelection, tHeader]);
 
   return (
     <Fragment>
@@ -363,8 +446,7 @@ function DealsPageContent({ lang }: Props) {
       />
 
       <DealsPrimaryCtaSection
-        label={checkAvailabilityCta}
-        onClick={() => openBooking({ kind: "standard" })}
+        actions={dealsActions}
       />
     </Fragment>
   );

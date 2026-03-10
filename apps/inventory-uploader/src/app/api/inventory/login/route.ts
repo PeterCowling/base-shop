@@ -18,13 +18,9 @@ type RateLimitEntry = { count: number; resetAt: number };
 
 const rateLimitStore = new Map<string, RateLimitEntry>();
 
-function getRateLimitStore() {
-  return rateLimitStore;
-}
-
 function checkRateLimit(key: string): boolean {
   const now = Date.now();
-  const store = getRateLimitStore();
+  const store = rateLimitStore;
   // Prune expired entries
   for (const [k, v] of store.entries()) {
     if (v.resetAt <= now) store.delete(k);

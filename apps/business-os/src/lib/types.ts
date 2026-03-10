@@ -90,8 +90,8 @@ export interface Idea extends IdeaFrontmatter {
   fileSha?: string;
 }
 
-// Stage document types
-export type StageType = "fact-find" | "plan" | "build" | "reflect";
+// Card document types use open-ended kebab-case slugs.
+export type StageType = string;
 
 export interface StageFrontmatter {
   Type: "Stage";

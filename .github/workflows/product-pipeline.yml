@@ -3,27 +3,28 @@ name: Deploy Product Pipeline
 on:
   push:
     branches:
+      - dev
       - main
       - staging
     paths:
-      - 'apps/product-pipeline/**'
-      - 'packages/next-config/**'
-      - 'packages/tailwind-config/**'
-      - 'packages/design-tokens/**'
-      - 'packages/themes/**'
-      - 'packages/pipeline-engine/**'
-      - 'packages/ui/**'
-      - '.github/workflows/product-pipeline.yml'
+      - "apps/product-pipeline/**"
+      - "packages/next-config/**"
+      - "packages/tailwind-config/**"
+      - "packages/design-tokens/**"
+      - "packages/themes/**"
+      - "packages/pipeline-engine/**"
+      - "packages/ui/**"
+      - ".github/workflows/product-pipeline.yml"
   pull_request:
     paths:
-      - 'apps/product-pipeline/**'
-      - 'packages/next-config/**'
-      - 'packages/tailwind-config/**'
-      - 'packages/design-tokens/**'
-      - 'packages/themes/**'
-      - 'packages/pipeline-engine/**'
-      - 'packages/ui/**'
-      - '.github/workflows/product-pipeline.yml'
+      - "apps/product-pipeline/**"
+      - "packages/next-config/**"
+      - "packages/tailwind-config/**"
+      - "packages/design-tokens/**"
+      - "packages/themes/**"
+      - "packages/pipeline-engine/**"
+      - "packages/ui/**"
+      - ".github/workflows/product-pipeline.yml"
   workflow_dispatch:
 
 jobs:

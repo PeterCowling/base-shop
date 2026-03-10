@@ -43,7 +43,7 @@ import {
   uploadBytes,
 } from 'firebase/storage';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 /* -------------------------------------------------------------------------- */
 /*                              Firebase config                               */
@@ -129,6 +129,7 @@ class FirebaseMetrics {
 
     if (durationMs > SLOW_QUERY_THRESHOLD_MS) {
       this._slowQueries.push(record);
+      if (this._slowQueries.length > 50) this._slowQueries.shift();
       logger.warn(`[firebase] Slow query (${durationMs}ms): ${path} (${(sizeBytes / 1024).toFixed(1)}KB)`);
     }
   }
@@ -357,6 +358,7 @@ export function onValue(
 
   const wrapped = (snapshot: DataSnapshot): void => {
     const size = JSON.stringify(snapshot.val()).length;
+    firebaseMetrics.recordQuery(path, size, 0);
     logger.debug(`[firebase] onValue snapshot ${path} bytes=${size}`);
     callback(snapshot);
   };

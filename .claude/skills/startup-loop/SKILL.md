@@ -49,6 +49,12 @@ Load the relevant module per command:
 | Module | Trigger |
 |---|---|
 | `modules/assessment-intake-sync.md` | Called by `cmd-start` and `cmd-advance` as part of ASSESSMENT-09 Intake contract validation (`GATE-ASSESSMENT-00`). Writes or refreshes `<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` from ASSESSMENT-01–ASSESSMENT-08 precursors. No-op when precursors are unchanged. |
+| `modules/cmd-advance/advance-contract.md` | Shared `advance` contract: BOS sync expectations, blocked-packet requirements, operator sequence, and red flags. |
+| `modules/cmd-advance/assessment-gates.md` | `cmd-advance` submodule for ASSESSMENT gate family (`GATE-A08-00`, `GATE-ASSESSMENT-00`, `GATE-ASSESSMENT-01`). |
+| `modules/cmd-advance/market-product-website-gates.md` | `cmd-advance` submodule for MARKET / PRODUCT / WEBSITE gate family (`GATE-BD-03`, `GATE-PRODUCT-02-01`, `GATE-WEBSITE-DO-01`). |
+| `modules/cmd-advance/signals-gates.md` | `cmd-advance` submodule for SIGNALS weekly advance routing (`/lp-weekly`, `GATE-BD-08`, `/lp-signal-review`). |
+| `modules/cmd-advance/sell-gates.md` | `cmd-advance` submodule for SELL strategy/activation gates and SELL-01 secondary dispatch. |
+| `modules/cmd-advance/gap-fill-gates.md` | `cmd-advance` submodule for ongoing loop gap-fill dispatch gates (`GATE-LOOP-GAP-01/02/03`). |
 
 ## Required Output Contract
 

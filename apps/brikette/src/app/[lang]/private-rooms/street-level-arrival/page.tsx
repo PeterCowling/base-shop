@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
-import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
+import { getNamespaceBundles, getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
@@ -49,6 +49,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function StreetLevelArrivalPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
+  const preloadedNamespaceBundles = await getNamespaceBundles(validLang, ["apartmentPage"]);
 
-  return <StreetLevelArrivalContent lang={validLang} />;
+  return (
+    <StreetLevelArrivalContent lang={validLang} preloadedNamespaceBundles={preloadedNamespaceBundles} />
+  );
 }

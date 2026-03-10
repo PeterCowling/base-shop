@@ -2,10 +2,7 @@
 
 import * as React from "react";
 
-import {
-  type CatalogProductDraftInput,
-  splitList,
-} from "@acme/lib/xa/catalogAdminSchema";
+import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
@@ -17,28 +14,18 @@ import {
   AdditionalImagesPanel,
   ImageDropZone,
   MainImagePanel,
+  parseImageEntries,
   useImageUploadController,
 } from "./CatalogProductImagesFields.client";
 import { CatalogProductJewelryFields } from "./CatalogProductJewelryFields.client";
-import { BTN_DANGER_CLASS, BTN_PRIMARY_CLASS, PANEL_CLASS } from "./catalogStyles";
-import { getCatalogDraftWorkflowReadiness } from "./catalogWorkflow";
+import { BTN_DANGER_CLASS, BTN_PRIMARY_CLASS, BTN_SUCCESS_CLASS, PANEL_CLASS } from "./catalogStyles";
+import { getCatalogDraftWorkflowReadiness, getWorkflowStatusDisplay } from "./catalogWorkflow";
 import type { ActionFeedback } from "./useCatalogConsole.client";
 
 type SaveButtonState = "idle" | "saving" | "saved";
 type PublishActionState = "idle" | "running" | "completed";
 type PublishActionKind = "live" | "out_of_stock";
-const MAKE_LIVE_TEST_ID = "catalog-make-live";
-const MAKE_LIVE_DATA_CY = "catalog-make-live";
-
-type ImageEntry = { path: string; filename: string; isMain: boolean };
-
-function parseImageEntries(files: string): ImageEntry[] {
-  return splitList(files).map((path, index) => ({
-    path,
-    filename: path.split("/").pop() ?? path,
-    isMain: index === 0,
-  }));
-}
+const MAKE_LIVE_ID = "catalog-make-live";
 
 function StatusDot({
   publishState,
@@ -53,22 +40,7 @@ function StatusDot({
   hasImages: boolean;
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
-  const label = !dataReady
-    ? t("workflowDataRequired")
-    : !publishReady
-      ? t("workflowDraftOnly")
-      : publishState === "out_of_stock"
-        ? t("workflowOutOfStock")
-        : publishState === "live"
-          ? t("workflowLive")
-          : t("workflowReadyForLive");
-  const dotClass = !dataReady
-    ? "bg-gate-status-incomplete"
-    : !publishReady
-      ? "bg-gate-status-draft"
-      : publishState === "out_of_stock"
-        ? "bg-warning"
-        : "bg-gate-status-ready";
+  const { label, dotClass } = getWorkflowStatusDisplay(dataReady, publishReady, publishState, t);
   return (
     <div className="flex items-center gap-2 text-xs text-gate-muted">
       <span className={`inline-block h-2 w-2 rounded-full animate-pulse-slow ${dotClass}`} />
@@ -129,7 +101,7 @@ function useSaveButtonTransition(params: {
 
   const saveButtonClass =
     saveButtonState === "saved"
-      ? "rounded-md border border-success-fg bg-success-bg px-4 py-2 text-xs font-semibold uppercase tracking-label text-success-fg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-success-fg focus-visible:ring-offset-2"
+      ? BTN_SUCCESS_CLASS
       : BTN_PRIMARY_CLASS;
   const saveButtonLabel =
     saveButtonState === "saved"
@@ -188,10 +160,8 @@ function PublishActionButton({
       data-testid={testId}
       data-cy={dataCy}
     >
-      <>
-        {isRunning ? <span className="me-2 inline-block align-middle"><LoadingSpinner /></span> : null}
-        <span>{isRunning ? runningLabel : isCompleted ? completedLabel : idleLabel}</span>
-      </>
+      {isRunning ? <span className="me-2 inline-block align-middle"><LoadingSpinner /></span> : null}
+      <span>{isRunning ? runningLabel : isCompleted ? completedLabel : idleLabel}</span>
     </button>
   );
 }
@@ -254,8 +224,8 @@ function DraftActionRow({
           actionState={publishActionKind === "live" ? publishActionState : "idle"}
           busy={busy}
           onClick={() => void triggerAction("live")}
-          testId={MAKE_LIVE_TEST_ID}
-          dataCy={MAKE_LIVE_DATA_CY}
+          testId={MAKE_LIVE_ID}
+          dataCy={MAKE_LIVE_ID}
           t={t}
         />
         <button

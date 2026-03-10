@@ -1,5 +1,5 @@
 // src/components/guides/TagFilterBar.tsx
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import clsx from "clsx";
@@ -21,8 +21,13 @@ function TagFilterBar({ tags, className = "" }: Props): JSX.Element | null {
   const lang = useCurrentLanguage();
   const searchParams = useSearchParams();
   const search = searchParams?.toString() ?? "";
-  const params = new URLSearchParams(search);
-  const selected = new Set(params.getAll("tag"));
+  const { selected, experiencesPath } = useMemo(() => {
+    const params = new URLSearchParams(search);
+    return {
+      selected: new Set(params.getAll("tag")),
+      experiencesPath: `/${lang}/${getSlug("experiences", lang)}`,
+    };
+  }, [search, lang]);
 
   function toggle(tag: string): string {
     const next = new URLSearchParams(search);
@@ -32,7 +37,7 @@ function TagFilterBar({ tags, className = "" }: Props): JSX.Element | null {
     next.delete("tag");
     for (const t of list) next.append("tag", t);
     const qs = next.toString();
-    return `/${lang}/${getSlug("experiences", lang)}${qs ? `?${qs}` : ""}`;
+    return `${experiencesPath}${qs ? `?${qs}` : ""}`;
   }
 
   if (!tags.length) return null;

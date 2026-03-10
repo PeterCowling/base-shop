@@ -10,24 +10,71 @@ import {
 import type { InventoryMutateFn,InventoryRepository } from "./inventory.types";
 import { resolveRepo } from "./repoResolver";
 
-let repoPromise: Promise<InventoryRepository> | undefined;
+export type InventoryRepositoryBackend = "prisma" | "json";
 
-async function getRepo(): Promise<InventoryRepository> {
-  if (!repoPromise) {
-    repoPromise = resolveRepo(
-      () => (prisma as { inventoryItem?: unknown }).inventoryItem,
-      () =>
-        import("./inventory.prisma.server").then(
-          (m) => m.prismaInventoryRepository,
-        ),
-      () =>
-        import("./inventory.json.server").then(
-          (m) => m.jsonInventoryRepository,
-        ),
-      { backendEnvVar: "INVENTORY_BACKEND" },
+type InventoryRepositoryOptions = {
+  backend?: InventoryRepositoryBackend;
+};
+
+const repoPromises = new Map<string, Promise<InventoryRepository>>();
+
+function getPrismaInventoryDelegate(): unknown | undefined {
+  return (prisma as { inventoryItem?: unknown }).inventoryItem;
+}
+
+function assertPrismaInventoryBackend(): void {
+  if (!process.env.DATABASE_URL) {
+    throw new Error(
+      'Prisma inventory backend requested but DATABASE_URL is not set.',
     );
   }
-  return repoPromise;
+  if (!getPrismaInventoryDelegate()) {
+    throw new Error(
+      "Prisma inventory backend requested but Prisma inventory delegate is unavailable.",
+    );
+  }
+}
+
+async function loadRepo(
+  backend?: InventoryRepositoryBackend,
+): Promise<InventoryRepository> {
+  if (backend === "json") {
+    return await import("./inventory.json.server").then(
+      (m) => m.jsonInventoryRepository,
+    );
+  }
+
+  if (backend === "prisma") {
+    assertPrismaInventoryBackend();
+    return await import("./inventory.prisma.server").then(
+      (m) => m.prismaInventoryRepository,
+    );
+  }
+
+  return await resolveRepo(
+    getPrismaInventoryDelegate,
+    () =>
+      import("./inventory.prisma.server").then(
+        (m) => m.prismaInventoryRepository,
+      ),
+    () =>
+      import("./inventory.json.server").then(
+        (m) => m.jsonInventoryRepository,
+      ),
+    { backendEnvVar: "INVENTORY_BACKEND" },
+  );
+}
+
+async function getRepo(
+  options: InventoryRepositoryOptions = {},
+): Promise<InventoryRepository> {
+  const cacheKey = options.backend ?? "auto";
+  let repoPromise = repoPromises.get(cacheKey);
+  if (!repoPromise) {
+    repoPromise = loadRepo(options.backend);
+    repoPromises.set(cacheKey, repoPromise);
+  }
+  return await repoPromise;
 }
 
 export const inventoryRepository: InventoryRepository = {
@@ -53,8 +100,9 @@ export const inventoryRepository: InventoryRepository = {
 
 export async function readInventoryMap(
   shop: string,
+  options: InventoryRepositoryOptions = {},
 ): Promise<Record<string, InventoryItem>> {
-  let items = await inventoryRepository.read(shop);
+  let items = await readInventory(shop, options);
   if (!Array.isArray(items)) {
     const { jsonInventoryRepository } = await import("./inventory.json.server");
     items = await jsonInventoryRepository.read(shop);
@@ -64,22 +112,33 @@ export async function readInventoryMap(
   );
 }
 
-export function readInventory(shop: string) {
-  return inventoryRepository.read(shop);
+export async function readInventory(
+  shop: string,
+  options: InventoryRepositoryOptions = {},
+) {
+  const repo = await getRepo(options);
+  return repo.read(shop);
 }
 
-export function writeInventory(shop: string, items: InventoryItem[]) {
+export async function writeInventory(
+  shop: string,
+  items: InventoryItem[],
+  options: InventoryRepositoryOptions = {},
+) {
+  const repo = await getRepo(options);
   const parsed = inventoryItemSchema.array().parse(items);
-  return inventoryRepository.write(shop, parsed);
+  return repo.write(shop, parsed);
 }
 
-export function updateInventoryItem(
+export async function updateInventoryItem(
   shop: string,
   sku: string,
   variantAttributes: Record<string, string>,
   mutate: InventoryMutateFn,
+  options: InventoryRepositoryOptions = {},
 ) {
-  return inventoryRepository.update(shop, sku, variantAttributes, mutate);
+  const repo = await getRepo(options);
+  return repo.update(shop, sku, variantAttributes, mutate);
 }
 
 export { variantKey };

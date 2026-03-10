@@ -1,31 +1,28 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { get, ref } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 
 import useDeleteGuestFromBooking from "./useDeleteGuestFromBooking";
+import useMutationState from "./useMutationState";
 
-interface UseDeleteBookingReturn {
+interface UseDeleteBookingReturn extends MutationState<void> {
   deleteBooking: (bookingRef: string) => Promise<void>;
-  loading: boolean;
-  error: unknown;
 }
 
 export default function useDeleteBooking(): UseDeleteBookingReturn {
   const database = useFirebaseDatabase();
   const { deleteGuest } = useDeleteGuestFromBooking();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   const deleteBooking = useCallback(
     async (bookingRef: string) => {
       if (!database) {
-        setError("Database not initialized.");
-        return;
+        throw new Error("Database not initialized.");
       }
-      setLoading(true);
-      setError(null);
-      try {
+
+      await run(async () => {
         const snapshot = await get(ref(database, `bookings/${bookingRef}`));
         if (snapshot.exists()) {
           const occupants = Object.keys(
@@ -35,14 +32,9 @@ export default function useDeleteBooking(): UseDeleteBookingReturn {
             await deleteGuest({ bookingRef, occupantId });
           }
         }
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
+      });
     },
-    [database, deleteGuest]
+    [database, deleteGuest, run]
   );
 
   return { deleteBooking, loading, error };

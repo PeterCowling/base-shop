@@ -11,14 +11,17 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import type { Database } from '@/services/firebase';
 import { get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { PreArrivalData } from '../../types/preArrival';
 import { DEFAULT_PRE_ARRIVAL } from '../../types/preArrival';
 import useUuid from '../useUuid';
+
+import type { PureDataRefetch } from './types';
 
 /**
  * Fetch pre-arrival data from Firebase.
@@ -39,7 +42,7 @@ async function fetchPreArrivalData(
     }
     return snapshot.val() as PreArrivalData;
   } catch (error) {
-    logger.error('[useFetchPreArrivalData] Error fetching pre-arrival data:', error);
+    logger.error('[useFetchPreArrivalData] Error fetching pre-arrival data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }
@@ -96,9 +99,7 @@ export function useFetchPreArrivalData(
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  const refetch = async (): Promise<void> => {
-    await refetchQuery();
-  };
+  const refetch = refetchQuery as unknown as PureDataRefetch;
 
   // Apply defaults when no data exists
   const effectiveData: PreArrivalData = data ?? DEFAULT_PRE_ARRIVAL;

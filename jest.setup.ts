@@ -111,6 +111,21 @@ try {
   if (typeof anyGlobal.clearImmediate !== "function") {
     anyGlobal.clearImmediate = (id: any) => clearTimeout(id);
   }
+  if (typeof anyGlobal.crypto?.randomUUID !== "function") {
+    // jsdom's Crypto sometimes lacks randomUUID; use a deterministic test fallback.
+    let counter = 0;
+    const fallbackRandomUuid = () =>
+      `00000000-0000-4000-8000-${String(++counter).padStart(12, "0")}`;
+
+    if (typeof anyGlobal.crypto === "object" && anyGlobal.crypto !== null) {
+      anyGlobal.crypto.randomUUID = fallbackRandomUuid;
+    } else {
+      anyGlobal.crypto = { randomUUID: fallbackRandomUuid };
+    }
+  }
+  if (typeof anyGlobal.vi === "undefined") {
+    anyGlobal.vi = jest;
+  }
 } catch {}
 
 try {

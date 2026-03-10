@@ -43,7 +43,7 @@ export const BUSINESSES: Business[] = [
     id: "BOS",
     name: "Business OS",
     description:
-      "Repo-native business operating system and kanban coordination layer",
+      "Repo-native workflow and operating system for ideas, plans, startup-loop execution, and process improvement",
     owner: "Pete",
     category: "internal-system",
     status: "active",

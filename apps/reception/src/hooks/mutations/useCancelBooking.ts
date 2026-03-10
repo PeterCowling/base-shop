@@ -1,12 +1,14 @@
 // File: /src/hooks/mutations/useCancelBooking.ts
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { get, ref } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 
 import useActivitiesMutations from "./useActivitiesMutations";
 import useArchiveBooking from "./useArchiveBooking";
+import useMutationState from "./useMutationState";
 
 interface CancellationActivityFailure {
   occupantId: string;
@@ -37,10 +39,8 @@ export class CancellationPartialFailureError extends Error {
 /**
  * Return type for the useCancelBooking hook.
  */
-interface UseCancelBookingReturn {
+interface UseCancelBookingReturn extends MutationState<void> {
   cancelBooking: (bookingRef: string, reason?: string) => Promise<CancelBookingResult>;
-  loading: boolean;
-  error: unknown;
 }
 
 /**
@@ -60,9 +60,7 @@ export default function useCancelBooking(): UseCancelBookingReturn {
   const database = useFirebaseDatabase();
   const { archiveBooking } = useArchiveBooking();
   const { addActivity } = useActivitiesMutations();
-
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   /**
    * Cancels a booking by archiving status and logging activities for all occupants.
@@ -70,15 +68,10 @@ export default function useCancelBooking(): UseCancelBookingReturn {
   const cancelBooking = useCallback(
     async (bookingRef: string, reason?: string): Promise<CancelBookingResult> => {
       if (!database) {
-        const err = new Error("Database not initialized");
-        setError(err);
-        throw err;
+        throw new Error("Database not initialized");
       }
 
-      setLoading(true);
-      setError(null);
-
-      try {
+      return await run(async () => {
         // Step 1: Write status="cancelled" to /bookingMeta
         await archiveBooking(bookingRef, reason, "staff");
 
@@ -121,12 +114,7 @@ export default function useCancelBooking(): UseCancelBookingReturn {
           }));
 
         if (activityFailures.length > 0) {
-          const partialFailureError = new CancellationPartialFailureError(
-            bookingRef,
-            activityFailures
-          );
-          setError(partialFailureError);
-          throw partialFailureError;
+          throw new CancellationPartialFailureError(bookingRef, activityFailures);
         }
 
         // Step 4: guestsByBooking data remains intact (no deletion)
@@ -136,14 +124,9 @@ export default function useCancelBooking(): UseCancelBookingReturn {
           archived: true,
           activityFailures: [],
         };
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
+      });
     },
-    [database, archiveBooking, addActivity]
+    [database, archiveBooking, addActivity, run]
   );
 
   return {

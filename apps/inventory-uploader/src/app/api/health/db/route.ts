@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { apiError } from "../../../../lib/api-helpers";
+
 export const runtime = "nodejs";
 
 export async function GET() {
@@ -10,7 +12,6 @@ export async function GET() {
     await prisma.$queryRaw`SELECT 1`;
     return NextResponse.json({ ok: true });
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    return NextResponse.json({ ok: false, error: message }, { status: 503 });
+    return apiError(err, 503);
   }
 }

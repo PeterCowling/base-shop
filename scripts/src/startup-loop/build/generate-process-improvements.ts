@@ -10,26 +10,39 @@ import {
   REQUIRED_REFLECTION_SECTIONS,
   validateResultsReviewFile,
 } from "./lp-do-build-reflection-debt.js";
+import { backfillSyntheticDispatch } from "../ideas/lp-do-ideas-synthetic-dispatch-narrative.js";
+import type {
+  DispatchBuildOriginProvenance,
+  DispatchHistoricalCarryoverProvenance,
+} from "../ideas/lp-do-ideas-trial.js";
+import {
+  IDEAS_COMPLETED_IDEAS_PATH,
+  IDEAS_TRIAL_QUEUE_STATE_PATH,
+  IDEAS_TRIAL_TELEMETRY_PATH,
+} from "../ideas/lp-do-ideas-paths.js";
 import {
   MISSING_VALUE,
   classifyIdeaItem,
-  extractBulletItems,
-  isNonePlaceholderIdeaCandidate,
   normalizeNewlines,
-  parseIdeaCandidate,
   parseSections,
   sanitizeText,
-  stripHtmlComments,
   toIsoDate,
 } from "./lp-do-build-results-review-parse.js";
+import { runBuildOriginSignalsBridge } from "../ideas/lp-do-ideas-build-origin-bridge.js";
 import { runCodebaseSignalsBridge } from "../ideas/lp-do-ideas-codebase-signals-bridge.js";
 import { runAgentSessionSignalsBridge } from "../ideas/lp-do-ideas-agent-session-bridge.js";
+import {
+  SIGNAL_REVIEW_REQUIRED_SCHEMA_VERSION,
+  type SignalReviewReviewRequiredItem,
+} from "../diagnostics/signal-review-review-required.js";
 
 const PROCESS_HTML_RELATIVE_PATH = "docs/business-os/process-improvements.user.html";
 const PROCESS_DATA_RELATIVE_PATH = "docs/business-os/_data/process-improvements.json";
-export const COMPLETED_IDEAS_RELATIVE_PATH = "docs/business-os/_data/completed-ideas.json";
+export const COMPLETED_IDEAS_RELATIVE_PATH = IDEAS_COMPLETED_IDEAS_PATH;
 const PLANS_ROOT = "docs/plans";
-export const QUEUE_STATE_RELATIVE_PATH = "docs/business-os/startup-loop/ideas/trial/queue-state.json";
+const STRATEGY_ROOT = "docs/business-os/strategy";
+export const QUEUE_STATE_RELATIVE_PATH = IDEAS_TRIAL_QUEUE_STATE_PATH;
+const QUEUE_TELEMETRY_RELATIVE_PATH = IDEAS_TRIAL_TELEMETRY_PATH;
 
 export type ProcessImprovementType = "idea" | "risk" | "pending-review";
 
@@ -55,6 +68,26 @@ export interface ProcessImprovementItem {
   proximity?: string | null;
   /** Reason code from the classifier decision tree. Only set for idea items. */
   reason_code?: string;
+  /** Review owner when the item is an operator work item. */
+  owner?: string;
+  /** Due date for operator review work. */
+  due_date?: string;
+  /** Review/escalation state for pending operator work. */
+  escalation_state?: string;
+  /** Stable dedupe identity for review work. */
+  fingerprint?: string;
+  /** Current workflow state for review work. */
+  workflow_status?: string;
+  /** First time the recurring issue appeared. */
+  first_seen_date?: string;
+  /** Most recent time the recurring issue appeared. */
+  latest_seen_date?: string;
+  /** Count of review occurrences observed so far. */
+  recurrence_count?: number;
+  /** Canonical build-review provenance for queue-backed build-origin ideas. */
+  build_origin?: DispatchBuildOriginProvenance;
+  /** Canonical historical carry-over provenance for archive-backfilled queue ideas. */
+  historical_carryover?: DispatchHistoricalCarryoverProvenance;
 }
 
 export interface CompletedIdeaEntry {
@@ -91,16 +124,39 @@ interface ReflectionDebtLedger {
 
 interface DispatchPacket {
   dispatch_id?: string;
+  artifact_id?: string | null;
   business?: string;
   area_anchor?: string;
+  current_truth?: string;
+  next_scope_now?: string;
   why?: string;
   priority?: string;
   queue_state?: string;
   created_at?: string;
+  build_origin?: DispatchBuildOriginProvenance;
+  historical_carryover?: DispatchHistoricalCarryoverProvenance;
 }
 
 interface QueueStateFile {
   dispatches?: DispatchPacket[];
+}
+
+interface SignalReviewReviewRequiredSidecarFile {
+  schema_version?: string;
+  source_path?: string;
+  items?: SignalReviewReviewRequiredItem[];
+}
+
+export interface BuildOriginBridgeSummary {
+  ok: boolean;
+  plans_scanned: number;
+  plans_considered: number;
+  signals_considered: number;
+  signals_admitted: number;
+  dispatches_enqueued: number;
+  suppressed: number;
+  noop: number;
+  warnings: string[];
 }
 
 interface BugScanFindingItem {
@@ -232,6 +288,122 @@ function inferFeatureSlugFromPath(sourcePath: string): string {
   return first;
 }
 
+function normalizeOptionalPathValue(value: unknown): string | null {
+  if (typeof value !== "string") {
+    return null;
+  }
+  const normalized = sanitizeText(value);
+  return normalized.length > 0 ? normalized : null;
+}
+
+function normalizeBuildOriginProvenance(
+  value: DispatchBuildOriginProvenance | undefined,
+): DispatchBuildOriginProvenance | undefined {
+  if (!value || value.schema_version !== "dispatch-build-origin.v1") {
+    return undefined;
+  }
+
+  const buildSignalId = sanitizeText(value.build_signal_id);
+  const recurrenceKey = sanitizeText(value.recurrence_key);
+  const reviewCycleKey = sanitizeText(value.review_cycle_key);
+  const planSlug = sanitizeText(value.plan_slug);
+  const canonicalTitle = sanitizeText(value.canonical_title);
+  const primarySource = sanitizeText(value.primary_source);
+  const mergeState = sanitizeText(value.merge_state);
+
+  if (
+    buildSignalId.length === 0 ||
+    recurrenceKey.length === 0 ||
+    reviewCycleKey.length === 0 ||
+    planSlug.length === 0 ||
+    canonicalTitle.length === 0 ||
+    (primarySource !== "pattern-reflection.entries.json" &&
+      primarySource !== "results-review.signals.json") ||
+    (mergeState !== "single_source" && mergeState !== "merged_cross_sidecar")
+  ) {
+    return undefined;
+  }
+
+  const reflectionFields = value.reflection_fields
+    ? {
+        category: normalizeOptionalPathValue(value.reflection_fields.category),
+        routing_target: normalizeOptionalPathValue(value.reflection_fields.routing_target),
+        occurrence_count:
+          typeof value.reflection_fields.occurrence_count === "number" &&
+            Number.isInteger(value.reflection_fields.occurrence_count) &&
+            value.reflection_fields.occurrence_count >= 0
+            ? value.reflection_fields.occurrence_count
+            : null,
+      }
+    : undefined;
+
+  return {
+    schema_version: "dispatch-build-origin.v1",
+    build_signal_id: buildSignalId,
+    recurrence_key: recurrenceKey,
+    review_cycle_key: reviewCycleKey,
+    plan_slug: planSlug,
+    canonical_title: canonicalTitle,
+    primary_source:
+      primarySource === "pattern-reflection.entries.json"
+        ? "pattern-reflection.entries.json"
+        : "results-review.signals.json",
+    merge_state:
+      mergeState === "merged_cross_sidecar" ? "merged_cross_sidecar" : "single_source",
+    source_presence: {
+      results_review_signal: value.source_presence?.results_review_signal === true,
+      pattern_reflection_entry: value.source_presence?.pattern_reflection_entry === true,
+    },
+    results_review_path: normalizeOptionalPathValue(value.results_review_path),
+    results_review_sidecar_path: normalizeOptionalPathValue(value.results_review_sidecar_path),
+    pattern_reflection_path: normalizeOptionalPathValue(value.pattern_reflection_path),
+    pattern_reflection_sidecar_path: normalizeOptionalPathValue(
+      value.pattern_reflection_sidecar_path,
+    ),
+    reflection_fields: reflectionFields,
+  };
+}
+
+function normalizeHistoricalCarryoverProvenance(
+  value: DispatchHistoricalCarryoverProvenance | undefined,
+): DispatchHistoricalCarryoverProvenance | undefined {
+  if (!value || value.schema_version !== "dispatch-historical-carryover.v1") {
+    return undefined;
+  }
+
+  const manifestPath = sanitizeText(value.manifest_path);
+  const historicalCandidateId = sanitizeText(value.historical_candidate_id);
+  const sourceAuditPath = sanitizeText(value.source_audit_path);
+  const backfilledAt = sanitizeText(value.backfilled_at);
+  const sourcePlanSlugs = Array.isArray(value.source_plan_slugs)
+    ? value.source_plan_slugs.map((entry) => sanitizeText(entry)).filter((entry) => entry.length > 0)
+    : [];
+  const sourcePaths = Array.isArray(value.source_paths)
+    ? value.source_paths.map((entry) => sanitizeText(entry)).filter((entry) => entry.length > 0)
+    : [];
+
+  if (
+    manifestPath.length === 0 ||
+    historicalCandidateId.length === 0 ||
+    sourceAuditPath.length === 0 ||
+    backfilledAt.length === 0 ||
+    sourcePlanSlugs.length === 0 ||
+    sourcePaths.length === 0
+  ) {
+    return undefined;
+  }
+
+  return {
+    schema_version: "dispatch-historical-carryover.v1",
+    manifest_path: manifestPath,
+    historical_candidate_id: historicalCandidateId,
+    source_audit_path: sourceAuditPath,
+    source_plan_slugs: sourcePlanSlugs,
+    source_paths: sourcePaths,
+    backfilled_at: backfilledAt,
+  };
+}
+
 function parseReflectionDebtItems(markdown: string): ReflectionDebtLedgerItem[] {
   const match = markdown.match(
     /<!--\s*REFLECTION_DEBT_LEDGER_START\s*-->\s*```json\s*([\s\S]*?)\s*```\s*<!--\s*REFLECTION_DEBT_LEDGER_END\s*-->/m,
@@ -259,6 +431,10 @@ function suggestedActionRank(action: string | undefined): number {
   if (/spike|investigate/i.test(lower)) return 3;
   if (/defer/i.test(lower)) return 5;
   return 4;
+}
+
+function compareDateOnly(left: string, right: string): number {
+  return left.localeCompare(right);
 }
 
 function sortItems(items: ProcessImprovementItem[]): ProcessImprovementItem[] {
@@ -292,6 +468,22 @@ export interface ProcessImprovementsData {
   ideaItems: ProcessImprovementItem[];
   riskItems: ProcessImprovementItem[];
   pendingReviewItems: ProcessImprovementItem[];
+}
+
+export interface UpdateProcessImprovementsArtifactsOptions {
+  sync_build_origin_bridge?: boolean;
+  sync_codebase_signals_bridge?: boolean;
+  sync_agent_session_signals_bridge?: boolean;
+  now?: Date;
+}
+
+export interface UpdateProcessImprovementsArtifactsResult {
+  data: ProcessImprovementsData;
+  date_iso: string;
+  generated_at: string;
+  build_origin_bridge: BuildOriginBridgeSummary | null;
+  codebase_signals_bridge: ReturnType<typeof runCodebaseSignalsBridge> | null;
+  agent_session_signals_bridge: ReturnType<typeof runAgentSessionSignalsBridge> | null;
 }
 
 /**
@@ -363,10 +555,10 @@ export function appendCompletedIdea(
 }
 
 export function collectProcessImprovements(repoRoot: string): ProcessImprovementsData {
-  const completedKeys = loadCompletedIdeasRegistry(repoRoot);
-
   const absPlansRoot = path.join(repoRoot, PLANS_ROOT);
+  const absStrategyRoot = path.join(repoRoot, STRATEGY_ROOT);
   const allPaths: string[] = [];
+  const strategyPaths: string[] = [];
   try {
     listFilesRecursive(absPlansRoot, allPaths, repoRoot);
   } catch {
@@ -376,10 +568,12 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
       pendingReviewItems: [],
     };
   }
+  try {
+    listFilesRecursive(absStrategyRoot, strategyPaths, repoRoot);
+  } catch {
+    // Signal Review review-required sidecars are optional.
+  }
 
-  const resultsReviewPaths = allPaths.filter((sourcePath) =>
-    sourcePath.endsWith("/results-review.user.md"),
-  );
   const buildRecordPaths = allPaths.filter((sourcePath) =>
     sourcePath.endsWith("/build-record.user.md"),
   );
@@ -389,129 +583,14 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
   const bugScanPaths = allPaths.filter((sourcePath) =>
     sourcePath.endsWith("/bug-scan-findings.user.json"),
   );
+  const signalReviewRequiredPaths = strategyPaths.filter((sourcePath) =>
+    /signal-review-.*\.review-required\.json$/u.test(sourcePath),
+  );
 
   const ideaItems: ProcessImprovementItem[] = [];
   const riskItems: ProcessImprovementItem[] = [];
   const pendingReviewItems: ProcessImprovementItem[] = [];
-
-  for (const sourcePath of resultsReviewPaths) {
-    if (sourcePath.includes("/_templates/")) {
-      continue;
-    }
-    const absPath = path.join(repoRoot, sourcePath);
-
-    // Sidecar-prefer branch: if results-review.signals.json exists, read items from it directly.
-    const sidecarPath = path.join(path.dirname(absPath), "results-review.signals.json");
-    if (existsSync(sidecarPath)) {
-      process.stderr.write(
-        `[generate-process-improvements] info: reading sidecar for ${sourcePath}\n`,
-      );
-      let sidecarItems: ProcessImprovementItem[] | null = null;
-      let sidecarSchemaVersion: string | null = null;
-      try {
-        const sidecarRaw = readFileSync(sidecarPath, "utf8");
-        const sidecarJson = JSON.parse(sidecarRaw) as {
-          schema_version?: unknown;
-          items?: unknown;
-        };
-        sidecarSchemaVersion = typeof sidecarJson.schema_version === "string"
-          ? sidecarJson.schema_version
-          : null;
-        if (
-          sidecarSchemaVersion !== "results-review.signals.v1" ||
-          !Array.isArray(sidecarJson.items)
-        ) {
-          throw new Error(
-            `unrecognized schema_version "${String(sidecarSchemaVersion)}" or missing items array`,
-          );
-        }
-        sidecarItems = sidecarJson.items as ProcessImprovementItem[];
-      } catch (err) {
-        process.stderr.write(
-          `[generate-process-improvements] warn: sidecar parse failed for ${sidecarPath}, falling back to markdown: ${String(err)}\n`,
-        );
-        sidecarItems = null;
-      }
-
-      if (sidecarItems !== null) {
-        for (const item of sidecarItems) {
-          const ideaKey = item.idea_key;
-          if (ideaKey && completedKeys.has(ideaKey)) {
-            continue;
-          }
-          ideaItems.push(item);
-        }
-        continue;
-      }
-      // Fall through to markdown parse if sidecar was malformed.
-    }
-
-    const raw = readFileSync(absPath, "utf8");
-    const parsed = parseFrontmatter(raw);
-    const sections = parseSections(parsed.body);
-    const ideasSection = sections.get("new idea candidates");
-    if (!ideasSection) {
-      continue;
-    }
-
-    const ideasRaw = extractBulletItems(stripHtmlComments(ideasSection))
-      .filter((item) => {
-        if (/^~~.+~~(\s*\|.*)?$/.test(item.trim())) {
-          process.stderr.write(
-            `[generate-process-improvements] info: suppressing struck-through idea in ${sourcePath}: "${item.trim().slice(0, 60)}..."\n`,
-          );
-          return false;
-        }
-        return true;
-      })
-      .filter((item) => {
-        const raw = item.trim();
-        if (isNonePlaceholderIdeaCandidate(raw)) {
-          process.stderr.write(
-            `[generate-process-improvements] info: suppressing none-placeholder idea in ${sourcePath}: "${raw.slice(0, 80)}"\n`,
-          );
-          return false;
-        }
-        return true;
-      });
-    if (ideasRaw.length === 0) {
-      continue;
-    }
-
-    const business = inferBusinessFromFrontmatter(parsed.frontmatter);
-    const date =
-      extractFrontmatterString(parsed.frontmatter, ["Review-date", "date"]) ??
-      statSync(absPath).mtime.toISOString();
-
-    for (const ideaRaw of ideasRaw) {
-      const idea = parseIdeaCandidate(ideaRaw);
-      const ideaKey = deriveIdeaKey(sourcePath, idea.title);
-
-      if (completedKeys.has(ideaKey)) {
-        continue;
-      }
-
-      if (idea.title.length > 100) {
-        process.stderr.write(
-          `[generate-process-improvements] warn: idea title exceeds 100 chars in ${sourcePath} — shorten at source: "${idea.title.slice(0, 60)}..."\n`,
-        );
-      }
-      const ideaItem: ProcessImprovementItem = {
-        type: "idea",
-        business,
-        title: idea.title,
-        body: idea.body,
-        suggested_action: idea.suggestedAction,
-        source: "results-review.user.md",
-        date: toIsoDate(date),
-        path: sourcePath,
-        idea_key: ideaKey,
-      };
-      classifyIdeaItem(ideaItem);
-
-      ideaItems.push(ideaItem);
-    }
-  }
+  const signalReviewPendingByFingerprint = new Map<string, ProcessImprovementItem>();
 
   for (const sourcePath of bugScanPaths) {
     const absPath = path.join(repoRoot, sourcePath);
@@ -547,11 +626,6 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
       const location =
         line > 0 ? `${file}:${line}${column > 0 ? `:${column}` : ""}` : file;
       const title = `Bug scan ${ruleId} at ${location}`;
-      const ideaKey = deriveIdeaKey(sourcePath, title);
-      if (completedKeys.has(ideaKey)) {
-        continue;
-      }
-
       const ideaItem: ProcessImprovementItem = {
         type: "idea",
         business,
@@ -562,7 +636,7 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
         source: "bug-scan-findings.user.json",
         date: ideaDate,
         path: sourcePath,
-        idea_key: ideaKey,
+        idea_key: deriveIdeaKey(sourcePath, title),
       };
       classifyIdeaItem(ideaItem);
       ideaItems.push(ideaItem);
@@ -580,7 +654,17 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
           if (dispatch.queue_state !== "enqueued") {
             continue;
           }
-          const title = sanitizeText(dispatch.area_anchor ?? "");
+          const enrichedDispatch = backfillSyntheticDispatch(dispatch, {
+            rootDir: repoRoot,
+          }).dispatch as DispatchPacket;
+          const buildOrigin = normalizeBuildOriginProvenance(enrichedDispatch.build_origin);
+          const historicalCarryover = normalizeHistoricalCarryoverProvenance(
+            enrichedDispatch.historical_carryover,
+          );
+          const title =
+            sanitizeText(enrichedDispatch.area_anchor ?? "") ||
+            sanitizeText(enrichedDispatch.current_truth ?? "") ||
+            (buildOrigin?.canonical_title ?? "");
           if (!title) {
             continue;
           }
@@ -588,12 +672,8 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
           if (!dispatchId) {
             continue;
           }
-          const ideaKey = deriveIdeaKey(QUEUE_STATE_RELATIVE_PATH, dispatchId);
-          if (completedKeys.has(ideaKey)) {
-            continue;
-          }
           const business = sanitizeText(dispatch.business ?? "BOS").toUpperCase() || "BOS";
-          const body = sanitizeText(dispatch.why ?? "") || MISSING_VALUE;
+          const body = sanitizeText(enrichedDispatch.why ?? "") || MISSING_VALUE;
           const date = toIsoDate(dispatch.created_at ?? new Date().toISOString());
 
           if (title.length > 100) {
@@ -609,7 +689,9 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
             source: "queue-state.json",
             date,
             path: QUEUE_STATE_RELATIVE_PATH,
-            idea_key: ideaKey,
+            idea_key: deriveIdeaKey(QUEUE_STATE_RELATIVE_PATH, dispatchId),
+            build_origin: buildOrigin,
+            historical_carryover: historicalCarryover,
           };
           classifyIdeaItem(ideaItem);
           ideaItems.push(ideaItem);
@@ -684,11 +766,141 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
     });
   }
 
+  for (const sourcePath of signalReviewRequiredPaths) {
+    const absPath = path.join(repoRoot, sourcePath);
+    let parsed: SignalReviewReviewRequiredSidecarFile | null = null;
+    try {
+      const raw = readFileSync(absPath, "utf8");
+      parsed = JSON.parse(raw) as SignalReviewReviewRequiredSidecarFile;
+    } catch {
+      parsed = null;
+    }
+
+    if (
+      !parsed ||
+      parsed.schema_version !== SIGNAL_REVIEW_REQUIRED_SCHEMA_VERSION ||
+      !Array.isArray(parsed.items)
+    ) {
+      continue;
+    }
+
+    for (const item of parsed.items) {
+      const fingerprint = sanitizeText(item.fingerprint);
+      if (!fingerprint) {
+        continue;
+      }
+      const business = sanitizeText(item.business).toUpperCase() || "BOS";
+      const latestSeenDate = toIsoDate(item.latest_seen_run_date);
+      const candidate: ProcessImprovementItem = {
+        type: "pending-review",
+        business,
+        title: `Review required: ${sanitizeText(item.title)}`,
+        body: sanitizeText(item.body),
+        suggested_action: sanitizeText(item.suggested_action),
+        source: "signal-review.review-required.json",
+        date: latestSeenDate,
+        path: sourcePath,
+        owner: sanitizeText(item.owner),
+        due_date: toIsoDate(item.due_date),
+        escalation_state: sanitizeText(item.escalation_state),
+        fingerprint,
+        workflow_status: sanitizeText(item.workflow_status),
+        first_seen_date: toIsoDate(item.first_seen_run_date),
+        latest_seen_date: latestSeenDate,
+        recurrence_count: item.recurrence_count,
+      };
+
+      const dedupeKey = `${candidate.business}:${fingerprint}`;
+      const existing = signalReviewPendingByFingerprint.get(dedupeKey);
+      if (!existing) {
+        signalReviewPendingByFingerprint.set(dedupeKey, candidate);
+        continue;
+      }
+
+      const pickCandidate = compareDateOnly(candidate.date, existing.date) >= 0;
+      const nextItem = pickCandidate ? candidate : existing;
+      nextItem.first_seen_date =
+        [existing.first_seen_date, candidate.first_seen_date]
+          .filter((value): value is string => typeof value === "string" && value.length > 0)
+          .sort(compareDateOnly)[0] ?? nextItem.first_seen_date;
+      nextItem.latest_seen_date =
+        [existing.latest_seen_date, candidate.latest_seen_date]
+          .filter((value): value is string => typeof value === "string" && value.length > 0)
+          .sort(compareDateOnly)
+          .at(-1) ?? nextItem.latest_seen_date;
+      nextItem.recurrence_count = Math.max(existing.recurrence_count ?? 0, candidate.recurrence_count ?? 0);
+      signalReviewPendingByFingerprint.set(dedupeKey, nextItem);
+    }
+  }
+
+  pendingReviewItems.push(...signalReviewPendingByFingerprint.values());
+
   return {
     ideaItems: sortIdeaItems(ideaItems),
     riskItems: sortItems(riskItems),
     pendingReviewItems: sortItems(pendingReviewItems),
   };
+}
+
+export function runBuildOriginBridgeForProcessImprovements(repoRoot: string): BuildOriginBridgeSummary {
+  const plansRoot = path.join(repoRoot, PLANS_ROOT);
+  const summary: BuildOriginBridgeSummary = {
+    ok: true,
+    plans_scanned: 0,
+    plans_considered: 0,
+    signals_considered: 0,
+    signals_admitted: 0,
+    dispatches_enqueued: 0,
+    suppressed: 0,
+    noop: 0,
+    warnings: [],
+  };
+
+  if (!existsSync(plansRoot)) {
+    return summary;
+  }
+
+  const planEntries = readdirSync(plansRoot, { withFileTypes: true }).filter(
+    (entry) => entry.isDirectory() && entry.name !== "_archive",
+  );
+  summary.plans_scanned = planEntries.length;
+
+  for (const planEntry of planEntries) {
+    const planDirAbs = path.join(plansRoot, planEntry.name);
+    const hasResultsReviewSidecar = existsSync(path.join(planDirAbs, "results-review.signals.json"));
+    const hasPatternReflectionSidecar = existsSync(
+      path.join(planDirAbs, "pattern-reflection.entries.json"),
+    );
+    if (!hasResultsReviewSidecar && !hasPatternReflectionSidecar) {
+      continue;
+    }
+
+    summary.plans_considered += 1;
+
+    const planDir = toPosixPath(path.join(PLANS_ROOT, planEntry.name));
+    const result = runBuildOriginSignalsBridge({
+      rootDir: repoRoot,
+      planDir,
+      queueStatePath: QUEUE_STATE_RELATIVE_PATH,
+      telemetryPath: QUEUE_TELEMETRY_RELATIVE_PATH,
+    });
+
+    summary.ok &&= result.ok;
+    summary.signals_considered += result.signals_considered;
+    summary.signals_admitted += result.signals_admitted;
+    summary.dispatches_enqueued += result.dispatches_enqueued;
+    summary.suppressed += result.suppressed;
+    summary.noop += result.noop;
+
+    for (const warning of result.warnings) {
+      summary.warnings.push(`[${planDir}] ${warning}`);
+    }
+    if (result.error) {
+      summary.warnings.push(`[${planDir}] ${result.error}`);
+    }
+  }
+
+  return summary;
 }
 
 function replaceArrayAssignment(html: string, variableName: string, items: ProcessImprovementItem[]): string {
@@ -780,12 +992,10 @@ function buildArrayAssignmentBlock(variableName: string, items: ProcessImproveme
  * (avoids false positives from the date-stamp footer) plus the full JSON data file.
  * Exits 0 if up-to-date, exits 1 if drift detected.
  *
- * The drift check works by re-running `collectProcessImprovements` (which reads
- * `completed-ideas.json`) and comparing the fresh output against committed files.
- * Any change to the registry — whether a new entry is appended or an entry is removed —
- * will cause `collectProcessImprovements` to produce different `ideaItems`, which the
- * drift check will detect here. No modification to this function is required to cover
- * registry-driven filtering.
+ * The drift check works by re-running `collectProcessImprovements` and comparing the
+ * fresh output against committed files. Active idea backlog now comes from canonical
+ * queue state plus bug-scan artifacts; `completed-ideas.json` remains a derived
+ * compatibility artifact and no longer suppresses active backlog visibility here.
  */
 export function runCheck(repoRoot: string): void {
   const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);
@@ -854,69 +1064,123 @@ function writeFileAtomic(filePath: string, content: string): void {
   renameSync(tempPath, filePath);
 }
 
-function runCli(): void {
-  const repoRoot = path.resolve(process.cwd(), "..");
+export function updateProcessImprovementsArtifacts(
+  repoRoot: string,
+  options: UpdateProcessImprovementsArtifactsOptions = {},
+): UpdateProcessImprovementsArtifactsResult {
+  const syncBuildOriginBridge = options.sync_build_origin_bridge ?? true;
+  const syncCodebaseSignalsBridge = options.sync_codebase_signals_bridge ?? true;
+  const syncAgentSessionSignalsBridge = options.sync_agent_session_signals_bridge ?? true;
+
+  const buildOriginBridgeResult = syncBuildOriginBridge
+    ? runBuildOriginBridgeForProcessImprovements(repoRoot)
+    : null;
   const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);
   const dataPath = path.join(repoRoot, PROCESS_DATA_RELATIVE_PATH);
-  const now = new Date();
+  const now = options.now ?? new Date();
   const dateIso = now.toISOString().slice(0, 10);
-  const genTs = now.toISOString();
+  const generatedAt = now.toISOString();
 
   const data = collectProcessImprovements(repoRoot);
   const html = readFileSync(htmlPath, "utf8");
-  const updatedHtml = updateProcessImprovementsHtml(html, data, dateIso, genTs);
+  const updatedHtml = updateProcessImprovementsHtml(html, data, dateIso, generatedAt);
 
   writeFileAtomic(htmlPath, updatedHtml);
   mkdirSync(path.dirname(dataPath), { recursive: true });
   writeFileSync(dataPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 
+  const latestBugScanArtifactPath =
+    data.ideaItems.find((item) => item.source === "bug-scan-findings.user.json")?.path ?? null;
+  const codebaseSignalsBridgeResult = syncCodebaseSignalsBridge
+    ? runCodebaseSignalsBridge({
+        rootDir: repoRoot,
+        business: "BOS",
+        registryPath: "docs/business-os/startup-loop/ideas/standing-registry.json",
+        queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+        telemetryPath: "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",
+        statePath: "docs/business-os/startup-loop/ideas/trial/codebase-signal-bridge-state.json",
+        bugScanArtifactPath: latestBugScanArtifactPath,
+        fromRef: "HEAD~1",
+        toRef: "HEAD",
+        bugSeverityThreshold: "critical",
+      })
+    : null;
+  const agentSessionBridgeResult = syncAgentSessionSignalsBridge
+    ? runAgentSessionSignalsBridge({
+        rootDir: repoRoot,
+        business: "BOS",
+        registryPath: "docs/business-os/startup-loop/ideas/standing-registry.json",
+        queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+        telemetryPath: "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",
+        statePath: "docs/business-os/startup-loop/ideas/trial/agent-session-signal-bridge-state.json",
+        artifactPath: "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        transcriptsRoot: path.join(
+          os.homedir(),
+          ".claude",
+          "projects",
+          "-Users-petercowling-base-shop",
+        ),
+        sessionLimit: 20,
+      })
+    : null;
+
+  return {
+    data,
+    date_iso: dateIso,
+    generated_at: generatedAt,
+    build_origin_bridge: buildOriginBridgeResult,
+    codebase_signals_bridge: codebaseSignalsBridgeResult,
+    agent_session_signals_bridge: agentSessionBridgeResult,
+  };
+}
+
+function runCli(): void {
+  const repoRoot = path.resolve(process.cwd(), "..");
+  const renderOnly = process.argv.includes("--render-only");
+  const result = updateProcessImprovementsArtifacts(repoRoot, {
+    sync_build_origin_bridge: !renderOnly,
+    sync_codebase_signals_bridge: !renderOnly,
+    sync_agent_session_signals_bridge: !renderOnly,
+  });
+
   process.stdout.write(
-    `[generate-process-improvements] updated ${PROCESS_HTML_RELATIVE_PATH} (ideas=${data.ideaItems.length}, risks=${data.riskItems.length}, pending=${data.pendingReviewItems.length})\n`,
+    `[generate-process-improvements] updated ${PROCESS_HTML_RELATIVE_PATH} (ideas=${result.data.ideaItems.length}, risks=${result.data.riskItems.length}, pending=${result.data.pendingReviewItems.length})\n`,
   );
   process.stdout.write(
     `[generate-process-improvements] wrote ${PROCESS_DATA_RELATIVE_PATH}\n`,
   );
-
-  const latestBugScanArtifactPath =
-    data.ideaItems.find((item) => item.source === "bug-scan-findings.user.json")?.path ?? null;
-  const bridgeResult = runCodebaseSignalsBridge({
-    rootDir: repoRoot,
-    business: "BOS",
-    registryPath: "docs/business-os/startup-loop/ideas/standing-registry.json",
-    queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-    telemetryPath: "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",
-    statePath: "docs/business-os/startup-loop/ideas/trial/codebase-signal-bridge-state.json",
-    bugScanArtifactPath: latestBugScanArtifactPath,
-    fromRef: "HEAD~1",
-    toRef: "HEAD",
-    bugSeverityThreshold: "critical",
-  });
-  process.stdout.write(
-    `[generate-process-improvements] signal bridge: ok=${bridgeResult.ok} events=${bridgeResult.events_considered} admitted=${bridgeResult.events_admitted} enqueued=${bridgeResult.dispatches_enqueued}\n`,
-  );
-  if (bridgeResult.warnings.length > 0) {
-    for (const warning of bridgeResult.warnings) {
-      process.stdout.write(`[generate-process-improvements] signal bridge warning: ${warning}\n`);
+  if (renderOnly) {
+    process.stdout.write("[generate-process-improvements] render-only mode: bridge sync skipped\n");
+    return;
+  }
+  if (result.build_origin_bridge) {
+    process.stdout.write(
+      `[generate-process-improvements] build-origin bridge: ok=${result.build_origin_bridge.ok} plans=${result.build_origin_bridge.plans_considered}/${result.build_origin_bridge.plans_scanned} signals=${result.build_origin_bridge.signals_considered} admitted=${result.build_origin_bridge.signals_admitted} enqueued=${result.build_origin_bridge.dispatches_enqueued}\n`,
+    );
+    if (result.build_origin_bridge.warnings.length > 0) {
+      for (const warning of result.build_origin_bridge.warnings) {
+        process.stdout.write(`[generate-process-improvements] build-origin bridge warning: ${warning}\n`);
+      }
     }
   }
-
-  const sessionBridgeResult = runAgentSessionSignalsBridge({
-    rootDir: repoRoot,
-    business: "BOS",
-    registryPath: "docs/business-os/startup-loop/ideas/standing-registry.json",
-    queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-    telemetryPath: "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",
-    statePath: "docs/business-os/startup-loop/ideas/trial/agent-session-signal-bridge-state.json",
-    artifactPath: "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
-    transcriptsRoot: path.join(os.homedir(), ".claude", "projects", "-Users-petercowling-base-shop"),
-    sessionLimit: 20,
-  });
-  process.stdout.write(
-    `[generate-process-improvements] agent-session bridge: ok=${sessionBridgeResult.ok} scanned=${sessionBridgeResult.sessions_scanned} with_findings=${sessionBridgeResult.sessions_with_findings} enqueued=${sessionBridgeResult.dispatches_enqueued}\n`,
-  );
-  if (sessionBridgeResult.warnings.length > 0) {
-    for (const warning of sessionBridgeResult.warnings) {
-      process.stdout.write(`[generate-process-improvements] agent-session bridge warning: ${warning}\n`);
+  if (result.codebase_signals_bridge) {
+    process.stdout.write(
+      `[generate-process-improvements] signal bridge: ok=${result.codebase_signals_bridge.ok} events=${result.codebase_signals_bridge.events_considered} admitted=${result.codebase_signals_bridge.events_admitted} enqueued=${result.codebase_signals_bridge.dispatches_enqueued}\n`,
+    );
+    if (result.codebase_signals_bridge.warnings.length > 0) {
+      for (const warning of result.codebase_signals_bridge.warnings) {
+        process.stdout.write(`[generate-process-improvements] signal bridge warning: ${warning}\n`);
+      }
+    }
+  }
+  if (result.agent_session_signals_bridge) {
+    process.stdout.write(
+      `[generate-process-improvements] agent-session bridge: ok=${result.agent_session_signals_bridge.ok} scanned=${result.agent_session_signals_bridge.sessions_scanned} with_findings=${result.agent_session_signals_bridge.sessions_with_findings} enqueued=${result.agent_session_signals_bridge.dispatches_enqueued}\n`,
+    );
+    if (result.agent_session_signals_bridge.warnings.length > 0) {
+      for (const warning of result.agent_session_signals_bridge.warnings) {
+        process.stdout.write(`[generate-process-improvements] agent-session bridge warning: ${warning}\n`);
+      }
     }
   }
 }

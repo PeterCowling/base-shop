@@ -1,0 +1,44 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260309140301-9306",
+  "mode": "trial",
+  "business": "PLAT",
+  "trigger": "operator_idea",
+  "domain": "STRATEGY",
+  "root_event_id": "operator:PLAT:STRATEGY:lp-do-ideas-structured-operator-intake:20260309",
+  "anchor_key": "lp-do-ideas-structured-operator-intake",
+  "cluster_key": "PLAT:STRATEGY:lp-do-ideas-structured-operator-intake:operator:20260309",
+  "cluster_fingerprint": "lp-do-ideas-structured-operator-intake-20260309",
+  "lineage_depth": 0,
+  "area_anchor": "PLAT lp-do-ideas intake - operator idea structured pre-router",
+  "location_anchors": [
+    ".claude/skills/lp-do-ideas/SKILL.md",
+    ".claude/skills/lp-do-ideas/modules/operator-idea-structured-intake.md",
+    "docs/analysis/lp-do-ideas-build-llm-deterministic-classification.md"
+  ],
+  "provisional_deliverable_family": "multi",
+  "current_truth": "lp-do-ideas operator intake currently depends on free-form follow-up inference for area, evidence, and next-step context, which costs tokens and makes evidence capture less reliable.",
+  "next_scope_now": "Introduce a structured five-question pre-router intake for operator ideas, preserve Step 4 routing judgment, and make the required packet fields explicit in the skill contract.",
+  "adjacent_later": [
+    "Shadow-test structured intake against archived operator ideas",
+    "Add explicit token and evidence-completeness measurement for future operator_idea runs"
+  ],
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "priority": "P3",
+  "confidence": 0.88,
+  "evidence_refs": [
+    "operator-stated: replace free-form operator_idea intake with a structured five-question pre-router while keeping routing judgment intact",
+    ".claude/skills/lp-do-ideas/SKILL.md",
+    ".claude/skills/lp-do-ideas/modules/operator-idea-structured-intake.md",
+    "docs/analysis/lp-do-ideas-build-llm-deterministic-classification.md"
+  ],
+  "created_at": "2026-03-09T14:03:01Z",
+  "queue_state": "enqueued",
+  "why": "The intake path currently spends tokens inferring follow-up questions and evidence fields that can be collected more cheaply and more consistently through a short structured questionnaire.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "lp-do-ideas uses a structured five-question pre-router intake for operator ideas, captures evidence through fixed prompts, and preserves the existing routing judgment path.",
+    "source": "operator"
+  }
+}

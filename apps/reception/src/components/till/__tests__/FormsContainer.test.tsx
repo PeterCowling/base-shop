@@ -3,6 +3,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import type { TillCashForm } from "../../../hooks/client/till/useTillReconciliationUI";
 import type {
   CloseShiftFormProps,
   OpenShiftFormProps,
@@ -45,9 +46,8 @@ describe("FormsContainer", () => {
     showCloseShiftForm: false,
     closeShiftFormVariant: "close" as const,
     showKeycardCountForm: false,
-    showFloatForm: false,
-    showExchangeForm: false,
-    showTenderRemovalForm: false,
+    cashForm: "none" as TillCashForm,
+    setCashForm: jest.fn(),
     lastCloseCashCount: 0,
     expectedCashAtClose: 0,
     expectedKeycardsAtClose: 0,
@@ -62,9 +62,6 @@ describe("FormsContainer", () => {
     setShowOpenShiftForm: jest.fn(),
     setShowCloseShiftForm: jest.fn(),
     setShowKeycardCountForm: jest.fn(),
-    setShowFloatForm: jest.fn(),
-    setShowExchangeForm: jest.fn(),
-    setShowTenderRemovalForm: jest.fn(),
     pinRequiredForTenderRemoval: false,
   };
 

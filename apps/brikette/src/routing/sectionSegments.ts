@@ -23,6 +23,7 @@ export const INTERNAL_SEGMENT_BY_KEY: Readonly<Record<SlugKey, string>> = {
   cookiePolicy: "cookie-policy",
   breakfastMenu: "breakfast-menu",
   barMenu: "bar-menu",
+  doubleRoomBooking: "private-rooms/double-room/book",
 };
 
 /**
@@ -46,6 +47,7 @@ export const TOP_LEVEL_SEGMENT_KEYS: readonly SlugKey[] = [
   "cookiePolicy",
   "breakfastMenu",
   "barMenu",
+  "doubleRoomBooking",
 ];
 
 /**
@@ -68,6 +70,7 @@ export const STATIC_EXPORT_SECTION_KEYS: readonly SlugKey[] = [
   "privateBooking",
   "book",
   "apartment",
+  "doubleRoomBooking",
 ];
 
 /**
@@ -91,6 +94,7 @@ export const PUBLIC_INDEXABLE_SECTION_KEYS: readonly SlugKey[] = [
   "howToGetHere",
   "privateBooking",
   "apartment",
+  "doubleRoomBooking",
 ];
 
 /**

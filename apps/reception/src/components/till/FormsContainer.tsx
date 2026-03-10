@@ -1,5 +1,6 @@
 import type { FC } from "react";
 
+import type { TillCashForm } from "../../hooks/client/till/useTillReconciliationUI";
 import type { Transaction, VarianceSignoff } from "../../types/component/Till";
 import type { TenderRemovalRecord } from "../../types/finance";
 
@@ -16,9 +17,8 @@ interface FormsContainerProps {
   showCloseShiftForm: boolean;
   closeShiftFormVariant: "close" | "reconcile";
   showKeycardCountForm: boolean;
-  showFloatForm: boolean;
-  showExchangeForm: boolean;
-  showTenderRemovalForm: boolean;
+  cashForm: TillCashForm;
+  setCashForm: (v: TillCashForm) => void;
   pinRequiredForTenderRemoval: boolean;
   lastCloseCashCount: number;
   expectedCashAtClose: number;
@@ -52,9 +52,6 @@ interface FormsContainerProps {
   setShowOpenShiftForm: (val: boolean) => void;
   setShowCloseShiftForm: (val: boolean) => void;
   setShowKeycardCountForm: (val: boolean) => void;
-  setShowFloatForm: (val: boolean) => void;
-  setShowExchangeForm: (val: boolean) => void;
-  setShowTenderRemovalForm: (val: boolean) => void;
 }
 
 const FormsContainer: FC<FormsContainerProps> = (props) => {
@@ -64,9 +61,8 @@ const FormsContainer: FC<FormsContainerProps> = (props) => {
     showCloseShiftForm,
     closeShiftFormVariant,
     showKeycardCountForm,
-    showFloatForm,
-    showExchangeForm,
-    showTenderRemovalForm,
+    cashForm,
+    setCashForm,
     pinRequiredForTenderRemoval,
     lastCloseCashCount,
     expectedCashAtClose,
@@ -82,9 +78,6 @@ const FormsContainer: FC<FormsContainerProps> = (props) => {
     setShowOpenShiftForm,
     setShowCloseShiftForm,
     setShowKeycardCountForm,
-    setShowFloatForm,
-    setShowExchangeForm,
-    setShowTenderRemovalForm,
   } = props;
 
   return (
@@ -97,16 +90,16 @@ const FormsContainer: FC<FormsContainerProps> = (props) => {
           previousFinalCash={lastCloseCashCount}
         />
       )}
-      {showFloatForm && shiftOpenTime && (
+      {cashForm === "float" && shiftOpenTime && (
         <FloatEntryModal
           onConfirm={confirmFloat}
-          onClose={() => setShowFloatForm(false)}
+          onClose={() => setCashForm("none")}
         />
       )}
-      {showExchangeForm && shiftOpenTime && (
+      {cashForm === "exchange" && shiftOpenTime && (
         <ExchangeNotesForm
           onConfirm={confirmExchange}
-          onCancel={() => setShowExchangeForm(false)}
+          onCancel={() => setCashForm("none")}
         />
       )}
       {showCloseShiftForm && shiftOpenTime && (
@@ -136,10 +129,10 @@ const FormsContainer: FC<FormsContainerProps> = (props) => {
           onCancel={() => setShowKeycardCountForm(false)}
         />
       )}
-      {showTenderRemovalForm && shiftOpenTime && (
+      {cashForm === "tenderRemoval" && shiftOpenTime && (
         <TenderRemovalModal
           onConfirm={handleTenderRemoval}
-          onClose={() => setShowTenderRemovalForm(false)}
+          onClose={() => setCashForm("none")}
           pinRequiredForTenderRemoval={pinRequiredForTenderRemoval}
         />
       )}

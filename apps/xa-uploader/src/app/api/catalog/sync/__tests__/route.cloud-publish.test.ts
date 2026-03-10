@@ -6,6 +6,7 @@ const hasUploaderSessionMock = jest.fn();
 const getCatalogContractReadinessMock = jest.fn();
 const publishCatalogPayloadToContractMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
+const readCloudCurrencyRatesMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
 const acquireCloudSyncLockMock = jest.fn();
 const releaseCloudSyncLockMock = jest.fn();
@@ -13,11 +14,8 @@ const buildCatalogArtifactsFromDraftsMock = jest.fn();
 const getMediaBucketMock = jest.fn();
 
 const getUploaderKvMock = jest.fn();
-const acquireSyncMutexMock = jest.fn();
-const releaseSyncMutexMock = jest.fn();
 
 const ORIGINAL_ENV = {
-  XA_UPLOADER_LOCAL_FS_DISABLED: process.env.XA_UPLOADER_LOCAL_FS_DISABLED,
   XA_B_DEPLOY_HOOK_URL: process.env.XA_B_DEPLOY_HOOK_URL,
   XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS: process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS,
   XA_B_DEPLOY_HOOK_MAX_RETRIES: process.env.XA_B_DEPLOY_HOOK_MAX_RETRIES,
@@ -50,10 +48,6 @@ jest.mock("../../../../../lib/uploaderAuth", () => ({
   hasUploaderSession: (...args: unknown[]) => hasUploaderSessionMock(...args),
 }));
 
-jest.mock("../../../../../lib/repoRoot", () => ({
-  resolveRepoRoot: () => "/repo",
-}));
-
 jest.mock("../../../../../lib/catalogContractClient", () => ({
   getCatalogContractReadiness: () => getCatalogContractReadinessMock(),
   publishCatalogPayloadToContract: (...args: unknown[]) => publishCatalogPayloadToContractMock(...args),
@@ -61,6 +55,7 @@ jest.mock("../../../../../lib/catalogContractClient", () => ({
 }));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  readCloudCurrencyRates: (...args: unknown[]) => readCloudCurrencyRatesMock(...args),
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
   writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
   acquireCloudSyncLock: (...args: unknown[]) => acquireCloudSyncLockMock(...args),
@@ -77,8 +72,6 @@ jest.mock("../../../../../lib/r2Media", () => ({
 
 jest.mock("../../../../../lib/syncMutex", () => ({
   getUploaderKv: (...args: unknown[]) => getUploaderKvMock(...args),
-  acquireSyncMutex: (...args: unknown[]) => acquireSyncMutexMock(...args),
-  releaseSyncMutex: (...args: unknown[]) => releaseSyncMutexMock(...args),
 }));
 
 describe("catalog sync cloud publish/finalize behavior", () => {
@@ -98,6 +91,7 @@ describe("catalog sync cloud publish/finalize behavior", () => {
       revisionsById: { p1: "rev-1" },
       docRevision: "doc-1",
     });
+    readCloudCurrencyRatesMock.mockResolvedValue({ EUR: 0.92, GBP: 0.78, AUD: 1.5 });
     writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "doc-2" });
     acquireCloudSyncLockMock.mockResolvedValue({
       status: "acquired",
@@ -114,22 +108,12 @@ describe("catalog sync cloud publish/finalize behavior", () => {
     getMediaBucketMock.mockResolvedValue(null);
 
     getUploaderKvMock.mockResolvedValue(null);
-    acquireSyncMutexMock.mockResolvedValue(true);
-    releaseSyncMutexMock.mockResolvedValue(undefined);
-
-    process.env.XA_UPLOADER_LOCAL_FS_DISABLED = "1";
     process.env.XA_B_DEPLOY_HOOK_URL = "https://deploy.example/hook";
     process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS = "1";
     process.env.XA_B_DEPLOY_HOOK_MAX_RETRIES = "0";
   });
 
   afterEach(() => {
-    if (ORIGINAL_ENV.XA_UPLOADER_LOCAL_FS_DISABLED === undefined) {
-      delete process.env.XA_UPLOADER_LOCAL_FS_DISABLED;
-    } else {
-      process.env.XA_UPLOADER_LOCAL_FS_DISABLED = ORIGINAL_ENV.XA_UPLOADER_LOCAL_FS_DISABLED;
-    }
-
     if (ORIGINAL_ENV.XA_B_DEPLOY_HOOK_URL === undefined) delete process.env.XA_B_DEPLOY_HOOK_URL;
     else process.env.XA_B_DEPLOY_HOOK_URL = ORIGINAL_ENV.XA_B_DEPLOY_HOOK_URL;
 

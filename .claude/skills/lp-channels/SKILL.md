@@ -44,6 +44,12 @@ Optional (enhances quality):
 - Competitor channel analysis, budget/resource constraints, existing audiences, market research
 - `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` — channel voice and tone alignment
 - `docs/business-os/strategy/<BIZ>/messaging-hierarchy.user.md` — channel-specific messaging
+- Existing GTM standing artifacts, when present:
+  - `docs/business-os/strategy/<BIZ>/stockist-target-list.user.md` — pre-live retail/distribution targets and coverage gaps
+  - `docs/business-os/strategy/<BIZ>/channel-health-log.user.md` — live channel actuals and partner performance
+  - `docs/business-os/strategy/<BIZ>/weekly-demand-plan.user.md` — current GTM-1 operating sprint
+  - `docs/business-os/strategy/<BIZ>/channel-policy.user.md` — channel governance, terms, and conflict rules
+  - `docs/business-os/strategy/<BIZ>/message-variants.user.md` — canonical CAP-02 message-testing ledger; schema defined in `docs/business-os/startup-loop/schemas/message-variants-schema.md`
 
 ## Workflow
 
@@ -63,22 +69,29 @@ Load `modules/channel-strategy.md`:
 
 Load `modules/channel-gtm-output.md`:
 - Stage 5: 30-Day GTM Timeline
-- Stage 6: Document Artifact to `docs/business-os/startup-baselines/<BIZ>/channels.md`
+- Stage 6: Document primary artifact and any required companion GTM artifacts
 - Self-audit QC-01–QC-10 and Red Flags
 
 ## Output Contract
 
-Produces single file: `docs/business-os/startup-baselines/<BIZ>/channels.md`
+Produces required primary file: `docs/business-os/startup-baselines/<BIZ>/channels.md`
 
 **Artifact registry**: Canonical path defined in `docs/business-os/startup-loop/artifact-registry.md` (artifact ID: `channels`).
 
 **Structure**: metadata frontmatter; executive summary; channel landscape audit; selected channels; cost/constraint analysis; 30-day GTM timeline; month 2+ roadmap; evidence register.
 
+**Conditional companion artifacts**:
+- If selected channels include boutiques, retailers, distributors, wholesale accounts, hotel shops, or other physical-product distribution lanes, initialize or refresh `docs/business-os/strategy/<BIZ>/stockist-target-list.user.md`.
+- If live physical placements or partner accounts already exist, read actuals from `docs/business-os/strategy/<BIZ>/channel-health-log.user.md` and do not restate those numbers as unsupported assumptions.
+- If the strategy introduces real partner-term, allocation, or channel-conflict rules, initialize or refresh `docs/business-os/strategy/<BIZ>/channel-policy.user.md`.
+- If the strategy is execution-ready for the next 7 days, initialize or refresh `docs/business-os/strategy/<BIZ>/weekly-demand-plan.user.md` with the first operating sprint.
+- If the strategy depends on testing multiple frames, copy angles, or retailer pitches, initialize or refresh `docs/business-os/strategy/<BIZ>/message-variants.user.md` so CAP-02 starts as a standing ledger rather than chat-only context.
+
 **Downstream compatibility**:
 - `draft-marketing`: selected channels, positioning, success metrics
 - `lp-seo`: organic channel context, keyword intent from ICP
 - `lp-do-fact-find`: channel strategy to scope go-items
-- `startup-loop`: SELL-01 strategy output for S4 join + SELL-08 activation gate for paid spend
+- `startup-loop`: SELL-01 strategy output for S4 join + SELL-08 activation gate for paid spend; companion GTM artifacts preserve GTM-1/GTM-2/OFF-4 continuity
 
 ## Integration
 

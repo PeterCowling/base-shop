@@ -1,0 +1,26 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-10T11:40:20.335Z",
+  "plan_slug": "startup-loop-cap02-message-variants",
+  "review_cycle_key": "startup-loop-cap02-message-variants",
+  "source_path": "docs/plans/startup-loop-cap02-message-variants/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": [
+    {
+      "canonical_title": "Capability references drift ahead of the artifact and schema they require",
+      "pattern_summary": "Capability references drift ahead of the artifact and schema they require",
+      "category": "deterministic",
+      "routing_target": "loop_update",
+      "occurrence_count": 1,
+      "evidence_refs": [
+        "docs/plans/startup-loop-cap02-message-variants/build-record.user.md#what-was-built",
+        "docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md"
+      ],
+      "review_cycle_key": "startup-loop-cap02-message-variants",
+      "build_signal_id": "7f2d01d810fd54f71c02c39acd994a070eadd7a0",
+      "recurrence_key": "0162d8d3e27f1da757168aa2218a2342b73afd3c",
+      "build_origin_status": "ready"
+    }
+  ]
+}

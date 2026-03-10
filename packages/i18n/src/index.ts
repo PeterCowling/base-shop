@@ -13,6 +13,7 @@ export {
   LOCALES,
   locales,
   normalizeContentLocale,
+  normalizeUiLocale,
   resolveContentLocale,
   resolveLocale,
   resolveUiLocale,

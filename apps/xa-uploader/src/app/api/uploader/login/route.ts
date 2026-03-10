@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 
 import { isUploaderIpAllowedByHeaders, uploaderAccessDeniedJsonResponse } from "../../../../lib/accessControl";
-import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
+import { isRecord } from "../../../../lib/typeGuards";
 import {
   issueUploaderSession,
   setUploaderCookie,
@@ -15,14 +16,7 @@ const LOGIN_MAX_ATTEMPTS = 10;
 const LOGIN_WINDOW_MS = 15 * 60 * 1000;
 const LOGIN_PAYLOAD_MAX_BYTES = 8 * 1024;
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
-}
 
-function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
-  applyRateLimitHeaders(response.headers, limit);
-  return response;
-}
 
 export async function POST(request: Request) {
   if (!isUploaderIpAllowedByHeaders(request.headers)) {

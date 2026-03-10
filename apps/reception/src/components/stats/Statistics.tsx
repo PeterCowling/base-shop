@@ -4,46 +4,11 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 
+import type { RevenueMode, StatisticsYoyResponse } from "../../schemas/statisticsYoySchema";
 import { getFirebaseAuth } from "../../services/firebaseAuth";
 import { useFirebaseApp } from "../../services/useFirebase";
+import { formatEuro } from "../../utils/format";
 import { PageShell } from "../common/PageShell";
-
-type RevenueMode = "room-only" | "room-plus-bar";
-
-type MonthlyRow = {
-  month: string;
-  currentValue: number;
-  previousValue: number;
-  delta: number;
-  deltaPct: number | null;
-};
-
-type YoYResponse = {
-  success: boolean;
-  year: number;
-  previousYear: number;
-  mode: RevenueMode;
-  monthly: MonthlyRow[];
-  summary: {
-    currentYtd: number;
-    previousYtd: number;
-    ytdDelta: number;
-    ytdDeltaPct: number | null;
-  };
-  source: {
-    current: string;
-    previous: string;
-  };
-  error?: string;
-};
-
-function formatEuro(value: number): string {
-  return new Intl.NumberFormat("it-IT", {
-    style: "currency",
-    currency: "EUR",
-    maximumFractionDigits: 2,
-  }).format(value);
-}
 
 function formatPct(value: number | null): string {
   if (value === null) {
@@ -64,7 +29,7 @@ const Statistics: React.FC = () => {
   const [mode, setMode] = useState<RevenueMode>("room-plus-bar");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [data, setData] = useState<YoYResponse | null>(null);
+  const [data, setData] = useState<StatisticsYoyResponse | null>(null);
 
   const fetchYoY = useCallback(async () => {
     setLoading(true);
@@ -88,7 +53,7 @@ const Statistics: React.FC = () => {
       },
     );
 
-    const payload = (await response.json()) as YoYResponse;
+    const payload = (await response.json()) as StatisticsYoyResponse & { error?: string };
 
     if (!response.ok || !payload.success) {
       setError(payload.error ?? "Failed to load year-on-year statistics");
@@ -165,15 +130,21 @@ const Statistics: React.FC = () => {
             <div className="grid gap-4 md:grid-cols-3">
               <div className="rounded-lg border border-border bg-surface p-4">
                 <p className="text-xs uppercase tracking-wide text-muted-foreground">{data.year} YTD</p>
-                <p className="mt-1 text-xl font-semibold text-foreground">{formatEuro(data.summary.currentYtd)}</p>
+                <p className="mt-1 text-xl font-semibold text-foreground">
+                  {formatEuro(data.summary.currentYtd, { style: "locale" })}
+                </p>
               </div>
               <div className="rounded-lg border border-border bg-surface p-4">
                 <p className="text-xs uppercase tracking-wide text-muted-foreground">{data.previousYear} YTD</p>
-                <p className="mt-1 text-xl font-semibold text-foreground">{formatEuro(data.summary.previousYtd)}</p>
+                <p className="mt-1 text-xl font-semibold text-foreground">
+                  {formatEuro(data.summary.previousYtd, { style: "locale" })}
+                </p>
               </div>
               <div className="rounded-lg border border-border bg-surface p-4">
                 <p className="text-xs uppercase tracking-wide text-muted-foreground">YTD Delta</p>
-                <p className="mt-1 text-xl font-semibold text-foreground">{formatEuro(data.summary.ytdDelta)}</p>
+                <p className="mt-1 text-xl font-semibold text-foreground">
+                  {formatEuro(data.summary.ytdDelta, { style: "locale" })}
+                </p>
                 <p className="text-sm text-muted-foreground">{formatPct(data.summary.ytdDeltaPct)}</p>
               </div>
             </div>
@@ -193,9 +164,9 @@ const Statistics: React.FC = () => {
                   {months.map((row) => (
                     <tr key={row.month} className="border-t border-border">
                       <td className="px-3 py-2">{row.month}</td>
-                      <td className="px-3 py-2">{formatEuro(row.currentValue)}</td>
-                      <td className="px-3 py-2">{formatEuro(row.previousValue)}</td>
-                      <td className="px-3 py-2">{formatEuro(row.delta)}</td>
+                      <td className="px-3 py-2">{formatEuro(row.currentValue, { style: "locale" })}</td>
+                      <td className="px-3 py-2">{formatEuro(row.previousValue, { style: "locale" })}</td>
+                      <td className="px-3 py-2">{formatEuro(row.delta, { style: "locale" })}</td>
                       <td className="px-3 py-2">{formatPct(row.deltaPct)}</td>
                     </tr>
                   ))}

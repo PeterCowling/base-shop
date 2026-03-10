@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "meta-loop-efficiency-h4-h5-2026-03-09",
+  "feature_slug": "meta-loop-efficiency-h4-h5",
+  "emitted_at": "2026-03-09T14:58:00Z",
+  "why": "Close the structural-only gap in skill-efficiency auditing so deterministic extraction and anti-gaming regressions are detected automatically instead of relying on prose-only guidance.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "/meta-loop-efficiency emits artifacts with H4/H5 findings, and downstream deterministic-extraction tooling can ingest those findings into planning/build queues.",
+    "source": "operator"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-09T11:47:45.779Z",
+  "why": "Duplicate modal code means any UX or validation change must be applied to two identical files, risking divergence."
+}

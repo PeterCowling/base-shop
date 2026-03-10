@@ -68,6 +68,18 @@ describe("ThemeToggle localized labels", () => {
     expect(screen.getByRole("button")).toHaveAttribute("title", "Passa al tema scuro");
   });
 
+  it("prefers shared locale messages over stale active-language resources", () => {
+    localizedResources.set("themeToggle.enableDark", "Enable dark mode");
+    localizedResources.set("themeToggle.switchToDark", "Switch to dark mode");
+    sharedTranslations.set("themeToggle.enableDark", "ダークモードを有効にする");
+    sharedTranslations.set("themeToggle.switchToDark", "ダークモードに切り替える");
+
+    render(<ThemeToggle />);
+
+    expect(screen.getByRole("button")).toHaveAttribute("aria-label", "ダークモードを有効にする");
+    expect(screen.getByRole("button")).toHaveAttribute("title", "ダークモードに切り替える");
+  });
+
   it("falls back to app translations when neither locale resources nor shared messages resolve", () => {
     themeState.isDark = true;
     appTranslations.set("themeToggle.enableLight", "Enable light mode");

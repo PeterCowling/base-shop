@@ -36,10 +36,13 @@ jest.mock("../../../lib/offline/syncManager", () => ({
   queueOfflineWrite: (...args: unknown[]) => queueOfflineWriteMock(...args),
 }));
 
+let logActivityMock: jest.Mock;
+let addToAllTransactionsMock: jest.Mock;
+
 jest.mock("../useActivitiesMutations", () => ({
   __esModule: true,
   default: () => ({
-    logActivity: jest.fn().mockResolvedValue(undefined),
+    logActivity: logActivityMock,
     addActivity: jest.fn().mockResolvedValue({ success: true }),
   }),
 }));
@@ -47,7 +50,7 @@ jest.mock("../useActivitiesMutations", () => ({
 jest.mock("../useAllTransactionsMutations", () => ({
   __esModule: true,
   default: () => ({
-    addToAllTransactions: jest.fn().mockResolvedValue(undefined),
+    addToAllTransactions: addToAllTransactionsMock,
   }),
 }));
 
@@ -72,6 +75,8 @@ beforeEach(() => {
   removeMock = jest.fn().mockResolvedValue(undefined);
   useOnlineStatusMock = jest.fn().mockReturnValue(true);
   queueOfflineWriteMock = jest.fn().mockResolvedValue(1);
+  logActivityMock = jest.fn().mockResolvedValue(undefined);
+  addToAllTransactionsMock = jest.fn().mockResolvedValue(undefined);
 });
 
 describe("useLoansMutations", () => {
@@ -105,6 +110,152 @@ describe("useLoansMutations", () => {
     });
   });
 
+  describe("removeOccupantIfEmpty", () => {
+    it("fast path: isEmpty=true — calls update with null-write; no get", async () => {
+      const { result } = renderHook(() => useLoansMutations());
+
+      await act(async () => {
+        await result.current.removeOccupantIfEmpty("BR1", "occ1", true);
+      });
+
+      expect(getMock).not.toHaveBeenCalled();
+      expect(removeMock).not.toHaveBeenCalled();
+      expect(updateMock).toHaveBeenCalledTimes(1);
+      const [, pathMap] = updateMock.mock.calls[0] as [unknown, Record<string, null>];
+      expect(pathMap).toEqual({ "loans/BR1/occ1": null });
+    });
+
+    it("fast path: isEmpty=false — no Firebase calls at all; returns null", async () => {
+      const { result } = renderHook(() => useLoansMutations());
+
+      let returnVal: unknown;
+      await act(async () => {
+        returnVal = await result.current.removeOccupantIfEmpty("BR1", "occ1", false);
+      });
+
+      expect(getMock).not.toHaveBeenCalled();
+      expect(removeMock).not.toHaveBeenCalled();
+      expect(updateMock).not.toHaveBeenCalled();
+      expect(returnVal).toBeNull();
+    });
+
+    it("fallback: no param, occupant has txns — get called; remove NOT called", async () => {
+      getMock.mockResolvedValueOnce({
+        exists: () => true,
+        size: 1,
+      });
+
+      const { result } = renderHook(() => useLoansMutations());
+
+      await act(async () => {
+        await result.current.removeOccupantIfEmpty("BR1", "occ1");
+      });
+
+      expect(getMock).toHaveBeenCalledTimes(1);
+      expect(removeMock).not.toHaveBeenCalled();
+    });
+
+    it("fallback: no param, occupant empty — get called; remove called", async () => {
+      getMock.mockResolvedValueOnce({
+        exists: () => false,
+        size: 0,
+      });
+
+      const { result } = renderHook(() => useLoansMutations());
+
+      await act(async () => {
+        await result.current.removeOccupantIfEmpty("BR1", "occ1");
+      });
+
+      expect(getMock).toHaveBeenCalledTimes(1);
+      expect(removeMock).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("removeLoanItem", () => {
+    it("fast path (non-Keycard): deposit provided — no get; update called with txn null-write; logActivity not called", async () => {
+      const { result } = renderHook(() => useLoansMutations());
+
+      await act(async () => {
+        await result.current.removeLoanItem("BR1", "occ1", "txn1", "Umbrella", 0, false);
+      });
+
+      expect(getMock).not.toHaveBeenCalled();
+      expect(removeMock).not.toHaveBeenCalled();
+      expect(logActivityMock).not.toHaveBeenCalled();
+      expect(updateMock).toHaveBeenCalledTimes(1);
+      const [, pathMap] = updateMock.mock.calls[0] as [unknown, Record<string, null>];
+      expect(pathMap).toEqual({ "loans/BR1/occ1/txns/txn1": null });
+    });
+
+    it("fast path (non-Keycard): isEmpty=true — update includes occupant null-write", async () => {
+      const { result } = renderHook(() => useLoansMutations());
+
+      await act(async () => {
+        await result.current.removeLoanItem("BR1", "occ1", "txn1", "Umbrella", 0, true);
+      });
+
+      expect(getMock).not.toHaveBeenCalled();
+      expect(updateMock).toHaveBeenCalledTimes(1);
+      const [, pathMap] = updateMock.mock.calls[0] as [unknown, Record<string, null>];
+      expect(pathMap).toEqual({
+        "loans/BR1/occ1/txns/txn1": null,
+        "loans/BR1/occ1": null,
+      });
+    });
+
+    it("fast path (Keycard, deposit>0): logActivity called; addToAllTransactions called with refund; update called", async () => {
+      const { result } = renderHook(() => useLoansMutations());
+
+      await act(async () => {
+        await result.current.removeLoanItem("BR1", "occ1", "txn1", "Keycard", 10, false);
+      });
+
+      expect(getMock).not.toHaveBeenCalled();
+      expect(updateMock).toHaveBeenCalledTimes(1);
+      expect(logActivityMock).toHaveBeenCalledWith("occ1", 13);
+      expect(addToAllTransactionsMock).toHaveBeenCalledWith(
+        "txn-test-id",
+        expect.objectContaining({
+          amount: -10,
+          description: "Keycard deposit refund",
+          isKeycard: true,
+          itemCategory: "KeycardDepositRefund",
+        })
+      );
+    });
+
+    it("fast path (Keycard, deposit=0): logActivity called; addToAllTransactions NOT called", async () => {
+      const { result } = renderHook(() => useLoansMutations());
+
+      await act(async () => {
+        await result.current.removeLoanItem("BR1", "occ1", "txn1", "Keycard", 0, false);
+      });
+
+      expect(getMock).not.toHaveBeenCalled();
+      expect(logActivityMock).toHaveBeenCalledWith("occ1", 13);
+      expect(addToAllTransactionsMock).not.toHaveBeenCalled();
+    });
+
+    it("fallback: no deposit param — get called once; remove called for txn", async () => {
+      getMock.mockResolvedValueOnce({
+        exists: () => true,
+        val: () => ({ ...baseLoanData, deposit: 5 }),
+      });
+      // Second get for removeOccupantIfEmpty fallback (has txns remaining)
+      getMock.mockResolvedValueOnce({ exists: () => true, size: 1 });
+
+      const { result } = renderHook(() => useLoansMutations());
+
+      await act(async () => {
+        await result.current.removeLoanItem("BR1", "occ1", "txn1", "Padlock");
+      });
+
+      expect(getMock).toHaveBeenCalledTimes(2);
+      expect(removeMock).toHaveBeenCalledTimes(1);
+    });
+  });
+
   describe("removeLoanTransactionsForItem", () => {
     function makeSnapshot(
       rows: Array<{ key: string; value: LoanTransaction }>
@@ -127,17 +278,74 @@ describe("useLoansMutations", () => {
       };
     }
 
-    it("waits for all matching removals before cleanup check", async () => {
-      const removeResolvers: Array<() => void> = [];
-      removeMock.mockImplementation(() => {
-        if (removeResolvers.length < 2) {
-          return new Promise<void>((resolve) => {
-            removeResolvers.push(resolve);
-          });
-        }
-        return Promise.resolve();
+    it("fast path: matchingTxnIds + isOccupantEmpty=true — single update with all null-writes; no get or remove", async () => {
+      const { result } = renderHook(() => useLoansMutations());
+
+      await act(async () => {
+        await result.current.removeLoanTransactionsForItem(
+          "BR1",
+          "occ1",
+          "Keycard",
+          ["t-1", "t-2"],
+          true
+        );
       });
 
+      expect(getMock).not.toHaveBeenCalled();
+      expect(removeMock).not.toHaveBeenCalled();
+      expect(updateMock).toHaveBeenCalledTimes(1);
+      const [, pathMap] = updateMock.mock.calls[0] as [unknown, Record<string, null>];
+      expect(pathMap).toEqual({
+        "loans/BR1/occ1/txns/t-1": null,
+        "loans/BR1/occ1/txns/t-2": null,
+        "loans/BR1/occ1": null,
+      });
+    });
+
+    it("fast path: matchingTxnIds + isOccupantEmpty=false — update txn null-writes only; occupant NOT included", async () => {
+      const { result } = renderHook(() => useLoansMutations());
+
+      await act(async () => {
+        await result.current.removeLoanTransactionsForItem(
+          "BR1",
+          "occ1",
+          "Keycard",
+          ["t-1"],
+          false
+        );
+      });
+
+      expect(getMock).not.toHaveBeenCalled();
+      expect(removeMock).not.toHaveBeenCalled();
+      expect(updateMock).toHaveBeenCalledTimes(1);
+      const [, pathMap] = updateMock.mock.calls[0] as [unknown, Record<string, null>];
+      expect(pathMap).toEqual({
+        "loans/BR1/occ1/txns/t-1": null,
+      });
+      expect(pathMap["loans/BR1/occ1"]).toBeUndefined();
+    });
+
+    it("fast path: empty matchingTxnIds — returns null with no Firebase calls", async () => {
+      const { result } = renderHook(() => useLoansMutations());
+
+      let returnVal: unknown;
+      await act(async () => {
+        returnVal = await result.current.removeLoanTransactionsForItem(
+          "BR1",
+          "occ1",
+          "Keycard",
+          [],
+          true
+        );
+      });
+
+      expect(getMock).not.toHaveBeenCalled();
+      expect(updateMock).not.toHaveBeenCalled();
+      expect(removeMock).not.toHaveBeenCalled();
+      expect(returnVal).toBeNull();
+    });
+
+    it("fallback: no matchingTxnIds — get called; remove called for each match; then removeOccupantIfEmpty fallback runs", async () => {
       getMock
         .mockResolvedValueOnce(
           makeSnapshot([
@@ -176,6 +384,7 @@ describe("useLoansMutations", () => {
             },
           ])
         )
+        // Second get for removeOccupantIfEmpty fallback
         .mockResolvedValueOnce({
           exists: () => false,
           size: 0,
@@ -183,28 +392,13 @@ describe("useLoansMutations", () => {
 
       const { result } = renderHook(() => useLoansMutations());
 
-      let pending!: Promise<void | null>;
       await act(async () => {
-        pending = result.current.removeLoanTransactionsForItem(
-          "BR1",
-          "occ1",
-          "Keycard"
-        );
+        await result.current.removeLoanTransactionsForItem("BR1", "occ1", "Keycard");
       });
 
-      expect(removeMock).toHaveBeenCalledTimes(2);
-      expect(getMock).toHaveBeenCalledTimes(1);
-
-      removeResolvers[0]?.();
-      await Promise.resolve();
-      expect(getMock).toHaveBeenCalledTimes(1);
-
-      removeResolvers[1]?.();
-      await act(async () => {
-        await pending;
-      });
-
+      // First get for txns snapshot; second for occupant emptiness check
       expect(getMock).toHaveBeenCalledTimes(2);
+      // Removes: t-1, t-2 matched; then occupant removed because empty
       expect(removeMock).toHaveBeenCalledTimes(3);
     });
 

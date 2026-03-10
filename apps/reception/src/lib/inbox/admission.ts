@@ -186,7 +186,7 @@ function extractSenderEmailAddress(fromRaw: string): string {
   return parsed.email.toLowerCase();
 }
 
-function extractSenderDomain(emailAddress: string): string {
+export function extractSenderDomain(emailAddress: string): string {
   const atIndex = emailAddress.lastIndexOf("@");
   if (atIndex < 0) {
     return "";

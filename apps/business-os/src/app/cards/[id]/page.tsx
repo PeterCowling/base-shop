@@ -34,16 +34,8 @@ export default async function CardPage({ params }: PageProps) {
     notFound();
   }
 
-  // Fetch stage docs from D1
-  const stageDocsArray = await listStageDocsForCard(db, id);
-
-  // Transform stage docs array into object format expected by CardDetail
-  const stageDocs = {
-    factFind: stageDocsArray.find((doc) => doc.Stage === "fact-find"),
-    plan: stageDocsArray.find((doc) => doc.Stage === "plan"),
-    build: stageDocsArray.find((doc) => doc.Stage === "build"),
-    reflect: stageDocsArray.find((doc) => doc.Stage === "reflect"),
-  };
+  // Fetch attached card docs from D1.
+  const stageDocs = await listStageDocsForCard(db, id);
 
   // Get business info from hard-coded catalog
   const business = card.Business

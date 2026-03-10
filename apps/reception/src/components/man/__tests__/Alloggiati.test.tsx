@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 import Alloggiati from "../Alloggiati";
 
 // --- Mock components and hooks ----------------------------------
-jest.mock("../DateSelectorAllo", () => ({
+jest.mock("../../common/DateSelector", () => ({
   __esModule: true,
   default: ({ selectedDate }: { selectedDate: string }) => (
     <div data-testid="date-selector">{selectedDate}</div>

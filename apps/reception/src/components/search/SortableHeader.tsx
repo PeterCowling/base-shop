@@ -7,8 +7,7 @@ import {
 } from "lucide-react";
 
 import { TableHead } from "@acme/design-system";
-
-import clsx from "../../utils/clsx";
+import { cn as clsx } from "@acme/design-system/utils/style";
 
 export interface SortableHeaderProps {
   /** Display label (already i18n‑translated) */

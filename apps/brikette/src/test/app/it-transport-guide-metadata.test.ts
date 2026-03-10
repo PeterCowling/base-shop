@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename -- TEST-000 [ttl=2026-12-31] Reads repo-local guide fixtures from controlled paths. */
 import { readFileSync } from "node:fs";
 import path from "node:path";
 

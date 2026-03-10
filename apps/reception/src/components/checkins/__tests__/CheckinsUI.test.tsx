@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 /*  Components under test                                             */
 /* ------------------------------------------------------------------ */
 import type { Activity } from "../../../schemas/activitySchema";
-import DateSelector from "../DateSelector";
+import DateSelector from "../../common/DateSelector";
 import StatusButton from "../StatusButton";
 
 /* ------------------------------------------------------------------ */

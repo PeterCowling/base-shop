@@ -4,12 +4,15 @@ set -euo pipefail
 usage() {
   echo "Usage:"
   echo "  scripts/agents/with-writer-lock.sh [options] -- <command> [args...]"
-  echo "  scripts/agents/with-writer-lock.sh [options]            # opens a locked subshell"
+  echo "  scripts/agents/with-writer-lock.sh --interactive-shell  # rare explicit locked subshell"
   echo ""
   echo "Acquires the Base-Shop single-writer lock and exports BASESHOP_WRITER_LOCK_TOKEN"
   echo "for child processes (git hooks use this to enforce single-writer commits/pushes)."
+  echo "Command-mode interactive shells such as '-- bash' are forbidden; use --interactive-shell instead."
   echo ""
   echo "Options:"
+  echo "  --interactive-shell  Explicitly open a locked interactive shell (rare)"
+  echo "  --agent-write-session  Explicitly allow a long-lived agent CLI session (for example codex or claude)"
   echo "  --timeout <sec>   Wait timeout while acquiring lock (default: 300s in non-interactive agents; 0 = wait forever only in interactive shells)"
   echo "  --poll <sec>      Poll interval while waiting (default: 30)"
   echo "  --no-wait         Do not wait; fail immediately if lock is held"
@@ -27,15 +30,72 @@ fi
 cd "$repo_root"
 
 lock_script="${repo_root}/scripts/git/writer-lock.sh"
+agent_guard="${repo_root}/scripts/agents/agent-session-guard.sh"
 if [[ ! -x "$lock_script" ]]; then
   echo "ERROR: missing ${lock_script}" >&2
   exit 1
 fi
+if [[ ! -f "$agent_guard" ]]; then
+  echo "ERROR: missing ${agent_guard}" >&2
+  exit 1
+fi
+
+# shellcheck source=/dev/null
+source "$agent_guard"
+
+block_implicit_agent_write_session() {
+  local agent="$1"
+
+  cat >&2 <<EOF
+ERROR: long-lived agent CLI sessions must opt in explicitly before they hold the writer lock.
+Failure reason: write mode would hold the Base-Shop writer lock for the full ${agent} session, which blocks unrelated repo work while the shared checkout may still be edited.
+Retry posture: retry-forbidden
+Exact next step: scripts/agents/integrator-shell.sh --read-only -- ${agent} [args...]
+Anti-retry list:
+- scripts/agents/with-writer-lock.sh -- ${agent} [args...]
+- scripts/agents/with-writer-lock.sh --wait-forever -- ${agent} [args...]
+Escalation/stop condition: if this ${agent} session must edit files directly in the shared checkout, rerun with scripts/agents/with-writer-lock.sh --agent-write-session -- ${agent} [args...]; if the work is mostly discovery, waiting, or external verification, stop and redesign the workflow instead of holding the lock.
+EOF
+  exit 1
+}
+
+block_implicit_interactive_shell() {
+  cat >&2 <<'EOF'
+ERROR: interactive writer shells must opt in explicitly.
+Failure reason: opening a locked interactive shell holds the Base-Shop writer lock for the full shell lifetime, which makes long-held locks easy to create accidentally.
+Retry posture: retry-forbidden
+Exact next step: scripts/agents/with-writer-lock.sh -- <git-write-command>
+Anti-retry list:
+- scripts/agents/with-writer-lock.sh
+- scripts/agents/with-writer-lock.sh --wait-forever
+- scripts/agents/with-writer-lock.sh --timeout 0
+Escalation/stop condition: if you genuinely need a rare interactive locked shell for a bounded repair, rerun with scripts/agents/with-writer-lock.sh --interactive-shell and exit as soon as the serialized write window closes.
+EOF
+  exit 1
+}
+
+block_command_mode_interactive_shell() {
+  cat >&2 <<'EOF'
+ERROR: command-mode interactive shells are forbidden while holding the writer lock.
+Failure reason: invocations such as scripts/agents/with-writer-lock.sh -- bash still open a locked interactive shell and can hold the Base-Shop writer lock indefinitely.
+Retry posture: retry-forbidden
+Exact next step: scripts/agents/with-writer-lock.sh -- <git-write-command>
+Anti-retry list:
+- scripts/agents/with-writer-lock.sh -- bash
+- scripts/agents/with-writer-lock.sh -- sh
+- scripts/agents/with-writer-lock.sh -- zsh
+- scripts/agents/with-writer-lock.sh -- scripts/agents/with-git-guard.sh -- bash
+Escalation/stop condition: if you genuinely need a rare interactive locked shell for a bounded repair, rerun with scripts/agents/with-writer-lock.sh --interactive-shell and exit as soon as the serialized write window closes.
+EOF
+  exit 1
+}
 
 wait_for_lock="1"
 timeout_sec="${BASESHOP_WRITER_LOCK_TIMEOUT_SEC:-}"
 poll_sec="${BASESHOP_WRITER_LOCK_POLL_SEC:-30}"
 command_mode="0"
+agent_write_session="0"
+interactive_shell="0"
 
 if [[ -z "$timeout_sec" ]]; then
   # Agents (non-interactive) should not wait indefinitely.
@@ -66,6 +126,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     --no-wait)
       wait_for_lock="0"
+      shift
+      ;;
+    --interactive-shell)
+      interactive_shell="1"
+      shift
+      ;;
+    --agent-write-session)
+      agent_write_session="1"
       shift
       ;;
     --wait)
@@ -101,6 +169,18 @@ fi
 if ! [[ "$poll_sec" =~ ^[0-9]+$ ]]; then
   echo "ERROR: --poll must be an integer number of seconds (0 or greater)." >&2
   exit 2
+fi
+
+if [[ "$command_mode" == "1" ]]; then
+  if detect_interactive_shell "$@" >/dev/null; then
+    block_command_mode_interactive_shell
+  fi
+fi
+
+if [[ "$command_mode" == "1" && "$agent_write_session" != "1" ]]; then
+  if agent_name="$(detect_long_lived_agent_cli "$@")"; then
+    block_implicit_agent_write_session "$agent_name"
+  fi
 fi
 
 # Non-interactive agents must not wait forever, and must poll (check) periodically.
@@ -147,6 +227,9 @@ if [[ "$command_mode" == "0" ]]; then
     echo "Run in command mode instead:" >&2
     echo "  scripts/agents/with-writer-lock.sh -- <command> [args...]" >&2
     exit 2
+  fi
+  if [[ "$interactive_shell" != "1" ]]; then
+    block_implicit_interactive_shell
   fi
   echo "Writer lock held for this shell. Exit to release." >&2
   exec bash

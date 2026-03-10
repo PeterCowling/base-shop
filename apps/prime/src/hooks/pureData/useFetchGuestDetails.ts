@@ -5,13 +5,16 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import type { Database } from '@/services/firebase';
 import { get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestDetailsRecord } from '../../types/guestsDetails';
 import useUuid from '../useUuid';
+
+import type { PureDataRefetch } from './types';
 
 /**
  * Fetch occupant details from "guestsDetails/{bookingRef}/{occupantId}".
@@ -30,7 +33,7 @@ async function fetchGuestDetails(
     }
     return snapshot.val() as GuestDetailsRecord;
   } catch (error) {
-    logger.error('Error fetching guestsDetails occupant data:', error);
+    logger.error('Error fetching guestsDetails occupant data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }
@@ -50,6 +53,6 @@ export function useFetchGuestDetails(bookingRef: string) {
     error: error ?? null,
     isLoading,
     isError: error !== null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

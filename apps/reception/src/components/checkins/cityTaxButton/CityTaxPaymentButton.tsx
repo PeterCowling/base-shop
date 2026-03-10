@@ -18,6 +18,7 @@ import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutat
 import useCityTaxMutation from "../../../hooks/mutations/useCityTaxMutation";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import { type PayType } from "../../../types/domains/cityTaxDomain";
+import { formatEuro } from "../../../utils/format";
 import { generateTransactionId } from "../../../utils/generateTransactionId";
 import { showToast } from "../../../utils/toastUtils";
 import SmallSpinner from "../../search/SmallSpinner";
@@ -253,7 +254,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
   const PayTypeIcon = payType === "CC" ? CreditCard : Banknote;
   const getButtonLabel = () => {
     if (loading) return <SmallSpinner />;
-    return amount > 0 ? `€${amount.toFixed(2)}` : "Paid";
+    return amount > 0 ? formatEuro(amount) : "Paid";
   };
   // Style classes
   const activeClass = "bg-primary-main/100 hover:opacity-90 text-primary-fg/100";

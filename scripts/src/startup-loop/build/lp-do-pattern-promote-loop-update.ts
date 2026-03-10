@@ -51,6 +51,7 @@ export interface PromoteOptions {
 
 interface YamlFrontmatter {
   entries?: Array<{
+    canonical_title?: string;
     pattern_summary?: string;
     category?: string;
     routing_target?: string;
@@ -84,6 +85,10 @@ function parseYamlEntries(yamlStr: string): PatternEntry[] {
       continue;
     }
     entries.push({
+      canonical_title:
+        typeof raw.canonical_title === "string" && raw.canonical_title.trim().length > 0
+          ? raw.canonical_title.trim()
+          : undefined,
       pattern_summary: String(raw.pattern_summary),
       category: (raw.category as PatternCategory) ?? "unclassified",
       routing_target: raw.routing_target as RoutingTarget,
@@ -102,6 +107,8 @@ function parseBodyFormatEntries(content: string): PatternEntry[] {
   const sections = content.split(/^### Entry \d+|^### \d+\./m);
 
   for (const section of sections.slice(1)) {
+    const canonicalTitle =
+      section.match(/\*\*canonical_title:\*\*\s*(.+)/i)?.[1]?.trim();
     const summary =
       section.match(/\*\*pattern_summary:\*\*\s*(.+)/i)?.[1]?.trim();
     const category =
@@ -125,6 +132,7 @@ function parseBodyFormatEntries(content: string): PatternEntry[] {
     }
 
     entries.push({
+      canonical_title: canonicalTitle,
       pattern_summary: summary,
       category: (category as PatternCategory) ?? "unclassified",
       routing_target: routingTarget as RoutingTarget,

@@ -1048,34 +1048,38 @@ describe("TASK-18: Critical Error Checks", () => {
       30_000,
     );
 
-    it("should always output both plaintext and HTML", async () => {
-      const customerFixtures = fixtures.filter(
-        (f) => f.requiresResponse && f.scenarioType !== "system"
-      );
-
-      for (const fixture of customerFixtures) {
-        const interpretResult = await handleDraftInterpretTool(
-          "draft_interpret",
-          { body: fixture.body, subject: fixture.subject }
-        );
-        const actionPlan = parseResult<InterpretResult>(interpretResult);
-
-        const generateResult = await handleDraftGenerateTool("draft_generate", {
-          actionPlan,
-          subject: fixture.subject,
-        });
-
-        if ("isError" in generateResult && generateResult.isError) continue;
-
-        const generated = parseResult<GenerateResult>(
-          generateResult as { content: Array<{ text: string }> }
+    it(
+      "should always output both plaintext and HTML",
+      async () => {
+        const customerFixtures = fixtures.filter(
+          (f) => f.requiresResponse && f.scenarioType !== "system"
         );
 
-        expect(generated.draft.bodyPlain.length).toBeGreaterThan(0);
-        expect(generated.draft.bodyHtml.length).toBeGreaterThan(0);
-        expect(generated.draft.bodyHtml).toContain("<!DOCTYPE html>");
-      }
-    });
+        for (const fixture of customerFixtures) {
+          const interpretResult = await handleDraftInterpretTool(
+            "draft_interpret",
+            { body: fixture.body, subject: fixture.subject }
+          );
+          const actionPlan = parseResult<InterpretResult>(interpretResult);
+
+          const generateResult = await handleDraftGenerateTool("draft_generate", {
+            actionPlan,
+            subject: fixture.subject,
+          });
+
+          if ("isError" in generateResult && generateResult.isError) continue;
+
+          const generated = parseResult<GenerateResult>(
+            generateResult as { content: Array<{ text: string }> }
+          );
+
+          expect(generated.draft.bodyPlain.length).toBeGreaterThan(0);
+          expect(generated.draft.bodyHtml.length).toBeGreaterThan(0);
+          expect(generated.draft.bodyHtml).toContain("<!DOCTYPE html>");
+        }
+      },
+      30_000,
+    );
 
     it("agreement detection: 0% false positive rate", async () => {
       // Emails that should NOT be detected as agreement

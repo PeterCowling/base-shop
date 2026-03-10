@@ -8,18 +8,7 @@ import { useCallback, useMemo, useState } from "react";
 import { get, ref, remove, set } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../../../../services/useFirebase";
-
-interface BarOrderItem {
-  product: string;
-  price: number;
-  count: number;
-  lineType?: "bds" | "kds";
-}
-
-interface BarOrder {
-  confirmed: boolean;
-  items: BarOrderItem[];
-}
+import type { BarOrder } from "../../../../../types/bar/BarOrderDomain";
 
 type UseRemoveItemFromOrderProps = Record<string, unknown>;
 

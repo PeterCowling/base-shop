@@ -37,6 +37,7 @@ import {
   upsertInboxSyncCheckpoint,
 } from "./sync-state.server";
 import { recordInboxEvent } from "./telemetry.server";
+import { buildThreadContext as buildBoundThreadContext } from "./thread-context";
 
 const DEFAULT_MAILBOX_KEY = "primary";
 const DEFAULT_RESCAN_WINDOW_DAYS = 30;
@@ -158,15 +159,7 @@ export function getLatestInboundMessage(
   return [...inbound].sort(compareMessagesByDate).at(-1) ?? null;
 }
 
-export function buildThreadContext(thread: ParsedGmailThread): { messages: Array<{ from: string; date: string; snippet: string }> } {
-  return {
-    messages: thread.messages.map((message) => ({
-      from: message.from ?? "Unknown sender",
-      date: message.receivedAt ?? message.internalDate ?? nowIso(),
-      snippet: message.body.plain || message.snippet,
-    })),
-  };
-}
+export const buildThreadContext = buildBoundThreadContext;
 
 function ensureReplySubject(subject: string | null | undefined): string {
   const trimmed = subject?.trim();

@@ -17,6 +17,13 @@ Produce evidence that lets `/lp-do-plan` create validation-first, channel-aware 
 
 3. Existing assets and operating baseline
 - Current templates, examples, playbooks, and known performance baselines.
+- If the topic touches channels, retail, distribution, partnerships, or GTM execution, inspect standing GTM artifacts first when present:
+  - `docs/business-os/startup-baselines/<BIZ>/channels.md`
+  - `docs/business-os/strategy/<BIZ>/stockist-target-list.user.md`
+  - `docs/business-os/strategy/<BIZ>/channel-health-log.user.md`
+  - `docs/business-os/strategy/<BIZ>/weekly-demand-plan.user.md`
+  - `docs/business-os/strategy/<BIZ>/channel-policy.user.md`
+- Do not re-discover facts that are already captured in these artifacts; treat them as the operating baseline and audit freshness/gaps instead.
 
 4. Ownership and approvals
 - Who signs off, who executes, who measures.

@@ -5,11 +5,15 @@
  *
  * Shows real-time Firebase query metrics in a collapsible panel.
  * Only renders in development mode.
+ *
+ * Uses the live firebaseMetrics singleton from @/services/firebase —
+ * the same singleton wired to the instrumented get() and onValue() wrappers,
+ * so all reads tracked by useBudgetWatcher appear here too.
  */
 
 import { useEffect, useState } from 'react';
 
-import { firebaseMetrics } from '@/services/firebaseMetrics';
+import { firebaseMetrics } from '@/services/firebase';
 
 interface MetricsData {
   totalQueries: number;
@@ -24,59 +28,93 @@ interface MetricsData {
   }>;
 }
 
+function formatBytes(bytes: number): string {
+  if (bytes === 0) return '0 B';
+  const k = 1024;
+  const sizes = ['B', 'KB', 'MB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
+}
+
+function deriveMetricsData(raw: ReturnType<typeof firebaseMetrics.getMetrics>): MetricsData {
+  // Aggregate per-path counts and durations from recentQueries ring buffer
+  const byPath: Record<string, { count: number; totalBytes: number; totalDuration: number; durationCount: number }> = {};
+  for (const q of raw.recentQueries) {
+    if (!byPath[q.path]) {
+      byPath[q.path] = { count: 0, totalBytes: 0, totalDuration: 0, durationCount: 0 };
+    }
+    byPath[q.path].count++;
+    byPath[q.path].totalBytes += q.sizeBytes;
+    if (q.durationMs > 0) {
+      byPath[q.path].totalDuration += q.durationMs;
+      byPath[q.path].durationCount++;
+    }
+  }
+
+  // Estimate average query time from recentQueries (best effort; ring buffer capped at 50)
+  let totalDuration = 0;
+  let durationCount = 0;
+  for (const q of raw.recentQueries) {
+    if (q.durationMs > 0) {
+      totalDuration += q.durationMs;
+      durationCount++;
+    }
+  }
+  const averageQueryTime = durationCount > 0 ? totalDuration / durationCount : 0;
+
+  const topPaths = Object.entries(byPath)
+    .sort((a, b) => b[1].count - a[1].count)
+    .slice(0, 5)
+    .map(([path, stats]) => ({
+      path: path.length > 50 ? `...${path.slice(-47)}` : path,
+      count: stats.count,
+      bytes: formatBytes(stats.totalBytes),
+      avgTime: stats.durationCount > 0
+        ? `${(stats.totalDuration / stats.durationCount).toFixed(1)}ms`
+        : 'n/a',
+    }));
+
+  return {
+    totalQueries: raw.queryCount,
+    totalBytes: raw.totalBytes,
+    averageQueryTime,
+    slowQueriesCount: raw.slowQueries.length,
+    topPaths,
+  };
+}
+
 export function FirebaseMetricsPanel() {
   const [isOpen, setIsOpen] = useState(false);
   const [metrics, setMetrics] = useState<MetricsData | null>(null);
   const [autoRefresh, setAutoRefresh] = useState(false);
 
-  // Only render in development - must check after hooks
+  // Only render in development — must check after hooks
   const isDevelopment = process.env.NODE_ENV === 'development';
-  const isEnabled = firebaseMetrics.isEnabled();
 
   const refreshMetrics = () => {
-    const summary = firebaseMetrics.getSummary();
-
-    const topPaths = Object.entries(summary.byPath)
-      .sort((a, b) => b[1].count - a[1].count)
-      .slice(0, 5)
-      .map(([path, stats]) => ({
-        path: path.length > 50 ? `...${path.slice(-47)}` : path,
-        count: stats.count,
-        bytes: formatBytes(stats.bytes),
-        avgTime: `${stats.avgDuration.toFixed(1)}ms`,
-      }));
-
-    setMetrics({
-      totalQueries: summary.totalQueries,
-      totalBytes: summary.totalBytes,
-      averageQueryTime: summary.averageQueryTime,
-      slowQueriesCount: summary.slowQueries.length,
-      topPaths,
-    });
-  };
-
-  const formatBytes = (bytes: number): string => {
-    if (bytes === 0) return '0 B';
-    const k = 1024;
-    const sizes = ['B', 'KB', 'MB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(1))} ${sizes[i]}`;
+    setMetrics(deriveMetricsData(firebaseMetrics.getMetrics()));
   };
 
   const handleClear = () => {
-    firebaseMetrics.clear();
+    firebaseMetrics.reset();
     refreshMetrics();
   };
 
   const handlePrintToConsole = () => {
-    firebaseMetrics.printSummary();
+    const raw = firebaseMetrics.getMetrics();
+    console.info('[Firebase Metrics] Summary', { // i18n-exempt -- PRIME-101 developer diagnostic [ttl=2026-12-31]
+      queryCount: raw.queryCount,
+      totalBytes: formatBytes(raw.totalBytes),
+      activeListeners: raw.activeListeners,
+      slowQueries: raw.slowQueries.length,
+      recentPaths: raw.recentQueries.map((q) => q.path),
+    });
   };
 
   useEffect(() => {
     if (isOpen) {
       refreshMetrics();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 
   useEffect(() => {
@@ -84,11 +122,10 @@ export function FirebaseMetricsPanel() {
       const interval = setInterval(refreshMetrics, 2000);
       return () => clearInterval(interval);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [autoRefresh, isOpen]);
 
   // Early return after all hooks
-  if (!isDevelopment || !isEnabled) {
+  if (!isDevelopment) {
     return null;
   }
 
@@ -118,7 +155,7 @@ export function FirebaseMetricsPanel() {
           }}
           title="Open Firebase Metrics"
         >
-          📊 Firebase
+          Firebase
         </button>
       ) : (
         <div
@@ -145,7 +182,7 @@ export function FirebaseMetricsPanel() {
               borderTopRightRadius: '8px',
             }}
           >
-            <span style={{ fontWeight: 'bold' }}>📊 Firebase Metrics</span>
+            <span style={{ fontWeight: 'bold' }}>Firebase Metrics</span>
             <button
               onClick={() => setIsOpen(false)}
               style={{
@@ -157,7 +194,7 @@ export function FirebaseMetricsPanel() {
                 padding: '0 5px',
               }}
             >
-              ✕
+              x
             </button>
           </div>
 
@@ -183,7 +220,7 @@ export function FirebaseMetricsPanel() {
                 fontSize: '11px',
               }}
             >
-              🔄 Refresh
+              Refresh
             </button>
             <button
               onClick={handleClear}
@@ -197,7 +234,7 @@ export function FirebaseMetricsPanel() {
                 fontSize: '11px',
               }}
             >
-              🗑️ Clear
+              Clear
             </button>
             <button
               onClick={handlePrintToConsole}
@@ -211,7 +248,7 @@ export function FirebaseMetricsPanel() {
                 fontSize: '11px',
               }}
             >
-              📄 Console
+              Console
             </button>
             <label
               style={{

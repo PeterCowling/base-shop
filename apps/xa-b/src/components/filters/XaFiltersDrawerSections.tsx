@@ -18,6 +18,8 @@ import { xaI18n } from "../../lib/xaI18n";
 
 import { PRICE_PRESETS } from "./XaFiltersDrawer.helpers";
 
+const TRENDING_DESIGNERS = getTrendingDesigners(4);
+
 export function RefineSection({
   draftInStock,
   draftNewIn,
@@ -98,15 +100,14 @@ export function DesignerSection({
   onToggleValue: (key: FilterKey, value: string) => void;
 }) {
   const [designerQuery, setDesignerQuery] = React.useState("");
-  const designerOptions = (facetValues.designer ?? []).map((handle) => ({
-    handle,
-    name: getDesignerName(handle),
-  }));
-  const designerQueryLower = designerQuery.trim().toLowerCase();
-  const filteredDesigners = designerQueryLower
-    ? designerOptions.filter((designer) => designer.name.toLowerCase().includes(designerQueryLower))
-    : designerOptions;
-  const trendingDesigners = getTrendingDesigners(4);
+  const designerOptions = React.useMemo(
+    () => (facetValues.designer ?? []).map((handle) => ({ handle, name: getDesignerName(handle) })),
+    [facetValues.designer],
+  );
+  const filteredDesigners = React.useMemo(() => {
+    const q = designerQuery.trim().toLowerCase();
+    return q ? designerOptions.filter((d) => d.name.toLowerCase().includes(q)) : designerOptions;
+  }, [designerOptions, designerQuery]);
 
   return (
     <div className="space-y-3">
@@ -118,7 +119,7 @@ export function DesignerSection({
           placeholder={xaI18n.t("xaB.src.components.xafiltersdrawer.client.l240c37")}
         />
         <Inline gap={2} className="flex-wrap">
-          {trendingDesigners.map((designer) => (
+          {TRENDING_DESIGNERS.map((designer) => (
             <Button
               key={`trend-${designer.handle}`}
               type="button"

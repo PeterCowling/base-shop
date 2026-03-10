@@ -10,7 +10,7 @@ import BookingModal from "../BookingModal";
 const updateBookingDates = jest.fn();
 jest.mock("../../../../hooks/mutations/useChangeBookingDatesMutator", () => ({
   __esModule: true,
-  useBookingDatesMutator: () => ({ updateBookingDates, isLoading: false }),
+  useBookingDatesMutator: () => ({ updateBookingDates, loading: false }),
 }));
 
 describe("BookingModal", () => {

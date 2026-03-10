@@ -1,0 +1,524 @@
+{
+  "business": "BRIK",
+  "generated_at": "2026-03-10T08:46:14.480Z",
+  "source_paths": {
+    "observations": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/observations.jsonl",
+    "candidates": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
+    "startup_state": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/startup-state.json",
+    "policy_state": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/policy-state.json",
+    "policy_decisions": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/policy-decisions.jsonl",
+    "shadow_handoffs": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/shadow-handoffs.jsonl",
+    "queue_state": "/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/trial/queue-state.json",
+    "events": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/events.jsonl"
+  },
+  "warnings": [],
+  "startup_state_present": true,
+  "policy_state_present": true,
+  "shadow_handoff_count": 4,
+  "lifecycle_events_count": 363,
+  "queue_dispatch_count": 495,
+  "dashboard": {
+    "totals": {
+      "observations": 211,
+      "candidates": 4,
+      "active_candidates": 4,
+      "blocked_candidates": 0,
+      "promoted_candidates": 0,
+      "reverted_candidates": 0
+    },
+    "quality": {
+      "resolved_candidate_precision": {
+        "sample_size": 0,
+        "successes": 0,
+        "observed_rate": null,
+        "posterior_mean": null,
+        "lower_credible_bound": null,
+        "upper_credible_bound": null,
+        "confidence_level": 0.95,
+        "method": "beta_binomial_jeffreys",
+        "status": "insufficient_data"
+      },
+      "observation_annotation_coverage": {
+        "sample_size": 211,
+        "successes": 5,
+        "observed_rate": 0.023696682464454975,
+        "posterior_mean": 0.025943396226415096,
+        "lower_credible_bound": 0.009098205991904251,
+        "upper_credible_bound": 0.051152374828234315,
+        "confidence_level": 0.95,
+        "method": "beta_binomial_jeffreys",
+        "status": "measured"
+      },
+      "annotated_data_quality_ok_rate": {
+        "sample_size": 5,
+        "successes": 0,
+        "observed_rate": 0,
+        "posterior_mean": 0.08333333333333333,
+        "lower_credible_bound": 0.00009342060002381913,
+        "upper_credible_bound": 0.37937714252620935,
+        "confidence_level": 0.95,
+        "method": "beta_binomial_jeffreys",
+        "status": "measured"
+      },
+      "measurement_ready_observation_rate": {
+        "sample_size": 211,
+        "successes": 0,
+        "observed_rate": 0,
+        "posterior_mean": 0.0023584905660377358,
+        "lower_credible_bound": 0.0000023244196256655414,
+        "upper_credible_bound": 0.01182041605352424,
+        "confidence_level": 0.95,
+        "method": "beta_binomial_jeffreys",
+        "status": "measured"
+      },
+      "measured_evidence_candidate_rate": {
+        "sample_size": 4,
+        "successes": 0,
+        "observed_rate": 0,
+        "posterior_mean": 0.1,
+        "lower_credible_bound": 0.00011533278848219197,
+        "upper_credible_bound": 0.44476261734962463,
+        "confidence_level": 0.95,
+        "method": "beta_binomial_jeffreys",
+        "status": "measured"
+      },
+      "evidence_constrained_candidates": 4
+    },
+    "posture": {
+      "total_observations": 211,
+      "effective_grade_counts": {
+        "exploratory": 206,
+        "structural": 5,
+        "measured": 0
+      },
+      "declared_grade_counts": {
+        "exploratory": 145,
+        "structural": 5,
+        "measured": 0,
+        "unlabeled": 61
+      },
+      "measurement_contract_status_counts": {
+        "none": 145,
+        "declared": 5,
+        "verified": 0,
+        "unlabeled": 61
+      },
+      "source_counts": {
+        "declared": 150,
+        "inferred": 61
+      },
+      "underlying_field_counts": {
+        "baseline_present": 0,
+        "measurement_window_present": 5,
+        "data_quality_ok": 0,
+        "minimum_sample_ready": 0,
+        "measurement_ready": 0
+      },
+      "policy_eligibility_counts": {
+        "exploratory_fact_find_only": 206,
+        "structural_fact_find_only": 5,
+        "stronger_route_eligible_measured": 0
+      },
+      "current_qualified_tranche": {
+        "measured_suffix_observations": 0,
+        "stronger_route_eligible_now": false
+      }
+    },
+    "backlog_saturation": 0.4,
+    "policy": {
+      "policy_version": "self-evolving-policy.v1",
+      "utility_version": "self-evolving-utility.v1",
+      "authority_level": "shadow",
+      "candidate_beliefs": 4,
+      "decision_records": 24,
+      "stochastic_decisions": 0,
+      "exploration_decisions": 0,
+      "promotion_gate_decisions": 8
+    },
+    "evaluation": {
+      "total_decisions": 8,
+      "observed_decisions": 0,
+      "pending_decisions": 4,
+      "censored_decisions": 4,
+      "missing_decisions": 0,
+      "replay_ready_decisions": 0,
+      "shadow_handoff_decisions": 4,
+      "pending_shadow_handoffs": 4,
+      "matured_shadow_handoffs": 0,
+      "maturity_debt_decisions": 8,
+      "replay_ready_rate": {
+        "sample_size": 8,
+        "successes": 0,
+        "observed_rate": 0,
+        "posterior_mean": 0.05555555555555555,
+        "lower_credible_bound": 0.00005949030310148373,
+        "upper_credible_bound": 0.2622172487899661,
+        "confidence_level": 0.95,
+        "method": "beta_binomial_jeffreys",
+        "status": "measured"
+      }
+    },
+    "audit": {
+      "calibration_status": "insufficient_data",
+      "calibration_sample_size": 0,
+      "calibration_brier_score": null,
+      "exploration_regret_status": "insufficient_data",
+      "exploration_regret_batches": 0,
+      "exploration_regret_measured_batches": 0,
+      "exploration_total_regret": null,
+      "override_count": 0,
+      "overridden_candidates": 0,
+      "policy_versions_compared": 1
+    },
+    "graph": {
+      "snapshot_id": "report-2026-03-10T08:46:14.480Z",
+      "node_count": 18,
+      "edge_count": 28,
+      "top_candidate_bottlenecks": [
+        {
+          "candidate_id": "ab5320678b656800",
+          "bottleneck_score": 0.022059
+        },
+        {
+          "candidate_id": "300444927b4c7dec",
+          "bottleneck_score": 0.012255
+        },
+        {
+          "candidate_id": "455be690c726c386",
+          "bottleneck_score": 0.012255
+        },
+        {
+          "candidate_id": "fd5ed6ad188ac1a9",
+          "bottleneck_score": 0.012255
+        }
+      ]
+    },
+    "survival": {
+      "snapshot_id": "2026-03-10T08:46:14.480Z",
+      "total_records": 8,
+      "verified_curve_status": "estimated",
+      "closure_curve_status": "estimated",
+      "estimated_route_profiles": 1,
+      "insufficient_route_profiles": 0
+    }
+  },
+  "dependency_graph": {
+    "status": "computed",
+    "snapshot_id": "report-2026-03-10T08:46:14.480Z",
+    "node_count": 18,
+    "edge_count": 28,
+    "top_candidate_bottlenecks": [
+      {
+        "candidate_id": "ab5320678b656800",
+        "bottleneck_score": 0.022059,
+        "shared_executor_candidate_count": 0,
+        "shared_constraint_candidate_count": 3
+      },
+      {
+        "candidate_id": "300444927b4c7dec",
+        "bottleneck_score": 0.012255,
+        "shared_executor_candidate_count": 2,
+        "shared_constraint_candidate_count": 3
+      },
+      {
+        "candidate_id": "455be690c726c386",
+        "bottleneck_score": 0.012255,
+        "shared_executor_candidate_count": 2,
+        "shared_constraint_candidate_count": 3
+      },
+      {
+        "candidate_id": "fd5ed6ad188ac1a9",
+        "bottleneck_score": 0.012255,
+        "shared_executor_candidate_count": 2,
+        "shared_constraint_candidate_count": 3
+      }
+    ],
+    "critical_path": {
+      "length": 2,
+      "node_ids": [
+        "constraint:blast:small",
+        "candidate:300444927b4c7dec",
+        "executor:lp-do-build:container:analytics-v1"
+      ]
+    }
+  },
+  "survival_policy": {
+    "snapshot_id": "2026-03-10T08:46:14.480Z",
+    "total_records": 8,
+    "verified_curve_status": "estimated",
+    "closure_curve_status": "estimated",
+    "route_profiles": [
+      {
+        "route": "lp-do-fact-find",
+        "status": "estimated",
+        "total_records": 8,
+        "verified_outcomes": 0,
+        "missing_outcomes": 0,
+        "censored_records": 8,
+        "median_verified_days": null,
+        "unresolved_after_hold_probability": 1,
+        "missing_outcome_rate": 0,
+        "policy_penalty": 0.45
+      }
+    ]
+  },
+  "policy_evaluation": {
+    "summary": {
+      "total_decisions": 8,
+      "observed_decisions": 0,
+      "pending_decisions": 4,
+      "censored_decisions": 4,
+      "missing_decisions": 0,
+      "replay_ready_decisions": 0,
+      "shadow_handoff_decisions": 4,
+      "pending_shadow_handoffs": 4,
+      "matured_shadow_handoffs": 0,
+      "deterministic_decisions": 8,
+      "stochastic_decisions": 0,
+      "policy_version_counts": {
+        "self-evolving-policy.v1": 8
+      }
+    },
+    "sample_unready_records": [
+      {
+        "decision_id": "e14a9b1acba67c82",
+        "candidate_id": "455be690c726c386",
+        "evaluation_status": "censored",
+        "queue_state": null,
+        "maturity_status": null,
+        "measurement_status": null,
+        "outcome_reason_code": null
+      },
+      {
+        "decision_id": "19f63181ae17edac",
+        "candidate_id": "ab5320678b656800",
+        "evaluation_status": "censored",
+        "queue_state": null,
+        "maturity_status": null,
+        "measurement_status": null,
+        "outcome_reason_code": null
+      },
+      {
+        "decision_id": "c194973197d928c3",
+        "candidate_id": "fd5ed6ad188ac1a9",
+        "evaluation_status": "censored",
+        "queue_state": null,
+        "maturity_status": null,
+        "measurement_status": null,
+        "outcome_reason_code": null
+      },
+      {
+        "decision_id": "ea5674d5b3dd3305",
+        "candidate_id": "300444927b4c7dec",
+        "evaluation_status": "censored",
+        "queue_state": null,
+        "maturity_status": null,
+        "measurement_status": null,
+        "outcome_reason_code": null
+      },
+      {
+        "decision_id": "acb4001f445c142c",
+        "candidate_id": "455be690c726c386",
+        "evaluation_status": "pending",
+        "queue_state": "shadow_handoff",
+        "maturity_status": "pending",
+        "measurement_status": "pending",
+        "outcome_reason_code": null
+      }
+    ]
+  },
+  "policy_audit": {
+    "schema_version": "policy-audit.v1",
+    "generated_at": "2026-03-10T08:46:14.480Z",
+    "belief_quality": {
+      "calibration": {
+        "status": "insufficient_data",
+        "sample_size": 0,
+        "positive_outcome_count": 0,
+        "mean_predicted_positive_probability": null,
+        "observed_positive_rate": null,
+        "brier_score": null,
+        "mean_absolute_error": null,
+        "bins": [
+          {
+            "lower_bound": 0,
+            "upper_bound": 0.2,
+            "sample_size": 0,
+            "mean_predicted_positive_probability": null,
+            "observed_positive_rate": null,
+            "calibration_gap": null
+          },
+          {
+            "lower_bound": 0.2,
+            "upper_bound": 0.4,
+            "sample_size": 0,
+            "mean_predicted_positive_probability": null,
+            "observed_positive_rate": null,
+            "calibration_gap": null
+          },
+          {
+            "lower_bound": 0.4,
+            "upper_bound": 0.6,
+            "sample_size": 0,
+            "mean_predicted_positive_probability": null,
+            "observed_positive_rate": null,
+            "calibration_gap": null
+          },
+          {
+            "lower_bound": 0.6,
+            "upper_bound": 0.8,
+            "sample_size": 0,
+            "mean_predicted_positive_probability": null,
+            "observed_positive_rate": null,
+            "calibration_gap": null
+          },
+          {
+            "lower_bound": 0.8,
+            "upper_bound": 1,
+            "sample_size": 0,
+            "mean_predicted_positive_probability": null,
+            "observed_positive_rate": null,
+            "calibration_gap": null
+          }
+        ],
+        "source": "candidate_route_belief_audit"
+      }
+    },
+    "policy_quality": {
+      "exploration_regret": {
+        "status": "insufficient_data",
+        "total_batches": 0,
+        "measured_batches": 0,
+        "sample_coverage_rate": null,
+        "total_regret": null,
+        "average_regret": null,
+        "max_regret": null,
+        "batches": [],
+        "source": "exploration_batch_positive_outcome_replay"
+      },
+      "policy_version_comparison": [
+        {
+          "policy_version": "self-evolving-policy.v1",
+          "decision_count": 8,
+          "observed_count": 0,
+          "pending_count": 4,
+          "censored_count": 4,
+          "missing_count": 0,
+          "positive_sample_size": 0,
+          "positive_outcome_count": 0,
+          "positive_outcome_rate": null,
+          "mean_predicted_positive_probability": null,
+          "calibration_gap": null
+        }
+      ]
+    },
+    "operator_intervention": {
+      "overrides": {
+        "total_overrides": 0,
+        "overridden_candidates": 0,
+        "route_overrides": 0,
+        "portfolio_overrides": 0,
+        "exploration_overrides": 0,
+        "promotion_gate_overrides": 0,
+        "unknown_overrides": 0,
+        "overridden_outcomes": {
+          "sample_size": 0,
+          "positive_outcome_count": 0,
+          "positive_outcome_rate": null,
+          "status": "insufficient_data"
+        },
+        "non_overridden_outcomes": {
+          "sample_size": 0,
+          "positive_outcome_count": 0,
+          "positive_outcome_rate": null,
+          "status": "insufficient_data"
+        },
+        "reason_breakdown": []
+      }
+    }
+  },
+  "policy_decisions": {
+    "total": 24,
+    "exploration": {
+      "total": 0,
+      "stochastic": 0,
+      "prioritized": 0,
+      "applied": 0,
+      "shadow": 0
+    },
+    "promotion_gate": {
+      "total": 8,
+      "promote": 0,
+      "revert": 0,
+      "hold": 8
+    }
+  },
+  "evidence_policy": {
+    "route_policy": {
+      "exploratory": "fact_find_only",
+      "structural": "fact_find_only",
+      "measured": "stronger_routes_allowed_only_when_declared_measured_posture_and_measurement_ready_fields_are_present"
+    },
+    "write_back_policy": "write_back_requires_declared_measured_posture_with_verified_contract_fields",
+    "posture_summary": {
+      "effective_grade_counts": {
+        "exploratory": 206,
+        "structural": 5,
+        "measured": 0
+      },
+      "declared_grade_counts": {
+        "exploratory": 145,
+        "structural": 5,
+        "measured": 0,
+        "unlabeled": 61
+      },
+      "measurement_contract_status_counts": {
+        "none": 145,
+        "declared": 5,
+        "verified": 0,
+        "unlabeled": 61
+      },
+      "source_counts": {
+        "declared": 150,
+        "inferred": 61
+      },
+      "underlying_field_counts": {
+        "baseline_present": 0,
+        "measurement_window_present": 5,
+        "data_quality_ok": 0,
+        "minimum_sample_ready": 0,
+        "measurement_ready": 0
+      },
+      "policy_eligibility_counts": {
+        "exploratory_fact_find_only": 206,
+        "structural_fact_find_only": 5,
+        "stronger_route_eligible_measured": 0
+      }
+    }
+  },
+  "boundary": {
+    "mature_stage_detected": false,
+    "autonomy_level_cap": 4,
+    "reasons": [],
+    "signals_used": {
+      "monthly_revenue": 0,
+      "headcount": 1,
+      "support_ticket_volume_per_week": 0,
+      "multi_region_compliance_flag": false,
+      "operational_complexity_score": 5
+    },
+    "signal_sources": {
+      "monthly_revenue": "unknown",
+      "headcount": "unknown",
+      "support_ticket_volume_per_week": "unknown",
+      "multi_region_compliance_flag": "inferred",
+      "operational_complexity_score": "inferred"
+    },
+    "thresholds": {
+      "monthly_revenue": 10000,
+      "headcount": 5,
+      "support_ticket_volume_per_week": 100,
+      "operational_complexity_score": 6
+    }
+  }
+}

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- TECH-000 [ttl=2026-12-31] Analytics identifiers and list labels are telemetry-only, not UI copy. */
 // src/utils/ga4-events.ts
 // Small GA4 helpers used by Brikette app surfaces.
 
@@ -37,9 +38,30 @@ export const GA4_ENUMS = {
     "assistance",
     "how_to_get_here",
     "offers_modal",
+    "notification_banner",
+    "sticky_cta",
+    "room_card",
+    "sticky_book_now",
+    "booking_widget",
+    "deals_page_cta",
   ] as const,
   source: ["header", "mobile_nav", "hero", "booking_widget", "room_card", "sticky_cta", "deals", "unknown"] as const,
   ratePlan: ["flex", "nr"] as const,
+  // ─── Entry-attribution enums (TASK-05) ─────────────────────────────────────
+  sourceSurface: [
+    "homepage",
+    "content_page",
+    "dorms_browse",
+    "room_detail",
+    "private_summary",
+    "sitewide_shell",
+    "deals_page",
+  ] as const,
+  resolvedIntent: ["hostel", "private", "undetermined"] as const,
+  productType: ["hostel_bed", "apartment", "double_private_room"] as const,
+  decisionMode: ["direct_resolution", "chooser", "hybrid_merchandising"] as const,
+  destinationFunnel: ["hostel_central", "hostel_assist", "private"] as const,
+  handoffMode: ["secure_booking_shell", "direct_octorate"] as const,
 } as const;
 
 export type ItemListId = (typeof GA4_ENUMS.itemListId)[number];
@@ -48,6 +70,47 @@ export type CtaId = (typeof GA4_ENUMS.ctaId)[number];
 export type CtaLocation = (typeof GA4_ENUMS.ctaLocation)[number];
 export type EventSource = (typeof GA4_ENUMS.source)[number];
 export type RatePlan = (typeof GA4_ENUMS.ratePlan)[number];
+
+// ─── Entry-attribution derived types (TASK-05) ───────────────────────────────
+type SourceSurface = (typeof GA4_ENUMS.sourceSurface)[number];
+type ResolvedIntent = (typeof GA4_ENUMS.resolvedIntent)[number];
+type ProductType = (typeof GA4_ENUMS.productType)[number];
+type DecisionMode = (typeof GA4_ENUMS.decisionMode)[number];
+type DestinationFunnel = (typeof GA4_ENUMS.destinationFunnel)[number];
+type EntryHandoffMode = (typeof GA4_ENUMS.handoffMode)[number];
+
+export function isSourceSurface(v: unknown): v is SourceSurface {
+  return typeof v === "string" && (GA4_ENUMS.sourceSurface as readonly string[]).includes(v);
+}
+
+export function isResolvedIntent(v: unknown): v is ResolvedIntent {
+  return typeof v === "string" && (GA4_ENUMS.resolvedIntent as readonly string[]).includes(v);
+}
+
+export function isProductType(v: unknown): v is ProductType {
+  return typeof v === "string" && (GA4_ENUMS.productType as readonly string[]).includes(v);
+}
+
+export function isDecisionMode(v: unknown): v is DecisionMode {
+  return typeof v === "string" && (GA4_ENUMS.decisionMode as readonly string[]).includes(v);
+}
+
+export function isDestinationFunnel(v: unknown): v is DestinationFunnel {
+  return typeof v === "string" && (GA4_ENUMS.destinationFunnel as readonly string[]).includes(v);
+}
+
+export interface EntryAttributionParams {
+  source_surface: SourceSurface;
+  source_cta: CtaLocation;
+  resolved_intent: ResolvedIntent;
+  product_type: "hostel_bed" | "apartment" | "double_private_room" | null;
+  decision_mode: DecisionMode;
+  destination_funnel: DestinationFunnel;
+  handoff_mode?: EntryHandoffMode;
+  locale: string;
+  fallback_triggered: boolean;
+  next_page?: string | null;
+}
 
 // ─── GA4 e-commerce data models ─────────────────────────────────────────────
 
@@ -264,7 +327,11 @@ export function fireModalClose(params: { modalType: string; source?: string }): 
   gtag("event", "modal_close", { modal_type: modalType, source });
 }
 
-export function fireCtaClick(params: { ctaId: string; ctaLocation: string }): void {
+export function fireCtaClick(
+  params: { ctaId: string; ctaLocation: string },
+  _deprecated?: unknown,
+  entryAttribution?: EntryAttributionParams,
+): void {
   const gtag = getGtag();
   if (!gtag) return;
 
@@ -274,9 +341,29 @@ export function fireCtaClick(params: { ctaId: string; ctaLocation: string }): vo
 
   if (!ctaId || !ctaLocation) return;
 
+  const attributionFields: Record<string, unknown> = {};
+  if (entryAttribution) {
+    attributionFields["source_surface"] = entryAttribution.source_surface;
+    attributionFields["resolved_intent"] = entryAttribution.resolved_intent;
+    if (entryAttribution.product_type !== null && entryAttribution.product_type !== undefined) {
+      attributionFields["product_type"] = entryAttribution.product_type;
+    }
+    attributionFields["decision_mode"] = entryAttribution.decision_mode;
+    attributionFields["destination_funnel"] = entryAttribution.destination_funnel;
+    if (entryAttribution.handoff_mode) {
+      attributionFields["handoff_mode"] = entryAttribution.handoff_mode;
+    }
+    attributionFields["locale"] = entryAttribution.locale;
+    attributionFields["fallback_triggered"] = entryAttribution.fallback_triggered;
+    if (entryAttribution.next_page !== undefined) {
+      attributionFields["next_page"] = entryAttribution.next_page;
+    }
+  }
+
   gtag("event", "cta_click", {
     cta_id: ctaId,
     cta_location: ctaLocation,
+    ...attributionFields,
   });
 }
 

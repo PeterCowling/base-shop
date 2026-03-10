@@ -7,8 +7,10 @@ import { Grid } from "@acme/design-system/primitives";
 import { getTranslations } from "@/app/_lib/i18n-server";
 import roomsData from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
-import { getPrivateBookingPath } from "@/utils/localizedRoutes";
+import { getDoubleRoomBookingPath, getPrivateBookingPath } from "@/utils/localizedRoutes";
 import { getPrivateRoomChildPath } from "@/utils/privateRoomPaths";
+
+import { PrivateSummaryCtaLink } from "./PrivateSummaryCtaLink";
 
 type Props = {
   lang: AppLanguage;
@@ -18,9 +20,10 @@ export default async function PrivateRoomsSummaryContent({ lang }: Props) {
   const tRoomsPage = await getTranslations(lang, "roomsPage");
   const tApartment = await getTranslations(lang, "apartmentPage");
 
-  const privateBookingPath = getPrivateBookingPath(lang);
-  const apartmentRoom = roomsData.find((room) => room.id === "apartment");
-  const doubleRoom = roomsData.find((room) => room.id === "double_room");
+  const apartmentBookingPath = getPrivateBookingPath(lang);
+  const doubleRoomBookingPath = getDoubleRoomBookingPath(lang);
+  const apartmentRoom = roomsData.find((r) => r.id === "apartment");
+  const doubleRoom = roomsData.find((r) => r.id === "double_room");
   const apartmentDetailsRaw = tApartment("detailsList", { returnObjects: true }) as unknown;
   const apartmentDetails = Array.isArray(apartmentDetailsRaw)
     ? apartmentDetailsRaw.filter((item): item is string => typeof item === "string")
@@ -36,6 +39,8 @@ export default async function PrivateRoomsSummaryContent({ lang }: Props) {
   const cards = [
     {
       href: getPrivateRoomChildPath(lang, "apartment"),
+      bookingHref: apartmentBookingPath,
+      productType: "apartment" as const,
       image: apartmentRoom?.landingImage ?? "/img/facade.avif",
       title: tApartment("title") as string,
       description: tApartment("body") as string,
@@ -43,6 +48,8 @@ export default async function PrivateRoomsSummaryContent({ lang }: Props) {
     },
     {
       href: getPrivateRoomChildPath(lang, "double-room"),
+      bookingHref: doubleRoomBookingPath,
+      productType: "double_private_room" as const,
       image: doubleRoom?.landingImage ?? "/img/7/landing.webp",
       title: tRoomsPage("rooms.double_room.title") as string,
       description: tRoomsPage("rooms.double_room.bed_description") as string,
@@ -94,12 +101,14 @@ export default async function PrivateRoomsSummaryContent({ lang }: Props) {
                   >
                     {tRoomsPage("moreAboutThisRoom") as string}
                   </Link>
-                  <Link
-                    href={privateBookingPath}
+                  <PrivateSummaryCtaLink
+                    href={card.bookingHref}
+                    lang={lang}
+                    productType={card.productType}
                     className="inline-flex min-h-11 items-center rounded-xl bg-brand-primary px-4 py-2 text-sm font-semibold text-brand-on-primary transition-opacity hover:opacity-90"
                   >
                     {tApartment("checkAvailability") as string}
-                  </Link>
+                  </PrivateSummaryCtaLink>
                 </div>
               </div>
             </article>

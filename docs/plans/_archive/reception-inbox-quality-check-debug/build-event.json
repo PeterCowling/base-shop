@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-quality-check-debug-2026-03-09",
+  "feature_slug": "reception-inbox-quality-check-debug",
+  "emitted_at": "2026-03-09T13:25:00.000Z",
+  "why": "When a draft fails quality checks, the operator sees only opaque check names. This makes it impossible to quickly understand what needs fixing without reading the full email and manually cross-referencing policy rules. Actionable detail saves review time and reduces missed issues.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Quality check failures include specific detail: which mandatory phrases are missing, which prohibited phrases were found, and which reference URLs were expected. Available in the quality result object returned by runQualityChecks() and the MCP draft_quality_check tool.",
+    "source": "operator"
+  }
+}

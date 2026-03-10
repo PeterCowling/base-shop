@@ -1,9 +1,9 @@
 "use client";
 
-/* eslint-disable ds/no-hardcoded-copy, complexity -- PUB-05 pre-existing */
+/* eslint-disable ds/no-hardcoded-copy -- PUB-05 pre-existing */
 // src/app/[lang]/experiences/tags/[tag]/GuidesTagContent.tsx
 // Client component for guide tag page
-import React, { memo, useEffect } from "react";
+import React, { memo, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 import type { TFunction } from "i18next";
@@ -13,9 +13,9 @@ import { BASE_URL } from "@/config/site";
 import { type GuideMeta,GUIDES_INDEX, isGuideLive } from "@/data/guides.index";
 import { TAGS_SUMMARY } from "@/data/tags.index";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
-import { getGuidesBundle, type GuidesNamespace } from "@/locales/guides";
+import { getGuidesBundle } from "@/locales/guides";
 import { guideHref } from "@/routes.guides-helpers";
-import { getSlug } from "@/utils/slug";
+import { getLocalizedSectionPath } from "@/utils/localizedRoutes";
 import { getTagMeta } from "@/utils/tags";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
@@ -39,9 +39,10 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
   const { t, i18n, ready } = useTranslation("guides", { lng: lang });
   const { t: tTags } = useTranslation("guides.tags", { lng: lang });
 
-  const items: GuideMeta[] = tag
-    ? GUIDES_INDEX.filter((guide) => guide.tags.includes(tag) && isGuideLive(guide.key))
-    : [];
+  const items = useMemo<GuideMeta[]>(
+    () => (tag ? GUIDES_INDEX.filter((guide) => guide.tags.includes(tag) && isGuideLive(guide.key)) : []),
+    [tag],
+  );
 
   const shouldNoIndex = items.length < 3;
 
@@ -67,31 +68,32 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
     };
   }, [shouldNoIndex]);
 
-  const summary = TAGS_SUMMARY.find((s) => s.tag === tag);
+  const summary = useMemo(() => TAGS_SUMMARY.find((s) => s.tag === tag), [tag]);
 
   // Prefer i18n intro when available; otherwise fall back to English
   const i18nIntro = t(`tags.intros.${tag}`);
-  const enIntroFromI18n = (() => {
-    if (!tag || !ready) return undefined;
-    const value = i18n?.getResource?.(FALLBACK_LANG, "guides", `tags.intros.${tag}`);
-    return typeof value === "string" && value.trim().length > 0 ? value : undefined;
-  })();
-
-  const enGuides: GuidesNamespace | undefined = EN_GUIDES;
-  const enIntro = (() => {
-    if (!enGuides || !tag) return undefined;
-    const tagsSection = (enGuides as { tags?: unknown }).tags;
-    if (!isRecord(tagsSection)) return undefined;
-    const intros = (tagsSection as { intros?: unknown }).intros;
-    if (!isRecord(intros)) return undefined;
-    const value = (intros as Record<string, unknown>)[tag];
-    return typeof value === "string" ? value : undefined;
-  })();
-
-  const customIntro = i18nIntro && i18nIntro !== `tags.intros.${tag}` ? i18nIntro : enIntroFromI18n ?? enIntro;
-  const hasCustomIntro = Boolean(customIntro && customIntro.length > 0);
-  const top5 = (TAGS_SUMMARY || []).filter((s) => s.tag !== tag).slice(0, 5);
-  const tagMeta = getTagMeta(lang, tag);
+  const customIntro = useMemo(() => {
+    const localized = i18nIntro && i18nIntro !== `tags.intros.${tag}` ? i18nIntro : undefined;
+    if (localized) return localized;
+    if (tag && ready) {
+      const fromResource = i18n?.getResource?.(FALLBACK_LANG, "guides", `tags.intros.${tag}`);
+      if (typeof fromResource === "string" && fromResource.trim().length > 0) return fromResource;
+    }
+    if (EN_GUIDES && tag) {
+      const tagsSection = (EN_GUIDES as { tags?: unknown }).tags;
+      if (isRecord(tagsSection)) {
+        const intros = (tagsSection as { intros?: unknown }).intros;
+        if (isRecord(intros)) {
+          const value = (intros as Record<string, unknown>)[tag];
+          if (typeof value === "string") return value;
+        }
+      }
+    }
+    return undefined;
+  }, [tag, i18nIntro, ready, i18n]);
+  const hasCustomIntro = !!customIntro;
+  const top5 = useMemo(() => TAGS_SUMMARY.filter((s) => s.tag !== tag).slice(0, 5), [tag]);
+  const tagMeta = useMemo(() => getTagMeta(lang, tag), [lang, tag]);
 
   const titleKey = `tags.${tag}.title`;
   const descKey = `tags.${tag}.description`;
@@ -99,53 +101,40 @@ function GuidesTagPageContent({ lang, tag }: Props): JSX.Element {
   const descI18n = tTags(descKey);
 
   type Translator = TFunction;
-  const fallbackGuidesT: Translator = (() => {
+  const fallbackGuidesT = useMemo<Translator>(() => {
     const fixed = i18n?.getFixedT?.(FALLBACK_LANG, "guides");
-    if (fixed) {
-      return fixed as Translator;
-    }
+    if (fixed) return fixed as Translator;
     return ((key: string) => key) as unknown as Translator;
-  })();
+  }, [i18n]);
 
-  const experiencesSlug = getSlug("experiences", lang);
-  const tagsSlug = getSlug("guidesTags", lang);
-  const guidesBasePath = `/${lang}/${experiencesSlug}`;
-  const tagsBasePath = `${guidesBasePath}/${tagsSlug}`;
-  const tagPath = tag
-    ? `${BASE_URL}${tagsBasePath}/${encodeURIComponent(tag)}`
-    : `${BASE_URL}${tagsBasePath}`;
+  const tagsBasePath = useMemo(() => getLocalizedSectionPath(lang, "guidesTags"), [lang]);
+  const tagPath = useMemo(
+    () => tag ? `${BASE_URL}${tagsBasePath}/${encodeURIComponent(tag)}` : `${BASE_URL}${tagsBasePath}`,
+    [tag, tagsBasePath],
+  );
 
-  const resolvedTitle = (titleI18n && titleI18n !== titleKey ? titleI18n : tagMeta?.title) ?? tag;
-  const resolvedDescription = (descI18n && descI18n !== descKey ? descI18n : tagMeta?.description) ?? "";
+  const resolvedTitle = useMemo(
+    () => (titleI18n && titleI18n !== titleKey ? titleI18n : tagMeta?.title) ?? tag,
+    [titleI18n, titleKey, tagMeta, tag],
+  );
+  const resolvedDescription = useMemo(
+    () => (descI18n && descI18n !== descKey ? descI18n : tagMeta?.description) ?? "",
+    [descI18n, descKey, tagMeta],
+  );
 
-  const resolvedGuides = (() => {
-    if (!items.length)
-      return [] as Array<{
-        key: GuideMeta["key"];
-        label: string;
-        href: string;
-        structuredUrl: string;
-      }>;
-
-    return items.map(({ key }) => {
+  const { resolvedGuides, structuredItems } = useMemo(() => {
+    if (!items.length) return { resolvedGuides: [], structuredItems: [] as GuidesTagListItem[] };
+    const guides = items.map(({ key }) => {
       const fallbackLabel = getGuideLinkLabel(fallbackGuidesT, fallbackGuidesT, key);
       const label = ready ? getGuideLinkLabel(t, fallbackGuidesT, key) : fallbackLabel;
       const href = guideHref(lang, key);
-      const structuredUrl = `${BASE_URL}${href}`;
-
-      return {
-        key,
-        label,
-        href,
-        structuredUrl,
-      };
+      return { key, label, href, structuredUrl: `${BASE_URL}${href}` };
     });
-  })();
-
-  const structuredItems: GuidesTagListItem[] = resolvedGuides.map(({ structuredUrl, label }) => ({
-    url: structuredUrl,
-    name: label,
-  }));
+    return {
+      resolvedGuides: guides,
+      structuredItems: guides.map(({ structuredUrl, label }) => ({ url: structuredUrl, name: label })),
+    };
+  }, [items, ready, t, fallbackGuidesT, lang]);
 
   return (
     <>

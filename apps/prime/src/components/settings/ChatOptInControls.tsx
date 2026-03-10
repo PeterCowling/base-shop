@@ -17,7 +17,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MessageCircle } from 'lucide-react';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import { useGuestProfileMutator } from '../../hooks/mutator/useGuestProfileMutator';
 import type { GuestProfile } from '../../types/guestProfile';

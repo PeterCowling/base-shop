@@ -15,6 +15,7 @@ import { ReadinessSignalCard } from '@acme/ui/components/hospitality/ReadinessSi
 import { UtilityActionStrip } from '@acme/ui/components/hospitality/UtilityActionStrip';
 
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
+import { getFunnelSessionKey } from '../../lib/analytics/funnelSessionKey';
 import {
   computeReadinessScore,
   getChecklistItemLabel,
@@ -82,17 +83,6 @@ function getDaysUntilCheckIn(dateStr: string): number {
   }
 }
 
-function getFunnelSessionKey(): string {
-  if (typeof window === 'undefined') {
-    return 'unknown-session';
-  }
-
-  return (
-    localStorage.getItem('prime_guest_uuid') ||
-    localStorage.getItem('prime_guest_booking_id') ||
-    'unknown-session'
-  );
-}
 
 export const ReadinessDashboard: FC<ReadinessDashboardProps> = memo(
   function ReadinessDashboard({

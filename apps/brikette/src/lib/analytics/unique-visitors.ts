@@ -163,7 +163,7 @@ export class InMemoryUniqueVisitorStore implements UniqueVisitorStore {
     const start = new Date(startDate);
     const end = new Date(endDate);
 
-    for (let d = start; d <= end; d.setDate(d.getDate() + 1)) {
+    for (let d = new Date(start); d <= end; d = new Date(d.getTime() + 86_400_000)) {
       const dateStr = d.toISOString().slice(0, 10);
       const data = this.store.get(dateStr);
       if (data) {

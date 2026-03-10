@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-1773046217832-ea76a8b5",
+  "feature_slug": "prime-normalize-locale-constants",
+  "emitted_at": "2026-03-09T08:50:17.832Z",
+  "why": "Local locale constant is a recurring copy-paste risk as supported locales expand.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Prime no longer defines SUPPORTED_LOCALES locally. normalizeLocale.ts removed; sole call site imports normalizeUiLocale from @acme/i18n. @acme/i18n exports normalizeUiLocale with region-stripping semantics.",
+    "source": "operator"
+  }
+}

@@ -24,15 +24,14 @@ import {
 import { ArrivalCodePanel, UtilityActionStrip } from '@acme/ui';
 
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
+import { getFunnelSessionKey } from '../../lib/analytics/funnelSessionKey';
 import type { GuestKeycardStatus } from '../../lib/preArrival/keycardStatus';
 import type { ChecklistProgress,PreArrivalData } from '../../types/preArrival';
 import { CheckInQR } from '../check-in/CheckInQR';
 
 import KeycardStatus from './KeycardStatus';
 
-interface ArrivalHomeProps {
-  /** Guest's first name */
-  firstName: string;
+export interface ArrivalCodeState {
   /** Check-in code (if available) */
   checkInCode: string | null;
   /** Whether check-in code is loading */
@@ -43,6 +42,13 @@ interface ArrivalHomeProps {
   isOffline?: boolean;
   /** Handler to refresh the code */
   onRefreshCode?: () => void;
+}
+
+interface ArrivalHomeProps {
+  /** Guest's first name */
+  firstName: string;
+  /** Arrival code loading state */
+  codeState: ArrivalCodeState;
   /** Pre-arrival data */
   preArrivalData: PreArrivalData;
   /** Cash amounts for display */
@@ -73,17 +79,6 @@ const DEFAULT_KEYCARD_STATUS: GuestKeycardStatus = {
   latestTransactionAt: null,
 };
 
-function getFunnelSessionKey(): string {
-  if (typeof window === 'undefined') {
-    return 'unknown-session';
-  }
-
-  return (
-    localStorage.getItem('prime_guest_uuid') ||
-    localStorage.getItem('prime_guest_booking_id') ||
-    'unknown-session'
-  );
-}
 
 const NextStepItem: FC<NextStepItemProps> = memo(function NextStepItem({
   index,
@@ -113,11 +108,7 @@ const NextStepItem: FC<NextStepItemProps> = memo(function NextStepItem({
  */
 export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
   firstName,
-  checkInCode,
-  isCodeLoading,
-  isCodeStale = false,
-  isOffline = false,
-  onRefreshCode,
+  codeState,
   preArrivalData,
   cashAmounts,
   nights,
@@ -125,6 +116,13 @@ export const ArrivalHome: FC<ArrivalHomeProps> = memo(function ArrivalHome({
   keycardStatus = DEFAULT_KEYCARD_STATUS,
   className = '',
 }) {
+  const {
+    checkInCode,
+    isCodeLoading,
+    isCodeStale = false,
+    isOffline = false,
+    onRefreshCode,
+  } = codeState;
   const { t } = useTranslation('PreArrival');
 
   const totalCash = cashAmounts.cityTax + cashAmounts.deposit;

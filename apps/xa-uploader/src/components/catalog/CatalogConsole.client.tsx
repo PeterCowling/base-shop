@@ -6,15 +6,24 @@ import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { CatalogLoginForm } from "./CatalogLoginForm.client";
 import { CatalogProductForm } from "./CatalogProductForm.client";
-import { SKELETON_BLOCK_CLASS } from "./catalogStyles";
+import {
+  BTN_ACCENT_OUTLINE_CLASS,
+  BTN_SECONDARY_CLASS,
+  SKELETON_BLOCK_CLASS,
+} from "./catalogStyles";
 import { CurrencyRatesPanel } from "./CurrencyRatesPanel.client";
 import { EditProductFilterSelector } from "./EditProductFilterSelector.client";
 import { useCatalogConsole } from "./useCatalogConsole.client";
 
 type CatalogConsoleProps = {
   monoClassName?: string;
-  onHeaderExtra?: (node: React.ReactNode) => void;
 };
+
+// i18n-exempt -- XAUP-0001 [ttl=2027-03-09] automation-only test ids
+const CONSOLE_TAB_TEST_IDS = {
+  catalog: "console-tab-catalog",
+  currency: "console-tab-currency",
+} as const;
 
 function ConsoleSkeletonPlaceholder({ srText }: { srText: string }) {
   return (
@@ -123,7 +132,7 @@ function ConsoleBody({
   );
 }
 
-export default function CatalogConsole({ monoClassName, onHeaderExtra }: CatalogConsoleProps) {
+export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
   const { t } = useUploaderI18n();
   const state = useCatalogConsole();
   const [screen, setScreen] = React.useState<ConsoleScreen>("catalog");
@@ -137,26 +146,6 @@ export default function CatalogConsole({ monoClassName, onHeaderExtra }: Catalog
 
   const showCurrency = state.session?.authenticated && state.uploaderMode === "internal";
   const currencyHeaderLabel = t("screenCurrencyRates");
-  React.useEffect(() => {
-    if (!onHeaderExtra) return;
-    if (!showCurrency) {
-      onHeaderExtra(null);
-      return;
-    }
-    onHeaderExtra(
-      <button
-        type="button"
-        onClick={screen === "currency" ? openCatalogScreen : openCurrencyScreen}
-        className={`rounded-md border px-3 py-2 text-2xs uppercase tracking-label-lg transition ${
-          screen === "currency"
-            ? "border-gate-accent text-gate-accent"
-            : "border-gate-header-border text-gate-header-muted hover:text-gate-header-fg"
-        }`}
-      >
-        {currencyHeaderLabel}
-      </button>,
-    );
-  }, [currencyHeaderLabel, onHeaderExtra, showCurrency, screen, openCurrencyScreen, openCatalogScreen, t]);
 
   if (state.session === null) {
     return <ConsoleSkeletonPlaceholder srText={t("checkingConsoleAccess")} />;
@@ -183,6 +172,39 @@ export default function CatalogConsole({ monoClassName, onHeaderExtra }: Catalog
           {state.actionFeedback.login.message}
         </p>
       ) : null}
+
+      <div className="flex flex-wrap items-center gap-2">
+        {showCurrency ? (
+          <>
+            <button
+              type="button"
+              onClick={openCatalogScreen}
+              className={screen === "catalog" ? BTN_ACCENT_OUTLINE_CLASS : BTN_SECONDARY_CLASS}
+              data-testid={CONSOLE_TAB_TEST_IDS.catalog}
+            >
+              {t("screenCatalog")}
+            </button>
+            <button
+              type="button"
+              onClick={openCurrencyScreen}
+              className={screen === "currency" ? BTN_ACCENT_OUTLINE_CLASS : BTN_SECONDARY_CLASS}
+              data-testid={CONSOLE_TAB_TEST_IDS.currency}
+            >
+              {currencyHeaderLabel}
+            </button>
+          </>
+        ) : null}
+        {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool layout */}
+        <div className="ml-auto">
+          <button
+            type="button"
+            onClick={state.handleLogout}
+            className={BTN_SECONDARY_CLASS}
+          >
+            {t("logout")}
+          </button>
+        </div>
+      </div>
 
       <ConsoleBody screen={screen} state={state} monoClassName={monoClassName} t={t} />
     </div>

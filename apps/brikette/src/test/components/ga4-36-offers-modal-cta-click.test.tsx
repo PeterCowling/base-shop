@@ -50,7 +50,7 @@ jest.mock("../../context/modal/lazy-modals", () => ({
 }));
 
 jest.mock("@acme/ui/shared", () => ({
-  resolveBookingCtaLabel: (_tTokens: unknown, opts: { fallback: () => string }) => opts.fallback(),
+  resolvePrimaryCtaLabel: (_tTokens: unknown, opts: { fallback: () => string }) => opts.fallback(),
 }));
 
 const { ModalContext } = require("@acme/ui/context/ModalContext") as { ModalContext: React.Context<unknown> };

@@ -21,6 +21,7 @@ import {
 } from "./lp-do-ideas-classifier.js";
 import { computeClusterFingerprint } from "./lp-do-ideas-fingerprint.js";
 import type { KeywordCalibrationPriors } from "./lp-do-ideas-keyword-calibrate.js";
+import type { DispatchSelfEvolvingLink } from "./lp-do-ideas-queue-state-file.js";
 import type { RegistryV2ArtifactEntry } from "./lp-do-ideas-registry-migrate-v1-v2.js";
 
 // ---------------------------------------------------------------------------
@@ -219,6 +220,7 @@ export type DeliverableFamily =
 
 export type DispatchStatus =
   | "fact_find_ready"
+  | "plan_ready"
   | "micro_build_ready"
   | "briefing_ready"
   | "auto_executed"
@@ -226,8 +228,39 @@ export type DispatchStatus =
 
 export type RecommendedRoute =
   | "lp-do-fact-find"
+  | "lp-do-plan"
   | "lp-do-build"
   | "lp-do-briefing";
+
+export const ROUTABLE_DISPATCH_STATUS_ROUTE_MAP = {
+  fact_find_ready: "lp-do-fact-find",
+  plan_ready: "lp-do-plan",
+  micro_build_ready: "lp-do-build",
+  briefing_ready: "lp-do-briefing",
+} as const satisfies Record<string, RecommendedRoute>;
+
+export type RoutableDispatchStatus = keyof typeof ROUTABLE_DISPATCH_STATUS_ROUTE_MAP;
+
+export function isRoutableDispatchStatus(status: DispatchStatus): status is RoutableDispatchStatus {
+  return Object.hasOwn(ROUTABLE_DISPATCH_STATUS_ROUTE_MAP, status);
+}
+
+export function routeForDispatchStatus(status: RoutableDispatchStatus): RecommendedRoute {
+  return ROUTABLE_DISPATCH_STATUS_ROUTE_MAP[status];
+}
+
+export function statusForRecommendedRoute(route: RecommendedRoute): RoutableDispatchStatus {
+  switch (route) {
+    case "lp-do-fact-find":
+      return "fact_find_ready";
+    case "lp-do-plan":
+      return "plan_ready";
+    case "lp-do-build":
+      return "micro_build_ready";
+    case "lp-do-briefing":
+      return "briefing_ready";
+  }
+}
 
 export type QueueState = "enqueued" | "processed" | "skipped" | "error";
 
@@ -279,6 +312,11 @@ export interface ArtifactDeltaEvent {
   before_truth_fingerprint?: string;
   after_truth_fingerprint?: string;
   material_delta?: boolean;
+  area_anchor_hint?: string;
+  current_truth_hint?: string;
+  next_scope_now_hint?: string;
+  why_hint?: string;
+  intended_outcome_hint?: IntendedOutcomeV2;
 }
 
 export interface TrialDispatchPacket {
@@ -365,6 +403,40 @@ export interface IntendedOutcomeV2 {
   source: "operator" | "auto";
 }
 
+export interface DispatchBuildOriginProvenance {
+  schema_version: "dispatch-build-origin.v1";
+  build_signal_id: string;
+  recurrence_key: string;
+  review_cycle_key: string;
+  plan_slug: string;
+  canonical_title: string;
+  primary_source: "pattern-reflection.entries.json" | "results-review.signals.json";
+  merge_state: "single_source" | "merged_cross_sidecar";
+  source_presence: {
+    results_review_signal: boolean;
+    pattern_reflection_entry: boolean;
+  };
+  results_review_path: string | null;
+  results_review_sidecar_path: string | null;
+  pattern_reflection_path: string | null;
+  pattern_reflection_sidecar_path: string | null;
+  reflection_fields?: {
+    category: string | null;
+    routing_target: string | null;
+    occurrence_count: number | null;
+  };
+}
+
+export interface DispatchHistoricalCarryoverProvenance {
+  schema_version: "dispatch-historical-carryover.v1";
+  manifest_path: string;
+  historical_candidate_id: string;
+  source_audit_path: string;
+  source_plan_slugs: string[];
+  source_paths: string[];
+  backfilled_at: string;
+}
+
 /**
  * dispatch.v2 packet type.
  *
@@ -385,7 +457,7 @@ export interface TrialDispatchPacketV2 {
   mode: PacketMode;
   business: string;
   trigger: "artifact_delta" | "operator_idea";
-  artifact_id: string;
+  artifact_id: string | null;
   before_sha: string | null;
   after_sha: string;
   root_event_id: string;
@@ -406,6 +478,9 @@ export interface TrialDispatchPacketV2 {
   evidence_refs: [string, ...string[]];
   created_at: string;
   queue_state: QueueState;
+  self_evolving?: DispatchSelfEvolvingLink;
+  build_origin?: DispatchBuildOriginProvenance;
+  historical_carryover?: DispatchHistoricalCarryoverProvenance;
   /**
    * Why this work is happening now.
    * Required, non-empty string.
@@ -641,14 +716,16 @@ function buildRootEventId(event: ArtifactDeltaEvent): string {
   return `${normalizeArtifactId(event.artifact_id)}:${event.after_sha}`;
 }
 
+const ANCHOR_KEY_MAX_LENGTH = 80;
+
 function buildAnchorKey(
   event: ArtifactDeltaEvent,
   areaAnchor: string,
 ): string {
   if (event.anchor_key && event.anchor_key.trim().length > 0) {
-    return normalizeKeyToken(event.anchor_key);
+    return normalizeKeyToken(event.anchor_key).slice(0, ANCHOR_KEY_MAX_LENGTH);
   }
-  return normalizeKeyToken(areaAnchor);
+  return normalizeKeyToken(areaAnchor).slice(0, ANCHOR_KEY_MAX_LENGTH);
 }
 
 function buildDomainKey(event: ArtifactDeltaEvent): string {
@@ -834,6 +911,11 @@ function deriveAreaAnchor(
   event: ArtifactDeltaEvent,
   locationAnchors: readonly string[],
 ): string {
+  const hintedArea = event.area_anchor_hint?.trim();
+  if (hintedArea && hintedArea.length > 0) {
+    return hintedArea;
+  }
+
   for (const anchor of locationAnchors) {
     const fromLocation = deriveAreaAnchorFromLocationAnchor(anchor);
     if (fromLocation) {
@@ -1268,15 +1350,37 @@ export function runTrialOrchestrator(
       : directBuildReady
         ? "micro_build_ready"
         : "fact_find_ready";
-    const recommendedRoute: RecommendedRoute = !t1Match
-      ? "lp-do-briefing"
-      : directBuildReady
-        ? "lp-do-build"
-        : "lp-do-fact-find";
+    const recommendedRoute = isRoutableDispatchStatus(status)
+      ? routeForDispatchStatus(status)
+      : "lp-do-fact-find";
 
     const dispatchId = buildDispatchId(now, sequence++);
     const beforeShort = event.before_sha.slice(0, 7);
     const afterShort = event.after_sha.slice(0, 7);
+    const currentTruth =
+      event.current_truth_hint?.trim() && event.current_truth_hint.trim().length > 0
+        ? event.current_truth_hint.trim()
+        : `${event.artifact_id} changed (${beforeShort} → ${afterShort})`;
+    const nextScopeNow =
+      event.next_scope_now_hint?.trim() && event.next_scope_now_hint.trim().length > 0
+        ? event.next_scope_now_hint.trim()
+        : directBuildReady
+          ? `Implement the bounded ${areaAnchor} change for ${event.business} and validate it locally`
+          : `Investigate implications of ${areaAnchor} delta for ${event.business}`;
+    const why =
+      event.why_hint?.trim() && event.why_hint.trim().length > 0
+        ? event.why_hint.trim()
+        : directBuildReady
+          ? `Implement the bounded ${areaAnchor} change signalled by ${event.artifact_id} for ${event.business}.`
+          : `Assess ${areaAnchor} implications from ${event.artifact_id} delta for ${event.business}.`;
+    const intendedOutcome =
+      event.intended_outcome_hint ?? {
+        type: "operational" as const,
+        statement: directBuildReady
+          ? `Ship a validated micro-build for ${areaAnchor} through direct lp-do-build intake.`
+          : `Produce a validated routing outcome and scoped next action for ${areaAnchor}.`,
+        source: "auto" as const,
+      };
 
     const packet: TrialDispatchPacket = {
       schema_version: "dispatch.v2",
@@ -1295,10 +1399,8 @@ export function runTrialOrchestrator(
       area_anchor: areaAnchor,
       location_anchors: locationAnchors,
       provisional_deliverable_family: provisionalDeliverableFamily,
-      current_truth: `${event.artifact_id} changed (${beforeShort} → ${afterShort})`,
-      next_scope_now: directBuildReady
-        ? `Implement the bounded ${areaAnchor} change for ${event.business} and validate it locally`
-        : `Investigate implications of ${areaAnchor} delta for ${event.business}`,
+      current_truth: currentTruth,
+      next_scope_now: nextScopeNow,
       adjacent_later: [],
       recommended_route: recommendedRoute,
       status,
@@ -1307,16 +1409,8 @@ export function runTrialOrchestrator(
       evidence_refs: evidenceRefs,
       created_at: now.toISOString(),
       queue_state: "enqueued",
-      why: directBuildReady
-        ? `Implement the bounded ${areaAnchor} change signalled by ${event.artifact_id} for ${event.business}.`
-        : `Assess ${areaAnchor} implications from ${event.artifact_id} delta for ${event.business}.`,
-      intended_outcome: {
-        type: "operational",
-        statement: directBuildReady
-          ? `Ship a validated micro-build for ${areaAnchor} through direct lp-do-build intake.`
-          : `Produce a validated routing outcome and scoped next action for ${areaAnchor}.`,
-        source: "auto",
-      },
+      why,
+      intended_outcome: intendedOutcome,
     };
     dispatched.push(packet);
 

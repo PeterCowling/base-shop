@@ -5,7 +5,10 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { markDispatchesCompleted } from "../ideas/lp-do-ideas-queue-state-completion.js";
+import {
+  markDispatchesCompleted,
+  parseMarkDispatchesCompletedArgs,
+} from "../ideas/lp-do-ideas-queue-state-completion.js";
 
 interface TestDispatch {
   schema_version: "dispatch.v1";
@@ -24,6 +27,14 @@ interface TestDispatch {
   next_scope_now: string;
   evidence_refs: string[];
   created_at: string;
+  self_evolving?: {
+    candidate_id: string;
+    decision_id: string;
+    policy_version: string;
+    recommended_route_origin: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build";
+    executor_path: string;
+    handoff_emitted_at: string;
+  };
   processed_by?: {
     target_route?: string;
     target_kind?: string;
@@ -35,9 +46,25 @@ interface TestDispatch {
     route: string;
   };
   completed_by?: {
-    plan_path: string;
+    plan_path?: string;
+    micro_build_path?: string;
     completed_at: string;
     outcome: string;
+    self_evolving?: {
+      candidate_id: string;
+      decision_id: string;
+      dispatch_id: string;
+      maturity_due_at: string;
+      maturity_status: "pending" | "matured";
+      measurement_status:
+        | "pending"
+        | "verified"
+        | "verified_degraded"
+        | "missing"
+        | "insufficient_sample";
+      outcome_event_id: string | null;
+      verified_observation_ids: string[];
+    };
   };
 }
 
@@ -127,6 +154,35 @@ function readFixture(filePath: string): QueueStateFixture {
 }
 
 describe("markDispatchesCompleted", () => {
+  it("TC-00: parses CLI args with queue-state default", () => {
+    const parsed = parseMarkDispatchesCompletedArgs([
+      "--feature-slug",
+      "my-slug",
+      "--plan-path",
+      "docs/plans/_archive/my-slug/plan.md",
+      "--outcome",
+      "Feature delivered",
+    ]);
+
+    expect(parsed).toEqual({
+      queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      featureSlug: "my-slug",
+      planPath: "docs/plans/_archive/my-slug/plan.md",
+      outcome: "Feature delivered",
+    });
+  });
+
+  it("TC-00B: parse throws when required flags are missing", () => {
+    expect(() =>
+      parseMarkDispatchesCompletedArgs([
+        "--feature-slug",
+        "my-slug",
+        "--outcome",
+        "Feature delivered",
+      ]),
+    ).toThrow("missing_required_flag:--plan-path");
+  });
+
   it("TC-01: marks one matching dispatch as completed", () => {
     const dir = makeTmpDir();
     const queueStatePath = join(dir, "queue-state.json");
@@ -150,6 +206,49 @@ describe("markDispatchesCompleted", () => {
     expect(dispatch.completed_by?.plan_path).toBe("docs/plans/_archive/my-slug/plan.md");
     expect(dispatch.completed_by?.outcome).toBe("Feature delivered");
     expect(dispatch.completed_by?.completed_at).toBe(fixedClock().toISOString());
+  });
+
+  it("TC-06A: stamps pending self-evolving completion metadata for deferred measurement", () => {
+    const dir = makeTmpDir();
+    const queueStatePath = join(dir, "queue-state.json");
+    writeFixture(
+      queueStatePath,
+      makeQueueFixture([
+        makeDispatch({
+          self_evolving: {
+            candidate_id: "cand-1",
+            decision_id: "decision-1",
+            policy_version: "self-evolving-policy.v1",
+            recommended_route_origin: "lp-do-plan",
+            executor_path: "lp-do-build:container:website-v3",
+            handoff_emitted_at: BASE_TIME,
+          },
+        }),
+      ]),
+    );
+
+    const fixedClock = () => new Date("2026-02-26T12:34:56.000Z");
+    const result = markDispatchesCompleted({
+      queueStatePath,
+      featureSlug: "my-slug",
+      planPath: "docs/plans/_archive/my-slug/plan.md",
+      outcome: "Primary KPI improvement shipped",
+      rootDir: dir,
+      clock: fixedClock,
+    });
+
+    expect(result).toEqual({ ok: true, mutated: 1, skipped: 0 });
+
+    const updated = readFixture(queueStatePath);
+    expect(updated.dispatches[0]?.completed_by?.self_evolving).toEqual(
+      expect.objectContaining({
+        candidate_id: "cand-1",
+        decision_id: "decision-1",
+        dispatch_id: updated.dispatches[0]?.dispatch_id,
+        maturity_status: "pending",
+        measurement_status: "pending",
+      }),
+    );
   });
 
   it("TC-02: idempotency preserves first completion timestamp", () => {

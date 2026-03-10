@@ -78,81 +78,36 @@ export function useMealPlanEligibility(
 ): UseMealPlanEligibilityResult {
   const { preorders, isCheckedIn } = input;
 
-  // Get meal types from first preorder
-  const occupantBreakfastType = useMemo(() => {
-    if (!preorders || preorders.length === 0) return '';
-    return preorders[0]?.breakfast ?? '';
-  }, [preorders]);
+  return useMemo<UseMealPlanEligibilityResult>(() => {
+    const first = preorders?.[0];
+    const occupantBreakfastType = first?.breakfast ?? '';
+    const occupantDrink1Type = first?.drink1 ?? '';
+    const occupantDrink2Type = first?.drink2 ?? '';
 
-  const occupantDrink1Type = useMemo(() => {
-    if (!preorders || preorders.length === 0) return '';
-    return preorders[0]?.drink1 ?? '';
-  }, [preorders]);
+    const drinksAllowed = getDrinksAllowed(occupantBreakfastType);
+    const hasPrepaidMealPlan =
+      occupantBreakfastType !== '' &&
+      PREPAID_MEAL_PLANS.includes(occupantBreakfastType as PrepaidMealPlan);
 
-  const occupantDrink2Type = useMemo(() => {
-    if (!preorders || preorders.length === 0) return '';
-    return preorders[0]?.drink2 ?? '';
-  }, [preorders]);
-
-  // Calculate drinks allowed
-  const drinksAllowed = useMemo(
-    () => getDrinksAllowed(occupantBreakfastType),
-    [occupantBreakfastType]
-  );
-
-  // Helper: is this a prepaid meal plan?
-  const hasPrepaidMealPlan = useMemo(
-    () => occupantBreakfastType !== '' && PREPAID_MEAL_PLANS.includes(occupantBreakfastType as PrepaidMealPlan),
-    [occupantBreakfastType]
-  );
-
-  // Display flags for breakfast
-  const showOrderBreakfastLink = useMemo(
-    () => hasPrepaidMealPlan && isCheckedIn,
-    [hasPrepaidMealPlan, isCheckedIn]
-  );
-
-  const showBreakfastIncludedMessage = useMemo(
-    () => hasPrepaidMealPlan && !isCheckedIn,
-    [hasPrepaidMealPlan, isCheckedIn]
-  );
-
-  // Display flags for drinks
-  const showOrderDrinkLinks = useMemo(
-    () => hasPrepaidMealPlan && isCheckedIn && drinksAllowed > 0,
-    [hasPrepaidMealPlan, isCheckedIn, drinksAllowed]
-  );
-
-  const showDrinksIncludedMessage = useMemo(
-    () => hasPrepaidMealPlan && !isCheckedIn && drinksAllowed > 0,
-    [hasPrepaidMealPlan, isCheckedIn, drinksAllowed]
-  );
-
-  // Compute overall eligibility
-  const eligibility = useMemo<OccupantEligibility>(() => {
-    if (!preorders || preorders.length === 0) {
-      return {
-        isEligibleForComplimentaryBreakfast: false,
-        isEligibleForEveningDrink: false,
-      };
-    }
+    const eligibility: OccupantEligibility =
+      preorders && preorders.length > 0
+        ? {
+            isEligibleForComplimentaryBreakfast: preorders.some(hasBreakfastEligibility),
+            isEligibleForEveningDrink: preorders.some(hasDrinkEligibility),
+          }
+        : { isEligibleForComplimentaryBreakfast: false, isEligibleForEveningDrink: false };
 
     return {
-      isEligibleForComplimentaryBreakfast: preorders.some(hasBreakfastEligibility),
-      isEligibleForEveningDrink: preorders.some(hasDrinkEligibility),
+      occupantBreakfastType,
+      occupantDrink1Type,
+      occupantDrink2Type,
+      drinksAllowed,
+      eligibility,
+      showOrderBreakfastLink: hasPrepaidMealPlan && isCheckedIn,
+      showBreakfastIncludedMessage: hasPrepaidMealPlan && !isCheckedIn,
+      showOrderDrinkLinks: hasPrepaidMealPlan && isCheckedIn && drinksAllowed > 0,
+      showDrinksIncludedMessage: hasPrepaidMealPlan && !isCheckedIn && drinksAllowed > 0,
+      prepaidMealPlans: PREPAID_MEAL_PLANS,
     };
-  }, [preorders]);
-
-  return {
-    occupantBreakfastType,
-    occupantDrink1Type,
-    occupantDrink2Type,
-    showOrderBreakfastLink,
-    showBreakfastIncludedMessage,
-    showOrderDrinkLinks,
-    showDrinksIncludedMessage,
-    drinksAllowed,
-    eligibility,
-    prepaidMealPlans: PREPAID_MEAL_PLANS,
-  };
+  }, [preorders, isCheckedIn]);
 }

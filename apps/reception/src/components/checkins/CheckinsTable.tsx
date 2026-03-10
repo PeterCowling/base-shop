@@ -57,16 +57,11 @@ const CheckinsTable: React.FC = () => {
   }, [validationError, privileged]);
 
   /**
-   * rows already contains occupants within a pre-defined range.
-   */
-  const tableData = useMemo<CheckInRow[]>(() => rows, [rows]);
-
-  /**
    * Local filter by selectedDate
    */
   const filteredBySelectedDate = useMemo<CheckInRow[]>(() => {
-    return tableData.filter((row) => row.checkInDate === selectedDate);
-  }, [tableData, selectedDate]);
+    return rows.filter((row) => row.checkInDate === selectedDate);
+  }, [rows, selectedDate]);
 
   /**
    * Sort after data is loaded or partially loaded
@@ -113,9 +108,7 @@ const CheckinsTable: React.FC = () => {
 
   const modes = useCheckinsModes();
   const {
-    isEditMode,
-    isDeleteMode,
-    isAddGuestMode,
+    checkinMode,
     showArchiveModal,
     selectedBooking,
     bookingToDelete,
@@ -220,18 +213,16 @@ const CheckinsTable: React.FC = () => {
    */
   const handleRowClick = useCallback(
     (booking: CheckInRow) => {
-      if (isEditMode) {
+      if (checkinMode === "edit") {
         handleRowClickForEdit(booking);
-      } else if (isDeleteMode) {
+      } else if (checkinMode === "delete") {
         handleRowClickForDelete(booking);
-      } else if (isAddGuestMode) {
+      } else if (checkinMode === "addGuest") {
         handleRowClickForAddGuest(booking);
       }
     },
     [
-      isEditMode,
-      isDeleteMode,
-      isAddGuestMode,
+      checkinMode,
       handleRowClickForEdit,
       handleRowClickForDelete,
       handleRowClickForAddGuest,
@@ -256,9 +247,7 @@ const CheckinsTable: React.FC = () => {
       finalSortedData={finalSortedData}
       guestsByBooking={guestsByBooking}
       eligibleCount={eligibleCount}
-      isEditMode={isEditMode}
-      isDeleteMode={isDeleteMode}
-      isAddGuestMode={isAddGuestMode}
+      checkinMode={checkinMode}
       onRowClick={handleRowClick}
       onNewBookingClick={handleNewBookingClick}
       onEditClick={handleEditClick}

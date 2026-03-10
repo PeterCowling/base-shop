@@ -1,0 +1,25 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-09T08:19:45.330Z",
+  "plan_slug": "reception-appnav-dual-source",
+  "source_path": "../docs/plans/reception-appnav-dual-source/results-review.user.md",
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic — divergence detection between multiple hardcoded arrays could be automated by a script that compares route sets across the app; now moot since divergences are eliminated, but the pattern of \"multiple files containing equivalent data\" could trigger a lint rule",
+      "body": "8 divergences were only found by manual cross-tabulation during fact-find",
+      "suggested_action": "defer (single-source-of-truth now enforced architecturally)",
+      "source": "results-review.user.md",
+      "date": "2026-03-09T00:00:00.000Z",
+      "path": "../docs/plans/reception-appnav-dual-source/results-review.user.md",
+      "idea_key": "51592b81a191afbe3229cdfadb035f7453543e45",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
+}

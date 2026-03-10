@@ -44,7 +44,7 @@ export default function ClientLayout({
   return (
     <TranslationsProvider messages={sharedMessages}>
       <I18nextProvider i18n={i18n}>
-        <AppLayout lang={lang}>{children}</AppLayout>
+        <AppLayout lang={lang} showBanner={!pathname.includes("/private-rooms")}>{children}</AppLayout>
       </I18nextProvider>
     </TranslationsProvider>
   );

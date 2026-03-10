@@ -38,8 +38,8 @@ while read -r local_ref local_sha remote_ref remote_sha; do
     echo "Protected branch: ${remote_ref#refs/heads/}" >&2
     echo "" >&2
     echo "Use the pipeline PR scripts instead:" >&2
-    echo "  - Ship dev -> staging: scripts/git/ship-to-staging.sh" >&2
-    echo "  - Promote staging -> main: scripts/git/promote-to-main.sh" >&2
+    echo "  - Ship any branch -> staging for user testing: scripts/git/ship-to-staging.sh" >&2
+    echo "  - Promote dev -> main: scripts/git/promote-to-main.sh" >&2
     echo "" >&2
     exit 1
   fi

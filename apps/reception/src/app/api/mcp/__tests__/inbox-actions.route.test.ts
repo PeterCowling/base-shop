@@ -123,6 +123,25 @@ function buildPostRequest(url: string, body?: unknown): Request {
   });
 }
 
+function buildStoredMessage(index: number) {
+  const sentAt = new Date(2026, 2, 1, 0, index, 0).toISOString();
+  return {
+    id: `msg-${index}`,
+    thread_id: "thread-1",
+    direction: "inbound" as const,
+    sender_email: "guest@example.com",
+    recipient_emails_json: "[\"hostelpositano@gmail.com\"]",
+    subject: `Check-in question ${index}`,
+    snippet: `Question ${index}`,
+    sent_at: sentAt,
+    payload_json: JSON.stringify({
+      from: "Guest <guest@example.com>",
+      body: { plain: `Question body ${index}` },
+    }),
+    created_at: sentAt,
+  };
+}
+
 describe("inbox regenerate/send/resolve routes", () => {
   const requireStaffAuthMock = jest.mocked(requireStaffAuth);
   const getThreadMock = jest.mocked(getThread);
@@ -229,6 +248,66 @@ describe("inbox regenerate/send/resolve routes", () => {
       },
     });
     expect(payload.data.draft.plainText).toBe("Fresh generated reply");
+  });
+
+  it("bounds regenerate thread context to the 20 most recent stored messages", async () => {
+    getThreadMock.mockResolvedValue(
+      buildThreadRecord({
+        messages: Array.from({ length: 30 }, (_, index) => buildStoredMessage(index)),
+      }),
+    );
+    generateAgentDraftMock.mockResolvedValue({
+      status: "ready",
+      plainText: "Fresh generated reply",
+      html: "<p>Fresh generated reply</p>",
+      templateUsed: {
+        subject: "Check-in Information",
+        category: "check-in",
+        confidence: 0.92,
+        selection: "auto",
+      },
+      qualityResult: {
+        passed: true,
+        failed_checks: [],
+        warnings: [],
+        confidence: 1,
+        question_coverage: [],
+      },
+      interpretResult: {
+        language: "EN",
+        intents: { questions: [], requests: [], confirmations: [] },
+        scenario: { category: "check-in", confidence: 0.92 },
+        scenarios: [],
+        escalation: { tier: "NONE", triggers: [], confidence: 0 },
+      },
+      questionBlocks: [],
+      knowledgeSources: [],
+    });
+    updateDraftMock.mockResolvedValue({
+      ...buildThreadRecord().drafts[0],
+      plain_text: "Fresh generated reply",
+    });
+
+    const response = await regenerateDraft(
+      buildPostRequest("http://localhost/api/mcp/inbox/thread-1/draft/regenerate", {}),
+      { params: { threadId: "thread-1" } },
+    );
+
+    expect(response.status).toBe(200);
+    expect(generateAgentDraftMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        threadContext: {
+          messages: expect.arrayContaining([
+            expect.objectContaining({ snippet: "Question body 10" }),
+            expect.objectContaining({ snippet: "Question body 29" }),
+          ]),
+        },
+      }),
+    );
+    const threadContext = generateAgentDraftMock.mock.calls[0]?.[0]?.threadContext;
+    expect(threadContext?.messages).toHaveLength(20);
+    expect(threadContext?.messages[0]?.snippet).toBe("Question body 10");
+    expect(threadContext?.messages[19]?.snippet).toBe("Question body 29");
   });
 
   it("returns 400 when send is attempted without a draft", async () => {

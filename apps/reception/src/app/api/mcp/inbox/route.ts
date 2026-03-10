@@ -5,7 +5,7 @@ import {
   isThreadVisibleInInbox,
 } from "@/lib/inbox/api-models.server";
 import { inboxApiErrorResponse } from "@/lib/inbox/api-route-helpers";
-import { listPrimeInboxThreadSummaries } from "@/lib/inbox/prime-review.server";
+import { isPrimeThreadVisibleInInbox, listPrimeInboxThreadSummaries, type PrimeReviewThreadSummary } from "@/lib/inbox/prime-review.server";
 import {
   type InboxThreadStatus,
   inboxThreadStatuses,
@@ -45,23 +45,20 @@ export async function GET(request: Request) {
     const offset = parseNumberParam(url.searchParams.get("offset"), 0);
     const status = parseStatusParam(url.searchParams.get("status"));
 
-    const rows = await listThreadsWithLatestDraft({
-      status,
-      limit,
-      offset,
+    const primeRowsPromise = listPrimeInboxThreadSummaries(status).catch((error) => {
+      console.error("Failed to load Prime review thread summaries:", error);
+      return [] as Awaited<ReturnType<typeof listPrimeInboxThreadSummaries>>;
     });
 
-    const visibleRows = status ? rows : rows.filter((row) => isThreadVisibleInInbox(row));
-    let primeRows: Awaited<ReturnType<typeof listPrimeInboxThreadSummaries>> = [];
-    try {
-      primeRows = await listPrimeInboxThreadSummaries();
-    } catch (error) {
-      console.error("Failed to load Prime review thread summaries:", error);
-    }
+    const [rows, primeRows] = await Promise.all([
+      listThreadsWithLatestDraft({ status, limit, offset }),
+      primeRowsPromise,
+    ]);
 
+    const visibleRows = status ? rows : rows.filter((row) => isThreadVisibleInInbox(row));
     const filteredPrimeRows = status
-      ? primeRows.filter((row) => row.status === status)
-      : primeRows;
+      ? primeRows
+      : primeRows.filter((row) => isPrimeThreadVisibleInInbox({ reviewStatus: row.status as PrimeReviewThreadSummary["reviewStatus"] }));
 
     return NextResponse.json({
       success: true,

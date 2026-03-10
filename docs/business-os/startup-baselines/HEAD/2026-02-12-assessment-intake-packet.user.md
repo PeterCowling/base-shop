@@ -3,8 +3,8 @@ Type: Startup-Intake-Packet
 Status: Active
 Business: HEAD
 Created: 2026-02-12
-Updated: 2026-02-20
-Last-reviewed: 2026-02-20
+Updated: 2026-03-09
+Last-reviewed: 2026-03-09
 Owner: Pete
 Precursor-ASSESSMENT-01: 2026-02-20
 Precursor-ASSESSMENT-02: 2026-02-20
@@ -45,7 +45,7 @@ This causes drops, near-loss events, and repeated "where is it / who has it" mom
 - Execution posture: speed-to-first-sales; direct sales before platform/CMS work (`ASSESSMENT-06`).
 - Inventory: stock purchased; in-stock date and units pending (`ASSESSMENT-06`).
 - Channel posture: own-site DTC primary; constrained marketplace probes for evidence capture (`ASSESSMENT-06`).
-- Naming: unconfirmed; working recommendation is Nidilo; Territory B coined masterbrand; TM/domain clearance required (`ASSESSMENT-04`).
+- Naming: confirmed - Facilella selected on 2026-02-26; facilella.com registered (DEC-HEAD-NAME-01).
 - Kill condition: **GO (provisional)** — three kill conditions pass; first-party WTP validation from Italian buyers is the primary open gap (`ASSESSMENT-01`).
 
 ### Current Workarounds (ASSESSMENT-01)
@@ -65,9 +65,9 @@ This causes drops, near-loss events, and repeated "where is it / who has it" mom
 | Field | Value | Source |
 |---|---|---|
 | Business code | HEAD | — |
-| Business name | Nidilo (working recommendation; not yet cleared) | ASSESSMENT-04 |
-| Business name status | unconfirmed — shortlist returned; TM/domain clearance required before commitment | ASSESSMENT-04 |
-| Naming territory | Territory B: lifestyle/everyday normalisation; coined masterbrand | ASSESSMENT-04 |
+| Business name | Facilella | DEC-HEAD-NAME-01 |
+| Business name status | confirmed - selected on 2026-02-26; facilella.com registered | DEC-HEAD-NAME-01 |
+| Naming territory | Easy Hair System | DEC-HEAD-NAME-01 |
 | Name shortlist | Nidilo, Telilo, Tessilo, Tramilo, Calafilo, Filocalma, Nuvafilo, Nidela | ASSESSMENT-04 |
 | Region | Italy (primary); EU expansion path | ASSESSMENT-01 |
 | Product 1 | Cross-compatible textile CI retention headband (launch hero) | ASSESSMENT-03 |
@@ -100,7 +100,7 @@ This causes drops, near-loss events, and repeated "where is it / who has it" mom
 | Inventory is near-term available | ASSESSMENT-06 | Stock purchased; in-stock date and units pending (ASSESSMENT-06 Section B) | Medium |
 | First-buyer ICP is caregiver-led; broader expansion is secondary | ASSESSMENT-01 | ASSESSMENT-01 primary segment; confirmed by community and competitor evidence | Medium |
 | Kill condition: GO provisional — first-party Italian WTP is the primary open constraint | ASSESSMENT-01 | All three kill conditions pass provisionally; first-party cohort not yet measured | Medium |
-| Naming remains provisional until TM/domain clearance | ASSESSMENT-04 | Clearance sequence (TMview, domain, counsel) not yet run (ASSESSMENT-04 Section E) | Medium |
+| Naming confirmed as Facilella; reassess only if legal/domain conflict appears pre-launch | DEC-HEAD-NAME-01 | Confirmed name decision recorded on 2026-02-26; facilella.com registered | High |
 | EU MDR copy discipline: non-medical claim language only | ASSESSMENT-03 | Intended-purpose is set by marketing claims, not materials; clinic-coded copy risks MDR accessory classification | High |
 | Tether-class accessories excluded from MVP | ASSESSMENT-03 | EN 14682 and manufacturer strangulation warnings; child-safety engineering gate required before inclusion | High |
 | Eudamed actor registration mandatory from 28 May 2026 | ASSESSMENT-03 | Launch window overlaps this deadline; monitor MDR classification decision; time-sensitive | High |

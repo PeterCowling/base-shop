@@ -59,7 +59,8 @@ describe("JSON-LD contract: representative pages", () => {
     pathname = "/en";
     const { container } = renderWithProviders(<HomeStructuredData />);
     const json = getJsonLd(container);
-    const hotel = json["hotel"] as Record<string, unknown>;
+    const graph = json["@graph"] as Array<Record<string, unknown>>;
+    const hotel = graph.find((node) => node["@type"] === "Hostel") as Record<string, unknown>;
     expect(hotel?.mainEntityOfPage).toBe(`${BASE_URL}/en`);
   });
 

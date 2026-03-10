@@ -5,11 +5,13 @@
 // --------------------------------------------------------------------------
 
 import { memo, useCallback, useState } from "react";
+import clsx from "clsx";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
 import { useTheme } from "@/hooks/useTheme";
 import type { AppLanguage } from "@/i18n.config";
+import { writeAttribution } from "@/utils/entryAttribution";
 import { fireCtaClick } from "@/utils/ga4-events";
 
 import DesktopHeader from "./DesktopHeader";
@@ -32,12 +34,58 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
   const barClass = theme === "dark" ? "progress-bar-dark" : "progress-bar-light";
 
   const onDesktopHeaderCtaClick = useCallback(() => {
-    fireCtaClick({ ctaId: "header_check_availability", ctaLocation: "desktop_header" });
-  }, []);
+    writeAttribution({
+      source_surface: "sitewide_shell",
+      source_cta: "desktop_header",
+      resolved_intent: "hostel",
+      product_type: null,
+      decision_mode: "direct_resolution",
+      destination_funnel: "hostel_central",
+      locale: resolvedLang,
+      fallback_triggered: false,
+    });
+    fireCtaClick(
+      { ctaId: "header_check_availability", ctaLocation: "desktop_header" },
+      undefined,
+      {
+        source_surface: "sitewide_shell",
+        source_cta: "desktop_header",
+        resolved_intent: "hostel",
+        product_type: null,
+        decision_mode: "direct_resolution",
+        destination_funnel: "hostel_central",
+        locale: resolvedLang,
+        fallback_triggered: false,
+      }
+    );
+  }, [resolvedLang]);
 
   const onMobileNavCtaClick = useCallback(() => {
-    fireCtaClick({ ctaId: "mobile_nav_check_availability", ctaLocation: "mobile_nav" });
-  }, []);
+    writeAttribution({
+      source_surface: "sitewide_shell",
+      source_cta: "mobile_nav",
+      resolved_intent: "hostel",
+      product_type: null,
+      decision_mode: "direct_resolution",
+      destination_funnel: "hostel_central",
+      locale: resolvedLang,
+      fallback_triggered: false,
+    });
+    fireCtaClick(
+      { ctaId: "mobile_nav_check_availability", ctaLocation: "mobile_nav" },
+      undefined,
+      {
+        source_surface: "sitewide_shell",
+        source_cta: "mobile_nav",
+        resolved_intent: "hostel",
+        product_type: null,
+        decision_mode: "direct_resolution",
+        destination_funnel: "hostel_central",
+        locale: resolvedLang,
+        fallback_triggered: false,
+      }
+    );
+  }, [resolvedLang]);
 
   /* Render ------------------------------------------------------------------ */
   return (
@@ -49,7 +97,7 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(progress)}
-        className={`progress-bar fixed left-0 top-0 z-[70] h-0.5 ${barClass}`}
+        className={clsx("progress-bar fixed left-0 top-0 z-[70] h-0.5", barClass)}
         style={{ width: `${progress}%` }}
       />
 

@@ -1,10 +1,10 @@
-import { describe, expect, it } from "@jest/globals";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { deserialize, serialize } from "node:v8";
+
+import { describe, expect, it } from "@jest/globals";
 import postcss from "postcss";
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const tailwindPostcssPlugin = require("@tailwindcss/postcss");
 
 if (typeof globalThis.structuredClone !== "function") {
@@ -32,5 +32,13 @@ describe("tailwind build", () => {
     expect(css).toContain("--reception-dark-surface");
     expect(css).toContain(".dark\\:bg-surface-dark");
     expect(css).toContain(".dark\\:text-accent-hospitality");
+    expect(css).toContain(".bg-primary");
+    expect(css).toContain(".bg-primary-main");
+    expect(css).toContain(".bg-input");
+    expect(css).toContain(".text-primary-foreground");
+    expect(css).toContain(".text-primary-fg");
+    expect(css).not.toMatch(/--color-primary:\s*var\(--color-primary\)/);
+    expect(css).not.toMatch(/--color-primary-fg:\s*var\(--color-primary-fg\)/);
+    expect(css).not.toMatch(/--color-border-strong:\s*var\(--color-border-strong\)/);
   });
 });

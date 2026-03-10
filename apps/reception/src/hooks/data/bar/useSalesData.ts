@@ -1,7 +1,5 @@
 // File: /src/hooks/data/bar/useSalesData.ts
 
-import { useMemo } from "react";
-
 import { type Ticket } from "../../../types/bar/BarTypes";
 import useFirebaseSubscription from "../useFirebaseSubscription";
 
@@ -18,14 +16,7 @@ export function useSalesData(): {
   const { data, loading, error } =
     useFirebaseSubscription<Record<string, Ticket>>("barOrders/sales");
 
-  const salesData = useMemo(() => data ?? null, [data]);
+  const salesData = data ?? null;
 
-  return useMemo(
-    () => ({
-      salesData,
-      loading,
-      error,
-    }),
-    [salesData, loading, error]
-  );
+  return { salesData, loading, error };
 }

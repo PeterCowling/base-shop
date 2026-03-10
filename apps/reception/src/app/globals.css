@@ -7,166 +7,26 @@
 @import "tw-animate-css";
 @import "tailwindcss";
 
-/* -------- TW v4 @theme — register custom colors as utility classes ------- */
-/* Reception tokens are now oklch() — consumed via bare var() (no hsl wrapper needed).  */
-/* Base tokens (danger, success, warning, info, hospitality) remain raw HSL triplets    */
-/* from packages/themes/base/tokens.css and still need hsl(var(...)) wrapping.          */
-@theme {
-  /* Reception dark palette */
-  /* oklch aliases: reception-dark-bg/surface/border reference reception oklch tokens */
-  --color-darkBg: var(--reception-dark-bg);
-  --color-darkSurface: var(--reception-dark-surface);
-  --color-darkAccentGreen: hsl(var(--reception-dark-accent-green));   /* BASE triplet */
-  --color-darkAccentOrange: hsl(var(--reception-dark-accent-orange)); /* BASE triplet */
-  --color-darkBorder: var(--reception-dark-border);
-  --color-surface-dark: var(--reception-surface-dark);
-  --color-accent-hospitality: hsl(var(--reception-accent-hospitality)); /* BASE triplet */
-
-  /* Shared preset surfaces — reception oklch */
-  --color-surface: var(--surface-1, var(--color-bg));
-  --color-surface-2: var(--surface-2, var(--color-bg));
-  --color-surface-3: var(--surface-3, var(--color-bg));
-
-  /* Shared preset semantic colors */
-  --color-primary: var(--color-primary);
-  --color-accent: var(--color-accent);
-  --color-destructive: hsl(var(--color-danger));   /* BASE triplet */
-  --color-success: hsl(var(--color-success));       /* BASE triplet */
-  --color-warning: hsl(var(--color-warning));       /* BASE triplet */
-  --color-muted: var(--color-muted);
-
-  /* Foreground / text */
-  --color-foreground: var(--color-fg);
-  --color-muted-foreground: var(--color-fg-muted, var(--color-fg));
-  --color-primary-fg: var(--color-primary-fg);
-  --color-danger-fg: hsl(var(--color-danger-fg));           /* BASE triplet */
-  --color-success-foreground: hsl(var(--color-success-fg)); /* BASE triplet */
-  --color-destructive-foreground: hsl(var(--color-danger-fg)); /* BASE triplet */
-  --color-destructive-main: hsl(var(--color-danger));           /* BASE triplet */
-
-  /* Borders — color-fg is oklch; border-1/border-2 use alpha-modifier fallback */
-  /* TODO: replace with oklch(from var(--color-fg) l c h / 0.12) when widely supported */
-  --color-border-1: hsl(var(--border-1, var(--color-fg) / 0.12));
-  --color-border-2: hsl(var(--border-2, var(--color-fg) / 0.22));
-
-  /* DS primitive tokens (needed for bg-input, bg-panel, ring-ring, etc.) */
-  --color-input: var(--surface-input, var(--color-bg));
-  /* color-panel source is now oklch — bare var() is correct */
-  --color-panel: var(--color-panel);
-  --color-inset: var(--color-inset);
-  --color-ring: var(--ring);
-  --color-danger: hsl(var(--color-danger));         /* BASE triplet */
-  --color-info: hsl(var(--color-info));             /* BASE triplet */
-  --color-border: var(--color-border);
-  --color-border-strong: var(--color-border-strong);
-  --color-border-muted: var(--color-border-muted);
-  --color-link: var(--color-link);
-
-  /* Soft palette — reception oklch overrides defined; fallback syntax retained for base tokens */
-  --color-accent-soft: var(--color-accent-soft);
-  --color-primary-soft: var(--color-primary-soft);
-  --color-danger-soft: hsl(var(--color-danger-soft, var(--color-danger) / 0.12));     /* BASE */
-  --color-success-soft: hsl(var(--color-success-soft, var(--color-success) / 0.12)); /* BASE */
-  --color-warning-soft: hsl(var(--color-warning-soft, var(--color-warning) / 0.12)); /* BASE */
-  --color-info-soft: hsl(var(--color-info-soft, var(--color-info) / 0.12));           /* BASE */
-
-  /* Typography */
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-mono);
-  --font-heading: var(--font-sans);
-  --font-body: var(--font-sans);
-
-  /* Z-index scale (exposes CSS tokens as Tailwind utilities) */
-  --z-modal-backdrop: 9998;
-  --z-modal: 9999;
-  --z-popover: 600;
-  --z-tooltip: 700;
-
-  /* Chart palette (dark-mode-aware) — reception oklch */
-  --color-chart-1: var(--chart-1);
-  --color-chart-2: var(--chart-2);
-  --color-chart-3: var(--chart-3);
-  --color-chart-4: var(--chart-4);
-  --color-chart-5: var(--chart-5);
-  --color-chart-6: var(--chart-6);
-  --color-chart-7: var(--chart-7);
-
-  /* Status -main/-dark/-light — primary is oklch; info/success/warning/error remain BASE */
-  --color-primary-main: var(--color-primary);
-  --color-primary-dark: var(--color-primary-dark, var(--color-primary));
-  --color-primary-light: var(--color-primary-light, var(--color-primary));
-  --color-info-main: hsl(var(--color-info));                                  /* BASE */
-  --color-info-dark: hsl(var(--color-info-dark, var(--color-info)));          /* BASE */
-  --color-info-light: hsl(var(--color-info-light, var(--color-info)));        /* BASE */
-  --color-success-main: hsl(var(--color-success));                            /* BASE */
-  --color-success-dark: hsl(var(--color-success-dark, var(--color-success))); /* BASE */
-  --color-warning-main: hsl(var(--color-warning));                            /* BASE */
-  --color-warning-dark: hsl(var(--color-warning-dark, var(--color-warning))); /* BASE */
-  --color-error-main: hsl(var(--color-danger));                               /* BASE */
-  --color-error-dark: hsl(var(--color-danger-dark, var(--color-danger)));     /* BASE */
-}
-
-/* -------- TW v4 @theme inline — shade families (bar/POS product grid) ---
-   Shade token source values are full oklch() literals (migrated from hsl()).
-   @theme inline uses bare var() — Tailwind reads the resolved value as-is.
-   Semantic tokens above are also oklch and use bare var() in @theme {}.
-   See packages/themes/reception/src/tokens.ts for the source of truth.
-   ----------------------------------------------------------------------- */
-@theme inline {
-  --color-pinkShades-row1: var(--color-pinkShades-row1);
-  --color-pinkShades-row2: var(--color-pinkShades-row2);
-  --color-pinkShades-row3: var(--color-pinkShades-row3);
-  --color-pinkShades-row4: var(--color-pinkShades-row4);
-  --color-coffeeShades-row1: var(--color-coffeeShades-row1);
-  --color-coffeeShades-row2: var(--color-coffeeShades-row2);
-  --color-coffeeShades-row3: var(--color-coffeeShades-row3);
-  --color-beerShades-row1: var(--color-beerShades-row1);
-  --color-beerShades-row2: var(--color-beerShades-row2);
-  --color-wineShades-row1: var(--color-wineShades-row1);
-  --color-wineShades-row2: var(--color-wineShades-row2);
-  --color-wineShades-row3: var(--color-wineShades-row3);
-  --color-teaShades-row1: var(--color-teaShades-row1);
-  --color-teaShades-row2: var(--color-teaShades-row2);
-  --color-greenShades-row1: var(--color-greenShades-row1);
-  --color-greenShades-row2: var(--color-greenShades-row2);
-  --color-greenShades-row3: var(--color-greenShades-row3);
-  --color-blueShades-row1: var(--color-blueShades-row1);
-  --color-blueShades-row2: var(--color-blueShades-row2);
-  --color-blueShades-row3: var(--color-blueShades-row3);
-  --color-blueShades-row4: var(--color-blueShades-row4);
-  --color-blueShades-row5: var(--color-blueShades-row5);
-  --color-purpleShades-row1: var(--color-purpleShades-row1);
-  --color-purpleShades-row2: var(--color-purpleShades-row2);
-  --color-spritzShades-row1: var(--color-spritzShades-row1);
-  --color-spritzShades-row2: var(--color-spritzShades-row2);
-  --color-orangeShades-row1: var(--color-orangeShades-row1);
-  --color-orangeShades-row2: var(--color-orangeShades-row2);
-  --color-orangeShades-row3: var(--color-orangeShades-row3);
-  --color-orangeShades-row4: var(--color-orangeShades-row4);
-  --color-orangeShades-row5: var(--color-orangeShades-row5);
-  --color-grayishShades-row1: var(--color-grayishShades-row1);
-  --color-grayishShades-row2: var(--color-grayishShades-row2);
-  --color-grayishShades-row3: var(--color-grayishShades-row3);
-  --color-grayishShades-row4: var(--color-grayishShades-row4);
-}
+/* Reception-specific runtime aliases.
+   Tailwind utility colors come from apps/reception/tailwind.config.mjs. */
 
 :root {
   /* Modal z-index override — must sit above all sticky/fixed page elements */
   --z-modal-backdrop: 9998;
   --z-modal: 9999;
 
-  /* Legacy dark palette aliases bridged to shared semantic tokens */
-  --reception-dark-bg: var(--color-bg-dark);
-  --reception-dark-surface: var(--surface-2-dark);
-  --reception-dark-accent-green: var(--hospitality-ready-fg-dark);
-  --reception-dark-accent-orange: var(--hospitality-warning-fg-dark);
-  --reception-dark-border: var(--color-border-dark);
+  /* Dark-mode aliases used by raw CSS consumers */
+  --reception-dark-bg: hsl(var(--color-bg-dark));
+  --reception-dark-surface: hsl(var(--surface-2-dark));
+  --reception-dark-accent-green: hsl(var(--hospitality-ready-fg-dark));
+  --reception-dark-accent-orange: hsl(var(--hospitality-warning-fg-dark));
+  --reception-dark-border: hsl(var(--color-border-dark));
 
-  /* Semantic aliases for new Reception component usage */
-  --reception-surface-dark: var(--surface-2);
-  --reception-accent-hospitality: var(--hospitality-ready-fg);
+  /* Semantic aliases for newer reception-only surfaces */
+  --reception-surface-dark: hsl(var(--surface-2));
+  --reception-accent-hospitality: hsl(var(--hospitality-ready-fg));
 
-  /* Bridge legacy reception semantics to shared hospitality tokens */
+  /* Hospitality status aliases consumed directly as colors */
   --reception-signal-ready-bg: hsl(var(--hospitality-ready));
   --reception-signal-ready-fg: hsl(var(--hospitality-ready-fg));
   --reception-signal-warning-bg: hsl(var(--hospitality-warning));

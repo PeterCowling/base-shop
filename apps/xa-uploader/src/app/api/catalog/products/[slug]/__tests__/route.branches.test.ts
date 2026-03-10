@@ -1,21 +1,13 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
-const getCatalogDraftBySlugMock = jest.fn();
-const deleteCatalogProductMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
 const deleteProductFromCloudSnapshotMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const parseStorefrontMock = jest.fn();
 const rateLimitMock = jest.fn();
-const applyRateLimitHeadersMock = jest.fn();
+const withRateHeadersMock = jest.fn();
 const getRequestIpMock = jest.fn();
-
-jest.mock("../../../../../../lib/catalogCsv", () => ({
-  getCatalogDraftBySlug: (...args: unknown[]) => getCatalogDraftBySlugMock(...args),
-  deleteCatalogProduct: (...args: unknown[]) => deleteCatalogProductMock(...args),
-  CatalogCsvStorageBusyError: class extends Error {},
-}));
 
 jest.mock("../../../../../../lib/catalogDraftContractClient", () => ({
   CatalogDraftContractError: class extends Error {
@@ -40,7 +32,7 @@ jest.mock("../../../../../../lib/uploaderAuth", () => ({
 
 jest.mock("../../../../../../lib/rateLimit", () => ({
   rateLimit: (...args: unknown[]) => rateLimitMock(...args),
-  applyRateLimitHeaders: (...args: unknown[]) => applyRateLimitHeadersMock(...args),
+  withRateHeaders: (...args: unknown[]) => withRateHeadersMock(...args),
   getRequestIp: (...args: unknown[]) => getRequestIpMock(...args),
 }));
 
@@ -51,10 +43,12 @@ describe("catalog product-by-slug branch coverage", () => {
     parseStorefrontMock.mockReturnValue("xa-b");
     getRequestIpMock.mockReturnValue("203.0.113.20");
     rateLimitMock.mockReturnValue({ allowed: true, remaining: 5, resetAt: Date.now() + 60_000 });
-    applyRateLimitHeadersMock.mockImplementation(() => {});
-    getCatalogDraftBySlugMock.mockResolvedValue({ slug: "studio-jacket", title: "Studio jacket" });
-    deleteCatalogProductMock.mockResolvedValue({ deleted: true });
-    readCloudDraftSnapshotMock.mockResolvedValue({ products: [], revisionsById: {}, docRevision: "doc-rev-1" });
+    withRateHeadersMock.mockImplementation((response: unknown) => response);
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [{ slug: "studio-jacket", title: "Studio jacket" }],
+      revisionsById: {},
+      docRevision: "doc-rev-1",
+    });
     deleteProductFromCloudSnapshotMock.mockReturnValue({ deleted: true, products: [], revisionsById: {} });
     writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "doc-rev-2" });
   });

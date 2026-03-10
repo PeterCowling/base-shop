@@ -1,4 +1,4 @@
-import type { CatalogProductDraftInput } from "@acme/lib/xa";
+import { type CatalogProductDraftInput,splitList } from "@acme/lib/xa";
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -22,16 +22,8 @@ export type EditFilterOptions = {
 /*  Helpers                                                            */
 /* ------------------------------------------------------------------ */
 
-function splitPipe(value: string | undefined): string[] {
-  if (!value) return [];
-  return value
-    .split("|")
-    .map((s) => s.trim())
-    .filter(Boolean);
-}
-
 function pipeContains(pipeValue: string | undefined, needle: string): boolean {
-  return splitPipe(pipeValue).includes(needle);
+  return splitList(pipeValue ?? "").includes(needle);
 }
 
 /* ------------------------------------------------------------------ */
@@ -69,11 +61,11 @@ export function extractFilterOptions(
 
   // Sizes: filtered by brand + collection (not by size itself)
   const byCollection = filterCatalogProducts(products, { brand: criteria.brand, collection: criteria.collection });
-  const sizes = [...new Set(byCollection.flatMap((p) => splitPipe(p.sizes)))];
+  const sizes = [...new Set(byCollection.flatMap((p) => splitList(p.sizes ?? "")))];
 
   // Colors: filtered by brand + collection + size (not by color itself)
   const bySize = filterCatalogProducts(products, { brand: criteria.brand, collection: criteria.collection, size: criteria.size });
-  const colors = [...new Set(bySize.flatMap((p) => splitPipe(p.taxonomy.color)))];
+  const colors = [...new Set(bySize.flatMap((p) => splitList(p.taxonomy.color ?? "")))];
 
   return { brands, collections, sizes, colors };
 }

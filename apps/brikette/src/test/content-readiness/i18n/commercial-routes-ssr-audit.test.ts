@@ -61,7 +61,7 @@ const COMMERCIAL_ROUTE_NAMESPACES = [
 ] as const;
 
 const NON_EN_LOCALES = (i18nConfig.supportedLngs ?? []).filter(
-  (l) => l !== "en",
+  (l) => l !== "en"
 ) as AppLanguage[];
 
 /**
@@ -69,9 +69,7 @@ const NON_EN_LOCALES = (i18nConfig.supportedLngs ?? []).filter(
  * The no-JS fallback link must live here (not in client components).
  * Path is relative to SOURCE_ROOT (apps/brikette/src/).
  */
-const BOOKING_ROUTE_SOURCE_FILES = [
-  "app/[lang]/book/page.tsx",
-] as const;
+const BOOKING_ROUTE_SOURCE_FILES = ["app/[lang]/book/page.tsx"] as const;
 
 /**
  * RSC entry point for the /{lang}/book-private-accommodations route.
@@ -83,7 +81,7 @@ const APARTMENT_BOOKING_ROUTE_SOURCE_FILE =
 
 /** Pattern that indicates the live static, non-JS-dependent Octorate booking link. */
 const OCTORATE_STATIC_LINK_PATTERN =
-  /book\.octorate\.com\/octobook\/site\/reservation\/calendar\.xhtml\?codice=45111/;
+  /book\.octorate\.com\/octobook\/site\/reservation\/calendar\.xhtml\?codice=(45111|\$\{BOOKING_CODE\})/;
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -94,7 +92,8 @@ const OCTORATE_STATIC_LINK_PATTERN =
  */
 function extractStringValues(obj: unknown): string[] {
   if (typeof obj === "string") return [obj];
-  if (Array.isArray(obj)) return obj.flatMap((item) => extractStringValues(item));
+  if (Array.isArray(obj))
+    return obj.flatMap((item) => extractStringValues(item));
   if (obj && typeof obj === "object") {
     return Object.values(obj).flatMap((v) => extractStringValues(v));
   }
@@ -107,7 +106,11 @@ function extractStringValues(obj: unknown): string[] {
 
 describe("TC-01: commercial route namespace i18n placeholder audit (TASK-10A, report-only)", () => {
   it("no unresolved placeholder phrases in commercial route namespaces across all locales", () => {
-    const findings: Array<{ locale: string; namespace: string; value: string }> = [];
+    const findings: Array<{
+      locale: string;
+      namespace: string;
+      value: string;
+    }> = [];
 
     for (const locale of NON_EN_LOCALES) {
       for (const namespace of COMMERCIAL_ROUTE_NAMESPACES) {
@@ -129,7 +132,9 @@ describe("TC-01: commercial route namespace i18n placeholder audit (TASK-10A, re
             keyPrefixes: [],
             minDotSegments: 999,
           });
-          for (const finding of detected.filter((f) => f.kind === "placeholderPhrase")) {
+          for (const finding of detected.filter(
+            (f) => f.kind === "placeholderPhrase"
+          )) {
             findings.push({ locale, namespace, value: finding.value });
           }
         }
@@ -187,7 +192,7 @@ describe("TC-02: no-JS fallback audit for /{lang}/book (TASK-10B, CI-blocking)",
       throw new Error(
         `[TASK-10B TC-02] No static Octorate link found in ${deadEndFiles.length} booking route source file(s).\n` +
           `No-JS users on /{lang}/book reach a booking dead-end (modal-only flow):\n${list}\n` +
-          `\nRemediation: restore <noscript><a href="https://book.octorate.com/..."> in book/page.tsx RSC layer.`,
+          `\nRemediation: restore <noscript><a href="https://book.octorate.com/..."> in book/page.tsx RSC layer.`
       );
     }
 
@@ -205,7 +210,7 @@ describe("TC-03: commercial namespace coverage regression (TASK-10A)", () => {
     (locale) => {
       const filePath = path.join(LOCALES_ROOT, locale, "bookPage.json");
       expect(existsSync(filePath)).toBe(true);
-    },
+    }
   );
 
   it.each(NON_EN_LOCALES)(
@@ -213,7 +218,7 @@ describe("TC-03: commercial namespace coverage regression (TASK-10A)", () => {
     (locale) => {
       const filePath = path.join(LOCALES_ROOT, locale, "modals.json");
       expect(existsSync(filePath)).toBe(true);
-    },
+    }
   );
 });
 
@@ -223,10 +228,13 @@ describe("TC-03: commercial namespace coverage regression (TASK-10A)", () => {
 
 describe("TC-04: no-JS fallback audit for /{lang}/apartment/book (TASK-08, CI-blocking)", () => {
   it("/{lang}/apartment/book server source includes a static Octorate link for no-JS users", () => {
-    const fullPath = path.join(SOURCE_ROOT, APARTMENT_BOOKING_ROUTE_SOURCE_FILE);
+    const fullPath = path.join(
+      SOURCE_ROOT,
+      APARTMENT_BOOKING_ROUTE_SOURCE_FILE
+    );
     if (!existsSync(fullPath)) {
       throw new Error(
-        `[TASK-08 TC-04] Apartment booking route source not found: ${APARTMENT_BOOKING_ROUTE_SOURCE_FILE}`,
+        `[TASK-08 TC-04] Apartment booking route source not found: ${APARTMENT_BOOKING_ROUTE_SOURCE_FILE}`
       );
     }
 
@@ -236,7 +244,7 @@ describe("TC-04: no-JS fallback audit for /{lang}/apartment/book (TASK-08, CI-bl
         `[TASK-08 TC-04] No static Octorate link found in apartment booking route source.\n` +
           `No-JS users on /{lang}/apartment/book reach a booking dead-end (JS-only flow):\n` +
           `  - ${APARTMENT_BOOKING_ROUTE_SOURCE_FILE}\n` +
-          `\nRemediation: add <noscript><a href="https://book.octorate.com/..."> in apartment/book/page.tsx RSC layer.`,
+          `\nRemediation: add <noscript><a href="https://book.octorate.com/..."> in apartment/book/page.tsx RSC layer.`
       );
     }
 
@@ -254,6 +262,6 @@ describe("TC-05: apartment namespace coverage regression (TASK-08, CI-blocking)"
     (locale) => {
       const filePath = path.join(LOCALES_ROOT, locale, "apartmentPage.json");
       expect(existsSync(filePath)).toBe(true);
-    },
+    }
   );
 });

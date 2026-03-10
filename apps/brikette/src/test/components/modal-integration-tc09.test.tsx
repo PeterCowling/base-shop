@@ -77,9 +77,9 @@ jest.mock("next/link", () => {
   return { __esModule: true, default: LinkMock };
 });
 
-// @/utils/slug: stub terms slug.
+// @/utils/slug: keep the booking route stable for widget navigation assertions.
 jest.mock("@/utils/slug", () => ({
-  getSlug: () => "terms",
+  getSlug: (key: string) => (key === "book" ? "book" : key),
 }));
 
 // ---------------------------------------------------------------------------
@@ -99,7 +99,9 @@ function getUseTranslationMock(): jest.Mock {
 }
 
 function getBookingSubmitButton(): HTMLElement {
-  return screen.getByRole("button", { name: "booking.buttonAvailability" });
+  // resolveTranslatedCopy in BookingWidget falls back to "Check availability" when the
+  // i18n mock returns the raw key (keys containing "." are treated as unresolved).
+  return screen.getByRole("button", { name: "Check availability" });
 }
 
 function getCheckInInput(): HTMLElement {

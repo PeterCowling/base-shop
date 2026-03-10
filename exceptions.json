@@ -106,6 +106,13 @@
       "expires": "2026-12-31",
       "notes": "Brikette SEO audit, CTA, guide, routes, and schema lint exceptions (security/detect-non-literal-regexp, max-params, complexity) pending refactor."
     },
+    "BRIK-2161": {
+      "allow": [
+        "apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Dorm booking query synchronization intentionally runs from resolved query fields only; hook dependency follow-up tracked separately."
+    },
     "BRIK-2": {
       "allow": [
         "apps/prime/src/**"
@@ -368,6 +375,16 @@
     },
     "HAND-001": {},
     "INT-1010": {},
+    "INV-001": {
+      "allow": ["apps/inventory-uploader/**"],
+      "expires": "2026-12-31",
+      "notes": "Inventory uploader operator-tool: max-lines-per-function and react-hooks/exhaustive-deps exceptions for monolithic form+history components; split deferred."
+    },
+    "INV-0001": {
+      "allow": ["apps/inventory-uploader/**"],
+      "expires": "2026-12-31",
+      "notes": "Inventory uploader operator-tool: DS lint exceptions (min-tap-size, enforce-layout-primitives, container-widths-only-at, no-arbitrary-tailwind) for compact desktop console UI and TypeScript any exceptions for Prisma generated schema."
+    },
     "INTL-000": {},
     "INTL-202": {},
     "INTL-203": {},
@@ -421,10 +438,32 @@
       "expires": "2027-06-30",
       "notes": "Prime pre-existing react-hooks/rules-of-hooks and react-hooks/exhaustive-deps suppressions: conditional SDK guard pattern and stable reference dep arrays deferred pending hooks refactor."
     },
+    "PRIME-101": {
+      "allow": [
+        "apps/prime/functions/api/review-threads.ts",
+        "apps/prime/functions/lib/prime-messaging-repositories.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Prime review API machine-readable errors, developer logs, and repository SQL literals are non-UI strings."
+    },
+    "PRIME-CHAT-001": {
+      "allow": [
+        "apps/prime/src/contexts/messaging/ChatProvider.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Prime chat provider developer diagnostic strings remain hardcoded until messaging telemetry copy is centralized."
+    },
     "PRIME-DATE-UTILS-001": {
       "allow": ["apps/prime/src/utils/dateUtils.ts"],
       "expires": "2026-12-31",
       "notes": "Prime date utility parser/formatter constants and internal log labels are intentionally non-localized."
+    },
+    "PRIME-PUREDATA-001": {
+      "allow": [
+        "apps/prime/src/hooks/pureData/useFetchBagStorageData.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Prime pureData bag-storage fetch hook keeps a developer diagnostic string hardcoded until logging helpers are shared."
     },
     "PRIME-ROUTES-001": {
       "allow": ["apps/prime/src/data/routes.ts"],

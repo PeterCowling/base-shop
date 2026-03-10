@@ -1,0 +1,15 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-09T11:49:18.115Z",
+  "plan_slug": "reception-date-selector-unification",
+  "source_path": "../docs/plans/reception-date-selector-unification/pattern-reflection.user.md",
+  "entries": [
+    {
+      "pattern_summary": "AI-to-mechanistic — Duplicate component detection (identify near-identical components by AST simi...",
+      "category": "deterministic",
+      "routing_target": "defer",
+      "occurrence_count": 1,
+      "evidence_refs": []
+    }
+  ]
+}

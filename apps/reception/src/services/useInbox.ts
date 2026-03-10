@@ -78,6 +78,12 @@ export type InboxMessage = {
     mimeType: string;
     size: number;
   }>;
+  // Prime-specific rich fields (absent/undefined for email messages)
+  links?: unknown[] | null;
+  primeAttachments?: unknown[] | null;
+  cards?: unknown[] | null;
+  audience?: string | null;
+  campaignId?: string | null;
 };
 
 export type InboxThreadDetail = {
@@ -200,8 +206,9 @@ export async function fetchInboxThreads(): Promise<InboxThreadSummary[]> {
   return sortThreads(data);
 }
 
-export async function fetchInboxThread(threadId: string): Promise<InboxThreadDetail> {
+export async function fetchInboxThread(threadId: string, signal?: AbortSignal): Promise<InboxThreadDetail> {
   return inboxRequest<InboxThreadDetail>(`/api/mcp/inbox/${threadId}`, {
+    signal,
     errorCode: "Failed to load inbox thread",
   });
 }
@@ -285,11 +292,13 @@ export default function useInbox() {
     detailCacheRef.current.delete(threadId);
     const detail = await fetchInboxThread(threadId);
     detailCacheRef.current.set(threadId, detail);
-    setSelectedThreadId(threadId);
-    setSelectedThread(detail);
-    setThreads((prev) =>
-      prev.map((t) => (t.id === threadId ? detail.thread : t)),
-    );
+    if (threadId === selectedThreadIdRef.current) {
+      setSelectedThreadId(threadId);
+      setSelectedThread(detail);
+      setThreads((prev) =>
+        prev.map((t) => (t.id === threadId ? detail.thread : t)),
+      );
+    }
     return detail;
   }, []);
 
@@ -311,7 +320,7 @@ export default function useInbox() {
     setDetailError(null);
 
     try {
-      const detail = await fetchInboxThread(threadId);
+      const detail = await fetchInboxThread(threadId, controller.signal);
       if (controller.signal.aborted) return detail;
       detailCacheRef.current.set(threadId, detail);
       setSelectedThreadId(threadId);
@@ -415,41 +424,17 @@ export default function useInbox() {
 
     try {
       const result = await sendInboxDraft(selectedThreadId);
-      detailCacheRef.current.delete(selectedThreadId);
       const threadId = selectedThreadId;
-      setThreads((prev) =>
-        prev.map((t) =>
-          t.id === threadId
-            ? {
-                ...t,
-                status: "sent",
-                currentDraft: t.currentDraft
-                  ? { ...t.currentDraft, status: "sent" }
-                  : null,
-              }
-            : t,
-        ),
-      );
-      if (selectedThread) {
-        setSelectedThread({
-          ...selectedThread,
-          thread: {
-            ...selectedThread.thread,
-            status: "sent",
-            currentDraft: selectedThread.thread.currentDraft
-              ? { ...selectedThread.thread.currentDraft, status: "sent" }
-              : null,
-          },
-          currentDraft: selectedThread.currentDraft
-            ? { ...selectedThread.currentDraft, status: "sent" }
-            : null,
-        });
+      try {
+        await refreshThreadDetail(threadId);
+      } catch {
+        // Refresh is best-effort; do not mask the successful send
       }
       return result;
     } finally {
       setSendingDraft(false);
     }
-  }, [selectedThreadId, selectedThread]);
+  }, [refreshThreadDetail, selectedThreadId]);
 
   const resolveThread = useCallback(async () => {
     if (!selectedThreadId) {

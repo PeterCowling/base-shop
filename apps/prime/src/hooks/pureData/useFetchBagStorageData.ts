@@ -5,8 +5,9 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import { get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { BagStorageRecord } from '../../types/bagStorage';
@@ -26,6 +27,7 @@ async function fetchBagStorage(
     }
     return snapshot.val() as BagStorageRecord;
   } catch (err) {
+    // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-PUREDATA-001 developer diagnostic string [ttl=2026-12-31]
     logger.error('Error fetching bagStorageData:', err);
     throw err;
   }
@@ -40,7 +42,7 @@ export function useFetchBagStorageData(options: UseFetchBagStorageDataOptions = 
   const uuid = useUuid();
   const database = useFirebaseDatabase();
 
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, refetch: rqRefetch } = useQuery({
     queryKey: ['bagStorage', uuid],
     queryFn: () => fetchBagStorage(uuid!, database),
     enabled: enabled && !!uuid,
@@ -50,5 +52,6 @@ export function useFetchBagStorageData(options: UseFetchBagStorageDataOptions = 
     bagStorageData: data ?? null,
     isLoading,
     error: error ?? null,
+    refetch: rqRefetch as unknown as import('./types').PureDataRefetch,
   };
 }

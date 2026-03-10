@@ -60,8 +60,7 @@ describe('CashPrep', () => {
     render(
       <ArrivalHome
         firstName="Jane"
-        checkInCode="BRK-ABCDE"
-        isCodeLoading={false}
+        codeState={{ checkInCode: 'BRK-ABCDE', isCodeLoading: false }}
         preArrivalData={{
           etaWindow: null,
           etaMethod: null,

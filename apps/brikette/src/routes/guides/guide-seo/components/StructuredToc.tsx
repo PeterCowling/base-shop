@@ -19,7 +19,7 @@ export default function StructuredToc({ items, title, sectionsPresent }: Structu
   // Suppress the visual ToC when it would only contain a single FAQs link and
   // no sections are present. This matches UX expectations and test assertions
   // for guides where content is FAQ-only (e.g., Interrail rail pass page).
-  const onlyFaqs = items.length === 1 && typeof items[0]?.href === 'string' && items[0]!.href.trim() === '#faqs';
+  const onlyFaqs = items.length === 1 && items[0]?.href === '#faqs';
   const shouldRenderNav = !(onlyFaqs && !sectionsPresent);
   logStructuredToc('[StructuredToc]', { count: items.length, title: title ?? '', sectionsPresent, onlyFaqs, shouldRenderNav });
 

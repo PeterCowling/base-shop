@@ -5,11 +5,14 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import { get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { CityTaxBookingRecord } from '../../types/cityTax';
+
+import type { PureDataRefetch } from './types';
 
 /**
  * Fetch booking city tax data from "cityTax/{bookingRef}".
@@ -25,7 +28,7 @@ async function fetchCityTaxForBooking(
     }
     return snapshot.val() as CityTaxBookingRecord;
   } catch (error) {
-    logger.error('Error fetching city tax data:', error);
+    logger.error('Error fetching city tax data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }
@@ -52,6 +55,6 @@ export function useFetchCityTax(
     error: error ?? null,
     isLoading,
     isError: error !== null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

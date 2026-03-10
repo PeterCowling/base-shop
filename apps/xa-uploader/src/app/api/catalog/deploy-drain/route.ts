@@ -1,6 +1,3 @@
-import crypto from "node:crypto";
-import path from "node:path";
-
 import { NextResponse } from "next/server";
 
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
@@ -11,13 +8,10 @@ import {
   maybeTriggerXaBDeploy,
   readDeployPendingState,
   reconcileDeployPendingState,
-  resolveDeployStatePaths,
 } from "../../../../lib/deployHook";
-import { isLocalFsRuntimeEnabled } from "../../../../lib/localFsGuard";
-import { applyRateLimitHeaders, getRequestIp, rateLimit } from "../../../../lib/rateLimit";
-import { resolveRepoRoot } from "../../../../lib/repoRoot";
+import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { getUploaderKv } from "../../../../lib/syncMutex";
-import { hasUploaderSession } from "../../../../lib/uploaderAuth";
+import { hasUploaderSession, timingSafeEqual } from "../../../../lib/uploaderAuth";
 import { XA_UPLOADER_DEPLOY_DRAIN_TOKEN_ENV } from "../../../../lib/uploaderRuntimeConfig";
 
 export const runtime = "nodejs";
@@ -25,20 +19,9 @@ export const runtime = "nodejs";
 const DEPLOY_DRAIN_WINDOW_MS = 60 * 1000;
 const DEPLOY_DRAIN_MAX_REQUESTS = 30;
 
-function withRateHeaders(response: NextResponse, limit: ReturnType<typeof rateLimit>): NextResponse {
-  applyRateLimitHeaders(response.headers, limit);
-  return response;
-}
 
 function extractBearerToken(request: Request): string {
   return request.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim() ?? "";
-}
-
-function timingSafeEqual(left: string, right: string): boolean {
-  const leftBuffer = Buffer.from(left);
-  const rightBuffer = Buffer.from(right);
-  if (leftBuffer.length !== rightBuffer.length) return false;
-  return crypto.timingSafeEqual(leftBuffer, rightBuffer);
 }
 
 function hasDeployDrainToken(request: Request): boolean {
@@ -101,13 +84,7 @@ export async function POST(request: Request) {
   const storefront = new URL(request.url).searchParams.get("storefront");
   const storefrontId = parseStorefront(storefront);
   const kv = await getUploaderKv();
-
-  const statePaths = isLocalFsRuntimeEnabled()
-    ? resolveDeployStatePaths(
-        path.join(resolveRepoRoot(), "apps", "xa-uploader", "data"),
-        storefrontId,
-      )
-    : undefined;
+  const statePaths = undefined;
 
   const pendingBefore = await readDeployPendingState({
     storefrontId,

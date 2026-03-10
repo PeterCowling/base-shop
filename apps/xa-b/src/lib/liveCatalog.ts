@@ -56,7 +56,10 @@ export async function loadXaCatalogSnapshot(): Promise<XaCatalogSnapshot> {
       const parsed = parseCatalogResponse(await response.json().catch(() => null));
       return parsed ?? BUNDLED_SNAPSHOT;
     })
-    .catch(() => BUNDLED_SNAPSHOT);
+    .catch(() => {
+      snapshotPromise = null;
+      return BUNDLED_SNAPSHOT;
+    });
 
   return snapshotPromise;
 }

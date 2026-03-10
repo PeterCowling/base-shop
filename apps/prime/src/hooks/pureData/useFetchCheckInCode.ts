@@ -12,10 +12,12 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import type { CheckInCodeRecord } from '../../types/checkInCode';
 import useUuid from '../useUuid';
+
+import type { PureDataRefetch } from './types';
 
 /**
  * Fetch check-in code via the CF Pages Function proxy.
@@ -106,9 +108,7 @@ export function useFetchCheckInCode(
     gcTime: 30 * 60 * 1000, // 30 minutes
   });
 
-  const refetch = async (): Promise<void> => {
-    await refetchQuery();
-  };
+  const refetch = refetchQuery as unknown as PureDataRefetch;
 
   return {
     data: data ?? null,

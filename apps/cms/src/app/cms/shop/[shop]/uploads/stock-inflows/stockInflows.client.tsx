@@ -168,12 +168,19 @@ function useInventorySnapshot(shop: string) {
   return { inventory, inventoryError, inventoryLoading };
 }
 
+type InflowSummary = {
+  id: string;
+  receivedAt: string;
+  note: string | null;
+  itemCount: number;
+};
+
 export default function StockInflowsClient({
   shop,
   recent,
 }: {
   shop: string;
-  recent: StockInflowEvent[];
+  recent: InflowSummary[];
 }) {
   const router = useRouter();
   const [idempotencyKey, setIdempotencyKey] = useState(() => createIdempotencyKey());
@@ -663,7 +670,6 @@ export default function StockInflowsClient({
                 <TableRow>
                   <TableHead className="w-[190px]">Received</TableHead>
                   <TableHead>Note</TableHead>
-                  <TableHead className="w-[150px]">Created/Updated</TableHead>
                   <TableHead className="w-[120px]">Items</TableHead>
                 </TableRow>
               </TableHeader>
@@ -680,10 +686,7 @@ export default function StockInflowsClient({
                       })}
                     </TableCell>
                     <TableCell className="text-muted-foreground">{event.note || "—"}</TableCell>
-                    <TableCell className="text-muted-foreground">
-                      {event.report.created}/{event.report.updated}
-                    </TableCell>
-                    <TableCell className="text-muted-foreground">{event.items.length}</TableCell>
+                    <TableCell className="text-muted-foreground">{event.itemCount}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

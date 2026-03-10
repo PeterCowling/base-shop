@@ -56,7 +56,7 @@ Relates-to tasks: TASK-52, TASK-57, TASK-58, TASK-59
 - No queue schema rollback required.
 
 ## Evidence References
-- `apps/prime/src/lib/messaging/useMessagingQueue.ts:51`
-- `apps/prime/src/lib/messaging/triggers.ts:121`
-- `apps/prime/functions/lib/email-dispatch.ts:17`
-- `apps/prime/wrangler.toml:11`
+- `apps/prime/src/lib/messaging/triggers.ts`
+- `apps/prime/functions/lib/messaging-dispatcher.ts`
+- `apps/prime/functions/lib/email-dispatch.ts`
+- `apps/prime/wrangler.toml`

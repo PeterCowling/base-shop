@@ -8,7 +8,7 @@ import { Cluster } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../context/AuthContext";
 import { useSafeData } from "../../context/SafeDataContext";
-import { useTillShiftActions } from "../../hooks/client/till/useTillShiftActions";
+import { useTillShiftContext } from "../../hooks/client/till/TillShiftProvider";
 import { useSafeKeycardCount } from "../../hooks/data/useSafeKeycardCount";
 import { useCashCounts } from "../../hooks/useCashCounts";
 import { useKeycardTransfer } from "../../hooks/useKeycardTransfer";
@@ -16,6 +16,7 @@ import { canAccess, Permissions } from "../../lib/roles";
 import type { SafeCount } from "../../types/hooks/data/safeCountData";
 import { formatEnGbDateTimeFromIso } from "../../utils/dateUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
+import { formatEuro } from "../../utils/format";
 import { showToast } from "../../utils/toastUtils";
 import { runTransaction } from "../../utils/transaction";
 import { PageShell } from "../common/PageShell";
@@ -30,6 +31,18 @@ import { SafeOpenForm } from "./SafeOpenForm";
 import { SafeReconcileForm } from "./SafeReconcileForm";
 import { SafeResetForm } from "./SafeResetForm";
 import { SafeWithdrawalForm } from "./SafeWithdrawalForm";
+
+type SafeModal =
+  | "deposit"
+  | "withdrawal"
+  | "exchange"
+  | "bankDeposit"
+  | "pettyCash"
+  | "reconcile"
+  | "open"
+  | "reset"
+  | "return"
+  | null;
 
 function SafeManagement(): JSX.Element {
   const {
@@ -51,17 +64,9 @@ function SafeManagement(): JSX.Element {
   const { count: safeKeycards, updateCount: updateSafeKeycards } =
     useSafeKeycardCount();
   const { addCashCount, recordFloatEntry } = useCashCounts();
-  const { returnKeycardsToSafe } = useTillShiftActions();
+  const { returnKeycardsToSafe } = useTillShiftContext();
   const recordKeycardTransfer = useKeycardTransfer();
-  const [showDeposit, setShowDeposit] = useState(false);
-  const [showWithdrawal, setShowWithdrawal] = useState(false);
-  const [showExchange, setShowExchange] = useState(false);
-  const [showBankDeposit, setShowBankDeposit] = useState(false);
-  const [showPettyCash, setShowPettyCash] = useState(false);
-  const [showReconcile, setShowReconcile] = useState(false);
-  const [showOpen, setShowOpen] = useState(false);
-  const [showReset, setShowReset] = useState(false);
-  const [showReturn, setShowReturn] = useState(false);
+  const [activeModal, setActiveModal] = useState<SafeModal>(null);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
 
   useEffect(() => {
@@ -69,6 +74,18 @@ function SafeManagement(): JSX.Element {
       showToast(getErrorMessage(error), "error");
     }
   }, [error]);
+
+  const runSafeTransaction = async (
+    steps: Parameters<typeof runTransaction>[0],
+    errorMessage: string
+  ): Promise<void> => {
+    try {
+      await runTransaction(steps);
+      setActiveModal(null);
+    } catch {
+      showToast(errorMessage, "error");
+    }
+  };
 
   const handleDeposit = async (
     amount: number,
@@ -95,30 +112,23 @@ function SafeManagement(): JSX.Element {
       });
     }
 
-    try {
-      await runTransaction(steps);
-      setShowDeposit(false);
-    } catch {
-      showToast("Failed to record deposit.", "error");
-    }
+    await runSafeTransaction(steps, "Failed to record deposit.");
   };
 
   const handleWithdrawal = async (
     amount: number,
     breakdown: Record<string, number>
   ) => {
-    try {
-      await runTransaction([
+    await runSafeTransaction(
+      [
         {
           run: () => recordWithdrawal(amount, breakdown),
           rollback: () => recordDeposit(amount, 0, 0, breakdown),
         },
         { run: () => recordFloatEntry(amount) },
-      ]);
-      setShowWithdrawal(false);
-    } catch {
-      showToast("Failed to record withdrawal.", "error");
-    }
+      ],
+      "Failed to record withdrawal."
+    );
   };
 
   const handleExchange = async (
@@ -154,15 +164,15 @@ function SafeManagement(): JSX.Element {
       }
 
       await runTransaction(steps);
-      setShowExchange(false);
+      setActiveModal(null);
     } catch {
       showToast("Failed to record exchange.", "error");
     }
   };
 
   const handleOpen = async (count: number, keycards: number) => {
-    try {
-      await runTransaction([
+    await runSafeTransaction(
+      [
         {
           run: async () => {
             await updateSafeKeycards(keycards);
@@ -174,11 +184,9 @@ function SafeManagement(): JSX.Element {
         {
           run: () => recordOpening(count, keycards),
         },
-      ]);
-      setShowOpen(false);
-    } catch {
-      showToast("Failed to record opening.", "error");
-    }
+      ],
+      "Failed to record opening."
+    );
   };
 
   const handleReset = async (
@@ -187,8 +195,8 @@ function SafeManagement(): JSX.Element {
     keycardDifference: number,
     breakdown: Record<string, number>
   ) => {
-    try {
-      await runTransaction([
+    await runSafeTransaction(
+      [
         {
           run: async () => {
             await updateSafeKeycards(keycards);
@@ -201,11 +209,9 @@ function SafeManagement(): JSX.Element {
           run: () =>
             recordReset(count, keycards, keycardDifference, breakdown),
         },
-      ]);
-      setShowReset(false);
-    } catch {
-      showToast("Failed to record reset.", "error");
-    }
+      ],
+      "Failed to record reset."
+    );
   };
 
   const handleReconcile = async (
@@ -215,8 +221,8 @@ function SafeManagement(): JSX.Element {
     keycardDifference: number,
     breakdown: Record<string, number>
   ) => {
-    try {
-      await runTransaction([
+    await runSafeTransaction(
+      [
         {
           run: async () => {
             await updateSafeKeycards(keycards);
@@ -235,11 +241,9 @@ function SafeManagement(): JSX.Element {
               breakdown
             ),
         },
-      ]);
-      setShowReconcile(false);
-    } catch {
-      showToast("Failed to record reconciliation.", "error");
-    }
+      ],
+      "Failed to record reconciliation."
+    );
   };
 
   const handleBankDeposit = async (
@@ -262,18 +266,13 @@ function SafeManagement(): JSX.Element {
       });
     }
 
-    try {
-      await runTransaction(steps);
-      setShowBankDeposit(false);
-    } catch {
-      showToast("Failed to record bank deposit.", "error");
-    }
+    await runSafeTransaction(steps, "Failed to record bank deposit.");
   };
 
   const handlePettyCash = async (amount: number) => {
     try {
       await recordPettyWithdrawal(amount);
-      setShowPettyCash(false);
+      setActiveModal(null);
     } catch {
       showToast("Failed to record petty cash withdrawal.", "error");
     }
@@ -305,7 +304,7 @@ function SafeManagement(): JSX.Element {
           run: () => recordKeycardTransfer(count, "toSafe"),
         },
       ]);
-      setShowReturn(false);
+      setActiveModal(null);
     } catch (error) {
       if ((error as Error).message !== "return failed") {
         showToast("Failed to record keycard transfer.", "error");
@@ -365,7 +364,7 @@ function SafeManagement(): JSX.Element {
         <div className="flex flex-wrap gap-4">
           <StatPanel
             label="Safe Balance"
-            value={`€${safeBalance.toFixed(2)}`}
+            value={formatEuro(safeBalance)}
             icon={<Wallet className="text-primary-main" size={24} />}
           />
           <StatPanel
@@ -378,26 +377,26 @@ function SafeManagement(): JSX.Element {
           <div className="flex gap-2 flex-wrap">
             {canOpenSafe && (
               <Button
-                onClick={() => setShowOpen(true)}
+                onClick={() => setActiveModal("open")}
                 color="primary" tone="solid" size="sm"
               >
                 Open
               </Button>
             )}
             <Button
-              onClick={() => setShowDeposit(true)}
+              onClick={() => setActiveModal("deposit")}
               color="primary" tone="solid" size="sm"
             >
               Deposit
             </Button>
             <Button
-              onClick={() => setShowWithdrawal(true)}
+              onClick={() => setActiveModal("withdrawal")}
               color="primary" tone="solid" size="sm"
             >
               Withdraw
             </Button>
             <Button
-              onClick={() => setShowExchange(true)}
+              onClick={() => setActiveModal("exchange")}
               color="primary" tone="solid" size="sm"
             >
               Exchange
@@ -405,94 +404,94 @@ function SafeManagement(): JSX.Element {
           </div>
           <div className="flex gap-2 flex-wrap">
             <Button
-              onClick={() => setShowBankDeposit(true)}
+              onClick={() => setActiveModal("bankDeposit")}
               color="primary" tone="solid" size="sm"
             >
               Bank Deposit
             </Button>
             <Button
-              onClick={() => setShowPettyCash(true)}
+              onClick={() => setActiveModal("pettyCash")}
               color="primary" tone="solid" size="sm"
             >
               Petty Cash
             </Button>
             <Button
-              onClick={() => setShowReset(true)}
+              onClick={() => setActiveModal("reset")}
               color="primary" tone="solid" size="sm"
             >
               Reset Safe
             </Button>
             <Button
-              onClick={() => setShowReturn(true)}
+              onClick={() => setActiveModal("return")}
               color="primary" tone="solid" size="sm"
             >
               Return Keycards
             </Button>
             <Button
-              onClick={() => setShowReconcile(true)}
+              onClick={() => setActiveModal("reconcile")}
               color="warning" tone="solid" size="sm"
             >
               Reconcile
             </Button>
           </div>
         </div>
-        {showOpen && (
+        {activeModal === "open" && (
           <SafeOpenForm
             onConfirm={handleOpen}
-            onCancel={() => setShowOpen(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showDeposit && (
+        {activeModal === "deposit" && (
           <SafeDepositForm
             currentKeycards={safeKeycards}
             onConfirm={handleDeposit}
-            onCancel={() => setShowDeposit(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showWithdrawal && (
+        {activeModal === "withdrawal" && (
           <SafeWithdrawalForm
             onConfirm={handleWithdrawal}
-            onCancel={() => setShowWithdrawal(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showExchange && (
+        {activeModal === "exchange" && (
           <ExchangeNotesForm
             onConfirm={handleExchange}
-            onCancel={() => setShowExchange(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showBankDeposit && (
+        {activeModal === "bankDeposit" && (
           <BankDepositForm
             currentKeycards={safeKeycards}
             onConfirm={handleBankDeposit}
-            onCancel={() => setShowBankDeposit(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showPettyCash && (
+        {activeModal === "pettyCash" && (
           <PettyCashForm
             onConfirm={handlePettyCash}
-            onCancel={() => setShowPettyCash(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showReset && (
+        {activeModal === "reset" && (
           <SafeResetForm
             currentKeycards={safeKeycards}
             onConfirm={handleReset}
-            onCancel={() => setShowReset(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showReturn && (
+        {activeModal === "return" && (
           <ReturnKeycardsModal
             onConfirm={handleReturn}
-            onCancel={() => setShowReturn(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showReconcile && (
+        {activeModal === "reconcile" && (
           <SafeReconcileForm
             expectedSafe={safeBalance}
             expectedKeycards={safeKeycards}
             onConfirm={handleReconcile}
-            onCancel={() => setShowReconcile(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
         <div className="border-t pt-4">
@@ -532,9 +531,9 @@ function SafeManagement(): JSX.Element {
                       <TableCell className="p-2">{s.type}</TableCell>
                       <TableCell className="p-2">
                         {s.amount !== undefined
-                          ? `€${s.amount.toFixed(2)}`
+                          ? formatEuro(s.amount)
                           : s.count !== undefined
-                          ? `€${s.count.toFixed(2)}${
+                          ? `${formatEuro(s.count)}${
                               s.difference !== undefined
                                 ? ` (${s.difference >= 0 ? "+" : ""}${s.difference.toFixed(2)})`
                                 : ""

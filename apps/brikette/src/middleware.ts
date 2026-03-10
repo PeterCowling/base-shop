@@ -82,6 +82,13 @@ for (const ambiguousSlug of AMBIGUOUS_TOP_LEVEL_SLUGS) {
   ANY_TOP_LEVEL_SLUG_TO_KEY.delete(ambiguousSlug);
 }
 
+// Register assistance root aliases so detectWrongTopLevelKey finds them.
+for (const alias of ASSISTANCE_ROOT_ALIASES) {
+  if (!ANY_TOP_LEVEL_SLUG_TO_KEY.has(alias)) {
+    ANY_TOP_LEVEL_SLUG_TO_KEY.set(alias, "assistance");
+  }
+}
+
 function resolveTopLevelKey(lang: AppLanguage, segment: string): SlugKey | null {
   const normalized = segment.toLowerCase();
   // Only check keys that represent the first path segment after /:lang.
@@ -311,7 +318,9 @@ function handleWrongTopLevelRedirect(params: {
   if (correctSlug.toLowerCase() === normalizedTopSegment) return null;
 
   if (wrongKey === "rooms" && nextParts.length >= 3) {
-    return maybeRedirectRoomAlias({ request, appLang, nextParts });
+    const roomRedirect = maybeRedirectRoomAlias({ request, appLang, nextParts });
+    if (roomRedirect) return roomRedirect;
+    // fall through to generic redirect when room alias is not recognized
   }
 
   if (wrongKey === "apartment" && nextParts.length >= 3) {

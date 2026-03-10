@@ -24,12 +24,12 @@ import usePrepaymentData, {
 /*  Register mocks first – Jest hoists `jest.mock` calls               */
 /*  Each factory returns a new `jest.fn()` without touching outer scope  */
 /* ------------------------------------------------------------------ */
-jest.mock("../../../data/useActivitiesByCodeData", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useActivitiesData", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useBookingsData", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useCCDetails", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useFinancialsRoom", () => ({ default: jest.fn() }));
-jest.mock("../../../data/useGuestDetails", () => ({ default: jest.fn() }));
+jest.mock("../../../data/useActivitiesByCodeData", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../../../data/useActivitiesData", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../../../data/useBookingsData", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../../../data/useCCDetails", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../../../data/useFinancialsRoom", () => ({ __esModule: true, default: jest.fn() }));
+jest.mock("../../../data/useGuestDetails", () => ({ __esModule: true, default: jest.fn() }));
 
 /* Typed references to the mocked functions */
 const useActivityByCodeMock = jest.mocked(useActivitiesByCodeData);

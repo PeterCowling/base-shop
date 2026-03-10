@@ -1,6 +1,6 @@
 // /src/hooks/data/useCityTax.ts
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   type DataSnapshot,
   endAt,
@@ -70,7 +70,5 @@ export default function useCityTax(
     return () => unsubscribe();
   }, [database, startKey, endKey, limit]);
 
-  const memoCityTax = useMemo(() => cityTax, [cityTax]);
-
-  return { cityTax: memoCityTax, loading, error };
+  return { cityTax, loading, error };
 }

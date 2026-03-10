@@ -23,12 +23,11 @@ import {
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
-import { getCatalogApiErrorMessage } from "./catalogConsoleFeedback";
+import { type AutosaveStatus, getCatalogApiErrorMessage } from "./catalogConsoleFeedback";
 import { BTN_SECONDARY_CLASS } from "./catalogStyles";
 
-type AutosaveStatus = "saving" | "saved" | "unsaved";
 type UploadStatus = "idle" | "uploading" | "persisting" | "persisted" | "error";
-type ImageEntry = { path: string; filename: string; isMain: boolean };
+export type ImageEntry = { path: string; filename: string; isMain: boolean };
 
 const MAX_FILE_SIZE = 8_388_608; // 8 MB
 const ACCEPTED_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
@@ -90,12 +89,8 @@ function ImageWithFallback({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-function splitPipeEntries(pipeStr: string): string[] {
-  return splitList(pipeStr);
-}
-
-function parseImageEntries(files: string): ImageEntry[] {
-  return splitPipeEntries(files).map((path, index) => ({
+export function parseImageEntries(files: string): ImageEntry[] {
+  return splitList(files).map((path, index) => ({
     path,
     filename: path.split("/").pop() ?? path,
     isMain: index === 0,
@@ -103,13 +98,13 @@ function parseImageEntries(files: string): ImageEntry[] {
 }
 
 function removePipeEntry(pipeStr: string, index: number): string {
-  return splitPipeEntries(pipeStr)
+  return splitList(pipeStr)
     .filter((_, itemIndex) => itemIndex !== index)
     .join("|");
 }
 
 export function reorderPipeEntry(pipeStr: string, fromIndex: number, direction: "up" | "down"): string {
-  const parts = splitPipeEntries(pipeStr);
+  const parts = splitList(pipeStr);
   const toIndex = direction === "up" ? fromIndex - 1 : fromIndex + 1;
   if (toIndex < 0 || toIndex >= parts.length || fromIndex < 0 || fromIndex >= parts.length) {
     return parts.join("|");
@@ -120,7 +115,7 @@ export function reorderPipeEntry(pipeStr: string, fromIndex: number, direction: 
 }
 
 function movePipeEntryToFront(pipeStr: string, index: number): string {
-  const parts = splitPipeEntries(pipeStr);
+  const parts = splitList(pipeStr);
   if (index <= 0 || index >= parts.length) {
     return parts.join("|");
   }
@@ -160,8 +155,8 @@ function appendImageDraftEntry(
   draft: CatalogProductDraftInput,
   imageKey: string,
 ): CatalogProductDraftInput {
-  const currentFiles = splitPipeEntries(draft.imageFiles ?? "");
-  const currentAlts = splitPipeEntries(draft.imageAltTexts ?? "");
+  const currentFiles = splitList(draft.imageFiles ?? "");
+  const currentAlts = splitList(draft.imageAltTexts ?? "");
   const nextIndex = currentFiles.length;
 
   return {

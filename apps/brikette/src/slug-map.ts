@@ -185,7 +185,7 @@ export const SLUGS = {
   /** Booking landing page */
   book: {
     de: "buchen",
-    en: "book-dorm-bed",
+    en: "book",
     es: "reservar",
     fr: "reserver",
     it: "prenota",
@@ -224,6 +224,28 @@ export const SLUGS = {
     no: "bestill-privat-opphold",
     da: "bestil-privat-ophold",
     hu: "privat-szallas-foglalas",
+  },
+
+  /** Double private room direct booking page */
+  doubleRoomBooking: {
+    de: "doppelzimmer-buchen",
+    en: "book-double-room",
+    es: "reservar-habitacion-doble",
+    fr: "reserver-chambre-double",
+    it: "prenota-camera-doppia",
+    ja: "daburu-rumu-yoyaku",
+    ko: "deobeul-rum-yeyak",
+    pt: "reservar-quarto-duplo",
+    ru: "bron-dvukhmestnogo",
+    zh: "yuding-shuangrenfang",
+    ar: "hajz-ghurfa-muzdawaja",
+    hi: "dabal-kamra-aarakshan",
+    vi: "dat-phong-doi",
+    pl: "rezerwuj-pokoj-dwuosobowy",
+    sv: "boka-dubbelrum",
+    no: "bestill-dobbeltrom",
+    da: "bestil-dobbeltvaerelse",
+    hu: "ketagyas-szoba-foglalas",
   },
 
   /* (blog removed) */

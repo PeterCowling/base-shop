@@ -6,9 +6,9 @@ import { hasPermission } from "@acme/auth";
 import type { Role } from "@acme/auth/types";
 import { Tag } from "@acme/design-system/atoms";
 import { Grid as DSGrid } from "@acme/design-system/primitives";
+import type { AuditEventEntry } from "@acme/platform-core/repositories/stockAdjustments.server";
 import { listStockAdjustments } from "@acme/platform-core/repositories/stockAdjustments.server";
 import { checkShopExists } from "@acme/platform-core/shops";
-import type { StockAdjustmentEvent } from "@acme/platform-core/types/stockAdjustments";
 
 import { Card, CardContent } from "@/components/atoms/shadcn";
 
@@ -40,15 +40,31 @@ export default async function StockAdjustmentsPage({
     );
   }
 
-  let recent: StockAdjustmentEvent[] = [];
+  let rawEntries: AuditEventEntry[] = [];
   try {
-    recent = await listStockAdjustments(shop, { limit: 10 });
+    rawEntries = await listStockAdjustments(shop, { limit: 50 });
   } catch {
-    recent = [];
+    rawEntries = [];
   }
 
-  const lastAdjustedAt = recent[0]?.adjustedAt
-    ? new Date(recent[0].adjustedAt).toLocaleString("en-GB", {
+  // Group per-item audit rows by referenceId to reconstruct per-event summaries.
+  const groupMap = new Map<string, { id: string; adjustedAt: string; note: string | null; itemCount: number }>();
+  for (const entry of rawEntries) {
+    const key = entry.referenceId ?? entry.id;
+    if (!groupMap.has(key)) {
+      groupMap.set(key, {
+        id: entry.id,
+        adjustedAt: entry.createdAt.toISOString(),
+        note: entry.note,
+        itemCount: 0,
+      });
+    }
+    groupMap.get(key)!.itemCount += 1;
+  }
+  const recent = [...groupMap.values()].slice(0, 10);
+
+  const lastAdjustedAt = rawEntries[0]?.createdAt
+    ? rawEntries[0].createdAt.toLocaleString("en-GB", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",

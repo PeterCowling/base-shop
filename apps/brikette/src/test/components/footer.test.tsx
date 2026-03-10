@@ -9,7 +9,7 @@ import { getSlug } from "@/utils/slug";
 
 const TEST_LANGUAGE = "en" as AppLanguage;
 const EXPECTED_NAV_PATHS = [
-  `/${TEST_LANGUAGE}/${getSlug("rooms", TEST_LANGUAGE)}`,
+  `/${TEST_LANGUAGE}/${getSlug("book", TEST_LANGUAGE)}`,
   `/${TEST_LANGUAGE}/${getSlug("experiences", TEST_LANGUAGE)}`,
   `/${TEST_LANGUAGE}/${getSlug("deals", TEST_LANGUAGE)}`,
   `/${TEST_LANGUAGE}/${getSlug("howToGetHere", TEST_LANGUAGE)}`,
@@ -52,7 +52,7 @@ jest.mock("react-i18next", () => {
     howToGetHere: "How to get here",
     assistance: "Help",
     backToTop: "Back to top",
-    noPhoneNotice: "We do not conduct business by telephone. Please contact us via email.",
+    noPhoneNotice: "For the fastest response, contact us by email.",
     navAriaLabel: "Footer navigation",
   };
 
@@ -128,7 +128,12 @@ describe("<Footer />", () => {
 
     // eslint-disable-next-line security/detect-non-literal-regexp -- Building test regex from current year; test code only
     const regex = new RegExp(`© 2023 to ${year}.*hostel brikette`, "i");
-    expect(screen.getByText(regex)).toBeInTheDocument();
+    expect(
+      screen.getByText((_, node) => {
+        const text = node?.textContent?.replace(/\s+/g, " ").trim() ?? "";
+        return regex.test(text);
+      }),
+    ).toBeInTheDocument();
     jest.useRealTimers();
   });
 
@@ -146,9 +151,7 @@ describe("<Footer />", () => {
       "href",
       expect.stringContaining("mailto:"),
     );
-    expect(
-      screen.getByText(/we do not conduct business by telephone\. please contact us via email\./i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/for the fastest response, contact us by email\./i)).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /phone/i })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: /instagram/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /facebook/i })).toBeInTheDocument();

@@ -10,9 +10,12 @@ import {
   deriveIdeaKey,
   loadCompletedIdeasRegistry,
   QUEUE_STATE_RELATIVE_PATH,
+  runBuildOriginBridgeForProcessImprovements,
   runCheck,
+  updateProcessImprovementsArtifacts,
   updateProcessImprovementsHtml,
 } from "../build/generate-process-improvements";
+import type { DispatchBuildOriginProvenance } from "../ideas/lp-do-ideas-trial";
 
 async function writeFile(root: string, relativePath: string, content: string): Promise<void> {
   const absPath = path.join(root, relativePath);
@@ -20,40 +23,172 @@ async function writeFile(root: string, relativePath: string, content: string): P
   await fs.writeFile(absPath, content, "utf8");
 }
 
+async function readCanonicalProcessImprovementsHtml(): Promise<string> {
+  const candidates = [
+    path.resolve(process.cwd(), "docs/business-os/process-improvements.user.html"),
+    path.resolve(process.cwd(), "../docs/business-os/process-improvements.user.html"),
+  ];
+
+  for (const candidate of candidates) {
+    try {
+      return await fs.readFile(candidate, "utf8");
+    } catch {
+      continue;
+    }
+  }
+
+  throw new Error("Unable to locate docs/business-os/process-improvements.user.html");
+}
+
+async function writeQueueState(
+  root: string,
+  dispatches: Record<string, unknown>[],
+): Promise<void> {
+  await writeFile(root, QUEUE_STATE_RELATIVE_PATH, `${JSON.stringify({ dispatches }, null, 2)}\n`);
+}
+
+function makeQueueDispatch(
+  overrides: Record<string, unknown> = {},
+): Record<string, unknown> {
+  return {
+    dispatch_id: "DISPATCH-QUEUE-001",
+    business: "BRIK",
+    area_anchor: "Queue-backed build idea",
+    current_truth: "Queue-backed build idea",
+    why: "Route this queued idea through the canonical backlog.",
+    queue_state: "enqueued",
+    created_at: "2026-03-06T09:00:00.000Z",
+    ...overrides,
+  };
+}
+
+function makeBuildOriginProvenance(
+  overrides: Partial<DispatchBuildOriginProvenance> = {},
+): DispatchBuildOriginProvenance {
+  return {
+    schema_version: "dispatch-build-origin.v1",
+    build_signal_id: "build-signal-123",
+    recurrence_key: "recurrence-123",
+    review_cycle_key: "queue-unification-task",
+    plan_slug: "queue-unification-task",
+    canonical_title: "Queue-backed build idea",
+    primary_source: "pattern-reflection.entries.json",
+    merge_state: "merged_cross_sidecar",
+    source_presence: {
+      results_review_signal: true,
+      pattern_reflection_entry: true,
+    },
+    results_review_path: "docs/plans/queue-unification-task/results-review.user.md",
+    results_review_sidecar_path: "docs/plans/queue-unification-task/results-review.signals.json",
+    pattern_reflection_path: "docs/plans/queue-unification-task/pattern-reflection.user.md",
+    pattern_reflection_sidecar_path:
+      "docs/plans/queue-unification-task/pattern-reflection.entries.json",
+    reflection_fields: {
+      category: "workflow",
+      routing_target: "loop_update",
+      occurrence_count: 3,
+    },
+    ...overrides,
+  };
+}
+
+async function writeBuildOriginSidecars(
+  root: string,
+  planDirRelative: string,
+  overrides: {
+    planSlug?: string;
+    reviewCycleKey?: string;
+    title?: string;
+    buildSignalId?: string;
+    recurrenceKey?: string;
+  } = {},
+): Promise<void> {
+  const planSlug = overrides.planSlug ?? path.basename(planDirRelative);
+  const reviewCycleKey = overrides.reviewCycleKey ?? planSlug;
+  const title = overrides.title ?? "Queue-backed build-origin idea";
+  const buildSignalId = overrides.buildSignalId ?? "build-signal-123";
+  const recurrenceKey = overrides.recurrenceKey ?? "recurrence-123";
+
+  await writeFile(
+    root,
+    `${planDirRelative}/results-review.signals.json`,
+    `${JSON.stringify(
+      {
+        schema_version: "results-review.signals.v1",
+        generated_at: "2026-03-10T09:00:00.000Z",
+        plan_slug: planSlug,
+        review_cycle_key: reviewCycleKey,
+        source_path: `${planDirRelative}/results-review.user.md`,
+        build_origin_status: "ready",
+        failures: [],
+        items: [
+          {
+            type: "idea",
+            business: "BRIK",
+            title,
+            body: "This came up again during build review.",
+            source: "results-review.user.md",
+            date: "2026-03-10T09:00:00.000Z",
+            path: `${planDirRelative}/results-review.user.md`,
+            idea_key: `legacy-${buildSignalId}`,
+            review_cycle_key: reviewCycleKey,
+            canonical_title: title,
+            build_signal_id: buildSignalId,
+            recurrence_key: recurrenceKey,
+            build_origin_status: "ready",
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  await writeFile(
+    root,
+    `${planDirRelative}/pattern-reflection.entries.json`,
+    `${JSON.stringify(
+      {
+        schema_version: "pattern-reflection.entries.v1",
+        generated_at: "2026-03-10T09:05:00.000Z",
+        plan_slug: planSlug,
+        review_cycle_key: reviewCycleKey,
+        source_path: `${planDirRelative}/pattern-reflection.user.md`,
+        build_origin_status: "ready",
+        failures: [],
+        entries: [
+          {
+            review_cycle_key: reviewCycleKey,
+            canonical_title: title,
+            pattern_summary: title,
+            category: "new-loop-process",
+            routing_target: "loop_update",
+            occurrence_count: 3,
+            evidence_refs: [`${planDirRelative}/results-review.user.md`],
+            build_signal_id: buildSignalId,
+            recurrence_key: recurrenceKey,
+            build_origin_status: "ready",
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+}
+
 describe("generate-process-improvements", () => {
   it("collects idea candidates, reflection risks, and pending reviews from plan artifacts", async () => {
     const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "process-improvements-"));
 
-    await writeFile(
-      repoRoot,
-      "docs/plans/feature-a/build-record.user.md",
-      `---
-Business-Unit: BRIK
----
-# Build Record`,
-    );
-    await writeFile(
-      repoRoot,
-      "docs/plans/feature-a/results-review.user.md",
-      `---
-Business-Unit: BRIK
-Review-date: 2026-02-25
----
-# Results Review
-
-## Observed Outcomes
-- Outcome observed.
-
-## Standing Updates
-- No standing updates: reason.
-
-## New Idea Candidates
-- Add ranking layer | Trigger observation: 1 seed rejected in pilot | Suggested next action: create INVESTIGATE task
-
-## Standing Expansion
-- No standing expansion: reason.
-`,
-    );
+    await writeQueueState(repoRoot, [
+      makeQueueDispatch({
+        dispatch_id: "DISPATCH-QUEUE-IDEA-001",
+        current_truth: "Add ranking layer",
+        area_anchor: "Add ranking layer",
+        why: "1 seed rejected in pilot; route through the canonical ideas queue.",
+      }),
+    ]);
 
     await writeFile(
       repoRoot,
@@ -101,7 +236,8 @@ Feature-Slug: feature-b
     expect(data.ideaItems).toHaveLength(1);
     expect(data.ideaItems[0]?.business).toBe("BRIK");
     expect(data.ideaItems[0]?.title).toBe("Add ranking layer");
-    expect(data.ideaItems[0]?.suggested_action).toBe("create INVESTIGATE task");
+    expect(data.ideaItems[0]?.source).toBe("queue-state.json");
+    expect(data.ideaItems[0]?.body).toContain("canonical ideas queue");
 
     expect(data.riskItems).toHaveLength(1);
     expect(data.riskItems[0]?.business).toBe("HBAG");
@@ -110,6 +246,87 @@ Feature-Slug: feature-b
     expect(data.pendingReviewItems).toHaveLength(1);
     expect(data.pendingReviewItems[0]?.business).toBe("HBAG");
     expect(data.pendingReviewItems[0]?.title).toContain("feature-b");
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  it("dedupes repeated Signal Review review-required sidecars onto one pending-review surface item", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "process-improvements-signal-review-"));
+
+    await writeFile(
+      repoRoot,
+      "docs/business-os/strategy/BRIK/marketing/signal-review-20260218-1238-W08.review-required.json",
+      `${JSON.stringify(
+        {
+          schema_version: "signal-review.review-required.v1",
+          generated_at: "2026-02-18T12:38:00.000Z",
+          business: "BRIK",
+          source_path: "docs/business-os/strategy/BRIK/marketing/signal-review-20260218-1238-W08.md",
+          items: [
+            {
+              fingerprint: "P08-S10-no-second-weekly-readout",
+              business: "BRIK",
+              title: "Feedback Loop Closure — no second weekly readout",
+              body: "Week-two readout is still absent.",
+              owner: "Pete",
+              workflow_status: "open",
+              due_date: "2026-02-25",
+              escalation_state: "repeat-open",
+              recurrence_count: 2,
+              first_seen_run_date: "2026-02-13",
+              latest_seen_run_date: "2026-02-18",
+              source_signal_review_path:
+                "docs/business-os/strategy/BRIK/marketing/signal-review-20260218-1238-W08.md",
+              suggested_action: "Produce the week-two KPCS now.",
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    await writeFile(
+      repoRoot,
+      "docs/business-os/strategy/BRIK/marketing/signal-review-20260226-1641-W09.review-required.json",
+      `${JSON.stringify(
+        {
+          schema_version: "signal-review.review-required.v1",
+          generated_at: "2026-02-26T16:41:00.000Z",
+          business: "BRIK",
+          source_path: "docs/business-os/strategy/BRIK/marketing/signal-review-20260226-1641-W09.md",
+          items: [
+            {
+              fingerprint: "P08-S10-no-second-weekly-readout",
+              business: "BRIK",
+              title: "Feedback Loop Closure — no second weekly readout",
+              body: "Day-14 gate review is now due tomorrow.",
+              owner: "Pete",
+              workflow_status: "open",
+              due_date: "2026-02-29",
+              escalation_state: "escalated",
+              recurrence_count: 3,
+              first_seen_run_date: "2026-02-13",
+              latest_seen_run_date: "2026-02-26",
+              source_signal_review_path:
+                "docs/business-os/strategy/BRIK/marketing/signal-review-20260226-1641-W09.md",
+              suggested_action: "Produce the week-two KPCS now.",
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    const data = collectProcessImprovements(repoRoot);
+
+    expect(data.pendingReviewItems).toHaveLength(1);
+    expect(data.pendingReviewItems[0]?.title).toContain("Review required");
+    expect(data.pendingReviewItems[0]?.fingerprint).toBe("P08-S10-no-second-weekly-readout");
+    expect(data.pendingReviewItems[0]?.escalation_state).toBe("escalated");
+    expect(data.pendingReviewItems[0]?.recurrence_count).toBe(3);
+    expect(data.pendingReviewItems[0]?.latest_seen_date).toBe("2026-02-26");
 
     await fs.rm(repoRoot, { recursive: true, force: true });
   });
@@ -160,25 +377,6 @@ var PENDING_REVIEW_ITEMS = [];
 </script>
 `;
 
-const IDEA_SOURCE_MD = `---
-Business-Unit: BRIK
-Review-date: 2026-02-25
----
-# Results Review
-
-## Observed Outcomes
-- Outcome observed.
-
-## Standing Updates
-- No standing updates: reason.
-
-## New Idea Candidates
-- Add ranking layer | Trigger observation: 1 seed rejected in pilot | Suggested next action: create INVESTIGATE task
-
-## Standing Expansion
-- No standing expansion: reason.
-`;
-
 describe("runCheck", () => {
   let tmpDir: string;
   let exitSpy: ReturnType<typeof jest.spyOn>;
@@ -196,7 +394,7 @@ describe("runCheck", () => {
   });
 
   it("TC-13: completes without error when committed output files are up-to-date", async () => {
-    await writeFile(tmpDir, "docs/plans/feature-a/results-review.user.md", IDEA_SOURCE_MD);
+    await writeQueueState(tmpDir, [makeQueueDispatch()]);
 
     const data = collectProcessImprovements(tmpDir);
     const expectedDataJson = `${JSON.stringify(data, null, 2)}\n`;
@@ -210,12 +408,12 @@ describe("runCheck", () => {
   });
 
   it("TC-14: calls process.exit(1) when committed HTML has stale array assignments", async () => {
-    await writeFile(tmpDir, "docs/plans/feature-a/results-review.user.md", IDEA_SOURCE_MD);
+    await writeQueueState(tmpDir, [makeQueueDispatch()]);
 
     const data = collectProcessImprovements(tmpDir);
     const expectedDataJson = `${JSON.stringify(data, null, 2)}\n`;
 
-    // Stale HTML — empty arrays, does not reflect the actual idea item
+    // Stale HTML — empty arrays, does not reflect the actual queue-backed idea item
     await writeFile(tmpDir, "docs/business-os/process-improvements.user.html", HTML_TEMPLATE);
     await writeFile(tmpDir, "docs/business-os/_data/process-improvements.json", expectedDataJson);
 
@@ -223,7 +421,7 @@ describe("runCheck", () => {
   });
 
   it("TC-15: calls process.exit(1) when the committed HTML file does not exist", async () => {
-    await writeFile(tmpDir, "docs/plans/feature-a/results-review.user.md", IDEA_SOURCE_MD);
+    await writeQueueState(tmpDir, [makeQueueDispatch()]);
 
     const data = collectProcessImprovements(tmpDir);
     const expectedDataJson = `${JSON.stringify(data, null, 2)}\n`;
@@ -257,23 +455,12 @@ describe("completion lifecycle", () => {
     expect(key1).not.toBe(keyDifferentPath);
   });
 
-  it("collectProcessImprovements skips an idea whose key is in the completed registry", async () => {
-    const sourceRelPath = "docs/plans/feature-a/results-review.user.md";
-    const ideaTitle = "Add ranking layer";
-    const ideaKey = deriveIdeaKey(sourceRelPath, ideaTitle);
-
-    await writeFile(
+  it("collectProcessImprovements does not let completed-ideas registry hide active queue items", async () => {
+    const dispatchId = "DISPATCH-COMPLETE-001";
+    const ideaKey = deriveIdeaKey(QUEUE_STATE_RELATIVE_PATH, dispatchId);
+    await writeQueueState(
       tmpDir,
-      sourceRelPath,
-      `---
-Business-Unit: BRIK
-Review-date: 2026-02-25
----
-# Results Review
-
-## New Idea Candidates
-- Add ranking layer | Trigger observation: test | Suggested next action: spike
-`,
+      [makeQueueDispatch({ dispatch_id: dispatchId, area_anchor: "Add ranking layer" })],
     );
 
     const registry = {
@@ -281,8 +468,8 @@ Review-date: 2026-02-25
       entries: [
         {
           idea_key: ideaKey,
-          title: ideaTitle,
-          source_path: sourceRelPath,
+          title: "Add ranking layer",
+          source_path: QUEUE_STATE_RELATIVE_PATH,
           plan_slug: "some-plan",
           completed_at: "2026-02-26",
         },
@@ -295,10 +482,11 @@ Review-date: 2026-02-25
     );
 
     const data = collectProcessImprovements(tmpDir);
-    expect(data.ideaItems).toHaveLength(0);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.title).toBe("Queue-backed build idea");
   });
 
-  it("collectProcessImprovements suppresses a struck-through bullet but keeps a normal bullet", async () => {
+  it("collectProcessImprovements no longer ingests markdown New Idea Candidates directly", async () => {
     await writeFile(
       tmpDir,
       "docs/plans/feature-a/results-review.user.md",
@@ -315,13 +503,10 @@ Review-date: 2026-02-25
     );
 
     const data = collectProcessImprovements(tmpDir);
-    expect(data.ideaItems).toHaveLength(1);
-    expect(data.ideaItems[0]?.title).toBe("Normal idea to keep");
-    const titles = data.ideaItems.map((item) => item.title);
-    expect(titles).not.toContain("~~Some completed idea~~");
+    expect(data.ideaItems).toHaveLength(0);
   });
 
-  it("collectProcessImprovements suppresses none-placeholder bullets in all forms", async () => {
+  it("collectProcessImprovements no longer ingests results-review sidecars directly", async () => {
     await writeFile(
       tmpDir,
       "docs/plans/feature-a/results-review.user.md",
@@ -333,55 +518,51 @@ Review-date: 2026-02-25
 
 ## New Idea Candidates
 - Real idea to keep
-- None.
-- None identified.
-- None for the other four categories.
-- New open-source package: None identified.
-- New skill: None — this was a standard flow.
 `,
+    );
+    await writeFile(
+      tmpDir,
+      "docs/plans/feature-a/results-review.signals.json",
+      `${JSON.stringify(
+        {
+          schema_version: "results-review.signals.v1",
+          generated_at: "2026-03-06T11:00:00.000Z",
+          plan_slug: "feature-a",
+          source_path: "docs/plans/feature-a/results-review.user.md",
+          items: [
+            {
+              type: "idea",
+              business: "BRIK",
+              title: "Sidecar-only idea",
+              body: "This should not appear until admitted into queue.",
+              source: "results-review.user.md",
+              date: "2026-03-06",
+              path: "docs/plans/feature-a/results-review.user.md",
+              idea_key: "sidecar-only-idea-key",
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
     );
 
     const data = collectProcessImprovements(tmpDir);
-    expect(data.ideaItems).toHaveLength(1);
-    expect(data.ideaItems[0]?.title).toBe("Real idea to keep");
+    expect(data.ideaItems).toHaveLength(0);
   });
 
   it("idea items produced by collectProcessImprovements carry classifier output fields", async () => {
-    // The classifier runs during collectProcessImprovements() for every idea item.
-    // Verify that the four new classification fields (urgency, effort, proximity, reason_code)
-    // are present on the emitted item, even if their values are classifier-determined.
     const tmpRoot = await fs.mkdtemp(path.join(os.tmpdir(), "process-improvements-clf-"));
-
-    await writeFile(
+    await writeQueueState(
       tmpRoot,
-      "docs/plans/clf-feature/build-record.user.md",
-      `---
-Business-Unit: BRIK
-Feature-Slug: clf-feature
----
-# Build Record`,
-    );
-    await writeFile(
-      tmpRoot,
-      "docs/plans/clf-feature/results-review.user.md",
-      `---
-Business-Unit: BRIK
-Review-date: 2026-02-26
----
-# Results Review
-
-## Observed Outcomes
-- Outcome observed.
-
-## Standing Updates
-- No standing updates: reason.
-
-## New Idea Candidates
-- Add classifier output fields | Trigger observation: classification fields missing | Suggested next action: create INVESTIGATE task
-
-## Standing Expansion
-- No standing expansion: reason.
-`,
+      [
+        makeQueueDispatch({
+          dispatch_id: "DISPATCH-CLF-QUEUE-001",
+          current_truth: "Add classifier output fields",
+          area_anchor: "Add classifier output fields",
+          why: "classification fields missing on surfaced queue items",
+        }),
+      ],
     );
 
     const data = collectProcessImprovements(tmpRoot);
@@ -444,10 +625,10 @@ Review-date: 2026-02-26
   });
 
   // ---------------------------------------------------------------------------
-  // TASK-04: Sidecar-prefer branch TCs
+  // TASK-04: queue-only backlog TCs
   // ---------------------------------------------------------------------------
 
-  it("TC-04-01: markdown-parse path taken when no sidecar exists", async () => {
+  it("TC-04-01: markdown-only results-review ideas do not appear without queue admission", async () => {
     await writeFile(
       tmpDir,
       "docs/plans/sidecar-test/results-review.user.md",
@@ -461,12 +642,10 @@ Review-date: 2026-03-06
     );
 
     const data = collectProcessImprovements(tmpDir);
-    expect(data.ideaItems).toHaveLength(1);
-    expect(data.ideaItems[0]?.title).toBe("Markdown only idea");
+    expect(data.ideaItems).toHaveLength(0);
   });
 
-  it("TC-04-02: sidecar-prefer path taken when valid sidecar exists alongside .user.md", async () => {
-    // Different idea in each file — confirms which source was read.
+  it("TC-04-02: valid results-review sidecars do not appear without queue admission", async () => {
     await writeFile(
       tmpDir,
       "docs/plans/sidecar-test/results-review.user.md",
@@ -510,140 +689,169 @@ Review-date: 2026-03-06
     );
 
     const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(0);
+  });
+
+  it("TC-04-03: queue-backed build-origin ideas expose provenance in process-improvements data", async () => {
+    await writeQueueState(
+      tmpDir,
+      [
+        makeQueueDispatch({
+          dispatch_id: "DISPATCH-BUILD-ORIGIN-001",
+          current_truth: "Queue-backed build-origin idea",
+          area_anchor: "Queue-backed build-origin idea",
+          build_origin: makeBuildOriginProvenance(),
+        }),
+      ],
+    );
+
+    const data = collectProcessImprovements(tmpDir);
     expect(data.ideaItems).toHaveLength(1);
-    expect(data.ideaItems[0]?.title).toBe("Sidecar idea (should win)");
+    expect(data.ideaItems[0]?.source).toBe("queue-state.json");
+    expect(data.ideaItems[0]?.build_origin?.build_signal_id).toBe("build-signal-123");
+    expect(data.ideaItems[0]?.build_origin?.results_review_path).toBe(
+      "docs/plans/queue-unification-task/results-review.user.md",
+    );
   });
 
-  it("TC-04-03: malformed sidecar falls back to markdown parse with warning", async () => {
-    await writeFile(
+  it("TC-04-03A: historical carry-over queue items use the area anchor as backlog title", async () => {
+    await writeQueueState(
       tmpDir,
-      "docs/plans/sidecar-test/results-review.user.md",
-      `---
-Business-Unit: BRIK
-Review-date: 2026-03-06
----
-## New Idea Candidates
-- Markdown fallback idea
-`,
+      [
+        makeQueueDispatch({
+          dispatch_id: "DISPATCH-HISTORICAL-001",
+          area_anchor: "Build artifact caching for staging",
+          current_truth:
+            "The archived observation is still specific, no later queue-backed follow-up exists, and the repo does not show a staging-specific caching follow-on that closes the idea.",
+          why: "Backfilled from the historical carry-over audit.",
+          historical_carryover: {
+            schema_version: "dispatch-historical-carryover.v1",
+            manifest_path:
+              "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
+            historical_candidate_id: "hc_96cb17616884",
+            source_audit_path:
+              "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+            source_plan_slugs: ["brikette-staging-upload-speed"],
+            source_paths: [
+              "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+              "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json",
+            ],
+            backfilled_at: "2026-03-10T12:25:35.035Z",
+          },
+        }),
+      ],
     );
 
-    // Write a malformed sidecar (not JSON)
-    await writeFile(
-      tmpDir,
-      "docs/plans/sidecar-test/results-review.signals.json",
-      "not valid json {{{",
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.source).toBe("queue-state.json");
+    expect(data.ideaItems[0]?.title).toBe("Build artifact caching for staging");
+    expect(data.ideaItems[0]?.historical_carryover?.historical_candidate_id).toBe(
+      "hc_96cb17616884",
     );
-
-    const stderrOutput: string[] = [];
-    const stderrSpy = jest
-      .spyOn(process.stderr, "write")
-      .mockImplementation((chunk: string | Uint8Array) => {
-        stderrOutput.push(typeof chunk === "string" ? chunk : "");
-        return true;
-      });
-
-    try {
-      const data = collectProcessImprovements(tmpDir);
-      // Should fall back to markdown parse
-      expect(data.ideaItems).toHaveLength(1);
-      expect(data.ideaItems[0]?.title).toBe("Markdown fallback idea");
-      // Should have logged a warning
-      expect(stderrOutput.some((line) => line.includes("falling back to markdown"))).toBe(true);
-    } finally {
-      stderrSpy.mockRestore();
-    }
   });
 
-  it("TC-04-04: sidecar with zero items produces zero idea items for that plan", async () => {
-    await writeFile(
-      tmpDir,
-      "docs/plans/sidecar-test/results-review.user.md",
-      `---
-Business-Unit: BRIK
-Review-date: 2026-03-06
----
-## New Idea Candidates
-- This idea should be bypassed by empty sidecar
-`,
+  it("TC-04-04: updated HTML embeds build-origin provenance for queue-backed ideas", () => {
+    const updated = updateProcessImprovementsHtml(
+      HTML_TEMPLATE,
+      {
+        ideaItems: [
+          {
+            type: "idea",
+            business: "BRIK",
+            title: "Queue-backed build-origin idea",
+            body: "Visible only through queue-backed admission.",
+            source: "queue-state.json",
+            date: "2026-03-06",
+            path: QUEUE_STATE_RELATIVE_PATH,
+            build_origin: makeBuildOriginProvenance(),
+          },
+        ],
+        riskItems: [],
+        pendingReviewItems: [],
+      },
+      "2026-03-06",
     );
 
-    const sidecar = {
-      schema_version: "results-review.signals.v1",
-      generated_at: new Date().toISOString(),
-      plan_slug: "sidecar-test",
-      source_path: "docs/plans/sidecar-test/results-review.user.md",
-      items: [],
-    };
-    await writeFile(
-      tmpDir,
-      "docs/plans/sidecar-test/results-review.signals.json",
-      `${JSON.stringify(sidecar, null, 2)}\n`,
-    );
+    expect(updated).toContain('"build_origin"');
+    expect(updated).toContain('"build_signal_id": "build-signal-123"');
+    expect(updated).toContain('"results_review_path": "docs/plans/queue-unification-task/results-review.user.md"');
+  });
+
+  it("TC-04-05: canonical report labels distinguish the P4/P5 group from the P5 tier", async () => {
+    const html = await readCanonicalProcessImprovementsHtml();
+
+    expect(html).toContain("Low/Backlog (P4/P5)");
+    expect(html).toContain("'P4':  'Low priority'");
+    expect(html).toContain("'P5':  'Backlog'");
+    expect(html).not.toContain("</span> Backlog</button>");
+  });
+
+  it("TC-14-01: build-origin bridge auto-admits active plan sidecars into the trial queue", async () => {
+    await writeBuildOriginSidecars(tmpDir, "docs/plans/queue-unification-task");
+
+    const bridgeResult = runBuildOriginBridgeForProcessImprovements(tmpDir);
+
+    expect(bridgeResult.ok).toBe(true);
+    expect(bridgeResult.plans_considered).toBe(1);
+    expect(bridgeResult.dispatches_enqueued).toBe(1);
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.title).toBe("Queue-backed build-origin idea");
+    expect(data.ideaItems[0]?.build_origin?.build_signal_id).toBe("build-signal-123");
+  });
+
+  it("TC-14-02: build-origin bridge ignores archived plan sidecars during automatic admission", async () => {
+    await writeBuildOriginSidecars(tmpDir, "docs/plans/_archive/old-feature", {
+      planSlug: "old-feature",
+      reviewCycleKey: "old-feature",
+      title: "Archived build-origin idea",
+      buildSignalId: "archived-signal-123",
+      recurrenceKey: "archived-recurrence-123",
+    });
+
+    const bridgeResult = runBuildOriginBridgeForProcessImprovements(tmpDir);
+
+    expect(bridgeResult.ok).toBe(true);
+    expect(bridgeResult.plans_considered).toBe(0);
+    expect(bridgeResult.dispatches_enqueued).toBe(0);
 
     const data = collectProcessImprovements(tmpDir);
     expect(data.ideaItems).toHaveLength(0);
   });
 
-  it("TC-04-05: sidecar item with completed idea_key is suppressed by completed-ideas filter", async () => {
-    const ideaKey = "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb";
+  it("TC-14-03: render-only artifact updates do not auto-admit build-origin sidecars", async () => {
+    await writeBuildOriginSidecars(tmpDir, "docs/plans/queue-unification-task");
+    await writeFile(tmpDir, "docs/business-os/process-improvements.user.html", HTML_TEMPLATE);
 
-    await writeFile(
-      tmpDir,
-      "docs/plans/sidecar-test/results-review.user.md",
-      `---
-Business-Unit: BRIK
-Review-date: 2026-03-06
----
-## New Idea Candidates
-- Fallback idea
-`,
-    );
+    const result = updateProcessImprovementsArtifacts(tmpDir, {
+      sync_build_origin_bridge: false,
+      sync_codebase_signals_bridge: false,
+      sync_agent_session_signals_bridge: false,
+      now: new Date("2026-03-10T12:00:00.000Z"),
+    });
 
-    const sidecar = {
-      schema_version: "results-review.signals.v1",
-      generated_at: new Date().toISOString(),
-      plan_slug: "sidecar-test",
-      source_path: "docs/plans/sidecar-test/results-review.user.md",
-      items: [
-        {
-          type: "idea",
-          business: "BRIK",
-          title: "Already completed idea",
-          body: "",
-          source: "results-review.user.md",
-          date: "2026-03-06",
-          path: "docs/plans/sidecar-test/results-review.user.md",
-          idea_key: ideaKey,
-          priority_tier: "P3",
-        },
-      ],
-    };
-    await writeFile(
-      tmpDir,
-      "docs/plans/sidecar-test/results-review.signals.json",
-      `${JSON.stringify(sidecar, null, 2)}\n`,
-    );
+    expect(result.data.ideaItems).toHaveLength(0);
 
-    const registry = {
-      schema_version: "completed-ideas.v1",
-      entries: [
-        {
-          idea_key: ideaKey,
-          title: "Already completed idea",
-          source_path: "docs/plans/sidecar-test/results-review.user.md",
-          plan_slug: "sidecar-test",
-          completed_at: "2026-03-05",
-        },
-      ],
-    };
-    await writeFile(
-      tmpDir,
-      "docs/business-os/_data/completed-ideas.json",
-      `${JSON.stringify(registry, null, 2)}\n`,
-    );
+    const queueStatePath = path.join(tmpDir, QUEUE_STATE_RELATIVE_PATH);
+    await expect(fs.stat(queueStatePath)).rejects.toThrow();
+  });
 
-    const data = collectProcessImprovements(tmpDir);
-    expect(data.ideaItems).toHaveLength(0);
+  it("TC-14-04: build-origin sync can still be run explicitly before artifact updates", async () => {
+    await writeBuildOriginSidecars(tmpDir, "docs/plans/queue-unification-task");
+    await writeFile(tmpDir, "docs/business-os/process-improvements.user.html", HTML_TEMPLATE);
+
+    const result = updateProcessImprovementsArtifacts(tmpDir, {
+      sync_build_origin_bridge: true,
+      sync_codebase_signals_bridge: false,
+      sync_agent_session_signals_bridge: false,
+      now: new Date("2026-03-10T12:00:00.000Z"),
+    });
+
+    expect(result.build_origin_bridge?.dispatches_enqueued).toBe(1);
+    expect(result.data.ideaItems).toHaveLength(1);
+    expect(result.data.ideaItems[0]?.title).toBe("Queue-backed build-origin idea");
   });
 
   it("appendCompletedIdea is idempotent — calling twice yields one entry", async () => {
@@ -765,6 +973,67 @@ describe("dispatch queue collection", () => {
     expect(typeof item.reason_code).toBe("string");
   });
 
+  it("TC-03B: synthetic dispatch items prefer enriched current_truth as the surfaced title", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-SYN-001",
+          artifact_id: "BOS-BOS-AGENT_SESSION_FINDINGS",
+          business: "BOS",
+          area_anchor: "bos-agent-session-findings",
+          current_truth: "Recent agent-session review surfaced: Upload button fails silently when the API times out.",
+          why: "Recent walkthrough/testing activity surfaced a concrete issue that should retain its original session context in downstream idea intake.",
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(1);
+    expect(dispatchItems[0]?.title).toBe(
+      "Recent agent-session review surfaced: Upload button fails silently when the API times out.",
+    );
+  });
+
+  it("TC-03C: generic synthetic dispatch items are projected into well-formed surfaced ideas", async () => {
+    const queueState = {
+      dispatches: [
+        {
+          dispatch_id: "DISPATCH-SYN-002",
+          artifact_id: "BOS-BOS-REPO_MATURITY_SIGNALS",
+          business: "BOS",
+          area_anchor: "bos-repo-maturity-signals",
+          current_truth: "BOS-BOS-REPO_MATURITY_SIGNALS changed (bootstr → b2e8a4f)",
+          next_scope_now: "Investigate implications of bos-repo-maturity-signals delta for BOS",
+          why: "Assess bos-repo-maturity-signals implications from BOS-BOS-REPO_MATURITY_SIGNALS delta for BOS.",
+          intended_outcome: {
+            type: "operational",
+            statement: "Produce a validated routing outcome and scoped next action for bos-repo-maturity-signals.",
+            source: "auto",
+          },
+          evidence_refs: [
+            "repo-maturity-score:65",
+            "repo-maturity-level:Level-3-Reliable",
+            "repo-maturity-critical-control:no_ci_pipeline",
+            "repo-maturity-critical-control:no_codeowners",
+          ],
+          queue_state: "enqueued",
+          created_at: "2026-03-04T10:00:00.000Z",
+        },
+      ],
+    };
+    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+
+    const data = collectProcessImprovements(tmpDir);
+    const dispatchItems = data.ideaItems.filter((item) => item.source === "queue-state.json");
+    expect(dispatchItems).toHaveLength(1);
+    expect(dispatchItems[0]?.title).toContain("Repo maturity is 65");
+    expect(dispatchItems[0]?.body).toContain("Repo maturity monitoring is only useful");
+  });
+
   it("TC-04: dispatches with identical area_anchor but different dispatch_id get distinct idea_keys", async () => {
     const queueState = {
       dispatches: [
@@ -795,39 +1064,50 @@ describe("dispatch queue collection", () => {
     expect(keys[0]).not.toBe(keys[1]);
   });
 
-  it("TC-05: dispatch items sort correctly alongside results-review items", async () => {
+  it("TC-05: dispatch items sort correctly alongside bug-scan items", async () => {
     await writeFile(
       tmpDir,
-      "docs/plans/mixed-test/results-review.user.md",
-      `---
-Business-Unit: BRIK
-Review-date: 2026-03-04
----
-# Results Review
-
-## New Idea Candidates
-- Results review idea
-`,
+      "docs/plans/mixed-test/bug-scan-findings.user.json",
+      `${JSON.stringify(
+        {
+          schema_version: "bug-scan-findings.v1",
+          generated_at: "2026-03-04T09:00:00.000Z",
+          business_scope: "BRIK",
+          findings: [
+            {
+              ruleId: "no-debug-logging",
+              severity: "warning",
+              message: "Debug logging leaked into production path.",
+              suggestion: "Remove the debug logging from the production path.",
+              file: "apps/brikette/src/lib/debug.ts",
+              line: 9,
+              column: 2,
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
     );
 
-    const queueState = {
-      dispatches: [
-        {
+    await writeQueueState(
+      tmpDir,
+      [
+        makeQueueDispatch({
           dispatch_id: "DISPATCH-SORT-001",
           business: "BOS",
           area_anchor: "Dispatch queue idea",
+          current_truth: "Dispatch queue idea",
           why: "Testing sort order",
-          queue_state: "enqueued",
           created_at: "2026-03-04T10:00:00.000Z",
-        },
+        }),
       ],
-    };
-    await writeFile(tmpDir, QUEUE_STATE_RELATIVE_PATH, JSON.stringify(queueState, null, 2));
+    );
 
     const data = collectProcessImprovements(tmpDir);
     // Both sources should be present in the same sorted ideaItems array
     const sources = new Set(data.ideaItems.map((i) => i.source));
-    expect(sources.has("results-review.user.md")).toBe(true);
+    expect(sources.has("bug-scan-findings.user.json")).toBe(true);
     expect(sources.has("queue-state.json")).toBe(true);
     // All items should be sorted (own_priority_rank ascending)
     for (let i = 1; i < data.ideaItems.length; i++) {

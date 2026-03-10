@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-09T13:05:00.000Z",
+  "why": "User-account provisioning is high-risk; the operator requested strict ownership control to prevent unauthorized account or permission changes."
+}

@@ -1,9 +1,9 @@
-/* eslint-disable ds/container-widths-only-at, ds/enforce-layout-primitives -- BRIK-3 prime DS rules deferred */
+/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 /**
  * ServiceCard.tsx
  *
  * A reusable card for displaying services on the homepage.
- * Horizontal layout with image on one side and description on the other.
+ * Supports horizontal layout (default) and vertical layout (image stacked above text).
  */
 
 import { memo } from 'react';
@@ -18,6 +18,7 @@ export interface ServiceCardProps {
   description?: string;
   to: string;
   image?: string;
+  layout?: 'horizontal' | 'vertical';
 }
 
 /**
@@ -31,6 +32,7 @@ export const ServiceCard = memo(function ServiceCard({
   description,
   to,
   image,
+  layout = 'horizontal',
 }: ServiceCardProps) {
   return (
     <Card
@@ -54,7 +56,9 @@ export const ServiceCard = memo(function ServiceCard({
         </Link>
       </h3>
 
-      <div className="flex flex-row items-center p-4 w-full gap-4">
+      <div
+        className={`${layout === 'vertical' ? 'flex flex-col items-center' : 'flex flex-row items-center'} p-4 w-full gap-4`}
+      >
         {image && (
           <Link href={to}>
             <Image
@@ -68,7 +72,7 @@ export const ServiceCard = memo(function ServiceCard({
           </Link>
         )}
         {description && (
-          <p className="w-full px-4 text-muted-foreground text-base">
+          <p className={`w-full text-muted-foreground text-base${layout === 'horizontal' ? ' px-4' : ''}`}>
             {description}
           </p>
         )}

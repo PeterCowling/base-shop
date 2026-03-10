@@ -4,7 +4,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { getDatabase } from 'firebase/database';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import type { FirebaseConfig } from '../types/firebase';
 
@@ -115,7 +115,7 @@ export function useFirebaseSubscription<T>(
         setIsLoading(false);
       },
       (error) => {
-        logger.error('Firebase subscription error:', error);
+        logger.error('Firebase subscription error:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
         setIsError(true);
         setIsLoading(false);
       },
@@ -144,7 +144,7 @@ export function useFirebaseSubscription<T>(
       }
       setIsError(false);
     } catch (err) {
-      logger.error('Firebase refetch error:', err);
+      logger.error('Firebase refetch error:', err); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
       setIsError(true);
     } finally {
       setIsLoading(false);

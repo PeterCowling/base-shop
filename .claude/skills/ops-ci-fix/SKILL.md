@@ -1,6 +1,6 @@
 ---
 name: ops-ci-fix
-description: Run typecheck and lint scoped to changed packages, fix all errors iteratively, and commit a clean state. Offload-ready for Codex. Terminal condition is all affected packages pass typecheck and lint with zero errors.
+description: Run typecheck and lint scoped to changed packages, fix all errors iteratively, and commit a clean state. Execute inline until the writer-lock patch-return pilot lands. Terminal condition is all affected packages pass typecheck and lint with zero errors.
 ---
 
 # ops-ci-fix — Typecheck + Lint Fix Loop
@@ -14,46 +14,23 @@ fails with a non-localized error.
 
 ---
 
-## Claude: Offload to Codex
+## Claude: Execution Mode
 
-When invoked by Claude, delegate to Codex using the build offload protocol:
+Current active policy: execute this skill inline.
 
-```bash
-# 1. Check Codex availability
-nvm exec 22 codex --version >/dev/null 2>&1 && CODEX_OK=1 || CODEX_OK=0
+Why:
+- the previous shared-checkout Codex path relied on the stale `codex exec -a never --sandbox workspace-write` contract
+- that path still holds the writer lock for the full mutable agent session
+- the replacement patch-return pilot is not validated yet
 
-# 2. If CODEX_OK=1, offload — with-writer-lock.sh wraps the invocation so Codex
-#    inherits the lock token; Codex must NOT re-acquire the lock itself.
-cat > /tmp/ops-ci-fix-prompt.txt <<'EOF'
-You are running an ops maintenance task in the base-shop monorepo.
-
-Read and follow .claude/skills/ops-ci-fix/SKILL.md exactly, starting from the
-"Codex: Execution Procedure" section.
-
-Repo root: /Users/petercowling/base-shop
-Safety rules: CODEX.md
-EOF
-
-bash scripts/agents/with-writer-lock.sh -- \
-  nvm exec 22 codex exec \
-    -a never \
-    --sandbox workspace-write \
-    -o /tmp/ops-ci-fix-output.txt \
-    "$(cat /tmp/ops-ci-fix-prompt.txt)"
-```
-
-After Codex returns, Claude must:
-1. Re-run scoped typecheck + lint independently to verify the terminal condition.
-2. If still failing, fall back to the inline procedure below.
-3. Read `/tmp/ops-ci-fix-output.txt` for the evidence summary.
-
-**CODEX_OK=0 — inline fallback:** Execute the procedure below.
-Writer-lock is required for all writes. Claude is non-interactive in this context so wrap each
+Writer-lock is still required for writes. Claude is non-interactive in this context so wrap each
 git write command rather than opening a subshell:
 ```bash
 bash scripts/agents/with-writer-lock.sh -- git add <file1> <file2> ...
 bash scripts/agents/with-writer-lock.sh -- git commit -m "..."
 ```
+
+Do not offload this skill to a shared-checkout mutable Codex session until the active build-offload protocol is reactivated by the patch-return pilot.
 
 ---
 

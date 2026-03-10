@@ -12,6 +12,8 @@ import {
 } from 'react';
 import { push } from 'firebase/database';
 
+import logger from '@acme/lib/logger/client';
+
 import { readGuestSession } from '@/lib/auth/guestSessionGuard';
 import {
   buildDirectMessageChannelId,
@@ -20,6 +22,7 @@ import {
 } from '@/lib/chat/directMessageChannel';
 import { MSG_ROOT } from '@/utils/messaging/dbRoot';
 
+import { MessageSchema, RawMessagePayloadSchema } from '../../lib/chat/messageSchema';
 import {
   type DataSnapshot,
   endAt,
@@ -28,7 +31,6 @@ import {
   get,
   limitToFirst,
   limitToLast,
-  off,
   onChildAdded,
   onChildChanged,
   onChildRemoved,
@@ -42,14 +44,7 @@ import {
 } from '../../services/firebase';
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { ActivityInstance } from '../../types/messenger/activity';
-import type {
-  Message,
-  MessageAttachment,
-  MessageCard,
-  MessageDraftMeta,
-  MessageKind,
-  MessageLink,
-} from '../../types/messenger/chat';
+import type { Message } from '../../types/messenger/chat';
 
 const PAGE_SIZE = 50;
 const ACTIVITIES_PAGE_SIZE = 20;
@@ -190,121 +185,12 @@ function reducer(state: ChatState, action: ChatAction): ChatState {
   }
 }
 
-function isMessage(value: unknown): value is Message {
-  if (!value || typeof value !== 'object') {
-    return false;
-  }
-
-  const candidate = value as Partial<Message>;
-  if (
-    typeof candidate.id !== 'string'
-    || typeof candidate.content !== 'string'
-    || typeof candidate.senderId !== 'string'
-    || typeof candidate.senderRole !== 'string'
-    || typeof candidate.createdAt !== 'number'
-  ) {
-    return false;
-  }
-
-  if (candidate.senderName !== undefined && typeof candidate.senderName !== 'string') {
-    return false;
-  }
-  if (candidate.deleted !== undefined && typeof candidate.deleted !== 'boolean') {
-    return false;
-  }
-  if (candidate.imageUrl !== undefined && typeof candidate.imageUrl !== 'string') {
-    return false;
-  }
-  if (candidate.kind !== undefined && !isMessageKind(candidate.kind)) {
-    return false;
-  }
-  if (candidate.audience !== undefined && !isMessageAudience(candidate.audience)) {
-    return false;
-  }
-  if (candidate.links !== undefined && !isMessageLinks(candidate.links)) {
-    return false;
-  }
-  if (candidate.attachments !== undefined && !isMessageAttachments(candidate.attachments)) {
-    return false;
-  }
-  if (candidate.cards !== undefined && !isMessageCards(candidate.cards)) {
-    return false;
-  }
-  if (candidate.campaignId !== undefined && typeof candidate.campaignId !== 'string') {
-    return false;
-  }
-  if (candidate.draft !== undefined && !isMessageDraft(candidate.draft)) {
-    return false;
-  }
-
-  return true;
-}
-
-function isMessageKind(value: unknown): value is MessageKind {
-  return value === 'support' || value === 'promotion' || value === 'draft' || value === 'system';
-}
-
-function isMessageAudience(value: unknown): value is Message['audience'] {
-  return value === 'thread' || value === 'booking' || value === 'room' || value === 'whole_hostel';
-}
-
-function isMessageLinks(value: unknown): value is MessageLink[] {
-  return Array.isArray(value) && value.every((entry) =>
-    entry
-    && typeof entry === 'object'
-    && typeof entry.label === 'string'
-    && typeof entry.url === 'string'
-    && (entry.id === undefined || typeof entry.id === 'string')
-    && (entry.variant === undefined || entry.variant === 'primary' || entry.variant === 'secondary'));
-}
-
-function isMessageAttachments(value: unknown): value is MessageAttachment[] {
-  return Array.isArray(value) && value.every((entry) =>
-    entry
-    && typeof entry === 'object'
-    && (entry.kind === 'image' || entry.kind === 'file')
-    && typeof entry.url === 'string'
-    && (entry.id === undefined || typeof entry.id === 'string')
-    && (entry.title === undefined || typeof entry.title === 'string')
-    && (entry.altText === undefined || typeof entry.altText === 'string')
-    && (entry.mimeType === undefined || typeof entry.mimeType === 'string'));
-}
-
-function isMessageCards(value: unknown): value is MessageCard[] {
-  return Array.isArray(value) && value.every((entry) =>
-    entry
-    && typeof entry === 'object'
-    && typeof entry.title === 'string'
-    && (entry.id === undefined || typeof entry.id === 'string')
-    && (entry.body === undefined || typeof entry.body === 'string')
-    && (entry.imageUrl === undefined || typeof entry.imageUrl === 'string')
-    && (entry.ctaLabel === undefined || typeof entry.ctaLabel === 'string')
-    && (entry.ctaUrl === undefined || typeof entry.ctaUrl === 'string'));
-}
-
-function isMessageDraft(value: unknown): value is MessageDraftMeta {
-  return Boolean(
-    value
-    && typeof value === 'object'
-    && typeof (value as MessageDraftMeta).draftId === 'string'
-    && typeof (value as MessageDraftMeta).createdAt === 'number'
-    && ((value as MessageDraftMeta).status === 'suggested'
-      || (value as MessageDraftMeta).status === 'under_review'
-      || (value as MessageDraftMeta).status === 'approved'
-      || (value as MessageDraftMeta).status === 'sent'
-      || (value as MessageDraftMeta).status === 'dismissed')
-    && ((value as MessageDraftMeta).source === 'agent'
-      || (value as MessageDraftMeta).source === 'staff'),
-  );
-}
-
 function toMessage(id: string, raw: unknown): Message | null {
-  if (!raw || typeof raw !== 'object') {
+  const result = RawMessagePayloadSchema.safeParse(raw);
+  if (!result.success) {
     return null;
   }
-
-  const candidate = { id, ...(raw as Omit<Message, 'id'>) };
-  return isMessage(candidate) ? candidate : null;
+  return { id, ...result.data } as Message;
 }
 
 function normalizeDirectMessages(payload: unknown): Message[] {
@@ -317,9 +203,17 @@ function normalizeDirectMessages(payload: unknown): Message[] {
     return [];
   }
 
-  return rawMessages
-    .filter(isMessage)
-    .sort((left, right) => left.createdAt - right.createdAt);
+  const parsed: Message[] = [];
+  for (const entry of rawMessages) {
+    const result = MessageSchema.safeParse(entry);
+    if (result.success) {
+      parsed.push(result.data as Message);
+    } else {
+      // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic string [ttl=2026-12-31]
+      logger.warn('normalizeDirectMessages: dropped invalid message entry', result.error.issues);
+    }
+  }
+  return parsed.sort((left, right) => left.createdAt - right.createdAt);
 }
 
 const initialState: ChatState = { activities: {}, messages: {} };
@@ -361,7 +255,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
           await update(ref(db), updates);
         }
       } catch (err) {
-        console.error('Failed to remove system messages', err);
+        // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic [ttl=2026-12-31]
+        logger.error('Failed to remove system messages', err);
       }
     },
     [db],
@@ -389,7 +284,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
           ),
         );
       } catch (err) {
-        console.error('Failed to post initial messages', err);
+        // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic [ttl=2026-12-31]
+        logger.error('Failed to post initial messages', err);
       }
     },
     [db],
@@ -434,7 +330,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
       dispatch({ type: 'setActivities', activities: filtered });
     });
     return () => {
-      off(q);
       unsubValue();
     };
   }, [db, activitiesLimit, postInitialMessages, removeSystemMessages]);
@@ -518,7 +413,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
             messages: normalizeDirectMessages(payload),
           });
         } catch (error) {
-          console.error('Failed to load direct messages', error);
+          // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic [ttl=2026-12-31]
+        logger.error('Failed to load direct messages', error);
         }
       };
 
@@ -586,10 +482,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
     const unsubRemove = onChildRemoved(q, handleRemove);
 
     messageListenerRef.current = () => {
-      off(q, 'child_added', handleAdd);
-      off(q, 'child_changed', handleChange);
-      off(q, 'child_removed', handleRemove);
-      off(q);
       unsubAdd();
       unsubChange();
       unsubRemove();
@@ -661,7 +553,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
             dispatch({ type: 'prependMessages', channelId, messages });
           }
         } catch (error) {
-          console.error('Failed to load older direct messages', error);
+          // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic [ttl=2026-12-31]
+        logger.error('Failed to load older direct messages', error);
         }
 
         return;

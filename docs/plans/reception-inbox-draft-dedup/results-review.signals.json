@@ -1,7 +1,10 @@
 {
   "schema_version": "results-review.signals.v1",
-  "generated_at": "2026-03-07T14:57:34.087Z",
+  "generated_at": "2026-03-10T11:40:06.723Z",
   "plan_slug": "reception-inbox-draft-dedup",
-  "source_path": "../docs/plans/reception-inbox-draft-dedup/results-review.user.md",
+  "review_cycle_key": "reception-inbox-draft-dedup",
+  "source_path": "docs/plans/reception-inbox-draft-dedup/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
   "items": []
 }

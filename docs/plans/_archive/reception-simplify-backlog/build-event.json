@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-09T12:21:33.727Z",
+  "why": "Route-level crashes in high-risk segments surface the root error boundary, destroying navigation context — users cannot recover without a full reload."
+}

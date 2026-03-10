@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-payment-prop-drilling-20260308",
+  "feature_slug": "reception-payment-prop-drilling",
+  "emitted_at": "2026-03-08T00:00:00.000Z",
+  "why": "Prop drilling through 3 component layers made the payment flow hard to test and extend safely.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Payment state managed via context instead of 3-layer prop threading. PaymentDropdown eliminated. PaymentForm prop interface reduced from 8 to 0.",
+    "source": "auto"
+  }
+}

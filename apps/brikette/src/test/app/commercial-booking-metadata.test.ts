@@ -6,25 +6,16 @@ import { type AppLanguage, i18nConfig } from "@/i18n.config";
 
 type HeaderLocale = {
   apartment?: string;
-  title?: string;
-};
-
-type BookPageLocale = {
-  apartment?: {
-    meta?: {
-      description?: string;
-      title?: string;
+  navigation?: {
+    apartment?: {
+      bookPrivate?: string;
     };
   };
+  title?: string;
 };
 
 type ApartmentPageLocale = {
   body?: string;
-  book?: {
-    meta?: {
-      description?: string;
-    };
-  };
 };
 
 type RoomsPageLocale = {
@@ -65,16 +56,16 @@ describe("commercial booking metadata", () => {
       const privateBookingModule = await import("@/app/[lang]/book-private-accommodations/page");
 
       const header = readLocale<HeaderLocale>(lang, "header");
-      const bookPage = readLocale<BookPageLocale>(lang, "bookPage");
       const apartmentPage = readLocale<ApartmentPageLocale>(lang, "apartmentPage");
       const roomsPage = readLocale<RoomsPageLocale>(lang, "roomsPage");
 
-      const expectedTitle =
-        bookPage.apartment?.meta?.title ||
-        [header.apartment ?? "", header.title ?? "Hostel Brikette"].filter(Boolean).join(" | ");
+      const expectedTitle = [
+        header.navigation?.apartment?.bookPrivate ?? header.apartment ?? "",
+        header.title ?? "Hostel Brikette",
+      ]
+        .filter(Boolean)
+        .join(" | ");
       const expectedDescription =
-        bookPage.apartment?.meta?.description ||
-        apartmentPage.book?.meta?.description ||
         [roomsPage.rooms?.double_room?.bed_intro, apartmentPage.body].filter(Boolean).join(" ");
 
       const metadata = await privateBookingModule.generateMetadata({

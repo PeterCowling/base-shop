@@ -400,6 +400,31 @@ describe("self-evolving contract validators", () => {
     expect(validatePolicyDecisionRecord(decision)).toEqual([]);
   });
 
+  it("TASK-09 TC-01 validates promotion_nomination policy decisions", () => {
+    const decision = {
+      ...buildValidPolicyDecision(),
+      decision_type: "promotion_nomination" as const,
+      eligible_actions: ["hold", "nominate"],
+      chosen_action: "nominate",
+      action_probability: 1,
+      promotion_nomination: {
+        schema_version: "promotion-nomination.v1" as const,
+        target_surface: "prompt_contract" as const,
+        target_identifier: "container:website-v3",
+        proof_status: "eligible" as const,
+        safety_status: "advisory_only" as const,
+        actuation_status: "nominated" as const,
+        observed_outcome_count: 2,
+        positive_outcome_count: 2,
+        positive_outcome_rate: 1,
+        latest_outcome_event_id: "event-1",
+        latest_outcome_source_path: "docs/plans/example/plan.md",
+        reason_code: "container_contract_requires_operator_promotion",
+      },
+    };
+    expect(validatePolicyDecisionRecord(decision)).toEqual([]);
+  });
+
   it("TASK-01 TC-02 accepts legacy v1 observations without admission metadata", () => {
     const legacyObservation: MetaObservation = {
       schema_version: "meta-observation.v1",

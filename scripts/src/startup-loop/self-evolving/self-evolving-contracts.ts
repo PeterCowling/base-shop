@@ -66,6 +66,7 @@ export type PolicyDecisionType =
   | "portfolio_selection"
   | "exploration_rank"
   | "promotion_gate"
+  | "promotion_nomination"
   | "override_record";
 export type PolicyDecisionMode = "deterministic" | "stochastic";
 export type GapCaseSourceKind =
@@ -102,6 +103,13 @@ export type PrescriptionMaturity =
   | "structured"
   | "proven"
   | "retired";
+export type PromotionTargetSurface =
+  | "prompt_contract"
+  | "write_back"
+  | "autofix_low_risk";
+export type PromotionProofStatus = "eligible" | "insufficient_data" | "ineligible";
+export type PromotionSafetyStatus = "eligible" | "advisory_only" | "ineligible";
+export type PromotionActuationStatus = "nominated" | "applied" | "skipped";
 
 export interface GapCaseRuntimeBinding {
   binding_mode: GapCaseBindingMode;
@@ -466,6 +474,21 @@ export interface PromotionGateContext {
   reason_code: string;
 }
 
+export interface PromotionNominationContext {
+  schema_version: "promotion-nomination.v1";
+  target_surface: PromotionTargetSurface;
+  target_identifier: string | null;
+  proof_status: PromotionProofStatus;
+  safety_status: PromotionSafetyStatus;
+  actuation_status: PromotionActuationStatus;
+  observed_outcome_count: number;
+  positive_outcome_count: number;
+  positive_outcome_rate: number | null;
+  latest_outcome_event_id: string | null;
+  latest_outcome_source_path: string | null;
+  reason_code: string;
+}
+
 export interface PolicyDecisionRecord {
   schema_version: "policy-decision.v1";
   decision_id: string;
@@ -493,6 +516,7 @@ export interface PolicyDecisionRecord {
   portfolio_selection?: PortfolioSelectionContext | null;
   exploration_rank?: ExplorationRankContext | null;
   promotion_gate?: PromotionGateContext | null;
+  promotion_nomination?: PromotionNominationContext | null;
   created_at: string;
 }
 
@@ -1740,6 +1764,99 @@ function validatePromotionGateContext(
   return errors;
 }
 
+function validatePromotionNominationContext(
+  context: PromotionNominationContext,
+): string[] {
+  const errors: string[] = [];
+  if (context.schema_version !== "promotion-nomination.v1") {
+    errors.push("schema_version");
+  }
+  if (
+    context.target_surface !== "prompt_contract" &&
+    context.target_surface !== "write_back" &&
+    context.target_surface !== "autofix_low_risk"
+  ) {
+    errors.push("target_surface");
+  }
+  if (context.target_identifier !== null && !nonEmptyString(context.target_identifier)) {
+    errors.push("target_identifier");
+  }
+  if (
+    context.proof_status !== "eligible" &&
+    context.proof_status !== "insufficient_data" &&
+    context.proof_status !== "ineligible"
+  ) {
+    errors.push("proof_status");
+  }
+  if (
+    context.safety_status !== "eligible" &&
+    context.safety_status !== "advisory_only" &&
+    context.safety_status !== "ineligible"
+  ) {
+    errors.push("safety_status");
+  }
+  if (
+    context.actuation_status !== "nominated" &&
+    context.actuation_status !== "applied" &&
+    context.actuation_status !== "skipped"
+  ) {
+    errors.push("actuation_status");
+  }
+  for (const [label, value] of Object.entries({
+    observed_outcome_count: context.observed_outcome_count,
+    positive_outcome_count: context.positive_outcome_count,
+  })) {
+    if (
+      typeof value !== "number" ||
+      Number.isNaN(value) ||
+      !Number.isInteger(value) ||
+      value < 0
+    ) {
+      errors.push(label);
+    }
+  }
+  if (
+    context.positive_outcome_rate !== null &&
+    (typeof context.positive_outcome_rate !== "number" ||
+      Number.isNaN(context.positive_outcome_rate) ||
+      context.positive_outcome_rate < 0 ||
+      context.positive_outcome_rate > 1)
+  ) {
+    errors.push("positive_outcome_rate");
+  }
+  for (const [label, value] of Object.entries({
+    latest_outcome_event_id: context.latest_outcome_event_id,
+    latest_outcome_source_path: context.latest_outcome_source_path,
+    reason_code: context.reason_code,
+  })) {
+    if (label === "reason_code") {
+      if (!nonEmptyString(value)) {
+        errors.push(label);
+      }
+      continue;
+    }
+    if (value !== null && !nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (context.positive_outcome_count > context.observed_outcome_count) {
+    errors.push("positive_outcome_count_exceeds_observed");
+  }
+  if (
+    context.proof_status === "eligible" &&
+    context.observed_outcome_count === 0
+  ) {
+    errors.push("proof_status_requires_observed_outcomes");
+  }
+  if (
+    context.actuation_status === "applied" &&
+    context.safety_status !== "eligible"
+  ) {
+    errors.push("applied_requires_eligible_safety_status");
+  }
+  return errors;
+}
+
 export function validatePolicyBeliefAuditSnapshot(
   snapshot: PolicyBeliefAuditSnapshot,
 ): string[] {
@@ -1853,6 +1970,7 @@ export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): stri
     record.decision_type !== "portfolio_selection" &&
     record.decision_type !== "exploration_rank" &&
     record.decision_type !== "promotion_gate" &&
+    record.decision_type !== "promotion_nomination" &&
     record.decision_type !== "override_record"
   ) {
     errors.push("decision_type");
@@ -1923,6 +2041,25 @@ export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): stri
   }
   if (record.decision_type !== "promotion_gate" && record.promotion_gate) {
     errors.push("promotion_gate_unexpected_for_decision_type");
+  }
+  if (
+    record.decision_type === "promotion_nomination" &&
+    !record.promotion_nomination
+  ) {
+    errors.push("promotion_nomination");
+  }
+  if (record.promotion_nomination) {
+    errors.push(
+      ...validatePromotionNominationContext(record.promotion_nomination).map(
+        (error) => `promotion_nomination.${error}`,
+      ),
+    );
+  }
+  if (
+    record.decision_type !== "promotion_nomination" &&
+    record.promotion_nomination
+  ) {
+    errors.push("promotion_nomination_unexpected_for_decision_type");
   }
   return errors;
 }

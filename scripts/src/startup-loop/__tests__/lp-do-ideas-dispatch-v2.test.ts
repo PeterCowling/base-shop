@@ -538,6 +538,80 @@ describe("TC-01-E: artifact_delta dispatch auto-populated values carry source: '
     expect(result.quality_warnings).toBeDefined();
     expect(result.quality_warnings!.length).toBeGreaterThan(0);
   });
+
+  it("accepts milestone_event packets with canonical milestone provenance", () => {
+    const packet = makeV2Packet({
+      trigger: "milestone_event",
+      artifact_id: null,
+      milestone_origin: {
+        schema_version: "dispatch-milestone.v1",
+        milestone_event_id: "milestone-1",
+        root_id: "transaction_data_available",
+        producer_kind: "metric",
+        source_ref: "data/shops/BRIK/growth-ledger.json",
+        observed_at: FIXED_DATE.toISOString(),
+        bundle_key: "gtm4-lifecycle-readiness",
+        bundle_title: "Assess lifecycle automation readiness from first transaction data",
+        bundle_size: 1,
+        bundle_index: 0,
+        gap_case: {
+          schema_version: "gap-case.v1",
+          gap_case_id: "gap-1",
+          source_kind: "milestone",
+          business_id: "HBAG",
+          stage_id: "S10",
+          capability_id: null,
+          gap_type: "milestone_transaction_data_available_gtm4_lifecycle_readiness",
+          reason_code: "transaction_data_available",
+          severity: 0.7,
+          evidence_refs: ["data/shops/BRIK/growth-ledger.json"],
+          recurrence_key: "transaction_data_available:gtm4-lifecycle-readiness",
+          requirement_posture: "relative_required",
+          blocking_scope: "degrades_quality",
+          structural_context: {
+            milestone_root_id: "transaction_data_available",
+          },
+          runtime_binding: {
+            binding_mode: "compiled_to_candidate",
+            candidate_id: "cand-1",
+          },
+        },
+        prescription: {
+          schema_version: "prescription.v1",
+          prescription_id: "rx-1",
+          prescription_family: "milestone_transaction_data_available_gtm4_lifecycle_readiness",
+          source: "milestone_bundle",
+          gap_types_supported: [
+            "milestone_transaction_data_available_gtm4_lifecycle_readiness",
+          ],
+          required_route: "lp-do-fact-find",
+          required_inputs: ["data/shops/BRIK/growth-ledger.json"],
+          expected_artifacts: ["fact-find.md"],
+          expected_signal_change:
+            "Lifecycle automation readiness is grounded in real transaction data instead of assumptions.",
+          risk_class: "low",
+          maturity: "structured",
+        },
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  it("rejects milestone_event packets without milestone provenance", () => {
+    const packet = makeV2Packet({
+      trigger: "milestone_event",
+      artifact_id: null,
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(false);
+    expect(result.errors.some((error) => error.includes("milestone_origin is required"))).toBe(
+      true,
+    );
+  });
 });
 
 // ---------------------------------------------------------------------------

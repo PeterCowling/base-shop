@@ -14,14 +14,13 @@ import { getRoomSlug } from "@acme/ui/config/roomSlugs";
 import { ASSISTANCE_GUIDES, GUIDES_INDEX } from "@/data/guides.index";
 import { HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS } from "@/data/how-to-get-here/routeGuides";
 import { websiteVisibleRoomsData } from "@/data/roomsData";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
 import { guideNamespace, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import {
   INTERNAL_SEGMENT_BY_KEY,
   PUBLIC_INDEXABLE_SECTION_KEYS,
   STATIC_EXPORT_SECTION_KEYS,
 } from "@/routing/sectionSegments";
+import { getServerBuildLanguages } from "@/utils/buildLanguages";
 import { getSlug } from "@/utils/slug";
 
 const NON_DORM_ROOM_IDS = new Set(["double_room", "apartment"]);
@@ -48,7 +47,7 @@ const PUBLIC_PRIVATE_ROOM_DETAIL_SEGMENTS = [
  * and ensures URL coverage without depending on legacy code.
  */
 export function listAppRouterUrls(): string[] {
-  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const langs = getServerBuildLanguages();
   const urls: string[] = [];
 
   for (const lang of langs) {
@@ -110,7 +109,7 @@ export function listAppRouterUrls(): string[] {
  * Lists canonical public URLs (localized slug contract) for sitemap emission.
  */
 export function listLocalizedPublicUrls(): string[] {
-  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const langs = getServerBuildLanguages();
   const urls: string[] = [];
 
   for (const lang of langs) {
@@ -159,7 +158,7 @@ export function listLocalizedPublicUrls(): string[] {
  * surfaces that stay live but are intentionally excluded from sitemap/indexation.
  */
 export function listLocalizedCanonicalAppUrls(): string[] {
-  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const langs = getServerBuildLanguages();
   const urls: string[] = [];
 
   for (const lang of langs) {
@@ -207,7 +206,7 @@ export function listLocalizedCanonicalAppUrls(): string[] {
  * Get count of all App Router URLs by category
  */
 export function getUrlCounts(): Record<string, number> {
-  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const langs = getServerBuildLanguages();
   const langCount = langs.length;
   const dormRoomCount = websiteVisibleRoomsData.filter((room) => !NON_DORM_ROOM_IDS.has(room.id)).length;
 

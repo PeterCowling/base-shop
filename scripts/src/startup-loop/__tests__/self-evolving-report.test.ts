@@ -200,6 +200,33 @@ function buildDecision(): PolicyDecisionRecord {
   };
 }
 
+function buildPromotionNominationDecision(): PolicyDecisionRecord {
+  const base = buildDecision();
+  return {
+    ...base,
+    decision_id: "promotion-nomination-1",
+    decision_type: "promotion_nomination",
+    eligible_actions: ["hold", "nominate"],
+    chosen_action: "nominate",
+    promotion_gate: null,
+    promotion_nomination: {
+      schema_version: "promotion-nomination.v1",
+      target_surface: "prompt_contract",
+      target_identifier: "container:website-v3",
+      proof_status: "eligible",
+      safety_status: "advisory_only",
+      actuation_status: "nominated",
+      observed_outcome_count: 1,
+      positive_outcome_count: 1,
+      positive_outcome_rate: 1,
+      latest_outcome_event_id: "event-1",
+      latest_outcome_source_path: "docs/plans/example/plan.md",
+      reason_code: "container_contract_requires_operator_promotion",
+    },
+    created_at: "2026-03-10T00:00:00.000Z",
+  };
+}
+
 function buildDispatch(): QueueDispatch {
   return {
     dispatch_id: "dispatch-1",
@@ -421,6 +448,53 @@ describe("buildSelfEvolvingReportData", () => {
             total_overrides: 0,
           }),
         }),
+      }),
+    );
+  });
+
+  it("TASK-09 TC-04 reports proven-but-unpromoted nomination state separately from applied promotion", () => {
+    const report = buildSelfEvolvingReportData({
+      business: "BRIK",
+      generated_at: "2026-03-12T00:00:00.000Z",
+      source_paths: {
+        observations: "obs.jsonl",
+        candidates: "candidates.json",
+        startup_state: "startup-state.json",
+        policy_state: "policy-state.json",
+        policy_decisions: "policy-decisions.jsonl",
+        shadow_handoffs: "shadow-handoffs.jsonl",
+        queue_state: "queue-state.json",
+        events: "events.jsonl",
+      },
+      warnings: [],
+      observations: [buildObservation()],
+      ranked_candidates: [],
+      startup_state: buildStartupState(),
+      policy_state: buildPolicyState(),
+      policy_decisions: [buildDecision(), buildPromotionNominationDecision()],
+      shadow_handoffs: [buildShadowHandoff()],
+      queue_dispatches: [buildDispatch()],
+      lifecycle_events: [buildLifecycleEvent()],
+    });
+
+    expect(report.policy_decisions).toEqual(
+      expect.objectContaining({
+        promotion_nomination: expect.objectContaining({
+          total: 1,
+          proof_eligible: 1,
+          advisory_only: 1,
+          nominated: 1,
+          applied: 0,
+          proven_but_unpromoted: 1,
+          target_surface_counts: expect.objectContaining({
+            prompt_contract: 1,
+          }),
+        }),
+      }),
+    );
+    expect(report.dashboard.policy).toEqual(
+      expect.objectContaining({
+        promotion_nomination_decisions: 1,
       }),
     );
   });

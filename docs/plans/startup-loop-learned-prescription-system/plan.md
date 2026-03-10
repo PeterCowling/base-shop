@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-10
@@ -37,11 +37,11 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - [x] TASK-03: Add requirement posture and prescription maturity to queue and policy routing — Complete (2026-03-10)
 - [x] TASK-04: Extend policy journaling and evaluation for prescription-choice learning — Complete (2026-03-10)
 - [x] TASK-05: Map milestone roots to runtime producers and unify activation thresholds — Complete (2026-03-10)
-- [ ] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation
+- [x] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation — Complete (2026-03-10)
 - [x] TASK-07: Widen live sensing for richer prescription evidence — Complete (2026-03-10)
 - [x] TASK-08: Define and enforce the discovery-output contract for unknown prescriptions — Complete (2026-03-10)
-- [ ] TASK-09: Add a guarded promotion path for proven prescriptions
-- [ ] TASK-10: Checkpoint resulting-system coherence and rollout readiness
+- [x] TASK-09: Add a guarded promotion path for proven prescriptions — Complete (2026-03-10)
+- [x] TASK-10: Checkpoint resulting-system coherence and rollout readiness — Complete (2026-03-10)
 
 ## Goals
 - Create one canonical identity layer for improvement work: `gap_case` plus `prescription`.
@@ -119,11 +119,11 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 | TASK-03 | IMPLEMENT | Add requirement posture and prescription maturity to queue and policy routing | 81% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-04 | IMPLEMENT | Extend policy journaling and evaluation for prescription-choice learning | 81% | M | Complete (2026-03-10) | TASK-01, TASK-03 | TASK-08, TASK-09 |
 | TASK-05 | INVESTIGATE | Map milestone roots to runtime producers and unify activation thresholds | 78% | M | Complete (2026-03-10) | - | TASK-06, TASK-09 |
-| TASK-06 | IMPLEMENT | Add milestone-event triggers, producers, and lateral bundle generation | 80% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-05 | TASK-09, TASK-10 |
+| TASK-06 | IMPLEMENT | Add milestone-event triggers, producers, and lateral bundle generation | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02, TASK-03, TASK-05 | TASK-09, TASK-10 |
 | TASK-07 | IMPLEMENT | Widen live sensing for richer prescription evidence | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-08, TASK-10 |
 | TASK-08 | IMPLEMENT | Define and enforce the discovery-output contract for unknown prescriptions | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-07 | TASK-09, TASK-10 |
-| TASK-09 | IMPLEMENT | Add a guarded promotion path for proven prescriptions | 80% | M | Pending | TASK-03, TASK-04, TASK-06, TASK-08 | TASK-10 |
-| TASK-10 | CHECKPOINT | Check resulting-system coherence and rollout readiness | 95% | S | Pending | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
+| TASK-09 | IMPLEMENT | Add a guarded promotion path for proven prescriptions | 80% | M | Complete (2026-03-10) | TASK-03, TASK-04, TASK-06, TASK-08 | TASK-10 |
+| TASK-10 | CHECKPOINT | Check resulting-system coherence and rollout readiness | 95% | S | Complete (2026-03-10) | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -395,8 +395,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/ideas/*`, `scripts/src/startup-loop/self-evolving/*`, related contract docs identified by TASK-05
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-classifier.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-milestone-bridge.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`, `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`, `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md`, `scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-milestone-bridge.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts`
 - **Depends on:** TASK-01, TASK-02, TASK-03, TASK-05
 - **Blocks:** TASK-09, TASK-10
 - **Confidence:** 80%
@@ -429,6 +429,18 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - Update startup-loop docs that currently describe milestone activation as doc-only.
 - **Notes / references:**
   - [lp-do-ideas-trial.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts)
+  - [lp-do-ideas-milestone-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-milestone-bridge.ts)
+  - [lp-do-ideas-trial-contract.md](/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: the runtime still had no native milestone trigger class, no bounded producer bridge for contract-backed roots, and no way to emit lateral follow-up bundles without abusing `artifact_delta` or `operator_idea`.
+  - Green: `dispatch.v2` now supports `trigger: "milestone_event"` with a required `milestone_origin` provenance block; the new milestone bridge emits bounded shadow/advisory packets for `transaction_data_available`, `qualified_lead_or_enquiry_flow_present`, and `repeat_signal_present`; and `self-evolving-from-ideas` now turns those packets into milestone-scoped observations with canonical recurrence and evidence references.
+  - Scope control: the first slice stays inside the TASK-05 producer truth. `wholesale_accounts_positive` and `weekly_cycles_post_launch_gte_4` remain deliberately non-emitting because they still lack bounded structured producers in code.
+  - Bundle discipline: milestone roots now expand into a small fixed bundle with explicit `requirement_posture`, `prescription_maturity`, and route choices instead of an unbounded task spray. `transaction_data_available` emits one fact-find bundle, `qualified_lead_or_enquiry_flow_present` emits one plan bundle, and `repeat_signal_present` emits one plan plus one optional fact-find bundle.
+  - TC-01: pass. `milestone_event` packets are admitted through `dispatch.v2` without pretending to be `artifact_delta` or `operator_idea`, and validation rejects missing or mismatched milestone provenance.
+  - TC-02: pass. Bundle generation is bounded, route-aligned, and posture-aware; “not-yet-active” artifact contracts emit nothing, and route mismatches fail closed.
+  - TC-03: pass. Higher-level phrases like “first sale” remain downstream aliases only; runtime source-of-truth roots stay pinned to the concrete contract-backed IDs from TASK-05.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`, targeted `pnpm exec eslint --no-warn-ignored ...`, `pnpm plans:lint`, `git diff --check`, and `bash scripts/validate-changes.sh` passed on the TASK-06 surface.
+  - Precursor completion propagation: TASK-06 no longer blocks TASK-09 or TASK-10. The next runnable task is TASK-09.
 
 ### TASK-07: Widen live sensing for richer prescription evidence
 - **Type:** IMPLEMENT
@@ -539,8 +551,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-write-back.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-autofix.ts`, related self-evolving promotion/reporting code, relevant prompt/contract docs
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-promotion-path.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-index.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-autofix.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-promotion-path.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-report.test.ts`
 - **Depends on:** TASK-03, TASK-04, TASK-06, TASK-08
 - **Blocks:** TASK-10
 - **Confidence:** 80%
@@ -574,6 +586,18 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Notes / references:**
   - [self-evolving-write-back.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-write-back.ts)
   - [self-evolving-autofix.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-autofix.ts)
+  - [self-evolving-promotion-path.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-promotion-path.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: the loop could learn prescription quality, but there was still no first-class promotion nomination path, no separation between proof and safety at the writer seam, and no report surface that could distinguish proven-but-unpromoted prescriptions from those actually promoted.
+  - Green: added `promotion_nomination` as a first-class policy decision with its own audited context; the new promotion-path module now derives promotion nominations from prescription-level outcome evidence, records separate `proof_status` and `safety_status`, and classifies bounded target surfaces instead of treating “worked before” as blanket promotion permission.
+  - Guarded writer boundary: the first slice keeps nearly all promotions nomination-only. Container/prompt-contract targets remain advisory, while the only live writer is the existing website-v1 low-risk startup-state autofix, and that only actuates when authority is `guarded_trial`, proof is eligible, and the autofix actually has something safe to patch.
+  - Reporting boundary: report and dashboard surfaces now expose promotion nomination counts, target-surface mix, applied-vs-nominated status, and proven-but-unpromoted totals so the loop can prove that efficacy and safety are being tracked separately instead of hand-waved together.
+  - TC-01: pass. Promotion nominations now require prescription-level observed outcomes; without a proven prescription and observed positive outcomes the path records `insufficient_data` or `ineligible` instead of silently nominating.
+  - TC-02: pass. Guarded promotion cannot silently actuate high-risk changes. Non-autofix surfaces stay advisory-only, and the only automatic writer in this tranche is the narrow website-v1 brand-rules autofix under `guarded_trial`.
+  - TC-03: pass. The promotion path is auditable through policy-decision records and report summaries: target surface, proof status, safety status, actuation status, and latest outcome evidence are all recorded.
+  - TC-04: pass. “Proven effective” no longer implies “safe to promote”: proof and safety are separate statuses in the promotion nomination context, and report output shows proven-but-unpromoted counts explicitly.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`, targeted `pnpm exec eslint --no-warn-ignored ...`, `pnpm plans:lint`, `git diff --check`, and `bash scripts/validate-changes.sh` passed on the TASK-09 surface.
+  - Precursor completion propagation: TASK-09 no longer blocks TASK-10. The next runnable task is the final checkpoint.
 
 ### TASK-10: Check resulting-system coherence and rollout readiness
 - **Type:** CHECKPOINT
@@ -582,8 +606,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** plan evidence, replay/report artifacts, any guarded rollout notes
+- **Status:** Complete (2026-03-10)
+- **Affects:** plan evidence, replay/report artifacts, guarded rollout notes
 - **Depends on:** TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
 - **Blocks:** -
 - **Confidence:** 95%
@@ -608,6 +632,25 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - Update this plan with checkpoint evidence and any resulting replan.
 - **Notes / references:**
   - [fact-find.md](/Users/petercowling/base-shop/docs/plans/startup-loop-learned-prescription-system/fact-find.md)
+  - [self-evolving-report.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-report.ts)
+- **Build Evidence (2026-03-10):**
+  - Resulting-system walkthrough, grounded in code:
+    1. upstream seams now normalize into canonical `gap_case` / `prescription` identities before queue or policy learning (`self-evolving-prescription-normalization.ts`, `lp-do-ideas-build-origin-bridge.ts`, `replan-trigger.ts`, `signal-review-review-required.ts`)
+    2. routing semantics now carry `requirement_posture` and `prescription_maturity`, with unknown/hypothesized prescriptions forced through the explicit discovery contract path (`self-evolving-scoring.ts`, `self-evolving-backbone-consume.ts`, `lp-do-ideas-trial.ts`)
+    3. policy decisions and evaluation now learn prescription choice and prescription outcomes, not just route choice (`self-evolving-contracts.ts`, `self-evolving-evaluation.ts`)
+    4. milestone-triggered lateral bundles now enter as first-class `milestone_event` packets only for contract roots with real producers (`lp-do-ideas-milestone-bridge.ts`, `lp-do-ideas-trial.ts`)
+    5. richer build-review sensing feeds the self-evolving layer beyond `build-record` alone (`self-evolving-from-build-output.ts`)
+    6. proven prescriptions now have an audited guarded promotion path with separate proof and safety states (`self-evolving-promotion-path.ts`, `self-evolving-report.ts`)
+  - TC-01: pass. The checkpoint is grounded in code and artifacts, not plan intent alone. I verified the runtime contracts, milestone bridge, discovery contract enforcement, promotion nomination path, and a live report smoke run for `BRIK`.
+  - TC-02: pass. No critical contradiction remains between candidate identity and `gap_case` identity. The runtime is still candidate-centric by design, but `gap_case.runtime_binding.candidate_id`, `GapCaseReference`, and queue self-evolving linkage all enforce deterministic compilation instead of a second live identity layer.
+  - TC-03: pass. Rollout boundary is explicit and still conservative. Queue influence, exploration influence, and promotion actuation remain authority-gated, and the first promotion writer is intentionally narrower than the nomination surface.
+  - TC-04: pass. No milestone-trigger behavior depends on prose-only roots. Only `transaction_data_available`, `qualified_lead_or_enquiry_flow_present`, and `repeat_signal_present` emit in runtime; `wholesale_accounts_positive` and `weekly_cycles_post_launch_gte_4` remain explicitly non-emitting until producers exist.
+  - TC-05: pass. Promotion efficacy and promotion safety are evaluated separately. `promotion_nomination` records carry both statuses, report output surfaces `proven_but_unpromoted` separately from `applied`, and only the website-v1 low-risk autofix can auto-apply under `guarded_trial`.
+  - Remaining issues, severity-ranked:
+    - Moderate: the live `BRIK` cohort has not yet exercised the new prescription-attribution and promotion-nomination lanes. The report smoke still shows `prescription_attributed_decisions: 0` and `promotion_nomination_decisions: 0`, so current confidence comes from code/tests plus a smoke report, not mature live evidence.
+    - Low: the milestone layer is intentionally partial by producer truth. That is a bounded coverage limit, not a design contradiction.
+    - Low: guarded promotion is intentionally asymmetric. Prompt/contract and write-back surfaces are nomination-only in this tranche; the only live writer is the website-v1 low-risk autofix.
+  - Checkpoint decision: proceed without replan. The learned-prescription system is now coherent enough to take forward inside current trial boundaries. The remaining work is operational exercise and evidence accumulation, not missing architecture.
 
 ## Risks & Mitigations
 - Dual identity drift between `gap_case` and `candidate_id`.
@@ -636,16 +679,17 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - flag promotion attempts without proof-quality thresholds met
 
 ## Acceptance Criteria (overall)
-- [ ] The startup loop has one canonical `gap_case` and `prescription` vocabulary instead of fragmented suggestion seams.
-- [ ] The runtime can distinguish absolute, relative, and optional work, plus unknown vs structured vs proven prescriptions.
-- [ ] The self-evolving journal/evaluation layer can learn remedy quality, not just route quality.
-- [ ] Milestone-triggered lateral bundles are grounded in current contract roots and emitted by real runtime producers.
-- [ ] Unknown prescriptions have an explicit fact-find discovery contract.
-- [ ] Proven prescriptions have a guarded promotion path that stays within trial boundaries.
+- [x] The startup loop has one canonical `gap_case` and `prescription` vocabulary instead of fragmented suggestion seams.
+- [x] The runtime can distinguish absolute, relative, and optional work, plus unknown vs structured vs proven prescriptions.
+- [x] The self-evolving journal/evaluation layer can learn remedy quality, not just route quality.
+- [x] Milestone-triggered lateral bundles are grounded in current contract roots and emitted by real runtime producers.
+- [x] Unknown prescriptions have an explicit fact-find discovery contract.
+- [x] Proven prescriptions have a guarded promotion path that stays within trial boundaries.
 
 ## Decision Log
 - 2026-03-10: Chose a contract-first plan rather than adding milestone and prescription behavior directly into the current candidate-centric runtime.
 - 2026-03-10: Kept the plan in `plan-only` mode because the operator explicitly asked for planning and critique, not immediate build execution.
+- 2026-03-10: Closed the plan at checkpoint: the resulting system is coherent enough to take forward in trial mode without another replan; remaining limits are operational evidence gaps, not architectural contradictions.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

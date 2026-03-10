@@ -252,7 +252,7 @@ function ApartmentBookContent({ lang }: Props) {
         </div>
 
         {/* Fit Check */}
-        <FitCheck />
+        <FitCheck lang={lang} />
 
         <PolicyFeeClarityPanel lang={lang} variant="apartment" />
 

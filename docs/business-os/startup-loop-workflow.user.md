@@ -3,8 +3,8 @@ Type: Operator-Guide
 Status: Active
 Domain: Venture-Studio
 Created: 2026-02-12
-Updated: 2026-03-05
-Last-reviewed: 2026-03-05
+Updated: 2026-03-10
+Last-reviewed: 2026-03-10
 Owner: Pete
 ---
 
@@ -86,6 +86,130 @@ flowchart LR
 ```
 
 Each week the S10 review gives you one of three verdicts: Continue (loop back to Research and sharpen your data), Scale (jump straight to Prioritise with what you already know), or Kill (end the business and move on). The loop is designed to be fast — most businesses complete the full first pass in 2–4 weeks.
+
+## Self Improving Loop
+
+The startup loop also watches itself. It looks for repeat work, tests safer ways of working, and keeps the changes that really help. It does this inside the normal queue, so improvement work is judged the same way as any other work.
+
+```mermaid
+flowchart LR
+    A["1. Notice repeat work\nIdeas, build output,\nand build failure create signals"]
+    B["2. Build candidates\nSimilar signals are grouped\ninto one improvement candidate"]
+    C["3. Score and choose\nBeliefs, evidence, risk,\nand likely value are updated"]
+    D["4. Apply safety rules\nGovernance, hold windows,\nand route limits cut risky moves"]
+    E["5. Hand work into the queue\nSelected items go to\nfact-find, plan, or build"]
+    F["6. Record what happened\nThe loop stores outcomes,\nmissing outcomes, and shadow handoffs"]
+    G["7. Learn from results\nAudit calibration, regret,\nand policy quality before the next round"]
+
+    A --> B --> C --> D --> E --> F --> G --> A
+```
+
+The point is not to automate everything. The point is to make better choices each week, with evidence.
+
+### How it works
+
+#### 1. It notices repeat work
+
+The loop starts by reading signals from three places:
+
+- idea dispatches
+- build output
+- build failures
+
+Each signal is stored as an observation. An observation is a short record of something that happened: what kind of problem it was, where it came from, how much time it cost, and any evidence tied to it.
+
+#### 2. It groups similar signals into one candidate
+
+When the loop sees the same kind of problem more than once, it groups those observations together. That group becomes an improvement candidate.
+
+The candidate is the loop's working unit. It says, in effect, "this looks like the same problem coming back again, so it may be worth fixing in a more permanent way."
+
+#### 3. It keeps memory for each candidate
+
+The loop does not start from zero each time it runs. Each candidate keeps memory, including:
+
+- the problem statement
+- the route it seems to need
+- the evidence posture
+- the belief state built from past results
+- the last known outcome, if one exists
+
+This means a candidate can carry history forward instead of being treated like a brand-new idea every time it appears.
+
+#### 4. It scores the candidates and picks a safe set
+
+The policy layer scores candidates using the evidence it has. It looks at things like:
+
+- likely value
+- likely effort
+- blast radius
+- past outcomes
+- uncertainty
+
+It then builds a portfolio, which is the set of candidates worth acting on now. If there is room to learn, the loop can also give a small boost to uncertain options so it does not only repeat the same safe choices forever.
+
+#### 5. It applies control before it acts
+
+Before anything is handed off, the governance layer checks whether the choice is stable enough to keep. This is where the loop avoids thrashing.
+
+It can hold a decision in place for a while, limit how much the selected set changes from one run to the next, and write down any override or safety intervention. So the policy is not just "pick the highest score." It is "pick a useful set, then keep the system steady."
+
+#### 6. It hands work into the normal queue
+
+Once a candidate survives scoring and control, it is handed back into the same ideas pipeline as other work.
+
+That handoff can point to:
+
+- `lp-do-fact-find`
+- `lp-do-plan`
+- `lp-do-build`
+
+So the self-improving loop does not live outside the normal workflow. It feeds work into the same queue, with the same routing and the same need for real follow-through.
+
+#### 7. It records what happened after handoff
+
+After work moves through the queue, the loop writes back what happened.
+
+That can include:
+
+- a real outcome
+- a missing outcome
+- a shadow handoff
+- a queue state that shows the work is still pending or censored
+
+This gives the loop a bridge between "what we thought would help" and "what happened after we tried it."
+
+#### 8. It learns from the results
+
+The audit layer reads the stored decisions and compares them with later results. This is where the loop checks whether its own judgement is improving.
+
+It looks at:
+
+- calibration, meaning how well its confidence matched reality
+- regret, meaning whether better choices were available
+- override history, meaning where humans stepped in
+- policy version quality over time
+
+That learning feeds back into the next run, so the next set of scores and choices can use more than raw recurrence.
+
+### Safety ladder
+
+The loop does not jump straight to full control. It moves in steps.
+
+```mermaid
+flowchart LR
+    S["Shadow\nThe system watches,\nscores, and records"]
+    A["Advisory\nThe system can rank\nand recommend"]
+    G["Guarded trial\nThe system can influence a\nsmall, fenced part of the flow"]
+
+    S --> A --> G
+```
+
+In `Shadow`, the loop watches, scores, and records, but it does not change the queue.
+
+In `Advisory`, it can rank and recommend, but a human still decides what to act on.
+
+In `Guarded trial`, it can influence a small, fenced part of the flow. This is where the loop starts to affect what happens next, but only inside a narrow safe boundary.
 
 ## Tasks by theme
 

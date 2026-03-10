@@ -437,11 +437,11 @@ const roomsData: Room[] = [
       direct: { nr: "804934", flex: "804933" },
       ota: { nr: "804935", flex: "804932" },
     },
-    occupancy: 4,
+    occupancy: 5,
     pricingModel: "perRoom",
     basePrice: { amount: 265.0, currency: "EUR" },
     seasonalPrices: SEASONAL,
-    availability: { totalBeds: 4, defaultRelease: 4 },
+    availability: { totalBeds: 5, defaultRelease: 5 },
     // Photography gap: apartment image slots are provisional placeholder assignments pending dedicated photography
     images: {
       bed: "/img/apt1.jpg",

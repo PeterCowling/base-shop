@@ -6,7 +6,7 @@ const apartment = {
   "@id": "https://hostel-positano.com/apartment",
   name: "StepFree Chiesa Nuova — Private Apartment in Positano",
   description:
-    "Private 85sqm apartment in Positano with step-free arrival from the street, full kitchen, sea-view terrace, and professional hospitality support next door. Sleeps 4.",
+    "Private 85sqm apartment in Positano with step-free arrival from the street, full kitchen, sea-view terrace, and professional hospitality support next door. Sleeps 5.",
   address: {
     "@type": "PostalAddress",
     streetAddress: "Via Guglielmo Marconi 358",
@@ -16,7 +16,7 @@ const apartment = {
   },
   occupancy: {
     "@type": "QuantitativeValue",
-    value: 4,
+    value: 5,
   },
   floorSize: {
     "@type": "QuantitativeValue",

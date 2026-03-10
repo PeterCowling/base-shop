@@ -1,6 +1,6 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-10T12:37:50.461Z",
+  "generated_at": "2026-03-10T13:58:04.502Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
@@ -9,7 +9,7 @@
     {
       "session_id": "3d562763-b553-4380-ac7c-ae0a8a9d42f6",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/3d562763-b553-4380-ac7c-ae0a8a9d42f6.jsonl",
-      "updated_at": "2026-03-10T12:37:48.557Z",
+      "updated_at": "2026-03-10T12:38:12.258Z",
       "findings": [
         "key-insight-changing-xadepartment-type-would-cascade-type-errors-to-37-files-pages-like-women-bags-page` at 103 chars).",
         "skipped` is actually the right state for these — it means \"rejected, not actionable.\" The fact-find explains why the two alternatives are problematic: **Delete**: Risky for dedup.",

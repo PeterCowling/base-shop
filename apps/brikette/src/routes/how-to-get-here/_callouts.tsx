@@ -227,7 +227,7 @@ export function renderCallout(path: string, value: unknown, ctx: RenderContext):
       key={path}
       className="rounded-3xl border border-brand-outline/30 bg-brand-primary/5 p-6 text-sm shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/10"
     >
-      {label ? <p className="font-semibold uppercase tracking-widest text-brand-secondary">{label}</p> : null}
+      {label ? <p className="font-semibold uppercase tracking-widest text-brand-primary dark:text-brand-secondary">{label}</p> : null}
       <div className="mt-2">{contentNode}</div>
     </aside>
   );

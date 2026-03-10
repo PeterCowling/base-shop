@@ -1,7 +1,7 @@
 import type { ComponentProps } from "react";
 
 import { Section } from "@acme/design-system/atoms";
-import { Button, Grid } from "@acme/design-system/primitives";
+import { Button, Cluster, Grid } from "@acme/design-system/primitives";
 
 type DealPerk = {
   title: string;
@@ -36,17 +36,23 @@ export function DealsPerksSection({
 }
 
 export function DealsPrimaryCtaSection({
-  label,
-  onClick,
+  actions,
 }: {
-  label: string;
-  onClick: NonNullable<ComponentProps<typeof Button>["onClick"]>;
+  actions: Array<{
+    label: string;
+    onClick: NonNullable<ComponentProps<typeof Button>["onClick"]>;
+    tone?: ComponentProps<typeof Button>["tone"];
+  }>;
 }): JSX.Element {
   return (
     <Section padding="default" className="text-center">
-      <Button onClick={onClick} size="md">
-        {label}
-      </Button>
+      <Cluster justify="center" className="gap-3">
+        {actions.map((action) => (
+          <Button key={action.label} onClick={action.onClick} size="md" tone={action.tone}>
+            {action.label}
+          </Button>
+        ))}
+      </Cluster>
     </Section>
   );
 }

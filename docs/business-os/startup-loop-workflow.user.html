@@ -99,7 +99,7 @@
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../../business-os/startup-loop-workflow.user.html">Workflow</a><a href="../../business-os/startup-loop-files.user.html">Loop Files</a><a href="../../business-os/startup-loop-file-types.user.html">File Types</a><a href="../../business-os/startup-loop-output-registry.user.html">Output Registry</a><a href="../../business-os/ideas.user.html">Ideas</a><a href="../../business-os/process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../../business-os/startup-loop-workflow.user.html">Workflow</a><a href="../../business-os/startup-loop-files.user.html">Loop Files</a><a href="../../business-os/startup-loop-file-types.user.html">File Types</a><a href="../../business-os/startup-loop-output-registry.user.html">Output Registry</a><a href="#self-improving-loop">Self Improving</a><a href="../../business-os/process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){var href=a.getAttribute("href")||"";if(href.charAt(0)==="#"&&location.hash===href)a.classList.add("sl-on");else if(href.charAt(0)!=="#"&&href.split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
   <main>
     <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
       Show technical details
@@ -287,6 +287,94 @@
     N8 -->|Scale| N5
     N8 -->|Kill| NEND</pre>
 <p>Each week the S10 review gives you one of three verdicts: Continue (loop back to Research and sharpen your data), Scale (jump straight to Prioritise with what you already know), or Kill (end the business and move on). The loop is designed to be fast — most businesses complete the full first pass in 2–4 weeks.</p>
+<h2 id="self-improving-loop">Self Improving Loop</h2>
+<p>The startup loop also watches itself. It looks for repeat work, tests safer ways of working, and keeps the changes that really help. It does this inside the normal queue, so improvement work is judged the same way as any other work.</p>
+<pre class="mermaid">flowchart LR
+    A["1. Notice repeat work<br/>Ideas, build output,<br/>and build failure create signals"]
+    B["2. Build candidates<br/>Similar signals are grouped<br/>into one improvement candidate"]
+    C["3. Score and choose<br/>Beliefs, evidence, risk,<br/>and likely value are updated"]
+    D["4. Apply safety rules<br/>Governance, hold windows,<br/>and route limits cut risky moves"]
+    E["5. Hand work into the queue<br/>Selected items go to<br/>fact-find, plan, or build"]
+    F["6. Record what happened<br/>The loop stores outcomes,<br/>missing outcomes, and shadow handoffs"]
+    G["7. Learn from results<br/>Audit calibration, regret,<br/>and policy quality before the next round"]
+
+    A --> B --> C --> D --> E --> F --> G --> A</pre>
+<p>The point is not to automate everything. The point is to make better choices each week, with evidence.</p>
+<h3>How it works</h3>
+<h4>1. It notices repeat work</h4>
+<p>The loop starts by reading signals from three places:</p>
+<ul>
+<li>idea dispatches</li>
+<li>build output</li>
+<li>build failures</li>
+</ul>
+<p>Each signal is stored as an observation. An observation is a short record of something that happened: what kind of problem it was, where it came from, how much time it cost, and any evidence tied to it.</p>
+<h4>2. It groups similar signals into one candidate</h4>
+<p>When the loop sees the same kind of problem more than once, it groups those observations together. That group becomes an improvement candidate.</p>
+<p>The candidate is the loop's working unit. It says, in effect, "this looks like the same problem coming back again, so it may be worth fixing in a more permanent way."</p>
+<h4>3. It keeps memory for each candidate</h4>
+<p>The loop does not start from zero each time it runs. Each candidate keeps memory, including:</p>
+<ul>
+<li>the problem statement</li>
+<li>the route it seems to need</li>
+<li>the evidence posture</li>
+<li>the belief state built from past results</li>
+<li>the last known outcome, if one exists</li>
+</ul>
+<p>This means a candidate can carry history forward instead of being treated like a brand-new idea every time it appears.</p>
+<h4>4. It scores the candidates and picks a safe set</h4>
+<p>The policy layer scores candidates using the evidence it has. It looks at things like:</p>
+<ul>
+<li>likely value</li>
+<li>likely effort</li>
+<li>blast radius</li>
+<li>past outcomes</li>
+<li>uncertainty</li>
+</ul>
+<p>It then builds a portfolio, which is the set of candidates worth acting on now. If there is room to learn, the loop can also give a small boost to uncertain options so it does not only repeat the same safe choices forever.</p>
+<h4>5. It applies control before it acts</h4>
+<p>Before anything is handed off, the governance layer checks whether the choice is stable enough to keep. This is where the loop avoids thrashing.</p>
+<p>It can hold a decision in place for a while, limit how much the selected set changes from one run to the next, and write down any override or safety intervention. So the policy is not just "pick the highest score." It is "pick a useful set, then keep the system steady."</p>
+<h4>6. It hands work into the normal queue</h4>
+<p>Once a candidate survives scoring and control, it is handed back into the same ideas pipeline as other work.</p>
+<p>That handoff can point to:</p>
+<ul>
+<li><code>lp-do-fact-find</code></li>
+<li><code>lp-do-plan</code></li>
+<li><code>lp-do-build</code></li>
+</ul>
+<p>So the self-improving loop does not live outside the normal workflow. It feeds work into the same queue, with the same routing and the same need for real follow-through.</p>
+<h4>7. It records what happened after handoff</h4>
+<p>After work moves through the queue, the loop writes back what happened.</p>
+<p>That can include:</p>
+<ul>
+<li>a real outcome</li>
+<li>a missing outcome</li>
+<li>a shadow handoff</li>
+<li>a queue state that shows the work is still pending or censored</li>
+</ul>
+<p>This gives the loop a bridge between "what we thought would help" and "what happened after we tried it."</p>
+<h4>8. It learns from the results</h4>
+<p>The audit layer reads the stored decisions and compares them with later results. This is where the loop checks whether its own judgement is improving.</p>
+<p>It looks at:</p>
+<ul>
+<li>calibration, meaning how well its confidence matched reality</li>
+<li>regret, meaning whether better choices were available</li>
+<li>override history, meaning where humans stepped in</li>
+<li>policy version quality over time</li>
+</ul>
+<p>That learning feeds back into the next run, so the next set of scores and choices can use more than raw recurrence.</p>
+<h3>Safety ladder</h3>
+<p>The loop does not jump straight to full control. It moves in steps.</p>
+<pre class="mermaid">flowchart LR
+    S["Shadow<br/>The system watches,<br/>scores, and records"]
+    A["Advisory<br/>The system can rank<br/>and recommend"]
+    G["Guarded trial<br/>The system can influence a<br/>small, fenced part of the flow"]
+
+    S --> A --> G</pre>
+<p>In <code>Shadow</code>, the loop watches, scores, and records, but it does not change the queue.</p>
+<p>In <code>Advisory</code>, it can rank and recommend, but a human still decides what to act on.</p>
+<p>In <code>Guarded trial</code>, it can influence a small, fenced part of the flow. This is where the loop starts to affect what happens next, but only inside a narrow safe boundary.</p>
 <h2>Tasks by theme</h2>
 <p>The same open tasks as above, grouped by type for when you want to tackle one theme across all three businesses at once.</p>
 <h3>Measurement setup</h3>
@@ -1827,7 +1915,7 @@ Canonical chat wrapper skill: <code>.claude/skills/startup-loop/SKILL.md</code>.
 </section>
     <div class="meta">
       <div>Source: <code>docs/business-os/startup-loop-workflow.user.md</code></div>
-      <div>Generated: 2026-02-25T15:52:53.614Z</div>
+      <div>Generated: 2026-03-10T15:04:06.000Z</div>
     </div>
   </main>
   <script type="module">

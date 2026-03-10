@@ -20,7 +20,7 @@ import type { BlockAccumulator } from "./BlockAccumulator";
 const VARIANT_STYLES = {
   tip: {
     container: "rounded-3xl border border-brand-outline/30 bg-brand-primary/5 p-6 text-sm shadow-sm dark:border-brand-outline/20 dark:bg-brand-surface/10",
-    title: "font-semibold uppercase tracking-widest text-brand-secondary",
+    title: "font-semibold uppercase tracking-widest text-brand-primary dark:text-brand-secondary",
     body: "mt-2 leading-relaxed text-brand-text dark:text-brand-text",
   },
   cta: {

@@ -5,6 +5,15 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      scope:
+        description: "Optional promotion scope to watch (for example: brikette)"
+        required: false
+        type: string
+      head_sha:
+        description: "Optional commit SHA to watch instead of the workflow ref SHA"
+        required: false
+        type: string
 
 permissions:
   contents: read
@@ -34,6 +43,17 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             git diff --name-only "origin/${{ github.base_ref }}...HEAD" > /tmp/changed-files.txt 2>/dev/null || echo "" > /tmp/changed-files.txt
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.scope }}" ]; then
+            case "${{ github.event.inputs.scope }}" in
+              brikette)
+                printf '%s\n' \
+                  "apps/brikette/.promotion-scope" \
+                  ".github/workflows/brikette.yml" > /tmp/changed-files.txt
+                ;;
+              *)
+                echo "**/*" > /tmp/changed-files.txt
+                ;;
+            esac
           elif [ "${{ github.event_name }}" = "push" ]; then
             git diff --name-only "${{ github.event.before }}..${{ github.sha }}" > /tmp/changed-files.txt 2>/dev/null || echo "" > /tmp/changed-files.txt
           else
@@ -82,6 +102,7 @@ jobs:
         if: >-
           ${{
             steps.filter.outputs.github_config == 'true' &&
+            !(github.event_name == 'workflow_dispatch' && github.event.inputs.scope != '') &&
             (
               github.event_name != 'pull_request' ||
               github.base_ref != 'main' ||
@@ -108,10 +129,19 @@ jobs:
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
+            const dispatchScope =
+              context.eventName === "workflow_dispatch"
+                ? (context.payload.inputs?.scope || "").trim()
+                : "";
+            const dispatchHeadSha =
+              context.eventName === "workflow_dispatch"
+                ? (context.payload.inputs?.head_sha || "").trim()
+                : "";
             const sha =
-              context.eventName === "pull_request"
+              dispatchHeadSha ||
+              (context.eventName === "pull_request"
                 ? context.payload.pull_request.head.sha
-                : context.sha;
+                : context.sha);
 
             const need = {
               core: process.env.NEED_CORE === "true",
@@ -134,6 +164,8 @@ jobs:
               .filter((label) => label.startsWith("promote-app:"))
               .map((label) => label.slice("promote-app:".length))
               .filter(Boolean);
+            const scopedApps = dispatchScope ? [dispatchScope] : scopedPromotionApps;
+            const isScopedDispatch = dispatchScope.length > 0;
             const isScopedMainPromotion =
               context.eventName === "pull_request" &&
               context.payload.pull_request.base?.ref === "main" &&
@@ -150,9 +182,9 @@ jobs:
               !need.storybook &&
               !need.consent_analytics;
 
-            if (isScopedMainPromotion) {
+            if (isScopedMainPromotion || isScopedDispatch) {
               core.notice(
-                `Scoped promotion detected for app(s): ${scopedPromotionApps.join(", ")}. Merge Gate will require only scoped workflows.`
+                `Scoped promotion detected for app(s): ${scopedApps.join(", ")}. Merge Gate will require only scoped workflows.`
               );
               const scopeWorkflowMap = {
                 brikette: [{ id: "brikette.yml", name: "Deploy Brikette" }],
@@ -174,7 +206,7 @@ jobs:
                 xa: [{ id: "xa.yml", name: "Deploy XA (Stealth Staging)" }],
               };
               const dedup = new Map();
-              for (const scopedApp of scopedPromotionApps) {
+              for (const scopedApp of scopedApps) {
                 const workflows = scopeWorkflowMap[scopedApp];
                 if (!workflows) {
                   core.warning(`Unknown promotion scope label: promote-app:${scopedApp}`);

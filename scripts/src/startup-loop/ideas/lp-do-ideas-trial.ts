@@ -242,6 +242,13 @@ export type RecommendedRoute =
   | "lp-do-build"
   | "lp-do-briefing";
 
+export type MilestoneRootId =
+  | "qualified_lead_or_enquiry_flow_present"
+  | "wholesale_accounts_positive"
+  | "transaction_data_available"
+  | "repeat_signal_present"
+  | "weekly_cycles_post_launch_gte_4";
+
 export const ROUTABLE_DISPATCH_STATUS_ROUTE_MAP = {
   fact_find_ready: "lp-do-fact-find",
   plan_ready: "lp-do-plan",
@@ -334,7 +341,7 @@ export interface TrialDispatchPacket {
   dispatch_id: string;
   mode: PacketMode;
   business: string;
-  trigger: "artifact_delta";
+  trigger: "artifact_delta" | "operator_idea" | "milestone_event";
   artifact_id: string;
   before_sha: string | null;
   after_sha: string;
@@ -449,6 +456,21 @@ export interface DispatchHistoricalCarryoverProvenance {
   backfilled_at: string;
 }
 
+export interface DispatchMilestoneProvenance {
+  schema_version: "dispatch-milestone.v1";
+  milestone_event_id: string;
+  root_id: MilestoneRootId;
+  producer_kind: "metric" | "artifact";
+  source_ref: string;
+  observed_at: string;
+  bundle_key: string;
+  bundle_title: string;
+  bundle_size: number;
+  bundle_index: number;
+  gap_case?: GapCase;
+  prescription?: Prescription;
+}
+
 /**
  * dispatch.v2 packet type.
  *
@@ -468,7 +490,7 @@ export interface TrialDispatchPacketV2 {
   dispatch_id: string;
   mode: PacketMode;
   business: string;
-  trigger: "artifact_delta" | "operator_idea";
+  trigger: "artifact_delta" | "operator_idea" | "milestone_event";
   artifact_id: string | null;
   before_sha: string | null;
   after_sha: string;
@@ -492,6 +514,7 @@ export interface TrialDispatchPacketV2 {
   queue_state: QueueState;
   self_evolving?: DispatchSelfEvolvingLink;
   build_origin?: DispatchBuildOriginProvenance;
+  milestone_origin?: DispatchMilestoneProvenance;
   historical_carryover?: DispatchHistoricalCarryoverProvenance;
   /**
    * Why this work is happening now.
@@ -505,6 +528,100 @@ export interface TrialDispatchPacketV2 {
    * `source: "auto"` values pass schema but are excluded from quality metrics.
    */
   intended_outcome: IntendedOutcomeV2;
+}
+
+function isMilestoneRootId(value: unknown): value is MilestoneRootId {
+  return (
+    value === "qualified_lead_or_enquiry_flow_present" ||
+    value === "wholesale_accounts_positive" ||
+    value === "transaction_data_available" ||
+    value === "repeat_signal_present" ||
+    value === "weekly_cycles_post_launch_gte_4"
+  );
+}
+
+function validateMilestoneProvenance(
+  milestone: DispatchMilestoneProvenance,
+  packet: Partial<TrialDispatchPacketV2>,
+): string[] {
+  const errors: string[] = [];
+  if (milestone.schema_version !== "dispatch-milestone.v1") {
+    errors.push(`[dispatch.v2] milestone_origin.schema_version is invalid.`);
+  }
+  if (typeof milestone.milestone_event_id !== "string" || milestone.milestone_event_id.trim() === "") {
+    errors.push(`[dispatch.v2] milestone_origin.milestone_event_id is required.`);
+  }
+  if (!isMilestoneRootId(milestone.root_id)) {
+    errors.push(`[dispatch.v2] milestone_origin.root_id is invalid.`);
+  }
+  if (milestone.producer_kind !== "metric" && milestone.producer_kind !== "artifact") {
+    errors.push(`[dispatch.v2] milestone_origin.producer_kind is invalid.`);
+  }
+  if (typeof milestone.source_ref !== "string" || milestone.source_ref.trim() === "") {
+    errors.push(`[dispatch.v2] milestone_origin.source_ref is required.`);
+  }
+  if (typeof milestone.observed_at !== "string" || Number.isNaN(Date.parse(milestone.observed_at))) {
+    errors.push(`[dispatch.v2] milestone_origin.observed_at must be an ISO date-time.`);
+  }
+  if (typeof milestone.bundle_key !== "string" || milestone.bundle_key.trim() === "") {
+    errors.push(`[dispatch.v2] milestone_origin.bundle_key is required.`);
+  }
+  if (typeof milestone.bundle_title !== "string" || milestone.bundle_title.trim() === "") {
+    errors.push(`[dispatch.v2] milestone_origin.bundle_title is required.`);
+  }
+  if (!Number.isInteger(milestone.bundle_size) || milestone.bundle_size < 1) {
+    errors.push(`[dispatch.v2] milestone_origin.bundle_size must be a positive integer.`);
+  }
+  if (
+    !Number.isInteger(milestone.bundle_index) ||
+    milestone.bundle_index < 0 ||
+    milestone.bundle_index >= milestone.bundle_size
+  ) {
+    errors.push(
+      `[dispatch.v2] milestone_origin.bundle_index must be within [0, bundle_size).`,
+    );
+  }
+  if (milestone.gap_case) {
+    errors.push(
+      ...validateGapCase(milestone.gap_case).map(
+        (error) => `[dispatch.v2] milestone_origin.gap_case.${error}`,
+      ),
+    );
+    if (milestone.gap_case.source_kind !== "milestone") {
+      errors.push(
+        `[dispatch.v2] milestone_origin.gap_case.source_kind must be "milestone".`,
+      );
+    }
+  }
+  if (milestone.prescription) {
+    errors.push(
+      ...validatePrescription(milestone.prescription).map(
+        (error) => `[dispatch.v2] milestone_origin.prescription.${error}`,
+      ),
+    );
+    if (milestone.prescription.source !== "milestone_bundle") {
+      errors.push(
+        `[dispatch.v2] milestone_origin.prescription.source must be "milestone_bundle".`,
+      );
+    }
+    if (
+      typeof packet.recommended_route === "string" &&
+      milestone.prescription.required_route !== packet.recommended_route
+    ) {
+      errors.push(
+        `[dispatch.v2] milestone_origin.prescription.required_route must match packet.recommended_route.`,
+      );
+    }
+    if (
+      milestone.gap_case &&
+      !milestone.prescription.gap_types_supported.includes(milestone.gap_case.gap_type)
+    ) {
+      errors.push(
+        `[dispatch.v2] milestone_origin.prescription.gap_types_supported must include milestone_origin.gap_case.gap_type.`,
+      );
+    }
+  }
+  return errors;
 }
 
 // ---------------------------------------------------------------------------
@@ -550,6 +667,16 @@ export function validateDispatchV2(
     errors.push(
       `[dispatch.v2] schema_version must be "dispatch.v2" but got "${String(packet.schema_version ?? "(missing)")}". ` +
         `Use validateDispatchV2 only for dispatch.v2 packets.`,
+    );
+  }
+
+  if (
+    packet.trigger !== "artifact_delta" &&
+    packet.trigger !== "operator_idea" &&
+    packet.trigger !== "milestone_event"
+  ) {
+    errors.push(
+      `[dispatch.v2] trigger must be "artifact_delta", "operator_idea", or "milestone_event".`,
     );
   }
 
@@ -693,6 +820,29 @@ export function validateDispatchV2(
         `[dispatch.v2] self_evolving.discovery_contract is required when self_evolving.prescription_maturity is unknown or hypothesized.`,
       );
     }
+  }
+
+  const milestoneOrigin = packet.milestone_origin;
+  if (milestoneOrigin && typeof milestoneOrigin === "object") {
+    errors.push(
+      ...validateMilestoneProvenance(
+        milestoneOrigin as DispatchMilestoneProvenance,
+        packet as Partial<TrialDispatchPacketV2>,
+      ),
+    );
+  }
+  if (packet.trigger === "milestone_event" && !milestoneOrigin) {
+    errors.push(
+      `[dispatch.v2] milestone_origin is required when trigger is "milestone_event".`,
+    );
+  }
+  if (packet.trigger === "milestone_event" && packet.artifact_id !== null) {
+    errors.push(`[dispatch.v2] artifact_id must be null when trigger is "milestone_event".`);
+  }
+  if (packet.trigger !== "milestone_event" && milestoneOrigin) {
+    errors.push(
+      `[dispatch.v2] milestone_origin is only permitted when trigger is "milestone_event".`,
+    );
   }
 
   const buildOrigin = packet.build_origin;

@@ -1,7 +1,10 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
-import type { DispatchBuildOriginProvenance } from "../ideas/lp-do-ideas-trial.js";
+import type {
+  DispatchBuildOriginProvenance,
+  DispatchMilestoneProvenance,
+} from "../ideas/lp-do-ideas-trial.js";
 
 import {
   consumeBackboneQueueToIdeasWorkflow,
@@ -32,7 +35,7 @@ export interface IdeasDispatchPacket {
   dispatch_id: string;
   mode: "trial" | "live";
   business: string;
-  trigger: "artifact_delta" | "operator_idea";
+  trigger: "artifact_delta" | "operator_idea" | "milestone_event";
   artifact_id?: string | null;
   before_sha: string | null;
   after_sha: string;
@@ -67,6 +70,7 @@ export interface IdeasDispatchPacket {
   created_at: string;
   queue_state: "enqueued" | "processed" | "skipped" | "error";
   why?: string;
+  milestone_origin?: DispatchMilestoneProvenance;
   build_origin?: DispatchBuildOriginProvenance;
   intended_outcome?:
     | {
@@ -120,6 +124,21 @@ function normalizeBuildOriginProvenance(
   return value;
 }
 
+function normalizeMilestoneProvenance(
+  value: DispatchMilestoneProvenance | undefined,
+): DispatchMilestoneProvenance | null {
+  if (!value || value.schema_version !== "dispatch-milestone.v1") {
+    return null;
+  }
+  const milestoneEventId = value.milestone_event_id?.trim() ?? "";
+  const bundleKey = value.bundle_key?.trim() ?? "";
+  const sourceRef = value.source_ref?.trim() ?? "";
+  if (!milestoneEventId || !bundleKey || !sourceRef) {
+    return null;
+  }
+  return value;
+}
+
 function resolveIntendedOutcomeStatement(packet: IdeasDispatchPacket): string {
   const intendedOutcome =
     typeof packet.intended_outcome === "string"
@@ -131,6 +150,7 @@ function resolveIntendedOutcomeStatement(packet: IdeasDispatchPacket): string {
       packet.next_scope_now,
       packet.current_truth,
       packet.why,
+      packet.milestone_origin?.bundle_title,
       packet.area_anchor,
       packet.cluster_key,
       packet.dispatch_id,
@@ -152,6 +172,7 @@ export function dispatchToMetaObservation(
     firstNonEmptyText(packet.area_anchor, packet.cluster_key, packet.dispatch_id) ?? "unknown";
   const intendedOutcomeStatement = resolveIntendedOutcomeStatement(packet);
   const buildOrigin = normalizeBuildOriginProvenance(packet.build_origin);
+  const milestoneOrigin = normalizeMilestoneProvenance(packet.milestone_origin);
   const buildOriginEvidenceRefs = buildOrigin
     ? [
         `build-origin-signal:${buildOrigin.build_signal_id}`,
@@ -159,17 +180,29 @@ export function dispatchToMetaObservation(
         buildOrigin.pattern_reflection_path ?? "",
       ]
     : [];
+  const milestoneEvidenceRefs = milestoneOrigin
+    ? [
+        `milestone-event:${milestoneOrigin.milestone_event_id}`,
+        milestoneOrigin.source_ref,
+      ]
+    : [];
   const signalHints = buildObservationSignalHints({
     recurrenceKeyParts: buildOrigin
       ? [buildOrigin.recurrence_key]
-      : [areaAnchor, intendedOutcomeStatement, packet.why ?? ""],
-    problemStatement: `Reduce recurring ${areaAnchor} work and route it into a reusable lp-do-build path for ${packet.business}.`,
+      : milestoneOrigin
+        ? ["milestone", milestoneOrigin.root_id, milestoneOrigin.bundle_key]
+        : [areaAnchor, intendedOutcomeStatement, packet.why ?? ""],
+    problemStatement: milestoneOrigin
+      ? `Respond to milestone ${milestoneOrigin.root_id} with bounded follow-through for ${packet.business}.`
+      : `Reduce recurring ${areaAnchor} work and route it into a reusable lp-do-build path for ${packet.business}.`,
     texts: [
       areaAnchor,
       packet.current_truth,
       packet.next_scope_now,
       packet.why ?? "",
       intendedOutcomeStatement,
+      milestoneOrigin?.bundle_title ?? "",
+      milestoneOrigin?.root_id ?? "",
       buildOrigin?.canonical_title ?? "",
       buildOrigin?.review_cycle_key ?? "",
     ],
@@ -192,10 +225,16 @@ export function dispatchToMetaObservation(
     ? packet.root_event_id
     : packet.dispatch_id;
 
-  const evidenceRefs = uniqueRefs([...packet.evidence_refs, ...buildOriginEvidenceRefs]);
+  const evidenceRefs = uniqueRefs([
+    ...packet.evidence_refs,
+    ...buildOriginEvidenceRefs,
+    ...milestoneEvidenceRefs,
+  ]);
   const contextPath = buildOrigin
     ? `lp-do-ideas/build-origin/${buildOrigin.review_cycle_key}/${buildOrigin.build_signal_id}`
-    : `lp-do-ideas/${areaAnchor}`;
+    : milestoneOrigin
+      ? `lp-do-ideas/milestone/${milestoneOrigin.root_id}/${milestoneOrigin.milestone_event_id}`
+      : `lp-do-ideas/${areaAnchor}`;
 
   return {
     schema_version: "meta-observation.v2",

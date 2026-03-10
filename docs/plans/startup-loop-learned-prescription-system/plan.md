@@ -37,7 +37,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - [x] TASK-03: Add requirement posture and prescription maturity to queue and policy routing — Complete (2026-03-10)
 - [x] TASK-04: Extend policy journaling and evaluation for prescription-choice learning — Complete (2026-03-10)
 - [x] TASK-05: Map milestone roots to runtime producers and unify activation thresholds — Complete (2026-03-10)
-- [ ] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation
+- [x] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation — Complete (2026-03-10)
 - [x] TASK-07: Widen live sensing for richer prescription evidence — Complete (2026-03-10)
 - [x] TASK-08: Define and enforce the discovery-output contract for unknown prescriptions — Complete (2026-03-10)
 - [ ] TASK-09: Add a guarded promotion path for proven prescriptions
@@ -119,7 +119,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 | TASK-03 | IMPLEMENT | Add requirement posture and prescription maturity to queue and policy routing | 81% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-04 | IMPLEMENT | Extend policy journaling and evaluation for prescription-choice learning | 81% | M | Complete (2026-03-10) | TASK-01, TASK-03 | TASK-08, TASK-09 |
 | TASK-05 | INVESTIGATE | Map milestone roots to runtime producers and unify activation thresholds | 78% | M | Complete (2026-03-10) | - | TASK-06, TASK-09 |
-| TASK-06 | IMPLEMENT | Add milestone-event triggers, producers, and lateral bundle generation | 80% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-05 | TASK-09, TASK-10 |
+| TASK-06 | IMPLEMENT | Add milestone-event triggers, producers, and lateral bundle generation | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02, TASK-03, TASK-05 | TASK-09, TASK-10 |
 | TASK-07 | IMPLEMENT | Widen live sensing for richer prescription evidence | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-08, TASK-10 |
 | TASK-08 | IMPLEMENT | Define and enforce the discovery-output contract for unknown prescriptions | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-07 | TASK-09, TASK-10 |
 | TASK-09 | IMPLEMENT | Add a guarded promotion path for proven prescriptions | 80% | M | Pending | TASK-03, TASK-04, TASK-06, TASK-08 | TASK-10 |
@@ -395,8 +395,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/ideas/*`, `scripts/src/startup-loop/self-evolving/*`, related contract docs identified by TASK-05
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-classifier.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-milestone-bridge.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`, `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`, `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md`, `scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-milestone-bridge.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts`
 - **Depends on:** TASK-01, TASK-02, TASK-03, TASK-05
 - **Blocks:** TASK-09, TASK-10
 - **Confidence:** 80%
@@ -429,6 +429,18 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - Update startup-loop docs that currently describe milestone activation as doc-only.
 - **Notes / references:**
   - [lp-do-ideas-trial.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts)
+  - [lp-do-ideas-milestone-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-milestone-bridge.ts)
+  - [lp-do-ideas-trial-contract.md](/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: the runtime still had no native milestone trigger class, no bounded producer bridge for contract-backed roots, and no way to emit lateral follow-up bundles without abusing `artifact_delta` or `operator_idea`.
+  - Green: `dispatch.v2` now supports `trigger: "milestone_event"` with a required `milestone_origin` provenance block; the new milestone bridge emits bounded shadow/advisory packets for `transaction_data_available`, `qualified_lead_or_enquiry_flow_present`, and `repeat_signal_present`; and `self-evolving-from-ideas` now turns those packets into milestone-scoped observations with canonical recurrence and evidence references.
+  - Scope control: the first slice stays inside the TASK-05 producer truth. `wholesale_accounts_positive` and `weekly_cycles_post_launch_gte_4` remain deliberately non-emitting because they still lack bounded structured producers in code.
+  - Bundle discipline: milestone roots now expand into a small fixed bundle with explicit `requirement_posture`, `prescription_maturity`, and route choices instead of an unbounded task spray. `transaction_data_available` emits one fact-find bundle, `qualified_lead_or_enquiry_flow_present` emits one plan bundle, and `repeat_signal_present` emits one plan plus one optional fact-find bundle.
+  - TC-01: pass. `milestone_event` packets are admitted through `dispatch.v2` without pretending to be `artifact_delta` or `operator_idea`, and validation rejects missing or mismatched milestone provenance.
+  - TC-02: pass. Bundle generation is bounded, route-aligned, and posture-aware; “not-yet-active” artifact contracts emit nothing, and route mismatches fail closed.
+  - TC-03: pass. Higher-level phrases like “first sale” remain downstream aliases only; runtime source-of-truth roots stay pinned to the concrete contract-backed IDs from TASK-05.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`, targeted `pnpm exec eslint --no-warn-ignored ...`, `pnpm plans:lint`, `git diff --check`, and `bash scripts/validate-changes.sh` passed on the TASK-06 surface.
+  - Precursor completion propagation: TASK-06 no longer blocks TASK-09 or TASK-10. The next runnable task is TASK-09.
 
 ### TASK-07: Widen live sensing for richer prescription evidence
 - **Type:** IMPLEMENT

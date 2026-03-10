@@ -27,8 +27,8 @@
     },
     "trigger": {
       "type": "string",
-      "enum": ["artifact_delta", "operator_idea"],
-      "description": "Trigger type. 'artifact_delta' — a standing artifact was updated; this dispatch processes the diff. 'operator_idea' — new information provided directly by the operator."
+      "enum": ["artifact_delta", "operator_idea", "milestone_event"],
+      "description": "Trigger type. 'artifact_delta' — a standing artifact was updated; this dispatch processes the diff. 'operator_idea' — new information provided directly by the operator. 'milestone_event' — a contract-backed business milestone was observed and expanded into a bounded follow-through bundle."
     },
     "artifact_id": {
       "type": ["string", "null"],
@@ -397,6 +397,173 @@
         "results_review_sidecar_path",
         "pattern_reflection_path",
         "pattern_reflection_sidecar_path"
+      ],
+      "additionalProperties": false
+    },
+    "milestone_origin": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "dispatch-milestone.v1"
+        },
+        "milestone_event_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "root_id": {
+          "type": "string",
+          "enum": [
+            "qualified_lead_or_enquiry_flow_present",
+            "wholesale_accounts_positive",
+            "transaction_data_available",
+            "repeat_signal_present",
+            "weekly_cycles_post_launch_gte_4"
+          ]
+        },
+        "producer_kind": {
+          "type": "string",
+          "enum": ["metric", "artifact"]
+        },
+        "source_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "bundle_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bundle_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bundle_size": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "bundle_index": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "gap_case": {
+          "type": "object",
+          "properties": {
+            "schema_version": { "type": "string", "const": "gap-case.v1" },
+            "gap_case_id": { "type": "string", "minLength": 1 },
+            "source_kind": {
+              "type": "string",
+              "enum": ["bottleneck", "build_origin", "signal_review", "milestone", "self_evolving"]
+            },
+            "business_id": { "type": "string", "minLength": 1 },
+            "stage_id": { "type": ["string", "null"] },
+            "capability_id": { "type": ["string", "null"] },
+            "gap_type": { "type": "string", "minLength": 1 },
+            "reason_code": { "type": "string", "minLength": 1 },
+            "severity": { "type": "number", "minimum": 0, "maximum": 1 },
+            "evidence_refs": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "recurrence_key": { "type": "string", "minLength": 1 },
+            "requirement_posture": {
+              "type": "string",
+              "enum": ["absolute_required", "relative_required", "optional_improvement"]
+            },
+            "blocking_scope": {
+              "type": "string",
+              "enum": ["blocks_route", "blocks_stage", "degrades_quality", "improves_if_time_allows"]
+            },
+            "structural_context": { "type": "object" },
+            "runtime_binding": {
+              "type": "object",
+              "properties": {
+                "binding_mode": { "type": "string", "const": "compiled_to_candidate" },
+                "candidate_id": { "type": "string", "minLength": 1 }
+              },
+              "required": ["binding_mode", "candidate_id"],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "schema_version",
+            "gap_case_id",
+            "source_kind",
+            "business_id",
+            "stage_id",
+            "capability_id",
+            "gap_type",
+            "reason_code",
+            "severity",
+            "evidence_refs",
+            "recurrence_key",
+            "structural_context",
+            "runtime_binding"
+          ],
+          "additionalProperties": false
+        },
+        "prescription": {
+          "type": "object",
+          "properties": {
+            "schema_version": { "type": "string", "const": "prescription.v1" },
+            "prescription_id": { "type": "string", "minLength": 1 },
+            "prescription_family": { "type": "string", "minLength": 1 },
+            "source": {
+              "type": "string",
+              "enum": ["replan_trigger", "signal_review", "build_origin", "milestone_bundle", "self_evolving"]
+            },
+            "gap_types_supported": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "required_route": {
+              "type": "string",
+              "enum": ["lp-do-fact-find", "lp-do-plan", "lp-do-build", "lp-do-briefing"]
+            },
+            "required_inputs": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "expected_artifacts": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "expected_signal_change": { "type": "string", "minLength": 1 },
+            "risk_class": { "type": "string", "enum": ["low", "medium", "high"] },
+            "maturity": {
+              "type": "string",
+              "enum": ["unknown", "hypothesized", "structured", "proven", "retired"]
+            }
+          },
+          "required": [
+            "schema_version",
+            "prescription_id",
+            "prescription_family",
+            "source",
+            "gap_types_supported",
+            "required_route",
+            "required_inputs",
+            "expected_artifacts",
+            "expected_signal_change",
+            "risk_class"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "milestone_event_id",
+        "root_id",
+        "producer_kind",
+        "source_ref",
+        "observed_at",
+        "bundle_key",
+        "bundle_title",
+        "bundle_size",
+        "bundle_index"
       ],
       "additionalProperties": false
     },

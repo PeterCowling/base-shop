@@ -209,7 +209,7 @@ export interface IdeaClassificationInput {
 
   // Dispatch context
   /** Trigger type from the originating dispatch packet. */
-  trigger?: "artifact_delta" | "operator_idea";
+  trigger?: "artifact_delta" | "operator_idea" | "milestone_event";
   /** Artifact ID from the dispatch packet; null for operator_idea trigger. */
   artifact_id?: string | null;
   /** Evidence references from the dispatch packet. */
@@ -379,7 +379,7 @@ export interface IdeaClassification {
   auto_demotion_reason?: string;
 
   // Dispatch context (carried through)
-  trigger?: "artifact_delta" | "operator_idea";
+  trigger?: "artifact_delta" | "operator_idea" | "milestone_event";
   artifact_id?: string | null;
   evidence_refs?: string[];
 }

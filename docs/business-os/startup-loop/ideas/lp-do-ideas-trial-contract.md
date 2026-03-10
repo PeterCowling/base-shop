@@ -2,7 +2,7 @@
 Type: Contract
 Domain: Repo
 Schema: lp-do-ideas-trial-contract
-Version: 1.2.1
+Version: 1.2.2
 Mode: trial
 Status: Active
 Created: 2026-02-24
@@ -101,6 +101,13 @@ All dispatches emitted in trial mode must:
 | `lp-do-build` | `area_anchor` (non-empty), `location_anchors` (≥1 item), `provisional_deliverable_family` |
 | `lp-do-briefing` | `area_anchor` (non-empty) |
 
+Milestone-triggered packets use the same route-specific intake requirements above, with two additional trigger rules:
+
+| Trigger | Additional requirement |
+|---|---|
+| `milestone_event` | `artifact_id` must be `null` |
+| `milestone_event` | `milestone_origin` must be present and schema-valid |
+
 4. Carry non-empty `evidence_refs` (at least one artifact path or anchor)
 5. Include a valid `recommended_route` value: `lp-do-fact-find`, `lp-do-plan`, `lp-do-build`, or `lp-do-briefing`
 6. Include cluster identity fields on every emitted packet:
@@ -115,6 +122,7 @@ Optional provenance blocks are permitted on `operator_idea` packets when the que
 | Field | Purpose |
 |---|---|
 | `build_origin` | Canonical live build-review provenance from the build-origin bridge, including optional canonical `gap_case` / `prescription` objects for normalized prescription learning |
+| `milestone_origin` | Canonical milestone-event provenance from the milestone bridge, including root identity, producer kind, bundle metadata, and optional canonical `gap_case` / `prescription` objects |
 | `historical_carryover` | One-time archive carry-over provenance linking the packet back to the audited historical manifest |
 
 Dispatches failing schema validation must enter `status: error` and must not be

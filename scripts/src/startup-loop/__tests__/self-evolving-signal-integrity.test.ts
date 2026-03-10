@@ -261,6 +261,46 @@ None identified.
     expect(validateMetaObservation(second)).toEqual([]);
   });
 
+  it("routes milestone_event dispatches into milestone-scoped observations", () => {
+    const observation = dispatchToMetaObservation(
+      buildDispatchPacket("d-milestone", {
+        trigger: "milestone_event",
+        artifact_id: null,
+        area_anchor: "lifecycle-automation",
+        current_truth: "Transaction data is now available with 3 recorded orders.",
+        next_scope_now:
+          "Run lp-do-fact-find to assess lifecycle automation readiness from first transaction data.",
+        milestone_origin: {
+          schema_version: "dispatch-milestone.v1",
+          milestone_event_id: "milestone-1",
+          root_id: "transaction_data_available",
+          producer_kind: "metric",
+          source_ref: "data/shops/BRIK/growth-ledger.json",
+          observed_at: "2026-03-10T08:00:00.000Z",
+          bundle_key: "gtm4-lifecycle-readiness",
+          bundle_title: "Assess lifecycle automation readiness from first transaction data",
+          bundle_size: 1,
+          bundle_index: 0,
+        },
+      }),
+      {
+        business: "BRIK",
+        run_id: "run-1",
+        session_id: "session-1",
+        index: 0,
+        now: new Date("2026-03-10T10:00:00.000Z"),
+      },
+    );
+
+    expect(observation.context_path).toBe(
+      "lp-do-ideas/milestone/transaction_data_available/milestone-1",
+    );
+    expect(observation.signal_hints?.recurrence_key).toContain("transaction_data_available");
+    expect(observation.evidence_refs).toContain("milestone-event:milestone-1");
+    expect(observation.evidence_refs).toContain("data/shops/BRIK/growth-ledger.json");
+    expect(validateMetaObservation(observation)).toEqual([]);
+  });
+
   it("derives mature-boundary inputs with explicit provenance", () => {
     const snapshot = deriveBoundarySignalSnapshotFromStartupState(buildStartupState());
 

@@ -28,7 +28,7 @@ This plan is deliberately separate because archive carry-over is manual and audi
 
 ## Active tasks
 
-- [ ] TASK-01: Define the historical carry-over manifest and provenance contract
+- [x] TASK-01: Define the historical carry-over manifest and provenance contract — Complete (2026-03-10)
 - [ ] TASK-02: Build the audited historical carry-over manifest for the 12 thematic candidates
 - [ ] TASK-03: Admit the worthwhile unresolved historical candidates into the canonical queue
 - [ ] TASK-04: Record discard rationale for non-carried candidates and verify queue-only canonicality remains intact
@@ -55,7 +55,7 @@ This plan is deliberately separate because archive carry-over is manual and audi
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | INVESTIGATE | Define the historical carry-over manifest and provenance contract | 80% | S | Pending | - | TASK-02, TASK-03, TASK-04 |
+| TASK-01 | INVESTIGATE | Define the historical carry-over manifest and provenance contract | 80% | S | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04 |
 | TASK-02 | IMPLEMENT | Build the audited historical carry-over manifest for the 12 thematic candidates | 80% | M | Pending | TASK-01 | TASK-03, TASK-04 |
 | TASK-03 | IMPLEMENT | Admit the worthwhile unresolved historical candidates into the canonical queue | 75% | M | Pending | TASK-02 | TASK-04 |
 | TASK-04 | CHECKPOINT | Record discard rationale and verify queue-only canonicality remains intact | 95% | S | Pending | TASK-03 | - |
@@ -74,3 +74,12 @@ This plan is deliberately separate because archive carry-over is manual and audi
 - A deterministic manifest helper that preloads all 12 normalized candidates with source paths.
 - A draft queue-packet shape for historical carry-over provenance.
 - A dry-run showing exactly how many queue admissions TASK-03 would write.
+
+## Build Evidence
+
+### TASK-01 (2026-03-10)
+
+- Defined the historical carry-over manifest contract in [historical-carryover-manifest-contract.md](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest-contract.md).
+- Locked the separation between live build-origin provenance and manual archive carry-over provenance: no fabricated `build_signal_id`, no reuse of the active build-origin bridge, and no archive reads reintroduced into the live backlog path.
+- Added explicit post-admission traceability requirements so carried items must record `dispatch_id`, queue outcome, and telemetry reason inside the manifest after TASK-03 instead of leaving the audit trail split across queue state and prose.
+- Precursor completion propagation: TASK-02 is now unblocked and can build the audited 12-item manifest against the fixed contract.

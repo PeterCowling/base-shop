@@ -266,7 +266,7 @@
     "clickToEnlarge": "Kliknij obraz, aby powiększyć",
     "prevAria": "Poprzedni obraz",
     "nextAria": "Następny obraz",
-    "pagination": "_ Placholder_0 __/_ Ubezpieczeniem _1 __",
+    "pagination": "{{current}} / {{total}}",
     "photoAlt": "Zdjęcie {{room}}",
     "noImage": "Brak dostępnego zdjęcia"
   },
@@ -308,7 +308,7 @@
   "date": {
     "stayHelper": "2- 8 nocy",
     "clearDates": "Wyczyść daty",
-    "nightsSummary": "_ _ TOK0 _ _ → _ _ TOK1 _ _ (_ _ TOK2 _ _ noce)"
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} noce)"
   },
   "noscript": {
     "jsDisabledAssistance": "Ta trasa hostelu korzysta z rezerwacji wspomaganej, gdy JavaScript jest wyłączony.",

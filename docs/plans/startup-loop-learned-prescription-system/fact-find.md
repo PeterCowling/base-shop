@@ -5,6 +5,7 @@ Status: Ready-for-planning
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-10
+Last-updated: 2026-03-10
 Last-reviewed: 2026-03-10
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: startup-loop-learned-prescription-system
@@ -18,9 +19,13 @@ Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-do-fact-find, lp-do-plan, lp-do-ideas, startup-loop
 Trigger-Why: The startup loop already detects many weaknesses and already emits some suggested next moves, but those prescriptions are fragmented, not learned as a system, and not yet able to distinguish absolute requirements, relative requirements, unknown remedies, and milestone-triggered lateral follow-up.
 Trigger-Intended-Outcome: "type: operational | statement: The repo has a code-backed account of the true missing parts needed for a single learned prescription system in the startup loop, framed as planning-ready improvement opportunities with explicit boundaries, trigger classes, and outcome-learning seams. | source: operator"
+Audit-Ref: working-tree
+Audit-Head: 369a9c9e58217ff69b2d580e1e4659f56c86d3a4
 ---
 
 # Startup Loop Learned Prescription System Fact-Find Brief
+
+> ⚠️ This audit was performed against the working tree. Results may differ from the committed state if relevant paths change before planning.
 
 ## Scope
 ### Summary
@@ -93,6 +98,8 @@ None.
   - Evidence: hard rule screen in [self-evolving-portfolio.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts#L149) and utility tradeoffs in [self-evolving-scoring.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts#L651).
 - Milestone-driven activation exists in contracts and process docs, but not as a native runtime trigger class.
   - Evidence: trigger model limited to `artifact_delta | operator_idea` in [lp-do-ideas-trial.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts#L454), versus CAP-05/CAP-06/GTM-2/GTM-3/GTM-4 activation rules in startup-loop docs.
+- The runtime remains candidate-centric in its core policy and outcome contracts.
+  - Evidence: `ImprovementCandidate`, `ImprovementOutcome`, and policy decision types in [self-evolving-contracts.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts#L64), plus evaluation records keyed by `candidate_id` in [self-evolving-evaluation.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts#L14).
 
 ### Data & Contracts
 - Policy decisions:
@@ -107,6 +114,9 @@ None.
 - Dispatch trigger model:
   - current trigger types are only `artifact_delta` and `operator_idea`
   - Evidence: [lp-do-ideas-trial.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts#L454)
+- Missing producer layer:
+  - milestone activations exist in contracts, but no runtime event producer currently emits those roots into `dispatch.v2` or self-evolving policy state
+  - Evidence: no milestone trigger type in [lp-do-ideas-trial.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts#L454) and no corresponding runtime producer under `scripts/src/startup-loop`
 
 ### Dependency & Impact Map
 - Upstream dependencies:
@@ -179,6 +189,15 @@ What does **not** happen is just as important:
 - the runtime does not learn which remedy worked best for a gap type
 - the runtime does not emit milestone-trigger bundles
 - the runtime does not explicitly say whether something is absolutely required, relatively required, or merely improvable
+
+## Resulting System If Implemented
+1. Upstream signals from bottlenecks, build-origin findings, signal-review repeats, and later milestone roots are normalized into one typed `gap_case` layer.
+2. Each gap case is classified by requirement posture before prescription choice: absolute, relative, or optional.
+3. The system either chooses a typed prescription or explicitly records that the prescription is still unknown and routes the case to fact-find.
+4. Milestone roots such as first qualified lead, first transaction data, first repeat signal, and `wholesale_accounts > 0` generate small lateral prescription bundles rather than a single blunt follow-up.
+5. Queue handoff still uses `dispatch.v2`, but now carries gap-case identity, requirement posture, prescription maturity, and prescription identity.
+6. Outcome closure joins back to the chosen prescription as well as the queue decision, so the system can learn whether a remedy actually worked.
+7. Over time the loop stops learning only "which candidate should route where" and starts learning "which remedy tends to work for this kind of gap in this kind of context."
 
 ## True Missing Parts
 ### 1. Canonical Gap Case Contract
@@ -271,10 +290,10 @@ The current dataset is already the right spine; it is simply missing prescriptio
 The loop needs a native trigger class for state transitions and milestones, not just deltas and operator ideas.
 
 Code-backed activation roots already present in repo contracts:
-- `first_qualified_lead`
-- `first_transaction_data_available`
-- `first_repeat_signal`
-- `wholesale_accounts_crossed_zero`
+- qualified lead / enquiry flow exists
+- first transaction data available
+- first non-zero repeat or re-booking signal
+- `wholesale_accounts > 0`
 
 Candidate higher-level runtime names like `first_sale` or `first_stockist_live` may still be worth introducing, but they are not current contract truth and should not be treated as such in planning.
 
@@ -284,11 +303,11 @@ These milestone roots should generate lateral prescription bundles rather than a
 A milestone should fan out into candidate follow-ups, each with requirement posture.
 
 Examples:
-- `first_transaction_data_available`
+- first transaction data available
   - evaluate GTM-4 activation
   - evaluate CAP-06 activation posture
   - check whether lifecycle instrumentation or retention artifact work is now relatively required
-- `wholesale_accounts_crossed_zero`
+- `wholesale_accounts > 0`
   - evaluate GTM-3 / CAP-05 activation
   - evaluate pipeline artifact requirements
 - physical-product stockist-target activation
@@ -323,6 +342,23 @@ The missing piece is not full autonomy. It is a guarded path from `proven prescr
 - standing write-back
 - bounded autofix class
 
+## Remaining Issues In The Resulting System
+1. The current runtime is candidate-centric. Core contracts, policy state, and evaluation records are still built around `candidate_id`, `ImprovementCandidate`, and `candidate_route`. A learned prescription system is only coherent if `gap_case` deterministically compiles into that identity model or deliberately replaces part of it.
+
+2. The queue trigger envelope is still too narrow. `dispatch.v2` currently supports only `artifact_delta` and `operator_idea`, so milestone-driven lateral expansion is not first-class yet.
+
+3. Milestone policy exists before milestone producers exist. CAP/GTM activation rules are present in contracts, but the repo does not yet contain a runtime producer that emits those roots into the learned loop.
+
+4. Live sensing is still thinner than the evidence surface. The self-evolving build bridge accepts richer artifact paths, but live observation seeding still comes only from `build-record`. A stronger prescription layer will stay starved if that does not change.
+
+5. Unknown-prescription routing is directionally correct, but still lacks a discovery-output contract. The loop can send weakly formed cases to fact-find, but the repo does not yet define what a fact-find must return before a prescription becomes `structured`.
+
+6. Requirement posture can become contradictory unless precedence is explicit. Hard rules, utility selection, and governance already interact in the current runtime; posture cannot be added as a parallel opinion layer.
+
+7. Promotion remains the weakest seam. Even if the loop learns which prescriptions work, the system still lacks a live guarded path that turns proven prescriptions into maintained prompts, contracts, or bounded autofix classes.
+
+8. Physical-product stockist handling should stay a derived bundle rule, not a canonical milestone root, until the repo has an explicit runtime signal for that state rather than only process wording and artifact expectations.
+
 ## Opportunities To Improve
 1. Create one canonical `gap_case` schema and normalize bottlenecks, build-origin findings, and milestone expansions onto it.
 2. Create one canonical `prescription` schema and migrate existing suggestion seams onto it.
@@ -331,10 +367,12 @@ The missing piece is not full autonomy. It is a guarded path from `proven prescr
 5. Extend the policy journal with `prescription_choice`.
 6. Extend the replay/evaluation dataset with prescription-level success attribution.
 7. Add a new `milestone_event` trigger family to `dispatch.v2` and upstream intake paths, using current contract roots first.
-8. Build milestone bundle generators for first qualified lead, first transaction data, first repeat signal, and `wholesale_accounts > 0`; treat `first_sale` or `first_stockist_live` as optional higher-level aliases only after contract mapping exists.
-9. Reconcile CAP/GTM activation thresholds into canonical milestone rules.
-10. Widen the live self-evolving build-output sensing path to consume richer build-review evidence.
-11. Add a guarded promotion path so proven prescriptions can update the system that uses them.
+8. Add milestone-root producers that emit qualified lead / enquiry flow present, first transaction data available, first non-zero repeat or re-booking signal, and `wholesale_accounts > 0` into the runtime rather than leaving them as contract-only state.
+9. Build milestone bundle generators for qualified lead / enquiry flow present, first transaction data available, first non-zero repeat or re-booking signal, and `wholesale_accounts > 0`; treat `first_sale` or `first_stockist_live` as optional higher-level aliases only after contract mapping exists.
+10. Reconcile CAP/GTM activation thresholds into canonical milestone rules.
+11. Widen the live self-evolving build-output sensing path to consume richer build-review evidence.
+12. Define a fact-find discovery-output contract for unknown prescriptions so the route from `unknown` to `structured` is explicit.
+13. Add a guarded promotion path so proven prescriptions can update the system that uses them.
 
 ## Questions
 ### Resolved

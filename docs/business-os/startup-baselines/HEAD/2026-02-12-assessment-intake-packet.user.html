@@ -5,13 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>HEAD Intake Packet</title>
   <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
     :root {
       --bg: #ffffff;
+      --surface: #f5f8fb;
       --text: #101418;
-      --muted: #5a6570;
+      --text-muted: #5a6570;
       --border: #d9e0e7;
-      --header: #f5f8fb;
-      --link: #0b63ce;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
     }
     html, body {
       margin: 0;
@@ -23,88 +50,45 @@
     main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 2rem 1.5rem 4rem;
     }
-    h1, h2, h3 {
-      line-height: 1.25;
-    }
-    p, li {
-      line-height: 1.5;
-    }
-    a {
-      color: var(--link);
-    }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-    pre {
-      background: #f7f9fb;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 16px 0 24px;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
       background: var(--header);
-      font-weight: 700;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
     }
-    tr:nth-child(even) td {
-      background: #fcfdff;
-    }
-    hr {
-      border: 0;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
-    blockquote {
-      border-left: 4px solid var(--border);
-      margin: 16px 0;
-      padding: 0 12px;
-      color: var(--muted);
-    }
-    .meta {
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-    /* Audience toggle — Model A: single engineering appendix wrapper */
-    [data-audience="engineering"] {
-      display: none;
-    }
-    body.show-engineering [data-audience="engineering"] {
-      display: block;
-    }
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
     .audience-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 16px 0 24px;
-      padding: 8px 16px;
-      background: var(--header);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.875rem;
-      color: var(--muted);
-      font-family: inherit;
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
     }
-    .audience-toggle:hover {
-      background: var(--border);
-      color: var(--text);
-    }
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
     @media print {
       [data-audience="engineering"] { display: none !important; }
       .audience-toggle { display: none !important; }
@@ -115,114 +99,173 @@
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../startup-loop-workflow.user.html">Workflow</a><a href="../startup-loop-files.user.html">Loop Files</a><a href="../startup-loop-file-types.user.html">File Types</a><a href="../startup-loop-output-registry.user.html">Output Registry</a><a href="../ideas.user.html">Ideas</a><a href="../process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-inner{position:relative;display:flex;align-items:center;justify-content:center;gap:0;min-width:max-content;width:100%;max-width:1200px}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><div class="sl-inner"><span class="sl-brand">Startup Loop</span><a href="../../startup-loop-files.user.html">Loop Files</a><a href="../../startup-loop-file-types.user.html">File Types</a><a href="../../startup-loop-output-registry.user.html">Output Registry</a><a href="../../process-improvements.user.html">Process</a><a href="../../follow-up.user.html">Follow-up</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button></div><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
   <main>
     <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
       Show technical details
     </button>
 <h1>HEAD Intake Packet</h1>
 <h2>A) Intake Summary</h2>
+<h3>Core Problem (ASSESSMENT-01)</h3>
+<p>Parents/caregivers of children who wear external cochlear implant (CI) sound processors, and active teen/adult wearers, lack a reliable, low-friction system to (a) keep processors secure on the head through normal activity and (b) keep small, mission-critical accessories (spare coil, batteries, pods, retention parts) organised and transferable across daily handovers.</p>
+<p>This causes drops, near-loss events, and repeated "where is it / who has it" moments, creating daily stress, time waste, social friction, and financial risk from damage or loss of expensive components.</p>
+<p><strong>Frequency:</strong> daily (morning setup) + multiple handovers per week for the caregiver segment; several times per week for the active wearer segment.
+<strong>Severity:</strong> high in caregiver segment — the spare coil is the most commonly lost item; a dropped processor is a high-cost replacement event. Confirmed at population level by BCIG formal lost-processor guidance.</p>
+<h3>Key Facts</h3>
 <ul>
-<li>Business idea: launch cochlear-implant retention headbands for Italy-first buyers (<code>observed</code>).</li>
-<li>First product lane: retention headbands that keep processors secure during daily use, school/play, and sport (<code>observed</code>).</li>
-<li>90-day extension lane: school-ready multi-pack headbands, organiser pouch, and patch packs (<code>observed</code> from S3B synthesis).</li>
-<li>Launch-surface mode is currently <code>pre-website</code> (<code>observed</code>).</li>
-<li>Stock for first product is already purchased; near-term availability is expected (<code>observed</code>).</li>
-<li>Channel-surface decision is <code>DEC-HEAD-CH-01</code>: own-site DTC primary, with constrained marketplace probes for evidence capture (<code>observed</code>).</li>
-<li>Execution posture is startup-speed: direct sales execution is prioritized over CMS work (<code>observed</code>).</li>
-<li>Core uncertainty is not category demand; it is execution quality (fit/compatibility clarity, conversion, and returns control) (<code>inferred</code>).</li>
-<li>Naming is currently unconfirmed; shortlist returned and pending legal clearance (<code>observed</code>).</li>
+<li>First product lane: cross-compatible textile CI retention headbands — launch hero (<code>ASSESSMENT-03</code>).</li>
+<li>90-day extension lane: organiser pouch and patch packs (<code>ASSESSMENT-03</code>).</li>
+<li>Launch surface: pre-website (<code>ASSESSMENT-06</code>).</li>
+<li>Execution posture: speed-to-first-sales; direct sales before platform/CMS work (<code>ASSESSMENT-06</code>).</li>
+<li>Inventory: stock purchased; in-stock date and units pending (<code>ASSESSMENT-06</code>).</li>
+<li>Channel posture: own-site DTC primary; constrained marketplace probes for evidence capture (<code>ASSESSMENT-06</code>).</li>
+<li>Naming: confirmed - Facilella selected on 2026-02-26; facilella.com registered (DEC-HEAD-NAME-01).</li>
+<li>Kill condition: <strong>GO (provisional)</strong> — three kill conditions pass; first-party WTP validation from Italian buyers is the primary open gap (<code>ASSESSMENT-01</code>).</li>
 </ul>
+<h3>Current Workarounds (ASSESSMENT-01)</h3>
+<table>
+<thead>
+<tr>
+<th>Workaround</th>
+<th>Structural gap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Manufacturer accessories (Cochlear, MED-EL, AB)</td>
+<td>Brand-locked compatibility; clinical design language; no cross-brand system</td>
+</tr>
+<tr>
+<td>Third-party retention products (Etsy/DTC, EUR18–38)</td>
+<td>No range coherence; no Italian-language support; no cross-brand compatibility guarantee</td>
+</tr>
+<tr>
+<td>DIY (tape, hair ties, elastic bands)</td>
+<td>Not durable; socially awkward for school-age children; not a repeatable system</td>
+</tr>
+<tr>
+<td>Behavioural compensation (restriction, extra checking)</td>
+<td>High cognitive load; limits child activity participation; no structural fix</td>
+</tr>
+<tr>
+<td>Organisation: no systematic workaround exists</td>
+<td>Ad-hoc kit across manufacturer cases, school bags, and verbal handover instructions</td>
+</tr>
+</tbody>
+</table>
+<hr>
 <h2>B) Business and Product Packet</h2>
 <table>
 <thead>
 <tr>
 <th>Field</th>
 <th>Value</th>
-<th>Tag</th>
+<th>Source</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Business code</td>
 <td>HEAD</td>
-<td>observed</td>
+<td>—</td>
 </tr>
 <tr>
 <td>Business name</td>
-<td>Headband business (cochlear-implant accessories)</td>
-<td>observed</td>
+<td>Facilella</td>
+<td>DEC-HEAD-NAME-01</td>
 </tr>
 <tr>
 <td>Business name status</td>
-<td>unconfirmed (shortlist returned; legal clearance pending)</td>
-<td>observed</td>
+<td>confirmed - selected on 2026-02-26; facilella.com registered</td>
+<td>DEC-HEAD-NAME-01</td>
+</tr>
+<tr>
+<td>Naming territory</td>
+<td>Easy Hair System</td>
+<td>DEC-HEAD-NAME-01</td>
+</tr>
+<tr>
+<td>Name shortlist</td>
+<td>Nidilo, Telilo, Tessilo, Tramilo, Calafilo, Filocalma, Nuvafilo, Nidela</td>
+<td>ASSESSMENT-04</td>
 </tr>
 <tr>
 <td>Region</td>
-<td>Italy (primary)</td>
-<td>observed</td>
+<td>Italy (primary); EU expansion path</td>
+<td>ASSESSMENT-01</td>
 </tr>
 <tr>
 <td>Product 1</td>
-<td>Cochlear-implant retention headband</td>
-<td>observed</td>
+<td>Cross-compatible textile CI retention headband (launch hero)</td>
+<td>ASSESSMENT-03</td>
 </tr>
 <tr>
 <td>Product 1 status</td>
-<td>Inventory purchased; launch-near</td>
-<td>observed</td>
+<td>Inventory purchased; in-stock date and units TBD</td>
+<td>ASSESSMENT-06</td>
 </tr>
 <tr>
 <td>Product 2</td>
-<td>Organiser pouch + school multi-pack + patch packs (MVP extension lane)</td>
-<td>observed</td>
+<td>Organiser pouch + patch packs (90-day extension lane)</td>
+<td>ASSESSMENT-03</td>
 </tr>
 <tr>
 <td>Product constraints</td>
-<td>Must protect fit/retention use-case without over-claiming medical outcomes</td>
-<td>inferred</td>
+<td>Non-medical claim language only (EU MDR); tether-class products excluded from MVP</td>
+<td>ASSESSMENT-01/ASSESSMENT-03</td>
+</tr>
+<tr>
+<td>Launch feasibility signal</td>
+<td>Textile manufacturing accessible MOQs; no specialist tooling; 3–6 month path to first sales</td>
+<td>ASSESSMENT-02/ASSESSMENT-03</td>
 </tr>
 </tbody>
 </table>
+<hr>
 <h2>C) ICP and Channel Packet</h2>
 <table>
 <thead>
 <tr>
 <th>Field</th>
 <th>Value</th>
-<th>Tag</th>
+<th>Source</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>First-buyer ICP</td>
-<td>Parents/caregivers of young children with cochlear implants</td>
-<td>inferred (from market-intel and competitor patterns)</td>
+<td>Parents/caregivers of children wearing CI processors (~12 months–12 years); problem appears daily at morning setup, school handover, sport, bedtime, travel</td>
+<td>ASSESSMENT-01</td>
 </tr>
 <tr>
 <td>Secondary ICP</td>
-<td>Active/sport users and daily-comfort adult users</td>
-<td>inferred</td>
+<td>Active teen/adult CI wearers (~16–45); slippage during movement and accessory loss in transit</td>
+<td>ASSESSMENT-01</td>
 </tr>
 <tr>
-<td>Planned channels (initial)</td>
-<td>Decision-locked by <code>DEC-HEAD-CH-01</code>: own-site DTC (primary) + constrained marketplace probes</td>
-<td>observed</td>
+<td>Tertiary (awareness)</td>
+<td>Gift/recommender purchasers (family, audiologists); not a primary ICP until first-party evidence exists</td>
+<td>ASSESSMENT-01</td>
 </tr>
 <tr>
 <td>Support expectation</td>
 <td>Fast pre-purchase support for compatibility/fit uncertainty</td>
 <td>inferred</td>
 </tr>
+<tr>
+<td>Channel posture</td>
+<td>Own-site DTC primary; constrained marketplace probes for evidence capture; Amazon deferred</td>
+<td>ASSESSMENT-06</td>
+</tr>
 </tbody>
 </table>
+<hr>
 <h2>D) Constraints and Assumptions Register</h2>
 <table>
 <thead>
 <tr>
 <th>Item</th>
-<th>Type</th>
+<th>Source</th>
 <th>Evidence / note</th>
 <th>Confidence</th>
 </tr>
@@ -230,54 +273,75 @@
 <tbody>
 <tr>
 <td>Speed-to-first-sales is non-negotiable</td>
-<td>observed</td>
-<td>Operating direction across startup-loop work</td>
+<td>ASSESSMENT-06</td>
+<td>Confirmed primary time constraint (ASSESSMENT-06 Section A)</td>
 <td>High</td>
 </tr>
 <tr>
 <td>Pre-website launch surface is current mode</td>
-<td>observed</td>
-<td>Current strategy and market-intel docs</td>
+<td>ASSESSMENT-06</td>
+<td>Confirmed launch surface (ASSESSMENT-06 Section A)</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Platform-cleanup work must not delay first sale</td>
+<td>ASSESSMENT-06</td>
+<td>Hard stop condition confirmed (ASSESSMENT-06 Section A)</td>
 <td>High</td>
 </tr>
 <tr>
 <td>Inventory is near-term available</td>
-<td>observed</td>
-<td>User-provided stock status; exact date still pending</td>
+<td>ASSESSMENT-06</td>
+<td>Stock purchased; in-stock date and units pending (ASSESSMENT-06 Section B)</td>
 <td>Medium</td>
 </tr>
 <tr>
-<td>Outcome should be sales-led, not platform-cleanup-led</td>
-<td>observed</td>
-<td>Current operating principle (startup execution first)</td>
+<td>First-buyer ICP is caregiver-led; broader expansion is secondary</td>
+<td>ASSESSMENT-01</td>
+<td>ASSESSMENT-01 primary segment; confirmed by community and competitor evidence</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Kill condition: GO provisional — first-party Italian WTP is the primary open constraint</td>
+<td>ASSESSMENT-01</td>
+<td>All three kill conditions pass provisionally; first-party cohort not yet measured</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Naming confirmed as Facilella; reassess only if legal/domain conflict appears pre-launch</td>
+<td>DEC-HEAD-NAME-01</td>
+<td>Confirmed name decision recorded on 2026-02-26; facilella.com registered</td>
 <td>High</td>
 </tr>
 <tr>
-<td>First ICP should be caregiver-led before broader expansion</td>
-<td>inferred</td>
-<td>Category patterns and HEAD research evidence</td>
-<td>Medium</td>
+<td>EU MDR copy discipline: non-medical claim language only</td>
+<td>ASSESSMENT-03</td>
+<td>Intended-purpose is set by marketing claims, not materials; clinic-coded copy risks MDR accessory classification</td>
+<td>High</td>
 </tr>
 <tr>
-<td>Naming remains provisional until TM/domain clearance</td>
-<td>observed</td>
-<td>Naming shortlist artifact exists; decision pending</td>
-<td>Medium</td>
+<td>Tether-class accessories excluded from MVP</td>
+<td>ASSESSMENT-03</td>
+<td>EN 14682 and manufacturer strangulation warnings; child-safety engineering gate required before inclusion</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Eudamed actor registration mandatory from 28 May 2026</td>
+<td>ASSESSMENT-03</td>
+<td>Launch window overlaps this deadline; monitor MDR classification decision; time-sensitive</td>
+<td>High</td>
 </tr>
 </tbody>
 </table>
+<hr>
 <h2>E) Outcome Contract Reference</h2>
 <ul>
 <li>Canonical contract (source of truth): <code>docs/business-os/contracts/HEAD/outcome-contract.user.md</code></li>
 <li>Intake role: provide assumptions, constraints, and missing-data inputs to the canonical contract; this packet does not redefine target/CAC contract values.</li>
-<li>Decision links:
-<ul>
-<li><code>DEC-HEAD-01</code> (scale vs hold paid expansion)</li>
-<li><code>DEC-HEAD-CH-01</code> (channel-surface decision)</li>
 </ul>
-</li>
-</ul>
+<hr>
 <h2>F) Missing-Data Checklist (to progress S1/S3)</h2>
+<h3>Operator gaps (ASSESSMENT-06)</h3>
 <table>
 <thead>
 <tr>
@@ -289,43 +353,87 @@
 </thead>
 <tbody>
 <tr>
-<td>Exact in-stock date and sellable units</td>
-<td>Required for decision-grade launch and spend planning</td>
+<td>Exact in-stock date</td>
+<td>Required for launch timing and spend planning</td>
 <td>Pete</td>
 <td>critical</td>
 </tr>
 <tr>
-<td>Processor compatibility matrix (launch version)</td>
-<td>Required to reduce wrong-buy risk and return risk</td>
+<td>Sellable units (launch quantity)</td>
+<td>Required for CAC guardrails and stockout risk modelling</td>
 <td>Pete</td>
 <td>critical</td>
 </tr>
 <tr>
-<td>Final pricing architecture (single vs bundle)</td>
-<td>Required for CAC and contribution guardrails</td>
+<td>Processor compatibility matrix</td>
+<td>Required to reduce wrong-buy and return risk; must cover Cochlear / MED-EL / AB main processor families</td>
+<td>Pete</td>
+<td>critical</td>
+</tr>
+<tr>
+<td>Final pricing model (single vs bundle)</td>
+<td>Required for contribution margin and CAC guardrails</td>
 <td>Pete</td>
 <td>high</td>
 </tr>
 <tr>
-<td>Payment stack day-1 confirmation</td>
-<td>Required for checkout conversion confidence in Italy</td>
+<td>Indicative price range</td>
+<td>Required for forecasting and positioning</td>
 <td>Pete</td>
 <td>high</td>
 </tr>
 <tr>
-<td>Returns flow copy and SLA</td>
-<td>Required for trust/compliance and support readiness</td>
+<td>Payment provider for Italy</td>
+<td>Required for checkout conversion confidence</td>
 <td>Pete</td>
 <td>high</td>
 </tr>
 <tr>
-<td>Trademark/domain clearance for shortlisted masterbrand names</td>
-<td>Required to confirm business name before scale branding work</td>
+<td>Returns policy and SLA</td>
+<td>Required for trust, compliance, and support readiness</td>
 <td>Pete</td>
 <td>high</td>
 </tr>
 </tbody>
 </table>
+<h3>Research gaps (ASSESSMENT-01/ASSESSMENT-03)</h3>
+<table>
+<thead>
+<tr>
+<th>Missing field</th>
+<th>Why needed</th>
+<th>Owner</th>
+<th>Priority</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>First-party WTP validation from Italian buyers</td>
+<td>ASSESSMENT-03 caveat: EUR18–38 WTP confirmed via third-party only; Italian cohort unvalidated</td>
+<td>Pete</td>
+<td>critical</td>
+</tr>
+<tr>
+<td>TM/domain clearance for shortlisted names</td>
+<td>Required to confirm business name before brand commitment</td>
+<td>Pete</td>
+<td>high</td>
+</tr>
+</tbody>
+</table>
+<h3>First-priority validation questions (ASSESSMENT-01)</h3>
+<p>Must be answered with real buyer data before advancing to S1 readiness:</p>
+<ol>
+<li>In the last 30 days, how many times did the processor fall off or nearly fall off?</li>
+<li>How many times were accessories misplaced or "couldn't find at handover"?</li>
+<li>What does "success" look like in 10 seconds for the morning routine?</li>
+<li>What have you already bought, and what did you like/hate specifically?</li>
+<li>What price feels "obvious yes" / "maybe" / "no way" for a retention band?</li>
+<li>How many would you buy: 1 for home, 1 for school bag, 1 spare?</li>
+<li>What accessories are actually in your current kit (list the items)?</li>
+<li>Where do accessories currently live, and which location fails most?</li>
+</ol>
+<hr>
 <h2>Priors (Machine)</h2>
 <p>Last updated: 2026-02-20 12:00 UTC</p>
 <pre><code class="language-json">[
@@ -365,17 +473,13 @@
 </code></pre>
     <div class="meta">
       <div>Source: <code>docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md</code></div>
-      <div>Generated: 2026-02-20T13:28:09.665Z</div>
+      <div>Generated: 2026-03-10T19:44:46.067Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    // startOnLoad: false — we render manually so hidden engineering diagrams
-    // (inside display:none) are not attempted on load, which causes spurious
-    // "Syntax error in text" failures in Mermaid v11.
     mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
 
-    // Render only the visible (operator) diagrams immediately.
     const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
       (el) => !el.closest("[data-audience='engineering']")
     );
@@ -383,8 +487,6 @@
       mermaid.run({ nodes: operatorDiagrams });
     }
 
-    // Audience toggle — Model A.
-    // Engineering diagrams are rendered on first reveal (not on load).
     let engineeringRendered = false;
     const toggleBtn = document.getElementById("audience-toggle");
     if (toggleBtn) {
@@ -393,7 +495,6 @@
         toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
         toggleBtn.setAttribute("aria-pressed", String(isShowing));
         if (isShowing && !engineeringRendered) {
-          // Render engineering diagrams now that they are visible.
           const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
           if (nodes.length > 0) {
             mermaid.run({ nodes });

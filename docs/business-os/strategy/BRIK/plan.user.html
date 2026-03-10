@@ -5,13 +5,40 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Brikette — Business Plan</title>
   <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
     :root {
       --bg: #ffffff;
+      --surface: #f5f8fb;
       --text: #101418;
-      --muted: #5a6570;
+      --text-muted: #5a6570;
       --border: #d9e0e7;
-      --header: #f5f8fb;
-      --link: #0b63ce;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
     }
     html, body {
       margin: 0;
@@ -23,62 +50,48 @@
     main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 2rem 1.5rem 4rem;
     }
-    h1, h2, h3 {
-      line-height: 1.25;
-    }
-    p, li {
-      line-height: 1.5;
-    }
-    a {
-      color: var(--link);
-    }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-    pre {
-      background: #f7f9fb;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 16px 0 24px;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
       background: var(--header);
-      font-weight: 700;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
     }
-    tr:nth-child(even) td {
-      background: #fcfdff;
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
+    .audience-toggle {
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
     }
-    hr {
-      border: 0;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
-    blockquote {
-      border-left: 4px solid var(--border);
-      margin: 16px 0;
-      padding: 0 12px;
-      color: var(--muted);
-    }
-    .meta {
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      font-size: 0.9rem;
-      color: var(--muted);
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
     }
   </style>
 
@@ -86,11 +99,23 @@
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../../startup-loop-workflow.user.html">Workflow</a><a href="../../startup-loop-files.user.html">Loop Files</a><a href="../../startup-loop-file-types.user.html">File Types</a><a href="../../startup-loop-output-registry.user.html">Output Registry</a><a href="../../ideas.user.html">Ideas</a><a href="../../process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-inner{position:relative;display:flex;align-items:center;justify-content:center;gap:0;min-width:max-content;width:100%;max-width:1200px}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><div class="sl-inner"><span class="sl-brand">Startup Loop</span><a href="../../startup-loop-files.user.html">Loop Files</a><a href="../../startup-loop-file-types.user.html">File Types</a><a href="../../startup-loop-output-registry.user.html">Output Registry</a><a href="../../process-improvements.user.html">Process</a><a href="../../follow-up.user.html">Follow-up</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button></div><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
   <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
 <h1>Brikette — Business Plan</h1>
+<h2>Business overview</h2>
+<p>Brikette is a physical hostel in Positano on the Amalfi Coast. The ambition is to be the most expensive hostel in the world while remaining very busy — premium pricing justified by exceptional quality across every dimension: comfortable rooms, great common areas, great staff and service, organised activities, and deep local knowledge delivered to guests. This is not a budget product with an inflated price; it is a genuinely excellent hospitality product that earns its premium.</p>
+<p>Revenue lines, all part of the same physical hospitality business:</p>
+<ul>
+<li><strong>Hostel bookings</strong> — room nights across 11 rooms in a multi-locale market, currently sold via OTA and direct</li>
+<li><strong>Experiences and activities</strong> — organised activities and local knowledge as a product, not a free add-on</li>
+<li><strong>StepFree Chiesa Nuova apartment</strong> — a 100sqm apartment adjacent to the hostel (new for 2026), targeting couples, listed on Booking.com only so far</li>
+</ul>
+<p>The digital platform (brikette website, content guides, reception app) is infrastructure that supports the physical business — it is not the business itself.</p>
 <h2>Strategy</h2>
-<h3>Current Focus (2026-02-13)</h3>
+<h3>Current Focus (2026-02-17)</h3>
 <ol>
 <li>
 <p><strong>L3 Transition: Reception Infrastructure</strong> (Priority: High)</p>
@@ -102,8 +127,8 @@
 <li>
 <p><strong>Analytics &#x26; Visibility Gap</strong> (Priority: High)</p>
 <ul>
-<li>Status: GA4 config is live in production (<code>G-2ZSYXG8R7T</code>), Data API access is now working, and first 7-day baseline is locked (sessions/users/page_view measured)</li>
-<li>Next: Verify report-layer non-zero <code>begin_checkout</code> after deployment propagation and close <code>web_vitals</code> verification path</li>
+<li>Status: GA4 admin settings are verified (referral exclusion and cross-domain suggestions reviewed), and debug validation confirms <code>begin_checkout</code> can fire under consent-granted test conditions</li>
+<li>Next: Verify non-zero handoff event counts in standard Data API windows and complete governance runbook (<code>handoff_to_engine</code>, conversion mapping, weekly review cadence)</li>
 </ul>
 </li>
 <li>
@@ -111,6 +136,13 @@
 <ul>
 <li>Status: 168+ guides across 18 locales operational; Cloudflare staging deployed (staging.brikette-website.pages.dev)</li>
 <li>Next: Validate guide translation quality, establish content update workflow</li>
+</ul>
+</li>
+<li>
+<p><strong>Booking Funnel Recovery (Octorate Last-Mile Model)</strong> (Priority: High)</p>
+<ul>
+<li>Status: Fact-find and sequenced plan completed with no-API scope confirmed (<code>BRIK-ENG-0021</code>)</li>
+<li>Next: Execute foundation tasks in validated order: native <code>handoff_to_engine</code> emission (<code>TASK-05A</code>) -> same-tab normalization (<code>TASK-03</code>) -> GA4 governance parity (<code>TASK-06</code>) -> overlap-window reconciliation calibration (<code>TASK-08</code>)</li>
 </ul>
 </li>
 </ol>
@@ -130,7 +162,7 @@
 <p>Outcome-ID: <code>BRIK-OUT-2026Q2-01</code></p>
 </li>
 <li>
-<p>Outcome statement: Stabilize and grow BRIK net booking value over the next 90 days by improving conversion quality, direct-share economics, and cancellation control under measured weekly decisioning.</p>
+<p>Outcome statement: Grow Brikette's net booking value and revenue per available bed over the next 90 days — establishing the measurement and operational foundation needed to price, fill, and operate at the premium level the product ambition demands.</p>
 </li>
 <li>
 <p>Baseline (2026-02-13):</p>
@@ -139,6 +171,17 @@
 <li>trailing 90-day bookings (2025-11..2026-01): 100</li>
 <li>direct booking share (same window): 18%</li>
 <li>paid CAC: not measured at decision-grade quality</li>
+</ul>
+</li>
+<li>
+<p>Operational data baseline (2026-02-14):</p>
+<ul>
+<li>Octorate calendar export: Mar 2025 - Oct 2026 (18 months, 612 date rows)</li>
+<li>Room inventory: 11 total rooms (9 numbered: 3-6, 8-12; 2 year-named: 2022-7, 2025-14)</li>
+<li>Data sheets: Price, Availability, Length of stay, Real availability</li>
+<li>Source: <code>data/octorate/octorate-calendar-2026-02-14.xlsx</code> + metadata JSONs</li>
+<li>Automation: ✅ Fully automated via <code>packages/mcp-server/octorate-export-final-working.mjs</code></li>
+<li>Protocol: <code>docs/business-os/startup-loop/operations/octorate-data-collection-protocol.md</code></li>
 </ul>
 </li>
 <li>
@@ -176,11 +219,19 @@
 <h3>Active Risks</h3>
 <ul>
 <li>
-<p><strong>Measurement Signal Quality Incomplete</strong> (Severity: Medium, Added: 2026-02-09, Updated: 2026-02-13)</p>
+<p><strong>Measurement Signal Quality Incomplete</strong> (Severity: Medium, Added: 2026-02-09, Updated: 2026-02-17)</p>
 <ul>
-<li>Source: First 7-day GA4 baseline is measured and production deploy alignment is complete, but current 7-day report still shows <code>begin_checkout=0</code> and <code>web_vitals=0</code></li>
-<li>Impact: Traffic baseline exists, but conversion and performance decisioning remain partially blind until report-layer confirmation stabilizes</li>
-<li>Mitigation: Re-run bounded GA4 extracts after propagation window, verify non-zero <code>begin_checkout</code>, and close <code>web_vitals</code> verification with weekly refresh discipline</li>
+<li>Source: Event firing is observable in debug sessions, but standard report windows still show inconsistent/zero handoff coverage for decision use</li>
+<li>Impact: Traffic baseline exists, but conversion decisioning remains partially blind until report-layer handoff visibility stabilizes</li>
+<li>Mitigation: ship native <code>handoff_to_engine</code> instrumentation, validate in bounded windows, and enforce a weekly GA4 governance checklist</li>
+</ul>
+</li>
+<li>
+<p><strong>Booking Completion Attribution Gap (No API/Webhook Access)</strong> (Severity: Medium, Added: 2026-02-17)</p>
+<ul>
+<li>Source: Octorate API/webhook onboarding is unavailable in this phase; deterministic join key closure is not yet feasible</li>
+<li>Impact: End-to-end revenue attribution is probabilistic and can lag operational decisions</li>
+<li>Mitigation: run no-API reconciliation (aggregate + probabilistic) weekly with explicit confidence thresholds and caveat labeling</li>
 </ul>
 </li>
 <li>
@@ -323,12 +374,36 @@
 </ul>
     <div class="meta">
       <div>Source: <code>docs/business-os/strategy/BRIK/plan.user.md</code></div>
-      <div>Generated: 2026-02-13T23:46:57.236Z</div>
+      <div>Generated: 2026-03-10T19:44:46.224Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
   </script>
 </body>
 </html>

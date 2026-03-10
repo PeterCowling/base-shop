@@ -3,15 +3,42 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Headband (Name Pending) — Brand Dossier</title>
+  <title>Facilella — Brand Language</title>
   <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
     :root {
       --bg: #ffffff;
+      --surface: #f5f8fb;
       --text: #101418;
-      --muted: #5a6570;
+      --text-muted: #5a6570;
       --border: #d9e0e7;
-      --header: #f5f8fb;
-      --link: #0b63ce;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
     }
     html, body {
       margin: 0;
@@ -23,88 +50,45 @@
     main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 2rem 1.5rem 4rem;
     }
-    h1, h2, h3 {
-      line-height: 1.25;
-    }
-    p, li {
-      line-height: 1.5;
-    }
-    a {
-      color: var(--link);
-    }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-    pre {
-      background: #f7f9fb;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 16px 0 24px;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
       background: var(--header);
-      font-weight: 700;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
     }
-    tr:nth-child(even) td {
-      background: #fcfdff;
-    }
-    hr {
-      border: 0;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
-    blockquote {
-      border-left: 4px solid var(--border);
-      margin: 16px 0;
-      padding: 0 12px;
-      color: var(--muted);
-    }
-    .meta {
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      font-size: 0.9rem;
-      color: var(--muted);
-    }
-    /* Audience toggle — Model A: single engineering appendix wrapper */
-    [data-audience="engineering"] {
-      display: none;
-    }
-    body.show-engineering [data-audience="engineering"] {
-      display: block;
-    }
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
     .audience-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 16px 0 24px;
-      padding: 8px 16px;
-      background: var(--header);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 0.875rem;
-      color: var(--muted);
-      font-family: inherit;
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
     }
-    .audience-toggle:hover {
-      background: var(--border);
-      color: var(--text);
-    }
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
     @media print {
       [data-audience="engineering"] { display: none !important; }
       .audience-toggle { display: none !important; }
@@ -115,174 +99,352 @@
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../../startup-loop-workflow.user.html">Workflow</a><a href="../../startup-loop-files.user.html">Loop Files</a><a href="../../startup-loop-file-types.user.html">File Types</a><a href="../../startup-loop-output-registry.user.html">Output Registry</a><a href="../../ideas.user.html">Ideas</a><a href="../../process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-inner{position:relative;display:flex;align-items:center;justify-content:center;gap:0;min-width:max-content;width:100%;max-width:1200px}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><div class="sl-inner"><span class="sl-brand">Startup Loop</span><a href="../../../startup-loop-files.user.html">Loop Files</a><a href="../../../startup-loop-file-types.user.html">File Types</a><a href="../../../startup-loop-output-registry.user.html">Output Registry</a><a href="../../../process-improvements.user.html">Process</a><a href="../../../follow-up.user.html">Follow-up</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button></div><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
   <main>
     <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
       Show technical details
     </button>
-<h1>Headband (Name Pending) — Brand Dossier</h1>
+<h1>Facilella — Brand Language</h1>
 <blockquote>
-<p><strong>Draft status.</strong> Token values are not duplicated in this document. When the theme package
-is created, the single source of truth will be <code>packages/themes/cochlearfit/src/tokens.ts</code>.
-This document records <em>why</em> tokens should be chosen, not what values they hold.
-All <code>TBD</code> fields require operator input or market research before this dossier can advance to Active.</p>
+<p><strong>Active status.</strong> Visual identity decisions are complete and ready for theme package creation.
+Token values are documented below. When the theme package is created at
+<code>packages/themes/facilella/src/tokens.ts</code>, that file becomes the single source of truth for token values.
+This document records the <em>why</em> behind every token choice.</p>
 </blockquote>
+<hr>
 <h2>Audience</h2>
-<p><strong>Primary:</strong> Adults and parents of children with cochlear implants in Italy. Age range TBD — cochlear implant users span from infants to elderly; the head-worn accessory category skews toward parents purchasing for children and adult women purchasing for themselves. Italy TAM estimate: ~17,000 cochlear-implant users (niche).</p>
-<p><strong>Secondary:</strong> TBD — gift purchasers (family members, audiologists recommending accessories).</p>
-<p><strong>Device:</strong> TBD — mobile-first assumed based on Italian e-commerce norms, but must be validated with first-party analytics once live.</p>
-<p><strong>Context:</strong> Likely discovery via search (high-intent, problem-aware) and peer community referral (cochlear implant communities, parenting forums). Purchasing decision is practical + emotional: does it fit my device? will it stay on? does it look good? Trust, compatibility evidence, and return policy clarity are decision-critical.</p>
-<p><strong>Key insight:</strong> The audience is defined by a medical device (cochlear implant), not purely by demographics. Compatibility and fit are purchase-blockers, not just preferences. Tone must be matter-of-fact and reassuring, not medicalized.</p>
+<p><strong>Primary:</strong> Parents and caregivers of children with cochlear implants, primarily in Italy. Children approximately 12 months–12 years — the period of highest processor-slip frequency and daily handover friction. Problem appears daily: morning setup, school handover, sport, bedtime, travel. Mindset at brand encounter: practical and problem-aware, not browsing. Not looking for inspiration — looking for a reliable solution to a daily frustration. Emotionally invested in their child's daily experience.</p>
+<p><strong>Secondary:</strong> Active teen and adult CI wearers (approximately 16–45 years). Primary pain: processor slippage during movement. More style-aware than the caregiver segment; purchase is more self-led.</p>
+<p><strong>Tertiary (awareness only):</strong> Gift purchasers — family members and audiologists recommending accessories. Not a direct-response target at launch.</p>
+<p><strong>Device:</strong> Mobile-first. Italian e-commerce norms and peer-community referral context (CI parenting forums, Facebook groups) favour mobile discovery and purchase.</p>
+<p><strong>Context:</strong> High-intent search and peer referral. Buyer is problem-aware at point of discovery — evaluating fit, compatibility, and trust. Purchase blockers are "Will this fit my child's processor?" and "Can I trust this brand?", not "Do I need this?"</p>
+<hr>
 <h2>Personality</h2>
 <ul>
-<li><strong>Reassuring</strong>, not clinical</li>
-<li><strong>Practical</strong>, not purely aspirational</li>
-<li><strong>Approachable</strong>, not technical or jargon-heavy</li>
-<li><strong>Inclusive</strong>, not niche-stigmatizing (normalizes wearing a headband, doesn't over-emphasize disability)</li>
-<li><strong>Warm</strong>, not corporate</li>
+<li><strong>Reassuring</strong>, not clinical — the brand feels safe and grounded, never medicalized or alarm-coded</li>
+<li><strong>Practical</strong>, not purely aspirational — solves a real daily problem first; warmth and style follow from that</li>
+<li><strong>Approachable</strong>, not technical — speaks plainly to busy parents; acknowledges the device without jargon</li>
+<li><strong>Inclusive</strong>, not niche-stigmatizing — normalises wearing a headband alongside a CI processor; never frames the product as a fix for something to be hidden</li>
+<li><strong>Warm</strong>, not corporate — sounds like a person, not a manufacturer</li>
 </ul>
-<blockquote>
-<p>TBD — Validate personality direction with 3–5 customer conversations or community feedback before advancing to Active.</p>
-</blockquote>
+<hr>
 <h2>Visual Identity</h2>
-<h3>Color Palette</h3>
-<blockquote>
-<p>TBD — No design work has been done for CochlearFit. The following are directional notes only.
-A dedicated <code>/lp-design-spec</code> session + theme package creation is required before Active status.</p>
-</blockquote>
+<h3>Colour Palette</h3>
+<p>Palette rationale: Facilella is a coined Italian-register name with an effortless, child-managed feel ("facile" root — easy, simple) and a soft diminutive ending. The palette reflects this: warm clay terracotta as the primary (distinctive from medical blue-white, from BRIK's coral-orange, and from sports-brand neons), grounded by a dusty Mediterranean seafoam accent. Background is warm linen, not stark clinical white. The overall effect reads Italian lifestyle accessories brand — trustworthy, warm, and non-clinical.</p>
 <table>
 <thead>
 <tr>
 <th>Role</th>
-<th>Token (proposed)</th>
+<th>Token</th>
+<th>HSL (light)</th>
+<th>HSL (dark)</th>
 <th>Rationale</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Primary</td>
-<td>TBD</td>
-<td>Should feel warm and approachable without clinical/medical coldness. Avoid blue-white (medical). Consider soft earth tones or muted pastels. Validate against accessibility + competitor differentiation.</td>
+<td><code>--color-primary</code></td>
+<td><code>18 52% 52%</code></td>
+<td><code>18 45% 68%</code></td>
+<td>Warm terracotta clay — Italian, craft-quality, lifestyle; avoids medical blue and BRIK coral (hue 6)</td>
+</tr>
+<tr>
+<td>Primary foreground</td>
+<td><code>--color-primary-fg</code></td>
+<td><code>0 0% 100%</code></td>
+<td><code>18 15% 10%</code></td>
+<td>White text on clay CTA; warm dark on light clay in dark mode</td>
 </tr>
 <tr>
 <td>Primary soft</td>
-<td>TBD</td>
-<td>Tinted background for cards and highlights</td>
+<td><code>--color-primary-soft</code></td>
+<td><code>18 52% 95%</code></td>
+<td><code>18 35% 18%</code></td>
+<td>Lightly tinted wash for card highlights, section backgrounds</td>
+</tr>
+<tr>
+<td>Primary hover</td>
+<td><code>--color-primary-hover</code></td>
+<td><code>18 52% 46%</code></td>
+<td><code>18 45% 74%</code></td>
+<td>Slightly deeper clay on hover</td>
+</tr>
+<tr>
+<td>Primary active</td>
+<td><code>--color-primary-active</code></td>
+<td><code>18 52% 40%</code></td>
+<td><code>18 45% 78%</code></td>
+<td>Pressed state</td>
 </tr>
 <tr>
 <td>Accent</td>
-<td>TBD</td>
-<td>Complementary to primary; avoid red/orange (urgency reads as alarm in medical contexts)</td>
+<td><code>--color-accent</code></td>
+<td><code>180 22% 44%</code></td>
+<td><code>180 22% 60%</code></td>
+<td>Dusty seafoam/teal — Mediterranean water; complements clay; calm, non-clinical; used for badges, secondary interactive states</td>
+</tr>
+<tr>
+<td>Accent foreground</td>
+<td><code>--color-accent-fg</code></td>
+<td><code>0 0% 100%</code></td>
+<td><code>0 0% 100%</code></td>
+<td>White text on dusty teal</td>
+</tr>
+<tr>
+<td>Accent soft</td>
+<td><code>--color-accent-soft</code></td>
+<td><code>180 25% 94%</code></td>
+<td><code>180 18% 18%</code></td>
+<td>Very light teal wash</td>
 </tr>
 <tr>
 <td>Background</td>
-<td>TBD</td>
-<td>Clean, light — not stark white (cold), not cream (dated)</td>
+<td><code>--color-bg</code></td>
+<td><code>35 20% 97%</code></td>
+<td><code>18 10% 8%</code></td>
+<td>Warm linen off-white (not clinical stark white); slight warmth reduces medical feel</td>
+</tr>
+<tr>
+<td>Foreground</td>
+<td><code>--color-fg</code></td>
+<td><code>18 8% 12%</code></td>
+<td><code>35 15% 92%</code></td>
+<td>Near-black on light; warm off-white on dark — avoids cold stark contrast</td>
+</tr>
+<tr>
+<td>Foreground muted</td>
+<td><code>--color-fg-muted</code></td>
+<td><code>18 6% 42%</code></td>
+<td><code>35 10% 58%</code></td>
+<td>Secondary text; warm grey in both modes</td>
+</tr>
+<tr>
+<td>Border</td>
+<td><code>--color-border</code></td>
+<td><code>35 12% 88%</code></td>
+<td><code>35 8% 20%</code></td>
+<td>Warm subtle dividers; consistent with linen background register</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Palette mood:</strong> TBD — candidate direction: warm neutral + 1 distinctive accent. Avoid the cold clinical look of medical equipment. Avoid the aggressive energy of sports accessories. Aim for "everyday lifestyle that happens to accommodate a medical device."</p>
+<p><strong>Palette mood:</strong> Warm Italian clay with a grounding Mediterranean seafoam accent — trustworthy, lifestyle-forward, distinctly non-clinical.</p>
+<p><strong>Canonical token names</strong> (from <code>packages/themes/base/src/tokens.ts</code>):
+<code>--color-primary</code> (+ <code>-fg</code>, <code>-soft</code>, <code>-hover</code>, <code>-active</code>), <code>--color-accent</code> (+ <code>-fg</code>, <code>-soft</code>), <code>--color-bg</code>, <code>--color-fg</code>, <code>--color-fg-muted</code>, <code>--color-border</code>.</p>
 <h3>Typography</h3>
+<blockquote>
+<p><strong>Constraint:</strong> All fonts must be freely available — Google Fonts or system stacks only. No paid or licensed typefaces.</p>
+</blockquote>
+<p>Font rationale: DM Sans is a humanist sans-serif with warm, approachable letterforms. It reads professionally without feeling cold or technical (unlike geometric sans-serifs). Excellent legibility at body sizes. Good Italian character rendering. Clearly distinct from Geist Sans (base theme) and Plus Jakarta Sans (BRIK prime theme).</p>
 <table>
 <thead>
 <tr>
 <th>Role</th>
-<th>Token (proposed)</th>
+<th>Token</th>
+<th>Font Family</th>
+<th>Source</th>
 <th>Rationale</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Body + headings</td>
-<td>TBD</td>
-<td>Readable, friendly, not too geometric (engineer feel). Consider humanist sans-serif. Italian market: ensure good display at moderate sizes.</td>
+<td>Body + UI</td>
+<td><code>--font-sans</code></td>
+<td><code>DM Sans, system-ui, sans-serif</code></td>
+<td><a href="https://fonts.google.com/specimen/DM+Sans">Google Fonts</a></td>
+<td>Humanist warmth; approachable without being playful; strong legibility for parent-audience at mobile sizes</td>
 </tr>
 <tr>
-<td>Monospace</td>
-<td>N/A — no dev-facing UI</td>
-<td></td>
+<td>Headings</td>
+<td>inherits <code>--font-sans</code></td>
+<td>same family</td>
+<td>same</td>
+<td>No display-font contrast needed; consistency signals reliability over flair</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Google Fonts URL:</strong> <code>https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&#x26;display=swap</code></p>
+<p><strong>Type personality:</strong> Humanist sans-serif — professional enough for trust, warm enough for a daily-care brand targeting parents.</p>
+<p><strong>Loading:</strong> Import <code>DM Sans</code> from Google Fonts (weights 400, 500, 600). Use <code>font-display: swap</code> and <code>preload</code> for the 400 weight.</p>
 <h3>Shape &#x26; Elevation</h3>
 <table>
 <thead>
 <tr>
 <th>Property</th>
-<th>Token (proposed)</th>
-<th>Rationale</th>
+<th>Token</th>
+<th>Value</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Card radius</td>
-<td>TBD</td>
-<td>Softer radius (friendlier) preferred over hard corners (clinical)</td>
+<td>Card radius (medium)</td>
+<td><code>--radius-md</code></td>
+<td><code>0.75rem</code></td>
+<td>Softer than base default — friendlier, less corporate; consistent with lifestyle brand register</td>
+</tr>
+<tr>
+<td>Card radius (large)</td>
+<td><code>--radius-lg</code></td>
+<td><code>1rem</code></td>
+<td>Used for modal overlays, hero cards — rounder and more approachable</td>
 </tr>
 <tr>
 <td>Default shadow</td>
-<td>TBD</td>
-<td>Light elevation; product cards need to feel trustworthy, not flashy</td>
-</tr>
-</tbody>
-</table>
-<h3>Token Rationale</h3>
-<blockquote>
-<p>Token rationale will be populated when the theme package is created. This section is a placeholder.</p>
-</blockquote>
-<table>
-<thead>
-<tr>
-<th>Token</th>
-<th>Design rationale</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><em>(all TBD)</em></td>
-<td>Theme package <code>packages/themes/cochlearfit/</code> does not yet exist. Populate when created via <code>/lp-design-spec</code>.</td>
+<td><code>--shadow-sm</code></td>
+<td>base value</td>
+<td>Light elevation on product cards; warm-biased neutral (no cold grey cast)</td>
 </tr>
 </tbody>
 </table>
 <h3>Imagery Direction</h3>
 <ul>
-<li><strong>Do:</strong> Real product photography showing fit on head (over cochlear implant worn correctly). Lifestyle photography with natural lighting. Inclusive representation — show range of ages, hair types, and cochlear implant processor types.</li>
-<li><strong>Don't:</strong> Stock photography of generic hair accessories. Over-medicalized imagery (hospital settings, devices isolated on white). Imagery that emphasizes disability over lifestyle.</li>
+<li><strong>Do:</strong> Real product photography showing the headband worn correctly on a child's head with the CI processor in place — the primary conversion proof shot. Natural lighting, warm colour grading consistent with the terracotta/linen palette. Contextual lifestyle scenes: morning routine, school run, playground, sports, travel. Show a genuine range of hair types, skin tones, ages, and CI processor brands (Cochlear Nucleus, MED-EL, Advanced Bionics). Parents and children together where possible — this is a family purchase.</li>
+<li><strong>Do:</strong> Close-up detail shots of product construction — fabric texture, clasp quality, fit adjustment — to answer "will this stay on?" before the customer asks.</li>
+<li><strong>Don't:</strong> Stock photography of generic children's hair accessories or generic headbands without a CI processor visible. Over-medicalized imagery: hospital settings, clinical white backgrounds with device components arranged on a table, before/after framing.</li>
+<li><strong>Don't:</strong> Imagery that emphasises disability over lifestyle — no imagery that frames the CI processor as a problem to be solved or hidden. The aesthetic normalises the device as part of the child's everyday appearance, not as a medical fact to be managed.</li>
 </ul>
-<blockquote>
-<p>TBD — Validate imagery direction against competitor positioning and community feedback.</p>
-</blockquote>
+<hr>
 <h2>Voice &#x26; Tone</h2>
 <h3>Writing Style</h3>
 <ul>
-<li><strong>Sentence length:</strong> Short and direct. Customers often have practical questions; answer them quickly.</li>
-<li><strong>Formality:</strong> Conversational but professional. Not casual-slang; not formal-medical.</li>
-<li><strong>Technical level:</strong> Acknowledge the device (cochlear implant) without jargon. Use plain names for processor brands (Cochlear Nucleus, Advanced Bionics, MED-EL) when compatibility is stated — customers know their own device.</li>
-<li><strong>Italian localization:</strong> Primary market is Italian. Italian copy should feel native, not translated. Warmth in Italian differs from English warmth — shorter sentences, direct address.</li>
+<li><strong>Formality:</strong> conversational — professional enough for trust, approachable enough for a parent reading a Facebook group recommendation at 7am</li>
+<li><strong>Sentence length:</strong> short — answer the practical question fast; secondary information follows</li>
+<li><strong>Humour:</strong> none — context is a child's daily medical device; warmth yes, humour no</li>
+<li><strong>Technical level:</strong> plain language; name processor brands directly (Cochlear Nucleus, MED-EL Sonnet, Advanced Bionics) when stating compatibility — customers know their own device and want to be met at that level; no clinical or engineering terminology</li>
 </ul>
+<h3>Italian copy note</h3>
+<p>Italian is the primary language of the primary market. Italian copy must feel native, not translated. Italian warmth is more direct and less effusive than English warmth — shorter sentences, direct address (<code>per tuo figlio</code>, <code>il tuo processore</code>), less hedging. Avoid literal translation of English idioms.</p>
 <h3>Key Phrases</h3>
-<blockquote>
-<p>TBD — Validate with customer interviews. Directional suggestions:</p>
-</blockquote>
 <ul>
-<li>"Fits your processor" (compatibility-first framing)</li>
-<li>"Made for everyday wear" (normalizes the use case)</li>
-<li>"Your fit, your style" (practical + personal)</li>
+<li><strong>"Fits your processor"</strong> — compatibility-first framing; the primary purchase-decision signal; use early, specifically, with named processor families where possible</li>
+<li><strong>"Made for everyday wear"</strong> — normalises the use case; positions Facilella as a standard part of the daily routine, not a workaround</li>
+<li><strong>"Secure wear for busy days"</strong> — core campaign-level message; pairs the functional benefit with the real-life context (school, play, travel)</li>
+<li><strong>"Worn proudly"</strong> — style and inclusion cue; counteracts concealment framing without overstating it</li>
+<li><strong>"Your fit, your style"</strong> — used in personalisation and accessory-range contexts</li>
 </ul>
 <h3>Words to Avoid</h3>
-<blockquote>
-<p>TBD — Validate with customer/community feedback. Initial candidates:</p>
-</blockquote>
 <ul>
-<li>Medical jargon ("implant-compatible device interface")</li>
-<li>Stigmatizing language ("hide your processor", "disguise")</li>
-<li>Overpromising fit language without evidence ("fits all processors" if not verified)</li>
+<li><strong>"improve hearing" / "therapy" / "treatment" / "rehabilitation"</strong> — EU MDR regulatory boundary; these risk framing Facilella as a medical-purpose claim or device-enabling accessory</li>
+<li><strong>"essential for implant function" / "enables your processor to work"</strong> — EU MDR accessory-enabling language; hard stop</li>
+<li><strong>"hide" / "invisible" / "discreet" / "conceal"</strong> as a primary promise — conflicts with inclusive positioning; Facilella normalises wearing, not concealment</li>
+<li><strong>"fits all processors"</strong> without a verified compatibility matrix — overpromising; generates returns and erodes trust</li>
+<li>Medical jargon (e.g., "implant-compatible device interface") — alienating; not how parents talk</li>
+<li>Stigmatising framing (e.g., "despite having a hearing loss", "even though your child wears a device") — Facilella treats CI wear as ordinary, not as something to overcome</li>
 </ul>
+<hr>
+<h2>Token Overrides</h2>
+<p>Theme package: <code>packages/themes/facilella/src/tokens.ts</code> — <strong>not yet created.</strong></p>
+<p>The overrides below are the canonical spec for the theme package. When created, these values should be applied verbatim.</p>
+<p>Reference: <code>packages/themes/prime/src/tokens.ts</code> shows the override pattern to follow (structure and type shape). Base values are in <code>packages/themes/base/src/tokens.ts</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Base Value</th>
+<th>Facilella Override</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--color-primary</code></td>
+<td>base default</td>
+<td><code>light: '18 52% 52%'</code>, <code>dark: '18 45% 68%'</code></td>
+<td>Warm terracotta clay primary</td>
+</tr>
+<tr>
+<td><code>--color-primary-fg</code></td>
+<td>base default</td>
+<td><code>light: '0 0% 100%'</code>, <code>dark: '18 15% 10%'</code></td>
+<td>White on clay in light; warm dark in dark mode</td>
+</tr>
+<tr>
+<td><code>--color-primary-soft</code></td>
+<td>base default</td>
+<td><code>light: '18 52% 95%'</code>, <code>dark: '18 35% 18%'</code></td>
+<td>Tinted linen wash</td>
+</tr>
+<tr>
+<td><code>--color-primary-hover</code></td>
+<td>base default</td>
+<td><code>light: '18 52% 46%'</code>, <code>dark: '18 45% 74%'</code></td>
+<td>Slightly deeper on hover</td>
+</tr>
+<tr>
+<td><code>--color-primary-active</code></td>
+<td>base default</td>
+<td><code>light: '18 52% 40%'</code>, <code>dark: '18 45% 78%'</code></td>
+<td>Pressed state</td>
+</tr>
+<tr>
+<td><code>--color-accent</code></td>
+<td>base default</td>
+<td><code>light: '180 22% 44%'</code>, <code>dark: '180 22% 60%'</code></td>
+<td>Dusty seafoam accent</td>
+</tr>
+<tr>
+<td><code>--color-accent-fg</code></td>
+<td>base default</td>
+<td><code>light: '0 0% 100%'</code>, <code>dark: '0 0% 100%'</code></td>
+<td>White on dusty teal</td>
+</tr>
+<tr>
+<td><code>--color-accent-soft</code></td>
+<td>base default</td>
+<td><code>light: '180 25% 94%'</code>, <code>dark: '180 18% 18%'</code></td>
+<td>Light teal wash</td>
+</tr>
+<tr>
+<td><code>--color-bg</code></td>
+<td>base default</td>
+<td><code>light: '35 20% 97%'</code>, <code>dark: '18 10% 8%'</code></td>
+<td>Warm linen background (not clinical white)</td>
+</tr>
+<tr>
+<td><code>--color-fg</code></td>
+<td>base default</td>
+<td><code>light: '18 8% 12%'</code>, <code>dark: '35 15% 92%'</code></td>
+<td>Near-black on light; warm off-white on dark</td>
+</tr>
+<tr>
+<td><code>--color-fg-muted</code></td>
+<td>base default</td>
+<td><code>light: '18 6% 42%'</code>, <code>dark: '35 10% 58%'</code></td>
+<td>Secondary text; warm grey in both modes</td>
+</tr>
+<tr>
+<td><code>--color-border</code></td>
+<td>base default</td>
+<td><code>light: '35 12% 88%'</code>, <code>dark: '35 8% 20%'</code></td>
+<td>Warm subtle dividers</td>
+</tr>
+<tr>
+<td><code>--font-sans</code></td>
+<td><code>var(--font-geist-sans)</code></td>
+<td><code>var(--font-dm-sans)</code></td>
+<td>Humanist warmth; DM Sans loaded in layout</td>
+</tr>
+<tr>
+<td><code>--radius-md</code></td>
+<td>base default</td>
+<td><code>light: '0.75rem'</code></td>
+<td>Softer corners — friendlier, less corporate</td>
+</tr>
+<tr>
+<td><code>--radius-lg</code></td>
+<td>base default</td>
+<td><code>light: '1rem'</code></td>
+<td>Rounded cards and modals</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Dark mode:</strong> requires bespoke overrides — dark values listed in Colour Palette and Token Overrides tables above.</p>
+<hr>
 <h2>Signature Patterns</h2>
-<blockquote>
-<p>TBD — No application has been built yet. Patterns will be added as <code>/lp-design-spec</code> identifies them during feature work.</p>
-</blockquote>
-<p><em>First pattern to define: product compatibility display component (which processor brands/models this headband fits — this is the primary conversion trust element).</em></p>
+<p>TBD — patterns emerge through <code>/lp-design-spec</code> work during DO+.</p>
+<p><em>First pattern to define:</em> <strong>Processor compatibility display component</strong> — shows which CI processor brands/models this headband fits (Cochlear, MED-EL, Advanced Bionics). This is the primary conversion trust element; it must be styled in Facilella brand tokens and should appear on every product detail page above the fold.</p>
+<hr>
 <h2>App Coverage</h2>
 <table>
 <thead>
@@ -295,88 +457,46 @@ A dedicated <code>/lp-design-spec</code> session + theme package creation is req
 </thead>
 <tbody>
 <tr>
-<td>cochlearfit</td>
-<td><code>packages/themes/cochlearfit/</code></td>
-<td>Not created</td>
-<td>Main storefront — theme package must be created before <code>/lp-design-spec</code> can run</td>
+<td>facilella (storefront)</td>
+<td><code>packages/themes/facilella/</code></td>
+<td>Planned — not yet created</td>
+<td>Theme package must be created before <code>/lp-design-spec</code> can run at DO. Follow <code>packages/themes/prime/</code> as the structural template.</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p><strong>Prerequisite for Active:</strong> theme package must exist and Token-Source must be a real file path.</p>
-</blockquote>
+<hr>
 <h2>References</h2>
 <ul>
+<li>Brand strategy (ASSESSMENT-10): <code>docs/business-os/strategy/HEAD/2026-02-21-brand-profile.user.md</code></li>
+<li>Naming decision (R7 — Facilella selected): <code>docs/business-os/strategy/HEAD/decisions/DEC-HEAD-NAME-01.user.md</code></li>
 <li>Business strategy: <code>docs/business-os/strategy/HEAD/plan.user.md</code></li>
+<li>Messaging hierarchy: <code>docs/business-os/strategy/HEAD/messaging-hierarchy.user.md</code></li>
 <li>90-day forecast (canonical): <code>docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md</code></li>
 <li>Offer design (canonical): <code>docs/business-os/startup-baselines/HEAD/offer.md</code></li>
-<li>Naming shortlist: <code>docs/business-os/strategy/HEAD/2026-02-20-candidate-names.user.md</code></li>
-<li>Strategy index (artifact status): <code>docs/business-os/strategy/HEAD/index.user.md</code></li>
+<li>Reference theme (structure template): <code>packages/themes/prime/src/tokens.ts</code></li>
+<li>Base theme tokens: <code>packages/themes/base/src/tokens.ts</code></li>
 <li>Design system handbook: <code>docs/design-system-handbook.md</code></li>
 </ul>
-<h2>Proof Ledger</h2>
-<table>
-<thead>
-<tr>
-<th>Claim</th>
-<th>Evidence</th>
-<th>Source</th>
-<th>Confidence</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Italy TAM directional band ~17k-20k</td>
-<td>Consolidated market-intel refresh</td>
-<td><code>docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md</code></td>
-<td>Medium</td>
-</tr>
-<tr>
-<td>Category supports low-risk textile + organisation expansion</td>
-<td>S3B synthesis top-3 MVP recommendation</td>
-<td><code>docs/business-os/strategy/HEAD/lp-other-products-results.user.md</code></td>
-<td>Medium</td>
-</tr>
-<tr>
-<td>Primary market is Italy, high-intent + referral-acquisition mix</td>
-<td>Canonical strategy + channels backfill</td>
-<td><code>docs/business-os/strategy/HEAD/plan.user.md</code>, <code>docs/business-os/startup-baselines/HEAD/channels.md</code></td>
-<td>Medium</td>
-</tr>
-<tr>
-<td>Fit/compatibility clarity is a primary conversion and returns driver</td>
-<td>Offer and forecast assumptions</td>
-<td><code>docs/business-os/startup-baselines/HEAD/offer.md</code>, <code>docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md</code></td>
-<td>Medium</td>
-</tr>
-</tbody>
-</table>
+<hr>
 <h2>Draft → Active Advancement Criteria</h2>
-<p>To advance this dossier from <code>Draft</code> to <code>Active</code>, the following must be complete:</p>
 <ul class="contains-task-list">
-<li class="task-list-item"><input type="checkbox" disabled> Audience demographic validated with first-party or community evidence (not just forecast estimates)</li>
-<li class="task-list-item"><input type="checkbox" disabled> Personality direction validated with ≥3 customer/community inputs</li>
-<li class="task-list-item"><input type="checkbox" disabled> Color palette decided and theme package <code>packages/themes/cochlearfit/</code> created</li>
-<li class="task-list-item"><input type="checkbox" disabled> Token-Source updated from <code>TBD</code> to real file path</li>
-<li class="task-list-item"><input type="checkbox" disabled> Typography decided and added to theme</li>
-<li class="task-list-item"><input type="checkbox" disabled> Key Phrases validated — at least 3 non-TBD phrases with evidence</li>
-<li class="task-list-item"><input type="checkbox" disabled> Words to Avoid list validated</li>
-<li class="task-list-item"><input type="checkbox" disabled> Proof Ledger: ≥1 entry with Medium or High confidence per claim</li>
-<li class="task-list-item"><input type="checkbox" disabled> Reviewed by Pete</li>
+<li class="task-list-item"><input type="checkbox" checked disabled> ASSESSMENT-12 completeness gate passed (2026-02-26)</li>
+<li class="task-list-item"><input type="checkbox" disabled> Theme package <code>packages/themes/facilella/src/tokens.ts</code> created with overrides above</li>
+<li class="task-list-item"><input type="checkbox" disabled> Token-Source updated to real file path</li>
+<li class="task-list-item"><input type="checkbox" disabled> DM Sans font loaded in <code>apps/facilella</code> layout and confirmed rendering at mobile sizes</li>
+<li class="task-list-item"><input type="checkbox" disabled> Processor compatibility display component designed (first Signature Pattern)</li>
+<li class="task-list-item"><input type="checkbox" disabled> Colour palette reviewed by Pete — clay primary and seafoam accent confirmed</li>
+<li class="task-list-item"><input type="checkbox" disabled> Typography reviewed by Pete — DM Sans confirmed</li>
 </ul>
     <div class="meta">
-      <div>Source: <code>docs/business-os/strategy/HEAD/2026-02-21-brand-identity-dossier.user.md</code></div>
-      <div>Generated: 2026-02-20T13:28:09.605Z</div>
+      <div>Source: <code>docs/business-os/strategy/HEAD/assessment/2026-02-21-brand-identity-dossier.user.md</code></div>
+      <div>Generated: 2026-03-10T19:44:46.786Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    // startOnLoad: false — we render manually so hidden engineering diagrams
-    // (inside display:none) are not attempted on load, which causes spurious
-    // "Syntax error in text" failures in Mermaid v11.
     mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
 
-    // Render only the visible (operator) diagrams immediately.
     const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
       (el) => !el.closest("[data-audience='engineering']")
     );
@@ -384,8 +504,6 @@ A dedicated <code>/lp-design-spec</code> session + theme package creation is req
       mermaid.run({ nodes: operatorDiagrams });
     }
 
-    // Audience toggle — Model A.
-    // Engineering diagrams are rendered on first reveal (not on load).
     let engineeringRendered = false;
     const toggleBtn = document.getElementById("audience-toggle");
     if (toggleBtn) {
@@ -394,7 +512,6 @@ A dedicated <code>/lp-design-spec</code> session + theme package creation is req
         toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
         toggleBtn.setAttribute("aria-pressed", String(isShowing));
         if (isShowing && !engineeringRendered) {
-          // Render engineering diagrams now that they are visible.
           const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
           if (nodes.length > 0) {
             mermaid.run({ nodes });

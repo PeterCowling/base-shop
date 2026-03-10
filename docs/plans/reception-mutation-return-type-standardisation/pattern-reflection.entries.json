@@ -1,15 +1,23 @@
 {
   "schema_version": "pattern-reflection.entries.v1",
-  "generated_at": "2026-03-08T23:46:23.474Z",
+  "generated_at": "2026-03-10T11:40:17.224Z",
   "plan_slug": "reception-mutation-return-type-standardisation",
-  "source_path": "../docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.user.md",
+  "review_cycle_key": "reception-mutation-return-type-standardisation",
+  "source_path": "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
   "entries": [
     {
+      "canonical_title": "Possible: a \"mutation hook migration\" skill could automate the pattern of reading hoo...",
       "pattern_summary": "New skill — Possible: a \"mutation hook migration\" skill could automate the pattern of reading hoo...",
       "category": "ad_hoc",
       "routing_target": "defer",
       "occurrence_count": 1,
-      "evidence_refs": []
+      "evidence_refs": [],
+      "review_cycle_key": "reception-mutation-return-type-standardisation",
+      "build_signal_id": "dbbe88851003c1cbdebe79d4e1fe0eaa0f961c49",
+      "recurrence_key": "3988de60ce126a2c46c760899584d0f158988e0f",
+      "build_origin_status": "ready"
     }
   ]
 }

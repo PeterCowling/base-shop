@@ -1,18 +1,18 @@
 {
-  "last_updated": "2026-03-09T21:10:30.000Z",
+  "last_updated": "2026-03-10T11:40:27.950Z",
   "counts": {
-    "enqueued": 19,
+    "enqueued": 21,
     "processed": 7,
     "skipped": 0,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 270,
-    "fact_find_ready": 15,
+    "fact_find_ready": 17,
     "plan_ready": 0,
     "micro_build_ready": 0,
     "briefing_ready": 0,
-    "total": 495
+    "total": 497
   },
   "dispatches": [
     {
@@ -22726,6 +22726,138 @@
         "processed_at": "2026-03-09T21:10:30.000Z",
         "fact_find_slug": "startup-loop-centralized-math-foundations",
         "fact_find_path": "docs/plans/startup-loop-centralized-math-foundations/fact-find.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310114027-0001",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "2714dcba92e63801bc068b59f9d38002d292542a",
+      "root_event_id": "build-origin:meta-loop-efficiency-h4-h5:2714dcba92e63801bc068b59f9d38002d292542a",
+      "anchor_key": "require-executable-audit-coverage-before-new-heuristics-graduate-from-skill-pros",
+      "cluster_key": "build-origin:bos:meta-loop-efficiency-h4-h5:require-executable-audit-coverage-before-new-heuristics-graduate-from-skill-pros",
+      "cluster_fingerprint": "443d064166d15904572e77de089ea6921840d63eb4ec683bf461392f5ccd94f8",
+      "lineage_depth": 0,
+      "area_anchor": "require executable audit coverage before new heuristics graduate from skill prose",
+      "location_anchors": [
+        "docs/plans/meta-loop-efficiency-h4-h5/results-review.user.md",
+        "docs/plans/meta-loop-efficiency-h4-h5/results-review.signals.json",
+        "docs/plans/meta-loop-efficiency-h4-h5/pattern-reflection.user.md",
+        "docs/plans/meta-loop-efficiency-h4-h5/pattern-reflection.entries.json"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "H4/H5 existed in the canonical skill contract and audit artifact shape, but they remained unscored until a script-backed implementation and downstream parser support were added in the same build",
+      "next_scope_now": "create card",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.6200000000000001,
+      "evidence_refs": [
+        "docs/plans/meta-loop-efficiency-h4-h5/results-review.user.md",
+        "docs/plans/meta-loop-efficiency-h4-h5/results-review.signals.json",
+        "docs/plans/meta-loop-efficiency-h4-h5/pattern-reflection.user.md",
+        "docs/plans/meta-loop-efficiency-h4-h5/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-10T11:40:27.918Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced \"require executable audit coverage before new heuristics graduate from skill prose\" with supporting narrative: H4/H5 existed in the canonical skill contract and audit artifact shape, but they remained unscored until a script-backed implementation and downstream parser support were added in the same build",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for require executable audit coverage before new heuristics graduate from skill prose.",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "2714dcba92e63801bc068b59f9d38002d292542a",
+        "recurrence_key": "74030f072ad5612047160ccef3f5294c07906f2d",
+        "review_cycle_key": "meta-loop-efficiency-h4-h5",
+        "plan_slug": "meta-loop-efficiency-h4-h5",
+        "canonical_title": "require executable audit coverage before new heuristics graduate from skill prose",
+        "primary_source": "pattern-reflection.entries.json",
+        "merge_state": "merged_cross_sidecar",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": true
+        },
+        "results_review_path": "docs/plans/meta-loop-efficiency-h4-h5/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/meta-loop-efficiency-h4-h5/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/meta-loop-efficiency-h4-h5/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": "docs/plans/meta-loop-efficiency-h4-h5/pattern-reflection.entries.json",
+        "reflection_fields": {
+          "category": "deterministic",
+          "routing_target": "defer",
+          "occurrence_count": 1
+        }
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310114027-0002",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "dbbe88851003c1cbdebe79d4e1fe0eaa0f961c49",
+      "root_event_id": "build-origin:reception-mutation-return-type-standardisation:dbbe88851003c1cbdebe79d4e1fe0eaa0f961c49",
+      "anchor_key": "possible-a-mutation-hook-migration-skill-could-automate-the-pattern-of-reading-h",
+      "cluster_key": "build-origin:bos:reception-mutation-return-type-standardisation:possible-a-mutation-hook-migration-skill-could-automate-the-pattern-of-reading-h",
+      "cluster_fingerprint": "de9e28b0e61a75176857a2b03c8e6b5c05bb299182c015ccee5b2087702c96a1",
+      "lineage_depth": 0,
+      "area_anchor": "Possible: a \"mutation hook migration\" skill could automate the pattern of reading hoo...",
+      "location_anchors": [
+        "docs/plans/reception-mutation-return-type-standardisation/results-review.user.md",
+        "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.user.md",
+        "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.entries.json"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "Possible: a \"mutation hook migration\" skill could automate the pattern of reading hoo...",
+      "next_scope_now": "Fact-find the build-origin improvement candidate \"Possible: a \"mutation hook migration\" skill could automate the pattern of reading hoo...\" and validate the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.5700000000000001,
+      "evidence_refs": [
+        "docs/plans/reception-mutation-return-type-standardisation/results-review.user.md",
+        "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.user.md",
+        "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-10T11:40:27.945Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced recurring follow-up work: Possible: a \"mutation hook migration\" skill could automate the pattern of reading hoo...",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for Possible: a \"mutation hook migration\" skill could automate the pattern of reading hoo....",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "dbbe88851003c1cbdebe79d4e1fe0eaa0f961c49",
+        "recurrence_key": "3988de60ce126a2c46c760899584d0f158988e0f",
+        "review_cycle_key": "reception-mutation-return-type-standardisation",
+        "plan_slug": "reception-mutation-return-type-standardisation",
+        "canonical_title": "Possible: a \"mutation hook migration\" skill could automate the pattern of reading hoo...",
+        "primary_source": "pattern-reflection.entries.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": false,
+          "pattern_reflection_entry": true
+        },
+        "results_review_path": "docs/plans/reception-mutation-return-type-standardisation/results-review.user.md",
+        "results_review_sidecar_path": null,
+        "pattern_reflection_path": "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.entries.json",
+        "reflection_fields": {
+          "category": "ad_hoc",
+          "routing_target": "defer",
+          "occurrence_count": 1
+        }
       }
     }
   ]

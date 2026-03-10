@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-do-fact-find, lp-do-ideas, startup-loop
-Overall-confidence: 78%
+Overall-confidence: 79%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan-only
 ---
@@ -34,7 +34,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [x] TASK-13: Choose the canonical queue surface and admission seam for build-origin ideas — Complete (2026-03-10)
 - [x] TASK-14: Wire build-origin admission into the real build lifecycle — Complete (2026-03-10)
 - [x] TASK-15: Align report and closure consumers to the canonical queue surface — Complete (2026-03-10)
-- [ ] TASK-07: Canonical queue-path readiness checkpoint
+- [x] TASK-16: Refresh active build-review sidecars to the canonical build-origin schema — Complete (2026-03-10)
+- [x] TASK-07: Canonical queue-path readiness checkpoint — Complete (2026-03-10)
 - [ ] TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
 - [ ] TASK-09: Cutover split checkpoint
 - [ ] TASK-10: Execute bounded carry-over cutover
@@ -112,7 +113,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-13 | INVESTIGATE | Choose the canonical queue surface and admission seam for build-origin ideas | 75% | M | Complete (2026-03-10) | TASK-03, TASK-04, TASK-05, TASK-11 | TASK-14, TASK-15, TASK-07 |
 | TASK-14 | IMPLEMENT | Wire build-origin admission into the real build lifecycle on the chosen queue surface | 80% | M | Complete (2026-03-10) | TASK-13 | TASK-07 |
 | TASK-15 | IMPLEMENT | Align report and closure consumers to the canonical queue surface | 80% | M | Complete (2026-03-10) | TASK-13 | TASK-07 |
-| TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11, TASK-14, TASK-15 | TASK-08, TASK-09, TASK-10, TASK-12 |
+| TASK-16 | IMPLEMENT | Refresh active build-review sidecars to the canonical build-origin schema | 80% | M | Complete (2026-03-10) | TASK-14, TASK-15 | TASK-07 |
+| TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Complete (2026-03-10) | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11, TASK-14, TASK-15, TASK-16 | TASK-08, TASK-09, TASK-10, TASK-12 |
 | TASK-08 | INVESTIGATE | Audit historical backlog carry-over and produce bounded carry-over evidence | 70% | M | Pending | TASK-07 | TASK-09, TASK-10, TASK-12 |
 | TASK-09 | CHECKPOINT | Decide in-thread cutover versus separate carry-over project | 95% | S | Pending | TASK-08 | TASK-10, TASK-12 |
 | TASK-10 | IMPLEMENT | Execute bounded carry-over cutover | 75% | M | Pending | TASK-09 | - |
@@ -129,10 +131,11 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | 6 | TASK-11 | TASK-06 | Turn the chosen self-evolving alignment into real code before any readiness claim |
 | 7 | TASK-13 | TASK-03, TASK-04, TASK-05, TASK-11 | Resolve the canonical queue surface and real admission seam before declaring the queue path ready |
 | 8 | TASK-14, TASK-15 | TASK-13 | After the queue-surface decision, wire automated admission and align report/closure consumers on the same trial queue surface |
-| 9 | TASK-07 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11, TASK-14, TASK-15 | Check whether queue-backed canonical path is genuinely ready |
-| 10 | TASK-08 | TASK-07 | Produce historical carry-over evidence only; do not decide project split here |
-| 11 | TASK-09 | TASK-08 | Decide whether carry-over stays in-thread or becomes a separate project |
-| 12 | TASK-10 or TASK-12 | TASK-09 | Exactly one conditional endgame task executes after the split checkpoint |
+| 9 | TASK-16 | TASK-14, TASK-15 | Refresh active non-archive sidecars so the new seam has canonical inputs to admit |
+| 10 | TASK-07 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11, TASK-14, TASK-15, TASK-16 | Check whether queue-backed canonical path is genuinely ready |
+| 11 | TASK-08 | TASK-07 | Produce historical carry-over evidence only; do not decide project split here |
+| 12 | TASK-09 | TASK-08 | Decide whether carry-over stays in-thread or becomes a separate project |
+| 13 | TASK-10 or TASK-12 | TASK-09 | Exactly one conditional endgame task executes after the split checkpoint |
 
 ## Tasks
 
@@ -519,6 +522,66 @@ The current startup-loop backlog is structurally split: `process-improvements.us
     - `lp-do-ideas-build-commit-hook.ts` defaults to `docs/business-os/startup-loop/ideas/live/queue-state.json`.
     - Before TASK-13, the plan had not yet stated which of those surfaces this thread actually intends to make canonical.
   - Result: TASK-07 stays pending. Added TASK-13, TASK-14, and TASK-15; rerun this checkpoint only after the trial-queue decision is implemented through the real admission seam and aligned consumers.
+- **Checkpoint Attempt (2026-03-10, rerun after TASK-14 and TASK-15): failed -> replan required**
+  - Pass: the canonical path is now real in code.
+    - `generate-process-improvements.ts` runs the build-origin bridge automatically before backlog collection.
+    - Report, build-origin admission, completion reconcile, keyword calibration, and queue-state completion now share one trial-queue constant surface.
+    - Self-evolving remains aligned to queue-backed `build_origin` provenance and no longer recreates a second idea authority rail.
+  - Fail: active non-archive build-review sidecars are still legacy inputs.
+    - Running `pnpm --filter scripts startup-loop:generate-process-improvements` scanned 8 active plan dirs with build-review sidecars and reported `signals=0 admitted=0 enqueued=0`.
+    - The warnings show the current active sidecars are not yet `ready` inputs for the bridge; example files such as [meta-loop-efficiency-h4-h5/results-review.signals.json](/Users/petercowling/base-shop/docs/plans/meta-loop-efficiency-h4-h5/results-review.signals.json) and [meta-loop-efficiency-h4-h5/pattern-reflection.entries.json](/Users/petercowling/base-shop/docs/plans/meta-loop-efficiency-h4-h5/pattern-reflection.entries.json) still use the pre-contract shape without canonical `build_signal_id` / `recurrence_key` readiness fields.
+    - One active plan, [xa-uploader-dual-upload-zones/results-review.signals.json](/Users/petercowling/base-shop/docs/plans/xa-uploader-dual-upload-zones/results-review.signals.json), also lacks a matching active `pattern-reflection.entries.json`.
+  - Result: TASK-07 stays pending. Added TASK-16; rerun this checkpoint only after active non-archive sidecars are refreshed onto the canonical build-origin schema and the generator is rerun.
+- **Checkpoint Attempt (2026-03-10, rerun after TASK-16): pass**
+  - Pass: the canonical queue-backed build-review path now works on real repo inputs.
+    - Active non-archive sidecars were refreshed with the hardened extractors and now carry canonical build-origin schema fields.
+    - Rerunning `pnpm --filter scripts startup-loop:generate-process-improvements` reported `plans=9/195 signals=5 admitted=5 enqueued=2`.
+    - `docs/business-os/startup-loop/ideas/trial/queue-state.json` now contains persisted `build_origin` dispatches.
+    - `docs/business-os/_data/process-improvements.json` and `docs/business-os/process-improvements.user.html` now surface queue-backed build-origin backlog items from the same run.
+  - Pass: remaining warnings are non-blocking and explicit.
+    - Some refreshed active plans legitimately produced zero idea items or zero pattern entries after re-extraction.
+    - `reception-inbox-prime-correctness` still lacks `results-review.signals.json`, and the generator now reports that missing source explicitly rather than silently dropping it.
+  - Result: TASK-07 is complete. Proceed to TASK-08 historical carry-over audit.
+
+### TASK-16: Refresh active build-review sidecars to the canonical build-origin schema
+- **Type:** IMPLEMENT
+- **Deliverable:** refreshed active non-archive `results-review.signals.json` / `pattern-reflection.entries.json` sidecars plus a generator rerun proving queue-backed admission on current repo inputs
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Complete (2026-03-10)
+- **Affects:** active non-archive build-review sidecars under `docs/plans/*`, `docs/business-os/process-improvements.user.html`, `docs/business-os/_data/process-improvements.json`, and `docs/business-os/startup-loop/ideas/trial/queue-state.json` if build-origin admissions are emitted
+- **Depends on:** TASK-14, TASK-15
+- **Blocks:** TASK-07
+- **Confidence:** 80%
+  - Implementation: 80% - the hardened extractors already exist; the gap is active artifact freshness, not missing code.
+  - Approach: 80% - refreshing active sidecars is better than preserving permanent legacy compatibility code.
+  - Impact: 90% - the checkpoint cannot pass honestly while current repo inputs still miss the canonical contract.
+- **Acceptance:**
+  - Every active non-archive plan with build-review sidecars is refreshed with the current extractor outputs, or explicitly recorded as having no build-origin signals.
+  - Rerunning `generate-process-improvements` after refresh produces queue-backed build-origin admissions for any plans that now qualify.
+  - Process improvements and queue outputs are regenerated from the refreshed state.
+  - Any active plan still lacking a pairable sidecar has an explicit documented reason.
+- **Validation contract (TC-16):**
+  - TC-01: refreshed active sidecars carry canonical build-origin fields where signals exist.
+  - TC-02: rerunning `generate-process-improvements` after refresh yields no legacy “No build-origin signals ready” warnings for refreshable cases.
+  - TC-03: any remaining no-op cases are explicit “no signal” or “missing source” cases, not schema drift.
+- **What would make this >=90%:** a precomputed inventory of active plans and a dry-run transcript proving which ones will emit signals before mutation.
+- **Build completion evidence (2026-03-10):**
+  - Refreshed active non-archive `results-review.signals.json` sidecars with the hardened extractor for:
+    - `meta-loop-efficiency-h4-h5`
+    - `reception-contrast-and-visual-polish`
+    - `reception-inbox-draft-dedup`
+    - `reception-mutation-return-type-standardisation`
+    - `reception-safe-handler-param-sprawl`
+    - `reception-theme-dark-mode-base-tokens`
+    - `startup-loop-cap02-message-variants`
+    - `xa-uploader-dual-upload-zones`
+  - Refreshed active non-archive `pattern-reflection.entries.json` sidecars for the above set plus `reception-inbox-prime-correctness`.
+  - Reran `pnpm --filter scripts startup-loop:generate-process-improvements`, which produced `signals=5 admitted=5 enqueued=2` on current repo inputs and increased the visible process-improvements idea backlog from 19 to 21.
+  - The remaining warnings are now explicit no-signal or missing-source cases rather than legacy schema drift.
+  - Outcome: affirming. TASK-07 can now pass on real repo evidence.
 
 ### TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
 - **Type:** INVESTIGATE
@@ -653,6 +716,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - 2026-03-10: Narrowed historical audit output to evidence only; project-split choice now belongs solely to TASK-09.
 - 2026-03-10: Readiness checkpoint exposed an unwired build-origin admission seam and a `trial`/`live` queue split, so queue-surface choice and automation wiring are now explicit precursor tasks.
 - 2026-03-10: Chose the trial queue, not the live queue, as the canonical surface for this thread; the live queue remains part of the broader go-live seam and is out of scope here.
+- 2026-03-10: Readiness rerun proved the code path is live but the current active sidecars are still legacy-shaped, so active-sidecar refresh is now an explicit precursor task.
+- 2026-03-10: Active non-archive sidecars were refreshed onto the canonical schema, allowing the readiness checkpoint to pass on real queue admissions rather than fixture-only evidence.
 
 ## Rehearsal Trace
 | Step | Preconditions Met | Issues Found | Resolution Required |
@@ -667,7 +732,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-13: Queue surface + automation seam decision | Yes (after TASK-03, TASK-04, TASK-05, TASK-11) | None after completion | No |
 | TASK-14: Automated build-origin admission | Yes (TASK-13 complete) | Major: the bridge exists only as a manual seam today | Yes |
 | TASK-15: Queue-surface consumer alignment | Yes (TASK-13 complete) | Moderate: the chosen trial queue must be made explicit and consistent across defaults/docs | Yes |
-| TASK-07: Canonical readiness checkpoint | Partial (depends on TASK-14 and TASK-15 as well as TASK-11) | Major: checkpoint would be false-positive while admission is manual or queue surfaces are split | Yes |
+| TASK-16: Active sidecar refresh | Yes (TASK-14 and TASK-15 complete) | None after completion | No |
+| TASK-07: Canonical readiness checkpoint | Yes (after TASK-16) | None after completion | No |
 | TASK-08: Historical carry-over audit | Yes (after TASK-07) | Moderate: audit must produce evidence, not smuggle in the split decision | Yes |
 | TASK-09: Cutover split checkpoint | Yes (after TASK-08) | None | No |
 | TASK-10: Bounded carry-over cutover | Partial (depends on TASK-09 continue-in-thread outcome) | Moderate: only valid for a small deterministic carry-forward set | Yes |
@@ -692,10 +758,11 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - TASK-13: 75% * 2 = 150
 - TASK-14: 80% * 2 = 160
 - TASK-15: 80% * 2 = 160
+- TASK-16: 80% * 2 = 160
 - TASK-08: 70% * 2 = 140
 - TASK-10: 75% * 2 = 150
 - TASK-12: 90% * 1 = 90
-- Overall = (150 + 170 + 160 + 170 + 160 + 140 + 160 + 150 + 160 + 160 + 140 + 150 + 90) / 25 = 78%
+- Overall = (150 + 170 + 160 + 170 + 160 + 140 + 160 + 150 + 160 + 160 + 160 + 140 + 150 + 90) / 27 = 79%
 
 ## Section Omission Rule
 

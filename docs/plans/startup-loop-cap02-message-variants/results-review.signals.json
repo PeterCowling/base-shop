@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-10T11:40:10.889Z",
+  "plan_slug": "startup-loop-cap02-message-variants",
+  "review_cycle_key": "startup-loop-cap02-message-variants",
+  "source_path": "docs/plans/startup-loop-cap02-message-variants/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

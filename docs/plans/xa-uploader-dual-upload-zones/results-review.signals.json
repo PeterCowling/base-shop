@@ -1,7 +1,10 @@
 {
   "schema_version": "results-review.signals.v1",
-  "generated_at": "2026-03-08T10:19:32.395Z",
+  "generated_at": "2026-03-10T11:40:11.879Z",
   "plan_slug": "xa-uploader-dual-upload-zones",
-  "source_path": "../docs/plans/xa-uploader-dual-upload-zones/results-review.user.md",
+  "review_cycle_key": "xa-uploader-dual-upload-zones",
+  "source_path": "docs/plans/xa-uploader-dual-upload-zones/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
   "items": []
 }

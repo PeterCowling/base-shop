@@ -13,8 +13,10 @@
 #   EXTRA_ROUTES      - Space-separated list of routes to check (e.g., "/api/health /shop")
 #                       Uses redirect-following curl (2xx and 3xx = pass).
 #   STRICT_ROUTES     - Space-separated list of routes that must return HTTP 200 exactly,
-#                       with no redirect following. Use for Cloudflare Pages 200-rewrite
-#                       routes where a 301 redirect indicates a broken route.
+#                       with no redirect following. These are checked against
+#                       CANONICAL_ORIGIN when provided, otherwise BASE_URL/derived URL.
+#                       Use for Cloudflare Pages 200-rewrite routes where a 301
+#                       redirect indicates a broken route.
 #   CANONICAL_ORIGIN  - Override the expected canonical host/origin used for
 #                       canonical tag and sitemap checks (e.g. "https://hostel-positano.com")
 #   CANONICAL_TAG_ROUTES - Space-separated list of HTML routes whose
@@ -253,9 +255,11 @@ fi
 # Check strict routes if specified (must return HTTP 200 — no redirect following)
 if [ -n "$STRICT_ROUTES" ]; then
     echo ""
+    STRICT_BASE_URL="${CANONICAL_ORIGIN%/}"
     echo "> Checking strict routes (must return HTTP 200, no redirect)..."
+    echo "  Strict base URL: $STRICT_BASE_URL"
     for route in $STRICT_ROUTES; do
-        ROUTE_URL="${URL}${route}"
+        ROUTE_URL="${STRICT_BASE_URL}${route}"
         echo "  Route: $route"
         if ! retry_check_strict "$ROUTE_URL"; then
             exit 1

@@ -170,7 +170,6 @@ function buildNavHtml(outputPath: string, navMode: RenderNavMode): string {
     path.join(businessOsDir, "startup-loop-output-registry.user.html"),
     outputDir
   );
-  const ideasHref = buildNavLink(path.join(businessOsDir, "ideas.user.html"), outputDir);
   const processHref = buildNavLink(path.join(businessOsDir, "process-improvements.user.html"), outputDir);
   const followUpHref = buildNavLink(path.join(businessOsDir, "follow-up.user.html"), outputDir);
 
@@ -189,7 +188,6 @@ function buildNavHtml(outputPath: string, navMode: RenderNavMode): string {
           `<a href="${loopFilesHref}">Loop Files</a>`,
           `<a href="${fileTypesHref}">File Types</a>`,
           `<a href="${outputRegistryHref}">Output Registry</a>`,
-          `<a href="${ideasHref}">Ideas</a>`,
           `<a href="${processHref}">Process</a>`,
           `<a href="${followUpHref}">Follow-up</a>`,
         ];

@@ -50,12 +50,12 @@
       "items": {
         "sita": {
           "href": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result",
-          "label": "Positano.com",
+          "label": "Lịch SITA",
           "text": "Lịch xe buýt SITA Positano ⇄ Sorrento trên <Link>Positano.com</Link>"
         },
         "curreri": {
           "href": "https://www.curreriviaggi.it/",
-          "label": "curreriviaggi.it",
+          "label": "curriviaggi.it.it.",
           "text": "Giờ chạy Curreri Sorrento ⇄ Napoli Aeroporto trên <Link>curreriviaggi.it</Link>"
         }
       }

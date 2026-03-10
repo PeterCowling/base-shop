@@ -1,0 +1,12 @@
+{
+  "title": "Kórházi témájú előnézet",
+  "guestActivation": {
+    "label": "Vendég aktiválása",
+    "description": "Az elmúlt 7 nap"
+  },
+  "signalBridge": {
+    "title": "Jelhídellenőrzés",
+    "etaShared": "ETA megosztott",
+    "cashPrepared": "Készpénz"
+  }
+}

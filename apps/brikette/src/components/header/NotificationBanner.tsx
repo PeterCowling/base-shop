@@ -11,6 +11,8 @@ import { useSetBannerRef } from "@/context/NotificationBannerContext";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { AppLanguage } from "@/i18n.config";
 import { X } from "@/icons";
+import { writeAttribution } from "@/utils/entryAttribution";
+import { fireCtaClick } from "@/utils/ga4-events";
 import { translatePath } from "@/utils/translate-path";
 
 type NotificationBannerCopy = {
@@ -153,10 +155,36 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
     };
   }, [lang, rawMessage, rawCta]);
 
-  const openDeals = useCallback(
-    () => router.push(`/${lang}/${translatePath("deals", lang)}`),
-    [router, lang]
-  );
+  const openDeals = useCallback(() => {
+    const dealsPath = `/${lang}/${translatePath("deals", lang)}`;
+    writeAttribution({
+      source_surface: "sitewide_shell",
+      source_cta: "notification_banner",
+      resolved_intent: "hostel",
+      product_type: null,
+      decision_mode: "direct_resolution",
+      destination_funnel: "hostel_central",
+      locale: lang,
+      fallback_triggered: false,
+      next_page: dealsPath,
+    });
+    fireCtaClick(
+      { ctaId: "header_check_availability", ctaLocation: "notification_banner" },
+      undefined,
+      {
+        source_surface: "sitewide_shell",
+        source_cta: "notification_banner",
+        resolved_intent: "hostel",
+        product_type: null,
+        decision_mode: "direct_resolution",
+        destination_funnel: "hostel_central",
+        locale: lang,
+        fallback_triggered: false,
+        next_page: dealsPath,
+      }
+    );
+    router.push(dealsPath);
+  }, [router, lang]);
 
   const close = useCallback(() => {
     setIsVisible(false);
@@ -236,8 +264,8 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
   );
 
   if (!isVisible) return null;
-  // Suppress banner on apartment routes — perks_apply_apartment: false (TASK-04/TASK-07)
-  if (pathname.includes("/apartment")) return null;
+  // Suppress banner on private-rooms routes — perks_apply_apartment: false (TASK-04/TASK-07)
+  if (pathname.includes("/private-rooms")) return null;
 
   return (
     <div className="sticky top-0">
@@ -248,7 +276,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
         tabIndex={0}
         onClick={openDeals}
         onKeyDown={handleActivation}
-        className="relative flex min-h-10 w-full min-w-10 cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-6 py-4 pe-16 text-fg-inverse shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg motion-safe:animate-slide-down"
+        className="relative flex min-h-10 w-full min-w-10 cursor-pointer items-center justify-center gap-2 overflow-hidden bg-brand-primary px-6 py-4 pe-16 text-brand-on-primary shadow-md transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg motion-safe:animate-slide-down"
       >
         <p className="text-balance text-center text-lg font-semibold leading-snug md:text-xl">
           <span data-notification-banner="message" className="font-semibold md:font-bold">
@@ -265,7 +293,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
           type="button"
           ref={registerDismissButton}
           aria-label={closeLabel}
-          className="absolute end-2 top-2 inline-flex size-11 items-center justify-center rounded-full bg-fg-inverse/15 text-fg-inverse transition hover:bg-fg-inverse/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg"
+          className="absolute end-2 top-2 inline-flex size-11 items-center justify-center rounded-full bg-brand-on-primary/15 text-brand-on-primary transition hover:bg-brand-on-primary/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bg"
         >
           <span
             aria-hidden="true"

@@ -1,11 +1,14 @@
 // File: /src/components/checkout/CheckoutTable.tsx
 
 import React from "react";
+import type { LucideIcon } from "lucide-react";
+import { Ban, CircleHelp, Cloud, Lock, Luggage, Umbrella, Wind } from "lucide-react";
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
 
 import { type LoanMethod } from "../../types/hooks/data/loansData";
 import { formatDdMm } from "../../utils/dateUtils";
+import { getKeycardIcon } from "../../utils/keycardIcon";
 import { sortCheckoutsData } from "../../utils/sortCheckouts";
 
 /**
@@ -54,44 +57,27 @@ interface CheckoutTableProps {
 }
 
 /**
- * Returns a combination of Font Awesome icon class(es) based on the loan item type.
+ * Returns the Lucide icon component and color class for a given loan item type.
  */
-export function getLoanIconClass(
+export function getLoanIcon(
   item: string,
   depositType?: LoanMethod | string
-): string {
-  const normalized = depositType ? depositType.toUpperCase() : undefined;
-
+): { Icon: LucideIcon; colorClass: string } {
   switch (item) {
     case "Umbrella":
-      return "fas fa-umbrella fa-lg text-info-main";
+      return { Icon: Umbrella, colorClass: "text-primary-main" };
     case "Hairdryer":
-      return "fas fa-hairdryer fa-lg text-accent";
+      return { Icon: Wind, colorClass: "text-accent" };
     case "Steamer":
-      return "fas fa-cloud fa-lg text-muted-foreground";
+      return { Icon: Cloud, colorClass: "text-muted-foreground" };
     case "Padlock":
-      return "fas fa-lock fa-lg text-warning-main";
+      return { Icon: Lock, colorClass: "text-warning-main" };
     case "Keycard":
-      if (normalized === "CASH") {
-        return "fas fa-id-card fa-lg text-success-main";
-      }
-      if (
-        normalized === "PASSPORT" ||
-        normalized === "LICENSE" ||
-        normalized === "ID"
-      ) {
-        return "fas fa-id-card fa-lg text-warning-main";
-      }
-      // Debug unknown deposit types
-      console.warn(
-        "[getLoanIconClass] Unrecognized deposit type for Keycard:",
-        depositType
-      );
-      return "fas fa-id-card fa-lg text-foreground";
+      return getKeycardIcon(depositType);
     case "No_card":
-      return "fas fa-ban fa-lg text-error-main";
+      return { Icon: Ban, colorClass: "text-error-main" };
     default:
-      return "fas fa-question fa-lg text-foreground";
+      return { Icon: CircleHelp, colorClass: "text-foreground" };
   }
 }
 
@@ -138,7 +124,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
   ({ guests, removeLoanItem, onComplete }) => {
     if (!guests || guests.length === 0) {
       return (
-        <div className="bg-surface border border-border-2 rounded-lg shadow p-8 text-center italic text-muted-foreground">
+        <div className="bg-surface border border-border-2 rounded-lg shadow-md p-8 text-center italic text-muted-foreground">
           No checkouts found for this date.
         </div>
       );
@@ -147,52 +133,44 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
     // Use the new utility to get a properly sorted list of guests
     const sortedGuests = sortCheckoutsData(guests);
 
-    // Optional debug
-    console.log("Final sorted guests for CheckoutTable:", sortedGuests);
-
     return (
-      <div className="bg-surface border border-border-2 rounded-lg shadow overflow-x-auto">
+      <div className="bg-surface border border-border-2 rounded-lg shadow-md overflow-x-auto">
         <Table className="w-full border-collapse" aria-label="checkout table">
-          <TableHeader className="bg-surface-2">
+          <TableHeader className="sticky top-0 z-10 backdrop-blur-sm bg-surface-2/80">
             <TableRow>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 DATE
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 REF
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 NAME
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 ROOM
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground w-48">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground w-48">
                 LOANS
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 BAG STORAGE
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground">
                 FRIDGE
               </TableHead>
-              <TableHead className="sticky top-0 z-10 text-center p-3 border-b border-border-2 text-muted-foreground w-32">
+              <TableHead className="text-center p-3 border-b border-border-2 text-muted-foreground w-32">
                 COMPLETE
               </TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {sortedGuests.map((guest, index) => {
+            {sortedGuests.map((guest) => {
               const loanEntries = guest.loans
                 ? Object.entries(guest.loans)
                 : [];
-              const rowBg =
-                index % 2 === 0
-                  ? "bg-surface"
-                  : "bg-surface-2";
-
               return (
-                <TableRow key={guest._key || guest.guestId} className={rowBg}>
+                <TableRow key={guest._key || guest.guestId} className="hover:bg-table-row-hover odd:bg-table-row-alt transition-colors">
                   <TableCell className="p-3 border-b border-border-2">
                     {formatDdMm(guest.checkoutDate)}
                   </TableCell>
@@ -207,25 +185,13 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                   </TableCell>
                   <TableCell className="p-3 border-b border-border-2 w-48">
                     {loanEntries.map(([txnKey, loan]) => {
-                      console.debug(
-                        `[CheckoutTable] Loan entry ${txnKey}:`,
-                        loan
-                      );
-                      const iconClass = getLoanIconClass(
+                      const { Icon: LoanIcon, colorClass } = getLoanIcon(
                         loan.item,
                         loan.depositType
-                      );
-                      console.debug(
-                        `[CheckoutTable] iconClass for ${txnKey}:`,
-                        iconClass
                       );
                       const loanTitle = getLoanTitle(
                         loan.item,
                         loan.depositType
-                      );
-                      console.debug(
-                        `[CheckoutTable] loanTitle for ${txnKey}:`,
-                        loanTitle
                       );
                       return (
                         <Button
@@ -243,7 +209,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                           className="inline-flex items-center px-1 me-1 text-foreground hover:text-foreground transition-colors duration-200"
                           title={loanTitle}
                         >
-                          <i className={iconClass} aria-hidden="true" />
+                          <LoanIcon size={18} className={colorClass} aria-hidden="true" />
                         </Button>
                       );
                     })}
@@ -251,11 +217,9 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                   {/* Show an icon if the occupant opted into bag storage */}
                   <TableCell className="p-3 border-b border-border-2 text-center">
                     {guest.bagStorageOptedIn && (
-                      <i
-                        className="fas fa-suitcase fa-lg text-info-main"
-                        title="Bag Storage"
-                        aria-hidden="true"
-                      />
+                      <span title="Bag Storage">
+                        <Luggage size={18} className="text-primary-main inline-block" aria-hidden="true" />
+                      </span>
                     )}
                   </TableCell>
                   <TableCell className="p-3 border-b border-border-2">
@@ -271,10 +235,10 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                           guest.checkoutDate
                         )
                       }
-                      className={`px-4 py-2 rounded text-primary-fg transition-colors duration-200 ${
+                      className={`px-4 py-2 rounded-lg text-primary-fg transition-colors duration-200 ${
                         guest.isCompleted
                           ? "bg-success-main hover:bg-error-main"
-                          : "bg-info-main hover:bg-info-main"
+                          : "bg-primary-main hover:bg-primary-dark"
                       }`}
                       title={
                         guest.isCompleted

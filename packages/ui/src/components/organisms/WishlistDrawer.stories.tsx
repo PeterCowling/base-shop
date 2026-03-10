@@ -27,7 +27,7 @@ export default meta;
 export const Default: StoryObj<typeof WishlistDrawer> = {
   render: () => (
     <WishlistDrawer
-      trigger={<button className="rounded border px-3 min-h-10 min-w-10">Open wishlist</button>}
+      trigger={<button className="rounded border px-3 min-h-11 min-w-11">Open wishlist</button>}
       items={items}
     />
   ),

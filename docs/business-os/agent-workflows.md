@@ -201,7 +201,7 @@ Agent:
 
 ### Feature Workflow Skills — Business OS Integration
 
-`/idea-generate` and `/lp-bos-sync` (S5B) integrate with Business OS. DO workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`) are **filesystem-only** — they do not create or update BOS cards, stage docs, or lane transitions.
+`/idea-generate` integrates with Business OS. DO workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`) are **filesystem-only** — they do not create or update BOS cards, stage docs, or lane transitions.
 
 **Automated behavior (BOS-integrated skills only):**
 

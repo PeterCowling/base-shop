@@ -3,7 +3,11 @@
   "meta": {
     "title": "Oszczędź 15% na pobytach od 20 września do 31 października",
     "description": "Oferta ograniczona czasowo: oszczędź 15% przy rezerwacji bezpośredniej na pobyty od 20 września do 31 października.",
-    "ogImageAlt": "Baner promocji ograniczonej czasowo"
+    "ogImageAlt": "Baner promocji ograniczonej czasowo",
+    "defaultTitle": "Deals & offers Brikette 124; Hostel",
+    "defaultDescription": "Rezerwacja bezpośrednia i sezonowe oferty Hostel Brikette.",
+    "activeTitle": "Zapisz _ _ TOK0 _ _ na pobyty z _ _ TOK1 _ _ do _ _ TOK2 _ _",
+    "activeDescription": "Automatyczne aplikowanie przy kasie. Tylko bezpośrednie rezerwacje."
   },
   "title": "Oszczędź {{percent}}% na pobytach od {{from}} do {{to}}",
   "promo": "Rezerwuj bezpośrednio — zniżka {{percent}}% nalicza się automatycznie przy płatności.",

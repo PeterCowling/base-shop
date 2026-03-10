@@ -3,6 +3,7 @@ import "@testing-library/jest-dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import type { CheckinMode } from "../../../hooks/utilities/useCheckinsModes";
 import type { CheckInRow } from "../../../types/component/CheckinRow";
 import * as dateUtils from "../../../utils/dateUtils";
 import CheckinsTable from "../CheckinsTable";
@@ -114,9 +115,7 @@ function createModes(overrides: Partial<ReturnType<typeof defaultModes>>) {
 
 function defaultModes() {
   return {
-    isEditMode: false,
-    isDeleteMode: false,
-    isAddGuestMode: false,
+    checkinMode: "idle" as CheckinMode,
     showArchiveModal: false,
     selectedBooking: null,
     bookingToDelete: null,
@@ -135,7 +134,7 @@ describe("CheckinsTable", () => {
     jest.clearAllMocks();
 
     useAuthMock.mockReturnValue({
-      user: { user_name: "Pete", email: "p@example.com" },
+      user: { user_name: "Pete", email: "p@example.com", roles: ["owner"] },
     });
     useSearchParamsMock.mockReturnValue(
       new URLSearchParams("selectedDate=2025-01-03"),
@@ -169,7 +168,7 @@ describe("CheckinsTable", () => {
   });
 
   it("routes row clicks to edit mode selection", async () => {
-    const modes = createModes({ isEditMode: true });
+    const modes = createModes({ checkinMode: "edit" as CheckinMode });
     checkinsModesMock.mockReturnValue(modes);
     const user = userEvent.setup();
 
@@ -180,7 +179,7 @@ describe("CheckinsTable", () => {
   });
 
   it("routes row clicks to delete mode selection", async () => {
-    const modes = createModes({ isDeleteMode: true });
+    const modes = createModes({ checkinMode: "delete" as CheckinMode });
     checkinsModesMock.mockReturnValue(modes);
     const user = userEvent.setup();
 
@@ -191,7 +190,7 @@ describe("CheckinsTable", () => {
   });
 
   it("routes row clicks to add-guest mode replication", async () => {
-    const modes = createModes({ isAddGuestMode: true });
+    const modes = createModes({ checkinMode: "addGuest" as CheckinMode });
     checkinsModesMock.mockReturnValue(modes);
     const user = userEvent.setup();
 

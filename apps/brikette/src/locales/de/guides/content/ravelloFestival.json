@@ -60,11 +60,11 @@
     }
   ],
   "eventSchema": {
-    "name": "Ravello Festival",
+    "name": "Festivals und Festivals",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
     "locationName": "Veranstaltungsorte des Ravello Festivals",
-    "addressLocality": "Ravello",
+    "addressLocality": "Ravental",
     "description": "Sommerliches Klassikfestival mit Blick über die Amalfiküste – aktuelle Termine und Tickets auf der offiziellen Seite."
   }
 }

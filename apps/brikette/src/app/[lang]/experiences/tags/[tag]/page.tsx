@@ -36,8 +36,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const tagMeta = getTagMeta(validLang, tag);
   const title = tagMeta.title || tag || "Guides";
-  const description = tagMeta.description || "";
-
   const experiencesSlug = getSlug("experiences", validLang);
   const tagsSlug = getSlug("guidesTags", validLang);
   const path = `/${validLang}/${experiencesSlug}/${tagsSlug}/${encodeURIComponent(tag)}`;
@@ -45,6 +43,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Don't index tag pages with fewer than 3 guides
   const itemCount = GUIDES_INDEX.filter((g) => g.tags.includes(tag) && isGuideLive(g.key)).length;
   const isPublished = itemCount >= 3;
+  const description =
+    tagMeta.description ||
+    `Guides for ${title} in Positano and across the Amalfi Coast (${itemCount} articles).`;
 
   return buildAppMetadata({
     lang: validLang,

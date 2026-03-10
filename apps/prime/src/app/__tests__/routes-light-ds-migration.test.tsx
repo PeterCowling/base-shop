@@ -254,7 +254,7 @@ jest.mock('../../hooks/data/useGuestProfiles', () => ({
 }));
 
 // Mock useUuid
-jest.mock('@/hooks/useUuid', () => ({
+jest.mock('../../hooks/useUuid', () => ({
   __esModule: true,
   default: jest.fn(() => 'test-uuid'),
 }));
@@ -287,7 +287,7 @@ jest.mock('../../components/homepage/GuardedHomeExperience', () => ({
 }));
 
 // Mock for @/lib/security/dataAccessModel
-jest.mock('@/lib/security/dataAccessModel', () => ({
+jest.mock('../../lib/security/dataAccessModel', () => ({
   evaluateSdkAccess: jest.fn(() => ({ allowed: true })),
   isSdkFlowFeatureEnabled: jest.fn(() => true),
 }));
@@ -507,8 +507,10 @@ describe('TASK-12: Route pages — DS migration', () => {
 
     const RootPage = jest.requireActual('../page').default;
     const { container } = render(<RootPage />);
+    // This test file mocks t() as key passthrough, so 'landing.title' (raw key) is
+    // what renders — not the translated string. Wait for the public landing state.
     await waitFor(() => {
-      expect(container.textContent).toContain('Prime Guest Portal');
+      expect(container.textContent).toContain('landing.title');
     });
     const html = container.innerHTML;
     assertNoRawPaletteClasses(html, 'root');

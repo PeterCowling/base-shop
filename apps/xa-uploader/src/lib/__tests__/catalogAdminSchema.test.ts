@@ -10,11 +10,7 @@ function baseDraft() {
     price: "189",
     description: "A structured layer.",
     createdAt: "2025-12-01T12:00:00.000Z",
-    forSale: true,
-    forRental: false,
     popularity: "0",
-    deposit: "0",
-    stock: "0",
     taxonomy: {
       department: "women",
       category: "clothing",
@@ -33,6 +29,39 @@ describe("catalogProductDraftSchema", () => {
       taxonomy: {
         ...baseDraft().taxonomy,
         category: "clothing",
+      },
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts out_of_stock as a valid publish state", () => {
+    const draft = {
+      ...baseDraft(),
+      publishState: "out_of_stock" as const,
+      sizes: "S|M|L",
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(true);
+  });
+
+  it("rejects legacy ready publish state", () => {
+    const draft = {
+      ...baseDraft(),
+      publishState: "ready",
+      sizes: "S|M|L",
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(false);
+  });
+
+  it("accepts kids as a valid department", () => {
+    const draft = {
+      ...baseDraft(),
+      sizes: "S|M|L",
+      taxonomy: {
+        ...baseDraft().taxonomy,
+        department: "kids" as const,
       },
     };
     const result = catalogProductDraftSchema.safeParse(draft);
@@ -72,6 +101,16 @@ describe("catalogProductDraftSchema", () => {
     expect(result.success).toBe(false);
   });
 
+  it("accepts missing createdAt (auto-filled on save)", () => {
+    const draft = {
+      ...baseDraft(),
+      sizes: "S|M|L",
+      createdAt: "",
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(true);
+  });
+
   it("requires sizes for clothing", () => {
     const draft = {
       ...baseDraft(),
@@ -109,5 +148,45 @@ describe("catalogProductDraftSchema", () => {
     const result = catalogProductDraftSchema.safeParse(draft);
     expect(result.success).toBe(false);
   });
-});
 
+  it("allows images without explicit alt text entries", () => {
+    const draft = {
+      ...baseDraft(),
+      sizes: "S|M|L",
+      imageFiles: "a|b",
+      imageAltTexts: "",
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(true);
+  });
+
+  it("allows a single main image for draft saves", () => {
+    const draft = {
+      ...baseDraft(),
+      sizes: "S|M|L",
+      imageFiles: "a",
+      imageAltTexts: "one",
+      taxonomy: {
+        ...baseDraft().taxonomy,
+        category: "clothing",
+      },
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(true);
+  });
+
+  it("accepts ordered image files for bag products", () => {
+    const draft = {
+      ...baseDraft(),
+      sizes: "",
+      imageFiles: "a|b|c",
+      imageAltTexts: "one|two|three",
+      taxonomy: {
+        ...baseDraft().taxonomy,
+        category: "bags",
+      },
+    };
+    const result = catalogProductDraftSchema.safeParse(draft);
+    expect(result.success).toBe(true);
+  });
+});

@@ -6,7 +6,7 @@
     "viewAll": "Összes útmutató",
     "helpfulGuides": "Hasznos útmutatók",
     "alsoSee": "Lásd még",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Szekció _ _ TOK0 _ _"
   },
   "meta": {
     "index": {
@@ -347,5 +347,10 @@
         "experience": "Élmények"
       }
     }
+  },
+  "search": {
+    "noResults": "Nem található útmutató",
+    "resultsCount_one": "Megtalált _ _ TOK0 _ _ útmutató",
+    "resultsCount_other": "Találtam _ _ TOK0 _ _ útmutatókat"
   }
 }

@@ -1,0 +1,34 @@
+{
+  "artifact": "plan.md",
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-payment-prop-drilling/plan.md",
+      "line": "323",
+      "message": "Validation commands use `--filter reception` but the canonical package name is `@apps/reception`."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-payment-prop-drilling/plan.md",
+      "line": "263",
+      "message": "Smoke test does not validate provider-wiring path — only checks button label; does not open popover or assert SplitList/PaymentSplitRow/confirm button render."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-payment-prop-drilling/plan.md",
+      "line": "353",
+      "message": "Delivery rehearsal says 'closes and submits' but no popover-close action is wired on confirm."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-payment-prop-drilling/plan.md",
+      "line": "16",
+      "message": "Header says 88% but math resolves to 87%."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0
+}

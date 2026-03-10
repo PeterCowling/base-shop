@@ -1,0 +1,111 @@
+import { beforeEach, describe, expect, it, jest } from "@jest/globals";
+
+const readCloudDraftSnapshotMock = jest.fn();
+const deleteProductFromCloudSnapshotMock = jest.fn();
+const writeCloudDraftSnapshotMock = jest.fn();
+const hasUploaderSessionMock = jest.fn();
+const parseStorefrontMock = jest.fn();
+const rateLimitMock = jest.fn();
+const withRateHeadersMock = jest.fn();
+const getRequestIpMock = jest.fn();
+
+jest.mock("../../../../../../lib/catalogDraftContractClient", () => ({
+  CatalogDraftContractError: class extends Error {
+    code: string;
+    constructor(code: string) {
+      super(code);
+      this.code = code;
+    }
+  },
+  readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
+  deleteProductFromCloudSnapshot: (...args: unknown[]) => deleteProductFromCloudSnapshotMock(...args),
+  writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
+}));
+
+jest.mock("../../../../../../lib/catalogStorefront.ts", () => ({
+  parseStorefront: (...args: unknown[]) => parseStorefrontMock(...args),
+}));
+
+jest.mock("../../../../../../lib/uploaderAuth", () => ({
+  hasUploaderSession: (...args: unknown[]) => hasUploaderSessionMock(...args),
+}));
+
+jest.mock("../../../../../../lib/rateLimit", () => ({
+  rateLimit: (...args: unknown[]) => rateLimitMock(...args),
+  withRateHeaders: (...args: unknown[]) => withRateHeadersMock(...args),
+  getRequestIp: (...args: unknown[]) => getRequestIpMock(...args),
+}));
+
+describe("catalog product-by-slug branch coverage", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    hasUploaderSessionMock.mockResolvedValue(true);
+    parseStorefrontMock.mockReturnValue("xa-b");
+    getRequestIpMock.mockReturnValue("203.0.113.20");
+    rateLimitMock.mockReturnValue({ allowed: true, remaining: 5, resetAt: Date.now() + 60_000 });
+    withRateHeadersMock.mockImplementation((response: unknown) => response);
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [{ slug: "studio-jacket", title: "Studio jacket" }],
+      revisionsById: {},
+      docRevision: "doc-rev-1",
+    });
+    deleteProductFromCloudSnapshotMock.mockReturnValue({ deleted: true, products: [], revisionsById: {} });
+    writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "doc-rev-2" });
+  });
+
+  it("GET returns product on success", async () => {
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/products/studio-jacket"), {
+      params: Promise.resolve({ slug: "studio-jacket" }),
+    });
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: true,
+        product: expect.objectContaining({ slug: "studio-jacket" }),
+      }),
+    );
+  });
+
+  it("GET returns 404 when unauthenticated", async () => {
+    hasUploaderSessionMock.mockResolvedValueOnce(false);
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/products/studio-jacket"), {
+      params: Promise.resolve({ slug: "studio-jacket" }),
+    });
+    expect(response.status).toBe(404);
+  });
+
+  it("GET returns 429 when rate limited", async () => {
+    rateLimitMock.mockReturnValueOnce({ allowed: false, remaining: 0, resetAt: Date.now() + 60_000 });
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/products/studio-jacket"), {
+      params: Promise.resolve({ slug: "studio-jacket" }),
+    });
+    expect(response.status).toBe(429);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({ ok: false, error: "rate_limited", reason: "product_get_rate_limited" }),
+    );
+  });
+
+  it("DELETE returns 404 when unauthenticated", async () => {
+    hasUploaderSessionMock.mockResolvedValueOnce(false);
+    const { DELETE } = await import("../route");
+    const response = await DELETE(new Request("http://localhost/api/catalog/products/studio-jacket"), {
+      params: Promise.resolve({ slug: "studio-jacket" }),
+    });
+    expect(response.status).toBe(404);
+  });
+
+  it("DELETE returns 429 when rate limited", async () => {
+    rateLimitMock.mockReturnValueOnce({ allowed: false, remaining: 0, resetAt: Date.now() + 60_000 });
+    const { DELETE } = await import("../route");
+    const response = await DELETE(new Request("http://localhost/api/catalog/products/studio-jacket"), {
+      params: Promise.resolve({ slug: "studio-jacket" }),
+    });
+    expect(response.status).toBe(429);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({ ok: false, error: "rate_limited", reason: "product_delete_rate_limited" }),
+    );
+  });
+});

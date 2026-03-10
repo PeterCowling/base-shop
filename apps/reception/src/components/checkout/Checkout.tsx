@@ -25,12 +25,13 @@ import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData
 import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 import { showToast } from "../../utils/toastUtils";
+import DateSelector from "../common/DateSelector";
 import { PageShell } from "../common/PageShell";
+import ReceptionSkeleton from "../common/ReceptionSkeleton";
 import { getDepositForItem } from "../loans/LoanUtils";
 
 import type { Guest } from "./CheckoutTable";
 import CheckoutTable from "./CheckoutTable";
-import DateSelector from "./DaySelector";
 
 type CheckoutProps = {
   debug?: boolean;
@@ -198,7 +199,7 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
 
   // Mark or un-mark a checkout as completed
   const onComplete = useCallback(
-    (
+    async (
       bookingRef: string,
       guestId: string,
       isCompleted: boolean,
@@ -217,44 +218,65 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
       }
 
       if (isCompleted) {
-        removeLastActivity(guestId, 14)
-          .then((result) =>
-            result.success
-              ? console.log(`Occupant ${guestId} checkout reversed.`)
-              : console.error("Error undoing checkout:", result.error)
-          )
-          .catch((err) => console.error("Error:", err));
+        try {
+          const undoResult = await removeLastActivity(guestId, 14);
+          if (!undoResult.success) {
+            console.error("Error undoing checkout:", undoResult.error);
+            showToast("Failed to reverse checkout", "error");
+            return;
+          }
 
-        saveCheckout(checkoutDate, { [guestId]: null }).catch((err) => {
+          await saveCheckout(checkoutDate, { [guestId]: null });
+          console.log(`Occupant ${guestId} checkout reversed.`);
+        } catch (err) {
           console.error(
             `[Checkout] Error clearing checkout record for ${guestId}:`,
             err
           );
+          const restoreResult = await saveActivity(guestId, {
+            code: 14,
+            description: "Compensating restore after checkout-reversal failure",
+          });
+          if (!restoreResult.success) {
+            console.error(
+              `[Checkout] Compensation failed while restoring checkout activity for ${guestId}:`,
+              restoreResult.error
+            );
+          }
           showToast("Failed to update checkout record", "error");
-        });
+        }
       } else {
-        saveActivity(guestId, {
-          code: 14,
-          description: "Manually completed checkout",
-        })
-          .then((result) =>
-            result.success
-              ? console.log(`Occupant ${guestId} completed checkout.`)
-              : console.error("Error marking checkout:", result.error)
-          )
-          .catch((err) => console.error("Error:", err));
+        try {
+          const completeResult = await saveActivity(guestId, {
+            code: 14,
+            description: "Manually completed checkout",
+          });
+          if (!completeResult.success) {
+            console.error("Error marking checkout:", completeResult.error);
+            showToast("Failed to mark checkout", "error");
+            return;
+          }
 
-        saveCheckout(checkoutDate, {
-          [guestId]: {
-            timestamp: getItalyIsoString(),
-          },
-        }).catch((err) => {
+          await saveCheckout(checkoutDate, {
+            [guestId]: {
+              timestamp: getItalyIsoString(),
+            },
+          });
+          console.log(`Occupant ${guestId} completed checkout.`);
+        } catch (err) {
           console.error(
             `[Checkout] Error recording checkout for ${guestId}:`,
             err
           );
+          const rollbackResult = await removeLastActivity(guestId, 14);
+          if (!rollbackResult.success) {
+            console.error(
+              `[Checkout] Compensation failed while rolling back checkout activity for ${guestId}:`,
+              rollbackResult.error
+            );
+          }
           showToast("Failed to record checkout", "error");
-        });
+        }
       }
     },
     [
@@ -315,12 +337,15 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
 
   return (
     <PageShell title="CHECKOUTS">
-      <div className="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow">
-        <DateSelector
-          selectedDate={selectedDate}
-          onDateChange={setSelectedDate}
-          username={user.user_name}
-        />
+      <div className="flex-grow p-6 space-y-4 bg-surface rounded-lg shadow-lg">
+          <DateSelector
+            selectedDate={selectedDate}
+            onDateChange={setSelectedDate}
+            accessMode="unrestricted"
+            calendarPlacement="inline"
+            calendarColorVariant="primary"
+            username={user.user_name}
+          />
 
         {!!error && (
           <div className="font-semibold text-error-main">
@@ -328,7 +353,7 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
           </div>
         )}
 
-        {loading && <div className="italic text-muted-foreground">Loading...</div>}
+        {loading && <ReceptionSkeleton rows={5} />}
 
         {!loading && (
           <CheckoutTable

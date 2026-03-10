@@ -77,6 +77,25 @@ When running `/lp-do-replan`, confidence increases must be evidence-led:
 - **Build-feature:** code and/or business artifacts + plan updated per task; commits tied to TASK IDs
 - **Re-plan:** plan updated with evidence/decisions/confidence (no implementation changes)
 
+## Optional CASS Pilot (Session Retrieval)
+
+To accelerate startup-loop continuity across runs, run retrieval before fact-find/plan:
+
+```bash
+pnpm startup-loop:cass-retrieve -- --mode fact-find --slug <feature-slug> --topic "<topic>"
+pnpm startup-loop:cass-retrieve -- --mode plan --slug <feature-slug> --topic "<topic>"
+```
+
+Default advisory output:
+- `docs/plans/<feature-slug>/artifacts/cass-context.md`
+
+Configuration:
+- `CASS_RETRIEVE_COMMAND` is optional. If unset, the built-in CASS-compatible session-history provider is used.
+- Set `CASS_RETRIEVE_COMMAND` to your external CASS invocation when available.
+- Runtime env passed to the command: `CASS_QUERY`, `CASS_TOP_K`, `CASS_SOURCE_ROOTS`.
+- If external CASS is unavailable, script falls back to local `rg` retrieval and the workflow continues (fail-open).
+- Detailed setup: `docs/runbooks/startup-loop-cass-pilot.md`
+
 ## Business OS Card Tracking
 
 DO workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`) are **filesystem-only**. They do not create or update BOS cards, stage docs, or lane transitions. Card and lane tracking for DO-stage work is done manually via `/idea-advance` when needed.
@@ -84,7 +103,6 @@ DO workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`) are **fil
 ### What is automated via BOS API
 
 - `/idea-generate`: creates prioritized ideas/cards and seeds top-K `lp-do-fact-find` stage docs.
-- `/lp-bos-sync` (S5B): persists prioritized baseline outputs to Business OS.
 
 All DO workflow artifacts are tracked through the `docs/plans/<feature-slug>/` filesystem namespace.
 

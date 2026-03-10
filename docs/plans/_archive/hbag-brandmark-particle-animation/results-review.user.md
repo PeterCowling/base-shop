@@ -23,5 +23,8 @@ No standing updates: this cycle closed with documented accepted risk (physical-d
 
 ## New Idea Candidates
 
-1. Add a lightweight CI reminder/gate to require a populated physical-device matrix (or explicit waiver) before plan closure for animation-heavy UI changes.
-2. Add a small runtime diagnostics toggle for BrandMark phase/frame sampling that can be enabled in staging for faster performance triage.
+- None.
+
+## Standing Expansion
+
+- `docs/plans/_archive/hbag-brandmark-particle-animation/artifacts/real-device-validation.md`: register as the canonical real-device capture template for animation features — the matrix structure (device, browser, scenario, pass/fail, notes) should be reused for any future canvas or CSS animation work on caryina or other storefronts.

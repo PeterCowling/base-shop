@@ -1,0 +1,63 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "no"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 20
+  },
+  "reports": [
+    {
+      "locale": "no",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "assistanceSection.json": [
+          "bookingOptions.googleBusiness"
+        ],
+        "barMenuPage.json": [
+          "sections.whisky.title"
+        ],
+        "footer.json": [
+          "infoHeading"
+        ],
+        "guides.json": [
+          "dev.editorialPanel.status.live"
+        ],
+        "guides.tags.json": [
+          "tags.camping.label",
+          "tags.pompei.label",
+          "tags.shopping.label",
+          "tags.tips.label",
+          "tags.transport.label"
+        ],
+        "guides/content/arienzoBeachClub.json": [
+          "faqsTitle"
+        ],
+        "guides/content/positanoRavello.json": [
+          "fallback.tipsTitle",
+          "tipsTitle"
+        ],
+        "guides/content/reachBudget.json": [
+          "mapReferrerPolicy"
+        ],
+        "guides/labels.json": [
+          "tipsHeading"
+        ],
+        "guides/tags.json": [
+          "labels.camping",
+          "labels.pompei",
+          "labels.shopping",
+          "labels.tips",
+          "labels.transport"
+        ],
+        "guidesFallback.json": [
+          "amalfiTownGuide.headings.tips"
+        ]
+      }
+    }
+  ]
+}

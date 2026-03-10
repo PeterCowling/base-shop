@@ -18,7 +18,7 @@ interface CacheEntry<T = unknown> {
 }
 
 interface FirebaseCacheContextValue {
-  subscribe: (path: string) => void;
+  subscribe: (path: string, prefill?: () => Promise<unknown>) => void;
   unsubscribe: (path: string) => void;
   getEntry: <T = unknown>(path: string) => CacheEntry<T>;
 }
@@ -40,43 +40,85 @@ export const FirebaseSubscriptionCacheProvider: React.FC<{
     databaseRef.current = database;
   }, [database]);
 
-  const startListening = useCallback((path: string) => {
-    const dbRef = ref(databaseRef.current, path);
-    const handleDataChange = (snapshot: DataSnapshot) => {
-      setCache((prev) => ({
-        ...prev,
-        [path]: {
-          data: snapshot.exists() ? snapshot.val() : null,
-          loading: false,
-          error: null,
-        },
-      }));
-    };
+  const startListening = useCallback(
+    (path: string, prefill?: () => Promise<unknown>) => {
+      // Cancelled token: shared between prefill and the unsubscribe closure.
+      // Set to true when the subscription is torn down OR Firebase data arrives
+      // (whichever comes first) to prevent a late prefill from overwriting live data.
+      let cancelled = false;
 
-    const handleError = (err: unknown) => {
-      setCache((prev) => ({
-        ...prev,
-        [path]: {
-          ...(prev[path] || { data: null }),
-          loading: false,
-          error: err,
-        },
-      }));
-    };
+      // Run optional prefill before Firebase listener fires
+      if (prefill) {
+        void (async () => {
+          try {
+            const prefillData = await prefill();
+            if (
+              !cancelled &&
+              prefillData !== null &&
+              prefillData !== undefined
+            ) {
+              setCache((prev) => ({
+                ...prev,
+                [path]: {
+                  data: prefillData,
+                  loading: false,
+                  error: null,
+                },
+              }));
+            }
+          } catch {
+            // Prefill errors are silently swallowed; Firebase will resolve the
+            // loading state independently via onValue.
+          }
+        })();
+      }
 
-    onValue(dbRef, handleDataChange, handleError);
-    unsubscribes.current[path] = () => off(dbRef, "value", handleDataChange);
-  }, []);
+      const dbRef = ref(databaseRef.current, path);
+
+      const handleDataChange = (snapshot: DataSnapshot) => {
+        // Firebase data always wins; mark cancelled so any in-flight prefill
+        // cannot overwrite this result.
+        cancelled = true;
+        setCache((prev) => ({
+          ...prev,
+          [path]: {
+            data: snapshot.exists() ? snapshot.val() : null,
+            loading: false,
+            error: null,
+          },
+        }));
+      };
+
+      const handleError = (err: unknown) => {
+        cancelled = true;
+        setCache((prev) => ({
+          ...prev,
+          [path]: {
+            ...(prev[path] || { data: null }),
+            loading: false,
+            error: err,
+          },
+        }));
+      };
+
+      onValue(dbRef, handleDataChange, handleError);
+      unsubscribes.current[path] = () => {
+        cancelled = true;
+        off(dbRef, "value", handleDataChange);
+      };
+    },
+    []
+  );
 
   const subscribe = useCallback(
-    (path: string) => {
+    (path: string, prefill?: () => Promise<unknown>) => {
       subscribers.current[path] = (subscribers.current[path] || 0) + 1;
       setCache((prev) => ({
         ...prev,
         [path]: prev[path] || { data: null, loading: true, error: null },
       }));
       if (subscribers.current[path] === 1) {
-        startListening(path);
+        startListening(path, prefill);
       }
     },
     [startListening]

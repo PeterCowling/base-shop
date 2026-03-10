@@ -27,7 +27,7 @@ const DEFAULT_BASE_URL = "https://hostel-positano.com";
 const IT_BOOK_SLUG = "prenota";
 
 // Events required to pass the smoke test
-const REQUIRED_EVENTS = ["select_item", "begin_checkout"];
+const REQUIRED_EVENTS = ["view_item_list", "select_item", "begin_checkout"];
 
 function getBaseUrl() {
   return (process.env.E2E_BASE_URL ?? DEFAULT_BASE_URL).replace(/\/$/, "");

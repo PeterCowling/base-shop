@@ -103,13 +103,13 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 
 ### TASK-01: Fix bottleneck-diagnosis-schema.md upstream_priority_order
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` — Section 5 `upstream_priority_order` expanded from 17 to 22 stage IDs
+- **Deliverable:** Updated `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` — Section 5 `upstream_priority_order` expanded from 17 to 22 stage IDs
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md`
+- **Affects:** `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md`
 - **Depends on:** -
 - **Blocks:** -
 - **Confidence:** 95%
@@ -124,7 +124,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - TC-01: After edit, manual count of stage IDs in the `upstream_priority_order` array = 22; grep cross-check against `UPSTREAM_PRIORITY_ORDER` in bottleneck-detector.ts passes
   - TC-02: S0A, S0B, S0C, S0D appear before S0; S3B appears after S3 and before S6B (consistent with parallel fan-out position)
 - **Execution plan:** Red → Green → Refactor
-  - Red: `grep -n "upstream_priority_order" docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` + read `bottleneck-detector.ts:UPSTREAM_PRIORITY_ORDER` to establish ground truth ordering
+  - Red: `grep -n "upstream_priority_order" docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` + read `bottleneck-detector.ts:UPSTREAM_PRIORITY_ORDER` to establish ground truth ordering
   - Green: Edit Section 5 — insert `S0A, S0B, S0C, S0D,` before `S0`; insert `, S3B` after `S3`; verify count = 22
   - Refactor: Update the section note (currently explains S6B precedes S4) to also note where S0A-D and S3B fit in the priority hierarchy
 - **Planning validation (required for M/L):** None: S-effort task
@@ -136,7 +136,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Rollback: `git revert <commit>`
 - **Documentation impact:** Section 5 note updated; no other docs affected
 - **Notes / references:**
-  - Ground truth: `scripts/src/startup-loop/bottleneck-detector.ts:UPSTREAM_PRIORITY_ORDER`
+  - Ground truth: `scripts/src/startup-loop/diagnostics/bottleneck-detector.ts:UPSTREAM_PRIORITY_ORDER`
 
 ---
 
@@ -177,19 +177,19 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Documentation impact:** Diagram updated in artifact-registry.md; no other docs reference this diagram directly
 - **Notes / references:**
   - Verified incorrect diagram: `docs/business-os/startup-loop/artifact-registry.md:60-70`
-  - Correct topology: `docs/business-os/startup-loop/loop-spec.yaml` fan-out edges
+  - Correct topology: `docs/business-os/startup-loop/specifications/loop-spec.yaml` fan-out edges
 
 ---
 
 ### TASK-03: Fix GATE-S3B-01 skill name + add gate stub to cmd-advance.md
 - **Type:** IMPLEMENT
-- **Deliverable:** (1) `docs/business-os/startup-loop/loop-spec.yaml` — GATE-S3B-01 changelog entry skill name corrected; (2) `.claude/skills/startup-loop/modules/cmd-advance.md` — GATE-S3B-01 advisory gate stub added
+- **Deliverable:** (1) `docs/business-os/startup-loop/specifications/loop-spec.yaml` — GATE-S3B-01 changelog entry skill name corrected; (2) `.claude/skills/startup-loop/modules/cmd-advance.md` — GATE-S3B-01 advisory gate stub added
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`, `.claude/skills/startup-loop/modules/cmd-advance.md`
+- **Affects:** `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `.claude/skills/startup-loop/modules/cmd-advance.md`
 - **Depends on:** -
 - **Blocks:** -
 - **Confidence:** 85%
@@ -202,11 +202,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - GATE-S3B-01 is classified as Advisory (not Hard)
   - Gate triggers at S2B→S3B transition
 - **Validation contract (TC-01 through TC-03):**
-  - TC-01: `grep "adjacent-product-research" docs/business-os/startup-loop/loop-spec.yaml` returns zero matches
+  - TC-01: `grep "adjacent-product-research" docs/business-os/startup-loop/specifications/loop-spec.yaml` returns zero matches
   - TC-02: `grep "GATE-S3B-01" .claude/skills/startup-loop/modules/cmd-advance.md` returns at least one match with the gate block header
   - TC-03: GATE-S3B-01 block contains fields: Gate ID, Trigger, Rationale, Rule — must pass, When blocked
 - **Execution plan:** Red → Green → Refactor
-  - Red: `grep -n "adjacent-product-research" docs/business-os/startup-loop/loop-spec.yaml` — confirm occurrence; `grep -c "GATE-S3B-01" .claude/skills/startup-loop/modules/cmd-advance.md` — confirm zero
+  - Red: `grep -n "adjacent-product-research" docs/business-os/startup-loop/specifications/loop-spec.yaml` — confirm occurrence; `grep -c "GATE-S3B-01" .claude/skills/startup-loop/modules/cmd-advance.md` — confirm zero
   - Green: Fix loop-spec.yaml skill name; add GATE-S3B-01 stub to cmd-advance.md following GATE-S6B-STRAT-01 pattern — advisory gate checking for existence of `docs/business-os/strategy/<BIZ>/adjacent-product-research-prompt.md` (the lp-other-products output artifact)
   - Refactor: Position GATE-S3B-01 block logically in cmd-advance (near S3B stage transitions, after GATE-BD gates); ensure advisory classification is explicit in the block
 - **Planning validation (required for M/L):** None: S-effort task
@@ -279,7 +279,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/derive-state.ts`, `[readonly] scripts/src/startup-loop/recovery.ts`, `[readonly] scripts/src/startup-loop/event-validation.ts`
+- **Affects:** `scripts/src/startup-loop/derive-state.ts`, `[readonly] scripts/src/startup-loop/recovery.ts`, `[readonly] scripts/src/startup-loop/diagnostics/event-validation.ts`
 - **Depends on:** -
 - **Blocks:** TASK-06
 - **Confidence:** 80%
@@ -369,7 +369,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Execution-Track:** code
 - **Effort:** S
 - **Status:** Pending
-- **Affects:** `docs/plans/startup-loop-integrity-audit/task-07-partial-data-investigation.md`, `[readonly] scripts/src/startup-loop/bottleneck-detector.ts`, `[readonly] docs/business-os/startup-loop/bottleneck-diagnosis-schema.md`
+- **Affects:** `docs/plans/startup-loop-integrity-audit/task-07-partial-data-investigation.md`, `[readonly] scripts/src/startup-loop/diagnostics/bottleneck-detector.ts`, `[readonly] docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md`
 - **Depends on:** -
 - **Blocks:** -
 - **Confidence:** 75%
@@ -390,8 +390,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Rollout / rollback:** None: non-implementation task
 - **Documentation impact:** New investigation artifact; if GO, plan should be updated to add a follow-on IMPLEMENT task via `/lp-do-replan`
 - **Notes / references:**
-  - `scripts/src/startup-loop/bottleneck-detector.ts:287` — `diagnosis_status` hardcoded
-  - `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` — Section on `diagnosis_status` values
+  - `scripts/src/startup-loop/diagnostics/bottleneck-detector.ts:287` — `diagnosis_status` hardcoded
+  - `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` — Section on `diagnosis_status` values
 
 ---
 

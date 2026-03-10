@@ -11,7 +11,6 @@ jest.mock("@acme/telemetry", () => ({
 jest.mock("@acme/i18n/useTranslations.server", () => ({
   __esModule: true,
   useTranslations: async (_locale: string) => {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const en = require("@acme/i18n/en.json") as Record<string, string>;
     return (key: string, vars?: Record<string, unknown>): string => {
       const msg = en[key] ?? key;

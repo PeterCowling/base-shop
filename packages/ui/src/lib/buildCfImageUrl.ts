@@ -22,7 +22,7 @@ type ViteEnv = Partial<Record<"DEV" | "SSR" | "SITE_ORIGIN" | "VITE_SITE_ORIGIN"
 
 function getViteEnv(): ViteEnv | undefined {
   try {
-    // eslint-disable-next-line no-eval -- UI-1000 [ttl=2026-12-31] eval avoids CJS parse errors for import.meta
+     
     const meta = eval("import.meta") as { env?: ViteEnv } | undefined;
     return meta?.env;
   } catch {

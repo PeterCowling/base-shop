@@ -6,9 +6,9 @@ usage() {
 Usage:
   scripts/git/promote-to-main.sh [--app <app-id>]...
 
-Promotes staging -> main via PR + auto-merge:
-- Ensures local branch 'staging' is up to date with origin
-- Ensures an open PR staging -> main exists
+Promotes dev -> main via PR + auto-merge:
+- Pushes branch 'dev' to origin
+- Ensures an open PR dev -> main exists
 - Enables auto-merge (MERGE) on that PR
 - Optionally scopes promotion checks via labels `promote-app:<app-id>`
   (example: `--app brikette`)
@@ -83,8 +83,8 @@ cd "$repo_root"
 scripts/git-hooks/require-writer-lock.sh
 
 branch="$(git rev-parse --abbrev-ref HEAD)"
-if [[ "$branch" != "staging" ]]; then
-  echo "ERROR: promote-to-main must be run from branch 'staging' (current: ${branch})" >&2
+if [[ "$branch" != "dev" ]]; then
+  echo "ERROR: promote-to-main must be run from branch 'dev' (current: ${branch})" >&2
   exit 1
 fi
 
@@ -105,26 +105,14 @@ gh auth status -h github.com >/dev/null 2>&1 || {
   exit 1
 }
 
-echo "Fetching origin..."
-git fetch origin --prune >/dev/null 2>&1 || true
+echo "Pushing dev -> origin/dev..."
+git push -u origin dev
 
-if git show-ref --verify --quiet "refs/remotes/origin/staging"; then
-  echo "Fast-forwarding local staging -> origin/staging..."
-  git merge --ff-only origin/staging >/dev/null 2>&1 || {
-    echo "ERROR: unable to fast-forward staging to origin/staging." >&2
-    echo "Resolve manually (no history rewrites) then retry." >&2
-    exit 1
-  }
-else
-  echo "ERROR: origin/staging does not exist. Create the staging branch first." >&2
-  exit 1
-fi
-
-existing_pr_number="$(gh pr list --state open --head staging --base main --json number --jq '.[0].number' || true)"
+existing_pr_number="$(gh pr list --state open --head dev --base main --json number --jq '.[0].number' || true)"
 
 if [[ -z "$existing_pr_number" ]]; then
-  echo "Creating PR: staging -> main..."
-  pr_url="$(gh pr create --head staging --base main --title "staging → main" --body "Promote staging to production.")"
+  echo "Creating PR: dev -> main..."
+  pr_url="$(gh pr create --head dev --base main --title "dev → main" --body "Promote dev to production.")"
 else
   pr_url="$(gh pr view "$existing_pr_number" --json url --jq .url)"
 fi

@@ -1,7 +1,6 @@
- 
 /* /src/components/seo/SiteSearchStructuredData.tsx
-   Emits the SearchAction JSON‑LD that powers Google’s
-   “Search Hostel Brikette” auto‑suggest box.  */
+   Emits the SearchAction JSON-LD that powers Google’s
+   “Search Hostel Brikette” auto-suggest box.  */
 import { memo } from "react";
 
 import { BASE_URL } from "@/config/site";
@@ -11,12 +10,13 @@ import { ORG_ID, WEBSITE_ID } from "@/utils/schema";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld";
 import { getSlug } from "@/utils/slug";
 
-/* Keep this component *tiny* so React can memo‑skip it. */
+/* Keep this component *tiny* so React can memo-skip it. */
 interface Props {
   lang: AppLanguage;
 }
 
 function SiteSearchStructuredData({ lang }: Props): JSX.Element {
+  const assistanceSlug = getSlug("assistance", lang);
   const json = serializeJsonLdValue({
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -26,8 +26,7 @@ function SiteSearchStructuredData({ lang }: Props): JSX.Element {
     publisher: { "@id": ORG_ID },
     potentialAction: {
       "@type": "SearchAction",
-      // Use localized slug for assistance page
-      target: `${BASE_URL}/${lang}/${getSlug("assistance", lang)}?q={search_term_string}`,
+      target: `${BASE_URL}/${lang}/${assistanceSlug}?q={search_term_string}`,
       "query-input": "required name=search_term_string",
     },
     inLanguage: lang,

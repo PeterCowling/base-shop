@@ -26,6 +26,7 @@ import { getItalyIsoString } from "../../../utils/dateUtils";
 import { generateTransactionId } from "../../../utils/generateTransactionId";
 import { showToast } from "../../../utils/toastUtils";
 
+import { PaymentProvider } from "./PaymentContext";
 import PaymentForm from "./PaymentForm";
 
 /**
@@ -413,7 +414,7 @@ function RoomPaymentButton({ booking }: RoomPaymentButtonProps) {
   );
 
   return (
-    <PaymentForm
+    <PaymentProvider
       outstanding={outstanding}
       splitPayments={splitPayments}
       handleAmountChange={handleAmountChange}
@@ -422,7 +423,9 @@ function RoomPaymentButton({ booking }: RoomPaymentButtonProps) {
       handleRemovePaymentRow={handleRemovePaymentRow}
       handleImmediatePayment={handleImmediatePayment}
       isDisabled={isDisabled}
-    />
+    >
+      <PaymentForm />
+    </PaymentProvider>
   );
 }
 

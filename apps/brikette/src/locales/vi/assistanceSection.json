@@ -1,5 +1,5 @@
 {
-  "slug": "assistance-contact",
+  "slug": "đối chiếu trợ giúp",
   "meta": {
     "title": "Bản dịch đang được chuẩn bị.",
     "description": "Đặt phòng, khám phá và kết nối với chúng tôi trực tuyến. Có câu hỏi? Trợ lý số của chúng tôi cung cấp gợi ý phù hợp và hướng dẫn du lịch để nâng cao kỳ nghỉ của bạn tại Positano."
@@ -11,11 +11,12 @@
   "otherBookingOptions": "Tùy chọn đặt phòng khác & Mạng xã hội",
   "addressLabel": "Địa chỉ:",
   "addressValue": "Qua G. Marconi, 358, 84017, Positano",
+  "bookDirect": "Đặt phòng trực tiếp",
   "bookingOptions": {
     "googleBusiness": "Doanh nghiệp Google",
-    "bookingCom": "Booking.com",
-    "hostelWorld": "Hostelworld",
-    "instagram": "Instagram"
+    "bookingCom": "Đặt qua Booking.com",
+    "hostelWorld": "Máy chủ",
+    "instagram": "Page size"
   },
   "amaHeadingPart1": "Chúng tôi có thể ",
   "amaHeadingPart2": "hỗ trợ gì",
@@ -41,7 +42,7 @@
     "cardCta": "Đọc hướng dẫn lập kế hoạch {{guideTitle}}"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "{{howToTitle}}* {{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}}ZTOK1ZZ"
   }
 }

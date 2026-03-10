@@ -1,4 +1,5 @@
 import { type FC, memo, useCallback } from "react";
+import { Copy } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -31,11 +32,11 @@ const BookingRefComponent: FC<BookingRefProps> = ({ bookingRef }) => {
         type="button"
         onClick={handleCopyBookingRef}
         title="Click to copy booking reference"
-        color="info"
+        color="primary"
         tone="solid"
         className="min-w-225px"
       >
-        <i className="fas fa-copy me-2" />
+        <Copy size={14} className="shrink-0" />
         <span>{bookingRef}</span>
       </Button>
     </div>

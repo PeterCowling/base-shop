@@ -1,0 +1,16 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-03T17:40:24.313Z",
+  "feature_slug": "assessment-completion-registry",
+  "plan_path": "docs/plans/assessment-completion-registry/plan.md",
+  "build_record_path": "docs/plans/assessment-completion-registry/build-record.user.md",
+  "outcome_contract": {
+    "why": "Assessment completion state was invisible to the loop without manual filesystem traversal.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A programmatic assessment completion registry exists that can answer which ASSESSMENT stages a business has completed and when, from a single file read, populated by a deterministic scanner.",
+    "source": "operator"
+  },
+  "business": "BOS",
+  "tasks_completed": 3,
+  "total_tasks": 3
+}

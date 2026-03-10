@@ -1,0 +1,62 @@
+[
+  {
+    "id": "C-001",
+    "severity": "S2",
+    "breakpoint": 1024,
+    "mode": "dark",
+    "route": "/en",
+    "state": "active",
+    "element": ".style-module__OTm3gG__caption_label",
+    "contrastRatioWorst": 1.22,
+    "contrastRatioAverage": 1.22,
+    "threshold": 4.5,
+    "wcagType": "text-normal",
+    "screenshot": "./screenshots/1024-dark-issue-style-module-OTm3gG-caption-label.png",
+    "fixHypothesis": "Date picker caption text uses near-white foreground on a light gray calendar background in dark mode token context."
+  },
+  {
+    "id": "C-002",
+    "severity": "S2",
+    "breakpoint": 1024,
+    "mode": "dark",
+    "route": "/en",
+    "state": "active",
+    "element": "th[aria-label=\"Monday\"]",
+    "contrastRatioWorst": 1.16,
+    "contrastRatioAverage": 1.16,
+    "threshold": 4.5,
+    "wcagType": "text-normal",
+    "screenshot": "./screenshots/1024-dark-issue-th-aria-label-Monday.png",
+    "fixHypothesis": "Calendar weekday headers inherit a dark-theme foreground token while the calendar header row remains light, causing systemic low contrast."
+  },
+  {
+    "id": "C-003",
+    "severity": "S2",
+    "breakpoint": 1024,
+    "mode": "dark",
+    "route": "/en",
+    "state": "active",
+    "element": "button[aria-label=\"Tuesday, March 10th, 2026\"]",
+    "contrastRatioWorst": 1.22,
+    "contrastRatioAverage": 1.22,
+    "threshold": 4.5,
+    "wcagType": "text-normal",
+    "screenshot": "./screenshots/1024-dark-issue-button-aria-label-Tuesday-March-10th-2026.png",
+    "fixHypothesis": "Calendar day cells in dark mode use near-white numerals against light gray date-cell backgrounds, indicating incorrect dark variant mapping for date cell tokens."
+  },
+  {
+    "id": "C-004",
+    "severity": "S2",
+    "breakpoint": 1024,
+    "mode": "dark",
+    "route": "/en",
+    "state": "default",
+    "element": "label[for=\"booking-guests\"]",
+    "contrastRatioWorst": 1.3,
+    "contrastRatioAverage": 1.3,
+    "threshold": 4.5,
+    "wcagType": "text-normal",
+    "screenshot": "./screenshots/1024-dark-issue-label-for-booking-guests.png",
+    "fixHypothesis": "Booking widget form label uses light foreground while its container resolves to a light gray panel in dark mode due to mixed token families."
+  }
+]

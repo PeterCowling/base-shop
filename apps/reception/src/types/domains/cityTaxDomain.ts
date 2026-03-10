@@ -2,10 +2,7 @@
 
 import { type CityTaxData } from "../hooks/data/cityTaxData";
 
-/**
- * Payment types for occupant's city tax.
- */
-export type PayType = "CASH" | "CC";
+export type { PayType } from "../hooks/data/cityTaxData";
 
 /**
  * Represents a transaction (taxPayment, etc.) for city tax.

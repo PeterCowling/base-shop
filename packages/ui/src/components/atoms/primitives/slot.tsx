@@ -7,13 +7,12 @@ export interface SlotProps extends React.HTMLAttributes<HTMLElement> {
   children?: React.ReactNode;
 }
 
-export const Slot = React.forwardRef<HTMLElement, SlotProps>(
-  ({ children, ...props }, ref) => {
-    const isValid = React.isValidElement(children);
+interface MergedProps extends React.HTMLAttributes<HTMLElement> {
+  ref?: React.Ref<HTMLElement>;
+}
 
-    interface MergedProps extends React.HTMLAttributes<HTMLElement> {
-      ref?: React.Ref<HTMLElement>;
-    }
+export function Slot({ children, ref, ...props }: SlotProps & { ref?: React.Ref<HTMLElement> }) {
+    const isValid = React.isValidElement(children);
 
     let childRef: React.Ref<HTMLElement> | undefined;
     let childProps = {} as MergedProps;
@@ -55,6 +54,4 @@ export const Slot = React.forwardRef<HTMLElement, SlotProps>(
       children as React.ReactElement<MergedProps>,
       merged
     );
-  }
-);
-Slot.displayName = "Slot";
+}

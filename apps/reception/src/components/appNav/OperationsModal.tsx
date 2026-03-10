@@ -1,44 +1,9 @@
-/* File: /src/components/appNav/OperationsModal.tsx */
 import { withIconModal } from "../../hoc/withIconModal";
-import { type ModalAction } from "../../types/component/ModalAction";
 
-const actions: ModalAction[] = [
-  {
-    label: "Bar",
-    iconClass: "fas fa-cocktail",
-    route: "/bar",
-  },
-  {
-    label: "Checkin",
-    iconClass: "fas fa-sign-in-alt",
-    route: "/checkin",
-  },
-  {
-    label: "View Rooms",
-    iconClass: "fas fa-eye",
-    route: "/rooms-grid",
-  },
-  {
-    label: "Checkout",
-    iconClass: "fas fa-sign-out-alt",
-    route: "/checkout",
-  },
-  {
-    label: "Loans",
-    iconClass: "fas fa-lock",
-    route: "/loan-items",
-  },
-  {
-    label: "Extension",
-    iconClass: "fas fa-calendar-plus",
-    route: "/extension",
-  },
-  {
-    label: "Prime Requests",
-    iconClass: "fas fa-inbox",
-    route: "/prime-requests",
-  },
-];
+import { navSections, SECTION_LABELS } from "./navConfig";
+
+const section = navSections.find((s) => s.label === SECTION_LABELS.OPERATIONS);
+const actions = (section?.items ?? []).filter((item) => !item.sidebarOnly);
 
 export default withIconModal({
   label: "OPERATIONS",

@@ -1,0 +1,211 @@
+{
+  "schema_version": "candidate-ledger.v1",
+  "business": "SIMC",
+  "updated_at": "2026-03-02T15:22:12.707Z",
+  "candidates": [
+    {
+      "candidate": {
+        "schema_version": "candidate.v1",
+        "candidate_id": "d8f8f9d7f5ca76e9",
+        "candidate_type": "new_skill",
+        "candidate_state": "validated",
+        "problem_statement": "Repeated work signature 8b38f7f8 detected 2 times in SIMC.",
+        "trigger_observations": [
+          "o1",
+          "o2"
+        ],
+        "executor_path": "lp-do-build:container:analytics-v1",
+        "change_scope": "business_only",
+        "applicability_predicates": [
+          "business=SIMC"
+        ],
+        "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+        "risk_level": "low",
+        "blast_radius_tag": "small",
+        "autonomy_level_required": 2,
+        "estimated_effort": "M",
+        "recommended_action": "route_into_lp-do-build_backbone",
+        "owners": [
+          "startup-loop"
+        ],
+        "approvers": [
+          "operator"
+        ],
+        "test_plan": "offline_replay_plus_canary",
+        "validation_contract": "self-evolving.validation.v1",
+        "rollout_plan": "feature_flag_canary_then_promote",
+        "rollback_contract": "auto_revert_on_guardrail_breach",
+        "kill_switch": "self_evolving_global_kill_switch",
+        "blocked_reason_code": null,
+        "unblock_requirements": [],
+        "blocked_since": null,
+        "expiry_at": "2026-04-01T12:00:00.000Z"
+      },
+      "score": {
+        "priority_score_v1": 3.25,
+        "priority_score_v2": 11.75,
+        "autonomy_cap": 2,
+        "reasons": []
+      },
+      "route": {
+        "route": "lp-do-fact-find",
+        "reason": "new_skill_needs_fact_find"
+      },
+      "source_hard_signature": "8b38f7f846ff2c2835ead5c8e5a70295ce09df1a14182549c123ea399dcaba82",
+      "generated_at": "2026-03-02T12:00:00.000Z"
+    },
+    {
+      "candidate": {
+        "schema_version": "candidate.v1",
+        "candidate_id": "f32a6ee4deb600ab",
+        "candidate_type": "skill_refactor",
+        "candidate_state": "validated",
+        "problem_statement": "Repeated work signature 9fcd658c detected 2 times in SIMC.",
+        "trigger_observations": [
+          "o3",
+          "o4"
+        ],
+        "executor_path": "lp-do-build:container:analytics-v1",
+        "change_scope": "business_only",
+        "applicability_predicates": [
+          "business=SIMC"
+        ],
+        "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+        "risk_level": "low",
+        "blast_radius_tag": "small",
+        "autonomy_level_required": 2,
+        "estimated_effort": "M",
+        "recommended_action": "route_into_lp-do-build_backbone",
+        "owners": [
+          "startup-loop"
+        ],
+        "approvers": [
+          "operator"
+        ],
+        "test_plan": "offline_replay_plus_canary",
+        "validation_contract": "self-evolving.validation.v1",
+        "rollout_plan": "feature_flag_canary_then_promote",
+        "rollback_contract": "auto_revert_on_guardrail_breach",
+        "kill_switch": "self_evolving_global_kill_switch",
+        "blocked_reason_code": null,
+        "unblock_requirements": [],
+        "blocked_since": null,
+        "expiry_at": "2026-04-01T12:00:00.000Z"
+      },
+      "score": {
+        "priority_score_v1": 3.25,
+        "priority_score_v2": 11.75,
+        "autonomy_cap": 2,
+        "reasons": []
+      },
+      "route": {
+        "route": "lp-do-plan",
+        "reason": "refactor_plan_required"
+      },
+      "source_hard_signature": "9fcd658c640412b40e8837fb098c2dfc4f91cef19397ad1665eff624e5cdebea",
+      "generated_at": "2026-03-02T12:00:00.000Z"
+    },
+    {
+      "candidate": {
+        "schema_version": "candidate.v1",
+        "candidate_id": "323e69501d5c6980",
+        "candidate_type": "deterministic_extraction",
+        "candidate_state": "validated",
+        "problem_statement": "Repeated work signature c35bdde4 detected 2 times in SIMC.",
+        "trigger_observations": [
+          "o5",
+          "o6"
+        ],
+        "executor_path": "lp-do-build:container:analytics-v1",
+        "change_scope": "business_only",
+        "applicability_predicates": [
+          "business=SIMC"
+        ],
+        "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+        "risk_level": "low",
+        "blast_radius_tag": "small",
+        "autonomy_level_required": 2,
+        "estimated_effort": "M",
+        "recommended_action": "route_into_lp-do-build_backbone",
+        "owners": [
+          "startup-loop"
+        ],
+        "approvers": [
+          "operator"
+        ],
+        "test_plan": "offline_replay_plus_canary",
+        "validation_contract": "self-evolving.validation.v1",
+        "rollout_plan": "feature_flag_canary_then_promote",
+        "rollback_contract": "auto_revert_on_guardrail_breach",
+        "kill_switch": "self_evolving_global_kill_switch",
+        "blocked_reason_code": null,
+        "unblock_requirements": [],
+        "blocked_since": null,
+        "expiry_at": "2026-04-01T12:00:00.000Z"
+      },
+      "score": {
+        "priority_score_v1": 3.25,
+        "priority_score_v2": 11.75,
+        "autonomy_cap": 2,
+        "reasons": []
+      },
+      "route": {
+        "route": "lp-do-plan",
+        "reason": "requires_spec_before_build"
+      },
+      "source_hard_signature": "c35bdde4f5772be6cb99bfce5d8aaa2275514e5ece8ea4f32c0ae9194fb2366e",
+      "generated_at": "2026-03-02T12:00:00.000Z"
+    },
+    {
+      "candidate": {
+        "schema_version": "candidate.v1",
+        "candidate_id": "7535fd96332ce617",
+        "candidate_type": "container_update",
+        "candidate_state": "validated",
+        "problem_statement": "Repeated work signature e984a455 detected 2 times in SIMC.",
+        "trigger_observations": [
+          "o7",
+          "o8"
+        ],
+        "executor_path": "lp-do-build:container:website-v1",
+        "change_scope": "business_only",
+        "applicability_predicates": [
+          "business=SIMC"
+        ],
+        "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+        "risk_level": "medium",
+        "blast_radius_tag": "medium",
+        "autonomy_level_required": 2,
+        "estimated_effort": "M",
+        "recommended_action": "route_into_lp-do-build_backbone",
+        "owners": [
+          "startup-loop"
+        ],
+        "approvers": [
+          "operator"
+        ],
+        "test_plan": "offline_replay_plus_canary",
+        "validation_contract": "self-evolving.validation.v1",
+        "rollout_plan": "feature_flag_canary_then_promote",
+        "rollback_contract": "auto_revert_on_guardrail_breach",
+        "kill_switch": "self_evolving_global_kill_switch",
+        "blocked_reason_code": null,
+        "unblock_requirements": [],
+        "blocked_since": null,
+        "expiry_at": "2026-04-01T12:00:00.000Z"
+      },
+      "score": {
+        "priority_score_v1": 3.25,
+        "priority_score_v2": 11.75,
+        "autonomy_cap": 2,
+        "reasons": []
+      },
+      "route": {
+        "route": "lp-do-build",
+        "reason": "container_update_ready_for_build"
+      },
+      "source_hard_signature": "e984a45595d72f59eb3f273ba703c05cf7a9fbfdb2275e8f1b9b9120451b7149",
+      "generated_at": "2026-03-02T12:00:00.000Z"
+    }
+  ]
+}

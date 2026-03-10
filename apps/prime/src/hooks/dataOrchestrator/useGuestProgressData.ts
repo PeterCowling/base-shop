@@ -74,7 +74,7 @@ export function useGuestProgressData(): GuestProgressData {
 
   const currentBookingId = occupantData?.reservationCode ?? null;
   const currentCheckInDate = occupantData?.checkInDate ?? null;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- PRIME-1: completedTasks reference stable; deep-equal check would cause infinite loop
   const completedTasks: OccupantCompletedTasks =
     occupantData?.completedTasks ?? {};
 

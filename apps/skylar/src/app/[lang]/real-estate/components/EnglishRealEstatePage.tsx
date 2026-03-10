@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- STYLING-0001 [ttl=2026-12-31] Milan real-estate CTAs and copy rely on CSS tokens; DS tap-size rule misestimates actual button size */
+/* eslint-disable ds/min-tap-size -- STYLING-0001 [ttl=2026-12-31] DS tap-size rule misestimates actual button size */
 
 import Image from "next/image";
 
@@ -118,8 +118,8 @@ export default function EnglishRealEstatePage({
       </section>
 
       <div className="realestate-showcase" aria-labelledby="realestate-showcase-header">
-        <p id="realestate-showcase-header" className="realestate-showcase-heading">
-          SHOWCASE
+        <p id="realestate-showcase-header" /* i18n-exempt -- STYLING-0001 DOM id attribute for aria-labelledby [ttl=2026-12-31] */ className="realestate-showcase-heading">
+          {translator("realEstate.en.showcase.heading")}
         </p>
         <section className="realestate-flagships">
           {flagshipCards.map((card) => (
@@ -144,7 +144,7 @@ export default function EnglishRealEstatePage({
                   target={card.key === "tower" ? undefined : "_blank"}
                   rel={card.key === "tower" ? undefined : "noreferrer"}
                 >
-                  Learn more
+                  {translator("realEstate.en.cta.learnMore")}
                 </a>
               )}
             </article>
@@ -161,7 +161,7 @@ export default function EnglishRealEstatePage({
             width={560}
             height={420}
             className="realestate-portfolio-gallery__image"
-            sizes="(min-width: 1200px) 20vw, (min-width: 768px) 33vw, 100vw"
+            sizes="(min-width: 1200px) 20vw, (min-width: 768px) 33vw, 100vw" /* i18n-exempt -- STYLING-0001 responsive image sizes directive [ttl=2026-12-31] */
           />
         ))}
       </section>
@@ -177,7 +177,7 @@ export default function EnglishRealEstatePage({
               target={index === 2 ? undefined : "_blank"}
               rel={index === 2 ? undefined : "noreferrer"}
             >
-              Learn more
+              {translator("realEstate.en.cta.learnMore")}
             </a>
           </article>
         ))}
@@ -186,4 +186,4 @@ export default function EnglishRealEstatePage({
   );
 }
 
-/* eslint-enable ds/no-hardcoded-copy, ds/min-tap-size */
+/* eslint-enable ds/min-tap-size */

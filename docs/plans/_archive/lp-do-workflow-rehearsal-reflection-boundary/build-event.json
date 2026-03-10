@@ -1,0 +1,14 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "lp-do-workflow-rehearsal-reflection-boundary-20260306",
+  "feature_slug": "lp-do-workflow-rehearsal-reflection-boundary",
+  "emitted_at": "2026-03-06T00:00:00.000Z",
+  "why": "The workflow needs a clean phase boundary. Anticipatory dry runs belong before build as rehearsal; once the build is done, post-build artifacts should only reflect what actually happened.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "lp-do-fact-find, lp-do-plan, and lp-do-critique use rehearsal language for pre-build dry runs; new post-critique delivery rehearsal is bounded and same-outcome only; lp-do-build post-build artifacts are explicitly reflective only.",
+    "source": "operator"
+  },
+  "plan_path": "docs/plans/lp-do-workflow-rehearsal-reflection-boundary/plan.md",
+  "build_record_path": "docs/plans/lp-do-workflow-rehearsal-reflection-boundary/build-record.user.md"
+}

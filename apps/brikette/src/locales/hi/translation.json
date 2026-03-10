@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "छात्रावास ब्रिकेट",
     "reserve": "अभी बुक करें"
   },
   "intro": {
@@ -24,10 +24,14 @@
     "reload": "पेज को फिर से लोड करें"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
-    "twitterHandle": "@brikette"
+    "twitterCard": "सारांश_large_image",
+    "twitterHandle": "@Burkette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS में कम से कम एक assistance slug परिभाषित होना चाहिए"
+  },
+  "stickyCta": {
+    "directHeadline": "दो मिनट से कम में हमारी सर्वोत्तम उपलब्ध दर सुनिश्चित करें।",
+    "directSubcopy": "तृतीय-पक्ष शुल्क से बचें और पोजिटानो में हमारी टीम से प्राथमिकता सहायता प्राप्त करें।"
   }
 }

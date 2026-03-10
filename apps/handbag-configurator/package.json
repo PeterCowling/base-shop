@@ -3,8 +3,8 @@
   "private": true,
   "scripts": {
     "prelint": "pnpm --filter @acme/eslint-plugin-ds build",
-    "dev": "next dev --webpack -p 3016",
-    "build": "next build --webpack",
+    "dev": "next dev -p 3016",
+    "build": "next build",
     "start": "next start -p 3016",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",

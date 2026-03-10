@@ -10,6 +10,8 @@
  * - 'mixed': Default CTAs
  */
 
+'use client';
+
 import { type FC, memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';

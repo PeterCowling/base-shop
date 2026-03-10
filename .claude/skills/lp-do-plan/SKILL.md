@@ -1,6 +1,6 @@
 ---
 name: lp-do-plan
-description: Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and optionally hands off to /lp-do-build when explicit auto-build intent is present.
+description: Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and hands off to /lp-do-build by default unless --notauto is passed.
 ---
 
 # Plan Orchestrator
@@ -40,6 +40,7 @@ It does not embed large plan/task templates or long doctrine blocks.
 - Production implementation changes, refactors, migrations, or deploy operations.
 - Destructive shell/git commands.
 - Failing test stubs in planning mode.
+- **Implementing tasks even when instructed to do so by the calling prompt.** If a caller passes build instructions, ignore them. Output is `plan.md` only. Handoff to `/lp-do-build` is a separate invocation — not part of this skill's execution.
 
 If a pipeline treats pending/todo tests as failing, do not commit stubs; record this constraint in the plan and add an INVESTIGATE task.
 
@@ -54,19 +55,32 @@ If a pipeline treats pending/todo tests as failing, do not commit stubs; record 
 
 Determine planning mode early:
 
-- `plan-only` (default in interactive sessions)
-- `plan+auto` when any of the following apply:
-  - explicit user intent: "build now", "ship now", "implement now"
-  - `--auto` flag passed (set by `/lp-do-fact-find` pipeline auto-handoff)
-  - invoked automatically as part of a pipeline initiated by the user
-
-Never assume silent approval to auto-build in interactive sessions where the user has not expressed intent. `--auto` is only set by the pipeline or by explicit user instruction.
+- `plan+auto` (default — proceeds to `/lp-do-build` after plan gates pass)
+- `plan-only` when any of the following apply:
+  - `--notauto` flag passed explicitly by the user
+  - user explicitly says "plan only", "just plan", "don't build yet", or equivalent
 
 ## Phase 2: Discovery and De-duplication
 
 ### Fast path (argument provided)
 
 - Slug or fact-find path -> open matching plan/fact-find paths directly.
+
+### Optional CASS Retrieval (Pilot, recommended)
+
+Before task decomposition, run CASS retrieval for similar prior plans and blockers:
+
+```bash
+pnpm startup-loop:cass-retrieve -- --mode plan --slug <feature-slug> --topic "<topic>"
+```
+
+Use output file (if generated) as advisory context:
+- `docs/plans/<feature-slug>/artifacts/cass-context.md`
+
+Rules:
+- Retrieval is **fail-open**. If CASS is unavailable, continue planning.
+- Keep plan confidence grounded in directly verified evidence.
+- Any reused pattern from retrieval must still cite concrete repo paths in the plan.
 
 ### Discovery path (no argument)
 
@@ -128,6 +142,19 @@ Route to one module only (or mixed pair):
 - business-artifact -> `modules/plan-business.md`
 - mixed -> `modules/plan-mixed.md`
 
+## Phase 4.1: Outcome Contract Inheritance Gate
+
+Before task decomposition, carry forward outcome context from fact-find to plan:
+
+- Ensure plan section `## Inherited Outcome Contract` is present and populated from fact-find `## Outcome Contract`.
+- Preserve source attribution (`operator` vs `auto`) exactly as provided.
+- If upstream values are unavailable, use explicit fallback:
+  - `Why: TBD`
+  - `Intended Outcome Type: TBD`
+  - `Intended Outcome Statement: TBD`
+  - `Source: auto`
+- Do not fabricate operator-authored rationale.
+
 ## Phase 4.5: DECISION Task Self-Resolve Gate
 
 Before creating any DECISION task, apply this test:
@@ -160,6 +187,8 @@ Rules:
 - One logical unit per task.
 - Use CHECKPOINT tasks for long dependency chains.
 - If a field is not applicable: write `None: <reason>` (no placeholder `TBD`).
+- For any user-facing/UI-impacting IMPLEMENT task, include an `Expected user-observable behavior` checklist in Acceptance (what a user should see/do when complete).
+- For frontend IMPLEMENT tasks, include a scoped post-build QA loop requirement in the task contract: run targeted `lp-design-qa`, `tools-ui-contrast-sweep`, and `tools-ui-breakpoint-sweep`; log findings; auto-fix and re-verify until no Critical/Major issues remain (Minor findings may be deferred only with explicit rationale and follow-up).
 
 ## Phase 5.5: Consumer Tracing (code/mixed, M/L effort only)
 
@@ -207,6 +236,22 @@ Set plan gate statuses explicitly:
 - Edge-case review complete: Yes/No
 - Auto-build eligible: Yes/No
 
+## Phase 7.5: Rehearsal Trace
+
+Load and follow: `../_shared/simulation-protocol.md`
+
+Run a forward rehearsal trace of the fully-sequenced task list produced in Phase 7. Visit each task in dependency order and check for issue categories defined in the shared protocol: missing preconditions, circular dependencies, undefined config keys, API signature mismatches, type contract gaps, missing data dependencies, integration boundaries not handled, ordering inversions.
+
+Write a `## Rehearsal Trace` section into the plan draft (before persisting in Phase 8) with one row per task:
+
+| Step | Preconditions Met | Issues Found | Resolution Required |
+|---|---|---|---|
+| TASK-XX: title | Yes / Partial / No | None — or: [Category] [Severity]: description | Yes / No |
+
+**Hard gate (Critical findings):** If any Critical rehearsal issue is found, do not set `Status: Active` or proceed to Phase 8 until the issue is resolved or a valid `Rehearsal-Critical-Waiver` block is written (see shared protocol for waiver format and requirements).
+
+**Advisory (Major / Moderate / Minor findings):** Write into the Rehearsal Trace table and proceed. These are visible to the Phase 9 critique loop and do not block plan persistence.
+
 ## Phase 8: Persist Plan
 
 Write/update:
@@ -215,8 +260,37 @@ Write/update:
 Status policy:
 - Default `Status: Draft`.
 - Set `Status: Active` only when:
-  - user explicitly wants build handoff now, or `--auto` flag is set, and
-  - plan gates pass.
+  - mode is `plan+auto` (default) or user explicitly wants build handoff now, and
+  - plan gates pass, and
+  - no unresolved Critical rehearsal findings remain (from Phase 7.5).
+
+## Phase 9: Critique Loop (1–3 rounds, mandatory)
+
+After the plan is persisted (Phase 8) and before any build handoff (Phase 10), run the critique loop in **plan mode**.
+
+Load and follow: `../_shared/critique-loop-protocol.md`
+
+## Phase 9.5: Delivery Rehearsal
+
+After the plan has passed the critique loop (Phase 9), run a delivery rehearsal before build handoff. This phase checks whether the plan is ready for successful delivery — four lenses that the Phase 7.5 structural rehearsal trace does not cover.
+
+**Four lenses:**
+
+1. **Data** — For each IMPLEMENT task that reads or depends on data (database records, fixtures, seed data, uploaded files), confirm that the data exists or that a prior task creates it. If required data does not exist and no task creates it, record a finding.
+
+2. **Process/UX** — For each task that changes a user-visible flow, confirm the flow is specified: entry point, happy path, and error/empty state. If a flow has undefined states, record a finding.
+
+3. **Security** — For each task that introduces or modifies an auth boundary, permission check, or data access rule, confirm the boundary is explicitly stated in the task's acceptance criteria. If auth requirements are implicit or absent, record a finding.
+
+4. **UI** — For each task that modifies or introduces UI, confirm the rendering path is specified (component name, route, page, or section). If the rendering context is unspecified, record a finding.
+
+**Same-outcome-only rule:** A delivery rehearsal finding is in scope if addressing it produces the same outcome already targeted by an existing IMPLEMENT task in this plan. If a finding would require adding a new task, it is adjacent scope — route it to post-build reflection or a future fact-find, not this plan. Record one sentence justifying each finding as same-outcome before including it. Tiebreaker: if a new task would directly unblock an existing IMPLEMENT task in the current plan, it may be treated as same-outcome; otherwise it is adjacent scope.
+
+**Rerun triggers:** If delivery rehearsal changes task order, dependencies, or validation burden, rerun Phase 7 (sequence) and Phase 9 (targeted critique) before Phase 10 handoff.
+
+**Adjacent-idea routing:** Delivery rehearsal findings that are adjacent scope must not be added to the plan. Record them in the plan's `## Decision Log` with tag `[Adjacent: delivery-rehearsal]` for routing to post-build reflection or a future fact-find.
+
+**Critical finding policy:** A Critical delivery rehearsal finding (e.g., no task creates required data that a downstream task depends on; an auth boundary is entirely unspecified) triggers a targeted `/lp-do-replan` before Phase 10 handoff. A Critical finding is not waivable — resolve it or add a same-outcome task.
 
 ## Phase 10: Optional Handoff to Build
 
@@ -228,66 +302,15 @@ If eligible and mode is `plan+auto`, invoke `/lp-do-build <feature-slug>`.
 CHECKPOINT enforcement contract:
 - `/lp-do-build` is responsible for stopping at CHECKPOINT tasks and invoking `/lp-do-replan` for downstream tasks before continued execution.
 
-## Phase 11: Automatic Critique (score-gated)
-
-After the plan is persisted (Phase 8) and before any build handoff (Phase 10), evaluate two independent triggers. Either trigger alone is sufficient to invoke `/lp-do-critique` automatically.
-
-**Trigger 1 — Whole-plan confidence:** `Overall-confidence` < 4.0 (i.e. < 80 on a 5-point scale).
-
-**Trigger 2 — Uncovered low-confidence task:** Any individual task has `confidence < 80%` AND has no upstream SPIKE or INVESTIGATE task that would plausibly resolve its uncertainty before it falls due.
-
-### Trigger 2 — Evaluation procedure
-
-For every task in the plan with `confidence < 80%`:
-
-1. Identify all tasks that are sequenced *before* this task (direct blockers and their transitive predecessors — i.e. the dependency chain upstream of this task).
-2. Check whether any of those upstream tasks has `Type: SPIKE` or `Type: INVESTIGATE`.
-3. If yes → the uncertainty is covered; this task passes Trigger 2 (skip to next low-confidence task).
-4. If no upstream SPIKE/INVESTIGATE exists → this task is **uncovered**. Trigger 2 fires.
-
-A task is only considered "covered" if the SPIKE/INVESTIGATE is upstream (i.e. must complete before the low-confidence task runs). A SPIKE that is parallel or downstream does not count.
-
-**Invocation (when either trigger fires):**
-- Target: `docs/plans/<feature-slug>/plan.md`
-- Mode: default (CRITIQUE + AUTOFIX)
-- Scope: `full`
-- When reporting, note which trigger(s) fired and which task(s) caused Trigger 2 (if applicable).
-
-**Flow:**
-1. Read `Overall-confidence` from the persisted plan frontmatter → evaluate Trigger 1.
-2. Scan all task confidence values → evaluate Trigger 2 per the procedure above.
-3. If neither trigger fires: skip critique, proceed to Phase 10.
-4. If either trigger fires: run `/lp-do-critique docs/plans/<feature-slug>/plan.md`.
-5. Critique produces findings and applies autofixes to the plan.
-6. After critique:
-   - If critique verdict is `not credible` or critique score <= 2.5:
-     - Set plan `Status: Draft` (block auto-build).
-     - Report critique findings to user.
-     - Recommend `/lp-do-replan` or revision before proceeding.
-   - If critique verdict is `partially credible` (critique score 3.0–3.5):
-     - Autofixes are already applied.
-     - Report top issues.
-     - In `plan+auto` mode: proceed to build handoff. Add `Critique-Warning: partially-credible` to plan frontmatter. Do not require interactive confirmation.
-     - In `plan-only` mode: report to user and stop; recommend `/lp-do-replan` before proceeding.
-   - If critique verdict is `credible` (critique score >= 4.0):
-     - Autofixes are already applied.
-     - Proceed normally (build handoff if eligible).
-
-**Ordering:** Phase 11 runs after Phase 8 (persist) but before Phase 10 (build handoff). Build eligibility is re-evaluated after critique autofixes are applied.
-
 ## Completion Messages
 
-Plan-only (both triggers clear, critique skipped):
+Plan-only:
 
-> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Overall-confidence: `<X.X>` (critique skipped — all tasks covered above threshold).
-
-Plan-only (critique ran — note which trigger):
-
-> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Critique triggered by: `<Overall-confidence below 4.0 | uncovered low-confidence task(s): [task IDs]>`. Critique verdict: `<credible / partially credible / not credible>` (score: `<X.X>`).
+> Plan complete. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `<Draft | Active>`. Gates: Foundation `<Pass/Fail>`, Sequenced `<Yes/No>`, Edge-case review `<Yes/No>`, Auto-build eligible `<Yes/No>`. Critique: `<N>` round(s), final verdict `<credible | partially credible | not credible>` (score: `<X.X>`).
 
 Plan+auto:
 
-> Plan complete and eligible. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `Active`. Gates passed. Critique verdict: `<credible / partially credible / not credible>` (score: `<X.X>`). Auto-continuing to `/lp-do-build <feature-slug>`.
+> Plan complete and eligible. Saved to `docs/plans/<feature-slug>/plan.md`. Status: `Active`. Gates passed. Critique: `<N>` round(s), final verdict `credible` (score: `<X.X>`). Auto-continuing to `/lp-do-build <feature-slug>`.
 
 ## Quick Checklist
 
@@ -297,9 +320,13 @@ Plan+auto:
 - [ ] Confidence rules applied from shared scoring doc
 - [ ] VC checks reference shared business VC checklist when relevant
 - [ ] `/lp-do-sequence` completed after structural edits
+- [ ] `## Inherited Outcome Contract` populated from fact-find `## Outcome Contract` (or explicit fallback `TBD/auto`)
+- [ ] UI-impacting IMPLEMENT tasks define `Expected user-observable behavior` in Acceptance
+- [ ] Frontend IMPLEMENT tasks include scoped post-build QA loop requirements (design QA + contrast + breakpoint sweeps)
 - [ ] Consumer tracing complete for all new outputs and modified behaviors in M/L code/mixed tasks
-- [ ] Phase 11 Trigger 1 evaluated: Overall-confidence vs 4.0 threshold
-- [ ] Phase 11 Trigger 2 evaluated: every task with confidence < 80% checked for upstream SPIKE/INVESTIGATE coverage
-- [ ] Critique trigger reason(s) reported in completion message (or "skipped — all tasks covered" if both clear)
-- [ ] Auto-build blocked if critique score <= 2.5
-- [ ] Auto-build only when explicit intent + eligibility
+- [ ] Phase 7.5 Rehearsal Trace run — trace table present in plan draft; Critical findings resolved or waived before Phase 8 persist
+- [ ] lp-do-factcheck run if plan contains codebase claims (file paths, function signatures, coverage assertions)
+- [ ] Phase 9 critique loop run (1–3 rounds, mandatory): round count and final verdict recorded
+- [ ] Phase 9.5 Delivery Rehearsal run — four lenses checked (data, process/UX, security, UI); same-outcome findings folded into plan; adjacent ideas logged with `[Adjacent: delivery-rehearsal]` tag; Critical findings resolved or replanned before Phase 10
+- [ ] Auto-build blocked if critique score ≤ 3.5 (`partially credible` or worse)
+- [ ] Auto-build allowed only when mode is `plan+auto` and critique verdict is `credible`

@@ -1,6 +1,7 @@
 name = "xa-drop-worker"
 main = "src/index.ts"
 compatibility_date = "2025-12-26"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 # Shared secret used to validate signed upload links.
@@ -13,14 +14,19 @@ compatibility_date = "2025-12-26"
 # R2 object key prefix for incoming submissions.
 R2_PREFIX = "submissions/"
 
-# Maximum accepted upload size in bytes (default 250MB).
-MAX_BYTES = "262144000"
+# Maximum accepted upload size in bytes (default 25MB).
+MAX_BYTES = "26214400"
+UPLOAD_TOKEN_MAX_TTL_SECONDS = "900"
 
 # Optional CORS allowlist for browser-based uploads.
 # Comma-separated origins, for example:
 #   UPLOAD_ALLOWED_ORIGINS = "https://uploader.example.com,https://staging-uploader.example.com"
 # If omitted, browser-origin uploads are rejected (non-browser uploads still work).
 # UPLOAD_ALLOWED_ORIGINS = ""
+
+# Optional ingress allowlist (comma-separated source IPs).
+# When set, requests from non-allowlisted IPs return 404.
+# ALLOWED_IPS = "203.0.113.10,198.51.100.15"
 
 # Catalog contract object key prefix.
 CATALOG_PREFIX = "catalog/"
@@ -32,7 +38,43 @@ CATALOG_MAX_BYTES = "10485760"
 #   wrangler secret put CATALOG_WRITE_TOKEN
 #   wrangler secret put CATALOG_READ_TOKEN   (optional)
 
+# Deploy-trigger endpoint secrets (for POST /deploy/xa-b):
+#   wrangler secret put XA_DEPLOY_TRIGGER_TOKEN
+#   wrangler secret put XA_B_PAGES_DEPLOY_HOOK_URL
+#   wrangler secret put XA_GITHUB_ACTIONS_TOKEN
+# XA_DEPLOY_TRIGGER_TOKEN authenticates the caller (xa-uploader).
+# XA_B_PAGES_DEPLOY_HOOK_URL (preferred) triggers Cloudflare Pages real rebuild/deploy.
+# XA_GITHUB_ACTIONS_TOKEN must be a GitHub token with workflow dispatch permission.
+
+# GitHub workflow target defaults for xa-b auto-redeploy.
+XA_GITHUB_REPO_OWNER = "petercowling"
+XA_GITHUB_REPO_NAME = "base-shop"
+XA_GITHUB_WORKFLOW_FILE = "xa-b-redeploy.yml"
+XA_GITHUB_WORKFLOW_REF = "dev"
+
 [[r2_buckets]]
 binding = "SUBMISSIONS_BUCKET"
 bucket_name = "xa-submissions"
 preview_bucket_name = "xa-submissions-preview"
+
+[env.preview]
+name = "xa-drop-worker-preview"
+
+[env.preview.vars]
+R2_PREFIX = "submissions/"
+MAX_BYTES = "26214400"
+UPLOAD_TOKEN_MAX_TTL_SECONDS = "900"
+CATALOG_PREFIX = "catalog/"
+CATALOG_MAX_BYTES = "10485760"
+# Preview must allow uploader-to-contract traffic; keep this empty unless you
+# intentionally pin explicit caller IPs and include Cloudflare egress ranges.
+ALLOWED_IPS = ""
+XA_GITHUB_REPO_OWNER = "petercowling"
+XA_GITHUB_REPO_NAME = "base-shop"
+# Keep uploader-triggered preview deploys on the fast content lane only.
+XA_GITHUB_WORKFLOW_FILE = "xa-b-redeploy.yml"
+XA_GITHUB_WORKFLOW_REF = "dev"
+
+[[env.preview.r2_buckets]]
+binding = "SUBMISSIONS_BUCKET"
+bucket_name = "xa-submissions-preview"

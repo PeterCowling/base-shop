@@ -30,7 +30,7 @@ This plan introduces an S10 weekly orchestration wrapper (`/lp-weekly`) while pr
 ## Goals
 - Introduce `/lp-weekly` as the S10 orchestration contract (operator-visible + startup-loop-internal route).
 - Preserve authority boundaries:
-  - stage graph authority = `docs/business-os/startup-loop/loop-spec.yaml`
+  - stage graph authority = `docs/business-os/startup-loop/specifications/loop-spec.yaml`
   - decision content authority = `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
 - Implement deterministic S10 sequence with lane contracts (`a/b/c`) and additive packetization.
 - Add compatibility checks proving canonical artifacts and stage semantics remain intact.
@@ -116,7 +116,7 @@ See `## Tasks` section for the active task list.
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
-- **Affects:** `.claude/skills/startup-loop/SKILL.md`, `.claude/skills/startup-loop/modules/cmd-advance.md`, `.claude/skills/lp-weekly/SKILL.md`, `[readonly] docs/business-os/startup-loop/loop-spec.yaml`
+- **Affects:** `.claude/skills/startup-loop/SKILL.md`, `.claude/skills/startup-loop/modules/cmd-advance.md`, `.claude/skills/lp-weekly/SKILL.md`, `[readonly] docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03, TASK-04, TASK-05
 - **Confidence:** 85%
@@ -150,17 +150,17 @@ See `## Tasks` section for the active task list.
 
 ### TASK-02: Publish S10 orchestration contract (`/lp-weekly`) with sequence + lane rules
 - **Type:** IMPLEMENT
-- **Deliverable:** S10 orchestration contract doc at `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md`
+- **Deliverable:** S10 orchestration contract doc at `docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
-- **Artifact-Destination:** `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md`
+- **Artifact-Destination:** `docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md`
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** Decision-log acknowledgment in plan + maintainer review note
 - **Measurement-Readiness:** owner=operator; cadence=weekly; tracked in two-cycle checkpoint evidence section
-- **Affects:** `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
+- **Affects:** `docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-04, TASK-05
 - **Confidence:** 85%
@@ -195,7 +195,7 @@ See `## Tasks` section for the active task list.
 - **Documentation impact:** Adds a new canonical S10 orchestration contract.
 - **Notes / references:** `docs/business-os/_shared/business-vc-quality-checklist.md`
 - **Build completion evidence (2026-02-18):**
-  - `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md` — created (10 sections)
+  - `docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md` — created (10 sections)
   - `docs/business-os/startup-loop-workflow.user.md` — S10 quick-action row updated with `/lp-weekly` reference
   - `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` — cross-reference note added (read-only comment)
   - VC-02-01 pass: authority isolation table present with non-overlapping scope columns
@@ -253,7 +253,7 @@ See `## Tasks` section for the active task list.
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Complete (2026-02-18)
-- **Affects:** `.claude/skills/startup-loop/SKILL.md`, `.claude/skills/startup-loop/modules/cmd-advance.md`, `[readonly] docs/business-os/startup-loop/loop-spec.yaml`
+- **Affects:** `.claude/skills/startup-loop/SKILL.md`, `.claude/skills/startup-loop/modules/cmd-advance.md`, `[readonly] docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** TASK-06
 - **Confidence:** 80%
@@ -279,7 +279,7 @@ See `## Tasks` section for the active task list.
   - `SKILL.md` line 102: Extend S10 stage-table row with a Phase note: `S10 | Weekly decision | /lp-experiment (Phase 0) / /lp-weekly (Phase 1 default)`. Do not remove `/lp-experiment` reference.
   - `loop-spec.yaml`: [readonly] — no changes in this task (Phase 2 remap is TASK-08 scope).
 - **Planning validation (required for M/L):**
-  - Checks run: `rg -n "S10|lp-weekly|lp-experiment|weekly-kpcs" .claude/skills/startup-loop docs/business-os/startup-loop/loop-spec.yaml`
+  - Checks run: `rg -n "S10|lp-weekly|lp-experiment|weekly-kpcs" .claude/skills/startup-loop docs/business-os/startup-loop/specifications/loop-spec.yaml`
   - Validation artifacts: grep snapshot recorded in task build notes (before and after edits).
   - Pre-edit snapshot taken: cmd-advance.md lines 115–148 (GATE-BD-08 + Signal Review Dispatch blocks); SKILL.md line 102; loop-spec.yaml lines 212–218.
   - Unexpected findings: None (static audit complete).
@@ -306,11 +306,11 @@ See `## Tasks` section for the active task list.
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Complete (2026-02-18)
-- **Artifact-Destination:** `docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md` + updates to workflow docs
+- **Artifact-Destination:** `docs/business-os/startup-loop/schemas/s10-weekly-packet-schema-v1.md` + updates to workflow docs
 - **Reviewer:** startup-loop maintainers + operator
 - **Approval-Evidence:** maintainer acknowledgment comment in decision log
 - **Measurement-Readiness:** packet completeness score tracked per weekly run
-- **Affects:** `docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
+- **Affects:** `docs/business-os/startup-loop/schemas/s10-weekly-packet-schema-v1.md`, `docs/business-os/startup-loop-workflow.user.md`, `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md`
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** TASK-06
 - **Confidence:** 85%
@@ -339,7 +339,7 @@ See `## Tasks` section for the active task list.
 - **Documentation impact:** Adds packet schema and workflow linking rules.
 - **Notes / references:** `docs/business-os/_shared/business-vc-quality-checklist.md`
 - **Build completion evidence (2026-02-18):**
-  - `docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md` — created (9 sections: purpose, canonical artifacts retained, path template, latest-pointer path, required fields schema, idempotency rule, pointer update rule, two-cycle metrics fields, cross-references)
+  - `docs/business-os/startup-loop/schemas/s10-weekly-packet-schema-v1.md` — created (9 sections: purpose, canonical artifacts retained, path template, latest-pointer path, required fields schema, idempotency rule, pointer update rule, two-cycle metrics fields, cross-references)
   - `docs/business-os/startup-loop-workflow.user.md` — S10 row updated with packet schema link and completion criteria extended
   - `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` — cross-reference comment updated with packet schema link
   - VC-05-01 pass: Section 1 + Section 2 explicitly state canonical artifacts are retained and referenced, not replaced
@@ -431,7 +431,7 @@ See `## Tasks` section for the active task list.
 - **Execution-Track:** mixed
 - **Effort:** S
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`, `.claude/skills/startup-loop/SKILL.md`, `[readonly] checkpoint evidence`
+- **Affects:** `docs/business-os/startup-loop/specifications/loop-spec.yaml`, `.claude/skills/startup-loop/SKILL.md`, `[readonly] checkpoint evidence`
 - **Depends on:** TASK-07
 - **Blocks:** -
 - **Confidence:** 85%

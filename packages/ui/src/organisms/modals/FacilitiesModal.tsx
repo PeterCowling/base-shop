@@ -39,7 +39,7 @@ function FacilitiesModal({
       <div className="flex min-h-full items-center justify-center p-4 text-center">
         <ModalPanel
           widthClassName={/* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */ "w-full max-w-2xl"}
-          className="layer-modal-panel pointer-events-auto transform bg-brand-bg p-6 text-start dark:bg-brand-text dark:text-brand-surface motion-safe:animate-in motion-safe:animate-fade-in motion-safe:animate-zoom-in-95 duration-200 flex max-h-[90dvh] flex-col"
+          className="layer-modal-panel pointer-events-auto transform bg-brand-bg p-6 text-start dark:bg-brand-text dark:text-brand-surface motion-safe:animate-in motion-safe:animate-fade-in motion-safe:animate-zoom-in-95 duration-200 flex max-h-dvh flex-col"
         >
           <h2 className="mb-4 text-xl font-semibold text-brand-heading text-shadow-sm [--tw-text-shadow-color:theme(colors.slate.500/0.3)]">
             {copy.title}

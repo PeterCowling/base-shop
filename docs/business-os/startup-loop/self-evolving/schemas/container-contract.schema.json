@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "docs/business-os/startup-loop/self-evolving/schemas/container-contract.schema.json",
+  "title": "Startup Motion Container Contract",
+  "type": "object",
+  "required": [
+    "container_name",
+    "container_version",
+    "maturity_level",
+    "idempotency_key_strategy",
+    "startup_state_ref",
+    "required_inputs",
+    "preflight_checks",
+    "steps",
+    "state_store_contract",
+    "outputs",
+    "acceptance_checks",
+    "blocked_reason_enum",
+    "rollback_plan",
+    "kpi_contract",
+    "experiment_hook_contract",
+    "actuator_refs"
+  ],
+  "properties": {
+    "container_name": { "type": "string", "minLength": 1 },
+    "container_version": { "type": "string", "minLength": 1 },
+    "maturity_level": { "type": "string", "enum": ["M0", "M1", "M2", "M3"] },
+    "idempotency_key_strategy": { "type": "string", "minLength": 1 },
+    "startup_state_ref": { "type": "string", "minLength": 1 },
+    "required_inputs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "preflight_checks": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step_id", "step_type", "description", "required", "actor"],
+        "properties": {
+          "step_id": { "type": "string", "minLength": 1 },
+          "step_type": {
+            "type": "string",
+            "enum": ["skill_call", "tool_call", "actuator_call", "validator", "human_approval"]
+          },
+          "description": { "type": "string", "minLength": 1 },
+          "required": { "type": "boolean" },
+          "actor": { "type": "string", "enum": ["human", "system"] }
+        }
+      }
+    },
+    "state_store_contract": { "type": "string", "minLength": 1 },
+    "outputs": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "acceptance_checks": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "blocked_reason_enum": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "rollback_plan": { "type": "string", "minLength": 1 },
+    "kpi_contract": { "type": "string", "minLength": 1 },
+    "experiment_hook_contract": { "type": "string", "minLength": 1 },
+    "actuator_refs": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+  }
+}

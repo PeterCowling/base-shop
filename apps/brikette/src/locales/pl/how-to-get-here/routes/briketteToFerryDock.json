@@ -1,0 +1,40 @@
+{
+  "figures": {
+    "map": {
+      "alt": "Mapa pokazująca trasę spacerową z Hostel Brikette do portu Positano z punktami 1- 5.",
+      "caption": "Przegląd trasy: Hostel → Port (punkty 1- 5)."
+    },
+    "point1": {
+      "alt": "Przecięcie w pobliżu Viale Pasitea z oznakowaną trasą i etykietą: \"1 skręcić w prawo\".",
+      "caption": "Punkt 1: skręcić w prawo."
+    },
+    "tabacchi": {
+      "alt": "Sklep Tabacchi z bankomatem obok.",
+      "caption": "Tabacchi w pobliżu punktu 1 (dobry punkt orientacyjny)."
+    },
+    "point2": {
+      "alt": "Przełącznik drogowy z oznaczoną linią w kierunku schodów i etykietą: \"2 Idź schodami prosto przed siebie\".",
+      "caption": "Punkt 2: opuścić drogę i iść schodami prosto przed siebie."
+    },
+    "point3": {
+      "alt": "Wąska alejka ze schodami i zaznaczoną ścieżką, oznakowana \"3 Idź schodami prosto przed siebie\".",
+      "caption": "Punkt 3: dalej schodzić po schodach."
+    },
+    "point4": {
+      "alt": "Crosswalk i droga z zaznaczoną trasą w kierunku schodów po prawej stronie, oznaczone \"4\".",
+      "caption": "Punkt 4: przejść przez drogę, skręcić w lewo krótko, a następnie zejść schodami na prawo."
+    },
+    "point5": {
+      "alt": "Mały plac w pobliżu portu z oznaczoną trasą, oznaczoną \"5\".",
+      "caption": "Punkt 5: kontynuować pod łukiem w kierunku portu."
+    },
+    "tickets": {
+      "alt": "Kabiny na bilety promowe w porcie Positano z rozkładem jazdy.",
+      "caption": "Bilety: sprawdź znak następnego wyjazdu."
+    },
+    "port": {
+      "alt": "Widok na port Positano z promem na pierwszym planie i na wzgórzu Positano za.",
+      "caption": "Port Positano: czekać w pobliżu końca molo na rozmowy pokładowe."
+    }
+  }
+}

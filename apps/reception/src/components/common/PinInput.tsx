@@ -21,12 +21,12 @@ interface PinInputProps {
 const PIN_LENGTH = 6 as const;
 
 const PIN_BG_CLASSES: readonly string[] = [
-  "bg-accent-soft focus:bg-pink-400",
-  "bg-accent-soft focus:bg-purple-400",
+  "bg-accent-soft focus:bg-accent",
+  "bg-accent-soft focus:bg-primary-main",
   "bg-primary-light focus:bg-primary-soft",
-  "bg-info-light focus:bg-sky-400",
-  "bg-success-light focus:bg-teal-400",
-  "bg-warning-light focus:bg-amber-400",
+  "bg-info-light focus:bg-info-main",
+  "bg-success-light focus:bg-success-main",
+  "bg-warning-light focus:bg-warning-main",
 ];
 
 const EMPTY_BG_CLASS = "bg-surface-3 focus:bg-surface-3";

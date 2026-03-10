@@ -2,24 +2,23 @@
 
 
 import * as React from "react";
-import Link from "next/link";
 import { HeartFilledIcon, HeartIcon } from "@radix-ui/react-icons";
 
-import { Button, Price, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
+import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system/atoms";
 import { PriceCluster } from "@acme/design-system/molecules";
-import { Cluster } from "@acme/design-system/primitives/Cluster";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { useCurrency } from "@acme/platform-core/contexts/CurrencyContext";
 
 import { useCart } from "../contexts/XaCartContext";
 import { useWishlist } from "../contexts/XaWishlistContext";
 import type { XaProduct } from "../lib/demoData";
-import { XA_PRODUCTS } from "../lib/demoData";
 import { getAvailableStock } from "../lib/inventoryStore";
-import { formatLabel, XA_COLOR_SWATCHES, XA_DEFAULT_SWATCH } from "../lib/xaCatalog";
+import { useXaCatalogSnapshot } from "../lib/liveCatalog";
+import { formatLabel, getEffectivePrice, isProductImage, XA_COLOR_SWATCHES, XA_DEFAULT_SWATCH } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
+import { getProductHref } from "../lib/xaRoutes";
 
-import { XaFadeImage } from "./XaFadeImage";
+import { XaColorSwatchStrip } from "./XaColorSwatchStrip";
 
 function getDeliveryWindow(daysMin = 5, daysMax = 12): string {
   const fmt = (d: Date) =>
@@ -33,25 +32,28 @@ function getDeliveryWindow(daysMin = 5, daysMax = 12): string {
 }
 
 export function XaBuyBox({ product }: { product: XaProduct }) {
+  const { products } = useXaCatalogSnapshot();
   const [cart, dispatch] = useCart();
   const [wishlist, wishlistDispatch] = useWishlist();
   const [currency] = useCurrency();
+  const effectivePrice = getEffectivePrice(product, currency);
 
   const [size, setSize] = React.useState<string>(product.sizes[0] ?? "");
-  const [qty, setQty] = React.useState(1);
   const [error, setError] = React.useState<string | null>(null);
+  const [deliveryWindow, setDeliveryWindow] = React.useState<string | null>(null);
   const isWishlisted = wishlist.includes(product.id);
   const sizeCount = product.sizes.length;
   const showSizeSelect = sizeCount > 1;
-  const colorOptions = product.taxonomy.color
-    ? Array.from(new Set(product.taxonomy.color))
-    : [];
-  const colorMedia = product.media.filter((media) => media.type === "image" && media.url.trim());
+  const colorOptions = React.useMemo(
+    () => (product.taxonomy.color ? Array.from(new Set(product.taxonomy.color)) : []),
+    [product.taxonomy.color],
+  );
+  const colorMedia = product.media.filter(isProductImage);
   const variantProducts = React.useMemo(() => {
     if (!product.variantGroup) return [];
-    const items = XA_PRODUCTS.filter((item) => item.variantGroup === product.variantGroup);
+    const items = products.filter((item) => item.variantGroup === product.variantGroup);
     return items.sort((a, b) => (a.id === product.id ? -1 : b.id === product.id ? 1 : 0));
-  }, [product.id, product.variantGroup]);
+  }, [product.id, product.variantGroup, products]);
   const showVariantStrip = variantProducts.length > 1;
   const showColorStrip = !showVariantStrip && colorOptions.length > 1;
   const sizeNote = sizeCount <= 1
@@ -64,6 +66,10 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
   );
   const soldOut = availableToAdd <= 0;
 
+  React.useEffect(() => {
+    setDeliveryWindow(getDeliveryWindow());
+  }, []);
+
   const addToCart = async () => {
     setError(null);
     try {
@@ -71,7 +77,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         type: "add",
         sku: product,
         size: product.sizes.length ? size : undefined,
-        qty,
+        qty: 1,
       });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Cart update failed"); // i18n-exempt -- XA-0009: demo fallback error message
@@ -82,21 +88,10 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
     <div className="space-y-6">
       <div className="space-y-2">
         <PriceCluster
-          price={product.price}
-          compare={product.compareAtPrice}
+          price={effectivePrice}
           currency={currency}
           className="xa-pdp-price"
         />
-        {product.compareAtPrice && product.compareAtPrice > product.price ? (
-          <div className="text-sm text-muted-foreground">
-            Save{" "}
-            <Price
-              amount={Math.max(0, product.compareAtPrice - product.price)}
-              currency={currency}
-              className="font-medium"
-            />
-          </div>
-        ) : null}
       </div>
 
       {showSizeSelect ? (
@@ -116,45 +111,13 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
               ))}
             </SelectContent>
           </Select>
-          {sizeNote ? (
-            <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div>
-          ) : null}
         </div>
-      ) : (
-        sizeNote ? <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div> : null
-      )}
+      ) : null}
+      {sizeNote ? <div className="xa-pdp-meta text-muted-foreground">{sizeNote}</div> : null}
 
-      <Inline gap={2} alignY="center" className="justify-between">
-        <span className="xa-pdp-label text-xs uppercase tracking-widest text-muted-foreground">
-          Quantity
-        </span>
-        <div className="flex items-center gap-0 border border-border-2">
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            aria-label="Decrease quantity"
-            disabled={qty <= 1}
-            onClick={() => setQty((q) => Math.max(1, q - 1))}
-            className="h-8 w-8 rounded-none px-0 py-0 text-sm hover:bg-muted disabled:opacity-40"
-          >
-            −
-          </Button>
-          <Cluster asChild alignY="center" justify="center" wrap={false}>
-            <span className="h-8 w-8 text-sm tabular-nums">{qty}</span>
-          </Cluster>
-          <Button
-            type="button"
-            variant="ghost"
-            size="sm"
-            aria-label="Increase quantity"
-            onClick={() => setQty((q) => q + 1)}
-            className="h-8 w-8 rounded-none px-0 py-0 text-sm hover:bg-muted"
-          >
-            +
-          </Button>
-        </div>
-      </Inline>
+      <div className="xa-pdp-meta text-muted-foreground">
+        {xaI18n.t("xaB.src.components.xabuybox.client.quantityFixed")}
+      </div>
 
       {error ? (
         <div className="rounded-md border border-danger/30 bg-danger/5 p-3 text-sm">
@@ -164,7 +127,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
 
       <Inline gap={2} className="flex-wrap">
         <Button
-          className="xa-pdp-action xa-flex-2 h-11 rounded-none bg-foreground text-primary-fg hover:bg-foreground/90"
+          className="xa-pdp-action xa-flex-2 h-11 rounded-none bg-foreground text-primary-foreground hover:bg-foreground/90"
           disabled={soldOut}
           onClick={() => void addToCart()}
         >
@@ -172,7 +135,7 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
         </Button>
         <Button
           variant="outline"
-          className="xa-pdp-action h-11 w-11 min-w-11 rounded-none border-foreground text-foreground hover:bg-foreground hover:text-primary-fg"
+          className="xa-pdp-action h-11 w-11 min-w-11 rounded-none border-foreground text-foreground hover:bg-foreground hover:text-primary-foreground"
           aria-pressed={isWishlisted}
           aria-label={isWishlisted ? xaI18n.t("xaB.src.components.xabuybox.client.l176c38") : xaI18n.t("xaB.src.components.xabuybox.client.l176c63")}
           onClick={() => wishlistDispatch({ type: "toggle", sku: product })}
@@ -191,80 +154,44 @@ export function XaBuyBox({ product }: { product: XaProduct }) {
 
       <div className="space-y-2">
         <div className="xa-pdp-label text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l192c61")}</div>
-        <div className="xa-pdp-meta">{getDeliveryWindow()}</div>
+        <div className="xa-pdp-meta">
+          {deliveryWindow ?? "Calculating delivery estimate"} {/* i18n-exempt -- XA-0091 [ttl=2026-12-31] hydration-safe transitional copy */}
+        </div>
       </div>
 
       {showVariantStrip || showColorStrip ? (
         <div className="space-y-2">
           <div className="xa-pdp-label text-muted-foreground">{xaI18n.t("xaB.src.components.xabuybox.client.l200c63")}</div>
           {showVariantStrip ? (
-            <Inline gap={2} wrap={false}>
-              {variantProducts.map((variant) => {
+            <XaColorSwatchStrip
+              items={variantProducts.map((variant) => {
                 const color = variant.taxonomy.color?.[0] ?? "";
                 const label = color ? formatLabel(color) : variant.title;
-                const swatch = color
-                  ? (XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH)
-                  : XA_DEFAULT_SWATCH;
-                const media = variant.media.find((item) => item.type === "image" && item.url.trim());
-                const isCurrent = variant.id === product.id;
-                return (
-                  <Link
-                    key={`${variant.slug}-variant`}
-                    href={`/products/${variant.slug}`}
-                    className={`relative h-12 w-12 overflow-hidden rounded-none border bg-surface ${isCurrent ? "border-foreground" : "border-border-2"}`}
-                    title={label}
-                    aria-label={label}
-                    aria-current={isCurrent ? "page" : undefined}
-                  >
-                    {media ? (
-                      <XaFadeImage
-                        src={media.url}
-                        alt={label}
-                        fill
-                        sizes="48px"
-                        className="object-contain p-1"
-                      />
-                    ) : (
-                      <span
-                        className="absolute inset-0"
-                        style={{ backgroundColor: swatch }}
-                        aria-hidden="true"
-                      />
-                    )}
-                  </Link>
-                );
+                const media = variant.media.find(isProductImage);
+                return {
+                  key: `${variant.slug}-variant`,
+                  label,
+                  swatch: color ? (XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH) : XA_DEFAULT_SWATCH,
+                  imageUrl: media?.url,
+                  imageAlt: label,
+                  isCurrent: variant.id === product.id,
+                  href: getProductHref(variant.slug),
+                };
               })}
-            </Inline>
+            />
           ) : (
-            <Inline gap={2} wrap={false}>
-              {colorOptions.map((color, idx) => {
-                const swatch = XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH;
+            <XaColorSwatchStrip
+              items={colorOptions.map((color, idx) => {
                 const media = colorMedia[idx % Math.max(1, colorMedia.length)];
-                return (
-                  <div
-                    key={`${product.slug}-color-${color}`}
-                    className="relative h-12 w-12 overflow-hidden rounded-none border border-border-2 bg-surface"
-                    title={formatLabel(color)}
-                  >
-                    {media ? (
-                      <XaFadeImage
-                        src={media.url}
-                        alt={formatLabel(color)}
-                        fill
-                        sizes="48px"
-                        className="object-contain p-1"
-                      />
-                    ) : (
-                      <span
-                        className="absolute inset-0"
-                        style={{ backgroundColor: swatch }}
-                        aria-hidden="true"
-                      />
-                    )}
-                  </div>
-                );
+                return {
+                  key: `${product.slug}-color-${color}`,
+                  label: formatLabel(color),
+                  swatch: XA_COLOR_SWATCHES[color] ?? XA_DEFAULT_SWATCH,
+                  imageUrl: media?.url,
+                  imageAlt: formatLabel(color),
+                };
               })}
-            </Inline>
+            />
           )}
         </div>
       ) : null}

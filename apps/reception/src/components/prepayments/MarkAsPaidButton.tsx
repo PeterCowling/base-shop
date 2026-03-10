@@ -2,6 +2,8 @@ import React, { type FC } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 
+import { formatEuro } from "../../utils/format";
+
 interface MarkAsPaidButtonProps {
   bookingRef: string;
   guestId: string;
@@ -11,30 +13,23 @@ interface MarkAsPaidButtonProps {
     guestId: string,
     amount: number
   ) => Promise<void>; // strictly returning Promise<void>
-  logActivity: (
-    occupantId: string,
-    code: number,
-    description: string
-  ) => Promise<void>; // strictly returning Promise<void>
   onSuccess?: () => void;
 }
 
 /**
  * MarkAsPaidButton
- * Renders a button that, when clicked, creates a payment transaction
- * and logs an activity (code=8). This triggers the backend email.
+ * Renders a button that, when clicked, creates a payment transaction.
+ * Activity code=8 is emitted by the transaction workflow itself.
  */
 const MarkAsPaidButton: FC<MarkAsPaidButtonProps> = ({
   bookingRef,
   guestId,
   amount,
   createPaymentTransaction,
-  logActivity,
   onSuccess,
 }) => {
   const handleMarkAsPaid = (): void => {
     createPaymentTransaction(bookingRef, guestId, amount)
-      .then(() => logActivity(guestId, 8, "Prepayment completed"))
       .then(() => {
         if (onSuccess) onSuccess();
       })
@@ -50,7 +45,7 @@ const MarkAsPaidButton: FC<MarkAsPaidButtonProps> = ({
       tone="solid"
       size="sm"
     >
-      €{amount.toFixed(2)}
+      {formatEuro(amount)}
     </Button>
   );
 };

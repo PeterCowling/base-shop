@@ -51,6 +51,118 @@
           "body": "Jede Koje verfügt über eigene Steckdosen, Leselampen und Schlüsselkartenschließfächer für ein sicheres Gefühl."
         }
       ]
+    },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Gutes Preis-Leistungs-Verhältnis, top Lage",
+          "body": "Eine unserer günstigsten Optionen liegt direkt im Herzstück des Hostels — nah an der Rezeption, der Gemeinschaftsküche und den Mitreisenden."
+        },
+        {
+          "title": "Nur für Frauen — gesamte Etage",
+          "body": "Zimmer 3 liegt in einem Bereich, der ausschließlich Frauen vorbehalten ist. Das nahegelegene Gemeinschaftsbad ist sauber, gut ausgestattet und exklusiv für Gästinnen."
+        },
+        {
+          "title": "Privatsphäre im Etagenbett inklusive",
+          "body": "Jedes Bett ist mit Sichtschutzvorhängen, einer eigenen Leselampe und Ladesteckdosen ausgestattet, damit Sie sich zu jeder Stunde einrichten können, ohne die Nachbarn zu stören."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Bereich nur für Frauen",
+          "body": "Ein spezieller Schlafsaal nur für Frauen mit eigenem Gemeinschaftsbad — sauber, gepflegt und exklusiv für Gästinnen auf dieser Etage reserviert."
+        },
+        {
+          "title": "Platz für alle",
+          "body": "Acht Betten auf vier Etagenbetten bedeuten, dass es immer jemanden gibt, mit dem man eine Empfehlung oder einen Strandausflug teilen kann — ohne das Chaos eines größeren gemischten Schlafsaals."
+        },
+        {
+          "title": "Das Wesentliche an jedem Bett",
+          "body": "Jedes Bett hat Sichtschutzvorhänge, eine Leselampe und USB-Ladebuchsen, damit Ihr Telefon für die Abenteuer von morgen bereit ist."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Terrasse mit Meerblick inklusive",
+          "body": "Treten Sie auf die gemeinsame Terrasse und genießen Sie den Panoramablick auf Positano und das Tyrrhenische Meer — eine Kulisse, die die meisten Gäste nie verlassen wollen."
+        },
+        {
+          "title": "Eigenes Bad für das Zimmer",
+          "body": "Ein privates Badezimmer, das nur mit den Zimmernachbarn geteilt wird, bedeutet keine Morgenwartezeiten und genügend Platz, um sich in Ihrem eigenen Tempo fertig zu machen."
+        },
+        {
+          "title": "Gesellig und trotzdem komfortabel",
+          "body": "Sechs Betten in einem offenen Layout mit Vorhängen, Leselampen und Ladepunkten an jedem Bett — nah genug, um Freunde zu finden, privat genug, um gut zu schlafen."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Terrasse mit Blick auf die Amalfiküste",
+          "body": "Die gemeinsame Meerblick-Terrasse ist nur wenige Schritte vom Zimmer entfernt — perfekt für morgendliche Dehnübungen, Aperitivo am Abend oder einfach die Boote in der Bucht beobachten."
+        },
+        {
+          "title": "Ihr eigenes Badezimmer",
+          "body": "Das Ensuite-Badezimmer gehört nur zu diesem Zimmer, Sie bestimmen also Ihren Morgenduscheplan, ohne je in einer Schlange zu warten."
+        },
+        {
+          "title": "Flexibles Bettlayout",
+          "body": "Drei Etagenbetten plus ein Einzelbett passen natürlich zu Alleinreisenden und Paaren, jeder Platz mit Vorhängen, Lampen und Ladesteckdosen ausgestattet."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Rückzugsort mit Gartenblick",
+          "body": "Ein ruhiger Blick auf den Hostelgarten macht Zimmer 8 zu einem der ruhigsten Orte im Gebäude — ideal für Frühaufsteher oder leichte Schläfer."
+        },
+        {
+          "title": "Intimes Damendomizil",
+          "body": "Mit nur zwei Betten in einer Umgebung nur für Frauen ist dies die hostelnahe Erfahrung eines Privatzimmers — ohne den Privatzimmerpreis."
+        },
+        {
+          "title": "Gemeinschaftsbad in der Nähe",
+          "body": "Ein makelloses Damenbad ist nur wenige Schritte entfernt, gut ausgestattet und den ganzen Tag über gepflegt."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Bad für drei Personen",
+          "body": "Ein privates Badezimmer, das nur unter drei Gästen geteilt wird, bedeutet wirklich kurze Wartezeiten und eine entspannte Morgenroutine — ein seltener Luxus auf Hostelreisen."
+        },
+        {
+          "title": "Ruhe im Innenhof",
+          "body": "Mit Blick auf den geschützten Innenhof des Hostels bleibt das Zimmer kühler und ruhiger als die meerseits gelegenen Etagen — eine willkommene Auszeit nach einem vollen Erkundungstag."
+        },
+        {
+          "title": "Intimes Gruppenfeeling",
+          "body": "Drei Einzelbetten statt Etagenbetten geben dem Zimmer ein entspannteres Layout — komfortabel für Alleinreisende, die etwas mehr Boden- und Lichtfläche schätzen."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Bad für den ganzen Schlafsaal",
+          "body": "Sechs Gäste teilen ein Bad — morgens läuft alles ruhiger, wenn das Bad Ihnen gehört und nicht der ganzen Etage."
+        },
+        {
+          "title": "Klassische Hostelerfahrung",
+          "body": "Ein lebhafter gemischter Schlafsaal mit drei Etagenbetten ist ideal für Alleinreisende, die bereit sind, innerhalb der ersten Stunde ihrer Ankunft Menschen aus aller Welt kennenzulernen."
+        },
+        {
+          "title": "Aufgeladen und bereit",
+          "body": "Jedes Bett hat eine Leselampe, USB-Ladesteckdosen und Sichtschutzvorhänge, damit Sie nach Ihrem eigenen Zeitplan abschalten können, auch wenn das Zimmer voll ist."
+        }
+      ]
     }
   }
 }

@@ -158,7 +158,7 @@ export default function LocalizedTextInput({ label, value = "", onChange, locale
         <button
           type="button"
           onClick={() => setMode("inline")}
-          className={`rounded border px-2 py-1 text-xs min-h-10 ${mode === "inline" ? "bg-accent" : "bg-muted"}`}
+          className={`rounded border px-2 py-1 text-xs min-h-11 ${mode === "inline" ? "bg-accent" : "bg-muted"}`}
           aria-pressed={mode === "inline"}
         >
           {t("cms.localizedText.inline")}
@@ -166,7 +166,7 @@ export default function LocalizedTextInput({ label, value = "", onChange, locale
         <button
           type="button"
           onClick={() => setMode("key")}
-          className={`rounded border px-2 py-1 text-xs min-h-10 ${mode === "key" ? "bg-accent" : "bg-muted"}`}
+          className={`rounded border px-2 py-1 text-xs min-h-11 ${mode === "key" ? "bg-accent" : "bg-muted"}`}
           aria-pressed={mode === "key"}
         >
           {t("cms.localizedText.sharedKey")}
@@ -197,7 +197,7 @@ export default function LocalizedTextInput({ label, value = "", onChange, locale
               <button
                 type="button"
                 key={k}
-                className="block w-full border-b px-2 py-1 text-start text-sm hover:bg-accent/30 min-h-10 min-w-10"
+                className="block w-full border-b px-2 py-1 text-start text-sm hover:bg-accent/30 min-h-11 min-w-11"
                 onClick={() => {
                   const en = enMessages[k];
                   setSelectedKey(k);

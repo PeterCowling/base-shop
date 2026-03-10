@@ -21,7 +21,9 @@ Shared utility library for the base-shop monorepo. Provides type-safe, well-test
 
 ### Math Primitives
 
-Reusable mathematical and computational utilities. Zero external dependencies.
+Reusable mathematical and computational utilities. Core primitives favor zero
+runtime dependencies; advanced adapters may wrap vetted open-source packages
+when the central math layer needs capabilities that are not worth rebuilding.
 
 #### Geometry (`@acme/lib/math/geometry`)
 
@@ -120,13 +122,86 @@ roundDownToIncrement(9.99, 0.5);  // 9.50
 - Installments: `pmt`, `amortizationSchedule`
 - Rounding: `roundCurrency`, `roundToPrecision`, `roundDownToIncrement`, `roundUpToIncrement`
 
+#### Graph (`@acme/lib/math/graph`)
+
+Centralized graph and dependency-analysis adapters backed by Graphology.
+
+```typescript
+import { analyzeDependencyGraph } from "@acme/lib/math/graph";
+
+const summary = analyzeDependencyGraph({
+  nodes: [
+    { id: "ideas" },
+    { id: "fact-find" },
+    { id: "plan" },
+    { id: "build" },
+  ],
+  edges: [
+    { from: "ideas", to: "fact-find" },
+    { from: "fact-find", to: "plan" },
+    { from: "plan", to: "build" },
+  ],
+});
+```
+
+**Exports:**
+- `analyzeDependencyGraph`
+- `DependencyGraphValidationError`
+- dependency graph input and summary types
+
+#### Optimization (`@acme/lib/math/optimization`)
+
+Constrained optimization primitives for explicit portfolio and scheduling choices.
+
+```typescript
+import { solveBinaryPortfolio } from "@acme/lib/math/optimization";
+
+const result = solveBinaryPortfolio({
+  options: [
+    { id: "a", utility: 8, coefficients: { capacity: 1, risk: 1 } },
+    { id: "b", utility: 10, coefficients: { capacity: 1, risk: 2 } },
+    { id: "c", utility: 7, coefficients: { capacity: 1, risk: 1 } },
+  ],
+  constraints: [
+    { key: "capacity", max: 2 },
+    { key: "risk", max: 3 },
+  ],
+});
+```
+
+**Exports:**
+- `solveBinaryPortfolio`
+- `PortfolioModelValidationError`
+- binary portfolio input and result types
+
+#### Survival (`@acme/lib/math/survival`)
+
+Time-to-event analysis primitives for churn, slip, close, and escalation curves.
+
+```typescript
+import { estimateKaplanMeierCurve } from "@acme/lib/math/survival";
+
+const curve = estimateKaplanMeierCurve([
+  { time: 1, event: true },
+  { time: 4, event: false },
+  { time: 4, event: true },
+  { time: 8, event: true },
+]);
+```
+
+**Exports:**
+- `estimateKaplanMeierCurve`
+- `SurvivalObservationValidationError`
+- time-to-event observation and curve summary types
+
 ## Design Principles
 
-1. **Zero runtime dependencies** for math modules
-2. **Immutable by default** - all operations return new values
-3. **Tree-shakeable** - unused functions are excluded from bundles
-4. **Well-documented** - JSDoc with examples on all exports
-5. **Thoroughly tested** - 95%+ coverage on math modules
+1. **Centralize math decisions** in `@acme/lib/math` instead of ad-hoc imports
+2. **Prefer zero-dependency core primitives**, but allow vetted adapters for advanced methods
+3. **Immutable by default** - all operations return new values
+4. **Tree-shakeable** - unused functions are excluded from bundles
+5. **Well-documented** - JSDoc with examples on all exports
+6. **Thoroughly tested** - 95%+ coverage on math modules
 
 ## Migration from Ad-hoc Implementations
 

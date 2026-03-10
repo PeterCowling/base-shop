@@ -49,10 +49,10 @@ export const Default: StoryObj<typeof VirtualList> = {
     const items = generateItems(1000);
 
     return (
-      <div className="w-[400px] rounded-lg border border-slate-200 bg-white shadow-lg">
-        <div className="border-b border-slate-200 p-4">
+      <div className="w-full max-w-md rounded-lg border border-border-2 bg-surface shadow-lg">
+        <div className="border-b border-border-2 p-4">
           <h3 className="font-semibold">1,000 Items</h3>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted-foreground">
             Only visible items are rendered
           </p>
         </div>
@@ -62,15 +62,15 @@ export const Default: StoryObj<typeof VirtualList> = {
           height={400}
           aria-label="Virtual list of items"
           renderItem={(item) => (
-            <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-3 hover:bg-slate-50">
+            <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-3 hover:bg-surface">
               <img
                 src={item.avatar}
                 alt=""
                 className="h-10 w-10 rounded-full"
               />
               <div>
-                <div className="font-medium text-slate-900">{item.title}</div>
-                <div className="text-sm text-slate-500">{item.description}</div>
+                <div className="font-medium text-foreground">{item.title}</div>
+                <div className="text-sm text-muted-foreground">{item.description}</div>
               </div>
             </div>
           )}
@@ -99,25 +99,25 @@ function WithImperativeControlsStory() {
         />
         <button
           onClick={() => listRef.current?.scrollToIndex(targetIndex, "start")}
-          className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+          className="rounded bg-info-light0 px-3 py-1 text-primary-fg hover:bg-info-main min-h-11 min-w-11"
         >
           Scroll to Start
         </button>
         <button
           onClick={() => listRef.current?.scrollToIndex(targetIndex, "center")}
-          className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+          className="rounded bg-info-light0 px-3 py-1 text-primary-fg hover:bg-info-main min-h-11 min-w-11"
         >
           Scroll to Center
         </button>
         <button
           onClick={() => listRef.current?.scrollToIndex(targetIndex, "end")}
-          className="rounded bg-blue-500 px-3 py-1 text-white hover:bg-blue-600"
+          className="rounded bg-info-light0 px-3 py-1 text-primary-fg hover:bg-info-main min-h-11 min-w-11"
         >
           Scroll to End
         </button>
       </div>
 
-      <div className="w-[400px] rounded-lg border border-slate-200 bg-white shadow-lg">
+      <div className="w-full max-w-md rounded-lg border border-border-2 bg-surface shadow-lg">
         <VirtualList
           ref={listRef}
           items={items}
@@ -126,11 +126,11 @@ function WithImperativeControlsStory() {
           renderItem={(item, index) => (
             <div
               className={`flex items-center justify-between border-b border-slate-100 px-4 py-3 ${
-                index === targetIndex ? "bg-yellow-100" : "hover:bg-slate-50"
+                index === targetIndex ? "bg-warning-light" : "hover:bg-surface"
               }`}
             >
               <span className="font-medium">{item.title}</span>
-              <span className="text-sm text-slate-500">#{index}</span>
+              <span className="text-sm text-muted-foreground">#{index}</span>
             </div>
           )}
         />
@@ -163,10 +163,10 @@ function InfiniteScrollStory() {
   };
 
   return (
-    <div className="w-[400px] rounded-lg border border-slate-200 bg-white shadow-lg">
-      <div className="border-b border-slate-200 p-4">
+    <div className="w-full max-w-md rounded-lg border border-border-2 bg-surface shadow-lg">
+      <div className="border-b border-border-2 p-4">
         <h3 className="font-semibold">Infinite Scroll</h3>
-        <p className="text-sm text-slate-500">
+        <p className="text-sm text-muted-foreground">
           {items.length} items loaded. Scroll to bottom to load more.
         </p>
       </div>
@@ -178,15 +178,15 @@ function InfiniteScrollStory() {
         onEndReached={loadMore}
         endReachedThreshold={100}
         renderItem={(item) => (
-          <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-3 hover:bg-slate-50">
+          <div className="flex items-center gap-3 border-b border-slate-100 px-4 py-3 hover:bg-surface">
             <img
               src={item.avatar}
               alt=""
               className="h-10 w-10 rounded-full"
             />
             <div>
-              <div className="font-medium text-slate-900">{item.title}</div>
-              <div className="text-sm text-slate-500">{item.description}</div>
+              <div className="font-medium text-foreground">{item.title}</div>
+              <div className="text-sm text-muted-foreground">{item.description}</div>
             </div>
           </div>
         )}
@@ -207,10 +207,10 @@ export const VariableHeights: StoryObj<typeof VariableVirtualList> = {
     }));
 
     return (
-      <div className="w-[400px] rounded-lg border border-slate-200 bg-white shadow-lg">
-        <div className="border-b border-slate-200 p-4">
+      <div className="w-full max-w-md rounded-lg border border-border-2 bg-surface shadow-lg">
+        <div className="border-b border-border-2 p-4">
           <h3 className="font-semibold">Variable Height Items</h3>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-muted-foreground">
             Items have different heights based on content
           </p>
         </div>
@@ -221,7 +221,7 @@ export const VariableHeights: StoryObj<typeof VariableVirtualList> = {
           renderItem={(item, _, measureRef) => (
             <div
               ref={measureRef}
-              className="border-b border-slate-100 px-4 py-3 hover:bg-slate-50"
+              className="border-b border-slate-100 px-4 py-3 hover:bg-surface"
             >
               <div className="flex items-center gap-3">
                 <img
@@ -231,23 +231,23 @@ export const VariableHeights: StoryObj<typeof VariableVirtualList> = {
                 />
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <span className="font-medium text-slate-900">
+                    <span className="font-medium text-foreground">
                       {item.title}
                     </span>
                     {item.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded bg-blue-100 px-1.5 py-0.5 text-xs text-blue-700"
+                        className="rounded bg-info-light px-1.5 py-0.5 text-xs text-info-main"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <div className="text-sm text-slate-500">{item.description}</div>
+                  <div className="text-sm text-muted-foreground">{item.description}</div>
                 </div>
               </div>
               {item.expanded && (
-                <div className="mt-3 rounded bg-slate-50 p-3 text-sm text-slate-600">
+                <div className="mt-3 rounded bg-surface p-3 text-sm text-muted-foreground">
                   Additional content for expanded items. This demonstrates
                   variable height rendering where some items take up more space
                   than others.
@@ -282,13 +282,13 @@ export const WithHook: StoryObj<typeof VirtualList> = {
 
       return (
         <div className="flex flex-col gap-4">
-          <div className="flex items-center justify-between rounded bg-slate-100 px-4 py-2">
+          <div className="flex items-center justify-between rounded bg-surface-2 px-4 py-2">
             <span className="text-sm">
               Visible: {visibleRange.startIndex} - {visibleRange.endIndex}
             </span>
             <button
               onClick={() => scrollToIndex(500)}
-              className="rounded bg-slate-700 px-2 py-1 text-sm text-white"
+              className="rounded bg-slate-700 px-2 py-1 text-sm text-primary-fg min-h-11 min-w-11"
             >
               Go to #500
             </button>
@@ -296,7 +296,7 @@ export const WithHook: StoryObj<typeof VirtualList> = {
 
           <div
             ref={containerRef}
-            className="w-[400px] overflow-auto rounded-lg border border-slate-200 bg-white"
+            className="w-full max-w-md overflow-auto rounded-lg border border-border-2 bg-surface"
             style={{ height: 400 }}
             onScroll={onScroll}
           >
@@ -305,10 +305,10 @@ export const WithHook: StoryObj<typeof VirtualList> = {
                 <div
                   key={index}
                   style={style}
-                  className="flex items-center justify-between border-b border-slate-100 px-4 py-3 hover:bg-slate-50"
+                  className="flex items-center justify-between border-b border-slate-100 px-4 py-3 hover:bg-surface"
                 >
                   <span className="font-medium">{item.title}</span>
-                  <span className="text-sm text-slate-500">#{index}</span>
+                  <span className="text-sm text-muted-foreground">#{index}</span>
                 </div>
               ))}
             </div>
@@ -327,27 +327,27 @@ function VisibleRangeTrackingStory() {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="rounded bg-slate-100 p-4">
+      <div className="rounded bg-surface-2 p-4">
         <div className="text-sm">
           <strong>Visible Range:</strong> {visibleRange.start} -{" "}
           {visibleRange.end}
         </div>
-        <div className="text-sm text-slate-600">
+        <div className="text-sm text-muted-foreground">
           Rendering {visibleRange.end - visibleRange.start + 1} items out of{" "}
           {items.length}
         </div>
       </div>
 
-      <div className="w-[400px] rounded-lg border border-slate-200 bg-white shadow-lg">
+      <div className="w-full max-w-md rounded-lg border border-border-2 bg-surface shadow-lg">
         <VirtualList
           items={items}
           itemHeight={48}
           height={400}
           onVisibleRangeChange={(start, end) => setVisibleRange({ start, end })}
           renderItem={(item, index) => (
-            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 hover:bg-slate-50">
+            <div className="flex items-center justify-between border-b border-slate-100 px-4 py-3 hover:bg-surface">
               <span className="font-medium">{item.title}</span>
-              <span className="text-sm text-slate-500">#{index}</span>
+              <span className="text-sm text-muted-foreground">#{index}</span>
             </div>
           )}
         />
@@ -364,7 +364,7 @@ export const CustomStyling: StoryObj<typeof VirtualList> = {
     const items = generateItems(100);
 
     return (
-      <div className="w-[400px]">
+      <div className="w-full max-w-md">
         <VirtualList
           items={items}
           itemHeight={72}
@@ -373,7 +373,7 @@ export const CustomStyling: StoryObj<typeof VirtualList> = {
           rowClassName="transition-all duration-200"
           renderItem={(item, index) => (
             <div className="flex items-center gap-4 p-4">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-white font-bold">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-purple-500 to-pink-500 text-primary-fg font-bold">
                 {index + 1}
               </div>
               <div>
@@ -394,8 +394,8 @@ export const LoadingState: StoryObj<typeof VirtualList> = {
 
     return (
       <div className="flex gap-8">
-        <div className="w-[300px] rounded-lg border border-slate-200 bg-white shadow-lg">
-          <div className="border-b border-slate-200 p-4">
+        <div className="w-full max-w-xs rounded-lg border border-border-2 bg-surface shadow-lg">
+          <div className="border-b border-border-2 p-4">
             <h3 className="font-semibold">Default Loading</h3>
           </div>
           <VirtualList
@@ -411,8 +411,8 @@ export const LoadingState: StoryObj<typeof VirtualList> = {
           />
         </div>
 
-        <div className="w-[300px] rounded-lg border border-slate-200 bg-white shadow-lg">
-          <div className="border-b border-slate-200 p-4">
+        <div className="w-full max-w-xs rounded-lg border border-border-2 bg-surface shadow-lg">
+          <div className="border-b border-border-2 p-4">
             <h3 className="font-semibold">Custom Loading</h3>
           </div>
           <VirtualList

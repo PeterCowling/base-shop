@@ -1,7 +1,8 @@
 import { useCallback, useState } from 'react';
 
+import logger from '@acme/lib/logger/client';
+
 import { ref, set, update } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { QuestProgress } from '../../types/questProgress';
@@ -47,7 +48,7 @@ export function useQuestProgressMutator(): UseQuestProgressMutatorReturn {
   const updateProgress = useCallback(
     async (payload: QuestProgressPayload) => {
       if (!uuid) {
-        logger.warn('[useQuestProgressMutator] Missing uuid');
+        logger.warn('[useQuestProgressMutator] Missing uuid'); // i18n-exempt -- BRIK-2 developer log [ttl=2026-12-31]
         return;
       }
 
@@ -62,7 +63,7 @@ export function useQuestProgressMutator(): UseQuestProgressMutatorReturn {
         setIsSuccess(true);
       } catch (error) {
         logger.error(
-          '[useQuestProgressMutator] Error in updateProgress:',
+          '[useQuestProgressMutator] Error in updateProgress:', // i18n-exempt -- BRIK-2 developer log [ttl=2026-12-31]
           error,
         );
         setIsError(true);
@@ -76,7 +77,7 @@ export function useQuestProgressMutator(): UseQuestProgressMutatorReturn {
   const setProgress = useCallback(
     async (progress: QuestProgress) => {
       if (!uuid) {
-        logger.warn('[useQuestProgressMutator] Missing uuid');
+        logger.warn('[useQuestProgressMutator] Missing uuid'); // i18n-exempt -- BRIK-2 developer log [ttl=2026-12-31]
         return;
       }
 
@@ -90,7 +91,7 @@ export function useQuestProgressMutator(): UseQuestProgressMutatorReturn {
 
         setIsSuccess(true);
       } catch (error) {
-        logger.error('[useQuestProgressMutator] Error in setProgress:', error);
+        logger.error('[useQuestProgressMutator] Error in setProgress:', error); // i18n-exempt -- BRIK-2 developer log [ttl=2026-12-31]
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -102,7 +103,7 @@ export function useQuestProgressMutator(): UseQuestProgressMutatorReturn {
   const completeTier = useCallback(
     async (tierId: string) => {
       if (!uuid || !tierId) {
-        logger.warn('[useQuestProgressMutator] Missing uuid or tierId:', {
+        logger.warn('[useQuestProgressMutator] Missing uuid or tierId:', { // i18n-exempt -- BRIK-2 developer log [ttl=2026-12-31]
           uuid,
           tierId,
         });
@@ -119,6 +120,7 @@ export function useQuestProgressMutator(): UseQuestProgressMutatorReturn {
 
         // We need to read-then-write to append to completedTiers array
         // This could be optimized with Firebase transactions if needed
+        // eslint-disable-next-line ds/no-hardcoded-copy -- BRIK-2 module import specifier [ttl=2026-12-31]
         const { get } = await import('@/services/firebase');
         const snapshot = await get(progressRef);
         const currentProgress = snapshot.val() as QuestProgress | null;
@@ -138,7 +140,7 @@ export function useQuestProgressMutator(): UseQuestProgressMutatorReturn {
 
         setIsSuccess(true);
       } catch (error) {
-        logger.error('[useQuestProgressMutator] Error in completeTier:', error);
+        logger.error('[useQuestProgressMutator] Error in completeTier:', error); // i18n-exempt -- BRIK-2 developer log [ttl=2026-12-31]
         setIsError(true);
       } finally {
         setIsLoading(false);
@@ -150,7 +152,7 @@ export function useQuestProgressMutator(): UseQuestProgressMutatorReturn {
   const initializeProgress = useCallback(
     async (bookingId: string, checkInDate: string) => {
       if (!uuid) {
-        logger.warn('[useQuestProgressMutator] Missing uuid');
+        logger.warn('[useQuestProgressMutator] Missing uuid'); // i18n-exempt -- BRIK-2 developer log [ttl=2026-12-31]
         return;
       }
 

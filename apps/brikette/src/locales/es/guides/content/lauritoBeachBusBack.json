@@ -46,7 +46,7 @@
   "tips": [
     "The printed timetable lists Positano times, not Laurito; expect the Laurito stop about 10 minutes before the Positano Sponda arrival.",
     "If you run out of tickets, use the Laurito shuttle boat back to Spiaggia Grande so you can buy more at the tabacchi before trying again.",
-    "Consulte nuestro %LINK:playas|Descripción general de las playas de Positano% para obtener más detalles sobre las instalaciones de Laurito y las opciones de transporte."
+    "Consulte nuestro %LINK:positanoBeaches|Descripción general de las playas de Positano% para obtener más detalles sobre las instalaciones de Laurito y las opciones de transporte."
   ],
   "faqs": [
     {
@@ -65,8 +65,8 @@
     }
   ],
   "articleLead": {
-    "rideAlt": "Amalfi Coast bus en route from Laurito",
-    "rideCaption": "Ride from Laurito toward Positano",
+    "rideAlt": "Amalfi Coast bus en ruta desde Laurito",
+    "rideCaption": "Paseo de Laurito hacia Positano",
     "stopAlt": "Parada de autobús Bar Internazionale / Chiesa Nuova",
     "stopCaption": "Parada Bar Internazionale / Chiesa Nuova"
   }

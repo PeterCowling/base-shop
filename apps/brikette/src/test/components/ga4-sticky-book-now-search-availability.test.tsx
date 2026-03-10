@@ -15,11 +15,15 @@ jest.mock("react-i18next", () => ({
   }),
 }));
 
+
 describe("GA4 search_availability on StickyBookNow (GA4-sticky)", () => {
   let originalGtag: typeof window.gtag;
 
   beforeEach(() => {
-    jest.useFakeTimers();
+    // doNotFake queueMicrotask so React 18's scheduler can still batch state
+    // updates from useEffect (e.g. setUrlParams). setTimeout is still faked so
+    // we can advance the navigation fallback timer deterministically.
+    jest.useFakeTimers({ doNotFake: ["queueMicrotask"] });
     jest.setSystemTime(new Date("2026-02-15T12:00:00Z"));
 
     originalGtag = window.gtag;

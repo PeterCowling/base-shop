@@ -1,9 +1,11 @@
 import { getShopSkuBySlug, listShopSkus } from "@acme/platform-core/repositories/catalogSkus.server";
+import { readInventory } from "@acme/platform-core/repositories/inventory.server";
 import { getShopSettings } from "@acme/platform-core/repositories/settings.server";
-import type { Locale, SKU } from "@acme/types";
+import type { InventoryItem, Locale, SKU } from "@acme/types";
 
 import shop from "../../shop.json";
 
+import { CARYINA_INVENTORY_BACKEND } from "./inventoryBackend";
 import {
   type LaunchCatalogMediaValidationResult,
   type LaunchSkuMediaValidationResult,
@@ -15,7 +17,10 @@ export const SHOP_ID = shop.id;
 
 export async function readShopSkus(locale: Locale): Promise<SKU[]> {
   try {
-    return await listShopSkus(SHOP_ID, locale, { includeDraft: false });
+    return await listShopSkus(SHOP_ID, locale, {
+      includeDraft: false,
+      inventoryBackend: CARYINA_INVENTORY_BACKEND,
+    });
   } catch {
     return [];
   }
@@ -26,9 +31,23 @@ export async function readShopSkuBySlug(
   slug: string,
 ): Promise<SKU | null> {
   try {
-    return await getShopSkuBySlug(SHOP_ID, slug, locale, { includeDraft: false });
+    return await getShopSkuBySlug(SHOP_ID, slug, locale, {
+      includeDraft: false,
+      inventoryBackend: CARYINA_INVENTORY_BACKEND,
+    });
   } catch {
     return null;
+  }
+}
+
+export async function readShopInventory(): Promise<InventoryItem[]> {
+  try {
+    const items = await readInventory(SHOP_ID, {
+      backend: CARYINA_INVENTORY_BACKEND,
+    });
+    return Array.isArray(items) ? items : [];
+  } catch {
+    return [];
   }
 }
 

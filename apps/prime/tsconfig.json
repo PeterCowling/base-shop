@@ -23,8 +23,12 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+      "@acme/platform-core": ["../../packages/platform-core/dist/index.d.ts"],
+      "@acme/platform-core/*": ["../../packages/platform-core/dist/*"],
       "@acme/ui": ["../../packages/ui/dist/index.d.ts"],
-      "@acme/ui/*": ["../../packages/ui/dist/*"]
+      "@acme/ui/*": ["../../packages/ui/dist/*"],
+      "@acme/i18n": ["../../packages/i18n/dist/index.d.ts"],
+      "@acme/i18n/*": ["../../packages/i18n/dist/*"]
     }
   },
   "include": [

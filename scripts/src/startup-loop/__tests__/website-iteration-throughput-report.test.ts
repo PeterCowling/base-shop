@@ -7,7 +7,7 @@ import { describe, expect, it } from "@jest/globals";
 import {
   buildWebsiteIterationThroughputReport,
   generateWebsiteIterationThroughputReport,
-} from "../website-iteration-throughput-report.js";
+} from "../website/website-iteration-throughput-report.js";
 
 describe("website-iteration-throughput-report", () => {
   it("TC-09-01: calculates required throughput metrics from synthetic pilot data", () => {

@@ -60,10 +60,10 @@
     }
   ],
   "eventSchema": {
-    "name": "Ravello Festival",
+    "name": "Ravello festival",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
-    "locationName": "Ravello Festival venues",
+    "locationName": "Ravello Festival arenor",
     "addressLocality": "Ravello",
     "description": "Sommarfestival med klassisk musik och utsikt över Amalfikusten. Se det officiella programmet för datum och biljetter."
   }

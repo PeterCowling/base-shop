@@ -107,11 +107,11 @@ jest.mock("@/utils/loadI18nNs", () => ({
 jest.mock("@/utils/translate-path", () => ({
   translatePath: (slugKey: string, lang: string) => {
     const map: Record<string, Record<string, string>> = {
-      assistance: { en: "help", it: "assistenza", de: "hilfe", fr: "aide" },
-      experiences: { en: "experiences", it: "esperienze", de: "erlebnisse", fr: "experiences" },
-      guides: { en: "guides", it: "guide", de: "reisefuehrer", fr: "guides" },
-      howToGetHere: { en: "how-to-get-here", it: "come-arrivare", de: "anfahrt", fr: "comment-venir" },
-      guidesTags: { en: "tags", it: "etichette", de: "schlagwoerter", fr: "etiquettes" },
+      assistance: { en: "assistance", it: "assistance", de: "assistance", fr: "assistance" },
+      experiences: { en: "experiences", it: "experiences", de: "experiences", fr: "experiences" },
+      guides: { en: "guides", it: "guides", de: "guides", fr: "guides" },
+      howToGetHere: { en: "how-to-get-here", it: "how-to-get-here", de: "how-to-get-here", fr: "how-to-get-here" },
+      guidesTags: { en: "tags", it: "tags", de: "tags", fr: "tags" },
     };
     return map[slugKey]?.[lang] ?? `${slugKey}-${lang}`;
   },
@@ -150,7 +150,7 @@ describe("LanguageGlobalModal routing", () => {
     await user.click(screen.getByRole("button", { name: "select-it" }));
 
     await waitFor(() => {
-      expect(replaceMock).toHaveBeenCalledWith("/it/assistenza/ostello-domande?from=language-modal#faq");
+      expect(replaceMock).toHaveBeenCalledWith("/it/assistance/ostello-domande?from=language-modal#faq");
     });
     expect(changeLanguageMock).toHaveBeenCalledWith("it");
     expect(closeModalMock).toHaveBeenCalled();
@@ -167,7 +167,7 @@ describe("LanguageGlobalModal routing", () => {
     await user.click(screen.getByRole("button", { name: "select-it" }));
 
     await waitFor(() => {
-      expect(replaceMock).toHaveBeenCalledWith("/it/esperienze/etichette/beaches");
+      expect(replaceMock).toHaveBeenCalledWith("/it/experiences/tags/beaches");
     });
   });
 
@@ -182,7 +182,7 @@ describe("LanguageGlobalModal routing", () => {
     await user.click(screen.getByRole("button", { name: "select-fr" }));
 
     await waitFor(() => {
-      expect(replaceMock).toHaveBeenCalledWith("/fr/comment-venir");
+      expect(replaceMock).toHaveBeenCalledWith("/fr/how-to-get-here");
     });
   });
 
@@ -197,7 +197,7 @@ describe("LanguageGlobalModal routing", () => {
     await user.click(screen.getByRole("button", { name: "select-fr" }));
 
     await waitFor(() => {
-      expect(replaceMock).toHaveBeenCalledWith("/fr/aide");
+      expect(replaceMock).toHaveBeenCalledWith("/fr/assistance");
     });
   });
 
@@ -212,7 +212,7 @@ describe("LanguageGlobalModal routing", () => {
     await user.click(screen.getByRole("button", { name: "select-it" }));
 
     await waitFor(() => {
-      expect(replaceMock).toHaveBeenCalledWith("/it/esperienze");
+      expect(replaceMock).toHaveBeenCalledWith("/it/experiences");
     });
   });
 

@@ -45,5 +45,99 @@
     ],
     "footer": "يتم إتمام التحقق النهائي من التوفر والدفع في محرك الحجز الرسمي."
   },
-  "backToRooms": "العودة إلى الغرف"
+  "backToRooms": "العودة إلى الغرف",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "كتاب مباشر وفر",
+      "headline": "أقل بنسبة 25% من \"بوكينغ\"."
+    }
+  },
+  "date": {
+    "stayHelper": "ليالي ٢-٨",
+    "clearDates": "المواعيد النهائية",
+    "nightsSummary": "_"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "تتم معالجة حجوزات النزل من خلال الدعم المساعد عند تعطيل JavaScript.",
+    "emailAssistedBooking": "راسلنا عبر البريد الإلكتروني للمساعدة في الحجز",
+    "octorateDirectBooking": "احجز مباشرة عبر Octorate"
+  },
+  "bookingConstraints": {
+    "notice": "تدعم حجوزات بيوت الشباب الإقامات المخصصة للبالغين فقط لمدة تتراوح بين ليلتين و8 ليالٍ مع ما يصل إلى 8 أشخاص بالغين لكل حجز. بالنسبة للمجموعات الأكبر أو الإقامات الطويلة، قم بتقسيم طلبك عبر حجوزات متعددة أو",
+    "assistedLink": "اتصل بنا للمساعدة في الحجز"
+  },
+  "expiredQuote": {
+    "message": "انتهت صلاحية رابط الاقتباس هذا. أعد إنشاء عرض الأسعار الخاص بك بتواريخ جديدة للمتابعة."
+  },
+  "recovery": {
+    "title": "هل تحتاج إلى المزيد من الوقت؟ أرسل لنفسك هذا الاقتباس واستأنفه لاحقًا.",
+    "privacyNotice": "نحن نحتفظ بسياق الحجز والبيانات الوصفية للموافقة فقط. تنتهي صلاحية روابط السيرة الذاتية بعد 7 أيام.",
+    "emailLabel": "البريد الإلكتروني الخاص بك",
+    "emailPlaceholder": "you@example.com",
+    "consent": "أوافق على تلقي هذا العرض عبر البريد الإلكتروني وأدرك أن صلاحيته تنتهي بعد 7 أيام.",
+    "submitted": "تم فتح مسودة البريد الإلكتروني. يمكنك إرساله لحفظ هذا الاقتباس.",
+    "submitCta": "أرسل لي هذا الاقتباس",
+    "errors": {
+      "invalidEmail": "أدخل عنوان بريد إلكتروني صالحًا.",
+      "consentRequired": "الموافقة مطلوبة لإرسال الاقتباس عبر البريد الإلكتروني.",
+      "sendFailed": "حدث شيء خاطئ حاول مرة أخرى أو اتصل بنا مباشرة"
+    },
+    "mailto": {
+      "subject": "طلب استرداد الاقتباس",
+      "bodyIntro": "من فضلك أرسل لي هذا الاقتباس وتذكير بالمتابعة.",
+      "labels": {
+        "guestEmail": "البريد الإلكتروني للضيف",
+        "checkIn": "تحقق في",
+        "checkOut": "الدفع",
+        "guests": "الضيوف",
+        "sourceRoute": "طريق المصدر",
+        "room": "غرفة",
+        "ratePlan": "خطة الأسعار",
+        "resumeLink": "استئناف الارتباط"
+      }
+    },
+    "sending": "إرسال..."
+  },
+  "apartment": {
+    "heading": "كتاب الشقة الخاصة",
+    "subheading": "اختيار مواعيدك وعدد الضيوف، ثم اختيار معدل.",
+    "guestLabel": "عدد الضيوف",
+    "guests": {
+      "2": "ضيفان",
+      "3": "3 ضيوف"
+    },
+    "flex": {
+      "title": "المعدل المرن",
+      "saving": "توفير 21 في المائة مقابل تكلفة التشغيل",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "غير قابلة للاسترداد",
+      "saving": "إنقاذ 26 في المائة ضد شركة OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "__TOK0_ night -- availability confirmed in the next step.",
+    "nightsSummary_other": "__TOK0 __ nights -- availability confirmed in the next step.",
+    "rateLabel": "اختر سعرك",
+    "ratePrompt": "اختيار معدل أعلى من ذلك",
+    "cta": {
+      "unselected": "اختيار معدل لمواصلة",
+      "flex": "مرن - الاستمرار في المراقبة",
+      "nr": "غير قابلة للاسترداد - مواصلة التحقق"
+    },
+    "policies": {
+      "title": "رسوم السياسات",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
+  }
 }

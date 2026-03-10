@@ -1,0 +1,25 @@
+{
+  "name": "@acme/inventory-uploader",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack -p 3021",
+    "build": "next build --webpack",
+    "build:worker": "opennextjs-cloudflare build",
+    "start": "next start -p 3021",
+    "lint": "eslint --cache --cache-location .eslintcache src",
+    "typecheck": "tsc -p tsconfig.json --noEmit --incremental --tsBuildInfoFile .typecheck.tsbuildinfo"
+  },
+  "dependencies": {
+    "@acme/next-config": "workspace:*",
+    "@acme/platform-core": "workspace:*",
+    "@acme/tailwind-config": "workspace:*",
+    "@themes/base": "workspace:*",
+    "react": "19.2.1",
+    "react-dom": "19.2.1"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250620.0",
+    "@opennextjs/cloudflare": "^1",
+    "typescript": "^5"
+  }
+}

@@ -3,8 +3,8 @@
 import { memo, type ReactElement, useCallback } from "react";
 
 import { TableCell, TableRow } from "@acme/design-system";
+import { cn as clsx } from "@acme/design-system/utils/style";
 
-import clsx from "../../../../utils/clsx";
 import { useMainContext } from "../../context";
 import { useTheme } from "../../hooks";
 import useDaysRange from "../../hooks/useDaysRange";

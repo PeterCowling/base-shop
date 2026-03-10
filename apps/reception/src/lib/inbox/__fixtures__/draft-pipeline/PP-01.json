@@ -1,0 +1,25 @@
+{
+  "id": "PP-01",
+  "class": "prepayment",
+  "description": "Prepayment first attempt context",
+  "source_refs": [
+    "packages/mcp-server/src/__tests__/pipeline-integration.test.ts",
+    "packages/mcp-server/src/__tests__/fixtures/email/sample-action-plans.ts"
+  ],
+  "input": {
+    "subject": "Re: Prepayment",
+    "body": "We kindly remind you about the pending payment for your reservation. Please complete the payment using the secure link."
+  },
+  "expected": {
+    "dominant_scenario_category": "prepayment",
+    "comparison_fields": [
+      "interpreted_language",
+      "dominant_scenario_category",
+      "selected_template_subject",
+      "selected_template_category",
+      "answered_question_set",
+      "quality_result",
+      "branded_html_present"
+    ]
+  }
+}

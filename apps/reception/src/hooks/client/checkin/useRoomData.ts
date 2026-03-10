@@ -46,7 +46,7 @@ export default function useRoomData(booking: Bookings | null) {
     }
     const outstanding = computeOutstandingRoom(booking);
     setAmount(outstanding);
-  }, [booking, payType]);
+  }, [booking]);
 
   return {
     payType,

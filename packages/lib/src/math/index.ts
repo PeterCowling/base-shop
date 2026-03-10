@@ -1,13 +1,16 @@
 export * from "./animation/index.js";
 export * from "./color/index.js";
-export type * from "./experimentation/index.js";
+export * from "./experimentation/index.js";
 export * from "./financial/index.js";
 export * from "./forecasting/index.js";
 export * from "./geometry/index.js";
+export * from "./graph/index.js";
 export * from "./ops/index.js";
+export * from "./optimization/index.js";
 export * from "./probabilistic/index.js";
 export * from "./random/index.js";
 export * from "./rate-limit/index.js";
 export * from "./search/index.js";
 export * from "./similarity/index.js";
 export * from "./statistics/index.js";
+export * from "./survival/index.js";

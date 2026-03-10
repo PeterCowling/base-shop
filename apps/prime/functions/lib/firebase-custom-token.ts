@@ -13,6 +13,11 @@ interface FirebaseCustomTokenOptions {
   nowMs?: number;
 }
 
+interface BufferLike {
+  from(data: Uint8Array): { toString(encoding: 'base64'): string };
+  from(data: string, encoding: 'base64'): Uint8Array;
+}
+
 function normalizePemPrivateKey(privateKey: string): string {
   return privateKey.replace(/\\n/g, '\n').trim();
 }
@@ -26,7 +31,7 @@ function base64Encode(bytes: Uint8Array): string {
     return btoa(binary);
   }
 
-  const maybeBuffer = (globalThis as { Buffer?: any }).Buffer;
+  const maybeBuffer = (globalThis as { Buffer?: BufferLike }).Buffer;
   if (maybeBuffer) {
     return maybeBuffer.from(bytes).toString('base64');
   }
@@ -44,7 +49,7 @@ function base64Decode(base64: string): Uint8Array {
     return bytes;
   }
 
-  const maybeBuffer = (globalThis as { Buffer?: any }).Buffer;
+  const maybeBuffer = (globalThis as { Buffer?: BufferLike }).Buffer;
   if (maybeBuffer) {
     return new Uint8Array(maybeBuffer.from(base64, 'base64'));
   }
@@ -64,14 +69,14 @@ function base64UrlEncodeBytes(bytes: ArrayBuffer): string {
     .replace(/=+$/g, '');
 }
 
-function pemToPkcs8Bytes(privateKeyPem: string): ArrayBuffer {
+function pemToPkcs8Bytes(privateKeyPem: string): Uint8Array {
   const normalizedPem = normalizePemPrivateKey(privateKeyPem);
   const base64 = normalizedPem
     .replace('-----BEGIN PRIVATE KEY-----', '')
     .replace('-----END PRIVATE KEY-----', '')
     .replace(/\s+/g, '');
 
-  return base64Decode(base64).buffer;
+  return base64Decode(base64);
 }
 
 async function signRs256(data: string, privateKeyPem: string): Promise<string> {

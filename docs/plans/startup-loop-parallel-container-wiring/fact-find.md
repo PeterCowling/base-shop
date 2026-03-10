@@ -71,8 +71,8 @@ This fact-find documents the required wiring changes to `loop-spec.yaml`, `stage
 
 ### Key Modules / Files
 
-- `docs/business-os/startup-loop/loop-spec.yaml` (spec_version: 3.9.6) — primary spec; defines stages, containers, ordering constraints, parallel groups, S4 join barrier
-- `docs/business-os/startup-loop/stage-operator-dictionary.yaml` — operator-facing routing: `operator_next_prompt` fields, `outcome_operator`, aliases
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` (spec_version: 3.9.6) — primary spec; defines stages, containers, ordering constraints, parallel groups, S4 join barrier
+- `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml` — operator-facing routing: `operator_next_prompt` fields, `outcome_operator`, aliases
 - `docs/business-os/startup-loop-containers-process-map.html` — visual representation (currently: linear sequential stack of containers)
 
 ### Current Sequential Ordering (Evidence: `loop-spec.yaml` ordering section, lines ~1180–1200)

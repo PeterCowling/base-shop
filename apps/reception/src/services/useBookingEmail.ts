@@ -19,6 +19,7 @@
 import { useCallback, useState } from "react";
 import { z } from "zod";
 
+import { firebaseBookingSchema } from "../schemas/bookingsSchema";
 import { GuestEmailRecord } from "../schemas/guestEmailSchema";
 import {
   EMAIL_TEST_ADDRESS,
@@ -34,7 +35,61 @@ import { buildMcpAuthHeaders } from "./mcpAuthHeaders";
  * --------------------------------------------------------------------- */
 type EmailMap = Record<string, string>;
 
+interface BookingEmailRouteResponse {
+  success?: boolean;
+  draftId?: string;
+  messageId?: string;
+  error?: string;
+}
+
+export interface SendBookingEmailResult {
+  success: boolean;
+  bookingRef: string;
+  occupantIds: string[];
+  recipients: string[];
+  occupantLinks: string[];
+  draftId?: string;
+  messageId?: string;
+  error?: string;
+}
+
 const isTestEnvironment = process.env.NODE_ENV === "test";
+const TEST_MODE_ENV_KEY = "NEXT_PUBLIC_BOOKING_EMAIL_TEST_MODE";
+const FIREBASE_URL_ENV_KEY = "NEXT_PUBLIC_FIREBASE_DATABASE_URL";
+const OCCUPANT_LINK_PREFIX_ENV_KEY = "NEXT_PUBLIC_BOOKING_OCCUPANT_LINK_PREFIX";
+const TEST_ADDRESS_ENV_KEY = "NEXT_PUBLIC_BOOKING_EMAIL_TEST_ADDRESS";
+
+function isBookingEmailTestModeEnabled(): boolean {
+  return EMAIL_TEST_MODE || process.env[TEST_MODE_ENV_KEY] === "true";
+}
+
+function requireFirebaseBaseUrl(): string {
+  if (!FIREBASE_BASE_URL) {
+    throw new Error(`Missing ${FIREBASE_URL_ENV_KEY} configuration`);
+  }
+  return FIREBASE_BASE_URL;
+}
+
+function requireOccupantLinkPrefix(): string {
+  if (!OCCUPANT_LINK_PREFIX) {
+    throw new Error(`Missing ${OCCUPANT_LINK_PREFIX_ENV_KEY} configuration`);
+  }
+  return OCCUPANT_LINK_PREFIX;
+}
+
+function requireBookingEmailConfig(testMode: boolean): {
+  firebaseBaseUrl: string;
+  occupantLinkPrefix: string;
+} {
+  const firebaseBaseUrl = requireFirebaseBaseUrl();
+  const occupantLinkPrefix = requireOccupantLinkPrefix();
+
+  if (testMode && !EMAIL_TEST_ADDRESS) {
+    throw new Error(`Missing ${TEST_ADDRESS_ENV_KEY} configuration`);
+  }
+
+  return { firebaseBaseUrl, occupantLinkPrefix };
+}
 
 /**
  * Fetch all guest emails for the given booking in a single request.
@@ -42,15 +97,28 @@ const isTestEnvironment = process.env.NODE_ENV === "test";
 export async function fetchGuestEmails(
   bookingRef: string
 ): Promise<Record<string, string>> {
-  const url = `${FIREBASE_BASE_URL}/guestsDetails/${bookingRef}.json`;
+  const firebaseBaseUrl = requireFirebaseBaseUrl();
+  const url = `${firebaseBaseUrl}/guestsDetails/${bookingRef}.json`;
   const resp = await fetch(url);
-  const json = await resp.json();
+  if (resp.ok === false) {
+    throw new Error(
+      `Failed to fetch guest emails (${resp.status || "unknown-status"})`
+    );
+  }
+
+  let json: unknown;
+  try {
+    json = await resp.json();
+  } catch {
+    throw new Error("Invalid guest email response payload");
+  }
+
   const parsed = z.record(GuestEmailRecord).safeParse(json);
   if (!parsed.success) {
     if (!isTestEnvironment) {
       console.error("Invalid guest email data", parsed.error);
     }
-    return {};
+    throw new Error("Invalid guest email data");
   }
   const data = parsed.data;
   return Object.fromEntries(
@@ -71,28 +139,48 @@ export default function useBookingEmail() {
    * emails fetched from Firebase (caller values win on conflict).
    */
   const sendBookingEmail = useCallback(
-    async (bookingRef: string, occupantEmails: EmailMap = {}) => {
+    async (
+      bookingRef: string,
+      occupantEmails: EmailMap = {}
+    ): Promise<SendBookingEmailResult> => {
       setLoading(true);
+
+      const emptyResult: SendBookingEmailResult = {
+        success: false,
+        bookingRef,
+        occupantIds: [],
+        recipients: [],
+        occupantLinks: [],
+      };
 
       try {
         /* -------------------------------------------------- */
         /* 1️⃣  Fetch guest IDs for the booking               */
         /* -------------------------------------------------- */
-        const bookingUrl = `${FIREBASE_BASE_URL}/bookings/${bookingRef}.json`;
+        const emailTestMode = isBookingEmailTestModeEnabled();
+        const { firebaseBaseUrl, occupantLinkPrefix } = requireBookingEmailConfig(
+          emailTestMode,
+        );
+        const bookingUrl = `${firebaseBaseUrl}/bookings/${bookingRef}.json`;
         const bookingResp = await fetch(bookingUrl);
+        if (bookingResp.ok === false) {
+          throw new Error(
+            `Failed to fetch booking (${bookingResp.status || "unknown-status"})`
+          );
+        }
         const bookingRaw = await bookingResp.json();
-        const bookingResult = z.record(z.any()).safeParse(bookingRaw);
+        const bookingResult = firebaseBookingSchema.safeParse(bookingRaw);
         if (!bookingResult.success) {
           console.error("Invalid booking response", bookingResult.error);
           throw new Error("Invalid booking response");
         }
         const bookingJson = bookingResult.data;
 
-        if (Object.keys(bookingJson).length === 0) {
+        const guestIds = Object.keys(bookingJson).filter((id) => id !== "__notes");
+
+        if (guestIds.length === 0) {
           throw new Error(`No guests found under bookingRef "${bookingRef}"`);
         }
-
-        const guestIds = Object.keys(bookingJson);
 
         /* -------------------------------------------------- */
         /* 2️⃣  Consolidate emails                            */
@@ -107,14 +195,17 @@ export default function useBookingEmail() {
         /* -------------------------------------------------- */
         /* 3️⃣  Build recipients + links                      */
         /* -------------------------------------------------- */
-        const emailTestMode = EMAIL_TEST_MODE ||
-          process.env.NEXT_PUBLIC_BOOKING_EMAIL_TEST_MODE === "true";
-
         const recipients = emailTestMode
           ? [EMAIL_TEST_ADDRESS]
-          : Object.values(mergedEmails).filter(Boolean);
+          : Array.from(new Set(Object.values(mergedEmails).filter(Boolean)));
 
-        const links = guestIds.map((id) => `${OCCUPANT_LINK_PREFIX}${id}`);
+        if (recipients.length === 0) {
+          throw new Error(
+            "No recipient email addresses found for this booking"
+          );
+        }
+
+        const links = guestIds.map((id) => `${occupantLinkPrefix}${id}`);
         const headers = await buildMcpAuthHeaders();
 
         const resp = await fetch("/api/mcp/booking-email", {
@@ -126,14 +217,31 @@ export default function useBookingEmail() {
             occupantLinks: links,
           }),
         });
-        const json = await resp.json();
+        const json = (await resp.json()) as BookingEmailRouteResponse;
         if (!resp.ok || !json?.success) {
           throw new Error(json?.error || "Failed to create booking email draft");
         }
+
+        const successResult: SendBookingEmailResult = {
+          success: true,
+          bookingRef,
+          occupantIds: guestIds,
+          recipients,
+          occupantLinks: links,
+          draftId: json?.draftId,
+          messageId: json?.messageId,
+        };
+
         setMessage(json?.draftId ?? json?.messageId ?? "draft-created");
+        return successResult;
       } catch (err) {
-        console.error("❌ sendBookingEmail failed", err);
-        setMessage((err as Error).message || "Failed to create email draft");
+        const error = err as Error;
+        console.error("❌ sendBookingEmail failed", error);
+        setMessage(error.message || "Failed to create email draft");
+        return {
+          ...emptyResult,
+          error: error.message || "Failed to create email draft",
+        };
       } finally {
         setLoading(false);
       }

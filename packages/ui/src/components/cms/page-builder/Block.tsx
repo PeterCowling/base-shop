@@ -189,7 +189,7 @@ function Block({ component, locale }: { component: PageComponent; locale: Locale
   let rendered = <Comp {...compProps} locale={locale} />;
   if (clickAction === "navigate" && href && component.type !== "Button") {
     rendered = (
-      <a href={href} onClick={(e) => e.preventDefault()} className="cursor-pointer inline-block min-h-10 min-w-10">
+      <a href={href} onClick={(e) => e.preventDefault()} className="cursor-pointer inline-block min-h-11 min-w-11">
         {rendered}
       </a>
     );

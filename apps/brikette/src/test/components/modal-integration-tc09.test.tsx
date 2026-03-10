@@ -77,9 +77,9 @@ jest.mock("next/link", () => {
   return { __esModule: true, default: LinkMock };
 });
 
-// @/utils/slug: stub terms slug.
+// @/utils/slug: keep the booking route stable for widget navigation assertions.
 jest.mock("@/utils/slug", () => ({
-  getSlug: () => "terms",
+  getSlug: (key: string) => (key === "book" ? "book" : key),
 }));
 
 // ---------------------------------------------------------------------------
@@ -98,6 +98,20 @@ function getUseTranslationMock(): jest.Mock {
   return (jest.requireMock("react-i18next") as { useTranslation: jest.Mock }).useTranslation;
 }
 
+function getBookingSubmitButton(): HTMLElement {
+  // resolveTranslatedCopy in BookingWidget falls back to "Check availability" when the
+  // i18n mock returns the raw key (keys containing "." are treated as unresolved).
+  return screen.getByRole("button", { name: "Check availability" });
+}
+
+function getCheckInInput(): HTMLElement {
+  return screen.getByTestId("date-range-checkin-input");
+}
+
+function getCheckOutInput(): HTMLElement {
+  return screen.getByTestId("date-range-checkout-input");
+}
+
 // ---------------------------------------------------------------------------
 // TC-01: BookingWidget → navigates to /book (TASK-27)
 // ---------------------------------------------------------------------------
@@ -107,52 +121,82 @@ describe("TC-01: BookingWidget → navigates to /book (TASK-27)", () => {
     // BookingWidget writes date state back to window.location.search via useEffect.
     // Clear URL search params between tests to prevent cross-test contamination.
     window.history.replaceState(null, "", window.location.pathname);
+    window.localStorage.clear();
   });
 
   it("navigates to /book with the entered dates and guests", () => {
     render(<BookingWidget />);
 
-    const checkInInput = screen.getByLabelText("booking.checkInLabel");
-    const checkOutInput = screen.getByLabelText("booking.checkOutLabel");
-    const guestsInput = screen.getByLabelText("booking.guestsLabel");
+    const checkInInput = getCheckInInput();
+    const checkOutInput = getCheckOutInput();
+    const increaseGuestsButton = screen.getByRole("button", {
+      name: "Increase guests",
+    });
 
     // Use ISO format — BookingWidget's parseDateInput handles YYYY-MM-DD.
     fireEvent.change(checkInInput, { target: { value: "2025-06-01" } });
     fireEvent.change(checkOutInput, { target: { value: "2025-06-03" } });
-    fireEvent.change(guestsInput, { target: { value: "2" } });
+    fireEvent.click(increaseGuestsButton);
 
     // Only one button in the widget (the CTA).
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     expect(mockPush).toHaveBeenCalledTimes(1);
     expect(mockPush).toHaveBeenCalledWith("/en/book?checkin=2025-06-01&checkout=2025-06-03&pax=2");
+  });
+
+  it("auto-sets checkout to two nights after check-in", () => {
+    render(<BookingWidget />);
+
+    const checkInInput = getCheckInInput();
+    const checkOutInput = getCheckOutInput() as HTMLInputElement;
+
+    fireEvent.change(checkInInput, { target: { value: "2025-06-05" } });
+
+    expect(checkOutInput.value).toBe("2025-06-07");
+    expect(checkOutInput.min).toBe("2025-06-07");
   });
 
   it("navigates to /book with pax only when no dates are entered", () => {
     render(<BookingWidget />);
 
     // Click without filling any dates — empty fields are omitted from query.
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     expect(mockPush).toHaveBeenCalledTimes(1);
     expect(mockPush).toHaveBeenCalledWith("/en/book?pax=1");
   });
 
-  it("does not navigate when date range is invalid (checkout <= checkin)", () => {
+  it("does not navigate when stay is shorter than two-night minimum", () => {
     render(<BookingWidget />);
 
-    fireEvent.change(screen.getByLabelText("booking.checkInLabel"), {
+    fireEvent.change(getCheckInInput(), {
       target: { value: "2025-06-05" },
     });
-    fireEvent.change(screen.getByLabelText("booking.checkOutLabel"), {
-      target: { value: "2025-06-03" }, // Before check-in — invalid range
+    fireEvent.change(getCheckOutInput(), {
+      target: { value: "2025-06-06" }, // 1-night stay — invalid range
     });
 
-    fireEvent.click(screen.getByRole("button"));
+    fireEvent.click(getBookingSubmitButton());
 
     // Widget shows error and does NOT navigate on invalid range.
     expect(mockPush).not.toHaveBeenCalled();
     // Error alert is shown.
+    expect(screen.getByRole("alert")).toBeInTheDocument();
+  });
+
+  it("does not navigate when pax exceeds maximum", () => {
+    window.history.replaceState(
+      null,
+      "",
+      `${window.location.pathname}?checkin=2025-06-05&checkout=2025-06-09&pax=9`,
+    );
+
+    render(<BookingWidget />);
+
+    fireEvent.click(getBookingSubmitButton());
+
+    expect(mockPush).not.toHaveBeenCalled();
     expect(screen.getByRole("alert")).toBeInTheDocument();
   });
 });

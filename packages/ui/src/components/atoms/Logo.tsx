@@ -32,22 +32,19 @@ export interface LogoProps
   srcSet?: string;
 }
 
-export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
-  (
-    {
-      className,
-      src,
-      sources,
-      alt,
-      fallbackText,
-      width: defaultWidth = 32,
-      height: defaultHeight = 32,
-      sizes,
-      srcSet: providedSrcSet,
-      ...props
-    },
-    ref,
-  ) => {
+export function Logo({
+  className,
+  src,
+  sources,
+  alt,
+  fallbackText,
+  width: defaultWidth = 32,
+  height: defaultHeight = 32,
+  sizes,
+  srcSet: providedSrcSet,
+  ref,
+  ...props
+}: LogoProps & { ref?: React.Ref<HTMLImageElement> }) {
     const viewport = useViewport();
     const responsive = sources?.[viewport];
     const imageSrc = responsive?.src ?? src;
@@ -57,7 +54,7 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
     const altText = alt ?? fallbackText;
 
     if (!imageSrc) {
-      return <span className={cn("font-bold", className)}>{fallbackText}</span>;
+      return <span data-slot="logo" className={cn("font-bold", className)}>{fallbackText}</span>;
     }
 
     // Avoid arbitrary Tailwind values; rely on width/height props instead
@@ -114,7 +111,5 @@ export const Logo = React.forwardRef<HTMLImageElement, LogoProps>(
       ...(computedSrcSet ? { srcSet: computedSrcSet } : {}),
     };
 
-    return <Image ref={ref} alt={altText} {...imageProps} />;
-  },
-);
-Logo.displayName = "Logo";
+    return <Image data-slot="logo" ref={ref} alt={altText} {...imageProps} />;
+}

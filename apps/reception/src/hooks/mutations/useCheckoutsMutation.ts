@@ -1,18 +1,28 @@
 /* src/hooks/mutations/useCheckoutsMutation.ts */
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type CheckoutData } from "../../types/hooks/data/checkoutsData";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
+
+import useMutationState from "./useMutationState";
+
+interface UseCheckoutsMutationReturn extends MutationState<void> {
+  saveCheckout: (
+    dateKey: string,
+    checkoutData: Partial<Record<string, CheckoutData[string] | null>>
+  ) => Promise<void>;
+}
 
 /**
  * Mutation Hook that handles creating or updating occupant check-out data
  * at /checkouts/<dateKey> in Firebase.
  */
-export function useCheckoutsMutation() {
+export function useCheckoutsMutation(): UseCheckoutsMutationReturn {
   const database = useFirebaseDatabase();
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   /**
    * saveCheckout merges new occupant data at /checkouts/<dateKey>
@@ -29,19 +39,17 @@ export function useCheckoutsMutation() {
       dateKey: string,
       checkoutData: Partial<Record<string, CheckoutData[string] | null>>
     ): Promise<void> => {
-      try {
+      await run(async () => {
         const checkoutRef = ref(database, `checkouts/${dateKey}`);
         await update(checkoutRef, checkoutData);
-      } catch (err) {
-        setError(err);
-        throw err;
-      }
+      });
     },
-    [database]
+    [database, run]
   );
 
   return {
     saveCheckout,
     error,
+    loading,
   };
 }

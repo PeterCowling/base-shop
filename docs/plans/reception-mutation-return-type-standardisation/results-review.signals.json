@@ -1,0 +1,24 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-08T23:46:10.300Z",
+  "plan_slug": "reception-mutation-return-type-standardisation",
+  "source_path": "../docs/plans/reception-mutation-return-type-standardisation/results-review.user.md",
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New skill — Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.",
+      "body": "New skill — Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.",
+      "source": "results-review.user.md",
+      "date": "2026-03-08T00:00:00.000Z",
+      "path": "../docs/plans/reception-mutation-return-type-standardisation/results-review.user.md",
+      "idea_key": "613ac19e9a337fb3b2be89eedc2d32f1fb95817c",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
+}

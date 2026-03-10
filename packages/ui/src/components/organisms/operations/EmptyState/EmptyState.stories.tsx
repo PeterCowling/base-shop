@@ -13,7 +13,7 @@ const meta: Meta<typeof EmptyState> = {
   decorators: [
     (Story) => (
       <div className="context-operations min-h-screen bg-gray-50 p-8 dark:bg-darkBg">
-        <div className="w-[800px]">
+        <div className="w-full max-w-4xl">
           <Story />
         </div>
       </div>
@@ -163,8 +163,8 @@ export const WithCustomContent: Story = {
     title: 'No items in this category',
     description: 'This category is currently empty.',
     children: (
-      <div className="mt-4 rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-darkBg dark:bg-darkBg">
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+      <div className="mt-4 rounded-lg border border-border-2 bg-gray-50 p-4 dark:border-darkBg dark:bg-darkBg">
+        <p className="text-sm text-muted-foreground dark:text-muted-foreground">
           💡 <strong>Tip:</strong> You can import items from a CSV file or add them manually one by one.
         </p>
       </div>

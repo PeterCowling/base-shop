@@ -6,10 +6,22 @@
 #   ./scripts/post-deploy-health-check.sh <project-name> --staging
 #   BASE_URL="https://custom.domain.com" ./scripts/post-deploy-health-check.sh
 #   EXTRA_ROUTES="/api/health /shop" ./scripts/post-deploy-health-check.sh <project-name>
+#   STRICT_ROUTES="/it/prenota" ./scripts/post-deploy-health-check.sh <project-name>
 #
 # Environment variables:
 #   BASE_URL          - Override the deployed URL (useful for custom domains or preview URLs)
 #   EXTRA_ROUTES      - Space-separated list of routes to check (e.g., "/api/health /shop")
+#                       Uses redirect-following curl (2xx and 3xx = pass).
+#   STRICT_ROUTES     - Space-separated list of routes that must return HTTP 200 exactly,
+#                       with no redirect following. Use for Cloudflare Pages 200-rewrite
+#                       routes where a 301 redirect indicates a broken route.
+#   CANONICAL_ORIGIN  - Override the expected canonical host/origin used for
+#                       canonical tag and sitemap checks (e.g. "https://hostel-positano.com")
+#   CANONICAL_TAG_ROUTES - Space-separated list of HTML routes whose
+#                       `<link rel=\"canonical\">` must equal CANONICAL_ORIGIN + route.
+#   SITEMAP_REQUIRED_ROUTES - Space-separated list of paths that must appear in
+#                       /sitemap.xml using CANONICAL_ORIGIN as the absolute URL base.
+#   EXPECT_404_ROUTES - Space-separated list of routes that must return HTTP 404.
 #   MAX_RETRIES       - Number of retry attempts (default: 10)
 #   RETRY_DELAY       - Seconds between retries (default: 6)
 #
@@ -21,6 +33,11 @@ set -e
 PROJECT_NAME="${1:-}"
 STAGING="${2:-}"
 EXTRA_ROUTES="${EXTRA_ROUTES:-}"
+STRICT_ROUTES="${STRICT_ROUTES:-}"
+CANONICAL_ORIGIN="${CANONICAL_ORIGIN:-}"
+CANONICAL_TAG_ROUTES="${CANONICAL_TAG_ROUTES:-}"
+SITEMAP_REQUIRED_ROUTES="${SITEMAP_REQUIRED_ROUTES:-}"
+EXPECT_404_ROUTES="${EXPECT_404_ROUTES:-}"
 MAX_RETRIES="${MAX_RETRIES:-10}"
 RETRY_DELAY="${RETRY_DELAY:-6}"
 
@@ -41,6 +58,10 @@ elif [ "$STAGING" = "--staging" ]; then
     URL="https://staging.${PROJECT_NAME}.pages.dev"
 else
     URL="https://${PROJECT_NAME}.pages.dev"
+fi
+
+if [ -z "$CANONICAL_ORIGIN" ]; then
+    CANONICAL_ORIGIN="$URL"
 fi
 
 echo "========================================"
@@ -64,6 +85,122 @@ check_url() {
             return 1
             ;;
     esac
+}
+
+# check_url_strict <url> - returns 0 only if HTTP 200, 1 otherwise
+# Does NOT follow redirects (--max-redirect 0). Use for routes that should be
+# served as Cloudflare Pages 200-rewrites (transparent proxy). A 301 redirect
+# indicates the route is broken and must be reported as failure.
+check_url_strict() {
+    CHECK_URL="$1"
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "000")
+    case "$STATUS" in
+        200) return 0 ;;  # Only HTTP 200 is success for strict routes
+        *)
+            echo "$STATUS"
+            return 1
+            ;;
+    esac
+}
+
+# check_url_404 <url> - returns 0 only if HTTP 404, 1 otherwise
+check_url_404() {
+    CHECK_URL="$1"
+    STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "000")
+    case "$STATUS" in
+        404) return 0 ;;
+        *)
+            echo "$STATUS"
+            return 1
+            ;;
+    esac
+}
+
+retry_check_404() {
+    CHECK_URL="$1"
+    ATTEMPT=1
+    LAST_STATUS=""
+    while [ "$ATTEMPT" -le "$MAX_RETRIES" ]; do
+        echo "  Attempt $ATTEMPT/$MAX_RETRIES (expect 404)..."
+        if LAST_STATUS=$(check_url_404 "$CHECK_URL" 2>&1); then
+            echo "  OK (404): $CHECK_URL returned 404"
+            return 0
+        else
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+                echo "  Got $LAST_STATUS (expected 404), retrying in ${RETRY_DELAY}s..."
+                sleep "$RETRY_DELAY"
+            fi
+        fi
+        ATTEMPT=$((ATTEMPT + 1))
+    done
+    FINAL_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "000")
+    echo "  FAIL (404): $CHECK_URL returned $FINAL_STATUS after $MAX_RETRIES attempts (expected 404)"
+    return 1
+}
+
+retry_check_canonical_tag() {
+    CHECK_URL="$1"
+    EXPECTED_CANONICAL="$2"
+    ATTEMPT=1
+    while [ "$ATTEMPT" -le "$MAX_RETRIES" ]; do
+        echo "  Attempt $ATTEMPT/$MAX_RETRIES (canonical tag)..."
+        ACTUAL_CANONICAL=$(curl -sL --max-time 30 "$CHECK_URL" 2>/dev/null | python3 -c "import re, sys; html = sys.stdin.read(); match = re.search(r\"<link[^>]+rel=['\\\"]canonical['\\\"][^>]+href=['\\\"]([^'\\\"]+)\", html, re.I); print(match.group(1) if match else '')")
+        if [ "$ACTUAL_CANONICAL" = "$EXPECTED_CANONICAL" ]; then
+            echo "  OK (canonical): $CHECK_URL -> $ACTUAL_CANONICAL"
+            return 0
+        fi
+        if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+            echo "  Got canonical '$ACTUAL_CANONICAL' (expected '$EXPECTED_CANONICAL'), retrying in ${RETRY_DELAY}s..."
+            sleep "$RETRY_DELAY"
+        fi
+        ATTEMPT=$((ATTEMPT + 1))
+    done
+    echo "  FAIL (canonical): $CHECK_URL -> '$ACTUAL_CANONICAL' (expected '$EXPECTED_CANONICAL')"
+    return 1
+}
+
+retry_check_sitemap_entry() {
+    REQUIRED_PATH="$1"
+    EXPECTED_LOC="${CANONICAL_ORIGIN%/}${REQUIRED_PATH}"
+    ATTEMPT=1
+    while [ "$ATTEMPT" -le "$MAX_RETRIES" ]; do
+        echo "  Attempt $ATTEMPT/$MAX_RETRIES (sitemap)..."
+        if curl -sL --max-time 30 "${URL%/}/sitemap.xml" 2>/dev/null | grep -Fq "$EXPECTED_LOC"; then
+            echo "  OK (sitemap): found $EXPECTED_LOC"
+            return 0
+        fi
+        if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+            echo "  Missing $EXPECTED_LOC in sitemap, retrying in ${RETRY_DELAY}s..."
+            sleep "$RETRY_DELAY"
+        fi
+        ATTEMPT=$((ATTEMPT + 1))
+    done
+    echo "  FAIL (sitemap): missing $EXPECTED_LOC after $MAX_RETRIES attempts"
+    return 1
+}
+
+# retry_check_strict <url> - retries with backoff until 200 or max retries
+retry_check_strict() {
+    CHECK_URL="$1"
+    ATTEMPT=1
+    LAST_STATUS=""
+    while [ "$ATTEMPT" -le "$MAX_RETRIES" ]; do
+        echo "  Attempt $ATTEMPT/$MAX_RETRIES (strict)..."
+        if LAST_STATUS=$(check_url_strict "$CHECK_URL" 2>&1); then
+            FINAL_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "???")
+            echo "  OK (strict): $CHECK_URL returned $FINAL_STATUS"
+            return 0
+        else
+            if [ "$ATTEMPT" -lt "$MAX_RETRIES" ]; then
+                echo "  Got $LAST_STATUS (expected 200), retrying in ${RETRY_DELAY}s..."
+                sleep "$RETRY_DELAY"
+            fi
+        fi
+        ATTEMPT=$((ATTEMPT + 1))
+    done
+    FINAL_STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 "$CHECK_URL" 2>/dev/null || echo "000")
+    echo "  FAIL (strict): $CHECK_URL returned $FINAL_STATUS after $MAX_RETRIES attempts (expected 200)"
+    return 1
 }
 
 # retry_check <url> - retries with backoff until success or max retries
@@ -108,6 +245,55 @@ if [ -n "$EXTRA_ROUTES" ]; then
         ROUTE_URL="${URL}${route}"
         echo "  Route: $route"
         if ! retry_check "$ROUTE_URL"; then
+            exit 1
+        fi
+    done
+fi
+
+# Check strict routes if specified (must return HTTP 200 — no redirect following)
+if [ -n "$STRICT_ROUTES" ]; then
+    echo ""
+    echo "> Checking strict routes (must return HTTP 200, no redirect)..."
+    for route in $STRICT_ROUTES; do
+        ROUTE_URL="${URL}${route}"
+        echo "  Route: $route"
+        if ! retry_check_strict "$ROUTE_URL"; then
+            exit 1
+        fi
+    done
+fi
+
+if [ -n "$CANONICAL_TAG_ROUTES" ]; then
+    echo ""
+    echo "> Checking canonical tags..."
+    for route in $CANONICAL_TAG_ROUTES; do
+        ROUTE_URL="${URL}${route}"
+        EXPECTED_CANONICAL="${CANONICAL_ORIGIN%/}${route}"
+        echo "  Route: $route"
+        if ! retry_check_canonical_tag "$ROUTE_URL" "$EXPECTED_CANONICAL"; then
+            exit 1
+        fi
+    done
+fi
+
+if [ -n "$SITEMAP_REQUIRED_ROUTES" ]; then
+    echo ""
+    echo "> Checking sitemap required routes..."
+    for route in $SITEMAP_REQUIRED_ROUTES; do
+        echo "  Route: $route"
+        if ! retry_check_sitemap_entry "$route"; then
+            exit 1
+        fi
+    done
+fi
+
+if [ -n "$EXPECT_404_ROUTES" ]; then
+    echo ""
+    echo "> Checking expected 404 routes..."
+    for route in $EXPECT_404_ROUTES; do
+        ROUTE_URL="${URL}${route}"
+        echo "  Route: $route"
+        if ! retry_check_404 "$ROUTE_URL"; then
             exit 1
         fi
     done

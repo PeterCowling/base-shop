@@ -45,5 +45,99 @@
     ],
     "footer": "Endelig tilgængelighed og betaling gennemføres i vores officielle bookingmotor."
   },
-  "backToRooms": "Tilbage til værelser"
+  "backToRooms": "Tilbage til værelser",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "Book direkte og gem",
+      "headline": "Op til 25% mindre end Booking.com"
+    }
+  },
+  "date": {
+    "stayHelper": "2- 8 nætter",
+    "clearDates": "Ryd datoer",
+    "nightsSummary": "_ _ TOK0 _ _ → _ TOK1 _ _ (_ TOK2 _ _ nætter)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Hostelbookinger håndteres med assisteret support, når JavaScript er deaktiveret.",
+    "emailAssistedBooking": "E-mail os for assisteret booking",
+    "octorateDirectBooking": "Book direkte med Octorate"
+  },
+  "bookingConstraints": {
+    "notice": "Hostelbookinger understøtter kun for voksne ophold mellem 2 og 8 nætter med op til 8 voksne pr. reservation. For større grupper eller længere ophold, opdel din anmodning på flere bookinger eller",
+    "assistedLink": "kontakt os for assisteret booking"
+  },
+  "expiredQuote": {
+    "message": "Dette citatlink er udløbet. Genopbyg dit tilbud med nye datoer for at fortsætte."
+  },
+  "recovery": {
+    "title": "Har du brug for mere tid? E-mail dig selv dette citat og fortsæt senere.",
+    "privacyNotice": "Vi beholder kun reservationskontekst og samtykkemetadata. Genoptag-links udløber efter 7 dage.",
+    "emailLabel": "Din e-mail",
+    "emailPlaceholder": "dig@eksempel.com",
+    "consent": "Jeg giver samtykke til at modtage dette tilbud via e-mail og forstår, at det udløber efter 7 dage.",
+    "submitted": "E-mailkladde åbnet. Du kan sende det for at gemme dette tilbud.",
+    "submitCta": "Email mig dette citat",
+    "errors": {
+      "invalidEmail": "Indtast en gyldig e-mailadresse.",
+      "consentRequired": "Der kræves samtykke for at sende tilbudsmailen.",
+      "sendFailed": "Noget gik galt. Prøv igen eller kontakt os direkte."
+    },
+    "mailto": {
+      "subject": "Anmodning om gendannelse af tilbud",
+      "bodyIntro": "Send mig venligst dette tilbud og en opfølgende påmindelse.",
+      "labels": {
+        "guestEmail": "Gæste-e-mail",
+        "checkIn": "Indtjekning",
+        "checkOut": "Check- out",
+        "guests": "Gæster",
+        "sourceRoute": "Kilde rute",
+        "room": "Værelse",
+        "ratePlan": "Prisplan",
+        "resumeLink": "Genoptag link"
+      }
+    },
+    "sending": "Sende..."
+  },
+  "apartment": {
+    "heading": "Book den private lejlighed",
+    "subheading": "Vælg dine datoer og antal gæster, derefter vælge en sats.",
+    "guestLabel": "Antal gæster",
+    "guests": {
+      "2": "2 gæster",
+      "3": "3 gæster"
+    },
+    "flex": {
+      "title": "Fleksibel sats",
+      "saving": "Gem 21% vs OTA",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "Ikke-refunderbar",
+      "saving": "Gem 26% vs OTA",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "_ _ TOK0 _ _ nat - tilgængelighed bekræftet i næste trin.",
+    "nightsSummary_other": "_ _ TOK0 _ _ nights - tilgængelighed bekræftet i næste trin.",
+    "rateLabel": "Vælg din sats",
+    "ratePrompt": "Vælg en kurs ovenfor for at fortsætte",
+    "cta": {
+      "unselected": "Vælg en kurs for at fortsætte →",
+      "flex": "Fleksibel - Fortsæt kontrol",
+      "nr": "Non-refundable - Fortsæt med at tjekke ud"
+    },
+    "policies": {
+      "title": "Politikker og gebyrer",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
+  }
 }

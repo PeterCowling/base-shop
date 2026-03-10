@@ -1,22 +1,24 @@
 // File: /src/hooks/mutations/useArchiveBooking.ts
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 import { getItalyIsoString } from "../../utils/dateUtils";
+
+import useMutationState from "./useMutationState";
 
 /**
  * Return type for the useArchiveBooking hook.
  */
-interface UseArchiveBookingReturn {
+interface UseArchiveBookingReturn
+  extends MutationState<void> {
   archiveBooking: (
     bookingRef: string,
     reason?: string,
     source?: string
   ) => Promise<void>;
-  loading: boolean;
-  error: unknown;
 }
 
 /**
@@ -35,8 +37,7 @@ interface UseArchiveBookingReturn {
  */
 export default function useArchiveBooking(): UseArchiveBookingReturn {
   const database = useFirebaseDatabase();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   /**
    * Archives a booking by writing metadata to /bookingMeta path.
@@ -44,15 +45,10 @@ export default function useArchiveBooking(): UseArchiveBookingReturn {
   const archiveBooking = useCallback(
     async (bookingRef: string, reason?: string, source?: string): Promise<void> => {
       if (!database) {
-        const err = new Error("Database not initialized");
-        setError(err);
-        throw err;
+        throw new Error("Database not initialized");
       }
 
-      setLoading(true);
-      setError(null);
-
-      try {
+      await run(async () => {
         const timestamp = getItalyIsoString();
         const cancellationSource = source ?? "staff";
 
@@ -70,14 +66,9 @@ export default function useArchiveBooking(): UseArchiveBookingReturn {
 
         // Commit all writes in a single atomic update
         await update(ref(database), updates);
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
+      });
     },
-    [database]
+    [database, run]
   );
 
   return {

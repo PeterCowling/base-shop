@@ -52,6 +52,12 @@
         "../../packages/guide-system/dist/*",
         "../../packages/guide-system/src/*"
       ],
+      "@acme/email": [
+        "../../packages/email/dist/index.d.ts"
+      ],
+      "@acme/email/*": [
+        "../../packages/email/dist/*"
+      ],
       "@acme/telemetry": [
         "../../packages/telemetry/dist/index.d.ts"
       ],
@@ -73,6 +79,8 @@
   "include": [
     "next-env.d.ts",
     "instrumentation.ts",
+    "playwright.config.ts",
+    "e2e/**/*.ts",
     "src/**/*.d.ts",
     "src/**/*.json",
     "src/**/*",

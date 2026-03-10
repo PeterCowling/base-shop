@@ -113,14 +113,14 @@ export const StickyPosition: Story = {
         onClearSelection={() => {}}
         position="sticky"
       />
-      <div className="h-[600px] space-y-2 overflow-auto rounded border border-slate-200 p-4">
+      <div className="h-96 space-y-2 overflow-auto rounded border border-border-2 p-4">
         {Array.from({ length: 50 }, (_, i) => (
-          <div key={i} className="rounded bg-slate-100 p-3 text-sm">
+          <div key={i} className="rounded bg-surface-2 p-3 text-sm">
             Item {i + 1}
           </div>
         ))}
       </div>
-      <p className="text-sm text-slate-600">Scroll the list above to see sticky behavior</p>
+      <p className="text-sm text-muted-foreground">Scroll the list above to see sticky behavior</p>
     </div>
   ),
 };
@@ -168,14 +168,14 @@ function InteractiveStory() {
         />
       )}
 
-      <div className="space-y-2 rounded border border-slate-200 p-4">
+      <div className="space-y-2 rounded border border-border-2 p-4">
         {items.map((item) => (
-          <label key={item.id} className="flex items-center gap-3 rounded p-2 hover:bg-slate-50">
+          <label key={item.id} className="flex items-center gap-3 rounded p-2 hover:bg-surface">
             <input
               type="checkbox"
               checked={selectedItems.includes(item.id)}
               onChange={() => toggleItem(item.id)}
-              className="rounded"
+              className="rounded min-h-11 min-w-11"
             />
             <span className="text-sm">{item.name}</span>
           </label>

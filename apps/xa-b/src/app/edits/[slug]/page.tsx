@@ -5,6 +5,12 @@ import { XaProductListing } from "../../../components/XaProductListing.client";
 import { XA_PRODUCTS } from "../../../lib/demoData";
 import { XA_EDITS } from "../../../lib/xaEdits";
 
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  return XA_EDITS.map((e) => ({ slug: e.slug }));
+}
+
 export default async function EditPage({
   params,
 }: {

@@ -5,14 +5,15 @@
     "description": "Bestill, utforsk og hold kontakt på nett. Har du spørsmål? Vår digitale assistent gir tilpassede anbefalinger og reiseguider for å forbedre oppholdet i Positano."
   },
   "heading": "Digital hjelp",
-  "heroEyebrow": "Book and Connect",
+  "heroEyebrow": "Bestill og koble",
   "subheading": "Bestill, utforsk og hold kontakt på nett.",
   "heroIntro": "Få umiddelbar veiledning før og under oppholdet. Den digitale assistenten gir deg svar på praktiske spørsmål og deler tips fra vårt lokale vertskap.",
   "otherBookingOptions": "Andre bestillingsvalg og sosiale medier",
   "addressLabel": "Adresse:",
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookDirect": "Bestill direkte",
   "bookingOptions": {
-    "googleBusiness": "Google Business",
+    "googleBusiness": "Google Bedrift",
     "bookingCom": "Booking.com",
     "hostelWorld": "Hostelworld",
     "instagram": "Instagram"
@@ -41,7 +42,7 @@
     "cardCta": "Les planleggingsguiden {{guideTitle}}"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "{{howToTitle}} · {{experiencesTitle}}_",
+    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}_"
   }
 }

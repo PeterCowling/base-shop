@@ -52,5 +52,115 @@
         "alt": "Positano utcája üzletekkel a lejtőn"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "Könyv közvetlen és mentés",
+    "heading": "26% -kal kevesebb, mint a Booking.com",
+    "nr": {
+      "label": "Nem újrafinanszírozható",
+      "saving": "26% megtakarítás",
+      "detail": "Legjobb közvetlen ár"
+    },
+    "flex": {
+      "label": "Rugalmas arány",
+      "saving": "21%",
+      "detail": "Ingyenes törlés"
+    }
+  },
+  "heroTagline": "Magánlakás · Positano, Olaszország",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "Ez a lakás jó neked?",
+    "arrival": {
+      "label": "Érkezés",
+      "text": "Nincs utcai lépcső az út a lakás bejáratáig."
+    },
+    "inside": {
+      "label": "Belül",
+      "text": "Split- szintű belső, belső lépcsők között nappali és hálószoba."
+    },
+    "sleeping": {
+      "label": "Alszik.",
+      "text": "Sofa ágy lent, dupla ágy fent."
+    },
+    "sound": {
+      "label": "Hang",
+      "text": "Néhány út és terasz hangulat; terasz csendes óra éjfélkor."
+    },
+    "bestFit": {
+      "label": "A legjobb.",
+      "text": "Ideális pároknak. Ha valaki a csoportból inkább elkerüli a lépcsőket, a földszinti kanapé egy kényelmes alternatíva. Nem ajánlott könnyű alvóknak."
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "Street- szint érkezés",
+      "subtitle": "Nincs utcai lépcső az útról a bejáratra",
+      "cta": "Tudjon meg többet"
+    },
+    "privateStayCard": {
+      "title": "Szolgáltatott magántartózkodás",
+      "subtitle": "Választható terasz, bár és reggeli a szomszédban",
+      "cta": "Tudjon meg többet"
+    }
+  },
+  "checkAvailability": "A rendelkezésre állás ellenőrzése",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "Step- Ingyenes érkezés Positano - No Street Stairs",
+      "description": "A lakás step-free hozzáférést kínál az út a bejárat - ritka meredek Positano. Se lépcső, se poggyász."
+    },
+    "heroTitle": "Step- ingyenes érkezés",
+    "heroSubtitle": "Nincs utcai lépcső az út a lakás bejárata",
+    "heroBody": "Egy több száz lépésről híres városban a lakásunk más. Sétáljon egyenesen az útról a bejárati ajtóhoz - se lépcső, se poggyász, se babakocsi.",
+    "videoPlaceholder": "Hamarosan jön a street-to-door videó.",
+    "clarification": "A lakás bejárata lépte- mentes az utcától. Odabent, az apartman split- szinten belső lépcsők között a nappali és a hálószoba.",
+    "whatsappCta": "WhatsApp a gyors válaszokért",
+    "checkAvailability": "A rendelkezésre állás ellenőrzése"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Privát serviced apartman Positano",
+      "description": "A saját 85m2 apartman teljes konyhával, professzionális kezelésű, opcionális hozzáférést biztosít terasz, reggeli, és bár a szomszédos."
+    },
+    "heroTitle": "Magánlakása Positanóban",
+    "heroSubtitle": "Szakmailag kezelt kórházi minőségű támogatás a szomszédban",
+    "sections": {
+      "privacy": {
+        "title": "Teljes függetlenség",
+        "body": "Egy 85m2-es lakás, ami teljesen a tiéd. Teljes konyha, mosógép és szárító, két fürdőszoba, és hely a szétszóródáshoz. Nincs közös hely, nincs csekk az asztalodon, csak a saját bejárati ajtód."
+      },
+      "support": {
+        "title": "Szakmai támogatás, ha szükséged van rá",
+        "body": "Egy tapasztalt vendéglátó csapat irányította a szomszédban. Szüksége van éttermi ajánlásokra, útmutatásra, vagy bármire? A szakmai támogatás egy rövid sétára van."
+      },
+      "amenities": {
+        "title": "Választható extrák a szomszédban",
+        "body": "Ha szeretné őket, egy terasz tengerre néző, reggeli szolgáltatás, és egy bár áll a közelben. Élvezze őket a menetrend, vagy hagyja ki őket teljesen - a választás a tiéd."
+      }
+    },
+    "whatsappCta": "WhatsApp a gyors válaszokért",
+    "checkAvailability": "A rendelkezésre állás ellenőrzése"
+  },
+  "book": {
+    "meta": {
+      "title": "Foglaljon Positano Apartman",
+      "description": "Ellenõrizze a privát apartmanunkat Positanóban. Step- ingyenes érkezés, konyha, alvás 4."
+    },
+    "heroTitle": "Foglalja le a tartózkodását.",
+    "heroSubtitle": "Magánlakás Positano",
+    "dateLabel": "Dátum kiválasztása",
+    "checkinLabel": "Bejelentkezés",
+    "checkoutLabel": "Kijelentkezés",
+    "rateNonRefundable": "Nem visszatéríthető",
+    "rateFlexible": "Rugalmas (ingyenes törlés)",
+    "checkAvailability": "A rendelkezésre állás ellenőrzése",
+    "orBookingCom": "Vagy könyv a Booking.com",
+    "whatsappCta": "WhatsApp a gyors válaszokért",
+    "backLink": "ȚVissza az apartman részleteihez"
   }
 }

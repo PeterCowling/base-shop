@@ -1,5 +1,5 @@
+import Providers from "@/components/ClientProviders";
 import Alloggiati from "@/components/man/Alloggiati";
-import Providers from "@/components/Providers";
 
 // Prevent static prerendering — Firebase RTDB requires runtime env vars
 export const dynamic = "force-dynamic";

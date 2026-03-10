@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
-import { getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
+import { getNamespaceBundles, getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
@@ -47,14 +47,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function HomePage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-
-  await getTranslations(validLang, [
+  const preloadedNamespaceBundles = await getNamespaceBundles(validLang, [
     "landingPage",
     "faq",
     "testimonials",
     "ratingsBar",
     "modals",
+    "_tokens",
+    "roomsPage",
+    "guides",
   ]);
 
-  return <HomeContent lang={validLang} />;
+  return <HomeContent lang={validLang} preloadedNamespaceBundles={preloadedNamespaceBundles} />;
 }

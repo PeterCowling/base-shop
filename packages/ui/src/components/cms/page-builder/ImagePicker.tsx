@@ -170,7 +170,7 @@ function ImagePicker({ onSelect, children }: ImagePickerProps) {
                       onSelect(m.url);
                       setOpen(false);
                     }}
-                    className="relative aspect-square min-h-10 min-w-10"
+                    className="relative aspect-square min-h-11 min-w-11"
                   >
                     <Image src={m.url} alt={m.altText || "media"} fill className="object-cover" />
                   </button>

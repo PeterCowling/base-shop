@@ -143,7 +143,7 @@ export default function StepShopDetails(
                 alt={`${key} logo preview`}
                 width={80}
                 height={40}
-                className="h-10 w-auto rounded border border-border-3 object-contain bg-white"
+                className="h-10 w-auto rounded border border-border-3 object-contain bg-surface"
               />
             ) : (
               <span className="text-xs text-muted-foreground">No logo selected</span>

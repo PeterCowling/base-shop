@@ -6,34 +6,22 @@ import { Banknote, CreditCard } from "lucide-react";
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
 
-import type {
-  PaymentSplit,
-  PaymentType,
-} from "../../../types/component/roomButton/types";
+import type { PaymentSplit } from "../../../types/component/roomButton/types";
+
+import { usePaymentContext } from "./PaymentContext";
 
 interface PaymentSplitRowProps {
   index: number;
   sp: PaymentSplit;
-  isDisabled: boolean;
-  handleAmountChange: (index: number, newAmount: string) => void;
-  handleSetPayType: (index: number, newPayType: PaymentType) => void;
-  handleAddPaymentRow: () => void;
-  handleRemovePaymentRow: (index: number) => void;
-  showAddButton: boolean;
 }
 
 /**
  * Renders a single row to manage amount and payment type for a split.
  * Row 0 is read-only (the "base" row), while rows 1..N are editable.
+ * Shared state is consumed from PaymentContext.
  */
-function PaymentSplitRow({
-  index,
-  sp,
-  isDisabled,
-  handleAmountChange,
-  handleSetPayType,
-  showAddButton: _showAddButton, // ignoring these props in this row
-}: PaymentSplitRowProps) {
+function PaymentSplitRow({ index, sp }: PaymentSplitRowProps) {
+  const { isDisabled, handleAmountChange, handleSetPayType } = usePaymentContext();
   const isRowZero = index === 0;
 
   const handleAmountInput = useCallback(
@@ -52,7 +40,7 @@ function PaymentSplitRow({
       {/* Amount input */}
       <Input compatibilityMode="no-wrapper"
         type="number"
-        className="border border-border-2 rounded px-2 py-1 w-24 focus:outline-none"
+        className="border border-border-2 rounded-lg px-2 py-1 w-24 focus:outline-none"
         placeholder="Amount"
         value={sp.amount || ""}
         onChange={handleAmountInput}
@@ -62,7 +50,7 @@ function PaymentSplitRow({
 
       {/* Toggle pay type */}
       <Button
-        className="flex items-center justify-center border border-border-2 rounded px-2 py-1 focus:outline-none"
+        className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none min-h-11 min-w-11"
         onClick={togglePayType}
         disabled={isDisabled}
       >

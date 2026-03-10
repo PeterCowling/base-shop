@@ -2,11 +2,13 @@
 import type { FC, ReactNode, SVGProps } from "react";
 import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import Link from "next/link";
 import { BedDouble, BookOpen, MapPin, Sparkles } from "lucide-react";
 
 import { Section } from "../atoms/Section";
 import { Grid } from "../components/atoms/primitives/Grid";
 import type { AppLanguage } from "../i18n.config";
+import { translatePath } from "../utils/translate-path";
 
 export interface QuickLink {
   label: string;
@@ -19,18 +21,45 @@ interface QuickLinksSectionProps {
   lang: AppLanguage;
 }
 
+const FALLBACK_QUICK_LINKS = {
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  roomsLabel: "Dorms",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  roomsDescription: "Mixed and female dormitories",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  commonAreasLabel: "Experiences",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  commonAreasDescription: "Activities and local adventures",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  locationLabel: "How to get here",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  locationDescription: "Bus stop and beach tips",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  guidesLabel: "Guides",
+  // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] static-export fallback copy for homepage quick links.
+  guidesDescription: "Local tips for your trip",
+} as const;
+
+function resolveTranslatedCopy(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (trimmed.includes(".")) return fallback;
+  return trimmed;
+}
+
 const QuickLinkCard: FC<QuickLink> = memo(({ label, description, Icon, href }): ReactNode => {
   const container =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "group flex h-full min-h-[120px] flex-col items-start gap-3 rounded-2xl border border-brand-outline/30 bg-white/90 p-5 text-start shadow-sm backdrop-blur " +
+    "group flex h-full min-h-[120px] flex-col items-start gap-3 rounded-2xl border border-brand-outline/30 bg-surface/90 p-5 text-start shadow-sm backdrop-blur " +
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "dark:bg-brand-text dark:border-white/10 transition hover:-translate-y-1 hover:shadow-lg " +
+    "dark:bg-brand-text dark:border-primary-fg/10 transition hover:-translate-y-1 hover:shadow-lg " +
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2";
 
   const iconWrapper =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
-    "inline-flex size-10 items-center justify-center rounded-full bg-brand-secondary/20 text-brand-primary shadow-sm transition group-hover:scale-105 dark:bg-brand-surface/20";
+    "inline-flex size-11 items-center justify-center rounded-full bg-brand-secondary/20 text-brand-primary shadow-sm transition group-hover:scale-105 dark:bg-brand-surface/20";
 
   const icon =
     /* i18n-exempt -- ABC-123 [ttl=2026-12-31] class names */
@@ -45,13 +74,13 @@ const QuickLinkCard: FC<QuickLink> = memo(({ label, description, Icon, href }): 
     "text-sm leading-snug text-brand-text/70 dark:text-brand-surface/70";
 
   return (
-    <a href={href} className={container}>
+    <Link href={href} prefetch={true} className={container}>
       <span className={iconWrapper} aria-hidden>
         <Icon className={icon} />
       </span>
       <span className={labelStyles}>{label}</span>
       <span className={descriptionStyles}>{description}</span>
-    </a>
+    </Link>
   );
 });
 
@@ -64,33 +93,55 @@ const QuickLinksSection: FC<QuickLinksSectionProps> = ({ lang }) => {
     if (!ready) return [];
     return [
       {
-        label: t("quickLinksSection.rooms", { defaultValue: "Rooms" }) as string,
-        description: t("quickLinksSection.roomsHint", { defaultValue: "Dorms and private rooms" }) as string,
+        label: resolveTranslatedCopy(
+          t("quickLinksSection.rooms", { defaultValue: FALLBACK_QUICK_LINKS.roomsLabel }),
+          FALLBACK_QUICK_LINKS.roomsLabel,
+        ),
+        description: resolveTranslatedCopy(
+          t("quickLinksSection.roomsHint", { defaultValue: FALLBACK_QUICK_LINKS.roomsDescription }),
+          FALLBACK_QUICK_LINKS.roomsDescription,
+        ),
         Icon: BedDouble,
-        href: "#rooms",
+        href: `/${lang}/${translatePath("book", lang)}`,
       },
       {
-        label: t("quickLinksSection.commonAreas", { defaultValue: "Common areas" }) as string,
-        description: t("quickLinksSection.commonAreasHint", { defaultValue: "Terrace, bar, shared spaces" }) as string,
+        label: resolveTranslatedCopy(
+          t("quickLinksSection.commonAreas", { defaultValue: FALLBACK_QUICK_LINKS.commonAreasLabel }),
+          FALLBACK_QUICK_LINKS.commonAreasLabel,
+        ),
+        description: resolveTranslatedCopy(
+          t("quickLinksSection.commonAreasHint", { defaultValue: FALLBACK_QUICK_LINKS.commonAreasDescription }),
+          FALLBACK_QUICK_LINKS.commonAreasDescription,
+        ),
         Icon: Sparkles,
-        href:
-          /* i18n-exempt -- UI-1000 ttl=2026-12-31 anchor id. */
-          "#common-areas",
+        href: `/${lang}/${translatePath("experiences", lang)}`,
       },
       {
-        label: t("quickLinksSection.location", { defaultValue: "Location" }) as string,
-        description: t("quickLinksSection.locationHint", { defaultValue: "Bus stop and beach tips" }) as string,
+        label: resolveTranslatedCopy(
+          t("quickLinksSection.location", { defaultValue: FALLBACK_QUICK_LINKS.locationLabel }),
+          FALLBACK_QUICK_LINKS.locationLabel,
+        ),
+        description: resolveTranslatedCopy(
+          t("quickLinksSection.locationHint", { defaultValue: FALLBACK_QUICK_LINKS.locationDescription }),
+          FALLBACK_QUICK_LINKS.locationDescription,
+        ),
         Icon: MapPin,
-        href: "#location",
+        href: `/${lang}/${translatePath("howToGetHere", lang)}`,
       },
       {
-        label: t("quickLinksSection.guides", { defaultValue: "Guides" }) as string,
-        description: t("quickLinksSection.guidesHint", { defaultValue: "Local tips for your trip" }) as string,
+        label: resolveTranslatedCopy(
+          t("quickLinksSection.guides", { defaultValue: FALLBACK_QUICK_LINKS.guidesLabel }),
+          FALLBACK_QUICK_LINKS.guidesLabel,
+        ),
+        description: resolveTranslatedCopy(
+          t("quickLinksSection.guidesHint", { defaultValue: FALLBACK_QUICK_LINKS.guidesDescription }),
+          FALLBACK_QUICK_LINKS.guidesDescription,
+        ),
         Icon: BookOpen,
-        href: "#guides",
+        href: `/${lang}/${translatePath("assistance", lang)}`,
       },
     ];
-  }, [t, ready]);
+  }, [lang, ready, t]);
 
   return (
     <Section as="section" padding="none" className="max-w-6xl px-6 py-6 sm:py-8 lg:py-10">

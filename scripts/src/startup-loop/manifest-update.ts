@@ -8,8 +8,8 @@
  * This module enforces the control-plane single-writer contract:
  * only this entry point may write baseline.manifest.json.
  *
- * @see docs/business-os/startup-loop/manifest-schema.md
- * @see docs/business-os/startup-loop/stage-result-schema.md
+ * @see docs/business-os/startup-loop/schemas/manifest-schema.md
+ * @see docs/business-os/startup-loop/schemas/stage-result-schema.md
  */
 
 import { promises as fs } from "fs";
@@ -324,7 +324,8 @@ export async function updateManifest(
     run_id: options.run_id,
     business: options.business,
     loop_spec_version: options.loop_spec_version,
-    status: "candidate",
+    // S4 is the merge-and-commit boundary.
+    status: "current",
     created_at: createdAt,
     updated_at: now,
     artifacts: sortKeys(artifacts),

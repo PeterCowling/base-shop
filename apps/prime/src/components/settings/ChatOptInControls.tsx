@@ -1,3 +1,4 @@
+/* eslint-disable ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 /**
  * ChatOptInControls.tsx
  *
@@ -16,7 +17,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MessageCircle } from 'lucide-react';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import { useGuestProfileMutator } from '../../hooks/mutator/useGuestProfileMutator';
 import type { GuestProfile } from '../../types/guestProfile';
@@ -40,7 +41,7 @@ export default function ChatOptInControls({ profile }: ChatOptInControlsProps) {
     try {
       await updateProfile({ chatOptIn: !profile.chatOptIn });
     } catch (error) {
-      logger.error('[ChatOptInControls] Failed to update chatOptIn:', error);
+      logger.error('[ChatOptInControls] Failed to update chatOptIn:', error); // eslint-disable-line ds/no-hardcoded-copy -- PRIME-001 technical log label, not UI copy
     } finally {
       setIsUpdating(false);
     }
@@ -69,7 +70,7 @@ export default function ChatOptInControls({ profile }: ChatOptInControlsProps) {
               checked={profile.chatOptIn}
               onChange={handleToggle}
               disabled={isUpdating}
-              className="h-5 w-5 rounded border-border text-primary focus:ring-primary/30 disabled:opacity-50"
+              className="h-5 w-5 rounded border-border text-primary focus-visible:ring-primary/30 disabled:opacity-50"
             />
           </label>
 

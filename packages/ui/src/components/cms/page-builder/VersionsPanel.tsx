@@ -145,7 +145,7 @@ export default function VersionsPanel({ shop, pageId, current, editor, onRestore
             </div>
             <div>
               <div className="text-sm font-medium mb-1">{t("cms.builder.versions.selected")}</div>
-              <div className="rounded border min-h-10">
+              <div className="rounded border min-h-11">
                 {selected ? (
                   <PreviewPane components={selected.components} locale="en" deviceId="desktop" onChange={() => {}} editor={selected.editor} />
                 ) : (

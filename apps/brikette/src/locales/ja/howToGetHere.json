@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "行き方の写真"
+  },
+  "loadingFallback": {
+    "intro": "ルート プランナーのコピーを読み込み中です。それまでは、次のルート ガイドをご利用ください。",
+    "routeLabelFallback": "ルート案内"
   }
 }

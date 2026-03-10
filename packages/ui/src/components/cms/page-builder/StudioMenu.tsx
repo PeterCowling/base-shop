@@ -23,29 +23,29 @@ export default function StudioMenu({ shop }: { shop?: string | null }) {
       </Tooltip>
       <PopoverContent align="start" className="w-64 text-sm" container={container}>
         <div className="flex flex-col gap-1">
-          <Link className="rounded px-2 py-1 hover:bg-muted min-h-10" href="/cms">{t("Dashboard")}</Link>
-          {shop && <Link className="rounded px-2 py-1 hover:bg-muted min-h-10" href={`/cms/shop/${shop}`}>{t("Site")}</Link>}
-          {shop && <Link className="rounded px-2 py-1 hover:bg-muted min-h-10" href={`/cms/shop/${shop}/sections`}>{t("Sections")}</Link>}
-          {shop && <Link className="rounded px-2 py-1 hover:bg-muted min-h-10" href={`/cms/shop/${shop}/settings`}>{t("Tools")}</Link>}
+          <Link className="rounded px-2 py-1 hover:bg-muted min-h-11" href="/cms">{t("Dashboard")}</Link>
+          {shop && <Link className="rounded px-2 py-1 hover:bg-muted min-h-11" href={`/cms/shop/${shop}`}>{t("Site")}</Link>}
+          {shop && <Link className="rounded px-2 py-1 hover:bg-muted min-h-11" href={`/cms/shop/${shop}/sections`}>{t("Sections")}</Link>}
+          {shop && <Link className="rounded px-2 py-1 hover:bg-muted min-h-11" href={`/cms/shop/${shop}/settings`}>{t("Tools")}</Link>}
           {shop && (
             <Link
-              className="rounded px-2 py-1 hover:bg-muted min-h-10"
+              className="rounded px-2 py-1 hover:bg-muted min-h-11"
               href={`/cms/shop/${shop}/marketing/email`}
             >
               {t("Email Campaigns")}
             </Link>
           )}
-          <button type="button" className="rounded px-2 py-1 text-start hover:bg-muted min-h-10 min-w-10" onClick={() => { try { window.dispatchEvent(new Event("pb:open-view")); } catch {} }}>{t("View…")}</button>
+          <button type="button" className="rounded px-2 py-1 text-start hover:bg-muted min-h-11 min-w-11" onClick={() => { try { window.dispatchEvent(new Event("pb:open-view")); } catch {} }}>{t("View…")}</button>
           <button
             type="button"
-            className="rounded px-2 py-1 text-start hover:bg-muted min-h-10 min-w-10"
+            className="rounded px-2 py-1 text-start hover:bg-muted min-h-11 min-w-11"
             onClick={() => { try { window.dispatchEvent(new Event("pb:open-design")); } catch {} }}
           >
             {t("Design…")}
           </button>
           <button
             type="button"
-            className="rounded px-2 py-1 text-start hover:bg-muted min-h-10 min-w-10"
+            className="rounded px-2 py-1 text-start hover:bg-muted min-h-11 min-w-11"
             onClick={() => { try { window.dispatchEvent(new Event("pb:open-breakpoints")); } catch {} }}
           >
             {t("Device Manager…")}

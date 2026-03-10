@@ -1,0 +1,70 @@
+import { describe, expect, it, jest } from "@jest/globals";
+
+jest.mock("next/link", () => ({
+  __esModule: true,
+  default: ({ href, children }: { href: string; children: unknown }) => (
+    <a href={href}>{children}</a>
+  ),
+}));
+
+function mockHomeData(options: {
+  isStale: boolean;
+  syncedAt?: string;
+}) {
+  jest.doMock("../../lib/demoData", () => ({
+    XA_PRODUCTS: [
+      {
+        id: "1",
+        slug: "studio-jacket",
+        title: "Studio Jacket",
+        createdAt: "2026-02-20T10:00:00.000Z",
+        media: [{ type: "image", url: "/image.jpg", altText: "Studio jacket" }],
+      },
+    ],
+  }));
+  jest.doMock("../../lib/catalogRuntimeMeta", () => ({
+    XA_CATALOG_RUNTIME_FRESHNESS: {
+      isStale: options.isStale,
+      syncedAt: options.syncedAt ?? null,
+      ageMs: null,
+    },
+    XA_CATALOG_RUNTIME_META: {
+      syncedAt: options.syncedAt ?? null,
+      source: "contract",
+    },
+  }));
+  jest.doMock("../../components/XaProductCard", () => ({
+    XaProductCard: ({ product }: { product: { title: string } }) => (
+      <article data-testid="xa-product-card">{product.title}</article>
+    ),
+  }));
+}
+
+describe("xa-b home page freshness banner", () => {
+  it("renders stale banner when runtime catalog is stale", async () => {
+    jest.resetModules();
+    mockHomeData({
+      isStale: true,
+      syncedAt: "2026-03-01T10:00:00.000Z",
+    });
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { default: HomePage } = await import("../page");
+    const html = renderToStaticMarkup(<HomePage />);
+
+    expect(html).toContain("Catalog data may be stale.");
+    expect(html).not.toContain("2026-03-01T10:00:00.000Z");
+  });
+
+  it("does not render stale banner when runtime catalog is fresh", async () => {
+    jest.resetModules();
+    mockHomeData({
+      isStale: false,
+      syncedAt: "2026-03-01T10:00:00.000Z",
+    });
+    const { renderToStaticMarkup } = await import("react-dom/server");
+    const { default: HomePage } = await import("../page");
+    const html = renderToStaticMarkup(<HomePage />);
+
+    expect(html).not.toContain("Catalog data may be stale.");
+  });
+});

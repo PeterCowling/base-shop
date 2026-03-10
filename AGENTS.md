@@ -16,6 +16,7 @@ This is the universal runbook for AI agents (Claude, Codex, etc.) working in Bas
 This applies to all decisions: architecture, implementation, testing, error handling, naming, documentation. When faced with a choice between "quick fix" and "proper solution," choose the proper solution.
 
 Examples of prohibited shortcuts:
+
 - Suppressing type errors instead of fixing root causes
 - Skipping tests to ship faster
 - Copy-pasting code instead of extracting shared logic
@@ -37,20 +38,16 @@ When you identify that the "right" solution requires significantly more work, ex
 | Build | `pnpm build` |
 | Typecheck | `pnpm --filter <pkg> typecheck` |
 | Lint | `pnpm --filter <pkg> lint` |
-| Test (single file) | `pnpm --filter <pkg> test -- path/to/file.test.ts` |
-| Test (pattern) | `pnpm --filter <pkg> test -- --testPathPattern="name"` |
+| Test feedback | `gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')` |
 | Validate all (local default) | `bash scripts/validate-changes.sh` |
-| Validate all (+ targeted local tests) | `VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh` |
 
 ## Validation Gate (Before Every Commit)
 
 ```bash
 # Scope validation to changed packages only (preferred default).
 pnpm --filter <pkg> typecheck && pnpm --filter <pkg> lint
-# Default local gate (policy + typecheck + lint):
+# Default local gate (policy + typecheck + lint — no test execution):
 bash scripts/validate-changes.sh
-# Optional: include targeted local tests; CI remains source of truth for test gating.
-VALIDATE_INCLUDE_TESTS=1 bash scripts/validate-changes.sh
 ```
 
 If multiple packages changed, run typecheck + lint for each affected package.
@@ -66,25 +63,31 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
 
 - **No worktrees.** Base-Shop runs with a single checkout to avoid cross-worktree confusion.
 - **Single writer.** With 1 human + up to 10 agents, only one process may write at a time.
-  - Start an “integrator shell” before editing, committing, or pushing: `scripts/agents/integrator-shell.sh -- codex`
-  - For long read-only discovery/planning/dry-run sessions, use guard-only mode (no writer lock): `scripts/agents/integrator-shell.sh --read-only -- codex`
-  - Or open a locked shell: `scripts/agents/with-writer-lock.sh`
+  - Use the integrator wrapper before editing, committing, or pushing; choose the narrowest mode that fits the work.
+  - For long read-only discovery/planning/dry-run sessions, use guard-only mode (no writer lock): `scripts/agents/integrator-shell.sh --read-only -- <agent-cli>` (for example `codex` or `claude`)
+  - For long-lived agent CLI sessions that will edit files directly in the shared checkout, opt in explicitly: `scripts/agents/integrator-shell.sh --agent-write-session -- <agent-cli>`
+  - For the low-level wrapper, the same rule applies: `scripts/agents/with-writer-lock.sh --agent-write-session -- <agent-cli>` for rare locked agent sessions, or `scripts/agents/with-writer-lock.sh --interactive-shell` for a rare locked interactive shell
   - If you are running in a non-interactive environment (no TTY; e.g. CI or API-driven agents), you cannot open a subshell. Wrap each write-related command instead:
     - `scripts/agents/integrator-shell.sh -- <command> [args...]`
     - Wait mode is FIFO queue-ordered (first-come, first-served). In non-interactive agent runs, waiting is **poll-based** (**30s** checks) and **hard-stops after 5 minutes** with an error so the agent can report the issue (stale locks are auto-cleaned only when PID is dead on this host).
+  - **Lock scope rule:** hold the writer lock only while the shared checkout may still be mutated by actual git writes or other serialized repo mutations that must not overlap (for example staged commits, queue-state writes, a short-lived temporary tree mutation that must be restored before another writer enters, or an explicit `--agent-write-session` that edits files directly in the shared checkout).
+  - **Do not hold the lock across long non-writing work** once the required repo mutation is complete. `pnpm build`, validation reads, artifact verification, and `wrangler` deploys should run outside the lock after the artifact or write phase is prepared.
+  - **Read-only default:** discovery, planning, audits, dry-runs, and other non-writing shell work should stay in `scripts/agents/integrator-shell.sh --read-only -- <command>` unless they are about to perform a serialized repo mutation.
   - Check status: `scripts/git/writer-lock.sh status` (token is redacted by default)
   - Show full token (human only): `scripts/git/writer-lock.sh status --print-token`
   - If lock handling blocks your git write:
     - `scripts/git/writer-lock.sh status`
     - `scripts/git/writer-lock.sh clean-stale` (only if holder PID is dead on this host)
     - `scripts/agents/with-writer-lock.sh -- <git-write-command>` (or `scripts/agents/integrator-shell.sh -- <command>`)
+    - If the holder PID is live and running a long external command (for example a deploy), have the owner end that command cleanly and let the lock release normally. Do not force-release a live holder first.
   - Agents must not use `SKIP_WRITER_LOCK=1`; fix lock state instead
-- **Branch flow:** `dev` → `staging` → `main`
+- **Branch flow:** `dev` → `main` (release path), with `staging` available separately for user testing
   - Commit locally on `dev`
-  - Ship `dev` to staging (PR + auto-merge): `scripts/git/ship-to-staging.sh`
-  - Promote `staging` to production (PR + auto-merge): `scripts/git/promote-to-main.sh`
+  - Ship any working branch to `staging` for user testing (PR + auto-merge): `scripts/git/ship-to-staging.sh`
+  - Promote `dev` to production via `main` (PR + auto-merge): `scripts/git/promote-to-main.sh`
 - **Commit every 30 minutes** or after completing any significant change
 - **Push `dev` every 2 hours** (or every 3 commits) — GitHub is your backup
+- **Codex attribution:** include `Co-Authored-By: Codex <noreply@openai.com>` in Codex-authored commits
 
 **Destructive / history-rewriting commands (agents: never):**
 - `git reset --hard`, `git clean -fd`, `git push --force` / `-f`
@@ -92,19 +95,65 @@ Only run full-repo `pnpm typecheck` / `pnpm lint` when:
 
 If one of these commands seems necessary, STOP and ask for help. Full guide: [docs/git-safety.md](docs/git-safety.md)
 
+## Agent Failure Message Contract
+
+Every agent-facing failure message in this repo must satisfy this contract. Apply it to all guard scripts, hook outputs, and structured preflight errors.
+
+### Required fields (minimum contract)
+
+| Field | Description |
+|---|---|
+| **Failure reason** | What failed, in plain terms — not just an error code. |
+| **Retry posture** | One of: `retry-allowed` (after the stated fix), `retry-forbidden` (this path will not work), or `escalate-now` (stop local retries, surface to operator). |
+| **Exact next step** | One concrete command or action — not a category or description. Must be a command the agent can run or a file the agent can read. |
+| **Anti-retry list** | Explicit list of commands, flags, or env-var bypasses that will NOT work for this failure. Prevents adjacent retry loops. |
+| **Escalation/stop condition** | When to stop local retries and surface to the operator. Required even in `retry-allowed` cases (e.g. "after 2 retries with same error"). |
+
+### Message classes
+
+Three classes are required. Each must appear in guard/preflight output with all five fields satisfied.
+
+**hard-block** — policy denies the command. Retry with the same command is forbidden regardless of state.
+- Retry posture: `retry-forbidden`
+- Exact next step: the only valid alternative command
+- Anti-retry list: the exact flags/invocations that triggered the block
+- Reference implementation: `.claude/hooks/pre-tool-use-git-safety.sh` → `block_with_guidance()` function (lines 57–72)
+
+**recoverable-fallback** — a prerequisite is missing or the wrong path was used. Retry is allowed after the stated fix.
+- Retry posture: `retry-allowed`
+- Exact next step: the command that acquires/restores the prerequisite
+- Anti-retry list: env-var bypasses and flags that skip enforcement
+- Reference implementation: `scripts/git-hooks/require-writer-lock.sh` → lock-not-held block (lines 38–57)
+
+**fail-closed-infrastructure** — internal or environment failure (missing binary, missing policy file, eval error). Retry may be possible after repair, but local retry without repair is not the right next step.
+- Retry posture: `escalate-now` (or `retry-allowed` only if the repair command is stated)
+- Exact next step: the command to repair the broken environment
+- Anti-retry list: retrying the original command without repair
+- Current weak examples (first-wave targets): `scripts/agent-bin/git` lines 32–46 (`ERROR: unable to locate real git binary`, `ERROR: missing evaluator`, `ERROR: missing policy`) — these lack exact next-step guidance and are being hardened by this plan.
+
+### First-wave adoption checklist
+
+These surfaces must be brought into full contract compliance. All five required fields must be satisfied for every failure path.
+
+**Wave 1 (shell/guard surfaces — TASK-02):**
+- `scripts/agent-bin/git` — infrastructure failure paths (missing binary, evaluator, policy)
+- `.claude/hooks/pre-tool-use-git-safety.sh` — already largely compliant; verify all rule branches satisfy anti-retry list
+- `scripts/git-hooks/require-writer-lock.sh` — already largely compliant; verify escalation/stop condition is explicit
+
+**Wave 2 (structured preflight/tool-guidance — TASK-03):**
+- `scripts/src/startup-loop/mcp-preflight.ts` → `printHumanResult()` — add per-code recovery guidance for each `MCP_PREFLIGHT_*` failure
+- `docs/ide/agent-language-intelligence-guide.md` — already largely compliant; verify fallback and "do not retry until" conditions are explicit for all paths
+
+### Compliance rule
+
+A surface is compliant when: for every distinct failure path it handles, an agent reading the output can identify all five fields without any additional discovery. If any field is absent or requires inference, the surface is non-compliant.
+
 ## Testing Rules
 
-- **Default local gate is lint + typecheck:** `bash scripts/validate-changes.sh` skips targeted tests unless explicitly opted in
-- **GitHub Actions is source of truth for required tests:** rely on CI/merge-gate for test pass/fail gating
-- **When running tests locally, always use targeted scope** — single file or pattern
-- **Never run `pnpm test` unfiltered** — spawns too many workers
-- **Limit workers:** `--maxWorkers=2` for broader runs
-- **Check for orphans first:** `ps aux | grep jest | grep -v grep`
-- **Governed timeout defaults:** `BASESHOP_TEST_TIMEOUT_SEC=600` (wall-clock, `0` disables) and `BASESHOP_TEST_ADMISSION_TIMEOUT_SEC=300` (admission polling, `0` disables)
-- **Governed cleanup semantics:** on forced stop, runner kills child processes and parent with `SIGTERM`, then escalates to `SIGKILL` after 5s if still alive; timeout exits with code `124`
-- **Telemetry fields for runaway prevention:** `timeout_killed` and `kill_escalation` (`none|sigterm|sigkill`) in `.cache/test-governor/events.jsonl`
-- **Jest defaults:** shared preset enforces `forceExit: true` and `detectOpenHandles: true`
-- **ESM vs CJS in Jest:** If a test or imported file fails with ESM parsing errors (for example, `Cannot use import statement outside a module` or `import.meta` issues), rerun that test with `JEST_FORCE_CJS=1` to force the CommonJS preset and avoid ESM transform gaps.
+- **Tests run in CI only.** Do not run Jest or e2e commands locally. Push to `dev` and watch CI for results.
+- **CI feedback:** `gh run watch $(gh run list --limit 1 --json databaseId -q '.[0].databaseId')`
+- **GitHub Actions is source of truth for required tests:** rely on CI/merge-gate for test pass/fail gating.
+- **ESM vs CJS in Jest (CI debugging):** If CI fails with ESM parsing errors (`Cannot use import statement outside a module` or `import.meta` issues), add `JEST_FORCE_CJS=1` to the CI command to force the CommonJS preset.
 
 Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 
@@ -119,105 +168,23 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 
 **Feature workflow**: `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build` → `/lp-do-replan` (when tasks are below execution threshold, blocked, or scope shifts)
 
-**Idea generation**: `/idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-do-fact-find docs. Feeds into the feature workflow above.
-- Full pipeline: `/idea-generate` → `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build`
+**Idea generation**: `/lp-do-idea-generate` — Cabinet Secretary sweep that generates, filters, prioritizes business ideas and seeds lp-do-fact-find docs. Feeds into the feature workflow above.
+
+- Full pipeline: `/lp-do-idea-generate` → `/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build`
 - Spec: `.claude/skills/idea-generate/SKILL.md`
 - Stances: `--stance=improve-data` (default) or `--stance=grow-business` (activates traction mode for market-facing L1-L2 businesses)
 - Shared personas: `.claude/skills/_shared/cabinet/` (filter, prioritizer, dossier template, lens files)
 
 Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
+For diagnostic and utility tool skills, see the index at `.claude/skills/tools-index.md`.
 For a short entrypoint into the workflow (progressive disclosure), see `docs/agents/feature-workflow-guide.md`.
 
 ## Skills
 
-A skill is a local instruction set stored in `.claude/skills/<name>/SKILL.md`.
-
-### Available skills
-
-All skills listed here use the same name in both Claude Code and Codex. The canonical file is `.claude/skills/<name>/SKILL.md`.
-
-- `biz-product-brief`: Produce a concise product brief artifact that is decision-ready, scoped, and measurable. (file: `.claude/skills/biz-product-brief/SKILL.md`)
-- `biz-spreadsheet`: Define an operations spreadsheet deliverable with schema, formula logic, ownership, and a starter CSV template. (file: `.claude/skills/biz-spreadsheet/SKILL.md`)
-- `biz-update-people`: Update People doc based on code attribution, reflection learnings, and role changes. (file: `.claude/skills/biz-update-people/SKILL.md`)
-- `biz-update-plan`: Update Business Plan based on scan evidence, card reflections, and strategic decisions. (file: `.claude/skills/biz-update-plan/SKILL.md`)
-- `draft-email`: Draft a decision-ready outbound or response email artifact with channel-safe structure, clear CTA, and review checklist. (file: `.claude/skills/draft-email/SKILL.md`)
-- `draft-marketing`: Create channel-specific marketing asset drafts with clear positioning, CTA, and measurable campaign intent. (file: `.claude/skills/draft-marketing/SKILL.md`)
-- `draft-outreach`: Draft sales and partnership outreach scripts (DMs, cold emails, follow-ups, objection handlers) for 1:1 relationship building. (file: `.claude/skills/draft-outreach/SKILL.md`)
-- `draft-whatsapp`: Draft WhatsApp-ready business messages with concise structure, clear CTA, and compliance-aware guardrails. (file: `.claude/skills/draft-whatsapp/SKILL.md`)
-- `tools-ui-frontend-design`: Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. (file: `.claude/skills/frontend-design/SKILL.md`)
-- `guide-translate`: Propagate updated EN guide content to all locales using parallel translation. Requires EN audit to be clean first. (file: `.claude/skills/guide-translate/SKILL.md`)
-- `idea-forecast`: Build a 90-day startup forecast and proposed goals from a business idea and product specs using web research. (file: `.claude/skills/idea-forecast/SKILL.md`)
-- `idea-generate`: Radical business growth process auditor. Cabinet Secretary orchestrates multi-lens composite idea generation with attribution, confidence gating, and priority ranking. (file: `.claude/skills/idea-generate/SKILL.md`)
-- `idea-scan`: Scan docs/business-os/ for changes and create business-relevant ideas from findings. (file: `.claude/skills/idea-scan/SKILL.md`)
-- `lp-assessment-bootstrap`: Bootstrap a brand-dossier.user.md for a business entering the startup loop. Used at S0/S1 when the doc is missing, or at DO before /lp-design-spec. (file: `.claude/skills/lp-assessment-bootstrap/SKILL.md`)
-- `lp-baseline-merge`: Join startup-loop fan-out outputs (S2B + S3 + S6B) into a single baseline snapshot and draft manifest. (file: `.claude/skills/lp-baseline-merge/SKILL.md`)
-- `lp-bos-sync`: S5B BOS sync stage worker. Persists prioritized baseline outputs to Business OS (D1) via agent API, then emits S5B stage-result.json. (file: `.claude/skills/lp-bos-sync/SKILL.md`)
-- `lp-channels`: Startup channel strategy + GTM skill (S6B). Analyzes channel-customer fit, selects 2-3 launch channels with rationale, and produces a 30-day GTM timeline. (file: `.claude/skills/lp-channels/SKILL.md`)
-- `lp-design-qa`: Audit a built UI against the design spec and design system for visual consistency, accessibility, responsive behavior, and token compliance. (file: `.claude/skills/lp-design-qa/SKILL.md`)
-- `lp-design-spec`: Translate a feature requirement into a concrete frontend design specification mapped to the design system, theme tokens, and per-business brand language. (file: `.claude/skills/lp-design-spec/SKILL.md`)
-- `lp-design-system`: Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values. (file: `.claude/skills/lp-design-system/SKILL.md`)
-- `lp-do-assessment-01-problem-statement`: Problem framing for new startups (ASSESSMENT-01). Produces a falsifiable problem statement artifact before entering ASSESSMENT intake. Upstream of lp-do-assessment-02-solution-profiling. (file: `.claude/skills/lp-do-assessment-01-problem-statement/SKILL.md`)
-- `lp-do-assessment-02-solution-profiling`: Solution space scanning for new startups (ASSESSMENT-02). Produces a structured deep-research-ready prompt covering 5-10 candidate product-type options with feasibility flags. (file: `.claude/skills/lp-do-assessment-02-solution-profiling/SKILL.md`)
-- `lp-do-assessment-03-solution-selection`: Solution selection gate for new startups (ASSESSMENT-03). Builds an evaluation matrix and produces a shortlist of 1-2 options with elimination rationale. Explicit kill gate. (file: `.claude/skills/lp-do-assessment-03-solution-selection/SKILL.md`)
-- `lp-do-assessment-04-candidate-names`: Full naming pipeline orchestrator (ASSESSMENT-04). Runs four parts: spec → generate 250 candidates → RDAP batch check → rank shortlist. (file: `.claude/skills/lp-do-assessment-04-candidate-names/SKILL.md`)
-- `lp-do-assessment-05-name-selection`: Produce a naming-generation-spec.md for a business. Part 1 of a 4-part naming pipeline (spec → generate → RDAP batch check → rank). (file: `.claude/skills/lp-do-assessment-05-name-selection/SKILL.md`)
-- `lp-do-assessment-06-distribution-profiling`: Distribution profiling for new startups (ASSESSMENT-06). Elicits ≥2 launch channels with cost/effort estimates and ICP fit rationale. (file: `.claude/skills/lp-do-assessment-06-distribution-profiling/SKILL.md`)
-- `lp-do-assessment-07-measurement-profiling`: Measurement profiling for new startups (ASSESSMENT-07). Elicits tracking setup, ≥2 key metrics, success thresholds, and data collection feasibility. (file: `.claude/skills/lp-do-assessment-07-measurement-profiling/SKILL.md`)
-- `lp-do-assessment-08-current-situation`: Current situation for new startups (ASSESSMENT-08). Elicits operator-direct knowledge: launch surface, inventory readiness, commercial architecture, and pre-locked channel decisions. (file: `.claude/skills/lp-do-assessment-08-current-situation/SKILL.md`)
-- `lp-do-assessment-10-brand-profiling`: Brand profiling for new startups (ASSESSMENT-10). Confirms business name, defines audience, personality, and voice & tone. Upstream of lp-do-assessment-11-brand-identity. (file: `.claude/skills/lp-do-assessment-10-brand-profiling/SKILL.md`)
-- `lp-do-assessment-11-brand-identity`: Visual brand identity for new startups (ASSESSMENT-11). Produces brand-dossier with colour palette, typography, imagery direction, and token overrides. (file: `.claude/skills/lp-do-assessment-11-brand-identity/SKILL.md`)
-- `lp-do-assessment-12-promote`: Brand dossier promotion gate (ASSESSMENT-12). Validates completeness of a Draft brand dossier and promotes to Active with operator confirmation. (file: `.claude/skills/lp-do-assessment-12-promote/SKILL.md`)
-- `lp-do-build`: Thin build orchestrator. Executes one runnable task per cycle from an approved plan using canonical gates, track-specific executors, and shared ops utilities. (file: `.claude/skills/lp-do-build/SKILL.md`)
-- `lp-do-critique`: Hardnosed critic for lp-do-fact-find, lp-do-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing. (file: `.claude/skills/lp-do-critique/SKILL.md`)
-- `lp-do-fact-find`: Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits planning or briefing artifacts with a shared schema. (file: `.claude/skills/lp-do-fact-find/SKILL.md`)
-- `lp-do-factcheck`: Verify the accuracy of statements in markdown documents by auditing the actual repository state. Directly fix inaccuracies in-place rather than producing a separate report. (file: `.claude/skills/lp-do-factcheck/SKILL.md`)
-- `lp-do-plan`: Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules and optionally hands off to /lp-do-build when explicit auto-build intent is present. (file: `.claude/skills/lp-do-plan/SKILL.md`)
-- `lp-do-replan`: Thin orchestrator for resolving low-confidence plan tasks with evidence, explicit precursor tasks, stable task IDs, and checkpoint-aware reassessment. (file: `.claude/skills/lp-do-replan/SKILL.md`)
-- `lp-experiment`: Startup experiment design and weekly readout for the S8/S10 build-measure-decide loop. (file: `.claude/skills/lp-experiment/SKILL.md`)
-- `lp-forecast`: S3 startup 90-day forecaster — build P10/P50/P90 scenario bands from zero operational data. (file: `.claude/skills/lp-forecast/SKILL.md`)
-- `lp-guide-audit`: Run SEO audit and iteratively fix all issues for English guide content only. No translation. (file: `.claude/skills/lp-guide-audit/SKILL.md`)
-- `lp-guide-improve`: Main entry point for guide improvement — interactive workflow selection for audit, translation, or both. (file: `.claude/skills/lp-guide-improve/SKILL.md`)
-- `lp-launch-qa`: Pre-launch quality assurance gate for startup loop (S9B). Validates conversion flows, SEO technical readiness, performance budget, and legal compliance before a site goes live. (file: `.claude/skills/lp-launch-qa/SKILL.md`)
-- `lp-measure`: Bootstrap measurement infrastructure for a startup before or just after website launch. (file: `.claude/skills/lp-measure/SKILL.md`)
-- `lp-offer`: Startup offer design skill (S2B). Consolidates ICP, positioning, pricing, and offer design into one artifact with 6 sections. (file: `.claude/skills/lp-offer/SKILL.md`)
-- `lp-onboarding-audit`: Audit an app's onboarding flow against the "Onboarding Done Right" checklist. Produces a planning-ready brief. (file: `.claude/skills/lp-onboarding-audit/SKILL.md`)
-- `lp-other-products`: Produce a deep research prompt for adjacent product range exploration covering customer JTBD, product candidate set, prioritisation rubric, and 90-day MVP plan. (file: `.claude/skills/lp-other-products/SKILL.md`)
-- `lp-prioritize`: S5 startup go-item ranking — score and select top 2-3 items to pursue. (file: `.claude/skills/lp-prioritize/SKILL.md`)
-- `lp-readiness`: Startup preflight gate (S1). Lightweight readiness check before entering the offer-building stage. (file: `.claude/skills/lp-readiness/SKILL.md`)
-- `lp-refactor`: Refactor React components for better maintainability, performance, or patterns. Covers hook extraction, component splitting, type safety, memoization, and composition. (file: `.claude/skills/lp-refactor/SKILL.md`)
-- `lp-seo`: S6B phased SEO strategy skill — keyword research, content clustering, SERP analysis, technical audit, and snippet optimization for any business. (file: `.claude/skills/lp-seo/SKILL.md`)
-- `lp-do-sequence`: Topologically sort plan tasks into correct implementation order, preserve stable task IDs by default, and add explicit dependency/blocker metadata. (file: `.claude/skills/lp-do-sequence/SKILL.md`)
-- `lp-signal-review`: Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles and emits a Signal Review artifact with ranked Finding Briefs. (file: `.claude/skills/lp-signal-review/SKILL.md`)
-- `lp-site-upgrade`: Build website-upgrade strategy in three layers: platform capability baseline, per-business upgrade brief, and lp-do-fact-find handoff packet. (file: `.claude/skills/lp-site-upgrade/SKILL.md`)
-- `lp-visual`: Generate or enhance HTML documentation with polished visual diagrams (Mermaid flowcharts, state machines, sequence diagrams, Chart.js dashboards). (file: `.claude/skills/lp-visual/SKILL.md`)
-- `lp-weekly`: S10 weekly orchestration wrapper. Coordinates the full weekly decision, audit/CI, measurement compilation, and experiment lane flows into one deterministic sequence. (file: `.claude/skills/lp-weekly/SKILL.md`)
-- `meta-loop-efficiency`: Weekly startup-loop skill efficiency audit. Scans lp-* + startup-loop + draft-outreach skills with deterministic heuristics and emits a ranked opportunity artifact. (file: `.claude/skills/meta-loop-efficiency/SKILL.md`)
-- `meta-reflect`: Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only — closes the feedback loop directly by updating existing files. (file: `.claude/skills/meta-reflect/SKILL.md`)
-- `meta-user-test`: Run a repeatable two-layer site audit: full sitemap JS-off coverage for complete issue inventory, then focused JS-on flow checks for hydration/booking UX. (file: `.claude/skills/meta-user-test/SKILL.md`)
-- `ops-git-recover`: Recover from confusing git states. Use when git status is unexpected, commits seem lost, you have a detached HEAD, or merge conflicts are overwhelming. (file: `.claude/skills/ops-git-recover/SKILL.md`)
-- `ops-inbox`: Process pending Brikette customer emails and generate draft responses using MCP tools. (file: `.claude/skills/ops-inbox/SKILL.md`)
-- `ops-ship`: Ship local changes to origin/dev with hard-enforced git safety policy, integrator-shell lock/guard flow, validate-changes gating, and CI watch-fix loops until required checks pass. (file: `.claude/skills/ops-ship/SKILL.md`)
-- `review-plan-status`: Report on the status of incomplete plans — how many tasks remain in each. Optionally lp-do-factcheck plans before reporting. (file: `.claude/skills/review-plan-status/SKILL.md`)
-- `startup-loop`: Chat command wrapper for operating Startup Loop runs. Supports /startup-loop start|status|submit|advance with strict stage gating, prompt handoff, and Business OS sync checks. (file: `.claude/skills/startup-loop/SKILL.md`)
-
-### Design & Visual routing
-
-When the user's request involves building or modifying UI:
-1. Load `tools-ui-frontend-design` for aesthetic direction grounded in the design system
-2. Reference `lp-design-system` for token quick-ref during implementation
-3. After significant UI work, suggest `/lp-visual` to document the feature visually
-
-When the user's request involves documentation or diagrams:
-1. Load `lp-visual` for diagram/chart creation
-2. If the doc is for a specific business, derive palette from the brand dossier (see `references/css-variables.md` Brand-Derived Palettes)
-3. Reference `lp-design-system` for consistent color language
-
-### How to use `lp-*` skills
-
-- Trigger rule: if a user asks for a specific `lp-*` skill (for example `/lp-do-plan`) or the task clearly matches one above, load that skill file and follow it.
-- Progressive loading: read only the needed sections first; load referenced files on-demand.
-- Path resolution: resolve relative paths from the skill directory before trying alternatives.
-- Reuse over rewrite: prefer referenced templates/scripts/assets shipped with the skill.
+Skills live in `.claude/skills/<name>/SKILL.md` (Claude Code auto-discovers; Codex discovers via `.agents/skills/` mirror).
+Discover all skills: `scripts/agents/list-skills` or Codex `/skills`.
+For tool/utility skill index: `.claude/skills/tools-index.md`.
+For workflow entrypoint: `docs/agents/feature-workflow-guide.md`.
 
 ## Plan Confidence Policy
 
@@ -324,7 +291,7 @@ If any required section above is missing, the instructions are incomplete.
 - **Completed plans** keep `Status: Complete`; they may remain in place or be moved to `docs/plans/archive/` as storage policy, while keeping `Status: Complete`.
 - **Superseded plans** live in `docs/historical/plans/` (or the domain’s historical directory).
 - **When superseding a plan (v2, rewrites, etc.)**
-  - Prefer keeping the *canonical* plan path stable (create the new plan under the original name in `docs/plans/`).
+  - Prefer keeping the _canonical_ plan path stable (create the new plan under the original name in `docs/plans/`).
   - Move the prior plan to `docs/historical/plans/` and update its header to `Status: Superseded`.
   - Add a forward pointer in the superseded plan header: `Superseded-by: <path-to-new-plan>`.
   - If you must disambiguate filenames, append a date (preferred) like `-superseded-YYYY-MM-DD` rather than adding `-v2` to the current plan.
@@ -351,8 +318,8 @@ Schema: [docs/AGENTS.docs.md](docs/AGENTS.docs.md)
 ## Pull Requests & CI
 
 - PRs are pipeline artifacts:
-  - `dev` → `staging` is shipped via PR + auto-merge (`scripts/git/ship-to-staging.sh`).
-  - `staging` → `main` is promoted via PR + auto-merge (`scripts/git/promote-to-main.sh`).
+  - `dev` → `main` is shipped via PR + auto-merge (`scripts/git/promote-to-main.sh`).
+  - `staging` is an optional user-testing branch shipped separately via PR + auto-merge (`scripts/git/ship-to-staging.sh`).
 - Keep PR green and mergeable — fix CI failures promptly
 - **Never merge directly to `main`** — always use PR workflow
 - All CI checks must pass before auto-merge
@@ -373,12 +340,14 @@ Base-Shop supports multiple agents working concurrently. The writer lock system 
 - **Normal operation:** Pull the latest changes with `git fetch origin && git pull --ff-only origin dev` before starting work
 
 When to STOP and ask:
+
 - Git state is internally inconsistent (conflicts, detached HEAD, corrupt objects)
 - You're asked to perform work that conflicts with visible uncommitted changes
 - Merge conflicts appear that you cannot safely resolve
-- Branch structure doesn't match expected flow (`dev -> staging -> main`)
+- Branch structure doesn't match expected flow (`dev -> main`, with optional branch -> `staging` user-test PRs)
 
 When to proceed normally:
+
 - Files exist that you didn't create (other agents' work)
 - Recent commits from other agents on `dev`
 - Untracked files outside your work scope
@@ -386,6 +355,7 @@ When to proceed normally:
 - Files deleted, moved, or renamed by another agent that you were **not** working on
 
 Prompting policy for shared worktrees:
+
 - Do **not** pause to ask for confirmation solely because unrelated/untracked files appeared.
 - Do **not** pause to ask for confirmation because files you were **not** working on were deleted or moved by another agent. Stay calm and proceed.
 - Continue by default and keep your commit scope limited to files required for the current task.
@@ -416,7 +386,7 @@ After completing significant work, consider capturing learnings to improve futur
 - Discovered gaps in documentation or skills
 
 **How to reflect:**
-1. Use `/meta-reflect` (or read `.claude/skills/meta-reflect/SKILL.md`)
+1. Use `/tools-meta-reflect` (or read `.claude/skills/tools-meta-reflect/SKILL.md`)
 2. Follow the skill workflow: identify friction, classify by layer, propose atomic changes to existing docs/skills
 3. All improvements go into existing target files — no separate learnings store
 

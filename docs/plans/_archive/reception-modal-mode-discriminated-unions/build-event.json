@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-modal-mode-discriminated-unions-2026-03-09",
+  "feature_slug": "reception-modal-mode-discriminated-unions",
+  "emitted_at": "2026-03-09T12:00:00.000Z",
+  "why": "Arrays of independent boolean flags for mutually exclusive state create 2^N theoretical states for an N-state reality, require manual enforcement of mutual exclusivity, and inflate component prop interfaces. The pattern is present in 4 components and already cascades into 27-prop `CheckinsTableView`.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Each modal/mode state in reception uses a single discriminated union state variable. Illegal state combinations are impossible by construction. `CheckinsTableView` prop count is reduced via a grouped mode-state prop (from 3 separate boolean props to 1 union-typed prop).",
+    "source": "auto"
+  }
+}

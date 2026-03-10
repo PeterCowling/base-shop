@@ -69,21 +69,21 @@ describe("ProductCard price", () => {
   it("omits price when sku.price is undefined", () => {
     const sku = { ...baseSku, price: undefined as any };
     const { container } = render(<ProductCard sku={sku} />);
-    expect(container.querySelector(".font-semibold.text-gray-900")).toBeNull();
+    expect(container.querySelector(".font-semibold.text-foreground")).toBeNull();
     expect(formatPriceMock).not.toHaveBeenCalled();
   });
 
   it("omits price when sku.price is null", () => {
     const sku = { ...baseSku, price: null as any };
     const { container } = render(<ProductCard sku={sku} />);
-    expect(container.querySelector(".font-semibold.text-gray-900")).toBeNull();
+    expect(container.querySelector(".font-semibold.text-foreground")).toBeNull();
     expect(formatPriceMock).not.toHaveBeenCalled();
   });
 
   it("renders price when sku.price is 0", () => {
     const sku = { ...baseSku, price: 0 };
     const { container } = render(<ProductCard sku={sku} />);
-    const priceEl = container.querySelector(".font-semibold.text-gray-900");
+    const priceEl = container.querySelector(".font-semibold.text-foreground");
     expect(priceEl).toBeInTheDocument();
     expect(priceEl).toHaveTextContent("0 USD");
     expect(formatPriceMock).toHaveBeenCalledWith(0, "USD");
@@ -156,4 +156,3 @@ describe("Price", () => {
     expect(formatPriceMock).toHaveBeenCalledWith(25, "EUR");
   });
 });
-

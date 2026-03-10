@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
 
+import ContentStickyCta from "@/components/cta/ContentStickyCta";
 import ArticleStructuredData from "@/components/seo/ArticleStructuredData";
 import BreadcrumbStructuredData, { type BreadcrumbList } from "@/components/seo/BreadcrumbStructuredData";
 import HowToJsonLd from "@/components/seo/HowToJsonLd";
@@ -219,6 +220,9 @@ export default function HowToGetHereContent({
           {howToSteps ? <HowToJsonLd lang={lang} url={canonicalUrl} steps={howToSteps} /> : null}
         </div>
       </Section>
+
+      {/* eslint-disable-next-line ds/no-hardcoded-copy -- BRIK-2145 prop value (enum), not UI text */}
+      <ContentStickyCta lang={lang} ctaLocation="how_to_get_here" />
     </Fragment>
   );
 }

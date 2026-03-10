@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "Hostel Brkette",
     "reserve": "Book nu"
   },
   "intro": {
@@ -24,10 +24,14 @@
     "reload": "Genindlæs siden"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
-    "twitterHandle": "@brikette"
+    "twitterCard": "summary _ large _ image",
+    "twitterHandle": "@ brikette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS skal definere mindst én assistance slug"
+  },
+  "stickyCta": {
+    "directHeadline": "Lås vores bedste tilgængelige pris fast på under to minutter.",
+    "directSubcopy": "Undgå tredjepartsgebyrer og få prioriteret hjælp fra vores team i Positano."
   }
 }

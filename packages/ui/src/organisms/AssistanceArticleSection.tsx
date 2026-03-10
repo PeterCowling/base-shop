@@ -25,7 +25,7 @@ const ExternalLink = memo(({ children, ...rest }: ExternalLinkProps): JSX.Elemen
     {...rest}
     target="_blank"
     rel="noopener noreferrer"
-    className="inline-block min-h-10 min-w-10 font-medium text-brand-primary decoration-brand-primary underline underline-offset-2 transition-colors hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-secondary dark:decoration-brand-secondary"
+    className="inline-block min-h-11 min-w-11 font-medium text-brand-primary decoration-brand-primary underline underline-offset-2 transition-colors hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary dark:text-brand-secondary dark:decoration-brand-secondary"
   >
     {children}
   </a>

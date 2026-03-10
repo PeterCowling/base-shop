@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import { AlertTriangle } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -10,15 +11,17 @@ interface DrawerLimitWarningProps {
 const DrawerLimitWarning: FC<DrawerLimitWarningProps> = ({ show, onLift }) => {
   if (!show) return null;
   return (
-    <div className="text-warning-main text-lg font-semibold flex items-center gap-2 self-end text-end sm:ms-auto">
-      Cash exceeds drawer limit.
+    <div className="bg-warning/10 border border-warning rounded-lg px-4 py-3 flex items-center gap-3">
+      <AlertTriangle className="text-warning shrink-0" size={20} aria-hidden="true" />
+      <p className="text-foreground text-sm font-semibold flex-1">
+        Cash exceeds the drawer limit — lift before closing the shift.
+      </p>
       <Button
         onClick={onLift}
-        className="underline text-info-main"
+        className="shrink-0 px-4 py-1.5 rounded-lg bg-warning text-primary-fg text-sm font-semibold hover:bg-warning/80 transition-colors"
       >
-        Lift
+        Lift Cash
       </Button>
-      as soon as possible, and before closing.
     </div>
   );
 };

@@ -42,7 +42,7 @@ export default function TestimonialSlider({
             type="button"
             onClick={prev}
             aria-label={t("Previous slide") as string}
-            className="absolute start-2 top-1/2 -translate-y-1/2 min-h-10 min-w-10 h-10 w-10 p-0 text-center leading-10"
+            className="absolute start-2 top-1/2 -translate-y-1/2 min-h-11 min-w-11 h-10 w-10 p-0 text-center leading-10"
           >
             {/* i18n-exempt: using chevron as icon, aria-label localized */}
             <span aria-hidden>‹</span>
@@ -51,7 +51,7 @@ export default function TestimonialSlider({
             type="button"
             onClick={next}
             aria-label={t("Next slide") as string}
-            className="absolute end-2 top-1/2 -translate-y-1/2 min-h-10 min-w-10 h-10 w-10 p-0 text-center leading-10"
+            className="absolute end-2 top-1/2 -translate-y-1/2 min-h-11 min-w-11 h-10 w-10 p-0 text-center leading-10"
           >
             {/* i18n-exempt: using chevron as icon, aria-label localized */}
             <span aria-hidden>›</span>

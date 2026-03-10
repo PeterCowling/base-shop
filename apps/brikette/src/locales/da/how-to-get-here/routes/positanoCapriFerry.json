@@ -9,7 +9,7 @@
     "description": "Følg disse trin for at gå fra Hostel Brikette til Positanos havn, købe færgebilletter og gå ombord mod Capri. Indeholder praktiske tids- og operatørtips."
   },
   "tip": {
-    "label": "Tip",
+    "label": "Råd",
     "intro": "Har du brug for alternativer, hvis havet er uroligt? Åbn",
     "linkLabel": "Oversigten Sådan kommer du hertil",
     "outro": "for alternative ruter."
@@ -23,7 +23,7 @@
     "linksSeparator": "·",
     "linksSuffix": ".",
     "links": {
-      "capriNet": "Capri.net – Capri ↔ Positano",
+      "capriNet": "Capri.net - Capri ↔ Positano",
       "positanoCom": "Positano.com (samlet køreplan)"
     }
   },

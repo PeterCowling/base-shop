@@ -25,8 +25,8 @@ jest.mock("../../../hooks/data/useSafeKeycardCount", () => ({
   useSafeKeycardCount: () => ({ count: 0, updateCount }),
 }));
 
-jest.mock("../../../hooks/client/till/useTillShiftActions", () => ({
-  useTillShiftActions: () => ({ returnKeycardsToSafe }),
+jest.mock("../../../hooks/client/till/TillShiftProvider", () => ({
+  useTillShiftContext: () => ({ returnKeycardsToSafe }),
 }));
 
 jest.mock("../../../hooks/useKeycardTransfer", () => ({
@@ -410,7 +410,7 @@ describe("SafeManagement", () => {
   it("displays the current safe balance", () => {
     safeCounts = [...defaultSafeCounts];
     render(<SafeManagement />, { wrapper });
-    const balance = screen.getByText(/Safe Balance:/);
+    const balance = screen.getByText(/Safe Balance/i);
     expect(balance).toHaveTextContent("€50.00");
   });
 
@@ -919,7 +919,8 @@ describe("SafeManagement", () => {
     await waitFor(() =>
       expect(showToastMock).toHaveBeenCalledWith("boom", "error")
     );
-    expect(screen.getByText(/Safe Balance:/)).toHaveTextContent("€50.00");
+    const summary = screen.getByText(/Safe Balance/i).closest("section") ?? screen.getByText(/Safe Balance/i);
+    expect(summary).toHaveTextContent("€50.00");
     expect(screen.getByText("safeReset")).toBeInTheDocument();
   });
 

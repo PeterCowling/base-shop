@@ -1,5 +1,5 @@
 {
-  "slug": "apartment",
+  "slug": "Wohnung",
   "meta": {
     "title": "Apartment-Unterkunft im Hostel Brikette",
     "description": "Buche das private Apartment im Hostel Brikette: 2 Schlafzimmer, Küche, Meerblickbalkon, schnelles WLAN und Klimaanlage für bis zu 4 Gäste."
@@ -52,5 +52,115 @@
         "alt": "Straßen von Positano"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "Buchen Sie direkt und sparen",
+    "heading": "Bis zu 26% weniger als Booking.com",
+    "nr": {
+      "label": "Nicht erstattbar",
+      "saving": "26% sparen",
+      "detail": "Bester direkter Preis"
+    },
+    "flex": {
+      "label": "Flexibler Tarif",
+      "saving": "21% sparen",
+      "detail": "Kostenlose Stornierung"
+    }
+  },
+  "heroTagline": "Privatwohnung · Positano, Italien",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "Ist diese Wohnung richtig für Sie?",
+    "arrival": {
+      "label": "Ankunft",
+      "text": "Keine Straßentreppe von der Straße zum Wohnungseingang."
+    },
+    "inside": {
+      "label": "Innenausstattung",
+      "text": "Geteiltes Interieur mit Innentreppe zwischen Wohnbereich und Schlafzimmer."
+    },
+    "sleeping": {
+      "label": "Schlafen",
+      "text": "Schlafsofa unten; Doppelbett oben."
+    },
+    "sound": {
+      "label": "Ton",
+      "text": "Einige Straßen und Terrassen Ambiente; Terrasse ruhige Stunden von Mitternacht."
+    },
+    "bestFit": {
+      "label": "Beste Passform",
+      "text": "Ideal für Paare. Wenn jemand in Ihrer Gruppe lieber Treppen zu vermeiden, ist das Schlafsofa unten eine komfortable Alternative. Nicht für sehr leichte Schlafanzüge empfohlen."
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "Anreise auf Straßenebene",
+      "subtitle": "Keine Straßentreppe von der Straße zum Eingang",
+      "cta": "Mehr erfahren"
+    },
+    "privateStayCard": {
+      "title": "Privater Service",
+      "subtitle": "Mit optionaler Terrasse, Bar &amp; Frühstück nebenan",
+      "cta": "Mehr erfahren"
+    }
+  },
+  "checkAvailability": "Verfügbarkeit prüfen",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "Step-Free Ankunft in Positano — No Street Stairs",
+      "description": "Unsere Wohnung bietet einen stufenlosen Zugang von der Straße zum Eingang — selten im steilen Positano. Keine Treppe, kein Kampf mit Gepäck."
+    },
+    "heroTitle": "Schrittfreie Ankunft",
+    "heroSubtitle": "Keine Straßentreppe von der Straße zur Wohnung Eingang",
+    "heroBody": "In einer Stadt, die für Hunderte von Schritten berühmt ist, ist unsere Wohnung anders. Gehen Sie direkt von der Straße zur Haustür – keine Treppe, kein Kampf mit Gepäck oder Kinderwagen.",
+    "videoPlaceholder": "Street-to-door-Video kommt bald",
+    "clarification": "Der Wohnungseingang ist stufenlos von der Straße entfernt. Im Inneren befindet sich die Wohnung mit einer Innentreppe zwischen Wohnbereich und Schlafzimmer.",
+    "whatsappCta": "WhatsApp für schnelle Antworten",
+    "checkAvailability": "Verfügbarkeit prüfen"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Private Ferienwohnungen in Positano",
+      "description": "Eine private 85m2 Wohnung mit voller Küche, professionell verwaltet mit optionalem Zugang zu Terrasse, Frühstück und Bar nebenan."
+    },
+    "heroTitle": "Ihre private Wohnung in Positano",
+    "heroSubtitle": "Professional mit Gastfreundschaft-Qualität Unterstützung neben Tür",
+    "sections": {
+      "privacy": {
+        "title": "Vollständige Unabhängigkeit",
+        "body": "Eine 85qm Wohnung, die ganz Ihnen gehört. Volle Küche, Waschmaschine und Trockner, zwei Badezimmer, und Platz zum Ausbreiten. Keine geteilten Räume, kein Check-in-Desk — nur Ihre eigene Haustür."
+      },
+      "support": {
+        "title": "Professionelle Unterstützung bei Bedarf",
+        "body": "Verwaltet von einem erfahrenen Gastfreundschaft Team direkt nebenan. Brauchen Sie Restaurantempfehlungen, Hilfe mit Anweisungen oder Hilfe mit irgendetwas? Professionelle Unterstützung ist nur einen kurzen Spaziergang entfernt."
+      },
+      "amenities": {
+        "title": "Optionale Extras nebenan",
+        "body": "Wenn Sie sie wollen, stehen Ihnen nebenan eine Terrasse mit Meerblick, ein Frühstück und eine Bar zur Verfügung. Genießen Sie sie auf Ihrem Zeitplan, oder überspringen Sie sie ganz — die Wahl ist Ihr."
+      }
+    },
+    "whatsappCta": "WhatsApp für schnelle Antworten",
+    "checkAvailability": "Verfügbarkeit prüfen"
+  },
+  "book": {
+    "meta": {
+      "title": "Buchen Sie unser Positano Apartment",
+      "description": "Überprüfen Sie die Verfügbarkeit und buchen Sie unsere Privatwohnung in Positano. Stufenlose Ankunft, volle Küche, Schlafplätze 4."
+    },
+    "heroTitle": "Buchen Sie Ihren Aufenthalt",
+    "heroSubtitle": "Privatwohnung in Positano",
+    "dateLabel": "Termine auswählen",
+    "checkinLabel": "Anreise",
+    "checkoutLabel": "Abreise",
+    "rateNonRefundable": "Nicht rückerstattungsfähig",
+    "rateFlexible": "Flexibel (kostenlose Stornierung)",
+    "checkAvailability": "Verfügbarkeit prüfen",
+    "orBookingCom": "Oder buchen Sie bei Booking.com",
+    "whatsappCta": "WhatsApp für schnelle Antworten",
+    "backLink": "Passwort vergessen? ← Zurück zu"
   }
 }

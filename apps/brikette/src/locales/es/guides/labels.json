@@ -17,7 +17,7 @@
   "faqsHeading": "Preguntas frecuentes",
   "costBreakdownTitle": "Desglose diario de gastos",
   "costBreakdownCurrencySuffix": "de {{currency}}",
-  "costBreakdownSliceLabel": "{{label}}: {{value}}%{{suffix}}",
+  "costBreakdownSliceLabel": "{{label}}_______________",
   "backLink": "Volver",
   "typicalCostsHeading": "Costos típicos",
   "essentialsHeading": "Esenciales",

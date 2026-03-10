@@ -2,6 +2,7 @@
 // Scenic day/night toggle — pill switch with animated sun/moon, clouds & stars.
 // Inspired by the Figma "Button 29" community toggle design.
 import { type CSSProperties,memo, useCallback } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useTranslations } from "@acme/i18n";
 
@@ -55,7 +56,7 @@ const SKY_DAY = "linear-gradient(180deg, var(--color-brand-primary) 0%, var(--co
 const SKY_NIGHT = "linear-gradient(180deg, var(--color-brand-bg) 0%, var(--color-brand-surface) 100%)";
 const SUN_COLOR = "var(--color-brand-secondary)";
 const SUN_GLOW = "0 0 8px 3px rgba(244,211,94,0.4)";
-const MOON_COLOR = "var(--color-brand-muted)";
+const MOON_COLOR = "hsl(var(--color-muted))";
 const MOON_GLOW = "0 0 6px 2px rgba(200,204,208,0.15)";
 const CRESCENT = "var(--color-brand-bg)";
 
@@ -96,19 +97,42 @@ function cloudStyle(c: Cloud, dark: boolean): CSSProperties {
 /* ── component ──────────────────────────────────────────────────────── */
 export const ThemeToggle = memo((): JSX.Element => {
   const { setTheme, isDark } = useTheme();
-  const t = useTranslations();
+  const tShared = useTranslations();
+  const { i18n, t: tApp } = useTranslation();
   const toggle = useCallback(
     () => setTheme(isDark ? "light" : "dark"),
     [isDark, setTheme],
+  );
+  const resolveLabel = useCallback(
+    (key: string): string => {
+      const sharedValue = tShared(key);
+      if (typeof sharedValue === "string" && sharedValue.trim() && sharedValue !== key) {
+        return sharedValue;
+      }
+
+      const activeLang = (i18n.resolvedLanguage || i18n.language || "").split("-")[0];
+      if (activeLang) {
+        const localizedResource = i18n.getResource(activeLang, "translation", key);
+        if (typeof localizedResource === "string" && localizedResource.trim()) {
+          return localizedResource;
+        }
+      }
+      const appValue = tApp(key);
+      if (typeof appValue === "string" && appValue.trim() && appValue !== key) {
+        return appValue;
+      }
+      return key;
+    },
+    [i18n, tApp, tShared],
   );
 
   return (
     <button
       type="button"
       onClick={toggle}
-      title={isDark ? t("themeToggle.switchToLight") : t("themeToggle.switchToDark")}
-      aria-label={isDark ? t("themeToggle.enableLight") : t("themeToggle.enableDark")}
-      className="scenic-toggle relative inline-flex shrink-0 cursor-pointer items-center rounded-full border-0 p-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-secondary"
+      title={isDark ? resolveLabel("themeToggle.switchToLight") : resolveLabel("themeToggle.switchToDark")}
+      aria-label={isDark ? resolveLabel("themeToggle.enableLight") : resolveLabel("themeToggle.enableDark")}
+      className="scenic-toggle relative inline-flex shrink-0 cursor-pointer items-center rounded-full border-0 p-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-secondary min-h-11 min-w-11"
       style={{
         width: W,
         height: H,
@@ -135,14 +159,14 @@ export const ThemeToggle = memo((): JSX.Element => {
         aria-hidden="true"
         style={{
           position: "absolute",
-          top: PAD,
+          top: "50%",
           left: PAD,
           width: THUMB,
           height: THUMB,
           borderRadius: "50%",
           background: isDark ? MOON_COLOR : SUN_COLOR,
           boxShadow: isDark ? MOON_GLOW : SUN_GLOW,
-          transform: `translateX(${isDark ? TRAVEL : 0}px)`,
+          transform: `translateX(${isDark ? TRAVEL : 0}px) translateY(-50%)`,
           transition: `all ${MS} ${EASE}`,
           zIndex: 10,
           overflow: "hidden",

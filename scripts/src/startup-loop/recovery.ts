@@ -10,8 +10,8 @@
  * - Recovery actions are recorded as explicit events in events.jsonl.
  * - Decision tree is deterministic: same state → same recommendation.
  *
- * @see docs/business-os/startup-loop/event-state-schema.md
- * @see docs/business-os/startup-loop/autonomy-policy.md
+ * @see docs/business-os/startup-loop/schemas/event-state-schema.md
+ * @see docs/business-os/startup-loop/specifications/autonomy-policy.md
  */
 
 import type { DerivedState,RunEvent } from "./derive-state";

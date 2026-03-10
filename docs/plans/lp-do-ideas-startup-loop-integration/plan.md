@@ -164,7 +164,7 @@ This plan delivers `lp-do-ideas` as a trial-first capability that can generate a
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/ideas/`, `[readonly] .claude/skills/lp-do-fact-find/SKILL.md`, `[readonly] docs/business-os/startup-loop/loop-output-contracts.md`
+- **Affects:** `docs/business-os/startup-loop/ideas/`, `[readonly] .claude/skills/lp-do-fact-find/SKILL.md`, `[readonly] docs/business-os/startup-loop/contracts/loop-output-contracts.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03, TASK-04, TASK-05
 - **Confidence:** 85%
@@ -185,7 +185,7 @@ This plan delivers `lp-do-ideas` as a trial-first capability that can generate a
 - **Planning validation (required for M/L):**
   - Checks run:
     - `rg -n "area_anchor|location_anchors|provisional_deliverable_family|lp-do-briefing" .claude/skills/lp-do-fact-find/SKILL.md`
-    - `rg -n "IDEAS|standing_pipeline|layer_a_pack_diff" docs/business-os/startup-loop/loop-spec.yaml`
+    - `rg -n "IDEAS|standing_pipeline|layer_a_pack_diff" docs/business-os/startup-loop/specifications/loop-spec.yaml`
   - Validation artifacts:
     - `docs/plans/lp-do-ideas-startup-loop-integration/fact-find.md`
     - `.claude/skills/lp-do-fact-find/SKILL.md`
@@ -222,14 +222,14 @@ This plan delivers `lp-do-ideas` as a trial-first capability that can generate a
 - **Type:** IMPLEMENT
 - **Deliverable:**
   - `.claude/skills/lp-do-ideas/SKILL.md`
-  - `scripts/src/startup-loop/lp-do-ideas-trial.ts`
+  - `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`
   - `scripts/src/startup-loop/__tests__/lp-do-ideas-trial.test.ts`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Pending
-- **Affects:** `.claude/skills/lp-do-ideas/`, `scripts/src/startup-loop/`, `[readonly] scripts/src/startup-loop/map-artifact-delta-to-website-backlog.ts`
+- **Affects:** `.claude/skills/lp-do-ideas/`, `scripts/src/startup-loop/`, `[readonly] scripts/src/startup-loop/website/map-artifact-delta-to-website-backlog.ts`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-04, TASK-05
 - **Confidence:** 85%
@@ -249,8 +249,8 @@ This plan delivers `lp-do-ideas` as a trial-first capability that can generate a
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation (required for M/L):**
   - Checks run:
-    - `sed -n 1,220p scripts/src/startup-loop/map-artifact-delta-to-website-backlog.ts`
-    - `rg -n "standing_pipeline|layer_a_pack_diff" docs/business-os/startup-loop/loop-spec.yaml`
+    - `sed -n 1,220p scripts/src/startup-loop/website/map-artifact-delta-to-website-backlog.ts`
+    - `rg -n "standing_pipeline|layer_a_pack_diff" docs/business-os/startup-loop/specifications/loop-spec.yaml`
   - Validation artifacts:
     - Existing deterministic mapper implementation and loop spec evidence.
   - Unexpected findings:
@@ -273,7 +273,7 @@ This plan delivers `lp-do-ideas` as a trial-first capability that can generate a
 - **Notes / references:** revised fact-find findings FND-03/FND-04.
 - **Build evidence (2026-02-24):**
   - Red: no trial orchestrator existed; delta events had no path to dispatch.v1 packets.
-  - Green: three deliverables created — `.claude/skills/lp-do-ideas/SKILL.md`, `scripts/src/startup-loop/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-trial.test.ts`.
+  - Green: three deliverables created — `.claude/skills/lp-do-ideas/SKILL.md`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-trial.test.ts`.
   - Refactor: fixed `buildDispatchId` to use UTC methods (was local time, broke on UTC+1 runner). All 27 tests pass.
   - TC-01 ✓: fixture T1 event → exactly one dispatch packet, dispatch_id matches `^IDEA-DISPATCH-[0-9]{14}-[0-9]{4}$`, deterministic with fixed clock.
   - TC-02 ✓: same event replayed twice → 1 dispatch + 1 suppressed; different after_sha → new dispatch.
@@ -285,7 +285,7 @@ This plan delivers `lp-do-ideas` as a trial-first capability that can generate a
 ### TASK-04: Implement dispatch routing adapter to fact-find or briefing
 - **Type:** IMPLEMENT
 - **Deliverable:**
-  - `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts`
+  - `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts`
   - `scripts/src/startup-loop/__tests__/lp-do-ideas-routing-adapter.test.ts`
   - `docs/business-os/startup-loop/ideas/lp-do-ideas-routing-matrix.md`
 - **Execution-Skill:** lp-do-build
@@ -337,7 +337,7 @@ This plan delivers `lp-do-ideas` as a trial-first capability that can generate a
 - **Notes / references:** fact-find trial handoff behavior.
 - **Build evidence (2026-02-24):**
   - Red: no routing adapter existed; dispatcher had no typed path to fact-find vs briefing intake payload shapes.
-  - Green: three deliverables created — `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-routing-adapter.test.ts`, `docs/business-os/startup-loop/ideas/lp-do-ideas-routing-matrix.md`.
+  - Green: three deliverables created — `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-routing-adapter.test.ts`, `docs/business-os/startup-loop/ideas/lp-do-ideas-routing-matrix.md`.
   - Refactor: casing normalisation applied to `status`/`recommended_route` before all comparisons; exhaustive guard at end of function as runtime safety net; error messages are actionable with recovery guidance.
   - TC-01 ✓: valid `fact_find_ready` packet → `RouteSuccess` with `FactFindInvocationPayload`; all intake fields mapped.
   - TC-02 ✓: empty `location_anchors` on fact-find path → `MISSING_LOCATION_ANCHORS` error.
@@ -349,7 +349,7 @@ This plan delivers `lp-do-ideas` as a trial-first capability that can generate a
 ### TASK-05: Implement idempotent trial queue and telemetry
 - **Type:** IMPLEMENT
 - **Deliverable:**
-  - `scripts/src/startup-loop/lp-do-ideas-trial-queue.ts`
+  - `scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts`
   - `scripts/src/startup-loop/__tests__/lp-do-ideas-trial-queue.test.ts`
   - `docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md`
 - **Execution-Skill:** lp-do-build
@@ -401,7 +401,7 @@ This plan delivers `lp-do-ideas` as a trial-first capability that can generate a
 - **Notes / references:** fact-find FND-04 and trial observability requirements.
 - **Build evidence (2026-02-24):**
   - Red: no queue existed; dispatches had no lifecycle, idempotency, or telemetry.
-  - Green: three deliverables created — `scripts/src/startup-loop/lp-do-ideas-trial-queue.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-trial-queue.test.ts`, `docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md`.
+  - Green: three deliverables created — `scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-trial-queue.test.ts`, `docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md`.
   - Refactor: monotonic state machine enforced via `ALLOWED_TRANSITIONS` map; `getTelemetry()` returns snapshot copy (caller mutation proof); `buildDedupeKeyFromPacket` mirrors `buildDedupeKey()` from orchestrator for consistency.
   - TC-01 ✓: same dispatch replayed → 1 processed entry, 1 `skipped_duplicate_dispatch_id` telemetry record; dedupe-key path also tested.
   - TC-02 ✓: missing `dispatch_id`, empty `evidence_refs`, `mode=live`, wrong `schema_version` all produce `queue_state=error` with diagnostic reason, no entry in queue.
@@ -459,7 +459,7 @@ This plan delivers `lp-do-ideas` as a trial-first capability that can generate a
 - **Reviewer:** startup-loop maintainers
 - **Approval-Evidence:** `docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-checklist.md` sign-off section
 - **Measurement-Readiness:** weekly review of trial telemetry in strategy ops cadence
-- **Affects:** `docs/business-os/startup-loop/ideas/`, `[readonly] docs/business-os/startup-loop/stage-operator-dictionary.yaml`, `[readonly] .claude/skills/startup-loop/modules/cmd-advance.md`
+- **Affects:** `docs/business-os/startup-loop/ideas/`, `[readonly] docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`, `[readonly] .claude/skills/startup-loop/modules/cmd-advance.md`
 - **Depends on:** TASK-06
 - **Blocks:** -
 - **Confidence:** 85%

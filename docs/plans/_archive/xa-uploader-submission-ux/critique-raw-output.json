@@ -1,0 +1,34 @@
+{
+  "mode": "file",
+  "rounds": [
+    {
+      "round": 1,
+      "score": 8,
+      "lp_score": 4.0,
+      "verdict": "needs_revision",
+      "findings": [
+        { "severity": "warning", "line": 248, "message": "Selector guidance internally inconsistent: instructed data-testid but testIdAttribute resolves data-cy." },
+        { "severity": "info", "line": 17, "message": "Supporting-Skills references non-existent skill create-ui-component." }
+      ]
+    },
+    {
+      "round": 2,
+      "score": 8,
+      "lp_score": 4.0,
+      "verdict": "needs_revision",
+      "findings": [
+        { "severity": "warning", "line": 91, "message": "Patterns section still said data-testid pattern for tests." },
+        { "severity": "info", "line": 248, "message": "Referenced 'Cypress e2e selectors' but xa-uploader uses Playwright." }
+      ]
+    },
+    {
+      "round": 3,
+      "score": 10,
+      "lp_score": 5.0,
+      "verdict": "approved",
+      "findings": []
+    }
+  ],
+  "final_lp_score": 5.0,
+  "final_verdict": "credible"
+}

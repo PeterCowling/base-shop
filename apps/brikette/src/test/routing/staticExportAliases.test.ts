@@ -8,7 +8,7 @@ describe("buildLocalizedStaticAliasPairs", () => {
 
     expect(pairs).toEqual(
       expect.arrayContaining([
-        { sourceBasePath: "/fr/chambres", targetBasePath: "/fr/rooms" },
+        { sourceBasePath: "/fr/chambres", targetBasePath: "/fr/dorms" },
         { sourceBasePath: "/fr/a-propos", targetBasePath: "/fr/about" },
         { sourceBasePath: "/fr/aide", targetBasePath: "/fr/assistance" },
         {

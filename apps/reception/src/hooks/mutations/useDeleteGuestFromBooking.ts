@@ -1,11 +1,14 @@
 // File: /src/hooks/mutations/useDeleteGuestFromBooking.ts
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { get, ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
+import { generateDateRange } from "../../utils/dateUtils";
 
 import useActivitiesMutations from "./useActivitiesMutations";
+import useMutationState from "./useMutationState";
 
 /**
  * Minimal type for the bookings node at:
@@ -21,6 +24,12 @@ interface BookingData {
   [occupantId: string]: object;
 }
 
+interface BookingOccupantInfo {
+  checkInDate?: string;
+  checkOutDate?: string;
+  roomNumbers?: string[];
+}
+
 /**
  * Type for the delete function arguments.
  */
@@ -32,10 +41,8 @@ interface DeleteArgs {
 /**
  * Return type for the useDeleteGuestFromBooking hook.
  */
-interface UseDeleteGuestFromBookingReturn {
+interface UseDeleteGuestFromBookingReturn extends MutationState<void> {
   deleteGuest: (args: DeleteArgs) => Promise<void>;
-  loading: boolean;
-  error: unknown;
 }
 
 /**
@@ -67,8 +74,7 @@ interface UseDeleteGuestFromBookingReturn {
  */
 export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingReturn {
   const database = useFirebaseDatabase();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   const { addActivity } = useActivitiesMutations();
 
@@ -78,14 +84,10 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
   const deleteGuest = useCallback(
     async ({ bookingRef, occupantId }: DeleteArgs): Promise<void> => {
       if (!database) {
-        setError("Database not initialized.");
-        return;
+        throw new Error("Database not initialized.");
       }
 
-      setLoading(true);
-      setError(null);
-
-      try {
+      await run(async () => {
         // Snapshot the booking to see if occupant is last occupant.
         const bookingSnapshot = await get(
           ref(database, `bookings/${bookingRef}`)
@@ -136,46 +138,100 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
 
         const occupantInfo = (bookingSnapshot.val() as BookingData | null)?.[
           occupantId
-        ] as
-          | {
-              checkInDate?: string;
-              checkOutDate?: string;
-              roomNumbers?: string[];
-            }
-          | undefined;
+        ] as BookingOccupantInfo | undefined;
 
         const checkInDate = occupantInfo?.checkInDate;
         const checkOutDate = occupantInfo?.checkOutDate;
         const roomNumbers = occupantInfo?.roomNumbers || [];
+        const stayDateKeys =
+          checkInDate && checkOutDate
+            ? generateDateRange(checkInDate, checkOutDate)
+            : [];
 
-        // Remove occupant's check-in entry directly via the specific date
-        if (checkInDate) {
-          updates[`checkins/${checkInDate}/${occupantId}`] = null;
+        // Prefer a bounded date-range cleanup when booking dates are available.
+        // Fall back to node scans if dates are missing to avoid orphaned references.
+        if (stayDateKeys.length > 0) {
+          for (const dateKey of stayDateKeys) {
+            updates[`checkins/${dateKey}/${occupantId}`] = null;
+            updates[`checkouts/${dateKey}/${occupantId}`] = null;
+          }
+        } else {
+          const checkInsSnapshot = await get(ref(database, "checkins"));
+          if (checkInsSnapshot.exists()) {
+            const checkInsData = checkInsSnapshot.val() as {
+              [dateKey: string]: { [occId: string]: unknown };
+            };
+            for (const dateKey of Object.keys(checkInsData)) {
+              if (checkInsData[dateKey][occupantId]) {
+                updates[`checkins/${dateKey}/${occupantId}`] = null;
+              }
+            }
+          }
+
+          const checkOutsSnapshot = await get(ref(database, "checkouts"));
+          if (checkOutsSnapshot.exists()) {
+            const checkOutsData = checkOutsSnapshot.val() as {
+              [dateKey: string]: { [occId: string]: unknown };
+            };
+            for (const dateKey of Object.keys(checkOutsData)) {
+              if (checkOutsData[dateKey][occupantId]) {
+                updates[`checkouts/${dateKey}/${occupantId}`] = null;
+              }
+            }
+          }
         }
 
-        // Remove occupant's check-out entry directly via the specific date
-        if (checkOutDate) {
-          updates[`checkouts/${checkOutDate}/${occupantId}`] = null;
-        }
-
-        // roomByDate -> occupantId may be in guestIds array for each booked room
-        if (checkInDate && roomNumbers.length) {
-          for (const roomNumber of roomNumbers) {
-            const roomIndex = `index_${roomNumber}`;
-            const rbdPath = `roomByDate/${checkInDate}/${roomIndex}/${roomNumber}`;
-            const snap = await get(ref(database, rbdPath));
-            if (snap.exists()) {
-              const data = snap.val() as { guestIds?: string[] };
-              if (
-                Array.isArray(data.guestIds) &&
-                data.guestIds.includes(occupantId)
-              ) {
-                const filteredIds = data.guestIds.filter(
-                  (id) => id !== occupantId
-                );
-                updates[`${rbdPath}/guestIds`] = filteredIds.length
-                  ? filteredIds
-                  : null;
+        // roomByDate -> occupantId may be in guestIds array.
+        if (stayDateKeys.length > 0 && roomNumbers.length > 0) {
+          for (const dateKey of stayDateKeys) {
+            for (const roomNumber of roomNumbers) {
+              const roomIndex = `index_${roomNumber}`;
+              const rbdPath = `roomByDate/${dateKey}/${roomIndex}/${roomNumber}`;
+              const snap = await get(ref(database, rbdPath));
+              if (snap.exists()) {
+                const data = snap.val() as { guestIds?: string[] };
+                if (
+                  Array.isArray(data.guestIds) &&
+                  data.guestIds.includes(occupantId)
+                ) {
+                  const filteredIds = data.guestIds.filter(
+                    (id) => id !== occupantId
+                  );
+                  updates[`${rbdPath}/guestIds`] = filteredIds.length
+                    ? filteredIds
+                    : null;
+                }
+              }
+            }
+          }
+        } else {
+          const roomByDateSnapshot = await get(ref(database, "roomByDate"));
+          if (roomByDateSnapshot.exists()) {
+            const roomByDateData = roomByDateSnapshot.val() as {
+              [dateKey: string]: {
+                [roomIndex: string]: {
+                  [bookingId: string]: { guestIds?: string[] };
+                };
+              };
+            };
+            for (const dateKey of Object.keys(roomByDateData)) {
+              const dateObj = roomByDateData[dateKey];
+              for (const roomIndex of Object.keys(dateObj)) {
+                const bookingIdsObj = dateObj[roomIndex];
+                for (const someBookingId of Object.keys(bookingIdsObj)) {
+                  const currentGuestIds = bookingIdsObj[someBookingId].guestIds;
+                  if (
+                    Array.isArray(currentGuestIds) &&
+                    currentGuestIds.includes(occupantId)
+                  ) {
+                    const filteredIds = currentGuestIds.filter(
+                      (id) => id !== occupantId
+                    );
+                    updates[
+                      `roomByDate/${dateKey}/${roomIndex}/${someBookingId}/guestIds`
+                    ] = filteredIds.length ? filteredIds : null;
+                  }
+                }
               }
             }
           }
@@ -190,15 +246,16 @@ export default function useDeleteGuestFromBooking(): UseDeleteGuestFromBookingRe
         await update(ref(database), updates);
 
         // Finally, log occupant deletion (activity code 25)
-        await addActivity(occupantId, 25);
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
+        const activityResult = await addActivity(occupantId, 25);
+        if (!activityResult.success) {
+          throw new Error(
+            activityResult.error ??
+              "Failed to log occupant deletion activity."
+          );
+        }
+      });
     },
-    [database, addActivity]
+    [database, addActivity, run]
   );
 
   return {

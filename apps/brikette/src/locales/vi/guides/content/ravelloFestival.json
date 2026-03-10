@@ -60,11 +60,11 @@
     }
   ],
   "eventSchema": {
-    "name": "Ravello Festival",
+    "name": "Lễ hội Rabello",
     "startDate": "2025-07-01",
     "endDate": "2025-09-15",
-    "locationName": "Ravello Festival venues",
-    "addressLocality": "Ravello",
+    "locationName": "Name",
+    "addressLocality": "Name",
     "description": "Bản dịch đang được chuẩn bị."
   }
 }

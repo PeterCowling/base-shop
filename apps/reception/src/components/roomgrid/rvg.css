@@ -2,16 +2,16 @@
 :root {
   --rvg-font-face: "sans-serif";
   --rvg-font-size: "14px";
-  --rvg-color-text: hsl(var(--color-foreground));
+  --rvg-color-text: hsl(var(--color-fg));
   --rvg-color-background: hsl(var(--color-bg));
-  --rvg-color-border: hsl(var(--color-border-1));
+  --rvg-color-border: hsl(var(--border-1, var(--color-fg) / 0.12));
   --rvg-color-free: transparent;
-  --rvg-color-awaiting: hsl(var(--color-info-light));
-  --rvg-color-confirmed: hsl(var(--color-info-main));
+  --rvg-color-awaiting: hsl(var(--color-info-soft, var(--color-info)));
+  --rvg-color-confirmed: hsl(var(--color-info));
   --rvg-color-inaccessible: hsl(var(--color-muted));
-  --rvg-color-today: hsl(var(--color-success-light));
-  --rvg-color-selected: hsl(var(--color-error-light));
-  --rvg-color-weekend: hsl(var(--color-surface-2));
+  --rvg-color-today: hsl(var(--color-primary) / 0.18);
+  --rvg-color-selected: hsl(var(--color-danger-soft, var(--color-danger) / 0.12));
+  --rvg-color-weekend: hsl(var(--surface-2, var(--color-bg)));
   --rvg-width-title: 50%;
   --rvg-width-info: 50%;
 }
@@ -23,7 +23,7 @@
   --rvg-color-awaiting: var(--reception-dark-accent-orange);
   --rvg-color-confirmed: var(--reception-dark-accent-green);
   --rvg-color-inaccessible: var(--reception-dark-surface);
-  --rvg-color-today: var(--reception-dark-accent-green);
+  --rvg-color-today: hsl(var(--color-primary) / 0.25);
   --rvg-color-selected: var(--reception-dark-accent-orange);
   --rvg-color-weekend: var(--reception-dark-bg);
 }

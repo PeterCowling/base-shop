@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "c9b93d18-ce83-4334-acf3-c44d8b2db32e",
+  "feature_slug": "reception-type-schema-deduplication",
+  "emitted_at": "2026-03-08T23:06:34.258Z",
+  "why": "A full-app simplify sweep flagged critical type duplication as a maintenance risk. Multiple definitions of DateOfBirth, Activity, and PayType could diverge silently.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Each duplicated type (DateOfBirth, Activity, PayType) is consolidated to a single canonical definition. All consumers import from that definition. Zod schemas use z.infer<> instead of parallel hand-written interfaces.",
+    "source": "auto"
+  }
+}

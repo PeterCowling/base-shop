@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-09T09:55:39.578Z",
+  "why": "Two wizard files contained 6+ copy-paste radio group blocks with identical structure — extracting a single RadioStep removes the duplication."
+}

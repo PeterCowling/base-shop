@@ -1,16 +1,21 @@
 import "@testing-library/jest-dom";
 
 import { useState } from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { CheckInRow } from "../../../../types/component/CheckinRow";
 import ReservationModal from "../BookingModal";
 
 const updateBookingDates = jest.fn();
+const showToastMock = jest.fn();
 jest.mock("../../../../hooks/mutations/useChangeBookingDatesMutator", () => ({
   __esModule: true,
   useBookingDatesMutator: () => ({ updateBookingDates, isLoading: false }),
+}));
+jest.mock("../../../../utils/toastUtils", () => ({
+  __esModule: true,
+  showToast: (...args: [string, string]) => showToastMock(...args),
 }));
 
 describe("ReservationModal", () => {
@@ -27,7 +32,11 @@ describe("ReservationModal", () => {
     activities: [],
   };
 
-  beforeEach(() => { updateBookingDates.mockClear(); });
+  beforeEach(() => {
+    updateBookingDates.mockClear();
+    showToastMock.mockClear();
+    updateBookingDates.mockResolvedValue(undefined);
+  });
 
   it("opens, edits fields, and cancels", async () => {
     function Wrapper() {
@@ -95,5 +104,41 @@ describe("ReservationModal", () => {
     expect(updateBookingDates).not.toHaveBeenCalled();
     expect(onClose).not.toHaveBeenCalled();
   });
-});
 
+  it("does not close when save fails and surfaces error toast", async () => {
+    const onClose = jest.fn();
+    updateBookingDates.mockRejectedValueOnce(new Error("booking write failed"));
+
+    render(<ReservationModal booking={booking} onClose={onClose} />);
+    await userEvent.clear(screen.getByLabelText(/check-out date/i));
+    await userEvent.type(screen.getByLabelText(/check-out date/i), "2024-01-02");
+    await userEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    await waitFor(() => {
+      expect(showToastMock).toHaveBeenCalledWith("booking write failed", "error");
+    });
+    expect(onClose).not.toHaveBeenCalled();
+    expect(
+      screen.getByRole("heading", { name: /booking details/i })
+    ).toBeInTheDocument();
+  });
+
+  it("blocks save when occupant id is missing", async () => {
+    const onClose = jest.fn();
+    render(
+      <ReservationModal
+        booking={{ ...booking, occupantId: "" }}
+        onClose={onClose}
+      />
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /save/i }));
+
+    expect(updateBookingDates).not.toHaveBeenCalled();
+    expect(showToastMock).toHaveBeenCalledWith(
+      "Missing occupant id. Save cancelled.",
+      "error"
+    );
+    expect(onClose).not.toHaveBeenCalled();
+  });
+});

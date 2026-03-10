@@ -12,8 +12,5 @@ export function useCreditSlipsData() {
 
   const creditSlips = useMemo(() => (data ? Object.values(data) : []), [data]);
 
-  return useMemo(
-    () => ({ creditSlips, loading, error }),
-    [creditSlips, loading, error]
-  );
+  return { creditSlips, loading, error };
 }

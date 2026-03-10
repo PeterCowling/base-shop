@@ -3,7 +3,11 @@
   "meta": {
     "title": "Spórolj 15%‑ot a szeptember 20. és október 31. közötti tartózkodásokon",
     "description": "Korlátozott idejű ajánlat: 15% kedvezmény közvetlen foglalásnál a szeptember 20. és október 31. közötti tartózkodásokra.",
-    "ogImageAlt": "Korlátozott idejű kedvezmény banner"
+    "ogImageAlt": "Korlátozott idejű kedvezmény banner",
+    "defaultTitle": "Deals & Offers - 124; Hostel Brikette",
+    "defaultDescription": "Közvetlen foglalás és szezonális ajánlatok a Brikette Hostel-ban.",
+    "activeTitle": "Mentés _ _ TOK0 _ _ a tartózkodások _ _ TOK1 _ _ to _ _ _ TOK2 _ _",
+    "activeDescription": "Automatikus kijelentkezés. Közvetlen foglalás."
   },
   "title": "Takaríts meg {{percent}}%‑ot a(z) {{from}} és {{to}} közötti tartózkodásokon",
   "promo": "Foglalj közvetlenül – a {{percent}}% kedvezmény automatikusan érvényes a fizetésnél.",
@@ -119,6 +123,6 @@
     "other": "ÁSZF megtekintése."
   },
   "robots": {
-    "expiredNoindex": "noindex,follow"
+    "expiredNoindex": "noindex, követ"
   }
 }

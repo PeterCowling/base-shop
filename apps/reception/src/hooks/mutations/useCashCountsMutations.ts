@@ -128,14 +128,32 @@ export function useCashCountsMutations() {
     [addCashCount]
   );
 
+  /**
+   * Convenience wrapper for adding an opening float entry.
+   */
+  const addOpeningFloatEntry = useCallback(
+    async (amount: number): Promise<void> => {
+      await addCashCount("openingFloat", 0, 0, amount);
+    },
+    [addCashCount]
+  );
+
   return useMemo(
     () => ({
       addCashCount,
       addFloatEntry,
+      addOpeningFloatEntry,
       addDeposit,
       addWithdrawal,
       addExchange,
     }),
-    [addCashCount, addFloatEntry, addDeposit, addWithdrawal, addExchange]
+    [
+      addCashCount,
+      addFloatEntry,
+      addOpeningFloatEntry,
+      addDeposit,
+      addWithdrawal,
+      addExchange,
+    ]
   );
 }

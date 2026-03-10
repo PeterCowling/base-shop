@@ -7,6 +7,7 @@
  * Canonical paths:
  *   DEP:                  docs/business-os/startup-baselines/<BIZ>/demand-evidence-pack.md
  *   Measurement verify:   docs/business-os/strategy/<BIZ>/*measurement-verification*.user.md
+ *                      OR docs/business-os/strategy/<BIZ>/<container>/*measurement-verification*.user.md
  *
  * Task: TASK-12 (startup-loop-marketing-sales-capability-gap-audit)
  */
@@ -157,15 +158,17 @@ export function lintStartupLoopArtifactPath(
 
   if (type === "measurement-verification") {
     // Must be at: docs/business-os/strategy/<BIZ>/*measurement-verification*.user.md
-    // (one BIZ path segment; filename may have date prefix or suffix)
+    //          OR docs/business-os/strategy/<BIZ>/<container>/*measurement-verification*.user.md
+    // (one BIZ path segment; optional container segment; filename may have date prefix or suffix)
     const canonicalPattern =
-      /docs\/business-os\/strategy\/[^/]+\/[^/]*measurement-verification[^/]*\.user\.md$/;
+      /docs\/business-os\/strategy\/[^/]+\/([^/]+\/)?[^/]*measurement-verification[^/]*\.user\.md$/;
     if (!canonicalPattern.test(normalized)) {
       issues.push({
         code: "measurement_verification_wrong_path",
         message:
           `measurement-verification doc must be at ` +
           `docs/business-os/strategy/<BIZ>/*measurement-verification*.user.md` +
+          ` or docs/business-os/strategy/<BIZ>/<container>/*measurement-verification*.user.md` +
           ` — found at: ${opts.filePath}`,
       });
     }

@@ -3,7 +3,11 @@
   "meta": {
     "title": "Ahorra un 15 % en estancias del 20 de septiembre al 31 de octubre",
     "description": "Oferta por tiempo limitado: ahorra un 15 % en reservas directas para estancias del 20 de septiembre al 31 de octubre.",
-    "ogImageAlt": "Banner de descuento por tiempo limitado"
+    "ogImageAlt": "Banner de descuento por tiempo limitado",
+    "defaultTitle": "Ofertas &amp; Ofertas Silencio Hostel Brikette",
+    "defaultDescription": "Tarifas de reserva directa y ofertas de temporada en Hostel Brikette.",
+    "activeTitle": "Ahorre {{percent}} en estancias de {{from}} a {{to}}",
+    "activeDescription": "Auto-aplicado en el checkout. Reservas directas solamente."
   },
   "title": "Ahorra un {{percent}} % en estancias del {{from}} al {{to}}",
   "promo": "Reserva directamente y tu descuento del {{percent}} % se aplica automáticamente al pagar.",

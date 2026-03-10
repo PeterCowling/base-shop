@@ -5,8 +5,6 @@ import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 import Accordion from "@acme/design-system/molecules/Accordion";
 import { Stack } from "@acme/design-system/primitives/Stack";
-import { FeedbackPreferenceCard } from "@acme/ui/components/organisms/FeedbackPreferenceCard";
-import { NewsletterSignupCard } from "@acme/ui/components/organisms/NewsletterSignupCard";
 
 import { XaInlineLink } from "../../components/XaInlineLink";
 import { siteConfig } from "../../lib/siteConfig";
@@ -38,7 +36,7 @@ const faqSections: FaqSection[] = [
             <p>{xaI18n.t("xaB.src.app.faqs.page.l37c16")}{brandName}{xaI18n.t("xaB.src.app.faqs.page.l38c100")}</p>
             <p>
               <XaInlineLink
-                href="/account/register"
+                href="/pages/how-to-shop"
                 className="text-foreground underline"
               >{xaI18n.t("xaB.src.app.faqs.page.l47c16")}</XaInlineLink>
               .
@@ -51,7 +49,7 @@ const faqSections: FaqSection[] = [
         content: (
           <p className="text-sm text-muted-foreground">
             Follow the{" "}
-            <Link href="/account/login" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l60c63")}</Link>{" "}{xaI18n.t("xaB.src.app.faqs.page.l62c25")}</p>
+            <Link href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l60c63")}</Link>{" "}{xaI18n.t("xaB.src.app.faqs.page.l62c25")}</p>
         ),
       },
       {
@@ -85,8 +83,8 @@ const faqSections: FaqSection[] = [
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
             <p>{xaI18n.t("xaB.src.app.faqs.page.l109c16")}{" "}
-              <Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l111c59")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l113c22")}{" "}
-              <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l115c81")}</XaInlineLink>
+              <Link href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l111c59")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l113c22")}{" "}
+              <XaInlineLink href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l115c81")}</XaInlineLink>
               .
             </p>
             <p>{xaI18n.t("xaB.src.app.faqs.page.l120c16")}{" "}
@@ -218,8 +216,8 @@ const faqSections: FaqSection[] = [
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
             <p>{xaI18n.t("xaB.src.app.faqs.page.l307c16")}</p>
-            <p>{xaI18n.t("xaB.src.app.faqs.page.l311c16")}<Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l313c62")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l313c89")}{" "}
-              <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l315c81")}</XaInlineLink>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l311c16")}<Link href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l313c62")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l313c89")}{" "}
+              <XaInlineLink href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l315c81")}</XaInlineLink>
               .
             </p>
           </div>
@@ -252,7 +250,7 @@ const faqSections: FaqSection[] = [
         question: xaI18n.t("xaB.src.app.faqs.page.l366c19"),
         content: (
           <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l368c56")}{" "}
-            <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l371c79")}</XaInlineLink>
+            <XaInlineLink href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l371c79")}</XaInlineLink>
             .
           </p>
         ),
@@ -271,8 +269,8 @@ const faqSections: FaqSection[] = [
               <XaInlineLink href="https://triple-a.io/" className="underline">
                 TripleA
               </XaInlineLink>{" "}{xaI18n.t("xaB.src.app.faqs.page.l395c35")}</p>
-            <p>{xaI18n.t("xaB.src.app.faqs.page.l399c16")}<Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l400c77")}</Link>{" "}{xaI18n.t("xaB.src.app.faqs.page.l400c109")}{" "}
-              <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l402c81")}</XaInlineLink>{xaI18n.t("xaB.src.app.faqs.page.l404c30")}{packagingItems}{xaI18n.t("xaB.src.app.faqs.page.l406c85")}{" "}
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l399c16")}<Link href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l400c77")}</Link>{" "}{xaI18n.t("xaB.src.app.faqs.page.l400c109")}{" "}
+              <XaInlineLink href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l402c81")}</XaInlineLink>{xaI18n.t("xaB.src.app.faqs.page.l404c30")}{packagingItems}{xaI18n.t("xaB.src.app.faqs.page.l406c85")}{" "}
               <XaInlineLink href="/pages/return-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l408c79")}</XaInlineLink>
               .
             </p>
@@ -283,8 +281,8 @@ const faqSections: FaqSection[] = [
         question: xaI18n.t("xaB.src.app.faqs.page.l417c19"),
         content: (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>{xaI18n.t("xaB.src.app.faqs.page.l420c16")}<Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l421c79")}</Link>{" "}{xaI18n.t("xaB.src.app.faqs.page.l421c111")}{" "}
-              <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l423c81")}</XaInlineLink>
+            <p>{xaI18n.t("xaB.src.app.faqs.page.l420c16")}<Link href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l421c79")}</Link>{" "}{xaI18n.t("xaB.src.app.faqs.page.l421c111")}{" "}
+              <XaInlineLink href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l423c81")}</XaInlineLink>
               .
             </p>
             <p>{xaI18n.t("xaB.src.app.faqs.page.l428c16")}</p>
@@ -305,8 +303,8 @@ const faqSections: FaqSection[] = [
             <div className="font-medium text-foreground">{xaI18n.t("xaB.src.app.faqs.page.l449c58")}</div>
             <ol className="list-decimal space-y-1 pl-5">
               <li>
-                Go to <Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l452c67")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l452c94")}{" "}
-                <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l454c83")}</XaInlineLink>
+                Go to <Link href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l452c67")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l452c94")}{" "}
+                <XaInlineLink href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l454c83")}</XaInlineLink>
                 .
               </li>
               <li>{xaI18n.t("xaB.src.app.faqs.page.l459c19")}</li>
@@ -360,7 +358,7 @@ const faqSections: FaqSection[] = [
         question: xaI18n.t("xaB.src.app.faqs.page.l531c19"),
         content: (
           <p className="text-sm text-muted-foreground">{xaI18n.t("xaB.src.app.faqs.page.l533c56")}{" "}
-            <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l536c79")}</XaInlineLink>
+            <XaInlineLink href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l536c79")}</XaInlineLink>
             .
           </p>
         ),
@@ -417,8 +415,8 @@ const faqSections: FaqSection[] = [
             <p>{xaI18n.t("xaB.src.app.faqs.page.l608c16")}</p>
             <ol className="list-decimal space-y-1 pl-5">
               <li>
-                Go to <Link href="/account" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l611c67")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l611c94")}{" "}
-                <XaInlineLink href="/account/trackingorder" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l612c83")}</XaInlineLink>
+                Go to <Link href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l611c67")}</Link>{xaI18n.t("xaB.src.app.faqs.page.l611c94")}{" "}
+                <XaInlineLink href="/service-center" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l612c83")}</XaInlineLink>
                 .
               </li>
               <li>{xaI18n.t("xaB.src.app.faqs.page.l617c19")}</li>
@@ -743,29 +741,6 @@ export default function FaqPage() {
         </Grid>
       </Section>
 
-      <Section padding="default">
-        <Grid columns={{ base: 1, md: 2 }} gap={6}>
-          <FeedbackPreferenceCard
-            id="newsletter"
-            className="p-5"
-            title="Tell us what you think"
-            question={xaI18n.t("xaB.src.app.faqs.page.l1035c22")}
-            options={[
-              { id: "yes", label: "Yes" },
-              { id: "not-really", label: "Not really" },
-            ]}
-          />
-          <NewsletterSignupCard
-            className="p-5"
-            title="Never miss a thing"
-            description={xaI18n.t("xaB.src.app.faqs.page.l1044c25")}
-            legalNote={
-              <>{xaI18n.t("xaB.src.app.faqs.page.l1046c17")}{" "}
-                <XaInlineLink href="/pages/privacy-policy" className="underline">{xaI18n.t("xaB.src.app.faqs.page.l1048c82")}</XaInlineLink>{xaI18n.t("xaB.src.app.faqs.page.l1050c32")}</>
-            }
-          />
-        </Grid>
-      </Section>
     </main>
   );
 }

@@ -1,0 +1,4 @@
+/* shadcn placeholder — no token injection.
+   This file satisfies the components.json tailwind.css requirement.
+   Token system is in packages/themes/base/tokens.css (imported per-app).
+   Do not add CSS variables here — they would conflict with the repo token system. */

@@ -1,6 +1,4 @@
 /* src/hook/data/usePreorder.ts */
-import { useMemo } from "react";
-
 import type { PreorderState } from "../../types/hooks/data/preorderData";
 
 import useFirebaseSubscription from "./useFirebaseSubscription";
@@ -15,7 +13,5 @@ export default function usePreorder() {
   const { data, loading, error } =
     useFirebaseSubscription<PreorderState>("preorder");
 
-  const preorder = useMemo(() => data ?? null, [data]);
-
-  return { preorder, loading, error };
+  return { preorder: data ?? null, loading, error };
 }

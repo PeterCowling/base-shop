@@ -1,0 +1,32 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "route": "codemoot",
+      "score": 7,
+      "lp_score": 3.5,
+      "verdict": "needs_revision",
+      "findings": [
+        { "severity": "warning", "line": "78", "message": "queryState described as only valid/absent, omitting invalid which RoomCard handles" },
+        { "severity": "warning", "line": "209", "message": "API contract { nr, flex, available } asserted without reconciling sibling-plan contract" },
+        { "severity": "info", "line": "263", "message": "rates.json stop-gap has no repeatable provenance/update path" },
+        { "severity": "info", "line": "188", "message": "ARI params flagged as assumptions but used in downstream contract language" }
+      ]
+    },
+    {
+      "round": 2,
+      "route": "inline",
+      "lp_score": 4.0,
+      "verdict": "credible",
+      "findings": [
+        { "severity": "Moderate", "target": "Open Questions", "message": "Date picker default question is agent-resolvable — resolved by reasoning in same session" },
+        { "severity": "Moderate", "target": "Remaining Assumptions", "message": "States specific API contract shape, contradicting Planning Constraints prohibition on defining contract" },
+        { "severity": "Minor", "target": "Planning Constraints", "message": "rates.json stop-gap has no owner/timeline" },
+        { "severity": "Minor", "target": "Planning Constraints", "message": "Feature-flag-off price display behavior unspecified" }
+      ],
+      "autofixes_applied": 5,
+      "issues_resolved_this_round": 2,
+      "issues_carried_open": 1
+    }
+  ]
+}

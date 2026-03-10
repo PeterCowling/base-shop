@@ -55,13 +55,16 @@ export default function ReceptionDashboard() {
   return (
     <div className="space-y-6">
       <header className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-foreground">
-            Reception Dashboard
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Today - {todayLabel}
-          </p>
+        <div className="flex items-center gap-3">
+          <div className="h-8 w-1 rounded-full bg-primary-main" aria-hidden="true" />
+          <div>
+            <h1 className="text-2xl font-heading font-semibold text-foreground">
+              Dashboard
+            </h1>
+            <p className="text-sm text-muted-foreground mt-0.5">
+              {todayLabel}
+            </p>
+          </div>
         </div>
         {user && (
           <div className="text-sm text-muted-foreground">
@@ -74,15 +77,15 @@ export default function ReceptionDashboard() {
       </header>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-foreground">
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
           Performance
         </h2>
         <DashboardMetrics transactions={transactions} loading={transactionsLoading} />
       </section>
 
       <section className="space-y-3">
-        <h2 className="text-lg font-semibold text-foreground">
-          Arrivals and Departures
+        <h2 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+          Arrivals & Departures
         </h2>
         <Grid cols={1} gap={4} className="md:grid-cols-3">
           <OwnerKpiTile

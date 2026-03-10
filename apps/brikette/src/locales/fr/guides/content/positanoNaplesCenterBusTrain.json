@@ -10,7 +10,7 @@
   },
   "callouts": {
     "cta": "Besoin de toutes les options de transport ? Ouvrez la %HOWTO:how-to-get-here|vue d'ensemble Comment venir% pour les itinéraires en ferry, taxi et combinés.",
-    "tip": "Vous voyagez en hiver ou en basse saison ? Consultez les %GUIDES:travelHelp|alertes de perturbations des transports% avant votre départ - les grèves et les changements d'horaires sont plus fréquents de novembre à mars."
+    "tip": "Vous voyagez en hiver ou en basse saison ? Consultez les %LINK:travelHelp|alertes de perturbations des transports% avant votre départ - les grèves et les changements d'horaires sont plus fréquents de novembre à mars."
   },
   "sections": [
     {
@@ -130,7 +130,7 @@
     {
       "id": "seasonal",
       "title": "Considérations saisonnières et horaires",
-      "body": "**Été (juin-septembre) :**\n- Les bus SITA circulent plus fréquemment mais se remplissent rapidement. Arrivez 10 à 15 minutes en avance.\n- Les trains Circumvesuviana sont bondés, surtout en milieu de journée et les week-ends.\n- La chaleur peut être inconfortable - le bus et le train ont une climatisation limitée.\n\n**Demi-saison (avril-mai, octobre) :**\n- Foules modérées ; arrivez 5 à 10 minutes en avance pour le bus.\n- Les températures agréables rendent le voyage plus confortable.\n\n**Hiver (novembre-mars) :**\n- SITA réduit la fréquence ; vérifiez les horaires à l'avance.\n- Les horaires de la Circumvesuviana peuvent changer en raison de la maintenance ou des grèves - vérifiez les heures de départ la veille du voyage.\n- Moins de touristes signifient un embarquement plus facile et plus d'espace, mais les services peuvent être moins fiables.\n\n**Grèves et perturbations :**\n- Les grèves des transports publics (sciopero) sont annoncées au moins 48 heures à l'avance. Consultez %GUIDES:travelHelp|notre page d'alertes de transport% ou demandez à la réception de l'auberge pour les dernières mises à jour.\n- Pendant les grèves, SITA et Circumvesuviana peuvent offrir des services réduits ou annuler complètement. Prévoyez un transport alternatif (taxi, transfert privé ou ferry si disponible) si une grève est prévue le jour de votre voyage."
+      "body": "**Été (juin-septembre) :**\n- Les bus SITA circulent plus fréquemment mais se remplissent rapidement. Arrivez 10 à 15 minutes en avance.\n- Les trains Circumvesuviana sont bondés, surtout en milieu de journée et les week-ends.\n- La chaleur peut être inconfortable - le bus et le train ont une climatisation limitée.\n\n**Demi-saison (avril-mai, octobre) :**\n- Foules modérées ; arrivez 5 à 10 minutes en avance pour le bus.\n- Les températures agréables rendent le voyage plus confortable.\n\n**Hiver (novembre-mars) :**\n- SITA réduit la fréquence ; vérifiez les horaires à l'avance.\n- Les horaires de la Circumvesuviana peuvent changer en raison de la maintenance ou des grèves - vérifiez les heures de départ la veille du voyage.\n- Moins de touristes signifient un embarquement plus facile et plus d'espace, mais les services peuvent être moins fiables.\n\n**Grèves et perturbations :**\n- Les grèves des transports publics (sciopero) sont annoncées au moins 48 heures à l'avance. Consultez %LINK:travelHelp|notre page d'alertes de transport% ou demandez à la réception de l'auberge pour les dernières mises à jour.\n- Pendant les grèves, SITA et Circumvesuviana peuvent offrir des services réduits ou annuler complètement. Prévoyez un transport alternatif (taxi, transfert privé ou ferry si disponible) si une grève est prévue le jour de votre voyage."
     },
     {
       "id": "alternatives",
@@ -168,7 +168,7 @@
     {
       "q": "Que dois-je faire s'il y a une grève des transports publics le jour de mon voyage ?",
       "a": [
-        "Les grèves (sciopero) sont annoncées au moins 48 heures à l'avance. Consultez la %GUIDES:travelHelp|page d'alertes de transport% ou demandez à la réception de l'auberge pour les mises à jour. Pendant les grèves, SITA et Circumvesuviana peuvent offrir des services réduits ou annuler complètement. Réservez un transfert privé ou un taxi en secours - si les ferries fonctionnent (avril-octobre), le %HOWTO:positanoNaplesCenterFerry|ferry Positano-Naples% est une alternative fiable."
+        "Les grèves (sciopero) sont annoncées au moins 48 heures à l'avance. Consultez la %LINK:travelHelp|page d'alertes de transport% ou demandez à la réception de l'auberge pour les mises à jour. Pendant les grèves, SITA et Circumvesuviana peuvent offrir des services réduits ou annuler complètement. Réservez un transfert privé ou un taxi en secours - si les ferries fonctionnent (avril-octobre), le %HOWTO:positanoNaplesCenterFerry|ferry Positano-Naples% est une alternative fiable."
       ]
     }
   ]

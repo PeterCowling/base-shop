@@ -17,7 +17,7 @@ const buildCityTaxTransactionMock = jest.fn(() => ({
   timestamp: "t",
 }));
 const saveCityTaxMock = jest.fn(async () => undefined);
-const addActivityMock = jest.fn(async () => undefined);
+const addActivityMock = jest.fn(async () => ({ success: true }));
 const addToAllTransactionsMock = jest.fn(async () => undefined);
 const showToastMock = jest.fn();
 
@@ -97,5 +97,23 @@ describe("CityTaxPaymentButton", () => {
     await waitFor(() => expect(saveCityTaxMock).toHaveBeenCalled());
     await waitFor(() => expect(addActivityMock).toHaveBeenCalled());
     await waitFor(() => expect(addToAllTransactionsMock).toHaveBeenCalled());
+  });
+
+  it("fails closed when activity write returns success:false", async () => {
+    addActivityMock.mockResolvedValueOnce({
+      success: false,
+      error: "activity failed",
+    });
+    render(<CityTaxPaymentButton booking={booking} />);
+
+    await userEvent.click(screen.getByTitle("Pay immediately with selected type"));
+
+    await waitFor(() =>
+      expect(showToastMock).toHaveBeenCalledWith(
+        "Error confirming city tax payment",
+        "error"
+      )
+    );
+    expect(addToAllTransactionsMock).not.toHaveBeenCalled();
   });
 });

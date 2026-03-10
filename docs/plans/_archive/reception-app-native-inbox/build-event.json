@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-app-native-inbox-2026-03-06",
+  "feature_slug": "reception-app-native-inbox",
+  "emitted_at": "2026-03-06T12:00:00.000Z",
+  "why": "The current Brikette email workflow is split between Gmail labels, local MCP tooling, and narrow reception-side draft routes. That is workable for ad hoc operator use, but it is not a clean staff-facing inbox. Because volume is low and the workflow is explicitly draft-first, there is now a realistic path to replace Gmail as the day-to-day UI without paying for an external help desk product, provided the hosted design avoids the current local-filesystem Gmail/auth assumptions.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "A planning-ready architecture exists for a reception-native inbox that admits only actionable emails, stores thread state in app-native records, supports draft-review-send flow through Gmail backend delivery, and fits the current Cloudflare-hosted setup without requiring attachments or Google admin features.",
+    "source": "operator"
+  }
+}

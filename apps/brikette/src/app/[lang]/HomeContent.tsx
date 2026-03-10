@@ -5,13 +5,14 @@
 import "swiper/css";
 import "swiper/css/navigation";
 
-import { Fragment, memo, useCallback, useEffect } from "react";
+import { Fragment, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 import CarouselSlides from "@acme/ui/organisms/CarouselSlides";
 import HeroSection from "@acme/ui/organisms/LandingHeroSection";
 import QuickLinksSection from "@acme/ui/organisms/QuickLinksSection";
+import type { RoomCardPrice } from "@acme/ui/types/roomCard";
 
 import BookingWidget from "@/components/landing/BookingWidget";
 import FaqStrip from "@/components/landing/FaqStrip";
@@ -23,44 +24,131 @@ import WhyStaySection from "@/components/landing/WhyStaySection";
 import AboutStructuredData from "@/components/seo/AboutStructuredData";
 import HomeStructuredData from "@/components/seo/HomeStructuredData";
 import SiteSearchStructuredData from "@/components/seo/SiteSearchStructuredData";
-import { type Room, roomsData } from "@/data/roomsData";
+import { type Room, websiteVisibleRoomsData } from "@/data/roomsData";
+import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityByCategory";
+import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
+import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { fireCtaClick, fireViewItemList } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
+import { type AppNamespaceBundles, primeAppI18nBundles } from "@/utils/primeAppI18nBundles";
 
 type Props = {
   lang: AppLanguage;
+  preloadedNamespaceBundles?: AppNamespaceBundles;
 };
 
-function HomeContent({ lang }: Props) {
+function HomeContent({ lang, preloadedNamespaceBundles }: Props) {
+  primeAppI18nBundles(lang, preloadedNamespaceBundles);
   const router = useRouter();
+  const [bookingQuery, setBookingQuery] = useState<{ checkIn: string; checkOut: string; pax: string }>({
+    checkIn: "",
+    checkOut: "",
+    pax: "1",
+  });
   usePagePreload({
     lang,
     namespaces: ["landingPage", "guides", "testimonials", "faq"],
     optionalNamespaces: ["_tokens", "roomsPage", "ratingsBar", "modals"],
   });
 
+  const buildBookHref = useCallback(() => {
+    const params = new URLSearchParams();
+    if (bookingQuery.checkIn) params.set("checkin", bookingQuery.checkIn);
+    if (bookingQuery.checkOut) params.set("checkout", bookingQuery.checkOut);
+    if (bookingQuery.pax) params.set("pax", bookingQuery.pax);
+    const queryString = params.toString();
+    return `${getBookPath(lang)}${queryString ? `?${queryString}` : ""}`;
+  }, [bookingQuery.checkIn, bookingQuery.checkOut, bookingQuery.pax, lang]);
+
+  const availabilityCheckin = bookingQuery.checkIn || getTodayIso();
+  const availabilityCheckout = bookingQuery.checkOut || getDatePlusTwoDays(availabilityCheckin);
+  const availabilityPax = bookingQuery.pax || "1";
+  const { rooms: availabilityRooms } = useAvailability({
+    checkin: availabilityCheckin,
+    checkout: availabilityCheckout,
+    pax: availabilityPax,
+  });
+
+  const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
+    if (!availabilityRooms.length) return undefined;
+    const prices: Record<string, RoomCardPrice> = {};
+    for (const room of websiteVisibleRoomsData) {
+      if (!room.octorateRoomCategory) continue;
+      const availabilityRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
+      if (!availabilityRoom) continue;
+      if (!availabilityRoom.available) {
+        prices[room.id] = { soldOut: true };
+      } else if (availabilityRoom.priceFrom !== null) {
+        prices[room.id] = {
+          formatted: `From €${availabilityRoom.priceFrom.toFixed(2)}`,
+          soldOut: false,
+        };
+      }
+    }
+    return Object.keys(prices).length > 0 ? prices : undefined;
+  }, [availabilityRooms]);
+
   const handleReserve = useCallback(() => {
     fireCtaClick({ ctaId: "hero_check_availability", ctaLocation: "home_hero" });
-    router.push(`/${lang}/book`);
-  }, [router, lang]);
+    router.push(buildBookHref());
+  }, [buildBookHref, router]);
+
+  const handleBookingDatesChange = useCallback(
+    ({ checkIn, checkOut, guests }: { checkIn: string; checkOut: string; guests: number }) => {
+      const pax = String(guests);
+      setBookingQuery((previous) => {
+        if (previous.checkIn === checkIn && previous.checkOut === checkOut && previous.pax === pax) {
+          return previous;
+        }
+        return { checkIn, checkOut, pax };
+      });
+    },
+    []
+  );
 
   // Handler for opening room rate CTA — navigates to /book (TASK-27 will add direct Octorate link)
   const handleOpenModalForRate = useCallback(
     (_room: Room, _rateType: "nonRefundable" | "refundable") => {
-      router.push(`/${lang}/book`);
+      router.push(buildBookHref());
     },
-    [router, lang]
+    [buildBookHref, router]
   );
 
   // Rooms data for carousel
-  const roomsForCarousel = roomsData.slice(0, 6);
+  const roomsForCarousel = websiteVisibleRoomsData.slice(0, 6);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const hydrated = hydrateBookingSearch(new URLSearchParams(window.location.search));
+    if (!hydrated.search) return;
+    setBookingQuery({
+      checkIn: hydrated.search.checkin,
+      checkOut: hydrated.search.checkout,
+      pax: String(hydrated.search.pax),
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!bookingQuery.checkIn || !bookingQuery.checkOut) return;
+    const timer = window.setTimeout(() => {
+      persistBookingSearch({
+        checkin: bookingQuery.checkIn,
+        checkout: bookingQuery.checkOut,
+        pax: parseInt(bookingQuery.pax, 10) || 1,
+      });
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [bookingQuery.checkIn, bookingQuery.checkOut, bookingQuery.pax]);
 
   useEffect(() => {
     fireViewItemList({
       itemListId: "home_rooms_carousel",
       rooms: roomsForCarousel,
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- BRIK-2145 fire-once on mount; roomsForCarousel is static (roomsData.slice of module-level constant)
   }, []);
 
   return (
@@ -77,7 +165,10 @@ function HomeContent({ lang }: Props) {
 
       {/* Booking Widget */}
       <Section padding="narrow">
-        <BookingWidget lang={lang} />
+        <BookingWidget
+          lang={lang}
+          onDatesChange={handleBookingDatesChange}
+        />
       </Section>
 
       {/* Intro */}
@@ -92,6 +183,7 @@ function HomeContent({ lang }: Props) {
       <CarouselSlides
         roomsData={roomsForCarousel}
         openModalForRate={handleOpenModalForRate}
+        roomPrices={roomPrices}
         lang={lang}
       />
 

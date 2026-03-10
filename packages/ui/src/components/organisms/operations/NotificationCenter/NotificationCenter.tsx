@@ -347,19 +347,19 @@ function NotificationItem({ notification, onDismiss }: NotificationItemProps) {
   }, [duration, onDismiss]);
 
   const icons: Record<NotificationType, React.ReactNode> = {
-    success: <CheckCircle className="h-5 w-5 text-green-500" />,
-    error: <XCircle className="h-5 w-5 text-red-500" />,
-    warning: <AlertTriangle className="h-5 w-5 text-yellow-500" />,
-    info: <Info className="h-5 w-5 text-blue-500" />,
-    loading: <Loader2 className="h-5 w-5 animate-spin text-blue-500" />,
+    success: <CheckCircle className="h-5 w-5 text-success-main" />,
+    error: <XCircle className="h-5 w-5 text-danger-fg" />,
+    warning: <AlertTriangle className="h-5 w-5 text-warning-main" />,
+    info: <Info className="h-5 w-5 text-info-main" />,
+    loading: <Loader2 className="h-5 w-5 animate-spin text-info-main" />,
   };
 
   const bgColors: Record<NotificationType, string> = {
-    success: 'bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800',
-    error: 'bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800',
-    warning: 'bg-yellow-50 border-yellow-200 dark:bg-yellow-900/20 dark:border-yellow-800',
-    info: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800',
-    loading: 'bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800',
+    success: 'bg-success-light border-border-2 dark:bg-green-900/20 dark:border-green-800',
+    error: 'bg-error-light border-border-2 dark:bg-red-900/20 dark:border-red-800',
+    warning: 'bg-warning-light border-border-2 dark:bg-yellow-900/20 dark:border-yellow-800',
+    info: 'bg-info-light border-border-2 dark:bg-blue-900/20 dark:border-blue-800',
+    loading: 'bg-info-light border-border-2 dark:bg-blue-900/20 dark:border-blue-800',
   };
 
   return (
@@ -374,11 +374,11 @@ function NotificationItem({ notification, onDismiss }: NotificationItemProps) {
       <div className="flex gap-3">
         <div className="flex-shrink-0">{icons[type]}</div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-gray-900 dark:text-slate-100">
+          <p className="text-sm font-medium text-foreground dark:text-slate-100">
             {title}
           </p>
           {description && (
-            <p className="mt-1 text-sm text-gray-600 dark:text-slate-300">
+            <p className="mt-1 text-sm text-muted-foreground dark:text-slate-300">
               {description}
             </p>
           )}
@@ -386,7 +386,7 @@ function NotificationItem({ notification, onDismiss }: NotificationItemProps) {
             <button
               type="button"
               onClick={action.onClick}
-              className="mt-2 text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
+              className="mt-2 text-sm font-medium text-info-main hover:text-info-main dark:text-blue-400 dark:hover:text-blue-300 min-h-11 min-w-11"
             >
               {action.label}
             </button>
@@ -396,7 +396,7 @@ function NotificationItem({ notification, onDismiss }: NotificationItemProps) {
           <button
             type="button"
             onClick={onDismiss}
-            className="flex-shrink-0 rounded p-1 text-gray-400 hover:bg-white/50 hover:text-gray-600 dark:hover:bg-black/20 dark:hover:text-slate-300"
+            className="flex-shrink-0 rounded p-1 text-muted-foreground hover:bg-surface/50 hover:text-muted-foreground dark:hover:bg-surface/20 dark:hover:text-slate-300 min-h-11 min-w-11"
             aria-label="Dismiss"
           >
             <X className="h-4 w-4" />

@@ -2,6 +2,7 @@ import { describe, expect, it } from '@jest/globals';
 
 import {
   buildPrimeLintDecision,
+  chunkPrimeLintTargets,
   collectPrimeLintTargets,
 } from '../../src/ci/prime-lint-changed-files';
 
@@ -46,6 +47,25 @@ describe('prime-lint-changed-files', () => {
     expect(targets).toEqual([
       'apps/prime/functions/api/guest-session.ts',
       'apps/prime/src/components/arrival/ArrivalHome.tsx',
+    ]);
+  });
+
+  it('TC-04: large Prime target sets are split into deterministic ESLint batches', () => {
+    const batches = chunkPrimeLintTargets(
+      [
+        'apps/prime/src/app/page.tsx',
+        'apps/prime/src/app/layout.tsx',
+        'apps/prime/src/app/g/page.tsx',
+        'apps/prime/src/hooks/useSessionValidation.ts',
+        'apps/prime/src/lib/auth/guestSessionGuard.ts',
+      ],
+      2,
+    );
+
+    expect(batches).toEqual([
+      ['apps/prime/src/app/page.tsx', 'apps/prime/src/app/layout.tsx'],
+      ['apps/prime/src/app/g/page.tsx', 'apps/prime/src/hooks/useSessionValidation.ts'],
+      ['apps/prime/src/lib/auth/guestSessionGuard.ts'],
     ]);
   });
 });

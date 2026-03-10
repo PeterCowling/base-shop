@@ -199,17 +199,17 @@
   "images": {
     "overview": {
       "src": "/img/guides/gavitella-beach/01-beach-layout.webp",
-      "alt": "Aerial view of Gavitella Beach cove and the sun decks",
+      "alt": "Vista aérea da enseada Gavitella Beach e dos decks solares",
       "caption": "Os dois beach clubs compartilham uma plataforma estreita esculpida no penhasco."
     },
     "gavitellaClub": {
       "src": "/img/guides/gavitella-beach/02-la-gavitella-club.webp",
-      "alt": "Terrace dinner table overlooking the Amalfi Coast at sunset",
+      "alt": "Mesa de jantar no terraço com vista para a Costa Amalfitana ao pôr do sol",
       "caption": "Os jantares ao pôr do sol de La Gavitella combinam vistas do mar com longos aperitivos."
     },
     "oneFire": {
       "src": "/img/guides/gavitella-beach/03-one-fire-club.webp",
-      "alt": "Bright orange umbrellas and sunbeds at One Fire Beach Club",
+      "alt": "Guarda-chuvas laranja brilhante e espreguiçadeiras no One Fire Beach Club",
       "caption": "One Fire é conhecida por tardes animadas e uma cena de pôr do sol liderada por DJ."
     }
   },

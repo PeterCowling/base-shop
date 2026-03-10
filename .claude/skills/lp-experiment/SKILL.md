@@ -302,7 +302,7 @@ Use during design mode to identify where in the conversion funnel an experiment 
 - **`/lp-do-build` (DO):** Experiments designed during build phase to test features being shipped
 
 **Downstream:**
-- **lp-prioritize (S5A):** Readout decisions feed back into prioritization for next cycle
+- **lp-prioritize (post-S4):** Readout decisions feed back into prioritization for next cycle
 - **lp-channels (S6B):** Channel experiments use this skill for design and readout
 - **lp-seo (S6B):** Experiment learnings inform SEO messaging and content briefs
 

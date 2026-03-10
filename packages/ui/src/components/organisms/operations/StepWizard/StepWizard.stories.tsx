@@ -36,26 +36,26 @@ export const Default: Story = {
       onComplete={() => alert("Wizard completed!")}
     >
       <StepContent stepId="personal">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
+        <div className="rounded-lg border border-border-2 bg-surface p-6 dark:border-gray-700 dark:bg-gray-800">
           <h3 className="mb-4 text-lg font-semibold">Personal Information</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
                 Full Name
               </label>
               <input
                 type="text"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
+                className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                 placeholder="John Doe"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
                 Email
               </label>
               <input
                 type="email"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
+                className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                 placeholder="john@example.com"
               />
             </div>
@@ -64,37 +64,37 @@ export const Default: Story = {
       </StepContent>
 
       <StepContent stepId="payment">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
+        <div className="rounded-lg border border-border-2 bg-surface p-6 dark:border-gray-700 dark:bg-gray-800">
           <h3 className="mb-4 text-lg font-semibold">Payment Details</h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
                 Card Number
               </label>
               <input
                 type="text"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
+                className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                 placeholder="4242 4242 4242 4242"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
                   Expiry
                 </label>
                 <input
                   type="text"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
+                  className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                   placeholder="MM/YY"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
                   CVC
                 </label>
                 <input
                   type="text"
-                  className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
+                  className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 dark:border-gray-600 dark:bg-gray-700"
                   placeholder="123"
                 />
               </div>
@@ -104,9 +104,9 @@ export const Default: Story = {
       </StepContent>
 
       <StepContent stepId="confirm">
-        <div className="rounded-lg border border-gray-200 bg-white p-6 dark:border-gray-700 dark:bg-gray-800">
+        <div className="rounded-lg border border-border-2 bg-surface p-6 dark:border-gray-700 dark:bg-gray-800">
           <h3 className="mb-4 text-lg font-semibold">Confirm Your Order</h3>
-          <div className="space-y-2 text-gray-600 dark:text-gray-400">
+          <div className="space-y-2 text-muted-foreground dark:text-muted-foreground">
             <p>Please review your information before submitting.</p>
             <ul className="list-inside list-disc">
               <li>Personal details verified</li>
@@ -136,25 +136,25 @@ export const WithIcons: Story = {
       <StepContent stepId="account">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">Create Your Account</h3>
-          <p className="mt-2 text-gray-600">Set up your username and password.</p>
+          <p className="mt-2 text-muted-foreground">Set up your username and password.</p>
         </div>
       </StepContent>
       <StepContent stepId="payment">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">Add Payment Method</h3>
-          <p className="mt-2 text-gray-600">Enter your billing information.</p>
+          <p className="mt-2 text-muted-foreground">Enter your billing information.</p>
         </div>
       </StepContent>
       <StepContent stepId="settings">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">Configure Settings</h3>
-          <p className="mt-2 text-gray-600">Customize your preferences.</p>
+          <p className="mt-2 text-muted-foreground">Customize your preferences.</p>
         </div>
       </StepContent>
       <StepContent stepId="done">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">All Done!</h3>
-          <p className="mt-2 text-gray-600">Your account is ready to use.</p>
+          <p className="mt-2 text-muted-foreground">Your account is ready to use.</p>
         </div>
       </StepContent>
       <StepActions completeLabel="Get Started" />
@@ -169,19 +169,19 @@ export const Vertical: Story = {
       <StepContent stepId="personal">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">Personal Information</h3>
-          <p className="mt-2 text-gray-600">Enter your personal details here.</p>
+          <p className="mt-2 text-muted-foreground">Enter your personal details here.</p>
         </div>
       </StepContent>
       <StepContent stepId="payment">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">Payment Details</h3>
-          <p className="mt-2 text-gray-600">Add your payment information.</p>
+          <p className="mt-2 text-muted-foreground">Add your payment information.</p>
         </div>
       </StepContent>
       <StepContent stepId="confirm">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">Confirmation</h3>
-          <p className="mt-2 text-gray-600">Review and confirm your submission.</p>
+          <p className="mt-2 text-muted-foreground">Review and confirm your submission.</p>
         </div>
       </StepContent>
       <StepActions />
@@ -252,7 +252,7 @@ function ValidationExample() {
       <StepContent stepId="done">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">All set!</h3>
-          <p className="mt-2 text-gray-600">
+          <p className="mt-2 text-muted-foreground">
             Name: {name}<br />
             Email: {email}
           </p>
@@ -280,19 +280,19 @@ export const WithOptionalSteps: Story = {
       <StepContent stepId="required1">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">Required Step</h3>
-          <p className="mt-2 text-gray-600">This step must be completed.</p>
+          <p className="mt-2 text-muted-foreground">This step must be completed.</p>
         </div>
       </StepContent>
       <StepContent stepId="optional">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">Optional Step</h3>
-          <p className="mt-2 text-gray-600">This step can be skipped.</p>
+          <p className="mt-2 text-muted-foreground">This step can be skipped.</p>
         </div>
       </StepContent>
       <StepContent stepId="required2">
         <div className="rounded-lg border p-6">
           <h3 className="text-lg font-semibold">Final Step</h3>
-          <p className="mt-2 text-gray-600">Complete the wizard here.</p>
+          <p className="mt-2 text-muted-foreground">Complete the wizard here.</p>
         </div>
       </StepContent>
       <StepActions />
@@ -309,17 +309,17 @@ function HookExample() {
       <h3 className="text-lg font-semibold">
         Step {wizard.currentStep + 1} of {wizard.steps.length}
       </h3>
-      <p className="mt-2 text-gray-600">
+      <p className="mt-2 text-muted-foreground">
         Current: {wizard.steps[wizard.currentStep].title}
       </p>
       <div className="mt-4 flex gap-2">
-        <span className="rounded bg-blue-100 px-2 py-1 text-xs text-blue-800">
+        <span className="rounded bg-info-light px-2 py-1 text-xs text-info-main">
           First: {wizard.isFirstStep ? "Yes" : "No"}
         </span>
-        <span className="rounded bg-green-100 px-2 py-1 text-xs text-green-800">
+        <span className="rounded bg-success-light px-2 py-1 text-xs text-success-main">
           Last: {wizard.isLastStep ? "Yes" : "No"}
         </span>
-        <span className="rounded bg-purple-100 px-2 py-1 text-xs text-purple-800">
+        <span className="rounded bg-secondary-light px-2 py-1 text-xs text-secondary-main">
           Completed: {wizard.completedSteps.size}
         </span>
       </div>
@@ -362,7 +362,7 @@ export const CustomActions: Story = {
       >
         <button
           type="button"
-          className="rounded-lg border px-4 py-2 text-sm hover:bg-gray-50"
+          className="rounded-lg border px-4 py-2 text-sm hover:bg-gray-50 min-h-11 min-w-11"
         >
           Save Draft
         </button>

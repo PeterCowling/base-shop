@@ -1,0 +1,234 @@
+/** @jest-environment jsdom */
+
+import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+
+import { CurrencyRatesPanel } from "../CurrencyRatesPanel.client";
+
+jest.mock("../../../lib/uploaderI18n.client", () => ({
+  useUploaderI18n: () => ({ t: (key: string) => key }),
+}));
+
+describe("CurrencyRatesPanel", () => {
+  const originalFetch = global.fetch;
+
+  function renderPanel(props: {
+    busy: boolean;
+    syncReadiness: { checking: boolean; ready: boolean };
+    onSync: () => Promise<{ ok: boolean }>;
+  }) {
+    render(<CurrencyRatesPanel {...props} />);
+  }
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({ ok: true, rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
+      } as Response),
+    ) as unknown as typeof fetch;
+  });
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+  });
+
+  it("renders EUR, GBP, and AUD rate inputs", async () => {
+    renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync: async () => ({ ok: true }),
+    });
+
+    expect(screen.getByTestId("currency-rates-eur")).toBeInTheDocument();
+    expect(screen.getByTestId("currency-rates-gbp")).toBeInTheDocument();
+    expect(screen.getByTestId("currency-rates-aud")).toBeInTheDocument();
+  });
+
+  it("save button is disabled when busy", async () => {
+    renderPanel({
+      busy: true,
+      syncReadiness: { checking: false, ready: true },
+      onSync: async () => ({ ok: true }),
+    });
+
+    expect(screen.getByTestId("currency-rates-save")).toBeDisabled();
+  });
+
+  it("shows load failure feedback when initial rates request fails", async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        json: () => Promise.resolve({ ok: false }),
+      } as Response),
+    ) as unknown as typeof fetch;
+
+    renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync: async () => ({ ok: true }),
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent("currencyRatesLoadFailed");
+    });
+    expect(screen.getByTestId("currency-rates-eur")).toBeDisabled();
+    expect((screen.getByTestId("currency-rates-eur") as HTMLInputElement).value).toBe("");
+  });
+
+  it("shows actionable invalid-file feedback and keeps inputs disabled when stored rates are corrupt", async () => {
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        ok: false,
+        json: () =>
+          Promise.resolve({
+            ok: false,
+            error: "invalid_rates",
+            reason: "currency_rates_invalid",
+          }),
+      } as Response),
+    ) as unknown as typeof fetch;
+
+    renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync: async () => ({ ok: true }),
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent(
+        "syncCurrencyRatesInvalidActionable",
+      );
+    });
+    expect(screen.getByTestId("currency-rates-save")).toBeDisabled();
+    expect(screen.getByTestId("currency-rates-eur")).toBeDisabled();
+    expect((screen.getByTestId("currency-rates-eur") as HTMLInputElement).value).toBe("");
+  });
+
+  it("awaits onSync and shows synced note only after sync succeeds", async () => {
+    const onSync = jest.fn(async () => ({ ok: true }));
+    global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const requestUrl = typeof input === "string" ? input : input.toString();
+      if (requestUrl.includes("/api/catalog/currency-rates") && init?.method === "PUT") {
+        return Promise.resolve({ ok: true, json: async () => ({ ok: true }) } as Response);
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({ ok: true, rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
+      } as Response);
+    }) as unknown as typeof fetch;
+
+    renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync,
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("currency-rates-eur")).toHaveValue(0.93);
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("currency-rates-save"));
+    });
+
+    await waitFor(() => {
+      expect(onSync).toHaveBeenCalledTimes(1);
+      expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent("currencyRatesSyncedRebuildNote");
+    });
+  });
+
+  it("shows sync-failed feedback when save succeeds but sync fails", async () => {
+    const onSync = jest.fn(async () => ({ ok: false }));
+    global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const requestUrl = typeof input === "string" ? input : input.toString();
+      if (requestUrl.includes("/api/catalog/currency-rates") && init?.method === "PUT") {
+        return Promise.resolve({ ok: true, json: async () => ({ ok: true }) } as Response);
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({ ok: true, rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
+      } as Response);
+    }) as unknown as typeof fetch;
+
+    renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync,
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("currency-rates-eur")).toHaveValue(0.93);
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("currency-rates-save"));
+    });
+
+    await waitFor(() => {
+      expect(onSync).toHaveBeenCalledTimes(1);
+      expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent("currencyRatesSavedSyncFailed");
+    });
+  });
+
+  it("shows saved-not-synced feedback and does not call onSync when readiness is false", async () => {
+    const onSync = jest.fn(async () => ({ ok: true }));
+    global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const requestUrl = typeof input === "string" ? input : input.toString();
+      if (requestUrl.includes("/api/catalog/currency-rates") && init?.method === "PUT") {
+        return Promise.resolve({ ok: true, json: async () => ({ ok: true }) } as Response);
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({ ok: true, rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
+      } as Response);
+    }) as unknown as typeof fetch;
+
+    renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: false },
+      onSync,
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("currency-rates-gbp")).toHaveValue(0.79);
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("currency-rates-save"));
+    });
+
+    await waitFor(() => {
+      expect(onSync).not.toHaveBeenCalled();
+      expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent("currencyRatesSavedSyncNotReady");
+    });
+  });
+
+  it("shows save failure feedback when PUT fails", async () => {
+    global.fetch = jest.fn((input: RequestInfo | URL, init?: RequestInit) => {
+      const requestUrl = typeof input === "string" ? input : input.toString();
+      if (requestUrl.includes("/api/catalog/currency-rates") && init?.method === "PUT") {
+        return Promise.resolve({ ok: false, json: async () => ({ ok: false }) } as Response);
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({ ok: true, rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 } }),
+      } as Response);
+    }) as unknown as typeof fetch;
+
+    renderPanel({
+      busy: false,
+      syncReadiness: { checking: false, ready: true },
+      onSync: async () => ({ ok: true }),
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("currency-rates-aud")).toHaveValue(1.55);
+    });
+    await act(async () => {
+      fireEvent.click(screen.getByTestId("currency-rates-save"));
+    });
+
+    await waitFor(() => {
+      expect(screen.getByTestId("currency-rates-feedback")).toHaveTextContent("currencyRatesSaveFailed");
+    });
+  });
+});

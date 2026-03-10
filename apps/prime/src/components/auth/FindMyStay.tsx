@@ -130,7 +130,7 @@ export const FindMyStay: FC<FindMyStayProps> = memo(function FindMyStay({
               bg-card
               text-foreground
               placeholder-muted-foreground
-              focus:ring-2 focus:ring-primary/30 focus:border-transparent
+              focus-visible:ring-2 focus-visible:ring-primary/30 focus:border-transparent
               uppercase
             `}
             autoComplete="off"
@@ -163,7 +163,7 @@ export const FindMyStay: FC<FindMyStayProps> = memo(function FindMyStay({
               bg-card
               text-foreground
               placeholder-muted-foreground
-              focus:ring-2 focus:ring-primary/30 focus:border-transparent
+              focus-visible:ring-2 focus-visible:ring-primary/30 focus:border-transparent
             `}
             autoComplete="family-name"
             disabled={isLoading}

@@ -20,6 +20,7 @@ Card-ID: BRIK-ENG-0020
 Audit-Ref: working-tree
 Audit-Date: 2026-02-14
 ---
+<!-- LINT-EXEMPT: local-jest-pattern -->
 
 # Reception Guest Email Cutover Plan
 

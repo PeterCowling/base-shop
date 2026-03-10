@@ -1,6 +1,8 @@
 // File: src/utils/sortCheckins.ts
 import { type CheckInRow } from "../types/component/CheckinRow";
 
+import { getBookingMinAllocatedRoom, parseAllocatedRoomNumber } from "./sortHelpers";
+
 /**
 Sort the check‑in rows so that all occupants belonging to the same booking
  * stay grouped together and bookings are ordered by their overall status.
@@ -48,22 +50,6 @@ export function sortCheckinsData(checkins: CheckInRow[]): CheckInRow[] {
     if (remainder === 2) return 12;
     if (remainder === 1 || remainder === 3) return 23;
     return 0;
-  };
-
-  // Convert roomAllocated string to a number safely. Non numeric values become a
-  // high number so they sort last.
-  const parseAllocatedRoomNumber = (roomStr: string | undefined): number => {
-    if (!roomStr) return 9999;
-    const num = parseInt(roomStr.trim(), 10);
-    return isNaN(num) ? 9999 : num;
-  };
-
-  // Compute the minimum allocated room for the entire booking
-  const getBookingMinAllocatedRoom = (rows: CheckInRow[]): number => {
-    const roomNumbers = rows.map((r) =>
-      parseAllocatedRoomNumber(r.roomAllocated)
-    );
-    return Math.min(...roomNumbers);
   };
 
   // Determine a numeric booking status weight:

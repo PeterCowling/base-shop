@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "BUILD-20260308-XAB-NAV-001",
+  "feature_slug": "xa-b-hermes-nav-taxonomy",
+  "emitted_at": "2026-03-08T12:00:00.000Z",
+  "why": "xa-b is positioned as a Hermès bags-only boutique; generic multi-brand fashion taxonomy misrepresents the product world.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "xa-b header nav displays Hermès-specific tier labels (Iconic/Everyday/Mini) and bag family subcategories; Brands link/column removed throughout.",
+    "source": "operator"
+  }
+}

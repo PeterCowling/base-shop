@@ -51,7 +51,7 @@ The business strategy and 90-day outcome contract are already defined in `docs/b
   - Initial launch geo is Italy.
     - Evidence: `docs/business-os/strategy/HEAD/headband-90-day-launch-forecast-v2.user.md`
   - Inventory is near-term launch-ready but unit counts and exact date still need confirmation.
-    - Evidence: `docs/business-os/startup-baselines/HEAD-forecast-seed.user.md`
+    - Evidence: `docs/business-os/startup-baselines/HEAD/forecast-seed.user.md`
 
 ## Evidence Audit (Current State)
 ### Strategy / Loop Artifacts (Business)

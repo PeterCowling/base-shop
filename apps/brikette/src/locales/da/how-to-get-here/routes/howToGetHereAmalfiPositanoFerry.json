@@ -9,7 +9,7 @@
     "description": "Følg denne guide til turen fra Amalfi til Positano med færge. Her finder du tips til billetter, ombordstigning i Amalfi, hvad du kan forvente ved ankomst, og hvordan du når Hostel Brikette fra kajen med så få trapper som muligt."
   },
   "tip": {
-    "label": "Tip",
+    "label": "Råd",
     "body": {
       "before": "Brug for andre transportmuligheder? Åbn ",
       "linkLabel": "oversigten Sådan kommer du hertil",
@@ -29,7 +29,7 @@
       "title": "Billetter og køreplaner",
       "intro": {
         "before": "Se de seneste tider og priser på ",
-        "travelmarLabel": "Travelmar",
+        "travelmarLabel": "Rejseland",
         "between": " og ",
         "positanoLabel": "Positano.com – Færgeplaner",
         "after": "."

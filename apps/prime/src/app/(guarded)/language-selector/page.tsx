@@ -5,13 +5,7 @@ import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { Check, Globe } from 'lucide-react';
 
-const SUPPORTED_LOCALES = ['en', 'it'] as const;
-type UiLocale = (typeof SUPPORTED_LOCALES)[number];
-
-function normalizeUiLocale(language: string | undefined): UiLocale {
-  const base = language?.split('-')[0]?.toLowerCase();
-  return base === 'it' ? 'it' : 'en';
-}
+import { normalizeUiLocale, UI_LOCALES, type UiLocale } from '@acme/i18n';
 
 export default function LanguageSelectorPage() {
   const { t, i18n } = useTranslation('Settings');
@@ -51,7 +45,7 @@ export default function LanguageSelectorPage() {
         </div>
 
         <div className="space-y-2">
-          {SUPPORTED_LOCALES.map((locale) => {
+          {UI_LOCALES.map((locale) => {
             const isActive = locale === activeLocale;
             const localeLabel = t(`language.options.${locale}`);
 

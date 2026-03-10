@@ -189,17 +189,17 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 ### TASK-01: Update loop-spec.yaml to v3.9.4
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `docs/business-os/startup-loop/loop-spec.yaml` at v3.9.4
+- **Deliverable:** Updated `docs/business-os/startup-loop/specifications/loop-spec.yaml` at v3.9.4
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Complete (2026-02-22)
-- **Artifact-Destination:** `docs/business-os/startup-loop/loop-spec.yaml`
+- **Artifact-Destination:** `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - **Reviewer:** operator
 - **Approval-Evidence:** None: internal spec doc; operator is author
 - **Measurement-Readiness:** None: spec file; validation is via test suite
-- **Affects:** `docs/business-os/startup-loop/loop-spec.yaml`
+- **Affects:** `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - **Depends on:** —
 - **Blocks:** TASK-02
 - **Confidence:** 85%
@@ -219,14 +219,14 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - VC-01: `spec_version` in file = `"3.9.4"` → pass immediately on file read
   - VC-02: IDEAS container block contains `type: standing_pipeline` and all required new fields → pass by structural inspection
   - VC-03: `ordering.sequential` contains no `IDEAS`, `IDEAS-01`, `IDEAS-02`, `IDEAS-03` entries → pass by grep
-    `grep -c "IDEAS" docs/business-os/startup-loop/loop-spec.yaml` — count should be from IDEAS definitions only, not ordering
+    `grep -c "IDEAS" docs/business-os/startup-loop/specifications/loop-spec.yaml` — count should be from IDEAS definitions only, not ordering
 - **Execution plan:** Red -> Green -> Refactor (VC-first)
   - Red evidence plan: Current file has `type: container` for IDEAS; IDEAS-01..03 all `skill: prompt-handoff`; no trigger/automation fields; ordering has `[ASSESSMENT, MEASURE-01]` (IDEAS absent but no comment explaining why)
   - Green evidence plan: Edit IDEAS container block; edit IDEAS-01..03 stage blocks; add ordering comment; bump spec_version; add changelog entry
   - Refactor evidence plan: Verify ordering.sequential is clean; verify no orphaned references to old IDEAS-01..03 fields
 - **Build/validation evidence (2026-02-22):**
-  - `rg -n "^spec_version:|^- id: IDEAS$|type: standing_pipeline|trigger:|automation:|recurrence:|impact_categories:|skill: /idea-scan|output_artifact: scan-proposals.md|skill: /idea-develop|secondary_skills: \\[/idea-advance\\]|skill: /lp-do-fact-find|operator_gate" docs/business-os/startup-loop/loop-spec.yaml` — PASS
-  - `sed -n '996,1065p' docs/business-os/startup-loop/loop-spec.yaml | rg -n "IDEAS|ASSESSMENT, MEASURE-01|standing_pipeline"` — PASS (`IDEAS` absent from sequential ordering; explanatory comment present on ASSESSMENT→MEASURE edge)
+  - `rg -n "^spec_version:|^- id: IDEAS$|type: standing_pipeline|trigger:|automation:|recurrence:|impact_categories:|skill: /idea-scan|output_artifact: scan-proposals.md|skill: /idea-develop|secondary_skills: \\[/idea-advance\\]|skill: /lp-do-fact-find|operator_gate" docs/business-os/startup-loop/specifications/loop-spec.yaml` — PASS
+  - `sed -n '996,1065p' docs/business-os/startup-loop/specifications/loop-spec.yaml | rg -n "IDEAS|ASSESSMENT, MEASURE-01|standing_pipeline"` — PASS (`IDEAS` absent from sequential ordering; explanatory comment present on ASSESSMENT→MEASURE edge)
   - `pnpm exec jest --runTestsByPath scripts/src/startup-loop/__tests__/s10-weekly-routing.test.ts --maxWorkers=2` — PASS (17/17; includes stage count 66 assertion)
 - **Planning validation (required for M/L):**
   - Checks run: Full read of loop-spec.yaml this session; verified ordering.sequential section; verified IDEAS block structure
@@ -245,7 +245,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 - **Documentation impact:**
   - `docs/business-os/startup-loop/_generated/stage-operator-table.md` and `stage-operator-map.json` are generated from the dictionary (TASK-02) not the spec directly; no direct regeneration needed from this task alone
 - **Notes / references:**
-  - Spec file: `docs/business-os/startup-loop/loop-spec.yaml`
+  - Spec file: `docs/business-os/startup-loop/specifications/loop-spec.yaml`
   - Full spec read this session (1087 lines)
 
 ---
@@ -253,17 +253,17 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 ### TASK-02: Update stage-operator-dictionary.yaml
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `docs/business-os/startup-loop/stage-operator-dictionary.yaml` with `loop_spec_version: "3.9.4"` and redesigned IDEAS entries
+- **Deliverable:** Updated `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml` with `loop_spec_version: "3.9.4"` and redesigned IDEAS entries
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
 - **Status:** Complete (2026-02-22)
-- **Artifact-Destination:** `docs/business-os/startup-loop/stage-operator-dictionary.yaml`
+- **Artifact-Destination:** `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`
 - **Reviewer:** operator
 - **Approval-Evidence:** None: internal spec doc
 - **Measurement-Readiness:** Validation: run `generate-stage-operator-views.ts` post-commit to confirm generated views are consistent
-- **Affects:** `docs/business-os/startup-loop/stage-operator-dictionary.yaml`, `docs/business-os/startup-loop/_generated/stage-operator-map.json`, `docs/business-os/startup-loop/_generated/stage-operator-table.md`
+- **Affects:** `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`, `docs/business-os/startup-loop/_generated/stage-operator-map.json`, `docs/business-os/startup-loop/_generated/stage-operator-table.md`
 - **Depends on:** TASK-01
 - **Blocks:** —
 - **Confidence:** 85%
@@ -286,7 +286,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - Green evidence plan: Edit all 4 IDEAS entries + IDEAS container entry + ASSESSMENT-11 next prompt; bump `loop_spec_version`
   - Refactor evidence plan: Run `generate-stage-operator-views.ts` to confirm consistency; verify VC-03
 - **Build/validation evidence (2026-02-22):**
-  - `rg -n "^loop_spec_version:|ASSESSMENT-11|IDEAS-01|IDEAS-02|IDEAS-03|pack-diff-scan|Backlog update|Promote to DO|operator_next_prompt" docs/business-os/startup-loop/stage-operator-dictionary.yaml` — PASS
+  - `rg -n "^loop_spec_version:|ASSESSMENT-11|IDEAS-01|IDEAS-02|IDEAS-03|pack-diff-scan|Backlog update|Promote to DO|operator_next_prompt" docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml` — PASS
   - `node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts` — PASS (generated map/table refreshed)
   - `node --import tsx scripts/src/startup-loop/generate-stage-operator-views.ts --check` — PASS (no drift)
   - `pnpm exec jest --runTestsByPath scripts/src/startup-loop/__tests__/generate-stage-operator-views.test.ts --maxWorkers=2` — PASS (19/19)
@@ -299,7 +299,7 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - Unexpected findings: `loop_spec_version` was 3.9.0, not 3.9.3 — will jump to 3.9.4 directly
 - **Scope expansion note:** Generated outputs were refreshed via canonical generator to satisfy VC-02/VC-03 consistency checks; no manual edits were made to `_generated/*`.
 - **Scouts:** Confirm ASSESSMENT-11 `operator_next_prompt` is the only reference to IDEAS in the "proceed to" pattern in the dictionary.
-  Check: `grep -n "IDEAS-01\|Idea backlog" docs/business-os/startup-loop/stage-operator-dictionary.yaml`
+  Check: `grep -n "IDEAS-01\|Idea backlog" docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`
 - **Edge Cases & Hardening:**
   - `aliases` for IDEAS-01: keep `idea-backlog`, `idea-backlog-capture`, `ideas-01` for backward compat; add `pack-diff-scan` as new canonical alias
   - VC-03 ordering: IDEAS entries must remain in the same position in the dictionary (between ASSESSMENT-11 and MEASURE-01) per VC-03 ordering constraint — do NOT reorder
@@ -426,17 +426,17 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
 ### TASK-05: Remove IDEAS from UPSTREAM_PRIORITY_ORDER
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `scripts/src/startup-loop/bottleneck-detector.ts` with IDEAS stages removed from `UPSTREAM_PRIORITY_ORDER`
+- **Deliverable:** Updated `scripts/src/startup-loop/diagnostics/bottleneck-detector.ts` with IDEAS stages removed from `UPSTREAM_PRIORITY_ORDER`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Complete (2026-02-22)
-- **Artifact-Destination:** `scripts/src/startup-loop/bottleneck-detector.ts`
+- **Artifact-Destination:** `scripts/src/startup-loop/diagnostics/bottleneck-detector.ts`
 - **Reviewer:** operator
 - **Approval-Evidence:** None: internal tooling change
 - **Measurement-Readiness:** Test suite: `pnpm -w test -- --testPathPattern=bottleneck` passes post-change
-- **Affects:** `scripts/src/startup-loop/bottleneck-detector.ts`, `[readonly] scripts/src/startup-loop/__tests__/s10-weekly-routing.test.ts`
+- **Affects:** `scripts/src/startup-loop/diagnostics/bottleneck-detector.ts`, `[readonly] scripts/src/startup-loop/__tests__/s10-weekly-routing.test.ts`
 - **Depends on:** —
 - **Blocks:** —
 - **Confidence:** 90%
@@ -450,21 +450,21 @@ bottleneck detector, HTML process map, and skill descriptions. Stage IDs are unc
   - Test suite passes: `pnpm -w test -- --testPathPattern=bottleneck`
   - Stage count assertion in `s10-weekly-routing.test.ts` (expects 66) still passes (UPSTREAM_PRIORITY_ORDER count is separate)
 - **Validation contract (TC-01..02):**
-  - TC-01: `grep "IDEAS" scripts/src/startup-loop/bottleneck-detector.ts | grep "UPSTREAM_PRIORITY_ORDER"` → zero matches
+  - TC-01: `grep "IDEAS" scripts/src/startup-loop/diagnostics/bottleneck-detector.ts | grep "UPSTREAM_PRIORITY_ORDER"` → zero matches
   - TC-02: Test suite `pnpm -w test -- --testPathPattern=bottleneck-detector` → passes with no failures
 - **Execution plan:** Red -> Green -> Refactor
   - Red: UPSTREAM_PRIORITY_ORDER currently includes IDEAS/IDEAS-01/IDEAS-02/IDEAS-03 at lines ~89; represents false sequential position
   - Green: Remove the 4 entries from the array (surgery only; no logic changes)
   - Refactor: Verify StageId type is unchanged; verify STARTUP_LOOP_STAGES in loop.ts is unchanged; run tests
 - **Build/validation evidence (2026-02-22):**
-  - `rg -n "UPSTREAM_PRIORITY_ORDER.*IDEAS" scripts/src/startup-loop/bottleneck-detector.ts` — PASS (no matches; IDEAS removed from priority order)
-  - `rg -n "UPSTREAM_PRIORITY_ORDER|indexOf\\('IDEAS'\\)|indexOf\\(\\\"IDEAS\\\"\\)" scripts/src/startup-loop/bottleneck-detector.ts` — PASS (only generic index lookup remains)
+  - `rg -n "UPSTREAM_PRIORITY_ORDER.*IDEAS" scripts/src/startup-loop/diagnostics/bottleneck-detector.ts` — PASS (no matches; IDEAS removed from priority order)
+  - `rg -n "UPSTREAM_PRIORITY_ORDER|indexOf\\('IDEAS'\\)|indexOf\\(\\\"IDEAS\\\"\\)" scripts/src/startup-loop/diagnostics/bottleneck-detector.ts` — PASS (only generic index lookup remains)
   - `pnpm exec jest --runTestsByPath scripts/src/startup-loop/__tests__/bottleneck-detector.test.ts --maxWorkers=2` — PASS (9/9)
   - `pnpm exec jest --runTestsByPath scripts/src/startup-loop/__tests__/s10-weekly-routing.test.ts --maxWorkers=2` — PASS (17/17; includes stage-count 66 assertion)
   - Guard note: plan’s root `pnpm -w test -- --testPathPattern=...` command is blocked by repo policy (`scripts/guard-broad-test-run.cjs`); targeted `jest --runTestsByPath` used as policy-compliant equivalent.
 - **Planning validation (required for M/L):** None: S effort
 - **Scouts:** Does any code access `UPSTREAM_PRIORITY_ORDER.indexOf('IDEAS')` or similar? If yes, that code needs updating too.
-  Check: `grep -n "UPSTREAM_PRIORITY_ORDER" scripts/src/startup-loop/bottleneck-detector.ts`
+  Check: `grep -n "UPSTREAM_PRIORITY_ORDER" scripts/src/startup-loop/diagnostics/bottleneck-detector.ts`
 - Scout result (2026-02-22): no IDEAS-specific index lookups found; no additional code updates required.
 - **Edge Cases & Hardening:**
   - Do not remove IDEAS from `StageId` type — existing manifests reference these IDs

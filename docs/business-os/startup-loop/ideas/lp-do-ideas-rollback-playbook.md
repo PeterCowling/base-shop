@@ -58,10 +58,12 @@ git checkout -b rollback-drill-$(date +%Y%m%d)
 ```bash
 # Confirm routing adapter accepts mode: live
 node -e "
-const { routeDispatch } = require('./scripts/src/startup-loop/lp-do-ideas-routing-adapter.js');
-const pkt = { schema_version: 'dispatch.v1', mode: 'live', status: 'fact_find_ready',
+const { routeDispatch } = require('./scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.js');
+const pkt = { schema_version: 'dispatch.v2', mode: 'live', status: 'fact_find_ready',
   recommended_route: 'lp-do-fact-find', area_anchor: 'test', location_anchors: ['test'],
-  provisional_deliverable_family: 'business-artifact', evidence_refs: ['test'], dispatch_id: 'TEST-001' };
+  provisional_deliverable_family: 'business-artifact', evidence_refs: ['test'], dispatch_id: 'TEST-001',
+  why: 'Validate live routing adapter mode acceptance for rollback drill.',
+  intended_outcome: { type: 'operational', statement: 'Confirm live packet is routable pre-rollback.', source: 'auto' } };
 console.log(routeDispatch(pkt).ok); // must print: true
 "
 ```
@@ -75,10 +77,12 @@ Follow the post-activation rollback procedure (Steps 1–6 in Part 2) on the tes
 ```bash
 # Confirm routing adapter again rejects mode: live
 node -e "
-const { routeDispatch } = require('./scripts/src/startup-loop/lp-do-ideas-routing-adapter.js');
-const pkt = { schema_version: 'dispatch.v1', mode: 'live', status: 'fact_find_ready',
+const { routeDispatch } = require('./scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.js');
+const pkt = { schema_version: 'dispatch.v2', mode: 'live', status: 'fact_find_ready',
   recommended_route: 'lp-do-fact-find', area_anchor: 'test', location_anchors: ['test'],
-  provisional_deliverable_family: 'business-artifact', evidence_refs: ['test'], dispatch_id: 'TEST-001' };
+  provisional_deliverable_family: 'business-artifact', evidence_refs: ['test'], dispatch_id: 'TEST-001',
+  why: 'Validate trial-only guard rejects live packet after rollback.',
+  intended_outcome: { type: 'operational', statement: 'Expect INVALID_MODE after rollback.', source: 'auto' } };
 const result = routeDispatch(pkt);
 console.log(result.ok === false && result.code === 'INVALID_MODE'); // must print: true
 "
@@ -118,8 +122,8 @@ from firing while rollback is in progress.
 # Option C: Rename the hook file to prevent import
 
 # Quickest safe option:
-mv scripts/src/startup-loop/lp-do-ideas-live-hook.ts \
-   scripts/src/startup-loop/lp-do-ideas-live-hook.ts.disabled
+mv scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts \
+   scripts/src/startup-loop/ideas/lp-do-ideas-live-hook.ts.disabled
 ```
 
 **Verification**: Confirm hook is not loaded by SIGNALS cycle:
@@ -135,7 +139,7 @@ echo "Hook disabled at: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
 
 **Action**: Restore the routing adapter's mode guard to `"trial"` only.
 
-**Change to make** in `scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts`:
+**Change to make** in `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts`:
 
 ```typescript
 // BEFORE (live mode active):
@@ -147,8 +151,8 @@ if (packet.mode !== "trial") {
 
 Or restore via git:
 ```bash
-git show HEAD~N:scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts > \
-  scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts
+git show HEAD~N:scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts > \
+  scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts
 # Where HEAD~N is the commit before live mode was activated
 ```
 
@@ -169,15 +173,15 @@ pnpm -w run test:governed -- jest -- \
 
 ```bash
 # Rename to prevent import resolution
-mv scripts/src/startup-loop/lp-do-ideas-live.ts \
-   scripts/src/startup-loop/lp-do-ideas-live.ts.disabled
+mv scripts/src/startup-loop/ideas/lp-do-ideas-live.ts \
+   scripts/src/startup-loop/ideas/lp-do-ideas-live.ts.disabled
 ```
 
 If the live orchestrator was part of the same file as the trial orchestrator, revert
 the file to the pre-live commit:
 ```bash
-git show <pre-live-commit>:scripts/src/startup-loop/lp-do-ideas-trial.ts > \
-  scripts/src/startup-loop/lp-do-ideas-trial.ts
+git show <pre-live-commit>:scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts > \
+  scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts
 ```
 
 **Verification**:
@@ -254,7 +258,7 @@ pnpm -w run test:governed -- jest -- \
 **Action**: Commit the rollback changes with a clear message.
 
 ```bash
-git add scripts/src/startup-loop/lp-do-ideas-routing-adapter.ts
+git add scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts
 git add docs/plans/lp-do-ideas-startup-loop-integration/artifacts/trial-policy-decision.md
 # Add any other modified files
 git commit -m "rollback(lp-do-ideas): disable live mode, restore trial-only operation"

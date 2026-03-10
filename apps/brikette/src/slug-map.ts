@@ -8,7 +8,7 @@ export const SLUGS = {
   /* ---------- Guest rooms & dorms ---------- */
   rooms: {
     de: "zimmer",
-    en: "rooms",
+    en: "dorms",
     es: "habitaciones",
     fr: "chambres",
     it: "camere",
@@ -160,26 +160,26 @@ export const SLUGS = {
     hu: "hogyan-jutsz-ide",
   },
 
-  /** Apartment details */
+  /** Private rooms (Double Room + Apartment) */
   apartment: {
-    de: "wohnungen", // German
-    en: "apartment", // English
-    es: "apartamentos", // Spanish
-    fr: "appartements", // French
-    it: "appartamenti", // Italian
-    ja: "apaato", // Japanese (アパート)
-    ko: "apateu", // Korean (아파트)
-    pt: "apartamentos", // Portuguese
-    ru: "kvartiry", // Russian (квартиры)
-    zh: "gongyu", // Chinese (公寓)
-    ar: "shuqaq",
-    hi: "awas",
-    vi: "can-ho",
-    pl: "apartamenty",
-    sv: "lagenheter",
-    no: "leiligheter",
-    da: "lejligheder",
-    hu: "apartmanok",
+    de: "privatzimmer", // German
+    en: "private-rooms", // English
+    es: "habitaciones-privadas", // Spanish
+    fr: "chambres-privees", // French
+    it: "camere-private", // Italian
+    ja: "kojin-heya", // Japanese (個室)
+    ko: "gaein-sil", // Korean (개인실)
+    pt: "quartos-privados", // Portuguese
+    ru: "chastnye-nomera", // Russian (частные номера)
+    zh: "siren-kefang", // Chinese (私人客房)
+    ar: "ghuraf-khassa",
+    hi: "niji-kamre",
+    vi: "phong-rieng",
+    pl: "pokoje-prywatne",
+    sv: "privata-rum",
+    no: "private-rom",
+    da: "private-vaerelser",
+    hu: "privat-szobak",
   },
 
   /** Booking landing page */
@@ -195,13 +195,57 @@ export const SLUGS = {
     ru: "bronirovanie",
     zh: "yuding",
     ar: "hajz",
-    hi: "book",
+    hi: "aarakshan",
     vi: "dat-phong",
     pl: "rezerwuj",
     sv: "boka",
     no: "bestill",
-    da: "book",
+    da: "bestil",
     hu: "foglalas",
+  },
+
+  /** Private accommodations booking landing page */
+  privateBooking: {
+    de: "privatunterkunft-buchen",
+    en: "book-private-accommodations",
+    es: "reservar-alojamientos-privados",
+    fr: "reserver-hebergements-prives",
+    it: "prenota-alloggi-privati",
+    ja: "kojin-heya-yoyaku",
+    ko: "gaein-sil-yeyak",
+    pt: "reservar-acomodacoes-privadas",
+    ru: "bronirovat-chastnoe-prozhivanie",
+    zh: "yuding-siren-zhusu",
+    ar: "hajz-iqama-khassa",
+    hi: "niji-aavaas-aarakshan",
+    vi: "dat-cho-o-rieng-tu",
+    pl: "rezerwuj-prywatny-pobyt",
+    sv: "boka-privat-boende",
+    no: "bestill-privat-opphold",
+    da: "bestil-privat-ophold",
+    hu: "privat-szallas-foglalas",
+  },
+
+  /** Double private room direct booking page */
+  doubleRoomBooking: {
+    de: "doppelzimmer-buchen",
+    en: "book-double-room",
+    es: "reservar-habitacion-doble",
+    fr: "reserver-chambre-double",
+    it: "prenota-camera-doppia",
+    ja: "daburu-rumu-yoyaku",
+    ko: "deobeul-rum-yeyak",
+    pt: "reservar-quarto-duplo",
+    ru: "bron-dvukhmestnogo",
+    zh: "yuding-shuangrenfang",
+    ar: "hajz-ghurfa-muzdawaja",
+    hi: "dabal-kamra-aarakshan",
+    vi: "dat-phong-doi",
+    pl: "rezerwuj-pokoj-dwuosobowy",
+    sv: "boka-dubbelrum",
+    no: "bestill-dobbeltrom",
+    da: "bestil-dobbeltvaerelse",
+    hu: "ketagyas-szoba-foglalas",
   },
 
   /* (blog removed) */
@@ -234,7 +278,7 @@ export const SLUGS = {
     en: "tags",
     es: "etiquetas",
     fr: "etiquettes",
-    it: "tags",
+    it: "etichette",
     ja: "tagu",
     ko: "tegeu",
     pt: "etiquetas",
@@ -279,8 +323,8 @@ export const SLUGS = {
     es: "normas-de-la-casa",
     fr: "reglement-interieur",
     it: "regole-della-casa",
-    ja: "house-rules",
-    ko: "house-rules",
+    ja: "riyou-ruuru",
+    ko: "iyong-gyuchik",
     pt: "regras-da-casa",
     ru: "pravila-prozhivaniya",
     zh: "jiagui",
@@ -296,46 +340,46 @@ export const SLUGS = {
 
   /* ---------- Privacy policy ---------- */
   privacyPolicy: {
-    de: "privacy-policy",
+    de: "datenschutz",
     en: "privacy-policy",
-    es: "privacy-policy",
-    fr: "privacy-policy",
-    it: "privacy-policy",
-    ja: "privacy-policy",
-    ko: "privacy-policy",
-    pt: "privacy-policy",
-    ru: "privacy-policy",
-    zh: "privacy-policy",
-    ar: "privacy-policy",
-    hi: "privacy-policy",
-    vi: "privacy-policy",
-    pl: "privacy-policy",
-    sv: "privacy-policy",
-    no: "privacy-policy",
-    da: "privacy-policy",
-    hu: "privacy-policy",
+    es: "politica-de-privacidad",
+    fr: "politique-confidentialite",
+    it: "informativa-privacy",
+    ja: "kojin-joho-hoshin",
+    ko: "gaein-jeongbo-bangchim",
+    pt: "politica-de-privacidade",
+    ru: "politika-konfidentsialnosti",
+    zh: "yinsi-zhengce",
+    ar: "siasat-al-khususiya",
+    hi: "gopaniyata-niti",
+    vi: "chinh-sach-bao-mat",
+    pl: "polityka-prywatnosci",
+    sv: "integritetspolicy",
+    no: "personvern",
+    da: "privatlivspolitik",
+    hu: "adatvedelmi-tajekoztato",
   },
 
   /* ---------- Cookie policy ---------- */
   cookiePolicy: {
-    de: "cookie-policy",
+    de: "cookie-richtlinie",
     en: "cookie-policy",
-    es: "cookie-policy",
-    fr: "cookie-policy",
-    it: "cookie-policy",
-    ja: "cookie-policy",
-    ko: "cookie-policy",
-    pt: "cookie-policy",
-    ru: "cookie-policy",
-    zh: "cookie-policy",
-    ar: "cookie-policy",
-    hi: "cookie-policy",
-    vi: "cookie-policy",
-    pl: "cookie-policy",
-    sv: "cookie-policy",
-    no: "cookie-policy",
-    da: "cookie-policy",
-    hu: "cookie-policy",
+    es: "politica-de-cookies",
+    fr: "politique-cookies",
+    it: "politica-cookie",
+    ja: "kukki-seisaku",
+    ko: "kuki-jeongchaek",
+    pt: "politica-de-cookies",
+    ru: "politika-cookie",
+    zh: "quqi-zhengce",
+    ar: "siasat-al-cookie",
+    hi: "cookie-niti",
+    vi: "chinh-sach-cookie",
+    pl: "polityka-cookie",
+    sv: "cookiepolicy",
+    no: "cookiepolicy",
+    da: "cookiepolitik",
+    hu: "cookie-szabalyzat",
   },
 
   /* ---------- Breakfast menu (public) ---------- */

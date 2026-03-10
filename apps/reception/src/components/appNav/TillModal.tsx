@@ -1,61 +1,14 @@
-/* File: /src/components/appNav/TillModal.tsx */
+import { withIconModal } from "../../hoc/withIconModal";
 
-import { memo } from "react";
+import { navSections, SECTION_LABELS } from "./navConfig";
 
-import { type IconModalProps,withIconModal } from "../../hoc/withIconModal";
-import { type ModalAction } from "../../types/component/ModalAction";
+// Till & Safe section carries permissionKey: Permissions.TILL_ACCESS, so the HOC
+// computes interactive internally — no wrapper component needed (Divergence #useAuth dedup).
+const section = navSections.find((s) => s.label === SECTION_LABELS.TILL_AND_SAFE);
+const actions = (section?.items ?? []).filter((item) => !item.sidebarOnly);
 
-const actions: ModalAction[] = [
-  {
-    label: "Till",
-    iconClass: "fas fa-cash-register",
-    route: "/till-reconciliation",
-  },
-  {
-    label: "Safe",
-    iconClass: "fas fa-shield-alt",
-    route: "/safe-reconciliation",
-  },
-  {
-    label: "Workbench",
-    iconClass: "fas fa-tools",
-    route: "/reconciliation-workbench",
-  },
-  {
-    label: "Live",
-    iconClass: "fas fa-stream",
-    route: "/live",
-  },
-  {
-    label: "Variance",
-    iconClass: "fas fa-chart-area",
-    route: "/variance-heatmap",
-  },
-  {
-    label: "End of Day",
-    iconClass: "fas fa-file-alt",
-    route: "/end-of-day",
-  },
-];
-
-// Build a base modal using the HOC.
-const BaseTillModal = withIconModal({
+export default withIconModal({
   label: "TILL",
   actions,
+  permissionKey: section?.permissionKey,
 });
-
-/**
- * Wrapper component so all users can view this modal but
- * only "Pete" can navigate using the icons.
- */
-function TillModal({ user, ...rest }: IconModalProps) {
-  return (
-    <BaseTillModal
-      {...rest}
-      user={user}
-      interactive={user.user_name === "Pete"}
-    />
-  );
-}
-
-export default memo(TillModal);

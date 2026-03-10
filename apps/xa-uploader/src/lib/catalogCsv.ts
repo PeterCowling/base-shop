@@ -16,6 +16,16 @@ export class CatalogCsvConflictError extends Error {
   override name = "CatalogCsvConflictError";
 }
 
+export class CatalogCsvStorageBusyError extends Error {
+  override name = "CatalogCsvStorageBusyError";
+}
+
+function isCsvStorageBusyError(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const code = (error as NodeJS.ErrnoException).code;
+  return code === "EPERM" || code === "EACCES" || code === "EBUSY";
+}
+
 export function resolveXaUploaderProductsCsvPath(
   storefront?: XaCatalogStorefront,
 ): string {
@@ -51,7 +61,10 @@ export async function listCatalogDrafts(storefront?: XaCatalogStorefront): Promi
     if (!id) continue;
     revisionsById[id] = computeRowRevision(revisionHeader, row);
   }
-  return { path: csvPath, products: rows.map(rowToDraftInput), revisionsById };
+  const products = rows
+    .map(rowToDraftInput)
+    .filter((product): product is CatalogProductDraftInput => product !== null);
+  return { path: csvPath, products, revisionsById };
 }
 
 export async function getCatalogDraftBySlug(
@@ -76,8 +89,9 @@ export async function upsertCatalogDraft(
   const normalizedSlug = slugify(update.slug);
   const normalizedId = (update.id ?? "").trim();
   const nextHeader = buildCsvHeader(header);
+  const normalizedSlugs = rows.map((row) => slugify(row.slug));
   const existingIndexById = normalizedId ? rows.findIndex((row) => row.id === normalizedId) : -1;
-  const existingIndexBySlug = rows.findIndex((row) => slugify(row.slug) === normalizedSlug);
+  const existingIndexBySlug = normalizedSlugs.indexOf(normalizedSlug);
   if (existingIndexById >= 0 && existingIndexBySlug >= 0 && existingIndexById !== existingIndexBySlug) {
     throw new Error(`Product id "${normalizedId}" is already used by a different slug.`);
   }
@@ -102,8 +116,8 @@ export async function upsertCatalogDraft(
   }
   if (!nextRow.id) nextRow.id = crypto.randomUUID();
 
-  const duplicates = rows.findIndex(
-    (row, idx) => idx !== existingIndex && slugify(row.slug) === normalizedSlug,
+  const duplicates = normalizedSlugs.findIndex(
+    (s, idx) => idx !== existingIndex && s === normalizedSlug,
   );
   if (duplicates >= 0) {
     throw new Error(`Duplicate product slug "${update.slug}".`);
@@ -115,12 +129,21 @@ export async function upsertCatalogDraft(
     rows.push(nextRow);
   }
 
-  await fs.mkdir(path.dirname(csvPath), { recursive: true });
-  await writeCsvFileAtomically(csvPath, nextHeader, rows);
+  try {
+    await fs.mkdir(path.dirname(csvPath), { recursive: true });
+    await writeCsvFileAtomically(csvPath, nextHeader, rows);
+  } catch (error) {
+    if (isCsvStorageBusyError(error)) {
+      throw new CatalogCsvStorageBusyError(
+        "Catalog CSV is temporarily locked by another process.",
+      );
+    }
+    throw error;
+  }
 
   return {
     path: csvPath,
-    product: rowToDraftInput(nextRow),
+    product: rowToDraftInput(nextRow) ?? input,
     revision: computeRowRevision(nextHeader, nextRow),
   };
 }
@@ -137,6 +160,15 @@ export async function deleteCatalogProduct(
   if (!deleted) return { path: csvPath, deleted: false };
 
   const nextHeader = buildCsvHeader(header);
-  await writeCsvFileAtomically(csvPath, nextHeader, nextRows);
+  try {
+    await writeCsvFileAtomically(csvPath, nextHeader, nextRows);
+  } catch (error) {
+    if (isCsvStorageBusyError(error)) {
+      throw new CatalogCsvStorageBusyError(
+        "Catalog CSV is temporarily locked by another process.",
+      );
+    }
+    throw error;
+  }
   return { path: csvPath, deleted: true };
 }

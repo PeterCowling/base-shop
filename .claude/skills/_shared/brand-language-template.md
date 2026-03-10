@@ -3,7 +3,7 @@
 Shared template for per-business brand language documents. These live at:
 
 ```
-docs/business-os/strategy/<BIZ>/brand-dossier.user.md
+docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md
 ```
 
 Each operating business should have one. The `/lp-design-spec` skill reads these as input and writes back stable new patterns as output.
@@ -176,6 +176,33 @@ Theme package: `packages/themes/{theme}/src/tokens.ts`
 | App | Theme | Status | Notes |
 |-----|-------|--------|-------|
 | {app} | `packages/themes/{theme}/` | {Active | Planned | TBD} | {notes} |
+
+## Logo Brief
+
+*Populated by `/lp-do-assessment-14-logo-brief`. Full artifact: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-logo-brief.user.md`*
+
+| Field | Value |
+|---|---|
+| Mark Type | {wordmark \| lettermark \| symbol + wordmark \| abstract mark} |
+| Primary Colour from Palette | `--color-primary` {HSL value} |
+| Accent from Palette | `--color-accent` {HSL value} |
+| Typography from Dossier | {heading font family, weight for logo} |
+| Use Cases | {e.g., social icon, website header, email header, hang tag — list from brief} |
+| Forbidden Territory | {key constraints from brief} |
+| Reference Inspirations | {brand references from brief, or "See full artifact"} |
+| Wordmark Note | {TBD — feasible from brand fonts \| designer recommended} |
+
+## Packaging Brief
+
+*Populated by `/lp-do-assessment-15-packaging-brief` (conditional: physical-product only). Full artifact: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-packaging-brief.user.md`*
+
+| Field | Value |
+|---|---|
+| Structural Format | {TBD — e.g., hang tag + poly bag \| folding carton \| label + outer box} |
+| Regulatory Category | {TBD — fashion/leather goods \| homeware/ceramics \| cosmetics/skincare \| food/beverage} |
+| Key Regulatory Fields | {TBD — e.g., fibre composition, care symbols, INCI list, allergens — from regulatory checklist} |
+| Brand Assets Used | {TBD — logo variant(s), colour tokens, typography from brief} |
+| Print Specification Notes | {TBD — e.g., CMYK not RGB, minimum print size, finish (matte/gloss/foil)} |
 
 ## References
 

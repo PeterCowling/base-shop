@@ -25,23 +25,20 @@ export interface AvatarProps extends Omit<ImageProps, "width" | "height"> {
 // ────────────────────────────────────────────────────────────────────────────────
 // Component
 // ────────────────────────────────────────────────────────────────────────────────
-export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
-  (
-    {
-      className,
-      src,
-      alt = "",
-      fallback,
-      size = 32,
-      width,
-      height,
-      padding,
-      margin,
-      style,
-      ...props
-    },
-    ref
-  ) => {
+export function Avatar({
+  className,
+  src,
+  alt = "",
+  fallback,
+  size = 32,
+  width,
+  height,
+  padding,
+  margin,
+  style,
+  ref,
+  ...props
+}: AvatarProps & { ref?: React.Ref<HTMLImageElement> }) {
     const dimension = size;
 
     // Ensure we hand Next <Image> genuine numbers
@@ -69,7 +66,8 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
     if (!src) {
       return (
         <div
-          ref={ref as unknown as React.RefObject<HTMLDivElement>}
+          data-slot="avatar"
+          ref={ref as unknown as React.Ref<HTMLDivElement>}
           className={cn(
             "bg-muted flex items-center justify-center rounded-full text-sm", // i18n-exempt -- DEV-000 CSS utility class names
             boxClasses,
@@ -86,6 +84,7 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
     // ─── With src: render Next <Image> ──────────────────────────────────────
     return (
       <Image
+        data-slot="avatar"
         ref={ref}
         src={src}
         alt={alt}
@@ -100,7 +99,4 @@ export const Avatar = React.forwardRef<HTMLImageElement, AvatarProps>(
         {...props}
       />
     );
-  }
-);
-
-Avatar.displayName = "Avatar";
+}

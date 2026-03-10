@@ -102,7 +102,7 @@ export function LayersPanelRow({ node, index, parentId, selected, onSelect, onTo
       <Inline gap={1} alignY="center">
         <button
           type="button"
-          className="min-h-10 min-w-10 rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          className="min-h-11 min-w-11 rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
           {...toggleHiddenAria}
           title={node.hidden ? (t("cms.builder.layer.show") as string) : (t("cms.builder.layer.hide") as string)}
           onClick={(e) => { e.stopPropagation(); onToggleHidden(node.id, !node.hidden); }}
@@ -111,7 +111,7 @@ export function LayersPanelRow({ node, index, parentId, selected, onSelect, onTo
         </button>
         <button
           type="button"
-          className="min-h-10 min-w-10 rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+          className="min-h-11 min-w-11 rounded border px-2 py-1 text-xs hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
           {...toggleLockAria}
           title={node.locked ? (t("cms.builder.layer.unlock") as string) : (t("cms.builder.layer.lock") as string)}
           onClick={(e) => { e.stopPropagation(); onToggleLocked(node.id, !node.locked); }}

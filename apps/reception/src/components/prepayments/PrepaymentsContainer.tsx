@@ -11,6 +11,7 @@ import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations
 import useAllTransactions from "../../hooks/mutations/useAllTransactionsMutations";
 import useCCDetailsMutations from "../../hooks/mutations/useCCDetailsMutations";
 import useFinancialsRoomMutations from "../../hooks/mutations/useFinancialsRoomMutations";
+import { canAccess, Permissions } from "../../lib/roles";
 import { getCurrentIsoTimestamp } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 
@@ -32,7 +33,7 @@ function PrepaymentsContainer({
   const { saveCCDetails } = useCCDetailsMutations();
   const { saveFinancialsRoom } = useFinancialsRoomMutations();
   const { user } = useAuth();
-  const isPete = user?.user_name === "Pete";
+  const isPrivileged = canAccess(user ?? null, Permissions.BULK_ACTIONS);
   const [selectedBooking, setSelectedBooking] = useState<PrepaymentData | null>(
     null
   );
@@ -83,7 +84,13 @@ function PrepaymentsContainer({
       });
 
       // Log successful payment activity
-      await addActivity(occupantId, 8);
+      const paymentActivityResult = await addActivity(occupantId, 8);
+      if (!paymentActivityResult.success) {
+        throw new Error(
+          paymentActivityResult.error ??
+            "Failed to log prepayment activity for paid reservation."
+        );
+      }
     },
     [addToAllTransactions, saveFinancialsRoom, addActivity]
   );
@@ -284,7 +291,13 @@ function PrepaymentsContainer({
           } else if (codes.includes(6)) {
             codeToLog = 7;
           }
-          await addActivity(occupantId, codeToLog);
+          const failedActivityResult = await addActivity(occupantId, codeToLog);
+          if (!failedActivityResult.success) {
+            throw new Error(
+              failedActivityResult.error ??
+                "Failed to log failed-payment activity."
+            );
+          }
           setMessage(`Payment failed for ${bookingRef}. Status code updated.`);
         }
 
@@ -380,7 +393,7 @@ function PrepaymentsContainer({
       setFilterText={setFilterText}
       lastCompletedBooking={lastCompletedBooking}
       handleRecallLast={handleRecallLast}
-      isPete={isPete}
+      isPrivileged={isPrivileged}
       handleDeleteClick={handleDeleteClick}
       isDeleteMode={isDeleteMode}
       handleOpenBooking={handleOpenBooking}

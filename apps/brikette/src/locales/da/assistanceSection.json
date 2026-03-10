@@ -11,6 +11,7 @@
   "otherBookingOptions": "Andre bookingmuligheder og sociale medier",
   "addressLabel": "Adresse:",
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookDirect": "Book direkte",
   "bookingOptions": {
     "googleBusiness": "Google Erhverv",
     "bookingCom": "Booking.com",
@@ -41,7 +42,7 @@
     "cardCta": "Læs planlægningsguiden {{guideTitle}}"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "_ _ _ _ _ _ _",
+    "intro": "_ TOK0 _ _ _ _ _ TOK1 _ _"
   }
 }

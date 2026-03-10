@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Caryina wordmark — dark / 1-colour variant (print, hang tag, emboss reference)
+  All glyphs near-black #1A1A1A — "y" is weight 300 for visual echo of the full-colour concept.
+  Background: white — remove rect for transparent.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 88" role="img" aria-label="Caryina">
+  <title>Caryina</title>
+
+  <defs>
+    <style><![CDATA[
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&display=swap');
+    ]]></style>
+  </defs>
+
+  <rect width="320" height="88" fill="#FFFFFF"/>
+
+  <text
+    font-family="'Cormorant Garamond', Georgia, serif"
+    font-size="46"
+    letter-spacing="7"
+    x="20"
+    y="59"
+  >
+    <tspan font-weight="500" fill="#1A1A1A">Cari</tspan><tspan
+      font-weight="300"
+      fill="#1A1A1A">y</tspan><tspan
+      font-weight="500"
+      fill="#1A1A1A">ina</tspan>
+  </text>
+
+</svg>

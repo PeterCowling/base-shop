@@ -17,40 +17,37 @@ const getJsonLd = (container: HTMLElement): Record<string, unknown> => {
 };
 
 describe("SiteSearchStructuredData", () => {
-  it("uses localized slug for assistance page in SearchAction target (English)", () => {
+  it("uses localized assistance slug in SearchAction target (English)", () => {
     const { container } = renderWithProviders(<SiteSearchStructuredData lang="en" />);
     const json = getJsonLd(container);
     const action = json.potentialAction as Record<string, unknown>;
 
-    const expectedSlug = getSlug("assistance", "en");
-    const expectedTarget = `${BASE_URL}/en/${expectedSlug}?q={search_term_string}`;
+    const expectedTarget = `${BASE_URL}/en/${getSlug("assistance", "en")}?q={search_term_string}`;
 
     expect(action.target).toBe(expectedTarget);
   });
 
-  it("uses localized slug for assistance page in SearchAction target (German)", () => {
+  it("uses localized assistance slug in SearchAction target (German)", () => {
     const { container } = renderWithProviders(<SiteSearchStructuredData lang="de" />);
     const json = getJsonLd(container);
     const action = json.potentialAction as Record<string, unknown>;
 
-    const expectedSlug = getSlug("assistance", "de");
-    const expectedTarget = `${BASE_URL}/de/${expectedSlug}?q={search_term_string}`;
+    const expectedTarget = `${BASE_URL}/de/${getSlug("assistance", "de")}?q={search_term_string}`;
 
     expect(action.target).toBe(expectedTarget);
   });
 
-  it("uses localized slug for assistance page in SearchAction target (French)", () => {
+  it("uses localized assistance slug in SearchAction target (French)", () => {
     const { container } = renderWithProviders(<SiteSearchStructuredData lang="fr" />);
     const json = getJsonLd(container);
     const action = json.potentialAction as Record<string, unknown>;
 
-    const expectedSlug = getSlug("assistance", "fr");
-    const expectedTarget = `${BASE_URL}/fr/${expectedSlug}?q={search_term_string}`;
+    const expectedTarget = `${BASE_URL}/fr/${getSlug("assistance", "fr")}?q={search_term_string}`;
 
     expect(action.target).toBe(expectedTarget);
   });
 
-  it("uses localized slug for assistance page in SearchAction target (all supported locales)", () => {
+  it("uses localized assistance slug in SearchAction target (all supported locales)", () => {
     const testLocales: AppLanguage[] = ["en", "es", "de", "fr", "it", "ja"];
 
     testLocales.forEach((lang) => {
@@ -58,8 +55,7 @@ describe("SiteSearchStructuredData", () => {
       const json = getJsonLd(container);
       const action = json.potentialAction as Record<string, unknown>;
 
-      const expectedSlug = getSlug("assistance", lang);
-      const expectedTarget = `${BASE_URL}/${lang}/${expectedSlug}?q={search_term_string}`;
+      const expectedTarget = `${BASE_URL}/${lang}/${getSlug("assistance", lang)}?q={search_term_string}`;
 
       expect(action.target).toBe(expectedTarget);
     });

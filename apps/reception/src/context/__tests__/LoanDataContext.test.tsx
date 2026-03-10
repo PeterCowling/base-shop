@@ -30,7 +30,7 @@ jest.mock("../../hooks/mutations/useLoansMutations", () => ({
   }),
 }));
 
-const toastMock = vi
+const toastMock = jest
   .spyOn(toastUtils, "showToast")
   .mockImplementation(() => undefined);
 
@@ -230,6 +230,139 @@ describe("LoanDataContext", () => {
       "Failed to update loan data",
       "error"
     );
+  });
+
+  describe("wrapper passes context-derived optional params to hook", () => {
+    it("removeLoanItem wrapper passes deposit and isEmpty from loansState", async () => {
+      const txn: LoanTransaction = { ...baseTxn, deposit: 15, item: "Umbrella" };
+      const loans: Loans = { B1: { O1: { txns: { T1: txn } } } };
+      mockedSubscription.mockReturnValue({
+        data: loans,
+        loading: false,
+        error: null,
+      });
+      const { result } = renderHook(() => useLoanData(), { wrapper });
+
+      await act(async () => {
+        await result.current.removeLoanItem("B1", "O1", "T1", "Umbrella");
+      });
+
+      // Hook should be called with deposit=15 (from loansState) and isEmpty=true (only txn being removed)
+      expect(removeLoanItemMock).toHaveBeenCalledWith(
+        "B1",
+        "O1",
+        "T1",
+        "Umbrella",
+        15,
+        true
+      );
+    });
+
+    it("removeLoanItem wrapper passes isEmpty=false when other txns remain", async () => {
+      const txn1: LoanTransaction = { ...baseTxn, deposit: 10, item: "Umbrella" };
+      const txn2: LoanTransaction = { ...baseTxn, deposit: 0, item: "Padlock" };
+      const loans: Loans = { B1: { O1: { txns: { T1: txn1, T2: txn2 } } } };
+      mockedSubscription.mockReturnValue({
+        data: loans,
+        loading: false,
+        error: null,
+      });
+      const { result } = renderHook(() => useLoanData(), { wrapper });
+
+      await act(async () => {
+        await result.current.removeLoanItem("B1", "O1", "T1", "Umbrella");
+      });
+
+      expect(removeLoanItemMock).toHaveBeenCalledWith(
+        "B1",
+        "O1",
+        "T1",
+        "Umbrella",
+        10,
+        false // T2 remains
+      );
+    });
+
+    it("removeLoanTransactionsForItem wrapper passes matchingTxnIds and isOccupantEmpty", async () => {
+      const txnLoan: LoanTransaction = { ...baseTxn, item: "Keycard", type: "Loan" };
+      const txnRefund: LoanTransaction = { ...baseTxn, item: "Padlock", type: "Loan" };
+      const loans: Loans = {
+        B1: { O1: { txns: { T1: txnLoan, T2: txnRefund } } },
+      };
+      mockedSubscription.mockReturnValue({
+        data: loans,
+        loading: false,
+        error: null,
+      });
+      const { result } = renderHook(() => useLoanData(), { wrapper });
+
+      await act(async () => {
+        await result.current.removeLoanTransactionsForItem("B1", "O1", "Keycard");
+      });
+
+      expect(removeLoanTransactionsForItemMock).toHaveBeenCalledWith(
+        "B1",
+        "O1",
+        "Keycard",
+        ["T1"], // only T1 matches Keycard+Loan
+        false   // T2 (Padlock) remains — occupant not empty
+      );
+    });
+
+    it("removeLoanTransactionsForItem wrapper passes isOccupantEmpty=true when all txns match", async () => {
+      const txnLoan: LoanTransaction = { ...baseTxn, item: "Umbrella", type: "Loan" };
+      const loans: Loans = { B1: { O1: { txns: { T1: txnLoan } } } };
+      mockedSubscription.mockReturnValue({
+        data: loans,
+        loading: false,
+        error: null,
+      });
+      const { result } = renderHook(() => useLoanData(), { wrapper });
+
+      await act(async () => {
+        await result.current.removeLoanTransactionsForItem("B1", "O1", "Umbrella");
+      });
+
+      expect(removeLoanTransactionsForItemMock).toHaveBeenCalledWith(
+        "B1",
+        "O1",
+        "Umbrella",
+        ["T1"],
+        true // no remaining txns after removing T1
+      );
+    });
+
+    it("removeOccupantIfEmpty wrapper passes isEmpty=true when occupant has no txns", async () => {
+      const loans: Loans = { B1: { O1: { txns: {} } } };
+      mockedSubscription.mockReturnValue({
+        data: loans,
+        loading: false,
+        error: null,
+      });
+      const { result } = renderHook(() => useLoanData(), { wrapper });
+
+      await act(async () => {
+        await result.current.removeOccupantIfEmpty("B1", "O1");
+      });
+
+      expect(removeOccupantIfEmptyMock).toHaveBeenCalledWith("B1", "O1", true);
+    });
+
+    it("removeOccupantIfEmpty wrapper passes isEmpty=false when occupant has txns", async () => {
+      const loans: Loans = { B1: { O1: { txns: { T1: baseTxn } } } };
+      mockedSubscription.mockReturnValue({
+        data: loans,
+        loading: false,
+        error: null,
+      });
+      const { result } = renderHook(() => useLoanData(), { wrapper });
+
+      await act(async () => {
+        await result.current.removeOccupantIfEmpty("B1", "O1");
+      });
+
+      expect(removeOccupantIfEmptyMock).toHaveBeenCalledWith("B1", "O1", false);
+    });
   });
 
   it("handles invalid subscription data", () => {

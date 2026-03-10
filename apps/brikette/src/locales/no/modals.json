@@ -20,7 +20,7 @@
     "title": "Bestill direkte og spar",
     "description": "Takk for at du velger å bestille direkte hos oss! Som takk får du:",
     "perks": {
-      "discount": "Opptil 10 % avslag på romprisen",
+      "discount": "Opptil 25 % avslag på romprisen",
       "breakfast": "Gratis frokost hver morgen",
       "drinks": "Gratis velkomstdrinker",
       "upgrades": "Prioriterte romoppgraderinger (ved tilgjengelighet)"
@@ -159,6 +159,19 @@
     "close": "Lukk"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "Laster"
+  },
+  "date": {
+    "stayHelper": "2-8 netter",
+    "clearDates": "Tøm datoer",
+    "nightsSummary": "{{from}} → {{to}}__{{nights}} nights)"
+  },
+  "directPerks": {
+    "heading": "Hvorfor booke direkte?",
+    "items": [
+      "Opptil 25 % rabatt",
+      "Gratis frokost",
+      "Gratis kveldsdrink"
+    ]
   }
 }

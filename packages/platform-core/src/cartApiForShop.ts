@@ -22,6 +22,7 @@ import {
   setQty,
 } from "./cartStore";
 import { getShopSkuById } from "./repositories/catalogSkus.server";
+import type { InventoryRepositoryBackend } from "./repositories/inventory.server";
 import { patchSchema, postSchema, putSchema } from "./schemas/cart";
 
 const deleteSchema = z.object({ id: z.string() }).strict();
@@ -30,13 +31,18 @@ export function createShopCartApi({
   shop,
   locale = "en",
   includeDraft = false,
+  inventoryBackend,
 }: {
   shop: string;
   locale?: Locale;
   includeDraft?: boolean;
+  inventoryBackend?: InventoryRepositoryBackend;
 }) {
   async function resolveSku(skuId: string): Promise<SKU | null> {
-    return await getShopSkuById(shop, skuId, locale, { includeDraft });
+    return await getShopSkuById(shop, skuId, locale, {
+      includeDraft,
+      inventoryBackend,
+    });
   }
 
   /* ------------------------------------------------------------------
@@ -229,4 +235,3 @@ export function createShopCartApi({
 
   return { PUT, POST, PATCH, DELETE, GET };
 }
-

@@ -31,7 +31,7 @@ The Technical cabinet reviews the codebase itself — not business strategy or c
 Technical cabinet runs when ANY of:
 1. IDEAS-01 `scan-proposals.md` contains repo-diff/code-quality evidence requiring technical review
 2. Stance is `improve-data` (technical debt is a data/measurement gap)
-3. `--force-code-review` flag passed to `/idea-generate`
+3. `--force-code-review` flag passed to `/lp-do-idea-generate`
 
 Technical cabinet SKIPS when:
 - Stance is `grow-business` AND no qualifying IDEAS-01 technical proposals AND no `--force-code-review`

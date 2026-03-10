@@ -38,6 +38,21 @@ Auto-Build-Intent: <plan-only | plan+auto>
 - Assumptions:
   - ...
 
+## Inherited Outcome Contract
+
+<!--
+Populated by /lp-do-plan from the fact-find's `## Outcome Contract` section.
+For dispatch-routed fact-finds: values come from the dispatch.v2 payload.
+For direct-inject fact-finds: values come from Trigger-Why / Trigger-Intended-Outcome frontmatter.
+If the fact-find has no Outcome Contract section (legacy): mark as Source: auto / Why: TBD.
+Do not fabricate values.
+-->
+
+- **Why:** <carry from fact-find Outcome Contract; use TBD if absent>
+- **Intended Outcome Type:** <measurable | operational | TBD>
+- **Intended Outcome Statement:** <carry from fact-find; use TBD if absent>
+- **Source:** <operator | auto> <!-- carries through from fact-find; auto values excluded from quality metrics -->
+
 ## Fact-Find Reference
 - Related brief: `docs/plans/<feature-slug>/fact-find.md`
 - Key findings used:

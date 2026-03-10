@@ -3,34 +3,30 @@
 
 // src/app/[lang]/deals/DealsPageContent.tsx
 // Client component for deals page
-import { Fragment, memo, useCallback, useEffect, useState } from "react";
+import { Fragment, memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
-import clsx from "clsx";
 
 import { Section } from "@acme/design-system/atoms";
-import { Button } from "@acme/design-system/primitives";
 
 import DealsStructuredData from "@/components/seo/DealsStructuredData";
-import { Cluster, Inline, InlineItem, Stack } from "@/components/ui/flex";
-import { useOptionalModal } from "@/context/ModalContext";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
-import { ChevronDown } from "@/icons";
 import { formatMonthDay, formatPercent, isoDateToLocalStart, shouldIncludeYear } from "@/routes/deals/dates";
 import DealCard from "@/routes/deals/DealCard";
 import { DEALS, PRIMARY_DEAL } from "@/routes/deals/deals";
+import { DealsPerksSection, DealsPrimaryCtaSection } from "@/routes/deals/PerksAndCtaSections";
 import { getDealStatus } from "@/routes/deals/status";
 import { useDealContent } from "@/routes/deals/useDealContent";
 import { fireSelectPromotion, fireViewItemList, fireViewPromotion } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 type Props = {
   lang: AppLanguage;
 };
 
 const CURRENT_DEALS_ID = "current-deals";
-const EXPIRED_DEALS_PANEL_ID = "expired-deals-panel";
 const DIRECT_BOOKING_PERKS_ID = "direct-booking-perks";
 const FALLBACK_DEALS_TITLE = "Deals & Offers";
 const FALLBACK_DEALS_SUBTITLE = "Auto-applied at checkout. Direct bookings only.";
@@ -64,9 +60,6 @@ type DealListingsProps = {
   lang: AppLanguage;
   activeDeals: DealEntry[];
   upcomingDeals: DealEntry[];
-  expiredDeals: DealEntry[];
-  showExpired: boolean;
-  onToggleExpired: () => void;
   translate: ReturnType<typeof useDealContent>["translate"];
   termsLabel: string;
   termsHref: string;
@@ -111,9 +104,6 @@ function DealListings({
   lang,
   activeDeals,
   upcomingDeals,
-  expiredDeals,
-  showExpired,
-  onToggleExpired,
   translate,
   termsLabel,
   termsHref,
@@ -147,48 +137,6 @@ function DealListings({
           onOpenBooking={onOpenBooking}
           referenceDate={referenceDate}
         />
-      )}
-
-      {expiredDeals.length > 0 && (
-        <Section padding="default">
-          <button
-            type="button"
-            onClick={onToggleExpired}
-            aria-expanded={showExpired}
-            aria-controls={EXPIRED_DEALS_PANEL_ID}
-            // eslint-disable-next-line ds/min-tap-size -- BRIK-DS-001: full-width control exceeds tap target; lint rule does not infer width-based size.
-            className="flex min-h-10 w-full items-center justify-between text-start"
-          >
-            <h2 className="text-xl font-semibold text-brand-heading">
-              {(translate("sections.expired") as string) || "Past Deals"}
-            </h2>
-            <ChevronDown
-              className={clsx(
-                "h-5 w-5 text-brand-text/60 transition-transform",
-                showExpired && "rotate-180"
-              )}
-            />
-          </button>
-          {showExpired && (
-            <div id={EXPIRED_DEALS_PANEL_ID} className="mt-6">
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {expiredDeals.map(({ deal, status }) => (
-                  <DealCard
-                    key={deal.id}
-                    deal={deal}
-                    status={status}
-                    lang={lang}
-                    translate={translate}
-                    termsLabel={termsLabel}
-                    termsHref={termsHref}
-                    onOpenBooking={onOpenBooking}
-                    referenceDate={referenceDate}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
-        </Section>
       )}
     </Fragment>
   );
@@ -277,24 +225,7 @@ function resolvePageCopy({
 }
 
 function DealsPageContent({ lang }: Props) {
-  useEffect(() => {
-    // Fire view_item_list for deals index
-    fireViewItemList({
-      itemListId: "deals_index",
-      rooms: DEALS.map((deal) => ({ sku: deal.id })),
-    });
-    // TC-01: fire view_promotion for all deals on mount
-    if (DEALS.length > 0) {
-      fireViewPromotion({
-        promotions: DEALS.map((deal) => ({
-          promotion_id: deal.id,
-          promotion_name: `${deal.discountPct}% off`,
-        })),
-      });
-    }
-  }, []);
   const { t } = useTranslation("dealsPage", { lng: lang });
-  const { openModal } = useOptionalModal();
   const router = useRouter();
   usePagePreload({ lang, namespaces: ["dealsPage", "_tokens"] });
 
@@ -313,15 +244,13 @@ function DealsPageContent({ lang }: Props) {
             promotion_name: deal ? `${deal.discountPct}% off` : dealId,
           },
         });
-        router.push(`/${lang}/book?deal=${encodeURIComponent(dealId)}`);
+        router.push(`${getBookPath(lang)}?deal=${encodeURIComponent(dealId)}`);
         return;
       }
-      router.push(`/${lang}/book`);
+      router.push(getBookPath(lang));
     },
     [router, lang]
   );
-
-  const openOffers = useCallback(() => openModal("offers"), [openModal]);
 
   const [now, setNow] = useState<number>(() => Date.now());
   useEffect(() => {
@@ -341,9 +270,26 @@ function DealsPageContent({ lang }: Props) {
 
   const activeDeals = dealsWithStatus.filter((entry) => entry.status === "active");
   const upcomingDeals = dealsWithStatus.filter((entry) => entry.status === "upcoming");
-  const expiredDeals = dealsWithStatus.filter((entry) => entry.status === "expired");
+  const visibleDeals = useMemo(
+    () => [...activeDeals, ...upcomingDeals],
+    [activeDeals, upcomingDeals],
+  );
 
-  const [showExpired, setShowExpired] = useState(false);
+  useEffect(() => {
+    if (visibleDeals.length === 0) return;
+
+    fireViewItemList({
+      itemListId: "deals_index",
+      rooms: visibleDeals.map(({ deal }) => ({ sku: deal.id })),
+    });
+
+    fireViewPromotion({
+      promotions: visibleDeals.map(({ deal }) => ({
+        promotion_id: deal.id,
+        promotion_name: `${deal.discountPct}% off`,
+      })),
+    });
+  }, [visibleDeals]);
 
   const headlineDeal = activeDeals[0]?.deal ?? upcomingDeals[0]?.deal ?? PRIMARY_DEAL;
   const headlineStatus = resolveHeadlineStatus(activeDeals, upcomingDeals);
@@ -403,9 +349,6 @@ function DealsPageContent({ lang }: Props) {
         lang={lang}
         activeDeals={activeDeals}
         upcomingDeals={upcomingDeals}
-        expiredDeals={expiredDeals}
-        showExpired={showExpired}
-        onToggleExpired={() => setShowExpired(!showExpired)}
         translate={ft}
         termsLabel={termsLabel}
         termsHref={termsHref}
@@ -413,32 +356,16 @@ function DealsPageContent({ lang }: Props) {
         referenceDate={referenceDate}
       />
 
-      {/* Direct Booking Perks */}
-      <Section id={DIRECT_BOOKING_PERKS_ID} padding="default" className="bg-brand-surface">
-        <h2 className="mb-6 text-center text-2xl font-semibold text-brand-heading">
-          {labels.perksHeading || "Direct booking perks"}
-        </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {perks.map((perk) => (
-            <div
-              key={perk.title}
-              className="flex flex-col items-center rounded-lg border border-brand-outline/20 bg-brand-bg p-4 text-center"
-            >
-              <h3 className="font-medium text-brand-heading">{perk.title}</h3>
-              {perk.subtitle && (
-                <p className="mt-1 text-sm text-brand-text/70">{perk.subtitle}</p>
-              )}
-            </div>
-          ))}
-        </div>
-      </Section>
+      <DealsPerksSection
+        sectionId={DIRECT_BOOKING_PERKS_ID}
+        heading={labels.perksHeading || "Direct booking perks"}
+        perks={perks}
+      />
 
-      {/* CTA */}
-      <Section padding="default" className="text-center">
-        <Button onClick={() => openBooking({ kind: "standard" })} size="md">
-          {checkAvailabilityCta}
-        </Button>
-      </Section>
+      <DealsPrimaryCtaSection
+        label={checkAvailabilityCta}
+        onClick={() => openBooking({ kind: "standard" })}
+      />
     </Fragment>
   );
 }

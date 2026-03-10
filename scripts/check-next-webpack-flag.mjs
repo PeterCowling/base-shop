@@ -43,6 +43,27 @@ const APP_COMMAND_POLICY_MATRIX = Object.freeze({
     dev: RULE_ALLOW_ANY,
     build: RULE_ALLOW_ANY,
   }),
+  "handbag-configurator": Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_ALLOW_ANY,
+  }),
+  "cochlearfit": Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_ALLOW_ANY,
+  }),
+  "skylar": Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_ALLOW_ANY,
+  }),
+});
+
+// Packages-level policy matrix. Keys are `packages/<pkg>` (without trailing slash).
+// Default for unregistered packages/* remains fail-closed (require-webpack).
+const PACKAGES_COMMAND_POLICY_MATRIX = Object.freeze({
+  "packages/template-app": Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_ALLOW_ANY,
+  }),
 });
 
 const WORKFLOW_APP_MATRIX = Object.freeze({
@@ -209,6 +230,12 @@ function resolveAppPolicy(relPath) {
   if (appPackage) {
     const appId = appPackage[1];
     return APP_COMMAND_POLICY_MATRIX[appId] || DEFAULT_COMMAND_POLICY;
+  }
+
+  const pkgPackage = norm.match(/^packages\/([^/]+)\/package\.json$/);
+  if (pkgPackage) {
+    const pkgKey = `packages/${pkgPackage[1]}`;
+    return PACKAGES_COMMAND_POLICY_MATRIX[pkgKey] || DEFAULT_COMMAND_POLICY;
   }
 
   const workflow = norm.match(/^\.github\/workflows\/([^/]+)$/);

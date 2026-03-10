@@ -19,6 +19,7 @@ Business-OS-Integration: on
 Business-Unit: BOS
 Card-ID:
 ---
+<!-- LINT-EXEMPT: local-jest-pattern -->
 
 # Startup Loop S2 Market Intelligence Prompt Quality — Plan
 
@@ -54,13 +55,13 @@ Refactor S2 (Market Intelligence) prompt generation so Deep Research consistentl
   - Website-live and competitor benchmarking need hard, reproducible rules.
 
 ## Existing System Notes
-- Current generator: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
+- Current generator: `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`
 - Current generic template: `docs/business-os/market-research/_templates/deep-research-market-intelligence-prompt.md`
 - Broken example output (BRIK): `docs/business-os/market-research/BRIK/2026-02-15-deep-research-market-intelligence-prompt.user.md`
 
 
 ## Validation Foundation (Evidence Collected In Planning)
-- Generator entry point reviewed: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
+- Generator entry point reviewed: `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`
 - Current prompt size scout (BRIK 2026-02-15 prompt): prompt ~9,580 chars; internal baselines ~5,668 chars; total file ~10,299 chars. (Used to set two-pass thresholds.)
 - Targeted test run executed: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2`
 - Known warning during Jest collection: `jest-haste-map: duplicate manual mock found: ui-modal-context` due to multiple app mocks; the S2 handoff test still passes.
@@ -131,7 +132,7 @@ See `## Tasks` section for the active task list.
 - **Approval-Evidence:** Accept prompt by replying “ok” after inspection.
 - **Measurement-Readiness:** n/a (prompt-generation infrastructure)
 - **Affects:**
-  - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
+  - Primary: `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`
   - Secondary: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
 - **Depends on:** -
 - **Blocks:** TASK-03, TASK-05
@@ -163,7 +164,7 @@ See `## Tasks` section for the active task list.
 - **Validation:**
   - Ran: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
   - Ran: `pnpm exec tsc -p scripts/tsconfig.json --pretty false --noEmit` — PASS
-  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
 - **Implementation notes:**
   - Replaced the “baseline bloat” block with a compact, decision-grade internal baseline that embeds: YoY 12-month window, decomposition, top decline months, last-12-month slice, and GA4 snapshot.
   - Removed nested-YAML risk by no longer embedding prior pack excerpts or other markdown docs inside `BEGIN_INTERNAL_BASELINES`.
@@ -213,9 +214,9 @@ See `## Tasks` section for the active task list.
 - **Approval-Evidence:** reviewer ack after inspecting generated BRIK prompt.
 - **Measurement-Readiness:** n/a
 - **Affects:**
-  - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
+  - Primary: `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`
   - Primary: `docs/business-os/market-research/_templates/` (new hospitality template referenced)
-  - Secondary: `[readonly] docs/business-os/startup-loop/loop-spec.yaml` (should remain unchanged)
+  - Secondary: `[readonly] docs/business-os/startup-loop/specifications/loop-spec.yaml` (should remain unchanged)
   - Secondary: `docs/business-os/startup-loop-workflow.user.md` (optional: mention profiles + override)
   - Tests: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
 - **Depends on:** TASK-01, TASK-02
@@ -242,7 +243,7 @@ See `## Tasks` section for the active task list.
 - **Validation:**
   - Ran: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
   - Ran: `pnpm exec tsc -p scripts/tsconfig.json --pretty false --noEmit` — PASS
-  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
 - **Implementation notes:**
   - Generator now selects a research profile (`hospitality_direct_booking_ota` vs `b2c_dtc_product`) and renders Deep Research prompts from markdown templates, injecting `{{INTERNAL_BASELINES}}` as mandatory evidence.
   - Added `docs/business-os/market-research/<BIZ>/research-profile.user.md` override support (Status: Active, `Profile-Id: ...`).
@@ -258,7 +259,7 @@ See `## Tasks` section for the active task list.
 - **Approval-Evidence:** reviewer ack after inspecting prompt.
 - **Measurement-Readiness:** n/a
 - **Affects:**
-  - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
+  - Primary: `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`
   - Tests: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-07
@@ -283,7 +284,7 @@ See `## Tasks` section for the active task list.
 - **Validation:**
   - Ran: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
   - Ran: `pnpm exec tsc -p scripts/tsconfig.json --pretty false --noEmit` — PASS
-  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
 - **Implementation notes:**
   - Generator now derives a canonical website origin via precedence: intake table (Website/Domain) -> measurement verification URLs -> business plan URLs -> Cloudflare `host-filter-requested`.
   - For hospitality + `website-live`, the generated Deep Research prompt now includes an explicit funnel-audit block (URL + audit path) and a `Status: BLOCKED` instruction when the website URL is missing.
@@ -298,7 +299,7 @@ See `## Tasks` section for the active task list.
 - **Approval-Evidence:** reviewer ack.
 - **Measurement-Readiness:** n/a
 - **Affects:**
-  - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
+  - Primary: `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`
   - Tests: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
 - **Depends on:** TASK-01, TASK-03
 - **Blocks:** TASK-07
@@ -325,7 +326,7 @@ See `## Tasks` section for the active task list.
 - **Validation:**
   - Ran: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
   - Ran: `pnpm exec tsc -p scripts/tsconfig.json --pretty false --noEmit` — PASS
-  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
 - **Implementation notes:**
   - Added deterministic two-pass emission when prompt size exceeds committed thresholds (`BASESHOP_S2_MAX_PROMPT_CHARS`, `BASESHOP_S2_MAX_BASELINE_CHARS`).
   - Two-pass output is clearly labeled in the generated prompt doc, with explicit operator synthesis instructions.
@@ -408,7 +409,7 @@ See `## Tasks` section for the active task list.
 - **Deliverable:** Generator renders hospitality prompts with deterministic scenario dates, compact inventory header, and no duplicated website-audit block.
 - **Execution-Skill:** /lp-do-build
 - **Affects:**
-  - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
+  - Primary: `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`
   - Tests: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
 - **Depends on:** TASK-08
 - **Blocks:** TASK-10
@@ -432,7 +433,7 @@ See `## Tasks` section for the active task list.
 - **Validation:**
   - Ran: `pnpm run test:governed -- jest -- --runTestsByPath scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
   - Ran: `pnpm exec tsc -p scripts/tsconfig.json --pretty false --noEmit` — PASS
-  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
 - **Implementation notes:**
   - Deterministic scenario dates are computed from `as-of` and injected into the hospitality prompt (`{{S1_DATES}}`, `{{S2_DATES}}`, `{{S3_DATES}}`).
   - Baseline header no longer prints full Octorate room label lists; it keeps `Total rooms` plus a short sample note.

@@ -5,22 +5,22 @@
  * Supports cancellation and CSV export.
  */
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 import { showToast } from "../../utils/toastUtils";
 
 import useArchiveBooking from "./useArchiveBooking";
+import useMutationState from "./useMutationState";
 
 export interface BulkActionResult {
   success: string[];
   failed: string[];
 }
 
-interface UseBulkBookingActionsReturn {
+interface UseBulkBookingActionsReturn extends MutationState<void> {
   cancelBookings: (bookingRefs: string[]) => Promise<BulkActionResult>;
   exportToCsv: (data: CsvExportRow[], filename?: string) => void;
-  loading: boolean;
-  error: unknown;
 }
 
 export interface CsvExportRow {
@@ -103,8 +103,7 @@ function downloadCsv(csv: string, filename: string): void {
 
 export default function useBulkBookingActions(): UseBulkBookingActionsReturn {
   const { archiveBooking } = useArchiveBooking();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   /**
    * Cancels multiple bookings in sequence using soft-delete (status flag).
@@ -113,36 +112,47 @@ export default function useBulkBookingActions(): UseBulkBookingActionsReturn {
    */
   const cancelBookings = useCallback(
     async (bookingRefs: string[]): Promise<BulkActionResult> => {
-      setLoading(true);
-      setError(null);
-      const success: string[] = [];
-      const failed: string[] = [];
+      let partialResult: BulkActionResult | null = null;
 
-      for (const bookingRef of bookingRefs) {
-        try {
-          await archiveBooking(bookingRef);
-          success.push(bookingRef);
-        } catch (err) {
-          failed.push(bookingRef);
-          console.error(`Failed to cancel booking ${bookingRef}:`, err);
+      try {
+        return await run(async () => {
+          const success: string[] = [];
+          const failed: string[] = [];
+
+          for (const bookingRef of bookingRefs) {
+            try {
+              await archiveBooking(bookingRef);
+              success.push(bookingRef);
+            } catch (err) {
+              failed.push(bookingRef);
+              console.error(`Failed to cancel booking ${bookingRef}:`, err);
+            }
+          }
+
+          if (failed.length > 0) {
+            partialResult = { success, failed };
+            showToast(
+              `Cancelled ${success.length} booking(s), ${failed.length} failed`,
+              "warning"
+            );
+            return Promise.reject(`Failed to cancel ${failed.length} booking(s)`);
+          }
+
+          showToast(
+            `Successfully cancelled ${success.length} booking(s)`,
+            "success"
+          );
+          return { success, failed };
+        });
+      } catch (err) {
+        if (partialResult !== null) {
+          return partialResult;
         }
+
+        throw err;
       }
-
-      setLoading(false);
-
-      if (failed.length > 0) {
-        setError(`Failed to cancel ${failed.length} booking(s)`);
-        showToast(
-          `Cancelled ${success.length} booking(s), ${failed.length} failed`,
-          "warning"
-        );
-      } else {
-        showToast(`Successfully cancelled ${success.length} booking(s)`, "success");
-      }
-
-      return { success, failed };
     },
-    [archiveBooking]
+    [archiveBooking, run]
   );
 
   /**

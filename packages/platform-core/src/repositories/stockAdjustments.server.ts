@@ -1,10 +1,8 @@
 import "server-only";
 
-import { promises as fs } from "fs";
-import * as path from "path";
 import { ulid } from "ulid";
 
-import { DATA_ROOT } from "../dataRoot";
+import { prisma } from "../db";
 import { validateShopName } from "../shops/index";
 import {
   type InventoryItem,
@@ -23,91 +21,36 @@ import {
 
 import { readInventory, writeInventory } from "./inventory.server";
 
-const ADJUSTMENTS_FILENAME = "stock-adjustments.jsonl";
-
-type FileLockOptions = { timeoutMs?: number; staleMs?: number };
-
-async function acquireLock(
-  lockFile: string,
-  { timeoutMs = 5000, staleMs = 60_000 }: FileLockOptions = {},
-): Promise<fs.FileHandle> {
-  const start = Date.now();
-  while (true) {
-    try {
-      // eslint-disable-next-line security/detect-non-literal-fs-filename -- COM-ADJ: lock path derived from validated shop and fixed filename
-      return await fs.open(lockFile, "wx");
-    } catch (err) {
-      if ((err as NodeJS.ErrnoException).code !== "EEXIST") throw err;
-      const elapsed = Date.now() - start;
-      if (elapsed >= timeoutMs) {
-        // eslint-disable-next-line security/detect-non-literal-fs-filename -- COM-ADJ: lock path derived from validated shop and fixed filename
-        const stat = await fs.stat(lockFile).catch(() => undefined);
-        const isStale =
-          typeof stat?.mtimeMs === "number" && Date.now() - stat.mtimeMs > staleMs;
-        if (isStale) {
-          // eslint-disable-next-line security/detect-non-literal-fs-filename -- COM-ADJ: lock path derived from validated shop and fixed filename
-          await fs.unlink(lockFile).catch(() => {});
-          continue;
-        }
-        throw new Error(
-          `Timed out acquiring stock adjustment lock ${lockFile} after ${timeoutMs}ms`,
-        ); // i18n-exempt -- developer error message
-      }
-      await new Promise((resolve) => setTimeout(resolve, 50));
-    }
-  }
-}
-
-function adjustmentsPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, ADJUSTMENTS_FILENAME);
-}
-
-function inventoryLockPath(shop: string): string {
-  shop = validateShopName(shop);
-  return path.join(DATA_ROOT, shop, "inventory.lock");
-}
-
-async function ensureDir(shop: string): Promise<void> {
-  shop = validateShopName(shop);
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- COM-ADJ: path uses validated shop and trusted base
-  await fs.mkdir(path.join(DATA_ROOT, shop), { recursive: true });
-}
-
-async function readAll(shop: string): Promise<StockAdjustmentEvent[]> {
-  try {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename -- COM-ADJ: path uses validated shop and trusted base
-    const buf = await fs.readFile(adjustmentsPath(shop), "utf8");
-    const lines = buf.split("\n").map((line) => line.trim()).filter(Boolean);
-    return lines.map((line) => stockAdjustmentEventSchema.parse(JSON.parse(line) as unknown));
-  } catch (err) {
-    if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
-    console.error(`Failed to read stock adjustments for ${shop}`, err);
-    throw err;
-  }
-}
-
-async function append(shop: string, event: StockAdjustmentEvent): Promise<void> {
-  await ensureDir(shop);
-  const line = `${JSON.stringify(event)}\n`;
-  // eslint-disable-next-line security/detect-non-literal-fs-filename -- COM-ADJ: path uses validated shop and trusted base
-  await fs.appendFile(adjustmentsPath(shop), line, "utf8");
-}
-
-export async function listStockAdjustments(
-  shop: string,
-  { limit = 50 }: { limit?: number } = {},
-): Promise<StockAdjustmentEvent[]> {
-  const safeShop = validateShopName(shop);
-  const events = await readAll(safeShop);
-  const sorted = [...events].sort((a, b) => b.adjustedAt.localeCompare(a.adjustedAt));
-  return sorted.slice(0, Math.max(1, Math.floor(limit)));
-}
+export type AuditEventEntry = {
+  id: string;
+  shopId: string;
+  type: string;
+  sku: string;
+  variantKey: string;
+  quantityDelta: number;
+  note: string | null;
+  referenceId: string | null;
+  operatorId: string | null;
+  createdAt: Date;
+};
 
 export type StockAdjustmentResult =
   | { ok: true; duplicate: false; report: StockAdjustmentReport; event: StockAdjustmentEvent }
   | { ok: true; duplicate: true; report: StockAdjustmentReport; event: StockAdjustmentEvent }
   | { ok: false; code: string; message: string; details?: unknown };
+
+export async function listStockAdjustments(
+  shop: string,
+  { limit = 50 }: { limit?: number } = {},
+): Promise<AuditEventEntry[]> {
+  const safeShop = validateShopName(shop);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- prisma client type varies by generated schema
+  return (prisma as any).inventoryAuditEvent.findMany({
+    where: { shopId: safeShop, type: "adjustment" },
+    orderBy: { createdAt: "desc" },
+    take: Math.max(1, Math.floor(limit)),
+  });
+}
 
 export async function applyStockAdjustment(
   shop: string,
@@ -122,131 +65,51 @@ export async function applyStockAdjustment(
 
   const dryRun = Boolean(parsed.data.dryRun);
   const adjustedAt = new Date().toISOString();
-  const lockFile = inventoryLockPath(safeShop);
-  await ensureDir(safeShop);
-  const handle = await acquireLock(lockFile);
 
-  try {
-    const existing = await readAll(safeShop);
-    const prior = existing.find((e) => e.idempotencyKey === parsed.data.idempotencyKey);
-    if (prior) {
-      const report: StockAdjustmentReport = {
-        shop: safeShop,
-        idempotencyKey: prior.idempotencyKey,
-        dryRun: false,
-        adjustedAt: prior.adjustedAt,
-        ...(prior.adjustedBy ? { adjustedBy: prior.adjustedBy } : {}),
-        ...(prior.note ? { note: prior.note } : {}),
-        created: prior.report.created,
-        updated: prior.report.updated,
-        items: prior.report.items,
-      };
-      return { ok: true, duplicate: true, report, event: prior };
-    }
+  // Idempotency: check for prior event with the same key
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- prisma client type varies
+  const priorRow: AuditEventEntry | null = await (prisma as any).inventoryAuditEvent.findFirst({
+    where: {
+      shopId: safeShop,
+      referenceId: parsed.data.idempotencyKey,
+      type: "adjustment",
+    },
+  });
 
-    const inventory = await readInventory(safeShop);
-    const index = new Map<string, InventoryItem>(
-      inventory.map((item) => [variantKey(item.sku, item.variantAttributes), item]),
-    );
-
-    const results: StockAdjustmentItemResult[] = [];
-    let created = 0;
-    let updated = 0;
-
-    for (const item of parsed.data.items) {
-      const attrs = item.variantAttributes ?? {};
-      const key = variantKey(item.sku, attrs);
-      const current = index.get(key);
-      if (current && current.productId !== item.productId) {
-        return {
-          ok: false,
-          code: "PRODUCT_MISMATCH",
-          message: `Inventory productId mismatch for sku ${item.sku}`,
-          details: { sku: item.sku, expected: current.productId, provided: item.productId },
-        };
-      }
-
-      const previousQuantity = current?.quantity ?? 0;
-      const nextQuantity = Math.max(0, previousQuantity + item.quantity);
-
-      const next: InventoryItem = inventoryItemSchema.parse({
-        ...(current ?? {}),
-        sku: item.sku,
-        productId: current?.productId ?? item.productId,
-        quantity: nextQuantity,
-        variantAttributes: attrs,
-        ...(current?.lowStockThreshold !== undefined
-          ? { lowStockThreshold: current.lowStockThreshold }
-          : {}),
-      });
-
-      if (current) {
-        updated += 1;
-      } else {
-        created += 1;
-      }
-      index.set(key, next);
-
-      results.push({
-        sku: item.sku,
-        productId: next.productId,
-        variantAttributes: attrs,
-        delta: item.quantity,
-        previousQuantity,
-        nextQuantity,
-        reason: adjustmentReasonSchema.parse(item.reason),
-      });
-    }
-
+  if (priorRow) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any -- prisma client type varies
+    const allRows: AuditEventEntry[] = await (prisma as any).inventoryAuditEvent.findMany({
+      where: {
+        shopId: safeShop,
+        referenceId: parsed.data.idempotencyKey,
+        type: "adjustment",
+      },
+    });
+    const items: StockAdjustmentItemResult[] = allRows.map((r) => ({
+      sku: r.sku,
+      productId: r.sku,
+      variantAttributes: {},
+      delta: r.quantityDelta,
+      previousQuantity: 0,
+      nextQuantity: 0,
+      reason: adjustmentReasonSchema.parse("manual_recount"),
+    }));
     const report: StockAdjustmentReport = {
       shop: safeShop,
       idempotencyKey: parsed.data.idempotencyKey,
-      dryRun,
-      adjustedAt,
-      ...(options.actor ? { adjustedBy: options.actor } : {}),
-      ...(parsed.data.note ? { note: parsed.data.note } : {}),
-      created,
-      updated,
-      items: results,
+      dryRun: false,
+      adjustedAt: priorRow.createdAt.toISOString(),
+      ...(priorRow.note ? { note: priorRow.note } : {}),
+      created: 0,
+      updated: allRows.length,
+      items,
     };
-
-    if (dryRun) {
-      return {
-        ok: true,
-        duplicate: false,
-        report,
-        event: {
-          id: "dry-run",
-          idempotencyKey: parsed.data.idempotencyKey,
-          shop: safeShop,
-          adjustedAt,
-          ...(options.actor ? { adjustedBy: options.actor } : {}),
-          ...(parsed.data.note ? { note: parsed.data.note } : {}),
-          items: parsed.data.items.map((i) => ({
-            sku: i.sku,
-            productId: i.productId,
-            quantity: i.quantity,
-            variantAttributes: i.variantAttributes ?? {},
-            reason: adjustmentReasonSchema.parse(i.reason),
-          })),
-          report: { created, updated, items: results },
-        },
-      };
-    }
-
-    const nextInventory = [...index.values()].sort((a, b) =>
-      variantKey(a.sku, a.variantAttributes).localeCompare(variantKey(b.sku, b.variantAttributes)),
-    );
-
-    await writeInventory(safeShop, nextInventory);
-
     const event: StockAdjustmentEvent = stockAdjustmentEventSchema.parse({
-      id: ulid(),
+      id: priorRow.id,
       idempotencyKey: parsed.data.idempotencyKey,
       shop: safeShop,
-      adjustedAt,
-      ...(options.actor ? { adjustedBy: options.actor } : {}),
-      ...(parsed.data.note ? { note: parsed.data.note } : {}),
+      adjustedAt: priorRow.createdAt.toISOString(),
+      ...(priorRow.note ? { note: priorRow.note } : {}),
       items: parsed.data.items.map((i) => ({
         sku: i.sku,
         productId: i.productId,
@@ -254,19 +117,143 @@ export async function applyStockAdjustment(
         variantAttributes: i.variantAttributes ?? {},
         reason: adjustmentReasonSchema.parse(i.reason),
       })),
-      report: { created, updated, items: results },
+      report: { created: 0, updated: allRows.length, items },
+    });
+    return { ok: true, duplicate: true, report, event };
+  }
+
+  const inventory = await readInventory(safeShop);
+  const index = new Map<string, InventoryItem>(
+    inventory.map((item) => [variantKey(item.sku, item.variantAttributes), item]),
+  );
+
+  const results: StockAdjustmentItemResult[] = [];
+  let created = 0;
+  let updated = 0;
+
+  for (const item of parsed.data.items) {
+    const attrs = item.variantAttributes ?? {};
+    const key = variantKey(item.sku, attrs);
+    const current = index.get(key);
+    if (current && current.productId !== item.productId) {
+      return {
+        ok: false,
+        code: "PRODUCT_MISMATCH",
+        message: `Inventory productId mismatch for sku ${item.sku}`,
+        details: { sku: item.sku, expected: current.productId, provided: item.productId },
+      };
+    }
+
+    const previousQuantity = current?.quantity ?? 0;
+    const nextQuantity = Math.max(0, previousQuantity + item.quantity);
+
+    const next: InventoryItem = inventoryItemSchema.parse({
+      ...(current ?? {}),
+      sku: item.sku,
+      productId: current?.productId ?? item.productId,
+      quantity: nextQuantity,
+      variantAttributes: attrs,
+      ...(current?.lowStockThreshold !== undefined
+        ? { lowStockThreshold: current.lowStockThreshold }
+        : {}),
     });
 
-    await append(safeShop, event);
-
-    return { ok: true, duplicate: false, report, event };
-  } finally {
-    try {
-      await handle.close();
-      // eslint-disable-next-line security/detect-non-literal-fs-filename -- COM-ADJ: lock path derived from validated shop and fixed filename
-      await fs.unlink(lockFile).catch(() => {});
-    } catch {
-      // ignore
+    if (current) {
+      updated += 1;
+    } else {
+      created += 1;
     }
+    index.set(key, next);
+
+    results.push({
+      sku: item.sku,
+      productId: next.productId,
+      variantAttributes: attrs,
+      delta: item.quantity,
+      previousQuantity,
+      nextQuantity,
+      reason: adjustmentReasonSchema.parse(item.reason),
+    });
   }
+
+  const report: StockAdjustmentReport = {
+    shop: safeShop,
+    idempotencyKey: parsed.data.idempotencyKey,
+    dryRun,
+    adjustedAt,
+    ...(options.actor ? { adjustedBy: options.actor } : {}),
+    ...(parsed.data.note ? { note: parsed.data.note } : {}),
+    created,
+    updated,
+    items: results,
+  };
+
+  if (dryRun) {
+    return {
+      ok: true,
+      duplicate: false,
+      report,
+      event: {
+        id: "dry-run",
+        idempotencyKey: parsed.data.idempotencyKey,
+        shop: safeShop,
+        adjustedAt,
+        ...(options.actor ? { adjustedBy: options.actor } : {}),
+        ...(parsed.data.note ? { note: parsed.data.note } : {}),
+        items: parsed.data.items.map((i) => ({
+          sku: i.sku,
+          productId: i.productId,
+          quantity: i.quantity,
+          variantAttributes: i.variantAttributes ?? {},
+          reason: adjustmentReasonSchema.parse(i.reason),
+        })),
+        report: { created, updated, items: results },
+      },
+    };
+  }
+
+  const nextInventory = [...index.values()].sort((a, b) =>
+    variantKey(a.sku, a.variantAttributes).localeCompare(variantKey(b.sku, b.variantAttributes)),
+  );
+
+  await writeInventory(safeShop, nextInventory);
+
+  const eventId = ulid();
+  const event: StockAdjustmentEvent = stockAdjustmentEventSchema.parse({
+    id: eventId,
+    idempotencyKey: parsed.data.idempotencyKey,
+    shop: safeShop,
+    adjustedAt,
+    ...(options.actor ? { adjustedBy: options.actor } : {}),
+    ...(parsed.data.note ? { note: parsed.data.note } : {}),
+    items: parsed.data.items.map((i) => ({
+      sku: i.sku,
+      productId: i.productId,
+      quantity: i.quantity,
+      variantAttributes: i.variantAttributes ?? {},
+      reason: adjustmentReasonSchema.parse(i.reason),
+    })),
+    report: { created, updated, items: results },
+  });
+
+  // Write per-item audit rows
+  await Promise.all(
+    results.map((r) =>
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any -- prisma client type varies
+      (prisma as any).inventoryAuditEvent.create({
+        data: {
+          shopId: safeShop,
+          type: "adjustment",
+          sku: r.sku,
+          variantKey: variantKey(r.sku, r.variantAttributes),
+          quantityDelta: r.delta,
+          referenceId: parsed.data.idempotencyKey,
+          note: parsed.data.note ?? null,
+          operatorId: null,
+        },
+      }),
+    ),
+  );
+
+  return { ok: true, duplicate: false, report, event };
 }

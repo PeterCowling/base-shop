@@ -13,6 +13,8 @@ import { emailSchema, subjectSchema } from "./validators";
 export interface CampaignOptions {
   /** Recipient email address */
   to: string;
+  /** Optional BCC recipient email address */
+  bcc?: string;
   /** Email subject line */
   subject: string;
   /** HTML body */
@@ -43,7 +45,7 @@ export interface CampaignOptions {
 export async function sendCampaignEmail(
   options: CampaignOptions
 ): Promise<void> {
-  const { sanitize = true, to, subject, ...rest } = options;
+  const { sanitize = true, to, bcc, subject, ...rest } = options;
 
   // Determine the provider at send time so module import never throws for an
   // unsupported EMAIL_PROVIDER value.
@@ -53,6 +55,12 @@ export async function sendCampaignEmail(
   if (!parsedTo.success) {
     throw new Error(`Invalid recipient email address: ${to}`); // i18n-exempt: developer validation error
   }
+  if (typeof bcc !== "undefined") {
+    const parsedBcc = emailSchema.safeParse(bcc);
+    if (!parsedBcc.success) {
+      throw new Error(`Invalid bcc email address: ${bcc}`); // i18n-exempt: developer validation error
+    }
+  }
   const parsedSubject = subjectSchema.safeParse(subject);
   if (!parsedSubject.success) {
     throw new Error("Email subject is required."); // i18n-exempt: developer validation error
@@ -61,6 +69,7 @@ export async function sendCampaignEmail(
   const opts = {
     ...rest,
     to: parsedTo.data,
+    ...(typeof bcc !== "undefined" ? { bcc } : {}),
     subject: parsedSubject.data,
   } as CampaignOptions;
   if (opts.templateId) {
@@ -145,6 +154,7 @@ async function sendWithNodemailer(options: CampaignOptions): Promise<void> {
   await transport.sendMail({
     from: getDefaultSender(),
     to: options.to,
+    bcc: options.bcc,
     subject: options.subject,
     html: options.html,
     text: options.text,

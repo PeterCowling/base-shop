@@ -60,6 +60,8 @@ Workflow entrypoint (progressive disclosure): `docs/agents/feature-workflow-guid
 
 When asked to “check types” or “check TypeScript errors,” use the MCP TypeScript language tools first (fast, on-demand). See `docs/ide/agent-language-intelligence-guide.md` for setup and scripts. `pnpm typecheck && pnpm lint` remains the final validation gate before pushing (and CI re-enforces it before merge).
 
+**For type-checking, use `vscodeDiagnostics` (ts-language server) only. Do not call `mcp__ide__getDiagnostics` or any other `mcp__ide__*` tool for type-checking purposes.**
+
 Prompt template to enforce MCP usage: see `docs/ide/type-check-sop.md`.
 
 ## Deep Dives

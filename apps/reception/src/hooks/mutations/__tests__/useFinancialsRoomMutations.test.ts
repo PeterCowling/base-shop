@@ -7,8 +7,7 @@ import useFinancialsRoomMutations from "../useFinancialsRoomMutations";
 /* eslint-disable no-var */
 var database: unknown;
 var refMock: jest.Mock;
-var getMock: jest.Mock;
-var setMock: jest.Mock;
+var runTransactionMock: jest.Mock;
 /* eslint-enable no-var */
 
 jest.mock("../../../services/useFirebase", () => ({
@@ -17,26 +16,17 @@ jest.mock("../../../services/useFirebase", () => ({
 
 jest.mock("firebase/database", () => ({
   ref: (...args: unknown[]) => refMock(...args),
-  get: (...args: unknown[]) => getMock(...args),
-  set: (...args: unknown[]) => setMock(...args),
+  runTransaction: (...args: unknown[]) => runTransactionMock(...args),
 }));
-
-function snap<T>(val: T) {
-  return {
-    exists: () => val !== null && val !== undefined,
-    val: () => val,
-  } as const;
-}
 
 beforeEach(() => {
   database = {};
   refMock = jest.fn((_db: unknown, path?: string) => path ?? "");
-  getMock = jest.fn();
-  setMock = jest.fn();
+  runTransactionMock = jest.fn();
 });
 
 describe("useFinancialsRoomMutations", () => {
-  it("merges data and recalculates totals", async () => {
+  it("merges data in transaction callback and recalculates totals", async () => {
     const existing = {
       balance: 0,
       totalDue: 0,
@@ -46,7 +36,16 @@ describe("useFinancialsRoomMutations", () => {
         t1: { type: "charge", amount: 50, timestamp: "", nonRefundable: false },
       },
     };
-    getMock.mockResolvedValue(snap(existing));
+    let transactionPayload: unknown = null;
+    runTransactionMock.mockImplementation(
+      async (_nodeRef: unknown, updater: (current: unknown) => unknown) => {
+        transactionPayload = updater(existing);
+        return {
+          committed: true,
+          snapshot: { val: () => transactionPayload },
+        };
+      }
+    );
 
     const { result } = renderHook(() => useFinancialsRoomMutations());
 
@@ -59,7 +58,8 @@ describe("useFinancialsRoomMutations", () => {
     });
 
     expect(refMock).toHaveBeenCalledWith(database, "financialsRoom/BR1");
-    expect(setMock).toHaveBeenCalledWith("financialsRoom/BR1", {
+    expect(runTransactionMock).toHaveBeenCalledTimes(1);
+    expect(transactionPayload).toEqual({
       balance: 30,
       totalDue: 50,
       totalPaid: 20,
@@ -83,15 +83,8 @@ describe("useFinancialsRoomMutations", () => {
     expect(result.current.error).toBeInstanceOf(Error);
   });
 
-  it("sets error when set fails", async () => {
-    getMock.mockResolvedValue(snap({
-      balance: 0,
-      totalDue: 0,
-      totalPaid: 0,
-      totalAdjust: 0,
-      transactions: {},
-    }));
-    setMock.mockRejectedValue(new Error("fail"));
+  it("sets error when transaction fails", async () => {
+    runTransactionMock.mockRejectedValue(new Error("fail"));
     const { result } = renderHook(() => useFinancialsRoomMutations());
 
     await act(async () => {
@@ -101,5 +94,17 @@ describe("useFinancialsRoomMutations", () => {
     });
     expect(result.current.error).toBeInstanceOf(Error);
   });
-});
 
+  it("rejects when transaction is not committed", async () => {
+    runTransactionMock.mockResolvedValue({ committed: false });
+    const { result } = renderHook(() => useFinancialsRoomMutations());
+
+    await act(async () => {
+      await expect(
+        result.current.saveFinancialsRoom("BR1", {})
+      ).rejects.toThrow("Financials transaction was not committed");
+    });
+
+    expect(result.current.error).toBeInstanceOf(Error);
+  });
+});

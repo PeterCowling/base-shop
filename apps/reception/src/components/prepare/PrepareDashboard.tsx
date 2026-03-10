@@ -8,9 +8,10 @@ import { useCheckoutCountsByRoomForDate } from "../../hooks/orchestrations/prepa
 import useInHouseGuestsByRoom from "../../hooks/orchestrations/prepare/useInHouseGuestsByRoom";
 import usePrepareDashboardData from "../../hooks/orchestrations/prepare/usePrepareDashboard";
 import { getLocalToday, isToday as isTodayDate } from "../../utils/dateUtils";
+import DateSelector from "../common/DateSelector";
 
 import CleaningPriorityTable from "./CleaningPriorityTable";
-import DateSelector from "./DateSelectorPP";
+import PreparePage from "./PreparePage";
 
 function PrepareDashboard(): JSX.Element {
   const { user } = useAuth();
@@ -67,67 +68,46 @@ function PrepareDashboard(): JSX.Element {
     });
   }, [mergedData, occupantCounts, checkoutCountsByRoom]);
 
+  const dateSelector = (
+    <DateSelector
+      selectedDate={selectedDate}
+      onDateChange={setSelectedDate}
+      calendarColorVariant="warning"
+      username={user?.user_name ?? ""}
+    />
+  );
+
   // Loading
   if (combinedLoading) {
     return (
-      <div className="min-h-screen flex flex-col p-5 bg-surface-2">
-        <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-          PREPARE
-        </h1>
-        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
-          <DateSelector
-            selectedDate={selectedDate}
-            onDateChange={setSelectedDate}
-            username={user?.user_name ?? ""}
-          />
-          <p>Loading data...</p>
-        </div>
-      </div>
+      <PreparePage dateSelector={dateSelector}>
+        <p>Loading data...</p>
+      </PreparePage>
     );
   }
 
   // Error
   if (combinedError) {
     return (
-      <div className="min-h-screen flex flex-col p-5 bg-surface-2">
-        <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-          PREPARE
-        </h1>
-        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
-          <DateSelector
-            selectedDate={selectedDate}
-            onDateChange={setSelectedDate}
-            username={user?.user_name ?? ""}
-          />
-          <p className="text-error-main font-semibold">
-            Error:{" "}
-            {combinedError instanceof Error
-              ? combinedError.message
-              : "Unknown error"}
-          </p>
-        </div>
-      </div>
+      <PreparePage dateSelector={dateSelector}>
+        <p className="text-error-main font-semibold">
+          Error:{" "}
+          {combinedError instanceof Error
+            ? combinedError.message
+            : "Unknown error"}
+        </p>
+      </PreparePage>
     );
   }
 
   // No data
   if (noRoomsData && noCheckinsData) {
     return (
-      <div className="min-h-screen flex flex-col p-5 bg-surface-2">
-        <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-          PREPARE
-        </h1>
-        <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
-          <DateSelector
-            selectedDate={selectedDate}
-            onDateChange={setSelectedDate}
-            username={user?.user_name ?? ""}
-          />
-          <div className="bg-surface border border-border-2 rounded shadow p-8 text-center italic text-muted-foreground">
-            No cleaning data found for this date.
-          </div>
+      <PreparePage dateSelector={dateSelector}>
+        <div className="bg-surface border border-border-2 rounded-lg shadow p-8 text-center italic text-muted-foreground">
+          No cleaning data found for this date.
         </div>
-      </div>
+      </PreparePage>
     );
   }
 
@@ -135,19 +115,9 @@ function PrepareDashboard(): JSX.Element {
   const isTodayFlag = isTodayDate(selectedDate);
 
   return (
-    <div className="min-h-screen flex flex-col p-5 bg-surface-2">
-      <h1 className="text-5xl font-heading text-primary-main w-full text-center mb-6">
-        PREPARE
-      </h1>
-      <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-10">
-        <DateSelector
-          selectedDate={selectedDate}
-          onDateChange={setSelectedDate}
-          username={user?.user_name ?? ""}
-        />
-        <CleaningPriorityTable data={finalData} isToday={isTodayFlag} />
-      </div>
-    </div>
+    <PreparePage dateSelector={dateSelector}>
+      <CleaningPriorityTable data={finalData} isToday={isTodayFlag} />
+    </PreparePage>
   );
 }
 

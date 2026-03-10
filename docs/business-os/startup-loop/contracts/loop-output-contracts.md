@@ -1,0 +1,496 @@
+---
+Type: Schema-Contract
+Status: Active
+Version: 1.2.0
+Domain: Venture-Studio
+Workstream: Feature-Development
+Created: 2026-02-22
+Last-updated: 2026-02-25
+Owner: startup-loop maintainers
+Related-plan: docs/plans/startup-loop-standing-info-gap-analysis/plan.md
+---
+
+# Loop Output Contracts
+
+## Purpose
+
+Formal artifact contracts for the four core documents produced by the feature development loop (`/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build` → operator review), plus the soft-gate reflection debt artifact. Each contract defines the canonical path, producer skill, required sections, frontmatter fields, lifecycle, and consumer list.
+
+These contracts close two feedback paths:
+- **Layer B → Layer A feedback**: the `results-review.user.md` artifact carries observed outcomes back into standing-information layer (Layer A), completing the loop as specified in `docs/business-os/startup-loop/specifications/two-layer-model.md`.
+- **Layer B → assessment balance-sheet refresh**: deterministic post-build utilities may refresh explicitly mapped revision-mode intake fields when later assessment decisions settle a strategic fact. This path is bounded, source-mapped, and separate from `results-review.user.md`.
+- **Skill handoff integrity**: each artifact is the single authoritative input to its downstream consumer. Consumers MUST read from the canonical path defined here.
+
+Skills MUST NOT store outputs at ad-hoc paths. All loop output artifacts in this contract use the path namespace `docs/plans/<feature-slug>/`.
+
+---
+
+## Artifact 1: `fact-find.md`
+
+**Artifact ID:** `fact-find`
+**Produced by:** `/lp-do-fact-find`
+**Stored at:** `docs/plans/<feature-slug>/fact-find.md`
+**Consumers:** `/lp-do-plan`
+
+### Required Sections
+
+| Section | Purpose |
+|---|---|
+| `## Scope` | Precise statement of what was investigated: feature area, location anchors, and what is explicitly out of scope. |
+| `## Evidence Audit` | Key files, modules, routes, or data artefacts examined. Max 10 primary entries. Stale evidence flagged with `[stale]`. |
+| `## Confidence Inputs` | Scored confidence dimensions feeding the planning phase (complexity, risk, unknowns). Each entry includes rationale and a verification path for unknowns. |
+| `## Planning Readiness` | Go / No-go call. If `No-go`: list unresolved blockers with minimal verification paths. If `Go`: summarise the recommended deliverable type and execution skill. |
+
+Additional sections produced by the fact-find template (`## Evidence Gap Review`, `## Open Questions`, `## Risk Inventory`) are permitted but the four above are mandatory minimums.
+
+### Required Frontmatter Fields
+
+```yaml
+Status: <Ready-for-planning | Needs-input>
+Outcome: <planning | briefing>
+Execution-Track: <code | business-artifact | mixed>
+Deliverable-Type: <canonical type>
+Feature-Slug: <slug>
+artifact: fact-find
+# Optional — present when opened via a queued dispatch packet:
+Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN | omit if direct inject>
+# Optional — use when one fact-find promotes multiple queued dispatches as a single work package:
+Dispatch-IDs: <comma-separated dispatch IDs>
+# Required when Dispatch-IDs contains 2+ dispatches:
+Work-Package-Reason: <why these dispatches belong in one fact-find / one plan>
+# Required when neither Dispatch-ID nor Dispatch-IDs is present:
+Trigger-Source: <path to standing artifact that motivated this cycle, or "direct-operator-decision: <rationale>">
+```
+
+Rules:
+- `Dispatch-ID` and `Dispatch-IDs` are mutually exclusive in canonical output. Use `Dispatch-ID` for one dispatch, `Dispatch-IDs` for a bundled promotion.
+- `Dispatch-IDs` is a traceability field, not a relaxation of scope discipline. Bundling is appropriate only when one fact-find and one downstream plan are genuinely more coherent than separate cycles.
+
+### Lifecycle
+
+- Created fresh by `/lp-do-fact-find` on first run.
+- May be updated in-place if scope restart is approved by operator.
+- Archived alongside `plan.md` when plan completes; see `_shared/plan-archiving.md`.
+- Stale status (`Status: Needs-input`) blocks `/lp-do-plan` from starting.
+
+---
+
+## Artifact 2: `plan.md`
+
+**Artifact ID:** `plan`
+**Produced by:** `/lp-do-plan`
+**Stored at:** `docs/plans/<feature-slug>/plan.md`
+**Consumers:** `/lp-do-build`
+
+### Required Sections
+
+| Section | Purpose |
+|---|---|
+| `## Summary` | One-paragraph restatement of the goal and approach. |
+| `## Tasks` | Ordered task list. Each task entry must carry: `ID`, `Type`, `Status`, `Confidence`, `Execution-Skill`, `Affects`, and `Depends-on`. |
+| `## Parallelism Guide` | Wave-groupings for parallel dispatch (may be `Single wave: all tasks` if sequential). Required even when there is only one wave. |
+| `## Validation Contracts` | Named VC-## or TC-## entries with pass criteria. Must include at least one entry per `IMPLEMENT` task. |
+| `## Open Decisions` | Any `DECISION` tasks not yet resolved, or `None` if fully resolved. |
+
+### Required Frontmatter Fields
+
+```yaml
+Status: <Draft | Active | Archived>
+Feature-Slug: <slug>
+Execution-Track: <code | business-artifact | mixed>
+Last-updated: <YYYY-MM-DD>
+artifact: plan
+```
+
+### Lifecycle
+
+- Drafted by `/lp-do-plan` after `fact-find.md` reaches `Status: Ready-for-planning`.
+- Updated in-place by `/lp-do-build` after each task completion (status, evidence, `Last-updated`).
+- Set to `Status: Archived` when all executable tasks are complete.
+- Archived to `docs/plans/_archive/<feature-slug>/plan.md`; see `_shared/plan-archiving.md`.
+
+---
+
+## Artifact 2A: `micro-build.md`
+
+**Artifact ID:** `micro-build`
+**Produced by:** `/lp-do-build` direct-dispatch intake
+**Stored at:** `docs/plans/<feature-slug>/micro-build.md`
+**Consumers:** `/lp-do-build`
+
+### Purpose
+
+Canonical minimal execution contract for trivially bounded direct-build work routed from `lp-do-ideas` without a full fact-find or plan. This artifact exists to preserve queue accuracy, scope discipline, and build validation while cutting ceremony for genuinely tiny changes.
+
+### Required Sections
+
+| Section | Purpose |
+|---|---|
+| `## Scope` | Exact change being made and what is explicitly out of scope. |
+| `## Execution Contract` | Affects, acceptance checks, validation commands, and rollback note. |
+| `## Outcome Contract` | Why, intended outcome type, statement, and source carried from the dispatch. |
+
+### Required Frontmatter Fields
+
+```yaml
+Status: <Active | Complete | Archived>
+Feature-Slug: <slug>
+artifact: micro-build
+Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN>
+Execution-Track: <code | business-artifact | mixed>
+Deliverable-Type: <canonical type>
+```
+
+### Lifecycle
+
+- Created by `/lp-do-build` when a confirmed `micro_build_ready` dispatch is taken directly from the ideas queue.
+- Treated as a single implicit IMPLEMENT task contract.
+- Archived alongside build outputs when the direct build completes.
+
+---
+
+## Artifact 3: `build-record.user.md`
+
+**Artifact ID:** `build-record`
+**Produced by:** `/lp-do-build` on plan completion
+**Stored at:** `docs/plans/<feature-slug>/build-record.user.md`
+**Consumers:** operator, `/lp-do-replan` (if re-engagement), standing-information Layer A refresh, bounded assessment post-build refresh utilities, `lp-do-build-event-emitter.ts` (reads canonical outcome fields)
+
+### Required Sections
+
+| Section | Purpose |
+|---|---|
+| `## What Was Built` | Concise narrative of every task completed: what changed, where, and why. One paragraph per task group is sufficient. |
+| `## Tests Run` | List of test commands executed, pass/fail outcomes, and any skips with justification. |
+| `## Validation Evidence` | Per-task VC/TC pass evidence. Copy from plan or summarise. Must show each contract was met. |
+| `## Scope Deviations` | Any controlled scope expansions made during build, with rationale. `None` if no deviations. |
+| `## Outcome Contract` | Canonical outcome fields carried from plan `## Inherited Outcome Contract`. Required for `build-event.json` emitter to produce operator-attributed `why_source`. See sub-fields below. |
+
+#### `## Outcome Contract` Sub-fields (required in build-record)
+
+The `## Outcome Contract` section in `build-record.user.md` carries the outcome context forward from the plan into the emitted `build-event.json`:
+
+```markdown
+## Outcome Contract
+
+- **Why:** <carry from plan Inherited Outcome Contract; use TBD if absent>
+- **Intended Outcome Type:** <measurable | operational | TBD>
+- **Intended Outcome Statement:** <carry from plan; use TBD if absent>
+- **Source:** <operator | auto>
+```
+
+Field notes:
+- `Why`: operator-authored explanation of why this build happened. Populated from `plan.md` § Inherited Outcome Contract → `## Outcome Contract` → Why. Use `TBD` if no canonical value; emitter marks `why_source: "heuristic"` when TBD.
+- `Intended Outcome Type`: `measurable` or `operational`. No KPI required for `operational` type.
+- `Intended Outcome Statement`: non-empty statement. Must not be a template placeholder.
+- `Source`: `operator` if the operator confirmed values at Option B; `auto` if auto-generated. `auto` values pass schema but are excluded from quality metrics. The emitter copies this as `why_source` in `build-event.json` (with `"heuristic"` as fallback for missing/TBD).
+
+### Required Frontmatter Fields
+
+```yaml
+Status: Complete
+Feature-Slug: <slug>
+Completed-date: <YYYY-MM-DD>
+artifact: build-record
+# Optional — set when a strategy artifact references this build:
+Build-Event-Ref: docs/plans/<feature-slug>/build-event.json
+```
+
+### Lifecycle
+
+- Created by `/lp-do-build` when all executable tasks reach `Complete` status.
+- Written once; treated as an immutable record after creation (do not overwrite; append addendum if corrections are needed).
+- Archived alongside `plan.md`; see `_shared/plan-archiving.md`.
+- Consumed by operator before writing `results-review.user.md`.
+- `build-event.json` emitter reads the `## Outcome Contract` section immediately after `build-record.user.md` is written; this is an instruction in the build skill SKILL.md, not a code-enforced hook.
+- Bounded assessment post-build refresh utilities may read the final build scope and relevant strategy artifacts after build completion, but they must update only explicitly mapped revision-mode assessment targets and must not mutate seed-once/live-owned docs.
+
+---
+
+## Artifact 4: `results-review.user.md`
+
+**Artifact ID:** `results-review`
+**Produced by:** Operator (human) after build is complete
+**Stored at:** `docs/plans/<feature-slug>/results-review.user.md`
+**Consumers:** startup-loop Layer A (standing-information refresh), future plan sessions for the same business unit
+
+results-review.user.md captures observations after build; it must not carry unexecuted work items from the plan.
+
+### Required Sections
+
+| Section | Purpose |
+|---|---|
+| `## Observed Outcomes` | What actually happened after the build was deployed or activated. Metrics, user feedback, anomalies, or qualitative notes. Minimum: one concrete observation. |
+| `## Standing Updates` | List of Layer A (standing-information) files that should be updated as a result of these outcomes, with a one-line description of the update needed. If no updates are needed, write: `No standing updates: <reason>`. This explicit entry is required — the section must not be left blank. Anti-loop rule applies: do not update the domain that triggered this cycle (see R8 in `two-layer-model.md`). |
+| `## New Idea Candidates` | Any new opportunities, problems, or hypotheses surfaced by observing the outcomes. Each entry should include: idea summary, trigger observation, and suggested next action (e.g., create card, spike, defer). `None` if nothing surfaced. |
+| `## Standing Expansion` | Required decision entry. Record either: (a) a decision to add/revise a standing artifact and register the new trigger, or (b) `No standing expansion: <reason>`. See R9 in `two-layer-model.md`. |
+
+### Required Frontmatter Fields
+
+```yaml
+Status: <Draft | Complete>
+Feature-Slug: <slug>
+Review-date: <YYYY-MM-DD>
+artifact: results-review
+```
+
+### Lifecycle
+
+- Created by operator after build is deployed/activated and outcomes are observable (optional for archival, required to clear reflection debt).
+- `Status: Complete` when all four required sections are filled (`Observed Outcomes`, `Standing Updates`, `New Idea Candidates`, `Standing Expansion` decision).
+- Archived alongside `plan.md` if present; see `_shared/plan-archiving.md`.
+- **Layer A refresh**: after `Status: Complete`, the `## Standing Updates` section is read by the operator (or a dedicated refresh agent) to apply updates to standing-information files. This is the formal Layer B → Layer A feedback handoff.
+
+---
+
+## Soft Gate Artifact: `reflection-debt.user.md`
+
+**Artifact ID:** `reflection-debt`  
+**Produced by:** `/lp-do-build` deterministic emitter (`scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts`)  
+**Stored at:** `docs/plans/<feature-slug>/reflection-debt.user.md`  
+**Consumers:** lane scheduler (`IMPROVE`), operations governance, admission controls
+
+### Purpose
+
+Soft-gate closure mechanism for reflection quality. Build completion and plan archival remain non-blocking, but if `results-review.user.md` is missing minimum payload the emitter must upsert an open debt item.
+
+### Deterministic Debt Rules
+
+- Debt key: `reflection-debt:{build_id}`.
+- Idempotency: one debt item per build ID; retries/replays must not create duplicates.
+- Default lane: `IMPROVE`.
+- SLA: 7 days.
+- Breach behavior: `block_new_admissions_same_owner_business_scope_until_resolved_or_override`.
+- Minimum payload checked against `results-review.user.md`:
+  - `Observed Outcomes`
+  - `Standing Updates` (or explicit `No standing updates: <reason>`)
+  - `New Idea Candidates`
+  - `Standing Expansion` decision (or explicit `No standing expansion: <reason>`)
+
+### Lifecycle
+
+- Emitted or updated when `/lp-do-build` closes a plan (`build-record.user.md` produced).
+- Open debt resolves when `results-review.user.md` satisfies minimum payload checks.
+- Debt entries remain in ledger for traceability after resolution.
+
+---
+
+## Soft Gate Artifact: `pattern-reflection.user.md`
+
+**Artifact ID:** `pattern-reflection`
+**Produced by:** `/lp-do-build` (instruction step 2.5 of plan completion sequence)
+**Stored at:** `docs/plans/<feature-slug>/pattern-reflection.user.md`
+**Consumers:** operator, startup-loop improvement backlog, future builds for the same plan slug
+
+### Purpose
+
+Post-build pattern capture mechanism. After every completed build, the agent reads the `results-review.user.md` idea candidates, classifies any recurring patterns, and writes this artifact. Build completion and plan archival are non-blocking: an empty-state artifact (no patterns identified) is always valid and always required.
+
+### Schema
+
+Full field spec, routing decision tree, access declarations sub-schema, and annotated fixtures are defined in:
+`docs/plans/startup-loop-build-reflection-gate/task-01-schema-spec.md`
+
+Schema version: `pattern-reflection.v1`
+
+### Routing Rules
+
+- `deterministic` category + `occurrence_count >= 3` → `routing_target: loop_update` (propose update to an existing loop stage or skill)
+- `ad_hoc` category + `occurrence_count >= 2` → `routing_target: skill_proposal` (propose new `tool-*` skill)
+- `access_gap` category → `routing_target: defer` (flag for operator review; no auto-promotion in this schema version)
+- `unclassified` → `routing_target: defer`
+- All other entries below threshold → `routing_target: defer`
+
+Routing proposals require operator confirmation before any file changes are made.
+
+### Required Sections
+
+| Section | Purpose |
+|---|---|
+| `## Patterns` | One entry per identified pattern (or `None identified`). Each entry: plain summary, category, routing result, occurrence count. |
+| `## Access Declarations` | De-duplicated summary of access records linked to patterns (or `None identified`). |
+
+### Required Frontmatter Fields
+
+```yaml
+schema_version: pattern-reflection.v1
+feature_slug: <feature-slug>
+generated_at: <ISO-8601>
+entries: []   # array of entry objects; empty array is valid
+```
+
+### `IdeaClassificationInput` Compatibility
+
+The optional `classifier_input` field within each entry maps directly to `IdeaClassificationInput` from `lp-do-ideas-classifier.ts` — all keys use the same names and types. No wrapper is required. See compatibility mapping in `task-01-schema-spec.md` § 5.
+
+### Lifecycle
+
+- Created by `/lp-do-build` step 2.5 after `results-review.user.md` is produced.
+- Empty-state artifact is valid; never skip producing this artifact.
+- Archived alongside `plan.md`; see `_shared/plan-archiving.md`.
+- Operator reviews routing proposals; those with `routing_target != defer` are candidates for action in a follow-on build cycle.
+
+---
+
+## Path Namespace Summary
+
+All artifacts in this contract share the `docs/plans/<feature-slug>/` namespace:
+
+| Artifact | Canonical path | Produced by |
+|---|---|---|
+| `fact-find.md` | `docs/plans/<feature-slug>/fact-find.md` | `/lp-do-fact-find` |
+| `plan.md` | `docs/plans/<feature-slug>/plan.md` | `/lp-do-plan` |
+| `build-record.user.md` | `docs/plans/<feature-slug>/build-record.user.md` | `/lp-do-build` |
+| `build-event.json` | `docs/plans/<feature-slug>/build-event.json` | `/lp-do-build` emitter (`lp-do-build-event-emitter.ts`) |
+| `results-review.user.md` | `docs/plans/<feature-slug>/results-review.user.md` | Operator |
+| `results-review.signals.json` | `docs/plans/<feature-slug>/results-review.signals.json` | `/lp-do-build` (step 2.1) |
+| `reflection-debt.user.md` | `docs/plans/<feature-slug>/reflection-debt.user.md` | `/lp-do-build` emitter |
+| `pattern-reflection.user.md` | `docs/plans/<feature-slug>/pattern-reflection.user.md` | `/lp-do-build` (step 2.5) |
+| `pattern-reflection.entries.json` | `docs/plans/<feature-slug>/pattern-reflection.entries.json` | `/lp-do-build` (step 2.55) |
+| `signal-review-*.review-required.json` | `docs/business-os/strategy/<BIZ>/.../signal-review-*.review-required.json` | `/lp-signal-review` helper sidecar |
+
+The `.user.md` suffix marks operator-facing loop artifacts. Only `results-review.user.md` requires human-authored observation content; `build-record.user.md`, `reflection-debt.user.md`, and `pattern-reflection.user.md` are produced by `/lp-do-build`.
+
+The `.json` sidecar artifacts are machine-readable companions that let downstream tooling read structured data without re-parsing markdown prose.
+
+---
+
+## Handoff Chain
+
+```
+/lp-do-fact-find
+    └── produces: fact-find.md (Status: Ready-for-planning)
+            └── /lp-do-plan reads fact-find.md
+                    └── produces: plan.md (Status: Active)
+                            └── /lp-do-build reads plan.md
+                                    ├── produces: build-record.user.md (Status: Complete)
+                                    ├── emits: build-event.json (canonical outcome event, from Outcome Contract in build-record)
+                                    ├── reads results-review idea candidates
+                                    │     └── produces: pattern-reflection.user.md (step 2.5; empty-state valid)
+                                    ├── evaluates results-review minimum payload
+                                    │     └── if missing: upserts reflection-debt.user.md (soft gate)
+                                    └── plan archived (Status: Archived)
+                                            └── Operator completes results-review.user.md
+                                                    └── debt resolves + Layer A standing-information refresh (§ Standing Updates)
+```
+
+---
+
+## Sidecar Artifacts: `results-review.signals.json` and `pattern-reflection.entries.json`
+
+These machine-readable sidecars are emitted by `/lp-do-build` immediately after the LLM finalizes the corresponding `.user.md`. They allow downstream consumers to read structured data without re-parsing markdown prose.
+
+### `results-review.signals.json`
+
+**Schema version:** `results-review.signals.v1`
+
+**Stored at:** `docs/plans/<feature-slug>/results-review.signals.json`
+
+**Produced by:** `/lp-do-build` step 2.1 (`pnpm --filter scripts startup-loop:results-review-extract`), after Step 2 LLM refinement of `results-review.user.md`.
+
+**Schema:**
+```json
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "<ISO timestamp>",
+  "plan_slug": "<feature-slug>",
+  "source_path": "<relative path to results-review.user.md>",
+  "items": [ /* ProcessImprovementItem[] — classified idea candidates */ ]
+}
+```
+
+**Consumers:**
+- `generate-process-improvements.ts` — prefers this sidecar over markdown parse; falls back to markdown if absent or malformed.
+- `self-evolving-from-build-output.ts` — reads candidate titles from sidecar items; falls back to `extractBulletCandidates(markdown)` if absent or malformed.
+
+**Fallback policy:** If `results-review.signals.json` is absent (historical plans without sidecar), all consumers fall back to the existing markdown parse path with no change in behaviour.
+
+---
+
+### `pattern-reflection.entries.json`
+
+**Schema version:** `pattern-reflection.entries.v1`
+
+**Stored at:** `docs/plans/<feature-slug>/pattern-reflection.entries.json`
+
+**Produced by:** `/lp-do-build` step 2.55 (`pnpm --filter scripts startup-loop:pattern-reflection-extract`), after Step 2.5 LLM refinement of `pattern-reflection.user.md`.
+
+**Schema:**
+```json
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "<ISO timestamp>",
+  "plan_slug": "<feature-slug>",
+  "source_path": "<relative path to pattern-reflection.user.md>",
+  "entries": [ /* PatternEntry[] — parsed pattern entries */ ]
+}
+```
+
+**Consumers:**
+- `self-evolving-from-build-output.ts` — builds observation seeds from sidecar entries; falls back to `extractPatternReflectionSeeds(markdown)` if absent or malformed.
+
+**Fallback policy:** If `pattern-reflection.entries.json` is absent, consumers fall back to the existing markdown parse path.
+
+---
+
+## Diagnostic Sidecar: `signal-review-*.review-required.json`
+
+Repeated Signal Review findings that still require a manual promote-or-close decision use the existing operator `pending-review` workflow surface in `process-improvements.user.html`. The persisted source for those items is a per-artifact sidecar written adjacent to the Signal Review markdown.
+
+**Schema version:** `signal-review.review-required.v1`
+
+**Stored at:** `docs/business-os/strategy/<BIZ>/.../signal-review-<YYYYMMDD>-<HHMM>-W<ISOweek>.review-required.json`
+
+**Produced by:** `/lp-signal-review` helper flow (`scripts/src/startup-loop/diagnostics/signal-review-review-required.ts`) after the Signal Review artifact is finalized.
+
+**Schema:**
+```json
+{
+  "schema_version": "signal-review.review-required.v1",
+  "generated_at": "<ISO timestamp>",
+  "business": "<BIZ>",
+  "source_path": "<relative path to signal-review-*.md>",
+  "items": [
+    {
+      "fingerprint": "<signal finding fingerprint>",
+      "business": "<BIZ>",
+      "title": "<finding title>",
+      "body": "<why this matters summary>",
+      "owner": "<operator owner>",
+      "workflow_status": "open",
+      "due_date": "<YYYY-MM-DD>",
+      "escalation_state": "<repeat-open|escalated|overdue>",
+      "recurrence_count": 2,
+      "first_seen_run_date": "<YYYY-MM-DD>",
+      "latest_seen_run_date": "<YYYY-MM-DD>",
+      "source_signal_review_path": "<relative path>",
+      "suggested_action": "<manual next step>"
+    }
+  ]
+}
+```
+
+**Required item fields:**
+- `fingerprint` — stable dedupe identity for the repeated finding.
+- `owner` — named operator owner for the review item.
+- `due_date` — deterministic review deadline.
+- `escalation_state` — review urgency derived from recurrence and lateness.
+- `workflow_status` — current manual-review state; v1 uses `open`.
+
+**Canonical workflow surface:** `generate-process-improvements.ts` reads these sidecars and materializes them into the existing `pending-review` section of `docs/business-os/process-improvements.user.html` and `docs/business-os/_data/process-improvements.json`. This reuses the existing operator review queue instead of creating a second backlog surface.
+
+**Consumers:**
+- `generate-process-improvements.ts` — dedupes by `business + fingerprint`, refreshes the latest item state, and exposes it on the pending-review surface.
+
+**Fallback policy:** If a Signal Review has no `.review-required.json` sidecar, the process-improvements report emits no review-required item for that artifact. Historical Signal Reviews therefore remain unchanged until explicitly refreshed.
+
+---
+
+## References
+
+- Two-layer architecture contract: `docs/business-os/startup-loop/specifications/two-layer-model.md`
+- Artifact registry: `docs/business-os/startup-loop/artifact-registry.md`
+- Plan archiving procedure: `.claude/skills/_shared/plan-archiving.md`
+- Loop spec: `docs/business-os/startup-loop/specifications/loop-spec.yaml`
+- Reflection debt emitter: `scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts`
+- Producer skills: `.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-plan/SKILL.md`, `.claude/skills/lp-do-build/SKILL.md`

@@ -32,7 +32,7 @@
     },
     "timetable": {
       "title": "시간표 & 계획",
-      "linkLabel": "Positano.com",
+      "linkLabel": "카테고리",
       "intro": "최신 시간표는 <link>Positano.com</link>에서 확인하세요. 두 구간 모두 조회하고 아말피 환승 시간을 확보하세요.",
       "items": [
         "정류장은 행(row)에 표시되고, 각 알파벳 열은 예정된 운행을 뜻합니다.",

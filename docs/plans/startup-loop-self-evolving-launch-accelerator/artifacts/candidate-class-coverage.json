@@ -1,0 +1,10 @@
+{
+  "candidate_types": [
+    "new_skill",
+    "skill_refactor",
+    "deterministic_extraction",
+    "container_update"
+  ],
+  "count": 4,
+  "meets_requirement": true
+}

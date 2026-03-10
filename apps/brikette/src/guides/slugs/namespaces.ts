@@ -45,7 +45,7 @@ export const GUIDE_BASE_KEY_OVERRIDES: Partial<Record<
   salernoPositanoFerry: "howToGetHere",
   sorrentoPositanoBus: "howToGetHere",
   sorrentoPositanoFerry: "howToGetHere",
-  parking: "howToGetHere",
+  arriveByCar: "howToGetHere",
   // --- End how-to-get-here transport routes ---
   // General planning/help belong under Assistance
   onlyHostel: "assistance",

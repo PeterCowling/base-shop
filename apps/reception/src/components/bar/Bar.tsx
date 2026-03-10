@@ -4,17 +4,13 @@
 import React, { type FC, useCallback, useMemo, useState } from "react";
 
 import { useAuth } from "../../context/AuthContext";
+import { type MenuType } from "../../types/bar/barDomain";
 import { type ScreenType } from "../../types/bar/BarTypes";
 
 import CompScreenComponent from "./CompScreen";
 import HeaderControls from "./HeaderControls";
 import OrderTakingContainer from "./orderTaking/OrderTakingContainer";
 import SalesScreen from "./sales/SalesScreen";
-
-/**
- * Extended menu type for bar screens.
- */
-type MenuType = "food" | "alcoholic" | "nonalcoholic" | "other";
 
 /**
  * BarRoot component:
@@ -44,7 +40,7 @@ const BarRoot: FC = React.memo(() => {
   }, [currentScreen, menuType]);
 
   return (
-    <div className="bg-surface-2 min-h-screen w-full font-body relative p-4 space-y-4">
+    <div className="bg-gradient-to-b from-surface-2 to-surface-3 min-h-screen w-full font-body relative">
       {user && (
         <HeaderControls
           currentUser={user.user_name}
@@ -53,7 +49,9 @@ const BarRoot: FC = React.memo(() => {
           onSelectMenuType={setMenuType}
         />
       )}
-      <div className="shadow bg-surface p-4 rounded">{content}</div>
+      <div className="p-4">
+        <div className="shadow-lg bg-surface rounded-lg ring-1 ring-border-1/50 overflow-hidden">{content}</div>
+      </div>
     </div>
   );
 });

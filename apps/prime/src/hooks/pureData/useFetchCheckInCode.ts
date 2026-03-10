@@ -1,8 +1,9 @@
 /**
  * useFetchCheckInCode
  *
- * Pure Data hook to retrieve check-in code from Firebase.
- * Path: checkInCodes/byUuid/{uuid}
+ * Pure Data hook to retrieve check-in code via the CF Pages Function proxy.
+ * Routes through GET /api/check-in-code?uuid=<uuid> — the prime_session HttpOnly
+ * cookie is sent automatically by the browser on this same-origin request.
  *
  * Uses React Query for caching with:
  * - Stale time: 5 minutes (codes don't change once generated)
@@ -11,46 +12,48 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import type { Database } from '@/services/firebase';
-import { get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
-import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { CheckInCodeRecord } from '../../types/checkInCode';
-import { CHECK_IN_CODE_PATHS } from '../../types/checkInCode';
 import useUuid from '../useUuid';
 
+import type { PureDataRefetch } from './types';
+
 /**
- * Fetch check-in code from Firebase.
- * Returns null if the record doesn't exist or is expired.
+ * Fetch check-in code via the CF Pages Function proxy.
+ * Returns null if the code doesn't exist, is expired, or the guest is not authenticated.
  */
-async function fetchCheckInCode(
-  uuid: string,
-  database: Database,
-): Promise<CheckInCodeRecord | null> {
+async function fetchCheckInCodeViaApi(uuid: string): Promise<CheckInCodeRecord | null> {
   if (!uuid) {
     return null;
   }
 
   try {
-    const codePath = CHECK_IN_CODE_PATHS.byUuid(uuid);
-    const snapshot = await get(ref(database, codePath));
+    const response = await fetch(`/api/check-in-code?uuid=${encodeURIComponent(uuid)}`);
 
-    if (!snapshot.exists()) {
+    if (response.status === 401 || response.status === 403) {
+      // Guest session cookie not present or expired — treat as no code
       return null;
     }
 
-    const record = snapshot.val() as CheckInCodeRecord;
+    if (!response.ok) {
+      throw new Error(`Unexpected response: ${response.status}`);
+    }
 
-    // Check if code is expired
-    if (record.expiresAt && record.expiresAt < Date.now()) {
-      logger.debug('[useFetchCheckInCode] Code expired');
+    const data = (await response.json()) as { code: string | null; expiresAt?: number; expired?: boolean };
+
+    if (!data.code || data.expired) {
       return null;
     }
 
-    return record;
+    return {
+      code: data.code,
+      uuid,
+      createdAt: 0, // Not returned by API; only code and expiresAt are needed by callers
+      expiresAt: data.expiresAt ?? 0,
+    };
   } catch (error) {
-    logger.error('[useFetchCheckInCode] Error fetching check-in code:', error);
+    logger.error('[useFetchCheckInCode] Error fetching check-in code via API:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }
@@ -84,14 +87,13 @@ export interface UseFetchCheckInCodeResult {
 /**
  * useFetchCheckInCode
  *
- * Fetches check-in code for the current guest from Firebase.
+ * Fetches check-in code for the current guest via the CF Function proxy.
  */
 export function useFetchCheckInCode(
   options: UseFetchCheckInCodeOptions = {},
 ): UseFetchCheckInCodeResult {
   const { enabled = true } = options;
   const uuid = useUuid();
-  const database = useFirebaseDatabase();
 
   const {
     data,
@@ -100,15 +102,13 @@ export function useFetchCheckInCode(
     refetch: refetchQuery,
   } = useQuery({
     queryKey: ['checkInCode', uuid],
-    queryFn: () => fetchCheckInCode(uuid, database),
+    queryFn: () => fetchCheckInCodeViaApi(uuid ?? ''),
     enabled: !!uuid && enabled,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 30 * 60 * 1000, // 30 minutes
   });
 
-  const refetch = async (): Promise<void> => {
-    await refetchQuery();
-  };
+  const refetch = refetchQuery as unknown as PureDataRefetch;
 
   return {
     data: data ?? null,

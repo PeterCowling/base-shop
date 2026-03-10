@@ -157,7 +157,7 @@ const EditableBalanceCell: React.FC<EditableBalanceCellProps> = ({
         <input
           ref={inputRef}
           type="number"
-          className="w-full focus:outline-none bg-surface border p-1 rounded"
+          className="w-full focus:outline-none bg-surface border p-1 rounded-lg"
           value={editValue}
           onChange={handleChange}
           onKeyDown={handleKeyDown}

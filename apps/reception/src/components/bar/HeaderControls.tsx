@@ -5,12 +5,8 @@ import React, { useCallback, useMemo } from "react";
 import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
 
+import { type MenuType } from "../../types/bar/barDomain";
 import { type ScreenType } from "../../types/bar/BarTypes";
-
-/* -------------------------------------------------------------------------- *
- *                                TYPE DEFS                                   *
- * -------------------------------------------------------------------------- */
-export type MenuType = "food" | "alcoholic" | "nonalcoholic" | "other";
 
 interface HeaderControlsProps {
   /** Username of the current staff member (reserved for future extensions). */
@@ -105,7 +101,7 @@ const HeaderControls: React.FC<HeaderControlsProps> = React.memo(
 
     /* ------------------------------ RENDER -------------------------------- */
     return (
-      <header className="sticky top-0 z-20 w-full bg-info-main/95 backdrop-blur-md shadow-lg">
+      <header className="sticky top-0 z-20 w-full bg-primary-main/95 backdrop-blur-md shadow-lg">
         <nav
           className="mx-auto flex max-w-screen-lg items-center justify-between gap-4 px-4 py-2 font-body"
           aria-label="Bar navigation"

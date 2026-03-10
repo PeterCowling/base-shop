@@ -97,7 +97,7 @@ function ProductGridInner({
             <div
               key={i}
               data-cy="placeholder"
-              className="h-64 rounded-lg bg-gray-200 animate-pulse"
+              className="h-64 rounded-lg bg-surface-3 animate-pulse"
             />
           ))}
     </section>

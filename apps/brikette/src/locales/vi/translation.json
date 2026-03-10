@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "Name",
     "reserve": "Đặt ngay"
   },
   "intro": {
@@ -24,10 +24,14 @@
     "reload": "Tải lại trang"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
-    "twitterHandle": "@brikette"
+    "twitterCard": "Bản tóm tắt_ hình lớn",
+    "twitterHandle": "@brette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS phải định nghĩa ít nhất một assistance slug"
+  },
+  "stickyCta": {
+    "directHeadline": "Đặt mức giá tốt nhất hiện có trong vòng chưa đầy hai phút.",
+    "directSubcopy": "Bỏ qua phí của bên thứ ba và nhận hỗ trợ ưu tiên từ đội ngũ của chúng tôi tại Positano."
   }
 }

@@ -1,150 +1,196 @@
-// scripts/verify-url-coverage.ts
-// Verifies that all legacy URLs are served by App Router or redirected
-// Run with: pnpm --filter @apps/brikette exec ts-node --esm scripts/verify-url-coverage.ts
-
 import fs from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
-import { listAppRouterUrls } from "../src/routing/routeInventory";
-import {
-  buildLocalizedStaticRedirectRules,
-  formatRedirectRule,
-} from "../src/routing/staticExportRedirects";
+import { buildStaticRuntimeArtifacts } from "./lib/static-runtime-redirects";
 
-// Script runs from apps/brikette directory
 const rootDir = process.cwd();
+const redirectsPath = path.join(rootDir, "public/_redirects");
+const routesPath = path.join(rootDir, "public/_routes.json");
+const legacyRedirectsModulePath = path.join(rootDir, "functions/generated/legacy-redirects.js");
+const EXCLUDED_URLS = new Set(["/404", "/app-router-test"]);
 
-// Patterns for URLs that are handled by Cloudflare _redirects (not served by App Router)
-const REDIRECT_PATTERNS = [
-  /^\/directions\//, // /directions/:slug → /en/how-to-get-here/:slug
-];
+function normalizeRedirectSourcePath(source: string): string | null {
+  if (source.startsWith("http://") || source.startsWith("https://")) return null;
 
-// URLs that are intentionally excluded from App Router (internal, deprecated, or special)
-const EXCLUDED_URLS = new Set([
-  "/404", // Next.js handles this via app/not-found.tsx
-  "/app-router-test", // Test-only route, not needed in production
-]);
+  return source.startsWith("/") ? source : null;
+}
 
-const isRedirectSourceUrl = (url: string): boolean =>
-  REDIRECT_PATTERNS.some((pattern) => pattern.test(url));
+function parseRedirectSources(redirectsContent: string): string[] {
+  const sources: string[] = [];
 
-const isExcludedUrl = (url: string): boolean => EXCLUDED_URLS.has(url);
+  for (const rawLine of redirectsContent.split(/\r?\n/)) {
+    const line = rawLine.trim();
+    if (!line || line.startsWith("#")) continue;
+
+    const [source] = line.split(/\s+/);
+    if (!source) continue;
+
+    const normalized = normalizeRedirectSourcePath(source);
+    if (!normalized) continue;
+    sources.push(normalized);
+  }
+
+  return sources;
+}
+
+function escapeRegex(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function routePatternToRegex(routePattern: string): RegExp {
+  return new RegExp(`^${escapeRegex(routePattern).replace(/\\\*/g, ".*")}$`);
+}
+
+function buildRedirectMatchers(redirectSources: readonly string[]): RegExp[] {
+  return redirectSources.map((source) =>
+    new RegExp(
+      `^${escapeRegex(source)
+        .replace(/:([A-Za-z_][A-Za-z0-9_]*)/g, "[^/]+")
+        .replace(/\\\*/g, ".*")}$`,
+    ),
+  );
+}
+
+async function loadGeneratedLegacyRedirectEntries(): Promise<[string, string][]> {
+  const moduleUrl = pathToFileURL(legacyRedirectsModulePath).href;
+  const imported = await import(moduleUrl);
+  return imported.LEGACY_REDIRECT_ENTRIES as [string, string][];
+}
 
 async function main() {
-  console.log("Verifying URL coverage...\n");
+  console.info("Verifying static runtime URL coverage...\n");
 
-  // Load legacy URLs
-  const fixturesPath = path.join(rootDir, "src/test/fixtures/legacy-urls.txt");
-  const legacyUrls = fs
-    .readFileSync(fixturesPath, "utf8")
-    .split("\n")
-    .filter(Boolean);
-
-  console.log(`Legacy URLs: ${legacyUrls.length}`);
-
-  // Load App Router URLs
-  const appRouterUrls = new Set(listAppRouterUrls());
-  console.log(`App Router URLs: ${appRouterUrls.size}`);
-
-  // Check _redirects file exists
-  const redirectsPath = path.join(rootDir, "public/_redirects");
   if (!fs.existsSync(redirectsPath)) {
     console.error("\nERROR: public/_redirects file not found");
     process.exit(1);
   }
+  if (!fs.existsSync(routesPath)) {
+    console.error("\nERROR: public/_routes.json file not found");
+    process.exit(1);
+  }
+  if (!fs.existsSync(legacyRedirectsModulePath)) {
+    console.error("\nERROR: functions/generated/legacy-redirects.js file not found");
+    process.exit(1);
+  }
 
+  const artifacts = buildStaticRuntimeArtifacts(rootDir);
   const redirectsContent = fs.readFileSync(redirectsPath, "utf8");
-  if (!redirectsContent.includes("/directions/:slug")) {
-    console.error("\nERROR: _redirects missing /directions/:slug rule");
+  const redirectSources = parseRedirectSources(redirectsContent);
+  const redirectMatchers = buildRedirectMatchers(redirectSources);
+  const actualRouteConfig = JSON.parse(fs.readFileSync(routesPath, "utf8")) as {
+    version: number;
+    include: string[];
+    exclude?: string[];
+  };
+  const generatedLegacyEntries = await loadGeneratedLegacyRedirectEntries();
+
+  const expectedStructuralRules = artifacts.structuralRules.map((rule) => `${rule.from}  ${rule.to}  ${rule.status}`);
+  const missingStructuralRules = expectedStructuralRules.filter((rule) => !redirectsContent.includes(rule));
+  if (missingStructuralRules.length > 0) {
+    console.error(`\nERROR: _redirects missing ${missingStructuralRules.length} structural rules`);
+    missingStructuralRules.slice(0, 20).forEach((rule) => console.error(`  ${rule}`));
     process.exit(1);
   }
 
-  const expectedLocalizedRules = buildLocalizedStaticRedirectRules().map(formatRedirectRule);
-  const missingLocalizedRules = expectedLocalizedRules.filter(
-    (rule) => !redirectsContent.includes(rule),
-  );
-  if (missingLocalizedRules.length > 0) {
+  const redirectRuleCount = redirectSources.length;
+  if (redirectRuleCount > 2000) {
+    console.error(`\nERROR: _redirects has ${redirectRuleCount} rules; Cloudflare Pages limit is 2000 static rules`);
+    process.exit(1);
+  }
+
+  const expectedRouteConfig = artifacts.routeConfig;
+  const actualInclude = [...(actualRouteConfig.include ?? [])].sort();
+  const actualExclude = [...(actualRouteConfig.exclude ?? [])].sort();
+  if (
+    actualRouteConfig.version !== expectedRouteConfig.version ||
+    JSON.stringify(actualInclude) !== JSON.stringify(expectedRouteConfig.include) ||
+    JSON.stringify(actualExclude) !== JSON.stringify(expectedRouteConfig.exclude)
+  ) {
+    console.error("\nERROR: public/_routes.json does not match generated legacy function scope");
+    process.exit(1);
+  }
+
+  const routeRuleCount = actualInclude.length + actualExclude.length;
+  if (routeRuleCount > 100) {
+    console.error(`\nERROR: _routes.json uses ${routeRuleCount} rules; Cloudflare limit is 100 combined include/exclude rules`);
+    process.exit(1);
+  }
+
+  const routeMatchers = actualInclude.map(routePatternToRegex);
+  const uncoveredLegacyFunctionSources = artifacts.exactLegacyRedirects
+    .map((entry) => entry.from)
+    .filter((source) => !routeMatchers.some((matcher) => matcher.test(source)));
+  if (uncoveredLegacyFunctionSources.length > 0) {
     console.error(
-      `\nERROR: _redirects missing ${missingLocalizedRules.length} localized static-export rules`,
+      `\nERROR: _routes.json does not cover ${uncoveredLegacyFunctionSources.length} legacy redirect sources`,
     );
-    missingLocalizedRules.slice(0, 20).forEach((rule) => console.error(`  ${rule}`));
+    uncoveredLegacyFunctionSources.slice(0, 20).forEach((source) => console.error(`  ${source}`));
     process.exit(1);
   }
 
-  console.log(
-    `Cloudflare _redirects: verified (${expectedLocalizedRules.length} localized rules)\n`,
-  );
+  const expectedLegacyEntries = artifacts.exactLegacyRedirects.map(({ from, to }) => [from, to]);
+  if (JSON.stringify(generatedLegacyEntries) !== JSON.stringify(expectedLegacyEntries)) {
+    console.error("\nERROR: generated legacy redirect module is out of sync with the fixture-backed manifest");
+    process.exit(1);
+  }
 
-  // Find missing URLs
+  console.info(`Historical legacy URLs: ${artifacts.legacyUrls.length}`);
+  console.info(`Localized canonicals: ${artifacts.canonicalUrls.length}`);
+  console.info(`Structural _redirects rules: ${redirectSources.length}`);
+  console.info(`Exact legacy redirects: ${artifacts.exactLegacyRedirects.length}`);
+  console.info(`Pages Function include rules: ${actualInclude.length}\n`);
+
   const missing: string[] = [];
-  const served: string[] = [];
-  const redirected: string[] = [];
-  const excluded: string[] = [];
+  const canonical: string[] = [];
+  const redirectedByStructural: string[] = [];
+  const redirectedByFunction: string[] = [];
 
-  for (const url of legacyUrls) {
-    if (isExcludedUrl(url)) {
-      excluded.push(url);
+  const canonicalUrlSet = new Set(artifacts.canonicalUrls);
+  const exactLegacySources = new Set(artifacts.exactLegacyRedirects.map((entry) => entry.from));
+
+  for (const url of artifacts.legacyUrls) {
+    if (EXCLUDED_URLS.has(url)) {
       continue;
     }
 
-    if (appRouterUrls.has(url)) {
-      served.push(url);
+    if (canonicalUrlSet.has(url)) {
+      canonical.push(url);
       continue;
     }
 
-    if (isRedirectSourceUrl(url)) {
-      redirected.push(url);
+    if (redirectMatchers.some((pattern) => pattern.test(url))) {
+      redirectedByStructural.push(url);
+      continue;
+    }
+
+    if (exactLegacySources.has(url)) {
+      redirectedByFunction.push(url);
       continue;
     }
 
     missing.push(url);
   }
 
-  console.log("Coverage Summary:");
-  console.log(`  Served by App Router: ${served.length}`);
-  console.log(`  Redirected: ${redirected.length}`);
-  console.log(`  Excluded: ${excluded.length}`);
-  console.log(`  Missing: ${missing.length}`);
+  console.info("Coverage Summary:");
+  console.info(`  Canonical: ${canonical.length}`);
+  console.info(`  Structural redirects: ${redirectedByStructural.length}`);
+  console.info(`  Function redirects: ${redirectedByFunction.length}`);
+  console.info(`  Missing: ${missing.length}`);
 
   if (missing.length > 0) {
-    console.log("\nMissing URLs (first 30):");
-    missing.slice(0, 30).forEach((url) => console.log(`  ${url}`));
-    if (missing.length > 30) {
-      console.log(`  ... and ${missing.length - 30} more`);
-    }
-
-    // Write full list to file for analysis
     const missingPath = path.join(rootDir, "missing-urls.txt");
     fs.writeFileSync(missingPath, missing.join("\n"));
-    console.log(`\nFull list written to: ${missingPath}`);
-
+    console.info("\nMissing URLs (first 30):");
+    missing.slice(0, 30).forEach((url) => console.info(`  ${url}`));
+    console.info(`\nFull list written to: ${missingPath}`);
     process.exit(1);
   }
 
-  // Check for duplicates in App Router URLs
-  const urlList = listAppRouterUrls();
-  if (urlList.length !== appRouterUrls.size) {
-    console.error("\nERROR: App Router URLs contain duplicates");
-    process.exit(1);
-  }
-
-  // Verify all App Router URLs have language prefix
-  const invalidUrls = [...appRouterUrls].filter((url) => {
-    const match = url.match(/^\/([a-z]{2})(\/|$)/);
-    return !match;
-  });
-
-  if (invalidUrls.length > 0) {
-    console.error("\nERROR: App Router URLs without language prefix:");
-    invalidUrls.slice(0, 10).forEach((url) => console.error(`  ${url}`));
-    process.exit(1);
-  }
-
-  console.log("\n✓ All legacy URLs are covered!");
-  process.exit(0);
+  console.info("\n✓ All supported legacy URLs are covered by the static Pages runtime.");
 }
 
-main().catch((err) => {
-  console.error("Error:", err);
+main().catch((error) => {
+  console.error("Error:", error);
   process.exit(1);
 });

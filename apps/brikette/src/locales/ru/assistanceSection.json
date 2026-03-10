@@ -11,10 +11,11 @@
   "otherBookingOptions": "Другие варианты бронирования и социальные сети",
   "addressLabel": "Адрес:",
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookDirect": "Забронировать напрямую",
   "bookingOptions": {
-    "googleBusiness": "Google Business",
+    "googleBusiness": "Google Бизнес",
     "bookingCom": "Booking.com",
-    "hostelWorld": "Hostelworld",
+    "hostelWorld": "Отель World",
     "instagram": "Instagram"
   },
   "amaHeadingPart1": "Как мы можем",
@@ -41,7 +42,7 @@
     "cardCta": "Прочитайте планировочный гид «{{guideTitle}}»"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "{{howToTitle}}_{{experiencesTitle}}",
+    "intro": "{{howToMetaDescription}}{{experiencesMetaDescription}}"
   }
 }

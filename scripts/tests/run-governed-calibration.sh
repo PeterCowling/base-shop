@@ -5,6 +5,7 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
 runner_script="${script_dir}/run-governed-test.sh"
 summary_script="${script_dir}/summarize-governor-telemetry.mjs"
+attribution_validator_script="${script_dir}/validate-governed-telemetry-attribution.mjs"
 
 profile="synthetic-day-zero"
 events_file="${repo_root}/.cache/test-governor/events.jsonl"
@@ -94,6 +95,11 @@ if [[ ! -x "$summary_script" ]]; then
   exit 2
 fi
 
+if [[ ! -x "$attribution_validator_script" ]]; then
+  echo "ERROR: attribution validator missing or not executable: $attribution_validator_script" >&2
+  exit 2
+fi
+
 mkdir -p "$(dirname "$events_file")"
 
 if [[ "$reset_events" == "1" ]]; then
@@ -163,6 +169,12 @@ if [[ "$assert_gates" == "0" ]]; then
 fi
 
 node "$summary_script" "${summary_args[@]}" >/dev/null
+
+validator_args=(--events-file "$events_file")
+if [[ "$assert_gates" == "0" ]]; then
+  validator_args+=(--no-assert)
+fi
+node "$attribution_validator_script" "${validator_args[@]}" >/dev/null
 
 echo "Calibration profile  complete."
 echo "  events:  ${events_file}"

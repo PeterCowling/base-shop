@@ -1,0 +1,415 @@
+"use client";
+
+import { useMemo, useState } from "react";
+
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
+
+import { useAuth } from "../../context/AuthContext";
+import useInventoryItems from "../../hooks/data/inventory/useInventoryItems";
+import useInventoryLedger from "../../hooks/data/inventory/useInventoryLedger";
+import { useTillShiftsData } from "../../hooks/data/till/useTillShiftsData";
+import { useCheckins } from "../../hooks/data/useCheckins";
+import { canAccess, Permissions } from "../../lib/roles";
+import { formatDate } from "../../utils/dateUtils";
+import { showToast } from "../../utils/toastUtils";
+
+function toTimestampMs(timestamp: unknown): number {
+  if (typeof timestamp === "number") {
+    return Number.isFinite(timestamp) ? timestamp : 0;
+  }
+
+  if (typeof timestamp === "string") {
+    const parsed = Date.parse(timestamp);
+    return Number.isNaN(parsed) ? 0 : parsed;
+  }
+
+  return 0;
+}
+
+function formatDelta(delta: number): string {
+  if (delta > 0) {
+    return `+${delta}`;
+  }
+
+  return String(delta);
+}
+
+function formatDateTime(timestamp: unknown): string {
+  const parsed = toTimestampMs(timestamp);
+  if (parsed <= 0) {
+    return "—";
+  }
+  return new Date(parsed).toLocaleString("it-IT");
+}
+
+function formatShiftStatus(status?: "open" | "closed"): string {
+  if (status === "open") {
+    return "Open";
+  }
+  if (status === "closed") {
+    return "Closed";
+  }
+  return "—";
+}
+
+function formatCloseDifference(value?: number): string {
+  if (value === undefined) {
+    return "—";
+  }
+  return formatDelta(value);
+}
+
+function escapeCsvCell(value: string): string {
+  let str = value;
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
+  return `"${str.replace(/"/g, '""')}"`;
+}
+
+function buildCsv(headers: string[], rows: string[][]): string {
+  return [
+    headers.join(","),
+    ...rows.map((row) => row.map(escapeCsvCell).join(",")),
+  ].join("\n");
+}
+
+function triggerCsvDownload(content: string, filename: string): void {
+  const blob = new Blob([content], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.setAttribute("href", url);
+  link.setAttribute("download", filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+}
+
+export default function ManagerAuditContent() {
+  const { user } = useAuth();
+  const canView = canAccess(user, Permissions.MANAGEMENT_ACCESS);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [staffFilter, setStaffFilter] = useState("");
+  const [itemFilter, setItemFilter] = useState("");
+
+  const {
+    items,
+    itemsById,
+    loading: inventoryItemsLoading,
+    error: inventoryItemsError,
+  } = useInventoryItems();
+  const {
+    entries,
+    loading: inventoryLedgerLoading,
+    error: inventoryLedgerError,
+  } = useInventoryLedger();
+  const { shifts, loading: shiftsLoading, error: shiftsError } = useTillShiftsData({
+    limitToLast: 3,
+  });
+
+  const todayKey = new Date().toISOString().split("T")[0];
+  const { checkins, loading: checkinsLoading, error: checkinsError } = useCheckins({
+    startAt: todayKey,
+    endAt: todayKey,
+  });
+
+  const stockVarianceRows = useMemo(() => {
+    const effectiveStartMs = startDate
+      ? toTimestampMs(`${startDate}T00:00:00.000+00:00`)
+      : Date.now() - 30 * 24 * 60 * 60 * 1000;
+    const effectiveEndMs = endDate
+      ? toTimestampMs(`${endDate}T23:59:59.999+00:00`)
+      : Date.now();
+    const normalizedStaffFilter = staffFilter.toLowerCase();
+
+    return entries
+      .filter(
+        (entry) =>
+          entry.type === "count" &&
+          toTimestampMs(entry.timestamp) >= effectiveStartMs &&
+          toTimestampMs(entry.timestamp) <= effectiveEndMs &&
+          (!itemFilter || entry.itemId === itemFilter) &&
+          (!staffFilter ||
+            (entry.user ?? "").toLowerCase().includes(normalizedStaffFilter))
+      )
+      .sort(
+        (a, b) => toTimestampMs(b.timestamp) - toTimestampMs(a.timestamp)
+      );
+  }, [endDate, entries, itemFilter, staffFilter, startDate]);
+
+  const handleExportVariance = () => {
+    const effectiveStart = startDate
+      ? formatDate(new Date(toTimestampMs(`${startDate}T00:00:00.000+00:00`)))
+      : formatDate(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000));
+    const effectiveEnd = endDate
+      ? formatDate(new Date(toTimestampMs(`${endDate}T23:59:59.999+00:00`)))
+      : formatDate(new Date());
+    const headers = ["Recorded at", "Item", "Item ID", "Delta", "User", "Reason", "Note"];
+    const rows = stockVarianceRows.map((entry) => [
+      formatDateTime(entry.timestamp),
+      itemsById[entry.itemId]?.name ?? entry.itemId,
+      entry.itemId,
+      String(entry.quantity),
+      entry.user ?? "",
+      entry.reason ?? "",
+      entry.note ?? "",
+    ]);
+    const csv = buildCsv(headers, rows);
+    const filename = `stock-variance-${effectiveStart}-${effectiveEnd}.csv`;
+    triggerCsvDownload(csv, filename);
+    showToast(`Exported ${stockVarianceRows.length} variance record(s)`, "success");
+  };
+
+  const lastThreeShifts = useMemo(
+    () =>
+      [...shifts].sort(
+        (a, b) =>
+          toTimestampMs(b.closedAt ?? b.openedAt) -
+          toTimestampMs(a.closedAt ?? a.openedAt)
+      ),
+    [shifts]
+  );
+
+  const todayCheckinCount = Object.keys(checkins?.[todayKey] ?? {}).length;
+
+  if (!canView) {
+    return null;
+  }
+
+  return (
+    <div className="space-y-4">
+      <h1 className="text-xl font-semibold text-foreground">Manager Audit</h1>
+
+      <section className="rounded-lg border border-border-2 bg-surface p-4">
+        <h2 className="text-lg font-semibold text-foreground">Stock Variance</h2>
+        {inventoryItemsLoading || inventoryLedgerLoading ? (
+          <p className="mt-3 text-sm text-muted-foreground">Loading...</p>
+        ) : null}
+        {!inventoryItemsLoading && !inventoryLedgerLoading && (inventoryItemsError || inventoryLedgerError) ? (
+          <p className="mt-3 text-sm text-danger-fg">
+            Error loading stock: {String(inventoryItemsError ?? inventoryLedgerError)}
+          </p>
+        ) : null}
+        {!inventoryItemsLoading &&
+        !inventoryLedgerLoading &&
+        !inventoryItemsError &&
+        !inventoryLedgerError ? (
+          <>
+            <div className="mt-3 flex flex-wrap gap-4 items-end">
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-start-date"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  From
+                </label>
+                <input
+                  id="variance-start-date"
+                  type="date"
+                  data-cy="variance-start-date"
+                  value={startDate}
+                  onChange={(event) => setStartDate(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-end-date"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  To
+                </label>
+                <input
+                  id="variance-end-date"
+                  type="date"
+                  data-cy="variance-end-date"
+                  value={endDate}
+                  onChange={(event) => setEndDate(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-staff-filter"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  Staff
+                </label>
+                <input
+                  id="variance-staff-filter"
+                  type="text"
+                  data-cy="variance-staff-filter"
+                  value={staffFilter}
+                  onChange={(event) => setStaffFilter(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                />
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="variance-item-filter"
+                  className="text-xs font-semibold text-muted-foreground mb-1"
+                >
+                  Item
+                </label>
+                <select
+                  id="variance-item-filter"
+                  data-cy="variance-item-filter"
+                  value={itemFilter}
+                  onChange={(event) => setItemFilter(event.target.value)}
+                  className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                >
+                  <option value="">All items</option>
+                  {items.map((item) => (
+                    <option key={item.id} value={item.id}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            {stockVarianceRows.length > 0 ? (
+              <div className="mt-3">
+                <Button
+                  type="button"
+                  data-cy="variance-export-btn"
+                  color="default"
+                  tone="outline"
+                  size="sm"
+                  onClick={handleExportVariance}
+                >
+                  Export CSV
+                </Button>
+              </div>
+            ) : null}
+            {stockVarianceRows.length === 0 ? (
+              <p className="mt-3 text-sm text-muted-foreground">
+                No variance in the selected period
+              </p>
+            ) : (
+              <div className="mt-3 overflow-x-auto rounded-lg border border-border-2">
+                <Table className="min-w-full text-sm">
+                  <TableHeader className="bg-surface-2">
+                    <TableRow>
+                      <TableHead className="p-2 text-start border-b border-border-2">
+                        Item
+                      </TableHead>
+                      <TableHead className="p-2 text-end border-b border-border-2">
+                        Delta
+                      </TableHead>
+                      <TableHead className="p-2 text-start border-b border-border-2">
+                        Date
+                      </TableHead>
+                      <TableHead className="p-2 text-start border-b border-border-2">
+                        Counted by
+                      </TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {stockVarianceRows.map((entry) => (
+                      <TableRow key={entry.id ?? `${entry.itemId}-${entry.timestamp}`}>
+                        <TableCell className="p-2 border-b border-border-2">
+                          {itemsById[entry.itemId]?.name ?? entry.itemId}
+                        </TableCell>
+                        <TableCell className="p-2 border-b border-border-2 text-end font-mono">
+                          {formatDelta(entry.quantity)}
+                        </TableCell>
+                        <TableCell className="p-2 border-b border-border-2">
+                          {formatDateTime(entry.timestamp)}
+                        </TableCell>
+                        <TableCell className="p-2 border-b border-border-2">
+                          {entry.user || "—"}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </div>
+            )}
+          </>
+        ) : null}
+      </section>
+
+      <section className="rounded-lg border border-border-2 bg-surface p-4">
+        <h2 className="text-lg font-semibold text-foreground">Recent Shifts</h2>
+        {shiftsLoading ? (
+          <p className="mt-3 text-sm text-muted-foreground">Loading...</p>
+        ) : null}
+        {!shiftsLoading && shiftsError ? (
+          <p className="mt-3 text-sm text-danger-fg">
+            Error loading shifts: {String(shiftsError)}
+          </p>
+        ) : null}
+        {!shiftsLoading && !shiftsError ? (
+          lastThreeShifts.length === 0 ? (
+            <p className="mt-3 text-sm text-muted-foreground">No shifts recorded</p>
+          ) : (
+            <div className="mt-3 overflow-x-auto rounded-lg border border-border-2">
+              <Table className="min-w-full text-sm">
+                <TableHeader className="bg-surface-2">
+                  <TableRow>
+                    <TableHead className="p-2 text-start border-b border-border-2">
+                      Status
+                    </TableHead>
+                    <TableHead className="p-2 text-start border-b border-border-2">
+                      Closed at
+                    </TableHead>
+                    <TableHead className="p-2 text-start border-b border-border-2">
+                      Closed by
+                    </TableHead>
+                    <TableHead className="p-2 text-end border-b border-border-2">
+                      Difference
+                    </TableHead>
+                    <TableHead className="p-2 text-center border-b border-border-2">
+                      Signoff
+                    </TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {lastThreeShifts.map((shift) => (
+                    <TableRow key={shift.id ?? shift.shiftId}>
+                      <TableCell className="p-2 border-b border-border-2">
+                        {formatShiftStatus(shift.status)}
+                      </TableCell>
+                      <TableCell className="p-2 border-b border-border-2">
+                        {shift.closedAt ?? "—"}
+                      </TableCell>
+                      <TableCell className="p-2 border-b border-border-2">
+                        {shift.closedBy ?? "—"}
+                      </TableCell>
+                      <TableCell className="p-2 border-b border-border-2 text-end font-mono">
+                        {formatCloseDifference(shift.closeDifference)}
+                      </TableCell>
+                      <TableCell className="p-2 border-b border-border-2 text-center">
+                        {shift.varianceSignoffRequired ? "✓" : "—"}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )
+        ) : null}
+      </section>
+
+      <section className="rounded-lg border border-border-2 bg-surface p-4">
+        <h2 className="text-lg font-semibold text-foreground">Check-ins Today</h2>
+        {checkinsLoading ? (
+          <p className="mt-3 text-sm text-muted-foreground">Loading...</p>
+        ) : null}
+        {!checkinsLoading && checkinsError ? (
+          <p className="mt-3 text-sm text-danger-fg">
+            Error loading check-ins: {String(checkinsError)}
+          </p>
+        ) : null}
+        {!checkinsLoading && !checkinsError ? (
+          <p className="mt-3 text-base font-medium text-foreground">
+            {todayCheckinCount} check-in(s) today
+          </p>
+        ) : null}
+      </section>
+    </div>
+  );
+}

@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "Albergue brikette",
     "reserve": "Reservar agora"
   },
   "intro": {
@@ -24,10 +24,14 @@
     "reload": "Recarregar a página"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
+    "twitterCard": "sumário_large_image",
     "twitterHandle": "@brikette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS deve definir pelo menos um slug de assistência."
+  },
+  "stickyCta": {
+    "directHeadline": "Garanta a nossa melhor tarifa disponível em menos de dois minutos.",
+    "directSubcopy": "Evite taxas de terceiros e receba ajuda prioritária da nossa equipa em Positano."
   }
 }

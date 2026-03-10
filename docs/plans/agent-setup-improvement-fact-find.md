@@ -243,7 +243,7 @@ Safety rules are defined in `docs/git-safety.md` (source of truth) and enforced 
   - A: **8 locations** with varying formats and levels of detail. See "Safety Rule Duplication" in the What's Not Working section.
 
 - Q: Can the PATH shim approach provide universal hard enforcement?
-  - A: **Yes, if agents use integrator-shell.** Claude Code gets it automatically via session-start hook. Codex gets it when launched via `scripts/agents/integrator-shell.sh -- codex`. Any future agent can use the same script.
+  - A: **Yes, if agents use integrator-shell.** Claude Code gets it automatically via session-start hook. Codex gets it when launched via `scripts/agents/integrator-shell.sh --read-only -- codex` for normal sessions, or `scripts/agents/integrator-shell.sh --agent-write-session -- codex` only when a long-lived locked shared-checkout write session is explicitly required. Any future agent can use the same script.
   - Evidence: `scripts/agents/integrator-shell.sh` is agent-agnostic.
 
 ### Open (User Input Needed)

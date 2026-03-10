@@ -3,6 +3,7 @@ import { onRequestGet, onRequestPost } from "@/routes/api/launches/index";
 
 export const runtime = "edge";
 
+
 export async function GET(request: Request) {
   return withPipelineContext(request, {}, onRequestGet);
 }

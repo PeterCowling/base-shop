@@ -38,7 +38,7 @@ beforeEach(() => {
   refMock = jest.fn((_db: unknown, path?: string) => path ?? "");
   getMock = jest.fn();
   updateMock = jest.fn();
-  addActivityMock = jest.fn();
+  addActivityMock = jest.fn().mockResolvedValue({ success: true });
 });
 
 describe("useDeleteGuestFromBooking", () => {
@@ -59,6 +59,9 @@ describe("useDeleteGuestFromBooking", () => {
       }
       if (path === "roomByDate/2024-01-01/index_3/3") {
         return snap({ guestIds: ["occ1"] });
+      }
+      if (path === "roomByDate/2024-01-02/index_3/3") {
+        return snap({ guestIds: ["occ1", "other"] });
       }
       return snap(null);
     });
@@ -86,8 +89,11 @@ describe("useDeleteGuestFromBooking", () => {
       "activities/occ1": null,
       "activitiesByCode/5/occ1": null,
       "checkins/2024-01-01/occ1": null,
+      "checkins/2024-01-02/occ1": null,
+      "checkouts/2024-01-01/occ1": null,
       "checkouts/2024-01-02/occ1": null,
       "roomByDate/2024-01-01/index_3/3/guestIds": null,
+      "roomByDate/2024-01-02/index_3/3/guestIds": ["other"],
     });
     expect(addActivityMock).toHaveBeenCalledWith("occ1", 25);
     expect(result.current.loading).toBe(false);
@@ -108,5 +114,90 @@ describe("useDeleteGuestFromBooking", () => {
     expect(updateMock).not.toHaveBeenCalled();
     expect(result.current.error).toBe("Database not initialized.");
     expect(result.current.loading).toBe(false);
+  });
+
+  it("falls back to full-node scans when booking dates are missing", async () => {
+    getMock.mockImplementation(async (path: string) => {
+      if (path === "bookings/BR1") {
+        return snap({
+          occ1: {},
+          other: {},
+        });
+      }
+      if (path === "activitiesByCode") {
+        return snap({ 5: { occ1: { a: 1 } } });
+      }
+      if (path === "checkins") {
+        return snap({ "2024-01-10": { occ1: { reservationCode: "R", timestamp: "t" } } });
+      }
+      if (path === "checkouts") {
+        return snap({ "2024-01-12": { occ1: { reservationCode: "R", timestamp: "t" } } });
+      }
+      if (path === "roomByDate") {
+        return snap({
+          "2024-01-10": {
+            index_3: {
+              "3": { guestIds: ["occ1", "other"] },
+            },
+          },
+        });
+      }
+      return snap(null);
+    });
+
+    const { result } = renderHook(() => useDeleteGuestFromBooking());
+
+    await act(async () => {
+      await result.current.deleteGuest({
+        bookingRef: "BR1",
+        occupantId: "occ1",
+      });
+    });
+
+    const updates = updateMock.mock.calls[0][1];
+    expect(updates).toMatchObject({
+      "checkins/2024-01-10/occ1": null,
+      "checkouts/2024-01-12/occ1": null,
+      "roomByDate/2024-01-10/index_3/3/guestIds": ["other"],
+    });
+  });
+
+  it("throws when delete succeeds but activity logging returns success:false", async () => {
+    getMock.mockImplementation(async (path: string) => {
+      if (path === "bookings/BR1") {
+        return snap({
+          occ1: {
+            checkInDate: "2024-01-01",
+            checkOutDate: "2024-01-02",
+            roomNumbers: ["3"],
+          },
+          other: {},
+        });
+      }
+      if (path === "activitiesByCode") {
+        return snap({ 5: { occ1: { a: 1 } } });
+      }
+      if (path === "roomByDate/2024-01-01/index_3/3") {
+        return snap({ guestIds: ["occ1"] });
+      }
+      return snap(null);
+    });
+    addActivityMock.mockResolvedValue({
+      success: false,
+      error: "activity write failed",
+    });
+
+    const { result } = renderHook(() => useDeleteGuestFromBooking());
+
+    await act(async () => {
+      await expect(
+        result.current.deleteGuest({
+          bookingRef: "BR1",
+          occupantId: "occ1",
+        })
+      ).rejects.toThrow("activity write failed");
+    });
+    expect(updateMock).toHaveBeenCalledTimes(1);
+    expect(result.current.error).toBeInstanceOf(Error);
   });
 });

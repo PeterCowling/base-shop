@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-prime-correctness-2026-03-08",
+  "feature_slug": "reception-inbox-prime-correctness",
+  "emitted_at": "2026-03-08T00:00:00.000Z",
+  "why": "Four code audit findings confirmed correctness gaps in the unified Reception inbox: staff could see resolved Prime threads, could not inspect full message content before approving, saw stale state after sending, and AbortController signal was never wired to the fetch call.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All four inbox correctness gaps are fixed, verified by targeted unit tests, and the inbox behaves consistently between email and Prime paths.",
+    "source": "operator"
+  }
+}

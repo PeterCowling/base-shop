@@ -1,11 +1,11 @@
 "use client";
-/* eslint-disable ds/no-hardcoded-copy, ds/absolute-parent-guard, ds/no-nonlayered-zindex -- BRIK-2145 [ttl=2026-12-31] Temporary CTA variant copy/layout override during funnel experiment. */
+/* eslint-disable ds/no-hardcoded-copy, ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/no-raw-tailwind-color -- BRIK-2145 [ttl=2026-12-31] Temporary CTA variant copy/layout override during funnel experiment. */
 
 // apps/brikette/src/components/cta/ContentStickyCta.tsx
 // Sticky CTA Variant A for content pages - opens BookingModal (generic availability)
 // Pattern reference: StickyBookNow, but opens modal instead of deep-link
 
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import React, { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 import { ArrowRight, BadgeCheck, Sparkles, X } from "lucide-react";
@@ -14,19 +14,22 @@ import { Section } from "@acme/design-system/atoms";
 import { resolveBookingCtaLabel } from "@acme/ui/shared";
 
 import type { AppLanguage } from "@/i18n.config";
+import { writeAttribution } from "@/utils/entryAttribution";
 import { type CtaLocation, fireCtaClick } from "@/utils/ga4-events";
-
-const CONTENT_STICKY_CTA_STORAGE_KEY = "content-sticky-cta-dismissed";
+import { resolveIntent } from "@/utils/intentResolver";
+import { getBookPath } from "@/utils/localizedRoutes";
+import { getPrivateRoomsPath } from "@/utils/privateRoomPaths";
 
 type ContentStickyCtaProps = {
   lang: AppLanguage;
   ctaLocation: Extract<
     CtaLocation,
-    "guide_detail" | "about_page" | "bar_menu" | "breakfast_menu" | "how_to_get_here" | "assistance"
+    "guide_detail" | "about_page" | "bar_menu" | "breakfast_menu" | "how_to_get_here" | "assistance" | "experiences_page"
   >;
+  isPrivateRoute?: boolean;
 };
 
-function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Element | null {
+function ContentStickyCta({ lang, ctaLocation, isPrivateRoute = false }: ContentStickyCtaProps): JSX.Element | null {
   const { t, ready } = useTranslation(undefined, { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const router = useRouter();
@@ -40,14 +43,12 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
     }
 
     try {
-      const storedValue = window.sessionStorage.getItem(CONTENT_STICKY_CTA_STORAGE_KEY);
-      if (storedValue === "true") {
-        setIsDismissed(true);
-      }
+      const storedValue = window.sessionStorage.getItem(`content-sticky-cta-dismissed:${ctaLocation}`);
+      setIsDismissed(storedValue === "true");
     } catch {
       // Ignore storage access errors (e.g. Safari private mode).
     }
-  }, []);
+  }, [ctaLocation]);
 
   const perksEyebrow = useMemo(
     () => (tokensReady ? (tTokens("directBookingPerks") as string) : ""),
@@ -115,23 +116,58 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
   const onDismiss = useCallback(() => {
     if (typeof window !== "undefined") {
       try {
-        window.sessionStorage.setItem(CONTENT_STICKY_CTA_STORAGE_KEY, "true");
+        window.sessionStorage.setItem(`content-sticky-cta-dismissed:${ctaLocation}`, "true");
       } catch {
         // Ignore storage access errors (e.g. Safari private mode).
       }
     }
     setIsDismissed(true);
-  }, []);
+  }, [ctaLocation]);
 
-  const onCtaClick = useCallback(() => {
-    // Fire cta_click event with canonical enums
-    fireCtaClick({
-      ctaId: "content_sticky_check_availability",
-      ctaLocation,
+  // Resolve intent and target URL at render time (SSR-safe, pure).
+  const { resolved_intent, product_type, decision_mode, destination_funnel } = resolveIntent(
+    "sticky_cta",
+    { isPrivateRoute }
+  );
+  const targetUrl = resolved_intent === "private"
+    ? getPrivateRoomsPath(lang)
+    : getBookPath(lang);
+
+  const onCtaClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+
+    // Write attribution carrier for multi-step journey tracking.
+    writeAttribution({
+      source_surface: "content_page",
+      source_cta: ctaLocation,
+      resolved_intent,
+      product_type,
+      decision_mode,
+      destination_funnel,
+      locale: lang,
+      fallback_triggered: false,
+      next_page: targetUrl,
     });
 
-    router.push(`/${lang}/book`);
-  }, [ctaLocation, router, lang]);
+    // Fire enriched cta_click event with entry-attribution fields.
+    fireCtaClick(
+      { ctaId: "content_sticky_check_availability", ctaLocation },
+      undefined,
+      {
+        source_surface: "content_page",
+        source_cta: ctaLocation,
+        resolved_intent,
+        product_type,
+        decision_mode,
+        destination_funnel,
+        locale: lang,
+        fallback_triggered: false,
+        next_page: targetUrl,
+      }
+    );
+
+    router.push(targetUrl);
+  }, [ctaLocation, router, lang, resolved_intent, product_type, decision_mode, destination_funnel, targetUrl]);
 
   if (isDismissed) {
     return null;
@@ -151,7 +187,7 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
         <button
           type="button"
           onClick={onDismiss}
-          className="absolute end-4 top-4 inline-flex size-10 items-center justify-center rounded-full bg-brand-surface/70 text-brand-heading transition hover:bg-brand-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+          className="absolute end-4 top-4 inline-flex size-11 items-center justify-center rounded-full bg-brand-surface/70 text-brand-heading transition hover:bg-brand-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
           aria-label={tTokens("close", { defaultValue: "Close" }) as string}
         >
           <X aria-hidden className="h-4 w-4" />
@@ -172,10 +208,10 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
             <p className="text-lg font-semibold text-brand-heading sm:text-xl">{highlightHeadline}</p>
             <p className="mt-1 text-sm text-brand-text/80 sm:text-base">{highlightSubcopy}</p>
           </div>
-          <button
-            type="button"
+          <a
+            href={targetUrl}
             onClick={onCtaClick}
-            className="group relative inline-flex min-h-11 min-w-11 w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-brand-secondary px-6 py-3 text-base font-semibold text-brand-heading shadow-lg transition-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary hover:scale-105 hover:bg-brand-secondary/90 sm:px-5 sm:py-3 sm:text-sm"
+            className="group relative inline-flex min-h-11 min-w-11 w-full items-center justify-center gap-2 overflow-hidden rounded-full bg-brand-secondary px-6 py-3 text-base font-semibold text-brand-on-accent shadow-lg transition-transform focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand-primary hover:scale-105 hover:bg-brand-secondary/90 sm:px-5 sm:py-3 sm:text-sm"
             aria-label={ctaLabel}
           >
             <span
@@ -186,7 +222,7 @@ function ContentStickyCta({ lang, ctaLocation }: ContentStickyCtaProps): JSX.Ele
               <span>{ctaLabel}</span>
               <ArrowRight aria-hidden className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
             </span>
-          </button>
+          </a>
         </div>
       </Section>
     </div>

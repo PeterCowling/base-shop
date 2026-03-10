@@ -14,6 +14,7 @@ import { getItalyIsoString, getLocalToday } from "../../utils/dateUtils";
 import { generateTransactionId } from "../../utils/generateTransactionId";
 import { showToast } from "../../utils/toastUtils";
 import { PageShell } from "../common/PageShell";
+import ReceptionSkeleton from "../common/ReceptionSkeleton";
 
 import { LoanFilters } from "./LoanFilters";
 import { LoansTable } from "./LoansTable";
@@ -37,7 +38,7 @@ function LoansContainer({ username }: { username: string }): ReactElement {
     });
   }, [guests, guestFilter]);
   const handleAddLoanTransaction = useCallback(
-    (
+    async (
       bookingRef: string,
       occupantId: string,
       item: LoanItem,
@@ -46,34 +47,41 @@ function LoansContainer({ username }: { username: string }): ReactElement {
       count: number
     ) => {
       setButtonDisabled(true);
-      const txnId = generateTransactionId();
-      const nowIso = getItalyIsoString();
-      addActivity(occupantId, deposit);
-      addToAllTransactions(txnId, {
-        occupantId,
-        amount: deposit,
-        type: "Loan",
-        method: depositType,
-        count,
-        description: `Added loan for ${item} (Ref: ${bookingRef})`,
-        ...(item === "Keycard" ? { isKeycard: true } : {}),
-      });
-      const newLoanTxn: LoanTransaction = {
-        count,
-        createdAt: nowIso,
-        depositType,
-        deposit,
-        item,
-        type: "Loan",
-      };
-      saveLoan(bookingRef, occupantId, txnId, newLoanTxn)
-        .catch((err) => {
-          console.error("Error adding occupant loan transaction:", err);
-          showToast("Failed to add loan", "error");
-        })
-        .finally(() => {
-          setButtonDisabled(false);
+      try {
+        const txnId = generateTransactionId();
+        const nowIso = getItalyIsoString();
+        const activityResult = await addActivity(occupantId, deposit);
+        if (!activityResult.success) {
+          throw new Error(
+            activityResult.error ?? "Failed to add loan activity."
+          );
+        }
+
+        await addToAllTransactions(txnId, {
+          occupantId,
+          amount: deposit,
+          type: "Loan",
+          method: depositType,
+          count,
+          description: `Added loan for ${item} (Ref: ${bookingRef})`,
+          ...(item === "Keycard" ? { isKeycard: true } : {}),
         });
+
+        const newLoanTxn: LoanTransaction = {
+          count,
+          createdAt: nowIso,
+          depositType,
+          deposit,
+          item,
+          type: "Loan",
+        };
+        await saveLoan(bookingRef, occupantId, txnId, newLoanTxn);
+      } catch (err) {
+        console.error("Error adding occupant loan transaction:", err);
+        showToast("Failed to add loan", "error");
+      } finally {
+        setButtonDisabled(false);
+      }
     },
     [addActivity, addToAllTransactions, saveLoan]
   );
@@ -116,49 +124,53 @@ function LoansContainer({ username }: { username: string }): ReactElement {
     ) => {
       if (!occupantId || !item || countToRemove <= 0) return;
       setButtonDisabled(true);
-      if (item === "Keycard") {
-        const occupantKeycardCount = await getOccupantKeycardCount(
-          bookingRef,
-          occupantId
-        );
-        if (occupantKeycardCount === countToRemove) {
-          addActivity(occupantId, 13);
+      try {
+        if (item === "Keycard") {
+          const occupantKeycardCount = await getOccupantKeycardCount(
+            bookingRef,
+            occupantId
+          );
+          if (occupantKeycardCount === countToRemove) {
+            const returnActivityResult = await addActivity(occupantId, 13);
+            if (!returnActivityResult.success) {
+              throw new Error(
+                returnActivityResult.error ??
+                  "Failed to add keycard return activity."
+              );
+            }
+          }
         }
-      }
-      const txnId = generateTransactionId();
-      const nowIso = getItalyIsoString();
-      const depositPerItem = getDepositForItem(item);
-      const totalRefund = -1 * depositPerItem * countToRemove;
-      const depositMethod = depositPerItem === 0 ? "NO_CARD" : "CASH";
-      addToAllTransactions(txnId, {
-        occupantId,
-        amount: totalRefund,
-        type: "Refund",
-        method: depositMethod,
-        count: countToRemove,
-        description: `Returned deposit for ${item} (count=${countToRemove}, Ref: ${bookingRef})`,
-        ...(item === "Keycard" ? { isKeycard: true } : {}),
-      });
-      const returnTxn: LoanTransaction = {
-        count: countToRemove,
-        createdAt: nowIso,
-        depositType: depositMethod,
-        deposit: totalRefund,
-        item,
-        type: "Refund",
-      };
-      saveLoan(bookingRef, occupantId, txnId, returnTxn).catch((err) => {
-        console.error("Error saving refund transaction:", err);
-        showToast("Failed to save refund", "error");
-      });
-      removeLoanTransactionsForItem(bookingRef, occupantId, item)
-        .catch((err) => {
-          console.error("Error removing occupant loan transactions:", err);
-          showToast("Failed to update loan records", "error");
-        })
-        .finally(() => {
-          setButtonDisabled(false);
+
+        const txnId = generateTransactionId();
+        const nowIso = getItalyIsoString();
+        const depositPerItem = getDepositForItem(item);
+        const totalRefund = -1 * depositPerItem * countToRemove;
+        const depositMethod = depositPerItem === 0 ? "NO_CARD" : "CASH";
+        await addToAllTransactions(txnId, {
+          occupantId,
+          amount: totalRefund,
+          type: "Refund",
+          method: depositMethod,
+          count: countToRemove,
+          description: `Returned deposit for ${item} (count=${countToRemove}, Ref: ${bookingRef})`,
+          ...(item === "Keycard" ? { isKeycard: true } : {}),
         });
+        const returnTxn: LoanTransaction = {
+          count: countToRemove,
+          createdAt: nowIso,
+          depositType: depositMethod,
+          deposit: totalRefund,
+          item,
+          type: "Refund",
+        };
+        await saveLoan(bookingRef, occupantId, txnId, returnTxn);
+        await removeLoanTransactionsForItem(bookingRef, occupantId, item);
+      } catch (err) {
+        console.error("Error removing occupant loan transactions:", err);
+        showToast("Failed to update loan records", "error");
+      } finally {
+        setButtonDisabled(false);
+      }
     },
     [
       addActivity,
@@ -208,7 +220,7 @@ function LoansContainer({ username }: { username: string }): ReactElement {
   );
   return (
     <PageShell title="LOANS">
-      <div className="bg-surface rounded-lg shadow p-6 space-y-4">
+      <div className="bg-surface rounded-lg shadow-lg p-6 space-y-4">
         {error && (
           <div className="p-4 text-error-main font-semibold">
             Error loading loan data: {String(error)}
@@ -221,11 +233,7 @@ function LoansContainer({ username }: { username: string }): ReactElement {
           guestFilter={guestFilter}
           onGuestFilterChange={setGuestFilter}
         />
-        {loading && (
-          <div className="italic text-muted-foreground">
-            Loading loan information...
-          </div>
-        )}
+        {loading && <ReceptionSkeleton rows={3} />}
         {!loading && guests?.length === 0 && (
           <div className="italic text-muted-foreground">
             No guests found for this date.

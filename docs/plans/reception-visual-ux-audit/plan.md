@@ -35,8 +35,8 @@ Following a comprehensive visual/UX audit of ~80 reception app components, this 
 - [x] TASK-04: Replace raw Tailwind colour scales (~20 files)
 - [x] TASK-05: Fix layout and component issues (5 files)
 - [x] TASK-06: CHECKPOINT — Verify critical+high fixes
-- [x] TASK-07a: INVESTIGATE — Audit custom modals for SimpleModal migration
-- [x] TASK-07b: Unify custom modals to DS SimpleModal
+- [x] TASK-07a: INVESTIGATE — Audit custom modals for SimpleModal migration — all 16 already use SimpleModal; AppNav.tsx is a drawer (not a modal)
+- [x] TASK-07b: Unify custom modals to DS SimpleModal — N/A: already complete
 - [x] TASK-08: Touch targets, active states, and UX polish
 - [x] TASK-09: Border radius and table styling consistency
 
@@ -114,16 +114,16 @@ Following a comprehensive visual/UX audit of ~80 reception app components, this 
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Define 11 shade colour token families | 75% | M | Pending | - | TASK-06 |
-| TASK-02 | IMPLEMENT | Fix dark mode backdrops (~20 files) | 85% | M | Pending | - | TASK-06 |
-| TASK-03 | IMPLEMENT | Fix dynamic CSS class interpolation | 80% | S | Pending | - | TASK-06 |
-| TASK-04 | IMPLEMENT | Replace raw Tailwind colour scales (~20 files) | 70% | M | Pending | - | TASK-06 |
-| TASK-05 | IMPLEMENT | Fix layout and component issues | 80% | S | Pending | - | TASK-06 |
-| TASK-06 | CHECKPOINT | Verify critical+high fixes | 95% | S | Pending | TASK-01..05 | TASK-07a..09 |
-| TASK-07a | INVESTIGATE | Audit custom modals for SimpleModal migration | 85% | S | Pending | TASK-06 | TASK-07b |
-| TASK-07b | IMPLEMENT | Unify custom modals to DS SimpleModal | 65% | L | Pending | TASK-07a | - |
-| TASK-08 | IMPLEMENT | Touch targets, active states, UX polish | 75% | S | Pending | TASK-06 | - |
-| TASK-09 | IMPLEMENT | Border radius and table styling consistency | 70% | S | Pending | TASK-06 | - |
+| TASK-01 | IMPLEMENT | Define 11 shade colour token families | 75% | M | Complete | - | TASK-06 |
+| TASK-02 | IMPLEMENT | Fix dark mode backdrops (~20 files) | 85% | M | Complete | - | TASK-06 |
+| TASK-03 | IMPLEMENT | Fix dynamic CSS class interpolation | 80% | S | Complete | - | TASK-06 |
+| TASK-04 | IMPLEMENT | Replace raw Tailwind colour scales (~20 files) | 70% | M | Complete | - | TASK-06 |
+| TASK-05 | IMPLEMENT | Fix layout and component issues | 80% | S | Complete | - | TASK-06 |
+| TASK-06 | CHECKPOINT | Verify critical+high fixes | 95% | S | Complete | TASK-01..05 | TASK-07a..09 |
+| TASK-07a | INVESTIGATE | Audit custom modals for SimpleModal migration | 85% | S | Complete | TASK-06 | TASK-07b |
+| TASK-07b | IMPLEMENT | Unify custom modals to DS SimpleModal | 65% | L | Complete (N/A — already migrated) | TASK-07a | - |
+| TASK-08 | IMPLEMENT | Touch targets, active states, UX polish | 75% | S | Complete | TASK-06 | - |
+| TASK-09 | IMPLEMENT | Border radius and table styling consistency | 70% | S | Complete | TASK-06 | - |
 
 ## Parallelism Guide
 
@@ -143,7 +143,7 @@ Following a comprehensive visual/UX audit of ~80 reception app components, this 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `packages/themes/reception/src/tokens.ts`, `packages/themes/reception/tokens.css`, `apps/reception/src/app/globals.css`
 - **Depends on:** -
 - **Blocks:** TASK-06
@@ -195,7 +195,7 @@ Following a comprehensive visual/UX audit of ~80 reception app components, this 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:**
   - Modal/overlay backdrops (replace with `bg-black/50`): `apps/reception/src/hoc/withIconModal.tsx`, `apps/reception/src/components/appNav/AppNav.tsx`, `apps/reception/src/components/till/VoidTransactionModal.tsx`, `apps/reception/src/components/bar/orderTaking/preorder/PreorderButtons.tsx`, `apps/reception/src/components/safe/PettyCashForm.tsx`, `apps/reception/src/components/checkins/header/ArchiveConfirmationModal.tsx`, `apps/reception/src/components/checkins/header/DeleteConfirmationModal.tsx`, `apps/reception/src/components/prepayments/DisplayDialogue.tsx`, `apps/reception/src/components/roomgrid/BookingDetailsModal.tsx`, `apps/reception/src/components/prepayments/EntryDialogue.tsx`, `apps/reception/src/components/prepayments/DeleteBookingModal.tsx`, `apps/reception/src/components/loans/KeycardsModal.tsx`, `apps/reception/src/components/loans/LoanModal.tsx`, `apps/reception/src/components/till/EditTransactionModal.tsx`, `apps/reception/src/components/bar/ModalPreorderDetails.tsx`, `apps/reception/src/components/checkins/header/BookingModal.tsx`, `apps/reception/src/components/checkins/notes/BookingNotesModal.tsx`
   - Non-modal uses (need individual analysis): `apps/reception/src/components/bar/orderTaking/ProductGrid.tsx` (price badge overlay), `apps/reception/src/components/roomgrid/_BookingTooltip.tsx` (tooltip bg), `apps/reception/src/components/checkins/tooltip/CustomTooltip.tsx` (tooltip bg)
@@ -247,7 +247,7 @@ Following a comprehensive visual/UX audit of ~80 reception app components, this 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `apps/reception/src/components/till/CloseShiftForm.tsx`
 - **Depends on:** -
 - **Blocks:** TASK-06

@@ -4,14 +4,14 @@ Shared runtime standards for all lp-seo phase modules. Every phase must conform 
 
 ## Artifact Location
 
-All outputs: `docs/business-os/strategy/<BIZ>/seo/<YYYY-MM-DD>-<phase-name>-<BIZ>.user.md`
+All outputs: `docs/business-os/strategy/<BIZ>/marketing/seo/<YYYY-MM-DD>-<phase-name>-<BIZ>.user.md`
 
 Canonical path defined in `docs/business-os/startup-loop/artifact-registry.md` (artifact ID: `seo`).
 
 ## Required Inputs
 
-- **lp-offer artifact**: `docs/business-os/startup-baselines/<BIZ>-offer.md` — ICP, value proposition, target customer language, differentiation, objection map
-- **lp-channels artifact**: `docs/business-os/startup-baselines/<BIZ>-channels.md` — confirms organic search is a prioritized channel
+- **lp-offer artifact**: `docs/business-os/startup-baselines/<BIZ>/offer.md` — ICP, value proposition, target customer language, differentiation, objection map
+- **lp-channels artifact**: `docs/business-os/startup-baselines/<BIZ>/channels.md` — confirms organic search is a prioritized channel
 
 ## Phase Dependency Chain
 

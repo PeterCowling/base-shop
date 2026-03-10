@@ -166,7 +166,7 @@ const HelpCentreMobileNav = memo(function HelpCentreMobileNav({
             "fixed",
             "start-1/2",
             "inline-flex",
-            "size-10",
+            "size-11",
             "-translate-x-1/2",
             "items-center",
             "justify-center",

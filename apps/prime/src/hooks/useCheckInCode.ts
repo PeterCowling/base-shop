@@ -94,12 +94,12 @@ export function useCheckInCode(options: UseCheckInCodeOptions): UseCheckInCodeRe
    */
   const generateCode = useCallback(async (): Promise<void> => {
     if (!isOnline) {
-      setGenerateError('Cannot generate code while offline');
+      setGenerateError('Cannot generate code while offline'); // i18n-exempt -- PRIME-101 programmatic hook error [ttl=2026-12-31]
       return;
     }
 
     if (!uuid || !checkOutDate) {
-      setGenerateError('Missing uuid or checkOutDate');
+      setGenerateError('Missing uuid or checkOutDate'); // i18n-exempt -- PRIME-101 programmatic hook error [ttl=2026-12-31]
       return;
     }
 
@@ -107,23 +107,22 @@ export function useCheckInCode(options: UseCheckInCodeOptions): UseCheckInCodeRe
     setGenerateError(null);
 
     try {
+      // prime_session HttpOnly cookie is sent automatically on this same-origin request
       const response = await fetch('/api/check-in-code', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ uuid, checkOutDate }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate code');
+        throw new Error(errorData.error || 'Failed to generate code'); // i18n-exempt -- PRIME-101 programmatic hook error [ttl=2026-12-31]
       }
 
       // Refetch to get the new code
       await refetch();
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Unknown error';
+      const message = error instanceof Error ? error.message : 'Unknown error'; // i18n-exempt -- PRIME-101 programmatic hook error [ttl=2026-12-31]
       setGenerateError(message);
     } finally {
       setIsGenerating(false);

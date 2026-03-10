@@ -32,7 +32,7 @@ export const Default: Story = {
       <>
         <button
           onClick={() => setIsOpen(true)}
-          className="rounded-lg bg-primary-600 px-4 py-2 text-white hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg"
+          className="rounded-lg bg-primary-600 px-4 py-2 text-primary-fg hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg min-h-11 min-w-11"
         >
           Open Action Sheet
         </button>
@@ -45,7 +45,7 @@ export const Default: Story = {
         >
           <div className="space-y-2">
             <button
-              className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-start text-gray-700 hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg"
+              className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-start text-muted-foreground hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg min-h-11 min-w-11"
               onClick={() => {
                 alert('Edit clicked');
                 setIsOpen(false);
@@ -54,12 +54,12 @@ export const Default: Story = {
               <Edit className="h-5 w-5" />
               <div>
                 <div className="font-medium">Edit Item</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Modify item details</div>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">Modify item details</div>
               </div>
             </button>
 
             <button
-              className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-start text-gray-700 hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg"
+              className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-start text-muted-foreground hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg min-h-11 min-w-11"
               onClick={() => {
                 alert('Copy clicked');
                 setIsOpen(false);
@@ -68,12 +68,12 @@ export const Default: Story = {
               <Copy className="h-5 w-5" />
               <div>
                 <div className="font-medium">Duplicate</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Create a copy</div>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">Create a copy</div>
               </div>
             </button>
 
             <button
-              className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-start text-gray-700 hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg"
+              className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-start text-muted-foreground hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg min-h-11 min-w-11"
               onClick={() => {
                 alert('Share clicked');
                 setIsOpen(false);
@@ -82,12 +82,12 @@ export const Default: Story = {
               <Share2 className="h-5 w-5" />
               <div>
                 <div className="font-medium">Share</div>
-                <div className="text-sm text-gray-500 dark:text-gray-400">Share with team</div>
+                <div className="text-sm text-muted-foreground dark:text-muted-foreground">Share with team</div>
               </div>
             </button>
 
             <button
-              className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-start text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+              className="flex w-full items-center gap-3 rounded-lg px-4 py-3 text-start text-danger-fg hover:bg-error-light dark:text-red-400 dark:hover:bg-red-900/20 min-h-11 min-w-11"
               onClick={() => {
                 alert('Delete clicked');
                 setIsOpen(false);
@@ -96,7 +96,7 @@ export const Default: Story = {
               <Trash2 className="h-5 w-5" />
               <div>
                 <div className="font-medium">Delete</div>
-                <div className="text-sm text-red-500 dark:text-red-400">Permanently remove</div>
+                <div className="text-sm text-danger-fg dark:text-red-400">Permanently remove</div>
               </div>
             </button>
           </div>
@@ -115,7 +115,7 @@ export const WithForm: Story = {
       <>
         <button
           onClick={() => setIsOpen(true)}
-          className="rounded-lg bg-primary-600 px-4 py-2 text-white hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg"
+          className="rounded-lg bg-primary-600 px-4 py-2 text-primary-fg hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg min-h-11 min-w-11"
         >
           Add New Item
         </button>
@@ -128,32 +128,32 @@ export const WithForm: Story = {
         >
           <form className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
                 Item Name
               </label>
               <input
                 type="text"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
+                className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
                 placeholder="Enter item name"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
                 SKU
               </label>
               <input
                 type="text"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
+                className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
                 placeholder="e.g., PROD-001"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label className="block text-sm font-medium text-muted-foreground dark:text-gray-300">
                 Quantity
               </label>
               <input
                 type="number"
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
+                className="mt-1 block w-full rounded-md border border-border-2 px-3 py-2 shadow-sm focus:border-primary-500 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-primary-500 dark:border-darkBg dark:bg-darkBg dark:text-darkAccentGreen"
                 placeholder="0"
               />
             </div>
@@ -161,13 +161,13 @@ export const WithForm: Story = {
               <button
                 type="button"
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-darkBg dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg"
+                className="rounded-lg border border-border-2 bg-surface px-4 py-2 text-sm font-semibold text-muted-foreground shadow-sm hover:bg-gray-50 dark:border-darkBg dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg min-h-11 min-w-11"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600"
+                className="rounded-lg bg-primary-600 px-4 py-2 text-sm font-semibold text-primary-fg shadow-sm hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg dark:hover:bg-green-600 min-h-11 min-w-11"
               >
                 Add Item
               </button>
@@ -194,7 +194,7 @@ export const WithLongContent: Story = {
       <>
         <button
           onClick={() => setIsOpen(true)}
-          className="rounded-lg bg-primary-600 px-4 py-2 text-white hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg"
+          className="rounded-lg bg-primary-600 px-4 py-2 text-primary-fg hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg min-h-11 min-w-11"
         >
           View All Items
         </button>
@@ -209,7 +209,7 @@ export const WithLongContent: Story = {
             {items.map((item) => (
               <button
                 key={item.id}
-                className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-start text-gray-700 hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg"
+                className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-start text-muted-foreground hover:bg-gray-50 dark:text-darkAccentGreen dark:hover:bg-darkBg min-h-11 min-w-11"
                 onClick={() => {
                   alert(`Selected: ${item.name}`);
                   setIsOpen(false);
@@ -217,7 +217,7 @@ export const WithLongContent: Story = {
               >
                 <div>
                   <div className="font-medium">{item.name}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400">{item.description}</div>
+                  <div className="text-sm text-muted-foreground dark:text-muted-foreground">{item.description}</div>
                 </div>
               </button>
             ))}
@@ -237,7 +237,7 @@ export const NoBackdropClose: Story = {
       <>
         <button
           onClick={() => setIsOpen(true)}
-          className="rounded-lg bg-primary-600 px-4 py-2 text-white hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg"
+          className="rounded-lg bg-primary-600 px-4 py-2 text-primary-fg hover:bg-primary-700 dark:bg-darkAccentGreen dark:text-darkBg min-h-11 min-w-11"
         >
           Open (No Backdrop Close)
         </button>
@@ -250,13 +250,13 @@ export const NoBackdropClose: Story = {
           closeOnBackdropClick={false}
         >
           <div className="space-y-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground dark:text-muted-foreground">
               Are you sure you want to proceed? This will permanently delete the item.
             </p>
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setIsOpen(false)}
-                className="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-50 dark:border-darkBg dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg"
+                className="rounded-lg border border-border-2 bg-surface px-4 py-2 text-sm font-semibold text-muted-foreground shadow-sm hover:bg-gray-50 dark:border-darkBg dark:bg-darkSurface dark:text-darkAccentGreen dark:hover:bg-darkBg min-h-11 min-w-11"
               >
                 Cancel
               </button>
@@ -265,7 +265,7 @@ export const NoBackdropClose: Story = {
                   alert('Confirmed');
                   setIsOpen(false);
                 }}
-                className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700"
+                className="rounded-lg bg-error-main px-4 py-2 text-sm font-semibold text-primary-fg shadow-sm hover:bg-red-700 min-h-11 min-w-11"
               >
                 Delete
               </button>

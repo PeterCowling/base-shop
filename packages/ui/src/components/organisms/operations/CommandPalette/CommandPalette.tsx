@@ -328,7 +328,7 @@ export function CommandPalette({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm"
+        className="fixed inset-0 z-50 bg-surface/50 backdrop-blur-sm"
         onClick={() => onOpenChange(false)}
         aria-hidden="true"
       />
@@ -340,18 +340,18 @@ export function CommandPalette({
         aria-label="Command palette"
         className={`
           fixed left-1/2 top-[20%] z-50 w-full max-w-lg -translate-x-1/2
-          overflow-hidden rounded-xl border border-gray-200 bg-white shadow-2xl
+          overflow-hidden rounded-xl border border-border-2 bg-surface shadow-2xl
           dark:border-slate-700 dark:bg-slate-800
           ${className}
         `}
         onKeyDown={handleKeyDown}
       >
         {/* Search Input */}
-        <div className="flex items-center gap-3 border-b border-gray-200 px-4 py-3 dark:border-slate-700">
+        <div className="flex items-center gap-3 border-b border-border-2 px-4 py-3 dark:border-slate-700">
           {loading ? (
-            <Loader2 className="h-5 w-5 animate-spin text-gray-400" />
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
           ) : (
-            <Search className="h-5 w-5 text-gray-400" />
+            <Search className="h-5 w-5 text-muted-foreground" />
           )}
           <input
             ref={inputRef}
@@ -359,12 +359,12 @@ export function CommandPalette({
             value={query}
             onChange={handleSearchChange}
             placeholder={placeholder}
-            className="flex-1 border-none bg-transparent text-base text-gray-900 placeholder-gray-500 outline-none dark:text-slate-100 dark:placeholder-slate-400"
+            className="flex-1 border-none bg-transparent text-base text-foreground placeholder-gray-500 outline-none dark:text-slate-100 dark:placeholder-slate-400"
           />
           <button
             type="button"
             onClick={() => onOpenChange(false)}
-            className="rounded p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600 dark:hover:bg-slate-700 dark:hover:text-slate-300"
+            className="rounded p-1 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-muted-foreground dark:hover:bg-slate-700 dark:hover:text-slate-300 min-h-11 min-w-11"
             aria-label="Close"
           >
             <X className="h-4 w-4" />
@@ -378,14 +378,14 @@ export function CommandPalette({
           role="listbox"
         >
           {flatResults.length === 0 ? (
-            <div className="px-4 py-8 text-center text-sm text-gray-500 dark:text-slate-400">
+            <div className="px-4 py-8 text-center text-sm text-muted-foreground dark:text-muted-foreground">
               {loading ? 'Searching...' : emptyMessage}
             </div>
           ) : (
             Object.entries(groupedResults).map(([group, groupCommands]) => (
               <div key={group || 'ungrouped'}>
                 {group && (
-                  <div className="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-gray-500 dark:text-slate-400">
+                  <div className="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground dark:text-muted-foreground">
                     {group}
                   </div>
                 )}
@@ -406,30 +406,30 @@ export function CommandPalette({
                       disabled={command.disabled}
                       className={`
                         flex w-full items-center gap-3 px-4 py-2.5 text-left transition-colors
-                        ${isHighlighted ? 'bg-blue-50 dark:bg-slate-700' : ''}
+                        ${isHighlighted ? 'bg-info-light dark:bg-slate-700' : ''}
                         ${command.disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-50 dark:hover:bg-slate-700'}
                       `}
                     >
                       {Icon && (
-                        <Icon className="h-4 w-4 flex-shrink-0 text-gray-400" />
+                        <Icon className="h-4 w-4 flex-shrink-0 text-muted-foreground" />
                       )}
                       <div className="min-w-0 flex-1">
-                        <div className="text-sm font-medium text-gray-900 dark:text-slate-100">
+                        <div className="text-sm font-medium text-foreground dark:text-slate-100">
                           {command.label}
                         </div>
                         {command.description && (
-                          <div className="truncate text-xs text-gray-500 dark:text-slate-400">
+                          <div className="truncate text-xs text-muted-foreground dark:text-muted-foreground">
                             {command.description}
                           </div>
                         )}
                       </div>
                       {command.shortcut && (
-                        <kbd className="hidden rounded border border-gray-300 bg-gray-100 px-1.5 py-0.5 text-xs font-medium text-gray-600 sm:inline-block dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300">
+                        <kbd className="hidden rounded border border-border-2 bg-surface-2 px-1.5 py-0.5 text-xs font-medium text-muted-foreground sm:inline-block dark:border-slate-600 dark:bg-slate-700 dark:text-slate-300">
                           {command.shortcut}
                         </kbd>
                       )}
                       {command.hasSubmenu && (
-                        <ArrowRight className="h-4 w-4 text-gray-400" />
+                        <ArrowRight className="h-4 w-4 text-muted-foreground" />
                       )}
                     </button>
                   );
@@ -441,22 +441,22 @@ export function CommandPalette({
 
         {/* Footer */}
         {footer ? (
-          <div className="border-t border-gray-200 px-4 py-2 dark:border-slate-700">
+          <div className="border-t border-border-2 px-4 py-2 dark:border-slate-700">
             {footer}
           </div>
         ) : (
-          <div className="flex items-center justify-between border-t border-gray-200 px-4 py-2 text-xs text-gray-500 dark:border-slate-700 dark:text-slate-400">
+          <div className="flex items-center justify-between border-t border-border-2 px-4 py-2 text-xs text-muted-foreground dark:border-slate-700 dark:text-muted-foreground">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
-                <kbd className="rounded border border-gray-300 bg-gray-100 px-1 py-0.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-700">↑↓</kbd>
+                <kbd className="rounded border border-border-2 bg-surface-2 px-1 py-0.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-700">↑↓</kbd>
                 Navigate
               </span>
               <span className="flex items-center gap-1">
-                <kbd className="rounded border border-gray-300 bg-gray-100 px-1 py-0.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-700">↵</kbd>
+                <kbd className="rounded border border-border-2 bg-surface-2 px-1 py-0.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-700">↵</kbd>
                 Select
               </span>
               <span className="flex items-center gap-1">
-                <kbd className="rounded border border-gray-300 bg-gray-100 px-1 py-0.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-700">esc</kbd>
+                <kbd className="rounded border border-border-2 bg-surface-2 px-1 py-0.5 font-mono text-xs dark:border-slate-600 dark:bg-slate-700">esc</kbd>
                 Close
               </span>
             </div>

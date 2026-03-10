@@ -75,6 +75,7 @@ export function ARViewer({
   if (!ready) {
     return (
       <div
+        data-slot="ar-viewer"
         role="status"
         aria-live="polite"
         className={cn("flex h-full w-full items-center justify-center text-sm text-muted-foreground", className)} // i18n-exempt -- DS-1234 [ttl=2025-11-30] — CSS utility class names
@@ -86,6 +87,7 @@ export function ARViewer({
 
   return (
     <model-viewer
+      data-slot="ar-viewer"
       src={src}
       ar
       camera-controls

@@ -2,6 +2,8 @@
 import { useCallback, useState } from "react";
 import { ref, update } from "firebase/database";
 
+import { queueOfflineWrite } from "../../lib/offline/syncManager";
+import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type FirebaseBookingOccupant } from "../../types/hooks/data/bookingsData";
 
@@ -27,6 +29,7 @@ export interface UseSaveBookingResult {
  */
 export default function useSaveBooking(): UseSaveBookingResult {
   const database = useFirebaseDatabase();
+  const online = useOnlineStatus();
   const [error, setError] = useState<unknown>(null);
 
   /**
@@ -39,6 +42,16 @@ export default function useSaveBooking(): UseSaveBookingResult {
       occupantId: string,
       bookingData: Partial<FirebaseBookingOccupant>
     ) => {
+      if (!online) {
+        const queued = await queueOfflineWrite(`bookings/${bookingRef}/${occupantId}`, "update", bookingData, {
+          idempotencyKey: crypto.randomUUID(),
+          conflictPolicy: "fail-on-conflict",
+          domain: "bookings",
+        });
+        if (queued !== null) return;
+        // IDB unavailable — fall through to direct write
+      }
+
       try {
         const bookingRefPath = ref(
           database,
@@ -50,7 +63,7 @@ export default function useSaveBooking(): UseSaveBookingResult {
         throw err; // Re-throw to allow callers to handle
       }
     },
-    [database]
+    [database, online]
   );
 
   return { saveBooking, error };

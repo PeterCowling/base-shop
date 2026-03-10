@@ -1,13 +1,14 @@
 "use client";
 
 import { Fragment, memo, useEffect, useState } from "react";
+import { Key, Wallet } from "lucide-react";
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../context/AuthContext";
 import { useSafeData } from "../../context/SafeDataContext";
-import { useTillShiftActions } from "../../hooks/client/till/useTillShiftActions";
+import { useTillShiftContext } from "../../hooks/client/till/TillShiftProvider";
 import { useSafeKeycardCount } from "../../hooks/data/useSafeKeycardCount";
 import { useCashCounts } from "../../hooks/useCashCounts";
 import { useKeycardTransfer } from "../../hooks/useKeycardTransfer";
@@ -18,6 +19,7 @@ import { getErrorMessage } from "../../utils/errorMessage";
 import { showToast } from "../../utils/toastUtils";
 import { runTransaction } from "../../utils/transaction";
 import { PageShell } from "../common/PageShell";
+import { StatPanel } from "../common/StatPanel";
 import { ExchangeNotesForm } from "../till/ExchangeNotesForm";
 import ReturnKeycardsModal from "../till/ReturnKeycardsModal";
 
@@ -28,6 +30,18 @@ import { SafeOpenForm } from "./SafeOpenForm";
 import { SafeReconcileForm } from "./SafeReconcileForm";
 import { SafeResetForm } from "./SafeResetForm";
 import { SafeWithdrawalForm } from "./SafeWithdrawalForm";
+
+type SafeModal =
+  | "deposit"
+  | "withdrawal"
+  | "exchange"
+  | "bankDeposit"
+  | "pettyCash"
+  | "reconcile"
+  | "open"
+  | "reset"
+  | "return"
+  | null;
 
 function SafeManagement(): JSX.Element {
   const {
@@ -49,17 +63,9 @@ function SafeManagement(): JSX.Element {
   const { count: safeKeycards, updateCount: updateSafeKeycards } =
     useSafeKeycardCount();
   const { addCashCount, recordFloatEntry } = useCashCounts();
-  const { returnKeycardsToSafe } = useTillShiftActions();
+  const { returnKeycardsToSafe } = useTillShiftContext();
   const recordKeycardTransfer = useKeycardTransfer();
-  const [showDeposit, setShowDeposit] = useState(false);
-  const [showWithdrawal, setShowWithdrawal] = useState(false);
-  const [showExchange, setShowExchange] = useState(false);
-  const [showBankDeposit, setShowBankDeposit] = useState(false);
-  const [showPettyCash, setShowPettyCash] = useState(false);
-  const [showReconcile, setShowReconcile] = useState(false);
-  const [showOpen, setShowOpen] = useState(false);
-  const [showReset, setShowReset] = useState(false);
-  const [showReturn, setShowReturn] = useState(false);
+  const [activeModal, setActiveModal] = useState<SafeModal>(null);
   const [expandedRows, setExpandedRows] = useState<number[]>([]);
 
   useEffect(() => {
@@ -95,7 +101,7 @@ function SafeManagement(): JSX.Element {
 
     try {
       await runTransaction(steps);
-      setShowDeposit(false);
+      setActiveModal(null);
     } catch {
       showToast("Failed to record deposit.", "error");
     }
@@ -113,7 +119,7 @@ function SafeManagement(): JSX.Element {
         },
         { run: () => recordFloatEntry(amount) },
       ]);
-      setShowWithdrawal(false);
+      setActiveModal(null);
     } catch {
       showToast("Failed to record withdrawal.", "error");
     }
@@ -152,7 +158,7 @@ function SafeManagement(): JSX.Element {
       }
 
       await runTransaction(steps);
-      setShowExchange(false);
+      setActiveModal(null);
     } catch {
       showToast("Failed to record exchange.", "error");
     }
@@ -173,7 +179,7 @@ function SafeManagement(): JSX.Element {
           run: () => recordOpening(count, keycards),
         },
       ]);
-      setShowOpen(false);
+      setActiveModal(null);
     } catch {
       showToast("Failed to record opening.", "error");
     }
@@ -200,7 +206,7 @@ function SafeManagement(): JSX.Element {
             recordReset(count, keycards, keycardDifference, breakdown),
         },
       ]);
-      setShowReset(false);
+      setActiveModal(null);
     } catch {
       showToast("Failed to record reset.", "error");
     }
@@ -234,7 +240,7 @@ function SafeManagement(): JSX.Element {
             ),
         },
       ]);
-      setShowReconcile(false);
+      setActiveModal(null);
     } catch {
       showToast("Failed to record reconciliation.", "error");
     }
@@ -262,7 +268,7 @@ function SafeManagement(): JSX.Element {
 
     try {
       await runTransaction(steps);
-      setShowBankDeposit(false);
+      setActiveModal(null);
     } catch {
       showToast("Failed to record bank deposit.", "error");
     }
@@ -271,7 +277,7 @@ function SafeManagement(): JSX.Element {
   const handlePettyCash = async (amount: number) => {
     try {
       await recordPettyWithdrawal(amount);
-      setShowPettyCash(false);
+      setActiveModal(null);
     } catch {
       showToast("Failed to record petty cash withdrawal.", "error");
     }
@@ -303,7 +309,7 @@ function SafeManagement(): JSX.Element {
           run: () => recordKeycardTransfer(count, "toSafe"),
         },
       ]);
-      setShowReturn(false);
+      setActiveModal(null);
     } catch (error) {
       if ((error as Error).message !== "return failed") {
         showToast("Failed to record keycard transfer.", "error");
@@ -359,132 +365,138 @@ function SafeManagement(): JSX.Element {
 
   return (
     <PageShell title="SAFE MANAGEMENT">
-      <div className="bg-surface rounded-lg shadow p-6 space-y-4">
-        <p className="text-lg">
-          Safe Balance: <strong>€{safeBalance.toFixed(2)}</strong>
-        </p>
-        <p className="text-lg">
-          Keycards in Safe: <strong>{safeKeycards}</strong>
-        </p>
+      <div className="bg-surface rounded-lg shadow-lg p-6 space-y-4">
+        <div className="flex flex-wrap gap-4">
+          <StatPanel
+            label="Safe Balance"
+            value={`€${safeBalance.toFixed(2)}`}
+            icon={<Wallet className="text-primary-main" size={24} />}
+          />
+          <StatPanel
+            label="Keycards in Safe"
+            value={safeKeycards}
+            icon={<Key className="text-primary-main" size={24} />}
+          />
+        </div>
         <div className="space-y-4">
           <div className="flex gap-2 flex-wrap">
             {canOpenSafe && (
               <Button
-                onClick={() => setShowOpen(true)}
-                className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+                onClick={() => setActiveModal("open")}
+                color="primary" tone="solid" size="sm"
               >
                 Open
               </Button>
             )}
             <Button
-              onClick={() => setShowDeposit(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              onClick={() => setActiveModal("deposit")}
+              color="primary" tone="solid" size="sm"
             >
               Deposit
             </Button>
             <Button
-              onClick={() => setShowWithdrawal(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              onClick={() => setActiveModal("withdrawal")}
+              color="primary" tone="solid" size="sm"
             >
               Withdraw
             </Button>
             <Button
-              onClick={() => setShowExchange(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              onClick={() => setActiveModal("exchange")}
+              color="primary" tone="solid" size="sm"
             >
               Exchange
             </Button>
           </div>
           <div className="flex gap-2 flex-wrap">
             <Button
-              onClick={() => setShowBankDeposit(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              onClick={() => setActiveModal("bankDeposit")}
+              color="primary" tone="solid" size="sm"
             >
               Bank Deposit
             </Button>
             <Button
-              onClick={() => setShowPettyCash(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              onClick={() => setActiveModal("pettyCash")}
+              color="primary" tone="solid" size="sm"
             >
               Petty Cash
             </Button>
             <Button
-              onClick={() => setShowReset(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              onClick={() => setActiveModal("reset")}
+              color="primary" tone="solid" size="sm"
             >
               Reset Safe
             </Button>
             <Button
-              onClick={() => setShowReturn(true)}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+              onClick={() => setActiveModal("return")}
+              color="primary" tone="solid" size="sm"
             >
               Return Keycards
             </Button>
             <Button
-              onClick={() => setShowReconcile(true)}
-              className="px-4 py-2 bg-warning-main text-primary-fg rounded hover:bg-warning-dark"
+              onClick={() => setActiveModal("reconcile")}
+              color="warning" tone="solid" size="sm"
             >
               Reconcile
             </Button>
           </div>
         </div>
-        {showOpen && (
+        {activeModal === "open" && (
           <SafeOpenForm
             onConfirm={handleOpen}
-            onCancel={() => setShowOpen(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showDeposit && (
+        {activeModal === "deposit" && (
           <SafeDepositForm
             currentKeycards={safeKeycards}
             onConfirm={handleDeposit}
-            onCancel={() => setShowDeposit(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showWithdrawal && (
+        {activeModal === "withdrawal" && (
           <SafeWithdrawalForm
             onConfirm={handleWithdrawal}
-            onCancel={() => setShowWithdrawal(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showExchange && (
+        {activeModal === "exchange" && (
           <ExchangeNotesForm
             onConfirm={handleExchange}
-            onCancel={() => setShowExchange(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showBankDeposit && (
+        {activeModal === "bankDeposit" && (
           <BankDepositForm
             currentKeycards={safeKeycards}
             onConfirm={handleBankDeposit}
-            onCancel={() => setShowBankDeposit(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showPettyCash && (
+        {activeModal === "pettyCash" && (
           <PettyCashForm
             onConfirm={handlePettyCash}
-            onCancel={() => setShowPettyCash(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showReset && (
+        {activeModal === "reset" && (
           <SafeResetForm
             currentKeycards={safeKeycards}
             onConfirm={handleReset}
-            onCancel={() => setShowReset(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showReturn && (
+        {activeModal === "return" && (
           <ReturnKeycardsModal
             onConfirm={handleReturn}
-            onCancel={() => setShowReturn(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
-        {showReconcile && (
+        {activeModal === "reconcile" && (
           <SafeReconcileForm
             expectedSafe={safeBalance}
             expectedKeycards={safeKeycards}
             onConfirm={handleReconcile}
-            onCancel={() => setShowReconcile(false)}
+            onCancel={() => setActiveModal(null)}
           />
         )}
         <div className="border-t pt-4">

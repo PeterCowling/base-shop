@@ -4,7 +4,7 @@
     "description": "Spritz, cocktails, vine, øl, blandede drinks, shots og gelato."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Hostel Brkette",
     "menuTitle": "Barmenu 2025",
     "hours": "Åben dagligt (se baren for åbningstider)"
   },
@@ -39,7 +39,7 @@
       "note": "Vælg fra vores sortiment, og giv besked, hvis du ønsker is, vand eller en koffeinmixer. Kaffe kan serveres kold eller varm, som espresso eller americano."
     },
     "shots": {
-      "title": "Shots"
+      "title": "Skud"
     },
     "gelato": {
       "title": "Gelato"
@@ -47,19 +47,19 @@
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Aperol spritz",
       "note": "Klassisk italiensk spritz, serveret med knust is."
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Limoncello spritz",
       "note": "Specialitet fra Amalfikysten, serveret med knust is."
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "Hugo spritz",
       "note": "Mousserende vin hældt over mynte, lime og hyldeblomstsaft. Serveres med knust is."
     },
     "rossiniSpritz": {
-      "name": "Rossini Spritz",
+      "name": "Rossini spritz",
       "note": "Mousserende vin hældt over jordbærjuice. Serveres med knust is."
     },
     "lemonStrawberryDaiquiri": {
@@ -70,7 +70,7 @@
       "note": "Jordbær- eller citronsaft med tequila, Cointreau og is. Afsluttes i klassisk margarita-stil."
     },
     "lemonDropMartini": {
-      "name": "Lemon Drop Martini",
+      "name": "Citron drop martini",
       "note": "Friskpresset citronsaft rystet med Absolut Vodka, Cointreau og is."
     },
     "redWhiteGlass": {
@@ -104,52 +104,52 @@
       "name": "Smirnoff"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "Grågås"
     },
     "pampero": {
       "name": "Pampero"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Bacardi superior"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "Kaptajn Morgan"
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Angostura reserva"
     },
     "beefeater": {
-      "name": "Beefeater"
+      "name": "Biofeater"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "Bombay safir"
     },
     "tanqueray": {
-      "name": "Tanqueray"
+      "name": "Tanquerayworld. kgm"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "Hendricks"
     },
     "jwRed": {
-      "name": "Johnnie Walker Red Label (Blended Scotch)"
+      "name": "Johnnie Walker Red Label (blandet whisky)"
     },
     "jameson": {
-      "name": "Jameson (Irish)"
+      "name": "Jameson (irsk)"
     },
     "jackDaniels": {
-      "name": "Jack Daniel's Old No.07 (Sour Mash)"
+      "name": "Jack Daniel 's Old No.07 (Sour Mash)"
     },
     "wildTurkey": {
-      "name": "Wild Turkey (Bourbon)"
+      "name": "Vildtlevende kalkun (Bourbon)"
     },
     "chivas12": {
-      "name": "Chivas Regal 12 Year Old (Blended Scotch)"
+      "name": "Chivas Regal 12 År gammel (Blended Scotch)"
     },
     "glenfiddich12": {
-      "name": "Glenfiddich 12 Year Old (Single Malt)"
+      "name": "Glenfiddich 12 År gammel (Single Malt)"
     },
     "joseCuervoSilver": {
-      "name": "Jose Cuervo Tequila, Silver",
+      "name": "Jose Cuervo Tequila, sølv",
       "note": "Serveres rent med citron og salt, som Tequila Sunrise eller med sodavand/Sprite."
     },
     "limoncelloShot": {

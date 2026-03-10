@@ -8,7 +8,7 @@ const IN_SCOPE_FILES = [
   path.join(APP_ROOT, "src/routes/guides/utils/_linkTokens.tsx"),
   path.join(APP_ROOT, "src/app/[lang]/experiences/[slug]/GuideContent.tsx"),
   path.join(APP_ROOT, "src/app/[lang]/book/BookPageContent.tsx"),
-  path.join(APP_ROOT, "src/app/[lang]/apartment/book/ApartmentBookContent.tsx"),
+  path.join(APP_ROOT, "src/app/[lang]/private-rooms/book/ApartmentBookContent.tsx"),
   path.join(UI_ROOT, "organisms/LandingHeroSection.tsx"),
   path.join(UI_ROOT, "organisms/ApartmentHeroSection.tsx"),
   path.join(UI_ROOT, "molecules/NotificationBanner.tsx"),

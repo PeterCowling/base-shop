@@ -54,7 +54,7 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
       <div className="absolute -top-3 start-0 flex gap-1">
         <button
           type="button"
-          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-10 min-w-10"
+          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-11 min-w-11"
           aria-label="Decrease column span"
           onClick={(e) => {
             e.stopPropagation();
@@ -68,7 +68,7 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
         </span>
         <button
           type="button"
-          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-10 min-w-10"
+          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-11 min-w-11"
           aria-label="Increase column span"
           onClick={(e) => {
             e.stopPropagation();
@@ -81,7 +81,7 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
       <div className="absolute -bottom-3 start-0 flex gap-1">
         <button
           type="button"
-          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-10 min-w-10"
+          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-11 min-w-11"
           aria-label="Decrease row span"
           onClick={(e) => {
             e.stopPropagation();
@@ -95,7 +95,7 @@ export default function GridChildControls({ parent, child, dispatch, containerEl
         </span>
         <button
           type="button"
-          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-10 min-w-10"
+          className="rounded bg-foreground/60 px-2 text-xs text-foreground shadow dark:bg-card/70 dark:text-foreground min-h-11 min-w-11"
           aria-label="Increase row span"
           onClick={(e) => {
             e.stopPropagation();

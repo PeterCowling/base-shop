@@ -1,0 +1,21 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/process-improvements-dispatch-queue-surface/fact-find.md",
+      "line": "141",
+      "message": "Dedup contract is incorrect: `appendCompletedIdea()` does not accept/store raw `dispatch_id`; it derives `idea_key` as SHA1(`source_path::title`), so the stated `dispatch_id`-based completion path will not work without code changes."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/process-improvements-dispatch-queue-surface/fact-find.md",
+      "line": "120",
+      "message": "Evidence audit is inaccurate: the generator already has unit tests (`scripts/src/startup-loop/__tests__/generate-process-improvements.test.ts`), so claiming 'no unit tests' is stale and lowers planning reliability."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "round": 1,
+  "lp_score": 3.5
+}

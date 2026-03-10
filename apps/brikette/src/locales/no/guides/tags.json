@@ -30,7 +30,7 @@
     "couples"
   ],
   "labels": {
-    "transport": "Transport",
+    "transport": "Transportmuligheter",
     "budgeting": "Budsjett",
     "beaches": "Strender",
     "hiking": "Fotturer",
@@ -43,7 +43,7 @@
     "culture": "Kultur",
     "events": "Arrangementer",
     "nightlife": "Ut på kvelden",
-    "shopping": "Shopping",
+    "shopping": "Butikker",
     "accommodation": "Overnatting",
     "hostel-life": "Hostellliv",
     "faq": "FAQ",
@@ -52,12 +52,12 @@
     "porters": "Portører",
     "stairs": "Færre trapper",
     "cost": "Kostnader",
-    "tips": "Tips",
+    "tips": "Råd",
     "passes": "Pass",
     "insurance": "Forsikring",
     "hitchhiking": "Haiking",
     "walking-tour": "Vandretur",
-    "camping": "Camping",
+    "camping": "Campingplasser",
     "work-life": "Jobb & reise",
     "souvenirs": "Suvenirer",
     "comparison": "Sammenlign",
@@ -81,7 +81,7 @@
     "naples": "Napoli",
     "salerno": "Salerno",
     "tramonti": "Tramonti",
-    "pompei": "Pompeii",
+    "pompei": "Pompei",
     "herculaneum": "Herculaneum",
     "winter": "Vinter",
     "summer": "Sommer",
@@ -123,7 +123,7 @@
     "ravello": "Guider til Ravello",
     "capri": "Capri på budsjett",
     "naples": "Napoli ↔ Positano",
-    "salerno": "Salerno ↔ Positano"
+    "salerno": "Salerno ↔ positano"
   },
   "descriptions": {
     "transport": "Valgguider for buss, ferje, skyttel og transport med tips som tar hensyn til bagasje.",

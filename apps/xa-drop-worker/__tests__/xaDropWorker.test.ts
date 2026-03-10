@@ -21,6 +21,7 @@ function makeToken(secret: string, options?: { iat?: number; exp?: number; nonce
   return `${payload}.${sig}`;
 }
 
+// eslint-disable-next-line max-lines-per-function -- XAUP-0102 test matrix intentionally covers route/security combinations in one flow
 describe("xa-drop-worker", () => {
   const secret = "test-xa-drop-upload-secret-32-chars!!";
 
@@ -67,10 +68,84 @@ describe("xa-drop-worker", () => {
     expect(res.headers.get("access-control-allow-origin")).toBeNull();
   });
 
+  it("rejects requests from non-allowlisted IPs when ALLOWED_IPS is configured", async () => {
+    const res = await handler.fetch(
+      new Request("https://drop.example/health", {
+        headers: { "CF-Connecting-IP": "203.0.113.9" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: {} as unknown as R2Bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        ALLOWED_IPS: "198.51.100.10",
+      },
+    );
+    expect(res.status).toBe(404);
+  });
+
+  it("allows requests from allowlisted IPs when ALLOWED_IPS is configured", async () => {
+    const res = await handler.fetch(
+      new Request("https://drop.example/health", {
+        headers: { "CF-Connecting-IP": "198.51.100.10" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: {} as unknown as R2Bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        ALLOWED_IPS: "198.51.100.10",
+      },
+    );
+    expect(res.status).toBe(200);
+  });
+
+  it("denies catalog reads from non-allowlisted IPs", async () => {
+    const bucket = {
+      get: jest.fn().mockResolvedValue({
+        httpEtag: "etag123",
+        text: jest.fn().mockResolvedValue("{\"ok\":true,\"storefront\":\"xa-b\"}\n"),
+      }),
+    } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/catalog/xa-b", {
+        method: "GET",
+        headers: { "CF-Connecting-IP": "203.0.113.9" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        ALLOWED_IPS: "198.51.100.10",
+      },
+    );
+
+    expect(res.status).toBe(404);
+    expect((bucket as any).get).not.toHaveBeenCalled();
+  });
+
+  it("denies upload preflight from non-allowlisted IPs", async () => {
+    const res = await handler.fetch(
+      new Request("https://drop.example/upload", {
+        method: "OPTIONS",
+        headers: {
+          Origin: "https://uploader.example",
+          "CF-Connecting-IP": "203.0.113.9",
+        },
+      }),
+      {
+        SUBMISSIONS_BUCKET: {} as unknown as R2Bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        UPLOAD_ALLOWED_ORIGINS: "https://uploader.example",
+        ALLOWED_IPS: "198.51.100.10",
+      },
+    );
+    expect(res.status).toBe(404);
+  });
+
   it("rejects invalid tokens", async () => {
     const bucket = { head: jest.fn(), put: jest.fn() } as unknown as R2Bucket;
     const res = await handler.fetch(
-      new Request("https://drop.example/upload/invalid", { method: "PUT", body: new Uint8Array([1, 2, 3]) }),
+      new Request("https://drop.example/upload", {
+        method: "PUT",
+        headers: { "X-XA-Upload-Token": "invalid" },
+        body: new Uint8Array([1, 2, 3]),
+      }),
       { SUBMISSIONS_BUCKET: bucket, UPLOAD_TOKEN_SECRET: secret },
     );
     expect(res.status).toBe(401);
@@ -85,9 +160,13 @@ describe("xa-drop-worker", () => {
     const body = new Blob([new Uint8Array([1, 2, 3])], { type: "application/zip" });
 
     const res = await handler.fetch(
-      new Request(`https://drop.example/upload/${token}`, {
+      new Request("https://drop.example/upload", {
         method: "PUT",
-        headers: { "Content-Type": "application/zip", "Content-Length": "3" },
+        headers: {
+          "Content-Type": "application/zip",
+          "Content-Length": "3",
+          "X-XA-Upload-Token": token,
+        },
         body,
       }),
       { SUBMISSIONS_BUCKET: bucket, UPLOAD_TOKEN_SECRET: secret, R2_PREFIX: "submissions/" },
@@ -123,6 +202,25 @@ describe("xa-drop-worker", () => {
     expect((bucket as any).put).toHaveBeenCalledTimes(1);
   });
 
+  it("rejects url path tokens by default when legacy mode is disabled", async () => {
+    const token = makeToken(secret, { nonce: "nonce-path-default-deny" });
+    const bucket = {
+      put: jest.fn().mockResolvedValue({ key: "ok" }),
+    } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request(`https://drop.example/upload/${token}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/zip", "Content-Length": "3" },
+        body: new Uint8Array([1, 2, 3]),
+      }),
+      { SUBMISSIONS_BUCKET: bucket, UPLOAD_TOKEN_SECRET: secret, R2_PREFIX: "submissions/" },
+    );
+
+    expect(res.status).toBe(401);
+    expect((bucket as any).put).not.toHaveBeenCalled();
+  });
+
   it("rejects overwriting an existing key", async () => {
     const token = makeToken(secret, { nonce: "nonce123" });
     const bucket = {
@@ -130,9 +228,13 @@ describe("xa-drop-worker", () => {
     } as unknown as R2Bucket;
 
     const res = await handler.fetch(
-      new Request(`https://drop.example/upload/${token}`, {
+      new Request("https://drop.example/upload", {
         method: "PUT",
-        headers: { "Content-Type": "application/zip", "Content-Length": "3" },
+        headers: {
+          "Content-Type": "application/zip",
+          "Content-Length": "3",
+          "X-XA-Upload-Token": token,
+        },
         body: new Uint8Array([1, 2, 3]),
       }),
       { SUBMISSIONS_BUCKET: bucket, UPLOAD_TOKEN_SECRET: secret, R2_PREFIX: "submissions/" },
@@ -191,10 +293,14 @@ describe("xa-drop-worker", () => {
         text: jest.fn().mockResolvedValue(catalogBody),
       }),
     } as unknown as R2Bucket;
+    const token = "catalog-write-token-1234567890";
 
     const first = await handler.fetch(
-      new Request("https://drop.example/catalog/xa-b", { method: "GET" }),
-      { SUBMISSIONS_BUCKET: bucket },
+      new Request("https://drop.example/catalog/xa-b", {
+        method: "GET",
+        headers: { "X-XA-Catalog-Token": token },
+      }),
+      { SUBMISSIONS_BUCKET: bucket, CATALOG_WRITE_TOKEN: token },
     );
 
     expect(first.status).toBe(200);
@@ -209,15 +315,49 @@ describe("xa-drop-worker", () => {
     const second = await handler.fetch(
       new Request("https://drop.example/catalog/xa-b", {
         method: "GET",
-        headers: { "If-None-Match": "\"etag123\"" },
+        headers: {
+          "If-None-Match": "\"etag123\"",
+          "X-XA-Catalog-Token": token,
+        },
       }),
-      { SUBMISSIONS_BUCKET: bucket },
+      { SUBMISSIONS_BUCKET: bucket, CATALOG_WRITE_TOKEN: token },
     );
 
     expect(second.status).toBe(304);
   });
 
-  it("enforces read-token auth when CATALOG_READ_TOKEN is configured", async () => {
+  it("requires catalog auth when read token is unset (fallback to write token)", async () => {
+    const bucket = {
+      get: jest.fn().mockResolvedValue({
+        httpEtag: "etag123",
+        text: jest.fn().mockResolvedValue("{\"ok\":true,\"storefront\":\"xa-b\"}\n"),
+      }),
+    } as unknown as R2Bucket;
+    const token = "catalog-write-token-1234567890";
+
+    const unauthorized = await handler.fetch(
+      new Request("https://drop.example/catalog/xa-b", { method: "GET" }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: token,
+      },
+    );
+    expect(unauthorized.status).toBe(401);
+
+    const authorized = await handler.fetch(
+      new Request("https://drop.example/catalog/xa-b", {
+        method: "GET",
+        headers: { "X-XA-Catalog-Token": token },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: token,
+      },
+    );
+    expect(authorized.status).toBe(200);
+  });
+
+  it("accepts read token and write token for catalog GET when CATALOG_READ_TOKEN is configured", async () => {
     const bucket = {
       get: jest.fn().mockResolvedValue({
         httpEtag: "etag123",
@@ -241,9 +381,385 @@ describe("xa-drop-worker", () => {
       }),
       {
         SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-123456",
         CATALOG_READ_TOKEN: "catalog-read-token-123456",
       },
     );
     expect(authorized.status).toBe(200);
+
+    const authorizedWithWriteToken = await handler.fetch(
+      new Request("https://drop.example/catalog/xa-b", {
+        method: "GET",
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-123456" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-123456",
+        CATALOG_READ_TOKEN: "catalog-read-token-123456",
+      },
+    );
+    expect(authorizedWithWriteToken.status).toBe(200);
+  });
+
+  it("serves xa-b on the public catalog route without auth", async () => {
+    const bucket = {
+      get: jest.fn().mockResolvedValue({
+        httpEtag: "etag123",
+        text: jest.fn().mockResolvedValue("{\"ok\":true,\"storefront\":\"xa-b\"}\n"),
+      }),
+    } as unknown as R2Bucket;
+
+    const response = await handler.fetch(
+      new Request("https://drop.example/catalog-public/xa-b", { method: "GET" }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+      },
+    );
+
+    expect(response.status).toBe(200);
+    expect(response.headers.get("Access-Control-Allow-Origin")).toBe("*");
+  });
+
+  it("does not expose non-public storefronts on the public catalog route", async () => {
+    const bucket = {
+      get: jest.fn(),
+    } as unknown as R2Bucket;
+
+    const response = await handler.fetch(
+      new Request("https://drop.example/catalog-public/xa-c", { method: "GET" }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+      },
+    );
+
+    expect(response.status).toBe(404);
+    expect(bucket.get).not.toHaveBeenCalled();
+  });
+
+  it("rejects tokens whose ttl exceeds configured max", async () => {
+    const iat = Math.floor(Date.now() / 1000);
+    const token = makeToken(secret, { iat, exp: iat + 3600, nonce: "nonce-ttl" });
+    const bucket = { put: jest.fn().mockResolvedValue({ key: "ok" }) } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/upload", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/zip",
+          "Content-Length": "3",
+          "X-XA-Upload-Token": token,
+        },
+        body: new Uint8Array([1, 2, 3]),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        UPLOAD_TOKEN_MAX_TTL_SECONDS: "900",
+      },
+    );
+
+    expect(res.status).toBe(401);
+    expect((bucket as any).put).not.toHaveBeenCalled();
+  });
+
+  it("supports legacy url token uploads only when explicitly enabled", async () => {
+    const token = makeToken(secret, { nonce: "nonce-legacy-url-token" });
+    const bucket = {
+      put: jest.fn().mockResolvedValue({ key: "ok" }),
+    } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request(`https://drop.example/upload/${token}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/zip", "Content-Length": "3" },
+        body: new Uint8Array([1, 2, 3]),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        R2_PREFIX: "submissions/",
+        UPLOAD_ALLOW_URL_TOKENS: "1",
+      },
+    );
+
+    expect(res.status).toBe(201);
+    expect((bucket as any).put).toHaveBeenCalledTimes(1);
+  });
+
+  it("enforces free-tier ttl cap even if env attempts a larger token ttl", async () => {
+    const iat = Math.floor(Date.now() / 1000);
+    const token = makeToken(secret, { iat, exp: iat + 1800, nonce: "nonce-env-ttl-cap" });
+    const bucket = { put: jest.fn().mockResolvedValue({ key: "ok" }) } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/upload", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/zip",
+          "Content-Length": "3",
+          "X-XA-Upload-Token": token,
+        },
+        body: new Uint8Array([1, 2, 3]),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        UPLOAD_TOKEN_SECRET: secret,
+        UPLOAD_TOKEN_MAX_TTL_SECONDS: "7200",
+      },
+    );
+
+    expect(res.status).toBe(401);
+    expect((bucket as any).put).not.toHaveBeenCalled();
+  });
+
+  it("stores and retrieves draft snapshots with write-token auth", async () => {
+    const bucketState = new Map<string, string>();
+    const bucket = {
+      get: jest.fn(async (key: string) => {
+        const body = bucketState.get(key);
+        if (!body) return null;
+        return { text: jest.fn().mockResolvedValue(body) };
+      }),
+      put: jest.fn(async (key: string, body: string) => {
+        bucketState.set(key, body);
+        return { key };
+      }),
+      delete: jest.fn(async (key: string) => {
+        bucketState.delete(key);
+      }),
+    } as unknown as R2Bucket;
+
+    const write = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-XA-Catalog-Token": "catalog-write-token-1234567890",
+        },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          products: [
+            {
+              id: "p1",
+              slug: "studio-jacket",
+              title: "Studio jacket",
+              brandHandle: "atelier-x",
+              collectionHandle: "outerwear",
+              price: "189",
+              description: "A structured layer.",
+              createdAt: "2025-12-01T12:00:00.000Z",
+              forSale: true,
+              forRental: false,
+              popularity: "0",
+              deposit: "0",
+              stock: "0",
+              sizes: "S|M|L",
+              taxonomy: {
+                department: "women",
+                category: "clothing",
+                subcategory: "outerwear",
+                color: "black|cream",
+                material: "wool|cotton",
+              },
+            },
+          ],
+          revisionsById: { p1: "rev-1" },
+        }),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+    expect(write.status).toBe(201);
+    const writePayload = await write.json() as { docRevision?: string };
+    expect(writePayload.docRevision).toBeTruthy();
+
+    const read = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+    expect(read.status).toBe(200);
+    await expect(read.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: true,
+        storefront: "xa-b",
+        products: expect.arrayContaining([
+          expect.objectContaining({ id: "p1", slug: "studio-jacket", title: "Studio jacket" }),
+        ]),
+      }),
+    );
+
+    const remove = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        method: "DELETE",
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+    expect(remove.status).toBe(200);
+    expect((bucket as any).delete).toHaveBeenCalled();
+  });
+
+  it("accepts read token and write token for draft GET when CATALOG_READ_TOKEN is configured", async () => {
+    const bucketState = new Map<string, string>();
+    bucketState.set(
+      "catalog/drafts/xa-b/latest.json",
+      JSON.stringify({
+        ok: true,
+        storefront: "xa-b",
+        docRevision: "doc-rev-1",
+        products: [{ id: "p1", slug: "studio-jacket", title: "Studio Jacket" }],
+        revisionsById: { p1: "rev-1" },
+      }),
+    );
+    const bucket = {
+      get: jest.fn(async (key: string) => {
+        const body = bucketState.get(key);
+        if (!body) return null;
+        return { text: jest.fn().mockResolvedValue(body) };
+      }),
+    } as unknown as R2Bucket;
+
+    const unauthorized = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b"),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+        CATALOG_READ_TOKEN: "catalog-read-token-1234567890",
+      },
+    );
+    expect(unauthorized.status).toBe(401);
+
+    const authorized = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        headers: { "X-XA-Catalog-Token": "catalog-read-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+        CATALOG_READ_TOKEN: "catalog-read-token-1234567890",
+      },
+    );
+    expect(authorized.status).toBe(200);
+
+    const authorizedWithWriteToken = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+        CATALOG_READ_TOKEN: "catalog-read-token-1234567890",
+      },
+    );
+    expect(authorizedWithWriteToken.status).toBe(200);
+  });
+
+  it("stores and retrieves currency rates with catalog token auth", async () => {
+    const bucketState = new Map<string, string>();
+    const bucket = {
+      get: jest.fn(async (key: string) => {
+        const body = bucketState.get(key);
+        if (!body) return null;
+        return { text: jest.fn().mockResolvedValue(body) };
+      }),
+      put: jest.fn(async (key: string, body: string) => {
+        bucketState.set(key, body);
+        return { key };
+      }),
+    } as unknown as R2Bucket;
+
+    const write = await handler.fetch(
+      new Request("https://drop.example/currency-rates/xa-b", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-XA-Catalog-Token": "catalog-write-token-1234567890",
+        },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 },
+        }),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+
+    expect(write.status).toBe(201);
+    expect((bucket as any).put).toHaveBeenCalledWith(
+      "catalog/currency-rates/xa-b.json",
+      expect.any(String),
+      expect.any(Object),
+    );
+
+    const read = await handler.fetch(
+      new Request("https://drop.example/currency-rates/xa-b", {
+        headers: { "X-XA-Catalog-Token": "catalog-write-token-1234567890" },
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+
+    expect(read.status).toBe(200);
+    await expect(read.json()).resolves.toEqual(
+      expect.objectContaining({
+        ok: true,
+        storefront: "xa-b",
+        rates: { EUR: 0.93, GBP: 0.79, AUD: 1.55 },
+      }),
+    );
+  });
+
+  it("returns draft conflict when ifMatchDocRevision does not match latest", async () => {
+    const bucket = {
+      get: jest.fn().mockResolvedValue({
+        text: jest.fn().mockResolvedValue(
+          JSON.stringify({
+            ok: true,
+            storefront: "xa-b",
+            docRevision: "doc-rev-1",
+            products: [],
+            revisionsById: {},
+          }),
+        ),
+      }),
+      put: jest.fn(),
+    } as unknown as R2Bucket;
+
+    const res = await handler.fetch(
+      new Request("https://drop.example/drafts/xa-b", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "X-XA-Catalog-Token": "catalog-write-token-1234567890",
+        },
+        body: JSON.stringify({
+          storefront: "xa-b",
+          products: [],
+          revisionsById: {},
+          ifMatchDocRevision: "doc-rev-old",
+        }),
+      }),
+      {
+        SUBMISSIONS_BUCKET: bucket,
+        CATALOG_WRITE_TOKEN: "catalog-write-token-1234567890",
+      },
+    );
+
+    expect(res.status).toBe(409);
+    expect((bucket as any).put).not.toHaveBeenCalled();
   });
 });

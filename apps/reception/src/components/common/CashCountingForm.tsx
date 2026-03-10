@@ -9,6 +9,7 @@ import { Cluster, Inline } from "@acme/design-system/primitives";
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { useDenominationCalculator } from "../../hooks/client/till/useDenominationCalculator";
 import { type Denomination, DENOMINATIONS } from "../../types/component/Till";
+import { formatEuro } from "../../utils/format";
 import { DenominationInput } from "../till/DenominationInput";
 
 import { DifferenceBadge } from "./DifferenceBadge";
@@ -106,7 +107,7 @@ export const CashCountingForm = memo(function CashCountingForm({
   }, [submitRef, handleSubmit]);
 
   return (
-    <div className={`mb-6 border ${borderClass} rounded p-4`}>
+    <div className={`mb-6 border ${borderClass} rounded-lg p-4`}>
       <div className="flex justify-between items-center mb-2">
         <h2 className="text-xl font-semibold">{title}</h2>
       </div>
@@ -130,7 +131,7 @@ export const CashCountingForm = memo(function CashCountingForm({
             type="number"
             value={keycardInput}
             onChange={(e) => setKeycardInput(e.target.value)}
-            className="border rounded p-1 w-24"
+            className="border border-border-strong rounded-lg p-1 w-24"
           />
         </div>
       )}
@@ -139,8 +140,8 @@ export const CashCountingForm = memo(function CashCountingForm({
         <div
           className={`flex flex-col items-end mt-6 text-sm ${textClass} text-right`}
         >
-          <strong className="mb-2">Total: €{totalDenomValue.toFixed(2)}</strong>
-          <div className="mb-2">Expected cash: €{expectedCash.toFixed(2)}</div>
+          <strong className="mb-2">Total: {formatEuro(totalDenomValue)}</strong>
+          <div className="mb-2">Expected cash: {formatEuro(expectedCash)}</div>
           {expectedKeycards !== undefined && (
             <div className="mb-2">Expected keycards: {expectedKeycards}</div>
           )}
@@ -152,7 +153,7 @@ export const CashCountingForm = memo(function CashCountingForm({
             {diffCash !== undefined &&
               Math.abs(diffCash) >= DISCREPANCY_LIMIT && (
                 <TriangleAlert
-                  className="h-4 w-4 text-warning-main"
+                  className="h-4 w-4 text-warning"
                   aria-hidden="true"
                 />
               )}

@@ -78,7 +78,7 @@ export default function AccountSection({ showDashboard = true, showOrders = true
                   {orders.map((o) => (
                     <tr key={o.id} className="border-b last:border-0">
                       <td className="py-2">
-                        <LinkText href={`/account/orders/${o.id}`} className="min-h-10 min-w-10">{o.id}</LinkText>
+                        <LinkText href={`/account/orders/${o.id}`} className="min-h-11 min-w-11">{o.id}</LinkText>
                       </td>
                       <td>{new Date(o.date).toLocaleDateString()}</td>
                       <td>{o.status ?? ""}</td>
@@ -110,7 +110,7 @@ export default function AccountSection({ showDashboard = true, showOrders = true
                   {rentals.map((r) => (
                     <tr key={r.id} className="border-b last:border-0">
                       <td className="py-2">
-                        <LinkText href={`/account/rentals/${r.id}`} className="min-h-10 min-w-10">{r.id}</LinkText>
+                        <LinkText href={`/account/rentals/${r.id}`} className="min-h-11 min-w-11">{r.id}</LinkText>
                       </td>
                       <td>{new Date(r.startedAt).toLocaleDateString()}</td>
                       <td>{r.returnDueDate ? new Date(r.returnDueDate).toLocaleDateString() : "—"}</td>
@@ -127,13 +127,13 @@ export default function AccountSection({ showDashboard = true, showOrders = true
         {showAddresses ? (
           <div className="rounded border p-4">
             <h3 className="mb-2 text-lg font-semibold">{t("Addresses")}</h3>
-            <LinkText href="/account/addresses" className="text-sm min-h-10 min-w-10">{t("Manage addresses")}</LinkText>
+            <LinkText href="/account/addresses" className="text-sm min-h-11 min-w-11">{t("Manage addresses")}</LinkText>
           </div>
         ) : null}
         {showPayments ? (
           <div className="rounded border p-4">
             <h3 className="mb-2 text-lg font-semibold">{t("Payment methods")}</h3>
-            <LinkText href="/account/payments" className="text-sm min-h-10 min-w-10">{t("Manage payment methods")}</LinkText>
+            <LinkText href="/account/payments" className="text-sm min-h-11 min-w-11">{t("Manage payment methods")}</LinkText>
           </div>
         ) : null}
       </GridPrimitive>

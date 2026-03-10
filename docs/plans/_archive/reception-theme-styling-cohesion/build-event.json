@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-theme-styling-cohesion",
+  "emitted_at": "2026-03-08T18:20:09.339Z",
+  "why": "Reception styling had become piecemeal — screens individually patched with no shared visual operating model, creating cognitive friction for staff and wasting build effort.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Reception has a coherent styling strategy with named screen archetypes, shared shell/component standards, and a delivered first wave where the check-in screen is the canonical table-workflow reference implementation."
+  }
+}

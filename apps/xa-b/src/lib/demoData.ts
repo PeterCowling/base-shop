@@ -1,51 +1,18 @@
-import type { SKU } from "@acme/types";
-
+import mediaIndex from "../data/catalog.media.runtime.json";
 import catalog from "../data/catalog.runtime.json";
 
-import { buildXaImageUrl } from "./xaImages";
-import type { XaProductDetails, XaProductTaxonomy } from "./xaTypes";
+import { parseXaCatalogModel, type XaBrand, type XaCollection, type XaProduct } from "./xaCatalogModel";
 
-export type XaProduct = SKU & {
-  brand: string;
-  collection: string;
-  compareAtPrice?: number;
-  createdAt: string;
-  popularity: number;
-  variantGroup?: string;
-  taxonomy: XaProductTaxonomy;
-  details?: XaProductDetails;
-};
+export type { XaBrand, XaCollection, XaProduct } from "./xaCatalogModel";
 
-type XaMediaSeed = Omit<SKU["media"][number], "url"> & {
-  // Cloudflare Images id (optionally with "/variant").
-  path: string;
-};
-
-type XaProductSeed = Omit<XaProduct, "media"> & { media: XaMediaSeed[] };
-
-type XaCatalogSeed = {
-  collections: Array<{ handle: string; title: string; description?: string }>;
-  brands: Array<{ handle: string; name: string }>;
-  products: XaProductSeed[];
-};
-
-const xaCatalog = catalog as XaCatalogSeed;
-
-function toMediaItem(item: XaMediaSeed, fallbackAlt: string): SKU["media"][number] {
-  return {
-    type: item.type,
-    url: buildXaImageUrl(item.path),
-    title: item.title,
-    altText: item.altText ?? fallbackAlt,
-  };
+const parsedCatalog = parseXaCatalogModel(catalog, mediaIndex);
+if (!parsedCatalog) {
+  throw new Error("[xa-demo-data] bundled catalog.runtime payload is invalid");
 }
 
-export const XA_COLLECTIONS = xaCatalog.collections;
-export const XA_BRANDS = xaCatalog.brands;
-export const XA_PRODUCTS: XaProduct[] = xaCatalog.products.map((product) => ({
-  ...product,
-  media: product.media.map((item) => toMediaItem(item, product.title)),
-}));
+export const XA_COLLECTIONS: XaCollection[] = parsedCatalog.collections;
+export const XA_BRANDS: XaBrand[] = parsedCatalog.brands;
+export const XA_PRODUCTS: XaProduct[] = parsedCatalog.products;
 
 export function getXaProductByHandle(handle: string): XaProduct | null {
   return XA_PRODUCTS.find((p) => p.slug === handle) ?? null;

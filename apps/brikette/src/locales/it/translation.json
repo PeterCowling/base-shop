@@ -24,10 +24,14 @@
     "reload": "Ricarica la pagina"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
+    "twitterCard": "sintesi_large_image",
     "twitterHandle": "@brikette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "ARTICLE_SLUGS deve definire almeno uno slug di assistenza"
+  },
+  "stickyCta": {
+    "directHeadline": "Blocca la nostra migliore tariffa disponibile in meno di due minuti.",
+    "directSubcopy": "Salta le commissioni di terze parti e ricevi assistenza prioritaria dal nostro team di Positano."
   }
 }

@@ -1,11 +1,11 @@
 {
   "home": "Hjem",
-  "rooms": "Værelser",
-  "apartment": "Lejlighed",
+  "rooms": "Dorm",
+  "apartment": "Private Værelser",
   "assistance": "Hjælp",
   "careers": "Job",
   "deals": "Tilbud",
-  "guides": "Guides",
+  "guides": "Guider",
   "terms": "Vilkår for værelsesbookinger",
   "copyright": "© 2023–{{year}}, Skylar SRL, der opererer som Hostel Brikette",
   "backToTop": "Til toppen",
@@ -19,7 +19,7 @@
   "experiences": "Oplevelser",
   "howToGetHere": "Find vej",
   "exploreHeading": "Udforsk",
-  "infoHeading": "Info",
+  "infoHeading": "Information",
   "legalHeading": "Juridisk",
   "locationHeading": "Adresse",
   "mapLink": "Åbn i Google Maps",
@@ -30,5 +30,6 @@
   "cancellationPolicy": "Afbestillingspolitik",
   "privacy": "Privatlivspolitik",
   "cookies": "Cookiepolitik",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "Fodnavigation",
+  "bookDirect": "Book direkte"
 }

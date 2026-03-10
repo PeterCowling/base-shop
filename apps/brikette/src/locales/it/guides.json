@@ -347,5 +347,10 @@
         "experience": "Esperienze"
       }
     }
+  },
+  "search": {
+    "noResults": "Nessuna guida trovata",
+    "resultsCount_one": "Trovato __TOK0_ guida",
+    "resultsCount_other": "Trovato {{count}} guide"
   }
 }

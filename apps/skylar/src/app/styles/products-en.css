@@ -103,6 +103,7 @@
   border-top: 1px solid hsl(var(--skylar-en-accent) / 0.15);
   align-items: stretch;
   text-align: center;
+  counter-reset: poster;
 }
 
 .products-en-posters .realestate-showcase-heading {
@@ -128,6 +129,7 @@
 .products-en-poster {
   width: 100%;
   text-align: left;
+  counter-increment: poster;
 }
 
 .products-en-poster::after,
@@ -149,6 +151,16 @@
   color: var(--skylar-en-accent);
 }
 
+.products-en-poster__word::before {
+  content: counter(poster, decimal-leading-zero);
+  display: block;
+  font-size: 0.42em;
+  letter-spacing: 0.5em;
+  opacity: 0.35;
+  margin-bottom: 0.3em;
+  font-weight: 400;
+}
+
 .products-en-poster__copy h2,
 .realestate-poster__copy h2 {
   margin: 0;
@@ -162,6 +174,8 @@
   display: flex;
   flex-direction: column;
   gap: clamp(1rem, 2vw, 2.2rem);
+  padding-top: clamp(1rem, 2vw, 1.5rem);
+  border-top: 1px solid hsl(var(--skylar-en-accent) / 0.15);
 }
 
 @media (min-width: 900px) {
@@ -420,6 +434,12 @@
   box-shadow: 0 30px 45px -40px hsl(0 0% 0% / 0.15);
   text-align: left;
   align-items: flex-start;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.products-en-category-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 25px 40px -30px hsl(0 0% 0% / 0.2);
 }
 
 .products-en-category-card__body {

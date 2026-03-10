@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "ko"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 2
+  },
+  "reports": [
+    {
+      "locale": "ko",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "guides/labels.json": [
+          "costBreakdownSliceLabel"
+        ],
+        "roomsPage.json": [
+          "roomImage.pagination"
+        ]
+      }
+    }
+  ]
+}

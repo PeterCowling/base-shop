@@ -9,6 +9,7 @@ import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
 import { buildFaqJsonLd } from "@/utils/buildFaqJsonLd";
 import { buildBreadcrumbList } from "@/utils/seo/jsonld";
+import { getSlug } from "@/utils/slug";
 
 import BookStructuredData from "./BookStructuredData";
 import FaqJsonLdScript from "./FaqJsonLdScript";
@@ -20,7 +21,7 @@ interface BookPageStructuredDataProps {
 export default function BookPageStructuredData({ lang }: BookPageStructuredDataProps): JSX.Element {
   const { t: tFaq } = useTranslation("faq", { lng: lang });
 
-  const pageUrl = `${BASE_URL}/${lang}/book`;
+  const pageUrl = `${BASE_URL}/${lang}/${getSlug("book", lang)}`;
 
   const faqData = useMemo(() => {
     const raw = tFaq("items", { returnObjects: true });

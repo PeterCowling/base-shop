@@ -287,3 +287,23 @@ model InventoryHoldItem {
 
   @@index([holdId])
 }
+
+/// Per-item audit trail for stock adjustments and inflows.
+/// Replaces JSONL file-based audit logs; Worker-safe (Prisma/PostgreSQL only).
+model InventoryAuditEvent {
+  id            String   @id @default(cuid())
+  shopId        String
+  sku           String
+  variantKey    String
+  type          String   // "adjustment" | "inflow"
+  quantityDelta Int
+  note          String?
+  referenceId   String?  // idempotency key
+  operatorId    String?
+  createdAt     DateTime @default(now())
+
+  @@index([shopId])
+  @@index([shopId, sku])
+  @@index([shopId, type])
+  @@index([referenceId])
+}

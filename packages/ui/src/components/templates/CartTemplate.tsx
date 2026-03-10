@@ -125,7 +125,7 @@ export function CartTemplate({
                     <button
                       type="button"
                       onClick={() => onRemove(line.id)}
-                      className="text-danger hover:underline inline-flex items-center justify-center min-h-10 min-w-10"
+                      className="text-danger hover:underline inline-flex items-center justify-center min-h-11 min-w-11"
                       data-token={dangerToken}
                     >
                       {t("actions.remove")}

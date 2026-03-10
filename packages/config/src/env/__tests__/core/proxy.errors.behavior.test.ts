@@ -6,6 +6,8 @@ const baseEnv = {
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "v1",
   EMAIL_FROM: "from@example.com",
+  NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long!!",
+  SESSION_SECRET: "test-session-secret-32-chars-long!!",
 };
 
 const ORIGINAL_ENV = { ...process.env };
@@ -60,6 +62,26 @@ describe("coreEnv error handling and logging", () => {
     );
     expect(errorSpy).toHaveBeenCalledWith(
       "  • CART_COOKIE_SECRET: Required",
+    );
+    errorSpy.mockRestore();
+  });
+
+  it("does not throw when CART_FEATURE_ENABLED=false and CART_COOKIE_SECRET is missing in production", () => {
+    process.env = {
+      ...ORIGINAL_ENV,
+      ...baseEnv,
+      NODE_ENV: "production",
+      CART_FEATURE_ENABLED: "false",
+    } as NodeJS.ProcessEnv;
+    delete process.env.CART_COOKIE_SECRET;
+    const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    jest.resetModules();
+    expect(() => {
+      const { loadCoreEnv } = require("../../core/loader.parse.ts");
+      loadCoreEnv(process.env);
+    }).not.toThrow();
+    expect(errorSpy).not.toHaveBeenCalledWith(
+      "❌ Invalid core environment variables:",
     );
     errorSpy.mockRestore();
   });

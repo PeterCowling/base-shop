@@ -113,14 +113,14 @@ const SalesScreen: FC = React.memo(() => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface-2 via-surface-3 to-surface-3 font-body">
+    <div className="min-h-screen bg-gradient-to-b from-surface via-surface-1 to-surface-1 font-body">
       {/* --- Top control bar --- */}
-      <div className="sticky top-0 z-10 flex items-center justify-end gap-2 bg-surface/60 px-4 py-2 backdrop-blur shadow-md">
+      <div className="sticky top-0 z-10 flex items-center justify-end gap-2 bg-primary-main/95 px-4 py-2 backdrop-blur-md shadow-lg">
         <Button
           onClick={handleRecallLastOrder}
           disabled={!lastRemovedOrder}
           compatibilityMode="passthrough"
-          className="min-h-11 rounded-md px-3 py-2 text-sm font-medium transition-colors bg-primary-main text-primary-fg hover:bg-primary-main/90 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="min-h-11 rounded-lg px-3 py-2 text-sm font-medium transition-colors bg-surface-3/50 text-primary-fg hover:bg-surface-3/70 disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Recall
         </Button>
@@ -133,10 +133,10 @@ const SalesScreen: FC = React.memo(() => {
               compatibilityMode="passthrough"
               aria-pressed={isActive}
               className={
-                "min-h-11 rounded-md px-3 py-2 text-sm font-medium transition-colors " +
+                "min-h-11 rounded-lg px-3 py-2 text-sm font-semibold transition-colors " +
                 (isActive
-                  ? "bg-primary-main text-primary-fg ring-2 ring-primary-main ring-offset-1 ring-offset-surface"
-                  : "bg-surface-2 text-foreground hover:bg-surface-3")
+                  ? "bg-surface-2 text-primary-main shadow-sm"
+                  : "border border-border-1 text-primary-fg hover:bg-surface-3/50")
               }
             >
               {btn}
@@ -156,7 +156,7 @@ const SalesScreen: FC = React.memo(() => {
           />
         ) : (
           <div className="flex h-60vh flex-col items-center justify-center">
-            <p className="text-4xl font-semibold text-foreground/70 text-shadow-sm">
+            <p className="text-4xl font-semibold text-muted-foreground text-shadow-sm">
               No orders
             </p>
           </div>

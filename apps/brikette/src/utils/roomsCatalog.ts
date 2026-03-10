@@ -3,7 +3,7 @@
 // Helper to merge base room definitions with translated copy from roomsPage.json
 // -----------------------------------------------------------------------------
 
-import roomsData, { type RoomId } from "@/data/roomsData";
+import { type RoomId, websiteVisibleRoomsData } from "@/data/roomsData";
 import i18n from "@/i18n";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- LINT-1007 [ttl=2026-12-31] JSON import uses build-time resolveJsonModule
@@ -187,7 +187,7 @@ export const getRoomsCatalog = (
 
   resources.push(EN_RESOURCE);
 
-  return roomsData.map((room) => {
+  return websiteVisibleRoomsData.map((room) => {
     const copy = buildRoomCopy(room.id, resources);
     return {
       ...room,

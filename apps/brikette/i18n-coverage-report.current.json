@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "es",
+    "de",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pt",
+    "ru",
+    "zh",
+    "ar",
+    "hi",
+    "vi",
+    "pl",
+    "sv",
+    "no",
+    "da",
+    "hu"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 0
+  },
+  "reports": [
+    {
+      "locale": "es",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "de",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "fr",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "it",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "ja",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "ko",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "pt",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "ru",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "zh",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "ar",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "hi",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "vi",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "pl",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "sv",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "no",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "da",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    },
+    {
+      "locale": "hu",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {}
+    }
+  ]
+}

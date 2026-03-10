@@ -1,0 +1,409 @@
+{
+  "schema_version": "self-evolving-dependency-graph.v1",
+  "business_id": "BRIK",
+  "snapshot_id": "c5463ba96078e95a",
+  "generated_at": "2026-03-10T08:46:13.255Z",
+  "node_count": 18,
+  "edge_count": 28,
+  "nodes": [
+    {
+      "id": "candidate:300444927b4c7dec",
+      "kind": "candidate",
+      "ref": "300444927b4c7dec"
+    },
+    {
+      "id": "candidate:455be690c726c386",
+      "kind": "candidate",
+      "ref": "455be690c726c386"
+    },
+    {
+      "id": "candidate:ab5320678b656800",
+      "kind": "candidate",
+      "ref": "ab5320678b656800"
+    },
+    {
+      "id": "candidate:fd5ed6ad188ac1a9",
+      "kind": "candidate",
+      "ref": "fd5ed6ad188ac1a9"
+    },
+    {
+      "id": "constraint:blast:small",
+      "kind": "constraint",
+      "ref": "blast:small"
+    },
+    {
+      "id": "constraint:effort:M",
+      "kind": "constraint",
+      "ref": "effort:M"
+    },
+    {
+      "id": "constraint:risk:low",
+      "kind": "constraint",
+      "ref": "risk:low"
+    },
+    {
+      "id": "constraint:route:lp-do-plan",
+      "kind": "constraint",
+      "ref": "route:lp-do-plan"
+    },
+    {
+      "id": "executor:lp-do-build:container:analytics-v1",
+      "kind": "executor",
+      "ref": "lp-do-build:container:analytics-v1"
+    },
+    {
+      "id": "executor:lp-do-build:container:feedback-intel-v1",
+      "kind": "executor",
+      "ref": "lp-do-build:container:feedback-intel-v1"
+    },
+    {
+      "id": "observation:04e94cdb1faa394d",
+      "kind": "observation",
+      "ref": "04e94cdb1faa394d"
+    },
+    {
+      "id": "observation:43500603ff31e455",
+      "kind": "observation",
+      "ref": "43500603ff31e455"
+    },
+    {
+      "id": "observation:4a19c981455f1e32",
+      "kind": "observation",
+      "ref": "4a19c981455f1e32"
+    },
+    {
+      "id": "observation:8b6e169dcb280324",
+      "kind": "observation",
+      "ref": "8b6e169dcb280324"
+    },
+    {
+      "id": "observation:a470fe61dc9ee048",
+      "kind": "observation",
+      "ref": "a470fe61dc9ee048"
+    },
+    {
+      "id": "observation:d41bc4d5b4e3b87d",
+      "kind": "observation",
+      "ref": "d41bc4d5b4e3b87d"
+    },
+    {
+      "id": "observation:d4a9d947a29aedd8",
+      "kind": "observation",
+      "ref": "d4a9d947a29aedd8"
+    },
+    {
+      "id": "observation:ddec2d474f80c532",
+      "kind": "observation",
+      "ref": "ddec2d474f80c532"
+    }
+  ],
+  "edges": [
+    {
+      "from": "candidate:300444927b4c7dec",
+      "to": "executor:lp-do-build:container:analytics-v1"
+    },
+    {
+      "from": "candidate:455be690c726c386",
+      "to": "executor:lp-do-build:container:analytics-v1"
+    },
+    {
+      "from": "candidate:ab5320678b656800",
+      "to": "executor:lp-do-build:container:feedback-intel-v1"
+    },
+    {
+      "from": "candidate:fd5ed6ad188ac1a9",
+      "to": "executor:lp-do-build:container:analytics-v1"
+    },
+    {
+      "from": "constraint:blast:small",
+      "to": "candidate:300444927b4c7dec"
+    },
+    {
+      "from": "constraint:blast:small",
+      "to": "candidate:455be690c726c386"
+    },
+    {
+      "from": "constraint:blast:small",
+      "to": "candidate:ab5320678b656800"
+    },
+    {
+      "from": "constraint:blast:small",
+      "to": "candidate:fd5ed6ad188ac1a9"
+    },
+    {
+      "from": "constraint:effort:M",
+      "to": "candidate:300444927b4c7dec"
+    },
+    {
+      "from": "constraint:effort:M",
+      "to": "candidate:455be690c726c386"
+    },
+    {
+      "from": "constraint:effort:M",
+      "to": "candidate:ab5320678b656800"
+    },
+    {
+      "from": "constraint:effort:M",
+      "to": "candidate:fd5ed6ad188ac1a9"
+    },
+    {
+      "from": "constraint:risk:low",
+      "to": "candidate:300444927b4c7dec"
+    },
+    {
+      "from": "constraint:risk:low",
+      "to": "candidate:455be690c726c386"
+    },
+    {
+      "from": "constraint:risk:low",
+      "to": "candidate:ab5320678b656800"
+    },
+    {
+      "from": "constraint:risk:low",
+      "to": "candidate:fd5ed6ad188ac1a9"
+    },
+    {
+      "from": "constraint:route:lp-do-plan",
+      "to": "candidate:300444927b4c7dec"
+    },
+    {
+      "from": "constraint:route:lp-do-plan",
+      "to": "candidate:455be690c726c386"
+    },
+    {
+      "from": "constraint:route:lp-do-plan",
+      "to": "candidate:ab5320678b656800"
+    },
+    {
+      "from": "constraint:route:lp-do-plan",
+      "to": "candidate:fd5ed6ad188ac1a9"
+    },
+    {
+      "from": "observation:04e94cdb1faa394d",
+      "to": "candidate:300444927b4c7dec"
+    },
+    {
+      "from": "observation:43500603ff31e455",
+      "to": "candidate:455be690c726c386"
+    },
+    {
+      "from": "observation:4a19c981455f1e32",
+      "to": "candidate:ab5320678b656800"
+    },
+    {
+      "from": "observation:8b6e169dcb280324",
+      "to": "candidate:300444927b4c7dec"
+    },
+    {
+      "from": "observation:a470fe61dc9ee048",
+      "to": "candidate:ab5320678b656800"
+    },
+    {
+      "from": "observation:d41bc4d5b4e3b87d",
+      "to": "candidate:fd5ed6ad188ac1a9"
+    },
+    {
+      "from": "observation:d4a9d947a29aedd8",
+      "to": "candidate:fd5ed6ad188ac1a9"
+    },
+    {
+      "from": "observation:ddec2d474f80c532",
+      "to": "candidate:455be690c726c386"
+    }
+  ],
+  "analysis": {
+    "node_ids": [
+      "candidate:300444927b4c7dec",
+      "candidate:455be690c726c386",
+      "candidate:ab5320678b656800",
+      "candidate:fd5ed6ad188ac1a9",
+      "constraint:blast:small",
+      "constraint:effort:M",
+      "constraint:risk:low",
+      "constraint:route:lp-do-plan",
+      "executor:lp-do-build:container:analytics-v1",
+      "executor:lp-do-build:container:feedback-intel-v1",
+      "observation:04e94cdb1faa394d",
+      "observation:43500603ff31e455",
+      "observation:4a19c981455f1e32",
+      "observation:8b6e169dcb280324",
+      "observation:a470fe61dc9ee048",
+      "observation:d41bc4d5b4e3b87d",
+      "observation:d4a9d947a29aedd8",
+      "observation:ddec2d474f80c532"
+    ],
+    "edge_count": 28,
+    "roots": [
+      "constraint:blast:small",
+      "constraint:effort:M",
+      "constraint:risk:low",
+      "constraint:route:lp-do-plan",
+      "observation:04e94cdb1faa394d",
+      "observation:43500603ff31e455",
+      "observation:4a19c981455f1e32",
+      "observation:8b6e169dcb280324",
+      "observation:a470fe61dc9ee048",
+      "observation:d41bc4d5b4e3b87d",
+      "observation:d4a9d947a29aedd8",
+      "observation:ddec2d474f80c532"
+    ],
+    "leaves": [
+      "executor:lp-do-build:container:analytics-v1",
+      "executor:lp-do-build:container:feedback-intel-v1"
+    ],
+    "topological_order": [
+      "constraint:blast:small",
+      "constraint:effort:M",
+      "constraint:risk:low",
+      "constraint:route:lp-do-plan",
+      "observation:04e94cdb1faa394d",
+      "observation:43500603ff31e455",
+      "observation:4a19c981455f1e32",
+      "observation:8b6e169dcb280324",
+      "observation:a470fe61dc9ee048",
+      "observation:d41bc4d5b4e3b87d",
+      "observation:d4a9d947a29aedd8",
+      "observation:ddec2d474f80c532",
+      "candidate:300444927b4c7dec",
+      "candidate:455be690c726c386",
+      "candidate:ab5320678b656800",
+      "candidate:fd5ed6ad188ac1a9",
+      "executor:lp-do-build:container:analytics-v1",
+      "executor:lp-do-build:container:feedback-intel-v1"
+    ],
+    "generations": [
+      [
+        "constraint:blast:small",
+        "constraint:effort:M",
+        "constraint:risk:low",
+        "constraint:route:lp-do-plan",
+        "observation:04e94cdb1faa394d",
+        "observation:43500603ff31e455",
+        "observation:4a19c981455f1e32",
+        "observation:8b6e169dcb280324",
+        "observation:a470fe61dc9ee048",
+        "observation:d41bc4d5b4e3b87d",
+        "observation:d4a9d947a29aedd8",
+        "observation:ddec2d474f80c532"
+      ],
+      [
+        "candidate:300444927b4c7dec",
+        "candidate:455be690c726c386",
+        "candidate:ab5320678b656800",
+        "candidate:fd5ed6ad188ac1a9"
+      ],
+      [
+        "executor:lp-do-build:container:analytics-v1",
+        "executor:lp-do-build:container:feedback-intel-v1"
+      ]
+    ],
+    "critical_path": {
+      "length": 2,
+      "node_ids": [
+        "constraint:blast:small",
+        "candidate:300444927b4c7dec",
+        "executor:lp-do-build:container:analytics-v1"
+      ]
+    },
+    "bottleneck_scores": [
+      {
+        "node_id": "candidate:ab5320678b656800",
+        "score": 0.022058823529411763
+      },
+      {
+        "node_id": "candidate:300444927b4c7dec",
+        "score": 0.012254901960784312
+      },
+      {
+        "node_id": "candidate:455be690c726c386",
+        "score": 0.012254901960784312
+      },
+      {
+        "node_id": "candidate:fd5ed6ad188ac1a9",
+        "score": 0.012254901960784312
+      },
+      {
+        "node_id": "constraint:blast:small",
+        "score": 0
+      },
+      {
+        "node_id": "constraint:effort:M",
+        "score": 0
+      },
+      {
+        "node_id": "constraint:risk:low",
+        "score": 0
+      },
+      {
+        "node_id": "constraint:route:lp-do-plan",
+        "score": 0
+      },
+      {
+        "node_id": "executor:lp-do-build:container:analytics-v1",
+        "score": 0
+      },
+      {
+        "node_id": "executor:lp-do-build:container:feedback-intel-v1",
+        "score": 0
+      },
+      {
+        "node_id": "observation:04e94cdb1faa394d",
+        "score": 0
+      },
+      {
+        "node_id": "observation:43500603ff31e455",
+        "score": 0
+      },
+      {
+        "node_id": "observation:4a19c981455f1e32",
+        "score": 0
+      },
+      {
+        "node_id": "observation:8b6e169dcb280324",
+        "score": 0
+      },
+      {
+        "node_id": "observation:a470fe61dc9ee048",
+        "score": 0
+      },
+      {
+        "node_id": "observation:d41bc4d5b4e3b87d",
+        "score": 0
+      },
+      {
+        "node_id": "observation:d4a9d947a29aedd8",
+        "score": 0
+      },
+      {
+        "node_id": "observation:ddec2d474f80c532",
+        "score": 0
+      }
+    ]
+  },
+  "candidate_signals": [
+    {
+      "candidate_id": "ab5320678b656800",
+      "bottleneck_score": 0.022059,
+      "shared_executor_candidate_count": 0,
+      "shared_constraint_candidate_count": 3
+    },
+    {
+      "candidate_id": "300444927b4c7dec",
+      "bottleneck_score": 0.012255,
+      "shared_executor_candidate_count": 2,
+      "shared_constraint_candidate_count": 3
+    },
+    {
+      "candidate_id": "455be690c726c386",
+      "bottleneck_score": 0.012255,
+      "shared_executor_candidate_count": 2,
+      "shared_constraint_candidate_count": 3
+    },
+    {
+      "candidate_id": "fd5ed6ad188ac1a9",
+      "bottleneck_score": 0.012255,
+      "shared_executor_candidate_count": 2,
+      "shared_constraint_candidate_count": 3
+    }
+  ]
+}

@@ -8,6 +8,12 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import {
+  findPrivateRoomChildRouteIdBySlug,
+  getPrivateRoomChildSlug,
+} from "@acme/ui/config/privateRoomChildSlugs";
+import { findRoomIdBySlug, getRoomSlug } from "@acme/ui/config/roomSlugs";
+
 import { type AppLanguage,i18nConfig } from "./i18n.config";
 import { INTERNAL_SEGMENT_BY_KEY, TOP_LEVEL_SEGMENT_KEYS } from "./routing/sectionSegments";
 import { SLUGS } from "./slug-map";
@@ -38,6 +44,25 @@ for (const key of Object.keys(SLUGS) as SlugKey[]) {
   INTERNAL_SEGMENT_TO_KEY.set(internalSegment, key);
 }
 
+// Legacy segment aliases: old internal segment → current SlugKey.
+// Allows the middleware to redirect /en/rooms/* → /en/dorms/* after the rename.
+INTERNAL_SEGMENT_TO_KEY.set("rooms", "rooms");
+// Allows the middleware to redirect /en/apartment/* → /en/private-rooms/* after the rename.
+INTERNAL_SEGMENT_TO_KEY.set("apartment", "apartment");
+
+// Legacy localized apartment slugs (pre-private-rooms rename) — redirect to new slugs.
+// e.g. /de/wohnungen → /de/privatzimmer/
+for (const oldSlug of [
+  "wohnungen", "apartamentos", "appartements", "appartamenti",
+  "apaato", "apateu", "kvartiry", "gongyu",
+  "shuqaq", "awas", "can-ho", "apartamenty",
+  "lagenheter", "leiligheter", "lejligheder", "apartmanok",
+]) {
+  if (!ANY_TOP_LEVEL_SLUG_TO_KEY.has(oldSlug)) {
+    ANY_TOP_LEVEL_SLUG_TO_KEY.set(oldSlug, "apartment");
+  }
+}
+
 for (const key of TOP_LEVEL_SEGMENT_KEYS) {
   const localizedValues = Object.values(SLUGS[key]);
   for (const localizedSlug of localizedValues) {
@@ -55,6 +80,13 @@ for (const key of TOP_LEVEL_SEGMENT_KEYS) {
 
 for (const ambiguousSlug of AMBIGUOUS_TOP_LEVEL_SLUGS) {
   ANY_TOP_LEVEL_SLUG_TO_KEY.delete(ambiguousSlug);
+}
+
+// Register assistance root aliases so detectWrongTopLevelKey finds them.
+for (const alias of ASSISTANCE_ROOT_ALIASES) {
+  if (!ANY_TOP_LEVEL_SLUG_TO_KEY.has(alias)) {
+    ANY_TOP_LEVEL_SLUG_TO_KEY.set(alias, "assistance");
+  }
 }
 
 function resolveTopLevelKey(lang: AppLanguage, segment: string): SlugKey | null {
@@ -100,6 +132,161 @@ function buildRedirectResponse(request: NextRequest, path: string): NextResponse
   return NextResponse.redirect(redirectUrl, 301);
 }
 
+function resolveCanonicalRoomRedirectPath(params: {
+  appLang: AppLanguage;
+  roomSlug: string | undefined;
+  trailingSegments: string[];
+}): string | null {
+  const { appLang, roomSlug, trailingSegments } = params;
+  if (!roomSlug) return null;
+
+  const roomId = findRoomIdBySlug(roomSlug, appLang);
+  if (!roomId) return null;
+
+  const canonicalRoomSlug = getRoomSlug(roomId, appLang);
+  if (canonicalRoomSlug === roomSlug) return null;
+
+  const localizedRoomsSlug = SLUGS.rooms[appLang];
+  const suffix = trailingSegments.length > 0 ? `/${trailingSegments.join("/")}` : "";
+  return `/${appLang}/${localizedRoomsSlug}/${canonicalRoomSlug}${suffix}/`;
+}
+
+function buildPrivateBookingRedirectPath(
+  appLang: AppLanguage,
+  topSegmentSuffix: SegmentWithSuffix["suffix"],
+): string {
+  const trailingSlash = topSegmentSuffix ? "" : "/";
+  return `/${appLang}/${SLUGS.privateBooking[appLang]}${trailingSlash}`;
+}
+
+function buildLocalizedRoomsRedirectPath(
+  appLang: AppLanguage,
+  topSegmentSuffix: SegmentWithSuffix["suffix"],
+): string {
+  const bookingSlug = `${SLUGS.book[appLang]}${topSegmentSuffix}`;
+  const trailingSlash = topSegmentSuffix ? "" : "/";
+  return `/${appLang}/${bookingSlug}${trailingSlash}`;
+}
+
+function resolvePrivateRoomChildRedirectPath(
+  appLang: AppLanguage,
+  childSegment: string | undefined,
+): string | null {
+  if (!childSegment) return null;
+
+  const routeId = findPrivateRoomChildRouteIdBySlug(childSegment.toLowerCase(), appLang);
+  if (!routeId) return null;
+
+  return `/${appLang}/${SLUGS.apartment[appLang]}/${getPrivateRoomChildSlug(routeId, appLang)}/`;
+}
+
+function rewritePrivateRoomChildSegment(
+  appLang: AppLanguage,
+  nextParts: string[],
+): void {
+  const routeId = findPrivateRoomChildRouteIdBySlug((nextParts[2] ?? "").toLowerCase(), appLang);
+  if (!routeId) return;
+
+  nextParts[2] = routeId;
+}
+
+function maybeRedirectRoomAlias(params: {
+  request: NextRequest;
+  appLang: AppLanguage;
+  nextParts: string[];
+}): NextResponse | null {
+  const { request, appLang, nextParts } = params;
+  const roomRedirectPath = resolveCanonicalRoomRedirectPath({
+    appLang,
+    roomSlug: nextParts[2],
+    trailingSegments: nextParts.slice(3),
+  });
+  if (!roomRedirectPath) return null;
+
+  return buildRedirectResponse(request, roomRedirectPath);
+}
+
+function maybeRedirectLocalizedTopLevel(params: {
+  request: NextRequest;
+  appLang: AppLanguage;
+  key: SlugKey;
+  topSegmentSuffix: SegmentWithSuffix["suffix"];
+  nextParts: string[];
+}): NextResponse | null {
+  const { request, appLang, key, topSegmentSuffix, nextParts } = params;
+
+  if (key === "apartment" && nextParts[2]?.toLowerCase() === "book") {
+    return buildRedirectResponse(request, buildPrivateBookingRedirectPath(appLang, topSegmentSuffix));
+  }
+
+  if (key === "apartment" && nextParts.length >= 3) {
+    const canonicalPrivateRoomPath = resolvePrivateRoomChildRedirectPath(appLang, nextParts[2]);
+    if (canonicalPrivateRoomPath) {
+      const canonicalChildSlug = canonicalPrivateRoomPath.split("/").filter(Boolean)[2];
+      const isCanonicalChild = nextParts[2]?.toLowerCase() === canonicalChildSlug;
+      if (!isCanonicalChild) {
+        return buildRedirectResponse(request, canonicalPrivateRoomPath);
+      }
+    }
+  }
+
+  if (key === "rooms" && nextParts.length >= 3) {
+    return maybeRedirectRoomAlias({ request, appLang, nextParts });
+  }
+
+  if (key === "rooms" && nextParts.length === 2) {
+    return buildRedirectResponse(request, buildLocalizedRoomsRedirectPath(appLang, topSegmentSuffix));
+  }
+
+  return null;
+}
+
+function buildGenericTopLevelRedirectPath(params: {
+  appLang: AppLanguage;
+  correctSlug: string;
+  normalizedTopSegment: string;
+  topSegmentSuffix: SegmentWithSuffix["suffix"];
+  nextParts: string[];
+  wrongKey: SlugKey;
+  wrongKeySource: "english" | "internal" | "cross-locale";
+}): string {
+  const {
+    appLang,
+    correctSlug,
+    normalizedTopSegment,
+    topSegmentSuffix,
+    nextParts,
+    wrongKey,
+    wrongKeySource,
+  } = params;
+
+  const localizedAssistanceSlug = SLUGS.assistance[appLang].toLowerCase();
+  if (
+    ASSISTANCE_ROOT_ALIASES.has(normalizedTopSegment) &&
+    normalizedTopSegment !== localizedAssistanceSlug
+  ) {
+    const correctedSegment = `${SLUGS.assistance[appLang]}${topSegmentSuffix}`;
+    const trailingSlash = topSegmentSuffix ? "" : "/";
+    return `/${appLang}/${correctedSegment}${trailingSlash}`;
+  }
+
+  if (wrongKey === "apartment" && nextParts.length === 2) {
+    const trailingSlash = topSegmentSuffix ? "" : "/";
+    return `/${appLang}/${correctSlug}${trailingSlash}`;
+  }
+
+  if (wrongKey === "apartment" && nextParts[2]?.toLowerCase() === "book") {
+    return buildPrivateBookingRedirectPath(appLang, topSegmentSuffix);
+  }
+
+  const correctedSegment = `${correctSlug}${topSegmentSuffix}`;
+  const trailingSlash = topSegmentSuffix ? "" : "/";
+  const shouldDropRemainingPath =
+    wrongKey === "assistance" && wrongKeySource === "cross-locale";
+  const remainingPath = shouldDropRemainingPath ? "" : nextParts.slice(2).join("/");
+  return `/${appLang}/${correctedSegment}${remainingPath ? `/${remainingPath}` : ""}${trailingSlash}`;
+}
+
 function detectWrongTopLevelKey(normalizedTopSegment: string): {
   wrongKey: SlugKey | undefined;
   wrongKeySource: "english" | "internal" | "cross-locale" | null;
@@ -124,29 +311,37 @@ function handleWrongTopLevelRedirect(params: {
   nextParts: string[];
 }): NextResponse | null {
   const { request, appLang, normalizedTopSegment, topSegmentSuffix, nextParts } = params;
-  const localizedAssistanceSlug = SLUGS.assistance[appLang].toLowerCase();
-  if (
-    ASSISTANCE_ROOT_ALIASES.has(normalizedTopSegment) &&
-    normalizedTopSegment !== localizedAssistanceSlug
-  ) {
-    const correctedSegment = `${SLUGS.assistance[appLang]}${topSegmentSuffix}`;
-    const trailingSlash = topSegmentSuffix ? "" : "/";
-    return buildRedirectResponse(request, `/${appLang}/${correctedSegment}${trailingSlash}`);
-  }
-
   const { wrongKey, wrongKeySource } = detectWrongTopLevelKey(normalizedTopSegment);
   if (!wrongKey || !wrongKeySource) return null;
 
   const correctSlug = SLUGS[wrongKey][appLang];
   if (correctSlug.toLowerCase() === normalizedTopSegment) return null;
 
-  const correctedSegment = `${correctSlug}${topSegmentSuffix}`;
-  const trailingSlash = topSegmentSuffix ? "" : "/";
-  const shouldDropRemainingPath =
-    wrongKey === "assistance" && wrongKeySource === "cross-locale";
-  const remainingPath = shouldDropRemainingPath ? "" : nextParts.slice(2).join("/");
-  const redirectPath = `/${appLang}/${correctedSegment}${remainingPath ? `/${remainingPath}` : ""}${trailingSlash}`;
-  return buildRedirectResponse(request, redirectPath);
+  if (wrongKey === "rooms" && nextParts.length >= 3) {
+    const roomRedirect = maybeRedirectRoomAlias({ request, appLang, nextParts });
+    if (roomRedirect) return roomRedirect;
+    // fall through to generic redirect when room alias is not recognized
+  }
+
+  if (wrongKey === "apartment" && nextParts.length >= 3) {
+    const canonicalPrivateRoomPath = resolvePrivateRoomChildRedirectPath(appLang, nextParts[2]);
+    if (canonicalPrivateRoomPath) {
+      return buildRedirectResponse(request, canonicalPrivateRoomPath);
+    }
+  }
+
+  return buildRedirectResponse(
+    request,
+    buildGenericTopLevelRedirectPath({
+      appLang,
+      correctSlug,
+      normalizedTopSegment,
+      topSegmentSuffix,
+      nextParts,
+      wrongKey,
+      wrongKeySource,
+    }),
+  );
 }
 
 export function middleware(request: NextRequest) {
@@ -172,10 +367,23 @@ export function middleware(request: NextRequest) {
   // Rewrite the first segment (after lang) if it's a localized slug.
   const key = resolveTopLevelKey(appLang, topSegmentCore);
   if (key) {
+    const localizedRedirectResponse = maybeRedirectLocalizedTopLevel({
+      request,
+      appLang,
+      key,
+      topSegmentSuffix,
+      nextParts,
+    });
+    if (localizedRedirectResponse) {
+      return localizedRedirectResponse;
+    }
     // RSC probe requests may include a `.txt` suffix (e.g. /en/help.txt?_rsc=...).
     // App Router routes are segment-based, so we must rewrite to the canonical
     // internal segment without the suffix to avoid deterministic 404 noise.
     nextParts[1] = INTERNAL_SEGMENT_BY_KEY[key];
+    if (key === "apartment" && nextParts.length >= 3) {
+      rewritePrivateRoomChildSegment(appLang, nextParts);
+    }
   } else {
     const redirectResponse = handleWrongTopLevelRedirect({
       request,

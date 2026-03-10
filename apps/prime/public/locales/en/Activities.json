@@ -1,6 +1,6 @@
 {
   "actions": {
-    "backHome": "\u2190 Back to home",
+    "backHome": "← Back to home",
     "eventEnded": "Event ended",
     "joinNow": "Join now",
     "loadMore": "Load more activities",
@@ -12,9 +12,9 @@
     "title": "No activities yet"
   },
   "presence": {
-    "markedPresent": "You are marked present",
+    "availableOnceLive": "Available once live",
     "markPresent": "I'm here",
-    "availableOnceLive": "Available once live"
+    "markedPresent": "You are marked present"
   },
   "sdkUnavailable": {
     "message": "Activities are temporarily unavailable until your secure session is ready.",
@@ -34,11 +34,11 @@
   "time": {
     "eventFinished": "Event finished",
     "inDays": "in {{count}} days",
-    "inDays_one": "in {{count}} day",
-    "inDays_other": "in {{count}} days",
     "inHoursMinutes": "in {{hours}}h {{minutes}}m",
     "inMinutes": "in {{minutes}}m",
-    "startingNow": "starting now"
+    "startingNow": "starting now",
+    "inDays_one": "in {{count}} day",
+    "inDays_other": "in {{count}} days"
   },
   "title": "Activities"
 }

@@ -5,17 +5,29 @@ import { get, ref, update } from "firebase/database";
 import { useAuth } from "../../context/AuthContext";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type FinancialTransaction } from "../../types/hooks/data/allFinancialTransaction";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 import { getItalyIsoString } from "../../utils/dateUtils";
 import { getStoredShiftId } from "../../utils/shiftId";
+
+import useMutationState from "./useMutationState";
+
+interface UseAllTransactionsReturn
+  extends MutationState<void> {
+  addToAllTransactions: (
+    transactionId: string,
+    transactionData: Partial<FinancialTransaction>
+  ) => Promise<void>;
+  success: string | null;
+}
 
 /**
  * A hook for writing/updating financial transaction records in:
  * "allFinancialTransactions/<transactionId>".
  */
-export default function useAllTransactions() {
+export default function useAllTransactions(): UseAllTransactionsReturn {
   const database = useFirebaseDatabase();
   const { user } = useAuth();
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
   const [success, setSuccess] = useState<string | null>(null);
 
   /**
@@ -30,7 +42,6 @@ export default function useAllTransactions() {
       transactionId: string,
       transactionData: Partial<FinancialTransaction>
     ): Promise<void> => {
-      setError(null);
       setSuccess(null);
 
       // Ensure the user is logged in
@@ -38,11 +49,12 @@ export default function useAllTransactions() {
         const errMsg =
           "User is not logged in; cannot write to allFinancialTransactions.";
         console.error(errMsg);
-        setError(errMsg);
-        return;
+        throw new Error(errMsg);
       }
 
-      try {
+      await run(async () => {
+        setSuccess(null);
+
         const existingSnap = await get(
           ref(database, `allFinancialTransactions/${transactionId}`)
         );
@@ -62,8 +74,7 @@ export default function useAllTransactions() {
             const errMsg =
               "Refusing to overwrite existing transaction. Use void/correction flows.";
             console.error(errMsg);
-            setError(errMsg);
-            return;
+            throw new Error(errMsg);
           }
           if (payloadEntries.length === 0) {
             return;
@@ -75,39 +86,32 @@ export default function useAllTransactions() {
           });
           await update(ref(database), updatePayload);
           const successMsg = `Updated void fields on allFinancialTransactions/${transactionId}`;
-          console.log(successMsg, updatePayload);
           setSuccess(successMsg);
           return;
         } else {
           // Build a Partial<FinancialTransaction> so optional fields are not strictly required
+          const resolvedShiftId = transactionData.shiftId ?? getStoredShiftId();
           const payload: Partial<FinancialTransaction> = {
             ...transactionData,
             user_name: user.user_name ?? "system",
             timestamp: getItalyIsoString(),
-            shiftId: transactionData.shiftId ?? getStoredShiftId() ?? undefined,
+            ...(resolvedShiftId != null && { shiftId: resolvedShiftId }),
           };
           await update(ref(database), {
             [`allFinancialTransactions/${transactionId}`]: payload,
           });
           const successMsg = `Successfully wrote to allFinancialTransactions/${transactionId}`;
-          console.log(successMsg, payload);
           setSuccess(successMsg);
         }
-      } catch (err) {
-        console.error(
-          "Failed to write transaction to allFinancialTransactions:",
-          err
-        );
-        setError(err);
-        throw err;
-      }
+      });
     },
-    [database, user]
+    [database, user, run]
   );
 
   return {
     addToAllTransactions,
     error,
+    loading,
     success,
   };
 }

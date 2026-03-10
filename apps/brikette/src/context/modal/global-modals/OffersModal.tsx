@@ -8,10 +8,12 @@ import { useTranslation } from "react-i18next";
 import { useRouter } from "next/navigation";
 
 import type { OffersModalCopy } from "@acme/ui/organisms/modals";
-import { resolveBookingCtaLabel } from "@acme/ui/shared";
+import { resolvePrimaryCtaLabel } from "@acme/ui/shared";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { writeAttribution } from "@/utils/entryAttribution";
 import { fireCtaClick } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
 
 import { i18nConfig } from "../constants";
 import { useModal } from "../hooks";
@@ -25,20 +27,20 @@ export function OffersGlobalModal(): JSX.Element | null {
   const { t: tModals } = useTranslation("modals", { lng: lang });
   const { t: tTokens } = useTranslation("_tokens", { lng: lang });
 
+  const tokenFallback = (tTokens("checkAvailability", { lng: i18nConfig.fallbackLng }) as string) ?? "";
+  const normalisedTokenFallback =
+    tokenFallback.trim() && tokenFallback !== "checkAvailability" ? tokenFallback : "";
+  const direct = (tModals("offers.button") as string) ?? "";
+  const normalisedDirect = direct.trim() && direct !== "offers.button" ? direct : "";
+  const fallback = (tModals("offers.button", { lng: i18nConfig.fallbackLng }) as string) ?? "";
+  const normalisedFallback = fallback.trim() && fallback !== "offers.button" ? fallback : "";
   const ctaLabel =
-    resolveBookingCtaLabel(tTokens, {
-      fallback: () => {
-        const direct = tModals("offers.button") as string;
-        if (direct && direct.trim() && direct !== "offers.button") {
-          return direct;
-        }
-        const fallback = tModals("offers.button", { lng: i18nConfig.fallbackLng }) as string;
-        if (fallback && fallback.trim() && fallback !== "offers.button") {
-          return fallback;
-        }
-        return "Reserve Now";
-      },
-    }) ?? "Reserve Now";
+    (resolvePrimaryCtaLabel(tTokens, {
+      fallback: () => normalisedDirect || normalisedFallback || normalisedTokenFallback,
+    }) ??
+    normalisedDirect) ||
+    normalisedFallback ||
+    normalisedTokenFallback;
 
   const offersCopy: OffersModalCopy = {
     title: tModals("offers.title"),
@@ -54,10 +56,34 @@ export function OffersGlobalModal(): JSX.Element | null {
   };
 
   const handleReserve = useCallback((): void => {
-    // TC-01: fire cta_click before navigating to /book
-    fireCtaClick({ ctaId: "offers_modal_reserve", ctaLocation: "offers_modal" });
+    const bookPath = getBookPath(lang);
+    writeAttribution({
+      source_surface: "sitewide_shell",
+      source_cta: "offers_modal",
+      resolved_intent: "hostel",
+      product_type: null,
+      decision_mode: "direct_resolution",
+      destination_funnel: "hostel_central",
+      locale: lang,
+      fallback_triggered: false,
+    });
+    // TC-01: fire enriched cta_click before navigating to /book
+    fireCtaClick(
+      { ctaId: "offers_modal_reserve", ctaLocation: "offers_modal" },
+      undefined,
+      {
+        source_surface: "sitewide_shell",
+        source_cta: "offers_modal",
+        resolved_intent: "hostel",
+        product_type: null,
+        decision_mode: "direct_resolution",
+        destination_funnel: "hostel_central",
+        locale: lang,
+        fallback_triggered: false,
+      }
+    );
     closeModal();
-    router.push(`/${lang}/book`);
+    router.push(bookPath);
   }, [closeModal, router, lang]);
 
   return <OffersModal isOpen onClose={closeModal} onReserve={handleReserve} copy={offersCopy} />;

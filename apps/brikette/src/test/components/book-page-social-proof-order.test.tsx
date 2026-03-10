@@ -34,12 +34,15 @@ const BookPageContent = require("@/app/[lang]/book/BookPageContent")
 
 describe("Book page layout order", () => {
   it("renders guests-love social proof above the booking selector", () => {
-    render(<BookPageContent lang="en" />);
+    render(<BookPageContent lang="en" heading="Book your stay" />);
 
     const socialProof = screen.getByText("Guests love Brikette");
-    const updateButton = screen.getByRole("button", { name: /update/i });
+    const checkInInput = document.querySelector(
+      '[data-cy="date-range-checkin-input"]',
+    ) as HTMLElement | null;
 
-    const order = socialProof.compareDocumentPosition(updateButton);
+    expect(checkInInput).not.toBeNull();
+    const order = socialProof.compareDocumentPosition(checkInInput as Node);
     expect(order & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   });
 });

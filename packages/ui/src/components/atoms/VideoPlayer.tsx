@@ -15,20 +15,17 @@ export interface VideoPlayerProps
 
 const DEFAULT_CAPTIONS_LANG = "en"; // i18n-exempt -- UI-3001: language code default, not user-facing copy [ttl=2026-12-31]
 
-export const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
-  (
-    {
-      className,
-      captionsSrc,
-      captionsLabel,
-      captionsLang = DEFAULT_CAPTIONS_LANG,
-      fallbackText,
-      controls = true,
-      "aria-label": ariaLabel,
-      ...props
-    },
-    ref,
-  ) => {
+export function VideoPlayer({
+  className,
+  captionsSrc,
+  captionsLabel,
+  captionsLang = DEFAULT_CAPTIONS_LANG,
+  fallbackText,
+  controls = true,
+  "aria-label": ariaLabel,
+  ref,
+  ...props
+}: VideoPlayerProps & { ref?: React.Ref<HTMLVideoElement> }) {
     const t = useTranslations();
     const resolvedCaptionsLabel =
       captionsLabel ?? (t("video.captions.label") as string);
@@ -43,7 +40,7 @@ export const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
     const warningId = React.useId();
 
     return (
-      <div className="flex w-full flex-col gap-2">
+      <div data-slot="video-player" className="flex w-full flex-col gap-2">
         <video
           ref={ref}
           className={cn("w-full rounded-lg", className)} // i18n-exempt -- UI-000: CSS utility class names [ttl=2026-01-31]
@@ -73,6 +70,4 @@ export const VideoPlayer = React.forwardRef<HTMLVideoElement, VideoPlayerProps>(
         ) : null}
       </div>
     );
-  }
-);
-VideoPlayer.displayName = "VideoPlayer";
+}

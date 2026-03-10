@@ -6,12 +6,10 @@ import { act, renderHook } from "@testing-library/react";
 import useCheckinsModes from "../useCheckinsModes";
 
 describe("useCheckinsModes", () => {
-  it("defaults all modes to false", () => {
+  it("defaults checkinMode to idle and showArchiveModal to false", () => {
     const { result } = renderHook(() => useCheckinsModes());
 
-    expect(result.current.isAddGuestMode).toBe(false);
-    expect(result.current.isEditMode).toBe(false);
-    expect(result.current.isDeleteMode).toBe(false);
+    expect(result.current.checkinMode).toBe("idle");
     expect(result.current.showArchiveModal).toBe(false);
   });
 
@@ -21,30 +19,51 @@ describe("useCheckinsModes", () => {
     act(() => {
       result.current.toggleAddGuestMode();
     });
-    expect(result.current.isAddGuestMode).toBe(true);
-    expect(result.current.isEditMode).toBe(false);
-    expect(result.current.isDeleteMode).toBe(false);
+    expect(result.current.checkinMode).toBe("addGuest");
 
     act(() => {
       result.current.toggleEditMode();
     });
-    expect(result.current.isAddGuestMode).toBe(false);
-    expect(result.current.isEditMode).toBe(true);
-    expect(result.current.isDeleteMode).toBe(false);
+    expect(result.current.checkinMode).toBe("edit");
 
     act(() => {
       result.current.toggleDeleteMode();
     });
-    expect(result.current.isAddGuestMode).toBe(false);
-    expect(result.current.isEditMode).toBe(false);
-    expect(result.current.isDeleteMode).toBe(true);
+    expect(result.current.checkinMode).toBe("delete");
 
     act(() => {
       result.current.openArchiveModal();
     });
     expect(result.current.showArchiveModal).toBe(true);
-    expect(result.current.isAddGuestMode).toBe(false);
-    expect(result.current.isEditMode).toBe(false);
-    expect(result.current.isDeleteMode).toBe(false);
+    expect(result.current.checkinMode).toBe("idle");
+  });
+
+  it("toggles back to idle on second click", () => {
+    const { result } = renderHook(() => useCheckinsModes());
+
+    act(() => {
+      result.current.toggleEditMode();
+    });
+    expect(result.current.checkinMode).toBe("edit");
+
+    act(() => {
+      result.current.toggleEditMode();
+    });
+    expect(result.current.checkinMode).toBe("idle");
+  });
+
+  it("openArchiveModal clears checkinMode to idle", () => {
+    const { result } = renderHook(() => useCheckinsModes());
+
+    act(() => {
+      result.current.toggleDeleteMode();
+    });
+    expect(result.current.checkinMode).toBe("delete");
+
+    act(() => {
+      result.current.openArchiveModal();
+    });
+    expect(result.current.checkinMode).toBe("idle");
+    expect(result.current.showArchiveModal).toBe(true);
   });
 });

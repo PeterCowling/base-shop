@@ -16,8 +16,11 @@ import {
 import type { Database } from "firebase/database";
 import { get,ref } from "firebase/database";
 
+import { getMeta, setMeta } from "../lib/offline/receptionDb";
 import type { User, UserProfile, UserRole } from "../types/domains/userDomain";
 import { normalizeRoles, userProfileSchema } from "../types/domains/userDomain";
+
+import { mapAuthError } from "./authErrors";
 
 let authInstance: Auth | null = null;
 const userProfileSnapshotSchema = userProfileSchema.partial({
@@ -80,23 +83,7 @@ export async function loginWithEmailPassword(
 
     return { success: true, user };
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Login failed";
-
-    // Provide user-friendly error messages
-    if (message.includes("auth/invalid-credential") || message.includes("auth/wrong-password")) {
-      return { success: false, error: "Invalid email or password." };
-    }
-    if (message.includes("auth/user-not-found")) {
-      return { success: false, error: "No account found with this email." };
-    }
-    if (message.includes("auth/too-many-requests")) {
-      return { success: false, error: "Too many failed attempts. Please try again later." };
-    }
-    if (message.includes("auth/network-request-failed")) {
-      return { success: false, error: "Network error. Check your connection." };
-    }
-
-    return { success: false, error: message };
+    return { success: false, error: mapAuthError(error) };
   }
 }
 
@@ -174,16 +161,27 @@ export async function loadUserWithProfile(
       roles: normalizeRoles(parsedProfile.roles),
     };
 
-    return {
+    const resolvedUser: User = {
       uid: firebaseUser.uid,
       email: resolvedEmail,
       user_name: profile.user_name,
       displayName: profile.displayName,
       roles: profile.roles,
     };
+
+    await setMeta<User | null>("cachedUserProfile", resolvedUser);
+
+    return resolvedUser;
   } catch (error) {
     console.error("Failed to load user profile:", error);
-    return null;
+    const cached = await getMeta<User>("cachedUserProfile");
+    if (cached && cached.uid !== firebaseUser.uid) {
+      console.warn(
+        `Cached profile UID mismatch: expected ${firebaseUser.uid}, got ${cached.uid}. Ignoring cache.`,
+      );
+      return null;
+    }
+    return cached;
   }
 }
 
@@ -199,6 +197,7 @@ export function subscribeToAuthState(
       const user = await loadUserWithProfile(database, firebaseUser);
       listener(user);
     } else {
+      await setMeta<User | null>("cachedUserProfile", null);
       listener(null);
     }
   });

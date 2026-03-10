@@ -65,6 +65,7 @@ export type UserProfile = {
 export const userSchema = z.object({
   email: z.string(),
   user_name: z.string(),
+  roles: userRolesSchema,
 });
 
 export type User = z.infer<typeof userSchema> & {

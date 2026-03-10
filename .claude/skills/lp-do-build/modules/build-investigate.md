@@ -1,5 +1,22 @@
 # Build Executor: INVESTIGATE
 
+## Offload Route
+
+Current active policy: execute this task inline. A validated patch-return Codex lane does not exist yet, so shared-checkout mutable offload is disabled as a normal default. If a future task explicitly enables a validated pilot, load and follow `../../_shared/build-offload-protocol.md`.
+
+**If a validated offload pilot is explicitly enabled later, keep these track-specific prompt additions for INVESTIGATE tasks:**
+
+- MCP tools are available to Codex via `~/.codex/config.toml` — Codex has the same evidence sources as Claude for INVESTIGATE tasks (GA4, Firebase, BOS API, brikette MCP server).
+- Codex's own internal parallelism replaces the `build-investigate.md` subagent dispatch pattern described in the `## Subagent Dispatch` section below. Do not instruct Codex to spawn subagents — it handles parallelism internally via tool-calling.
+- Include the full evidence queries (from `Questions to answer` or acceptance criteria) in the prompt so Codex can plan its evidence collection.
+
+**If a validated offload pilot is explicitly enabled later, Claude's post-execution verification steps remain:**
+
+1. Re-read all `Affects` files — confirm the deliverable artifact was written. If missing or empty: treat as task failure; do not proceed to commit.
+2. Validate artifact against task acceptance criteria — INVESTIGATE tasks are exempt from `modules/build-validate.md`, but acceptance criteria must be met.
+3. Commit gate — stage only task-scoped files (the `Affects` list). Run via `scripts/agents/with-writer-lock.sh`.
+4. Post-task plan update — mark task status Complete with date; add build evidence block (exit code, Affects files verified, acceptance criteria pass/fail, offload route used). Run downstream confidence propagation per `## Downstream Confidence Propagation` below.
+
 ## Objective
 
 Produce the investigation artifact (decision memo, analysis note, evidence map) that closes the task's uncertainty.

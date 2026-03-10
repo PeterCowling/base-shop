@@ -1,0 +1,413 @@
+{
+  "routes": [
+    "/en/dorms",
+    "/en/dorms/7-bed-female-sea-view-dorm",
+    "/en/dorms/8-bed-female-dorm",
+    "/en/dorms/8-bed-mixed-dorm",
+    "/en/dorms/female-dorm-large-sea-terrace",
+    "/en/dorms/female-garden-room",
+    "/en/dorms/female-sea-view-dorm",
+    "/en/dorms/mixed-dorm-sea-terrace",
+    "/en/dorms/mixed-ensuite-dorm",
+    "/en/dorms/mixed-room-single-beds"
+  ],
+  "testedEntries": 120,
+  "failures": [
+    {
+      "breakpoint": 768,
+      "mode": "light",
+      "route": "/en/dorms/female-garden-room",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-garden-room\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-garden-room\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "light",
+      "route": "/en/dorms/female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "light",
+      "route": "/en/dorms/mixed-dorm-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "light",
+      "route": "/en/dorms/mixed-ensuite-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-ensuite-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-ensuite-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "light",
+      "route": "/en/dorms/mixed-room-single-beds",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-room-single-beds\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-room-single-beds\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/en/dorms",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/en/dorms/7-bed-female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/en/dorms/8-bed-female-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-female-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-female-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/en/dorms/8-bed-mixed-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-mixed-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-mixed-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/en/dorms/female-dorm-large-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/en/dorms/female-garden-room",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-garden-room\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-garden-room\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/en/dorms/female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/en/dorms/mixed-dorm-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/en/dorms/mixed-ensuite-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-ensuite-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-ensuite-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1024,
+      "mode": "light",
+      "route": "/en/dorms/mixed-room-single-beds",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-room-single-beds\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-room-single-beds\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/en/dorms",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/en/dorms/7-bed-female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/en/dorms/8-bed-female-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-female-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-female-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/en/dorms/8-bed-mixed-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-mixed-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-mixed-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/en/dorms/female-dorm-large-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/en/dorms/female-garden-room",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-garden-room\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-garden-room\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/en/dorms/female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/en/dorms/mixed-dorm-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/en/dorms/mixed-ensuite-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-ensuite-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-ensuite-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 1280,
+      "mode": "light",
+      "route": "/en/dorms/mixed-room-single-beds",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-room-single-beds\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-room-single-beds\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "dark",
+      "route": "/en/dorms",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "dark",
+      "route": "/en/dorms/7-bed-female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "dark",
+      "route": "/en/dorms/8-bed-female-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-female-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-female-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "dark",
+      "route": "/en/dorms/8-bed-mixed-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-mixed-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-mixed-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "dark",
+      "route": "/en/dorms/female-dorm-large-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "dark",
+      "route": "/en/dorms/female-garden-room",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-garden-room\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-garden-room\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "dark",
+      "route": "/en/dorms/female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-dorm-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-ensuite-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-ensuite-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-ensuite-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 320,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-room-single-beds",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-room-single-beds\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-room-single-beds\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "dark",
+      "route": "/en/dorms",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "dark",
+      "route": "/en/dorms/7-bed-female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "dark",
+      "route": "/en/dorms/8-bed-female-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-female-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-female-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "dark",
+      "route": "/en/dorms/8-bed-mixed-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-mixed-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-mixed-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "dark",
+      "route": "/en/dorms/female-dorm-large-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "dark",
+      "route": "/en/dorms/female-garden-room",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-garden-room\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-garden-room\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "dark",
+      "route": "/en/dorms/female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-dorm-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-ensuite-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-ensuite-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-ensuite-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 375,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-room-single-beds",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-room-single-beds\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-room-single-beds\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "dark",
+      "route": "/en/dorms",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "dark",
+      "route": "/en/dorms/7-bed-female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "dark",
+      "route": "/en/dorms/8-bed-female-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-female-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-female-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "dark",
+      "route": "/en/dorms/8-bed-mixed-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-mixed-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-mixed-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "dark",
+      "route": "/en/dorms/female-dorm-large-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "dark",
+      "route": "/en/dorms/female-garden-room",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-garden-room\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-garden-room\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "dark",
+      "route": "/en/dorms/female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-dorm-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-ensuite-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-ensuite-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-ensuite-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 430,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-room-single-beds",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-room-single-beds\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-room-single-beds\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "dark",
+      "route": "/en/dorms",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "dark",
+      "route": "/en/dorms/7-bed-female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/7-bed-female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "dark",
+      "route": "/en/dorms/8-bed-female-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-female-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-female-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "dark",
+      "route": "/en/dorms/8-bed-mixed-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/8-bed-mixed-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/8-bed-mixed-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "dark",
+      "route": "/en/dorms/female-dorm-large-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-dorm-large-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "dark",
+      "route": "/en/dorms/female-garden-room",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-garden-room\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-garden-room\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "dark",
+      "route": "/en/dorms/female-sea-view-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/female-sea-view-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/female-sea-view-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-dorm-sea-terrace",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-dorm-sea-terrace\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-ensuite-dorm",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-ensuite-dorm\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-ensuite-dorm\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    },
+    {
+      "breakpoint": 768,
+      "mode": "dark",
+      "route": "/en/dorms/mixed-room-single-beds",
+      "error": "page.goto: net::ERR_CONNECTION_REFUSED at http://localhost:3012/en/dorms/mixed-room-single-beds\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en/dorms/mixed-room-single-beds\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    }
+  ],
+  "totals": {
+    "issues": 1152,
+    "S1": 1152,
+    "S2": 0,
+    "S3": 0
+  }
+}

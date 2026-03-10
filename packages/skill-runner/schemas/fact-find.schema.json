@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://acme.local/schemas/fact-find.schema.json",
+  "title": "Fact-Find Frontmatter",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "Type",
+    "Status",
+    "Execution-Track",
+    "Deliverable-Type",
+    "Feature-Slug",
+    "Primary-Execution-Skill"
+  ],
+  "properties": {
+    "Type": { "const": "Fact-Find" },
+    "Status": {
+      "type": "string",
+      "enum": ["Draft", "Ready-for-planning", "Needs-input", "Infeasible"]
+    },
+    "Execution-Track": {
+      "type": "string",
+      "enum": ["code", "business-artifact", "mixed"]
+    },
+    "Deliverable-Type": {
+      "type": "string",
+      "enum": [
+        "code-change",
+        "email-message",
+        "whatsapp-message",
+        "product-brief",
+        "marketing-asset",
+        "spreadsheet",
+        "multi-deliverable"
+      ]
+    },
+    "Feature-Slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+    }
+  }
+}

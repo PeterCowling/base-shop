@@ -83,13 +83,13 @@ function TenderRemovalModalBase({
               compatibilityMode="no-wrapper"
               type="number"
               inputMode="decimal"
-              className="w-32 rounded border px-3 py-2 text-sm"
+              className="w-32 rounded-lg border px-3 py-2 text-sm"
               placeholder="Amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
             <select
-              className="w-36 rounded border px-2 py-2 text-sm"
+              className="w-36 rounded-lg border px-2 py-2 text-sm"
               value={removalType}
               onChange={(e) => setRemovalType(e.target.value as RemovalType)}
             >
@@ -100,7 +100,7 @@ function TenderRemovalModalBase({
 
             {removalType !== "SAFE_DROP" && (
               <select
-                className="w-32 rounded border px-2 py-2 text-sm"
+                className="w-32 rounded-lg border px-2 py-2 text-sm"
                 value={destination}
                 onChange={(e) =>
                   setDestination(e.target.value as RemovalDestination)
@@ -123,7 +123,7 @@ function TenderRemovalModalBase({
               <Button
                 type="button"
                 onClick={handleConfirm}
-                className="min-h-11 min-w-32 rounded bg-primary-main px-4 py-2 text-primary-fg transition-opacity hover:opacity-90 disabled:opacity-50"
+                className="min-h-11 min-w-32 rounded-lg bg-primary-main px-4 py-2 text-primary-fg transition-opacity hover:opacity-90 disabled:opacity-50"
               >
                 Confirm removal
               </Button>

@@ -3,6 +3,7 @@ import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/re
 import { usePreArrivalMutator } from '../../../hooks/mutator/usePreArrivalMutator';
 import { useFetchPreArrivalData } from '../../../hooks/pureData/useFetchPreArrivalData';
 import { recordActivationFunnelEvent } from '../../../lib/analytics/activationFunnel';
+import { assignActivationVariants } from '../../../lib/experiments/activationExperiments';
 import GuidedOnboardingFlow from '../GuidedOnboardingFlow';
 
 jest.mock('../../../hooks/mutator/usePreArrivalMutator', () => ({
@@ -18,7 +19,7 @@ jest.mock('../../../lib/analytics/activationFunnel', () => ({
 }));
 
 jest.mock('../../../lib/experiments/activationExperiments', () => ({
-  assignActivationVariants: () => ({
+  assignActivationVariants: jest.fn().mockReturnValue({
     onboardingStepOrder: 'standard',
     onboardingCtaCopy: 'control',
   }),
@@ -504,6 +505,24 @@ describe('GuidedOnboardingFlow', () => {
       const enKeys = collectKeys(en.guidedFlow);
       const itKeys = collectKeys(it.guidedFlow);
       expect(itKeys).toEqual(enKeys);
+    });
+  });
+
+  describe('OB-07: fieldset render order', () => {
+    it('TC-01: eta-first variant renders confidence fieldset before method fieldset', () => {
+      (assignActivationVariants as jest.Mock).mockReturnValueOnce({
+        onboardingStepOrder: 'eta-first',
+        onboardingCtaCopy: 'control',
+      });
+
+      render(<GuidedOnboardingFlow onComplete={jest.fn()} guestFirstName="Jane" />);
+
+      const confidenceLegend = screen.getByText('guidedFlow.step1.confidenceLabel');
+      const methodLegend = screen.getByText('guidedFlow.step1.arrivalMethodLabel');
+
+      expect(
+        confidenceLegend.compareDocumentPosition(methodLegend) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy();
     });
   });
 });

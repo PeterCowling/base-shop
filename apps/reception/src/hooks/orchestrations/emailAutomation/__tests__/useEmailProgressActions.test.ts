@@ -99,4 +99,18 @@ describe("useEmailProgressActions", () => {
     expect(addActivityMock).not.toHaveBeenCalledWith("occ4", expect.anything());
     expect(addActivityMock).not.toHaveBeenCalledWith("occ5", expect.anything());
   });
+
+  it("logNextActivity rejects when addActivity returns success:false", async () => {
+    addActivityMock.mockResolvedValueOnce({
+      success: false,
+      error: "activity write failed",
+    });
+    const { result } = renderHook(() => useEmailProgressActions());
+
+    await act(async () => {
+      await expect(
+        result.current.logNextActivity({ bookingRef })
+      ).rejects.toThrow("activity write failed");
+    });
+  });
 });

@@ -56,7 +56,7 @@ export default function GuidedSellingSection({ title, questions = defaultQuestio
                     type="button"
                     className={[
                       // i18n-exempt -- DS-1234 [ttl=2025-11-30]
-                      "rounded border px-3 inline-flex items-center min-h-10 min-w-10",
+                      "rounded border px-3 inline-flex items-center min-h-11 min-w-11",
                       // i18n-exempt -- DS-1234 [ttl=2025-11-30]
                       answers[q.id] === opt.value ? "bg-foreground text-foreground" : "bg-card",
                     ].join(" ")}
@@ -75,7 +75,7 @@ export default function GuidedSellingSection({ title, questions = defaultQuestio
                 type="button"
                 onClick={back}
                 disabled={step === 0}
-                className="rounded border px-3 inline-flex items-center min-h-10 min-w-10 disabled:opacity-50"
+                className="rounded border px-3 inline-flex items-center min-h-11 min-w-11 disabled:opacity-50"
               >
                 {t("guided.back")}
               </button>
@@ -83,7 +83,7 @@ export default function GuidedSellingSection({ title, questions = defaultQuestio
                 type="button"
                 onClick={next}
                 disabled={!answers[q.id]}
-                className="rounded border px-3 inline-flex items-center min-h-10 min-w-10 disabled:opacity-50"
+                className="rounded border px-3 inline-flex items-center min-h-11 min-w-11 disabled:opacity-50"
               >
                 {t("guided.next")}
               </button>
@@ -95,7 +95,7 @@ export default function GuidedSellingSection({ title, questions = defaultQuestio
               <a
                 href={link}
                 // i18n-exempt — CSS utility class names
-                className="inline-flex items-center rounded bg-foreground px-4 min-h-10 min-w-10 text-foreground"
+                className="inline-flex items-center rounded bg-foreground px-4 min-h-11 min-w-11 text-foreground"
               >
                 {t("guided.viewResults")}
               </a>
@@ -112,7 +112,7 @@ export default function GuidedSellingSection({ title, questions = defaultQuestio
                 setStep(0);
                 setAnswers({});
               }}
-              className="rounded border px-3 inline-flex items-center min-h-10 min-w-10"
+              className="rounded border px-3 inline-flex items-center min-h-11 min-w-11"
             >
               {t("guided.startOver")}
             </button>

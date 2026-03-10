@@ -1,0 +1,11 @@
+{
+  "round": 2,
+  "target": "plan.md",
+  "mode": "file",
+  "findings": [],
+  "verdict": "needs_revision",
+  "score": 7,
+  "lp_score": 3.5,
+  "review": "WARNING: plan.md:16 `Overall-confidence` in frontmatter is `78%`, but the plan's own calculation states `82%`. Canonical metadata mismatch.\n\nWARNING: plan.md:324 The plan says artifact naming is 'pending operator confirmation (Open Q1)', but `Open Decisions` says 'None'. Decision state internally inconsistent.\n\nWARNING: plan.md:53 MEMORY.md referenced for plain-language rule, but MEMORY.md is not present in the repo path — non-resolvable reference.\n\nWARNING: plan.md:233 Acceptance criteria require verification via memory/data-access.md, but that path does not exist in the repo.\n\nINFO: plan.md:224 Baseline metric 'at least 1 access discovery per 3 builds' asserted without linked evidence.",
+  "autofix_round": 2
+}

@@ -89,7 +89,8 @@ type InterpretResult = {
   workflow_triggers: {
     prepayment: boolean;
     terms_and_conditions: boolean;
-    booking_monitor: boolean;
+    booking_action_required: boolean;
+    booking_context: boolean;
   };
   scenario: { category: string; confidence: number };
   escalation: {
@@ -973,7 +974,9 @@ describe("TASK-18: Stage 2+3 — Full Pipeline", () => {
 
 describe("TASK-18: Critical Error Checks", () => {
   describe("Critical Error Checks", () => {
-    it("should never include prohibited claims in generated drafts", async () => {
+    it(
+      "should never include prohibited claims in generated drafts",
+      async () => {
       const prohibited = [
         "availability confirmed",
         "we will charge now",
@@ -1007,9 +1010,13 @@ describe("TASK-18: Critical Error Checks", () => {
           expect(bodyLower).not.toContain(phrase);
         }
       }
-    });
+      },
+      30_000,
+    );
 
-    it("should always include signature block in generated HTML", async () => {
+    it(
+      "should always include signature block in generated HTML",
+      async () => {
       const customerFixtures = fixtures.filter(
         (f) => f.requiresResponse && f.scenarioType !== "system"
       );
@@ -1037,36 +1044,42 @@ describe("TASK-18: Critical Error Checks", () => {
             htmlLower.includes("peter's signature")
         ).toBe(true);
       }
-    });
+      },
+      30_000,
+    );
 
-    it("should always output both plaintext and HTML", async () => {
-      const customerFixtures = fixtures.filter(
-        (f) => f.requiresResponse && f.scenarioType !== "system"
-      );
-
-      for (const fixture of customerFixtures) {
-        const interpretResult = await handleDraftInterpretTool(
-          "draft_interpret",
-          { body: fixture.body, subject: fixture.subject }
-        );
-        const actionPlan = parseResult<InterpretResult>(interpretResult);
-
-        const generateResult = await handleDraftGenerateTool("draft_generate", {
-          actionPlan,
-          subject: fixture.subject,
-        });
-
-        if ("isError" in generateResult && generateResult.isError) continue;
-
-        const generated = parseResult<GenerateResult>(
-          generateResult as { content: Array<{ text: string }> }
+    it(
+      "should always output both plaintext and HTML",
+      async () => {
+        const customerFixtures = fixtures.filter(
+          (f) => f.requiresResponse && f.scenarioType !== "system"
         );
 
-        expect(generated.draft.bodyPlain.length).toBeGreaterThan(0);
-        expect(generated.draft.bodyHtml.length).toBeGreaterThan(0);
-        expect(generated.draft.bodyHtml).toContain("<!DOCTYPE html>");
-      }
-    });
+        for (const fixture of customerFixtures) {
+          const interpretResult = await handleDraftInterpretTool(
+            "draft_interpret",
+            { body: fixture.body, subject: fixture.subject }
+          );
+          const actionPlan = parseResult<InterpretResult>(interpretResult);
+
+          const generateResult = await handleDraftGenerateTool("draft_generate", {
+            actionPlan,
+            subject: fixture.subject,
+          });
+
+          if ("isError" in generateResult && generateResult.isError) continue;
+
+          const generated = parseResult<GenerateResult>(
+            generateResult as { content: Array<{ text: string }> }
+          );
+
+          expect(generated.draft.bodyPlain.length).toBeGreaterThan(0);
+          expect(generated.draft.bodyHtml.length).toBeGreaterThan(0);
+          expect(generated.draft.bodyHtml).toContain("<!DOCTYPE html>");
+        }
+      },
+      30_000,
+    );
 
     it("agreement detection: 0% false positive rate", async () => {
       // Emails that should NOT be detected as agreement
@@ -1118,7 +1131,10 @@ describe("TASK-04: Multi-Scenario Action Plan", () => {
       language: string;
       intents: { questions: Array<{ text: string }>; requests: Array<{ text: string }>; confirmations: Array<{ text: string }> };
       agreement: object;
-      workflow_triggers: { booking_monitor: boolean };
+      workflow_triggers: {
+        booking_action_required: boolean;
+        booking_context: boolean;
+      };
       escalation: object;
     }>(interpretResult);
 
@@ -1168,7 +1184,10 @@ describe("TASK-18: Quality Gate Standalone", () => {
         actionPlan: {
           language: "EN",
           intents: { questions: [] },
-          workflow_triggers: { booking_monitor: false },
+          workflow_triggers: {
+            booking_action_required: false,
+            booking_context: false,
+          },
           scenario: { category: "faq" },
           thread_summary: { prior_commitments: [] },
         },
@@ -1188,7 +1207,10 @@ describe("TASK-18: Quality Gate Standalone", () => {
         actionPlan: {
           language: "EN",
           intents: { questions: [{ text: "What time is check-in?" }] },
-          workflow_triggers: { booking_monitor: false },
+          workflow_triggers: {
+            booking_action_required: false,
+            booking_context: false,
+          },
           scenario: { category: "faq" },
           thread_summary: { prior_commitments: [] },
         },

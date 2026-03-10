@@ -18,6 +18,7 @@ import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutat
 import useCityTaxMutation from "../../../hooks/mutations/useCityTaxMutation";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import { type PayType } from "../../../types/domains/cityTaxDomain";
+import { formatEuro } from "../../../utils/format";
 import { generateTransactionId } from "../../../utils/generateTransactionId";
 import { showToast } from "../../../utils/toastUtils";
 import SmallSpinner from "../../search/SmallSpinner";
@@ -206,7 +207,12 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
         });
 
         // Occupant-level activity (code=9)
-        await addActivity(occupantId, 9);
+        const activityResult = await addActivity(occupantId, 9);
+        if (!activityResult.success) {
+          throw new Error(
+            activityResult.error ?? "Failed to save city tax activity."
+          );
+        }
 
         // Mirror in /allFinancialTransactions
         await addToAllTransactions(txnId, {
@@ -248,50 +254,54 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
   const PayTypeIcon = payType === "CC" ? CreditCard : Banknote;
   const getButtonLabel = () => {
     if (loading) return <SmallSpinner />;
-    return amount > 0 ? `€${amount.toFixed(2)}` : "Paid";
+    return amount > 0 ? formatEuro(amount) : "Paid";
   };
   // Style classes
-  const activeClass = "bg-primary-main hover:bg-primary-dark text-primary-fg";
+  const activeClass = "bg-primary-main/100 hover:opacity-90 text-primary-fg/100";
   const disabledClass =
-    "bg-success-light text-primary-fg cursor-not-allowed opacity-70";
+    "bg-success-main/100 text-foreground cursor-not-allowed opacity-70";
   const baseButtonClass =
-    "min-h-55px px-4 flex items-center justify-center focus:outline-none transition-colors";
+    "h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors text-xs font-medium";
 
-  const leftButtonClass = isDisabled
-    ? disabledClass
-    : `${activeClass} border-r border-border-2/20`;
+  const leftButtonClass = isDisabled ? disabledClass : activeClass;
   const rightButtonClass = isDisabled ? disabledClass : activeClass;
 
   return (
-    <div className="relative flex items-center">
-      {/* Left button: choose payment type */}
-      <Button
-        ref={buttonRef}
-        onClick={handleMenuToggle}
-        disabled={isDisabled}
-        className={`${baseButtonClass} rounded-l ${leftButtonClass}`}
-        title={
-          isDisabled
-            ? "City tax is already paid or not applicable."
-            : "Click to choose payment type"
-        }
-      >
-        <PayTypeIcon size={20} />
-      </Button>
+    <div className="relative">
+      <div className="flex items-stretch rounded-md overflow-hidden">
+        {/* Left button: choose payment type */}
+        <Button
+          compatibilityMode="passthrough"
+          ref={buttonRef}
+          onClick={handleMenuToggle}
+          disabled={isDisabled}
+          className={`${baseButtonClass} rounded-none ${leftButtonClass}`}
+          title={
+            isDisabled
+              ? "City tax is already paid or not applicable."
+              : "Click to choose payment type"
+          }
+        >
+          <PayTypeIcon size={16} />
+        </Button>
 
-      {/* Right button: immediate payment */}
-      <Button
-        onClick={handleImmediatePayment}
-        disabled={isDisabled}
-        className={`${baseButtonClass} rounded-r ${rightButtonClass}`}
-        title={
-          isDisabled
-            ? "City tax is already paid or not applicable."
-            : "Pay immediately with selected type"
-        }
-      >
-        {getButtonLabel()}
-      </Button>
+        <div className="w-px self-stretch bg-border-1" />
+
+        {/* Right button: immediate payment */}
+        <Button
+          compatibilityMode="passthrough"
+          onClick={handleImmediatePayment}
+          disabled={isDisabled}
+          className={`${baseButtonClass} rounded-none ${rightButtonClass}`}
+          title={
+            isDisabled
+              ? "City tax is already paid or not applicable."
+              : "Pay immediately with selected type"
+          }
+        >
+          {getButtonLabel()}
+        </Button>
+      </div>
 
       {/* Dropdown menu */}
       {menuVisible &&
@@ -300,7 +310,7 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
         ReactDOM.createPortal(
           <div
             style={portalStyle}
-            className={`z-50 mt-1 w-32 border border-border-2 rounded shadow-lg bg-surface p-3
+            className={`z-50 mt-1 w-32 border border-border-2 rounded-lg shadow-lg bg-surface p-3
               transition-opacity duration-200 transform-gpu
               ${menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
             onMouseLeave={handleMenuMouseLeave}

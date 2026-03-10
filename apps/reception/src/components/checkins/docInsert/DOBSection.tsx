@@ -11,6 +11,7 @@ import { Input } from "@acme/design-system";
 import { ConfirmDialog } from "@acme/design-system/atoms";
 
 import { useAuth } from "../../../context/AuthContext";
+import { canAccess, Permissions } from "../../../lib/roles";
 import { occupantDetailsSchema } from "../../../schemas/occupantDetailsSchema";
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { showToast } from "../../../utils/toastUtils";
@@ -21,21 +22,8 @@ interface DOBSectionProps {
 }
 
 /**
- * Users allowed to override the 18–39 age restriction.
- * Keep alphabetically sorted for easier maintenance.
- */
-const ALLOWED_OVERRIDE_USERS = [
-  "Allessandro",
-  "Cristiana",
-  "Pete",
-  "Serena",
-] as const;
-
-type AllowedOverrideUser = (typeof ALLOWED_OVERRIDE_USERS)[number];
-
-/**
  * DOBSection: Collect and validate day, month, and year, skipping min/max age checks if allocated room = "7".
- * In addition, users in `ALLOWED_OVERRIDE_USERS` may override the age restriction after confirmation.
+ * In addition, users with MANAGEMENT_ACCESS may override the age restriction after confirmation.
  */
 function DOBSection({
   occupantDetails,
@@ -170,7 +158,7 @@ function DOBSection({
   }, [pendingOverrideDob, saveDob]);
 
   /**
-   * On blur, if all fields are filled, validate. If invalid, revert unless user is in ALLOWED_OVERRIDE_USERS and confirms override.
+   * On blur, if all fields are filled, validate. If invalid, revert unless user has MANAGEMENT_ACCESS and confirms override.
    */
   const handleBlur = useCallback(
     async (_e: FocusEvent<HTMLInputElement>) => {
@@ -182,10 +170,7 @@ function DOBSection({
         showToast(errorMsg, "error");
         setBgSuccess(false);
 
-        const currentUser = user?.user_name;
-        const canOverride = ALLOWED_OVERRIDE_USERS.includes(
-          currentUser as AllowedOverrideUser
-        );
+        const canOverride = canAccess(user ?? null, Permissions.MANAGEMENT_ACCESS);
 
         // If user is allowed an override, prompt for confirmation.
         if (canOverride) {
@@ -205,7 +190,7 @@ function DOBSection({
       // Valid date or override accepted.
       saveDob(yyyy, mm, dd);
     },
-    [yyyy, mm, dd, validateDOB, user?.user_name, revertDOB, saveDob]
+    [yyyy, mm, dd, validateDOB, user, revertDOB, saveDob]
   );
 
   return (
@@ -220,7 +205,7 @@ function DOBSection({
           type="text"
           placeholder="YYYY"
           maxLength={4}
-          className={`w-[70px] border border-info-light rounded px-3 py-2 
+          className={`w-[70px] border border-info-light rounded-lg px-3 py-2 
             focus:outline-none focus:ring-1 focus:ring-primary-main 
             ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
           value={yyyy}
@@ -235,7 +220,7 @@ function DOBSection({
           type="text"
           placeholder="MM"
           maxLength={2}
-          className={`w-[50px] border border-info-light rounded px-3 py-2 
+          className={`w-[50px] border border-info-light rounded-lg px-3 py-2 
             focus:outline-none focus:ring-1 focus:ring-primary-main 
             ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
           value={mm}
@@ -250,7 +235,7 @@ function DOBSection({
           type="text"
           placeholder="DD"
           maxLength={2}
-          className={`w-[50px] border border-info-light rounded px-3 py-2 
+          className={`w-[50px] border border-info-light rounded-lg px-3 py-2 
             focus:outline-none focus:ring-1 focus:ring-primary-main 
             ${bgSuccess ? "bg-success-light/50" : ""} text-foreground`}
           value={dd}

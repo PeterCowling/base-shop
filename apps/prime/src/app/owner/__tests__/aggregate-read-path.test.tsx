@@ -8,9 +8,9 @@
 import { type DailyKpiRecord,ZERO_SAFE_DEFAULTS } from '../../../lib/owner/kpiAggregator';
 
 // Mock Firebase — declare with var so jest.mock hoisted factory can reference them
-// eslint-disable-next-line no-var
+// eslint-disable-next-line no-var -- PRIME-1: pre-existing lint debt
 var mockFirebaseGet = jest.fn();
-// eslint-disable-next-line no-var
+// eslint-disable-next-line no-var -- PRIME-1: pre-existing lint debt
 var mockFirebaseRef = jest.fn();
 jest.mock('firebase/database', () => ({
   getDatabase: jest.fn(),
@@ -19,7 +19,7 @@ jest.mock('firebase/database', () => ({
 }));
 
 // Import after mocking — must follow jest.mock for mock to be active
-// eslint-disable-next-line import/first
+// eslint-disable-next-line import/first -- PRIME-1: pre-existing lint debt
 import { readDailyKpi, readKpiRange } from '../../../lib/owner/kpiReader';
 
 describe('Owner KPI read path contract', () => {

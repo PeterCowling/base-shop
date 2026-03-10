@@ -19,13 +19,13 @@ describe("HoursChip", () => {
   it("applies success style when below threshold", () => {
     render(<HoursChip hoursElapsed={10} thresholdHours={24} />);
     const chip = screen.getByText("10h");
-    expect(chip).toHaveClass("bg-success-main");
+    expect(chip).toHaveClass("bg-primary-soft");
   });
 
   it("applies warning style when above threshold", () => {
     render(<HoursChip hoursElapsed={30} thresholdHours={24} />);
     const chip = screen.getByText("30h");
-    expect(chip).toHaveClass("bg-warning-main");
+    expect(chip).toHaveClass("bg-warning");
   });
 });
 
@@ -83,14 +83,14 @@ describe("CheckInDateChip", () => {
     const date = "2025-01-05"; // 4 days later
     render(<CheckInDateChip checkInDate={date} />);
     const chip = screen.getByText(/jan 5, 2025/i);
-    expect(chip).toHaveClass("bg-warning-main");
+    expect(chip).toHaveClass("bg-warning");
   });
 
-  it("marks dates outside window as info", () => {
+  it("marks dates outside window as primary", () => {
     const date = "2025-02-01";
     render(<CheckInDateChip checkInDate={date} />);
     const chip = screen.getByText(/feb 1, 2025/i);
-    expect(chip).toHaveClass("bg-info-main");
+    expect(chip).toHaveClass("bg-primary");
   });
 
   it("handles missing date", () => {

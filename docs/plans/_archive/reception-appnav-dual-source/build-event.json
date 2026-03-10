@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-2026-03-09",
+  "feature_slug": "reception-appnav-dual-source",
+  "emitted_at": "2026-03-09T08:18:52.967Z",
+  "why": "Dual source of truth for nav items requires simultaneous edits in up to 5 files and had produced discrepancies",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Navigation items defined once in navConfig.ts, consumed by all nav surfaces. Adding a route requires one edit."
+  }
+}

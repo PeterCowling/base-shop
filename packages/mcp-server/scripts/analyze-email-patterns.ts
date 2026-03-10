@@ -46,7 +46,8 @@ interface InterpretResult {
   workflow_triggers: {
     prepayment: boolean;
     terms_and_conditions: boolean;
-    booking_monitor: boolean;
+    booking_action_required: boolean;
+    booking_context: boolean;
   };
   scenario: { category: string; confidence: number };
 }

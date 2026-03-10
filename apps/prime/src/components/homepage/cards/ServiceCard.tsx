@@ -1,11 +1,13 @@
+/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 /**
  * ServiceCard.tsx
  *
  * A reusable card for displaying services on the homepage.
- * Horizontal layout with image on one side and description on the other.
+ * Supports horizontal layout (default) and vertical layout (image stacked above text).
  */
 
 import { memo } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import { Card } from '@acme/design-system/primitives';
@@ -16,6 +18,7 @@ export interface ServiceCardProps {
   description?: string;
   to: string;
   image?: string;
+  layout?: 'horizontal' | 'vertical';
 }
 
 /**
@@ -29,16 +32,17 @@ export const ServiceCard = memo(function ServiceCard({
   description,
   to,
   image,
+  layout = 'horizontal',
 }: ServiceCardProps) {
   return (
     <Card
       className="
-        w-full max-w-[370px]
+        w-full max-w-sm
         overflow-hidden
         transition-transform duration-300
         flex flex-col
-        text-left
-        ml-4
+        text-start
+        ms-4
         hover:-translate-y-1
         hover:shadow-lg
       "
@@ -52,19 +56,23 @@ export const ServiceCard = memo(function ServiceCard({
         </Link>
       </h3>
 
-      <div className="flex flex-row items-center p-4 w-full gap-4">
+      <div
+        className={`${layout === 'vertical' ? 'flex flex-col items-center' : 'flex flex-row items-center'} p-4 w-full gap-4`}
+      >
         {image && (
           <Link href={to}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={image}
               alt={alt || ''}
-              className="max-w-[200px] h-auto object-cover rounded"
+              width={200}
+              height={200}
+              className="max-w-48 object-cover rounded"
+              unoptimized
             />
           </Link>
         )}
         {description && (
-          <p className="w-full px-4 text-muted-foreground text-base">
+          <p className={`w-full text-muted-foreground text-base${layout === 'horizontal' ? ' px-4' : ''}`}>
             {description}
           </p>
         )}

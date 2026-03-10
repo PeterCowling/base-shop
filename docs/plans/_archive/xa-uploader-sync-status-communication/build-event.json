@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "xa-uploader-sync-status-communication-2026-03-06",
+  "feature_slug": "xa-uploader-sync-status-communication",
+  "emitted_at": "2026-03-06T14:00:29.999Z",
+  "why": "XA uploader was implying that a successful catalog publish meant the site was already live, creating operator confusion when the site rebuild was still pending. Autosync was also unavailable, requiring manual re-triggers after every autosave.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Operators can trust what is saved, what is published to the catalog, and what still awaits site rebuild — without the tool overstating the live state. Autosync fires automatically after autosave settles and the product is publish-ready.",
+    "source": "operator"
+  }
+}

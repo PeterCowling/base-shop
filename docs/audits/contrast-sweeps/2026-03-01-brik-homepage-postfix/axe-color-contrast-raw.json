@@ -1,0 +1,97 @@
+{
+  "url": "http://localhost:3012/en",
+  "breakpoints": [
+    320,
+    375,
+    430,
+    768,
+    1024,
+    1280
+  ],
+  "modes": [
+    "light",
+    "dark"
+  ],
+  "runs": [
+    {
+      "width": 320,
+      "mode": "light",
+      "violations": 0,
+      "status": "ok"
+    },
+    {
+      "width": 375,
+      "mode": "light",
+      "violations": 0,
+      "status": "error"
+    },
+    {
+      "width": 430,
+      "mode": "light",
+      "violations": 0,
+      "status": "ok"
+    },
+    {
+      "width": 768,
+      "mode": "light",
+      "violations": 0,
+      "status": "ok"
+    },
+    {
+      "width": 1024,
+      "mode": "light",
+      "violations": 0,
+      "status": "ok"
+    },
+    {
+      "width": 1280,
+      "mode": "light",
+      "violations": 0,
+      "status": "ok"
+    },
+    {
+      "width": 320,
+      "mode": "dark",
+      "violations": 0,
+      "status": "ok"
+    },
+    {
+      "width": 375,
+      "mode": "dark",
+      "violations": 0,
+      "status": "ok"
+    },
+    {
+      "width": 430,
+      "mode": "dark",
+      "violations": 0,
+      "status": "ok"
+    },
+    {
+      "width": 768,
+      "mode": "dark",
+      "violations": 0,
+      "status": "ok"
+    },
+    {
+      "width": 1024,
+      "mode": "dark",
+      "violations": 0,
+      "status": "ok"
+    },
+    {
+      "width": 1280,
+      "mode": "dark",
+      "violations": 0,
+      "status": "ok"
+    }
+  ],
+  "findings": [],
+  "errors": [
+    {
+      "width": 375,
+      "mode": "light",
+      "message": "page.goto: Timeout 45000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3012/en\", waiting until \"domcontentloaded\"\u001b[22m\n"
+    }
+  ]
+}

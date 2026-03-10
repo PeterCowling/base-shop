@@ -1,0 +1,91 @@
+{
+  "smoke_test_meta": {
+    "task": "TASK-01",
+    "run_date": "2026-02-26",
+    "artifact_reviewed": "docs/plans/codemoot-cross-agent-critique/fact-find.md",
+    "codemoot_version": "0.2.14",
+    "codex_version": "0.105.0",
+    "node_version": "v22.16.0",
+    "install_package": "@codemoot/cli",
+    "codemoot_path": "/Users/petercowling/.nvm/versions/node/v22.16.0/bin/codemoot",
+    "dynamic_resolution_command": "nvm exec 22 which codemoot 2>/dev/null",
+    "schema_assumptions_verified": {
+      "has_json_flag": false,
+      "note": "review command always outputs JSON to stdout — no --json flag needed or supported",
+      "score_scale": "0-10 integer (NOT 0-1 as assumed in plan — plan mapping formula needs correction)",
+      "schema_actual": {
+        "mode": "file|prompt|stdin|diff",
+        "findings": [{"severity": "critical|warning|info", "file": "string", "line": "string", "message": "string"}],
+        "verdict": "approved|needs_revision|unknown",
+        "score": "integer 0-10 or null",
+        "review": "string (capped at 2KB)",
+        "sessionId": "string",
+        "codexThreadId": "string",
+        "resumed": "boolean",
+        "usage": {"inputTokens": "number", "outputTokens": "number", "totalTokens": "number", "costUsd": "number"},
+        "durationMs": "number"
+      },
+      "schema_assumed_in_plan": {
+        "score": "number 0-1",
+        "verdict": "string",
+        "feedback": "string[]"
+      },
+      "deviations": [
+        "score is integer 0-10, not float 0-1; plan mapping formula codemoot_score × 5 is WRONG; correct formula: codemoot_score / 2",
+        "field 'feedback' does not exist; replaced by 'findings' (array of {severity, file, line, message}) plus 'review' (capped text string)",
+        "--json flag does not exist on review command; JSON always output to stdout",
+        "score can be null if Codex output does not match 'SCORE: X/10' pattern",
+        "requires .cowork.yml config and codemoot init before first run",
+        "requires 'codex' binary on PATH; VS Code extension binary not on PATH by default"
+      ]
+    }
+  },
+  "review_result": {
+    "mode": "file",
+    "findings": [
+      {
+        "severity": "critical",
+        "file": "docs/plans/codemoot-cross-agent-critique/fact-find.md",
+        "line": "102",
+        "message": "Conflict rule is incorrect: `approved` + `lp_score < 4.0` is forced to \"partially credible,\" which contradicts the documented `<3.0 = not credible` band and can let failing critiques pass gate logic."
+      },
+      {
+        "severity": "warning",
+        "file": "docs/plans/codemoot-cross-agent-critique/fact-find.md",
+        "line": "212",
+        "message": "Readiness evidence says Codex CLI/auth are unverified and not installed, but the same file marks this resolved as installed/logged-in at lines 187-189; this makes confidence and task gating internally inconsistent."
+      },
+      {
+        "severity": "warning",
+        "file": "docs/plans/codemoot-cross-agent-critique/fact-find.md",
+        "line": "180",
+        "message": "The document says `nvm` is unavailable in non-interactive shells, while core execution depends on `nvm exec` (lines 55, 250); without explicit shell bootstrap, codemoot may never execute and automation silently degrades to fallback."
+      },
+      {
+        "severity": "warning",
+        "file": "docs/plans/codemoot-cross-agent-critique/fact-find.md",
+        "line": "246",
+        "message": "Requiring raw `codemoot review --json` logs in plan docs introduces data-leak risk (feedback can include artifact excerpts) with no redaction/retention rule."
+      },
+      {
+        "severity": "info",
+        "file": "docs/plans/codemoot-cross-agent-critique/fact-find.md",
+        "line": "250",
+        "message": "TASK-01 says \"do not proceed if path resolution returns empty,\" which conflicts with the required graceful fallback behavior documented at lines 122 and 240."
+      }
+    ],
+    "verdict": "needs_revision",
+    "score": 4,
+    "review": "Reviewing the fact-find document now for internal correctness, risk, and quality issues. I'll pull the file with line numbers first so findings are precise.\nI have the file with line numbers and am now checking for internal contradictions and risky assumptions that could break execution. I'll pull the remainder to complete the review.\n- CRITICAL: docs/plans/codemoot-cross-agent-critique/fact-find.md:102 Conflict rule is incorrect: `approved` + `lp_score < 4.0` is forced to \"partially credible,\" which contradicts the documented `<3.0 = not credible` band and can let failing critiques pass gate logic.\n- WARNING: docs/plans/codemoot-cross-agent-critique/fact-find.md:212 Readiness evidence says Codex CLI/auth are unverified and not installed, but the same file marks this resolved as installed/logged-in at lines 187-189; this makes confidence and task gating internally inconsistent.\n- WARNING: docs/plans/codemoot-cross-agent-critique/fact-find.md:180 The document says `nvm` is unavailable in non-interactive shells, while core execution depends on `nvm exec` (lines 55, 250); without explicit shell bootstrap, codemoot may never execute and automation silently degrades to fallback.\n- WARNING: docs/plans/codemoot-cross-agent-critique/fact-find.md:246 Requiring raw `codemoot review --json` logs in plan docs introduces data-leak risk (feedback can include artifact excerpts) with no redaction/retention rule.\n- INFO: docs/plans/codemoot-cross-agent-critique/fact-find.md:250 TASK-01 says \"do not proceed if path resolution returns empty,\" which conflicts with the required graceful fallback behavior documented at lines 122 and 240.\n\nVERDICT: NEEDS_REVISION\nSCORE: 4/10",
+    "sessionId": "Q1qNA84XAQMYM94_",
+    "codexThreadId": "019c9a09-f0b4-7291-8993-723d4d4bb701",
+    "resumed": false,
+    "usage": {
+      "inputTokens": 137880,
+      "outputTokens": 3386,
+      "totalTokens": 141266,
+      "costUsd": 0
+    },
+    "durationMs": 65525
+  }
+}

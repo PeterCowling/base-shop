@@ -1,162 +1,190 @@
 "use client";
 
-/* eslint-disable ds/no-raw-typography, ds/no-arbitrary-tailwind, ds/min-tap-size -- XAUP-0001 [ttl=2026-12-31] Gate UI pending design token refactor */
+import * as React from "react";
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import { CatalogLoginForm } from "./CatalogLoginForm.client";
 import { CatalogProductForm } from "./CatalogProductForm.client";
-import { CatalogProductsList } from "./CatalogProductsList.client";
-import { CatalogSubmissionPanel } from "./CatalogSubmissionPanel.client";
-import { CatalogSyncPanel } from "./CatalogSyncPanel.client";
+import { SKELETON_BLOCK_CLASS } from "./catalogStyles";
+import { CurrencyRatesPanel } from "./CurrencyRatesPanel.client";
+import { EditProductFilterSelector } from "./EditProductFilterSelector.client";
 import { useCatalogConsole } from "./useCatalogConsole.client";
 
 type CatalogConsoleProps = {
   monoClassName?: string;
+  onHeaderExtra?: (node: React.ReactNode) => void;
 };
 
-export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
-  const { t } = useUploaderI18n();
-  const consoleState = useCatalogConsole();
-
-  if (consoleState.session === null) {
-    return (
-      <div className="text-sm text-[color:var(--gate-muted)]">
-        {t("checkingConsoleAccess")}
+function ConsoleSkeletonPlaceholder({ srText }: { srText: string }) {
+  return (
+    /* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool layout */
+    <div className="grid gap-6 sm:grid-cols-[280px_1fr]" aria-busy="true">
+      <span className="sr-only">{srText}</span>
+      {/* Sidebar skeleton */}
+      <div className="space-y-3">
+        <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-4 w-3/4 ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
       </div>
-    );
-  }
+      {/* Form panel skeleton */}
+      <div className="space-y-4">
+        <div className={`h-6 w-1/3 ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-9 w-full ${SKELETON_BLOCK_CLASS}`} />
+        <div className={`h-24 w-full ${SKELETON_BLOCK_CLASS}`} />
+      </div>
+    </div>
+  );
+}
 
-  if (!consoleState.session.authenticated) {
+type ConsoleScreen = "catalog" | "currency";
+type ConsoleState = ReturnType<typeof useCatalogConsole>;
+type Translator = ReturnType<typeof useUploaderI18n>["t"];
+
+function ProductEditor({
+  state,
+  monoClassName,
+}: {
+  state: ConsoleState;
+  monoClassName?: string;
+}) {
+  return (
+    <CatalogProductForm
+      selectedSlug={state.selectedSlug}
+      draft={state.draft}
+      storefront={state.storefront}
+      fieldErrors={state.fieldErrors}
+      monoClassName={monoClassName}
+      busy={state.busy}
+      autosaveInlineMessage={state.autosaveInlineMessage}
+      autosaveStatus={state.autosaveStatus}
+      lastAutosaveSavedAt={state.lastAutosaveSavedAt}
+      feedback={state.actionFeedback.draft}
+      onChangeDraft={state.setDraft}
+      onSave={state.handleSave}
+      onSavedFeedback={state.handleSaveAdvanceFeedback}
+      onSaveWithDraft={state.handleSaveWithDraft}
+      onDelete={state.handleDelete}
+      onPublish={state.handlePublish}
+    />
+  );
+}
+
+function CurrencyScreen({
+  state,
+  t,
+}: {
+  state: ConsoleState;
+  t: Translator;
+}) {
+  if (state.uploaderMode !== "internal") return null;
+  return (
+    <div className="space-y-6">
+      <div className="text-sm text-gate-muted">{t("screenCurrencyHint")}</div>
+      <CurrencyRatesPanel
+        busy={state.busy}
+        syncReadiness={state.syncReadiness}
+        onSync={state.handleSync}
+      />
+    </div>
+  );
+}
+
+function ConsoleBody({
+  screen,
+  state,
+  monoClassName,
+  t,
+}: {
+  screen: ConsoleScreen;
+  state: ConsoleState;
+  monoClassName?: string;
+  t: Translator;
+}) {
+  if (screen === "currency") return <CurrencyScreen state={state} t={t} />;
+  return (
+    /* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool layout */
+    <div className="grid gap-6 sm:grid-cols-[280px_1fr]">
+      <aside className="rounded-xl border border-gate-border bg-gate-surface p-4 shadow-elevation-2">
+        <EditProductFilterSelector
+          products={state.products}
+          isLoading={state.isCatalogLoading}
+          onSelect={state.handleSelect}
+          onNew={state.handleNew}
+        />
+      </aside>
+
+      <div className="space-y-6">
+        <ProductEditor state={state} monoClassName={monoClassName} />
+      </div>
+    </div>
+  );
+}
+
+export default function CatalogConsole({ monoClassName, onHeaderExtra }: CatalogConsoleProps) {
+  const { t } = useUploaderI18n();
+  const state = useCatalogConsole();
+  const [screen, setScreen] = React.useState<ConsoleScreen>("catalog");
+
+  const openCurrencyScreen = React.useCallback(() => {
+    setScreen("currency");
+  }, []);
+  const openCatalogScreen = React.useCallback(() => {
+    setScreen("catalog");
+  }, []);
+
+  const showCurrency = state.session?.authenticated && state.uploaderMode === "internal";
+  const currencyHeaderLabel = t("screenCurrencyRates");
+  React.useEffect(() => {
+    if (!onHeaderExtra) return;
+    if (!showCurrency) {
+      onHeaderExtra(null);
+      return;
+    }
+    onHeaderExtra(
+      <button
+        type="button"
+        onClick={screen === "currency" ? openCatalogScreen : openCurrencyScreen}
+        className={`rounded-md border px-3 py-2 text-2xs uppercase tracking-label-lg transition ${
+          screen === "currency"
+            ? "border-gate-accent text-gate-accent"
+            : "border-gate-header-border text-gate-header-muted hover:text-gate-header-fg"
+        }`}
+      >
+        {currencyHeaderLabel}
+      </button>,
+    );
+  }, [currencyHeaderLabel, onHeaderExtra, showCurrency, screen, openCurrencyScreen, openCatalogScreen, t]);
+
+  if (state.session === null) {
+    return <ConsoleSkeletonPlaceholder srText={t("checkingConsoleAccess")} />;
+  }
+  if (!state.session.authenticated) {
     return (
       <CatalogLoginForm
-        token={consoleState.token}
-        busy={consoleState.busy}
-        feedback={consoleState.actionFeedback.login}
-        onTokenChange={consoleState.setToken}
-        onSubmit={consoleState.handleLogin}
+        token={state.token}
+        busy={state.busy}
+        feedback={state.actionFeedback.login}
+        onTokenChange={state.setToken}
+        onSubmit={state.handleLogin}
       />
     );
   }
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-wrap items-center justify-between gap-4">
-        <div className="space-y-1">
-          <div className="text-xs uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
-            {t("consoleActive")}
-          </div>
-          <label className="block text-[10px] uppercase tracking-[0.3em] text-[color:var(--gate-muted)]">
-            {t("storefrontLabel")}
-          </label>
-          <select
-            value={consoleState.storefront}
-            onChange={(event) =>
-              consoleState.handleStorefrontChange(
-                event.target.value as typeof consoleState.storefront,
-              )
-            }
-            disabled={consoleState.busy}
-            className="rounded-md border border-border-2 bg-transparent px-3 py-2 text-xs uppercase tracking-[0.2em] text-[color:var(--gate-ink)]"
-          >
-            {consoleState.storefronts.map((storefront) => (
-              <option key={storefront.id} value={storefront.id}>
-                {t(storefront.labelKey)}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            onClick={() => consoleState.loadCatalog().catch(() => null)}
-            className="rounded-md border border-border-2 px-4 py-2 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] transition hover:underline"
-          >
-            {t("refresh")}
-          </button>
-          {consoleState.uploaderMode === "internal" ? (
-            <button
-              type="button"
-              onClick={consoleState.handleLogout}
-              className="rounded-md border border-border-2 px-4 py-2 text-xs uppercase tracking-[0.3em] text-[color:var(--gate-ink)] transition hover:underline"
-            >
-              {t("exitConsole")}
-            </button>
-          ) : null}
-        </div>
-      </div>
-
-      {consoleState.actionFeedback.login ? (
+      {state.actionFeedback.login ? (
         <p
-          role={consoleState.actionFeedback.login.kind === "error" ? "alert" : "status"}
-          className={
-            consoleState.actionFeedback.login.kind === "error"
-              ? "text-sm text-danger-fg"
-              : "text-sm text-success-fg"
-          }
+          role={state.actionFeedback.login.kind === "error" ? "alert" : "status"}
+          className={state.actionFeedback.login.kind === "error" ? "text-sm text-danger-fg" : "text-sm text-success-fg"}
         >
-          {consoleState.actionFeedback.login.message}
+          {state.actionFeedback.login.message}
         </p>
       ) : null}
 
-      <div className="grid gap-6 lg:grid-cols-[280px_1fr]">
-        <CatalogProductsList
-          products={consoleState.products}
-          query={consoleState.query}
-          selectedSlug={consoleState.selectedSlug}
-          submissionSlugs={consoleState.submissionSlugs}
-          submissionMax={consoleState.submissionMax}
-          monoClassName={monoClassName}
-          onQueryChange={consoleState.setQuery}
-          onSelect={consoleState.handleSelect}
-          onToggleSubmissionSlug={consoleState.handleToggleSubmissionSlug}
-          onNew={consoleState.handleNew}
-        />
-
-        <div className="space-y-6">
-          <CatalogProductForm
-            selectedSlug={consoleState.selectedSlug}
-            draft={consoleState.draft}
-            fieldErrors={consoleState.fieldErrors}
-            monoClassName={monoClassName}
-            busy={consoleState.busy}
-            feedback={consoleState.actionFeedback.draft}
-            onChangeDraft={consoleState.setDraft}
-            onSave={consoleState.handleSave}
-            onDelete={consoleState.handleDelete}
-          />
-
-          <CatalogSubmissionPanel
-            busy={consoleState.busy}
-            submissionAction={consoleState.submissionAction}
-            selectedCount={consoleState.submissionSlugs.size}
-            maxProducts={consoleState.submissionMax}
-            maxBytes={consoleState.submissionMaxBytes}
-            minImageEdge={consoleState.minImageEdge}
-            r2Destination={consoleState.r2Destination}
-            uploadUrl={consoleState.submissionUploadUrl}
-            feedback={consoleState.actionFeedback.submission}
-            onUploadUrlChange={consoleState.setSubmissionUploadUrl}
-            onUploadToR2={consoleState.handleUploadSubmissionToR2}
-            onExport={consoleState.handleExportSubmission}
-            onClear={consoleState.handleClearSubmission}
-          />
-
-          {consoleState.uploaderMode === "internal" ? (
-            <CatalogSyncPanel
-              busy={consoleState.busy}
-              syncOptions={consoleState.syncOptions}
-              syncReadiness={consoleState.syncReadiness}
-              monoClassName={monoClassName}
-              feedback={consoleState.actionFeedback.sync}
-              syncOutput={consoleState.syncOutput}
-              onSync={consoleState.handleSync}
-              onRefreshReadiness={consoleState.refreshSyncReadiness}
-              onChangeSyncOptions={consoleState.setSyncOptions}
-            />
-          ) : null}
-        </div>
-      </div>
+      <ConsoleBody screen={screen} state={state} monoClassName={monoClassName} t={t} />
     </div>
   );
 }

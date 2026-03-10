@@ -13,7 +13,10 @@ import { ROUTES_TO_POSITANO } from '../../data/routes';
 import { usePreArrivalMutator } from '../../hooks/mutator/usePreArrivalMutator';
 import { useFetchPreArrivalData } from '../../hooks/pureData/useFetchPreArrivalData';
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
-import { assignActivationVariants } from '../../lib/experiments/activationExperiments';
+import {
+  type ActivationExperimentVariants,
+  assignActivationVariants,
+} from '../../lib/experiments/activationExperiments';
 import {
   getChecklistItemLabel,
   getDefaultEtaWindow,
@@ -24,16 +27,19 @@ import {
 import type { ArrivalConfidence, ChecklistProgress, EtaMethod } from '../../types/preArrival';
 
 type Step = 1 | 2 | 3;
-
+type Translate = ReturnType<typeof useTranslation>['t'];
 const HOSTEL_MAPS_URL =
   'https://www.google.com/maps/search/?api=1&query=Hostel+Brikette+Via+Cristoforo+Colombo+13+Positano';
-
+const ARRIVAL_METHOD_OPTIONS = ['ferry', 'bus', 'train', 'taxi'] as const;
+const ARRIVAL_CONFIDENCE_OPTIONS = [
+  { value: 'confident' as const, labelKey: 'guidedFlow.step1.confident' },
+  { value: 'need-guidance' as const, labelKey: 'guidedFlow.step1.needGuidance' },
+] as const;
 interface GuidedOnboardingFlowProps {
   guestFirstName?: string | null;
   onComplete: () => void;
   onClose?: () => void;
 }
-
 function normalizeMethod(method: string | null): EtaMethod | null {
   if (
     method === 'ferry' ||
@@ -45,30 +51,113 @@ function normalizeMethod(method: string | null): EtaMethod | null {
   ) {
     return method;
   }
-
   return null;
 }
-
 function getFunnelSessionKey(): string {
   if (typeof window === 'undefined') {
     return 'unknown-session';
   }
-
   return (
     localStorage.getItem('prime_guest_uuid') ||
     localStorage.getItem('prime_guest_booking_id') ||
     'unknown-session'
   );
 }
-
 function normalizeConfidence(confidence: string | null): ArrivalConfidence | null {
   if (confidence === 'confident' || confidence === 'need-guidance') {
     return confidence;
   }
-
   return null;
 }
-
+function getStepTitle(
+  step: Step,
+  guestFirstName: string | null | undefined,
+  t: Translate,
+): string {
+  if (step === 1) return guestFirstName
+    ? t('guidedFlow.step1.titleWithName', { name: guestFirstName })
+    : t('guidedFlow.step1.title');
+  if (step === 2) return t('guidedFlow.step2.title');
+  return t('guidedFlow.step3.title');
+}
+function getStepDescription(
+  step: Step,
+  experimentVariants: ActivationExperimentVariants,
+  t: Translate,
+): ReactNode {
+  if (step === 1) {
+    return (
+      <ExperimentGate flag="prime-onboarding-cta-copy" enabled={experimentVariants.onboardingCtaCopy === 'value-led'} fallback={t('guidedFlow.step1.descriptionControl')}>
+        {t('guidedFlow.step1.descriptionValueLed')}
+      </ExperimentGate>
+    );
+  }
+  if (step === 2) return t('guidedFlow.step2.description');
+  return t('guidedFlow.step3.description');
+}
+interface ArrivalMethodFieldsetProps {
+  arrivalMethodPreference: EtaMethod | null;
+  setArrivalMethodPreference: (method: EtaMethod) => void;
+  t: Translate;
+}
+function getChoiceButtonClass(isSelected: boolean): string {
+  return `flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
+    isSelected
+      ? 'border-primary bg-primary text-primary-foreground shadow-sm'
+      : 'border-border text-foreground hover:border-border-strong'
+  }`;
+}
+function ArrivalMethodFieldset({ arrivalMethodPreference, setArrivalMethodPreference, t }: ArrivalMethodFieldsetProps) {
+  return (
+    <fieldset className="space-y-2">
+      <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.arrivalMethodLabel')}</legend>
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
+      <div className="grid grid-cols-2 gap-2">
+        {ARRIVAL_METHOD_OPTIONS.map((method) => (
+          <button
+            key={method}
+            type="button"
+            role="radio"
+            aria-checked={arrivalMethodPreference === method}
+            onClick={() => setArrivalMethodPreference(method)}
+            className={getChoiceButtonClass(arrivalMethodPreference === method)}
+          >
+            {arrivalMethodPreference === method && <Check className="h-3.5 w-3.5" />}
+            {t(`guidedFlow.methods.${method}`)}
+          </button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
+interface ArrivalConfidenceFieldsetProps {
+  arrivalConfidence: ArrivalConfidence | null;
+  setArrivalConfidence: (confidence: ArrivalConfidence) => void;
+  t: Translate;
+}
+function ArrivalConfidenceFieldset({ arrivalConfidence, setArrivalConfidence, t }: ArrivalConfidenceFieldsetProps) {
+  return (
+    <fieldset className="space-y-2">
+      <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.confidenceLabel')}</legend>
+      {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
+      <div className="grid grid-cols-2 gap-2">
+        {ARRIVAL_CONFIDENCE_OPTIONS.map(({ value, labelKey }) => (
+          <button
+            key={value}
+            type="button"
+            role="radio"
+            aria-checked={arrivalConfidence === value}
+            onClick={() => setArrivalConfidence(value)}
+            className={getChoiceButtonClass(arrivalConfidence === value)}
+          >
+            {arrivalConfidence === value && <Check className="h-3.5 w-3.5" />}
+            {t(labelKey)}
+          </button>
+        ))}
+      </div>
+    </fieldset>
+  );
+}
 export default function GuidedOnboardingFlow({
   guestFirstName,
   onComplete,
@@ -78,7 +167,6 @@ export default function GuidedOnboardingFlow({
   const [step, setStep] = useState<Step>(1);
   const [isSaving, setIsSaving] = useState(false);
   const [celebration, setCelebration] = useState<string | null>(null);
-
   const { effectiveData, isLoading } = useFetchPreArrivalData();
   const {
     setPersonalization,
@@ -86,7 +174,6 @@ export default function GuidedOnboardingFlow({
     setEta,
     updateChecklistItem,
   } = usePreArrivalMutator();
-
   const [arrivalMethodPreference, setArrivalMethodPreference] = useState<EtaMethod | null>(null);
   const [arrivalConfidence, setArrivalConfidence] = useState<ArrivalConfidence | null>(null);
   const [selectedRouteSlug, setSelectedRouteSlug] = useState<string | null>(null);
@@ -97,22 +184,18 @@ export default function GuidedOnboardingFlow({
   const [locationSaved, setLocationSaved] = useState(false);
   const [lastCompletedItem, setLastCompletedItem] = useState<keyof ChecklistProgress | null>(null);
   const [errorToast, setErrorToast] = useState<{ message: string; retry: () => void } | null>(null);
-
   const didInitRef = useRef(false);
   const celebrationTimeoutRef = useRef<number | null>(null);
   const flowCompletedRef = useRef(false);
   const cardRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
     if (isLoading || didInitRef.current) {
       return;
     }
-
     didInitRef.current = true;
     const method = normalizeMethod(effectiveData.arrivalMethodPreference);
     const confidence = normalizeConfidence(effectiveData.arrivalConfidence);
     const defaultWindow = getDefaultEtaWindow(confidence);
-
     setArrivalMethodPreference(method);
     setArrivalConfidence(confidence);
     setSelectedRouteSlug(effectiveData.routeSaved);
@@ -122,22 +205,18 @@ export default function GuidedOnboardingFlow({
     setRulesReviewed(effectiveData.checklistProgress.rulesReviewed);
     setLocationSaved(effectiveData.checklistProgress.locationSaved);
   }, [effectiveData, isLoading]);
-
   useEffect(() => {
     if (!arrivalMethodPreference) {
       return;
     }
-
     setEtaMethod(arrivalMethodPreference);
   }, [arrivalMethodPreference]);
-
   useEffect(() => {
     const options = getEtaWindowOptions(arrivalConfidence);
     if (!options.includes(etaWindow)) {
       setEtaWindow(options[0]);
     }
   }, [arrivalConfidence, etaWindow]);
-
   useEffect(() => {
     return () => {
       if (celebrationTimeoutRef.current) {
@@ -145,11 +224,9 @@ export default function GuidedOnboardingFlow({
       }
     };
   }, []);
-
   // Keep step accessible to the abandon cleanup via a ref
   const stepRef = useRef(step);
   stepRef.current = step;
-
   // Focus the step heading after step transitions for screen readers
   const prevStepRef = useRef(step);
   useEffect(() => {
@@ -162,7 +239,6 @@ export default function GuidedOnboardingFlow({
       }
     }
   }, [step]);
-
   // Track flow abandonment on unmount (if not completed)
   useEffect(() => {
     return () => {
@@ -176,70 +252,37 @@ export default function GuidedOnboardingFlow({
       }
     };
   }, []);
-
   const routeSuggestions = useMemo(() => {
     return sortRoutesForPersonalization(ROUTES_TO_POSITANO, arrivalMethodPreference).slice(0, 3);
   }, [arrivalMethodPreference]);
-
   const sessionKey = useMemo(() => getFunnelSessionKey(), []);
   const experimentVariants = useMemo(
     () => assignActivationVariants(sessionKey),
     [sessionKey],
   );
   const showConfidenceBeforeMethod = experimentVariants.onboardingStepOrder === 'eta-first';
-
   const etaWindowOptions = useMemo(() => {
     return getEtaWindowOptions(arrivalConfidence);
   }, [arrivalConfidence]);
-
   // Step-dependent content for StepFlowShell
-  const stepTitle = useMemo(() => {
-    if (step === 1) {
-      return guestFirstName
-        ? t('guidedFlow.step1.titleWithName', { name: guestFirstName })
-        : t('guidedFlow.step1.title');
-    }
-    if (step === 2) {
-      return t('guidedFlow.step2.title');
-    }
-    return t('guidedFlow.step3.title');
-  }, [step, guestFirstName, t]);
-
-  const stepDescription = useMemo((): ReactNode => {
-    if (step === 1) {
-      return (
-        <ExperimentGate
-          flag="prime-onboarding-cta-copy"
-          enabled={experimentVariants.onboardingCtaCopy === 'value-led'}
-          fallback={t('guidedFlow.step1.descriptionControl')}
-        >
-          {t('guidedFlow.step1.descriptionValueLed')}
-        </ExperimentGate>
-      );
-    }
-    if (step === 2) {
-      return t('guidedFlow.step2.description');
-    }
-    return t('guidedFlow.step3.description');
-  }, [step, experimentVariants.onboardingCtaCopy, t]);
-
+  const stepTitle = useMemo(() => getStepTitle(step, guestFirstName, t), [step, guestFirstName, t]);
+  const stepDescription = useMemo(
+    () => getStepDescription(step, experimentVariants, t),
+    [step, experimentVariants, t],
+  );
   function showCelebration(message: string) {
     if (celebrationTimeoutRef.current) {
       window.clearTimeout(celebrationTimeoutRef.current);
     }
-
     setCelebration(message);
     celebrationTimeoutRef.current = window.setTimeout(() => {
       setCelebration(null);
     }, 1400);
   }
-
   async function handleStepOneContinue() {
     setIsSaving(true);
-
     try {
       await setPersonalization(arrivalMethodPreference, arrivalConfidence);
-
       if (selectedRouteSlug) {
         await saveRoute(selectedRouteSlug);
         setLastCompletedItem('routePlanned');
@@ -255,7 +298,6 @@ export default function GuidedOnboardingFlow({
           stepOrder: experimentVariants.onboardingStepOrder,
         },
       });
-
       showCelebration(t('guidedFlow.step1.celebration'));
       setStep(2);
     } catch {
@@ -268,10 +310,8 @@ export default function GuidedOnboardingFlow({
       setIsSaving(false);
     }
   }
-
   async function handleStepTwoContinue() {
     setIsSaving(true);
-
     try {
       await setEta(etaWindow, etaMethod, '');
       setLastCompletedItem('etaConfirmed');
@@ -298,23 +338,19 @@ export default function GuidedOnboardingFlow({
       setIsSaving(false);
     }
   }
-
   async function handleFinish() {
     setIsSaving(true);
-
     try {
       if (cashPrepared) {
         await updateChecklistItem('cashPrepared', true);
         setLastCompletedItem('cashPrepared');
         writeLastCompletedChecklistItem('cashPrepared');
       }
-
       if (rulesReviewed) {
         await updateChecklistItem('rulesReviewed', true);
         setLastCompletedItem('rulesReviewed');
         writeLastCompletedChecklistItem('rulesReviewed');
       }
-
       if (locationSaved) {
         await updateChecklistItem('locationSaved', true);
         setLastCompletedItem('locationSaved');
@@ -330,7 +366,6 @@ export default function GuidedOnboardingFlow({
           stepOrder: experimentVariants.onboardingStepOrder,
         },
       });
-
       showCelebration(t('guidedFlow.step3.celebration'));
       flowCompletedRef.current = true;
       onComplete();
@@ -345,7 +380,6 @@ export default function GuidedOnboardingFlow({
       setIsSaving(false);
     }
   }
-
   function handleBack() {
     if (step === 1) {
       onClose?.();
@@ -353,14 +387,12 @@ export default function GuidedOnboardingFlow({
       setStep((step - 1) as Step);
     }
   }
-
   const handleOpenMaps = useCallback(() => {
     setLocationSaved(true);
     if (typeof window !== 'undefined') {
       window.open(HOSTEL_MAPS_URL, '_blank');
     }
   }, []);
-
   if (isLoading) {
     return (
       <main className="min-h-svh bg-muted px-4 py-6">
@@ -382,7 +414,6 @@ export default function GuidedOnboardingFlow({
       </main>
     );
   }
-
   return (
     <main className="min-h-svh bg-muted px-4 py-6">
       {/* eslint-disable-next-line ds/container-widths-only-at -- PLAT-ENG-0001 top-level card container */}
@@ -399,116 +430,36 @@ export default function GuidedOnboardingFlow({
           milestoneMessage={celebration}
           onBack={handleBack}
         >
-
         {/* ── Step 1: Arrival style ── */}
         {step === 1 && (
           <section className="space-y-5">
             {showConfidenceBeforeMethod ? (
               <>
-                <fieldset className="space-y-2">
-                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.confidenceLabel')}</legend>
-                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
-                  <div className="grid grid-cols-2 gap-2">
-                    {([
-                      { value: 'confident' as const, label: t('guidedFlow.step1.confident') },
-                      { value: 'need-guidance' as const, label: t('guidedFlow.step1.needGuidance') },
-                    ]).map(({ value, label }) => (
-                      <button
-                        key={value}
-                        type="button"
-                        role="radio"
-                        aria-checked={arrivalConfidence === value}
-                        onClick={() => setArrivalConfidence(value)}
-                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
-                          arrivalConfidence === value
-                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
-                            : 'border-border text-foreground hover:border-border-strong'
-                        }`}
-                      >
-                        {arrivalConfidence === value && <Check className="h-3.5 w-3.5" />}
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                </fieldset>
-                <fieldset className="space-y-2">
-                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.arrivalMethodLabel')}</legend>
-                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
-                  <div className="grid grid-cols-2 gap-2">
-                    {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
-                      <button
-                        key={method}
-                        type="button"
-                        role="radio"
-                        aria-checked={arrivalMethodPreference === method}
-                        onClick={() => setArrivalMethodPreference(method)}
-                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
-                          arrivalMethodPreference === method
-                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
-                            : 'border-border text-foreground hover:border-border-strong'
-                        }`}
-                      >
-                        {arrivalMethodPreference === method && <Check className="h-3.5 w-3.5" />}
-                        {t(`guidedFlow.methods.${method}`)}
-                      </button>
-                    ))}
-                  </div>
-                </fieldset>
+                <ArrivalConfidenceFieldset
+                  arrivalConfidence={arrivalConfidence}
+                  setArrivalConfidence={setArrivalConfidence}
+                  t={t}
+                />
+                <ArrivalMethodFieldset
+                  arrivalMethodPreference={arrivalMethodPreference}
+                  setArrivalMethodPreference={setArrivalMethodPreference}
+                  t={t}
+                />
               </>
             ) : (
               <>
-                <fieldset className="space-y-2">
-                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.arrivalMethodLabel')}</legend>
-                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
-                  <div className="grid grid-cols-2 gap-2">
-                    {(['ferry', 'bus', 'train', 'taxi'] as const).map((method) => (
-                      <button
-                        key={method}
-                        type="button"
-                        role="radio"
-                        aria-checked={arrivalMethodPreference === method}
-                        onClick={() => setArrivalMethodPreference(method)}
-                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
-                          arrivalMethodPreference === method
-                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
-                            : 'border-border text-foreground hover:border-border-strong'
-                        }`}
-                      >
-                        {arrivalMethodPreference === method && <Check className="h-3.5 w-3.5" />}
-                        {t(`guidedFlow.methods.${method}`)}
-                      </button>
-                    ))}
-                  </div>
-                </fieldset>
-                <fieldset className="space-y-2">
-                  <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.confidenceLabel')}</legend>
-                  {/* eslint-disable-next-line ds/enforce-layout-primitives -- PLAT-ENG-0001 2-col radio button grid */}
-                  <div className="grid grid-cols-2 gap-2">
-                    {([
-                      { value: 'confident' as const, label: t('guidedFlow.step1.confident') },
-                      { value: 'need-guidance' as const, label: t('guidedFlow.step1.needGuidance') },
-                    ]).map(({ value, label }) => (
-                      <button
-                        key={value}
-                        type="button"
-                        role="radio"
-                        aria-checked={arrivalConfidence === value}
-                        onClick={() => setArrivalConfidence(value)}
-                        className={`flex min-h-11 items-center justify-center gap-1.5 rounded-full border-2 px-3 py-2.5 text-sm font-medium transition-all ${
-                          arrivalConfidence === value
-                            ? 'border-primary bg-primary text-primary-foreground shadow-sm'
-                            : 'border-border text-foreground hover:border-border-strong'
-                        }`}
-                      >
-                        {arrivalConfidence === value && <Check className="h-3.5 w-3.5" />}
-                        {label}
-                      </button>
-                    ))}
-                  </div>
-                </fieldset>
+                <ArrivalMethodFieldset
+                  arrivalMethodPreference={arrivalMethodPreference}
+                  setArrivalMethodPreference={setArrivalMethodPreference}
+                  t={t}
+                />
+                <ArrivalConfidenceFieldset
+                  arrivalConfidence={arrivalConfidence}
+                  setArrivalConfidence={setArrivalConfidence}
+                  t={t}
+                />
               </>
             )}
-
             {arrivalMethodPreference && (
               <fieldset className="space-y-2">
                 <legend className="text-sm font-medium text-foreground">{t('guidedFlow.step1.routeLabel')} <span className="font-normal text-foreground/60">{t('guidedFlow.step1.routeOptional')}</span></legend>
@@ -546,7 +497,6 @@ export default function GuidedOnboardingFlow({
                 </div>
               </fieldset>
             )}
-
             {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 buttons have min-h-11 + padding, width from text exceeds 44px */}
             <div className="flex items-center gap-3 pt-1">
               <button
@@ -579,7 +529,6 @@ export default function GuidedOnboardingFlow({
             {/* eslint-enable ds/min-tap-size */}
           </section>
         )}
-
         {/* ── Step 2: Share ETA ── */}
         {step === 2 && (
           <section className="space-y-4">
@@ -597,7 +546,6 @@ export default function GuidedOnboardingFlow({
                 ))}
               </select>
             </label>
-
             <label className="block text-sm font-medium text-foreground">
               {t('guidedFlow.step2.methodLabel')}
               <select
@@ -612,7 +560,6 @@ export default function GuidedOnboardingFlow({
                 ))}
               </select>
             </label>
-
             {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 buttons have min-h-11 + padding, width from text exceeds 44px */}
             <div className="flex items-center gap-3 pt-1">
               <button
@@ -645,7 +592,6 @@ export default function GuidedOnboardingFlow({
             {/* eslint-enable ds/min-tap-size */}
           </section>
         )}
-
         {/* ── Step 3: Final readiness checks ── */}
         {step === 3 && (
           <section className="space-y-3">
@@ -677,7 +623,6 @@ export default function GuidedOnboardingFlow({
                 </span>
               </span>
             </button>
-
             {/* House rules */}
             <button
               type="button"
@@ -706,7 +651,6 @@ export default function GuidedOnboardingFlow({
                 </span>
               </span>
             </button>
-
             {/* Save hostel location */}
             <button
               type="button"
@@ -740,13 +684,11 @@ export default function GuidedOnboardingFlow({
                 </span>
               </span>
             </button>
-
             {lastCompletedItem && (
               <p className="rounded-lg bg-info-soft px-3 py-2 text-xs font-medium text-info-foreground">
                 {t('guidedFlow.step3.lastCompleted', { item: getChecklistItemLabel(lastCompletedItem) })}
               </p>
             )}
-
             {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 buttons have min-h-11 + padding, width from text exceeds 44px */}
             <div className="flex items-center gap-3 pt-2">
               <button
@@ -781,7 +723,6 @@ export default function GuidedOnboardingFlow({
           </section>
         )}
         </StepFlowShell>
-
         {/* eslint-disable ds/min-tap-size -- PLAT-ENG-0001 link text+padding exceeds 44px at runtime */}
         <a
           href={buildSupportMailto({
@@ -800,7 +741,6 @@ export default function GuidedOnboardingFlow({
           {t('guidedFlow.helpLink')}
         </a>
         {/* eslint-enable ds/min-tap-size */}
-
         <Toast
           open={errorToast !== null}
           message={errorToast?.message ?? ''}

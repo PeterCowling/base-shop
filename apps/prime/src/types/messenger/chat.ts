@@ -1,13 +1,17 @@
 // src/types/messenger/chat.ts
-import type { Role } from './roles';
+// This file is a thin re-export shim. All type definitions live in:
+//   apps/prime/src/lib/chat/messageSchema.ts
 
-export interface Message {
-  id: string;
-  content: string;
-  senderId: string;
-  senderRole: Role;
-  senderName?: string;
-  createdAt: number;
-  deleted?: boolean;
-  imageUrl?: string;
-}
+export type {
+  Message,
+  MessageAttachment,
+  MessageAttachmentKind,
+  MessageAudience,
+  MessageCard,
+  MessageDraftMeta,
+  MessageDraftSource,
+  MessageDraftStatus,
+  MessageKind,
+  MessageLink,
+  MessageLinkVariant,
+} from '../../lib/chat/messageSchema';

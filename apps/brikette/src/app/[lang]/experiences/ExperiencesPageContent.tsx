@@ -9,16 +9,19 @@ import { useRouter } from "next/navigation";
 
 import { Section } from "@acme/design-system/atoms";
 
+import ContentStickyCta from "@/components/cta/ContentStickyCta";
 import GroupedGuideCollection from "@/components/guides/GroupedGuideCollection";
 import GuideCollection from "@/components/guides/GuideCollection";
 import GuideFaqSection, { type GuideFaq } from "@/components/guides/GuideFaqSection";
 import { useGuideTopicOptions } from "@/components/guides/useGuideTopicOptions";
-import ExperiencesStructuredData from "@/components/seo/ExperiencesStructuredData";
 import { useOptionalModal } from "@/context/ModalContext";
 import { type GuideMeta, GUIDES_INDEX } from "@/data/guides.index";
 import { matchesGuideTopic, resolveGuideTopicId } from "@/data/guideTopics";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import { fireCtaClick } from "@/utils/ga4-events";
+import { getBookPath } from "@/utils/localizedRoutes";
+import { type AppNamespaceBundles, primeAppI18nBundles } from "@/utils/primeAppI18nBundles";
 import { getSlug } from "@/utils/slug";
 import { getTagMeta } from "@/utils/tags";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
@@ -32,6 +35,7 @@ type Props = {
   topicParam?: string;
   tagParam?: string;
   queryString?: string;
+  preloadedNamespaceBundles?: AppNamespaceBundles;
 };
 
 // Filter guides to only include published experiences.
@@ -108,7 +112,14 @@ function buildGuideCopy(
   };
 }
 
-function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryString = "" }: Props) {
+function ExperiencesPageContent({
+  lang,
+  topicParam = "",
+  tagParam = "",
+  queryString = "",
+  preloadedNamespaceBundles,
+}: Props) {
+  primeAppI18nBundles(lang, preloadedNamespaceBundles);
   const { t } = useTranslation("experiencesPage", { lng: lang });
   useTranslation("guides", { lng: lang });
   const router = useRouter();
@@ -116,13 +127,16 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
   usePagePreload({
     lang,
     namespaces: ["experiencesPage", "guides"],
-    optionalNamespaces: ["guides.tags", "modals"],
+    optionalNamespaces: ["guides.tags", "modals", "translation"],
     optional: true,
   });
 
   const experiencesEnT = useEnglishFallback("experiencesPage");
 
-  const handleOpenBooking = useCallback(() => router.push(`/${lang}/book`), [router, lang]);
+  const handleOpenBooking = useCallback(() => {
+    fireCtaClick({ ctaId: "experiences_book_cta", ctaLocation: "experiences_page" });
+    router.push(getBookPath(lang));
+  }, [router, lang]);
   const handleOpenConcierge = useCallback(() => openModal("contact"), [openModal]);
 
   const [clientTopicParam, setClientTopicParam] = useState(topicParam);
@@ -197,7 +211,6 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
 
   return (
     <Fragment>
-      <ExperiencesStructuredData />
       <Section as="main" width="full" padding="none" className="bg-brand-surface text-brand-text dark:bg-brand-bg">
         {/* Hero */}
         <Section padding="none" width="full" className="px-4 pt-10 sm:pt-12">
@@ -278,6 +291,7 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
             subtitle={ctaSubtitle || undefined}
             bookLabel={ctaBook || undefined}
             onBookClick={handleOpenBooking}
+            bookHref={getBookPath(lang)}
             eventsLabel={ctaEvents || undefined}
             eventsHref={barMenuHref}
             breakfastLabel={ctaBreakfast || undefined}
@@ -287,6 +301,8 @@ function ExperiencesPageContent({ lang, topicParam = "", tagParam = "", queryStr
           />
         </Section>
       </Section>
+
+      <ContentStickyCta lang={lang} ctaLocation="experiences_page" />
     </Fragment>
   );
 }

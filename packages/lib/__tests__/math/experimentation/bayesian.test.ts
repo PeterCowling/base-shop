@@ -1,6 +1,35 @@
-import { bayesianABTest } from "../../../src/math/experimentation/bayesian";
+import {
+  bayesianABTest,
+  betaBinomialPosterior,
+} from "../../../src/math/experimentation/bayesian";
 
 describe("bayesianABTest", () => {
+  test("TC-05-00: betaBinomialPosterior returns Jeffreys-posterior summary for one arm", () => {
+    const result = betaBinomialPosterior({
+      successes: 95,
+      total: 1000,
+    });
+
+    expect(result.alpha).toBeCloseTo(95.5, 6);
+    expect(result.beta).toBeCloseTo(905.5, 6);
+    expect(result.mean).toBeCloseTo(95.5 / 1001, 6);
+    expect(result.credibleInterval.lower).toBeCloseTo(0.078, 2);
+    expect(result.credibleInterval.upper).toBeCloseTo(0.114, 2);
+  });
+
+  test("TC-05-00b: betaBinomialPosterior accepts explicit failures", () => {
+    const result = betaBinomialPosterior({
+      successes: 12,
+      failures: 8,
+      priorAlpha: 1,
+      priorBeta: 1,
+    });
+
+    expect(result.alpha).toBe(13);
+    expect(result.beta).toBe(9);
+    expect(result.mean).toBeCloseTo(13 / 22, 6);
+  });
+
   test("TC-05-01: Jeffreys prior gives expected superiority probability", () => {
     const result = bayesianABTest({
       controlSuccesses: 50,
@@ -134,6 +163,20 @@ describe("bayesianABTest", () => {
   });
 
   test("invalid count inputs throw RangeError", () => {
+    expect(() =>
+      betaBinomialPosterior({
+        successes: 1,
+      })
+    ).toThrow(RangeError);
+
+    expect(() =>
+      betaBinomialPosterior({
+        successes: 3,
+        failures: 4,
+        total: 10,
+      })
+    ).toThrow(RangeError);
+
     expect(() =>
       bayesianABTest({
         controlSuccesses: -1,

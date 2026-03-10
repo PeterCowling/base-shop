@@ -1,7 +1,7 @@
 {
   "home": "首页",
-  "rooms": "客房",
-  "apartment": "公寓",
+  "rooms": "宿舍",
+  "apartment": "私人客房",
   "assistance": "帮助",
   "careers": "招聘",
   "deals": "优惠",
@@ -30,5 +30,6 @@
   "cancellationPolicy": "取消政策",
   "privacy": "隐私政策",
   "cookies": "Cookie 政策",
-  "navAriaLabel": "Footer navigation"
+  "navAriaLabel": "页脚导航",
+  "bookDirect": "直接预订"
 }

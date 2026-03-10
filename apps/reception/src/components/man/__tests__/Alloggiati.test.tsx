@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 import Alloggiati from "../Alloggiati";
 
 // --- Mock components and hooks ----------------------------------
-jest.mock("../DateSelectorAllo", () => ({
+jest.mock("../../common/DateSelector", () => ({
   __esModule: true,
   default: ({ selectedDate }: { selectedDate: string }) => (
     <div data-testid="date-selector">{selectedDate}</div>
@@ -175,6 +175,64 @@ describe("Alloggiati", () => {
     );
   });
 
+  it("fails closed when result count does not match selected occupants", async () => {
+    alloggiatiLogsHookMock.mockReturnValue({
+      logs: {},
+      loading: false,
+      error: null,
+    });
+    sendMock.mockResolvedValue([{ recordNumber: "1", status: "ok" }]);
+
+    render(<Alloggiati />);
+    await userEvent.click(screen.getByRole("button", { name: /send occupants/i }));
+
+    expect(saveMock).not.toHaveBeenCalled();
+    expect(showToastMock).toHaveBeenCalledWith(
+      "Result count mismatch from Alloggiati response. No records were saved.",
+      "error"
+    );
+  });
+
+  it("maps Alloggiati results by recordNumber (not array order)", async () => {
+    alloggiatiLogsHookMock.mockReturnValue({
+      logs: {},
+      loading: false,
+      error: null,
+    });
+    sendMock.mockResolvedValue([
+      {
+        recordNumber: "2",
+        status: "error",
+        erroreCod: "E2",
+        erroreDes: "Bad 2",
+        erroreDettaglio: "detail 2",
+        occupantRecord: "rec2",
+        occupantRecordLength: 2,
+      },
+      {
+        recordNumber: "1",
+        status: "ok",
+      },
+    ]);
+
+    render(<Alloggiati />);
+    await userEvent.click(screen.getByRole("button", { name: /send occupants/i }));
+
+    expect(saveMock).toHaveBeenCalledWith(
+      "2024-05-01",
+      "o1",
+      "ok",
+      "2024-05-02T09:00:00Z"
+    );
+    expect(saveMock).toHaveBeenCalledWith(
+      "2024-05-01",
+      "o2",
+      "error",
+      "2024-05-02T09:00:00Z",
+      expect.objectContaining({ erroreCod: "E2" })
+    );
+  });
+
   it("shows loading state", () => {
     checkinsHookMock.mockReturnValue({
       checkins: {},
@@ -182,9 +240,7 @@ describe("Alloggiati", () => {
       error: null,
     });
     render(<Alloggiati />);
-    expect(
-      screen.getByText(/Loading checkins, financial data, guest details, or occupant logs/)
-    ).toBeInTheDocument();
+    expect(document.querySelector('[aria-busy="true"]')).toBeInTheDocument();
   });
 
   it("shows error state", () => {

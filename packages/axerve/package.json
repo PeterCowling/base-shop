@@ -1,0 +1,30 @@
+{
+  "name": "@acme/axerve",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "default": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -b --force",
+    "dev": "tsc -b --watch",
+    "clean": "rimraf dist *.tsbuildinfo",
+    "typecheck": "tsc --noEmit",
+    "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs --passWithNoTests",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "server-only": "*",
+    "soap": "^1.7.1"
+  }
+}

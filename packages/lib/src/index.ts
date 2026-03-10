@@ -268,6 +268,23 @@ export {
   zScore,
 } from "./math/statistics/index.js";
 
+// Experimentation utilities
+export type {
+  BayesianABTestOptions,
+  BayesianABTestResult,
+  BetaBinomialPosteriorOptions,
+  BetaPosteriorSummary,
+  ConfidenceIntervalResult,
+} from "./math/experimentation/index.js";
+export {
+  bayesianABTest,
+  betaBinomialPosterior,
+  meanConfidenceInterval,
+  meanDifferenceCI,
+  proportionConfidenceInterval,
+  proportionDifferenceCI,
+} from "./math/experimentation/index.js";
+
 // Random utilities (seeded PRNG, sampling)
 export {
   exponentialSample,

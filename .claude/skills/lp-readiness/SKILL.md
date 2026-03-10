@@ -49,7 +49,7 @@ This startup readiness skill targets early-stage businesses and lightweight laun
 
 Required files (at least ONE must exist):
 - `docs/business-os/strategy/<BIZ>/*.user.md` — any strategy doc (revenue architecture, business model, etc.)
-- `docs/business-os/startup-baselines/<BIZ>-*.md` — baseline docs (offer, distribution, measurement, research)
+- `docs/business-os/startup-baselines/<BIZ>/*.md` — baseline docs (offer, distribution, measurement, research)
 
 Optional:
 - `docs/business-os/People.md` — team context
@@ -119,7 +119,7 @@ DEP is required before GATE-S6B-ACT-01 (spend authorization). Starting capture a
 To start now:
 - Register at least 1 message hypothesis (channel + audience_slice + asset_ref)
 - Set up source-tagged tracking before any test impressions
-- Schema: docs/business-os/startup-loop/demand-evidence-pack-schema.md
+- Schema: docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md
 
 Current DEP status: [Not started | In progress | Pass-floor met]
 ```
@@ -131,7 +131,7 @@ If DEP is already in progress, note its status in the Context Summary. If DEP is
 ### Stage 1: Load Context (READ)
 
 1. Scan `docs/business-os/strategy/<BIZ>/` for strategy docs
-2. Scan `docs/business-os/startup-baselines/<BIZ>-*.md` for baseline docs
+2. Scan `docs/business-os/startup-baselines/<BIZ>/*.md` for baseline docs
 3. Load `docs/business-os/People.md` if it exists
 4. Aggregate offer, distribution, measurement context from all sources
 
@@ -218,7 +218,7 @@ Invalid outputs:
 ## Integration
 
 ### Upstream (S0)
-- Preceded by optional `/idea-forecast` or manual strategy doc creation
+- Preceded by optional `/lp-do-idea-forecast` or manual strategy doc creation
 - Does NOT require BOS card/stage-doc setup
 
 ### Downstream (S2)

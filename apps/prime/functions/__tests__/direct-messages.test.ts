@@ -256,6 +256,118 @@ describe('/api/direct-messages', () => {
     ]);
   });
 
+  it('TC-05b: preserves rich support and promotional metadata when present', async () => {
+    const bookingId = 'BOOK123';
+    const guestUuid = 'occ_aaa';
+    const channelId = 'dm_occ_aaa_occ_bbb';
+
+    getSpy.mockImplementation(async (path: string) => {
+      if (path === 'guestSessionsByToken/token-1') {
+        return {
+          bookingId,
+          guestUuid,
+          createdAt: '2026-02-01T00:00:00.000Z',
+          expiresAt: '2099-02-01T00:00:00.000Z',
+        };
+      }
+      if (path === `messaging/channels/${channelId}/meta`) {
+        return {
+          bookingId,
+          channelType: 'direct',
+          memberUids: {
+            occ_aaa: true,
+            occ_bbb: true,
+          },
+        };
+      }
+      if (path === `messaging/channels/${channelId}/messages`) {
+        return {
+          msg_rich: {
+            content: 'Breakfast on the roof tonight.',
+            senderId: 'staff_1',
+            senderRole: 'staff',
+            senderName: 'Reception',
+            createdAt: 200,
+            kind: 'promotion',
+            audience: 'whole_hostel',
+            campaignId: 'camp_roof_1',
+            links: [
+              {
+                id: 'link_1',
+                label: 'View details',
+                url: 'https://example.com/roof',
+                variant: 'primary',
+              },
+            ],
+            attachments: [
+              {
+                id: 'asset_1',
+                kind: 'image',
+                url: 'https://example.com/roof.jpg',
+                altText: 'Roof event poster',
+              },
+            ],
+            cards: [
+              {
+                id: 'card_1',
+                title: 'Roof social',
+                body: 'Starts at 19:00 with a free welcome drink.',
+                ctaLabel: 'Reserve',
+                ctaUrl: 'https://example.com/roof',
+              },
+            ],
+            draft: {
+              draftId: 'draft_1',
+              status: 'suggested',
+              source: 'agent',
+              createdAt: 150,
+            },
+          },
+        };
+      }
+      return null;
+    });
+
+    const response = await onRequestGet(
+      createPagesContext({
+        url: `https://prime.example.com/api/direct-messages?channelId=${channelId}`,
+        headers: {
+          'X-Prime-Guest-Token': 'token-1',
+          'X-Prime-Guest-Booking-Id': bookingId,
+        },
+      }),
+    );
+
+    const payload = await response.json() as {
+      messages: Array<{
+        kind?: string;
+        audience?: string;
+        campaignId?: string;
+        links?: Array<{ label: string; url: string }>;
+        attachments?: Array<{ kind: string; url: string }>;
+        cards?: Array<{ title: string }>;
+        draft?: { draftId: string; status: string; source: string };
+      }>;
+    };
+
+    expect(response.status).toBe(200);
+    expect(payload.messages).toEqual([
+      expect.objectContaining({
+        kind: 'promotion',
+        audience: 'whole_hostel',
+        campaignId: 'camp_roof_1',
+        links: [expect.objectContaining({ label: 'View details', url: 'https://example.com/roof' })],
+        attachments: [expect.objectContaining({ kind: 'image', url: 'https://example.com/roof.jpg' })],
+        cards: [expect.objectContaining({ title: 'Roof social' })],
+        draft: expect.objectContaining({
+          draftId: 'draft_1',
+          status: 'suggested',
+          source: 'agent',
+        }),
+      }),
+    ]);
+  });
+
   it('TC-06: rejects invalid limit parameter', async () => {
     const response = await onRequestGet(
       createPagesContext({

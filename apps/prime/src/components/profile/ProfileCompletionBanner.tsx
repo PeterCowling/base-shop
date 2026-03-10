@@ -10,6 +10,8 @@
  * - Hide if profile is complete and matches current booking
  */
 
+'use client';
+
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';

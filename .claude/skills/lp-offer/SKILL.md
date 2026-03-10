@@ -25,7 +25,7 @@ RESEARCH + DESIGN + DOCUMENT
 This skill:
 - Researches competitor offerings, pricing, and customer reviews
 - Designs a structured offer hypothesis with 6 sections
-- Documents the offer artifact at `docs/business-os/startup-baselines/<BIZ>-offer.md`
+- Documents the offer artifact at `docs/business-os/startup-baselines/<BIZ>/offer.md`
 - Does NOT make final pricing decisions (produces hypothesis to validate)
 - Does NOT skip sections (all 6 MUST be present)
 
@@ -41,7 +41,7 @@ Optional (enhances quality):
 - Customer reviews (competitor products/services)
 - Market research docs from `docs/business-os/market-research/`
 - Existing offer drafts or positioning statements
-- `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` — enhances Positioning One-Pager (Section 4) voice and personality
+- `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` — enhances Positioning One-Pager (Section 4) voice and personality
 
 ## Workflow
 
@@ -154,7 +154,7 @@ Top 5 objections with responses:
 
 ### Stage 3: Document Artifact (DOCUMENT)
 
-1. Write complete offer artifact to `docs/business-os/startup-baselines/<BIZ>-offer.md`
+1. Write complete offer artifact to `docs/business-os/startup-baselines/<BIZ>/offer.md`
 2. Include metadata header:
    ```yaml
    ---
@@ -170,7 +170,7 @@ Top 5 objections with responses:
 
 ## Output Contract
 
-Produces single file: `docs/business-os/startup-baselines/<BIZ>-offer.md`
+Produces single file: `docs/business-os/startup-baselines/<BIZ>/offer.md`
 
 **Artifact registry**: Canonical path defined in `docs/business-os/startup-loop/artifact-registry.md` (artifact ID: `offer`).
 

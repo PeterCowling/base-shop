@@ -3,7 +3,6 @@
 import { useEffect, useMemo } from "react";
 
 import type { Activities } from "../../../types/hooks/data/activitiesData";
-import type { RoomsByDate } from "../../../types/hooks/data/roomsByDateData";
 import type {
   Cleanliness,
   SingleRoomStatus,
@@ -94,37 +93,6 @@ function occupantIsActive(
   return finalCode === 1;
 }
 
-/**
- * Returns occupant IDs from roomsByDate for a given date & roomNumber.
- */
-function getOccupantIds(
-  roomsData: RoomsByDate | null,
-  date: string,
-  roomNum: string
-): string[] {
-  if (!roomsData || !roomsData[date]) return [];
-  const dateObj = roomsData[date];
-  let occupantIds: string[] = [];
-
-  function parseRoomKey(rawKey: string): string {
-    return rawKey.startsWith("index_") ? rawKey.slice("index_".length) : rawKey;
-  }
-
-  Object.entries(dateObj).forEach(([outerKey, occupantGroup]) => {
-    if (parseRoomKey(outerKey) !== roomNum) return;
-    if (!occupantGroup || typeof occupantGroup !== "object") return;
-
-    Object.entries(occupantGroup).forEach(([, occupantInfo]) => {
-      if (!occupantInfo || typeof occupantInfo !== "object") return;
-      const { guestIds } = occupantInfo as { guestIds: string[] };
-      if (Array.isArray(guestIds)) {
-        occupantIds = occupantIds.concat(guestIds);
-      }
-    });
-  });
-
-  return occupantIds;
-}
 
 /**
  * Determines "local cleanliness" simply based on whether any occupant is active.
@@ -253,21 +221,59 @@ export default function usePrepareDashboardData(selectedDate: string) {
     return output;
   }, [filteredCheckins, guestByRoom]);
 
+  // Pre-build a roomNum -> occupantId[] map for selectedDate and yesterdayDate
+  // by scanning each date's subtree once, avoiding O(rooms * entries) per room.
+  const occupantIdsByRoomToday = useMemo<Map<string, string[]>>(() => {
+    const map = new Map<string, string[]>();
+    if (!roomsByDate || !selectedDate || !roomsByDate[selectedDate]) return map;
+    const dateObj = roomsByDate[selectedDate];
+    Object.entries(dateObj).forEach(([outerKey, occupantGroup]) => {
+      const roomNum = outerKey.startsWith("index_") ? outerKey.slice("index_".length) : outerKey;
+      if (!occupantGroup || typeof occupantGroup !== "object") return;
+      const ids: string[] = map.get(roomNum) ?? [];
+      Object.entries(occupantGroup).forEach(([, occupantInfo]) => {
+        if (!occupantInfo || typeof occupantInfo !== "object") return;
+        const { guestIds } = occupantInfo as { guestIds: string[] };
+        if (Array.isArray(guestIds)) {
+          ids.push(...guestIds);
+        }
+      });
+      map.set(roomNum, ids);
+    });
+    return map;
+  }, [roomsByDate, selectedDate]);
+
+  const occupantIdsByRoomYesterday = useMemo<Map<string, string[]>>(() => {
+    const map = new Map<string, string[]>();
+    if (!roomsByDate || !yesterdayDate || !roomsByDate[yesterdayDate]) return map;
+    const dateObj = roomsByDate[yesterdayDate];
+    Object.entries(dateObj).forEach(([outerKey, occupantGroup]) => {
+      const roomNum = outerKey.startsWith("index_") ? outerKey.slice("index_".length) : outerKey;
+      if (!occupantGroup || typeof occupantGroup !== "object") return;
+      const ids: string[] = map.get(roomNum) ?? [];
+      Object.entries(occupantGroup).forEach(([, occupantInfo]) => {
+        if (!occupantInfo || typeof occupantInfo !== "object") return;
+        const { guestIds } = occupantInfo as { guestIds: string[] };
+        if (Array.isArray(guestIds)) {
+          ids.push(...guestIds);
+        }
+      });
+      map.set(roomNum, ids);
+    });
+    return map;
+  }, [roomsByDate, yesterdayDate]);
+
   // Determine occupant counts from the data
   const occupancyData: OccupancyItem[] = useMemo(() => {
     if (!roomsByDate || !selectedDate) return [];
     return Object.keys(bedsInRooms).map<OccupancyItem>((roomNum) => {
-      const occupantIds = getOccupantIds(roomsByDate, selectedDate, roomNum);
+      const occupantIds = occupantIdsByRoomToday.get(roomNum) ?? [];
       const activeOccupants = occupantIds.filter((occId) =>
         occupantIsActive(occId, activities)
       );
       const occupantCount = activeOccupants.length;
 
-      const occupantIdsYesterday = getOccupantIds(
-        roomsByDate,
-        yesterdayDate,
-        roomNum
-      );
+      const occupantIdsYesterday = occupantIdsByRoomYesterday.get(roomNum) ?? [];
       const wasOccupiedYesterday =
         occupantIdsYesterday.filter((occId) =>
           occupantIsActive(occId, activities)
@@ -283,7 +289,7 @@ export default function usePrepareDashboardData(selectedDate: string) {
         finalCleanliness: occupantCleanliness,
       };
     });
-  }, [roomsByDate, selectedDate, yesterdayDate, bedsInRooms, activities]);
+  }, [roomsByDate, selectedDate, occupantIdsByRoomToday, occupantIdsByRoomYesterday, bedsInRooms, activities]);
 
   // Merge occupant-based cleanliness with DB status
   const mergedData: OccupancyItem[] = useMemo(() => {
@@ -321,14 +327,14 @@ export default function usePrepareDashboardData(selectedDate: string) {
     if (!roomsByDate || !yesterdayDate || !roomsByDate[yesterdayDate]) return 0;
     let sum = 0;
     Object.keys(bedsInRooms).forEach((roomNum) => {
-      const occupantIds = getOccupantIds(roomsByDate, yesterdayDate, roomNum);
+      const occupantIds = occupantIdsByRoomYesterday.get(roomNum) ?? [];
       const activeOccupants = occupantIds.filter((occId) =>
         occupantIsActive(occId, activities)
       );
       sum += activeOccupants.length;
     });
     return sum;
-  }, [roomsByDate, yesterdayDate, bedsInRooms, activities]);
+  }, [roomsByDate, yesterdayDate, bedsInRooms, activities, occupantIdsByRoomYesterday]);
 
   const totalCheckInsToday = useMemo(() => {
     if (!mergedCheckins || !mergedCheckins[selectedDate]) return 0;

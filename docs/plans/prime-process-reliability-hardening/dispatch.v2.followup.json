@@ -1,0 +1,46 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260305193000-0002",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "root_event_id": "operator-idea-prime-process-reliability-2026-03-05-followup",
+  "anchor_key": "prime-outbound-reliability-followup",
+  "cluster_key": "prime-outbound-reliability",
+  "cluster_fingerprint": "prime-outbound-reliability-hardening-v2",
+  "lineage_depth": 1,
+  "area_anchor": "Prime queue idempotency and auth replay hardening",
+  "location_anchors": [
+    "apps/prime/functions/lib/messaging-dispatcher.ts",
+    "apps/prime/functions/api/process-messaging-queue.ts",
+    "apps/prime/functions/api/extension-request.ts",
+    "apps/prime/functions/lib/firebase-rest.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Follow-up audit found queue-claim race risk, replay-window abuse risk, and dedupe requests consuming rate-limit budget.",
+  "next_scope_now": "Implement atomic queue claim path, replay guard with signature-secret split, and dedupe-before-rate-limit sequencing with regression coverage.",
+  "adjacent_later": [
+    "Add distributed queue ownership telemetry for claim-conflict rates",
+    "Promote transactional email copy to localized catalogs for functions runtime"
+  ],
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "priority": "P1",
+  "confidence": 0.92,
+  "evidence_refs": [
+    "operator-stated: take forward via lp-do-ideas -> lp-do-build workflow",
+    "apps/prime/functions/lib/messaging-dispatcher.ts",
+    "apps/prime/functions/api/process-messaging-queue.ts",
+    "apps/prime/functions/api/extension-request.ts",
+    "apps/prime/functions/__tests__/email-provider-smoke.test.ts",
+    "apps/prime/functions/__tests__/extension-request.test.ts"
+  ],
+  "created_at": "2026-03-05T19:30:00.000Z",
+  "queue_state": "enqueued",
+  "why": "Concurrent queue processing and replayed signed requests can duplicate outbound actions, while dedupe submissions should not consume extension request quota.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Prime queue claims are concurrency-safe, signed requests are replay-protected, and duplicate extension submissions no longer erode rate-limit budget.",
+    "source": "operator"
+  }
+}

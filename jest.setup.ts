@@ -111,6 +111,21 @@ try {
   if (typeof anyGlobal.clearImmediate !== "function") {
     anyGlobal.clearImmediate = (id: any) => clearTimeout(id);
   }
+  if (typeof anyGlobal.crypto?.randomUUID !== "function") {
+    // jsdom's Crypto sometimes lacks randomUUID; use a deterministic test fallback.
+    let counter = 0;
+    const fallbackRandomUuid = () =>
+      `00000000-0000-4000-8000-${String(++counter).padStart(12, "0")}`;
+
+    if (typeof anyGlobal.crypto === "object" && anyGlobal.crypto !== null) {
+      anyGlobal.crypto.randomUUID = fallbackRandomUuid;
+    } else {
+      anyGlobal.crypto = { randomUUID: fallbackRandomUuid };
+    }
+  }
+  if (typeof anyGlobal.vi === "undefined") {
+    anyGlobal.vi = jest;
+  }
 } catch {}
 
 try {
@@ -345,6 +360,8 @@ const IGNORED_ERROR_PATTERNS: ConsolePattern[] = [
   "Failed to load upgrade changes",
   "Publish failed",
   /^\[api\/delivery\] schedulePickup error:/,
+  // Availability proxy route — error-path logs exercised in TC-01-08 and TC-01-09
+  /^\[availability\] Octobook /,
 ];
 
 const IGNORED_WARN_PATTERNS: ConsolePattern[] = [

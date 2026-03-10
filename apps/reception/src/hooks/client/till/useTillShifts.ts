@@ -6,7 +6,7 @@ import { MONTHLY_DISCREPANCY_LIMIT } from "../../../constants/cash";
 import { settings } from "../../../constants/settings";
 import { useAuth } from "../../../context/AuthContext";
 import { useTillData } from "../../../context/TillDataContext";
-import type { VarianceSignoff } from "../../../types/component/Till";
+import type { DrawerOverride, VarianceSignoff } from "../../../types/component/Till";
 import type { Booking } from "../../../types/domains/bookingsDomain";
 import { calculateDiscrepancy } from "../../../utils/cashUtils";
 import { startOfMonthLocal, toEpochMillis } from "../../../utils/dateUtils";
@@ -126,6 +126,11 @@ export function useTillShifts() {
   const [closeShiftFormVariant, setCloseShiftFormVariant] =
     useState<"close" | "reconcile">("close");
   const [showKeycardCountForm, setShowKeycardCountForm] = useState(false);
+
+  // Drawer override modal state
+  const [showDrawerOverrideModal, setShowDrawerOverrideModal] = useState(false);
+  const [pendingOverride, setPendingOverride] = useState<DrawerOverride | null>(null);
+  const [pendingVariant, setPendingVariant] = useState<"close" | "reconcile" | null>(null);
 
   const {
     filteredTransactions,
@@ -357,8 +362,14 @@ export function useTillShifts() {
         showToast("No shift is currently open in this local session.", "info");
         return;
       }
-      if (!user || user.user_name !== shiftOwner) {
-        showToast("Only the user who opened this shift can close it.", "error");
+      if (!user) {
+        showToast("Not authorized. Please log in.", "error");
+        return;
+      }
+      if (user.user_name !== shiftOwner) {
+        // Non-owner: show override modal instead of blocking toast
+        setPendingVariant(variant);
+        setShowDrawerOverrideModal(true);
         return;
       }
       if (variant === "close") {
@@ -381,7 +392,25 @@ export function useTillShifts() {
       cashDrawerLimit,
       setCloseShiftFormVariant,
       setShowCloseShiftForm,
+      setPendingVariant,
+      setShowDrawerOverrideModal,
     ]);
+
+  const confirmDrawerOverride = useCallback(
+    (override: DrawerOverride) => {
+      setPendingOverride(override);
+      setShowDrawerOverrideModal(false);
+      const variant = pendingVariant ?? "close";
+      setCloseShiftFormVariant(variant);
+      setShowCloseShiftForm(true);
+    },
+    [pendingVariant, setCloseShiftFormVariant, setShowCloseShiftForm]
+  );
+
+  const cancelDrawerOverride = useCallback(() => {
+    setShowDrawerOverrideModal(false);
+    setPendingVariant(null);
+  }, []);
 
   const handleKeycardCountClick = useCallback(() => {
     if (!shiftOpenTime) {
@@ -417,6 +446,15 @@ export function useTillShifts() {
       if (!openShift) {
         showToast(
           "Cannot close the till because it is not currently open.",
+          "error"
+        );
+        return;
+      }
+
+      // Second-layer guard: use DB-authoritative openShift.user (not ephemeral shiftOwner state)
+      if (openShift.user !== user.user_name && !pendingOverride) {
+        showToast(
+          "Only the shift owner or an authorized manager can close this shift.",
           "error"
         );
         return;
@@ -458,6 +496,7 @@ export function useTillShifts() {
           signedOffByUid: varianceSignoff?.signedOffByUid,
           signedOffAt: varianceSignoff?.signedOffAt,
           varianceNote: varianceSignoff?.varianceNote,
+          override: pendingOverride ?? undefined,
         });
         addShiftEvent(
           "close",
@@ -485,6 +524,7 @@ export function useTillShifts() {
           signedOffByUid: varianceSignoff?.signedOffByUid,
           signedOffAt: varianceSignoff?.signedOffAt,
           varianceNote: varianceSignoff?.varianceNote,
+          override: pendingOverride ?? undefined,
         });
         addShiftEvent(
           "reconcile",
@@ -532,12 +572,16 @@ export function useTillShifts() {
         setShowCloseShiftForm(false);
         setStoredShiftId(null);
         setCurrentShiftId(null);
+        setPendingOverride(null);
+        setPendingVariant(null);
       } else {
         setOpeningCash(countedCash);
         setOpeningKeycards(countedKeycards);
         setFinalCashCount(0);
         setFinalKeycardCount(0);
         setShowCloseShiftForm(false);
+        setPendingOverride(null);
+        setPendingVariant(null);
       }
 
     },
@@ -556,8 +600,11 @@ export function useTillShifts() {
       recordShiftClose,
       recordShiftOpen,
       expectedKeycardsAtClose,
+      pendingOverride,
       setShowCloseShiftForm,
       setCurrentShiftId,
+      setPendingOverride,
+      setPendingVariant,
     ]
   );
 
@@ -630,12 +677,15 @@ export function useTillShifts() {
     closeShiftFormVariant,
     setCloseShiftFormVariant,
     setShowKeycardCountForm,
+    showDrawerOverrideModal,
 
     // Actions
     handleOpenShiftClick,
     confirmShiftOpen,
     handleCloseShiftClick,
     confirmShiftClose,
+    confirmDrawerOverride,
+    cancelDrawerOverride,
     handleKeycardCountClick,
     confirmKeycardReconcile,
     addKeycardsFromSafe,

@@ -14,7 +14,7 @@ import hotel from "../config/hotel";
 import { useModal } from "../context/ModalContext";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { type AppLanguage,i18nConfig } from "../i18n.config";
-import { resolveBookingCtaLabel } from "../shared";
+import { resolvePrimaryCtaLabel } from "../shared";
 
 import type {
   ContactModalCopy,
@@ -47,9 +47,9 @@ const Loader = memo(function Loader(): React.JSX.Element {
     <div
       role="status"
       aria-label="loading"
-      className="fixed inset-0 layer-modal-backdrop grid place-items-center bg-black/20 dark:bg-black/40 backdrop-blur-sm motion-safe:animate-in motion-safe:fade-in pointer-coarse:p-4"
+      className="fixed inset-0 layer-modal-backdrop grid place-items-center bg-surface/20 dark:bg-surface/40 backdrop-blur-sm motion-safe:animate-in motion-safe:fade-in pointer-coarse:p-4"
     >
-      <div className="size-10 animate-spin rounded-full border-4 border-brand-primary/50 border-t-transparent" />
+      <div className="size-11 animate-spin rounded-full border-4 border-brand-primary/50 border-t-transparent" />
     </div>
   );
 });
@@ -80,20 +80,15 @@ function GlobalModals(): React.JSX.Element | null {
   const offersCopy = useMemo<OffersModalCopy>(() => {
     void modalsReady;
     void tokensReady;
-    const ctaLabel =
-      resolveBookingCtaLabel(tTokens, {
-        fallback: () => {
-          const direct = tModals("offers.button") as string;
-          if (direct && direct.trim() && direct !== "offers.button") {
-            return direct;
-          }
-          const fallback = tModals("offers.button", { lng: i18nConfig.fallbackLng }) as string;
-          if (fallback && fallback.trim() && fallback !== "offers.button") {
-            return fallback;
-          }
-          return "Reserve Now";
-        },
-      }) ?? "Reserve Now";
+    const tokenFallback = (tTokens("checkAvailability", { lng: i18nConfig.fallbackLng }) as string) ?? "";
+    const normalisedTokenFallback =
+      tokenFallback.trim() && tokenFallback !== "checkAvailability" ? tokenFallback : "";
+    const direct = (tModals("offers.button") as string) ?? "";
+    const normalisedDirect = direct.trim() && direct !== "offers.button" ? direct : "";
+    const fallback = (tModals("offers.button", { lng: i18nConfig.fallbackLng }) as string) ?? "";
+    const normalisedFallback = fallback.trim() && fallback !== "offers.button" ? fallback : "";
+    const ctaFallback = normalisedDirect || normalisedFallback || normalisedTokenFallback;
+    const ctaLabel = resolvePrimaryCtaLabel(tTokens, { fallback: () => ctaFallback }) ?? ctaFallback;
 
     return {
       title: tModals("offers.title"),

@@ -18,7 +18,7 @@ interface SwiperBundle {
   SwiperSlide: ComponentType<SwiperSlideProps>;
 }
 
-function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesProps): JSX.Element {
+function CarouselSlides({ roomsData, openModalForRate, roomPrices, lang }: CarouselSlidesProps): JSX.Element {
   const translationOptions = lang ? { lng: lang } : undefined;
   const { t, i18n, ready } = useTranslation("roomsPage", translationOptions);
   const activeLanguage = lang ?? i18n.language;
@@ -161,6 +161,7 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
             ref={getSlideRef(room.id)}
             item={room}
             openModalForRate={openModalForRate}
+            price={roomPrices?.[room.id]}
             {...heightProps}
             {...(lang !== undefined ? { lang } : {})}
           />
@@ -202,6 +203,7 @@ function CarouselSlides({ roomsData, openModalForRate, lang }: CarouselSlidesPro
               ref={getSlideRef(room.id)}
               item={room}
               openModalForRate={openModalForRate}
+              price={roomPrices?.[room.id]}
               {...heightProps}
               {...(lang !== undefined ? { lang } : {})}
             />

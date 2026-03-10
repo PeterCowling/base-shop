@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "2258cec1-c75a-400e-b42a-92ce3f1c5211",
+  "feature_slug": "prime-arrival-home-prop-sprawl",
+  "emitted_at": "2026-03-09T08:16:25.413Z",
+  "why": "ArrivalHome had 11 props; five of them form a single domain concept (code loading state) but were passed individually, making call sites verbose and the interface harder to scan.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "ArrivalHome prop count reduced from 11 to 7 by grouping the five code-loading props into a single ArrivalCodeState config object.",
+    "source": "operator"
+  }
+}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { bookingNotesSchema } from "../../schemas/bookingNoteSchema";
 import { type BookingNotes } from "../../types/hooks/data/bookingNotesData";
@@ -38,5 +38,5 @@ export default function useBookingNotes(
     }
   }, [data]);
 
-  return { notes: useMemo(() => notes, [notes]), loading, error };
+  return { notes, loading, error };
 }

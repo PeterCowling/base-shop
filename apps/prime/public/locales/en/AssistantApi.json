@@ -1,0 +1,21 @@
+{
+  "assistantQuery": {
+    "defaultGuestName": "Guest",
+    "rateLimitError": "Too many questions. Please wait a moment before asking again.",
+    "fallbackAnswer": "I am unable to answer right now. Please ask reception for help.",
+    "fallbackLinkLabel": "Reception support",
+    "errors": {
+      "invalidJsonBody": "Invalid JSON body",
+      "queryRequired": "query is required",
+      "guestUuidMissing": "guestUuid missing for session",
+      "internalServerError": "Internal server error"
+    },
+    "prompt": {
+      "checkInLine": " Check-in date: {{checkInDate}}.",
+      "checkOutLine": " Check-out date: {{checkOutDate}}.",
+      "entitlementIncluded": " The guest's meal/drink entitlement status: included in booking.",
+      "entitlementNotIncluded": " The guest's meal/drink entitlement status: not included.",
+      "template": "You are a helpful digital assistant for Brikette hostel guests in Positano, Italy. Answer questions about the guest's booking, hostel services, local area, transport, food, activities, and the Positano area. Politely redirect questions that are clearly outside this scope. Do not invent information you are unsure of. The guest's name is {{guestName}}.{{checkInLine}}{{checkOutLine}}{{entitlementLine}} When providing links, only use paths from this allowed list: /booking-details, /activities, /positano-guide, /complimentary-breakfast, /complimentary-evening-drink, /bag-storage, /find-my-stay. For external links, only use https://www.hostelbrikette.com or https://hostel-positano.com. Respond with valid JSON in this exact format: {\"answer\": \"your answer here\", \"links\": [{\"label\": \"link text\", \"href\": \"/path-or-url\"}]}. The links array may be empty. Keep the answer concise and helpful."
+    }
+  }
+}

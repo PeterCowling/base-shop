@@ -108,7 +108,7 @@ export default function StoreLocatorSection({ stores: inputStores = [], adapter,
                   type="button"
                   className={(() => {
                     // i18n-exempt -- ABC-123 [ttl=2025-01-31]
-                    const ITEM_BASE_CLASS = "block w-full text-left p-3 min-h-10";
+                    const ITEM_BASE_CLASS = "block w-full text-left p-3 min-h-11";
                     // i18n-exempt -- ABC-123 [ttl=2025-01-31]
                     const ITEM_SELECTED_CLASS = "bg-muted";
                     // i18n-exempt -- ABC-123 [ttl=2025-01-31]
@@ -140,7 +140,7 @@ export default function StoreLocatorSection({ stores: inputStores = [], adapter,
               {selected.url ? (
                 <a
                   href={selected.url}
-                  className="mt-2 inline-block text-primary underline min-h-10 min-w-10"
+                  className="mt-2 inline-block text-primary underline min-h-11 min-w-11"
                 >
                   {t("storeLocator.viewStorePage")}
                 </a>

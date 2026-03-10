@@ -226,7 +226,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           onKeyDown={handleKeyDown(placeOfBirth, finalizePlaceOfBirth)}
           suggestions={countries}
           placeholder="Enter place of birth"
-          inputClassName={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
+          inputClassName={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
             isPlaceOfBirthSaved ? "bg-success-light/50" : ""
           }`}
         />
@@ -244,7 +244,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           onKeyDown={handleKeyDown(citizenship, finalizeCitizenship)}
           suggestions={countries}
           placeholder="Enter citizenship"
-          inputClassName={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
+          inputClassName={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
             isCitizenshipSaved ? "bg-success-light/50" : ""
           }`}
         />
@@ -268,7 +268,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           onKeyDown={handleKeyDown(municipality, finalizeMunicipality)}
           suggestions={municipalities}
           placeholder="Enter municipality"
-          inputClassName={`border border-info-light rounded px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
+          inputClassName={`border border-info-light rounded-lg px-3 py-2 w-300px focus:outline-none focus:ring-1 focus:ring-primary-main ${
             isMunicipalitySaved ? "bg-success-light/50" : ""
           }`}
         />

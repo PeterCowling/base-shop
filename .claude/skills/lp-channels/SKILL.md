@@ -26,13 +26,13 @@ This skill researches channel landscape, analyzes channel-customer fit using lp-
 ## Inputs
 
 Required:
-- `lp-offer` output: ICP, positioning, objections from `docs/business-os/startup-baselines/<BIZ>-offer.md`
+- `lp-offer` output: ICP, positioning, objections from `docs/business-os/startup-baselines/<BIZ>/offer.md`
 - `lp-readiness` output: distribution feasibility from RG-02 gate
 - Business context from `docs/business-os/strategy/<BIZ>/`
 
 **Demand Evidence Pack (DEP) — strategy eligibility gate (GATE-SELL-STRAT-01):**
 
-Before SELL-01 starts, a valid DEP record must pass the floor defined in `docs/business-os/startup-loop/demand-evidence-pack-schema.md`. Full gate logic is in startup-loop advance gate docs. Summary:
+Before SELL-01 starts, a valid DEP record must pass the floor defined in `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md`. Full gate logic is in startup-loop advance gate docs. Summary:
 - DEP passes → SELL-01 strategy design is eligible.
 - DEP missing or fails → SELL-01 is blocked.
 
@@ -42,7 +42,7 @@ Paid spend authorization is evaluated separately at SELL-08 after strategy outpu
 
 Optional (enhances quality):
 - Competitor channel analysis, budget/resource constraints, existing audiences, market research
-- `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` — channel voice and tone alignment
+- `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` — channel voice and tone alignment
 - `docs/business-os/strategy/<BIZ>/messaging-hierarchy.user.md` — channel-specific messaging
 
 ## Workflow
@@ -63,12 +63,12 @@ Load `modules/channel-strategy.md`:
 
 Load `modules/channel-gtm-output.md`:
 - Stage 5: 30-Day GTM Timeline
-- Stage 6: Document Artifact to `docs/business-os/startup-baselines/<BIZ>-channels.md`
+- Stage 6: Document Artifact to `docs/business-os/startup-baselines/<BIZ>/channels.md`
 - Self-audit QC-01–QC-10 and Red Flags
 
 ## Output Contract
 
-Produces single file: `docs/business-os/startup-baselines/<BIZ>-channels.md`
+Produces single file: `docs/business-os/startup-baselines/<BIZ>/channels.md`
 
 **Artifact registry**: Canonical path defined in `docs/business-os/startup-loop/artifact-registry.md` (artifact ID: `channels`).
 

@@ -9,12 +9,13 @@
   "lastChecked": "Последняя проверка:",
   "sources": {
     "hostelworld": {
-      "ariaName": "Hostelworld",
-      "label": "Hostelworld"
+      "ariaName": "Отель World",
+      "label": "Отель World"
     },
     "booking": {
       "ariaName": "Booking точка ком",
       "label": "Booking.com"
     }
-  }
+  },
+  "snapshotAsOf": "По данным {{date}}"
 }

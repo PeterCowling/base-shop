@@ -30,6 +30,7 @@ describe("payments env", () => {
       STRIPE_WEBHOOK_SECRET: "whsec_live_123",
       PAYMENTS_SANDBOX: true,
       PAYMENTS_CURRENCY: "USD",
+      AXERVE_SANDBOX: false,
     });
     expect(warn).not.toHaveBeenCalled();
   });
@@ -152,6 +153,7 @@ describe("payment gateway flag", () => {
       STRIPE_WEBHOOK_SECRET: "whsec_test_abc",
       PAYMENTS_SANDBOX: true,
       PAYMENTS_CURRENCY: "USD",
+      AXERVE_SANDBOX: false,
     });
     expect(warn).not.toHaveBeenCalled();
   });
@@ -170,6 +172,7 @@ describe("payment gateway flag", () => {
       STRIPE_WEBHOOK_SECRET: "whsec_live_abc",
       PAYMENTS_SANDBOX: true,
       PAYMENTS_CURRENCY: "USD",
+      AXERVE_SANDBOX: false,
     });
     expect(warn).not.toHaveBeenCalled();
   });

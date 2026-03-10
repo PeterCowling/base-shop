@@ -14,6 +14,8 @@ export type SlugMap = {
   experiences: Record<AppLanguage, string>;
   howToGetHere: Record<AppLanguage, string>;
   apartment: Record<AppLanguage, string>;
+  /** Private accommodations booking landing page */
+  privateBooking: Record<AppLanguage, string>;
   /** Booking landing page */
   book: Record<AppLanguage, string>;
   /** Travel guides (SEO content hub) */
@@ -32,6 +34,8 @@ export type SlugMap = {
   breakfastMenu: Record<AppLanguage, string>;
   /** Public bar menu */
   barMenu: Record<AppLanguage, string>;
+  /** Double private room direct booking page */
+  doubleRoomBooking: Record<AppLanguage, string>;
 };
 
 /** Convenience helper for `keyof SlugMap` usage. */

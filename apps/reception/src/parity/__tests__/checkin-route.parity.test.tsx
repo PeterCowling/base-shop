@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 import CheckinsTableView from "../../components/checkins/view/CheckinsTable";
 import type { CheckInRow } from "../../types/component/CheckinRow";
 
-jest.mock("../../components/checkins/DateSelector", () => ({
+jest.mock("../../components/common/DateSelector", () => ({
   __esModule: true,
   default: ({ selectedDate }: { selectedDate: string }) => (
     <div data-cy="checkin-date-selector">{selectedDate}</div>

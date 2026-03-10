@@ -15,10 +15,8 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import {
-  buildLocalizedStaticRedirectRules,
-  formatRedirectRule,
-} from "../../routing/staticExportRedirects";
+import { buildStaticRuntimeArtifacts } from "../../../scripts/lib/static-runtime-redirects";
+import { formatRedirectRule } from "../../routing/staticExportRedirects";
 
 // Patterns for URLs that are handled by Cloudflare _redirects (not served by App Router)
 const REDIRECT_PATTERNS = [
@@ -96,13 +94,15 @@ describe("URL inventory", () => {
   it("localized static-export redirect rules are present in _redirects", () => {
     const redirectsPath = path.join(__dirname, "../../../public/_redirects");
     const redirectsFile = fs.readFileSync(redirectsPath, "utf8");
-    const expectedRules = buildLocalizedStaticRedirectRules().map(formatRedirectRule);
+    const expectedRules = buildStaticRuntimeArtifacts(path.join(__dirname, "../../..")).structuralRules.map(
+      formatRedirectRule,
+    );
     const missingRules = expectedRules.filter((rule) => !redirectsFile.includes(rule));
 
     if (missingRules.length > 0) {
       const preview = missingRules.slice(0, 20);
       console.error(
-        `Missing ${missingRules.length} localized redirect rules. First 20:\\n${preview.join("\\n")}`
+        `Missing ${missingRules.length} structural redirect rules. First 20:\\n${preview.join("\\n")}`
       );
     }
 

@@ -6,8 +6,8 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 
-import { type BottleneckEntry } from "../bottleneck-history";
-import { type DiagnosisSnapshot } from "../diagnosis-snapshot";
+import { type BottleneckEntry } from "../diagnostics/bottleneck-history";
+import { type DiagnosisSnapshot } from "../diagnostics/diagnosis-snapshot";
 import { checkAndTriggerReplan, type ReplanTrigger } from "../replan-trigger";
 
 // Test helpers

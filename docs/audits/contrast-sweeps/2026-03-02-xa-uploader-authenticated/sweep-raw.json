@@ -1,0 +1,5306 @@
+[
+  {
+    "breakpoint": 320,
+    "mode": "light",
+    "route": "/",
+    "authenticated": true,
+    "screenshot": "./screenshots/320-light-root-auth.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "Language",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.sr-only"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "h1",
+        "text": "XA catalog operations",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "h1.text-3xl.font-semibold"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Create and edit products locally, then sync into the selected XA storefront catalog.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.max-w-2xl.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Storefront",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-2xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "XA-B (Bags)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "New",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Search",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "title or slug",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Slug",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Compare-at price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand name",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "DepartmentWomenMenKids",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "WomenMenKids",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Category (product type)ClothingBagsJewelry",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "ClothingBagsJewelry",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Subcategory",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Colors (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Materials (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For sale",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For rental",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Deposit",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Stock",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Popularity",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Created at",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "2026-03-02T09:38",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Size class",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Fits (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Strap style",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Hardware color",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Closure type",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Bag details (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Dimensions",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Strap drop",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "What fits (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "Interior (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image files (paths, globs, or directories)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "images/my-product/*.jpg",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image shot roles",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (front|side|top|back|detail|interior|scale)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image alt texts (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (pipe, comma, or newline)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max 10 products per submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max ZIP size 25MB.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Run this console locally so it can read your image files.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Images must be JPG/PNG/WebP and at least 1600px on the shortest edge.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Use a new upload link for each submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "https://<upload-domain>/upload/<one-time-link>",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.font-mono.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Upload link",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Paste the one-time upload link you were given",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Catalog publish target is not configured for this environment. Set XA_CATALOG_CONTRACT_BASE_URL and XA_CATALOG_CONTRACT_",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.mt-3.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "strict",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "recursive",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "replace",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "dry run",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "USD (base)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.0000",
+        "ratio": 4.3496008646106645,
+        "threshold": 4.5,
+        "pass": false,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "EUR rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.9200",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "GBP rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.7800",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "AUD rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.5000",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "New",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "input",
+        "text": "",
+        "ratio": 4.3496008646106645,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ]
+  },
+  {
+    "breakpoint": 375,
+    "mode": "light",
+    "route": "/",
+    "authenticated": true,
+    "screenshot": "./screenshots/375-light-root-auth.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "Language",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.sr-only"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "h1",
+        "text": "XA catalog operations",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "h1.text-3xl.font-semibold"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Create and edit products locally, then sync into the selected XA storefront catalog.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.max-w-2xl.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Storefront",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-2xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "XA-B (Bags)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "New",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Search",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "title or slug",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Slug",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Compare-at price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand name",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "DepartmentWomenMenKids",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "WomenMenKids",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Category (product type)ClothingBagsJewelry",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "ClothingBagsJewelry",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Subcategory",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Colors (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Materials (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For sale",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For rental",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Deposit",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Stock",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Popularity",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Created at",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "2026-03-02T09:38",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Size class",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Fits (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Strap style",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Hardware color",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Closure type",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Bag details (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Dimensions",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Strap drop",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "What fits (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "Interior (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image files (paths, globs, or directories)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "images/my-product/*.jpg",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image shot roles",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (front|side|top|back|detail|interior|scale)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image alt texts (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (pipe, comma, or newline)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max 10 products per submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max ZIP size 25MB.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Run this console locally so it can read your image files.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Images must be JPG/PNG/WebP and at least 1600px on the shortest edge.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Use a new upload link for each submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "https://<upload-domain>/upload/<one-time-link>",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.font-mono.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Upload link",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Paste the one-time upload link you were given",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Catalog publish target is not configured for this environment. Set XA_CATALOG_CONTRACT_BASE_URL and XA_CATALOG_CONTRACT_",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.mt-3.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "strict",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "recursive",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "replace",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "dry run",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "USD (base)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.0000",
+        "ratio": 4.3496008646106645,
+        "threshold": 4.5,
+        "pass": false,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "EUR rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.9200",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "GBP rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.7800",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "AUD rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.5000",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "New",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "input",
+        "text": "",
+        "ratio": 4.3496008646106645,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ]
+  },
+  {
+    "breakpoint": 430,
+    "mode": "light",
+    "route": "/",
+    "authenticated": true,
+    "screenshot": "./screenshots/430-light-root-auth.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "Language",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.sr-only"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "h1",
+        "text": "XA catalog operations",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "h1.text-3xl.font-semibold"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Create and edit products locally, then sync into the selected XA storefront catalog.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.max-w-2xl.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Storefront",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-2xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "XA-B (Bags)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "New",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Search",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "title or slug",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Slug",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Compare-at price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand name",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "DepartmentWomenMenKids",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "WomenMenKids",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Category (product type)ClothingBagsJewelry",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "ClothingBagsJewelry",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Subcategory",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Colors (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Materials (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For sale",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For rental",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Deposit",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Stock",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Popularity",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Created at",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "2026-03-02T09:38",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Size class",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Fits (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Strap style",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Hardware color",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Closure type",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Bag details (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Dimensions",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Strap drop",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "What fits (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "Interior (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image files (paths, globs, or directories)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "images/my-product/*.jpg",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image shot roles",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (front|side|top|back|detail|interior|scale)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image alt texts (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (pipe, comma, or newline)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max 10 products per submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max ZIP size 25MB.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Run this console locally so it can read your image files.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Images must be JPG/PNG/WebP and at least 1600px on the shortest edge.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Use a new upload link for each submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "https://<upload-domain>/upload/<one-time-link>",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.font-mono.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Upload link",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Paste the one-time upload link you were given",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Catalog publish target is not configured for this environment. Set XA_CATALOG_CONTRACT_BASE_URL and XA_CATALOG_CONTRACT_",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.mt-3.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "strict",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "recursive",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "replace",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "dry run",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "USD (base)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.0000",
+        "ratio": 4.3496008646106645,
+        "threshold": 4.5,
+        "pass": false,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "EUR rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.9200",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "GBP rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.7800",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "AUD rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.5000",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "New",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "input",
+        "text": "",
+        "ratio": 4.3496008646106645,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ]
+  },
+  {
+    "breakpoint": 768,
+    "mode": "light",
+    "route": "/",
+    "authenticated": true,
+    "screenshot": "./screenshots/768-light-root-auth.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "Language",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.sr-only"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "h1",
+        "text": "XA catalog operations",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "h1.text-3xl.font-semibold"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Create and edit products locally, then sync into the selected XA storefront catalog.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.max-w-2xl.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Storefront",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-2xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "XA-B (Bags)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "New",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Search",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "title or slug",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Slug",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Compare-at price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand name",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "DepartmentWomenMenKids",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "WomenMenKids",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Category (product type)ClothingBagsJewelry",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "ClothingBagsJewelry",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Subcategory",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Colors (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Materials (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For sale",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For rental",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Deposit",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Stock",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Popularity",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Created at",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "2026-03-02T09:38",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Size class",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Fits (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Strap style",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Hardware color",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Closure type",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Bag details (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Dimensions",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Strap drop",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "What fits (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "Interior (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image files (paths, globs, or directories)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "images/my-product/*.jpg",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image shot roles",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (front|side|top|back|detail|interior|scale)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image alt texts (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (pipe, comma, or newline)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max 10 products per submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max ZIP size 25MB.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Run this console locally so it can read your image files.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Images must be JPG/PNG/WebP and at least 1600px on the shortest edge.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Use a new upload link for each submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "https://<upload-domain>/upload/<one-time-link>",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.font-mono.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Upload link",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Paste the one-time upload link you were given",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Catalog publish target is not configured for this environment. Set XA_CATALOG_CONTRACT_BASE_URL and XA_CATALOG_CONTRACT_",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.mt-3.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "strict",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "recursive",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "replace",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "dry run",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "USD (base)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.0000",
+        "ratio": 4.3496008646106645,
+        "threshold": 4.5,
+        "pass": false,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "EUR rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.9200",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "GBP rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.7800",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "AUD rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.5000",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "New",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "input",
+        "text": "",
+        "ratio": 4.3496008646106645,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ]
+  },
+  {
+    "breakpoint": 1024,
+    "mode": "light",
+    "route": "/",
+    "authenticated": true,
+    "screenshot": "./screenshots/1024-light-root-auth.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "Language",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.sr-only"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "h1",
+        "text": "XA catalog operations",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "h1.text-3xl.font-semibold"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Create and edit products locally, then sync into the selected XA storefront catalog.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.max-w-2xl.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Storefront",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-2xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "XA-B (Bags)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "New",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Search",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "title or slug",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Slug",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Compare-at price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand name",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "DepartmentWomenMenKids",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "WomenMenKids",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Category (product type)ClothingBagsJewelry",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "ClothingBagsJewelry",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Subcategory",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Colors (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Materials (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For sale",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For rental",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Deposit",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Stock",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Popularity",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Created at",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "2026-03-02T09:38",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Size class",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Fits (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Strap style",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Hardware color",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Closure type",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Bag details (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Dimensions",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Strap drop",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "What fits (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "Interior (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image files (paths, globs, or directories)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "images/my-product/*.jpg",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image shot roles",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (front|side|top|back|detail|interior|scale)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image alt texts (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (pipe, comma, or newline)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max 10 products per submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max ZIP size 25MB.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Run this console locally so it can read your image files.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Images must be JPG/PNG/WebP and at least 1600px on the shortest edge.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Use a new upload link for each submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "https://<upload-domain>/upload/<one-time-link>",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.font-mono.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Upload link",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Paste the one-time upload link you were given",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Catalog publish target is not configured for this environment. Set XA_CATALOG_CONTRACT_BASE_URL and XA_CATALOG_CONTRACT_",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.mt-3.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "strict",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "recursive",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "replace",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "dry run",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "USD (base)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.0000",
+        "ratio": 4.3496008646106645,
+        "threshold": 4.5,
+        "pass": false,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "EUR rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.9200",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "GBP rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.7800",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "AUD rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.5000",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "New",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "input",
+        "text": "",
+        "ratio": 4.3496008646106645,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ]
+  },
+  {
+    "breakpoint": 1280,
+    "mode": "light",
+    "route": "/",
+    "authenticated": true,
+    "screenshot": "./screenshots/1280-light-root-auth.png",
+    "text": [
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "Language",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.sr-only"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "text",
+        "tag": "h1",
+        "text": "XA catalog operations",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "h1.text-3xl.font-semibold"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Create and edit products locally, then sync into the selected XA storefront catalog.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.max-w-2xl.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Storefront",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-2xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "XA-B (Bags)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "New",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Search",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "title or slug",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Slug",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Compare-at price",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Brand name",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection handle",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection title",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Collection description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Description",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "DepartmentWomenMenKids",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "WomenMenKids",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Category (product type)ClothingBagsJewelry",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "select",
+        "text": "ClothingBagsJewelry",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "select.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Subcategory",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Colors (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Materials (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For sale",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "For rental",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Deposit",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Stock",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Popularity",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Created at",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "2026-03-02T09:38",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Size class",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Fits (pipe, comma, or newline)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Strap style",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Hardware color",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Closure type",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Bag details (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Dimensions",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Strap drop",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "What fits (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "Interior (list)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.w-full.rounded-md"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image files (paths, globs, or directories)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "images/my-product/*.jpg",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image shot roles",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (front|side|top|back|detail|interior|scale)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Image alt texts (optional)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.block.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "textarea",
+        "text": "One per image (pipe, comma, or newline)",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "textarea.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max 10 products per submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Max ZIP size 25MB.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Run this console locally so it can read your image files.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Images must be JPG/PNG/WebP and at least 1600px on the shortest edge.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "li",
+        "text": "Use a new upload link for each submission.",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "li"
+      },
+      {
+        "kind": "text",
+        "tag": "span",
+        "text": "https://<upload-domain>/upload/<one-time-link>",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "span.font-mono.text-xs"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "Upload link",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.mt-3.block"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "Paste the one-time upload link you were given",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "p",
+        "text": "Catalog publish target is not configured for this environment. Set XA_CATALOG_CONTRACT_BASE_URL and XA_CATALOG_CONTRACT_",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "p.mt-3.text-sm"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "strict",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "recursive",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "replace",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "dry run",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.inline-flex.items-center"
+      },
+      {
+        "kind": "text",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "USD (base)",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.0000",
+        "ratio": 4.3496008646106645,
+        "threshold": 4.5,
+        "pass": false,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "EUR rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.9200",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "GBP rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "0.7800",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      },
+      {
+        "kind": "text",
+        "tag": "label",
+        "text": "AUD rate",
+        "ratio": 5.74183648145415,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "label.text-xs.uppercase"
+      },
+      {
+        "kind": "text",
+        "tag": "input",
+        "text": "1.5000",
+        "ratio": 17.40432753274219,
+        "threshold": 4.5,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ],
+    "focus": [
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "EN",
+        "ratio": 13.18426227025029,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "ZH",
+        "ratio": 5.74183648145415,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.px-3.py-2"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Refresh",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Exit console",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "New",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save details",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Clear selection",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Export ZIP",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Upload submission",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Run sync",
+        "ratio": 17.40432753274219,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Recheck",
+        "ratio": 5.984934612252126,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "button",
+        "text": "Save & sync",
+        "ratio": 2.9080230044807385,
+        "threshold": 3,
+        "pass": false,
+        "selectorHint": "button.rounded-md.border"
+      },
+      {
+        "kind": "focus",
+        "tag": "input",
+        "text": "",
+        "ratio": 4.3496008646106645,
+        "threshold": 3,
+        "pass": true,
+        "selectorHint": "input.mt-2.w-full"
+      }
+    ]
+  }
+]

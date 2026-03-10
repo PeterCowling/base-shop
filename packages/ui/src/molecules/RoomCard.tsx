@@ -146,6 +146,18 @@ function PriceBlock({ price }: { price?: RoomCardPrice }): JSX.Element | null {
         </div>
       ) : null}
 
+      {price.badge && !price.soldOut ? (
+        <a
+          href={price.badge.claimUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mb-2 inline-flex min-h-11 min-w-11 items-center gap-1 text-xs font-medium text-brand-primary underline-offset-2 hover:underline dark:text-brand-secondary"
+        >
+          <span aria-hidden="true">✓</span>
+          {price.badge.text}
+        </a>
+      ) : null}
+
       {price.soldOut && price.soldOutLabel ? (
         <p className="mb-3 text-base font-medium text-brand-primary dark:text-brand-secondary">
           {price.soldOutLabel}
@@ -166,11 +178,17 @@ function splitActionLabel(label: string): string[] {
   return [first, rest.join(" ")];
 }
 
-function ActionButtons({ actions }: { actions?: RoomCardAction[] }): JSX.Element | null {
+function ActionButtons({
+  actions,
+  className,
+}: {
+  actions?: RoomCardAction[];
+  className?: string;
+}): JSX.Element | null {
   if (!actions?.length) return null;
 
   return (
-    <Stack gap={2} className="mt-auto sm:flex-row">
+    <Stack gap={2} className={clsx("sm:flex-row", className)}>
       {actions.map((action, actionIndex) => {
         const trimmedLabel = action.label.trim();
         const normalisedLabel = trimmedLabel.replace(/\s+/g, " ");
@@ -223,6 +241,9 @@ function RoomCardComponent({
   className,
   lang,
   onRequestFullscreen,
+  titleOverlay,
+  detailHref,
+  detailLabel,
 }: RoomCardProps): JSX.Element {
   const [imageIndex, setImageIndex] = useState(0);
   const galleryImages = useMemo(() => {
@@ -285,31 +306,54 @@ function RoomCardComponent({
         className
       )}
     >
-      {currentImage ? (
-        <RoomImage
-          image={currentImage}
-          imageIndex={imageIndex}
-          totalImages={totalImages}
-          onPrev={goToPrev}
-          onNext={goToNext}
-          onEnlarge={onRequestFullscreen ? handleEnlarge : undefined}
-          alt={imageAlt}
-          labels={labels}
-        />
-      ) : (
-        <Stack align="center" className="aspect-square justify-center bg-brand-surface text-sm text-brand-outline">
-          {labels.empty ?? DEFAULT_IMAGE_LABELS.empty}
-        </Stack>
+      <div className="relative">
+        {currentImage ? (
+          <RoomImage
+            image={currentImage}
+            imageIndex={imageIndex}
+            totalImages={totalImages}
+            onPrev={goToPrev}
+            onNext={goToNext}
+            onEnlarge={onRequestFullscreen ? handleEnlarge : undefined}
+            alt={imageAlt}
+            labels={labels}
+          />
+        ) : (
+          <Stack align="center" className="aspect-square justify-center bg-brand-surface text-sm text-brand-outline">
+            {labels.empty ?? DEFAULT_IMAGE_LABELS.empty}
+          </Stack>
+        )}
+        {titleOverlay && currentImage && (
+          <div className="pointer-events-none absolute right-0 top-0 px-3 pt-3">
+            <h3 className="inline-block rounded bg-brand-primary px-2.5 py-1 text-sm font-semibold tracking-wide text-brand-bg">{title}</h3>
+          </div>
+        )}
+      </div>
+
+      {detailHref && (
+        <a
+          href={detailHref}
+          className="flex min-h-11 min-w-11 items-center justify-between border-b border-brand-surface px-4 py-2.5 text-sm font-medium text-brand-primary transition-colors hover:bg-brand-primary/5 dark:border-brand-surface/30 dark:text-brand-secondary dark:hover:bg-brand-secondary/5"
+        >
+          <span>{detailLabel ?? "More About This Room"}</span>
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
       )}
 
       <div className="flex flex-1 flex-col p-4">
-        <h3 className="mb-1 text-lg font-semibold tracking-wide text-brand-primary dark:text-brand-secondary">{title}</h3>
+        {(!titleOverlay || !currentImage) && (
+          <h3 className="mb-1 text-lg font-semibold tracking-wide text-brand-primary dark:text-brand-secondary">{title}</h3>
+        )}
 
         <PriceBlock price={price} />
 
+        <ActionButtons actions={actions} className="mt-3 hidden lg:flex" />
+
         <FacilitiesList facilities={facilities} />
 
-        <ActionButtons actions={actions} />
+        <ActionButtons actions={actions} className="mt-4 lg:hidden" />
       </div>
     </article>
   );

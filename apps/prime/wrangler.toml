@@ -8,6 +8,11 @@ binding = "RATE_LIMIT"
 id = "f3d56007e07d494cb3ab0db1995fd958"
 preview_id = "f49512da7ac246e7bac8d97375a42809"
 
+[[d1_databases]]
+binding = "PRIME_MESSAGING_DB"
+database_name = "prime-messaging"
+database_id = "00000000000000000000000000000000" # replace with real D1 id
+
 [vars]
 CF_FIREBASE_DATABASE_URL = "https://prime-f3652-default-rtdb.europe-west1.firebasedatabase.app"
 

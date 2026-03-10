@@ -19,11 +19,15 @@ export default async function AnalyticsScripts() {
     return (
       <>
         <Script
+          // i18n-exempt -- TMP-2041 [ttl=2026-12-31]
           src={`https://www.googletagmanager.com/gtag/js?id=${analytics.id}`}
+          // i18n-exempt -- TMP-2041 [ttl=2026-12-31]
           strategy="afterInteractive"
         />
         <Script
+          // i18n-exempt -- TMP-2041 [ttl=2026-12-31]
           id="ga-inline-init"
+          // i18n-exempt -- TMP-2041 [ttl=2026-12-31]
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${analytics.id}');`,

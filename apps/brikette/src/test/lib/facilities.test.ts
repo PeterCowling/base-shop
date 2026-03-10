@@ -31,6 +31,7 @@ describe("FACILITIES", () => {
       "gardenView",
       "airCon",
       "keycard",
+      "locker",
       "linen",
     ];
     expect(new Set(FACILITIES)).toEqual(new Set(expected));

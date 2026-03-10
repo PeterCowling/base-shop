@@ -1,12 +1,24 @@
 import "@testing-library/jest-dom";
 
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 
+import { showToast } from "../../../utils/toastUtils";
 import EntryDialog from "../EntryDialogue";
 
+jest.mock("../../../utils/toastUtils", () => ({
+  showToast: jest.fn(),
+}));
+
+const showToastMock = showToast as unknown as jest.Mock;
+
 describe("EntryDialog", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   afterEach(() => {
     jest.restoreAllMocks();
+    jest.useRealTimers();
   });
 
   it("saves new card details", async () => {
@@ -35,11 +47,8 @@ describe("EntryDialog", () => {
     );
   });
 
-  it("validates card input", async () => {
+  it("validates card input via toast and does not submit", async () => {
     const onSave = jest.fn();
-    const alertMock = vi
-      .spyOn(window, "alert")
-      .mockImplementation(() => undefined);
     render(
       <EntryDialog
         open
@@ -48,6 +57,7 @@ describe("EntryDialog", () => {
         onSaveOrUpdate={onSave}
       />
     );
+
     fireEvent.change(screen.getByLabelText(/credit card number/i), {
       target: { value: "123" },
     });
@@ -55,10 +65,71 @@ describe("EntryDialog", () => {
       target: { value: "1299" },
     });
     fireEvent.click(screen.getByRole("button", { name: /save cc details/i }));
-    expect(alertMock).toHaveBeenCalled();
+
+    expect(showToastMock).toHaveBeenCalledWith(
+      "Card number must be 13-16 digits",
+      "error"
+    );
     expect(onSave).not.toHaveBeenCalled();
   });
 
+  it("processes payment and reports paid status", async () => {
+    jest.useFakeTimers();
+    jest.spyOn(Math, "random").mockReturnValue(0.9);
+
+    const onProcessPayment = jest.fn().mockResolvedValue(undefined);
+
+    render(
+      <EntryDialog
+        open
+        initialCardNumber="4242424242424242"
+        initialExpiry="12/30"
+        onClose={jest.fn()}
+        onProcessPayment={onProcessPayment}
+        onSaveOrUpdate={jest.fn()}
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /process payment/i }));
+
+    await act(async () => {
+      jest.advanceTimersByTime(1500);
+      await Promise.resolve();
+    });
+
+    await waitFor(() =>
+      expect(onProcessPayment).toHaveBeenCalledWith("paid")
+    );
+  });
+
+  it("processes payment and reports failed status", async () => {
+    jest.useFakeTimers();
+    jest.spyOn(Math, "random").mockReturnValue(0.1);
+
+    const onProcessPayment = jest.fn().mockResolvedValue(undefined);
+
+    render(
+      <EntryDialog
+        open
+        initialCardNumber="4242424242424242"
+        initialExpiry="12/30"
+        onClose={jest.fn()}
+        onProcessPayment={onProcessPayment}
+        onSaveOrUpdate={jest.fn()}
+      />
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /process payment/i }));
+
+    await act(async () => {
+      jest.advanceTimersByTime(1500);
+      await Promise.resolve();
+    });
+
+    await waitFor(() =>
+      expect(onProcessPayment).toHaveBeenCalledWith("failed")
+    );
+  });
 
   it("calls onClose when cancelled", () => {
     const onClose = jest.fn();

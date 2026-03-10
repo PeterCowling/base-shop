@@ -1,0 +1,165 @@
+import { describe, expect, it } from "@jest/globals";
+
+import type { PolicyEvaluationDataset } from "../self-evolving/self-evolving-evaluation.js";
+import { buildSurvivalPolicySignals } from "../self-evolving/self-evolving-survival.js";
+
+function buildDataset(): PolicyEvaluationDataset {
+  return {
+    schema_version: "policy-evaluation-dataset.v1",
+    generated_at: "2026-03-12T00:00:00.000Z",
+    summary: {
+      total_decisions: 4,
+      observed_decisions: 1,
+      pending_decisions: 1,
+      censored_decisions: 1,
+      missing_decisions: 1,
+      replay_ready_decisions: 1,
+      deterministic_decisions: 4,
+      stochastic_decisions: 0,
+      policy_version_counts: {
+        "self-evolving-policy.v1": 4,
+      },
+    },
+    records: [
+      {
+        schema_version: "policy-evaluation.v1",
+        decision_id: "decision-1",
+        decision_context_id: "context-1",
+        business_id: "BRIK",
+        candidate_id: "cand-1",
+        chosen_action: "lp-do-plan",
+        policy_version: "self-evolving-policy.v1",
+        utility_version: "self-evolving-utility.v1",
+        decision_mode: "deterministic",
+        eligible_actions: ["lp-do-fact-find", "lp-do-plan", "lp-do-build"],
+        action_probability: null,
+        decision_created_at: "2026-03-01T00:00:00.000Z",
+        dispatch_id: "dispatch-1",
+        queue_state: "completed",
+        completed_at: "2026-03-05T00:00:00.000Z",
+        maturity_due_at: "2026-03-05T00:00:00.000Z",
+        maturity_status: "matured",
+        measurement_status: "verified",
+        evaluation_status: "observed",
+        evaluation_ready: true,
+        outcome_event_id: "event-1",
+        verified_observation_ids: ["obs-1"],
+        outcome_reason_code: null,
+        outcome_source_path: "docs/plans/example/plan.md",
+        linked_dispatch_count: 1,
+        recorded_at: "2026-03-05T00:00:00.000Z",
+      },
+      {
+        schema_version: "policy-evaluation.v1",
+        decision_id: "decision-2",
+        decision_context_id: "context-2",
+        business_id: "BRIK",
+        candidate_id: "cand-2",
+        chosen_action: "lp-do-plan",
+        policy_version: "self-evolving-policy.v1",
+        utility_version: "self-evolving-utility.v1",
+        decision_mode: "deterministic",
+        eligible_actions: ["lp-do-fact-find", "lp-do-plan", "lp-do-build"],
+        action_probability: null,
+        decision_created_at: "2026-03-02T00:00:00.000Z",
+        dispatch_id: "dispatch-2",
+        queue_state: "completed",
+        completed_at: "2026-03-09T00:00:00.000Z",
+        maturity_due_at: "2026-03-09T00:00:00.000Z",
+        maturity_status: "matured",
+        measurement_status: "missing",
+        evaluation_status: "missing",
+        evaluation_ready: false,
+        outcome_event_id: "event-2",
+        verified_observation_ids: [],
+        outcome_reason_code: "metric_not_available",
+        outcome_source_path: "docs/plans/example/plan.md",
+        linked_dispatch_count: 1,
+        recorded_at: "2026-03-09T00:00:00.000Z",
+      },
+      {
+        schema_version: "policy-evaluation.v1",
+        decision_id: "decision-3",
+        decision_context_id: "context-3",
+        business_id: "BRIK",
+        candidate_id: "cand-3",
+        chosen_action: "lp-do-build",
+        policy_version: "self-evolving-policy.v1",
+        utility_version: "self-evolving-utility.v1",
+        decision_mode: "deterministic",
+        eligible_actions: ["lp-do-fact-find", "lp-do-plan", "lp-do-build"],
+        action_probability: null,
+        decision_created_at: "2026-03-03T00:00:00.000Z",
+        dispatch_id: "dispatch-3",
+        queue_state: "completed",
+        completed_at: "2026-03-10T00:00:00.000Z",
+        maturity_due_at: "2026-03-10T00:00:00.000Z",
+        maturity_status: "pending",
+        measurement_status: "pending",
+        evaluation_status: "pending",
+        evaluation_ready: false,
+        outcome_event_id: null,
+        verified_observation_ids: [],
+        outcome_reason_code: null,
+        outcome_source_path: "docs/plans/example/plan.md",
+        linked_dispatch_count: 1,
+        recorded_at: "2026-03-10T00:00:00.000Z",
+      },
+      {
+        schema_version: "policy-evaluation.v1",
+        decision_id: "decision-4",
+        decision_context_id: "context-4",
+        business_id: "BRIK",
+        candidate_id: "cand-4",
+        chosen_action: "lp-do-build",
+        policy_version: "self-evolving-policy.v1",
+        utility_version: "self-evolving-utility.v1",
+        decision_mode: "deterministic",
+        eligible_actions: ["lp-do-fact-find", "lp-do-plan", "lp-do-build"],
+        action_probability: null,
+        decision_created_at: "2026-03-04T00:00:00.000Z",
+        dispatch_id: "dispatch-4",
+        queue_state: null,
+        completed_at: null,
+        maturity_due_at: null,
+        maturity_status: null,
+        measurement_status: null,
+        evaluation_status: "censored",
+        evaluation_ready: false,
+        outcome_event_id: null,
+        verified_observation_ids: [],
+        outcome_reason_code: null,
+        outcome_source_path: null,
+        linked_dispatch_count: 0,
+        recorded_at: "2026-03-12T00:00:00.000Z",
+      },
+    ],
+  };
+}
+
+describe("buildSurvivalPolicySignals", () => {
+  it("TASK-09 TC-01 separates verified outcome timing from broader closure timing", () => {
+    const signals = buildSurvivalPolicySignals({
+      evaluation_dataset: buildDataset(),
+      hold_window_days: 7,
+    });
+
+    expect(signals.total_records).toBe(4);
+    expect(signals.verified_outcome_curve.status).toBe("estimated");
+    expect(signals.closure_curve.status).toBe("estimated");
+    expect(signals.route_profiles).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          route: "lp-do-plan",
+          status: "insufficient_data",
+          missing_outcomes: 1,
+        }),
+        expect.objectContaining({
+          route: "lp-do-build",
+          status: "insufficient_data",
+          censored_records: 2,
+        }),
+      ]),
+    );
+  });
+});

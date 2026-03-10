@@ -1187,7 +1187,7 @@
     },
     {
       "filePath": "packages/ui/src/organisms/StickyBookNow.tsx",
-      "line": 244,
+      "line": 248,
       "column": 25,
       "messageId": "noRawTw",
       "message": "Use token-based utilities instead of raw Tailwind palette or arbitrary color: 'bg-white/10'"

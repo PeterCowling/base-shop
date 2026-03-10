@@ -1,0 +1,93 @@
+{
+  "schema_version": "repo-maturity-signals.v1",
+  "generated_at": "2026-03-09T10:50:34.322Z",
+  "root": "/Users/petercowling/base-shop",
+  "maturity_level": "Level-3-Reliable",
+  "overall_score": 70,
+  "raw_overall_score": 98,
+  "category_scores": {
+    "testing": 20,
+    "automation": 20,
+    "documentation": 15,
+    "operational_readiness": 15,
+    "governance": 13,
+    "code_quality": 15
+  },
+  "signals": {
+    "ci_pipeline_present": true,
+    "ci_test_gating_present": true,
+    "release_automation_present": true,
+    "dependency_update_bot_present": true,
+    "tests_present": true,
+    "coverage_tooling_present": true,
+    "lint_config_present": true,
+    "type_safety_level": "full",
+    "static_analysis_present": true,
+    "readme_present": true,
+    "contributing_or_onboarding_present": true,
+    "architecture_or_adr_docs_present": true,
+    "codeowners_present": true,
+    "security_policy_present": true,
+    "license_present": true,
+    "changelog_present": false,
+    "health_checks_present": true,
+    "feature_flags_present": true,
+    "rollback_runbook_present": true
+  },
+  "strictness_assessment": {
+    "scores": {
+      "frontier_math_adoption": 5,
+      "oss_acceleration": 3,
+      "security_depth": 3,
+      "ci_velocity": 1,
+      "structure_hygiene": 0,
+      "indexing_hygiene": 2
+    },
+    "strictness_cap": 70,
+    "cap_reasons": [
+      "ci_velocity_very_low",
+      "structure_hygiene_very_low",
+      "indexing_hygiene_low",
+      "root_zero_byte_files_present"
+    ],
+    "metrics": {
+      "advanced_math_module_roots_used": 5,
+      "advanced_math_import_sites": 16,
+      "external_dependency_count": 2805,
+      "top_level_dirs_total": 92,
+      "top_level_dirs_without_readme": 64,
+      "docs_index_coverage_pct": 1.7,
+      "package_src_index_coverage_pct": 49.9,
+      "setup_repo_invocations": 46,
+      "max_workflow_timeout_minutes": 75,
+      "merge_gate_wait_minutes": 55,
+      "security_tool_count": 0,
+      "rate_limit_call_sites": 10,
+      "cms_rate_limit_call_sites": 10,
+      "root_zero_byte_files": [
+        "=",
+        "=14",
+        "=18",
+        "4",
+        "Double",
+        "Effort",
+        "lp-do-build",
+        "n",
+        "next",
+        "nPrecursor-DISCOVERY-01:",
+        "nUpdated:",
+        "Value",
+        "xargs"
+      ],
+      "root_test_dir_count": 3
+    }
+  },
+  "critical_controls_missing": [],
+  "notes": [
+    "strictness_cap_applied_70",
+    "strictness_cap_reason:ci_velocity_very_low",
+    "strictness_cap_reason:structure_hygiene_very_low",
+    "strictness_cap_reason:indexing_hygiene_low",
+    "strictness_cap_reason:root_zero_byte_files_present"
+  ]
+}

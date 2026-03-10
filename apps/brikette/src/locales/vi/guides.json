@@ -313,32 +313,32 @@
     "editorialPanel": {
       "title": "Quy trình biên tập",
       "status": {
-        "draft": "Draft",
-        "review": "In review",
-        "live": "Live"
+        "draft": "Nháp",
+        "review": "Để ôn lại",
+        "live": "Sống"
       },
       "workflow": {
         "draftPreview": "Xem trước bản nháp",
-        "published": "Published",
+        "published": "Xuất bản",
         "pending": "Đang chờ xuất bản",
         "allComplete": "Đã hoàn thành tất cả mục kiểm tra",
         "outstanding_one": "{{count}} mục chưa hoàn thành",
         "outstanding_other": "{{count}} mục chưa hoàn thành"
       },
       "draftPath": {
-        "label": "Draft path",
+        "label": "Đường dẫn nháp",
         "dashboardCta": "Mở bảng điều khiển bản nháp"
       },
       "publish": {
-        "heading": "Publish to",
-        "primary": "Primary"
+        "heading": "Xuất bản tới",
+        "primary": "Chính"
       },
       "checklist": {
         "heading": "Danh sách kiểm tra hoàn thiện",
         "status": {
-          "missing": "Missing",
+          "missing": "Thiếu",
           "inProgress": "Đang xử lý",
-          "complete": "Complete"
+          "complete": "Hoàn tất"
         }
       },
       "areaLabels": {
@@ -347,5 +347,10 @@
         "experience": "Trải nghiệm"
       }
     }
+  },
+  "search": {
+    "noResults": "Không tìm thấy hướng dẫn viên",
+    "resultsCount_one": "Tìm thấy hướng dẫn {{count}}",
+    "resultsCount_other": "Tìm thấy hướng dẫn {{count}}"
   }
 }

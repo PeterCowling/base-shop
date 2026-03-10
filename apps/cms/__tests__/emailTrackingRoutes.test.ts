@@ -1,6 +1,6 @@
 import type { NextRequest } from "next/server";
 
-jest.mock("@acme/email", () => ({
+jest.mock("@acme/email/hooks", () => ({
   __esModule: true,
   emitClick: jest.fn(),
   emitOpen: jest.fn(),
@@ -17,8 +17,8 @@ describe("email tracking routes", () => {
 
   beforeEach(() => {
     jest.resetModules();
-    emitClick = require("@acme/email").emitClick as jest.Mock;
-    emitOpen = require("@acme/email").emitOpen as jest.Mock;
+    emitClick = require("@acme/email/hooks").emitClick as jest.Mock;
+    emitOpen = require("@acme/email/hooks").emitOpen as jest.Mock;
     emitClick.mockReset();
     emitOpen.mockReset();
   });
@@ -85,4 +85,3 @@ describe("email tracking routes", () => {
     expect(emitOpen).toHaveBeenCalledWith("shop1", { campaign: "c1" });
   });
 });
-

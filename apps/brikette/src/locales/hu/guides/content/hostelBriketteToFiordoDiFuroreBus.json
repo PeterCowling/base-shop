@@ -8,7 +8,7 @@
     "Kövesse ezt az útvonalat, hogy eljuthasson a Hostel Brikette-ből Fiordo di Furore-ba a SITA-busszal anélkül, hogy le kellene hagynia egy megállót, vagy felkészületlenül érkezne.",
     "A fiordnak nincs jegyértékesítő létesítménye vagy üzlete, így ezek a lépcsők fedezik a jegyeket, a legközelebbi buszmegállót és a strandra vezető lépcsőt."
   ],
-  "warningsTitle": "Before you leave the hostel",
+  "warningsTitle": "Mielőtt elhagyja a hostel",
   "warnings": [
     "Buy a round-trip SITA ticket in Positano — there is no way to purchase or validate tickets once you reach the beach.",
     "Buses fill quickly in peak months and may skip the stop when full, so allow extra time for your journey."
@@ -75,7 +75,7 @@
     "Mentse el a %LINK:fiordoDiFuroreBusReturn|Fiordo di Furore → Hostel Brikette visszaút kalauzát% visszaútjához.",
     "Jump to the %LINK:positanoBeaches|Positano beaches overview% to compare other swim spots for the same day."
   ],
-  "faqsTitle": "Common questions",
+  "faqsTitle": "Általános kérdések",
   "faqs": [
     {
       "q": "Valóban előre meg kell vásárolnom a retúrjegyet?",

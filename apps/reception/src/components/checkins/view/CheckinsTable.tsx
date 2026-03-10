@@ -1,11 +1,17 @@
 import React from "react";
+import { AlertTriangle, Info, UserPlus } from "lucide-react";
 
 import { Input } from "@acme/design-system";
-import { Button, Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
+import { Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
 
+import type { CheckinMode } from "../../../hooks/utilities/useCheckinsModes";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
+import DateSelector from "../../common/DateSelector";
+import { FilterToolbar } from "../../common/FilterToolbar";
+import { OperationalTableScreen } from "../../common/OperationalTableScreen";
+import ReceptionSkeleton from "../../common/ReceptionSkeleton";
+import { TableCard } from "../../common/TableCard";
 import BookingRow from "../BookingRow";
-import DateSelector from "../DateSelector";
 import ArchiveConfirmationModal from "../header/ArchiveConfirmationModal";
 import BookingModal from "../header/BookingModal";
 import CheckinsHeader from "../header/CheckinsHeader";
@@ -15,7 +21,6 @@ import TableHeader from "../TableHeader";
 interface Props {
   selectedDate: string;
   onDateChange: (d: string) => void;
-  username?: string;
   roomsReady: boolean;
   setRoomsReady: (v: boolean) => void;
   loading: boolean;
@@ -23,9 +28,7 @@ interface Props {
   finalSortedData: CheckInRow[];
   guestsByBooking: Record<string, CheckInRow[]>;
   eligibleCount: number;
-  isEditMode: boolean;
-  isDeleteMode: boolean;
-  isAddGuestMode: boolean;
+  checkinMode: CheckinMode;
   onRowClick: (booking: CheckInRow) => void;
   onNewBookingClick: React.MouseEventHandler<HTMLButtonElement>;
   onEditClick: React.MouseEventHandler<HTMLButtonElement>;
@@ -46,10 +49,21 @@ interface Props {
   bookingStatuses: Record<string, string | undefined>;
 }
 
+/**
+ * CheckinsTableView — canonical OperationalTableScreen reference implementation.
+ *
+ * Migrated in TASK-04 (reception-theme-styling-cohesion Wave 1) to use:
+ * - OperationalTableScreen: single gradient source + standard padding
+ * - CheckinsHeader: injected via headerSlot (handles role gating internally)
+ * - FilterToolbar: slot-based; DateSelector + controls are caller-injected
+ * - TableCard: canonical surface recipe (rounded-xl bg-surface-2 border-strong shadow-xl)
+ *
+ * Modals are rendered outside TableCard as siblings in OperationalTableScreen
+ * to preserve portal/z-index independence.
+ */
 const CheckinsTableView: React.FC<Props> = ({
   selectedDate,
   onDateChange,
-  username,
   roomsReady,
   setRoomsReady,
   loading,
@@ -57,9 +71,7 @@ const CheckinsTableView: React.FC<Props> = ({
   finalSortedData,
   guestsByBooking,
   eligibleCount,
-  isEditMode,
-  isDeleteMode,
-  isAddGuestMode,
+  checkinMode,
   onRowClick,
   onNewBookingClick,
   onEditClick,
@@ -76,57 +88,92 @@ const CheckinsTableView: React.FC<Props> = ({
   onToggleCancelled,
   bookingStatuses,
 }) => (
-  <div className="min-h-screen flex flex-col p-5">
-    <CheckinsHeader
-      onNewBookingClick={onNewBookingClick}
-      onEditClick={onEditClick}
-      onDeleteClick={onDeleteClick}
-      onArchiveClick={onArchiveClick}
-      eligibleCount={eligibleCount}
-    />
-    <div className="flex-grow bg-surface rounded-lg shadow p-6 space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+  <OperationalTableScreen
+    title="Check-ins"
+    headerSlot={
+      <CheckinsHeader
+        onNewBookingClick={onNewBookingClick}
+        onEditClick={onEditClick}
+        onDeleteClick={onDeleteClick}
+        onArchiveClick={onArchiveClick}
+        eligibleCount={eligibleCount}
+      />
+    }
+  >
+    <TableCard>
+      {/* Mode banners */}
+      {checkinMode === "edit" && (
+        <div className="bg-info-light/80 rounded-lg px-4 py-2.5 flex items-center gap-2.5 border border-info-main/20">
+          <Info className="text-info-main shrink-0" size={16} />
+          <span className="text-info-main text-sm font-medium">
+            Click a row to edit the booking
+          </span>
+        </div>
+      )}
+      {checkinMode === "delete" && (
+        <div className="bg-error-main/10 rounded-lg px-4 py-2.5 flex items-center gap-2.5 border border-error-main/20">
+          <AlertTriangle className="text-error-main shrink-0" size={16} />
+          <span className="text-error-main text-sm font-medium">
+            Click a row to delete the booking
+          </span>
+        </div>
+      )}
+      {checkinMode === "addGuest" && (
+        <div className="bg-success-light/80 rounded-lg px-4 py-2.5 flex items-center gap-2.5 border border-success-main/20">
+          <UserPlus className="text-success-main shrink-0" size={16} />
+          <span className="text-success-main text-sm font-medium">
+            Click a row to add a guest to that booking
+          </span>
+        </div>
+      )}
+
+      {/* Filter controls */}
+      <FilterToolbar>
+        <div className="space-y-3 w-full">
           <DateSelector
             selectedDate={selectedDate}
             onDateChange={onDateChange}
-            username={username}
+            accessMode="role-aware-calendar"
+            calendarColorVariant="primary"
           />
-          <label className="flex items-center gap-2 text-sm cursor-pointer">
-            <Input compatibilityMode="no-wrapper"
-              type="checkbox"
-              checked={showCancelled}
-              onChange={onToggleCancelled}
-              className="w-4 h-4 cursor-pointer"
-            />
-            <span>Show cancelled</span>
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="flex items-center gap-2.5 text-sm text-muted-foreground cursor-pointer select-none group">
+              <Input
+                compatibilityMode="no-wrapper"
+                type="checkbox"
+                checked={showCancelled}
+                onChange={onToggleCancelled}
+                className="w-4 h-4 cursor-pointer accent-primary-main"
+              />
+              <span className="group-hover:text-foreground transition-colors">Show cancelled</span>
+            </label>
+            {roomsReady ? (
+              <span className="inline-flex items-center gap-1.5 rounded-lg bg-success-main/10 border border-success-main/20 px-3 py-1.5 text-sm font-semibold text-success-main">
+                <span className="h-1.5 w-1.5 rounded-full bg-success-main" />
+                Rooms Ready
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={() => setRoomsReady(true)}
+                className="rounded-lg bg-primary-main px-4 py-2 text-sm font-semibold text-primary-fg transition-all duration-150 hover:brightness-110 active:scale-95"
+              >
+                Rooms Ready
+              </button>
+            )}
+          </div>
         </div>
-        {roomsReady ? (
-          <span className="ms-4 text-success-main font-semibold">
-            Rooms are Set
-          </span>
-        ) : (
-            <Button
-            type="button"
-            onClick={() => setRoomsReady(true)}
-            className="px-3 py-2 bg-success-main text-primary-fg rounded"
-          >
-            Rooms Ready
-          </Button>
-        )}
-      </div>
-      <div className="overflow-x-auto">
-        <Table className="w-full table-auto border border-border-2 text-sm">
+      </FilterToolbar>
+
+      {/* Table */}
+      <div className="overflow-x-auto rounded-lg border border-border-strong">
+        <Table className="w-full table-auto text-sm">
           <TableHeader />
           <TableBody>
             {loading && (
               <TableRow>
-                <TableCell
-                  colSpan={12}
-                  className="p-4 text-center italic text-muted-foreground"
-                >
-                  Loading...
+                <TableCell colSpan={12} className="p-0">
+                  <ReceptionSkeleton rows={5} />
                 </TableCell>
               </TableRow>
             )}
@@ -141,9 +188,9 @@ const CheckinsTableView: React.FC<Props> = ({
               <TableRow>
                 <TableCell
                   colSpan={12}
-                  className="p-4 text-center italic text-muted-foreground"
+                  className="p-8 text-center italic text-muted-foreground"
                 >
-                  No checkins found for this date.
+                  No check-ins found for this date.
                 </TableCell>
               </TableRow>
             )}
@@ -157,7 +204,7 @@ const CheckinsTableView: React.FC<Props> = ({
                   selectedDate={selectedDate}
                   allGuests={guestsByBooking[guestRow.bookingRef] || []}
                   onRowClick={
-                    isEditMode || isDeleteMode || isAddGuestMode
+                    checkinMode !== "idle"
                       ? onRowClick
                       : undefined
                   }
@@ -167,7 +214,9 @@ const CheckinsTableView: React.FC<Props> = ({
           </TableBody>
         </Table>
       </div>
-    </div>
+    </TableCard>
+
+    {/* Modals — outside TableCard as siblings; preserves portal/z-index independence */}
     {selectedBooking && (
       <BookingModal booking={selectedBooking} onClose={closeSelectedBooking} />
     )}
@@ -183,7 +232,7 @@ const CheckinsTableView: React.FC<Props> = ({
         onArchiveComplete={onArchiveComplete}
       />
     )}
-  </div>
+  </OperationalTableScreen>
 );
 
 export default CheckinsTableView;

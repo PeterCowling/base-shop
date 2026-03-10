@@ -2,10 +2,8 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import path from "node:path";
 
-import { PLACEHOLDER_PHRASES } from "@tests/utils/detectRenderedI18nPlaceholders";
-
-import { type AppLanguage,i18nConfig } from "@/i18n.config";
-
+import { type AppLanguage, i18nConfig } from "../../../i18n.config";
+import { PLACEHOLDER_PHRASES } from "../../utils/detectRenderedI18nPlaceholders";
 import { resolveGuideContentFileAllowlist } from "../helpers/guideFilters";
 
 const LOCALES_ROOT = path.resolve(__dirname, "../../../locales");
@@ -157,7 +155,7 @@ function isSlugLike(value: string): boolean {
   const trimmed = value.trim();
   if (trimmed.length < 4 || trimmed.length > 160) return false;
   if (trimmed.includes(" ")) return false;
-    // Kebab-case slugs (canonical across locales).
+  // Kebab-case slugs (canonical across locales).
   // eslint-disable-next-line security/detect-unsafe-regex -- TEST-1001 Static pattern for validating kebab-case slugs; no user input. [ttl=2026-12-31]
   return /^[a-z0-9]+(?:-[a-z0-9]+)*$/u.test(trimmed);
 }
@@ -607,8 +605,20 @@ describe("i18n parity & quality audit (guide content structure)", () => {
       throw new Error(message);
     }
 
-     
+
     console.warn("[WARN] " + message);
     expect(true).toBe(true);
+  });
+});
+
+describe("TASK-05: discount claim cross-namespace consistency", () => {
+  // Regression guard: ensures EN modals.offers.perks.discount stays aligned with the 25% claim
+  // used on all other surfaces. Reverts to "10%" would surface here immediately.
+  it("TC-01: EN modals.offers.perks.discount contains '25'", () => {
+    const modalsPath = path.join(LOCALES_ROOT, "en", "modals.json");
+    const modals = JSON.parse(readFileSync(modalsPath, "utf-8")) as Record<string, unknown>;
+    const offers = modals.offers as Record<string, Record<string, string>> | undefined;
+    const discount: string = offers?.perks?.discount ?? "";
+    expect(discount).toContain("25");
   });
 });

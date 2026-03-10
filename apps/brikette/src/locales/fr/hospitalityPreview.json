@@ -1,0 +1,12 @@
+{
+  "title": "Aperçu du thème de l'accueil",
+  "guestActivation": {
+    "label": "Activation des invités",
+    "description": "7 derniers jours"
+  },
+  "signalBridge": {
+    "title": "Contrôle de la passerelle de signalisation",
+    "etaShared": "ETA partagée",
+    "cashPrepared": "Espèces préparées"
+  }
+}

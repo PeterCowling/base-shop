@@ -3,7 +3,7 @@
     "title": "Bản dịch đang được chuẩn bị.",
     "description": "Bức tranh tổng thể: di chuyển, hoạt động và mẹo thực tế cho kỳ nghỉ Positano."
   },
-  "linkLabel": "Positano Travel Guide",
+  "linkLabel": "Hướng dẫn du lịch Positano",
   "intro": [
     "Bản dịch đang được chuẩn bị.",
     "Bản dịch đang được chuẩn bị."
@@ -63,34 +63,34 @@
     ],
     "sections": {
       "whereToStay": {
-        "title": "Where to stay",
+        "title": "Ở đâu?",
         "body": "Bản dịch đang được chuẩn bị."
       },
       "whenToVisit": {
-        "title": "When to visit",
+        "title": "Khi nào đến thăm",
         "body": "Bản dịch đang được chuẩn bị."
       },
       "gettingAround": {
-        "title": "Getting around",
+        "title": "Đi lòng vòng.",
         "arrivals": "Bản dịch đang được chuẩn bị.",
         "withinTown": "Bản dịch đang được chuẩn bị.",
         "ferries": "Bản dịch đang được chuẩn bị."
       },
       "thingsToDo": {
-        "title": "Things to do",
+        "title": "Việc phải làm",
         "beaches": "Bản dịch đang được chuẩn bị.",
         "pathOfTheGods": "Bản dịch đang được chuẩn bị.",
         "dayTrips": "Bản dịch đang được chuẩn bị."
       },
       "moneySavers": {
-        "title": "Money savers",
+        "title": "Tiết kiệm tiền",
         "eat": "Bản dịch đang được chuẩn bị.",
         "travel": "Bản dịch đang được chuẩn bị.",
         "stay": "Bản dịch đang được chuẩn bị."
       }
     },
-    "tipsTitle": "Where to save",
-    "faqHeading": "FAQs",
+    "tipsTitle": "Nơi để lưu",
+    "faqHeading": "Câu hỏi thường gặp",
     "faqs": [
       {
         "question": "Bản dịch đang được chuẩn bị.",

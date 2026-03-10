@@ -5,6 +5,7 @@ import { type FC, type MouseEventHandler } from "react";
 import { Inline } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../../context/AuthContext";
+import { canAccess, Permissions } from "../../../lib/roles";
 
 import ArchiveButton from "./ArchiveButton";
 import DeleteButton from "./DeleteButton";
@@ -40,16 +41,17 @@ const CheckinsHeader: FC<CheckinsHeaderProps> = ({
   const { user } = useAuth();
 
   return (
-    <div className="grid grid-cols-3 items-center mb-6">
-      {/* Left cell intentionally left blank */}
-      <div />
-      {/* Center cell with title */}
-      <h1 className="text-5xl font-heading text-primary-main text-center">
-        CHECKINS
-      </h1>
-      {/* Right cell with booking, edit, and delete buttons only if user is "Pete" */}
-      <Inline wrap={false} gap={0} className="justify-end pr-5 space-x-2">
-        {user?.user_name === "Pete" && (
+    <div className="flex items-center justify-between mb-6">
+      {/* Title with green accent bar */}
+      <div className="flex items-center gap-3">
+        <div className="h-8 w-1 rounded-full bg-primary-main" aria-hidden="true" />
+        <h1 className="text-2xl font-heading font-semibold text-foreground tracking-wide">
+          Check-ins
+        </h1>
+      </div>
+      {/* Action buttons only for users with bulk-action access */}
+      <Inline wrap={false} gap={0} className="justify-end space-x-2">
+        {canAccess(user ?? null, Permissions.BULK_ACTIONS) && (
           <>
             <NewBookingButton onClick={onNewBookingClick} />
             <EditButton onClick={onEditClick} />

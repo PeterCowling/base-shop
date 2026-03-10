@@ -9,6 +9,10 @@ import { useFirebaseDatabase } from "../../services/useFirebase";
  * Fetches booking metadata (status flags) for a list of booking refs.
  * Returns a map of bookingRef -> status ("cancelled" | undefined).
  *
+ * Uses a single subtree listener on the /bookingMeta root and filters
+ * client-side to only the requested refs, reducing Firebase listener count
+ * from N (one per booking) to 1 regardless of how many refs are provided.
+ *
  * Used by CheckinsTable to filter out cancelled bookings.
  */
 export default function useBookingMetaStatuses(
@@ -36,34 +40,49 @@ export default function useBookingMetaStatuses(
       return;
     }
 
-    // Reset when the ref set changes to avoid stale entries.
+    // Reset when the ref set changes to avoid stale entries from a previous ref set.
     setStatuses({});
 
-    const unsubscribers: Array<() => void> = [];
+    // Single subtree listener on the bookingMeta root.
+    // The snapshot delivers the full bookingMeta subtree; we extract only the
+    // requested refs client-side, keeping the returned map bounded.
+    const rootRef = ref(database, "bookingMeta");
 
-    for (const bookingRef of bookingRefsStable) {
-      const statusRef = ref(database, `bookingMeta/${bookingRef}/status`);
-      const unsubscribe = onValue(
-        statusRef,
-        (snapshot) => {
-          const status = snapshot.val() as string | null;
-          setStatuses((prev) => {
-            const next = status ?? undefined;
-            if (prev[bookingRef] === next) {
-              return prev;
+    const unsubscribe = onValue(
+      rootRef,
+      (snapshot) => {
+        const snapshotVal = (snapshot.val() ?? {}) as Record<
+          string,
+          { status?: string } | undefined
+        >;
+
+        setStatuses((prev) => {
+          const next: Record<string, string | undefined> = {};
+          let changed = false;
+
+          for (const bookingRef of bookingRefsStable) {
+            const status = snapshotVal[bookingRef]?.status ?? undefined;
+            next[bookingRef] = status;
+            if (prev[bookingRef] !== status) {
+              changed = true;
             }
-            return { ...prev, [bookingRef]: next };
-          });
-        },
-        (error) => {
-          console.error(`Failed to fetch status for booking ${bookingRef}:`, error);
-        },
-      );
-      unsubscribers.push(unsubscribe);
-    }
+          }
+
+          // Only update state if something actually changed to avoid
+          // triggering unnecessary re-renders.
+          if (!changed && Object.keys(prev).length === bookingRefsStable.length) {
+            return prev;
+          }
+          return next;
+        });
+      },
+      (error) => {
+        console.error("Failed to fetch bookingMeta statuses:", error);
+      },
+    );
 
     return () => {
-      unsubscribers.forEach((unsub) => unsub());
+      unsubscribe();
     };
   }, [database, bookingRefsStable]);
 

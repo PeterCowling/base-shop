@@ -20,29 +20,13 @@ function deferred<T>() {
 
 const mockSpec = { layout: "default", sections: [], hero: "", cta: "" };
 
-const SpecFormMock = jest.fn(({ onNext }: any) => (
-  <div data-cy="spec-form">
-    <button data-cy="next" onClick={() => onNext(mockSpec)}>
-      next
-    </button>
-  </div>
-));
-
-const PreviewPaneMock = jest.fn(({ onConfirm }: any) => (
-  <div data-cy="preview-pane">
-    <button data-cy="confirm" onClick={onConfirm}>
-      confirm
-    </button>
-  </div>
-));
-
 jest.mock("next/navigation", () => ({
-  useParams: mockUseParams,
+  useParams: (...args: any[]) => mockUseParams(...args),
 }));
 
 jest.mock("../actions", () => ({
-  createDraft: mockCreateDraft,
-  finalize: mockFinalize,
+  createDraft: (...args: any[]) => mockCreateDraft(...args),
+  finalize: (...args: any[]) => mockFinalize(...args),
 }));
 
 jest.mock("@acme/i18n", () => ({
@@ -52,12 +36,24 @@ jest.mock("@acme/i18n", () => ({
 
 jest.mock("../components/SpecForm", () => ({
   __esModule: true,
-  default: SpecFormMock,
+  default: ({ onNext }: any) => (
+    <div data-testid="spec-form">
+      <button data-testid="next" onClick={() => onNext(mockSpec)}>
+        next
+      </button>
+    </div>
+  ),
 }));
 
 jest.mock("../components/PreviewPane", () => ({
   __esModule: true,
-  default: PreviewPaneMock,
+  default: ({ onConfirm }: any) => (
+    <div data-testid="preview-pane">
+      <button data-testid="confirm" onClick={onConfirm}>
+        confirm
+      </button>
+    </div>
+  ),
 }));
 
 describe("NewWizardPage", () => {

@@ -1,0 +1,284 @@
+# coverage-manifest.yaml — Business Coverage Manifest Template
+# Copy this file to docs/business-os/strategy/<BIZ>/coverage-manifest.yaml
+# and populate it for your business.
+#
+# Profile: Set 'profile' to match your business type.
+#          Supported profiles: hospitality | physical-product | saas (commented out)
+#          Profile determines which domains are mandatory vs optional.
+#
+# Overrides: You can override mandatory/optional per-domain by editing the
+#            'mandatory' field directly. The profile mapping is a starting point.
+#
+# Per-manifest override example:
+#   If your business uses the 'hospitality' profile but you also track inventory,
+#   change the Inventory domain's 'mandatory: false' to 'mandatory: true'.
+#   There is no separate override key — just edit the field in this file.
+
+schema_version: "coverage-manifest.v1"
+
+business: "<BIZ>"  # e.g. BRIK, PWRB — must match the directory name under docs/business-os/strategy/
+
+profile: hospitality  # hospitality | physical-product
+                      # 'hospitality'      — Financial, Customer, Operational, Marketing, Compliance are mandatory; Inventory is optional
+                      # 'physical-product' — all 6 domains are mandatory
+                      # 'saas'             — see commented-out SaaS example below (not enforced in Phase 1)
+
+last_updated: "<YYYY-MM-DD>"  # ISO date; update whenever you change this file
+
+domains:
+
+  # ---------------------------------------------------------------------------
+  # FINANCIAL
+  # Tracks revenue, expenses, margins, and cash-flow evidence.
+  # Backed by Stripe data and/or manually maintained doc artefacts.
+  # Mandatory for: hospitality ✓  |  physical-product ✓
+  # ---------------------------------------------------------------------------
+  - domain: Financial
+    label: "Financial Health"
+
+    # mandatory — boolean.
+    #   true  = the scanner flags this business as incomplete if the domain is absent or stale.
+    #   false = domain is optional; absence produces a warning only.
+    #
+    # hospitality profile:      mandatory: true
+    # physical-product profile: mandatory: true
+    #
+    # To override for this specific business, change the value below.
+    mandatory: true
+
+    # backing_type — how coverage is verified.
+    #   'doc-only'    = presence of a matching artefact file is sufficient.
+    #   'data-backed' = artefact must also reference a live data connection (see data_connections).
+    backing_type: data-backed
+
+    # staleness_threshold_days — integer.
+    #   An artefact older than this many days (by last-modified date) is considered stale.
+    #   Default reasoning: financial data changes monthly; 30 days is a safe refresh cadence.
+    staleness_threshold_days: 30
+
+    # artifact_path_patterns — list of glob patterns.
+    #   Paths are relative to docs/business-os/strategy/<BIZ>/.
+    #   The scanner marks this domain covered if at least one matching, non-stale file exists.
+    #   Use '*' for single-segment wildcards, '**' for recursive wildcards.
+    artifact_path_patterns:
+      - "financial/**/*.md"
+      - "financial/**/*.json"
+      - "signal-review-*.md"  # weekly signal reviews often contain financial summaries
+
+    # data_connections — list of integration IDs the scanner expects to find referenced.
+    #   Phase 1 known IDs: stripe | firebase | ga4 | octorate
+    #   Any ID not in this list is treated as absent by the scanner.
+    #   Leave the list empty ([]) if backing_type is 'doc-only'.
+    data_connections:
+      - stripe
+
+  # ---------------------------------------------------------------------------
+  # INVENTORY
+  # Tracks stock levels, SKU counts, and fulfilment capacity.
+  # Mandatory for: hospitality ✗ (optional)  |  physical-product ✓
+  #
+  # hospitality profile: this domain is OPTIONAL.
+  #   Remove this entire block if your hospitality business does not manage inventory.
+  #   To make it mandatory for this specific business, change 'mandatory: false' to 'mandatory: true'.
+  # ---------------------------------------------------------------------------
+  - domain: Inventory
+    label: "Inventory & Stock"
+
+    # hospitality profile:      mandatory: false   (optional — remove block if not applicable)
+    # physical-product profile: mandatory: true
+    mandatory: false  # <-- change to true if this business manages physical inventory
+
+    backing_type: data-backed
+
+    # Default reasoning: stock levels can shift weekly; 14 days catches significant drift.
+    staleness_threshold_days: 14
+
+    artifact_path_patterns:
+      - "inventory/**/*.md"
+      - "inventory/**/*.json"
+      - "sku-list*.csv"
+
+    data_connections:
+      - firebase   # primary real-time inventory store in Phase 1
+      - octorate   # property-management systems sometimes carry room/unit inventory
+
+  # ---------------------------------------------------------------------------
+  # CUSTOMER
+  # Covers customer acquisition, retention, segmentation, and support evidence.
+  # Mandatory for: hospitality ✓  |  physical-product ✓
+  # ---------------------------------------------------------------------------
+  - domain: Customer
+    label: "Customer Insight"
+
+    # hospitality profile:      mandatory: true
+    # physical-product profile: mandatory: true
+    mandatory: true
+
+    # 'doc-only' is acceptable here because customer insight often lives in qualitative docs
+    # (interview notes, NPS summaries) rather than a live data feed.
+    backing_type: doc-only
+
+    # Default reasoning: customer behaviour shifts quarterly; 60 days keeps insight current
+    # without requiring weekly updates.
+    staleness_threshold_days: 60
+
+    artifact_path_patterns:
+      - "customer/**/*.md"
+      - "customer/**/*.json"
+      - "personas*.md"
+      - "nps-*.md"
+
+    # No live data connection required for doc-only domains; leave empty.
+    data_connections: []
+
+  # ---------------------------------------------------------------------------
+  # OPERATIONAL
+  # Covers processes, team capacity, tooling, and day-to-day execution health.
+  # Mandatory for: hospitality ✓  |  physical-product ✓
+  # ---------------------------------------------------------------------------
+  - domain: Operational
+    label: "Operational Readiness"
+
+    # hospitality profile:      mandatory: true
+    # physical-product profile: mandatory: true
+    mandatory: true
+
+    backing_type: doc-only
+
+    # Default reasoning: operational docs should be reviewed at least quarterly.
+    # 90 days is a pragmatic threshold for a small team.
+    staleness_threshold_days: 90
+
+    artifact_path_patterns:
+      - "operations/**/*.md"
+      - "sops/**/*.md"
+      - "runbooks/**/*.md"
+      - "process-improvements*.html"  # generated process-improvement reports
+
+    data_connections:
+      - octorate   # property-management / booking operations for hospitality businesses
+
+  # ---------------------------------------------------------------------------
+  # MARKETING
+  # Covers channel strategy, campaign performance, and brand positioning evidence.
+  # Mandatory for: hospitality ✓  |  physical-product ✓
+  # ---------------------------------------------------------------------------
+  - domain: Marketing
+    label: "Marketing & Growth"
+
+    # hospitality profile:      mandatory: true
+    # physical-product profile: mandatory: true
+    mandatory: true
+
+    backing_type: data-backed
+
+    # Default reasoning: marketing metrics should be reviewed monthly to catch
+    # channel drift before it compounds.
+    staleness_threshold_days: 30
+
+    artifact_path_patterns:
+      - "marketing/**/*.md"
+      - "marketing/**/*.json"
+      - "channel-strategy*.md"
+      - "signal-review-*.md"  # signal reviews often contain traffic/marketing data
+
+    data_connections:
+      - ga4      # Google Analytics 4 — web traffic and conversion data
+      - firebase # may hold campaign or email analytics
+
+  # ---------------------------------------------------------------------------
+  # COMPLIANCE
+  # Covers legal, regulatory, and policy obligations.
+  # Mandatory for: hospitality ✓  |  physical-product ✓
+  # ---------------------------------------------------------------------------
+  - domain: Compliance
+    label: "Compliance & Legal"
+
+    # hospitality profile:      mandatory: true
+    # physical-product profile: mandatory: true
+    mandatory: true
+
+    backing_type: doc-only
+
+    # Default reasoning: compliance docs are typically annual obligations.
+    # 180 days gives a mid-year check-in window.
+    staleness_threshold_days: 180
+
+    artifact_path_patterns:
+      - "compliance/**/*.md"
+      - "legal/**/*.md"
+      - "policies/**/*.md"
+      - "licenses/**/*.md"
+
+    data_connections: []
+
+# ---------------------------------------------------------------------------
+# SaaS PROFILE EXAMPLE (commented out — not enforced in Phase 1)
+#
+# If you are defining a SaaS business, uncomment and adapt the block below.
+# The SaaS profile typically makes Financial, Customer, and Operational mandatory
+# while treating Inventory as not applicable and Marketing/Compliance as optional.
+#
+# schema_version: "coverage-manifest.v1"
+# business: "<BIZ>"
+# profile: saas
+# last_updated: "<YYYY-MM-DD>"
+# domains:
+#   - domain: Financial
+#     label: "Financial Health"
+#     mandatory: true
+#     backing_type: data-backed
+#     staleness_threshold_days: 30
+#     artifact_path_patterns:
+#       - "financial/**/*.md"
+#     data_connections:
+#       - stripe
+#
+#   - domain: Inventory
+#     label: "Inventory & Stock"
+#     mandatory: false  # SaaS businesses typically have no physical inventory
+#     backing_type: doc-only
+#     staleness_threshold_days: 14
+#     artifact_path_patterns: []
+#     data_connections: []
+#
+#   - domain: Customer
+#     label: "Customer Insight"
+#     mandatory: true
+#     backing_type: data-backed
+#     staleness_threshold_days: 60
+#     artifact_path_patterns:
+#       - "customer/**/*.md"
+#     data_connections:
+#       - ga4
+#       - firebase
+#
+#   - domain: Operational
+#     label: "Operational Readiness"
+#     mandatory: true
+#     backing_type: doc-only
+#     staleness_threshold_days: 90
+#     artifact_path_patterns:
+#       - "operations/**/*.md"
+#     data_connections: []
+#
+#   - domain: Marketing
+#     label: "Marketing & Growth"
+#     mandatory: false  # optional for early-stage SaaS
+#     backing_type: data-backed
+#     staleness_threshold_days: 30
+#     artifact_path_patterns:
+#       - "marketing/**/*.md"
+#     data_connections:
+#       - ga4
+#
+#   - domain: Compliance
+#     label: "Compliance & Legal"
+#     mandatory: false  # escalate to mandatory once regulated features ship
+#     backing_type: doc-only
+#     staleness_threshold_days: 180
+#     artifact_path_patterns:
+#       - "compliance/**/*.md"
+#       - "legal/**/*.md"
+#     data_connections: []
+# ---------------------------------------------------------------------------

@@ -11,7 +11,7 @@ const CLOSE_BUTTON_CLASSNAMES = [
   "end-4",
   "top-4",
   "inline-flex",
-  "size-10",
+  "size-11",
   "items-center",
   "justify-center",
   "rounded-full",
@@ -80,7 +80,7 @@ function ContactModal({
         <button
           type="button"
           onClick={handleEmailClick}
-          className="min-h-10 min-w-10 rounded-full px-4 text-center font-medium text-brand-primary underline decoration-brand-primary underline-offset-2 transition-colors [overflow-wrap:anywhere] hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+          className="min-h-11 min-w-11 rounded-full px-4 text-center font-medium text-brand-primary underline decoration-brand-primary underline-offset-2 transition-colors [overflow-wrap:anywhere] hover:decoration-brand-bougainvillea focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
         >
           {email || copy.revealEmail}
         </button>

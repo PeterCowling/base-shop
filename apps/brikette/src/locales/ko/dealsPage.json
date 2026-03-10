@@ -3,7 +3,11 @@
   "meta": {
     "title": "9월 20일–10월 31일 숙박 15 % 할인",
     "description": "한정 기간: 공식 웹사이트 직접 예약 시 9월 20일–10월 31일 숙박에 15 % 할인이 제공되며 결제 시 자동 적용됩니다.",
-    "ogImageAlt": "기간 한정 할인 배너"
+    "ogImageAlt": "기간 한정 할인 배너",
+    "defaultTitle": "거래 및 제공 | 호스텔 Brikette",
+    "defaultDescription": "Hostel Brikette에서 직접 예약 특전 및 계절 제공.",
+    "activeTitle": "{{percent}}에서 {{from}}에 {{to}}에 머물기",
+    "activeDescription": "체크 아웃에서 자동 승인. 직접 예약 만."
   },
   "title": "{{from}}부터 {{to}}까지 숙박 시 {{percent}} % 할인",
   "promo": "공식 웹사이트에서 직접 예약하면 {{percent}} % 할인이 결제 시 자동으로 적용됩니다.",
@@ -119,6 +123,6 @@
     "other": "약관 보기."
   },
   "robots": {
-    "expiredNoindex": "noindex,follow"
+    "expiredNoindex": "사이트 맵"
   }
 }

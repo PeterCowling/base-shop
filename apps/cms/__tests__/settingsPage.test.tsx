@@ -10,7 +10,7 @@ import { __setMockSession } from "~test/mocks/next-auth";
 // Mock dependencies before importing the page
 jest.mock("@cms/auth/options", () => ({ authOptions: {} }));
 jest.mock("@cms/actions/shops.server", () => ({ resetThemeOverride: jest.fn() }));
-jest.mock("@acme/lib", () => ({ checkShopExists: jest.fn().mockResolvedValue(true) }));
+jest.mock("@acme/platform-core/shops", () => ({ checkShopExists: jest.fn().mockResolvedValue(true) }));
 const mockReadSettings = jest.fn();
 const mockReadShop = jest.fn();
 jest.mock("@acme/platform-core/repositories/json.server", () => ({

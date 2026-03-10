@@ -1,7 +1,8 @@
 import { useCallback, useState } from "react";
 import { get, ref, remove, update } from "firebase/database";
 
-import { useAuth } from "../../context/AuthContext";
+import { queueOfflineWrite } from "../../lib/offline/syncManager";
+import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type LoanMethod, type LoanTransaction } from "../../types/hooks/data/loansData";
 import { generateTransactionId } from "../../utils/generateTransactionId";
@@ -18,11 +19,8 @@ import useAllTransactions from "./useAllTransactionsMutations";
  */
 export default function useLoansMutations() {
   const database = useFirebaseDatabase();
+  const online = useOnlineStatus();
   const [error, setError] = useState<unknown>(null);
-
-  // We need the user’s info for logging deposit refunds and adding an activity.
-  // Renamed 'user' to '_user' to satisfy lint rules for unused vars.
-  const { user: _user } = useAuth();
 
   // Hooks for logging activities and financial transactions
   const { logActivity } = useActivitiesMutations();
@@ -33,7 +31,7 @@ export default function useLoansMutations() {
    *   loans/<bookingRef>/<occupantId>/txns/<transactionId>
    */
   const saveLoan = useCallback(
-    (
+    async (
       bookingRef: string,
       occupantId: string,
       transactionId: string,
@@ -41,11 +39,21 @@ export default function useLoansMutations() {
     ) => {
       setError(null);
       const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
-      const loanRef = ref(database, path);
 
+      if (!online) {
+        const queued = await queueOfflineWrite(path, "update", loanData, {
+          idempotencyKey: crypto.randomUUID(),
+          conflictPolicy: "last-write-wins",
+          domain: "loans",
+        });
+        if (queued !== null) return;
+        // IDB unavailable — fall through to direct write
+      }
+
+      const loanRef = ref(database, path);
       return update(loanRef, loanData)
         .then(() => {
-          console.log("Saved loan transaction:", path, loanData);
+          // success — no logging of financial payload
         })
         .catch((err) => {
           console.error("Error saving loan transaction:", path, err);
@@ -53,16 +61,50 @@ export default function useLoansMutations() {
           throw err;
         });
     },
-    [database]
+    [database, online]
   );
 
   /**
    * Removes the occupant node entirely if it has zero transactions left:
    *   loans/<bookingRef>/<occupantId>/txns => remove occupant if empty
+   *
+   * Fast path: when `isEmpty` is supplied, skips the Firebase read entirely.
+   *   - isEmpty === true  → single multi-path update with occupant set to null
+   *   - isEmpty === false → returns null immediately (no Firebase call)
+   * Fallback: when `isEmpty` is not supplied, reads txns then conditionally removes.
    */
   const removeOccupantIfEmpty = useCallback(
-    (bookingRef: string, occupantId: string) => {
+    (bookingRef: string, occupantId: string, isEmpty?: boolean) => {
       setError(null);
+
+      if (!online) {
+        setError(new Error("This operation requires a network connection. Please reconnect and try again."));
+        return Promise.resolve(null);
+      }
+
+      // Fast path: context has already computed occupant emptiness
+      if (isEmpty === true) {
+        const occupantPath = `loans/${bookingRef}/${occupantId}`;
+        return update(ref(database), { [occupantPath]: null })
+          .then(() => null)
+          .catch((err) => {
+            console.error(
+              "Error removing occupant node:",
+              bookingRef,
+              occupantId,
+              err
+            );
+            setError(err);
+            throw err;
+          });
+      }
+
+      if (isEmpty === false) {
+        // Occupant still has remaining txns — nothing to do
+        return Promise.resolve(null);
+      }
+
+      // Fallback: read txns and conditionally remove (backward-compatible path)
       const occupantTxnsRef = ref(
         database,
         `loans/${bookingRef}/${occupantId}/txns`
@@ -75,13 +117,7 @@ export default function useLoansMutations() {
               database,
               `loans/${bookingRef}/${occupantId}`
             );
-            return remove(occupantRef).then(() => {
-              console.log(
-                "Removed empty occupant node:",
-                bookingRef,
-                occupantId
-              );
-            });
+            return remove(occupantRef);
           }
           return null;
         })
@@ -96,79 +132,177 @@ export default function useLoansMutations() {
           throw err;
         });
     },
-    [database]
+    [database, online]
   );
 
   /**
    * Removes any existing "Loan" transactions (type === "Loan") for the given item,
    * then calls removeOccupantIfEmpty to clean up if no remaining txns.
+   *
+   * Fast path: when `matchingTxnIds` AND `isOccupantEmpty` are both supplied,
+   * skips the Firebase read and issues a single multi-path null-write update.
+   * Fallback: when `matchingTxnIds` is not supplied, reads txns then removes individually.
    */
   const removeLoanTransactionsForItem = useCallback(
-    (bookingRef: string, occupantId: string, itemName: string) => {
+    async (
+      bookingRef: string,
+      occupantId: string,
+      itemName: string,
+      matchingTxnIds?: string[],
+      isOccupantEmpty?: boolean
+    ) => {
       setError(null);
+
+      if (!online) {
+        setError(new Error("This operation requires a network connection. Please reconnect and try again."));
+        return null;
+      }
+
+      // Fast path: context has already identified matching txn IDs and occupant emptiness
+      if (matchingTxnIds !== undefined) {
+        if (matchingTxnIds.length === 0) {
+          // No matching transactions to remove
+          return null;
+        }
+
+        const pathMap: Record<string, null> = {};
+        for (const txnId of matchingTxnIds) {
+          pathMap[`loans/${bookingRef}/${occupantId}/txns/${txnId}`] = null;
+        }
+        if (isOccupantEmpty === true) {
+          pathMap[`loans/${bookingRef}/${occupantId}`] = null;
+        }
+
+        return update(ref(database), pathMap)
+          .then(() => null)
+          .catch((err) => {
+            console.error(
+              "Error removing loan transactions for item:",
+              itemName,
+              err
+            );
+            setError(err);
+            throw err;
+          });
+      }
+
+      // Fallback: read txns, find matches, remove individually, then check emptiness
       const occupantTxnsRef = ref(
         database,
         `loans/${bookingRef}/${occupantId}/txns`
       );
 
-      return get(occupantTxnsRef)
-        .then((snapshot) => {
-          if (snapshot.exists()) {
-            snapshot.forEach((txnSnap) => {
-              const txn = txnSnap.val() as LoanTransaction;
-              if (txn.item === itemName && txn.type === "Loan") {
-                const txnPath = `loans/${bookingRef}/${occupantId}/txns/${txnSnap.key}`;
-                remove(ref(database, txnPath))
-                  .then(() => {
-                    console.log("Removed Loan transaction:", txnPath);
-                  })
-                  .catch((err) => {
-                    console.error("Error removing transaction:", txnPath, err);
-                    setError(err);
-                    throw err;
-                  });
-              }
-            });
-          }
-        })
-        .then(() => {
-          // After removing matching "Loan" transactions, check occupant emptiness
-          return removeOccupantIfEmpty(bookingRef, occupantId);
-        })
-        .catch((err) => {
-          console.error(
-            "Error removing loan transactions for item:",
-            itemName,
-            err
-          );
-          setError(err);
-          throw err;
-        });
+      try {
+        const snapshot = await get(occupantTxnsRef);
+        const removals: Promise<void>[] = [];
+        if (snapshot.exists()) {
+          snapshot.forEach((txnSnap) => {
+            const txn = txnSnap.val() as LoanTransaction;
+            if (txn.item === itemName && txn.type === "Loan") {
+              const txnPath = `loans/${bookingRef}/${occupantId}/txns/${txnSnap.key}`;
+              removals.push(remove(ref(database, txnPath)));
+            }
+          });
+        }
+
+        await Promise.all(removals);
+
+        // After removing matching "Loan" transactions, check occupant emptiness
+        return await removeOccupantIfEmpty(bookingRef, occupantId);
+      } catch (err) {
+        console.error(
+          "Error removing loan transactions for item:",
+          itemName,
+          err
+        );
+        setError(err);
+        throw err;
+      }
     },
-    [database, removeOccupantIfEmpty]
+    [database, online, removeOccupantIfEmpty]
   );
 
   /**
    * Directly remove a specific transaction by occupant + transaction ID,
    * then remove occupant if empty. If the item is "Keycard", log an activity (#13)
    * and create a keycard deposit refund entry in allFinancialTransactions.
+   *
+   * Fast path: when `deposit` is supplied, skips the Firebase pre-read and uses a
+   * single multi-path null-write to delete the transaction (and optionally the
+   * occupant node when `isEmpty` is true).
+   * Fallback: when `deposit` is not supplied, reads the txn first (backward-compatible).
    */
   const removeLoanItem = useCallback(
     (
       bookingRef: string,
       occupantId: string,
       transactionId: string,
-      itemName: string
+      itemName: string,
+      deposit?: number,
+      isEmpty?: boolean
     ) => {
       setError(null);
 
-      const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
-      const txnRef = ref(database, path);
+      if (!online) {
+        setError(new Error("This operation requires a network connection. Please reconnect and try again."));
+        return Promise.resolve(null);
+      }
+
+      const txnPath = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
+
+      // Fast path: deposit value known from context — skip pre-read
+      if (deposit !== undefined) {
+        const originalDeposit = deposit;
+
+        const pathMap: Record<string, null> = {
+          [txnPath]: null,
+        };
+        if (isEmpty === true) {
+          pathMap[`loans/${bookingRef}/${occupantId}`] = null;
+        }
+
+        return update(ref(database), pathMap)
+          .then(() => {
+            if (itemName === "Keycard") {
+              return logActivity(occupantId, 13)
+                .then(() => {
+                  if (originalDeposit > 0) {
+                    const transactionKey = `${generateTransactionId()}`;
+                    return addToAllTransactions(transactionKey, {
+                      bookingRef,
+                      occupantId,
+                      amount: -originalDeposit,
+                      count: 1,
+                      description: "Keycard deposit refund",
+                      method: "cash",
+                      type: "deposit",
+                      isKeycard: true,
+                      itemCategory: "KeycardDepositRefund",
+                    });
+                  }
+                  return null;
+                })
+                .catch((err) => {
+                  console.error("Keycard activity/refund error:", err);
+                  setError(err);
+                  throw err;
+                });
+            }
+            return null;
+          })
+          .catch((err) => {
+            console.error("Error removing occupant transaction:", txnPath, err);
+            setError(err);
+            throw err;
+          });
+      }
+
+      // Fallback: read the transaction first so we know how much to refund
+      const txnRef = ref(database, txnPath);
 
       let originalDeposit = 0;
       let _originalMethod: LoanMethod | undefined;
 
-      // Read the transaction first so we know how much to refund
       return get(txnRef)
         .then((snapshot) => {
           if (snapshot.exists()) {
@@ -179,8 +313,6 @@ export default function useLoansMutations() {
         })
         .then(() => remove(txnRef))
         .then(() => {
-          console.log("Removed occupant transaction:", path);
-
           if (itemName === "Keycard") {
             return logActivity(occupantId, 13)
               .then(() => {
@@ -215,12 +347,12 @@ export default function useLoansMutations() {
           return removeOccupantIfEmpty(bookingRef, occupantId);
         })
         .catch((err) => {
-          console.error("Error removing occupant transaction:", path, err);
+          console.error("Error removing occupant transaction:", txnPath, err);
           setError(err);
           throw err;
         });
     },
-    [database, removeOccupantIfEmpty, logActivity, addToAllTransactions]
+    [database, online, removeOccupantIfEmpty, logActivity, addToAllTransactions]
   );
 
   /**
@@ -235,6 +367,11 @@ export default function useLoansMutations() {
       count: number
     ) => {
       setError(null);
+
+      if (!online) {
+        setError(new Error("This operation requires a network connection. Please reconnect and try again."));
+        return Promise.resolve(null);
+      }
 
       const deposit = 10 * count;
       const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
@@ -262,7 +399,7 @@ export default function useLoansMutations() {
           throw err;
         });
     },
-    [database, addToAllTransactions, logActivity]
+    [database, online, addToAllTransactions, logActivity]
   );
 
   /**
@@ -276,6 +413,12 @@ export default function useLoansMutations() {
       depositType: LoanMethod
     ) => {
       setError(null);
+
+      if (!online) {
+        setError(new Error("This operation requires a network connection. Please reconnect and try again."));
+        return Promise.resolve(null);
+      }
+
       const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
       const loanRef = ref(database, path);
 
@@ -286,16 +429,13 @@ export default function useLoansMutations() {
           const newDeposit = depositType === "CASH" ? 10 * txn.count : 0;
           return update(loanRef, { depositType, deposit: newDeposit });
         })
-        .then(() => {
-          console.log("Updated deposit type:", path, depositType);
-        })
         .catch((err) => {
           console.error("Error updating deposit type:", path, err);
           setError(err);
           throw err;
         });
     },
-    [database]
+    [database, online]
   );
 
   return {

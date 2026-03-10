@@ -16,10 +16,14 @@ import {
 } from "@acme/ui/operations";
 
 import AuthenticatedApp from "./components/AuthenticatedApp";
+import ThemeModeDock from "./components/common/ThemeModeDock";
 import LoadingSpinner from "./components/LoadingSpinner";
 import Login from "./components/Login";
 import { useAuth } from "./context/AuthContext";
+import { OfflineSyncContext } from "./context/OfflineSyncContext";
 import useInactivityLogout from "./hooks/client/useInactivityLogoutClient";
+import { readJson, writeJson } from "./lib/offline/storage";
+import { useOfflineSync } from "./lib/offline/useOfflineSync";
 import { useFirebaseDatabase } from "./services/useFirebase";
 import type { ModalName } from "./types/ModalName";
 
@@ -31,7 +35,8 @@ function App({ children }: AppProps) {
   const { user, status, logout } = useAuth();
   const [activeModal, setActiveModal] = useState<ModalName | null>(null);
 
-  useFirebaseDatabase();
+  const database = useFirebaseDatabase();
+  const offlineSyncValue = useOfflineSync({ database, autoSync: true });
 
   const router = useRouter();
   const pathname = usePathname();
@@ -60,8 +65,7 @@ function App({ children }: AppProps) {
       if (!user) return;
       if (isArrowKeyCapturingElement(e.target)) return;
 
-      if (e.key === "ArrowUp") {
-        e.preventDefault();
+      const cycleForward = () => {
         if (activeModal === null) {
           setActiveModal(modals[0] ?? null);
         } else {
@@ -69,10 +73,9 @@ function App({ children }: AppProps) {
           const nextIndex = (currentIndex + 1) % modals.length;
           setActiveModal(modals[nextIndex] ?? null);
         }
-      }
+      };
 
-      if (e.key === "ArrowDown") {
-        e.preventDefault();
+      const cycleBackward = () => {
         if (activeModal === null) {
           setActiveModal(modals[modals.length - 1] ?? null);
         } else {
@@ -80,6 +83,16 @@ function App({ children }: AppProps) {
           const prevIndex = (currentIndex - 1 + modals.length) % modals.length;
           setActiveModal(modals[prevIndex] ?? null);
         }
+      };
+
+      if (e.key === "ArrowUp" || e.key === "ArrowRight") {
+        e.preventDefault();
+        cycleForward();
+      }
+
+      if (e.key === "ArrowDown" || e.key === "ArrowLeft") {
+        e.preventDefault();
+        cycleBackward();
       }
     },
     [user, activeModal, modals, isArrowKeyCapturingElement]
@@ -92,17 +105,17 @@ function App({ children }: AppProps) {
 
   useEffect(() => {
     if (user && pathname !== "/") {
-      localStorage.setItem("lastPath", pathname);
+      writeJson("lastPath", pathname);
     }
   }, [user, pathname]);
 
   const handleLoginSuccess = useCallback((): void => {
-    const lastPath = localStorage.getItem("lastPath");
+    const lastPath = readJson<string>("lastPath");
     if (lastPath && lastPath !== "/") {
       router.push(lastPath);
     } else {
       router.push("/bar");
-      localStorage.setItem("lastPath", "/bar");
+      writeJson("lastPath", "/bar");
     }
   }, [router]);
 
@@ -133,27 +146,31 @@ function App({ children }: AppProps) {
     return (
       <NotificationProviderWithGlobal defaultDuration={1500}>
         <NotificationContainer position="top-center" />
+        <ThemeModeDock />
         <LoadingSpinner />
       </NotificationProviderWithGlobal>
     );
   }
 
   return (
-    <NotificationProviderWithGlobal defaultDuration={1500}>
-      <NotificationContainer position="top-center" />
-      {user && legacyUser ? (
-        <AuthenticatedApp
-          user={legacyUser}
-          activeModal={activeModal}
-          closeModal={closeModal}
-          handleLogout={handleLogout}
-        >
-          {children}
-        </AuthenticatedApp>
-      ) : (
-        <Login onLoginSuccess={handleLoginSuccess} />
-      )}
-    </NotificationProviderWithGlobal>
+    <OfflineSyncContext.Provider value={offlineSyncValue}>
+      <NotificationProviderWithGlobal defaultDuration={1500}>
+        <NotificationContainer position="top-center" />
+        <ThemeModeDock />
+        {user && legacyUser ? (
+          <AuthenticatedApp
+            user={legacyUser}
+            activeModal={activeModal}
+            closeModal={closeModal}
+            handleLogout={handleLogout}
+          >
+            {children}
+          </AuthenticatedApp>
+        ) : (
+          <Login onLoginSuccess={handleLoginSuccess} />
+        )}
+      </NotificationProviderWithGlobal>
+    </OfflineSyncContext.Provider>
   );
 }
 

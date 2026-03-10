@@ -1,0 +1,32 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "score": 6,
+      "lp_score": 3.0,
+      "critical": 0,
+      "major": 3,
+      "minor": 1
+    },
+    {
+      "round": 2,
+      "score": 5,
+      "lp_score": 2.5,
+      "critical": 1,
+      "major": 3,
+      "minor": 0,
+      "note": "TDZ error in CLI execution plan (BUSINESS used before declaration)"
+    },
+    {
+      "round": 3,
+      "score": 8,
+      "lp_score": 4.0,
+      "critical": 0,
+      "major": 2,
+      "minor": 0,
+      "note": "Remaining findings are scope/wording nits, fixed in place"
+    }
+  ],
+  "final_lp_score": 4.0,
+  "final_verdict": "credible"
+}

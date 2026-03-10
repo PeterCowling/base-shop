@@ -30,7 +30,7 @@ const BASE_BUTTON_CLASSES = [
 const SELECTED_BUTTON_CLASSES = [
   "border-brand-primary",
   "bg-brand-primary",
-  "text-fg-inverse",
+  "text-brand-on-primary",
 ] as const;
 
 const IDLE_BUTTON_CLASSES = [

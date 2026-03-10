@@ -50,8 +50,7 @@ const basePreArrivalData: PreArrivalData = {
 
 const defaultProps = {
   firstName: 'Jane',
-  checkInCode: 'BRK-123',
-  isCodeLoading: false,
+  codeState: { checkInCode: 'BRK-123', isCodeLoading: false },
   preArrivalData: basePreArrivalData,
   cashAmounts: { cityTax: 18, deposit: 10 },
   nights: 3,
@@ -100,7 +99,7 @@ describe('ArrivalHome DS Migration', () => {
   // TC-05: No raw red palette classes in error state
   it('should use semantic danger tokens instead of raw red classes', () => {
     const { container } = render(
-      <ArrivalHome {...defaultProps} isOffline={true} checkInCode={null} />,
+      <ArrivalHome {...defaultProps} codeState={{ checkInCode: null, isCodeLoading: false, isOffline: true }} />,
     );
     const html = container.innerHTML;
     expect(html).not.toMatch(/\bbg-red-/);

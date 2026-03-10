@@ -18,6 +18,7 @@ export const GA4_ENUMS = {
     "deals_book_direct",
     "content_sticky_check_availability",
     "offers_modal_reserve",
+    "experiences_book_cta",
   ] as const,
   ctaLocation: [
     "desktop_header",
@@ -28,6 +29,7 @@ export const GA4_ENUMS = {
     "book_page",
     "room_detail",
     "deals_page",
+    "experiences_page",
     "guide_detail",
     "about_page",
     "bar_menu",
@@ -35,9 +37,30 @@ export const GA4_ENUMS = {
     "assistance",
     "how_to_get_here",
     "offers_modal",
+    "notification_banner",
+    "sticky_cta",
+    "room_card",
+    "sticky_book_now",
+    "booking_widget",
+    "deals_page_cta",
   ] as const,
   source: ["header", "mobile_nav", "hero", "booking_widget", "room_card", "sticky_cta", "deals", "unknown"] as const,
   ratePlan: ["flex", "nr"] as const,
+  // ─── Entry-attribution enums (TASK-05) ─────────────────────────────────────
+  sourceSurface: [
+    "homepage",
+    "content_page",
+    "dorms_browse",
+    "room_detail",
+    "private_summary",
+    "sitewide_shell",
+    "deals_page",
+  ] as const,
+  resolvedIntent: ["hostel", "private", "undetermined"] as const,
+  productType: ["hostel_bed", "apartment", "double_private_room"] as const,
+  decisionMode: ["direct_resolution", "chooser", "hybrid_merchandising"] as const,
+  destinationFunnel: ["hostel_central", "hostel_assist", "private"] as const,
+  handoffMode: ["secure_booking_shell", "direct_octorate"] as const,
 } as const;
 
 export type ItemListId = (typeof GA4_ENUMS.itemListId)[number];
@@ -46,6 +69,47 @@ export type CtaId = (typeof GA4_ENUMS.ctaId)[number];
 export type CtaLocation = (typeof GA4_ENUMS.ctaLocation)[number];
 export type EventSource = (typeof GA4_ENUMS.source)[number];
 export type RatePlan = (typeof GA4_ENUMS.ratePlan)[number];
+
+// ─── Entry-attribution derived types (TASK-05) ───────────────────────────────
+type SourceSurface = (typeof GA4_ENUMS.sourceSurface)[number];
+type ResolvedIntent = (typeof GA4_ENUMS.resolvedIntent)[number];
+type ProductType = (typeof GA4_ENUMS.productType)[number];
+type DecisionMode = (typeof GA4_ENUMS.decisionMode)[number];
+type DestinationFunnel = (typeof GA4_ENUMS.destinationFunnel)[number];
+type EntryHandoffMode = (typeof GA4_ENUMS.handoffMode)[number];
+
+export function isSourceSurface(v: unknown): v is SourceSurface {
+  return typeof v === "string" && (GA4_ENUMS.sourceSurface as readonly string[]).includes(v);
+}
+
+export function isResolvedIntent(v: unknown): v is ResolvedIntent {
+  return typeof v === "string" && (GA4_ENUMS.resolvedIntent as readonly string[]).includes(v);
+}
+
+export function isProductType(v: unknown): v is ProductType {
+  return typeof v === "string" && (GA4_ENUMS.productType as readonly string[]).includes(v);
+}
+
+export function isDecisionMode(v: unknown): v is DecisionMode {
+  return typeof v === "string" && (GA4_ENUMS.decisionMode as readonly string[]).includes(v);
+}
+
+export function isDestinationFunnel(v: unknown): v is DestinationFunnel {
+  return typeof v === "string" && (GA4_ENUMS.destinationFunnel as readonly string[]).includes(v);
+}
+
+export interface EntryAttributionParams {
+  source_surface: SourceSurface;
+  source_cta: CtaLocation;
+  resolved_intent: ResolvedIntent;
+  product_type: "hostel_bed" | "apartment" | "double_private_room" | null;
+  decision_mode: DecisionMode;
+  destination_funnel: DestinationFunnel;
+  handoff_mode?: EntryHandoffMode;
+  locale: string;
+  fallback_triggered: boolean;
+  next_page?: string | null;
+}
 
 // ─── GA4 e-commerce data models ─────────────────────────────────────────────
 
@@ -262,7 +326,11 @@ export function fireModalClose(params: { modalType: string; source?: string }): 
   gtag("event", "modal_close", { modal_type: modalType, source });
 }
 
-export function fireCtaClick(params: { ctaId: string; ctaLocation: string }): void {
+export function fireCtaClick(
+  params: { ctaId: string; ctaLocation: string },
+  _deprecated?: unknown,
+  entryAttribution?: EntryAttributionParams,
+): void {
   const gtag = getGtag();
   if (!gtag) return;
 
@@ -272,9 +340,29 @@ export function fireCtaClick(params: { ctaId: string; ctaLocation: string }): vo
 
   if (!ctaId || !ctaLocation) return;
 
+  const attributionFields: Record<string, unknown> = {};
+  if (entryAttribution) {
+    attributionFields["source_surface"] = entryAttribution.source_surface;
+    attributionFields["resolved_intent"] = entryAttribution.resolved_intent;
+    if (entryAttribution.product_type !== null && entryAttribution.product_type !== undefined) {
+      attributionFields["product_type"] = entryAttribution.product_type;
+    }
+    attributionFields["decision_mode"] = entryAttribution.decision_mode;
+    attributionFields["destination_funnel"] = entryAttribution.destination_funnel;
+    if (entryAttribution.handoff_mode) {
+      attributionFields["handoff_mode"] = entryAttribution.handoff_mode;
+    }
+    attributionFields["locale"] = entryAttribution.locale;
+    attributionFields["fallback_triggered"] = entryAttribution.fallback_triggered;
+    if (entryAttribution.next_page !== undefined) {
+      attributionFields["next_page"] = entryAttribution.next_page;
+    }
+  }
+
   gtag("event", "cta_click", {
     cta_id: ctaId,
     cta_location: ctaLocation,
+    ...attributionFields,
   });
 }
 
@@ -407,10 +495,12 @@ export function fireViewItem(params: { itemId: string; itemName?: string }): voi
 
 // ─── handoff_to_engine instrumentation (TASK-05A) ───────────────────────────
 // Canonical event emitted at every Octorate handoff click point.
-// Required params: handoff_mode, engine_endpoint, checkin, checkout, pax.
+// Required params:
+// handoff_mode, engine_endpoint, checkin, checkout, pax,
+// rate_plan, room_id, source_route, cta_location, brik_click_id.
 
 export type HandoffMode = "new_tab" | "same_tab";
-export type EngineEndpoint = "result" | "confirm";
+export type EngineEndpoint = "calendar" | "result" | "confirm";
 
 export interface HandoffToEngineParams {
   handoff_mode: HandoffMode;
@@ -418,7 +508,19 @@ export interface HandoffToEngineParams {
   checkin: string;
   checkout: string;
   pax: number;
-  source?: string;
+  rate_plan: "nr" | "flex";
+  room_id: string;
+  source_route: string;
+  cta_location: string;
+  brik_click_id: string;
+}
+
+export interface RecoveryProxySignalParams {
+  signal_type: "handoff" | "lead_capture";
+  source_route: string;
+  room_id?: string;
+  rate_plan?: "nr" | "flex";
+  recovery_channel?: "email";
 }
 
 // Per-click dedupe: prevents double-fire within 300ms (TC-02).
@@ -426,6 +528,13 @@ let _lastHandoffTs = 0;
 
 export function resetHandoffDedupe(): void {
   _lastHandoffTs = 0;
+}
+
+export function createBrikClickId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `brik_${crypto.randomUUID()}`;
+  }
+  return `brik_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
 }
 
 /**
@@ -446,8 +555,18 @@ export function fireHandoffToEngine(params: HandoffToEngineParams): void {
     checkin: params.checkin,
     checkout: params.checkout,
     pax: params.pax,
+    rate_plan: params.rate_plan,
+    room_id: params.room_id,
+    source_route: params.source_route,
+    cta_location: params.cta_location,
+    brik_click_id: params.brik_click_id,
     transport_type: "beacon",
-    ...(params.source ? { source: params.source } : null),
+  });
+  fireRecoveryProxySignal({
+    signal_type: "handoff",
+    source_route: params.source_route,
+    room_id: params.room_id,
+    rate_plan: params.rate_plan,
   });
 }
 
@@ -473,10 +592,59 @@ export function fireHandoffToEngineAndNavigate(
       checkin: params.checkin,
       checkout: params.checkout,
       pax: params.pax,
-      ...(params.source ? { source: params.source } : null),
+      rate_plan: params.rate_plan,
+      room_id: params.room_id,
+      source_route: params.source_route,
+      cta_location: params.cta_location,
+      brik_click_id: params.brik_click_id,
     },
     onNavigate: params.onNavigate,
     timeoutMs: params.timeoutMs,
+  });
+  fireRecoveryProxySignal({
+    signal_type: "handoff",
+    source_route: params.source_route,
+    room_id: params.room_id,
+    rate_plan: params.rate_plan,
+  });
+}
+
+export function fireRecoveryProxySignal(params: RecoveryProxySignalParams): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+  gtag("event", "recovery_proxy_signal", {
+    signal_type: params.signal_type,
+    source_route: params.source_route,
+    ...(params.room_id ? { room_id: params.room_id } : null),
+    ...(params.rate_plan ? { rate_plan: params.rate_plan } : null),
+    ...(params.recovery_channel ? { recovery_channel: params.recovery_channel } : null),
+  });
+}
+
+export function fireRecoveryLeadCapture(params: {
+  source_route: string;
+  room_id?: string;
+  rate_plan?: "nr" | "flex";
+  recovery_channel: "email";
+  consent_version: string;
+  resume_ttl_days: number;
+}): void {
+  const gtag = getGtag();
+  if (!gtag) return;
+  gtag("event", "recovery_lead_capture", {
+    source_route: params.source_route,
+    ...(params.room_id ? { room_id: params.room_id } : null),
+    ...(params.rate_plan ? { rate_plan: params.rate_plan } : null),
+    recovery_channel: params.recovery_channel,
+    consent_version: params.consent_version,
+    resume_ttl_days: params.resume_ttl_days,
+  });
+  fireRecoveryProxySignal({
+    signal_type: "lead_capture",
+    source_route: params.source_route,
+    room_id: params.room_id,
+    rate_plan: params.rate_plan,
+    recovery_channel: params.recovery_channel,
   });
 }
 

@@ -72,6 +72,7 @@ export class ResendProvider implements CampaignProvider {
       await this.client.emails.send({
         from: getDefaultSender(),
         to: options.to,
+        ...(options.bcc ? { bcc: options.bcc } : {}),
         subject: options.subject,
         html: options.html,
         text: options.text ?? "",

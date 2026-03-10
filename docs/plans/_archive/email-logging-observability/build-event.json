@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-06T13:37:39Z",
+  "feature_slug": "email-logging-observability",
+  "business": "BRIK",
+  "why": "Three identified logging gaps leave the email pipeline partially blind. Reconcile recovery lacks per-email context; error-path lock-releases carry no error reason; label creation failures produce zero trace.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "After this change: (1) each non-dry-run reconcile recovery emits an email_reconcile_recovery event with reason and age_hours, visible in the daily rollup; (2) error-path lock-released entries carry an error_reason field; (3) ensureLabelMap label creation failures emit a stderr warning. All fail-open guarantees are preserved.",
+  "why_source": "operator",
+  "tasks_completed": ["TASK-01", "TASK-02", "TASK-03", "TASK-04"],
+  "tasks_skipped": [],
+  "confidence": 80
+}

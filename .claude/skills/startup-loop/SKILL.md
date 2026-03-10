@@ -48,7 +48,7 @@ Load the relevant module per command:
 
 | Module | Trigger |
 |---|---|
-| `modules/assessment-intake-sync.md` | Called by `cmd-start` and `cmd-advance` as part of ASSESSMENT-09 Intake contract validation (`GATE-ASSESSMENT-00`). Writes or refreshes `<BIZ>-intake-packet.user.md` from ASSESSMENT-01–ASSESSMENT-08 precursors. No-op when precursors are unchanged. |
+| `modules/assessment-intake-sync.md` | Called by `cmd-start` and `cmd-advance` as part of ASSESSMENT-09 Intake contract validation (`GATE-ASSESSMENT-00`). Writes or refreshes `<BIZ>-<YYYY-MM-DD>assessment-intake-packet.user.md` from ASSESSMENT-01–ASSESSMENT-08 precursors. No-op when precursors are unchanged. |
 
 ## Required Output Contract
 
@@ -57,7 +57,7 @@ For `start`, `status`, and `advance`, return this exact packet:
 ```text
 run_id: SFS-<BIZ>-<YYYYMMDD>-<hhmm>
 business: <BIZ>
-loop_spec_version: 3.12.0
+loop_spec_version: 3.14.0
 current_stage: <STAGE_ID>
 current_stage_label: <label_operator_short for current_stage>
 current_stage_display: <label_operator_long for current_stage>
@@ -89,7 +89,7 @@ When a stage reference cannot be resolved, return fail-closed with deterministic
 
 ## Stage Model
 
-Canonical source: `docs/business-os/startup-loop/loop-spec.yaml` (spec_version 3.12.0).
+Canonical source: `docs/business-os/startup-loop/specifications/loop-spec.yaml` (spec_version 3.14.0).
 Stage labels: `docs/business-os/startup-loop/_generated/stage-operator-map.json`.
 
 Stages (canonical IDs from loop-spec):
@@ -107,6 +107,9 @@ Stages (canonical IDs from loop-spec):
 | ASSESSMENT-09 | Intake | `/startup-loop start` | — |
 | ASSESSMENT-10 | Brand profiling | `/lp-do-assessment-10-brand-profiling` | — |
 | ASSESSMENT-11 | Brand identity | `/lp-do-assessment-11-brand-identity` | — |
+| ASSESSMENT-13 | Product naming | `/lp-do-assessment-13-product-naming` | — |
+| ASSESSMENT-14 | Logo design brief | `/lp-do-assessment-14-logo-brief` | — |
+| ASSESSMENT-15 | Packaging brief | `/lp-do-assessment-15-packaging-brief` | physical-product |
 | ASSESSMENT | Brand (container) | — | — |
 | IDEAS | Ideas pipeline (standing) | — | event-driven trigger paths |
 | IDEAS-01 | Pack diff scan | `/idea-scan` | layer_a_pack_diff OR operator_inject |
@@ -156,9 +159,7 @@ Stages (canonical IDs from loop-spec):
 | SELL-06 | Partnership and referral standing | prompt handoff | — |
 | SELL-07 | Sell aggregate pack | prompt handoff | — |
 | SELL-08 | Activation readiness (pre-spend) | `/startup-loop advance` | paid_spend_requested |
-| S4 | Baseline merge (join barrier) | `/lp-baseline-merge` | — |
-| S5A | Prioritize | `/lp-prioritize` | — |
-| S5B | BOS sync (sole mutation boundary) | `/lp-bos-sync` | — |
+| S4 | Baseline merge + manifest commit (join barrier) | `/lp-baseline-merge` | — |
 | WEBSITE | Website (container) | — | — |
 | WEBSITE-01 | L1 first build framework | `/lp-site-upgrade` (auto-handover to DO sequence `/lp-do-fact-find --website-first-build-backlog` -> `/lp-do-plan` -> `/lp-do-build` once Active) | launch-surface=pre-website |
 | WEBSITE-02 | Site-upgrade synthesis | `/lp-site-upgrade` (L1 Build 2 auto-mode: image-first merchandising for visual-heavy catalogs) | launch-surface=website-live |
@@ -169,6 +170,6 @@ Stages (canonical IDs from loop-spec):
 ## Global Invariants
 
 - Never allow silent stage skipping.
-- BOS sync must be confirmed complete before advance for all non-DO stages. See `modules/cmd-advance.md` for sync contract.
+- Never bypass the S4 merge-and-commit boundary before WEBSITE/DO progression.
 - Canonical source of truth is always `loop-spec.yaml` — not markdown mirrors of cards or ideas.
 - All stage references are resolved via stage-addressing.ts — never guess stage IDs.

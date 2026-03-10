@@ -15,13 +15,13 @@ const baseResources: Record<string, ModalMessages> = {
   it: {
     modals: {
       "location.nearbyBusCompact": "About 120 m from the bus stop",
-      getDirections: "Get directions",
+      "location.getDirections": "Get directions",
     },
   },
   fr: {
     modals: {
       "location.nearbyBusCompact": "About 120 m from the next bus stop",
-      getDirections: "Get directions",
+      "location.getDirections": "Get directions",
     },
   },
 };
@@ -161,7 +161,7 @@ describe("LocationInline", () => {
     renderWithProviders(<LocationInline />);
 
     expect(screen.getByText("location.nearbyBusCompact")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: "getDirections" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "location.getDirections" })).toBeInTheDocument();
   });
 
   it("falls back to the active language when fallback defaults are empty", () => {
@@ -177,13 +177,13 @@ describe("LocationInline", () => {
   it("returns the translation key when the fallback resource is not a string", () => {
     bypassPrimaryLookup = true;
     i18nStub.options.fallbackLng = "fr";
-    const originalFallback = resourceStore.fr.modals.getDirections;
-    resourceStore.fr.modals.getDirections = { text: "ignored" } as unknown as string;
+    const originalFallback = resourceStore.fr.modals["location.getDirections"];
+    resourceStore.fr.modals["location.getDirections"] = { text: "ignored" } as unknown as string;
 
     renderWithProviders(<LocationInline />);
 
-    expect(screen.getByRole("button", { name: "getDirections" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "location.getDirections" })).toBeInTheDocument();
 
-    resourceStore.fr.modals.getDirections = originalFallback;
+    resourceStore.fr.modals["location.getDirections"] = originalFallback;
   });
 });

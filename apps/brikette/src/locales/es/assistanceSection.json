@@ -5,12 +5,13 @@
     "description": "Reserva, explora y conéctate con nosotros en línea. ¿Tienes preguntas? Nuestro asistente digital ofrece recomendaciones personalizadas y guías de viaje para mejorar tu estancia en Positano."
   },
   "heading": "Asistencia Digital",
-  "heroEyebrow": "Book and Connect",
+  "heroEyebrow": "libro y conexión",
   "subheading": "Reserva, explora y conéctate con nosotros en línea.",
   "heroIntro": "Obtén respuestas instantáneas de nuestro equipo y asistente digital para planificar tu estancia más rápido.",
   "otherBookingOptions": "Otras Opciones de Reserva y Redes Sociales",
   "addressLabel": "Dirección:",
   "addressValue": "Via G. Marconi, 358, 84017, Positano",
+  "bookDirect": "Reserva directa",
   "bookingOptions": {
     "googleBusiness": "Perfil de empresa de Google",
     "bookingCom": "Booking.com",
@@ -41,7 +42,7 @@
     "cardCta": "Lee la guía de planificación {{guideTitle}}"
   },
   "crosslinks": {
-    "heading": "{{howToTitle}} · {{experiencesTitle}}",
-    "intro": "{{howToMetaDescription}} {{experiencesMetaDescription}}"
+    "heading": "{{howToTitle}}_ __TOK1_",
+    "intro": "{{howtometadescription} {{experiencesmetadescription}} {{experiencesmetadescription}} {} {{experiencesmetadescription}}} {{experiencesmetadescription}}} {{howtometadescription}} {} {} {} {{experiencesmetadescription}} {{experiencesmetadescription}}}}} {} {} {} {} {} {} {} {} {{} {} {} {{experiencesmetadescription}} {} {{experiencesmesemesemesemetam}}}}}} {}}}}} {} {}}}}} {} {} {} {}} {} {} {} {} {} {} {} {} {} {} {} {}}} {} {} {} {} {}}}}} {}}}} {} {}}}}}}}} {} {}}}}} {} {}}}} {} {}}}}}}"
   }
 }

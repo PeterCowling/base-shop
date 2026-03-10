@@ -96,7 +96,7 @@ export const CreditCardReceiptCheck = memo(function CreditCardReceiptCheck({
           return (
             <li
               key={txnId}
-              className="flex flex-wrap items-center gap-3 border border-info-light p-2 rounded"
+              className="flex flex-wrap items-center gap-3 border border-info-light p-2 rounded-lg"
             >
               <label className="flex items-center gap-2">
                 <Input

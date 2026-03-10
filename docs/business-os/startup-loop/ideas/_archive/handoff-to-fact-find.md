@@ -49,7 +49,7 @@ layer_a_inputs:
 layer_a_source: <relative path to source Layer A artifact>  # from Source-Link
 ```
 
-These fields are in addition to the standard fact-find frontmatter fields defined in `docs/business-os/startup-loop/loop-output-contracts.md` (Artifact 1).
+These fields are in addition to the standard fact-find frontmatter fields defined in `docs/business-os/startup-loop/contracts/loop-output-contracts.md` (Artifact 1).
 
 ## 3. Operator Action to Initiate Fact-Find
 
@@ -116,7 +116,7 @@ Each link in this chain is auditable via the artifact paths recorded in `Promote
 | Scan proposal artifact format | `scan-proposals.schema.md` |
 | Idea card artifact format | `idea-card.schema.md` |
 | Idea portfolio artifact format | `idea-portfolio.schema.md` |
-| Fact-find artifact format | `docs/business-os/startup-loop/loop-output-contracts.md` (Artifact 1) |
+| Fact-find artifact format | `docs/business-os/startup-loop/contracts/loop-output-contracts.md` (Artifact 1) |
 | Promotion-ready scoring rubric | `idea-card.schema.md` Section "Scoring rubric" |
-| IDEAS-03 stage definition | `docs/business-os/startup-loop/loop-spec.yaml` (id: IDEAS-03) |
+| IDEAS-03 stage definition | `docs/business-os/startup-loop/specifications/loop-spec.yaml` (id: IDEAS-03) |
 | Fact-find skill | `.claude/skills/lp-do-fact-find/SKILL.md` |

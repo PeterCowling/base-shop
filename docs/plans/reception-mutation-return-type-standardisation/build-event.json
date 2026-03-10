@@ -1,0 +1,8 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-20260308-reception-mutation-return-type-standardisation",
+  "feature_slug": "reception-mutation-return-type-standardisation",
+  "emitted_at": "2026-03-08T23:45:22.642Z",
+  "why": "Full-app simplify sweep found that all mutation hooks have inconsistent return types and error propagation, making it impossible for components to handle errors uniformly.",
+  "why_source": "auto"
+}

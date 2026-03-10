@@ -1,4 +1,3 @@
-
 type RoomsNamespace = {
   meta: Record<string, string>;
   rooms: Record<string, unknown>;
@@ -12,13 +11,16 @@ const roomsDataMock = [
     widgetRoomCode: "1",
     widgetRateCodeNR: "nr",
     widgetRateCodeFlex: "flex",
-    rateCodes: { direct: { nr: "nr", flex: "flex" }, ota: { nr: "nr", flex: "flex" } },
+    rateCodes: {
+      direct: { nr: "nr", flex: "flex" },
+      ota: { nr: "nr", flex: "flex" },
+    },
     occupancy: 2,
     pricingModel: "perBed",
     basePrice: { amount: 100, currency: "EUR" },
     seasonalPrices: [],
     availability: { totalBeds: 2, defaultRelease: 2 },
-    imagesRaw: [],
+    images: { bed: "/img/test-bed.webp", bathroom: "/img/test-bathroom.webp" },
     landingImage: "/landing.jpg",
     roomsHref: "/rooms#room_1",
   },
@@ -55,6 +57,7 @@ jest.mock("@/utils/loadI18nNs", () => ({
 
 jest.mock("@/data/roomsData", () => ({
   __esModule: true,
+  websiteVisibleRoomsData: roomsDataMock,
   default: roomsDataMock,
 }));
 
@@ -105,7 +108,11 @@ describe("roomsCatalog", () => {
     };
 
     getDataByLanguage.mockImplementation((lang) =>
-      lang === "it" ? italianNamespace : lang === "en" ? englishNamespace : undefined,
+      lang === "it"
+        ? italianNamespace
+        : lang === "en"
+          ? englishNamespace
+          : undefined
     );
 
     const mod = await import("@/utils/roomsCatalog");
@@ -117,11 +124,16 @@ describe("roomsCatalog", () => {
     expect(room.intro).toBe("English intro");
     expect(room.description).toBe("English description");
     expect(room.facilityKeys).toEqual(["wifi", "balcony"]);
-    expect(room.amenities.map((item) => item.name)).toEqual(["Wi-Fi EN", "Balcony EN"]);
+    expect(room.amenities.map((item) => item.name)).toEqual([
+      "Wi-Fi EN",
+      "Balcony EN",
+    ]);
   });
 
   it("returns fallback English copy when translations are missing", async () => {
-    getDataByLanguage.mockImplementation((lang) => (lang === "en" ? englishNamespace : undefined));
+    getDataByLanguage.mockImplementation((lang) =>
+      lang === "en" ? englishNamespace : undefined
+    );
 
     const mod = await import("@/utils/roomsCatalog");
     const catalog = mod.getRoomsCatalog("es");
@@ -132,12 +144,17 @@ describe("roomsCatalog", () => {
       description: "English description",
       facilityKeys: ["wifi", "balcony"],
     });
-    expect(catalog[0].amenities).toEqual([{ name: "Wi-Fi EN" }, { name: "Balcony EN" }]);
+    expect(catalog[0].amenities).toEqual([
+      { name: "Wi-Fi EN" },
+      { name: "Balcony EN" },
+    ]);
   });
 
   it("falls back to configured language when runtime options omit one", async () => {
     i18nOptions.fallbackLng = "it";
-    getDataByLanguage.mockImplementation((lang) => (lang === "it" ? englishNamespace : undefined));
+    getDataByLanguage.mockImplementation((lang) =>
+      lang === "it" ? englishNamespace : undefined
+    );
 
     const mod = await import("@/utils/roomsCatalog");
     expect(mod.resolveFallbackLanguage()).toBe("it");
@@ -161,14 +178,18 @@ describe("roomsCatalog", () => {
 
   it("respects fallback overrides when fetching the catalog", async () => {
     const mod = await import("@/utils/roomsCatalog");
-    getDataByLanguage.mockImplementation((lang) => (lang === "en" ? englishNamespace : undefined));
+    getDataByLanguage.mockImplementation((lang) =>
+      lang === "en" ? englishNamespace : undefined
+    );
 
     const catalog = mod.getRoomsCatalog("es", { fallbackLang: "en" });
     expect(catalog[0].title).toBe("English title");
   });
 
   it("loads namespaces for primary and fallback languages", async () => {
-    getDataByLanguage.mockImplementation((lang) => (lang === "en" ? englishNamespace : undefined));
+    getDataByLanguage.mockImplementation((lang) =>
+      lang === "en" ? englishNamespace : undefined
+    );
 
     const mod = await import("@/utils/roomsCatalog");
     await mod.loadRoomsCatalog("es", { fallbackLang: "en" });

@@ -364,8 +364,8 @@ export function SplitPane({
           className={cn(
             "absolute inset-0 transition-colors",
             isHorizontal
-              ? "w-full bg-slate-200 group-hover:bg-slate-300"
-              : "h-full bg-slate-200 group-hover:bg-slate-300",
+              ? "w-full bg-surface-3 group-hover:bg-slate-300"
+              : "h-full bg-surface-3 group-hover:bg-slate-300",
             isResizing && "bg-primary"
           )}
         />

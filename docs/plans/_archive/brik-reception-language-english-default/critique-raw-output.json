@@ -1,0 +1,22 @@
+{
+  "round": 2,
+  "artifact": "plan.md",
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-reception-language-english-default/plan.md",
+      "line": "62",
+      "message": "`Why` is still `TBD` in the inherited outcome contract. FIXED: filled with operator-stated rationale — English as default language per operator policy; inconsistency with older screens violates stated convention."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/brik-reception-language-english-default/plan.md",
+      "line": "292",
+      "message": "StockManagement label anchored at 'line 606' but string is now at line 744. FIXED: removed hard line number; replaced with search-by-string guidance."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "sessionId": "Q1qNA84XAQMYM94_"
+}

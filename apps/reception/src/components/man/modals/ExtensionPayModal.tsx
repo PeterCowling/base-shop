@@ -3,6 +3,7 @@ import { useCallback, useMemo, useState } from "react";
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
 
+import { ActivityCode } from "../../../constants/activities";
 import { withModalBackground } from "../../../hoc/withModalBackground";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import { useBookingDatesMutator } from "../../../hooks/mutations/useChangeBookingDatesMutator";
@@ -82,49 +83,41 @@ function ExtensionPayModalBase({
     return Number(total.toFixed(2));
   }, [cityTaxTargets, cityTaxRecords, defaultCityTaxPerGuest]);
 
-  const CITY_TAX_ACTIVITY_CODE = 9;
-  const KEY_EXTENSION_ACTIVITY_CODE = 30;
 
   const handleExtend = useCallback(async () => {
     const newCheckout = formatDate(
       addDays(parseLocalDate(checkOutDate) || new Date(checkOutDate), nights)
     );
+    const targetOccupantIds = extendType === "single" ? [occupantId] : occupantIds;
+    let updatedOccupants = 0;
+
     setIsSaving(true);
     try {
-      if (extendType === "single") {
-        const occ = bookingOccupants[occupantId] || {};
+      for (const id of targetOccupantIds) {
+        const occ = bookingOccupants[id] || {};
+        const nextCheckOut =
+          extendType === "single"
+            ? newCheckout
+            : formatDate(
+                addDays(
+                  parseLocalDate(occ.checkOutDate ?? checkOutDate) ||
+                    new Date(occ.checkOutDate ?? checkOutDate),
+                  nights,
+                )
+              );
+
         await updateBookingDates({
           bookingRef,
-          occupantId,
+          occupantId: id,
           oldCheckIn: occ.checkInDate ?? "",
           oldCheckOut: occ.checkOutDate ?? "",
           newCheckIn: occ.checkInDate ?? "",
-          newCheckOut: newCheckout,
+          newCheckOut: nextCheckOut,
           extendedPrice: String(pricePerGuest),
         });
-      } else {
-        await Promise.all(
-          occupantIds.map(async (id) => {
-            const occ = bookingOccupants[id] || {};
-            const newOut = formatDate(
-              addDays(
-                parseLocalDate(occ.checkOutDate ?? checkOutDate) ||
-                  new Date(occ.checkOutDate ?? checkOutDate),
-                nights,
-              )
-            );
-            await updateBookingDates({
-              bookingRef,
-              occupantId: id,
-              oldCheckIn: occ.checkInDate ?? "",
-              oldCheckOut: occ.checkOutDate ?? "",
-              newCheckIn: occ.checkInDate ?? "",
-              newCheckOut: newOut,
-              extendedPrice: String(pricePerGuest),
-            });
-          })
-        );
+        updatedOccupants += 1;
       }
+
       if (markCityTaxPaid) {
         await Promise.all(
           cityTaxTargets.map(async (id) => {
@@ -136,22 +129,47 @@ function ExtensionPayModalBase({
                   totalPaid: record.totalDue,
                 });
               }
-              await saveActivity(id, { code: CITY_TAX_ACTIVITY_CODE });
+              const cityTaxActivityResult = await saveActivity(id, {
+                code: ActivityCode.CITY_TAX_PAYMENT,
+              });
+              if (!cityTaxActivityResult.success) {
+                throw new Error(
+                  cityTaxActivityResult.error ??
+                    `Failed to save city tax activity for occupant ${id}.`
+                );
+              }
             }
           })
         );
       }
       if (markKeyExtended) {
         await Promise.all(
-          cityTaxTargets.map((id) =>
-            saveActivity(id, { code: KEY_EXTENSION_ACTIVITY_CODE })
-          )
+          cityTaxTargets.map(async (id) => {
+            const keyActivityResult = await saveActivity(id, {
+              code: ActivityCode.KEY_EXTENSION,
+            });
+            if (!keyActivityResult.success) {
+              throw new Error(
+                keyActivityResult.error ??
+                  `Failed to save key extension activity for occupant ${id}.`
+              );
+            }
+          })
         );
       }
       showToast("Extension saved", "success");
       onClose();
-    } catch {
-      showToast("Error extending booking", "error");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Error extending booking";
+      if (updatedOccupants > 0 && updatedOccupants < targetOccupantIds.length) {
+        showToast(
+          `Extension partially applied (${updatedOccupants}/${targetOccupantIds.length}). ${message}`,
+          "error"
+        );
+      } else {
+        showToast(message, "error");
+      }
     } finally {
       setIsSaving(false);
     }
@@ -172,8 +190,6 @@ function ExtensionPayModalBase({
     cityTaxRecords,
     saveCityTax,
     saveActivity,
-    CITY_TAX_ACTIVITY_CODE,
-    KEY_EXTENSION_ACTIVITY_CODE,
   ]);
 
   const amount =

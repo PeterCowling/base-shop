@@ -124,6 +124,11 @@ type InterpretResult = {
 type GenerateResult = {
   draft: { bodyPlain: string; bodyHtml: string };
   answered_questions: string[];
+  question_blocks?: Array<{
+    question: string;
+    answer_source: "template" | "knowledge" | "policy" | "default" | "follow_up";
+    follow_up_required: boolean;
+  }>;
   quality: { passed: boolean; failed_checks: string[]; warnings: string[] };
   sources_used?: SourcesUsedEntry[];
 };
@@ -390,7 +395,10 @@ describe("TASK-09: Known Regression Detection", () => {
       actionPlan: {
         language: "EN",
         intents: { questions: [] },
-        workflow_triggers: { booking_monitor: false },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
         scenario: { category: "faq" },
         thread_summary: { prior_commitments: [] },
       },
@@ -420,6 +428,87 @@ describe("TASK-09: Known Regression Detection", () => {
 describe("TASK-09: Command Contract Documentation", () => {
   it("TC-09-03 governed runner command is present in docs/testing-policy.md", () => {
     const policy = readFileSync("docs/testing-policy.md", "utf-8");
-    expect(policy).toContain("draft-pipeline.integration");
+    expect(policy).toContain("gh run watch");
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TASK-01: Simulation Defect Corpus — regression cases for simulation findings
+// These tests assert post-fix behavior. SIM-01 and SIM-02 are red until
+// TASK-02 and TASK-04 are implemented respectively. SIM-03 may be red until
+// TASK-02. SIM-04 asserts existing escalation behavior (should be green).
+// ---------------------------------------------------------------------------
+
+describe("TASK-01: Simulation Defect Corpus", () => {
+  it("SIM-01 extracts multiple intent clauses from compound FAQ without a question mark", async () => {
+    const body =
+      "Hi there, I would like to know about check-in times and also what the cancellation policy is";
+
+    const interpretResult = await handleDraftInterpretTool("draft_interpret", {
+      body,
+      subject: "Question about check-in and cancellation",
+    });
+    const actionPlan = parseResult<InterpretResult>(interpretResult);
+
+    const extractedClauseCount = Math.max(
+      actionPlan.intents.questions.length,
+      actionPlan.intents.requests.length,
+    );
+    expect(extractedClauseCount).toBeGreaterThanOrEqual(2);
+  });
+
+  it("SIM-02 routes unknown facility sub-questions to follow-up in multipart replies", async () => {
+    const body = "Hi, is breakfast included? Do you have a rooftop pool at the hostel?";
+
+    const interpretResult = await handleDraftInterpretTool("draft_interpret", {
+      body,
+      subject: "Facility question",
+    });
+    const actionPlan = parseResult<InterpretResult>(interpretResult);
+    expect(actionPlan.intents.questions.length).toBeGreaterThanOrEqual(2);
+
+    const generateResult = await handleDraftGenerateTool("draft_generate", {
+      actionPlan,
+      subject: "Facility question",
+      recipientName: "Test Guest",
+    });
+    const generated = parseResult<GenerateResult>(
+      generateResult as { content: Array<{ text: string }> },
+    );
+
+    const questionBlocks = generated.question_blocks ?? [];
+    expect(generated.composite).toBe(true);
+    expect(questionBlocks.length).toBeGreaterThan(0);
+    const hasFollowUpDisposition = questionBlocks.some(
+      (block) =>
+        block.follow_up_required === true || block.answer_source === "follow_up",
+    );
+    expect(hasFollowUpDisposition).toBe(true);
+  });
+
+  it("SIM-03 atomizes availability+cancellation compound email into multiple questions", async () => {
+    const body =
+      "Hello, I am interested in booking. Can you tell me about availability for August, and also what your cancellation policy is?";
+
+    const interpretResult = await handleDraftInterpretTool("draft_interpret", {
+      body,
+      subject: "Availability and cancellation",
+    });
+    const actionPlan = parseResult<InterpretResult>(interpretResult);
+
+    expect(actionPlan.intents.questions.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it("SIM-04 keeps high-stakes refund disputes on HIGH/CRITICAL escalation path", async () => {
+    const body =
+      "I demand a full refund immediately. You cancelled my booking without notice and I have evidence this violates consumer law. I will pursue legal action if this is not resolved within 24 hours.";
+
+    const interpretResult = await handleDraftInterpretTool("draft_interpret", {
+      body,
+      subject: "Urgent refund dispute",
+    });
+    const actionPlan = parseResult<InterpretResult>(interpretResult);
+
+    expect(["HIGH", "CRITICAL"]).toContain(actionPlan.escalation.tier);
   });
 });

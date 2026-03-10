@@ -15,15 +15,12 @@ import { Grid as LayoutGrid } from "@acme/design-system/atoms/Grid";
 import { Cluster } from "@acme/design-system/primitives/Cluster";
 
 import type { XaProduct } from "../lib/demoData";
+import { isProductImage } from "../lib/xaCatalog";
 import { xaI18n } from "../lib/xaI18n";
 
 import { XaFadeImage } from "./XaFadeImage";
 
 type MediaItem = XaProduct["media"][number];
-
-function isImage(item: MediaItem): item is MediaItem & { type: "image" } {
-  return item.type === "image" && item.url.trim().length > 0;
-}
 
 export function XaImageGallery({
   title,
@@ -32,7 +29,7 @@ export function XaImageGallery({
   title: string;
   media: MediaItem[];
 }) {
-  const images = React.useMemo(() => media.filter(isImage), [media]);
+  const images = React.useMemo(() => media.filter(isProductImage), [media]);
   const [activeIndex, setActiveIndex] = React.useState(0);
 
   React.useEffect(() => setActiveIndex(0), [title]);
@@ -101,7 +98,7 @@ export function XaImageGallery({
               disabled={activeIndex === 0}
               variant="secondary"
               size="sm"
-              className="absolute start-3 top-1/2 h-8 w-8 -translate-y-1/2 rounded-none border border-border-2 bg-surface-1 text-foreground hover:bg-muted disabled:opacity-30"
+              className="absolute start-3 top-1/2 h-8 w-8 -translate-y-1/2 rounded-none border xa-border-control bg-surface-1 text-foreground hover:bg-muted disabled:opacity-50"
             >
               <svg aria-hidden viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
                 <path d="M10 4L6 8l4 4"/>
@@ -114,7 +111,7 @@ export function XaImageGallery({
               disabled={activeIndex === images.length - 1}
               variant="secondary"
               size="sm"
-              className="absolute end-3 top-1/2 h-8 w-8 -translate-y-1/2 rounded-none border border-border-2 bg-surface-1 text-foreground hover:bg-muted disabled:opacity-30"
+              className="absolute end-3 top-1/2 h-8 w-8 -translate-y-1/2 rounded-none border xa-border-control bg-surface-1 text-foreground hover:bg-muted disabled:opacity-50"
             >
               <svg aria-hidden viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-4 w-4">
                 <path d="M6 4l4 4-4 4"/>
@@ -126,7 +123,7 @@ export function XaImageGallery({
           </DialogContent>
         </Dialog>
       ) : (
-        <div className="relative xa-aspect-4-5 w-full overflow-hidden rounded-none border border-border-1 bg-surface">
+        <div className="relative xa-aspect-4-5 w-full overflow-hidden rounded-none border xa-border-control bg-surface">
           <Cluster
             alignY="center"
             justify="center"

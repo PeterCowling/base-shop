@@ -46,7 +46,7 @@ export default function DSARSection({ headline, explanation, adapter, className,
                 value="export"
                 checked={type === "export"}
                 onChange={() => setType("export")}
-                className="min-h-10 min-w-10"
+                className="min-h-11 min-w-11"
               />
               {t("dsar.export")}
             </label>
@@ -57,7 +57,7 @@ export default function DSARSection({ headline, explanation, adapter, className,
                 value="delete"
                 checked={type === "delete"}
                 onChange={() => setType("delete")}
-                className="min-h-10 min-w-10"
+                className="min-h-11 min-w-11"
               />
               {t("dsar.delete")}
             </label>
@@ -70,13 +70,13 @@ export default function DSARSection({ headline, explanation, adapter, className,
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full min-h-10 min-w-10 rounded border px-3 text-sm"
+              className="w-full min-h-11 min-w-11 rounded border px-3 text-sm"
             />
           </div>
           <button
             type="submit"
             disabled={!adapter || status === "loading"}
-            className="inline-flex min-h-10 min-w-10 items-center justify-center rounded bg-foreground px-4 text-foreground disabled:opacity-50"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-foreground px-4 text-foreground disabled:opacity-50"
           >
             {type === "export" ? t("dsar.submit.export") : t("dsar.submit.delete")}
           </button>

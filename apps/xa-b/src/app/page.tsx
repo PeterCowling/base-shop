@@ -7,8 +7,8 @@ import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 
 import { XaFadeImage } from "../components/XaFadeImage";
-import { XaProductCard } from "../components/XaProductCard";
-import { XA_PRODUCTS } from "../lib/demoData";
+import { XaHomeCatalogSections } from "../components/XaHomeCatalogSections.client";
+import { XA_CATALOG_RUNTIME_FRESHNESS } from "../lib/catalogRuntimeMeta";
 import { siteConfig } from "../lib/siteConfig";
 import { xaI18n } from "../lib/xaI18n";
 
@@ -35,13 +35,17 @@ function HangerIcon(props: SVGProps<SVGSVGElement>) {
 }
 
 export default function HomePage() {
-  const catalog = siteConfig.catalog;
-  const newInProducts = [...XA_PRODUCTS]
-    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-    .slice(0, 12);
+  const staleCatalogCopy = "Catalog data may be stale."; // i18n-exempt -- XA-0090 [ttl=2026-12-31] public-safe status ribbon
 
   return (
     <main className="sf-content">
+      {XA_CATALOG_RUNTIME_FRESHNESS.isStale ? (
+        <Section padding="default" className="pt-6">
+          <div className="border border-warning bg-warning-soft px-4 py-3 text-sm text-warning-fg">
+            {staleCatalogCopy}
+          </div>
+        </Section>
+      ) : null}
       <Section padding="wide" className="pt-10">
         <div className="xa-grid-home-primary">
           <div className="space-y-6">
@@ -55,9 +59,9 @@ export default function HomePage() {
             </div>
             <Button
               asChild
-              className="xa-hero-cta rounded-none bg-foreground px-6 text-primary-fg hover:bg-foreground/90"
+              className="xa-hero-cta rounded-none bg-foreground px-6 text-primary-foreground hover:bg-foreground/90"
             >
-              <Link href="/account/register">Join Us</Link>
+              <Link href="/pages/how-to-shop">Join Us</Link>
             </Button>
           </div>
           <div className="xa-hero-media w-full md:justify-self-end xa-hero-media-max">
@@ -77,25 +81,7 @@ export default function HomePage() {
         </div>
       </Section>
 
-      <Section padding="default">
-        <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-          <h2 className="text-xl font-semibold">
-            New in:{" "}
-            <span className="font-normal text-muted-foreground">{xaI18n.t("xaB.src.app.page.l83c65")}{catalog.labelPlural}{xaI18n.t("xaB.src.app.page.l84c53")}</span>
-          </h2>
-          <Button variant="outline" asChild>
-            <Link href="/new-in">Shop now</Link>
-          </Button>
-        </div>
-
-        <div className="mt-6">
-          <Grid columns={{ base: 2, md: 3, lg: 4 }} gap={6}>
-            {newInProducts.map((p) => (
-              <XaProductCard key={p.slug} product={p} />
-            ))}
-          </Grid>
-        </div>
-      </Section>
+      <XaHomeCatalogSections />
 
       <Section padding="default">
         <Grid columns={{ base: 1, md: 3 }} gap={6}>

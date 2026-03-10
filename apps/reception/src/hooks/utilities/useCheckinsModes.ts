@@ -2,10 +2,10 @@ import { useCallback, useState } from "react";
 
 import type { CheckInRow } from "../../types/component/CheckinRow";
 
+export type CheckinMode = "idle" | "edit" | "delete" | "addGuest";
+
 export default function useCheckinsModes() {
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [isDeleteMode, setIsDeleteMode] = useState(false);
-  const [isAddGuestMode, setIsAddGuestMode] = useState(false);
+  const [checkinMode, setCheckinMode] = useState<CheckinMode>("idle");
   const [showArchiveModal, setShowArchiveModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState<CheckInRow | null>(
     null
@@ -15,34 +15,24 @@ export default function useCheckinsModes() {
   );
 
   const toggleAddGuestMode = useCallback(() => {
-    setIsAddGuestMode((p) => !p);
-    setIsEditMode(false);
-    setIsDeleteMode(false);
+    setCheckinMode((prev) => (prev === "addGuest" ? "idle" : "addGuest"));
   }, []);
 
   const toggleEditMode = useCallback(() => {
-    setIsEditMode((p) => !p);
-    setIsDeleteMode(false);
-    setIsAddGuestMode(false);
+    setCheckinMode((prev) => (prev === "edit" ? "idle" : "edit"));
   }, []);
 
   const toggleDeleteMode = useCallback(() => {
-    setIsDeleteMode((p) => !p);
-    setIsEditMode(false);
-    setIsAddGuestMode(false);
+    setCheckinMode((prev) => (prev === "delete" ? "idle" : "delete"));
   }, []);
 
   const openArchiveModal = useCallback(() => {
     setShowArchiveModal(true);
-    setIsEditMode(false);
-    setIsDeleteMode(false);
-    setIsAddGuestMode(false);
+    setCheckinMode("idle");
   }, []);
 
   return {
-    isEditMode,
-    isDeleteMode,
-    isAddGuestMode,
+    checkinMode,
     showArchiveModal,
     selectedBooking,
     bookingToDelete,

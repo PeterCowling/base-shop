@@ -1,6 +1,6 @@
 {
   "lightbox": {
-    "titleFallback": "Image",
+    "titleFallback": "Visuel",
     "openAria": "Ouvrir l'image",
     "openAriaWithCaption": "Ouvrir l'image : {{caption}}"
   },
@@ -9,7 +9,7 @@
     "description": "Itinéraires pratiques pour rejoindre l’Hostel Brikette depuis Amalfi, Capri, Naples, Salerne, Ravello, Rome et Sorrente, avec les avantages et inconvénients de chaque moyen de transport."
   },
   "header": {
-    "eyebrow": "Hostel Brikette",
+    "eyebrow": "Auberge Brikette",
     "title": "Liste des itinéraires",
     "description": "Utilisez ce guide pour vos trajets aller-retour entre votre destination sur la Côte amalfitaine et l’Hostel Brikette.",
     "heroAlt": "Escalier en pierre bordé de bougainvilliers menant à l’entrée de l’Hostel Brikette",
@@ -68,7 +68,7 @@
   "jumpTo": {
     "label": "Aller à",
     "arrival": "Aide à l’arrivée",
-    "rome": "Rome",
+    "rome": "Pour",
     "experiences": "Expériences"
   },
   "intro": {
@@ -456,7 +456,7 @@
     ]
   },
   "rome": {
-    "title": "Rome",
+    "title": "Pour",
     "image": {
       "src": "/img/directions/rome-forum.jpg",
       "alt": "Forum romain vu depuis les Musées du Capitole",
@@ -684,9 +684,9 @@
     "transportLabel": "Type de transport",
     "transportAll": "Tous",
     "transportModes": {
-      "bus": "Bus",
-      "ferry": "Ferry",
-      "train": "Train",
+      "bus": "Autobus",
+      "ferry": "Navette maritime",
+      "train": "Trains",
       "car": "Voiture / Taxi",
       "walk": "À pied"
     },
@@ -741,7 +741,7 @@
             "from": {
               "1": "Bus Positano → Sorrente (arrivée à la gare de Sorrente).",
               "2": "Train local Sorrente → Naples (arrivée à la gare de Naples).",
-              "3": "Train Naples → Rome."
+              "3": "Prendre le train Naples → Rome."
             },
             "to": {
               "1": "Train Rome → Naples (arrivée à la gare de Naples).",
@@ -759,14 +759,14 @@
           "steps": {
             "from": {
               "1": "Positano → port (les porteurs peuvent aider avec les bagages).",
-              "2": "Ferry Positano → Naples.",
+              "2": "Prendre le ferry Positano → Naples.",
               "3": "Tram port de Naples → gare.",
-              "4": "Train Naples → Rome."
+              "4": "Prendre le train Naples → Rome."
             },
             "to": {
               "1": "Train Rome → Naples (arrivée à la gare de Naples).",
               "2": "Tram gare de Naples → port.",
-              "3": "Ferry Naples → Positano.",
+              "3": "Prendre le ferry Naples → Positano.",
               "4": "Depuis le port de Positano → hostel (trajet assez exigeant ; porteurs/Interno Bus peuvent aider)."
             }
           }
@@ -855,12 +855,12 @@
     },
     "tag": {
       "cheap": "Économique",
-      "directish": "Simple",
+      "directish": "Simple et direct",
       "scenic": "Panoramique",
       "transfer": "Correspondance",
-      "bus": "Bus",
-      "train": "Train",
-      "ferry": "Ferry"
+      "bus": "Autobus",
+      "train": "Trains",
+      "ferry": "Navette maritime"
     },
     "reasons": {
       "cheapest": {
@@ -928,5 +928,9 @@
   },
   "galleries": {
     "defaultAlt": "Photo d’itinéraire"
+  },
+  "loadingFallback": {
+    "intro": "La copie du planificateur d'itinéraire est en cours de chargement. En attendant, utilisez ces guides d'itinéraire :",
+    "routeLabelFallback": "Guide d'itinéraire"
   }
 }

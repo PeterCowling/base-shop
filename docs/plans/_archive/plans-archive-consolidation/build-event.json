@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "plans-archive-consolidation-2026-03-03",
+  "feature_slug": "plans-archive-consolidation",
+  "emitted_at": "2026-03-03T11:26:21.530Z",
+  "why": "Two archive systems create confusion about where completed plans go. 213 loose files + 27 subdirectories in archive/ alongside 111 structured directories in _archive/. Demo files in _tmp/ pollute version control.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Single clear archive system. archive/ contents audited and either deleted or migrated. _tmp/ cleaned or gitignored.",
+    "source": "operator"
+  }
+}

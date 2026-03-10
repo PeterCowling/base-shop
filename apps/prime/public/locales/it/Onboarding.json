@@ -1,25 +1,60 @@
 {
+  "guestProfile": {
+    "chatOptInLabel": "Unisciti alla chat degli ospiti",
+    "goalsLabel": "Quali sono i tuoi obiettivi per questo soggiorno?",
+    "intentLabel": "Qual è il tuo stile?",
+    "interestsLabel": "Cosa ti interessa?",
+    "paceLabel": "Qual è il tuo ritmo?",
+    "saveCta": "Salva preferenze",
+    "saveError": "Impossibile salvare il tuo profilo — riprova.",
+    "skipCta": "Salta per ora",
+    "socialOptInLabel": "Connettiti con gli altri ospiti",
+    "title": "Parlaci di te",
+    "goals": {
+      "adventure": "Avventura",
+      "explore": "Esplorare la zona",
+      "meetPeople": "Conoscere gente",
+      "relax": "Rilassarsi"
+    },
+    "intent": {
+      "mixed": "Un po' di entrambi",
+      "quiet": "Tranquillo e riservato",
+      "social": "Socievole e aperto"
+    },
+    "interests": {
+      "beaches": "Spiagge",
+      "food": "Cibo e ristoranti",
+      "hiking": "Escursioni",
+      "history": "Storia e cultura",
+      "nightlife": "Vita notturna",
+      "photography": "Fotografia"
+    },
+    "pace": {
+      "active": "Attivo",
+      "activeDesc": "Fare il più possibile.",
+      "relaxed": "Rilassato",
+      "relaxedDesc": "Con calma, senza fretta."
+    }
+  },
   "guidedFlow": {
+    "errors": {
+      "retry": "Riprova",
+      "step1": "Non è stato possibile salvare le tue preferenze. Tocca per riprovare.",
+      "step2": "Non è stato possibile salvare il tuo orario. Tocca per riprovare.",
+      "step3": "Non è stato possibile salvare la checklist. Tocca per riprovare."
+    },
     "finish": "Completa",
     "helpLink": "Hai bisogno di aiuto?",
-    "loadingTip": "Caricamento dei dettagli del tuo arrivo\u2026",
-    "methods": {
-      "bus": "Autobus",
-      "ferry": "Traghetto",
-      "other": "Altro",
-      "private": "Privato",
-      "taxi": "Taxi",
-      "train": "Treno"
-    },
+    "loadingTip": "Caricamento dei dettagli del tuo arrivo…",
     "saveAndContinue": "Salva e continua",
     "skipButton": "Salta per ora",
     "step1": {
       "arrivalMethodLabel": "Come arrivi molto probabilmente?",
-      "celebration": "Ottimo inizio. Il tuo percorso di arrivo \u00e8 ora personalizzato.",
-      "confident": "Sicuro",
+      "celebration": "Ottimo inizio. Il tuo percorso di arrivo è ora personalizzato.",
       "confidenceLabel": "Quanto ti senti sicuro di arrivare qui?",
-      "descriptionControl": "Completa questi passaggi rapidi per ridurre l\u2019attesa alla reception ed evitare sorprese all\u2019arrivo.",
-      "descriptionValueLed": "Sblocca un check-in pi\u00f9 veloce e consigli locali migliori completando questi passaggi ora.",
+      "confident": "Sicuro",
+      "descriptionControl": "Completa questi passaggi rapidi per ridurre l’attesa alla reception ed evitare sorprese all’arrivo.",
+      "descriptionValueLed": "Sblocca un check-in più veloce e consigli locali migliori completando questi passaggi ora.",
       "needGuidance": "Ho bisogno di indicazioni",
       "privacyDescription": "Utilizziamo queste informazioni solo per il tuo soggiorno attuale e le operazioni della reception.",
       "privacyTitle": "Rassicurazione sulla privacy",
@@ -30,70 +65,38 @@
       "titleWithName": "Benvenuto {{name}}, prepariamoci per il tuo arrivo"
     },
     "step2": {
-      "celebration": "Orario condiviso. La reception pu\u00f2 ora preparare il tuo arrivo.",
-      "description": "Condividere il tuo orario di arrivo aiuta la reception a preparare un check-in pi\u00f9 veloce.",
+      "celebration": "Orario condiviso. La reception può ora preparare il tuo arrivo.",
+      "description": "Condividere il tuo orario di arrivo aiuta la reception a preparare un check-in più veloce.",
       "etaLabel": "Fascia oraria di arrivo",
       "methodLabel": "Mezzo di trasporto",
       "title": "Condividi il tuo orario di arrivo"
     },
-    "errors": {
-      "retry": "Riprova",
-      "step1": "Non \u00e8 stato possibile salvare le tue preferenze. Tocca per riprovare.",
-      "step2": "Non \u00e8 stato possibile salvare il tuo orario. Tocca per riprovare.",
-      "step3": "Non \u00e8 stato possibile salvare la checklist. Tocca per riprovare."
-    },
     "step3": {
-      "cashDescription": "Tassa di soggiorno + deposito chiave in contanti \u2014 evita ritardi alla reception",
+      "cashDescription": "Tassa di soggiorno + deposito chiave in contanti — evita ritardi alla reception",
       "cashTitle": "Contanti per il check-in",
       "celebration": "Ben fatto. La tua checklist di arrivo sta procedendo.",
-      "description": "Spunta quello che puoi \u2014 aggiorna in qualsiasi momento dalla dashboard.",
+      "description": "Spunta quello che puoi — aggiorna in qualsiasi momento dalla dashboard.",
       "lastCompleted": "Ultimo completato: {{item}}",
       "locationAction": "Apri in Mappe",
-      "locationTitle": "Salva la posizione dell\u2019ostello",
-      "rulesDescription": "Lettura veloce \u2014 aiuta il tuo soggiorno ad andare liscio",
+      "locationTitle": "Salva la posizione dell’ostello",
+      "rulesDescription": "Lettura veloce — aiuta il tuo soggiorno ad andare liscio",
       "rulesTitle": "Regole della casa",
       "title": "Ultimi controlli"
+    },
+    "methods": {
+      "bus": "Autobus",
+      "ferry": "Traghetto",
+      "other": "Altro",
+      "private": "Privato",
+      "taxi": "Taxi",
+      "train": "Treno"
     }
-  },
-  "guestProfile": {
-    "goals": {
-      "adventure": "Avventura",
-      "explore": "Esplorare la zona",
-      "meetPeople": "Conoscere gente",
-      "relax": "Rilassarsi"
-    },
-    "goalsLabel": "Quali sono i tuoi obiettivi per questo soggiorno?",
-    "intent": {
-      "mixed": "Un po' di entrambi",
-      "quiet": "Tranquillo e riservato",
-      "social": "Socievole e aperto"
-    },
-    "intentLabel": "Qual \u00e8 il tuo stile?",
-    "interests": {
-      "beaches": "Spiagge",
-      "food": "Cibo e ristoranti",
-      "hiking": "Escursioni",
-      "history": "Storia e cultura",
-      "nightlife": "Vita notturna",
-      "photography": "Fotografia"
-    },
-    "interestsLabel": "Cosa ti interessa?",
-    "pace": {
-      "active": "Attivo",
-      "activeDesc": "Fare il pi\u00f9 possibile.",
-      "relaxed": "Rilassato",
-      "relaxedDesc": "Con calma, senza fretta."
-    },
-    "paceLabel": "Qual \u00e8 il tuo ritmo?",
-    "saveCta": "Salva preferenze",
-    "skipCta": "Salta per ora",
-    "title": "Parlaci di te"
   },
   "handoff": {
     "cta": "Inizia a esplorare",
     "highlights": {
       "connect": {
-        "description": "Chatta con gli altri ospiti e partecipa alle attivit\u00e0 di gruppo.",
+        "description": "Chatta con gli altri ospiti e partecipa alle attività di gruppo.",
         "title": "Connettiti"
       },
       "explore": {
@@ -110,8 +113,8 @@
   },
   "socialOptIn": {
     "activities": {
-      "description": "Partecipa ad attivit\u00e0 di gruppo come yoga, corsi di cucina e gite in barca.",
-      "title": "Attivit\u00e0"
+      "description": "Partecipa ad attività di gruppo come yoga, corsi di cucina e gite in barca.",
+      "title": "Attività"
     },
     "chat": {
       "description": "Connettiti con gli altri ospiti e condividi consigli nella chat di gruppo.",
@@ -119,13 +122,13 @@
     },
     "intro": "Sfrutta al meglio il tuo soggiorno connettendoti con gli altri ospiti.",
     "noActivities": {
-      "description": "Nessuna attivit\u00e0 in programma al momento. Dai un'occhiata alla guida di Positano!",
-      "title": "Nessuna attivit\u00e0 in programma"
+      "description": "Nessuna attività in programma al momento. Dai un'occhiata alla guida di Positano!",
+      "title": "Nessuna attività in programma"
     },
     "privacyNote": "Puoi modificare queste impostazioni in qualsiasi momento. Le tue informazioni sono visibili solo agli ospiti attuali.",
     "saveCta": "Salva preferenze",
     "skipCta": "Salta per ora",
     "title": "Resta connesso",
-    "upcomingActivities": "Prossime attivit\u00e0"
+    "upcomingActivities": "Prossime attività"
   }
 }

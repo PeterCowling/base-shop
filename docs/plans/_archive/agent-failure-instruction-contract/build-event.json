@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-2026-03-06-agent-failure-instruction-contract",
+  "feature_slug": "agent-failure-instruction-contract",
+  "emitted_at": "2026-03-06T13:56:57.269Z",
+  "why": "A blocked or failed path should terminate ambiguity, not create more of it. Precise next-step instructions are an efficiency control that prevents retry loops and wasted tool exploration.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Agent-facing failure messages across guards and blocked operations follow a precise contract that says whether retry is valid, what exact next step to take, and when to stop escalating locally.",
+    "source": "operator"
+  }
+}

@@ -35,6 +35,7 @@ import {
 
 import { handleOrganizeInbox as handleOrganizeInboxModule } from "./gmail-organize.js";
 import { setLockStore as setSharedLockStore } from "./gmail-shared.js";
+import { sendGuestEmailActivity } from "./guest-email-activity.js";
 import { processCancellationEmail } from "./process-cancellation-email.js";
 
 export { checkBookingRefDuplicate } from "./gmail-booking.js";
@@ -179,9 +180,10 @@ export function setLockStore(store: LockStore): void {
 export interface AuditEntry {
   ts: string;           // ISO 8601 UTC timestamp
   messageId: string;
-  action: "lock-acquired" | "lock-released" | "outcome";
+  action: "lock-acquired" | "lock-released" | "outcome" | "booking-dedup-skipped" | "inquiry-draft-dedup-skipped";
   actor: string;
   result?: string;      // only present for action === "outcome"
+  error_reason?: string; // only present on error-path "lock-released" entries
 }
 
 export type EmailSourcePath = "queue" | "reception" | "outbound" | "unknown";
@@ -191,7 +193,8 @@ export type TelemetryEventKey =
   | "email_draft_deferred"
   | "email_outcome_labeled"
   | "email_queue_transition"
-  | "email_fallback_detected";
+  | "email_fallback_detected"
+  | "email_reconcile_recovery";
 
 export interface TelemetryEvent {
   ts: string;
@@ -206,6 +209,7 @@ export interface TelemetryEvent {
   classification?: string;
   queue_from?: string | null;
   queue_to?: string | null;
+  age_hours?: number;
 }
 
 // TASK-04: Zod schema for TelemetryEvent validation on read.
@@ -217,6 +221,7 @@ const TelemetryEventSchema = z.object({
     "email_outcome_labeled",
     "email_queue_transition",
     "email_fallback_detected",
+    "email_reconcile_recovery",
   ]),
   source_path: z.enum(["queue", "reception", "outbound", "unknown"]),
   actor: z.string(),
@@ -331,6 +336,7 @@ interface DailyRollupBucket {
   deferred: number;
   requeued: number;
   fallback: number;
+  recovered: number;
 }
 
 function computeDailyTelemetryRollup(
@@ -348,6 +354,7 @@ function computeDailyTelemetryRollup(
       deferred: 0,
       requeued: 0,
       fallback: 0,
+      recovered: 0,
     };
     buckets.set(day, created);
     return created;
@@ -370,6 +377,10 @@ function computeDailyTelemetryRollup(
     }
     if (event.event_key === "email_fallback_detected") {
       bucket.fallback += 1;
+      continue;
+    }
+    if (event.event_key === "email_reconcile_recovery") {
+      bucket.recovered += 1;
       continue;
     }
     if (event.event_key === "email_queue_transition" && event.queue_to === LABELS.NEEDS_PROCESSING) {
@@ -577,6 +588,7 @@ const markProcessedSchema = z.object({
     .optional()
     .default("queue"),
   prepaymentProvider: z.enum(["octorate", "hostelworld"]).optional(),
+  reservationCode: z.string().optional(),
 });
 
 const telemetryDailyRollupSchema = z.object({
@@ -762,6 +774,14 @@ export const gmailTools = [
           default: "codex",
         },
       },
+    },
+  },
+  {
+    name: "gmail_audit_labels",
+    description: "Audit Gmail labels under the Brikette/* namespace. Returns three lists: known (expected required labels), legacy (old taxonomy labels pending migration), and orphaned (unrecognised Brikette/* labels). Silent if all clean.",
+    inputSchema: {
+      type: "object",
+      properties: {},
     },
   },
 ] as const;
@@ -954,8 +974,9 @@ export async function ensureLabelMap(
       if (created.data?.id) {
         labelMap.set(labelName, created.data.id);
       }
-    } catch {
+    } catch (err) {
       // If creation fails (permissions, etc.), leave missing labels unresolved.
+      process.stderr.write(`[ensureLabelMap] Failed to create label "${labelName}": ${String(err)}\n`);
     }
   }
 
@@ -1076,6 +1097,24 @@ function formatGmailQueryDate(date: Date): string {
   const month = String(date.getMonth() + 1).padStart(2, "0");
   const day = String(date.getDate()).padStart(2, "0");
   return `${year}/${month}/${day}`;
+}
+
+function parseSpecificStartDate(value: string): Date | null {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(value);
+  if (!match) return null;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const parsed = new Date(year, month - 1, day);
+  if (
+    Number.isNaN(parsed.getTime()) ||
+    parsed.getFullYear() !== year ||
+    parsed.getMonth() !== month - 1 ||
+    parsed.getDate() !== day
+  ) {
+    return null;
+  }
+  return parsed;
 }
 
 function parseMessageTimestamp(
@@ -1916,6 +1955,23 @@ async function handleCancellationCase({
       });
     }
 
+    // Draft cancellation confirmation email (code 27) for occupants with email addresses
+    if (result.status === "success" && result.guestEmails && Object.keys(result.guestEmails).length > 0 && result.reservationCode) {
+      await Promise.allSettled(
+        Object.entries(result.guestEmails).map(async ([occupantId, email]) => {
+          try {
+            await sendGuestEmailActivity({
+              bookingRef: result.reservationCode!,
+              activityCode: 27,
+              recipients: [email],
+            });
+          } catch (draftErr) {
+            console.error(`Failed to draft cancellation email for occupant ${occupantId}:`, draftErr);
+          }
+        })
+      );
+    }
+
     return { processed: true };
   } catch (error) {
     // Log error but don't throw - we've already marked it as received
@@ -1986,9 +2042,9 @@ async function _handleOrganizeInbox(
   let tomorrowDateString: string | null = null;
 
   if (specificStartDate) {
-    const parsed = new Date(specificStartDate);
-    if (Number.isNaN(parsed.getTime())) {
-      return errorResult(`Invalid specificStartDate: ${specificStartDate}`);
+    const parsed = parseSpecificStartDate(specificStartDate);
+    if (!parsed) {
+      return errorResult(`Invalid specificStartDate: ${specificStartDate}. Expected YYYY-MM-DD calendar date.`);
     }
     startDateString = formatGmailQueryDate(parsed);
     tomorrowDateString = formatGmailQueryDate(new Date(Date.now() + 24 * 60 * 60 * 1000));
@@ -2585,6 +2641,32 @@ async function handleCreateDraft(
     ? `${existingRefs} ${messageId}`
     : messageId;
 
+  // Thread-level dedup: skip if a draft already exists for this thread (fail-open).
+  const threadId = original.data.threadId;
+  try {
+    const existingDraftsRes = await gmail.users.drafts.list({
+      userId: "me",
+      q: `in:drafts thread:${threadId}`,
+    });
+    const existingDrafts = existingDraftsRes.data.drafts ?? [];
+    if (existingDrafts.length > 0) {
+      appendAuditEntry({
+        ts: new Date().toISOString(),
+        messageId: emailId,
+        action: "outcome",
+        actor: "system",
+        result: `inquiry-draft-dedup-skipped:thread-${threadId}-already-has-draft`,
+      });
+      return jsonResult({
+        success: false,
+        already_exists: true,
+        message: "Draft already exists for this thread — skipping to prevent duplicate.",
+      });
+    }
+  } catch {
+    // Fail-open: drafts.list error → proceed with draft creation normally
+  }
+
   const raw = createRawEmail(
     from,
     subject,
@@ -2599,7 +2681,7 @@ async function handleCreateDraft(
     requestBody: {
       message: {
         raw,
-        threadId: original.data.threadId,
+        threadId,
       },
     },
   });
@@ -2633,7 +2715,7 @@ async function handleCreateDraft(
   return jsonResult({
     success: true,
     draftId: draft.data.id,
-    threadId: original.data.threadId,
+    threadId,
     message: "Draft created successfully. Review and send from Gmail.",
   });
 }
@@ -2666,8 +2748,8 @@ async function cleanupInProgress(emailId: string, gmail: gmail_v1.Gmail): Promis
     return "cleanup succeeded";
   } catch (cleanupError) {
     lockStoreRef.release(emailId);
-    appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system" });
     const msg = cleanupError instanceof Error ? cleanupError.message : String(cleanupError);
+    appendAuditEntry({ ts: new Date().toISOString(), messageId: emailId, action: "lock-released", actor: "system", error_reason: msg });
     return `cleanup failed: ${msg}`;
   }
 }
@@ -2718,7 +2800,7 @@ async function handleMarkProcessed(
   gmail: gmail_v1.Gmail,
   args: unknown
 ): Promise<ReturnType<typeof jsonResult> | ReturnType<typeof errorResult>> {
-  const { emailId, action, actor, sourcePath, prepaymentProvider } = markProcessedSchema.parse(args);
+  const { emailId, action, actor, sourcePath, prepaymentProvider, reservationCode } = markProcessedSchema.parse(args);
 
   const labelMap = await ensureLabelMap(gmail, REQUIRED_LABELS);
   const preModify = await gmail.users.messages.get({
@@ -2899,6 +2981,40 @@ async function handleMarkProcessed(
     return errorResult(`Failed to apply labels: ${errorMessage}. ${cleanupStatus}`);
   }
   lockStoreRef.release(emailId);
+
+  // Write activity code 21 (AGREEMENT_RECEIVED) to Firebase fanout paths
+  if (action === "agreement_received" && reservationCode) {
+    const fbUrl = process.env.FIREBASE_DATABASE_URL ?? "";
+    const fbKey = process.env.FIREBASE_API_KEY;
+    if (fbUrl) {
+      try {
+        const makeUrl = (path: string): string => {
+          const u = new URL(`${fbUrl}${path}.json`);
+          if (fbKey) u.searchParams.set("auth", fbKey);
+          return u.toString();
+        };
+        const bookingResp = await fetch(makeUrl(`/bookings/${reservationCode}`));
+        if (bookingResp.ok) {
+          const bookingData = (await bookingResp.json()) as Record<string, unknown> | null;
+          const occupantIds = bookingData ? Object.keys(bookingData) : [];
+          const actTs = new Date().toISOString();
+          const actBaseId = Date.now();
+          const actPayload = JSON.stringify({ code: 21, timestamp: actTs, who: "Reception" });
+          await Promise.all(
+            occupantIds.map(async (occupantId, index) => {
+              const actId = `act_${actBaseId}_${index}`;
+              const patchOpts = { method: "PATCH", headers: { "Content-Type": "application/json" }, body: actPayload };
+              await fetch(makeUrl(`/activities/${occupantId}/${actId}`), patchOpts);
+              await fetch(makeUrl(`/activitiesByCode/21/${occupantId}/${actId}`), patchOpts);
+            })
+          );
+        }
+      } catch {
+        // Graceful degradation: Firebase write failure does not block label application
+      }
+    }
+  }
+
   const ts = new Date().toISOString();
   appendAuditEntry({ ts, messageId: emailId, action: "lock-released", actor: "system" });
   appendAuditEntry({ ts, messageId: emailId, action: "outcome", actor, result: action });
@@ -2971,9 +3087,10 @@ async function handleTelemetryDailyRollup(
       acc.deferred += bucket.deferred;
       acc.requeued += bucket.requeued;
       acc.fallback += bucket.fallback;
+      acc.recovered += bucket.recovered;
       return acc;
     },
-    { drafted: 0, deferred: 0, requeued: 0, fallback: 0 },
+    { drafted: 0, deferred: 0, requeued: 0, fallback: 0, recovered: 0 },
   );
 
   return jsonResult({
@@ -3224,6 +3341,15 @@ async function handleReconcileInProgress(
     }
 
     if (!dryRun) {
+      appendTelemetryEvent({
+        ts: new Date().toISOString(),
+        event_key: "email_reconcile_recovery",
+        source_path: "queue",
+        actor,
+        message_id: msg.id,
+        reason,
+        age_hours: ageHours !== null ? ageHours : undefined,
+      });
       await handleMarkProcessed(gmail, {
         emailId: msg.id,
         action,
@@ -3272,6 +3398,47 @@ async function handleReconcileInProgress(
     policy:
       "Stale customer threads are requeued for prompt handling; stale agreement replies are routed to agreement_received.",
   });
+}
+
+// =============================================================================
+// Audit Labels
+// =============================================================================
+
+async function handleAuditLabels(gmail: gmail_v1.Gmail) {
+  try {
+    const res = await gmail.users.labels.list({ userId: "me" });
+    const allLabels = res.data.labels ?? [];
+
+    const briketteLabels = allLabels
+      .map((l) => l.name ?? "")
+      .filter((name) => name === "Brikette" || name.startsWith("Brikette/"));
+
+    const legacyValues = new Set<string>(Object.values(LEGACY_LABELS));
+    const requiredSet = new Set<string>(REQUIRED_LABELS);
+
+    const known: string[] = [];
+    const legacy: string[] = [];
+    const orphaned: string[] = [];
+
+    for (const name of briketteLabels) {
+      if (requiredSet.has(name)) {
+        known.push(name);
+      } else if (legacyValues.has(name)) {
+        legacy.push(name);
+      } else {
+        orphaned.push(name);
+      }
+    }
+
+    return jsonResult({
+      known,
+      legacy,
+      orphaned,
+      total_brikette: briketteLabels.length,
+    });
+  } catch (error) {
+    return errorResult(formatError(error));
+  }
 }
 
 // =============================================================================
@@ -3336,6 +3503,10 @@ export async function handleGmailTool(name: string, args: unknown) {
 
       case "gmail_reconcile_in_progress": {
         return await handleReconcileInProgress(gmail, args);
+      }
+
+      case "gmail_audit_labels": {
+        return await handleAuditLabels(gmail);
       }
 
       default:

@@ -124,17 +124,14 @@ export const TillDataProvider: React.FC<TillDataProviderProps> = ({
   const loading = cashCountsLoading || creditSlipsLoading || transactionsLoading;
   const error = cashCountsError || creditSlipsError || transactionsError;
 
-  const value = useMemo<TillDataContextValue>(
-    () => ({
-      cashCounts: filteredCashCounts,
-      creditSlips,
-      transactions,
-      isShiftOpen,
-      loading,
-      error,
-    }),
-    [filteredCashCounts, creditSlips, transactions, isShiftOpen, loading, error]
-  );
+  const value: TillDataContextValue = {
+    cashCounts: filteredCashCounts,
+    creditSlips,
+    transactions,
+    isShiftOpen,
+    loading,
+    error,
+  };
 
   return (
     <TillDataContext.Provider value={value}>

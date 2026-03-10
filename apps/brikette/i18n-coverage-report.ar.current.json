@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 2,
+  "baselineLocale": "en",
+  "locales": [
+    "ar"
+  ],
+  "summary": {
+    "totalMissingFiles": 0,
+    "totalMissingKeys": 0,
+    "totalUntranslatedKeys": 1
+  },
+  "reports": [
+    {
+      "locale": "ar",
+      "missingFiles": [],
+      "missingKeys": {},
+      "untranslatedKeys": {
+        "how-to-get-here/routes/briketteToFerryDock.json": [
+          "figures.tabacchi.caption"
+        ]
+      }
+    }
+  ]
+}

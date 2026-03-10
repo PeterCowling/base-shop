@@ -9,7 +9,7 @@
 
 import { useMemo } from 'react';
 
-import logger from '@/utils/logger';
+import logger from '@acme/lib/logger/client';
 
 import type { BagStorageRecord } from '../../types/bagStorage';
 import type { CityTaxOccupantRecord, CityTaxRecord } from '../../types/cityTax';
@@ -148,7 +148,7 @@ function processPreorders(
           if (match) {
             nightKey = `Night${match[1]}`;
           } else {
-            logger.warn('Non-standard night key:', nightKey, item);
+            logger.warn('Non-standard night key:', nightKey, item); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
           }
         }
 

@@ -3,29 +3,30 @@ name: Deploy Prime
 on:
   push:
     branches:
+      - dev
       - main
       - staging
     paths:
-      - 'apps/prime/**'
-      - 'packages/design-system/**'
-      - 'packages/design-tokens/**'
-      - 'packages/next-config/**'
-      - 'packages/tailwind-config/**'
-      - 'packages/themes/**'
-      - 'packages/ui/**'
-      - '.github/workflows/prime.yml'
-      - '.github/workflows/reusable-app.yml'
+      - "apps/prime/**"
+      - "packages/design-system/**"
+      - "packages/design-tokens/**"
+      - "packages/next-config/**"
+      - "packages/tailwind-config/**"
+      - "packages/themes/**"
+      - "packages/ui/**"
+      - ".github/workflows/prime.yml"
+      - ".github/workflows/reusable-app.yml"
   pull_request:
     paths:
-      - 'apps/prime/**'
-      - 'packages/design-system/**'
-      - 'packages/design-tokens/**'
-      - 'packages/next-config/**'
-      - 'packages/tailwind-config/**'
-      - 'packages/themes/**'
-      - 'packages/ui/**'
-      - '.github/workflows/prime.yml'
-      - '.github/workflows/reusable-app.yml'
+      - "apps/prime/**"
+      - "packages/design-system/**"
+      - "packages/design-tokens/**"
+      - "packages/next-config/**"
+      - "packages/tailwind-config/**"
+      - "packages/themes/**"
+      - "packages/ui/**"
+      - ".github/workflows/prime.yml"
+      - ".github/workflows/reusable-app.yml"
   workflow_dispatch:
 
 jobs:
@@ -40,7 +41,15 @@ jobs:
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/prime"
-      build-cmd: OUTPUT_EXPORT=1 pnpm --filter @apps/prime... build
+      build-cmd: >
+        pnpm --filter @apps/prime^... build &&
+        cd apps/prime &&
+        ([ -d "src/app/g" ] && mv "src/app/g" "src/app/_g-off" || true) &&
+        ([ -d "src/app/api" ] && mv "src/app/api" "src/app/_api-off" || true) &&
+        (OUTPUT_EXPORT=1 pnpm exec next build; e=$?;
+        ([ -d "src/app/_api-off" ] && mv "src/app/_api-off" "src/app/api" || true);
+        ([ -d "src/app/_g-off" ] && mv "src/app/_g-off" "src/app/g" || true);
+        exit $e)
       artifact-path: apps/prime/out
       deploy_cmd: >
         cd apps/prime &&
@@ -56,3 +65,16 @@ jobs:
       healthcheck-extra-routes: ""
       healthcheck-args: "${{ github.ref_name == 'staging' && '--staging' || '' }}"
     secrets: inherit
+
+  healthcheck-custom-domain:
+    needs: [deploy]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Healthcheck guests.hostel-positano.com
+        env:
+          BASE_URL: https://guests.hostel-positano.com
+          MAX_RETRIES: "12"
+          RETRY_DELAY: "10"
+        run: bash scripts/post-deploy-health-check.sh prime

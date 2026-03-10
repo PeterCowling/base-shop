@@ -1,0 +1,753 @@
+{
+  "business": "BRIK",
+  "run_id": "task-19-shadow-brik-2026-03-10",
+  "session_id": "task-19-shadow-brik-2026-03-10-session",
+  "generation_source": "self-evolving-from-ideas",
+  "observations_generated": 151,
+  "backbone_queue_path": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
+  "backbone_queued": 0,
+  "shadow_handoff_path": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/shadow-handoffs.jsonl",
+  "shadow_handoffs_written": 4,
+  "followup_consume_mode": "skip",
+  "followup_closure_state": "closed",
+  "followup_dispatches_emitted": 0,
+  "followup_pending_entries": 0,
+  "followup_consumed_entries": 0,
+  "followup_closed_candidate_ids": [],
+  "followup_stale_repairable_candidate_ids": [],
+  "followup_hard_failed_candidate_ids": [],
+  "followup_unresolved_candidate_ids": [],
+  "followup_queue_entries_written": 0,
+  "warnings": [],
+  "orchestrator": {
+    "business": "BRIK",
+    "generated_at": "2026-03-10T08:46:13.255Z",
+    "startup_state_path": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/startup-state.json",
+    "candidate_path": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
+    "policy_state_path": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/policy-state.json",
+    "policy_decision_path": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/policy-decisions.jsonl",
+    "dependency_graph_path": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/dependency-graph.json",
+    "observations_count": 211,
+    "repeat_candidates_detected": 4,
+    "candidates_generated": 4,
+    "candidate_rejections": [],
+    "ranked_candidates": [
+      {
+        "candidate": {
+          "schema_version": "candidate.v1",
+          "candidate_id": "455be690c726c386",
+          "candidate_type": "deterministic_extraction",
+          "candidate_state": "validated",
+          "problem_statement": "New standing data source — Add a standing ops feed for inbox recovery outcomes Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window.",
+          "trigger_observations": [
+            "43500603ff31e455",
+            "ddec2d474f80c532"
+          ],
+          "executor_path": "lp-do-build:container:analytics-v1",
+          "change_scope": "business_only",
+          "applicability_predicates": [
+            "business=BRIK"
+          ],
+          "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+          "risk_level": "low",
+          "blast_radius_tag": "small",
+          "autonomy_level_required": 2,
+          "estimated_effort": "M",
+          "recommended_action": "route_into_lp-do-build_backbone",
+          "owners": [
+            "startup-loop"
+          ],
+          "approvers": [
+            "operator"
+          ],
+          "test_plan": "offline_replay_plus_canary",
+          "validation_contract": "self-evolving.validation.v1",
+          "rollout_plan": "feature_flag_canary_then_promote",
+          "rollback_contract": "auto_revert_on_guardrail_breach",
+          "kill_switch": "self_evolving_global_kill_switch",
+          "blocked_reason_code": null,
+          "unblock_requirements": [],
+          "blocked_since": null,
+          "expiry_at": "2026-04-09T08:46:13.255Z"
+        },
+        "score": {
+          "priority_score_v1": 3.55,
+          "priority_score_v2": null,
+          "autonomy_cap": 2,
+          "reasons": [
+            "v2_evidence_missing_or_low_quality",
+            "evidence_class:structural_only",
+            "negative_expected_utility"
+          ],
+          "evidence": {
+            "classification": "structural_only",
+            "requirements_met": 2,
+            "requirements_total": 6,
+            "readiness_ratio": 0.3333333333333333,
+            "missing_requirements": [
+              "kpi_baseline",
+              "measurement_plan",
+              "data_quality_ok",
+              "minimum_sample_size"
+            ],
+            "data_quality_ok_rate": {
+              "sample_size": 0,
+              "successes": 0,
+              "observed_rate": null,
+              "posterior_mean": null,
+              "lower_credible_bound": null,
+              "upper_credible_bound": null,
+              "confidence_level": 0.95,
+              "method": "beta_binomial_jeffreys",
+              "status": "insufficient_data"
+            },
+            "measurement_ready_observation_rate": {
+              "sample_size": 2,
+              "successes": 0,
+              "observed_rate": 0,
+              "posterior_mean": 0.16666666666666666,
+              "lower_credible_bound": 0.00021690846915589646,
+              "upper_credible_bound": 0.6668217545375228,
+              "confidence_level": 0.95,
+              "method": "beta_binomial_jeffreys",
+              "status": "measured"
+            }
+          },
+          "utility": {
+            "expected_reward": 1.4453,
+            "downside_penalty": 1.1567,
+            "effort_penalty": 1.46,
+            "evidence_penalty": 0,
+            "instability_penalty": 0,
+            "exploration_bonus": 0,
+            "net_utility": -1.1714
+          },
+          "policy": {
+            "policy_version": "self-evolving-policy.v1",
+            "utility_version": "self-evolving-utility.v1",
+            "prior_family_version": "self-evolving-priors.v1",
+            "belief_state_id": "727a1f1c448e0e17",
+            "structural_snapshot_id": "880351e99f95d778",
+            "evidence_weight": 0.35,
+            "evidence_floor_met": true,
+            "fallback_reason": null
+          }
+        },
+        "route": {
+          "route": "lp-do-fact-find",
+          "reason": "evidence_posture_exploratory_fact_find_only"
+        },
+        "source_hard_signature": "ddcad390a1288a50c69f303434c9abf5d2517fa1c9d00af069194ab974acd823",
+        "generated_at": "2026-03-10T08:46:13.255Z",
+        "policy_context": {
+          "decision_id": "acb4001f445c142c",
+          "decision_context_id": "a5c6dad9a82c01e7",
+          "policy_version": "self-evolving-policy.v1",
+          "utility_version": "self-evolving-utility.v1",
+          "prior_family_version": "self-evolving-priors.v1",
+          "belief_state_id": "727a1f1c448e0e17",
+          "structural_snapshot_id": "880351e99f95d778",
+          "portfolio_decision_id": "8a72317f23549378",
+          "portfolio_selected": false,
+          "portfolio_selected_at": "2026-03-10T08:46:13.255Z",
+          "portfolio_adjusted_utility": -1.7939,
+          "exploration_decision_id": null,
+          "exploration_mode": null,
+          "exploration_selected": false,
+          "exploration_selected_at": "2026-03-10T08:46:13.255Z",
+          "exploration_priority_score": null,
+          "exploration_applied": false,
+          "promotion_gate_decision_id": null,
+          "promotion_gate_action": null,
+          "promotion_gate_reason": null
+        }
+      },
+      {
+        "candidate": {
+          "schema_version": "candidate.v1",
+          "candidate_id": "ab5320678b656800",
+          "candidate_type": "deterministic_extraction",
+          "candidate_state": "validated",
+          "problem_statement": "New loop process — Add a post-deploy recovery telemetry review checkpoint Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window.",
+          "trigger_observations": [
+            "4a19c981455f1e32",
+            "a470fe61dc9ee048"
+          ],
+          "executor_path": "lp-do-build:container:feedback-intel-v1",
+          "change_scope": "business_only",
+          "applicability_predicates": [
+            "business=BRIK"
+          ],
+          "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+          "risk_level": "low",
+          "blast_radius_tag": "small",
+          "autonomy_level_required": 2,
+          "estimated_effort": "M",
+          "recommended_action": "route_into_lp-do-build_backbone",
+          "owners": [
+            "startup-loop"
+          ],
+          "approvers": [
+            "operator"
+          ],
+          "test_plan": "offline_replay_plus_canary",
+          "validation_contract": "self-evolving.validation.v1",
+          "rollout_plan": "feature_flag_canary_then_promote",
+          "rollback_contract": "auto_revert_on_guardrail_breach",
+          "kill_switch": "self_evolving_global_kill_switch",
+          "blocked_reason_code": null,
+          "unblock_requirements": [],
+          "blocked_since": null,
+          "expiry_at": "2026-04-09T08:46:13.255Z"
+        },
+        "score": {
+          "priority_score_v1": 3.55,
+          "priority_score_v2": null,
+          "autonomy_cap": 2,
+          "reasons": [
+            "v2_evidence_missing_or_low_quality",
+            "evidence_class:structural_only",
+            "negative_expected_utility"
+          ],
+          "evidence": {
+            "classification": "structural_only",
+            "requirements_met": 2,
+            "requirements_total": 6,
+            "readiness_ratio": 0.3333333333333333,
+            "missing_requirements": [
+              "kpi_baseline",
+              "measurement_plan",
+              "data_quality_ok",
+              "minimum_sample_size"
+            ],
+            "data_quality_ok_rate": {
+              "sample_size": 0,
+              "successes": 0,
+              "observed_rate": null,
+              "posterior_mean": null,
+              "lower_credible_bound": null,
+              "upper_credible_bound": null,
+              "confidence_level": 0.95,
+              "method": "beta_binomial_jeffreys",
+              "status": "insufficient_data"
+            },
+            "measurement_ready_observation_rate": {
+              "sample_size": 2,
+              "successes": 0,
+              "observed_rate": 0,
+              "posterior_mean": 0.16666666666666666,
+              "lower_credible_bound": 0.00021690846915589646,
+              "upper_credible_bound": 0.6668217545375228,
+              "confidence_level": 0.95,
+              "method": "beta_binomial_jeffreys",
+              "status": "measured"
+            }
+          },
+          "utility": {
+            "expected_reward": 1.4453,
+            "downside_penalty": 1.1567,
+            "effort_penalty": 1.46,
+            "evidence_penalty": 0,
+            "instability_penalty": 0,
+            "exploration_bonus": 0,
+            "net_utility": -1.1714
+          },
+          "policy": {
+            "policy_version": "self-evolving-policy.v1",
+            "utility_version": "self-evolving-utility.v1",
+            "prior_family_version": "self-evolving-priors.v1",
+            "belief_state_id": "c57fa69cbc1a5fef",
+            "structural_snapshot_id": "73a9149ce3b6fd0d",
+            "evidence_weight": 0.35,
+            "evidence_floor_met": true,
+            "fallback_reason": null
+          }
+        },
+        "route": {
+          "route": "lp-do-fact-find",
+          "reason": "evidence_posture_exploratory_fact_find_only"
+        },
+        "source_hard_signature": "65c52360d5deb9addf345eb6668fe309ff5d38bd581a7731a885f316da8dbb0f",
+        "generated_at": "2026-03-10T08:46:13.255Z",
+        "policy_context": {
+          "decision_id": "bed21ada3d255ccb",
+          "decision_context_id": "89876a6039dd48d1",
+          "policy_version": "self-evolving-policy.v1",
+          "utility_version": "self-evolving-utility.v1",
+          "prior_family_version": "self-evolving-priors.v1",
+          "belief_state_id": "c57fa69cbc1a5fef",
+          "structural_snapshot_id": "73a9149ce3b6fd0d",
+          "portfolio_decision_id": "db226e64d00e88b3",
+          "portfolio_selected": false,
+          "portfolio_selected_at": "2026-03-10T08:46:13.255Z",
+          "portfolio_adjusted_utility": -1.7158,
+          "exploration_decision_id": null,
+          "exploration_mode": null,
+          "exploration_selected": false,
+          "exploration_selected_at": "2026-03-10T08:46:13.255Z",
+          "exploration_priority_score": null,
+          "exploration_applied": false,
+          "promotion_gate_decision_id": null,
+          "promotion_gate_action": null,
+          "promotion_gate_reason": null
+        }
+      },
+      {
+        "candidate": {
+          "schema_version": "candidate.v1",
+          "candidate_id": "fd5ed6ad188ac1a9",
+          "candidate_type": "deterministic_extraction",
+          "candidate_state": "validated",
+          "problem_statement": "AI-to-mechanistic — Schedule Gmail In-Progress reconciliation outside the agent loop Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window.",
+          "trigger_observations": [
+            "d41bc4d5b4e3b87d",
+            "d4a9d947a29aedd8"
+          ],
+          "executor_path": "lp-do-build:container:analytics-v1",
+          "change_scope": "business_only",
+          "applicability_predicates": [
+            "business=BRIK"
+          ],
+          "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+          "risk_level": "low",
+          "blast_radius_tag": "small",
+          "autonomy_level_required": 2,
+          "estimated_effort": "M",
+          "recommended_action": "route_into_lp-do-build_backbone",
+          "owners": [
+            "startup-loop"
+          ],
+          "approvers": [
+            "operator"
+          ],
+          "test_plan": "offline_replay_plus_canary",
+          "validation_contract": "self-evolving.validation.v1",
+          "rollout_plan": "feature_flag_canary_then_promote",
+          "rollback_contract": "auto_revert_on_guardrail_breach",
+          "kill_switch": "self_evolving_global_kill_switch",
+          "blocked_reason_code": null,
+          "unblock_requirements": [],
+          "blocked_since": null,
+          "expiry_at": "2026-04-09T08:46:13.255Z"
+        },
+        "score": {
+          "priority_score_v1": 3.55,
+          "priority_score_v2": null,
+          "autonomy_cap": 2,
+          "reasons": [
+            "v2_evidence_missing_or_low_quality",
+            "evidence_class:structural_only",
+            "negative_expected_utility"
+          ],
+          "evidence": {
+            "classification": "structural_only",
+            "requirements_met": 2,
+            "requirements_total": 6,
+            "readiness_ratio": 0.3333333333333333,
+            "missing_requirements": [
+              "kpi_baseline",
+              "measurement_plan",
+              "data_quality_ok",
+              "minimum_sample_size"
+            ],
+            "data_quality_ok_rate": {
+              "sample_size": 0,
+              "successes": 0,
+              "observed_rate": null,
+              "posterior_mean": null,
+              "lower_credible_bound": null,
+              "upper_credible_bound": null,
+              "confidence_level": 0.95,
+              "method": "beta_binomial_jeffreys",
+              "status": "insufficient_data"
+            },
+            "measurement_ready_observation_rate": {
+              "sample_size": 2,
+              "successes": 0,
+              "observed_rate": 0,
+              "posterior_mean": 0.16666666666666666,
+              "lower_credible_bound": 0.00021690846915589646,
+              "upper_credible_bound": 0.6668217545375228,
+              "confidence_level": 0.95,
+              "method": "beta_binomial_jeffreys",
+              "status": "measured"
+            }
+          },
+          "utility": {
+            "expected_reward": 1.4453,
+            "downside_penalty": 1.1567,
+            "effort_penalty": 1.46,
+            "evidence_penalty": 0,
+            "instability_penalty": 0,
+            "exploration_bonus": 0,
+            "net_utility": -1.1714
+          },
+          "policy": {
+            "policy_version": "self-evolving-policy.v1",
+            "utility_version": "self-evolving-utility.v1",
+            "prior_family_version": "self-evolving-priors.v1",
+            "belief_state_id": "e3a8bc3b8711db02",
+            "structural_snapshot_id": "a2d6578f652c8c1a",
+            "evidence_weight": 0.35,
+            "evidence_floor_met": true,
+            "fallback_reason": null
+          }
+        },
+        "route": {
+          "route": "lp-do-fact-find",
+          "reason": "evidence_posture_exploratory_fact_find_only"
+        },
+        "source_hard_signature": "5f9cd3076451decc027b433313209d1fb0463a77c135371e13970ebcf23c1f6d",
+        "generated_at": "2026-03-10T08:46:13.255Z",
+        "policy_context": {
+          "decision_id": "e25b61d2eda4cc59",
+          "decision_context_id": "c912b432ec622f96",
+          "policy_version": "self-evolving-policy.v1",
+          "utility_version": "self-evolving-utility.v1",
+          "prior_family_version": "self-evolving-priors.v1",
+          "belief_state_id": "e3a8bc3b8711db02",
+          "structural_snapshot_id": "a2d6578f652c8c1a",
+          "portfolio_decision_id": "525494d3d2d24200",
+          "portfolio_selected": false,
+          "portfolio_selected_at": "2026-03-10T08:46:13.255Z",
+          "portfolio_adjusted_utility": -1.7939,
+          "exploration_decision_id": null,
+          "exploration_mode": null,
+          "exploration_selected": false,
+          "exploration_selected_at": "2026-03-10T08:46:13.255Z",
+          "exploration_priority_score": null,
+          "exploration_applied": false,
+          "promotion_gate_decision_id": null,
+          "promotion_gate_action": null,
+          "promotion_gate_reason": null
+        }
+      },
+      {
+        "candidate": {
+          "schema_version": "candidate.v1",
+          "candidate_id": "300444927b4c7dec",
+          "candidate_type": "deterministic_extraction",
+          "candidate_state": "validated",
+          "problem_statement": "AI-to-mechanistic — Extract shared PIN digit colour array into a single constant Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window.",
+          "trigger_observations": [
+            "04e94cdb1faa394d",
+            "8b6e169dcb280324"
+          ],
+          "executor_path": "lp-do-build:container:analytics-v1",
+          "change_scope": "business_only",
+          "applicability_predicates": [
+            "business=BRIK"
+          ],
+          "expected_benefit": "Reduce repetitive operator/manual workflow load.",
+          "risk_level": "low",
+          "blast_radius_tag": "small",
+          "autonomy_level_required": 2,
+          "estimated_effort": "M",
+          "recommended_action": "route_into_lp-do-build_backbone",
+          "owners": [
+            "startup-loop"
+          ],
+          "approvers": [
+            "operator"
+          ],
+          "test_plan": "offline_replay_plus_canary",
+          "validation_contract": "self-evolving.validation.v1",
+          "rollout_plan": "feature_flag_canary_then_promote",
+          "rollback_contract": "auto_revert_on_guardrail_breach",
+          "kill_switch": "self_evolving_global_kill_switch",
+          "blocked_reason_code": null,
+          "unblock_requirements": [],
+          "blocked_since": null,
+          "expiry_at": "2026-04-09T08:46:13.255Z"
+        },
+        "score": {
+          "priority_score_v1": 3.55,
+          "priority_score_v2": null,
+          "autonomy_cap": 2,
+          "reasons": [
+            "v2_evidence_missing_or_low_quality",
+            "evidence_class:structural_only",
+            "negative_expected_utility"
+          ],
+          "evidence": {
+            "classification": "structural_only",
+            "requirements_met": 2,
+            "requirements_total": 6,
+            "readiness_ratio": 0.3333333333333333,
+            "missing_requirements": [
+              "kpi_baseline",
+              "measurement_plan",
+              "data_quality_ok",
+              "minimum_sample_size"
+            ],
+            "data_quality_ok_rate": {
+              "sample_size": 0,
+              "successes": 0,
+              "observed_rate": null,
+              "posterior_mean": null,
+              "lower_credible_bound": null,
+              "upper_credible_bound": null,
+              "confidence_level": 0.95,
+              "method": "beta_binomial_jeffreys",
+              "status": "insufficient_data"
+            },
+            "measurement_ready_observation_rate": {
+              "sample_size": 2,
+              "successes": 0,
+              "observed_rate": 0,
+              "posterior_mean": 0.16666666666666666,
+              "lower_credible_bound": 0.00021690846915589646,
+              "upper_credible_bound": 0.6668217545375228,
+              "confidence_level": 0.95,
+              "method": "beta_binomial_jeffreys",
+              "status": "measured"
+            }
+          },
+          "utility": {
+            "expected_reward": 1.4453,
+            "downside_penalty": 1.1567,
+            "effort_penalty": 1.46,
+            "evidence_penalty": 0,
+            "instability_penalty": 0,
+            "exploration_bonus": 0,
+            "net_utility": -1.1714
+          },
+          "policy": {
+            "policy_version": "self-evolving-policy.v1",
+            "utility_version": "self-evolving-utility.v1",
+            "prior_family_version": "self-evolving-priors.v1",
+            "belief_state_id": "7633243dd5bf2499",
+            "structural_snapshot_id": "b97c6d3785ee0dda",
+            "evidence_weight": 0.35,
+            "evidence_floor_met": true,
+            "fallback_reason": null
+          }
+        },
+        "route": {
+          "route": "lp-do-fact-find",
+          "reason": "evidence_posture_exploratory_fact_find_only"
+        },
+        "source_hard_signature": "d82b1a6d02f032aa253035f13ce2ca644b879668902f3a7a90c2ea0495d6249e",
+        "generated_at": "2026-03-10T08:46:13.255Z",
+        "policy_context": {
+          "decision_id": "35fd6cac9220caee",
+          "decision_context_id": "5a1c318f2ab6efb8",
+          "policy_version": "self-evolving-policy.v1",
+          "utility_version": "self-evolving-utility.v1",
+          "prior_family_version": "self-evolving-priors.v1",
+          "belief_state_id": "7633243dd5bf2499",
+          "structural_snapshot_id": "b97c6d3785ee0dda",
+          "portfolio_decision_id": "0e64794f56a0bd12",
+          "portfolio_selected": false,
+          "portfolio_selected_at": "2026-03-10T08:46:13.255Z",
+          "portfolio_adjusted_utility": -1.7939,
+          "exploration_decision_id": null,
+          "exploration_mode": null,
+          "exploration_selected": false,
+          "exploration_selected_at": "2026-03-10T08:46:13.255Z",
+          "exploration_priority_score": null,
+          "exploration_applied": false,
+          "promotion_gate_decision_id": null,
+          "promotion_gate_action": null,
+          "promotion_gate_reason": null
+        }
+      }
+    ],
+    "dashboard": {
+      "totals": {
+        "observations": 211,
+        "candidates": 4,
+        "active_candidates": 4,
+        "blocked_candidates": 0,
+        "promoted_candidates": 0,
+        "reverted_candidates": 0
+      },
+      "quality": {
+        "resolved_candidate_precision": {
+          "sample_size": 0,
+          "successes": 0,
+          "observed_rate": null,
+          "posterior_mean": null,
+          "lower_credible_bound": null,
+          "upper_credible_bound": null,
+          "confidence_level": 0.95,
+          "method": "beta_binomial_jeffreys",
+          "status": "insufficient_data"
+        },
+        "observation_annotation_coverage": {
+          "sample_size": 211,
+          "successes": 5,
+          "observed_rate": 0.023696682464454975,
+          "posterior_mean": 0.025943396226415096,
+          "lower_credible_bound": 0.009098205991904251,
+          "upper_credible_bound": 0.051152374828234315,
+          "confidence_level": 0.95,
+          "method": "beta_binomial_jeffreys",
+          "status": "measured"
+        },
+        "annotated_data_quality_ok_rate": {
+          "sample_size": 5,
+          "successes": 0,
+          "observed_rate": 0,
+          "posterior_mean": 0.08333333333333333,
+          "lower_credible_bound": 0.00009342060002381913,
+          "upper_credible_bound": 0.37937714252620935,
+          "confidence_level": 0.95,
+          "method": "beta_binomial_jeffreys",
+          "status": "measured"
+        },
+        "measurement_ready_observation_rate": {
+          "sample_size": 211,
+          "successes": 0,
+          "observed_rate": 0,
+          "posterior_mean": 0.0023584905660377358,
+          "lower_credible_bound": 0.0000023244196256655414,
+          "upper_credible_bound": 0.01182041605352424,
+          "confidence_level": 0.95,
+          "method": "beta_binomial_jeffreys",
+          "status": "measured"
+        },
+        "measured_evidence_candidate_rate": {
+          "sample_size": 4,
+          "successes": 0,
+          "observed_rate": 0,
+          "posterior_mean": 0.1,
+          "lower_credible_bound": 0.00011533278848219197,
+          "upper_credible_bound": 0.44476261734962463,
+          "confidence_level": 0.95,
+          "method": "beta_binomial_jeffreys",
+          "status": "measured"
+        },
+        "evidence_constrained_candidates": 4
+      },
+      "posture": {
+        "total_observations": 211,
+        "effective_grade_counts": {
+          "exploratory": 206,
+          "structural": 5,
+          "measured": 0
+        },
+        "declared_grade_counts": {
+          "exploratory": 145,
+          "structural": 5,
+          "measured": 0,
+          "unlabeled": 61
+        },
+        "measurement_contract_status_counts": {
+          "none": 145,
+          "declared": 5,
+          "verified": 0,
+          "unlabeled": 61
+        },
+        "source_counts": {
+          "declared": 150,
+          "inferred": 61
+        },
+        "underlying_field_counts": {
+          "baseline_present": 0,
+          "measurement_window_present": 5,
+          "data_quality_ok": 0,
+          "minimum_sample_ready": 0,
+          "measurement_ready": 0
+        },
+        "policy_eligibility_counts": {
+          "exploratory_fact_find_only": 206,
+          "structural_fact_find_only": 5,
+          "stronger_route_eligible_measured": 0
+        },
+        "current_qualified_tranche": {
+          "measured_suffix_observations": 0,
+          "stronger_route_eligible_now": false
+        }
+      },
+      "backlog_saturation": 0.4,
+      "policy": {
+        "policy_version": "self-evolving-policy.v1",
+        "utility_version": "self-evolving-utility.v1",
+        "authority_level": "shadow",
+        "candidate_beliefs": 4,
+        "decision_records": 24,
+        "stochastic_decisions": 0,
+        "exploration_decisions": 0,
+        "promotion_gate_decisions": 4
+      },
+      "evaluation": {
+        "total_decisions": 8,
+        "observed_decisions": 0,
+        "pending_decisions": 0,
+        "censored_decisions": 8,
+        "missing_decisions": 0,
+        "replay_ready_decisions": 0,
+        "shadow_handoff_decisions": 0,
+        "pending_shadow_handoffs": 0,
+        "matured_shadow_handoffs": 0,
+        "maturity_debt_decisions": 8,
+        "replay_ready_rate": {
+          "sample_size": 8,
+          "successes": 0,
+          "observed_rate": 0,
+          "posterior_mean": 0.05555555555555555,
+          "lower_credible_bound": 0.00005949030310148373,
+          "upper_credible_bound": 0.2622172487899661,
+          "confidence_level": 0.95,
+          "method": "beta_binomial_jeffreys",
+          "status": "measured"
+        }
+      },
+      "audit": {
+        "calibration_status": "insufficient_data",
+        "calibration_sample_size": 0,
+        "calibration_brier_score": null,
+        "exploration_regret_status": "insufficient_data",
+        "exploration_regret_batches": 0,
+        "exploration_regret_measured_batches": 0,
+        "exploration_total_regret": null,
+        "override_count": 0,
+        "overridden_candidates": 0,
+        "policy_versions_compared": 1
+      },
+      "graph": {
+        "snapshot_id": "c5463ba96078e95a",
+        "node_count": 18,
+        "edge_count": 28,
+        "top_candidate_bottlenecks": [
+          {
+            "candidate_id": "ab5320678b656800",
+            "bottleneck_score": 0.022059
+          },
+          {
+            "candidate_id": "300444927b4c7dec",
+            "bottleneck_score": 0.012255
+          },
+          {
+            "candidate_id": "455be690c726c386",
+            "bottleneck_score": 0.012255
+          },
+          {
+            "candidate_id": "fd5ed6ad188ac1a9",
+            "bottleneck_score": 0.012255
+          }
+        ]
+      },
+      "survival": {
+        "snapshot_id": "2026-03-10T08:46:13.255Z",
+        "total_records": 4,
+        "verified_curve_status": "estimated",
+        "closure_curve_status": "estimated",
+        "estimated_route_profiles": 1,
+        "insufficient_route_profiles": 0
+      }
+    },
+    "boundary": {
+      "mature_stage_detected": false,
+      "autonomy_level_cap": 4,
+      "reasons": []
+    }
+  },
+  "source_paths": {
+    "dispatches": "/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/trial/queue-state.json",
+    "startup_state": "/Users/petercowling/base-shop/docs/business-os/startup-loop/self-evolving/BRIK/startup-state.json",
+    "followup_queue_state": "/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/trial/queue-state.json",
+    "followup_telemetry": "/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/trial/telemetry.jsonl"
+  }
+}

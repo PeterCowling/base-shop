@@ -275,6 +275,39 @@ export default [
     },
   },
 
+  /* ▸ Prime Cloudflare Functions: lint outside app tsconfig project graph */
+  {
+    files: ["apps/prime/functions/**/*.{ts,tsx}"],
+    plugins: { ds: dsPlugin },
+    languageOptions: {
+      parserOptions: {
+        project: [path.join(__dirname, "apps/prime/tsconfig.functions.json")],
+        projectService: false,
+        allowDefaultProject: false,
+      },
+    },
+    rules: {
+      ...offAllDsRules,
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-non-literal-require": "off",
+      "security/detect-unsafe-regex": "off",
+      "no-console": "off",
+    },
+  },
+
+  /* ▸ Prime app source: bind type-aware lint to the app tsconfig only.
+   *   The repo-wide projectService graph is too large for changed-file lint here. */
+  {
+    files: ["apps/prime/src/**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        project: [path.join(__dirname, "apps/prime/tsconfig.json")],
+        projectService: false,
+        allowDefaultProject: false,
+      },
+    },
+  },
+
   /* ▸ MCP server scripts: allow default project (no type-aware lint) */
   {
     files: ["packages/mcp-server/scripts/**/*.ts"],
@@ -534,6 +567,53 @@ export default [
     ],
     rules: {
       "ds/no-hardcoded-copy": "warn",
+    },
+  },
+
+  /* ▸ Prime: downgrade architectural debt rules to warn (tracked in remediation plans) */
+  // Must appear AFTER the apps/**/src/**/*.{ts,tsx} error-escalation block to take effect.
+  {
+    files: ["apps/prime/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      // Pre-existing i18n debt tracked in prime-hardcoded-copy-i18n-remediation plan
+      "ds/no-hardcoded-copy": "warn",
+      // Pre-existing layout primitive debt — tracked for future refactor
+      "ds/container-widths-only-at": "warn",
+      "ds/enforce-layout-primitives": "warn",
+    },
+  },
+
+  /* ▸ Inventory-uploader: internal operator console — no i18n requirement, semantic tokens enforced */
+  // Must appear AFTER the apps/**/src/**/*.{ts,tsx} error-escalation block to take effect.
+  {
+    files: ["apps/inventory-uploader/**/*.{ts,tsx,js,jsx,mdx}"],
+    plugins: { ds: dsPlugin },
+    rules: {
+      "ds/no-hardcoded-copy": "off",
+      "ds/no-raw-tailwind-color": "error",
+    },
+  },
+
+  /* ▸ Prime tests: suppress security filesystem rule (paths are test fixtures, not user input) */
+  {
+    files: [
+      "apps/prime/src/__tests__/**/*.{ts,tsx,js,jsx}",
+      "apps/prime/src/**/__tests__/**/*.{ts,tsx,js,jsx}",
+    ],
+    rules: {
+      "security/detect-non-literal-fs-filename": "off",
+    },
+  },
+
+  /* ▸ Prime test-utils: disable project service (files are excluded from tsconfig) */
+  {
+    files: ["apps/prime/src/test-utils/**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        projectService: false,
+        allowDefaultProject: true,
+      },
     },
   },
 
@@ -2403,6 +2483,7 @@ export default [
       "ds/no-raw-font": "off", // receipt printing is domain-specific for POS system
       /* DS spacing rules — escalation per DS-06 */
       "ds/no-raw-spacing": "error", // escalated in DS-06 after fixing 8 violations
+      "ds/no-bare-rounded": "error", // Design standard: bare 'rounded' must be 'rounded-lg' — see Phase 1-4 reception UI polish
       "ds/no-arbitrary-tailwind": "error",
       /* Non-DS relaxations */
       complexity: ["error", 60],

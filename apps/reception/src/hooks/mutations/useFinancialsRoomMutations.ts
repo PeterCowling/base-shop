@@ -1,12 +1,15 @@
 // File: /src/hooks/mutations/useFinancialsRoomMutations.ts
-import { useCallback, useState } from "react";
-import { get, ref, set } from "firebase/database";
+import { useCallback } from "react";
+import { ref, runTransaction } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import {
   type FinancialsRoomData,
   type RoomTransaction,
 } from "../../types/hooks/data/financialsRoomData";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
+
+import useMutationState from "./useMutationState";
 
 /**
  * Merges existing data with a partial update, preserving old transactions
@@ -25,6 +28,29 @@ function mergeFinancials(
       ...existing.transactions,
       ...partial.transactions,
     },
+  };
+}
+
+function normalizeFinancialsRoomData(current: unknown): FinancialsRoomData {
+  const fallback: FinancialsRoomData = {
+    balance: 0,
+    totalDue: 0,
+    totalPaid: 0,
+    totalAdjust: 0,
+    transactions: {},
+  };
+
+  if (!current || typeof current !== "object") {
+    return fallback;
+  }
+
+  const record = current as Partial<FinancialsRoomData>;
+  return {
+    balance: record.balance ?? 0,
+    totalDue: record.totalDue ?? 0,
+    totalPaid: record.totalPaid ?? 0,
+    totalAdjust: record.totalAdjust ?? 0,
+    transactions: record.transactions ?? {},
   };
 }
 
@@ -72,65 +98,58 @@ function calculateFinancials(
   return { totalDue, totalPaid, totalAdjust, balance };
 }
 
+interface UseFinancialsRoomMutationsReturn extends MutationState<void> {
+  saveFinancialsRoom: (
+    bookingRef: string,
+    partial: Partial<FinancialsRoomData>
+  ) => Promise<void>;
+}
+
 /**
  * Mutator Hook
  * Provides a function that merges partial data into existing `financialsRoom/{bookingRef}`,
  * then recalculates the top-level fields from the transactions.
  */
-export default function useFinancialsRoomMutations() {
+export default function useFinancialsRoomMutations(): UseFinancialsRoomMutationsReturn {
   const database = useFirebaseDatabase();
-  const [error, setError] = useState<unknown>(null);
+  const { loading, error, run } = useMutationState();
 
   /**
    * saveFinancialsRoom
-   * 1) Reads existing data or uses defaults if none
-   * 2) Merges partial data
-   * 3) Recalculates top-level fields (balance, totalDue, totalPaid, totalAdjust)
-   * 4) Writes final data back to Firebase
+   * Uses a Firebase transaction to avoid lost updates during concurrent writes.
    */
   const saveFinancialsRoom = useCallback(
     async (bookingRef: string, partial: Partial<FinancialsRoomData>) => {
       if (!database) {
-        const dbErr = new Error("Firebase database is not initialized.");
-        setError(dbErr);
-        return Promise.reject(dbErr);
+        throw new Error("Firebase database is not initialized.");
       }
 
-      const nodeRef = ref(database, `financialsRoom/${bookingRef}`);
+      await run(async () => {
+        const nodeRef = ref(database, `financialsRoom/${bookingRef}`);
 
-      try {
-        const snapshot = await get(nodeRef);
-        const existingData: FinancialsRoomData = snapshot.exists()
-          ? (snapshot.val() as FinancialsRoomData)
-          : {
-              balance: 0,
-              totalDue: 0,
-              totalPaid: 0,
-              totalAdjust: 0,
-              transactions: {},
-            };
+        const result = await runTransaction(nodeRef, (currentValue) => {
+          const existingData = normalizeFinancialsRoomData(currentValue);
 
-        // 1) Merge partial data into existing
-        const merged = mergeFinancials(existingData, partial);
+          // 1) Merge partial data into existing
+          const merged = mergeFinancials(existingData, partial);
 
-        // 2) Calculate derived fields from merged transactions
-        const recalculated = calculateFinancials(merged.transactions);
+          // 2) Calculate derived fields from merged transactions
+          const recalculated = calculateFinancials(merged.transactions);
 
-        // 3) Final updated object
-        const updatedData: FinancialsRoomData = {
-          ...merged,
-          ...recalculated,
-        };
+          // 3) Final updated object
+          return {
+            ...merged,
+            ...recalculated,
+          } as FinancialsRoomData;
+        });
 
-        // 4) Write to Firebase
-        await set(nodeRef, updatedData);
-      } catch (err) {
-        setError(err);
-        return Promise.reject(err);
-      }
+        if (!result.committed) {
+          throw new Error("Financials transaction was not committed");
+        }
+      });
     },
-    [database]
+    [database, run]
   );
 
-  return { saveFinancialsRoom, error };
+  return { saveFinancialsRoom, error, loading };
 }

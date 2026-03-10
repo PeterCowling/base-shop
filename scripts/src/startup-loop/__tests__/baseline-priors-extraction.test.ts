@@ -4,11 +4,11 @@
  * Tests extraction, validation, and round-trip serialization of machine priors blocks
  * from baseline artifacts.
  *
- * Task: LC-00 from docs/plans/archive/learning-compiler-plan.md
+ * Task: LC-00 from the learning-compiler plan (archived — see git history)
  */
 
-import type { Prior } from '../baseline-priors';
-import { extractPriors, replaceMachineBlock, serializePriors } from '../baseline-priors';
+import type { Prior } from '../baselines/baseline-priors';
+import { extractPriors, replaceMachineBlock, serializePriors } from '../baselines/baseline-priors';
 
 // Fixture: Sample baseline doc with Priors (Machine) block
 const FIXTURE_BASELINE_DOC = `---

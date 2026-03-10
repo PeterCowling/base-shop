@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "Brikette Hostel",
     "reserve": "Foglalj most"
   },
   "intro": {
@@ -24,10 +24,14 @@
     "reload": "Töltse újra az oldalt"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
-    "twitterHandle": "@brikette"
+    "twitterCard": "összefoglaló _ large _ image",
+    "twitterHandle": "@ brikette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "Az ARTICLE_SLUGS-nak legalább egy assistance slug-ot kell definiálnia"
+  },
+  "stickyCta": {
+    "directHeadline": "Foglalja le legjobb elérhető árunkat két percen belül.",
+    "directSubcopy": "Kerülje el a közvetítők díjait, és kapjon elsőbbségi segítséget Positanói csapatunktól."
   }
 }

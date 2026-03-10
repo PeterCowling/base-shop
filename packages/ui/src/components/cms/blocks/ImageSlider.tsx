@@ -87,7 +87,7 @@ export default function ImageSlider({
             type="button"
             onClick={prev}
             aria-label={t("Previous slide") as string}
-            className="absolute start-2 top-1/2 -translate-y-1/2 rounded p-2 min-h-10 min-w-10 bg-surface-2/60 hover:bg-surface-2/80"
+            className="absolute start-2 top-1/2 -translate-y-1/2 rounded p-2 min-h-11 min-w-11 bg-surface-2/60 hover:bg-surface-2/80"
             data-token="--color-fg"
           >
             <span className="text-bg" data-token="--color-bg">‹</span>
@@ -96,7 +96,7 @@ export default function ImageSlider({
             type="button"
             onClick={next}
             aria-label={t("Next slide") as string}
-            className="absolute end-2 top-1/2 -translate-y-1/2 rounded p-2 min-h-10 min-w-10 bg-surface-2/60 hover:bg-surface-2/80"
+            className="absolute end-2 top-1/2 -translate-y-1/2 rounded p-2 min-h-11 min-w-11 bg-surface-2/60 hover:bg-surface-2/80"
             data-token="--color-fg"
           >
             <span className="text-bg" data-token="--color-bg">›</span>

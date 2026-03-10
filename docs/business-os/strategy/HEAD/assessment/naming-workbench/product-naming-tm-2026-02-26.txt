@@ -1,0 +1,380 @@
+TM Pre-Screen Direction — Facilella Product Naming Pipeline
+Run date: 2026-02-26  |  Round: 1  |  Business: HEAD
+Candidates: 20  |  Classes checked: Class 25, Class 26
+
+IMPORTANT: This document provides search direction only. No trademark searches
+have been performed automatically. The operator must visit each URL and record
+the result in the "Operator result" field below.
+
+A clear result in the target class does not guarantee no conflict — seek
+professional IP advice if any near-matches are found.
+
+====================================================================
+--- 1. Archella ---
+Compound: Facilella Archella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Archella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Archella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Archella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 2. Nastella ---
+Compound: Facilella Nastella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Nastella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Nastella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Nastella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 3. Cerchietta ---
+Compound: Facilella Cerchietta
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Cerchietta
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Cerchietta
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Cerchietta" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 4. Archova ---
+Compound: Facilella Archova
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Archova
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Archova
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Archova" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 5. Nastrica ---
+Compound: Facilella Nastrica
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Nastrica
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Nastrica
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Nastrica" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 6. Faschella ---
+Compound: Facilella Faschella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Faschella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Faschella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Faschella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 7. Archetto ---
+Compound: Facilella Archetto
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Archetto
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Archetto
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Archetto" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 8. Sicella ---
+Compound: Facilella Sicella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Sicella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Sicella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Sicella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 9. Saldella ---
+Compound: Facilella Saldella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Saldella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Saldella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Saldella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 10. Pronella ---
+Compound: Facilella Pronella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Pronella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Pronella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Pronella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 11. Decella ---
+Compound: Facilella Decella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Decella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Decella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Decella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 12. Vivella ---
+Compound: Facilella Vivella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Vivella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Vivella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Vivella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 13. Fermella ---
+Compound: Facilella Fermella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Fermella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Fermella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Fermella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 14. Nastova ---
+Compound: Facilella Nastova
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Nastova
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Nastova
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Nastova" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 15. Sempre ---
+Compound: Facilella Sempre
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Sempre
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Sempre
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Sempre" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 16. Svelta ---
+Compound: Facilella Svelta
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Svelta
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Svelta
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Svelta" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 17. Destella ---
+Compound: Facilella Destella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Destella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Destella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Destella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 18. Certova ---
+Compound: Facilella Certova
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Certova
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Certova
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Certova" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 19. Abitella ---
+Compound: Facilella Abitella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Abitella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Abitella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Abitella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+
+--- 20. Prestella ---
+Compound: Facilella Prestella
+TM classes: Class 25, Class 26
+
+EUIPO (EU trademark register — eTMview):
+  https://euipo.europa.eu/eSearch/#basic?criteria=WORD&searchTerm=Prestella
+  Note: Check "Word" search for exact match + phonetic near-matches in Classes 25 and 26.
+
+WIPO Global Brand Database (cross-jurisdictional):
+  https://branddb.wipo.int/en/quicksearch/brand?query=Prestella
+  Note: Search includes EU, IT, FR, DE marks. Look for word mark conflicts in Nice Classes 25, 26.
+
+UIBM (Italian national trademark register):
+  https://www.uibm.gov.it/bancadati/
+  Manual step: Navigate to the URL, enter "Prestella" in the word mark search field, filter by Classes 25 and 26.
+
+Operator result: [ ] Clear  [ ] Conflict  [ ] Pending
+====================================================================
+
+Next step: After completing searches, update the shortlist artifact
+(product-naming-shortlist-2026-02-26.user.md) with TM pre-screen results.
+
+Registered Nice Classification class descriptions:
+  Class 25: Clothing, footwear, headgear (includes headbands worn as headgear)
+  Class 26: Lace, embroidery, ribbons, buttons, hooks, pins, needlework;
+            hair accessories (slides, bands, clips, pins, headbands)

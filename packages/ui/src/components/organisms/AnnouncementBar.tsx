@@ -35,7 +35,7 @@ export default function AnnouncementBar({ text, href, closable = false, classNam
   const content = (
     <div
       className={cn(
-        "flex w-full items-center justify-center gap-2 bg-primary px-4 py-2 text-sm min-h-10", // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes
+        "flex w-full items-center justify-center gap-2 bg-primary px-4 py-2 text-sm min-h-11", // i18n-exempt -- PB-000 [ttl=2025-12-31]: CSS utility classes
         className,
       )}
       /* i18n-exempt -- PB-000 [ttl=2025-12-31]: design token attribute */

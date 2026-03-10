@@ -1,15 +1,7 @@
 // /Users/petercowling/reception/src/types/component/checkoutrow.ts
+import { type Activity } from "../hooks/data/activitiesData";
 import { type FinancialsRoomData } from "../hooks/data/financialsRoomData";
 import { type LoanTransaction } from "../hooks/data/loansData";
-
-/**
- * Represents an activity related to the checkout process.
- * Extend this interface with additional properties as needed.
- */
-export interface Activity {
-  code: number;
-  timestamp?: string;
-}
 
 /**
  * Final shape of a checkout row

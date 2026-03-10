@@ -19,25 +19,19 @@ export interface ColorSwatchProps
 /**
  * Simple circular swatch button for color selection.
  */
-export const ColorSwatch = React.forwardRef<
-  HTMLButtonElement,
-  ColorSwatchProps
->(
-  (
-    {
-      color,
-      selected = false,
-      size = 24,
-      className,
-      style,
-      label,
-      "aria-label": ariaLabel,
-      "aria-labelledby": ariaLabelledBy,
-      type = "button",
-      ...props
-    },
-    ref,
-  ) => {
+export function ColorSwatch({
+  color,
+  selected = false,
+  size = 24,
+  className,
+  style,
+  label,
+  "aria-label": ariaLabel,
+  "aria-labelledby": ariaLabelledBy,
+  type = "button",
+  ref,
+  ...props
+}: ColorSwatchProps & { ref?: React.Ref<HTMLButtonElement> }) {
     const normalizedColor =
       typeof color === "string" ? color.trim() : String(color);
     const sizePx = Number.isFinite(size) ? Number(size) : 24;
@@ -52,6 +46,7 @@ export const ColorSwatch = React.forwardRef<
 
     return (
       <button
+        data-slot="color-swatch"
         ref={ref}
         type={type}
         className={cn(
@@ -67,6 +62,4 @@ export const ColorSwatch = React.forwardRef<
         {...props}
       />
     );
-  },
-);
-ColorSwatch.displayName = "ColorSwatch";
+}

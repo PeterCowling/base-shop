@@ -33,6 +33,15 @@ export interface BayesianABTestResult {
   expectedLift: number;
 }
 
+export interface BetaBinomialPosteriorOptions {
+  successes: number;
+  failures?: number;
+  total?: number;
+  priorAlpha?: number;
+  priorBeta?: number;
+  credibleIntervalLevel?: number;
+}
+
 const DEFAULT_PRIOR_ALPHA = 0.5;
 const DEFAULT_PRIOR_BETA = 0.5;
 const DEFAULT_CREDIBLE_LEVEL = 0.95;
@@ -170,6 +179,50 @@ function summarizePosterior(
   };
 }
 
+export function betaBinomialPosterior(
+  options: BetaBinomialPosteriorOptions
+): BetaPosteriorSummary {
+  const {
+    successes,
+    failures,
+    total,
+    priorAlpha = DEFAULT_PRIOR_ALPHA,
+    priorBeta = DEFAULT_PRIOR_BETA,
+    credibleIntervalLevel = DEFAULT_CREDIBLE_LEVEL,
+  } = options;
+
+  assertNonNegativeInteger(successes, "successes");
+  assertPositive(priorAlpha, "priorAlpha");
+  assertPositive(priorBeta, "priorBeta");
+  assertOpenUnitInterval(credibleIntervalLevel, "credibleIntervalLevel");
+
+  let normalizedFailures: number;
+  if (typeof failures === "number") {
+    assertNonNegativeInteger(failures, "failures");
+    normalizedFailures = failures;
+    if (typeof total === "number") {
+      assertPositiveInteger(total, "total");
+      if (successes + failures !== total) {
+        throw new RangeError("successes + failures must equal total");
+      }
+    }
+  } else if (typeof total === "number") {
+    assertPositiveInteger(total, "total");
+    if (successes > total) {
+      throw new RangeError("successes must be <= total");
+    }
+    normalizedFailures = total - successes;
+  } else {
+    throw new RangeError("either failures or total must be provided");
+  }
+
+  return summarizePosterior(
+    priorAlpha + successes,
+    priorBeta + normalizedFailures,
+    credibleIntervalLevel
+  );
+}
+
 export function bayesianABTest(
   options: BayesianABTestOptions
 ): BayesianABTestResult {
@@ -203,24 +256,25 @@ export function bayesianABTest(
   assertPositiveInteger(simulationSamples, "simulationSamples");
   assertFinite(seed, "seed");
 
-  const controlFailures = controlTotal - controlSuccesses;
-  const treatmentFailures = treatmentTotal - treatmentSuccesses;
+  const controlPosterior = betaBinomialPosterior({
+    successes: controlSuccesses,
+    total: controlTotal,
+    priorAlpha,
+    priorBeta,
+    credibleIntervalLevel,
+  });
+  const treatmentPosterior = betaBinomialPosterior({
+    successes: treatmentSuccesses,
+    total: treatmentTotal,
+    priorAlpha,
+    priorBeta,
+    credibleIntervalLevel,
+  });
 
-  const controlAlpha = priorAlpha + controlSuccesses;
-  const controlBeta = priorBeta + controlFailures;
-  const treatmentAlpha = priorAlpha + treatmentSuccesses;
-  const treatmentBeta = priorBeta + treatmentFailures;
-
-  const controlPosterior = summarizePosterior(
-    controlAlpha,
-    controlBeta,
-    credibleIntervalLevel
-  );
-  const treatmentPosterior = summarizePosterior(
-    treatmentAlpha,
-    treatmentBeta,
-    credibleIntervalLevel
-  );
+  const controlAlpha = controlPosterior.alpha;
+  const controlBeta = controlPosterior.beta;
+  const treatmentAlpha = treatmentPosterior.alpha;
+  const treatmentBeta = treatmentPosterior.beta;
 
   const rng = new SeededRandom(seed);
   let treatmentBetterCount = 0;

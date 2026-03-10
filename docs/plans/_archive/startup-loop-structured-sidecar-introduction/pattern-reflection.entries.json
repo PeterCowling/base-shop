@@ -1,0 +1,26 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-06T15:58:29.326Z",
+  "plan_slug": "startup-loop-structured-sidecar-introduction",
+  "source_path": "../docs/plans/startup-loop-structured-sidecar-introduction/pattern-reflection.user.md",
+  "entries": [
+    {
+      "pattern_summary": "Post-authoring sidecar extraction as a reusable loop process",
+      "category": "new-loop-process",
+      "routing_target": "loop_update",
+      "occurrence_count": 1,
+      "evidence_refs": [
+        "docs/plans/startup-loop-structured-sidecar-introduction/plan.md"
+      ]
+    },
+    {
+      "pattern_summary": "Build-record structured extraction as AI-to-mechanistic candidate",
+      "category": "ai-to-mechanistic",
+      "routing_target": "loop_update",
+      "occurrence_count": 1,
+      "evidence_refs": [
+        "docs/plans/startup-loop-structured-sidecar-introduction/plan.md"
+      ]
+    }
+  ]
+}

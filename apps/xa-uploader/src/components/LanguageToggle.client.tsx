@@ -1,32 +1,40 @@
 "use client";
 
-/* eslint-disable ds/no-raw-typography, ds/no-arbitrary-tailwind -- XAUP-0001 [ttl=2026-12-31] Gate UI pending design token refactor */
-
 import { useUploaderI18n } from "../lib/uploaderI18n.client";
 
 export function LanguageToggle({
   className,
   monoClassName,
+  variant = "light",
 }: {
   className?: string;
   monoClassName?: string;
+  variant?: "light" | "dark";
 }) {
   const { locale, setLocale, t } = useUploaderI18n();
   const rootClassName = [monoClassName ?? "", className ?? ""].filter(Boolean).join(" ");
 
+  const isDark = variant === "dark";
+  const wrapperClass = isDark
+    ? "inline-flex overflow-hidden rounded-md border border-gate-header-border text-2xs uppercase tracking-label-lg text-gate-header-muted"
+    : "inline-flex overflow-hidden rounded-md border border-gate-border bg-surface text-2xs uppercase tracking-label-lg text-gate-muted";
+
+  const buttonClass = (active: boolean) => {
+    if (isDark) {
+      return `px-3 py-2 transition ${active ? "bg-gate-accent text-gate-on-accent" : "hover:bg-gate-accent/10 text-gate-header-muted"}`;
+    }
+    return `px-3 py-2 transition ${active ? "bg-gate-accent-soft text-gate-accent" : "hover:bg-muted text-gate-muted"}`;
+  };
+
   return (
     <div className={rootClassName}>
       <span className="sr-only">{t("languageLabel")}</span>
-      <div className="inline-flex overflow-hidden rounded-md border border-border-2 bg-surface text-[10px] uppercase tracking-[0.35em] text-[color:var(--gate-muted)]">
+      <div className={wrapperClass}>
         <button
           type="button"
           onClick={() => setLocale("en")}
           aria-pressed={locale === "en"}
-          className={`px-3 py-2 transition ${
-            locale === "en"
-              ? "bg-muted text-[color:var(--gate-ink)]"
-              : "hover:bg-muted"
-          }`}
+          className={buttonClass(locale === "en")}
         >
           {t("languageEnglish")}
         </button>
@@ -34,13 +42,9 @@ export function LanguageToggle({
           type="button"
           onClick={() => setLocale("zh")}
           aria-pressed={locale === "zh"}
-          className={`px-3 py-2 transition ${
-            locale === "zh"
-              ? "bg-muted text-[color:var(--gate-ink)]"
-              : "hover:bg-muted"
-          }`}
+          className={buttonClass(locale === "zh")}
         >
-          {t("languageChinese")}
+          {t("languageZh")}
         </button>
       </div>
     </div>

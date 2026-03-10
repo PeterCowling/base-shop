@@ -53,7 +53,7 @@ const ApartmentHighlightsSection: FC<{ lang?: string }> = ({ lang }) => {
           key={title}
           className="group flex w-full flex-col overflow-hidden rounded-3xl shadow-xl transition-shadow duration-300 hover:shadow-2xl"
         >
-          <div className="relative aspect-[var(--apartment-highlight-aspect,4/3)] w-full overflow-hidden">
+          <div className="relative aspect-video w-full overflow-hidden">
             <CfHeroImage
               src={image}
               alt={alt}
@@ -62,10 +62,10 @@ const ApartmentHighlightsSection: FC<{ lang?: string }> = ({ lang }) => {
               className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
             />
           </div>
-          <figcaption className="relative mt-0 flex w-full justify-center bg-black/55 px-6 py-6 text-center backdrop-blur-sm sm:px-8 sm:py-8 after:absolute after:inset-0 after:bg-gradient-to-t after:from-black/40 after:to-transparent dark:bg-black/60">
+          <figcaption className="relative mt-0 flex w-full justify-center bg-surface/55 px-6 py-6 text-center backdrop-blur-sm sm:px-8 sm:py-8 after:absolute after:inset-0 after:bg-gradient-to-t after:from-black/40 after:to-transparent dark:bg-black/60">
             <div className="relative z-10 flex w-full flex-col items-center justify-center">
-              <h3 className="text-xl font-semibold leading-snug text-white dark:text-white md:text-2xl">{title}</h3>
-              <p className="mt-2 text-sm text-white/90 dark:text-white/90 md:text-base">{text}</p>
+              <h3 className="text-xl font-semibold leading-snug text-primary-fg dark:text-primary-fg md:text-2xl">{title}</h3>
+              <p className="mt-2 text-sm text-primary-fg/90 dark:text-primary-fg/90 md:text-base">{text}</p>
             </div>
           </figcaption>
         </figure>

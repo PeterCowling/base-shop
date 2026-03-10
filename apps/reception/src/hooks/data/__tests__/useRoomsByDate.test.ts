@@ -5,8 +5,17 @@ import { act, renderHook } from "@testing-library/react";
 
 import useRoomsByDate from "../useRoomsByDate";
 
+// Use a stable database reference so that `database` does not change between
+// renders and trigger spurious re-subscriptions in the effect dep array.
+const mockDatabase = {};
 jest.mock("../../../services/useFirebase", () => ({
-  useFirebaseDatabase: () => ({}),
+  useFirebaseDatabase: () => mockDatabase,
+}));
+
+// Silence the IndexedDB prefill — not available in jsdom.
+jest.mock("../../../lib/offline/receptionDb", () => ({
+  getCachedData: jest.fn().mockResolvedValue(null),
+  setCachedData: jest.fn().mockResolvedValue(undefined),
 }));
 
 // --- Hoisted mock state ------------------------------------------------
@@ -141,5 +150,20 @@ describe("useRoomsByDate", () => {
 
     unmount();
     expect(unsubscribes[1]).toHaveBeenCalledTimes(1);
+  });
+
+  // TC-15: re-render with same date array content does not call onValue again
+  it("TC-15: same sorted dates on re-render do not create a new Firebase subscription", () => {
+    const { rerender } = renderHook(
+      ({ dates }: { dates: string[] }) => useRoomsByDate(dates),
+      { initialProps: { dates: ["2024-01-01", "2024-01-02"] } }
+    );
+
+    expect(callbacks).toHaveLength(1);
+
+    // Re-render with a new array reference but same sorted content.
+    rerender({ dates: ["2024-01-02", "2024-01-01"] });
+    expect(callbacks).toHaveLength(1);
+    expect(unsubscribes[0]).not.toHaveBeenCalled();
   });
 });

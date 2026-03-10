@@ -12,7 +12,9 @@ import {
 } from "@acme/lib/xa";
 
 import {
+  isCatalogMediaPathSpec,
   loadCatalogRows,
+  normalizeCatalogMediaPath,
   parseList,
 } from "./catalogSyncCommon";
 
@@ -31,7 +33,7 @@ Usage:
 Options:
   --products <path>  Path to uploader products CSV (required)
   --recursive        Expand directory image specs recursively
-  --strict           Fail on missing images or low-resolution images
+  --strict           Fail on missing images and unresolved image specs
 `);
 }
 
@@ -145,6 +147,19 @@ async function main() {
     }
 
     for (const [specIndex, imageSpec] of imageSpecs.entries()) {
+      const expectedAlt = imageAltTexts[specIndex];
+      if (isCatalogMediaPathSpec(imageSpec)) {
+        const catalogPath = normalizeCatalogMediaPath(imageSpec);
+        if (!catalogPath) {
+          errors.push(`[${rowLabel(index)}] "${productSlug}" has an empty catalog image path.`);
+          continue;
+        }
+        if (!expectedAlt) {
+          errors.push(`[${rowLabel(index)}] "${productSlug}" image "${catalogPath}" is missing alt text.`);
+        }
+        continue;
+      }
+
       let resolvedPaths: string[];
       try {
         resolvedPaths = await expandFileSpec(imageSpec, baseDir, {
@@ -168,7 +183,7 @@ async function main() {
         try {
           const dimensions = await readImageDimensions(resolvedPath);
           const shortestEdge = Math.min(dimensions.width, dimensions.height);
-          if (options.strict && shortestEdge < minEdge) {
+          if (shortestEdge < minEdge) {
             errors.push(
               `[${rowLabel(index)}] "${productSlug}" image "${resolvedPath}" is ${dimensions.width}x${dimensions.height}; minimum shortest edge is ${minEdge}px.`,
             );
@@ -181,11 +196,9 @@ async function main() {
             warnings.push(`[${rowLabel(index)}] "${productSlug}" ${message}`);
           }
         }
-
-        const expectedAlt = imageAltTexts[specIndex];
-        if (!expectedAlt && options.strict) {
-          warnings.push(
-            `[${rowLabel(index)}] "${productSlug}" image "${resolvedPath}" has no explicit alt text (fallback to title will be used).`,
+        if (!expectedAlt) {
+          errors.push(
+            `[${rowLabel(index)}] "${productSlug}" image "${resolvedPath}" is missing alt text.`,
           );
         }
       }

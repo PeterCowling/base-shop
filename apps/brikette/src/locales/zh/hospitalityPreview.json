@@ -1,0 +1,12 @@
+{
+  "title": "招待主题预览",
+  "guestActivation": {
+    "label": "嘉宾激活",
+    "description": "过去7天"
+  },
+  "signalBridge": {
+    "title": "信号桥检查",
+    "etaShared": "共享的ETA",
+    "cashPrepared": "准备的现金"
+  }
+}

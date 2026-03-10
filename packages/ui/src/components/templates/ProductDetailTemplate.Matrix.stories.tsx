@@ -222,7 +222,7 @@ const SubscriptionTogglePlayStory: React.FC = () => {
           <input
             type="radio"
             name="subscription-toggle"
-            className="me-2"
+            className="me-2 min-h-11 min-w-11"
             checked={mode === 'one-time'}
             onChange={() => setMode('one-time')}
           />
@@ -232,7 +232,7 @@ const SubscriptionTogglePlayStory: React.FC = () => {
           <input
             type="radio"
             name="subscription-toggle"
-            className="me-2"
+            className="me-2 min-h-11 min-w-11"
             checked={mode === 'subscribe'}
             onChange={() => setMode('subscribe')}
           />

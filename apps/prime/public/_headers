@@ -1,0 +1,21 @@
+# Cloudflare Pages security headers for Prime guest portal.
+# Applied at edge response time to all paths.
+#
+# DEPLOYMENT NOTE: HSTS header in this file requires Full (strict) SSL to be active
+# on the hostel-positano.com zone before this file is deployed to production.
+# Deploying HSTS over a non-strict SSL zone risks downgrade attacks on redirect loops.
+# See: docs/plans/prime-edge-tls-hardening/plan.md — TASK-02/TASK-03 must complete first.
+#
+# CSP connect-src allow-list (do not remove without auditing Firebase calls):
+#   - prime-f3652-default-rtdb  — Firebase Realtime Database (HTTP + WebSocket)
+#   - identitytoolkit.googleapis.com — Firebase Auth (sign-in / token exchange)
+#   - securetoken.googleapis.com    — Firebase Auth (token refresh)
+#   - prime-f3652.firebaseapp.com   — Firebase authDomain (OAuth redirect host)
+
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self' https://prime-f3652-default-rtdb.europe-west1.firebasedatabase.app wss://prime-f3652-default-rtdb.europe-west1.firebasedatabase.app https://identitytoolkit.googleapis.com https://securetoken.googleapis.com https://prime-f3652.firebaseapp.com; img-src 'self' data:; font-src 'self'; frame-ancestors 'none'

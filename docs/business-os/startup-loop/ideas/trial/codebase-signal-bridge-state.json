@@ -1,0 +1,32 @@
+{
+  "schema_version": "codebase-signal-bridge.v3",
+  "updated_at": "2026-03-09T10:52:01.626Z",
+  "bug_scan_hash": null,
+  "codebase_hash": "9e8580c11640368660d01f4fcc5a5e38d92cbb45",
+  "repo_maturity_hash": "f79221155b07283376aff9c0ca2c558eaf1acc0f",
+  "repo_maturity_inputs_fingerprint": "8a0c33381687fab0b9708c426c6bc2c68ade285e",
+  "repo_maturity_score": 70,
+  "repo_maturity_category_scores": {
+    "testing": 20,
+    "automation": 20,
+    "documentation": 15,
+    "operational_readiness": 15,
+    "governance": 13,
+    "code_quality": 15
+  },
+  "repo_maturity_strictness_scores": {
+    "frontier_math_adoption": 5,
+    "oss_acceleration": 3,
+    "security_depth": 3,
+    "ci_velocity": 1,
+    "structure_hygiene": 0,
+    "indexing_hygiene": 2
+  },
+  "repo_maturity_cap_reasons": [
+    "ci_velocity_very_low",
+    "structure_hygiene_very_low",
+    "indexing_hygiene_low",
+    "root_zero_byte_files_present"
+  ],
+  "repo_maturity_critical_controls": []
+}

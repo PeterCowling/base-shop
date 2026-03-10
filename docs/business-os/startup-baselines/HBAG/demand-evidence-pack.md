@@ -193,4 +193,4 @@ operator_notes: >
 - Market intelligence: `docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md`
 - Mini-handbag PMF fact-find: `docs/plans/mini-handbag-pmf/fact-find.md` (2026-02-17)
 - Outcome contract: `docs/business-os/strategy/HBAG/plan.user.md` §HBAG-OUT-2026Q1-01
-- DEP schema: `docs/business-os/startup-loop/demand-evidence-pack-schema.md`
+- DEP schema: `docs/business-os/startup-loop/schemas/demand-evidence-pack-schema.md`

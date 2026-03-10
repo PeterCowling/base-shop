@@ -113,7 +113,7 @@ After Section H, append Section I with this exact structure:
 - `stop-next-week`: what will be stopped next week based on evidence
 - `no-test reason`: required only when `tested` is "none"; include remediation owner + due date for restoring test cadence
 
-Full checklist specification (including monthly deep-audit): `docs/business-os/startup-loop/audit-cadence-contract-v1.md`.
+Full checklist specification (including monthly deep-audit): `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md`.
 
-<!-- Cross-reference (read-only, do not change prompt authority content above): This prompt is invoked by the S10 orchestrator (`/lp-weekly`) at Step 3 of the S10 weekly sequence. Orchestration contract: `docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md`. Weekly packet schema (additive artifact produced by Step 7): `docs/business-os/startup-loop/s10-weekly-packet-schema-v1.md`. The orchestrator links this artifact; it does not author or override the decision content produced here. -->
+<!-- Cross-reference (read-only, do not change prompt authority content above): This prompt is invoked by the S10 orchestrator (`/lp-weekly`) at Step 3 of the S10 weekly sequence. Orchestration contract: `docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md`. Weekly packet schema (additive artifact produced by Step 7): `docs/business-os/startup-loop/schemas/s10-weekly-packet-schema-v1.md`. The orchestrator links this artifact; it does not author or override the decision content produced here. -->
 ```

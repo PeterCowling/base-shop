@@ -5,11 +5,14 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import { type Database,get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { FinancialsRoomRecord } from '../../types/financialsRoom';
+
+import type { PureDataRefetch } from './types';
 
 /**
  * Fetch booking financial info from "financialsRoom/{bookingRef}".
@@ -25,7 +28,7 @@ async function fetchFinancialsRoomForBooking(
     }
     return snapshot.val() as FinancialsRoomRecord;
   } catch (error) {
-    logger.error('Error fetching financialsRoom data:', error);
+    logger.error('Error fetching financialsRoom data:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }
@@ -52,6 +55,6 @@ export function useFetchFinancialsRoom(
     error: error ?? null,
     isLoading,
     isError: error !== null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

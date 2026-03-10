@@ -10,13 +10,18 @@
  * Firebase paths:
  *   checkInCodes/byCode/{code} — staff lookup by code
  *   checkInCodes/byUuid/{uuid} — guest lookup by UUID
+ *
+ * Auth: requires a valid guest session token in Authorization: Bearer header.
+ * Rate limit: POST endpoint — 5 requests per 15 min per IP (RATE_LIMIT KV).
  */
 
-import { FirebaseRest, jsonResponse, errorResponse } from '../lib/firebase-rest';
+import { errorResponse, FirebaseRest, jsonResponse } from '../lib/firebase-rest';
+import { createFunctionTranslator } from '../lib/function-i18n';
 
 interface Env {
   CF_FIREBASE_DATABASE_URL: string;
   CF_FIREBASE_API_KEY?: string;
+  RATE_LIMIT?: KVNamespace;
 }
 
 interface CheckInCodeRecord {
@@ -24,6 +29,13 @@ interface CheckInCodeRecord {
   uuid: string;
   createdAt: number;
   expiresAt: number;
+}
+
+interface GuestSessionToken {
+  bookingId: string;
+  guestUuid: string | null;
+  createdAt: string;
+  expiresAt: string;
 }
 
 const CODE_PREFIX = 'BRK-';
@@ -34,70 +46,171 @@ const MAX_COLLISION_ATTEMPTS = 10;
 /** Characters excluding confusing ones (0, O, 1, I, L) */
 const CODE_CHARACTERS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 
+const MAX_ATTEMPTS = 5;
+const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+
+/** Generates a cryptographically random BRK-XXXXX code. */
 function generateCode(): string {
+  const arr = new Uint32Array(CODE_LENGTH);
+  crypto.getRandomValues(arr);
   let code = '';
   for (let i = 0; i < CODE_LENGTH; i++) {
-    code += CODE_CHARACTERS.charAt(Math.floor(Math.random() * CODE_CHARACTERS.length));
+    code += CODE_CHARACTERS[arr[i] % CODE_CHARACTERS.length];
   }
   return `${CODE_PREFIX}${code}`;
 }
 
-function calculateExpiry(checkOutDate: string): number {
-  try {
-    const checkOut = new Date(checkOutDate);
-    return checkOut.getTime() + CODE_EXPIRY_HOURS_AFTER_CHECKOUT * 60 * 60 * 1000;
-  } catch {
-    // Default to 7 days from now if checkout date is invalid
-    return Date.now() + 7 * 24 * 60 * 60 * 1000;
+function calculateExpiry(checkOutDate: string): number | null {
+  const checkOutTimestamp = Date.parse(checkOutDate);
+  if (!Number.isFinite(checkOutTimestamp)) {
+    return null;
   }
+
+  return checkOutTimestamp + CODE_EXPIRY_HOURS_AFTER_CHECKOUT * 60 * 60 * 1000;
+}
+
+function parseCookie(cookieHeader: string, name: string): string | null {
+  for (const part of cookieHeader.split(';')) {
+    const [key, ...rest] = part.trim().split('=');
+    if (key.trim() === name) {
+      return rest.join('=').trim() || null;
+    }
+  }
+  return null;
+}
+
+/**
+ * Extracts the session token from cookie (primary) or Authorization: Bearer header (transition period).
+ * Returns null if absent or malformed.
+ */
+function extractSessionToken(request: Request): string | null {
+  const cookie = parseCookie(request.headers.get('Cookie') ?? '', 'prime_session');
+  if (cookie) return cookie;
+  const authHeader = request.headers.get('Authorization');
+  if (!authHeader || !authHeader.startsWith('Bearer ')) return null;
+  const token = authHeader.slice('Bearer '.length).trim();
+  return token.length > 0 ? token : null;
+}
+
+/**
+ * Validates a guest session token against Firebase.
+ * Returns the guestUuid associated with the token, or null if invalid/expired.
+ */
+async function validateGuestSessionToken(
+  firebase: FirebaseRest,
+  token: string,
+): Promise<string | null> {
+  const session = await firebase.get<GuestSessionToken>(`guestSessionsByToken/${token}`);
+  if (!session) {
+    return null;
+  }
+  if (new Date(session.expiresAt) <= new Date()) {
+    return null;
+  }
+  return session.guestUuid ?? null;
 }
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
+  const { t } = createFunctionTranslator(request, 'CheckInCodeApi');
   const url = new URL(request.url);
   const uuid = url.searchParams.get('uuid');
 
   if (!uuid) {
-    return errorResponse('uuid parameter is required', 400);
+    return errorResponse(t('errors.uuidQueryRequired'), 400);
+  }
+
+  const token = extractSessionToken(request);
+  if (!token) {
+    return errorResponse('Unauthorized', 401);
   }
 
   try {
     const firebase = new FirebaseRest(env);
+
+    const sessionGuestUuid = await validateGuestSessionToken(firebase, token);
+    if (!sessionGuestUuid) {
+      return errorResponse('Unauthorized', 401);
+    }
+
+    if (sessionGuestUuid !== uuid) {
+      return errorResponse('Forbidden', 403);
+    }
+
     const record = await firebase.get<CheckInCodeRecord>(`checkInCodes/byUuid/${uuid}`);
 
     if (!record) {
       return jsonResponse({ code: null });
     }
 
-    // Check if expired
-    if (record.expiresAt && record.expiresAt < Date.now()) {
+    const expiresAt = Number(record.expiresAt);
+    if (!Number.isFinite(expiresAt) || expiresAt < Date.now()) {
       return jsonResponse({ code: null, expired: true });
     }
 
-    return jsonResponse({ code: record.code, expiresAt: record.expiresAt });
+    return jsonResponse({ code: record.code, expiresAt });
   } catch (error) {
     console.error('Error fetching check-in code:', error);
-    return errorResponse('Failed to fetch check-in code', 500);
+    return errorResponse(t('errors.fetchFailed'), 500);
   }
 };
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
+  const { t } = createFunctionTranslator(request, 'CheckInCodeApi');
+
+  const token = extractSessionToken(request);
+  if (!token) {
+    return errorResponse('Unauthorized', 401);
+  }
+
   try {
-    const body = await request.json() as { uuid?: string; checkOutDate?: string };
+    const firebase = new FirebaseRest(env);
+
+    const sessionGuestUuid = await validateGuestSessionToken(firebase, token);
+    if (!sessionGuestUuid) {
+      return errorResponse('Unauthorized', 401);
+    }
+
+    // Rate limiting — track every POST attempt per IP
+    const ip = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+    const rateLimitKey = `cic:${ip}`;
+
+    if (env.RATE_LIMIT) {
+      const stored = await env.RATE_LIMIT.get(rateLimitKey);
+      const currentAttempts = stored ? parseInt(stored, 10) : 0;
+      if (currentAttempts >= MAX_ATTEMPTS) {
+        return errorResponse('Too many attempts. Please try again later.', 429);
+      }
+      await env.RATE_LIMIT.put(rateLimitKey, String(currentAttempts + 1), {
+        expirationTtl: WINDOW_MS / 1000,
+      });
+    }
+
+    const body = (await request.json()) as { uuid?: string; checkOutDate?: string };
 
     if (!body.uuid) {
-      return errorResponse('uuid is required', 400);
+      return errorResponse(t('errors.uuidRequired'), 400);
     }
 
     if (!body.checkOutDate) {
-      return errorResponse('checkOutDate is required', 400);
+      return errorResponse(t('errors.checkOutDateRequired'), 400);
     }
 
-    const firebase = new FirebaseRest(env);
+    const expiresAt = calculateExpiry(body.checkOutDate);
+    if (expiresAt === null) {
+      return errorResponse(t('errors.checkOutDateInvalid'), 400);
+    }
 
     // Check if code already exists and is not expired
     const existing = await firebase.get<CheckInCodeRecord>(`checkInCodes/byUuid/${body.uuid}`);
-    if (existing && existing.expiresAt > Date.now()) {
-      return jsonResponse({ code: existing.code, expiresAt: existing.expiresAt, existing: true });
+    if (existing) {
+      const existingExpiry = Number(existing.expiresAt);
+      if (Number.isFinite(existingExpiry) && existingExpiry > Date.now()) {
+        // Reset rate limit counter on success
+        if (env.RATE_LIMIT) {
+          await env.RATE_LIMIT.delete(rateLimitKey);
+        }
+        return jsonResponse({ code: existing.code, expiresAt: existingExpiry, existing: true });
+      }
     }
 
     // Generate new code with collision detection
@@ -114,13 +227,11 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       }
 
       if (attempts >= MAX_COLLISION_ATTEMPTS) {
-        return errorResponse('Failed to generate unique code', 500);
+        return errorResponse(t('errors.uniqueCodeGenerationFailed'), 500);
       }
     } while (true);
 
     const now = Date.now();
-    const expiresAt = calculateExpiry(body.checkOutDate);
-
     const record: CheckInCodeRecord = {
       code,
       uuid: body.uuid,
@@ -132,9 +243,14 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     await firebase.set(`checkInCodes/byCode/${code}`, record);
     await firebase.set(`checkInCodes/byUuid/${body.uuid}`, record);
 
+    // Reset rate limit counter on success
+    if (env.RATE_LIMIT) {
+      await env.RATE_LIMIT.delete(rateLimitKey);
+    }
+
     return jsonResponse({ code, expiresAt, created: true });
   } catch (error) {
     console.error('Error generating check-in code:', error);
-    return errorResponse('Failed to generate check-in code', 500);
+    return errorResponse(t('errors.generateFailed'), 500);
   }
 };

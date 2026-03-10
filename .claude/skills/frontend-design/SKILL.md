@@ -1,6 +1,9 @@
 ---
 name: tools-ui-frontend-design
 description: Create distinctive, production-grade frontend interfaces grounded in this repo's design system. Use when asked to build web components, pages, or applications. Combines bold creative direction with token-constrained implementation.
+operating_mode: GENERATE
+trigger_conditions: build UI, web components, pages, frontend interface, design system implementation, production UI, React components
+related_skills: tools-design-system, lp-design-spec, lp-design-qa, tools-bos-design-page
 ---
 
 # Frontend Design
@@ -27,8 +30,8 @@ Load these before any design work:
 
 | What | Where | Load when |
 |------|-------|-----------|
-| Token quick-ref | `.claude/skills/lp-design-system/SKILL.md` | Always — first thing |
-| Brand dossier | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | If it exists for the business |
+| Token quick-ref | `.claude/skills/tools-design-system/SKILL.md` | Always — first thing |
+| Brand dossier | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` | If it exists for the business |
 | Theme tokens | `packages/themes/<theme>/src/tokens.ts` | Before any design |
 | Base tokens | `packages/themes/base/src/tokens.ts` | Always (fallback + reference) |
 | Component catalog | `docs/design-system-handbook.md` | When composing layouts |
@@ -69,6 +72,8 @@ The plugin's creative philosophy does NOT override:
 
 Read `docs/business-os/strategy/businesses.json` to find the target business for the work.
 
+**Quick-reference only (may become stale):** The table below is illustrative. Always read `docs/business-os/strategy/businesses.json` for the authoritative app → business → theme mapping.
+
 | Business | Key Apps | Theme |
 |----------|----------|-------|
 | BRIK | brikette, reception, prime | `packages/themes/prime/` |
@@ -80,13 +85,13 @@ Read `docs/business-os/strategy/businesses.json` to find the target business for
 | PET | (no apps yet) | `packages/themes/base/` |
 | HBAG | cover-me-pretty, handbag-configurator | `packages/themes/base/` |
 
-Load the brand dossier: `docs/business-os/strategy/<BIZ>/brand-dossier.user.md`
+Load the brand dossier: `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md`
 
 **If no brand dossier exists** (common for PLAT, BOS, PIPE, XA): use base theme tokens directly from `packages/themes/base/src/tokens.ts` as the design reference. No redirection needed — the design system tokens provide a complete and correct palette. Reserve `/lp-assessment-bootstrap <BIZ>` for operating businesses that will have a distinct brand identity.
 
 ### Step 2: Load Design System Context
 
-1. Read `.claude/skills/lp-design-system/SKILL.md` for the token quick-reference
+1. Read `.claude/skills/tools-design-system/SKILL.md` for the token quick-reference
 2. Read `packages/themes/<theme>/src/tokens.ts` for the business's concrete token values
 3. Read `docs/design-system-handbook.md` for available components
 4. If the feature is complex, also read `docs/typography-and-color.md`
@@ -118,7 +123,13 @@ After building, run `/lp-design-qa` to audit:
 
 ### Step 6: Document (optional)
 
-For significant features that benefit from visual documentation, suggest `/lp-visual` to create diagrams showing the component architecture, state flows, or interaction patterns.
+For significant features that benefit from visual documentation, suggest `/tools-bos-design-page` to create diagrams showing the component architecture, state flows, or interaction patterns.
+
+## Integration
+
+- **Upstream:** `lp-design-spec` (design spec document — provides layout, component, and token decisions); `lp-do-plan` (IMPLEMENT task with `Execution-Track: code` and UI component scope).
+- **Downstream:** `lp-design-qa` (design and token compliance audit of the built UI); `lp-do-build` (built components committed and verified before QA).
+- **Loop position:** S9A (UI Build) — post-design-spec, pre-design-qa.
 
 ## Anti-Patterns
 

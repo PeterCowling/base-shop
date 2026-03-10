@@ -1,0 +1,32 @@
+{
+  "round": 3,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/process-improvements-transitions/plan.md",
+      "line": "149",
+      "message": "Reduced-motion guidance is internally contradictory: it says `.pi-gone-section` is \"NOT suppressed,\" then states the fade animation should be suppressed; this conflicts with the later hardening rule at line 164 (`animation: none`) and can lead to incorrect implementation."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/process-improvements-transitions/plan.md",
+      "line": "372",
+      "message": "Global acceptance says the removed section \"fades after 6 seconds,\" but reduced-motion requirements specify no fade and JS-only removal; acceptance criteria should explicitly scope fade behavior to non-reduced-motion mode."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/process-improvements-transitions/plan.md",
+      "line": "83",
+      "message": "\"localStorage pattern already established … with try/catch guard\" is only partially true in current HTML (theme-init read is guarded, nav theme-toggle write is unguarded), so wording should remain precise to avoid implying both operations are already guarded."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "post_loop_gate": "credible",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019c9a09-f0b4-7291-8993-723d4d4bb701",
+  "durationMs": 23214,
+  "note": "Round 3 is the final round per critique-loop-protocol.md. Score 8/10 → lp_score 4.0 ≥ 4.0 → credible. No Critical findings. Remaining findings are advisory for lp-do-build."
+}

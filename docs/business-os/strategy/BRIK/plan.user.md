@@ -46,7 +46,7 @@ The digital platform (brikette website, content guides, reception app) is infras
 ## Startup-Loop Outcome Contract (Canonical)
 
 Promoted from:
-- `docs/business-os/startup-baselines/BRIK-forecast-seed.user.md`
+- `docs/business-os/startup-baselines/BRIK/forecast-seed.user.md`
 - `docs/business-os/strategy/BRIK/2026-02-13-startup-loop-90-day-forecast-v1.user.md`
 - `docs/business-os/strategy/BRIK/2026-02-13-prioritization-scorecard.user.md`
 
@@ -63,7 +63,7 @@ Promoted from:
   - Data sheets: Price, Availability, Length of stay, Real availability
   - Source: `data/octorate/octorate-calendar-2026-02-14.xlsx` + metadata JSONs
   - Automation: ✅ Fully automated via `packages/mcp-server/octorate-export-final-working.mjs`
-  - Protocol: `docs/business-os/startup-loop/octorate-data-collection-protocol.md`
+  - Protocol: `docs/business-os/startup-loop/operations/octorate-data-collection-protocol.md`
 - Target (90 days, by 2026-05-13):
   - net booking value: EUR 205,200 (forecast P50)
   - bookings: 760 (forecast P50)

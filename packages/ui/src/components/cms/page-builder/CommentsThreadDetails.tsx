@@ -206,14 +206,14 @@ export default function CommentsThreadDetails({
           <span className="text-muted-foreground">{t("Component:")}</span> <code className="text-xs">{thr.componentId}</code>
         </div>
         {onJumpTo && (
-          <Button variant="outline" className="px-3 text-xs min-h-10 min-w-10" onClick={() => onJumpTo(thr.componentId)}>
+          <Button variant="outline" className="px-3 text-xs min-h-11 min-w-11" onClick={() => onJumpTo(thr.componentId)}>
             {t("Jump")}
           </Button>
         )}
         {onDelete && (
           <Button
             variant="outline"
-            className="px-3 text-xs min-h-10 min-w-10"
+            className="px-3 text-xs min-h-11 min-w-11"
             onClick={async () => {
               if (confirm(t("Delete this thread?"))) {
                 await onDelete(thr.id);
@@ -292,11 +292,11 @@ export default function CommentsThreadDetails({
           <div className="pointer-events-none absolute end-2 top-2 flex gap-2">
             <div className="pointer-events-auto">
               <input ref={fileRef} type="file" accept="image/*" className="hidden" onChange={(e) => e.target.files && e.target.files[0] && void uploadScreenshot(e.target.files[0])} />
-              <Button variant="outline" className="px-3 text-xs min-h-10 min-w-10" onClick={() => fileRef.current?.click()}>
+              <Button variant="outline" className="px-3 text-xs min-h-11 min-w-11" onClick={() => fileRef.current?.click()}>
                 {t("Attach")}
               </Button>
             </div>
-            <Button variant="default" className="px-3 text-xs min-h-10 min-w-10" onClick={() => void handleSend()} disabled={!draft.trim()}>
+            <Button variant="default" className="px-3 text-xs min-h-11 min-w-11" onClick={() => void handleSend()} disabled={!draft.trim()}>
               {t("Send")}
             </Button>
           </div>

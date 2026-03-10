@@ -47,19 +47,19 @@
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Aperol spritz",
       "note": "El spritz italiano clásico, con hielo picado."
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Limoncello spritz",
       "note": "Especialidad de la Costa Amalfitana, con hielo picado."
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "Hugo spritz",
       "note": "Vino espumoso con menta, lima y flor de saúco. Con hielo picado."
     },
     "rossiniSpritz": {
-      "name": "Rossini Spritz",
+      "name": "Rossini spritz",
       "note": "Vino espumoso con zumo de fresa. Con hielo picado."
     },
     "lemonStrawberryDaiquiri": {
@@ -70,7 +70,7 @@
       "note": "Zumo de fresa o limón con tequila, Cointreau y hielo. Acabado clásico."
     },
     "lemonDropMartini": {
-      "name": "Lemon Drop Martini",
+      "name": "Gota de limón martini",
       "note": "Zumo de limón recién exprimido con Absolut Vodka, Cointreau y hielo."
     },
     "redWhiteGlass": {
@@ -83,67 +83,67 @@
       "name": "Copa de Prosecco"
     },
     "nastro330": {
-      "name": "Nastro, 330ml"
+      "name": "nastro, 330ml"
     },
     "nastro660": {
-      "name": "Nastro, 660ml"
+      "name": "nastro, 660ml"
     },
     "peroni330": {
-      "name": "Peroni, 330ml"
+      "name": "perni, 330ml"
     },
     "peroni660": {
-      "name": "Peroni, 660ml"
+      "name": "peroni, 660ml"
     },
     "skyy": {
       "name": "Skyy"
     },
     "absolut": {
-      "name": "Absolut"
+      "name": "Absoluto"
     },
     "smirnoff": {
       "name": "Smirnoff"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "Goose gris"
     },
     "pampero": {
       "name": "Pampero"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Bacardi superior"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "Capitán Morgan"
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Angostura reserva"
     },
     "beefeater": {
       "name": "Beefeater"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "Bombay sapphire"
     },
     "tanqueray": {
-      "name": "Tanqueray"
+      "name": "#"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "Hendrick"
     },
     "jwRed": {
       "name": "Johnnie Walker Red Label (Blended Scotch)"
     },
     "jameson": {
-      "name": "Jameson (Irish)"
+      "name": "Jameson (irish)"
     },
     "jackDaniels": {
-      "name": "Jack Daniel's Old No.07 (Sour Mash)"
+      "name": "Viejo de Jack Daniel No.07 (Sour Mash)"
     },
     "wildTurkey": {
-      "name": "Wild Turkey (Bourbon)"
+      "name": "Pavo salvaje (bourbon)"
     },
     "chivas12": {
-      "name": "Chivas Regal 12 Year Old (Blended Scotch)"
+      "name": "Chivas Regal 12 años (Blended Scotch)"
     },
     "glenfiddich12": {
       "name": "Glenfiddich 12 años (single malt)"

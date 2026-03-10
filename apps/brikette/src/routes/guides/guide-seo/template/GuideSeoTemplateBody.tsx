@@ -166,6 +166,8 @@ export function GuideSeoTemplateBody(props: GuideSeoTemplateBodyProps): JSX.Elem
         // Avoid getFixedT translator lookups for twitter:card overrides when
         // localized structured content exists; tests assert zero fallback calls.
         suppressTwitterCardResolve={hasAnyLocalized}
+        // Wire lastUpdated → Article JSON-LD datePublished/dateModified (SEO-datePublished-01)
+        lastUpdated={lastUpdated}
       />
       <FaqStructuredDataBlock
         guideKey={guideKey as any}

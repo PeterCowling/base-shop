@@ -1,0 +1,48 @@
+{
+  "round": 2,
+  "mode": "file",
+  "artifact": "docs/plans/hbag-pdp-return-visit-capture/plan.md",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-pdp-return-visit-capture/plan.md",
+      "line": "17",
+      "message": "`Overall-confidence` is inconsistent with the calculation footer (`83%` then rounded to `80%` at line 515). This can break plan-gate interpretation and automation."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-pdp-return-visit-capture/plan.md",
+      "line": "147",
+      "message": "TC-01 says \"Render with no props,\" but the same task defines required props `{ productSlug: string }` (line 183). The test contract is internally invalid."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-pdp-return-visit-capture/plan.md",
+      "line": "245",
+      "message": "The planned email validation (`email.includes(\"@\") && email.includes(\".\")`) is too weak for a public API and conflicts with the strict \"invalid email -> 400\" acceptance contract (line 215); malformed addresses can pass and then fail asynchronously in fire-and-forget email sending."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-pdp-return-visit-capture/plan.md",
+      "line": "476",
+      "message": "Risk row is self-contradictory: it says missing `EMAIL_PROVIDER` causes route `500`, but the same row also says fire-and-forget `.catch()` prevents response failure and still acknowledges submission. This needs one canonical behavior."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-pdp-return-visit-capture/plan.md",
+      "line": "212",
+      "message": "The plan defines a public email-sending endpoint but includes no abuse controls (rate limit/challenge/origin throttle). That is a security and cost-risk gap for an unauthenticated route."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/hbag-pdp-return-visit-capture/plan.md",
+      "line": "329",
+      "message": "Proposed env doc filename `.env.local.example` is inconsistent with repo convention (`apps/*/.env.example`), which may reduce discoverability and maintenance consistency."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 6,
+  "autofix_applied": true,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "durationMs": 164491
+}

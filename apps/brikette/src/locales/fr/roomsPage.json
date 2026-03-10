@@ -35,8 +35,8 @@
     "perBed": "lit"
   },
   "meta": {
-    "title": "Chambres & Tarifs | Brikette Hostel Positano",
-    "description": "Chambres doubles privées avec vue sur la mer et dortoirs économiques : découvrez photos, équipements et tarifs en direct, puis réservez en direct pour le meilleur prix au Brikette Hostel Positano.",
+    "title": "Lits en Dortoir à Positano | Découvrez les Chambres — Brikette Hostel",
+    "description": "Parcourez les lits en dortoir et chambres privées à Positano. Comparez photos, équipements et tarifs en direct dès EUR 55/nuit au Brikette Hostel.",
     "ogImageAlt": "Intérieur d’un dortoir partagé"
   },
   "facilities": {
@@ -65,7 +65,8 @@
     "linen": "Draps et serviette fournis"
   },
   "rooms": {
-    "title": "Nos chambres",
+    "title": "Lits en Dortoir",
+    "soldOut": "Complet",
     "double_room": {
       "title": "Chambre Double",
       "bed_intro": "Superbe vue sur la mer – parfaite pour les couples.",
@@ -86,7 +87,7 @@
       }
     },
     "room_10": {
-      "title": "Dortoir Mixte Premium",
+      "title": "Dortoir Mixte – Salle de Bain Privée",
       "bed_intro": "Quand vous voulez six lits et une salle de bain supérieure.",
       "bed_description": "Notre Dortoir Premium est un dortoir mixte avec trois lits de dortoir pouvant accueillir jusqu’à six personnes. Situé au quatrième étage, il comprend la climatisation, un accès sécurisé par carte-clé et une salle de bain attenante (sans vue). Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -105,7 +106,7 @@
       }
     },
     "room_11": {
-      "title": "Dortoir féminin supérieur – Grande terrasse",
+      "title": "Dortoir Féminin – Grande Terrasse Vue Mer",
       "bed_intro": "La meilleure vue, depuis une grande terrasse, et une excellente salle de bain.",
       "bed_description": "Notre Dortoir Féminin Supérieur comprend trois lits de dortoir, soit six lits au total, pouvant accueillir jusqu’à six personnes. Situé au quatrième étage, il dispose de la climatisation, d’un accès sécurisé par carte-clé, d’une salle de bain attenante et d’une vue sur la mer avec une terrasse extra-large. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -124,7 +125,7 @@
       }
     },
     "room_12": {
-      "title": "Dortoir Mixte Supérieur",
+      "title": "Dortoir Mixte – Terrasse Vue Mer",
       "bed_intro": "La meilleure vue, depuis une grande terrasse, et une excellente salle de bain.",
       "bed_description": "Notre Dortoir Mixte Supérieur dispose de trois lits de dortoir, soit six lits au total, pouvant accueillir jusqu’à six personnes. Situé au quatrième étage, il comprend la climatisation, un accès sécurisé par carte-clé, une salle de bain privée et une vue sur la mer avec une terrasse extra-large. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -143,7 +144,7 @@
       }
     },
     "room_3": {
-      "title": "Dortoir Féminin Économique",
+      "title": "Dortoir Féminin 8 Lits",
       "bed_intro": "Un choix économique pour les voyageuses.",
       "bed_description": "Notre Dortoir Féminin Économique peut accueillir jusqu’à huit personnes grâce à quatre lits de dortoir. Situé au troisième étage, il offre la climatisation, un accès sécurisé par carte-clé et l’accès à une salle de bain partagée (femmes). Sans vue. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -162,7 +163,7 @@
       }
     },
     "room_4": {
-      "title": "Dortoir Mixte Économique",
+      "title": "Dortoir Mixte 8 Lits",
       "bed_intro": "Un choix économique pour voyageurs et voyageuses.",
       "bed_description": "Notre Dortoir Mixte Économique peut accueillir jusqu’à huit personnes grâce à quatre lits de dortoir. Situé au troisième étage, il offre la climatisation, un accès sécurisé par carte-clé et l’accès à une salle de bain partagée (femmes). Sans vue. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -181,7 +182,7 @@
       }
     },
     "room_5": {
-      "title": "Dortoir féminin supérieur – Vue sur la mer",
+      "title": "Dortoir Féminin – Vue sur la Mer",
       "bed_intro": "Vues imprenables sur la mer et salle de bain privée.",
       "bed_description": "Notre Dortoir Féminin Supérieur peut accueillir jusqu’à six personnes dans trois lits de dortoir. Situé au troisième étage, il dispose d’une salle de bain attenante, d’une terrasse avec vue sur la mer, de la climatisation et d’un accès sécurisé par carte-clé. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -200,7 +201,7 @@
       }
     },
     "room_6": {
-      "title": "Dortoir féminin supérieur – 7 lits",
+      "title": "Dortoir Féminin 7 Lits – Vue sur la Mer",
       "bed_intro": "Vues imprenables sur la mer et salle de bain privée.",
       "bed_description": "Notre Dortoir Féminin Supérieur dispose de trois lits de dortoir plus un lit simple, soit sept lits au total, pouvant accueillir jusqu’à sept personnes. Situé au troisième étage, il comprend une salle de bain attenante, une terrasse avec vue sur la mer, la climatisation et un accès sécurisé par carte-clé. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -219,7 +220,7 @@
       }
     },
     "room_9": {
-      "title": "Chambre Mixte Deluxe",
+      "title": "Chambre Mixte – Lits Simples",
       "bed_intro": "Une manière économique d’obtenir un dortoir de trois lits.",
       "bed_description": "Notre Chambre Mixte Deluxe offre trois lits simples et peut accueillir jusqu’à trois personnes. Située au quatrième étage, elle dispose d’une salle de bain attenante, d’une vue sur la cour, de la climatisation et d’un accès sécurisé par carte-clé. Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -238,7 +239,7 @@
       }
     },
     "room_8": {
-      "title": "Chambre Twin Féminine",
+      "title": "Chambre Féminine – Jardin",
       "bed_intro": "Une option économique pour deux voyageuses.",
       "bed_description": "Notre Chambre Twin Féminine comporte un lit superposé (dortoir) et peut accueillir jusqu’à deux personnes. Située au troisième étage, elle offre la climatisation, un accès sécurisé par carte-clé, une vue sur le jardin et se trouve à côté de la salle de bain partagée (femmes). Draps et serviette fournis à l’arrivée.",
       "facilities": [
@@ -265,7 +266,7 @@
     "clickToEnlarge": "Cliquez sur l’image pour l’agrandir",
     "prevAria": "Image précédente",
     "nextAria": "Image suivante",
-    "pagination": "{{current}}/{{total}}",
+    "pagination": "{{current}}XQTOKEN2QXZ",
     "photoAlt": "Photo de {{room}}",
     "noImage": "Aucune image disponible"
   },
@@ -274,8 +275,8 @@
     "nextSlide": "Diapositive suivante"
   },
   "hero": {
-    "heading": "Nos chambres",
-    "subheading": "Choisissez la chambre parfaite pour votre séjour"
+    "heading": "Lits en Dortoir",
+    "subheading": "Parcourez nos chambres, comparez les options de lits et trouvez celle qui vous convient."
   },
   "filters": {
     "all": "Toutes les chambres",
@@ -285,9 +286,10 @@
   "filtersAria": "Filtrer par type de chambre",
   "checkRatesNonRefundable": "Tarifs non remboursables",
   "checkRatesFlexible": "Tarifs flexibles",
+  "checkRatesSingle": "Taux de vérification",
   "ctaSuffix": {
     "nonRefundable": "Non remboursable",
-    "flexible": "Flexible"
+    "flexible": "Souple"
   },
   "details": "Détails",
   "ratesFrom": "À partir de €{{price}}",
@@ -302,5 +304,36 @@
   "landingImageAlt": "Image d’accueil de {{room}}",
   "priceNotes": {
     "dorm": "Par nuit, par personne. Une personne par lit superposé."
+  },
+  "date": {
+    "stayHelper": "2–8 nuits",
+    "clearDates": "Effacer les dates",
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} nuits)"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "Cet itinéraire d'auberge utilise la réservation assistée lorsque JavaScript est désactivé.",
+    "contactAssistedBooking": "Contactez-nous pour une réservation assistée"
+  },
+  "bookingConstraints": {
+    "notice": "Les réservations en auberge de jeunesse sont réservées aux adultes et prennent en charge les séjours entre 2 et 8 nuits avec jusqu'à 8 adultes par réservation. Si votre demande dépasse ces limites, divisez-la en plusieurs réservations ou",
+    "assistedLink": "contactez-nous pour une réservation assistée",
+    "absentWithAnchor": "{{price}} par nuit (indicatif). Sélectionnez les dates pour voir les tarifs en direct.",
+    "absentNoRates": "Tarifs temporairement indisponibles. Sélectionnez les dates pour vérifier la disponibilité en direct."
+  },
+  "bookingControls": {
+    "decreaseAdults": "Diminuer les adultes",
+    "increaseAdults": "Augmenter les adultes"
+  },
+  "recovery": {
+    "roomTitle": "Besoin de décider plus tard ? Envoyez-vous ce devis de chambre."
+  },
+  "feature": {
+    "beds": "Lits",
+    "bathroom": "Salle de bain",
+    "view": "Voir",
+    "terrace": "Terrasse",
+    "lockers": "Casiers",
+    "privateTerrace": "Terrasse privée",
+    "inRoomLockers": "Casiers dans la chambre"
   }
 }

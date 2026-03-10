@@ -1,0 +1,24 @@
+{
+  "rounds": [
+    {
+      "round": 1,
+      "score": 7,
+      "lp_score": 3.5,
+      "findings_count": { "critical": 0, "warning": 4, "info": 1 },
+      "verdict": "needs_revision",
+      "findings_summary": "Stale failure reasons on success, badge tooltip contract inconsistency, mobile tooltip QA unrealistic, thin validation strategy"
+    },
+    {
+      "round": 2,
+      "score": 8,
+      "lp_score": 4.0,
+      "findings_count": { "critical": 0, "warning": 3, "info": 1 },
+      "verdict": "needs_revision",
+      "findings_summary": "Type narrowness (string vs string|null), regeneration stale cleanup, test ownership unspecified",
+      "all_addressed": true
+    }
+  ],
+  "final_score": 8,
+  "final_lp_score": 4.0,
+  "final_verdict": "credible"
+}

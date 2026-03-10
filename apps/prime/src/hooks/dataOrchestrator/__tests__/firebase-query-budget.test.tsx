@@ -6,14 +6,16 @@ import {
 describe('firebase query budget contracts', () => {
   it('TC-01: initial pre-arrival load stays within read budget', () => {
     const metrics = buildMetricsSnapshot([
-      'bookings/occ_1234567890123',
+      'occupantIndex/occ_1234567890123',
+      'bookings/BDC-123456/occ_1234567890123',
       'completedTasks/occ_1234567890123',
       'loans/room-12',
       'guestByRoom/room-12',
       'financialsRoom/BDC-123456',
-      'preordersData/occ_1234567890123',
-      'cityTaxData/BDC-123456',
+      'preorder/occ_1234567890123',
+      'cityTax/BDC-123456',
       'bagStorage/occ_1234567890123',
+      'guestsDetails/occ_1234567890123',
     ], 1);
 
     expect(() => {
@@ -21,17 +23,18 @@ describe('firebase query budget contracts', () => {
     }).not.toThrow();
   });
 
-  it('TC-02: arrival-day load stays within read budget including check-in path', () => {
+  it('TC-02: arrival-day load stays within read budget (same as pre-arrival; checkInCode is HTTP)', () => {
     const metrics = buildMetricsSnapshot([
-      'bookings/occ_1234567890123',
+      'occupantIndex/occ_1234567890123',
+      'bookings/BDC-123456/occ_1234567890123',
       'completedTasks/occ_1234567890123',
       'loans/room-12',
       'guestByRoom/room-12',
       'financialsRoom/BDC-123456',
-      'preordersData/occ_1234567890123',
-      'cityTaxData/BDC-123456',
+      'preorder/occ_1234567890123',
+      'cityTax/BDC-123456',
       'bagStorage/occ_1234567890123',
-      'checkInCode/BRK-ABCDE',
+      'guestsDetails/occ_1234567890123',
     ], 1);
 
     expect(() => {
@@ -50,8 +53,8 @@ describe('firebase query budget contracts', () => {
       'guestByRoom/room-12',
       'financialsRoom/BDC-123456',
       'financialsRoom/BDC-123456',
-      'preordersData/occ_1234567890123',
-      'cityTaxData/BDC-123456',
+      'preorder/occ_1234567890123',
+      'cityTax/BDC-123456',
     ], 1);
 
     expect(() => {

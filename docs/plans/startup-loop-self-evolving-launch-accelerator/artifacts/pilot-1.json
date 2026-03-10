@@ -1,0 +1,7 @@
+{
+  "recurrence_reduction": 0.6,
+  "cycle_time_reduction": 0.3333333333333333,
+  "kpi_delta": 0.03,
+  "rollback_drill_passed": true,
+  "pass": true
+}

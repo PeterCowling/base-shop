@@ -33,7 +33,7 @@ export function RangeToken({
       {isOverridden && (
         <button
           type="button"
-          className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+          className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
           onClick={() => setToken(tokenKey, defaultValue ?? "")}
         >
           {t("common.reset") as string}

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { type Locale, resolveLocale } from "@acme/i18n/locales";
 
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
+import { SectionEyebrow } from "@/components/typography/SectionEyebrow";
 import {
   getLaunchFamilyCopy,
   getSeoKeywords,
@@ -16,7 +17,7 @@ import {
   LAUNCH_FAMILY_ANCHORS,
   resolveLaunchFamily,
 } from "@/lib/launchMerchandising";
-import { formatMoney, readShopCurrency, readShopSkus } from "@/lib/shop";
+import { formatMoney, readShopCurrency, readShopInventory, readShopSkus } from "@/lib/shop";
 
 import ShopAnalytics from "./ShopAnalytics.client";
 
@@ -47,10 +48,17 @@ export default async function ShopPage({
   const lang: Locale = resolveLocale(rawLang);
   const familyParam = Array.isArray(rawFamily) ? rawFamily[0] : rawFamily;
   const activeFamily = resolveLaunchFamily(familyParam);
-  const [skus, currency] = await Promise.all([
+  const [skus, currency, inventoryItems] = await Promise.all([
     readShopSkus(lang),
     readShopCurrency(),
+    readShopInventory(),
   ]);
+  const thresholdByProductId = new Map<string, number>();
+  for (const item of inventoryItems) {
+    if (typeof item.lowStockThreshold === "number") {
+      thresholdByProductId.set(item.productId, item.lowStockThreshold);
+    }
+  }
   const shopContent = getShopContent(lang);
   const familyCopy = getLaunchFamilyCopy(lang);
   const filteredSkus = filterSkusByLaunchFamily(skus, activeFamily);
@@ -62,9 +70,7 @@ export default async function ShopPage({
       <section className="space-y-10">
         <div className="space-y-4">
           <div className="space-y-2">
-            <p className="text-xs uppercase tracking-widest" style={{ color: "hsl(var(--color-accent))" }}>
-              {shopContent.eyebrow}
-            </p>
+            <SectionEyebrow>{shopContent.eyebrow}</SectionEyebrow>
             <h1 className="text-3xl font-display sm:text-4xl">{shopContent.heading}</h1>
             <p className="max-w-3xl text-muted-foreground">
               {shopContent.summary}
@@ -132,6 +138,8 @@ export default async function ShopPage({
                     primaryAlt={media.primaryAlt}
                     secondarySrc={media.secondarySrc}
                     secondaryAlt={media.secondaryAlt}
+                    stock={sku.stock}
+                    lowStockThreshold={thresholdByProductId.get(sku.id)}
                   />
                 </li>
               );

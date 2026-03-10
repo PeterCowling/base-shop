@@ -20,6 +20,7 @@ import {
 } from '@/lib/chat/directMessageChannel';
 import { MSG_ROOT } from '@/utils/messaging/dbRoot';
 
+import { MessageSchema, RawMessagePayloadSchema } from '../../lib/chat/messageSchema';
 import {
   type DataSnapshot,
   endAt,
@@ -183,33 +184,12 @@ function reducer(state: ChatState, action: ChatAction): ChatState {
   }
 }
 
-function isMessage(value: unknown): value is Message {
-  if (!value || typeof value !== 'object') {
-    return false;
+function toMessage(id: string, raw: unknown): Message | null {
+  const result = RawMessagePayloadSchema.safeParse(raw);
+  if (!result.success) {
+    return null;
   }
-
-  const candidate = value as Partial<Message>;
-  if (
-    typeof candidate.id !== 'string'
-    || typeof candidate.content !== 'string'
-    || typeof candidate.senderId !== 'string'
-    || typeof candidate.senderRole !== 'string'
-    || typeof candidate.createdAt !== 'number'
-  ) {
-    return false;
-  }
-
-  if (candidate.senderName !== undefined && typeof candidate.senderName !== 'string') {
-    return false;
-  }
-  if (candidate.deleted !== undefined && typeof candidate.deleted !== 'boolean') {
-    return false;
-  }
-  if (candidate.imageUrl !== undefined && typeof candidate.imageUrl !== 'string') {
-    return false;
-  }
-
-  return true;
+  return { id, ...result.data } as Message;
 }
 
 function normalizeDirectMessages(payload: unknown): Message[] {
@@ -223,7 +203,7 @@ function normalizeDirectMessages(payload: unknown): Message[] {
   }
 
   return rawMessages
-    .filter(isMessage)
+    .filter((entry): entry is Message => MessageSchema.safeParse(entry).success)
     .sort((left, right) => left.createdAt - right.createdAt);
 }
 
@@ -363,7 +343,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
       const session = readGuestSession();
       if (
         !session.uuid
-        || !session.token
         || !session.bookingId
         || !directMessageChannelIncludesGuest(activeChannelId, session.uuid)
       ) {
@@ -380,12 +359,12 @@ export function ChatProvider({ children }: ChatProviderProps) {
         }
 
         try {
+          // prime_session HttpOnly cookie is sent automatically on this same-origin request
           const response = await fetch(
             buildDirectMessagesRequestUrl(activeChannelId, { limit: PAGE_SIZE }),
             {
               method: 'GET',
               headers: {
-                'X-Prime-Guest-Token': session.token,
                 'X-Prime-Guest-Booking-Id': session.bookingId,
               },
               cache: 'no-store',
@@ -451,9 +430,9 @@ export function ChatProvider({ children }: ChatProviderProps) {
     );
     get(q).then((snap) => {
       const raw = snap.val() ?? {};
-      const messages: Message[] = Object.entries(raw).map(
-        ([mid, msg]: [string, unknown]) => ({ id: mid, ...(msg as Omit<Message, 'id'>) }),
-      );
+      const messages = Object.entries(raw)
+        .map(([mid, msg]: [string, unknown]) => toMessage(mid, msg))
+        .filter((message): message is Message => message !== null);
       dispatch({
         type: 'setMessages',
         channelId: activeChannelId,
@@ -462,9 +441,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
     });
 
     const handleAdd = (snap: DataSnapshot) => {
-      const msg = snap.val();
-      if (!msg) return;
-      const message: Message = { id: snap.key as string, ...msg };
+      const message = toMessage(snap.key as string, snap.val());
+      if (!message) return;
       dispatch({
         type: 'upsertMessage',
         channelId: activeChannelId,
@@ -472,9 +450,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
       });
     };
     const handleChange = (snap: DataSnapshot) => {
-      const msg = snap.val();
-      if (!msg) return;
-      const message: Message = { id: snap.key as string, ...msg };
+      const message = toMessage(snap.key as string, snap.val());
+      if (!message) return;
       dispatch({
         type: 'upsertMessage',
         channelId: activeChannelId,
@@ -515,7 +492,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
         const session = readGuestSession();
         if (
           !session.uuid
-          || !session.token
           || !session.bookingId
           || !directMessageChannelIncludesGuest(channelId, session.uuid)
         ) {
@@ -533,6 +509,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
         }
 
         try {
+          // prime_session HttpOnly cookie is sent automatically on this same-origin request
           const response = await fetch(
             buildDirectMessagesRequestUrl(channelId, {
               before: oldest.createdAt,
@@ -541,7 +518,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
             {
               method: 'GET',
               headers: {
-                'X-Prime-Guest-Token': session.token,
                 'X-Prime-Guest-Booking-Id': session.bookingId,
               },
               cache: 'no-store',
@@ -586,9 +562,9 @@ export function ChatProvider({ children }: ChatProviderProps) {
       );
       const snap = await get(q);
       const raw = snap.val() ?? {};
-      const messages: Message[] = Object.entries(raw).map(
-        ([mid, msg]: [string, unknown]) => ({ id: mid, ...(msg as Omit<Message, 'id'>) }),
-      );
+      const messages = Object.entries(raw)
+        .map(([mid, msg]: [string, unknown]) => toMessage(mid, msg))
+        .filter((message): message is Message => message !== null);
       if (messages.length) {
         dispatch({ type: 'prependMessages', channelId, messages });
       }
@@ -610,7 +586,7 @@ export function ChatProvider({ children }: ChatProviderProps) {
       if (options?.directMessage) {
         const { bookingId, peerUuid } = options.directMessage;
 
-        if (!bookingId || !peerUuid || !session.bookingId || !session.token) {
+        if (!bookingId || !peerUuid || !session.bookingId) {
           throw new Error('Direct message context is incomplete.');
         }
 
@@ -632,11 +608,11 @@ export function ChatProvider({ children }: ChatProviderProps) {
           throw new Error(buildDirectRateLimitMessage(activeWriteBackoff));
         }
 
+        // prime_session HttpOnly cookie is sent automatically on this same-origin request
         const directResponse = await fetch('/api/direct-message', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'X-Prime-Guest-Token': session.token,
             'X-Prime-Guest-Booking-Id': bookingId,
           },
           body: JSON.stringify({

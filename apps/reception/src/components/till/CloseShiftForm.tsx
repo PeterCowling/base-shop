@@ -14,7 +14,7 @@ import useShiftProgress, {
   type ShiftProgress,
   useAutoSaveShiftProgress,
 } from "../../hooks/utilities/useShiftProgress";
-import { getUserDisplayName } from "../../lib/roles";
+import { canAccess, getUserDisplayName, Permissions } from "../../lib/roles";
 import { type CloseShiftFormProps, type VarianceSignoff } from "../../types/component/Till";
 import { showToast } from "../../utils/toastUtils";
 import { CashCountingForm } from "../common/CashCountingForm";
@@ -87,6 +87,10 @@ export const CloseShiftForm = memo(function CloseShiftForm({
   );
 
   const { user } = useAuth();
+  const isManager = useMemo(
+    () => canAccess(user ?? null, Permissions.MANAGEMENT_ACCESS),
+    [user]
+  );
   const { thresholds } = useVarianceThresholds();
 
   const [recountRequired, setRecountRequired] = useState(false);
@@ -182,8 +186,27 @@ export const CloseShiftForm = memo(function CloseShiftForm({
     }
   }, [saved, hasCCReceipts]);
 
-  const [showExpected, setShowExpected] = useState(!settings.blindClose);
+  const [showExpected, setShowExpected] = useState(
+    () => isManager && !settings.blindClose
+  );
   const firstUpdate = useRef(true);
+
+  useEffect(() => {
+    if (firstUpdate.current) {
+      setShowExpected(isManager && !settings.blindClose);
+    }
+  }, [isManager]);
+
+  const [showKeycardExpected, setShowKeycardExpected] = useState(
+    () => isManager && !settings.blindClose
+  );
+  const keycardFirstUpdate = useRef(true);
+
+  useEffect(() => {
+    if (keycardFirstUpdate.current) {
+      setShowKeycardExpected(isManager && !settings.blindClose);
+    }
+  }, [isManager]);
 
   const handleCountsChange = useCallback(
     (
@@ -198,7 +221,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
       }
       if (firstUpdate.current) {
         firstUpdate.current = false;
-      } else if (settings.blindClose && !showExpected) {
+      } else if (!showExpected) {
         setShowExpected(true);
       }
       if (recountRequired) {
@@ -256,7 +279,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
             onCancel={onCancel}
           />
           <Button
-            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded"
+            className="mt-2 px-3 py-1 bg-primary-main text-primary-fg rounded-lg"
             onClick={saveProgress}
           >
             Save Progress
@@ -266,7 +289,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
 
       {step === 1 && (
         <div
-          className={`border ${styles.border} rounded p-4`}
+          className={`border ${styles.border} rounded-lg p-4`}
         >
           {isReconcile ? (
             <CreditCardReceiptCheck
@@ -286,19 +309,19 @@ export const CloseShiftForm = memo(function CloseShiftForm({
           <div className="mt-4 flex gap-2">
             <Button
               onClick={() => setStep(0)}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg"
             >
               Back
             </Button>
             <Button
               onClick={handleStep1Next}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg"
             >
               Next
             </Button>
             <Button
               onClick={saveProgress}
-              className="px-4 py-2 bg-info-main text-primary-fg rounded"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg"
             >
               Save Progress
             </Button>
@@ -336,6 +359,14 @@ export const CloseShiftForm = memo(function CloseShiftForm({
           </Button>
             <KeycardCountForm
               expectedCount={expectedKeycardsAtClose}
+              showExpected={showKeycardExpected}
+              onChange={(_count) => {
+                if (keycardFirstUpdate.current) {
+                  keycardFirstUpdate.current = false;
+                } else if (!showKeycardExpected) {
+                  setShowKeycardExpected(true);
+                }
+              }}
               onConfirm={(count) => {
                 if (varianceSignoff) {
                   setVarianceSignoff(null);
@@ -344,15 +375,15 @@ export const CloseShiftForm = memo(function CloseShiftForm({
                 handleConfirm();
               }}
               onCancel={onCancel}
-            hideCancel
-          />
+              hideCancel
+            />
           {recountRequired && (
             <p className="mt-2 text-center text-warning-main text-sm">
               Please recount and click Go again.
             </p>
           )}
           <Button
-            className="mt-2 px-3 py-1 bg-info-main text-primary-fg rounded"
+            className="mt-2 px-3 py-1 bg-primary-main text-primary-fg rounded-lg"
             onClick={saveProgress}
           >
             Save Progress

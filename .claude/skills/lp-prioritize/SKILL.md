@@ -1,6 +1,6 @@
 ---
 name: lp-prioritize
-description: S5 startup go-item ranking - score and select top 2-3 items to pursue
+description: Startup go-item ranking - score and select top 2-3 items to pursue
 ---
 
 # lp-prioritize: Startup Go-Item Ranking
@@ -25,15 +25,15 @@ Optional flags:
 
 This skill reads candidate go-items from upstream outputs (lp-readiness, lp-offer, lp-forecast), scores them on 3 dimensions, ranks by combined score, and selects top 2-3 with rationale.
 
-## Differs from idea-generate
+## Differs from lp-do-idea-generate
 
-**CRITICAL**: This is NOT a renamed idea-generate. Key differences:
+**CRITICAL**: This is NOT a renamed lp-do-idea-generate. Key differences:
 
 1. **Simple rank-and-pick vs 7-stage pipeline**: No Cabinet Secretary, no multi-lens expert passes, no clustering, no Munger/Buffett filter. Just: list candidates → score → rank → pick top 2-3.
 
 2. **3 scoring dimensions vs 12+ sub-experts**: Scores by effort, impact, and learning-value only. No persona-based expert evaluation (no Product Strategist, no Growth Hacker, no Financial Analyst, etc.).
 
-3. **Includes experiment + distribution candidates**: idea-generate focuses on business ideas. lp-prioritize ranks ALL go-items: product features, experiments, distribution bets, content pieces, operational improvements.
+3. **Includes experiment + distribution candidates**: lp-do-idea-generate focuses on business ideas. lp-prioritize ranks ALL go-items: product features, experiments, distribution bets, content pieces, operational improvements.
 
 4. **Direct output to lp-do-fact-find**: Ranked list feeds directly into lp-do-fact-find for the top items. No card creation, no idea persistence, no DGPs.
 

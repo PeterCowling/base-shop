@@ -32,7 +32,7 @@ Input packet:
   Move Caryina from proven WhatsApp demand to a scalable owned channel (website + Etsy), validating that premium €80–€150 positioning converts at volume without manual order handling.
 - Startup constraints and non-negotiables:
   - Keep product imagery primary; copy and chrome must remain recessive behind product visuals.
-  - Preserve brand language and token contract from `docs/business-os/strategy/HBAG/brand-dossier.user.md`.
+  - Preserve brand language and token contract from `docs/business-os/strategy/HBAG/2026-02-21-brand-identity-dossier.user.md`.
   - No pattern recommendations that require heavy runtime dependencies or WebGL libraries.
   - Mobile-first behavior is mandatory; discovery traffic is social-first.
   - Keep accessibility intact (`prefers-reduced-motion`, semantic DOM, keyboard/focus parity).

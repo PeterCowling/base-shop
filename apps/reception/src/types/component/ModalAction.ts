@@ -1,7 +1,11 @@
-/* src/types/ModalAction.ts */
+import type { LucideIcon } from "lucide-react";
+
+import type { UserRole } from "../domains/userDomain";
 
 export interface ModalAction {
   label: string;
-  iconClass: string;
+  icon: LucideIcon;
   route: string;
+  permission?: UserRole[];
+  peteOnly?: boolean;
 }

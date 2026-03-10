@@ -50,13 +50,13 @@ The work is intentionally split into two phases: (1) Octorate channel economics 
 ## Fact-Find Reference
 - Related brief: `docs/plans/brik-s2-data-capture-automation/fact-find.md`
 - Key findings:
-  - Dated operator CSVs are discovered via `findLatestDatedMarketResearchDataFile()` and embedded verbatim via `buildOperatorCapturedDataBlock()` in `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`.
+  - Dated operator CSVs are discovered via `findLatestDatedMarketResearchDataFile()` and embedded verbatim via `buildOperatorCapturedDataBlock()` in `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`.
   - Current market-research CSVs are header-only or scaffold rows with empty values.
   - Octorate processing exists but uses room-name heuristic and create-time month; S2 requires per-channel attribution (Refer) and check-in month.
 
 ## Existing System Notes
 - S2 discovery/embedding:
-  - `scripts/src/startup-loop/s2-market-intelligence-handoff.ts` (dated-file selector + embed; warns on header-only CSV).
+  - `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts` (dated-file selector + embed; warns on header-only CSV).
 - Octorate pipeline:
   - `packages/mcp-server/octorate-export-final-working.mjs` (currently selects "Create time" and exports 90 days).
   - `packages/mcp-server/octorate-process-bookings.mjs` (currently aggregates by create-time month; room-name Direct vs OTA).
@@ -123,8 +123,8 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-do-build
 - **Affects:**
-  - Primary: `scripts/src/startup-loop/s2-market-intelligence-handoff.ts`
-  - Primary: `scripts/src/startup-loop/hospitality-scenarios.ts` (new)
+  - Primary: `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts`
+  - Primary: `scripts/src/startup-loop/s2/hospitality-scenarios.ts` (new)
   - Primary: `scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts`
 - **Depends on:** -
 - **Blocks:** TASK-05
@@ -150,11 +150,11 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Commit:** 46940b08e1
 - **Validation:**
   - Ran: `pnpm --filter ./scripts test -- scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts --maxWorkers=2` — PASS
-  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2-market-intelligence-handoff.ts scripts/src/startup-loop/hospitality-scenarios.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
+  - Ran: `pnpm exec eslint scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts scripts/src/startup-loop/s2/hospitality-scenarios.ts scripts/src/startup-loop/__tests__/s2-market-intelligence-handoff.test.ts` — PASS
   - Ran: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` — PASS
 - **Implementation notes:**
-  - Extracted hospitality scenario math to `scripts/src/startup-loop/hospitality-scenarios.ts` so parity capture can share the same source of truth.
-  - Updated `scripts/src/startup-loop/s2-market-intelligence-handoff.ts` to consume labels via `computeHospitalityScenarioDateLabels()` and added a direct unit test for structured inputs.
+  - Extracted hospitality scenario math to `scripts/src/startup-loop/s2/hospitality-scenarios.ts` so parity capture can share the same source of truth.
+  - Updated `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts` to consume labels via `computeHospitalityScenarioDateLabels()` and added a direct unit test for structured inputs.
 
 ### TASK-02: Configurable Octorate Export (S2 Window)
 - **Type:** IMPLEMENT
@@ -224,7 +224,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - Run/verify: `pnpm --filter @acme/mcp-server test:startup-loop`.
 - **Execution plan:** Red -> Green -> Refactor
 - **Planning validation:**
-  - Evidence read: `packages/mcp-server/octorate-process-bookings.mjs`, `packages/mcp-server/OCTORATE_EXPORT_README.md`, and `scripts/src/startup-loop/s2-market-intelligence-handoff.ts` parse expectations.
+  - Evidence read: `packages/mcp-server/octorate-process-bookings.mjs`, `packages/mcp-server/OCTORATE_EXPORT_README.md`, and `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts` parse expectations.
 - **What would make this ≥90%:** fixture coverage for real-world Refer patterns observed in the latest export.
 
 #### Build Completion (2026-02-15)
@@ -280,7 +280,7 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
 - **Startup-Deliverable-Alias:** none
 - **Execution-Skill:** /lp-do-build
 - **Affects:**
-  - Primary: `scripts/src/startup-loop/s2-operator-capture.ts` (new)
+  - Primary: `scripts/src/startup-loop/s2/s2-operator-capture.ts` (new)
   - Secondary: `[readonly] packages/mcp-server/octorate-full-pipeline.mjs`
 - **Depends on:** TASK-01, TASK-04, TASK-07, TASK-08
 - **Blocks:** TASK-09
@@ -307,9 +307,9 @@ Tasks in a later wave require all blocking tasks from earlier waves to complete.
   - All 19 unit tests pass: `pnpm --filter scripts test -- s2-operator-capture.test.ts` — PASS
   - Full startup-loop suite: 275/275 tests pass
   - TypeScript compilation: PASS (`pnpm --filter scripts typecheck`)
-  - Lint: PASS (`pnpm --filter scripts lint -- src/startup-loop/s2-operator-capture.ts`)
+  - Lint: PASS (`pnpm --filter scripts lint -- src/startup-loop/s2/s2-operator-capture.ts`)
 - **Implementation notes:**
-  - Created `scripts/src/startup-loop/s2-operator-capture.ts` with full orchestration logic
+  - Created `scripts/src/startup-loop/s2/s2-operator-capture.ts` with full orchestration logic
   - Created `scripts/s2-operator-capture.mjs` as CLI wrapper
   - Created `scripts/src/startup-loop/__tests__/s2-operator-capture.test.ts` with 19 test cases covering all exported helper functions
   - Added `parseBookingsByChannelCsv` function to `packages/mcp-server/src/startup-loop/octorate-bookings.ts` to support commission derivation

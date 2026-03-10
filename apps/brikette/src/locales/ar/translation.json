@@ -1,6 +1,6 @@
 {
   "header": {
-    "title": "Hostel Brikette",
+    "title": "سماء الاستضافة",
     "reserve": "احجز الآن"
   },
   "intro": {
@@ -24,10 +24,20 @@
     "reload": "إعادة تحميل الصفحة"
   },
   "meta": {
-    "twitterCard": "summary_large_image",
+    "twitterCard": "موجز - حجم البعثة",
     "twitterHandle": "@brikette"
   },
   "internalErrors": {
     "assistanceSlugMissing": "يجب أن يعرّف ARTICLE_SLUGS مُعرّف مساعدة واحدًا على الأقل"
+  },
+  "themeToggle": {
+    "enableDark": "تفعيل الوضع الداكن",
+    "enableLight": "تفعيل الوضع الفاتح",
+    "switchToDark": "التبديل إلى الوضع الداكن",
+    "switchToLight": "التبديل إلى الوضع الفاتح"
+  },
+  "stickyCta": {
+    "directHeadline": "احجز أفضل سعر متاح في أقل من دقيقتين.",
+    "directSubcopy": "تجنب رسوم الوسطاء واحصل على مساعدة ذات أولوية من فريقنا في بوزيتانو."
   }
 }

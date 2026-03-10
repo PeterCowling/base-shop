@@ -1,0 +1,29 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-r2-deployment-config/fact-find.md",
+      "line": "20",
+      "message": "The intended outcome still says success is 'actual public URL set in xa-b wrangler.toml,' but the brief correctly establishes that xa-b static builds require setting NEXT_PUBLIC_XA_IMAGES_BASE_URL in CI build env; this outcome wording is now misleading/incomplete."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-r2-deployment-config/fact-find.md",
+      "line": "149",
+      "message": "Confidence input is stale ('only code change is updating a string in wrangler.toml'). The brief now also requires workflow/config changes in .github/workflows/xa.yml (and GitHub Actions variable wiring), so implementation scope is understated."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-r2-deployment-config/fact-find.md",
+      "line": "166",
+      "message": "Scope rationale is stale ('one string update in wrangler.toml'). Current proposed work includes CI env wiring plus staged/production uploader deploy sequencing, so this minimization can under-plan execution risk."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "lp_score": 4.0,
+  "note": "All 3 warnings were stale text artifacts from pre-round-1 version. Fixed in post-round-2 edits. No critical findings remain.",
+  "durationMs": 17209
+}

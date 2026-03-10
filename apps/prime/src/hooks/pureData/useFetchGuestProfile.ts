@@ -9,14 +9,17 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import type { Database } from '@/services/firebase';
 import { get, ref } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { GuestProfile } from '../../types/guestProfile';
 import { DEFAULT_GUEST_PROFILE } from '../../types/guestProfile';
 import useUuid from '../useUuid';
+
+import type { PureDataRefetch } from './types';
 
 /**
  * Helper function to fetch guest profile from "guestProfiles/{uuid}".
@@ -36,7 +39,7 @@ async function fetchGuestProfile(
     }
     return snapshot.val() as GuestProfile;
   } catch (error) {
-    logger.error('Error fetching guest profile:', error);
+    logger.error('Error fetching guest profile:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     throw error;
   }
 }
@@ -93,9 +96,7 @@ export function useFetchGuestProfile(
     gcTime: 30 * 60 * 1000, // 30 minutes
   });
 
-  const refetch = async (): Promise<void> => {
-    await refetchQuery();
-  };
+  const refetch = refetchQuery as unknown as PureDataRefetch;
 
   // Staleness check: profile belongs to a different booking
   const isStale =

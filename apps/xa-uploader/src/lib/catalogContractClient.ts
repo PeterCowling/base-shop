@@ -1,7 +1,10 @@
 import fs from "node:fs/promises";
 
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+
 import { toPositiveInt } from "@acme/lib";
 
+import { resolveContractRoot } from "./catalogContractUtils";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 
 type CatalogContractResponse = {
@@ -14,6 +17,16 @@ export type CatalogPublishResult = {
   version?: string;
   publishedAt?: string;
 };
+
+export interface CatalogContractServiceBinding {
+  fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
+}
+
+declare global {
+  interface CloudflareEnv {
+    XA_CATALOG_CONTRACT_SERVICE?: CatalogContractServiceBinding;
+  }
+}
 
 export class CatalogPublishError extends Error {
   readonly code: "unconfigured" | "invalid_payload" | "request_failed" | "invalid_response";
@@ -41,13 +54,19 @@ function getCatalogContractWriteToken(): string {
   return (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
 }
 
+export function getCatalogContractReadiness(): { configured: boolean; errors: string[] } {
+  const errors: string[] = [];
+  // i18n-exempt -- XAUP-118 [ttl=2026-12-31] non-UI diagnostics for readiness payload
+  if (!getCatalogContractBaseUrl()) errors.push("XA_CATALOG_CONTRACT_BASE_URL not set");
+  // i18n-exempt -- XAUP-118 [ttl=2026-12-31] non-UI diagnostics for readiness payload
+  if (!getCatalogContractWriteToken()) errors.push("XA_CATALOG_CONTRACT_WRITE_TOKEN not set");
+  return { configured: errors.length === 0, errors };
+}
+
 function getCatalogContractTimeoutMs(): number {
   return toPositiveInt(process.env.XA_CATALOG_CONTRACT_TIMEOUT_MS, 20_000, 1);
 }
 
-function ensureTrailingSlash(value: string): string {
-  return value.endsWith("/") ? value : `${value}/`;
-}
 
 function buildCatalogContractPublishUrl(storefrontId: XaCatalogStorefront): string {
   const baseUrl = getCatalogContractBaseUrl();
@@ -59,13 +78,36 @@ function buildCatalogContractPublishUrl(storefrontId: XaCatalogStorefront): stri
   }
 
   try {
-    return new URL(encodeURIComponent(storefrontId), ensureTrailingSlash(baseUrl)).toString();
+    const root = resolveContractRoot(baseUrl);
+    return new URL(`catalog/${encodeURIComponent(storefrontId)}`, root).toString();
   } catch {
     throw new CatalogPublishError(
       "unconfigured",
       "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.",
     );
   }
+}
+
+function asServiceBindingRequestUrl(value: string): string {
+  const parsed = new URL(value);
+  return `https://catalog-contract.internal${parsed.pathname}${parsed.search}`;
+}
+
+async function getCatalogContractServiceBinding(): Promise<CatalogContractServiceBinding | null> {
+  try {
+    const { env } = await getCloudflareContext({ async: true });
+    return env.XA_CATALOG_CONTRACT_SERVICE ?? null;
+  } catch {
+    return null;
+  }
+}
+
+async function requestCatalogContract(url: string, init: RequestInit): Promise<Response> {
+  const serviceBinding = await getCatalogContractServiceBinding();
+  if (serviceBinding) {
+    return serviceBinding.fetch(asServiceBindingRequestUrl(url), init);
+  }
+  return fetch(url, init);
 }
 
 function parseCatalogJson(raw: string, sourcePath: string): unknown {
@@ -84,18 +126,9 @@ export async function publishCatalogArtifactsToContract(params: {
   catalogOutPath: string;
   mediaOutPath: string;
 }): Promise<CatalogPublishResult> {
-  const writeToken = getCatalogContractWriteToken();
-  if (!writeToken) {
-    throw new CatalogPublishError(
-      "unconfigured",
-      "XA_CATALOG_CONTRACT_WRITE_TOKEN is not configured.",
-    );
-  }
-
-  const publishUrl = buildCatalogContractPublishUrl(params.storefrontId);
   const [catalogRaw, mediaRaw] = await Promise.all([
-    fs.readFile(params.catalogOutPath, "utf8"),
-    fs.readFile(params.mediaOutPath, "utf8"),
+    readFileUtf8(params.catalogOutPath),
+    readFileUtf8(params.mediaOutPath),
   ]);
 
   const payload = {
@@ -105,21 +138,47 @@ export async function publishCatalogArtifactsToContract(params: {
     mediaIndex: parseCatalogJson(mediaRaw, params.mediaOutPath),
   };
 
+  return await publishCatalogPayloadToContract({
+    storefrontId: params.storefrontId,
+    payload,
+  });
+}
+
+export async function publishCatalogPayloadToContract(params: {
+  storefrontId: XaCatalogStorefront;
+  payload: {
+    storefront: XaCatalogStorefront;
+    publishedAt: string;
+    catalog: unknown;
+    mediaIndex: unknown;
+  };
+}): Promise<CatalogPublishResult> {
+  const writeToken = getCatalogContractWriteToken();
+  if (!writeToken) {
+    throw new CatalogPublishError(
+      "unconfigured",
+      "XA_CATALOG_CONTRACT_WRITE_TOKEN is not configured.",
+    );
+  }
+
+  const publishUrl = buildCatalogContractPublishUrl(params.storefrontId);
+
   const controller = new AbortController();
   const timeoutHandle = setTimeout(() => controller.abort(), getCatalogContractTimeoutMs());
 
   let response: Response;
   try {
-    response = await fetch(publishUrl, {
+    response = await requestCatalogContract(publishUrl, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
         "X-XA-Catalog-Token": writeToken,
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(params.payload),
       signal: controller.signal,
     });
   } catch (error) {
+    // i18n-exempt -- XAUP-118 [ttl=2026-12-31]
     const message = error instanceof Error ? error.message : "catalog contract request failed";
     throw new CatalogPublishError("request_failed", message);
   } finally {
@@ -155,4 +214,10 @@ export async function publishCatalogArtifactsToContract(params: {
     version: typeof parsed.version === "string" ? parsed.version : undefined,
     publishedAt: typeof parsed.publishedAt === "string" ? parsed.publishedAt : undefined,
   };
+}
+
+async function readFileUtf8(filePath: string): Promise<string> {
+  // Paths are produced by the XA uploader pipeline and stay within generated artifact directories.
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- XAUP-118 controlled artifact path from server-side pipeline
+  return fs.readFile(filePath, "utf8");
 }

@@ -1,0 +1,34 @@
+{
+  "round": 1,
+  "mode": "file",
+  "score": 7,
+  "lp_score": 3.5,
+  "verdict": "needs_revision",
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "docs/plans/reception-type-schema-deduplication/fact-find.md",
+      "line": "234",
+      "message": "The inline DOB schema in checkInRowSchema.ts is only z.string().optional() fields, not strict. Replacing with canonical dateOfBirthSchema would tighten validation and violate the non-goal of no validation logic changes."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-type-schema-deduplication/fact-find.md",
+      "line": "96",
+      "message": "activitiesData.ts Activity interface / activitySchema.ts Zod schema pair remains unaddressed — hand-written interface should become z.infer<typeof activitySchema>."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-type-schema-deduplication/fact-find.md",
+      "line": "177",
+      "message": "PayType recommended for schemas/cityTaxSchema.ts which contradicts the stated pattern that schema files are for Zod schemas + z.infer<> exports. Domain file is the correct canonical location."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-type-schema-deduplication/fact-find.md",
+      "line": "32",
+      "message": "DateOfBirth duplication count overstated — relay files and alias layers are not independent source definitions."
+    }
+  ],
+  "durationMs": 115588
+}

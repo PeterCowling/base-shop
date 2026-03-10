@@ -31,7 +31,7 @@
       "title": "Guider till buss och SITA"
     },
     "camping": {
-      "label": "Camping",
+      "label": "Campingplats",
       "title": "Camping längs kusten"
     },
     "capri": {
@@ -202,10 +202,10 @@
     },
     "salerno": {
       "label": "Salerno",
-      "title": "Salerno ↔ Positano"
+      "title": "Salerno - Positano"
     },
     "shopping": {
-      "label": "Shopping",
+      "label": "Shopping shopping",
       "title": "Shopping och hantverk"
     },
     "shoulder": {
@@ -229,7 +229,7 @@
       "title": "Sommar i Positano"
     },
     "tips": {
-      "label": "Tips",
+      "label": "Råd",
       "title": "Resetips"
     },
     "train": {
@@ -241,7 +241,7 @@
       "title": "Vingårdar i Tramonti"
     },
     "transport": {
-      "label": "Transport",
+      "label": "Transporter",
       "title": "Transportguider för Amalfikusten",
       "description": "Beslutsguider för buss, färja, shuttle och transfer – med tips för resor med bagage."
     },

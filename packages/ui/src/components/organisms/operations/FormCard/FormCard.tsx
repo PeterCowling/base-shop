@@ -120,7 +120,7 @@ export function FormCard({
       )}
 
       {/* Header */}
-      <div className="border-b border-border-2 bg-surface-1 px-[var(--card-padding)] py-4">
+      <div className="border-b border-border-2 bg-surface-1 px-4 py-4">
         <h2 className="text-lg font-semibold text-foreground">
           {title}
         </h2>
@@ -133,7 +133,7 @@ export function FormCard({
 
       {/* Success message */}
       {showSuccess && (
-        <div className="border-b border-success/40 bg-success-soft px-[var(--card-padding)] py-3">
+        <div className="border-b border-success/40 bg-success-soft px-4 py-3">
           <div className="flex items-start gap-3">
             <CheckCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-success-foreground" />
             <p className="text-sm font-medium text-success-foreground">
@@ -145,7 +145,7 @@ export function FormCard({
 
       {/* Error message */}
       {showError && (
-        <div className="border-b border-danger/40 bg-danger-soft px-[var(--card-padding)] py-3">
+        <div className="border-b border-danger/40 bg-danger-soft px-4 py-3">
           <div className="flex items-start gap-3">
             <AlertCircle className="mt-0.5 h-5 w-5 flex-shrink-0 text-danger-foreground" />
             <p className="text-sm font-medium text-danger-foreground">
@@ -156,13 +156,13 @@ export function FormCard({
       )}
 
       {/* Content */}
-      <div className="px-[var(--card-padding)] py-[var(--card-padding)]">
+      <div className="px-4 py-4">
         {children}
       </div>
 
       {/* Footer */}
       {footer && (
-        <div className="border-t border-border-2 bg-surface-1 px-[var(--card-padding)] py-4">
+        <div className="border-t border-border-2 bg-surface-1 px-4 py-4">
           <div className="flex items-center justify-end gap-3">
             {footer}
           </div>

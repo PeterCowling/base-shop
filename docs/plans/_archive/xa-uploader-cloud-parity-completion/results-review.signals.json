@@ -1,0 +1,25 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-09T09:22:41.165Z",
+  "plan_slug": "xa-uploader-cloud-parity-completion",
+  "source_path": "../docs/plans/xa-uploader-cloud-parity-completion/results-review.user.md",
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New loop process — Split parity-completion checkpoint from runtime-cleanup migration",
+      "body": "hosted parity was complete once currency rates moved to the contract, while the remaining local-FS branches were separate cleanup work",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-03-09T00:00:00.000Z",
+      "path": "../docs/plans/xa-uploader-cloud-parity-completion/results-review.user.md",
+      "idea_key": "79a2b6a83f6466ea1d6572706101120f3c93b3d4",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    }
+  ]
+}

@@ -4,6 +4,8 @@ import { useCallback } from "react";
 import { ref, set } from "firebase/database";
 
 import { useAuth } from "../../context/AuthContext";
+import { queueOfflineWrite } from "../../lib/offline/syncManager";
+import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import {
   type CompletedTaskField,
@@ -19,6 +21,7 @@ import {
 export function useCompletedTasks() {
   const database = useFirebaseDatabase();
   const { user } = useAuth();
+  const online = useOnlineStatus();
 
   /**
    * Sets the entire block of completed tasks for a specific occupant.
@@ -28,17 +31,27 @@ export function useCompletedTasks() {
   const setOccupantTasks = useCallback(
     async (occupantId: string, tasks: CompletedTaskFlags): Promise<void> => {
       if (!user) {
-        console.log("No user is logged in; cannot set occupant tasks.");
+        console.warn("No user is logged in; cannot set occupant tasks.");
         return;
+      }
+
+      if (!online) {
+        const queued = await queueOfflineWrite(`completedTasks/${occupantId}`, "set", tasks, {
+          idempotencyKey: crypto.randomUUID(),
+          conflictPolicy: "last-write-wins",
+          domain: "tasks",
+        });
+        if (queued !== null) return;
+        // IDB unavailable — fall through to direct write
       }
 
       try {
         await set(ref(database, `completedTasks/${occupantId}`), tasks);
       } catch (error) {
-        console.log("Error writing occupant tasks:", error);
+        console.error("Error writing occupant tasks:", error);
       }
     },
-    [database, user]
+    [database, online, user]
   );
 
   /**
@@ -54,8 +67,18 @@ export function useCompletedTasks() {
       value: "true" | "false"
     ): Promise<void> => {
       if (!user) {
-        console.log("No user is logged in; cannot update occupant tasks.");
+        console.warn("No user is logged in; cannot update occupant tasks.");
         return;
+      }
+
+      if (!online) {
+        const queued = await queueOfflineWrite(`completedTasks/${occupantId}/${field}`, "set", value, {
+          idempotencyKey: crypto.randomUUID(),
+          conflictPolicy: "last-write-wins",
+          domain: "tasks",
+        });
+        if (queued !== null) return;
+        // IDB unavailable — fall through to direct write
       }
 
       try {
@@ -64,10 +87,10 @@ export function useCompletedTasks() {
           value
         );
       } catch (error) {
-        console.log("Error writing occupant tasks:", error);
+        console.error("Error writing occupant tasks:", error);
       }
     },
-    [database, user]
+    [database, online, user]
   );
 
   return {

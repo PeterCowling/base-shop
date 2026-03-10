@@ -18,8 +18,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  block-dev-to-main:
-    if: ${{ github.event.pull_request.head.ref == 'dev' && github.event.pull_request.base.ref == 'main' }}
+  block-staging-to-main:
+    if: ${{ github.event.pull_request.head.ref == 'staging' && github.event.pull_request.base.ref == 'main' }}
     runs-on: ubuntu-latest
     steps:
       - name: Close disallowed PR shape
@@ -30,13 +30,12 @@ jobs:
             const repo = context.repo.repo;
             const pr = context.payload.pull_request;
             const body = [
-              "Closing automatically: `dev -> main` is blocked for this repository.",
+              "Closing automatically: `staging -> main` is not the release path for this repository.",
               "",
               "Use the release flow:",
-              "- `dev -> staging`",
-              "- `staging -> main`",
+              "- `dev -> main`",
               "",
-              "Helper scripts:",
+              "Use staging only for user testing via:",
               "- `scripts/git/ship-to-staging.sh`",
               "- `scripts/git/promote-to-main.sh`",
             ].join("\\n");
@@ -55,4 +54,4 @@ jobs:
               state: "closed",
             });
 
-            core.setFailed("Blocked disallowed release path: dev -> main.");
+            core.setFailed("Blocked disallowed release path: staging -> main.");

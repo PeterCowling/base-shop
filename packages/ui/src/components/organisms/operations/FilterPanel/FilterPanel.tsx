@@ -85,14 +85,14 @@ export function FilterPanel({
 
   return (
     <div
-      className={`rounded-lg border border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-800 ${className}`}
+      className={`rounded-lg border border-border-2 bg-surface dark:border-slate-700 dark:bg-slate-800 ${className}`}
     >
       {/* Panel Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3 dark:border-slate-700">
+      <div className="flex items-center justify-between border-b border-border-2 px-4 py-3 dark:border-slate-700">
         <div className="flex items-center gap-2">
-          <h3 className="font-medium text-slate-900 dark:text-slate-100">Filters</h3>
+          <h3 className="font-medium text-foreground dark:text-slate-100">Filters</h3>
           {activeFiltersCount > 0 && (
-            <span className="inline-flex items-center justify-center rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+            <span className="inline-flex items-center justify-center rounded-full bg-info-light px-2 py-0.5 text-xs font-medium text-info-main dark:bg-blue-900 dark:text-blue-300">
               {activeFiltersCount}
             </span>
           )}
@@ -102,7 +102,7 @@ export function FilterPanel({
           {showClearButton && activeFiltersCount > 0 && (
             <button
               onClick={onClear}
-              className="flex items-center gap-1 rounded px-2 py-1 text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+              className="flex items-center gap-1 rounded px-2 py-1 text-sm text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground dark:text-muted-foreground dark:hover:bg-slate-700 dark:hover:text-slate-100 min-h-11 min-w-11"
             >
               <X className="h-3 w-3" />
               Clear
@@ -113,7 +113,7 @@ export function FilterPanel({
             <button
               onClick={togglePanel}
               aria-label={isExpanded ? 'Collapse filters' : 'Expand filters'}
-              className="rounded p-1 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-700 dark:hover:text-slate-100"
+              className="rounded p-1 text-muted-foreground transition-colors hover:bg-surface-2 hover:text-foreground dark:text-muted-foreground dark:hover:bg-slate-700 dark:hover:text-slate-100 min-h-11 min-w-11"
             >
               {isExpanded ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             </button>
@@ -129,15 +129,15 @@ export function FilterPanel({
               {/* Section Header */}
               <button
                 onClick={() => toggleSection(section.id)}
-                className="flex w-full items-center justify-between px-4 py-3 text-start transition-colors hover:bg-slate-50 dark:hover:bg-slate-750"
+                className="flex w-full items-center justify-between px-4 py-3 text-start transition-colors hover:bg-surface dark:hover:bg-slate-750 min-h-11 min-w-11"
               >
-                <span className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                <span className="text-sm font-medium text-foreground dark:text-slate-100">
                   {section.title}
                 </span>
                 {expandedSections[section.id] ? (
-                  <ChevronUp className="h-4 w-4 text-slate-400" />
+                  <ChevronUp className="h-4 w-4 text-muted-foreground" />
                 ) : (
-                  <ChevronDown className="h-4 w-4 text-slate-400" />
+                  <ChevronDown className="h-4 w-4 text-muted-foreground" />
                 )}
               </button>
 
@@ -153,7 +153,7 @@ export function FilterPanel({
             <div className="px-4 py-3">
               <button
                 onClick={onApply}
-                className="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-blue-500 focus-visible:focus:ring-offset-2 focus-visible:dark:focus:ring-offset-slate-800"
+                className="w-full rounded-lg bg-info-main px-4 py-2 text-sm font-medium text-primary-fg transition-colors hover:bg-blue-700 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-info-main focus-visible:focus:ring-offset-2 focus-visible:dark:focus:ring-offset-slate-800 min-h-11 min-w-11"
               >
                 Apply Filters
               </button>

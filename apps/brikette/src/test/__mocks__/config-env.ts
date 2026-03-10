@@ -19,3 +19,5 @@ export const BRIKETTE_APP_BASE_URL = "https://hostel-positano.com";
 export const BRIKETTE_GOOGLE_TAG_MANAGER_ID = "";
 export const BRIKETTE_TAWK_PROPERTY_ID = "";
 export const BRIKETTE_TAWK_WIDGET_ID = "";
+// Default: feature flag OFF in tests. Route and hook tests override per-test via jest.mock / jest.resetModules.
+export const OCTORATE_LIVE_AVAILABILITY = false;

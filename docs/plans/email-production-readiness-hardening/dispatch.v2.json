@@ -1,0 +1,46 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260302193000-0001",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "artifact_id": "email-production-readiness-hardening",
+  "before_sha": null,
+  "after_sha": "operator-2026-03-02-production-readiness",
+  "root_event_id": "operator:email-production-readiness-hardening-2026-03-02",
+  "anchor_key": "email-prod-readiness-testing-verification-validation",
+  "cluster_key": "brik:email-prod-readiness",
+  "cluster_fingerprint": "email-prod-ready-20260302",
+  "lineage_depth": 0,
+  "area_anchor": "BRIK email refinement — production readiness hardening",
+  "location_anchors": [
+    "packages/mcp-server/src/tools/draft-refine.ts",
+    "packages/mcp-server/src/tools/draft-quality-check.ts",
+    "packages/mcp-server/src/tools/draft-signal-stats.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Deterministic refinement and parity fallback are implemented, but production-readiness guardrails need stronger test and verification gates.",
+  "next_scope_now": "Introduce P0 readiness tests for semantic-failure fallback and deterministic repair-chain matrix/idempotency, plus telemetry health thresholds for fallback risk.",
+  "adjacent_later": [
+    "historical shadow-replay harness",
+    "jsonl concurrency stress and archival race validation"
+  ],
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "priority": "P1",
+  "confidence": 0.9,
+  "evidence_refs": [
+    "operator-stated: walk through resulting system and make production ready",
+    "operator-stated: use lp-do-ideas and progress",
+    "packages/mcp-server/src/tools/draft-refine.ts:523",
+    "packages/mcp-server/src/tools/draft-quality-check.ts:500"
+  ],
+  "created_at": "2026-03-02T19:30:00.000Z",
+  "queue_state": "enqueued",
+  "why": "Production readiness requires explicit proof that high-risk quality failures always fail safe and deterministic repairs remain non-regressive under combined failure conditions.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Email refinement pipeline has P0 production-readiness validation gates for failure-safe behavior and deterministic repair stability.",
+    "source": "operator"
+  }
+}

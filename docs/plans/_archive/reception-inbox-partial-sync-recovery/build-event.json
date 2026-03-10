@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-partial-sync-recovery-2026-03-07",
+  "feature_slug": "reception-inbox-partial-sync-recovery",
+  "emitted_at": "2026-03-07T17:45:00.000Z",
+  "why": "A single sync failure can permanently skip threads, causing emails to be missed. This is the most dangerous reliability gap in the pipeline.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Sync checkpoint is held back (not advanced) when any thread fails during processing, ensuring no threads are permanently skipped. On partial failure, the next sync re-discovers all threads from the same history point, giving failed threads another chance.",
+    "source": "operator"
+  }
+}

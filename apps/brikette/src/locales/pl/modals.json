@@ -20,7 +20,7 @@
     "title": "Rezerwuj bezpośrednio i oszczędzaj",
     "description": "Dziękujemy za wybór rezerwacji bezpośredniej! W ramach podziękowania otrzymasz:",
     "perks": {
-      "discount": "Do 10% zniżki na cenę pokoju",
+      "discount": "Do 25% zniżki na cenę pokoju",
       "breakfast": "Bezpłatne śniadanie każdego ranka",
       "drinks": "Powitalne napoje gratis",
       "upgrades": "Priorytetowe ulepszenia pokoju (gdy dostępne)"
@@ -159,6 +159,19 @@
     "close": "Zamknij"
   },
   "loader": {
-    "ariaLabel": "Loading"
+    "ariaLabel": "Ładowanie"
+  },
+  "date": {
+    "stayHelper": "2- 8 nocy",
+    "clearDates": "Wyczyść daty",
+    "nightsSummary": "_ _ TOK0 _ _ → _ _ TOK1 _ _ (_ _ TOK2 _ _ noce)"
+  },
+  "directPerks": {
+    "heading": "Dlaczego rezerwować bezpośrednio?",
+    "items": [
+      "Do 25% zniżki",
+      "Śniadanie gratis",
+      "Wieczorny drink gratis"
+    ]
   }
 }

@@ -1,0 +1,243 @@
+name: XA Deploy Drain (staging)
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      storefront:
+        description: "Storefront to drain"
+        required: false
+        default: "xa-b"
+
+permissions: {}
+
+concurrency:
+  group: xa-deploy-drain-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy-drain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      XA_UPLOADER_PREVIEW_BASE_URL_DEFAULT: https://xa-uploader-preview.peter-cowling1976.workers.dev
+      XA_UPLOADER_PREVIEW_BASE_URL_OVERRIDE: ${{ vars.XA_UPLOADER_PREVIEW_BASE_URL }}
+      XA_UPLOADER_DEPLOY_DRAIN_TOKEN: ${{ secrets.XA_UPLOADER_DEPLOY_DRAIN_TOKEN }}
+      XA_CATALOG_CONTRACT_READ_URL: ${{ vars.XA_CATALOG_CONTRACT_READ_URL }}
+      XA_CATALOG_CONTRACT_READ_TOKEN: ${{ secrets.XA_CATALOG_CONTRACT_READ_TOKEN }}
+      XA_IMAGES_BASE_URL: ${{ vars.XA_IMAGES_BASE_URL_PREVIEW || vars.XA_IMAGES_BASE_URL }}
+      XA_IMAGES_VARIANT: ${{ vars.XA_IMAGES_VARIANT_PREVIEW || vars.XA_IMAGES_VARIANT }}
+      STOREFRONT: ${{ inputs.storefront }}
+    steps:
+      - name: Validate runtime configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [[ -z "${XA_UPLOADER_DEPLOY_DRAIN_TOKEN}" ]]; then
+            echo "::error::Missing XA_UPLOADER_DEPLOY_DRAIN_TOKEN repository secret."
+            exit 1
+          fi
+
+          if [[ -z "${XA_CATALOG_CONTRACT_READ_URL}" ]]; then
+            echo "::error::Missing XA_CATALOG_CONTRACT_READ_URL repository variable."
+            exit 1
+          fi
+
+          if [[ -z "${XA_CATALOG_CONTRACT_READ_TOKEN}" ]]; then
+            echo "::error::Missing XA_CATALOG_CONTRACT_READ_TOKEN repository secret."
+            exit 1
+          fi
+
+          if [[ -z "${XA_IMAGES_BASE_URL}" ]]; then
+            echo "::error::Missing XA_IMAGES_BASE_URL(_PREVIEW) repository variable."
+            exit 1
+          fi
+
+          storefront="${STOREFRONT:-xa-b}"
+          if ! [[ "${storefront}" =~ ^[a-z0-9-]+$ ]]; then
+            echo "::error::Invalid storefront ${storefront}."
+            exit 1
+          fi
+
+      - name: Trigger deploy drain
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          storefront="${STOREFRONT:-xa-b}"
+          base_url="${XA_UPLOADER_PREVIEW_BASE_URL_DEFAULT}"
+          if [[ -n "${XA_UPLOADER_PREVIEW_BASE_URL_OVERRIDE}" ]]; then
+            base_url="${XA_UPLOADER_PREVIEW_BASE_URL_OVERRIDE}"
+          fi
+
+          endpoint="${base_url%/}/api/catalog/deploy-drain?storefront=${storefront}"
+          response_file="$(mktemp)"
+          http_code="$(
+            curl \
+              --silent \
+              --show-error \
+              --output "${response_file}" \
+              --write-out "%{http_code}" \
+              --connect-timeout 10 \
+              --max-time 60 \
+              --request POST \
+              --header "authorization: Bearer ${XA_UPLOADER_DEPLOY_DRAIN_TOKEN}" \
+              "${endpoint}"
+          )"
+
+          echo "Endpoint: ${endpoint}"
+          echo "HTTP status: ${http_code}"
+          echo "Response body:"
+          cat "${response_file}"
+          echo
+
+          if [[ "${http_code}" -lt 200 || "${http_code}" -ge 300 ]]; then
+            echo "::error::Deploy drain call failed with HTTP ${http_code}."
+            exit 1
+          fi
+
+      - name: Resolve staging smoke-check targets from published catalog
+        id: smoke-targets
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          node <<'NODE'
+          (async () => {
+            const fs = require("node:fs");
+            const readUrl = (process.env.XA_CATALOG_CONTRACT_READ_URL ?? "").trim();
+            const readToken = (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
+            const imageBase = (process.env.XA_IMAGES_BASE_URL ?? "").trim().replace(/\/+$/, "");
+            const imageVariant = (process.env.XA_IMAGES_VARIANT ?? "").trim() || "public";
+            const storefront = (process.env.STOREFRONT ?? "xa-b").trim() || "xa-b";
+
+            function fail(message) {
+              console.error(`::error::${message}`);
+              process.exit(1);
+            }
+
+            function normalizePath(path) {
+              return String(path ?? "").trim().replace(/^\/+/, "");
+            }
+
+            function hasVariant(path) {
+              return path.includes("/");
+            }
+
+            function buildImageUrl(path) {
+              if (!path) return "";
+              if (/^https?:\/\//i.test(path)) return path;
+              const normalized = normalizePath(path);
+              if (!normalized) return "";
+              if (!imageBase) return "";
+              const resolvedPath = hasVariant(normalized) ? normalized : `${normalized}/${imageVariant}`;
+              return `${imageBase}/${resolvedPath}`;
+            }
+
+            if (!readUrl) fail("XA_CATALOG_CONTRACT_READ_URL is empty.");
+            if (!readToken) fail("XA_CATALOG_CONTRACT_READ_TOKEN is empty.");
+            if (!imageBase) fail("XA_IMAGES_BASE_URL is empty.");
+
+            const response = await fetch(readUrl, {
+              method: "GET",
+              headers: {
+                authorization: `Bearer ${readToken}`,
+                accept: "application/json",
+              },
+            }).catch((error) => {
+              fail(`Catalog read request failed: ${error instanceof Error ? error.message : String(error)}`);
+            });
+
+            if (!response || !response.ok) {
+              const status = response ? response.status : 0;
+              fail(`Catalog read failed with HTTP ${status}.`);
+            }
+
+            const payload = await response.json().catch(() => fail("Catalog read response is not valid JSON."));
+            const catalogProducts = Array.isArray(payload?.catalog?.products) ? payload.catalog.products : [];
+            if (catalogProducts.length < 1) fail("Published catalog has no products.");
+
+            const product = catalogProducts.find((candidate) => {
+              if (!candidate || typeof candidate.slug !== "string" || !candidate.slug.trim()) return false;
+              if (!Array.isArray(candidate.media)) return false;
+              return candidate.media.some(
+                (item) =>
+                  item &&
+                  item.type === "image" &&
+                  typeof item.path === "string" &&
+                  item.path.trim().length > 0,
+              );
+            });
+            if (!product) fail("Published catalog has no product with image media.");
+
+            const firstImage = product.media.find(
+              (item) =>
+                item &&
+                item.type === "image" &&
+                typeof item.path === "string" &&
+                item.path.trim().length > 0,
+            );
+            if (!firstImage) fail("No image media found on selected product.");
+
+            const productSlug = String(product.slug).trim();
+            const imageUrl = buildImageUrl(firstImage.path);
+            if (!imageUrl) fail("Failed to derive image URL from published media path.");
+
+            const productUrl = `https://dev.xa-b-site.pages.dev/products/${encodeURIComponent(productSlug)}`;
+
+            const outputPath = process.env.GITHUB_OUTPUT;
+            if (!outputPath) fail("GITHUB_OUTPUT is unavailable.");
+            fs.appendFileSync(outputPath, `storefront=${storefront}\n`, "utf8");
+            fs.appendFileSync(outputPath, `product_slug=${productSlug}\n`, "utf8");
+            fs.appendFileSync(outputPath, `product_url=${productUrl}\n`, "utf8");
+            fs.appendFileSync(outputPath, `image_url=${imageUrl}\n`, "utf8");
+
+            console.log(`Smoke target storefront: ${storefront}`);
+            console.log(`Smoke target product slug: ${productSlug}`);
+            console.log(`Smoke target product URL: ${productUrl}`);
+            console.log(`Smoke target image URL: ${imageUrl}`);
+          })();
+          NODE
+
+      - name: Smoke check staging product + image are live
+        shell: bash
+        env:
+          PRODUCT_URL: ${{ steps.smoke-targets.outputs.product_url }}
+          IMAGE_URL: ${{ steps.smoke-targets.outputs.image_url }}
+          PRODUCT_SLUG: ${{ steps.smoke-targets.outputs.product_slug }}
+        run: |
+          set -euo pipefail
+
+          check_with_retry() {
+            local label="$1"
+            local url="$2"
+            local attempts="${3:-24}"
+            local delay_s="${4:-10}"
+
+            for attempt in $(seq 1 "${attempts}"); do
+              http_code="$(curl -s -o /dev/null -w "%{http_code}" --connect-timeout 10 --max-time 30 "${url}")"
+              echo "${label} attempt ${attempt}/${attempts}: ${url} -> HTTP ${http_code}"
+              if [[ "${http_code}" == "200" ]]; then
+                return 0
+              fi
+              sleep "${delay_s}"
+            done
+
+            echo "::error::${label} did not return HTTP 200 after ${attempts} attempts."
+            return 1
+          }
+
+          if [[ -z "${PRODUCT_URL}" ]]; then
+            echo "::error::Missing PRODUCT_URL output."
+            exit 1
+          fi
+          if [[ -z "${IMAGE_URL}" ]]; then
+            echo "::error::Missing IMAGE_URL output."
+            exit 1
+          fi
+
+          echo "Running staging smoke check for product slug: ${PRODUCT_SLUG}"
+          check_with_retry "Product page" "${PRODUCT_URL}" 24 10
+          check_with_retry "Primary image" "${IMAGE_URL}" 6 5

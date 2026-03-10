@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "prime-client-logger",
+  "emitted_at": "2026-03-09T00:00:00.000Z",
+  "why": "Prime maintained a duplicate logger with env-var reading and log-level logic that belongs in a shared utility.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Prime app logger.ts is replaced by a shared client-compatible logger utility, eliminating duplicate env-var reading and log-level logic.",
+    "source": "operator"
+  }
+}

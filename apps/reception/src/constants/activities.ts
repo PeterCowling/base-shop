@@ -26,4 +26,5 @@ export enum ActivityCode {
   OCCUPANT_DELETED = 25,
   RESEND_APP_EMAIL = 26,
   CANCELLED = 27,
+  KEY_EXTENSION = 30,
 }

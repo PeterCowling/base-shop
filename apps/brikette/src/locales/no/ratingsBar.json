@@ -1,7 +1,7 @@
 {
   "aria": {
     "regionLabel": "Ekstern gjennomgangsvurderinger",
-    "linkSummary": "{{score}} {{provider}}, {{reviews}}, {{lastChecked}} {{date}}"
+    "linkSummary": "{{score}} {{provider}}, {{reviews}}, {{lastChecked}} {{date}}_"
   },
   "reviewed": "Anmeldt:",
   "countReviews_one": "{{formattedCount}} anmeldelser",
@@ -16,5 +16,6 @@
       "ariaName": "Booking punktum com",
       "label": "Booking.com"
     }
-  }
+  },
+  "snapshotAsOf": "Fra {{date}}_"
 }

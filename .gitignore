@@ -49,6 +49,13 @@ apps/cms/dist/
 docs/api/
 
 # ---------------------------
+# Python tooling
+# ---------------------------
+tools/naminglab/.venv/
+**/__pycache__/
+**/*.pyc
+
+# ---------------------------
 # Misc
 # ---------------------------
 .DS_Store
@@ -69,6 +76,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+apps/reception/database-debug.log
 
 # ---------------------------
 # Environment files
@@ -109,6 +117,7 @@ packages/types/src/**/*.d.ts.map
 # ---------------------------
 # Local Claude skill/config backups (ephemeral; should not be committed)
 .claude.backup/
+.claude/worktrees/
 
 # Session learnings (may contain task details, gitignored)
 .agents/learnings/*
@@ -152,3 +161,6 @@ data/octorate/
 # Email draft fallback queues (may contain customer content/PII)
 data/email-fallback-queue/
 packages/mcp-server/.tmp/
+
+.cowork/
+.cowork.yml

@@ -31,7 +31,7 @@
       "title": "Ônibus & SITA"
     },
     "camping": {
-      "label": "Camping",
+      "label": "Acampar",
       "title": "Camping na costa"
     },
     "capri": {
@@ -95,11 +95,11 @@
       "title": "Perguntas frequentes de viagem"
     },
     "ferragosto": {
-      "label": "Ferragosto",
+      "label": "Ferrogosto",
       "title": "Ferragosto em Positano"
     },
     "ferry": {
-      "label": "Ferry",
+      "label": "Balsa",
       "title": "Guias de ferry"
     },
     "free": {
@@ -111,7 +111,7 @@
       "title": "Para turistas em geral"
     },
     "herculaneum": {
-      "label": "Herculaneum",
+      "label": "Herculano",
       "title": "Bate-volta a Herculano"
     },
     "hiking": {
@@ -132,7 +132,7 @@
       "title": "Seguro de viagem"
     },
     "ischia": {
-      "label": "Ischia",
+      "label": "Isquia",
       "title": "Guias de Ischia"
     },
     "itinerary": {
@@ -160,7 +160,7 @@
       "title": "Dicas de baixa temporada"
     },
     "passes": {
-      "label": "Passes",
+      "label": "Passagens",
       "title": "Passes de transporte"
     },
     "photography": {
@@ -202,10 +202,10 @@
     },
     "salerno": {
       "label": "Salerno",
-      "title": "Salerno ↔ Positano"
+      "title": "Salerno ↔ positano"
     },
     "shopping": {
-      "label": "Shopping",
+      "label": "Compras",
       "title": "Compras & artesãos"
     },
     "shoulder": {

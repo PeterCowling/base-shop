@@ -4,7 +4,13 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { axe, toHaveNoViolations } from "jest-axe";
 
+import {
+  __getUseSettingsSaveFormToastLog,
+  __resetUseSettingsSaveFormMock,
+} from "../../hooks/useSettingsSaveForm";
 import ReverseLogisticsEditor from "../ReverseLogisticsEditor";
+
+jest.mock("../../hooks/useSettingsSaveForm");
 
 expect.extend(toHaveNoViolations as any);
 
@@ -12,30 +18,6 @@ const updateReverseLogistics = jest.fn();
 
 jest.mock("@cms/actions/shops.server", () => ({
   updateReverseLogistics: (...args: any[]) => updateReverseLogistics(...args),
-}));
-jest.mock("@/components/atoms", () => ({
-  Toast: ({ open, message, className, role = "status", ...props }: any) =>
-    open ? (
-      <div role={role} className={className} {...props}>
-        <span>{message}</span>
-      </div>
-    ) : null,
-  Switch: ({ id, name, checked, onChange, disabled, ...props }: any) => (
-    <input
-      id={id}
-      name={name}
-      type="checkbox"
-      checked={checked}
-      onChange={onChange}
-      disabled={disabled}
-      {...props}
-    />
-  ),
-  Chip: ({ children, className, ...props }: any) => (
-    <span className={className} {...props}>
-      {children}
-    </span>
-  ),
 }));
 jest.mock(
   "@/components/atoms/shadcn",
@@ -58,6 +40,7 @@ jest.mock(
 
 describe("ReverseLogisticsEditor", () => {
   beforeEach(() => {
+    __resetUseSettingsSaveFormMock();
     jest.clearAllMocks();
   });
 
@@ -85,12 +68,10 @@ describe("ReverseLogisticsEditor", () => {
     });
 
     expect(chip).toHaveClass("text-destructive");
-    const toastMessage = (
-      await screen.findAllByText(/Interval must be greater than zero\./)
-    ).find((element) => element.closest('[role="status"]'));
-    expect(toastMessage).toBeDefined();
-    const toast = toastMessage!.closest('[role="status"]');
-    expect(toast).toHaveClass("bg-destructive");
+    expect(__getUseSettingsSaveFormToastLog().at(-1)).toEqual({
+      status: "error",
+      message: "Interval must be greater than zero.",
+    });
     expect(updateReverseLogistics).not.toHaveBeenCalled();
   });
 
@@ -116,10 +97,10 @@ describe("ReverseLogisticsEditor", () => {
     expect(fd.get("enabled")).toBe("on");
     expect(fd.get("intervalMinutes")).toBe("15");
 
-    const successMessage = await screen.findByText(/Reverse logistics updated\./);
-    const toast = successMessage.closest('[role="status"]');
-    expect(toast).toHaveClass("bg-success");
-    expect(toast).toHaveClass("text-success-fg");
+    expect(__getUseSettingsSaveFormToastLog().at(-1)).toEqual({
+      status: "success",
+      message: "Reverse logistics updated.",
+    });
 
     const results = await axe(container);
     expect(results).toHaveNoViolations();

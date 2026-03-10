@@ -15,6 +15,7 @@ import { SimpleModal } from "@acme/ui/molecules";
 import { useBookingDatesMutator } from "../../../hooks/mutations/useChangeBookingDatesMutator";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import { parseYMD } from "../../../utils/dateUtils";
+import { showToast } from "../../../utils/toastUtils";
 
 /**
  * BookingModalProps:
@@ -53,7 +54,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
     const [extensionPrice, setExtensionPrice] = useState<string>("");
     const [priceError, setPriceError] = useState<string>("");
 
-    const { updateBookingDates, isLoading } = useBookingDatesMutator();
+    const { updateBookingDates, loading } = useBookingDatesMutator();
 
     // Check if the new checkOut date is strictly later than the old one => extended
     const isExtended = useMemo(() => {
@@ -97,7 +98,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
     );
 
     // Save the updated dates to the database.
-    const handleSave = useCallback(() => {
+    const handleSave = useCallback(async () => {
       // If there's an extension, require a valid price
       if (isExtended) {
         // Basic numeric check
@@ -108,21 +109,32 @@ const BookingModal: FC<BookingModalProps> = React.memo(
         }
       }
 
-      // Use booking.occupantId or fallback if not available.
-      const occupantId = booking.occupantId || "unknown_occupant";
+      const occupantId = booking.occupantId?.trim();
+      if (!occupantId) {
+        showToast("Missing occupant id. Save cancelled.", "error");
+        return;
+      }
 
-      // Pass extensionPrice only if it's an actual extension
-      updateBookingDates({
-        bookingRef: booking.bookingRef,
-        occupantId,
-        oldCheckIn: booking.checkInDate ?? "",
-        oldCheckOut: booking.checkOutDate ?? "",
-        newCheckIn: checkIn,
-        newCheckOut: checkOut,
-        extendedPrice: isExtended ? extensionPrice : "0",
-      });
+      try {
+        // Pass extensionPrice only if it's an actual extension
+        await updateBookingDates({
+          bookingRef: booking.bookingRef,
+          occupantId,
+          oldCheckIn: booking.checkInDate ?? "",
+          oldCheckOut: booking.checkOutDate ?? "",
+          newCheckIn: checkIn,
+          newCheckOut: checkOut,
+          extendedPrice: isExtended ? extensionPrice : "0",
+        });
 
-      onClose();
+        onClose();
+      } catch (err) {
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Failed to update booking dates. Please retry.";
+        showToast(message, "error");
+      }
     }, [
       booking.bookingRef,
       booking.checkInDate,
@@ -145,18 +157,18 @@ const BookingModal: FC<BookingModalProps> = React.memo(
         footer={
           <div className="flex justify-end gap-2">
             <Button
-              className="px-4 py-2 bg-surface-3 text-foreground rounded"
+              className="px-4 py-2 bg-surface-3 text-foreground rounded-lg"
               onClick={onClose}
-              disabled={isLoading}
+              disabled={loading}
             >
               Cancel
             </Button>
             <Button
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded"
+              className="px-4 py-2 bg-primary-main text-primary-fg rounded-lg"
               onClick={handleSave}
-              disabled={isLoading}
+              disabled={loading}
             >
-              {isLoading ? "Saving..." : "Save"}
+              {loading ? "Saving..." : "Save"}
             </Button>
           </div>
         }
@@ -193,7 +205,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
           <Input compatibilityMode="no-wrapper"
             id="check-in-date"
             type="date"
-            className="border rounded px-2 py-1 text-foreground"
+            className="border rounded-lg px-2 py-1 text-foreground"
             value={checkIn}
             onChange={handleCheckInChange}
           />
@@ -207,7 +219,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
           <Input compatibilityMode="no-wrapper"
             id="check-out-date"
             type="date"
-            className="border rounded px-2 py-1 text-foreground"
+            className="border rounded-lg px-2 py-1 text-foreground"
             value={checkOut}
             onChange={handleCheckOutChange}
           />
@@ -224,7 +236,7 @@ const BookingModal: FC<BookingModalProps> = React.memo(
               type="number"
               step="0.01"
               min="0"
-              className="border rounded px-2 py-1 text-foreground"
+              className="border rounded-lg px-2 py-1 text-foreground"
               value={extensionPrice}
               onChange={handleExtensionPriceChange}
             />

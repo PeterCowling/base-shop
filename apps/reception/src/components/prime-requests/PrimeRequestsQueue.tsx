@@ -14,6 +14,7 @@ import type {
   PrimeRequestStatus,
   PrimeRequestType,
 } from "../../types/hooks/data/primeRequestsData";
+import { PageShell } from "../common/PageShell";
 
 const STATUS_ORDER: PrimeRequestStatus[] = [
   "pending",
@@ -129,12 +130,8 @@ export default function PrimeRequestsQueue() {
   }
 
   return (
-    <div className="min-h-80vh bg-surface-2 p-4 font-sans text-foreground">
-      <h1 className="mb-6 w-full text-center font-heading text-5xl text-primary-main">
-        PRIME REQUESTS
-      </h1>
-
-      <div className="rounded-lg bg-surface p-6 shadow">
+    <PageShell title="Prime Requests">
+      <div className="rounded-lg bg-surface p-6 shadow-lg">
         <p className="mb-4 text-sm text-muted-foreground">
           Resolve Prime guest requests while keeping booking/preorder/check-out
           flows as the canonical source of truth.
@@ -146,7 +143,7 @@ export default function PrimeRequestsQueue() {
               key={status}
               type="button"
               onClick={() => setSelectedStatusFilter(status)}
-              className={`rounded px-3 py-1.5 text-xs font-semibold ${
+              className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${
                 selectedStatusFilter === status
                   ? "bg-primary-main text-primary-fg"
                   : "bg-surface-3 text-foreground"
@@ -248,7 +245,7 @@ export default function PrimeRequestsQueue() {
                                   event.target.value as PrimeRequestStatus,
                               }))
                             }
-                            className="rounded border px-2 py-1"
+                            className="rounded-lg border px-2 py-1"
                           >
                             {STATUS_ORDER.map((status) => (
                               <option key={status} value={status}>
@@ -267,14 +264,14 @@ export default function PrimeRequestsQueue() {
                               }))
                             }
                             placeholder="Optional operator note"
-                            className="rounded border px-2 py-1"
+                            className="rounded-lg border px-2 py-1"
                           />
 
                           <Button
                             type="button"
                             onClick={() => handleApply(request)}
                             disabled={isBusy}
-                            className="rounded bg-primary-main px-3 py-1.5 text-primary-fg disabled:opacity-60"
+                            className="rounded-lg bg-primary-main px-3 py-1.5 text-primary-fg disabled:opacity-60"
                           >
                             {isBusy ? "Applying..." : "Apply"}
                           </Button>
@@ -301,6 +298,6 @@ export default function PrimeRequestsQueue() {
           </p>
         )}
       </div>
-    </div>
+    </PageShell>
   );
 }

@@ -86,7 +86,7 @@ const VarianceSummary: React.FC<VarianceSummaryProps> = ({
         {keycardVarianceMismatch &&
           unresolvedAssignments &&
           unresolvedAssignments.length > 0 && (
-            <div className="mt-2 p-2 bg-warning-light/10 border border-warning-main rounded text-xs">
+            <div className="mt-2 p-2 bg-warning-light/10 border border-warning-main rounded-lg text-xs">
               <strong>Unresolved keycard assignments:</strong>
               <ul className="mt-1 space-y-0.5">
                 {unresolvedAssignments.map((a) => (

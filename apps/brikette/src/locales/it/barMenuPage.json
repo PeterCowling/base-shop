@@ -4,7 +4,7 @@
     "description": "Spritz, cocktail, vini, birre, long drink, shot e gelato."
   },
   "header": {
-    "brand": "Hostel Brikette",
+    "brand": "Ostello Brikette",
     "menuTitle": "Menù del bar, 2025",
     "hours": "Aperto tutti i giorni (orari disponibili al bar)"
   },
@@ -47,19 +47,19 @@
   },
   "items": {
     "aperolSpritz": {
-      "name": "Aperol Spritz",
+      "name": "Aperol spritz",
       "note": "Lo spritz italiano classico, servito con ghiaccio tritato."
     },
     "limoncelloSpritz": {
-      "name": "Limoncello Spritz",
+      "name": "Limoncello spritz",
       "note": "Specialità della Costiera Amalfitana, servita con ghiaccio tritato."
     },
     "hugoSpritz": {
-      "name": "Hugo Spritz",
+      "name": "Abbraccio spritz",
       "note": "Vino spumante con menta, lime e fiori di sambuco. Servito con ghiaccio tritato."
     },
     "rossiniSpritz": {
-      "name": "Rossini Spritz",
+      "name": "Rossi",
       "note": "Vino spumante con succo di fragola. Servito con ghiaccio tritato."
     },
     "lemonStrawberryDaiquiri": {
@@ -70,7 +70,7 @@
       "note": "Succo di fragola o limone con tequila, Cointreau e ghiaccio. Rifinitura classica."
     },
     "lemonDropMartini": {
-      "name": "Lemon Drop Martini",
+      "name": "Limone goccia martini",
       "note": "Succo di limone fresco shakerato con Absolut Vodka, Cointreau e ghiaccio."
     },
     "redWhiteGlass": {
@@ -95,52 +95,52 @@
       "name": "Peroni, 660 ml"
     },
     "skyy": {
-      "name": "Skyy"
+      "name": "Cielo"
     },
     "absolut": {
-      "name": "Absolut"
+      "name": "Absoluto"
     },
     "smirnoff": {
       "name": "Smirnoff"
     },
     "greyGoose": {
-      "name": "Grey Goose"
+      "name": "Oca"
     },
     "pampero": {
       "name": "Pampero"
     },
     "bacardiSuperior": {
-      "name": "Bacardi Superior"
+      "name": "Bacardi superiore"
     },
     "captainMorgan": {
-      "name": "Captain Morgan"
+      "name": "Capitano Morgan"
     },
     "angosturaReserva": {
-      "name": "Angostura Reserva"
+      "name": "Angostura reserva"
     },
     "beefeater": {
-      "name": "Beefeater"
+      "name": "Beefea"
     },
     "bombaySapphire": {
-      "name": "Bombay Sapphire"
+      "name": "Bomba zaffiro"
     },
     "tanqueray": {
-      "name": "Tanqueray"
+      "name": "Abbronzatura"
     },
     "hendricks": {
-      "name": "Hendrick's"
+      "name": "Hendrick"
     },
     "jwRed": {
       "name": "Johnnie Walker Red Label (Scotch blended)"
     },
     "jameson": {
-      "name": "Jameson (Irish)"
+      "name": "Jameson (irlandese)"
     },
     "jackDaniels": {
       "name": "Jack Daniel's Old No.07 (sour mash)"
     },
     "wildTurkey": {
-      "name": "Wild Turkey (Bourbon)"
+      "name": "Turchia selvaggia (Bourbon)"
     },
     "chivas12": {
       "name": "Chivas Regal 12 anni (Scotch blended)"

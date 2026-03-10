@@ -68,6 +68,30 @@ export const skuSchema = z
     media: z.array(mediaItemSchema),
     sizes: z.array(z.string()),
     description: z.string(),
+    /** Localized material description (exterior shell, hardware finish, lining) */
+    materials: z
+      .object({
+        en: z.string(),
+        de: z.string().optional(),
+        it: z.string().optional(),
+      })
+      .optional(),
+    /** Physical dimensions (H × W × D in mm) */
+    dimensions: z
+      .object({
+        h: z.number(),
+        w: z.number(),
+        d: z.number(),
+        unit: z.literal("mm"),
+      })
+      .optional(),
+    /** Weight */
+    weight: z
+      .object({
+        value: z.number(),
+        unit: z.literal("g"),
+      })
+      .optional(),
   })
   .strict();
 
@@ -101,6 +125,12 @@ export interface ProductCore {
   maintenanceCycle?: number;
   /** availability windows as ISO timestamps */
   availability?: { from: string; to: string }[];
+  /** Localized material description (exterior shell, hardware finish, lining) */
+  materials?: { en: string; de?: string; it?: string };
+  /** Physical dimensions (H × W × D in mm) */
+  dimensions?: { h: number; w: number; d: number; unit: "mm" };
+  /** Weight */
+  weight?: { value: number; unit: "g" };
 }
 
 export type PublicationStatus =

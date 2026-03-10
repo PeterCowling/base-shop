@@ -42,8 +42,8 @@ Define where and how to add a new `LEGAL` container to startup-loop so legal pro
 
 ### Constraints & Assumptions
 - Constraints:
-  - Stage ordering authority is `docs/business-os/startup-loop/loop-spec.yaml`.
-  - Process definition authority is `docs/business-os/startup-loop/process-registry-v2.md` and `process-assignment-v2.yaml`.
+  - Stage ordering authority is `docs/business-os/startup-loop/specifications/loop-spec.yaml`.
+  - Process definition authority is `docs/business-os/startup-loop/process-registry-v2.md` and `specifications/process-assignment-v2.yaml`.
   - Existing stage IDs and aliases should remain backward-compatible.
 - Assumptions:
   - Legal protection must begin before MEASURE/market execution to reduce brand/IP and claims risk.
@@ -51,19 +51,19 @@ Define where and how to add a new `LEGAL` container to startup-loop so legal pro
 
 ## Evidence Audit (Current State)
 ### Entry Points
-- `docs/business-os/startup-loop/loop-spec.yaml` - canonical stage graph and ordering.
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` - canonical stage graph and ordering.
 - `docs/business-os/startup-loop/process-registry-v2.md` - process model and workstream boundaries.
-- `docs/business-os/startup-loop/process-assignment-v2.yaml` - process IDs and activation model.
+- `docs/business-os/startup-loop/specifications/process-assignment-v2.yaml` - process IDs and activation model.
 - `docs/business-os/startup-loop/artifact-registry.md` - canonical artifact path contracts.
 
 ### Key Modules / Files
-- `docs/business-os/startup-loop/loop-spec.yaml`
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - `docs/business-os/startup-loop/process-registry-v2.md`
-- `docs/business-os/startup-loop/process-assignment-v2.yaml`
-- `docs/business-os/startup-loop/stage-operator-dictionary.yaml`
+- `docs/business-os/startup-loop/specifications/process-assignment-v2.yaml`
+- `docs/business-os/startup-loop/specifications/stage-operator-dictionary.yaml`
 - `docs/business-os/startup-loop-workflow.user.md`
 - `docs/business-os/startup-loop/artifact-registry.md`
-- `docs/business-os/startup-loop/exception-runbooks-v1.md`
+- `docs/business-os/startup-loop/operations/exception-runbooks-v1.md`
 
 ### Patterns & Conventions Observed
 - New containers are introduced with explicit sub-stage IDs and ordering comments in `loop-spec.yaml`.
@@ -72,10 +72,10 @@ Define where and how to add a new `LEGAL` container to startup-loop so legal pro
 - Process registry keeps legal/compliance currently under FIN (`FIN-3`), but no dedicated LEGAL container/stages exist.
 
 ### Data & Contracts
-- Stage sequencing contract: `docs/business-os/startup-loop/loop-spec.yaml` (`ordering.sequential`).
+- Stage sequencing contract: `docs/business-os/startup-loop/specifications/loop-spec.yaml` (`ordering.sequential`).
 - Process contract: `docs/business-os/startup-loop/process-registry-v2.md`.
 - Artifact path contract: `docs/business-os/startup-loop/artifact-registry.md`.
-- Loop output contract registry: `docs/business-os/startup-loop/loop-output-contracts.md` (LEGAL outputs not yet defined here — new LEGAL artifact entries must be added as part of this work).
+- Loop output contract registry: `docs/business-os/startup-loop/contracts/loop-output-contracts.md` (LEGAL outputs not yet defined here — new LEGAL artifact entries must be added as part of this work).
 
 ### Proposed LEGAL Stage Contract (for planning)
 - Container: `LEGAL` (unconditional, all profiles).

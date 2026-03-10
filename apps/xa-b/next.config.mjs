@@ -2,39 +2,20 @@
 
 import sharedConfig from "@acme/next-config/next.config.mjs";
 
-// Keep production config strict: missing secrets should fail fast so we don't
-// accidentally deploy with insecure defaults.
-const DEV_NEXTAUTH = "dev-nextauth-secret-32-chars-long-string!";
-const DEV_SESSION = "dev-session-secret-32-chars-long-string!";
-function ensureStrong(name, fallback) {
-  const val = process.env[name];
-  if (!val || val.length < 32) process.env[name] = fallback;
-}
-function requireEnv(name, minLength) {
-  const val = process.env[name];
-  if (!val) throw new Error(`${name} is required in production`);
-  if (minLength && val.length < minLength) {
-    throw new Error(`${name} must be at least ${minLength} characters`);
-  }
-}
-
-// Keep production strict everywhere (including CI) to prevent unsafe defaults.
-if (process.env.NODE_ENV === "production") {
-  requireEnv("NEXTAUTH_SECRET", 32);
-  requireEnv("SESSION_SECRET", 32);
-  requireEnv("CART_COOKIE_SECRET");
-} else {
-  ensureStrong("NEXTAUTH_SECRET", DEV_NEXTAUTH);
-  ensureStrong("SESSION_SECRET", DEV_SESSION);
-  process.env.CART_COOKIE_SECRET ??= "dev-cart-secret";
-}
-
 process.env.CMS_SPACE_URL ??= "https://cms.example.com";
 process.env.CMS_ACCESS_TOKEN ??= "placeholder-token";
 process.env.SANITY_API_VERSION ??= "2021-10-21";
 process.env.EMAIL_PROVIDER ??= "noop";
 
 const XA_IMAGES_BASE_URL = process.env.NEXT_PUBLIC_XA_IMAGES_BASE_URL ?? "";
+const XA_STEALTH_MODE =
+  process.env.NEXT_PUBLIC_STEALTH_MODE ??
+  process.env.XA_STEALTH_MODE ??
+  process.env.STEALTH_MODE ??
+  "";
+const XA_STEALTH_BRAND_NAME =
+  process.env.NEXT_PUBLIC_STEALTH_BRAND_NAME ?? "Private preview";
+const CONTRACT_ROUTE_ROOT_SEGMENTS = new Set(["catalog", "catalog-public", "drafts", "deploy", "upload"]);
 const XA_IMAGES_HOSTNAME = (() => {
   try {
     return new URL(XA_IMAGES_BASE_URL).hostname;
@@ -43,11 +24,62 @@ const XA_IMAGES_HOSTNAME = (() => {
   }
 })();
 
+function ensureTrailingSlash(value) {
+  return value.endsWith("/") ? value : `${value}/`;
+}
+
+function resolveContractRoot(baseUrl) {
+  const base = new URL(ensureTrailingSlash(baseUrl));
+  const segments = base.pathname.split("/").filter(Boolean);
+  const routeRootIndex = segments.findIndex((segment) => CONTRACT_ROUTE_ROOT_SEGMENTS.has(segment));
+  const rootSegments = routeRootIndex < 0 ? segments : segments.slice(0, routeRootIndex);
+  base.pathname = rootSegments.length > 0 ? `/${rootSegments.join("/")}/` : "/";
+  base.search = "";
+  base.hash = "";
+  return base;
+}
+
+function resolveCatalogPublicUrl() {
+  const explicit = (process.env.NEXT_PUBLIC_XA_CATALOG_PUBLIC_URL ?? "").trim();
+  if (explicit) return explicit;
+
+  const readUrl = (process.env.XA_CATALOG_CONTRACT_READ_URL ?? "").trim();
+  if (readUrl) {
+    try {
+      const parsed = new URL(readUrl);
+      parsed.pathname = parsed.pathname.replace(/\/catalog\//u, "/catalog-public/");
+      parsed.search = "";
+      parsed.hash = "";
+      return parsed.toString();
+    } catch {
+      return "";
+    }
+  }
+
+  const baseUrl = (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
+  if (!baseUrl) return "";
+  try {
+    const root = resolveContractRoot(baseUrl);
+    return new URL("catalog-public/xa-b", root).toString();
+  } catch {
+    return "";
+  }
+}
+
+const XA_CATALOG_PUBLIC_URL = resolveCatalogPublicUrl();
+
 export default {
   ...sharedConfig,
   poweredByHeader: false,
+  env: {
+    ...(sharedConfig.env ?? {}),
+    NEXT_PUBLIC_STEALTH_MODE: XA_STEALTH_MODE,
+    NEXT_PUBLIC_STEALTH_BRAND_NAME: XA_STEALTH_BRAND_NAME,
+    NEXT_PUBLIC_XA_CATALOG_PUBLIC_URL: XA_CATALOG_PUBLIC_URL,
+  },
   images: {
     ...sharedConfig.images,
+    unoptimized: true,
     remotePatterns: [
       ...(sharedConfig.images?.remotePatterns ?? []),
       { protocol: "https", hostname: "imagedelivery.net", pathname: "/**" },
@@ -58,6 +90,5 @@ export default {
         : []),
     ],
   },
-  // XA is a dynamic storefront; avoid forcing static export when OUTPUT_EXPORT is set.
-  output: sharedConfig.output === "export" ? undefined : sharedConfig.output,
+  output: "export",
 };

@@ -22,14 +22,14 @@ import {
   type ProcessEntry,
   type Taxonomy,
   validateAssignment,
-} from "../validate-process-assignment";
+} from "../diagnostics/validate-process-assignment";
 
 // ---------------------------------------------------------------------------
 // Fixtures
 // ---------------------------------------------------------------------------
 
 const TAXONOMY_REL_PATH =
-  "docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml";
+  "docs/business-os/startup-loop/specifications/workstream-workflow-taxonomy-v2.yaml";
 
 function makeTaxonomy(overrides: Partial<Taxonomy> = {}): Taxonomy {
   return {
@@ -93,7 +93,7 @@ function makeFullAssignment(): ProcessAssignment {
   return {
     schema_version: "2.0",
     taxonomy_ref: TAXONOMY_REL_PATH,
-    process_id_source: "docs/business-os/startup-loop/process-registry-v1.md",
+    process_id_source: "docs/business-os/startup-loop/_deprecated/process-registry-v1.md",
     processes,
   };
 }
@@ -511,11 +511,11 @@ describe("Live fixture: process-assignment-v2.yaml", () => {
     const repoRoot = path.resolve(__dirname, "../../../..");
     const assignmentPath = path.join(
       repoRoot,
-      "docs/business-os/startup-loop/process-assignment-v2.yaml"
+      "docs/business-os/startup-loop/specifications/process-assignment-v2.yaml"
     );
     const taxonomyPath = path.join(
       repoRoot,
-      "docs/business-os/startup-loop/workstream-workflow-taxonomy-v2.yaml"
+      "docs/business-os/startup-loop/specifications/workstream-workflow-taxonomy-v2.yaml"
     );
     const taxonomyRelPath = path.relative(repoRoot, taxonomyPath).replace(/\\/g, "/");
 

@@ -1,21 +1,20 @@
 // src/components/checkins/KeycardButton/KeycardDepositButton.tsx
 import {
   memo,
-  type MouseEvent,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
 } from "react";
 import ReactDOM from "react-dom";
 import type { LucideIcon } from "lucide-react";
-import { Ban, Banknote, FileText } from "lucide-react";
+import { Ban, Banknote, FileText, Key } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
 import { useLoanData } from "../../../context/LoanDataContext";
+import { useDropdownMenu } from "../../../hooks/client/keycardButton/useDropdownMenu";
 import useActivitiesMutations from "../../../hooks/mutations/useActivitiesMutations";
 import useAllTransactions from "../../../hooks/mutations/useAllTransactionsMutations";
 import { useKeycardAssignmentsMutations } from "../../../hooks/mutations/useKeycardAssignmentsMutations";
@@ -58,7 +57,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
   const { addToAllTransactions } = useAllTransactions();
   const { assignGuestKeycard } = useKeycardAssignmentsMutations();
 
-  /* ──────────────── keycard / “No_card” status ─────────────────────────── */
+  /* ──────────────── keycard / "No_card" status ─────────────────────────── */
   const { occupantLoans } = useOccupantLoans(bookingRef, occupantId);
 
   let hasKeycard = false;
@@ -78,49 +77,23 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     });
   }
 
+  /* ──────────────── disabled logic ─────────────────────────────────────── */
+  const disabledDueToKeycard = hasKeycard || hasNoCard;
+  const disabledDueToOther = !bookingRef || !occupantId || buttonDisabled;
+  const isDisabled = disabledDueToKeycard || disabledDueToOther;
+
   /* ──────────────── menu / dropdown state ──────────────────────────────── */
-  const [menuOpen, setMenuOpen] = useState<boolean>(false);
-  const [menuVisible, setMenuVisible] = useState<boolean>(false);
-  const [menuPosition, setMenuPosition] = useState<{
-    top: number;
-    left: number;
-  } | null>(null);
+  const {
+    menuOpen,
+    menuVisible,
+    menuPosition,
+    buttonRef,
+    handleMenuToggle,
+    closeMenu,
+    setTrackedTimeout,
+  } = useDropdownMenu({ isDisabled });
 
-  const buttonRef = useRef<HTMLButtonElement>(null);
-
-  /* Reference for the confirm ("Keycard") button so it can be resized */
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
-  const [confirmButtonWidth, setConfirmButtonWidth] = useState<number | null>(
-    null
-  );
-
-  /* Track active timers so they can be cleared on unmount */
-  const timeoutsRef = useRef<ReturnType<typeof setTimeout>[]>([]);
-  const setTrackedTimeout = useCallback(
-    (fn: () => void, delay: number): ReturnType<typeof setTimeout> => {
-      const id = setTimeout(() => {
-        fn();
-        timeoutsRef.current = timeoutsRef.current.filter((t) => t !== id);
-      }, delay);
-      timeoutsRef.current.push(id);
-      return id;
-    },
-    [timeoutsRef]
-  );
-
-  useEffect(() => {
-    return () => {
-      timeoutsRef.current.forEach((t) => clearTimeout(t));
-    };
-  }, []);
-
-  /* Ensure the confirm button is exactly 15 px narrower than its natural width */
-  useLayoutEffect(() => {
-    if (confirmButtonRef.current && confirmButtonWidth === null) {
-      const naturalWidth = confirmButtonRef.current.offsetWidth;
-      setConfirmButtonWidth(naturalWidth - 15);
-    }
-  }, [confirmButtonWidth]);
 
   /* ──────────────── payment- & doc-type state ───────────────────────────── */
   const [payType, setPayType] = useState<KeycardPayType>(KeycardPayType.CASH);
@@ -172,43 +145,25 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     }
   }, [payType]);
 
-  /* Issue only one keycard unless “No_card” was chosen. */
+  /* Issue only one keycard unless "No_card" was chosen. */
   const cardCount = 1;
-
-  /* ──────────────── dropdown fade-in / out ─────────────────────────────── */
-  useEffect(() => {
-    let timer: ReturnType<typeof setTimeout> | undefined;
-    if (menuOpen) setMenuVisible(true);
-    else timer = setTrackedTimeout(() => setMenuVisible(false), 200);
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-        timeoutsRef.current = timeoutsRef.current.filter((t) => t !== timer);
-      }
-    };
-  }, [menuOpen, setTrackedTimeout]);
-
-  /* ──────────────── disabled logic ─────────────────────────────────────── */
-  const disabledDueToKeycard = hasKeycard || hasNoCard;
-  const disabledDueToOther = !bookingRef || !occupantId || buttonDisabled;
-  const isDisabled = disabledDueToKeycard || disabledDueToOther;
 
   /* ──────────────── styling helpers ────────────────────────────────────── */
   const baseButtonClass =
-    "min-h-55px px-4 flex items-center justify-center transition-colors focus:outline-none";
+    "h-9 px-2.5 flex items-center justify-center transition-colors focus:outline-none text-xs font-medium";
 
   const activeClass =
-    "bg-primary-main hover:bg-primary-dark text-primary-fg";
+    "bg-primary-main/100 hover:opacity-90 text-primary-fg/100";
   const successDisabledClass =
-    "bg-success-light text-primary-fg cursor-not-allowed opacity-70";
+    "bg-success-main/100 text-foreground cursor-not-allowed opacity-70";
   const greyDisabledClass =
-    "bg-surface-3 text-primary-fg cursor-not-allowed opacity-70";
+    "bg-surface-3 text-foreground cursor-not-allowed opacity-50";
 
   const leftButtonClass = disabledDueToKeycard
-    ? `${successDisabledClass} border-r border-border/20`
+    ? successDisabledClass
     : isDisabled
     ? greyDisabledClass
-    : `${activeClass} border-r border-border/20`;
+    : activeClass;
 
   const rightButtonClass = disabledDueToKeycard
     ? successDisabledClass
@@ -217,112 +172,92 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     : activeClass;
 
   /* ──────────────── handlers ───────────────────────────────────────────── */
-  const handleMenuToggle = useCallback(
-    (event: MouseEvent<HTMLButtonElement>): void => {
-      event.stopPropagation();
-      if (isDisabled) {
-        showToast("Keycard deposit action not available.", "warning");
-        return;
-      }
-      if (!menuOpen && buttonRef.current) {
-        const rect = buttonRef.current.getBoundingClientRect();
-        setMenuPosition({
-          top: rect.bottom + window.scrollY,
-          left: rect.left + window.scrollX,
-        });
-      } else {
-        setTrackedTimeout(() => setMenuPosition(null), 200);
-      }
-      setMenuOpen((prev) => !prev);
-    },
-    [isDisabled, menuOpen, setTrackedTimeout]
-  );
 
   /**
-   * Confirm keycard issuance / “No_card”.
+   * Confirm keycard issuance / "No_card".
    * Creates a **Loan** transaction, records financials,
    * and logs activity code 10.
    */
-  const handleConfirm = useCallback((): Promise<void> => {
+  const handleConfirm = useCallback(async (): Promise<void> => {
     if (isDisabled) return Promise.resolve();
 
     setButtonDisabled(true);
-    return new Promise<void>((resolve) => {
-      setTrackedTimeout(resolve, 800);
-    })
-      .then(() => {
-        const transactionId = generateTransactionId();
-        const createdAt = getItalyIsoString();
-        const depositAmount = payType === KeycardPayType.CASH ? 10 : 0;
-        const item = payType === KeycardPayType.NO_CARD ? "No_card" : "Keycard";
+    try {
+      await new Promise<void>((resolve) => {
+        setTrackedTimeout(resolve, 800);
+      });
 
-        const depositType: LoanMethod = selectionToLoanMethod(payType, docType);
+      const transactionId = generateTransactionId();
+      const createdAt = getItalyIsoString();
+      const depositAmount = payType === KeycardPayType.CASH ? 10 : 0;
+      const item = payType === KeycardPayType.NO_CARD ? "No_card" : "Keycard";
 
-        console.log("[KeycardDepositButton] issue keycard", {
-          bookingRef,
+      const depositType: LoanMethod = selectionToLoanMethod(payType, docType);
+
+      console.log("[KeycardDepositButton] issue keycard", {
+        bookingRef,
+        occupantId,
+        payType,
+        docType,
+        depositType,
+        depositAmount,
+        item,
+      });
+
+      await saveLoan(bookingRef, occupantId, transactionId, {
+        count: cardCount,
+        createdAt,
+        depositType,
+        deposit: depositAmount,
+        item,
+        type: "Loan",
+      });
+
+      if (item === "Keycard") {
+        await addToAllTransactions(transactionId, {
           occupantId,
-          payType,
-          docType,
-          depositType,
-          depositAmount,
-          item,
-        });
-
-        saveLoan(bookingRef, occupantId, transactionId, {
+          bookingRef,
+          amount: depositAmount,
           count: cardCount,
-          createdAt,
-          depositType,
-          deposit: depositAmount,
-          item,
+          description: "Keycard loan",
+          method: depositType,
           type: "Loan",
+          isKeycard: true,
+          itemCategory: "keycard",
         });
 
-        if (item === "Keycard") {
-          addToAllTransactions(transactionId, {
+        if (keycardNumber.trim()) {
+          const roomNumber = booking.roomAllocated ?? booking.roomBooked ?? "";
+          await assignGuestKeycard({
+            keycardNumber: keycardNumber.trim(),
             occupantId,
             bookingRef,
-            amount: depositAmount,
-            count: cardCount,
-            description: "Keycard loan",
-            method: depositType,
-            type: "Loan",
-            isKeycard: true,
-            itemCategory: "keycard",
+            roomNumber,
+            depositMethod: depositType,
+            depositAmount,
+            loanTxnId: transactionId,
           });
-
-          if (keycardNumber.trim()) {
-            const roomNumber =
-              booking.roomAllocated ?? booking.roomBooked ?? "";
-            assignGuestKeycard({
-              keycardNumber: keycardNumber.trim(),
-              occupantId,
-              bookingRef,
-              roomNumber,
-              depositMethod: depositType,
-              depositAmount,
-              loanTxnId: transactionId,
-            });
-          }
         }
+      }
 
-        addActivity(occupantId, 10);
+      const activityResult = await addActivity(occupantId, 10);
+      if (!activityResult.success) {
+        throw new Error(activityResult.error ?? "Failed to log keycard activity.");
+      }
 
-        showToast(
-          payType === KeycardPayType.NO_CARD
-            ? "Guest declined a keycard (No_card logged)."
-            : `Issued 1 keycard (#${keycardNumber || "?"}) with deposit €${depositAmount}.`,
-          payType === KeycardPayType.NO_CARD ? "info" : "success"
-        );
-        setKeycardNumber("");
-      })
-      .catch(() => {
-        showToast("Error issuing keycard.", "error");
-      })
-      .finally(() => {
-        setButtonDisabled(false);
-        setMenuOpen(false);
-        setTrackedTimeout(() => setMenuPosition(null), 200);
-      });
+      showToast(
+        payType === KeycardPayType.NO_CARD
+          ? "Guest declined a keycard (No_card logged)."
+          : `Issued 1 keycard (#${keycardNumber || "?"}) with deposit €${depositAmount}.`,
+        payType === KeycardPayType.NO_CARD ? "info" : "success"
+      );
+      setKeycardNumber("");
+    } catch {
+      showToast("Error issuing keycard.", "error");
+    } finally {
+      setButtonDisabled(false);
+      closeMenu();
+    }
   }, [
     isDisabled,
     booking,
@@ -337,48 +272,51 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     assignGuestKeycard,
     addActivity,
     setTrackedTimeout,
+    closeMenu,
   ]);
 
   /* ──────────────── render ─────────────────────────────────────────────── */
   return (
-    <div className="relative flex items-center">
-      {/* Deposit-type selector */}
-      <Button
-        ref={buttonRef}
-        onClick={handleMenuToggle}
-        disabled={isDisabled}
-        className={`${baseButtonClass} rounded-l ${leftButtonClass}`}
-        title={
-          disabledDueToKeycard
-            ? "Guest already has a keycard."
-            : isDisabled
-            ? "Keycard deposit action not available."
-            : "Select deposit type"
-        }
-      >
-        <depositIcon.icon
-          size={20}
-          className={depositIcon.className}
-        />
-      </Button>
+    <div className="relative">
+      <div className="flex items-stretch rounded-md overflow-hidden">
+        {/* Deposit-type selector */}
+        <Button
+          compatibilityMode="passthrough"
+          ref={buttonRef}
+          onClick={handleMenuToggle}
+          disabled={isDisabled}
+          className={`${baseButtonClass} rounded-none ${leftButtonClass}`}
+          title={
+            disabledDueToKeycard
+              ? "Guest already has a keycard."
+              : isDisabled
+              ? "Keycard deposit action not available."
+              : "Select deposit type"
+          }
+        >
+          <depositIcon.icon size={16} />
+        </Button>
 
-      {/* Confirm action */}
-      <Button
-        ref={confirmButtonRef}
-        onClick={handleConfirm}
-        disabled={isDisabled}
-        style={confirmButtonWidth ? { width: confirmButtonWidth } : undefined}
-        className={`${baseButtonClass} rounded-r ${rightButtonClass}`}
-        title={
-          disabledDueToKeycard
-            ? "Guest already has a keycard."
-            : isDisabled
-            ? "Keycard deposit action not available."
-            : "Confirm keycard deposit"
-        }
-      >
-        <span className="ms-2 hidden md:inline">Keycard</span>
-      </Button>
+        <div className="w-px self-stretch bg-border-1" />
+
+        {/* Confirm action */}
+        <Button
+          compatibilityMode="passthrough"
+          ref={confirmButtonRef}
+          onClick={handleConfirm}
+          disabled={isDisabled}
+          className={`${baseButtonClass} rounded-none ${rightButtonClass}`}
+          title={
+            disabledDueToKeycard
+              ? "Guest already has a keycard."
+              : isDisabled
+              ? "Keycard deposit action not available."
+              : "Confirm keycard deposit"
+          }
+        >
+          <Key size={14} />
+        </Button>
+      </div>
 
       {/* Dropdown menu (portal) */}
       {menuVisible &&
@@ -395,10 +333,7 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
             setDocType={setDocType}
             setKeycardNumber={setKeycardNumber}
             handleConfirm={handleConfirm}
-            closeMenu={() => {
-              setMenuOpen(false);
-              setTrackedTimeout(() => setMenuPosition(null), 200);
-            }}
+            closeMenu={closeMenu}
           />,
           document.body
         )}

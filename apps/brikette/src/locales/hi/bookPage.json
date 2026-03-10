@@ -41,5 +41,103 @@
     ],
     "footer": "अंतिम उपलब्धता और भुगतान हमारे आधिकारिक बुकिंग इंजन पर पूर्ण होते हैं।"
   },
-  "backToRooms": "कमरों पर वापस जाएँ"
+  "backToRooms": "कमरों पर वापस जाएँ",
+  "hostel": {
+    "directSavings": {
+      "eyebrow": "बुक डायरेक्ट और सेव",
+      "headline": "Booking.com से 25% तक कम"
+    }
+  },
+  "date": {
+    "stayHelper": "2-8 रात",
+    "clearDates": "स्पष्ट तिथि",
+    "nightsSummary": "{{from}}__________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________"
+  },
+  "noscript": {
+    "jsDisabledAssistance": "जावास्क्रिप्ट अक्षम होने पर छात्रावास बुकिंग को सहायक सहायता से नियंत्रित किया जाता है।",
+    "emailAssistedBooking": "सहायता प्राप्त बुकिंग के लिए हमें ईमेल करें",
+    "octorateDirectBooking": "Octorate पर सीधे बुक करें"
+  },
+  "bookingConstraints": {
+    "notice": "हॉस्टल बुकिंग केवल वयस्कों के लिए 2 से 8 रातों के बीच ठहरने की सुविधा प्रदान करती है, जिसमें प्रति बुकिंग अधिकतम 8 वयस्क होते हैं। बड़े समूहों या लंबे समय तक ठहरने के लिए, अपने अनुरोध को कई बुकिंग में विभाजित करें या",
+    "assistedLink": "सहायता प्राप्त बुकिंग के लिए हमसे संपर्क करें"
+  },
+  "expiredQuote": {
+    "message": "यह उद्धरण लिंक समाप्त हो गया है. जारी रखने के लिए नई तारीखों के साथ अपने उद्धरण का पुनर्निर्माण करें।"
+  },
+  "recovery": {
+    "title": "अधिक समय चाहिए? यह उद्धरण स्वयं को ईमेल करें और बाद में फिर से शुरू करें।",
+    "privacyNotice": "हम केवल बुकिंग संदर्भ और सहमति मेटाडेटा रखते हैं। बायोडाटा लिंक 7 दिनों के बाद समाप्त हो जाते हैं।",
+    "emailLabel": "आपका ईमेल",
+    "emailPlaceholder": "you@example.com",
+    "consent": "मैं इस उद्धरण को ईमेल के माध्यम से प्राप्त करने के लिए सहमति देता हूं और समझता हूं कि यह 7 दिनों के बाद समाप्त हो जाएगा।",
+    "submitted": "ईमेल ड्राफ्ट खोला गया. आप इस उद्धरण को सहेजने के लिए इसे भेज सकते हैं.",
+    "submitCta": "यह उद्धरण मुझे ईमेल करें",
+    "errors": {
+      "invalidEmail": "एक मान्य ईमेल पता दर्ज करें।",
+      "consentRequired": "कोटेशन ईमेल भेजने के लिए सहमति आवश्यक है.",
+      "sendFailed": "कुछ गलत हो गया। कृपया फिर से प्रयास करें या सीधे हमसे संपर्क करें।"
+    },
+    "mailto": {
+      "subject": "उद्धरण पुनर्प्राप्ति अनुरोध",
+      "bodyIntro": "कृपया मुझे यह उद्धरण और एक अनुवर्ती अनुस्मारक भेजें।",
+      "labels": {
+        "guestEmail": "अतिथि ईमेल",
+        "checkIn": "चेक इन",
+        "checkOut": "चेक आउट",
+        "guests": "अतिथियों",
+        "sourceRoute": "स्रोत मार्ग",
+        "room": "कमरा",
+        "ratePlan": "दर योजना",
+        "resumeLink": "लिंक फिर से शुरू करें"
+      }
+    },
+    "sending": "भेजना"
+  },
+  "subheading": "अपनी तारीख चुनें, फिर एक कमरा चुनें।",
+  "dealBanner": {
+    "applied": "डील लागू: {{code}}_"
+  },
+  "apartment": {
+    "heading": "निजी अपार्टमेंट बुक करें",
+    "subheading": "अपनी तारीख और मेहमानों की संख्या का चयन करें, फिर एक दर चुनें।",
+    "guestLabel": "मेहमानों की संख्या",
+    "guests": {
+      "2": "2 अतिथि",
+      "3": "3 अतिथि"
+    },
+    "flex": {
+      "title": "लचीली दर",
+      "saving": "बचाओ 21% बनाम ओटीए",
+      "bullets": [
+        "Free cancellation up to 3 days before arrival.",
+        "Changes subject to availability."
+      ]
+    },
+    "nr": {
+      "title": "गैर वापसी योग्य",
+      "saving": "26% बनाम ओटीए सहेजें",
+      "bullets": [
+        "Best direct price — paid in full upfront.",
+        "No refunds or changes after booking."
+      ]
+    },
+    "nightsSummary_one": "To make the next step.",
+    "nightsSummary_other": "The night of a day.",
+    "rateLabel": "अपनी दर चुनें",
+    "ratePrompt": "जारी रखने के लिए ऊपर की दर का चयन करें",
+    "cta": {
+      "unselected": "जारी रखने की दर का चयन करें →",
+      "flex": "लचीले - चेकआउट जारी",
+      "nr": "गैर वापसी योग्य - चेकआउट जारी रखें"
+    },
+    "policies": {
+      "title": "नीतियां और शुल्क",
+      "items": [
+        "City/tourist tax: €2.50 per guest per night (added at checkout).",
+        "Cancellation admin fee: typically 15% of booking price.",
+        "Final availability and payment are completed on our official booking engine."
+      ]
+    }
+  }
 }

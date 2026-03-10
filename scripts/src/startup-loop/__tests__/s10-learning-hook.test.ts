@@ -1,26 +1,26 @@
 /**
  * Tests for s10-learning-hook.ts
- * Task: LC-06 from docs/plans/archive/learning-compiler-plan.md
+ * Task: LC-06 from the learning-compiler plan (archived — see git history)
  */
 
 import * as fs from 'node:fs';
 
-import type { ManifestPointer, PriorIndex } from '../baseline-priors';
-import type { CompilerResult } from '../learning-compiler';
-import type { LearningEntry } from '../learning-ledger';
-import type { PriorDelta } from '../prior-update-writer';
+import type { ManifestPointer, PriorIndex } from '../baselines/baseline-priors';
+import type { CompilerResult } from '../baselines/learning-compiler';
+import type { LearningEntry } from '../baselines/learning-ledger';
+import type { PriorDelta } from '../baselines/prior-update-writer';
 import {
   runLearningCompilation,
   type S10LearningInput,
   type S10LearningResult,
-} from '../s10-learning-hook';
+} from '../s10/s10-learning-hook';
 
 // Mock all imported modules
 jest.mock('node:fs');
-jest.mock('../baseline-priors');
-jest.mock('../learning-compiler');
-jest.mock('../learning-ledger');
-jest.mock('../prior-update-writer');
+jest.mock('../baselines/baseline-priors');
+jest.mock('../baselines/learning-compiler');
+jest.mock('../baselines/learning-ledger');
+jest.mock('../baselines/prior-update-writer');
 
 const mockFs = fs as jest.Mocked<typeof fs>;
 
@@ -39,7 +39,7 @@ describe('s10-learning-hook', () => {
   describe('VC-LC-06-01: Happy path', () => {
     it('should successfully compile, append, write artifacts, and update manifest', async () => {
       // Import mocked modules
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry } = await import('../learning-ledger');
       const { applyPriorDeltas, computeSnapshotPath } = await import('../prior-update-writer');
@@ -217,7 +217,7 @@ describe('s10-learning-hook', () => {
 
   describe('VC-LC-06-03: Supersede flow', () => {
     it('should invert superseded deltas before applying new deltas', async () => {
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry, queryLearningEntries } = await import('../learning-ledger');
       const { applyPriorDeltas, computeSnapshotPath } = await import('../prior-update-writer');
@@ -353,7 +353,7 @@ describe('s10-learning-hook', () => {
 
   describe('VC-LC-06-04: Rerun idempotency', () => {
     it('should not create new snapshots when ledger returns appended: false', async () => {
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry } = await import('../learning-ledger');
       const { applyPriorDeltas } = await import('../prior-update-writer');
@@ -424,7 +424,7 @@ describe('s10-learning-hook', () => {
 
   describe('Additional validation tests', () => {
     it('should write prior-delta artifact as valid JSON', async () => {
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry } = await import('../learning-ledger');
       const { applyPriorDeltas, computeSnapshotPath } = await import('../prior-update-writer');
@@ -500,7 +500,7 @@ describe('s10-learning-hook', () => {
     });
 
     it('should handle INCONCLUSIVE verdict with no snapshots written', async () => {
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry } = await import('../learning-ledger');
       const { applyPriorDeltas } = await import('../prior-update-writer');
@@ -556,7 +556,7 @@ describe('s10-learning-hook', () => {
     });
 
     it('should continue with ledger append even if snapshot write fails', async () => {
-      const { buildPriorIndex } = await import('../baseline-priors');
+      const { buildPriorIndex } = await import('../baselines/baseline-priors');
       const { compileExperimentLearning } = await import('../learning-compiler');
       const { appendLearningEntry } = await import('../learning-ledger');
       const { applyPriorDeltas, computeSnapshotPath } = await import('../prior-update-writer');

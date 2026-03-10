@@ -1,13 +1,25 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
-const getCatalogDraftBySlugMock = jest.fn();
-const deleteCatalogProductMock = jest.fn();
+const readCloudDraftSnapshotMock = jest.fn();
+const deleteProductFromCloudSnapshotMock = jest.fn();
+const writeCloudDraftSnapshotMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const parseStorefrontMock = jest.fn();
 
-jest.mock("../../../../../../lib/catalogCsv", () => ({
-  getCatalogDraftBySlug: (...args: unknown[]) => getCatalogDraftBySlugMock(...args),
-  deleteCatalogProduct: (...args: unknown[]) => deleteCatalogProductMock(...args),
+class CatalogDraftContractErrorMock extends Error {
+  code: string;
+
+  constructor(code: string) {
+    super(code);
+    this.code = code;
+  }
+}
+
+jest.mock("../../../../../../lib/catalogDraftContractClient", () => ({
+  CatalogDraftContractError: CatalogDraftContractErrorMock,
+  readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
+  deleteProductFromCloudSnapshot: (...args: unknown[]) => deleteProductFromCloudSnapshotMock(...args),
+  writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
 }));
 
 jest.mock("../../../../../../lib/catalogStorefront.ts", () => ({
@@ -18,64 +30,81 @@ jest.mock("../../../../../../lib/uploaderAuth", () => ({
   hasUploaderSession: (...args: unknown[]) => hasUploaderSessionMock(...args),
 }));
 
-describe("catalog product-by-slug route", () => {
+describe("catalog products/[slug] route", () => {
+  const params = Promise.resolve({ slug: "studio-jacket" });
+
   beforeEach(() => {
     jest.clearAllMocks();
     hasUploaderSessionMock.mockResolvedValue(true);
     parseStorefrontMock.mockReturnValue("xa-b");
-    getCatalogDraftBySlugMock.mockResolvedValue(null);
-    deleteCatalogProductMock.mockResolvedValue({ deleted: true });
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [{ id: "p1", slug: "studio-jacket", title: "Studio Jacket" }],
+      revisionsById: { p1: "rev-1" },
+      docRevision: "doc-rev-1",
+    });
+    deleteProductFromCloudSnapshotMock.mockReturnValue({
+      deleted: true,
+      products: [],
+      revisionsById: {},
+    });
+    writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "doc-rev-2" });
   });
 
-  it("returns not_found class for missing product on GET", async () => {
+  it("GET returns product from the cloud draft snapshot", async () => {
     const { GET } = await import("../route");
-    const response = await GET(new Request("http://localhost/api/catalog/products/studio-jacket"), {
-      params: Promise.resolve({ slug: "studio-jacket" }),
+    const response = await GET(new Request("http://localhost/api/catalog/products/studio-jacket?storefront=xa-b"), {
+      params,
     });
 
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(200);
     expect(await response.json()).toEqual(
-      expect.objectContaining({
-        ok: false,
-        error: "not_found",
-        reason: "product_not_found",
-      }),
+      expect.objectContaining({ ok: true, product: expect.objectContaining({ slug: "studio-jacket" }) }),
+    );
+    expect(readCloudDraftSnapshotMock).toHaveBeenCalledWith("xa-b");
+  });
+
+  it("GET returns catalog contract unavailable when the snapshot contract is unconfigured", async () => {
+    readCloudDraftSnapshotMock.mockRejectedValueOnce(new CatalogDraftContractErrorMock("unconfigured"));
+
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/products/studio-jacket?storefront=xa-b"), {
+      params,
+    });
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({ ok: false, error: "service_unavailable", reason: "catalog_contract_unavailable" }),
     );
   });
 
-  it("returns not_found class for missing product on DELETE", async () => {
-    deleteCatalogProductMock.mockResolvedValueOnce({ deleted: false });
+  it("DELETE returns conflict when the hosted snapshot write reports a revision mismatch", async () => {
+    writeCloudDraftSnapshotMock.mockRejectedValueOnce(new CatalogDraftContractErrorMock("conflict"));
 
     const { DELETE } = await import("../route");
-    const response = await DELETE(new Request("http://localhost/api/catalog/products/studio-jacket"), {
-      params: Promise.resolve({ slug: "studio-jacket" }),
-    });
+    const response = await DELETE(
+      new Request("http://localhost/api/catalog/products/studio-jacket?storefront=xa-b", { method: "DELETE" }),
+      { params },
+    );
 
-    expect(response.status).toBe(404);
+    expect(response.status).toBe(409);
     expect(await response.json()).toEqual(
-      expect.objectContaining({
-        ok: false,
-        error: "not_found",
-        reason: "product_not_found",
-      }),
+      expect.objectContaining({ ok: false, error: "conflict", reason: "revision_conflict" }),
     );
   });
 
-  it("returns internal_error for unknown delete failures without leaking internals", async () => {
-    deleteCatalogProductMock.mockRejectedValueOnce(
-      new Error("EACCES /Users/petercowling/base-shop/apps/xa-uploader/data/products.csv"),
+  it("DELETE writes the updated hosted snapshot when a product is removed", async () => {
+    const { DELETE } = await import("../route");
+    const response = await DELETE(
+      new Request("http://localhost/api/catalog/products/studio-jacket?storefront=xa-b", { method: "DELETE" }),
+      { params },
     );
 
-    const { DELETE } = await import("../route");
-    const response = await DELETE(new Request("http://localhost/api/catalog/products/studio-jacket"), {
-      params: Promise.resolve({ slug: "studio-jacket" }),
-    });
-
-    expect(response.status).toBe(500);
-    const payload = (await response.json()) as { error?: string; reason?: string };
-    expect(payload.error).toBe("internal_error");
-    expect(payload.reason).toBe("products_delete_failed");
-    expect(JSON.stringify(payload)).not.toContain("EACCES");
-    expect(JSON.stringify(payload)).not.toContain("/Users/petercowling");
+    expect(response.status).toBe(200);
+    expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        storefront: "xa-b",
+        ifMatchDocRevision: "doc-rev-1",
+      }),
+    );
   });
 });

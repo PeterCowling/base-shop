@@ -3115,9 +3115,9 @@
       "focusKeyword": "best time to visit Positano"
     },
     {
-      "key": "parking",
+      "key": "arriveByCar",
       "slug": "arriving-by-car",
-      "contentKey": "parking",
+      "contentKey": "arriveByCar",
       "status": "draft",
       "areas": [
         "howToGetHere"
@@ -3136,14 +3136,14 @@
         {
           "type": "genericContent",
           "options": {
-            "contentKey": "parking",
+            "contentKey": "arriveByCar",
             "showToc": true
           }
         },
         {
           "type": "faq",
           "options": {
-            "fallbackKey": "parking",
+            "fallbackKey": "arriveByCar",
             "alwaysProvideFallback": true
           }
         },
@@ -3897,7 +3897,7 @@
         "BreadcrumbList"
       ],
       "relatedGuides": [
-        "parking",
+        "arriveByCar",
         "publicTransportAmalfi",
         "transportBudget"
       ],
@@ -3919,7 +3919,7 @@
           "type": "relatedGuides",
           "options": {
             "guides": [
-              "parking",
+              "arriveByCar",
               "publicTransportAmalfi",
               "transportBudget"
             ]

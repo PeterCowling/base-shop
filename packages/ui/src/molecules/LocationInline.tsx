@@ -69,7 +69,7 @@ function LocationInline({ lang }: { lang?: string }): JSX.Element {
       <button
         type="button"
         onClick={openMap}
-        className="inline-flex min-h-10 min-w-10 items-center justify-center gap-1 rounded-full bg-brand-surface px-3 py-1 text-xs font-medium text-brand-primary transition-colors hover:bg-brand-primary/10 focus-visible:ring-1 focus-visible:ring-brand-primary/30"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-full bg-brand-surface px-3 py-1 text-xs font-medium text-brand-primary transition-colors hover:bg-brand-primary/10 focus-visible:ring-1 focus-visible:ring-brand-primary/30"
       >
         <MapPin className="size-3.5" aria-hidden />
         {resolveText("getDirections")}

@@ -33,11 +33,13 @@ describe("GuidedTour", () => {
   it("updates localStorage through the tour lifecycle", async () => {
     render(
       <GuidedTour>
-        <div data-tour="select-template">template</div>
-        <div data-tour="drag-component">drag</div>
-        <div data-tour="edit-properties">edit</div>
-        <div data-tour="preview">preview</div>
-        <div data-tour="publish">publish</div>
+        <div data-tour="quest-basics">basics</div>
+        <div data-tour="quest-theme">theme</div>
+        <div data-tour="quest-payments">payments</div>
+        <div data-tour="quest-shipping">shipping</div>
+        <div data-tour="quest-product">product</div>
+        <div data-tour="quest-checkout">checkout</div>
+        <div data-tour="quest-launch">launch</div>
         <ReplayButton />
       </GuidedTour>
     );

@@ -52,5 +52,115 @@
         "alt": "Positanos gater"
       }
     ]
+  },
+  "directSavings": {
+    "eyebrow": "Bestill direkte og spar",
+    "heading": "Opptil 26 % mindre enn Booking.com",
+    "nr": {
+      "label": "Ikke-refunderbar",
+      "saving": "Spar 26%",
+      "detail": "Beste direkte pris"
+    },
+    "flex": {
+      "label": "Fleksibel pris",
+      "saving": "Lagre 21%",
+      "detail": "Gratis kansellering"
+    }
+  },
+  "heroTagline": "Privat leilighet · Positano, Italia",
+  "galleryCaptions": [
+    "Full private bathroom with rain-head shower and designer fittings",
+    "Bright open-plan living space with dining area, TV lounge and mezzanine staircase",
+    "Fully equipped kitchen with dishwasher, washing machine and traditional Positano tilework"
+  ],
+  "fitCheck": {
+    "heading": "Er denne leiligheten riktig for deg?",
+    "arrival": {
+      "label": "Ankomst",
+      "text": "Ingen gatetrapper fra veien til leiligheten inngang."
+    },
+    "inside": {
+      "label": "Innsiden",
+      "text": "Split-nivå interiør med indre trapper mellom stue og soverom."
+    },
+    "sleeping": {
+      "label": "Sover",
+      "text": "sovesofa nedover; dobbeltseng oppover."
+    },
+    "sound": {
+      "label": "Lyd",
+      "text": "Noen vei og terrasse atmosfære; terrasse rolige timer fra midnatt."
+    },
+    "bestFit": {
+      "label": "Beste passform",
+      "text": "Ideell for par. Hvis noen i din gruppe foretrekker å unngå trapper, er sovesofaen nede et komfortabelt alternativ. Ikke anbefalt for veldig lette sovende."
+    }
+  },
+  "hub": {
+    "streetLevelCard": {
+      "title": "Ankomst på gatenivå",
+      "subtitle": "Ingen gate trapper fra veien til inngang",
+      "cta": "Les mer"
+    },
+    "privateStayCard": {
+      "title": "Privat leilighet",
+      "subtitle": "Med valgfri terrasse, bar og frokost neste dør",
+      "cta": "Les mer"
+    }
+  },
+  "checkAvailability": "Sjekk tilgjengelighet",
+  "streetLevelArrival": {
+    "meta": {
+      "title": "Trinnfri ankomst i Positano — Ingen gatetrapp",
+      "description": "Vår leilighet tilbyr trinnfri tilgang fra veien til inngangen - sjelden i bratt Positano. Ingen trapper, ingen kamp med bagasje."
+    },
+    "heroTitle": "Stegfri ankomst",
+    "heroSubtitle": "Ingen gatetrapp fra veien til leiligheten inngang",
+    "heroBody": "I en by kjent for hundrevis av skritt, er vår leilighet annerledes. Gå rett fra veien til døren din - ingen trapper, ingen kamp med bagasje eller barnevogner.",
+    "videoPlaceholder": "Gate-til-dør video kommer snart",
+    "clarification": "Leilighetens inngang er trinnfri fra gaten. Inne i leiligheten er delt med interne trapper mellom stuen og soverommet.",
+    "whatsappCta": "WhatsApp for raske svar",
+    "checkAvailability": "Sjekk tilgjengelighet"
+  },
+  "privateStay": {
+    "meta": {
+      "title": "Privat leilighet i Positano",
+      "description": "En privat 85sqm leilighet med fullt kjøkken, profesjonelt håndtert med valgfri tilgang til terrasse, frokost og bar ved siden av."
+    },
+    "heroTitle": "Din private leilighet i Positano",
+    "heroSubtitle": "Profesjonelt håndtert med gjestfrihet-klasse støtte ved siden av",
+    "sections": {
+      "privacy": {
+        "title": "fullstendig uavhengighet",
+        "body": "En 85sqm leilighet som er helt din. Fullt kjøkken, vaskemaskin og tørketrommel, to bad og plass til å spre ut. Ingen delte plasser, ingen innsjekking skrivebord - bare din egen dør."
+      },
+      "support": {
+        "title": "Profesjonell støtte når du trenger den",
+        "body": "Håndtert av et erfarent gjestfrihet team basert rett ved siden av. Trenger restaurant anbefalinger, hjelp med retninger eller hjelp med noe? Profesjonell støtte er en kort spasertur unna."
+      },
+      "amenities": {
+        "title": "Valgfrie ekstratilbud ved siden av",
+        "body": "Hvis du vil ha dem, er en terrasse med utsikt over havet, frokost og en bar tilgjengelig ved siden av. Nyt dem på din tidsplan, eller hopp dem helt - valget er ditt."
+      }
+    },
+    "whatsappCta": "WhatsApp for raske svar",
+    "checkAvailability": "Sjekk tilgjengelighet"
+  },
+  "book": {
+    "meta": {
+      "title": "Bestill vår Positano leilighet",
+      "description": "Sjekk tilgjengelighet og bestill vår private leilighet i Positano. Stemfri ankomst, fullt kjøkken, sover 4."
+    },
+    "heroTitle": "Bestill ditt opphold",
+    "heroSubtitle": "Privat leilighet i Positano",
+    "dateLabel": "Velg datoer",
+    "checkinLabel": "Innsjekking",
+    "checkoutLabel": "Utsjekking",
+    "rateNonRefundable": "Ikke-refunderbar",
+    "rateFlexible": "Fleksibel (gratis kansellering)",
+    "checkAvailability": "Sjekk tilgjengelighet",
+    "orBookingCom": "Eller bestill på Booking.com",
+    "whatsappCta": "WhatsApp for raske svar",
+    "backLink": "← Tilbake til konferansen"
   }
 }

@@ -1,18 +1,32 @@
 import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 
-const listCatalogDraftsMock = jest.fn();
-const upsertCatalogDraftMock = jest.fn();
+const readCloudDraftSnapshotMock = jest.fn();
+const upsertProductInCloudSnapshotMock = jest.fn();
+const writeCloudDraftSnapshotMock = jest.fn();
 const hasUploaderSessionMock = jest.fn();
 const parseStorefrontMock = jest.fn();
 
-class MockCatalogCsvConflictError extends Error {
-  override name = "CatalogCsvConflictError";
+class MockCatalogDraftContractError extends Error {
+  code: string;
+  status?: number;
+
+  constructor(code: string, options?: { status?: number }) {
+    super(code);
+    this.code = code;
+    this.status = options?.status;
+  }
 }
 
-jest.mock("../../../../../lib/catalogCsv", () => ({
-  CatalogCsvConflictError: MockCatalogCsvConflictError,
-  listCatalogDrafts: (...args: unknown[]) => listCatalogDraftsMock(...args),
-  upsertCatalogDraft: (...args: unknown[]) => upsertCatalogDraftMock(...args),
+class MockCatalogDraftConflictError extends Error {
+  override name = "CatalogDraftConflictError";
+}
+
+jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  CatalogDraftConflictError: MockCatalogDraftConflictError,
+  CatalogDraftContractError: MockCatalogDraftContractError,
+  readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
+  upsertProductInCloudSnapshot: (...args: unknown[]) => upsertProductInCloudSnapshotMock(...args),
+  writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
 }));
 
 jest.mock("../../../../../lib/catalogStorefront.ts", () => ({
@@ -28,31 +42,42 @@ describe("catalog products route", () => {
     jest.clearAllMocks();
     hasUploaderSessionMock.mockResolvedValue(true);
     parseStorefrontMock.mockReturnValue("xa-b");
-    listCatalogDraftsMock.mockResolvedValue({ products: [], revisionsById: {} });
-    upsertCatalogDraftMock.mockResolvedValue({
-      product: { title: "Studio jacket", slug: "studio-jacket" },
-      revision: "rev-1",
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [],
+      revisionsById: {},
+      docRevision: "doc-rev-1",
     });
+    upsertProductInCloudSnapshotMock.mockReturnValue({
+      product: { title: "Studio jacket", slug: "studio-jacket", id: "p1" },
+      revision: "rev-2",
+      products: [{ title: "Studio jacket", slug: "studio-jacket", id: "p1" }],
+      revisionsById: { p1: "rev-2" },
+    });
+    writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "doc-rev-2" });
   });
 
-  it("returns invalid for malformed JSON payload", async () => {
-    const { POST } = await import("../route");
-    const response = await POST(
-      new Request("http://localhost/api/catalog/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: "{not-json",
+  it("GET returns contract-backed products list on success", async () => {
+    readCloudDraftSnapshotMock.mockResolvedValueOnce({
+      products: [{ id: "p1", slug: "studio-jacket" }],
+      revisionsById: { p1: "rev-1" },
+      docRevision: "doc-rev-1",
+    });
+
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/products?storefront=xa-b"));
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: true,
+        products: [{ id: "p1", slug: "studio-jacket" }],
+        revisionsById: { p1: "rev-1" },
       }),
     );
-
-    expect(response.status).toBe(400);
-    expect(await response.json()).toEqual(
-      expect.objectContaining({ ok: false, error: "invalid", reason: "invalid_json" }),
-    );
-    expect(upsertCatalogDraftMock).not.toHaveBeenCalled();
+    expect(readCloudDraftSnapshotMock).toHaveBeenCalledWith("xa-b");
   });
 
-  it("returns missing_product when product payload is absent", async () => {
+  it("POST returns missing_product when product payload is absent", async () => {
     const { POST } = await import("../route");
     const response = await POST(
       new Request("http://localhost/api/catalog/products", {
@@ -70,20 +95,22 @@ describe("catalog products route", () => {
         reason: "missing_product_payload",
       }),
     );
-    expect(upsertCatalogDraftMock).not.toHaveBeenCalled();
   });
 
-  it("returns conflict code for CSV revision conflicts", async () => {
-    upsertCatalogDraftMock.mockRejectedValueOnce(
-      new MockCatalogCsvConflictError("conflict"),
-    );
+  it("POST returns conflict when cloud snapshot upsert detects revision mismatch", async () => {
+    upsertProductInCloudSnapshotMock.mockImplementationOnce(() => {
+      throw new MockCatalogDraftConflictError("revision_conflict");
+    });
 
     const { POST } = await import("../route");
     const response = await POST(
       new Request("http://localhost/api/catalog/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product: { title: "x", slug: "x" }, ifMatch: "rev-old" }),
+        body: JSON.stringify({
+          product: { title: "Studio jacket", slug: "studio-jacket", id: "p1" },
+          ifMatch: "rev-old",
+        }),
       }),
     );
 
@@ -93,45 +120,51 @@ describe("catalog products route", () => {
     );
   });
 
-  it("returns invalid code for validation-shape failures", async () => {
-    upsertCatalogDraftMock.mockRejectedValueOnce({ issues: [{ path: ["title"], message: "Title is required" }] });
+  it("POST returns catalog contract unavailable when draft contract is unconfigured", async () => {
+    readCloudDraftSnapshotMock.mockRejectedValueOnce(new MockCatalogDraftContractError("unconfigured"));
 
     const { POST } = await import("../route");
     const response = await POST(
       new Request("http://localhost/api/catalog/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product: { title: "" } }),
+        body: JSON.stringify({ product: { title: "Studio jacket", slug: "studio-jacket" } }),
       }),
     );
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(503);
     expect(await response.json()).toEqual(
       expect.objectContaining({
         ok: false,
-        error: "invalid",
-        reason: "catalog_validation_failed",
+        error: "service_unavailable",
+        reason: "catalog_contract_unavailable",
       }),
     );
   });
 
-  it("returns internal_error for unknown server failures without exposing raw message", async () => {
-    upsertCatalogDraftMock.mockRejectedValueOnce(new Error("EACCES /Users/petercowling/base-shop"));
-
+  it("POST passes both product revision and doc revision through the hosted write path", async () => {
     const { POST } = await import("../route");
     const response = await POST(
       new Request("http://localhost/api/catalog/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product: { title: "x", slug: "x" } }),
+        body: JSON.stringify({
+          product: { title: "Edited title", slug: "edited-slug", id: "p1" },
+          ifMatch: "rev-current",
+        }),
       }),
     );
 
-    expect(response.status).toBe(500);
-    const payload = (await response.json()) as { error?: string; reason?: string };
-    expect(payload.error).toBe("internal_error");
-    expect(payload.reason).toBe("products_upsert_failed");
-    expect(JSON.stringify(payload)).not.toContain("EACCES");
-    expect(JSON.stringify(payload)).not.toContain("/Users/petercowling");
+    expect(response.status).toBe(200);
+    expect(upsertProductInCloudSnapshotMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ifMatch: "rev-current",
+      }),
+    );
+    expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        ifMatchDocRevision: "doc-rev-1",
+      }),
+    );
   });
 });

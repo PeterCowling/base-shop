@@ -15,6 +15,20 @@ function restoreEnv() {
 
 async function loadDemoData(env: { base?: string; variant?: string }) {
   jest.resetModules();
+  jest.unmock("../../data/catalog.runtime.json");
+  if (env.base === undefined) delete process.env[BASE_KEY];
+  else process.env[BASE_KEY] = env.base;
+  if (env.variant === undefined) delete process.env[VARIANT_KEY];
+  else process.env[VARIANT_KEY] = env.variant;
+  return await import("../demoData");
+}
+
+async function loadDemoDataWithCatalogMock(
+  env: { base?: string; variant?: string },
+  catalogMock: unknown,
+) {
+  jest.resetModules();
+  jest.doMock("../../data/catalog.runtime.json", () => catalogMock);
   if (env.base === undefined) delete process.env[BASE_KEY];
   else process.env[BASE_KEY] = env.base;
   if (env.variant === undefined) delete process.env[VARIANT_KEY];
@@ -40,5 +54,127 @@ describe("XA catalog data", () => {
     expect(url).toBeTruthy();
     expect(url.startsWith("http")).toBe(true);
     expect(product.media[0]?.altText).toBeTruthy();
+  });
+
+  it("exposes runtime freshness metadata without contract URL leakage", async () => {
+    process.env.NEXT_PUBLIC_XA_CATALOG_MAX_AGE_HOURS = "48";
+    const { XA_CATALOG_RUNTIME_FRESHNESS, XA_CATALOG_RUNTIME_META } = await import("../catalogRuntimeMeta");
+    await loadDemoData({
+      base: "https://imagedelivery.net/hash",
+      variant: "public",
+    });
+
+    expect(typeof XA_CATALOG_RUNTIME_FRESHNESS.isStale).toBe("boolean");
+    expect("readUrl" in XA_CATALOG_RUNTIME_META).toBe(false);
+    expect("runtimeMetaPath" in XA_CATALOG_RUNTIME_META).toBe(false);
+    expect("artifactPath" in XA_CATALOG_RUNTIME_META).toBe(false);
+    expect("details" in XA_CATALOG_RUNTIME_META).toBe(false);
+  });
+
+  it("hydrates media in source order without adding role metadata", async () => {
+    const catalogMock = {
+      collections: [],
+      brands: [],
+      products: [
+        {
+          id: "legacy-roleless-1",
+          slug: "legacy-roleless-1",
+          title: "Legacy Roleless Product",
+          brand: "legacy-brand",
+          collection: "legacy-collection",
+          price: 100,
+          prices: { USD: 100 },
+          status: "live",
+          sizes: ["OS"],
+          description: "legacy",
+          createdAt: "2026-03-05T00:00:00.000Z",
+          popularity: 1,
+          taxonomy: {
+            department: "women",
+            category: "bags",
+            subcategory: "crossbody",
+          },
+          media: [
+            {
+              type: "image",
+              path: "xa-b/legacy-roleless-1/detail.jpg",
+              altText: "detail view",
+            },
+            {
+              type: "image",
+              path: "xa-b/legacy-roleless-1/main.jpg",
+              altText: "main view",
+            },
+          ],
+        },
+      ],
+    };
+
+    const { XA_PRODUCTS } = await loadDemoDataWithCatalogMock(
+      {
+        base: "https://imagedelivery.net/hash",
+        variant: "public",
+      },
+      catalogMock,
+    );
+
+    expect(XA_PRODUCTS.length).toBe(1);
+    const hydrated = XA_PRODUCTS[0];
+    expect(hydrated).toBeTruthy();
+    const hydratedImageMedia = (hydrated?.media ?? []).filter((item) => item.type === "image");
+    expect(hydratedImageMedia.map((item) => item.altText)).toEqual(["detail view", "main view"]);
+    expect(hydratedImageMedia.every((item) => !("role" in item))).toBe(true);
+  });
+
+  it("keeps catalog-provided media ordering exactly as seeded", async () => {
+    const catalogMock = {
+      collections: [],
+      brands: [],
+      products: [
+        {
+          id: "explicit-role-1",
+          slug: "explicit-role-1",
+          title: "Explicit Role Product",
+          brand: "legacy-brand",
+          collection: "legacy-collection",
+          price: 100,
+          prices: { USD: 100 },
+          status: "live",
+          sizes: ["OS"],
+          description: "explicit-role",
+          createdAt: "2026-03-05T00:00:00.000Z",
+          popularity: 1,
+          taxonomy: {
+            department: "women",
+            category: "bags",
+            subcategory: "crossbody",
+          },
+          media: [
+            {
+              type: "image",
+              path: "xa-b/explicit-role-1/second.jpg",
+              altText: "second",
+            },
+            {
+              type: "image",
+              path: "xa-b/explicit-role-1/first.jpg",
+              altText: "first",
+            },
+          ],
+        },
+      ],
+    };
+
+    const { XA_PRODUCTS } = await loadDemoDataWithCatalogMock(
+      {
+        base: "https://imagedelivery.net/hash",
+        variant: "public",
+      },
+      catalogMock,
+    );
+
+    expect(XA_PRODUCTS.length).toBe(1);
+    const imageMedia = XA_PRODUCTS[0]?.media.filter((item) => item.type === "image") ?? [];
+    expect(imageMedia.map((item) => item.altText)).toEqual(["second", "first"]);
   });
 });

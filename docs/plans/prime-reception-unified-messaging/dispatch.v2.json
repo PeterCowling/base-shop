@@ -1,0 +1,48 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260308121500-0001",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "root_event_id": "operator-idea-prime-reception-unified-messaging-2026-03-08",
+  "anchor_key": "prime-reception-shared-drafting-rich-messaging",
+  "cluster_key": "prime-reception-unified-messaging",
+  "cluster_fingerprint": "prime-reception-unified-messaging-v1",
+  "lineage_depth": 0,
+  "area_anchor": "BRIK Prime and Reception shared drafting architecture",
+  "location_anchors": [
+    "apps/prime/functions/api/direct-message.ts",
+    "apps/prime/functions/api/direct-messages.ts",
+    "apps/prime/src/app/(guarded)/chat/channel/page.tsx",
+    "apps/reception/src/lib/inbox/draft-pipeline.server.ts",
+    "apps/reception/src/services/useInbox.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Email drafting is Gmail-shaped and Prime direct messaging is plain-text Firebase chat, so shared templates, agent drafting, and rich promotional Prime messages do not have a stable cross-channel contract yet.",
+  "next_scope_now": "Document the shared architecture, then land Prime rich-message contracts and rendering foundations that future D1-canonical drafts and Reception review flows can build on.",
+  "adjacent_later": [
+    "Add D1-canonical Prime chat and draft tables",
+    "Add Reception Prime review queue and takeover controls",
+    "Project Prime drafts and sent messages into Firebase from D1"
+  ],
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "priority": "P1",
+  "confidence": 0.9,
+  "evidence_refs": [
+    "operator-stated: Prime and Reception need shared templates, agent drafting, rich support/promotional messages, and whole-hostel broadcast support",
+    "apps/reception/src/lib/inbox/draft-pipeline.server.ts",
+    "apps/reception/src/services/useInbox.ts",
+    "apps/prime/functions/api/direct-message.ts",
+    "apps/prime/functions/api/direct-messages.ts",
+    "apps/prime/src/types/messenger/chat.ts"
+  ],
+  "created_at": "2026-03-08T12:15:00.000Z",
+  "queue_state": "enqueued",
+  "why": "Shared templates and agent drafting need one drafting layer across email and Prime, while Prime also needs richer support/promotional payloads and broadcast audience support that the current plain direct-message model cannot represent.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Prime and Reception share a documented drafting architecture, and Prime gains rich-message contracts and rendering foundations for future D1-canonical draft/review flows.",
+    "source": "operator"
+  }
+}

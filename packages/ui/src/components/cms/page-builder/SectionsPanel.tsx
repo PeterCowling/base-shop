@@ -150,14 +150,14 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked, allowedT
           {/* i18n-exempt */}
           <button
             type="button"
-            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+            className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
             onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Text", text: t("cms.builder.sections.presets.titlePlusButton.text") }, { id: ulid(), type: "Button", label: t("cms.builder.cta"), href: "/shop" }] } as unknown as PageComponent))}
           >
             {t("cms.builder.sections.presets.titleCta")}
           </button>
           <button
             type="button"
-            className="rounded border px-2 py-1 text-xs min-h-10 min-w-10"
+            className="rounded border px-2 py-1 text-xs min-h-11 min-w-11"
             onClick={() => onInsert(cloneWithIds({ id: ulid(), type: "Section", children: [{ id: ulid(), type: "Image", src: "/hero/slide-1.jpg", alt: "" }] } as unknown as PageComponent))}
           >
             {t("cms.builder.sections.presets.imageHero")}
@@ -194,7 +194,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked, allowedT
                       <button
                         key={p.id}
                         type="button"
-                        className="rounded border p-1 text-start hover:bg-muted min-h-10 min-w-10"
+                        className="rounded border p-1 text-start hover:bg-muted min-h-11 min-w-11"
                         title={titleText}
                         onClick={() => {
                           const candidate = cloneWithIds(p.build());
@@ -248,7 +248,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked, allowedT
               <Button
                 type="button"
                 variant="outline"
-                className="min-h-10 min-w-10 px-2 text-xs"
+                className="min-h-11 min-w-11 px-2 text-xs"
                 onClick={() => {
                   const candidate = cloneWithIds(s.template);
                   if (!isAllowedTemplate(candidate, allowedTypes)) return;
@@ -261,7 +261,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked, allowedT
                 <Button
                   type="button"
                   variant="outline"
-                  className="min-h-10 min-w-10 px-2 text-xs"
+                  className="min-h-11 min-w-11 px-2 text-xs"
                   onClick={() => {
                     const candidate = cloneWithIds(s.template);
                     if (!isAllowedTemplate(candidate, allowedTypes)) return;
@@ -279,7 +279,7 @@ export default function SectionsPanel({ shop, onInsert, onInsertLinked, allowedT
             <Button
               type="button"
               variant="outline"
-              className="min-h-10 px-2 text-xs w-full"
+              className="min-h-11 px-2 text-xs w-full"
               disabled={loading}
               onClick={() => {
                 if (loading) return;

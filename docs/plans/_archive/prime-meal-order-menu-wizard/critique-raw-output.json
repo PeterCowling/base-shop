@@ -1,0 +1,27 @@
+{
+  "round": 1,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "docs/plans/prime-meal-order-menu-wizard/plan.md",
+      "line": "336",
+      "message": "`useEvDrinkWizard({ preorders })` does not include `serviceDate`, so tier filtering is computed from aggregate booking data instead of the selected night. Because `GuestBookingSnapshot.preorders` is night-scoped, this can over-permit premium drinks on nights where entitlement is lower."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-meal-order-menu-wizard/plan.md",
+      "line": "132",
+      "message": "The data typing contract is internally inconsistent: it defines `modifiers?: string[]` for item arrays, then immediately requires `drinksData` to use `modifiers?: Record<string, boolean>` at line 133. This should be a discriminated/union type or separate interfaces to avoid implementation drift."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/prime-meal-order-menu-wizard/plan.md",
+      "line": "491",
+      "message": "Evidence path is inaccurate (`apps/prime/jest.setup.ts` does not exist in repo). `data-cy` test-id configuration is provided via shared test setup/preset files, so the reference should be corrected."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "lp_score": 3.5
+}

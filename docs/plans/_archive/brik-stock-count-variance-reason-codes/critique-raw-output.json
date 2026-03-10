@@ -1,0 +1,23 @@
+{
+  "round": 2,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-stock-count-variance-reason-codes/fact-find.md",
+      "line": "138",
+      "message": "The test command is labeled as 'local verification,' but repo policy states tests must run in CI only (AGENTS.md:94). This is a process-correctness conflict that can lead to non-compliant execution guidance."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/brik-stock-count-variance-reason-codes/fact-find.md",
+      "line": "139",
+      "message": "'13 skipped tests noted in memory' is not evidence-backed from source files/CI artifacts and is likely to drift; this should be replaced with a reproducible source reference (or removed)."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ca4fb-601e-7d63-9742-c394eb34cc1b",
+  "durationMs": 85004
+}

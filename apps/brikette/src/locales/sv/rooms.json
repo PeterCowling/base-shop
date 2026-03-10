@@ -51,6 +51,118 @@
           "body": "Varje säng har egna uttag, läslampor och nyckelkortsskåp så att allt känns säkert."
         }
       ]
+    },
+    "room_3": {
+      "amenities": [
+        {
+          "title": "Fantastiskt prisvärd, utmärkt läge",
+          "body": "Ett av våra mest prisvärda alternativ ligger mitt i vandrarhemshjärtat — nära receptionen, det delade köket och andra resenärer."
+        },
+        {
+          "title": "Damvåning",
+          "body": "Rum 3 är en del av vandrarhemsavdelningen för enbart kvinnor. Det delade badrummet i närheten är rent, välutrustat och exklusivt för kvinnliga gäster."
+        },
+        {
+          "title": "Inbyggd integritet i varje bädd",
+          "body": "Varje sovplats har integritetsgardiner, en personlig läslampa och ladduttag så att du kan slå dig till ro när som helst utan att störa grannarna."
+        }
+      ]
+    },
+    "room_4": {
+      "amenities": [
+        {
+          "title": "Utrymme enbart för kvinnor",
+          "body": "Ett dedikerat damrum med eget delat badrum — rent, välunderhållet och reserverat enbart för kvinnliga gäster på detta våningsplan."
+        },
+        {
+          "title": "Plats för alla",
+          "body": "Åtta sängar på fyra stocksängar innebär att det alltid finns någon att dela ett tips eller en strandtur med, utan kaoset i en större blandat sovsal."
+        },
+        {
+          "title": "Det nödvändigaste vid varje bädd",
+          "body": "Varje säng har integritetsgardiner, en läslampa och USB-laddningsuttag så att din telefon är redo för morgondagens äventyr."
+        }
+      ]
+    },
+    "room_5": {
+      "amenities": [
+        {
+          "title": "Terrass med havsutsikt ingår",
+          "body": "Gå ut på den delade terrassen för att ta in panoramavyer över Positano och Tyrrenska havet — en bakgrund de flesta gäster aldrig vill lämna."
+        },
+        {
+          "title": "Eget badrum för rummet",
+          "body": "Ett privat badrum som bara delas med rumskompisar innebär inga morgonköer och allt utrymme du behöver för att göra dig redo i din egen takt."
+        },
+        {
+          "title": "Socialt men bekvämt",
+          "body": "Sex sängar i en öppen layout med gardiner, läslampor och laddpunkter vid varje bädd — nära nog för att skaffa vänner, privat nog för att sova gott."
+        }
+      ]
+    },
+    "room_6": {
+      "amenities": [
+        {
+          "title": "Terrass med utsikt över Amalfikusten",
+          "body": "Den delade terrassen med havsutsikt är ett stenkast från rummet — perfekt för morgonstretchning, aperitivo på kvällen eller att bara titta på båtarna i viken nedan."
+        },
+        {
+          "title": "Ditt eget badrum",
+          "body": "Enrumsbadrum tillhör enbart detta rum, så du sätter schemat för morgonduschar utan att någonsin stå i kö."
+        },
+        {
+          "title": "Flexibel bäddlayout",
+          "body": "Tre stocksängar plus en enkelsäng passar naturligt för soloturister och par, varje plats utrustad med gardiner, lampor och laddningsuttag."
+        }
+      ]
+    },
+    "room_8": {
+      "amenities": [
+        {
+          "title": "Trädgårdsvy retreat",
+          "body": "En stillsam utsikt över vandrarhemsens trädgård gör rum 8 till ett av de lugnaste ställena i byggnaden — idealiskt för tidiga vaknar eller lätta sovare."
+        },
+        {
+          "title": "Intimt damrum",
+          "body": "Med bara två sängar i en damsmiljö är detta den närmaste vandrarhemsupplevelsen av att ha ett privat rum — utan priset för ett privatrum."
+        },
+        {
+          "title": "Delat badrum i närheten",
+          "body": "Ett fläckfritt delat badrum enbart för damer är bara ett steg från dörren, välförsett och välunderhållet hela dagen."
+        }
+      ]
+    },
+    "room_9": {
+      "amenities": [
+        {
+          "title": "Badrum för tre",
+          "body": "Ett privat badrum som bara delas av tre gäster innebär genuint korta köer och en avslappnad morgonrutin — en sällsynt lyx i vandrarhemsresande."
+        },
+        {
+          "title": "Lugnet i innergården",
+          "body": "Mot den skyddade innergården är rummet svalare och tystare än havssidan — en välkommen flykt efter en full dag av utforskning."
+        },
+        {
+          "title": "Intim gruppdynamik",
+          "body": "Tre enkelsängar istället för stocksängar ger rummet en mer avslappnad layout — bekväm för soloturister som uppskattar lite extra golvyta och ljus."
+        }
+      ]
+    },
+    "room_10": {
+      "amenities": [
+        {
+          "title": "Badrum för hela sovplatsen",
+          "body": "Sex gäster delar ett badrum och ingen annan — morgonrutiner flödar smidigare när badrummet är ditt och inte hela våningens."
+        },
+        {
+          "title": "Klassisk vandrarhemsatmosfär",
+          "body": "En livlig blandad sovsal med tre stocksängar är perfekt för soloturister redo att möta människor från hela världen inom den första timmen efter ankomst."
+        },
+        {
+          "title": "Laddad och redo",
+          "body": "Varje sovplats inkluderar en läslampa, USB-laddningsuttag och integritetsgardiner så att du kan varva ner efter ditt eget schema även när rummet är livligt."
+        }
+      ]
     }
   }
 }

@@ -10,8 +10,6 @@ import i18n, { type ReadCallback } from "i18next";
 import resourcesToBackend from "i18next-resources-to-backend";
 
 import { i18nConfig } from "./i18n.config";
-import EN_FOOTER from "./locales/en/footer.json";
-import EN_TRANSLATION from "./locales/en/translation.json";
 import { loadLocaleResource } from "./locales/locale-loader";
 import { asResourceKey } from "./utils/i18n-types";
 // (blog namespace removed)
@@ -74,6 +72,36 @@ const createGuidesTagsSeed = (label: string) =>
       },
     },
   }) satisfies Record<string, unknown>;
+
+const loadNodeSeedResource = (
+  locale: string,
+  namespace: string,
+): Record<string, unknown> | null => {
+  const getBuiltinModule = (process as typeof process & {
+    getBuiltinModule?: (id: string) => unknown;
+  }).getBuiltinModule;
+  if (typeof getBuiltinModule !== "function") return null;
+
+  const fs = getBuiltinModule("fs") as typeof import("fs") | undefined;
+  const path = getBuiltinModule("path") as typeof import("path") | undefined;
+  if (!fs || !path) return null;
+
+  const candidates = [
+    path.resolve(process.cwd(), "src/locales", locale, `${namespace}.json`),
+    path.resolve(process.cwd(), "apps/brikette/src/locales", locale, `${namespace}.json`),
+  ];
+
+  for (const file of candidates) {
+    try {
+      const data = fs.readFileSync(file, "utf8");
+      return JSON.parse(data) as Record<string, unknown>;
+    } catch {
+      // try next candidate
+    }
+  }
+
+  return null;
+};
 
 /*---------------------------------------------------------------*
  | Backend: load JSON by (lng, ns) in any runtime                 |
@@ -199,8 +227,6 @@ i18n.use(
     resources: (() => {
       const base: Record<string, import("i18next").ResourceLanguage> = {
         en: {
-          translation: asResourceKey(EN_TRANSLATION),
-          footer: asResourceKey(EN_FOOTER),
           // (legacy article namespaces removed - now served via guides)
           dealsPage: {
             // eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI seed values for tests; real copy lives in locales JSON
@@ -223,6 +249,18 @@ i18n.use(
           },
         },
       };
+
+      // Keep immediate seeds for Node/test runtimes without shipping large locale
+      // payloads in browser bundles.
+      if (canUseNodeFs) {
+        const translation = loadNodeSeedResource("en", "translation");
+        const footer = loadNodeSeedResource("en", "footer");
+        const bookPage = loadNodeSeedResource("en", "bookPage");
+        const en = base["en"] as Record<string, import("i18next").ResourceKey>;
+        if (translation) en.translation = asResourceKey(translation);
+        if (footer) en.footer = asResourceKey(footer);
+        if (bookPage) en.bookPage = asResourceKey(bookPage);
+      }
 
       for (const [lang, label] of Object.entries(TRANSPORT_TAG_LABELS)) {
         const seed = asResourceKey(createGuidesTagsSeed(label));

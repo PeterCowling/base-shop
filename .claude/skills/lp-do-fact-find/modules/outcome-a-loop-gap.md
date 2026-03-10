@@ -22,8 +22,8 @@ If trigger type cannot be determined, ask one targeted question: "Is this trigge
 ## Schema References
 
 Before investigating, read and hold open:
-- `docs/business-os/startup-loop/event-state-schema.md` — stage status transitions, event ledger format
-- `docs/business-os/startup-loop/bottleneck-diagnosis-schema.md` — constraint key format, severity bands, replan trigger lifecycle
+- `docs/business-os/startup-loop/schemas/event-state-schema.md` — stage status transitions, event ledger format
+- `docs/business-os/startup-loop/schemas/bottleneck-diagnosis-schema.md` — constraint key format, severity bands, replan trigger lifecycle
 
 ---
 

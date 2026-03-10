@@ -1,33 +1,14 @@
-import { memo } from "react";
-
-interface PageShellProps {
-  title: string;
-  children: React.ReactNode;
-  className?: string;
-  /** Override the default centered heading with a custom header */
-  headerSlot?: React.ReactNode;
-}
-
 /**
- * Shared page wrapper for reception screens.
- * Provides consistent background, padding, and heading layout.
+ * PageShell — backward-compatibility re-export.
+ *
+ * The canonical component is now OperationalTableScreen.
+ * All existing consumers continue to work via this re-export.
+ * New code should import OperationalTableScreen directly.
+ *
+ * Migration: TASK-04 (check-in) migrates to OperationalTableScreen + primitives.
+ * This shim can be removed once all consumers are migrated.
  */
-export const PageShell = memo(function PageShell({
-  title,
-  children,
-  className,
-  headerSlot,
-}: PageShellProps) {
-  return (
-    <div
-      className={`min-h-80vh p-4 bg-surface-2 font-sans text-foreground${className ? ` ${className}` : ""}`}
-    >
-      {headerSlot ?? (
-        <h1 className="w-full mb-6 text-2xl text-center font-heading text-primary-main">
-          {title}
-        </h1>
-      )}
-      {children}
-    </div>
-  );
-});
+export {
+  OperationalTableScreen as PageShell,
+  type OperationalTableScreenProps as PageShellProps,
+} from "./OperationalTableScreen";

@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-safe-handler-param-sprawl-20260309",
+  "feature_slug": "reception-safe-handler-param-sprawl",
+  "emitted_at": "2026-03-09T09:45:10.809Z",
+  "why": "Copy-paste handler structure means adding a new safe transaction type requires duplicating ~30 lines. Positional params make refactoring fragile.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Safe transaction handlers share a common structure. Adding a new transaction type does not require duplicating handler boilerplate.",
+    "source": "auto"
+  }
+}

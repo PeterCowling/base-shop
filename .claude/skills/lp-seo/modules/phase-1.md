@@ -2,7 +2,7 @@
 
 **Loads**: `phase-base-contract.md` (output location, common inputs, inter-phase handoff, quality requirements)
 **Prerequisites**: lp-offer + lp-channels artifacts
-**Output**: `docs/business-os/strategy/<BIZ>/seo/<YYYY-MM-DD>-keyword-universe-<BIZ>.user.md`
+**Output**: `docs/business-os/strategy/<BIZ>/marketing/seo/<YYYY-MM-DD>-keyword-universe-<BIZ>.user.md`
 
 Build a comprehensive keyword inventory across all customer journey stages.
 

@@ -22,5 +22,8 @@ No standing updates: this build directly modified the standing startup-loop cont
 
 ## New Idea Candidates
 
-1. Add a dedicated `scripts` package command (for example `check-website-contract-parity`) and wire it into the standard startup-loop validation path so WEBSITE parity checks run by default.
-2. Add a lightweight doc-lint rule that flags legacy stage aliases in authoritative startup-loop workflow sections unless explicitly tagged historical.
+- None.
+
+## Standing Expansion
+
+- No standing expansion: this build directly hardened the standing startup-loop contract artifacts (`process-registry-v2.md`, `startup-loop-workflow.user.md`) in place. The parity guard test (`website-contract-parity.test.ts`) is already wired into the scripts test suite; no additional registration is required.

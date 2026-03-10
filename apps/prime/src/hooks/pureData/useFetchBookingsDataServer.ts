@@ -5,6 +5,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import useUuid from '../useUuid';
 
+import type { PureDataRefetch } from './types';
+
 async function fetchBookingsViaAPI(uuid: string) {
   if (!uuid) {
     return {};
@@ -36,9 +38,7 @@ export function useFetchBookingsDataServer() {
     gcTime: 10 * 60 * 1000, // 10 minutes
   });
 
-  const refetch = async (): Promise<void> => {
-    await refetchQuery();
-  };
+  const refetch = refetchQuery as unknown as PureDataRefetch;
 
   return {
     data: data ?? {},

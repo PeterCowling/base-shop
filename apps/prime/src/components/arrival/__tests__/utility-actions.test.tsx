@@ -5,17 +5,6 @@ import type { PreArrivalData } from '../../../types/preArrival';
 import { ReadinessDashboard } from '../../pre-arrival/ReadinessDashboard';
 import ArrivalHome from '../ArrivalHome';
 
-jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string, params?: Record<string, string | number>) => {
-      if (params && typeof params.name === 'string') {
-        return `${key}:${params.name}`;
-      }
-      return key;
-    },
-  }),
-}));
-
 jest.mock('../../../lib/analytics/activationFunnel', () => ({
   recordActivationFunnelEvent: jest.fn(),
 }));
@@ -100,8 +89,7 @@ describe('utility action surfaces', () => {
     render(
       <ArrivalHome
         firstName="Jamie"
-        checkInCode="BRK-ABCDE"
-        isCodeLoading={false}
+        codeState={{ checkInCode: 'BRK-ABCDE', isCodeLoading: false }}
         preArrivalData={defaultPreArrivalData}
         cashAmounts={{ cityTax: 18, deposit: 10 }}
         nights={3}
@@ -110,7 +98,7 @@ describe('utility action surfaces', () => {
     );
 
     expect(screen.getByRole('button', { name: 'Maps' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Cash' })).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /cash/i }).length).toBeGreaterThan(0);
     expect(screen.getByRole('button', { name: 'Support' })).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Share ETA' })).toBeNull();
   });
@@ -153,8 +141,7 @@ describe('utility action surfaces', () => {
     render(
       <ArrivalHome
         firstName="Jamie"
-        checkInCode="BRK-ABCDE"
-        isCodeLoading={false}
+        codeState={{ checkInCode: 'BRK-ABCDE', isCodeLoading: false }}
         preArrivalData={defaultPreArrivalData}
         cashAmounts={{ cityTax: 18, deposit: 10 }}
         nights={3}

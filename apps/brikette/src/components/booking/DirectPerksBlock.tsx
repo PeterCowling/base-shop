@@ -10,9 +10,11 @@ import type { AppLanguage } from "@/i18n.config";
 export interface DirectPerksBlockProps {
   readonly lang: AppLanguage;
   readonly className?: string;
+  readonly savingsEyebrow?: string;
+  readonly savingsHeadline?: string;
 }
 
-export function DirectPerksBlock({ lang, className }: DirectPerksBlockProps): JSX.Element {
+export function DirectPerksBlock({ lang, className, savingsEyebrow, savingsHeadline }: DirectPerksBlockProps): JSX.Element {
   const { t: tModals } = useTranslation("modals", { lng: lang });
 
   const heading = tModals("directPerks.heading", {
@@ -40,8 +42,16 @@ export function DirectPerksBlock({ lang, className }: DirectPerksBlockProps): JS
     return <></>;
   }
 
+  const showSavingsBanner = Boolean(savingsEyebrow?.trim() && savingsHeadline?.trim());
+
   return (
     <div className={className}>
+      {showSavingsBanner && (
+        <div>
+          <p className="text-brand-text/60 text-sm">{savingsEyebrow}</p>
+          <p className="text-brand-heading font-semibold text-base">{savingsHeadline}</p>
+        </div>
+      )}
       <h3 className="text-sm font-semibold text-brand-heading mb-2">
         {heading}
       </h3>

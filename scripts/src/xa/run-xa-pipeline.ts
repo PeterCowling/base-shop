@@ -1,10 +1,16 @@
 #!/usr/bin/env node
 
+import fs from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import {
   catalogProductDraftSchema,
+  type CatalogPublishState,
+  deriveCatalogPublishState,
   expandFileSpec,
+  getCatalogDraftWorkflowReadiness,
+  isCatalogPublishableState,
   rowToDraftInput,
   slugify,
 } from "@acme/lib/xa";
@@ -13,8 +19,12 @@ import {
   backupFileIfExists,
   buildCatalogMediaPath,
   handleToTitle,
+  isCatalogMediaPathSpec,
+  isErrnoCode,
   loadCatalogRows,
+  normalizeCatalogMediaPath,
   parseList,
+  pruneBackups,
   sanitizePathSegment,
   toNonNegativeInt,
   writeJsonFile,
@@ -25,6 +35,7 @@ type PipelineOptions = {
   outPath: string;
   mediaOutPath: string;
   statePath: string;
+  currencyRatesPath?: string;
   backupDir: string;
   simple: boolean;
   backup: boolean;
@@ -36,7 +47,11 @@ type PipelineOptions = {
 
 type CatalogBrand = { handle: string; name: string };
 type CatalogCollection = { handle: string; title: string; description?: string };
-type CatalogMediaEntry = { type: "image"; path: string; altText: string };
+type CatalogMediaEntry = {
+  type: "image";
+  path: string;
+  altText: string;
+};
 
 type CatalogProduct = {
   id: string;
@@ -45,18 +60,15 @@ type CatalogProduct = {
   brand: string;
   collection: string;
   price: number;
-  compareAtPrice?: number;
-  deposit: number;
-  stock: number;
-  forSale: boolean;
-  forRental: boolean;
+  prices: { AUD: number; EUR: number; GBP: number; USD: number };
+  status: CatalogPublishState;
   media: CatalogMediaEntry[];
   sizes: string[];
   description: string;
   createdAt: string;
   popularity: number;
   taxonomy: {
-    department: "women" | "men";
+    department: "women" | "men" | "kids";
     category: "clothing" | "bags" | "jewelry";
     subcategory: string;
     color: string[];
@@ -67,9 +79,9 @@ type CatalogProduct = {
     sleeveLength?: string;
     pattern?: string;
     occasion?: string[];
-    sizeClass?: string;
     strapStyle?: string;
     hardwareColor?: string;
+    interiorColor?: string[];
     closureType?: string;
     fits?: string[];
     metal?: string;
@@ -115,6 +127,52 @@ type MediaIndexPayload = {
   }>;
 };
 
+export type CurrencyRates = { EUR: number; GBP: number; AUD: number };
+const DEFAULT_BACKUP_KEEP = 60;
+const scriptDir = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(scriptDir, "../../..");
+const xaBPublicDir = path.join(repoRoot, "apps", "xa-b", "public");
+
+function isHttpUrl(pathValue: string): boolean {
+  return /^https?:\/\//i.test(pathValue);
+}
+
+function resolveLocalCatalogMediaPath(pathValue: string): string | null {
+  if (!pathValue.startsWith("images/")) return null;
+  if (pathValue.includes("\\") || pathValue.includes("..")) return null;
+  const resolved = path.resolve(xaBPublicDir, pathValue);
+  const rootPrefix = `${xaBPublicDir}${path.sep}`;
+  if (resolved !== xaBPublicDir && !resolved.startsWith(rootPrefix)) return null;
+  return resolved;
+}
+
+async function validateLocalCatalogMediaPath(pathValue: string): Promise<string | null> {
+  if (isHttpUrl(pathValue)) return null;
+  const canonicalSegments = pathValue.split("/").filter(Boolean);
+  if (canonicalSegments.length >= 3 && canonicalSegments[0]?.trim() === "xa-b") {
+    return null;
+  }
+  if (!pathValue.startsWith("images/")) {
+    return `has unsupported local catalog media path "${pathValue}".`;
+  }
+  const localPath = resolveLocalCatalogMediaPath(pathValue);
+  if (!localPath) {
+    return `has invalid local catalog media path "${pathValue}".`;
+  }
+  try {
+    const stats = await fs.stat(localPath);
+    if (!stats.isFile()) {
+      return `references non-file local media path "${pathValue}".`;
+    }
+  } catch (error) {
+    if (isErrnoCode(error, "ENOENT")) {
+      return `references missing local media path "${pathValue}".`;
+    }
+    throw error;
+  }
+  return null;
+}
+
 function printHelp(): void {
   console.log(`XA pipeline runner
 
@@ -133,7 +191,21 @@ Options:
   --recursive         Expand image directory specs recursively
   --dry-run           Validate + transform but do not write files
   --strict            Fail on missing image specs or unresolved image files
+  --currency-rates <path>  Currency rates JSON path (optional)
 `);
+}
+
+export function applyCurrencyRates(
+  usdPrice: number,
+  rates: CurrencyRates,
+): { AUD: number; EUR: number; GBP: number; USD: number } {
+  const safeRate = (r: number) => (Number.isFinite(r) && r > 0 ? r : 1.0);
+  return {
+    USD: usdPrice,
+    EUR: toNonNegativeInt(usdPrice * safeRate(rates.EUR)),
+    GBP: toNonNegativeInt(usdPrice * safeRate(rates.GBP)),
+    AUD: toNonNegativeInt(usdPrice * safeRate(rates.AUD)),
+  };
 }
 
 function parseArgs(argv: string[]): PipelineOptions {
@@ -141,6 +213,7 @@ function parseArgs(argv: string[]): PipelineOptions {
   let outPath = "";
   let mediaOutPath = "";
   let statePath = "";
+  let currencyRatesPath: string | undefined = undefined;
   let backupDir = "";
   let simple = false;
   let backup = false;
@@ -177,6 +250,13 @@ function parseArgs(argv: string[]): PipelineOptions {
         const value = argv[index + 1];
         if (!value) throw new Error("--state requires a value.");
         statePath = value;
+        index += 1;
+        break;
+      }
+      case "--currency-rates": {
+        const value = argv[index + 1];
+        if (!value) throw new Error("--currency-rates requires a value.");
+        currencyRatesPath = value;
         index += 1;
         break;
       }
@@ -225,6 +305,7 @@ function parseArgs(argv: string[]): PipelineOptions {
     outPath,
     mediaOutPath,
     statePath,
+    currencyRatesPath,
     backupDir,
     simple,
     backup,
@@ -233,6 +314,20 @@ function parseArgs(argv: string[]): PipelineOptions {
     dryRun,
     strict,
   };
+}
+
+function resolveBackupKeepCount(): number {
+  const parsed = Number.parseInt(process.env.XA_UPLOADER_BACKUP_KEEP ?? "", 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return DEFAULT_BACKUP_KEEP;
+  return parsed;
+}
+
+function validateCurrencyRates(value: unknown): value is CurrencyRates {
+  if (!value || typeof value !== "object" || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  return [record.EUR, record.GBP, record.AUD].every(
+    (rate) => typeof rate === "number" && Number.isFinite(rate) && rate > 0,
+  );
 }
 
 function requiredString(value: string | undefined, fallback: string): string {
@@ -252,6 +347,11 @@ function buildFallbackId(slugValue: string): string {
 
 function rowLabel(index: number): string {
   return `row ${index + 2}`;
+}
+
+function isPublishableDraft(draft: ReturnType<typeof catalogProductDraftSchema.parse>): boolean {
+  if (!getCatalogDraftWorkflowReadiness(draft).isPublishReady) return false;
+  return isCatalogPublishableState(deriveCatalogPublishState(draft));
 }
 
 function buildDetails(draft: ReturnType<typeof catalogProductDraftSchema.parse>) {
@@ -305,6 +405,7 @@ async function buildCatalogArtifacts(options: {
   rows: Awaited<ReturnType<typeof loadCatalogRows>>["rows"];
   recursive: boolean;
   strict: boolean;
+  currencyRates?: CurrencyRates;
 }): Promise<{ catalog: CatalogPayload; mediaIndex: MediaIndexPayload; warnings: string[] }> {
   const baseDir = path.dirname(path.resolve(options.productsPath));
   const warnings: string[] = [];
@@ -329,6 +430,9 @@ async function buildCatalogArtifacts(options: {
     }
 
     const draft = parsed.data;
+    if (!isPublishableDraft(draft)) {
+      continue;
+    }
     const productSlug = slugify(draft.slug?.trim() || draft.title);
     if (!productSlug) {
       throw new Error(`[${rowLabel(index)}] could not derive product slug from title/slug.`);
@@ -377,6 +481,34 @@ async function buildCatalogArtifacts(options: {
     const usedMediaNames = new Set<string>();
 
     for (const [specIndex, imageSpec] of imageSpecs.entries()) {
+      const altText = imageAltTexts[specIndex] || productSlug;
+      if (isCatalogMediaPathSpec(imageSpec)) {
+        const catalogPath = normalizeCatalogMediaPath(imageSpec);
+        if (!catalogPath) {
+          if (options.strict) {
+            throw new Error(`[${rowLabel(index)}] "${productSlug}" has an empty catalog media path.`);
+          }
+          warnings.push(`[${rowLabel(index)}] "${productSlug}" has an empty catalog media path.`);
+          continue;
+        }
+        const pathValidationError = await validateLocalCatalogMediaPath(catalogPath);
+        if (pathValidationError) {
+          if (options.strict) {
+            throw new Error(`[${rowLabel(index)}] "${productSlug}" ${pathValidationError}`);
+          }
+          warnings.push(`[${rowLabel(index)}] "${productSlug}" ${pathValidationError}`);
+          continue;
+        }
+        media.push({ type: "image", path: catalogPath, altText });
+        mediaItems.push({
+          productSlug,
+          sourcePath: catalogPath,
+          catalogPath,
+          altText,
+        });
+        continue;
+      }
+
       let resolvedPaths: string[];
       try {
         resolvedPaths = await expandFileSpec(imageSpec, baseDir, {
@@ -391,7 +523,6 @@ async function buildCatalogArtifacts(options: {
         continue;
       }
 
-      const altText = imageAltTexts[specIndex] || draft.title || productSlug;
       for (const sourcePath of resolvedPaths) {
         const catalogPath = buildCatalogMediaPath({
           brandHandle,
@@ -414,6 +545,9 @@ async function buildCatalogArtifacts(options: {
     }
 
     const details = buildDetails(draft);
+    const mergedFits = Array.from(
+      new Set([...parseList(draft.taxonomy.fits), ...parseList(draft.details?.whatFits)]),
+    );
     const taxonomy = {
       department: draft.taxonomy.department,
       category: draft.taxonomy.category,
@@ -436,8 +570,8 @@ async function buildCatalogArtifacts(options: {
       ...(parseList(draft.taxonomy.occasion).length > 0
         ? { occasion: parseList(draft.taxonomy.occasion) }
         : {}),
-      ...(optionalString(draft.taxonomy.sizeClass)
-        ? { sizeClass: optionalString(draft.taxonomy.sizeClass) }
+      ...(parseList(draft.taxonomy.interiorColor).length > 0
+        ? { interiorColor: parseList(draft.taxonomy.interiorColor) }
         : {}),
       ...(optionalString(draft.taxonomy.strapStyle)
         ? { strapStyle: optionalString(draft.taxonomy.strapStyle) }
@@ -448,7 +582,7 @@ async function buildCatalogArtifacts(options: {
       ...(optionalString(draft.taxonomy.closureType)
         ? { closureType: optionalString(draft.taxonomy.closureType) }
         : {}),
-      ...(parseList(draft.taxonomy.fits).length > 0 ? { fits: parseList(draft.taxonomy.fits) } : {}),
+      ...(mergedFits.length > 0 ? { fits: mergedFits } : {}),
       ...(optionalString(draft.taxonomy.metal) ? { metal: optionalString(draft.taxonomy.metal) } : {}),
       ...(optionalString(draft.taxonomy.gemstone)
         ? { gemstone: optionalString(draft.taxonomy.gemstone) }
@@ -464,24 +598,22 @@ async function buildCatalogArtifacts(options: {
         : {}),
     };
 
+    const effectiveRates: CurrencyRates = options.currencyRates ?? { EUR: 1.0, GBP: 1.0, AUD: 1.0 };
+    const normalizedPrice = toNonNegativeInt(draft.price);
+
     const product: CatalogProduct = {
       id: productId,
       slug: productSlug,
       title: draft.title,
       brand: brandHandle,
       collection: collectionHandle,
-      price: toNonNegativeInt(draft.price),
-      ...(typeof draft.compareAtPrice === "number"
-        ? { compareAtPrice: toNonNegativeInt(draft.compareAtPrice) }
-        : {}),
-      deposit: toNonNegativeInt(draft.deposit),
-      stock: toNonNegativeInt(draft.stock),
-      forSale: draft.forSale ?? true,
-      forRental: draft.forRental ?? false,
+      price: normalizedPrice,
+      prices: applyCurrencyRates(normalizedPrice, effectiveRates),
+      status: deriveCatalogPublishState(draft),
       media,
       sizes: parseList(draft.sizes),
       description: draft.description,
-      createdAt: draft.createdAt,
+      createdAt: requiredString(draft.createdAt, new Date().toISOString()),
       popularity: toNonNegativeInt(draft.popularity),
       taxonomy,
       ...(details ? { details } : {}),
@@ -524,6 +656,15 @@ async function main() {
   const mediaOutPath = path.resolve(options.mediaOutPath);
   const statePath = path.resolve(options.statePath);
   const backupDir = path.resolve(options.backupDir);
+  let currencyRates: CurrencyRates | undefined;
+  if (options.currencyRatesPath) {
+    const ratesRaw = await fs.readFile(path.resolve(options.currencyRatesPath), "utf-8");
+    const parsed = JSON.parse(ratesRaw) as unknown;
+    if (!validateCurrencyRates(parsed)) {
+      throw new Error("currency-rates.json is invalid (expected positive numeric EUR/GBP/AUD).");
+    }
+    currencyRates = parsed;
+  }
 
   const { rows, missing } = await loadCatalogRows(productsPath);
   if (missing) {
@@ -535,6 +676,7 @@ async function main() {
     rows,
     recursive: options.recursive,
     strict: options.strict,
+    currencyRates,
   });
 
   if (warnings.length > 0) {
@@ -571,6 +713,9 @@ async function main() {
       backups: backupRecords,
       warnings,
     });
+    if (options.backup) {
+      await pruneBackups(backupDir, resolveBackupKeepCount());
+    }
   }
 
   console.log(
@@ -578,8 +723,17 @@ async function main() {
   );
 }
 
-main().catch((error) => {
-  const message = error instanceof Error ? error.message : String(error);
-  console.error(`[xa-pipeline] fatal: ${message}`);
-  process.exit(1);
-});
+function isDirectRun(): boolean {
+  const entryArg = process.argv[1];
+  if (!entryArg) return false;
+  const entryFile = path.basename(entryArg);
+  return entryFile === "run-xa-pipeline.ts" || entryFile === "run-xa-pipeline.js";
+}
+
+if (isDirectRun()) {
+  main().catch((error) => {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(`[xa-pipeline] fatal: ${message}`);
+    process.exit(1);
+  });
+}

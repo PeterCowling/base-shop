@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "lp-do-ideas-standing-registry.schema.json",
+  "title": "lp-do-ideas Standing Artifact Registry (registry.v2)",
+  "description": "Registry of standing artifacts monitored by lp-do-ideas. Adds explicit artifact taxonomy, trigger policy, and propagation mode controls for source-triggered intake with fail-closed defaults.",
+  "type": "object",
+  "properties": {
+    "registry_version": {
+      "type": "string",
+      "const": "registry.v2",
+      "description": "Schema version for taxonomy-aware registry. Must be registry.v2."
+    },
+    "trigger_threshold": {
+      "type": "string",
+      "enum": ["T1-conservative", "T2-moderate", "T3-open"],
+      "description": "Active trigger threshold policy for section-level semantic checks used by legacy classification paths."
+    },
+    "t1_semantic_sections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "minItems": 1,
+      "description": "Section heading keywords used by T1-conservative semantic-delta classification."
+    },
+    "unknown_artifact_policy": {
+      "type": "string",
+      "const": "fail_closed_never_trigger",
+      "description": "Global default for artifacts not present in registry: do not admit dispatches."
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last registry update."
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/artifact_entry"
+      },
+      "minItems": 1,
+      "description": "Registered standing artifacts with explicit taxonomy and trigger semantics."
+    }
+  },
+  "required": [
+    "registry_version",
+    "trigger_threshold",
+    "t1_semantic_sections",
+    "unknown_artifact_policy",
+    "artifacts"
+  ],
+  "additionalProperties": false,
+  "$defs": {
+    "artifact_entry": {
+      "type": "object",
+      "description": "A single registered standing artifact with explicit trigger and propagation behavior.",
+      "properties": {
+        "artifact_id": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9]+-[A-Z]+-[A-Z0-9_-]+$",
+          "description": "Registry key. Format: <BIZ>-<DOMAIN>-<descriptor> in uppercase. Example: HBAG-MARKET-PACK."
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Relative path to artifact file from repo root."
+        },
+        "domain": {
+          "type": "string",
+          "enum": ["ASSESSMENT", "MARKET", "SELL", "PRODUCTS", "LOGISTICS", "LEGAL", "STRATEGY", "BOS"],
+          "description": "Standing information domain classification for this artifact."
+        },
+        "business": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Business identifier (e.g. HBAG, BRIK)."
+        },
+        "artifact_class": {
+          "type": "string",
+          "enum": [
+            "source_process",
+            "source_reference",
+            "projection_summary",
+            "system_telemetry",
+            "execution_output",
+            "reflection"
+          ],
+          "description": "Artifact taxonomy class used for trigger eligibility and anti-loop controls."
+        },
+        "trigger_policy": {
+          "type": "string",
+          "enum": ["eligible", "manual_override_only", "never"],
+          "description": "Admission policy for this artifact. manual_override_only allows explicit operator-triggered use but no default admission."
+        },
+        "propagation_mode": {
+          "type": "string",
+          "enum": ["projection_auto", "source_task", "source_mechanical_auto"],
+          "description": "Propagation behavior when artifact deltas imply downstream updates."
+        },
+        "depends_on": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]+-[A-Z]+-[A-Z0-9_-]+$"
+          },
+          "uniqueItems": true,
+          "description": "Upstream artifact IDs this artifact semantically depends on."
+        },
+        "produces": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9]+-[A-Z]+-[A-Z0-9_-]+$"
+          },
+          "uniqueItems": true,
+          "description": "Downstream artifact IDs produced or refreshed when this artifact is updated."
+        },
+        "last_known_sha": {
+          "type": ["string", "null"],
+          "description": "Last known content hash for this artifact. Null until first delta is processed."
+        },
+        "registered_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 timestamp when this artifact was added to the registry."
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Whether this artifact is actively monitored."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional free-text notes about this artifact entry."
+        }
+      },
+      "required": [
+        "artifact_id",
+        "path",
+        "domain",
+        "business",
+        "artifact_class",
+        "trigger_policy",
+        "propagation_mode",
+        "depends_on",
+        "produces",
+        "active"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

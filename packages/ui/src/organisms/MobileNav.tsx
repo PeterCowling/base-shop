@@ -56,9 +56,11 @@ function MobileNav({
   // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
   // booking page instead of opening the hostel booking modal.
   const apartmentPath = `/${translatePath("apartment", lang)}`;
-  const isApartmentRoute = pathname.startsWith(`/${lang}${apartmentPath}`);
+  const privateBookingPath = `/${lang}/${translatePath("privateBooking", lang)}`;
+  const isApartmentRoute =
+    pathname.startsWith(`/${lang}${apartmentPath}`) || pathname.startsWith(privateBookingPath);
   const bookHref = isApartmentRoute
-    ? `/${lang}${apartmentPath}/book`
+    ? privateBookingPath
     : `/${lang}/${translatePath("book", lang)}`;
 
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), [setMenuOpen]);
@@ -104,13 +106,13 @@ function MobileNav({
               if (logoAlt && logoAlt !== "logoAlt") return logoAlt;
               return FALLBACK_LOGO_ALT;
             })()}
-            className="size-10"
+            className="size-11"
             width={40}
             height={40}
             loading="eager"
             decoding="async"
           />
-          <span className="whitespace-nowrap text-sm font-bold text-white sm:text-lg">
+          <span className="whitespace-nowrap text-sm font-bold text-primary-fg sm:text-lg">
             {(() => {
               const title = t("title") as string;
               if (title && title !== "title") return title;
@@ -126,7 +128,7 @@ function MobileNav({
         <Link
           href={bookHref}
           onClick={onBookingClick}
-          className={`cta min-h-11 min-w-11 max-w-[6rem] px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:max-w-none sm:whitespace-nowrap sm:px-4 sm:text-sm`}
+          className={`cta min-h-11 min-w-11 max-w-[calc(100vw-7rem)] truncate px-3 py-2 text-xs font-semibold ${ctaClass} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary sm:max-w-none sm:whitespace-nowrap sm:px-4 sm:text-sm`}
         >
           {primaryCtaLabel}
         </Link>
@@ -156,7 +158,7 @@ function MobileNav({
       </div>
 
       {/* subtle bottom divider */}
-      <div className="absolute inset-x-0 bottom-0 h-px bg-brand-surface/60 dark:bg-white/5" />
+      <div className="absolute inset-x-0 bottom-0 h-px bg-brand-surface/60 dark:bg-surface/5" />
     </nav>
   );
 }

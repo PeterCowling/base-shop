@@ -60,7 +60,14 @@ function writeLegacyTheme(theme: string): void {
 
 function ShopThemeProviderInner({ children }: { children: ReactNode }) {
   const { mode } = useThemeMode();
-  const [themeName, setThemeName] = useState<ThemeName>(() => readStoredThemeName() ?? "base");
+  const [themeName, setThemeName] = useState<ThemeName>("base");
+
+  useEffect(() => {
+    const storedThemeName = readStoredThemeName();
+    if (storedThemeName) {
+      setThemeName(storedThemeName);
+    }
+  }, []);
 
   useLayoutEffect(() => {
     const root = document.documentElement;

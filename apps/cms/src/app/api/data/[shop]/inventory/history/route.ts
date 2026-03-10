@@ -78,36 +78,32 @@ export async function GET(
   }
 
   const history: InventoryHistoryEntry[] = [
-    ...inflows.flatMap<InventoryHistoryEntry>((event) =>
-      event.report.items
-        .filter((item) => variantKey(item.sku, item.variantAttributes) === targetKey)
-        .map((item) => ({
-          source: "inflow" as const,
-          id: event.id,
-          idempotencyKey: event.idempotencyKey ?? null,
-          receivedAt: event.receivedAt,
-          note: event.note ?? null,
-          delta: item.delta,
-          previousQuantity: item.previousQuantity,
-          nextQuantity: item.nextQuantity,
-          reason: null as string | null,
-        })),
-    ),
-    ...adjustments.flatMap<InventoryHistoryEntry>((event) =>
-      event.report.items
-        .filter((item) => variantKey(item.sku, item.variantAttributes) === targetKey)
-        .map((item) => ({
-          source: "adjustment" as const,
-          id: event.id,
-          idempotencyKey: event.idempotencyKey ?? null,
-          receivedAt: event.adjustedAt,
-          note: event.note ?? null,
-          delta: item.delta,
-          previousQuantity: item.previousQuantity,
-          nextQuantity: item.nextQuantity,
-          reason: item.reason,
-        })),
-    ),
+    ...inflows
+      .filter((entry) => entry.variantKey === targetKey)
+      .map<InventoryHistoryEntry>((entry) => ({
+        source: "inflow" as const,
+        id: entry.id,
+        idempotencyKey: entry.referenceId ?? null,
+        receivedAt: entry.createdAt.toISOString(),
+        note: entry.note ?? null,
+        delta: entry.quantityDelta,
+        previousQuantity: null,
+        nextQuantity: null,
+        reason: null as string | null,
+      })),
+    ...adjustments
+      .filter((entry) => entry.variantKey === targetKey)
+      .map<InventoryHistoryEntry>((entry) => ({
+        source: "adjustment" as const,
+        id: entry.id,
+        idempotencyKey: entry.referenceId ?? null,
+        receivedAt: entry.createdAt.toISOString(),
+        note: entry.note ?? null,
+        delta: entry.quantityDelta,
+        previousQuantity: null,
+        nextQuantity: null,
+        reason: null,
+      })),
     ...reverseLogistics
       .filter((event) => event.sessionId === sku) // best-effort: sessionId may match sku for rental items
       .map((event) => ({

@@ -70,14 +70,14 @@ Three automation tracks:
 
 ### Entry Points
 
-- `scripts/src/startup-loop/s2-market-intelligence-handoff.ts` — S2 prompt generator; calls `buildOperatorCapturedDataBlock()` at line 274 to discover and embed operator CSVs
+- `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts` — S2 prompt generator; calls `buildOperatorCapturedDataBlock()` at line 274 to discover and embed operator CSVs
 - `packages/mcp-server/octorate-process-bookings.mjs` — current booking processor; binary Direct/OTA classification via `isDirectBooking()` at line 59
 - `packages/mcp-server/octorate-full-pipeline.mjs` — orchestrator: runs export then processing
 - `packages/mcp-server/src/tools/browser.ts` — MCP browser tool definitions (6 tools: session_open/close, observe, act, get_downloads, wait_for_download)
 
 ### Key Modules / Files
 
-- `scripts/src/startup-loop/s2-market-intelligence-handoff.ts` — `buildOperatorCapturedDataBlock()` (L274-320), `findLatestDatedMarketResearchDataFile()` (L231-264), `csvLooksEmptyOrHeaderOnly()` (L266-272), `computeHospitalityScenarioDates()` (L1008-1031)
+- `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts` — `buildOperatorCapturedDataBlock()` (L274-320), `findLatestDatedMarketResearchDataFile()` (L231-264), `csvLooksEmptyOrHeaderOnly()` (L266-272), `computeHospitalityScenarioDates()` (L1008-1031)
 - `packages/mcp-server/octorate-process-bookings.mjs` — standalone .mjs script, reads Excel via ExcelJS, deduplicates by Refer per month, classifies channel, outputs 2 CSVs
 - `packages/mcp-server/src/tools/gmail.ts:1062-1066` — `deriveBookingSource()` function with reservation code format → channel mapping (must be ported)
 - `packages/mcp-server/src/tools/browser/driver-playwright.ts` — Playwright browser driver (sessions, downloads, navigation)
@@ -196,7 +196,7 @@ Three automation tracks:
 ### Recent Git History (Targeted)
 
 - `packages/mcp-server/octorate-process-bookings.mjs` — created 2026-02-14, no subsequent changes
-- `scripts/src/startup-loop/s2-market-intelligence-handoff.ts` — actively developed through 2026-02-15; recent additions include hospitality template, operator-captured data block, scenario date computation
+- `scripts/src/startup-loop/s2/s2-market-intelligence-handoff.ts` — actively developed through 2026-02-15; recent additions include hospitality template, operator-captured data block, scenario date computation
 - `docs/business-os/market-research/BRIK/data/` — scaffold CSVs created 2026-02-15 by s2 handoff script
 - `packages/mcp-server/src/tools/gmail.ts` — `deriveBookingSource()` has been stable; used in production email processing
 

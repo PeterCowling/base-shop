@@ -14,6 +14,14 @@ Use this when asked to “check types” or “check TypeScript errors” withou
 
 Optional: `scripts/mcp/healthcheck-ts-language.sh`
 
+## Availability gate (run before any vscodeDiagnostics call)
+
+1. Check that `.vscode/.mcp-port` exists and is non-empty. If missing: ts-language server is not running — **skip all `vscodeDiagnostics` calls and fall back to `pnpm --filter <pkg> typecheck` for each affected package.**
+2. Call `vscodeDiagnostics` on one file. If the call errors or returns no connection: same fallback as above.
+3. This gate is session-scoped. Once marked unavailable, do not retry `vscodeDiagnostics` — **unless** `.vscode/.mcp-port` appears, changes, or a re-registration step (`scripts/mcp/register-ts-language.sh`) succeeds within the same session.
+
+**Do not use `mcp__ide__getDiagnostics` or any `mcp__ide__*` tool for type-checking. That is the Claude Code built-in IDE server, not this ts-language server.**
+
 ## Required approach
 
 Use the MCP TypeScript language tools first:

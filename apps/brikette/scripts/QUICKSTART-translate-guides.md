@@ -1,6 +1,6 @@
 # Quick Start: Translate Guides
 
-Generate all 85 translated guide files in 3 easy steps.
+Run deterministic in-house guide translation workflows in 3 easy steps.
 
 ## 1. Install Dependencies
 
@@ -9,32 +9,36 @@ cd apps/brikette
 pnpm install
 ```
 
-This installs the `@anthropic-ai/sdk` package needed for translations.
+This installs local tooling for fixture-based translation workflows.
 
-## 2. Set API Key
+## 2. Prepare Fixture File
 
-Get your Anthropic API key from https://console.anthropic.com/
+Create a fixture JSON file with locale+guide entries:
 
 ```bash
-export ANTHROPIC_API_KEY=sk-ant-api03-...
-```
-
-**Tip:** Add to your `.env.local` or shell profile for persistence:
-```bash
-echo 'export ANTHROPIC_API_KEY=sk-ant-api03-...' >> ~/.zshrc
+cat > /tmp/guide-fixtures.json <<'JSON'
+{
+  "it:historyPositano.json": "{\"title\":\"...\"}",
+  "fr:*": "{\"title\":\"...\"}"
+}
+JSON
 ```
 
 ## 3. Run Translation
 
 ```bash
-pnpm run translate-guides
+pnpm exec tsx scripts/translate-guides.ts \
+  --provider=fixture \
+  --fixture-file=/tmp/guide-fixtures.json \
+  --guides=historyPositano.json,ferragostoPositano.json,folkloreAmalfi.json,avoidCrowdsPositano.json,positanoPompeii.json \
+  --locales=ar,da,de,es,fr,hi,hu,it,ja,ko,no,pl,pt,ru,sv,vi,zh \
+  --write
 ```
 
 That's it! The script will:
-- Translate 5 guides to 17 languages (85 files total)
+- Write fixture-generated translations for requested guides/locales
 - Show progress for each translation
 - Report success/failure summary
-- Take approximately 10-15 minutes
 
 ## Output
 
@@ -64,11 +68,6 @@ pnpm run validate-content
 
 ## Troubleshooting
 
-**API Key Error?**
-```bash
-echo $ANTHROPIC_API_KEY  # Should print your key
-```
-
 **Permission Error?**
 ```bash
 chmod +x scripts/translate-guides.ts
@@ -82,8 +81,3 @@ pnpm install  # Reinstall dependencies
 ## Need Help?
 
 See the full documentation: `scripts/README-translate-guides.md`
-
----
-
-**Estimated cost:** $3-5 USD for complete translation batch
-**Estimated time:** 10-15 minutes

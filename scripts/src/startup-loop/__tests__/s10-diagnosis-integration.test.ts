@@ -13,17 +13,17 @@ import * as fs from "node:fs";
 import * as os from "node:os";
 import * as path from "node:path";
 
-import { appendBottleneckHistory, checkConstraintPersistence } from "../bottleneck-history";
-import { type DiagnosisSnapshot } from "../diagnosis-snapshot";
-import { generateDiagnosisSnapshot } from "../diagnosis-snapshot";
+import { appendBottleneckHistory, checkConstraintPersistence } from "../diagnostics/bottleneck-history";
+import { type DiagnosisSnapshot } from "../diagnostics/diagnosis-snapshot";
+import { generateDiagnosisSnapshot } from "../diagnostics/diagnosis-snapshot";
 import { runMcpPreflight } from "../mcp-preflight";
 import { checkAndTriggerReplan, type ReplanTrigger } from "../replan-trigger";
-import { runDiagnosisPipeline } from "../s10-diagnosis-integration";
+import { runDiagnosisPipeline } from "../s10/s10-diagnosis-integration";
 import { WEEKLY_STAGE_CANDIDATES, WEEKLY_STAGE_ID } from "../stage-id-compat";
 
 // Mock the imported modules
-jest.mock("../diagnosis-snapshot");
-jest.mock("../bottleneck-history");
+jest.mock("../diagnostics/diagnosis-snapshot");
+jest.mock("../diagnostics/bottleneck-history");
 jest.mock("../replan-trigger");
 jest.mock("../mcp-preflight");
 

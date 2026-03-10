@@ -7,12 +7,15 @@ import { ArrowRight } from "lucide-react";
 import { CfCardImage } from "../atoms/CfCardImage";
 import { Cluster } from "../components/atoms/primitives/Cluster";
 import { Button } from "../components/atoms/shadcn";
+import { getRoomSlug } from "../config/roomSlugs";
 import type { Room } from "../data/roomsData";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { useRoomPricing } from "../hooks/useRoomPricing";
 import type { AppLanguage } from "../i18n.config";
 import { resolveSharedToken } from "../shared";
+import type { RoomCardPrice } from "../types/roomCard";
 import { toAppLanguage } from "../utils/lang";
+import { getPrivateRoomChildPath } from "../utils/privateRoomPaths";
 import { getSlug } from "../utils/slug";
 
 const resolveAsset = (p: string): string => p.replace(/^\/images\//, "/img/");
@@ -37,25 +40,31 @@ type ViewKey = (typeof VIEW_KEYS)[number];
 export interface SlideItemProps {
   item: Room;
   openModalForRate: (room: Room, rateType: "nonRefundable" | "refundable") => void;
+  price?: RoomCardPrice;
   height?: number;
   lang?: AppLanguage;
 }
 
-const DROP_FIRST_SEGMENT = /^\/[^/]+/;
-
 function SlideItemBase(
-  { item, openModalForRate, height, lang }: SlideItemProps,
+  { item, openModalForRate, price, height, lang }: SlideItemProps,
   ref: ForwardedRef<HTMLElement>
 ): JSX.Element {
   const { t, ready } = useTranslation("roomsPage", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const currentLang = useCurrentLanguage();
   const effectiveLang = lang ?? currentLang;
-  const roomsSlug = getSlug("rooms", toAppLanguage(effectiveLang));
-  const { loading: priceLoading, lowestPrice } = useRoomPricing(item);
+  const { loading: fallbackPriceLoading, lowestPrice } = useRoomPricing(item);
+  const roomHref = useMemo(() => {
+    const appLang = toAppLanguage(effectiveLang);
+    if (item.id === "double_room") {
+      return `/${effectiveLang}${getPrivateRoomChildPath(appLang, "double-room")}`;
+    }
+    if (item.id === "apartment") {
+      return `/${effectiveLang}${getPrivateRoomChildPath(appLang, "apartment")}`;
+    }
 
-  const restPath = useMemo(() => item.roomsHref.replace(DROP_FIRST_SEGMENT, ""), [item.roomsHref]);
-  const roomHref = `/${effectiveLang}/${roomsSlug}${restPath}`;
+    return `/${effectiveLang}/${getSlug("rooms", appLang)}/${getRoomSlug(item.id, appLang)}`;
+  }, [effectiveLang, item.id]);
 
   const normaliseLabel = useCallback((value: unknown): string => {
     return typeof value === "string" ? value.trim() : "";
@@ -128,6 +137,9 @@ function SlideItemBase(
   }, [item.id, t, ready]);
 
   const priceLine = useMemo(() => {
+    const externalFormatted = typeof price?.formatted === "string" ? price.formatted.trim() : "";
+    const shouldUseExternalPrice = Boolean(price?.loading || price?.soldOut || externalFormatted);
+    const priceLoading = shouldUseExternalPrice ? Boolean(price?.loading) : fallbackPriceLoading;
     const unitKey = item.pricingModel === "perRoom" ? "perRoom" : "perBed";
     const unitPath = `priceUnits.${unitKey}`;
     const unitTranslation = normaliseLabel(t(unitPath));
@@ -135,13 +147,26 @@ function SlideItemBase(
     if (priceLoading) {
       return t("loadingPrice");
     }
+    if (shouldUseExternalPrice) {
+      if (price?.soldOut) {
+        if (typeof price.soldOutLabel === "string" && price.soldOutLabel.trim().length > 0) {
+          return price.soldOutLabel;
+        }
+        const soldOutKey = "soldOut";
+        const soldOutTranslation = normaliseLabel(t(soldOutKey));
+        return soldOutTranslation && soldOutTranslation !== soldOutKey ? soldOutTranslation : "";
+      }
+      return externalFormatted;
+    }
     if (typeof lowestPrice === "number") {
       const base = normaliseLabel(t("ratesFrom", { price: lowestPrice.toFixed(2) }));
       const prefix = base || `From €${lowestPrice.toFixed(2)}`;
       return unitLabel ? `${prefix} / ${unitLabel}` : prefix;
     }
     return "";
-  }, [item.pricingModel, lowestPrice, priceLoading, t, normaliseLabel]);
+  }, [fallbackPriceLoading, item.pricingModel, lowestPrice, normaliseLabel, price, t]);
+
+  const showPriceLoading = Boolean(price?.loading || (!price && fallbackPriceLoading));
 
   const availabilityLabel = useMemo(() => {
     if (!tokensReady) {
@@ -200,7 +225,7 @@ function SlideItemBase(
 
         <div className="md:mt-auto flex flex-col gap-3">
 
-          {priceLoading ? (
+          {showPriceLoading ? (
             <div
               data-testid={PRICE_LOADING_TEST_ID}
               aria-hidden="true"
@@ -222,7 +247,7 @@ function SlideItemBase(
             prefetch
             aria-label={detailsAriaLabel}
             title={t("details")}
-            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 text-sm font-semibold text-brand-bougainvillea underline-offset-4 transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bougainvillea dark:text-white"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 text-sm font-semibold text-brand-bougainvillea underline-offset-4 transition hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-bougainvillea dark:text-primary-fg"
           >
             {t("moreAboutThisRoom")} <ArrowRight className="h-4 w-4 shrink-0" />
           </Link>

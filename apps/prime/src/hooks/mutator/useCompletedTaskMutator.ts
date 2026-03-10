@@ -2,8 +2,9 @@
 
 import { useCallback, useState } from 'react';
 
+import logger from '@acme/lib/logger/client';
+
 import { ref, update } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
@@ -46,7 +47,7 @@ export function useCompletedTaskMutator(
   const completeTask = useCallback(
     async (taskId: string, status: boolean) => {
       if (!uuid || !taskId) {
-        logger.warn('[useCompletedTaskMutator] Missing uuid or taskId:', {
+        logger.warn('[useCompletedTaskMutator] Missing uuid or taskId:', { // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
           uuid,
           taskId,
         });
@@ -65,7 +66,7 @@ export function useCompletedTaskMutator(
 
         setIsSuccess(true);
       } catch (error) {
-        logger.error('[useCompletedTaskMutator] Error in completeTask:', error);
+        logger.error('[useCompletedTaskMutator] Error in completeTask:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
         setIsError(true);
       } finally {
         setIsLoading(false);

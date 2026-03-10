@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "prime-chatprovider-zod-migration",
+  "business": "BRIK",
+  "completed_at": "2026-03-09",
+  "why": "8 near-identical manual type guard functions (~110 lines) create an update burden: adding or renaming a Message field requires parallel edits in 8+ locations. The project already uses Zod for similar validation; this migration brings consistency and eliminates the maintenance surface.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "Zod MessageSchema replaces the 8 manual type guards; chat.ts types derive from z.infer; ChatProvider.tsx contains no inline validation logic; zero behaviour change at runtime; test coverage parity maintained.",
+  "source": "auto",
+  "emitted_at": "2026-03-09T10:57:00.000Z"
+}

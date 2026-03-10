@@ -131,7 +131,7 @@ function BrandAssetUploader({
           alt={label}
           width={240}
           height={140}
-          className="h-24 w-auto rounded border object-contain bg-white"
+          className="h-24 w-auto rounded border object-contain bg-surface"
         />
       ) : (
         <div className="h-24 rounded border border-dashed bg-muted/40" />

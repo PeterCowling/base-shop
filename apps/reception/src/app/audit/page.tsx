@@ -1,4 +1,4 @@
-import Providers from "@/components/Providers";
+import Providers from "@/components/ClientProviders";
 import BookingSearch from "@/components/search/Search";
 
 // Prevent static prerendering — Firebase RTDB requires runtime env vars

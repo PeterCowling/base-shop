@@ -1,3 +1,11 @@
+# Brikette — Agent Runbook
+
+## Deployment
+
+See **[docs/brikette-deploy-decisions.md](../../docs/brikette-deploy-decisions.md)** for the full deploy runbook — build steps, route hiding, direct wrangler deploy, and known gotchas.
+
+---
+
 # Brikette — Upstreaming Guide
 
 ## How to upstream shared code

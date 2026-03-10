@@ -17,13 +17,16 @@
 
 import { useQuery } from '@tanstack/react-query';
 
+import logger from '@acme/lib/logger/client';
+
 import { get, ref, set } from '@/services/firebase';
-import logger from '@/utils/logger';
 
 import { useFirebaseDatabase } from '../../services/useFirebase';
 import { type BookingOccupantData,bookingOccupantDataSchema } from '../../utils/bookingsSchemas';
 import { zodErrorToString } from '../../utils/zodErrorToString';
 import useUuid from '../useUuid';
+
+import type { PureDataRefetch } from './types';
 
 export interface BookingDetails extends BookingOccupantData {
   reservationCode: string;
@@ -109,7 +112,7 @@ async function fetchViaFullScan(
       logger.debug(`[bookings] Wrote occupantIndex for ${uuid} → ${reservationCode}`);
     } catch (indexErr) {
       // Non-critical — the lookup still succeeded
-      logger.warn('[bookings] Failed to write occupantIndex:', indexErr);
+      logger.warn('[bookings] Failed to write occupantIndex:', indexErr); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     }
 
     return found;
@@ -148,6 +151,6 @@ export function useFetchBookingsData(): UseFetchBookingsDataReturn {
     bookingsData: data ?? null,
     isLoading,
     error: error ?? null,
-    refetch: async () => { await rqRefetch(); },
+    refetch: rqRefetch as unknown as PureDataRefetch,
   };
 }

@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 
 import { useUnifiedBookingData } from '../../hooks/dataOrchestrator/useUnifiedBookingData';
+import { useBudgetWatcher } from '../../hooks/dev/useBudgetWatcher';
 import { useCheckInCode } from '../../hooks/useCheckInCode';
 import { usePreArrivalState } from '../../hooks/usePreArrivalState';
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
@@ -23,7 +24,7 @@ import HomePage from './HomePage';
 export default function GuardedHomeExperience() {
   const { t } = useTranslation('Homepage');
   const router = useRouter();
-  const { occupantData, isLoading, error, isCheckedIn } = useUnifiedBookingData();
+  const { occupantData, isLoading, error, isCheckedIn, isInitialSyncComplete } = useUnifiedBookingData();
   const [recentlyCompletedItem, setRecentlyCompletedItem] = useState<keyof ChecklistProgress | null>(null);
   const celebrationTimeoutRef = useRef<number | null>(null);
   const trackedArrivalModeRef = useRef(false);
@@ -61,6 +62,10 @@ export default function GuardedHomeExperience() {
     checkOutDate,
     enabled: arrivalState === 'arrival-day',
   });
+
+  const budgetFlowId = arrivalState === 'arrival-day' ? 'arrival_mode_initial' : 'portal_pre_arrival_initial';
+  const budgetIsSettled = arrivalState !== 'checked-in' && isInitialSyncComplete;
+  useBudgetWatcher(budgetFlowId, { isSettled: budgetIsSettled });
 
   const handleChecklistItemClick = useCallback((item: keyof ChecklistProgress) => {
     if (item === 'routePlanned') {
@@ -172,11 +177,13 @@ export default function GuardedHomeExperience() {
         <div className="mx-auto max-w-md">
           <ArrivalHome
             firstName={firstName}
-            checkInCode={checkInCode}
-            isCodeLoading={isCodeLoading}
-            isCodeStale={isCodeStale}
-            isOffline={isOffline}
-            onRefreshCode={refetchCheckInCode}
+            codeState={{
+              checkInCode,
+              isCodeLoading,
+              isCodeStale,
+              isOffline,
+              onRefreshCode: refetchCheckInCode,
+            }}
             preArrivalData={preArrivalData}
             cashAmounts={cashAmounts}
             nights={nights}

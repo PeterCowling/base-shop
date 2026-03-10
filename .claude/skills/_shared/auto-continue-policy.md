@@ -2,14 +2,14 @@
 
 ## Modes
 
-- `plan-only` (default)
-- `plan+auto` (explicit user intent only)
+- `plan+auto` (default)
+- `plan-only` (when user explicitly requests no build handoff, for example `--notauto`)
 
-## Explicit Intent Requirement
+## Plan-Only Requirement
 
-Only use `plan+auto` when the user explicitly asks to build/implement/ship now or asks for auto-continue.
+Use `plan-only` only when the user explicitly asks for planning without build handoff.
 
-Silence is not approval.
+Default behavior is auto-continue to build after planning gates pass.
 
 ## Eligibility Gates (all required)
 
@@ -19,6 +19,7 @@ Silence is not approval.
 4. Dependencies for auto-selected tasks are satisfied.
 5. `/lp-do-sequence` has run after the final topology changes.
 6. Edge-case review gate is marked complete.
+7. Critique verdict is `credible` (auto-build is blocked for `partially credible` and `not credible`).
 
 ## Execution Scope
 

@@ -99,28 +99,40 @@ function SafeReconciliation(): JSX.Element {
 
   return (
     <PageShell title="SAFE RECONCILIATION">
-      <div className="bg-surface rounded-lg shadow p-6 space-y-4">
-        <p className="text-lg">
-          Expected Balance: <strong>€{safeBalance.toFixed(2)}</strong>
-        </p>
-        <div className="flex gap-2">
-          <div className="flex gap-2">
-            <Button
-              onClick={() => openForm("reconcile")}
-              className="px-4 py-2 bg-warning-main text-primary-fg rounded hover:bg-warning-dark"
-            >
-              Reconcile Safe
-            </Button>
-            <Button
-              onClick={() => openForm("deposit")}
-              className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
-            >
-              Bank Deposit
-            </Button>
-          </div>
+      <div className="bg-surface rounded-lg shadow-lg p-6 space-y-6">
+        {/* Balance stat card */}
+        <div className="bg-surface-2 rounded-lg border border-border-strong px-5 py-4">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+            Expected Balance
+          </p>
+          <p className="text-3xl font-heading font-bold text-foreground tabular-nums">
+            €{safeBalance.toFixed(2)}
+          </p>
+        </div>
+
+        {/* Action buttons */}
+        <div className="flex flex-wrap gap-3">
+          <Button
+            onClick={() => openForm("reconcile")}
+            color="warning"
+            tone="solid"
+            size="sm"
+          >
+            Reconcile Safe
+          </Button>
+          <Button
+            onClick={() => openForm("deposit")}
+            color="primary"
+            tone="solid"
+            size="sm"
+          >
+            Bank Deposit
+          </Button>
           <Button
             onClick={() => openForm("petty")}
-            className="px-4 py-2 bg-primary-main text-primary-fg rounded hover:bg-primary-dark"
+            color="default"
+            tone="outline"
+            size="sm"
           >
             Petty Cash
           </Button>

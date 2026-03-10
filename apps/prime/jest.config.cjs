@@ -7,6 +7,7 @@ module.exports = {
   testEnvironment: "jsdom",
   moduleNameMapper: {
     ...createJestPreset({ useCjs: true }).moduleNameMapper,
+    "^react-i18next$": "<rootDir>/__mocks__/react-i18next.ts",
     "^@acme/design-system$": "<rootDir>/../../packages/design-system/src/index.ts",
     "^@acme/design-system/(.*)$": "<rootDir>/../../packages/design-system/src/$1",
     "^next/link$": "<rootDir>/../../test/__mocks__/next-link.tsx",

@@ -3,8 +3,8 @@ Type: Business-Plan
 Status: Active
 Business: BOS
 Created: 2026-02-09
-Updated: 2026-02-09
-Last-reviewed: 2026-02-09
+Updated: 2026-03-02
+Last-reviewed: 2026-03-02
 Owner: Pete
 ---
 
@@ -51,7 +51,10 @@ Owner: Pete
 _None yet — to be populated by Cabinet sweeps_
 
 ### Under Investigation
-_None yet_
+- **BOS-P1-CASS-VERIFY-DECISION-2026-03-09** (Priority: P1, Added: 2026-03-02)
+  - Goal: Determine if evidence verification should remain full-scope or shift to risk-based in startup-loop workflows with CASS enabled.
+  - Due: 2026-03-09 (hard decision gate)
+  - Tracking artifact: `docs/business-os/strategy/BOS/2026-03-02-cass-verification-decision-scorecard.agent.md`
 
 ## Learnings
 

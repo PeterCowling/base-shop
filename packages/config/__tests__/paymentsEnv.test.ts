@@ -25,6 +25,7 @@ describe("paymentsEnv", () => {
       STRIPE_WEBHOOK_SECRET: "whsec_789",
       PAYMENTS_SANDBOX: true,
       PAYMENTS_CURRENCY: "USD",
+      AXERVE_SANDBOX: false,
     });
   });
 
@@ -50,6 +51,7 @@ describe("paymentsEnv", () => {
       STRIPE_WEBHOOK_SECRET: "whsec_test",
       PAYMENTS_SANDBOX: true,
       PAYMENTS_CURRENCY: "USD",
+      AXERVE_SANDBOX: false,
     });
   });
 });

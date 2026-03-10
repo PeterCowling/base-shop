@@ -1,4 +1,4 @@
-import type { XaProduct } from "./demoData";
+import type { XaBrand, XaProduct } from "./demoData";
 import { XA_BRANDS, XA_PRODUCTS } from "./demoData";
 import { siteConfig } from "./siteConfig";
 import type { XaCategory, XaDepartment } from "./xaTypes";
@@ -16,9 +16,28 @@ export const XA_CATEGORY_LABELS: Record<XaCategory, string> = {
   jewelry: "Jewelry",
 };
 
+export const XA_DEPARTMENT_LABELS: Record<XaDepartment, string> = {
+  women: "Iconic",
+  men: "Everyday",
+  kids: "Mini",
+};
+
 export const XA_SUBCATEGORIES: Record<XaCategory, string[]> = {
   clothing: ["outerwear", "knitwear", "tops", "shirts"],
-  bags: ["tote", "shoulder", "crossbody", "clutch", "backpack", "belt-bag", "bucket"],
+  bags: [
+    "birkin",
+    "kelly",
+    "constance",
+    "lindy",
+    "evelyne",
+    "picotin",
+    "garden-party",
+    "herbag",
+    "mini-kelly",
+    "roulis",
+    "verrou",
+    "egee",
+  ],
   jewelry: ["necklaces", "bracelets", "earrings", "rings"],
 };
 
@@ -67,26 +86,47 @@ export function getCategoryHref(category: XaCategory, department?: XaDepartment)
   return `/${category}`;
 }
 
-export function getDesignerName(handle: string): string {
-  return XA_BRANDS.find((designer) => designer.handle === handle)?.name ??
+export function getDepartmentCategoryHref(
+  department: XaDepartment,
+  category: XaCategory,
+): string {
+  return `/${department}/${category}`;
+}
+
+export function getDepartmentCategorySubcategoryHref(
+  department: XaDepartment,
+  category: XaCategory,
+  subcategory?: string,
+): string | null {
+  const normalized = (subcategory ?? "").trim();
+  if (!normalized) return null;
+  if (!XA_SUBCATEGORIES[category].includes(normalized)) return null;
+  return `/${department}/${category}/${normalized}`;
+}
+
+export function getDesignerName(handle: string, brands: XaBrand[] = XA_BRANDS): string {
+  return brands.find((designer) => designer.handle === handle)?.name ??
     formatLabel(handle);
 }
 
 export function getTrendingDesigners(
   limit = 3,
   department?: XaDepartment,
+  sourceData: { brands?: XaBrand[]; products?: XaProduct[] } = {},
 ): Array<{ handle: string; name: string }> {
-  const source = department
-    ? XA_PRODUCTS.filter((product) => product.taxonomy.department === department)
-    : XA_PRODUCTS;
+  const brands = sourceData.brands ?? XA_BRANDS;
+  const products = sourceData.products ?? XA_PRODUCTS;
+  const filteredProducts = department
+    ? products.filter((product) => product.taxonomy.department === department)
+    : products;
   const counts = new Map<string, number>();
-  for (const product of source) {
+  for (const product of filteredProducts) {
     counts.set(product.brand, (counts.get(product.brand) ?? 0) + product.popularity);
   }
   return [...counts.entries()]
     .sort((a, b) => b[1] - a[1])
     .slice(0, limit)
-    .map(([handle]) => ({ handle, name: getDesignerName(handle) }));
+    .map(([handle]) => ({ handle, name: getDesignerName(handle, brands) }));
 }
 
 export function filterByDepartment(products: XaProduct[], department?: XaDepartment) {
@@ -102,4 +142,23 @@ export function filterByCategory(products: XaProduct[], category?: XaCategory) {
 export function filterBySubcategory(products: XaProduct[], subcategory?: string) {
   if (!subcategory) return products;
   return products.filter((product) => product.taxonomy.subcategory === subcategory);
+}
+
+export function formatLabelList(values: string[], separator = " / "): string {
+  return values.map(formatLabel).join(separator);
+}
+
+export function getEffectivePrice(product: XaProduct, currency: string): number {
+  return (product.prices as Record<string, number> | undefined)?.[currency] ?? product.price;
+}
+
+export function getNewInProducts(products: XaProduct[], limit: number): XaProduct[] {
+  return [...products]
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+    .slice(0, limit);
+}
+
+type MediaItem = XaProduct["media"][number];
+export function isProductImage(item: MediaItem): item is MediaItem & { type: "image" } {
+  return item.type === "image" && item.url.trim().length > 0;
 }

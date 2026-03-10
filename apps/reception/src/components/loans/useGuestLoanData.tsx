@@ -1,6 +1,6 @@
 // File: /src/components/loans/useGuestLoanData.ts
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo } from "react";
 
 import useBookings from "../../hooks/data/useBookingsData";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
@@ -51,47 +51,29 @@ export function useGuestLoanData({
   const combinedError = bookingsError || guestDetailsError;
   const error = combinedError ? String(combinedError) : null;
 
-  const [tableData, setTableData] = useState<GuestRow[]>([]);
+  const data = useMemo<GuestRow[]>(() => {
+    if (loading || error || !bookings || !guestsDetails) return [];
 
-  useEffect(() => {
-    if (loading || error || !bookings || !guestsDetails) {
-      setTableData([]);
-      return;
-    }
-
-    const finalRows: GuestRow[] = [];
-
+    const rows: GuestRow[] = [];
     Object.entries(bookings).forEach(([bookingRef, guestsObj]) => {
       if (!guestsObj) return;
-
       Object.entries(guestsObj).forEach(([guestId, guestBooking]) => {
         if (guestId.startsWith("__")) return;
         const occ = guestBooking as FirebaseBookingOccupant | undefined;
         const { checkInDate, checkOutDate } = occ || {};
         if (!checkInDate || !checkOutDate) return;
-
-        if (!isDateWithinRange(selectedDate, checkInDate, checkOutDate)) {
-          return;
-        }
-
-        const occupantId = guestId;
+        if (!isDateWithinRange(selectedDate, checkInDate, checkOutDate)) return;
         const guestDetail = guestsDetails?.[bookingRef]?.[guestId];
-        const firstName = guestDetail?.firstName || "";
-        const lastName = guestDetail?.lastName || "";
-
-        finalRows.push({
+        rows.push({
           bookingRef,
-          occupantId,
-          firstName,
-          lastName,
+          occupantId: guestId,
+          firstName: guestDetail?.firstName || "",
+          lastName: guestDetail?.lastName || "",
         });
       });
     });
-
-    setTableData(finalRows);
+    return rows;
   }, [bookings, guestsDetails, loading, error, selectedDate]);
-
-  const data = useMemo(() => tableData, [tableData]);
 
   return {
     data,

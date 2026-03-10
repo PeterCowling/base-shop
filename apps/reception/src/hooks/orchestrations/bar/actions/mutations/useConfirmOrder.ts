@@ -5,23 +5,12 @@ import { get, ref, remove, set } from "firebase/database";
 
 import useAllTransactions from "../../../../../hooks/mutations/useAllTransactionsMutations";
 import { useFirebaseDatabase } from "../../../../../services/useFirebase";
+import type { BarOrder, BarOrderItem } from "../../../../../types/bar/BarOrderDomain";
 import { type SalesOrder, type SalesOrderItem } from "../../../../../types/bar/BarTypes";
 import { generateTransactionId } from "../../../../../utils/generateTransactionId";
 import useInventoryItems from "../../../../data/inventory/useInventoryItems";
 import useInventoryRecipes from "../../../../data/inventory/useInventoryRecipes";
 import { useInventoryLedgerMutations } from "../../../../mutations/useInventoryLedgerMutations";
-
-interface BarOrderItem {
-  product: string;
-  price: number;
-  count: number;
-  lineType?: "bds" | "kds";
-}
-
-interface BarOrder {
-  confirmed: boolean;
-  items: BarOrderItem[];
-}
 
 interface UseConfirmOrderProps {
   /**

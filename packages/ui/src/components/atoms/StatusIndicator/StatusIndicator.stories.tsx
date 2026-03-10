@@ -7,7 +7,7 @@ const meta: Meta<typeof StatusIndicator> = {
   component: StatusIndicator,
   decorators: [
     (Story) => (
-      <div className="context-operations p-8 bg-white dark:bg-darkSurface">
+      <div className="context-operations p-8 bg-surface dark:bg-darkSurface">
         <Story />
       </div>
     ),
@@ -185,9 +185,9 @@ export const DotsOnly: Story = {
 
 export const InDataTable: Story = {
   render: () => (
-    <table className="min-w-full border border-gray-200">
+    <table className="min-w-full border border-border-2">
       <thead>
-        <tr className="bg-gray-100">
+        <tr className="bg-surface-2">
           <th className="p-2 text-left">Room</th>
           <th className="p-2 text-left">Status</th>
           <th className="p-2 text-left">Guest</th>

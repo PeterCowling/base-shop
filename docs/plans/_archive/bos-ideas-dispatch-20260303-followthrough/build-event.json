@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "bos-ideas-dispatch-20260303-followthrough-20260304",
+  "feature_slug": "bos-ideas-dispatch-20260303-followthrough",
+  "emitted_at": "2026-03-04T00:30:00.000Z",
+  "why": "These dispatches identify missing links in loop-level learning and dispatch generation.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Build and document loop-closure utilities that make non-assessment changes and build outputs visible to ideas and self-evolving pipelines while preserving queue data integrity.",
+    "source": "operator"
+  }
+}

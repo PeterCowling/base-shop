@@ -72,7 +72,7 @@ Current-state findings are derived from repository evidence only (primarily `loo
 - `.claude/skills/lp-do-plan/SKILL.md` - Current plan path and planning gates.
 - `.claude/skills/lp-do-build/SKILL.md` - Current build completion and archive behavior.
 - `docs/business-os/market-research/_templates/*.md` - Current MARKET-01..05 prompt templates.
-- `docs/business-os/startup-baselines/HEAD-intake-packet.user.md` - Representative standing baseline artifact.
+- `docs/business-os/startup-baselines/HEAD-2026-02-12assessment-intake-packet.user.md` - Representative standing baseline artifact.
 
 ### Patterns & Conventions Observed
 - The startup loop is still modeled as a **single directed stage graph** with containers and stages, not as two explicit top-level layers (`loop-spec.yaml:111`, `loop-spec.yaml:523`).

@@ -236,6 +236,24 @@ The `content_rules.never` array directly feeds the prohibited claims check — a
 
 Each correction feeds back into the data files. The next session benefits immediately — no redeployment, no retraining, no configuration changes. Just edit a JSON file and commit.
 
+## Guest Email Activity (`guest-email-activity.ts`)
+
+This is a separate, simpler flow used by the reception app for system-triggered guest emails (prepayment chases, cancellation confirmations, T&C reminders). It does **not** go through the three-stage interpret/generate/quality pipeline.
+
+**How it works:**
+
+1. The reception app calls `POST /api/mcp/guest-email-activity` with `{ bookingRef, activityCode, recipients }`.
+2. `resolveTemplateSubject()` maps the activity code to a template subject string.
+3. The template is looked up by exact subject match in `data/email-templates.json`.
+4. A Gmail draft is created directly via the Gmail API (no BM25 ranking, no LLM step).
+5. If the activity code is unsupported or the template is not found, the call returns `status: deferred` and a telemetry event is logged.
+
+**Supported activity codes:** 2, 3, 4, 5, 6, 7, 8, 21, 27.
+
+**Prepayment provider inference:** booking refs starting with `7763-` are treated as Hostelworld; all others as Octorate. Can be overridden by passing `prepaymentProvider` explicitly.
+
+This helper is consumed via direct import in the reception API route, not via MCP tool dispatch.
+
 ## Testing
 
 The pipeline has comprehensive automated testing:
@@ -260,7 +278,8 @@ packages/mcp-server/
 │   │   ├── draft-generate.ts       # Stage 2: ActionPlan → Draft
 │   │   ├── draft-quality-check.ts  # Stage 3: Draft → QualityResult
 │   │   ├── gmail.ts                # Gmail API operations
-│   │   └── booking-email.ts        # Booking confirmation emails
+│   │   ├── booking-email.ts        # Booking confirmation emails
+│   │   └── guest-email-activity.ts # Activity-code-driven guest emails (reception)
 │   ├── resources/
 │   │   ├── brikette-knowledge.ts   # FAQ, rooms, pricing, policies
 │   │   ├── draft-guide.ts          # Draft quality framework

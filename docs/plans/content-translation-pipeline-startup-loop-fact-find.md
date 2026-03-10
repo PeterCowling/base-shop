@@ -39,7 +39,7 @@ This doc focuses on loop integration only: where language decisions happen, what
 
 ### Non-goals
 - Designing a human editorial localisation program (professional translation, multi-review workflows).
-- Changing the loop stage graph in `docs/business-os/startup-loop/loop-spec.yaml`.
+- Changing the loop stage graph in `docs/business-os/startup-loop/specifications/loop-spec.yaml`.
 - Rewriting the implementation plan tasks; this doc links to them.
 
 ### Constraints and assumptions
@@ -60,8 +60,8 @@ This doc focuses on loop integration only: where language decisions happen, what
 - `docs/i18n/translatable-content-audit.md` (inventory and locale model split: UI_LOCALES vs CONTENT_LOCALES)
 
 ### Startup loop authority
-- `docs/business-os/startup-loop/loop-spec.yaml` (authoritative stage graph)
-- `docs/business-os/startup-loop/autonomy-policy.md` (guarded vs autonomous boundaries)
+- `docs/business-os/startup-loop/specifications/loop-spec.yaml` (authoritative stage graph)
+- `docs/business-os/startup-loop/specifications/autonomy-policy.md` (guarded vs autonomous boundaries)
 
 ## Findings
 - Localisation affects acquisition (channel/SEO surfaces) and conversion (landing page trust, legal clarity, purchase confidence).

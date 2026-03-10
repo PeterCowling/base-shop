@@ -1,5 +1,5 @@
 {
-  "slug": "positano-sorrento-bus",
+  "slug": "positano-sorentto-bus",
   "meta": {
     "title": "Từ Positano đến Sorrento bằng xe buýt | Hostel Brikette",
     "description": "Chỉ dẫn từng bước từ Hostel Brikette tới Sorrento bằng xe buýt SITA, bao gồm vé, mẹo xem lịch và trạm Chiesa Nuova."
@@ -32,7 +32,7 @@
         "Đi vào Chủ nhật hoặc ngày lễ? Dùng cột ‘G’ và ‘H’."
       ],
       "link": "Xem lịch cập nhật trên <link>Positano.com</link>.",
-      "linkLabel": "Positano.com",
+      "linkLabel": "Xem thời gian biểu",
       "linkHref": "https://www.positano.com/en/bus-schedule?route=amalfi_positano_sorrento#section-schedule-result"
     },
     "positanoStop": {

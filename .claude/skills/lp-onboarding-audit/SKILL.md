@@ -42,7 +42,7 @@ Audit an app's onboarding experience against the universal "Onboarding Done Righ
 | Strategy plan | `docs/business-os/strategy/<BIZ>/plan.user.md` | Yes |
 | Business registry | `docs/business-os/strategy/businesses.json` | Yes |
 | Generic checklist | `.claude/skills/_shared/onboarding-done-right-checklist.md` | Yes |
-| Brand language | `docs/business-os/strategy/<BIZ>/brand-dossier.user.md` | No — enhances customization |
+| Brand language | `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` | No — enhances customization |
 | App name | `<app>` argument (e.g., `prime`) | No — if BIZ has multiple apps |
 | Scope limit | `--scope A,B,E` argument | No — audit specific sections only |
 

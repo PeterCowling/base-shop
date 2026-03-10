@@ -1,5 +1,4 @@
 import { type CheckInRow, checkInRowSchema } from "../../../types/component/CheckinRow";
-import type { OccupantDateOfBirth } from "../../../types/component/dob";
 import type { Financials } from "../../../types/domains/booking_old";
 import type { Activity } from "../../../types/hooks/data/activitiesData";
 import {
@@ -8,7 +7,7 @@ import {
 } from "../../../types/hooks/data/bookingsData";
 import type { CityTaxData } from "../../../types/hooks/data/cityTaxData";
 import type { GuestByRoomData } from "../../../types/hooks/data/guestByRoomData";
-import type { GuestsDetails } from "../../../types/hooks/data/guestDetailsData";
+import type { DateOfBirth, GuestsDetails } from "../../../types/hooks/data/guestDetailsData";
 import type { Loans, OccupantLoanData } from "../../../types/hooks/data/loansData";
 import { getCurrentIsoTimestamp, parseYMD } from "../../../utils/dateUtils";
 import { parseLoanItem, parseLoanMethod, parseTxType } from "../../../utils/loanParsers";
@@ -163,7 +162,7 @@ export function buildCheckinRows({
         };
       }
 
-      let dobObject: OccupantDateOfBirth = { dd: "", mm: "", yyyy: "" };
+      let dobObject: DateOfBirth = { dd: "", mm: "", yyyy: "" };
       if (occupantDetailsObj?.dateOfBirth) {
         const { dd, mm, yyyy } = occupantDetailsObj.dateOfBirth;
         dobObject = {

@@ -1,0 +1,34 @@
+{
+  "errors": {
+    "invalidJsonBody": "Invalid JSON body",
+    "requestedCheckOutDateIso": "requestedCheckOutDate must be ISO YYYY-MM-DD",
+    "noteTooLong": "note must be 500 characters or fewer",
+    "guestUuidMissing": "guestUuid missing for session",
+    "rateLimitExceeded": "Too many extension requests. Please wait before retrying.",
+    "currentCheckoutUnavailable": "Current checkout date unavailable for this booking",
+    "requestedCheckoutAfterCurrent": "requestedCheckOutDate must be after current checkout date",
+    "targetEmailNotConfigured": "Extension request routing is temporarily unavailable",
+    "submitFailed": "Failed to submit extension request"
+  },
+  "messages": {
+    "deduplicated": "Extension request already submitted recently.",
+    "submitted": "Extension request sent. Reception usually replies by email within one business day."
+  },
+  "requestRecord": {
+    "defaultGuestName": "Guest"
+  },
+  "outboundDraft": {
+    "subject": "[Prime] Extension request {{bookingId}}",
+    "body": {
+      "intro": "Prime extension request received.",
+      "booking": "Booking: {{bookingId}}",
+      "guestUuid": "Guest UUID: {{guestUuid}}",
+      "guestName": "Guest name: {{guestName}}",
+      "currentCheckout": "Current checkout: {{currentCheckOutDate}}",
+      "requestedCheckout": "Requested checkout: {{requestedCheckOutDate}}",
+      "note": "Note: {{note}}",
+      "requestId": "Request ID: {{requestId}}",
+      "none": "(none)"
+    }
+  }
+}

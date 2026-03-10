@@ -5,14 +5,15 @@ import type { SlugKey } from "@/types/slugs";
  * Localized slugs are rewritten/redirected to these segment names.
  */
 export const INTERNAL_SEGMENT_BY_KEY: Readonly<Record<SlugKey, string>> = {
-  rooms: "rooms",
+  rooms: "dorms",
   deals: "deals",
   careers: "careers",
   about: "about",
   assistance: "assistance",
   experiences: "experiences",
   howToGetHere: "how-to-get-here",
-  apartment: "apartment",
+  apartment: "private-rooms",
+  privateBooking: "book-private-accommodations",
   book: "book",
   guides: "guides",
   guidesTags: "tags",
@@ -22,6 +23,7 @@ export const INTERNAL_SEGMENT_BY_KEY: Readonly<Record<SlugKey, string>> = {
   cookiePolicy: "cookie-policy",
   breakfastMenu: "breakfast-menu",
   barMenu: "bar-menu",
+  doubleRoomBooking: "private-rooms/double-room/book",
 };
 
 /**
@@ -36,6 +38,7 @@ export const TOP_LEVEL_SEGMENT_KEYS: readonly SlugKey[] = [
   "experiences",
   "howToGetHere",
   "apartment",
+  "privateBooking",
   "book",
   "guides",
   "terms",
@@ -44,6 +47,7 @@ export const TOP_LEVEL_SEGMENT_KEYS: readonly SlugKey[] = [
   "cookiePolicy",
   "breakfastMenu",
   "barMenu",
+  "doubleRoomBooking",
 ];
 
 /**
@@ -63,8 +67,34 @@ export const STATIC_EXPORT_SECTION_KEYS: readonly SlugKey[] = [
   "assistance",
   "experiences",
   "howToGetHere",
+  "privateBooking",
   "book",
   "apartment",
+  "doubleRoomBooking",
+];
+
+/**
+ * Public canonical sections that should appear in sitemap / hreflang inventories.
+ * Booking entry routes are intentionally excluded when they are treated as
+ * transactional / noindex surfaces rather than indexable content pages.
+ */
+export const PUBLIC_INDEXABLE_SECTION_KEYS: readonly SlugKey[] = [
+  "about",
+  "rooms",
+  "deals",
+  "careers",
+  "breakfastMenu",
+  "barMenu",
+  "terms",
+  "houseRules",
+  "privacyPolicy",
+  "cookiePolicy",
+  "assistance",
+  "experiences",
+  "howToGetHere",
+  "privateBooking",
+  "apartment",
+  "doubleRoomBooking",
 ];
 
 /**

@@ -15,7 +15,6 @@ import { Button } from "@acme/design-system/atoms";
 
 import { useAuth } from "../context/AuthContext";
 import { readJson, removeItem,writeJson } from "../lib/offline/storage";
-import { useReceptionTheme } from "../providers/ReceptionThemeProvider";
 import {
   getFirebaseAuth,
   sendPasswordResetEmail,
@@ -24,6 +23,8 @@ import { useFirebaseApp } from "../services/useFirebase";
 import type { DevicePin } from "../types/domains/userDomain";
 
 const DEVICE_PIN_KEY = "reception:devicePin";
+
+type LoginPanel = "credentials" | "forgotPassword" | "pinSetup" | "pinUnlock";
 const PIN_LENGTH = 6;
 
 async function hashPin(pin: string): Promise<string> {
@@ -34,7 +35,7 @@ async function hashPin(pin: string): Promise<string> {
   return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-// Icon components for password visibility toggle and dark mode
+// Icon components for password visibility toggle
 function EyeIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -80,45 +81,7 @@ function EyeSlashIcon({ className }: { className?: string }) {
   );
 }
 
-function SunIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className={className}
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
-      />
-    </svg>
-  );
-}
 
-function MoonIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 24 24"
-      strokeWidth={1.5}
-      stroke="currentColor"
-      className={className}
-      aria-hidden="true"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"
-      />
-    </svg>
-  );
-}
 
 interface LoginProps {
   onLoginSuccess?: () => void;
@@ -126,7 +89,6 @@ interface LoginProps {
 
 function Login({ onLoginSuccess }: LoginProps) {
   const { login, status } = useAuth();
-  const { toggleDark, dark } = useReceptionTheme();
   const app = useFirebaseApp();
   const auth = useMemo(() => getFirebaseAuth(app), [app]);
 
@@ -137,8 +99,10 @@ function Login({ onLoginSuccess }: LoginProps) {
   const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Panel state (discriminated union)
+  const [loginPanel, setLoginPanel] = useState<LoginPanel>("credentials");
+
   // Forgot password state
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetStatus, setResetStatus] = useState<
     "idle" | "sending" | "sent" | "error"
@@ -147,8 +111,6 @@ function Login({ onLoginSuccess }: LoginProps) {
 
   // Device PIN state
   const [devicePin, setDevicePin] = useState<DevicePin | null>(null);
-  const [showPinSetup, setShowPinSetup] = useState(false);
-  const [showPinUnlock, setShowPinUnlock] = useState(false);
   const [pinInput, setPinInput] = useState("");
   const [pinError, setPinError] = useState<string | null>(null);
 
@@ -161,20 +123,20 @@ function Login({ onLoginSuccess }: LoginProps) {
     const stored = readJson<DevicePin>(DEVICE_PIN_KEY);
     if (stored) {
       setDevicePin(stored);
-      setShowPinUnlock(true);
+      setLoginPanel("pinUnlock");
     }
   }, []);
 
   // Focus appropriate input
   useEffect(() => {
-    if (showForgotPassword) {
+    if (loginPanel === "forgotPassword") {
       resetEmailRef.current?.focus();
-    } else if (showPinUnlock) {
+    } else if (loginPanel === "pinUnlock") {
       pinRef.current?.focus();
     } else {
       emailRef.current?.focus();
     }
-  }, [showPinUnlock, showForgotPassword]);
+  }, [loginPanel]);
 
   const handleEmailLogin = useCallback(
     async (e: FormEvent) => {
@@ -189,7 +151,7 @@ function Login({ onLoginSuccess }: LoginProps) {
       if (result.success) {
         // Ask if they want to set up device PIN (if not already set)
         if (!devicePin) {
-          setShowPinSetup(true);
+          setLoginPanel("pinSetup");
         } else {
           onLoginSuccess?.();
         }
@@ -219,14 +181,14 @@ function Login({ onLoginSuccess }: LoginProps) {
   );
 
   const handleBackToLogin = useCallback(() => {
-    setShowForgotPassword(false);
+    setLoginPanel("credentials");
     setResetStatus("idle");
     setResetError(null);
     setResetEmail("");
   }, []);
 
   const handleShowForgotPassword = useCallback(() => {
-    setShowForgotPassword(true);
+    setLoginPanel("forgotPassword");
     setResetEmail(email); // Pre-fill with entered email
   }, [email]);
 
@@ -243,7 +205,7 @@ function Login({ onLoginSuccess }: LoginProps) {
 
       writeJson(DEVICE_PIN_KEY, newDevicePin);
       setDevicePin(newDevicePin);
-      setShowPinSetup(false);
+      setLoginPanel("credentials");
       onLoginSuccess?.();
     },
     [onLoginSuccess]
@@ -269,14 +231,14 @@ function Login({ onLoginSuccess }: LoginProps) {
   );
 
   const handleSkipPinSetup = useCallback(() => {
-    setShowPinSetup(false);
+    setLoginPanel("credentials");
     onLoginSuccess?.();
   }, [onLoginSuccess]);
 
   const handleClearDevicePin = useCallback(() => {
     removeItem(DEVICE_PIN_KEY);
     setDevicePin(null);
-    setShowPinUnlock(false);
+    setLoginPanel("credentials");
     setPinInput("");
   }, []);
 
@@ -287,20 +249,20 @@ function Login({ onLoginSuccess }: LoginProps) {
       setPinError(null);
 
       if (digits.length === PIN_LENGTH) {
-        if (showPinSetup) {
+        if (loginPanel === "pinSetup") {
           handlePinSetup(digits);
         } else {
           handlePinUnlock(digits);
         }
       }
     },
-    [showPinSetup, handlePinSetup, handlePinUnlock]
+    [loginPanel, handlePinSetup, handlePinUnlock]
   );
 
   // Render forgot password screen
-  if (showForgotPassword) {
+  if (loginPanel === "forgotPassword") {
     return (
-      <LoginContainer dark={dark} toggleDark={toggleDark}>
+      <LoginContainer>
         <ProductLogo />
         <h1 className="mt-6 text-xl font-semibold text-foreground">
           Reset your password
@@ -329,20 +291,21 @@ function Login({ onLoginSuccess }: LoginProps) {
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
                 placeholder="name@company.com"
-                className="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+                className="mt-1.5 w-full rounded-lg border border-border-strong px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
               />
             </div>
 
             {resetError && (
-              <p role="alert" className="text-sm font-medium text-error-main">
+              <p role="alert" className="text-sm font-medium text-danger-fg">
                 {resetError}
               </p>
             )}
 
             <Button
               type="submit"
+              compatibilityMode="passthrough"
               disabled={resetStatus === "sending"}
-              className="w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-primary-dark focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2 disabled:opacity-50"
+              className="w-full h-11 px-5 rounded-lg text-base font-medium bg-primary-main text-primary-fg hover:bg-primary-dark transition-colors disabled:opacity-50"
             >
               {resetStatus === "sending" ? "Sending..." : "Send reset link"}
             </Button>
@@ -359,8 +322,10 @@ function Login({ onLoginSuccess }: LoginProps) {
 
         <Button
           type="button"
+          color="primary"
+          tone="quiet"
           onClick={handleBackToLogin}
-          className="mt-4 w-full text-center text-sm font-medium text-primary-main hover:text-primary-main"
+          className="mt-4 w-full"
         >
           Back to sign in
         </Button>
@@ -370,9 +335,9 @@ function Login({ onLoginSuccess }: LoginProps) {
   }
 
   // Render PIN setup screen
-  if (showPinSetup) {
+  if (loginPanel === "pinSetup") {
     return (
-      <LoginContainer dark={dark} toggleDark={toggleDark}>
+      <LoginContainer>
         <ProductLogo />
         <h1 className="mt-6 text-xl font-semibold text-foreground">
           Set up quick unlock
@@ -395,14 +360,17 @@ function Login({ onLoginSuccess }: LoginProps) {
             value={pinInput}
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter 6-digit PIN"
-            className="w-full rounded-lg border border-border-2 px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+            className="w-full rounded-lg border border-border-strong px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
           />
         </div>
 
         <Button
           type="button"
+          color="default"
+          tone="outline"
+          size="lg"
           onClick={handleSkipPinSetup}
-          className="mt-4 w-full rounded-lg border border-border-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
+          className="mt-4 w-full"
         >
           Skip for now
         </Button>
@@ -412,10 +380,10 @@ function Login({ onLoginSuccess }: LoginProps) {
   }
 
   // Render PIN unlock screen
-  if (showPinUnlock && devicePin) {
+  if (loginPanel === "pinUnlock" && devicePin) {
     const pinErrorId = "pin-error";
     return (
-      <LoginContainer dark={dark} toggleDark={toggleDark}>
+      <LoginContainer>
         <ProductLogo />
         <h1 className="mt-6 text-xl font-semibold text-foreground">
           Welcome back
@@ -439,7 +407,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter PIN"
             aria-describedby={pinError ? pinErrorId : undefined}
-            className="w-full rounded-lg border border-border-2 px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+            className="w-full rounded-lg border border-border-strong px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
           />
         </div>
 
@@ -447,7 +415,7 @@ function Login({ onLoginSuccess }: LoginProps) {
           <p
             id={pinErrorId}
             role="alert"
-            className="mt-2 text-sm font-medium text-error-main"
+            className="mt-2 text-sm font-medium text-danger-fg"
           >
             {pinError}
           </p>
@@ -455,8 +423,11 @@ function Login({ onLoginSuccess }: LoginProps) {
 
         <Button
           type="button"
+          color="default"
+          tone="outline"
+          size="lg"
           onClick={handleClearDevicePin}
-          className="mt-4 w-full rounded-lg border border-border-2 px-4 py-3 text-sm font-medium text-foreground hover:bg-surface-2 focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
+          className="mt-4 w-full"
         >
           Sign in with email instead
         </Button>
@@ -468,12 +439,9 @@ function Login({ onLoginSuccess }: LoginProps) {
   // Render email/password login
   const loginErrorId = "login-error";
   return (
-    <LoginContainer dark={dark} toggleDark={toggleDark}>
+    <LoginContainer>
       <ProductLogo />
-      <h1 className="mt-6 text-xl font-semibold text-foreground">
-        Sign in to Reception
-      </h1>
-      <p className="mt-2 text-sm text-muted-foreground">
+      <p className="mt-6 text-sm text-foreground/70">
         Enter your credentials to continue.
       </p>
 
@@ -495,7 +463,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="name@company.com"
             aria-describedby={error ? loginErrorId : undefined}
-            className="mt-1.5 w-full rounded-lg border border-border-2 px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+            className="mt-1.5 w-full rounded-lg border border-border-strong px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
           />
         </div>
 
@@ -509,8 +477,10 @@ function Login({ onLoginSuccess }: LoginProps) {
             </label>
             <Button
               type="button"
+              color="primary"
+              tone="quiet"
+              size="sm"
               onClick={handleShowForgotPassword}
-              className="text-sm font-medium text-primary-main hover:text-primary-main"
             >
               Forgot password?
             </Button>
@@ -524,12 +494,15 @@ function Login({ onLoginSuccess }: LoginProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               aria-describedby={error ? loginErrorId : undefined}
-              className="w-full rounded-lg border border-border-2 px-4 py-2.5 pr-10 text-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+              className="w-full rounded-lg border border-border-strong px-4 py-2.5 pr-10 text-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
             />
             <Button
               type="button"
+              color="default"
+              tone="ghost"
+              size="sm"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
@@ -545,7 +518,7 @@ function Login({ onLoginSuccess }: LoginProps) {
           <p
             id={loginErrorId}
             role="alert"
-            className="text-sm font-medium text-error-main"
+            className="text-sm font-medium text-danger-fg"
           >
             {error}
           </p>
@@ -553,8 +526,9 @@ function Login({ onLoginSuccess }: LoginProps) {
 
         <Button
           type="submit"
+          compatibilityMode="passthrough"
           disabled={isSubmitting || status === "loading"}
-          className="w-full rounded-lg bg-primary-main px-4 py-3 font-medium text-primary-fg hover:bg-primary-dark focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2 disabled:opacity-50"
+          className="w-full h-11 px-5 rounded-lg text-base font-medium bg-primary-main text-primary-fg hover:bg-primary-dark transition-colors disabled:opacity-50"
         >
           {isSubmitting ? "Signing in..." : "Sign in"}
         </Button>
@@ -568,10 +542,10 @@ function ProductLogo() {
   return (
     <div className="flex items-center justify-center">
       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary-main">
-        <span className="text-lg font-bold text-primary-fg">R</span>
+        <span className="text-lg font-bold text-primary-fg">B</span>
       </div>
-      <span className="ms-3 text-xl font-semibold text-foreground">
-        Reception
+      <span className="ms-3 text-xl font-semibold text-primary-main">
+        Brikette Operating System
       </span>
     </div>
   );
@@ -580,28 +554,12 @@ function ProductLogo() {
 
 interface LoginContainerProps {
   children: React.ReactNode;
-  dark: boolean;
-  toggleDark: () => void;
 }
 
-function LoginContainer({ children, dark, toggleDark }: LoginContainerProps) {
+function LoginContainer({ children }: LoginContainerProps) {
   return (
-    <div className="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-surface-2 via-surface-2 to-surface-3 px-4">
-      <div className="relative w-full max-w-md rounded-2xl bg-surface px-8 py-10 shadow-xl">
-        <Button
-          type="button"
-          onClick={toggleDark}
-          aria-pressed={dark}
-          aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-          className="absolute right-4 top-4 rounded-lg p-2 text-muted-foreground hover:bg-surface-2 hover:text-muted-foreground focus:outline-none focus-visible:focus:ring-2 focus:ring-ring focus-visible:focus:ring-offset-2"
-        >
-          {dark ? (
-            <SunIcon className="h-5 w-5" />
-          ) : (
-            <MoonIcon className="h-5 w-5" />
-          )}
-        </Button>
-
+    <div className="flex min-h-dvh w-full items-center justify-center bg-gradient-to-br from-surface via-surface-1 to-surface-1 px-4">
+      <div className="relative w-full max-w-md rounded-lg bg-surface-2 border border-border-strong px-8 py-10 shadow-xl ring-1 ring-border-1/30">
         {children}
       </div>
     </div>

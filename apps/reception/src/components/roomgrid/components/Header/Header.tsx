@@ -1,8 +1,8 @@
 import type { FC } from "react";
 
 import { TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { cn as clsx } from "@acme/design-system/utils/style";
 
-import clsx from "../../../../utils/clsx";
 import { useMainContext } from "../../context";
 import { useDaysRange } from "../../hooks";
 import type { TDaysRange } from "../../interfaces/daysRange.interface";

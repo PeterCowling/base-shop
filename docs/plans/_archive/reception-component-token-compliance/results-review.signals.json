@@ -1,0 +1,25 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-08T12:32:37.245Z",
+  "plan_slug": "reception-component-token-compliance",
+  "source_path": "../docs/plans/reception-component-token-compliance/results-review.user.md",
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic — Extract shared PIN digit colour array into a single constant",
+      "body": "PinInput.tsx and PinLoginInline.tsx have identical duplicated arrays (noted in plan Decision Log as adjacent scope)",
+      "suggested_action": "defer",
+      "source": "results-review.user.md",
+      "date": "2026-03-08T00:00:00.000Z",
+      "path": "../docs/plans/reception-component-token-compliance/results-review.user.md",
+      "idea_key": "00b52b1227491e31f594c8147176049181f52be8",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "event_type": "build_complete",
+  "feature_slug": "reception-date-selector-unification",
+  "build_date": "2026-03-09",
+  "outcome_type": "operational",
+  "outcome_statement": "A single shared DateSelector component in common/ replaces all 5 variants. Access-level and quick-range differences are parameterised. All 5 callers are migrated. Existing tests pass.",
+  "why": "5 copies of the same component meant any date selector bug or UI change required 5 coordinated edits. Bugs had already diverged (inline vs popup calendar, inconsistent DayPicker color tokens).",
+  "source": "auto",
+  "tasks_completed": 8,
+  "tasks_total": 8,
+  "commits": ["def00d4323", "c7f3c0997f", "1c20c82573"],
+  "validation": {
+    "typecheck": "pass",
+    "lint": "pass",
+    "validate_changes_sh": "pass",
+    "ci": "pending"
+  }
+}

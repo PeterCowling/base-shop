@@ -3,7 +3,11 @@
   "meta": {
     "title": "15 % sparen bei Aufenthalten vom 20. September bis 31. Oktober",
     "description": "Zeitlich begrenztes Angebot: 15 % sparen bei Direktbuchungen für Aufenthalte vom 20. September bis 31. Oktober.",
-    "ogImageAlt": "Banner für zeitlich begrenzten Rabatt"
+    "ogImageAlt": "Banner für zeitlich begrenzten Rabatt",
+    "defaultTitle": "Angebote &amp; Angebote | Hostel Brikette",
+    "defaultDescription": "Direktbuchung perks und saisonale Angebote im Hostel Brikette.",
+    "activeTitle": "{{percent}} auf Aufenthalten von {{from}} bis {{to}}",
+    "activeDescription": "Autobenutzt beim Checkout. Nur direkte Buchungen."
   },
   "title": "Spare {{percent}} % bei Aufenthalten vom {{from}} bis {{to}}",
   "promo": "Direkt buchen – dein {{percent}} %-Rabatt wird beim Checkout automatisch angewendet.",

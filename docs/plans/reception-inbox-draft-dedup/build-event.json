@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-draft-dedup-2026-03-07",
+  "feature_slug": "reception-inbox-draft-dedup",
+  "emitted_at": "2026-03-07T15:30:00.000Z",
+  "why": "Duplicate pending drafts for the same thread create confusion in the inbox UI and waste operator attention sorting through redundant drafts.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Only one pending draft exists per thread at any time; subsequent draft_generate calls either replace or skip if a pending draft already exists.",
+    "source": "operator"
+  }
+}

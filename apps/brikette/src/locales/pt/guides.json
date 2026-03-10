@@ -6,7 +6,7 @@
     "viewAll": "Ver todos os guias",
     "helpfulGuides": "Guias úteis",
     "alsoSee": "Veja também",
-    "sectionFallback": "Section {{position}}"
+    "sectionFallback": "Secção {{position}}"
   },
   "meta": {
     "index": {
@@ -347,5 +347,10 @@
         "experience": "Experiências"
       }
     }
+  },
+  "search": {
+    "noResults": "Nenhum guia encontrado",
+    "resultsCount_one": "Guia _TOK0__ encontrado",
+    "resultsCount_other": "Encontrado {{count}} guias"
   }
 }

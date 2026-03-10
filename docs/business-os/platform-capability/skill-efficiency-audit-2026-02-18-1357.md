@@ -34,7 +34,7 @@ Status: Active
 
 **New H2 finding (HIGH tier):** lp-sequence newly appears as dispatch-candidate (phase_matches 0→9 due to Step-N headings in new module files). Advisory: false positive — modules contain sequential algorithm steps, not parallel dispatch domains.
 
-Compliant skills (H1 and H2 clean): draft-outreach, lp-bos-sync, lp-assessment-bootstrap\*,
+Compliant skills (H1 and H2 clean): draft-outreach, lp-prioritize, lp-assessment-bootstrap\*,
 lp-channels, lp-design-qa, lp-design-system, lp-launch-qa, lp-prioritize, lp-refactor,
 lp-do-replan\*, lp-seo, lp-signal-review\*, lp-site-upgrade\*, startup-loop.
 

@@ -1,0 +1,12 @@
+{
+  "title": "Forhåndsvisning av gjestfrihet",
+  "guestActivation": {
+    "label": "Gjesteaktivering",
+    "description": "Siste 7 dager"
+  },
+  "signalBridge": {
+    "title": "Signal bro sjekk",
+    "etaShared": "ETA delt",
+    "cashPrepared": "Kontant forberedt"
+  }
+}

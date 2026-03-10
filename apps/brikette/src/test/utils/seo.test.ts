@@ -1,5 +1,6 @@
-
 import "@testing-library/jest-dom";
+
+import { getPrivateRoomChildSlug } from "@acme/ui/config/privateRoomChildSlugs";
 
 import { ASSISTANCE_GUIDE_KEYS } from "@/data/assistanceGuideKeys";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
@@ -41,8 +42,8 @@ describe("buildLinks", () => {
   });
 
   it("handles localized subpaths with stripped prefix", () => {
-    const links = buildLinks({ lang: "en", origin, path: "/en/rooms" });
-    expect(links[0].href).toBe(`${origin}/en/rooms`);
+    const links = buildLinks({ lang: "en", origin, path: "/en/dorms" });
+    expect(links[0].href).toBe(`${origin}/en/dorms`);
     expect(links.some((link) => link.href.includes("/fr/chambres"))).toBe(true);
   });
 
@@ -81,11 +82,11 @@ describe("buildLinks", () => {
   });
 
   it("produces localized alternates for apartment page", () => {
-    const links = buildLinks({ lang: "en", origin, path: "/en/apartment" });
+    const links = buildLinks({ lang: "en", origin, path: "/en/private-rooms" });
     const fr = links.find((link) => link.hrefLang === "fr");
     const it = links.find((link) => link.hrefLang === "it");
-    expect(fr?.href).toBe(`${origin}/fr/appartements`);
-    expect(it?.href).toBe(`${origin}/it/appartamenti`);
+    expect(fr?.href).toBe(`${origin}/fr/chambres-privees`);
+    expect(it?.href).toBe(`${origin}/it/camere-private`);
   });
 
   it("produces localized alternates for guides pages", () => {
@@ -106,12 +107,20 @@ describe("buildLinks", () => {
     );
   });
 
-  it("produces localized alternates for rooms detail pages (slug preserved)", () => {
-    const links = buildLinks({ lang: "en", origin, path: "/en/rooms/double_room" });
+  it("produces localized alternates for private-rooms detail pages", () => {
+    const links = buildLinks({
+      lang: "en",
+      origin,
+      path: `/en/private-rooms/${getPrivateRoomChildSlug("double-room", "en")}`,
+    });
     const fr = links.find((link) => link.hrefLang === "fr");
     const it = links.find((link) => link.hrefLang === "it");
-    expect(fr?.href).toBe(`${origin}/fr/chambres/double_room`);
-    expect(it?.href).toBe(`${origin}/it/camere/double_room`);
+    expect(fr?.href).toBe(
+      `${origin}/fr/chambres-privees/${getPrivateRoomChildSlug("double-room", "fr")}`,
+    );
+    expect(it?.href).toBe(
+      `${origin}/it/camere-private/${getPrivateRoomChildSlug("double-room", "it")}`,
+    );
   });
 
   it("produces localized alternates for careers page", () => {
@@ -123,9 +132,9 @@ describe("buildLinks", () => {
   });
 
   it("includes x-default pointing to fallback language on subpage", () => {
-    const links = buildLinks({ lang: "en", origin, path: "/en/rooms" });
+    const links = buildLinks({ lang: "en", origin, path: "/en/dorms" });
     const xDefault = links.find((link) => link.hrefLang === "x-default");
-    expect(xDefault?.href).toBe(`${origin}/en/rooms`);
+    expect(xDefault?.href).toBe(`${origin}/en/dorms`);
   });
 
   it("home '/' canonical and alternates are correct", () => {
@@ -164,7 +173,7 @@ describe("buildLinks", () => {
   it("normalizes alternate hrefs (no double slashes after protocol)", () => {
     const cases = [
       "/en",
-      "/en/rooms",
+      "/en/dorms",
       `/en/${getSlug("assistance", "en")}/arriving-by-ferry`,
     ];
     for (const path of cases) {
@@ -216,7 +225,7 @@ describe("buildLinks", () => {
   });
 
   it("produces Spanish and Russian alternates for rooms and deals", () => {
-    const roomLinks = buildLinks({ lang: "en", origin, path: "/en/rooms" });
+    const roomLinks = buildLinks({ lang: "en", origin, path: "/en/dorms" });
     const esRooms = roomLinks.find((link) => link.hrefLang === "es");
     const ruRooms = roomLinks.find((link) => link.hrefLang === "ru");
     expect(esRooms?.href).toBe(`${origin}/es/habitaciones`);
@@ -297,14 +306,14 @@ describe("buildBreadcrumb", () => {
     const graph = buildBreadcrumb({
       lang: "en",
       origin,
-      path: "/en/rooms",
-      title: "Rooms",
+      path: "/en/dorms",
+      title: "Dorms",
       homeLabel: "Home",
     });
 
     expect(graph.itemListElement).toHaveLength(2);
     expect(graph.itemListElement[1]).toEqual(
-      expect.objectContaining({ name: "Rooms", item: `${origin}/en/rooms` }),
+      expect.objectContaining({ name: "Dorms", item: `${origin}/en/dorms` }),
     );
   });
 });

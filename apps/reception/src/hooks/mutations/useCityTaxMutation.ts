@@ -1,19 +1,20 @@
 /* File: /src/hooks/mutations/useCityTaxMutation.ts */
 
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 import { ref, update } from "firebase/database";
 
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { type CityTaxRecord } from "../../types/hooks/data/cityTaxData";
+import type { MutationState } from "../../types/hooks/mutations/mutationState";
 
-interface UseCityTaxMutationResult {
+import useMutationState from "./useMutationState";
+
+interface UseCityTaxMutationResult extends MutationState<void> {
   saveCityTax: (
     bookingRef: string,
     occupantId: string,
     taxData: Partial<CityTaxRecord>
   ) => Promise<void>;
-  loading: boolean;
-  error: unknown;
 }
 
 /**
@@ -22,8 +23,7 @@ interface UseCityTaxMutationResult {
  */
 export default function useCityTaxMutation(): UseCityTaxMutationResult {
   const database = useFirebaseDatabase();
-  const [error, setError] = useState<unknown>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { loading, error, run } = useMutationState();
 
   const saveCityTax = useCallback(
     async (
@@ -31,21 +31,13 @@ export default function useCityTaxMutation(): UseCityTaxMutationResult {
       occupantId: string,
       taxData: Partial<CityTaxRecord>
     ) => {
-      setLoading(true);
-      setError(null);
-
       const cityTaxRef = ref(database, `cityTax/${bookingRef}/${occupantId}`);
 
-      try {
+      await run(async () => {
         await update(cityTaxRef, taxData);
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
+      });
     },
-    [database]
+    [database, run]
   );
 
   return { saveCityTax, loading, error };

@@ -7,8 +7,6 @@ import {
   AccordionTrigger,
 } from "@acme/design-system/atoms";
 import { Section } from "@acme/design-system/atoms/Section";
-import { FeedbackPreferenceCard } from "@acme/ui/components/organisms/FeedbackPreferenceCard";
-import { NewsletterInterestCard } from "@acme/ui/components/organisms/NewsletterInterestCard";
 import { SupportSidebarNav } from "@acme/ui/components/organisms/SupportSidebarNav";
 import { SupportTwoColumnLayout } from "@acme/ui/components/organisms/SupportTwoColumnLayout";
 
@@ -28,8 +26,8 @@ export default function HowToShopPage() {
     { label: "FAQs", href: "/faqs" },
     { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l28c14"), href: "/pages/terms-of-service" },
     { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l29c14"), href: "/pages/privacy-policy" },
-    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l30c14"), href: "/pages/terms-of-service" },
-    { label: "Accessibility", href: "/pages/contact-us" },
+    { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l30c14"), href: "/pages/terms-of-service#modern-slavery" },
+    { label: "Accessibility", href: "/pages/contact-us#accessibility" },
     { label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l32c14"), href: "/pages/privacy-policy#cookies" },
     {
       label: xaI18n.t("xaB.src.app.pages.how.to.shop.page.l34c14"),
@@ -87,31 +85,6 @@ export default function HowToShopPage() {
               </AccordionItem>
             </Accordion>
 
-            <FeedbackPreferenceCard
-              interactive={false}
-              className="space-y-2 border-0 p-0"
-              title="Tell us what you think"
-              titleClassName={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l125c30")}
-              question={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l126c24")}
-              questionClassName={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l127c33")}
-              options={[
-                { id: "yes", label: "Yes" },
-                { id: "not-really", label: "Not really" },
-              ]}
-              optionsClassName={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l132c32")}
-            />
-
-            <NewsletterInterestCard
-              title="Never miss a thing"
-              description={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l137c27")}
-              channelLabel={xaI18n.t("xaB.src.app.pages.how.to.shop.page.l138c28")}
-              channelValue="Email"
-              ctaLabel="Sign Up"
-              legalNote={
-                <>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l142c19")}{" "}
-                  <Link href="/pages/privacy-policy" className="text-foreground underline">{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l145c92")}</Link>{xaI18n.t("xaB.src.app.pages.how.to.shop.page.l147c26")}</>
-              }
-            />
         </SupportTwoColumnLayout>
       </Section>
     </main>

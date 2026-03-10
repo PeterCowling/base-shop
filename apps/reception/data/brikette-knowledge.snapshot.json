@@ -1,0 +1,1092 @@
+{
+  "generatedAt": "2026-03-06T20:05:03.328Z",
+  "source": {
+    "faq": "apps/brikette/src/locales/en/faq.json",
+    "rooms": "apps/brikette/src/locales/en/rooms.json",
+    "houseRules": "apps/brikette/src/locales/en/houseRulesPage.json",
+    "breakfastMenu": "apps/brikette/src/locales/en/breakfastMenuPage.json",
+    "barMenu": "apps/brikette/src/locales/en/barMenuPage.json",
+    "hostelFaqGuide": "apps/brikette/src/locales/en/guides/content/hostelFaqs.json",
+    "faqPromotions": null
+  },
+  "resources": {
+    "brikette://faq": {
+      "items": [
+        {
+          "id": "what-kind-of-breakfast-is-served-at-hostel-brikette",
+          "question": "What kind of breakfast is served at Hostel Brikette?",
+          "answer": "Guests enjoy a highly-rated à la carte menu. Book direct for complimentary breakfast."
+        },
+        {
+          "id": "what-are-the-check-in-and-check-out-times-at-hostel-brikette",
+          "question": "What are the check-in and check-out times at Hostel Brikette?",
+          "answer": "Regular check‑in is from 15:00 to 22:30, and check‑out is from 07:30 to 10:30."
+        },
+        {
+          "id": "how-much-does-it-cost-to-stay-at-hostel-brikette",
+          "question": "How much does it cost to stay at Hostel Brikette?",
+          "answer": "Prices vary by date and room type. For up-to-date prices, search by room and date."
+        },
+        {
+          "id": "what-is-there-to-do-at-hostel-brikette",
+          "question": "What is there to do at Hostel Brikette?",
+          "answer": "The hostel organises or recommends hiking; additional activities may incur charges."
+        },
+        {
+          "id": "how-far-is-hostel-brikette-from-the-centre-of-positano",
+          "question": "How far is Hostel Brikette from the centre of Positano?",
+          "answer": "The property is about 350 metres from the centre of Positano."
+        },
+        {
+          "id": "how-close-to-the-beach-is-hostel-brikette",
+          "question": "How close to the beach is Hostel Brikette?",
+          "answer": "The nearest beach is roughly 350 metres away."
+        },
+        {
+          "id": "what-room-types-are-available-at-hostel-brikette",
+          "question": "What room types are available at Hostel Brikette?",
+          "answer": "You can book mixed dormitory beds, female-only dormitory beds, or private double rooms with ensuite."
+        },
+        {
+          "id": "does-hostel-brikette-have-a-terrace-with-sea-views",
+          "question": "Does Hostel Brikette have a terrace with sea views?",
+          "answer": "Yes — a large shared terrace overlooks Positano, offering panoramic sea views."
+        },
+        {
+          "id": "is-free-wi-fi-provided",
+          "question": "Is free Wi-Fi provided?",
+          "answer": "Yes — complimentary Wi-Fi is available throughout the property."
+        },
+        {
+          "id": "is-breakfast-included-in-the-rate",
+          "question": "Is breakfast included in the rate?",
+          "answer": "Breakfast is included in the rate if you book directly; otherwise it is charged additionally."
+        },
+        {
+          "id": "does-hostel-brikette-have-an-on-site-bar",
+          "question": "Does Hostel Brikette have an on-site bar?",
+          "answer": "Yes — the bar serves coffee, light snacks, breakfast, evening meals, and drinks between 07:30 and 23:30 each day."
+        },
+        {
+          "id": "can-i-store-my-luggage-before-check-in-or-after-check-out",
+          "question": "Can I store my luggage before check-in or after check-out?",
+          "answer": "Yes — luggage storage is available from 10:30 for guests checking in, and from 07:30 to 15:30 for those checking out."
+        },
+        {
+          "id": "are-there-age-restrictions-at-hostel-brikette",
+          "question": "Are there age restrictions at Hostel Brikette?",
+          "answer": "Check-in for dorm rooms is only possible for guests aged between 18 and 39 years. These restrictions do not apply to private rooms."
+        },
+        {
+          "id": "are-children-allowed",
+          "question": "Are children allowed?",
+          "answer": "Dorm rooms are adults-only and cannot accommodate children. Book private rooms to overcome age restrictions."
+        },
+        {
+          "id": "are-pets-allowed",
+          "question": "Are pets allowed?",
+          "answer": "Sorry, pets are not permitted on the premises."
+        },
+        {
+          "id": "does-the-hostel-have-its-own-parking",
+          "question": "Does the hostel have its own parking?",
+          "answer": "The hostel does not have on-site parking; public parking garages are available in Positano for a fee."
+        },
+        {
+          "id": "is-air-conditioning-available",
+          "question": "Is air-conditioning available?",
+          "answer": "Yes — all rooms and dorms are air-conditioned."
+        },
+        {
+          "id": "are-lockers-provided-in-the-dormitories",
+          "question": "Are lockers provided in the dormitories?",
+          "answer": "Yes — each bed has an individual locker; bring your own padlock or purchase one at reception."
+        },
+        {
+          "id": "are-towels-included",
+          "question": "Are towels included?",
+          "answer": "A shower towel is provided at check-in. Beach towels are available to rent."
+        },
+        {
+          "id": "is-bed-linen-included",
+          "question": "Is bed linen included?",
+          "answer": "Yes — fresh linen is provided on check in."
+        },
+        {
+          "id": "does-hostel-brikette-have-laundry-facilities",
+          "question": "Does Hostel Brikette have laundry facilities?",
+          "answer": "The hostel does not have laundry facilities; however, there are some close by."
+        },
+        {
+          "id": "does-hostel-brikette-have-quiet-hours",
+          "question": "Does Hostel Brikette have quiet hours?",
+          "answer": "Quiet hours are observed from 23:30 to 07:30."
+        },
+        {
+          "id": "how-do-i-get-to-hostel-brikette-from-naples-airport",
+          "question": "How do I get to Hostel Brikette from Naples Airport?",
+          "answer": "Take the Curreri shuttle to Sorrento, then the SITA bus to Positano; get off at Chiesa Nuova bus stop."
+        },
+        {
+          "id": "where-is-the-nearest-bus-stop",
+          "question": "Where is the nearest bus stop?",
+          "answer": "The Chiesa Nuova bus stop is less than 80 m (250 ft) away with no stairs to the hostel."
+        },
+        {
+          "id": "what-payment-methods-are-accepted",
+          "question": "What payment methods are accepted?",
+          "answer": "Visa, Mastercard, Maestro, ATM card, and cash are accepted at reception."
+        },
+        {
+          "id": "is-reception-open-24-hours",
+          "question": "Is reception open 24 hours?",
+          "answer": "Reception opens at 07:30 and closes at 22:30. Late arrivals must be arranged in advance."
+        },
+        {
+          "id": "does-hostel-brikette-have-a-shared-kitchen",
+          "question": "Does Hostel Brikette have a shared kitchen?",
+          "answer": "No communal kitchen is available, but guests have access to a fridge, kettle, and microwave."
+        },
+        {
+          "id": "does-hostel-brikette-offer-female-only-dorms",
+          "question": "Does Hostel Brikette offer female-only dorms?",
+          "answer": "Yes — female-only dorm beds can be booked."
+        },
+        {
+          "id": "is-the-property-wheelchair-accessible",
+          "question": "Is the property wheelchair accessible?",
+          "answer": "The hostel is not wheelchair accessible."
+        }
+      ]
+    },
+    "brikette://rooms": {
+      "locale": {
+        "detail": {
+          "common": {
+            "amenitiesHeading": "Why guests book this room",
+            "amenitiesIntro": "Thoughtful touches already waiting when you arrive."
+          },
+          "double_room": {
+            "amenities": [
+              {
+                "title": "Private ensuite comfort",
+                "body": "Start and end each day with a hot shower, fluffy towels and space that's yours alone."
+              },
+              {
+                "title": "Sea-view terrace mornings",
+                "body": "Slide open the doors to a private terrace for espresso or sunset drinks overlooking Positano."
+              },
+              {
+                "title": "Cool and quiet nights",
+                "body": "Individually controlled air-conditioning and blackout shutters keep the room calm even in August heat."
+              }
+            ]
+          },
+          "room_3": {
+            "amenities": [
+              {
+                "title": "Great value, great location",
+                "body": "One of our most affordable options sits right in the hostel heart — close to reception, the shared kitchen and fellow travellers."
+              },
+              {
+                "title": "Female-only floor",
+                "body": "Room 3 is part of a women-only section of the hostel. The shared bathroom nearby is clean, well-stocked and exclusively for female guests."
+              },
+              {
+                "title": "Bunk privacy built in",
+                "body": "Each bunk comes with privacy curtains, a personal reading light and charging sockets so you can settle in at any hour without disturbing neighbours."
+              }
+            ]
+          },
+          "room_4": {
+            "amenities": [
+              {
+                "title": "Female-only space",
+                "body": "A dedicated women-only dorm with its own shared bathroom — clean, well-maintained and reserved exclusively for female guests on this floor."
+              },
+              {
+                "title": "Room for everyone",
+                "body": "Eight beds across four bunks means there is always someone to share a recommendation or a trip to the beach with, without the chaos of a larger mixed dorm."
+              },
+              {
+                "title": "Essentials at every bunk",
+                "body": "Each bed has privacy curtains, a reading light and USB charging sockets so your phone is ready for tomorrow's adventures."
+              }
+            ]
+          },
+          "room_5": {
+            "amenities": [
+              {
+                "title": "Sea-view terrace included",
+                "body": "Step outside onto the shared terrace to take in panoramic views of Positano and the Tyrrhenian Sea — a backdrop most guests never want to leave."
+              },
+              {
+                "title": "Ensuite bathroom for the room",
+                "body": "A private bathroom shared only among roommates means no morning queues and all the space you need to get ready at your own pace."
+              },
+              {
+                "title": "Social but comfortable",
+                "body": "Six beds in an open layout with curtains, reading lights and charging points at every bunk — close enough to make friends, private enough to sleep well."
+              }
+            ]
+          },
+          "room_6": {
+            "amenities": [
+              {
+                "title": "Terrace with Amalfi views",
+                "body": "The shared sea-view terrace is steps from the room — perfect for sunrise stretches, evening aperitivo or simply watching the boats in the bay below."
+              },
+              {
+                "title": "Your own bathroom",
+                "body": "The ensuite bathroom belongs to this room only, so you set the schedule for morning showers without ever waiting in line."
+              },
+              {
+                "title": "Flexible bed layout",
+                "body": "Three bunk beds plus a single means solo travellers and pairs both fit naturally, each spot equipped with curtains, lights and charging sockets."
+              }
+            ]
+          },
+          "room_8": {
+            "amenities": [
+              {
+                "title": "Garden-view retreat",
+                "body": "A quiet outlook onto the hostel garden makes room 8 one of the calmest spots in the building — ideal for early risers or light sleepers."
+              },
+              {
+                "title": "Intimate female-only setting",
+                "body": "With just two beds in a women-only environment, this is the closest hostel experience to having a private room — without the private-room price tag."
+              },
+              {
+                "title": "Shared bathroom nearby",
+                "body": "A spotless female-only shared bathroom is just steps from the door, kept stocked and well-maintained throughout the day."
+              }
+            ]
+          },
+          "room_9": {
+            "amenities": [
+              {
+                "title": "Ensuite for three",
+                "body": "A private bathroom shared between just three guests means genuinely short queues and a relaxed morning routine — a rare luxury in hostel travel."
+              },
+              {
+                "title": "Courtyard calm",
+                "body": "Facing inward over the hostel's sheltered courtyard, the room stays cooler and quieter than the seafront floors — a welcome escape after a full day of exploring."
+              },
+              {
+                "title": "Intimate group feel",
+                "body": "Three single beds rather than bunks give the room a more relaxed layout — comfortable for solo travellers who appreciate a little extra floor space and light."
+              }
+            ]
+          },
+          "room_10": {
+            "amenities": [
+              {
+                "title": "Ensuite for the whole dorm",
+                "body": "Six guests share one bathroom and no one else — morning routines run smoother when the bathroom is yours and not the whole floor's."
+              },
+              {
+                "title": "Classic hostel atmosphere",
+                "body": "A lively mixed dorm with three bunk beds is perfect for solo travellers ready to meet people from all over the world within their first hour of arriving."
+              },
+              {
+                "title": "Charged and ready",
+                "body": "Each bunk includes a reading light, USB charging sockets and privacy curtains so you can power down on your own schedule even when the room is busy."
+              }
+            ]
+          },
+          "room_11": {
+            "amenities": [
+              {
+                "title": "Terrace big enough for every roommate",
+                "body": "Gather on outdoor sofas and tables to share breakfasts, stretch after hikes or capture the skyline together."
+              },
+              {
+                "title": "All-female comfort",
+                "body": "A women-only dorm with ensuite bathroom and vanity space so you never queue for a shower."
+              },
+              {
+                "title": "Privacy and peace of mind",
+                "body": "Each bunk includes curtains, reading lights, charging points and key-card lockers for valuables."
+              }
+            ]
+          },
+          "room_12": {
+            "amenities": [
+              {
+                "title": "Extra-large shared terrace",
+                "body": "Lounge chairs and dining space give your dorm a social living room with Amalfi Coast views."
+              },
+              {
+                "title": "Dedicated bathroom",
+                "body": "Freshen up in a private bathroom stocked with hairdryers, mirrors and plenty of hooks."
+              },
+              {
+                "title": "Easy access to power",
+                "body": "Each bed includes personal sockets, reading lights and key-card lockers for peace of mind."
+              }
+            ]
+          }
+        }
+      },
+      "summary": {
+        "totalRoomTypes": 3,
+        "roomTypes": [
+          {
+            "sku": "PRD",
+            "name": "Private Double Ensuite",
+            "occupancy": 2,
+            "pricingModel": "perRoom",
+            "basePrice": {
+              "amount": 85,
+              "currency": "EUR"
+            },
+            "amenities": [
+              "Private ensuite comfort",
+              "Sea-view terrace mornings",
+              "Cool and quiet nights",
+              "Air-conditioning",
+              "Towels included"
+            ]
+          },
+          {
+            "sku": "DRF",
+            "name": "Female Dorm Beds",
+            "occupancy": 8,
+            "pricingModel": "perBed",
+            "basePrice": {
+              "amount": 25,
+              "currency": "EUR"
+            },
+            "amenities": [
+              "Female-only options",
+              "Privacy curtains",
+              "Reading lights",
+              "Charging sockets",
+              "Shared bathroom"
+            ]
+          },
+          {
+            "sku": "DRM",
+            "name": "Mixed Dorm Beds",
+            "occupancy": 6,
+            "pricingModel": "perBed",
+            "basePrice": {
+              "amount": 22,
+              "currency": "EUR"
+            },
+            "amenities": [
+              "Mixed dormitory beds",
+              "Sea-view terrace access",
+              "Individual lockers",
+              "Air-conditioning",
+              "Free Wi-Fi"
+            ]
+          }
+        ],
+        "note": "Summarized from current Brikette room content. Live availability, allocation, and rates vary by date."
+      }
+    },
+    "brikette://pricing/menu": {
+      "breakfast": {
+        "hours": "08:00 – 10:30 daily",
+        "summary": "Freshly prepared breakfasts, pressed juices, and barista coffee served each morning on the terrace. Scroll to explore every option and price.",
+        "items": [
+          {
+            "key": "eggsCombo",
+            "name": "Eggs Combo",
+            "note": null,
+            "price_eur": 12.5
+          },
+          {
+            "key": "frenchToast",
+            "name": "French Toast",
+            "note": "Classic French toast, served with syrup.",
+            "price_eur": 12.5
+          },
+          {
+            "key": "nutellaFrenchToast",
+            "name": "Nutella French Toast",
+            "note": "French toast stuffed with Nutella.",
+            "price_eur": 14
+          },
+          {
+            "key": "pancakes",
+            "name": "Pancakes",
+            "note": null,
+            "price_eur": 12.5
+          },
+          {
+            "key": "addEggComboItem",
+            "name": "Add an Egg Combo item",
+            "note": "Choose an item from the egg combo menu. For example, pancakes with golden syrup plus scrambled eggs for €15.50.",
+            "price_eur": 3
+          },
+          {
+            "key": "addAdditionalSyrup",
+            "name": "Add an additional syrup",
+            "note": "Choose to have more than one syrup. For example, pancakes with golden syrup plus Nutella for €14.",
+            "price_eur": 1.5
+          },
+          {
+            "key": "veggieToast",
+            "name": "Veggie Toast",
+            "note": "Seasonal vegetables on toast.",
+            "price_eur": 10.5
+          },
+          {
+            "key": "healthyDelight",
+            "name": "Healthy Delight",
+            "note": "Parfait of yogurt, granola & homemade fruit compote.",
+            "price_eur": 10
+          },
+          {
+            "key": "detoxMe",
+            "name": "Detox Me, Juice",
+            "note": "Spinach, cucumber, ginger & lemon.",
+            "price_eur": 7
+          },
+          {
+            "key": "energizeMe",
+            "name": "Energize Me, Juice",
+            "note": "Orange, carrot, ginger & lemon.",
+            "price_eur": 7
+          },
+          {
+            "key": "multiV",
+            "name": "Multi-V, Juice",
+            "note": "Apple, carrot, orange, lemon, ginger.",
+            "price_eur": 7
+          },
+          {
+            "key": "orangeJuice",
+            "name": "Orange Juice",
+            "note": "Freshly squeezed orange juice.",
+            "price_eur": 5
+          },
+          {
+            "key": "bananaSmoothie",
+            "name": "Banana Smoothie",
+            "note": null,
+            "price_eur": 8
+          },
+          {
+            "key": "strawberrySmoothie",
+            "name": "Strawberry Smoothie",
+            "note": null,
+            "price_eur": 8
+          },
+          {
+            "key": "saltedCaramelProteinSmoothie",
+            "name": "Salted caramel coffee protein smoothie",
+            "note": null,
+            "price_eur": 11
+          },
+          {
+            "key": "addProtein",
+            "name": "Add protein to your smoothie (vanilla, chocolate or salted caramel) — HUEL Complete Nutrition (40g protein)",
+            "note": null,
+            "price_eur": 3
+          },
+          {
+            "key": "tea",
+            "name": "Tea (black, green, herbal)",
+            "note": null,
+            "price_eur": 3
+          },
+          {
+            "key": "espresso",
+            "name": "Espresso (per shot)",
+            "note": null,
+            "price_eur": 2
+          },
+          {
+            "key": "macchiato",
+            "name": "Macchiato",
+            "note": null,
+            "price_eur": 3
+          },
+          {
+            "key": "americano",
+            "name": "Americano / Long Black",
+            "note": null,
+            "price_eur": 3
+          },
+          {
+            "key": "cappuccino",
+            "name": "Cappuccino",
+            "note": null,
+            "price_eur": 3.5
+          },
+          {
+            "key": "latte",
+            "name": "Latte",
+            "note": null,
+            "price_eur": 4
+          },
+          {
+            "key": "altMilk",
+            "name": "Soy or rice milk – additional charge",
+            "note": null,
+            "price_eur": 1.5
+          },
+          {
+            "key": "icedLatte",
+            "name": "Iced Latte",
+            "note": null,
+            "price_eur": 5
+          },
+          {
+            "key": "icedSoyLatte",
+            "name": "Iced Soy Latte",
+            "note": null,
+            "price_eur": 6
+          },
+          {
+            "key": "icedRiceLatte",
+            "name": "Iced Rice Milk Latte",
+            "note": null,
+            "price_eur": 6
+          },
+          {
+            "key": "icedTea",
+            "name": "Iced Lemon or Peach Tea",
+            "note": null,
+            "price_eur": 4
+          }
+        ]
+      },
+      "bar": {
+        "hours": "Open daily (see bar for hours)",
+        "summary": "Full bar selection with local favorites and classic serves.",
+        "items": [
+          {
+            "key": "aperolSpritz",
+            "name": "Aperol Spritz",
+            "note": "The classic Italian spritz, served with flaked ice.",
+            "price_eur": 10
+          },
+          {
+            "key": "limoncelloSpritz",
+            "name": "Limoncello Spritz",
+            "note": "An Amalfi Coast speciality, served with flaked ice.",
+            "price_eur": 10
+          },
+          {
+            "key": "hugoSpritz",
+            "name": "Hugo Spritz",
+            "note": "Sparkling wine, poured over mint, lime, and elderflower juice. Served with flaked ice.",
+            "price_eur": 11
+          },
+          {
+            "key": "rossiniSpritz",
+            "name": "Rossini Spritz",
+            "note": "Sparkling wine poured over strawberry juice. Served with flaked ice.",
+            "price_eur": 11
+          },
+          {
+            "key": "lemonStrawberryDaiquiri",
+            "name": "Lemon or Strawberry Daiquiri",
+            "note": null,
+            "price_eur": 10
+          },
+          {
+            "key": "lemonStrawberryMargarita",
+            "name": "Lemon or Strawberry Margarita",
+            "note": "Strawberry or lemon juice with Tequila, Cointreau, and ice. Finished in the classic margarita style.",
+            "price_eur": 12.5
+          },
+          {
+            "key": "lemonDropMartini",
+            "name": "Lemon Drop Martini",
+            "note": "Freshly squeezed lemon juice shaken into Absolut Vodka, Cointreau, and ice.",
+            "price_eur": 12.5
+          },
+          {
+            "key": "redWhiteGlass",
+            "name": "Red and White by the glass",
+            "note": null,
+            "price_eur": 5.5
+          },
+          {
+            "key": "redWhiteBottle",
+            "name": "Red and White by the bottle",
+            "note": null,
+            "price_eur": 20
+          },
+          {
+            "key": "proseccoGlass",
+            "name": "Glass of Prosecco",
+            "note": null,
+            "price_eur": 8
+          },
+          {
+            "key": "nastro330",
+            "name": "Nastro, 330ml",
+            "note": null,
+            "price_eur": 5
+          },
+          {
+            "key": "nastro660",
+            "name": "Nastro, 660ml",
+            "note": null,
+            "price_eur": 8
+          },
+          {
+            "key": "peroni330",
+            "name": "Peroni, 330ml",
+            "note": null,
+            "price_eur": 4.5
+          },
+          {
+            "key": "peroni660",
+            "name": "Peroni, 660ml",
+            "note": null,
+            "price_eur": 7
+          },
+          {
+            "key": "skyy",
+            "name": "Skyy",
+            "note": null,
+            "price_eur": 8
+          },
+          {
+            "key": "absolut",
+            "name": "Absolut",
+            "note": null,
+            "price_eur": 8
+          },
+          {
+            "key": "smirnoff",
+            "name": "Smirnoff",
+            "note": null,
+            "price_eur": 10
+          },
+          {
+            "key": "greyGoose",
+            "name": "Grey Goose",
+            "note": null,
+            "price_eur": 11
+          },
+          {
+            "key": "pampero",
+            "name": "Pampero",
+            "note": null,
+            "price_eur": 8
+          },
+          {
+            "key": "bacardiSuperior",
+            "name": "Bacardi Superior",
+            "note": null,
+            "price_eur": 8
+          },
+          {
+            "key": "captainMorgan",
+            "name": "Captain Morgan",
+            "note": null,
+            "price_eur": 11
+          },
+          {
+            "key": "angosturaReserva",
+            "name": "Angostura Reserva",
+            "note": null,
+            "price_eur": 12.5
+          },
+          {
+            "key": "beefeater",
+            "name": "Beefeater",
+            "note": null,
+            "price_eur": 8
+          },
+          {
+            "key": "bombaySapphire",
+            "name": "Bombay Sapphire",
+            "note": null,
+            "price_eur": 10
+          },
+          {
+            "key": "tanqueray",
+            "name": "Tanqueray",
+            "note": null,
+            "price_eur": 10
+          },
+          {
+            "key": "hendricks",
+            "name": "Hendrick's",
+            "note": null,
+            "price_eur": 14
+          },
+          {
+            "key": "jwRed",
+            "name": "Johnnie Walker Red Label (Blended Scotch)",
+            "note": null,
+            "price_eur": 8
+          },
+          {
+            "key": "jameson",
+            "name": "Jameson (Irish)",
+            "note": null,
+            "price_eur": 11
+          },
+          {
+            "key": "jackDaniels",
+            "name": "Jack Daniel's Old No.07 (Sour Mash)",
+            "note": null,
+            "price_eur": 11
+          },
+          {
+            "key": "wildTurkey",
+            "name": "Wild Turkey (Bourbon)",
+            "note": null,
+            "price_eur": 11
+          },
+          {
+            "key": "chivas12",
+            "name": "Chivas Regal 12 Year Old (Blended Scotch)",
+            "note": null,
+            "price_eur": 14
+          },
+          {
+            "key": "glenfiddich12",
+            "name": "Glenfiddich 12 Year Old (Single Malt)",
+            "note": null,
+            "price_eur": 18
+          },
+          {
+            "key": "joseCuervoSilver",
+            "name": "Jose Cuervo Tequila, Silver",
+            "note": "Served straight up with lemon and salt, as a Tequila Sunrise, or with soda/sprite.",
+            "price_eur": 8
+          },
+          {
+            "key": "limoncelloShot",
+            "name": "Limoncello",
+            "note": "A classic southern Italian drink, served straight-up.",
+            "price_eur": 5.5
+          },
+          {
+            "key": "oneScoop",
+            "name": "1 Scoop",
+            "note": null,
+            "price_eur": 2
+          },
+          {
+            "key": "twoScoops",
+            "name": "2 Scoops",
+            "note": null,
+            "price_eur": 3
+          },
+          {
+            "key": "threeScoops",
+            "name": "3 Scoops",
+            "note": "Choose from Lemon, Chocolate, Vanilla, and Hazelnut flavors.",
+            "price_eur": 3.5
+          }
+        ]
+      },
+      "disclaimer": "Menu items and prices may change. Please confirm at the bar."
+    },
+    "brikette://policies": {
+      "summary": {
+        "check_in_window": "15:00-22:30",
+        "check_out_window": "07:30-10:30",
+        "quiet_hours": "23:45-08:00",
+        "visitor_hours": "10:30-23:00 in communal areas only, subject to discretion and ID checks",
+        "dorm_age_restriction": "Dorm check-in is only for guests aged 18 to 39; private rooms are exempt",
+        "late_check_out": "Until 12:00 subject to availability for EUR 40",
+        "luggage_storage": "Arrival-day storage from 10:30; departure-day storage from 07:30 until 15:30",
+        "keycard_deposit": "EUR 10 cash deposit for keycard and linen set, refunded at checkout",
+        "outside_alcohol": "Outside alcohol is not permitted on the premises",
+        "pets": "Pets are not permitted",
+        "payment_methods": "Visa, Mastercard, Maestro, ATM card, and cash are accepted at reception"
+      },
+      "houseRulesSections": {
+        "s1": {
+          "title": "1. Respectful conduct and safety",
+          "body": [
+            "Applies to: all Guests and Visitors on the premises.",
+            "These House Rules form part of your accommodation contract. Breaches may result in removal from the property and/or Termination for Breach under the Booking Terms.",
+            "1.1 Treat staff and other Guests respectfully. Harassment, threats, violence, or discriminatory conduct is not permitted.",
+            "1.2 Follow staff directions related to safety, security, and operations.",
+            "1.3 Do not damage property or interfere with safety equipment."
+          ]
+        },
+        "s2": {
+          "title": "2. Quiet hours and noise",
+          "body": [
+            "2.1 Quiet hours are 23:45–08:00. During quiet hours: keep noise to a minimum in rooms and Communal Areas; no loud music/speakers; take phone calls outside sleeping areas.",
+            "2.2 If you repeatedly disturb others, we may require you to leave under the Booking Terms."
+          ]
+        },
+        "s3": {
+          "title": "3. Visitors / Temporary Guests (Communal Areas only)",
+          "body": [
+            "3.1 Visitors are permitted only at our discretion and only in Communal Areas. Visitors are not permitted in Guest rooms/dormitories.",
+            "3.2 Visitor hours (if permitted) are 10:30–23:00, subject to operational needs.",
+            "3.3 Visitors must present original identification and comply with security measures (including wristbands/bands if used).",
+            "3.4 Guests may not \"sponsor\" Visitors into rooms. Attempting to admit unregistered persons into rooms is a serious breach."
+          ]
+        },
+        "s4": {
+          "title": "4. Unregistered persons",
+          "body": [
+            "4.1 Only registered Guests may stay overnight.",
+            "4.2 If an unregistered person is found in a room or staying overnight: we may require immediate check‑in/registration (if possible), or require them to leave, and we may charge fees as described in the Booking Terms (Security Deposit and damages/fees), subject to applicable law."
+          ]
+        },
+        "s5": {
+          "title": "5. Check‑in and arrival operations",
+          "body": [
+            "5.1 Official check‑in window is 15:00–22:00.",
+            "5.2 Arrivals before the property opens: If you arrive before 10:30, you may not be able to enter the premises.",
+            "5.3 Between door‑open time and check‑in time, we may (at our discretion) allow: waiting in designated areas, Visitor/Temporary Guest access to Communal Areas, and/or luggage storage under separate terms."
+          ]
+        },
+        "s6": {
+          "title": "6. Identification requirements (on site)",
+          "body": [
+            "6.1 Guests and Visitors must present valid original ID on request for security and registration.",
+            "6.2 Failure to present ID when requested may result in being asked to leave."
+          ]
+        },
+        "s7": {
+          "title": "7. Keycards, wristbands/security bands, and access control",
+          "body": [
+            "7.1 Keycards and/or access codes are personal. Do not share them.",
+            "7.2 Where security bands are used, you must wear them on the premises and show them on request.",
+            "7.3 Lost/damaged keycards or bands must be reported immediately. Replacement fees (if any) are posted on site and/or stated in the Booking Terms."
+          ]
+        },
+        "s8": {
+          "title": "8. Linen and deposits",
+          "body": [
+            "8.1 Linen is provided per Guest (as described at check‑in).",
+            "8.2 If a deposit is taken (e.g., keycard/linen deposit of €10), it will be refunded according to the check‑out process, subject to return of issued items and any deductions permitted under the Booking Terms."
+          ]
+        },
+        "s9": {
+          "title": "9. Dorm etiquette and bed selection",
+          "body": [
+            "9.1 Dorm beds are selected on a first‑come basis unless otherwise stated.",
+            "9.2 You may move to another available bed only if permitted by staff and without disturbing other Guests.",
+            "9.3 Keep your sleeping area tidy and do not store items in others’ spaces."
+          ]
+        },
+        "s10": {
+          "title": "10. Alcohol policy",
+          "body": [
+            "10.1 If Hostel Brikette is licensed and we prohibit outside alcohol: Guests may not bring alcohol purchased off‑site into the premises. If outside alcohol is found, staff may require it to be removed from the premises or may store it for return at check‑out (where permitted).",
+            "10.2 Repeated or serious breach may result in Termination for Breach under the Booking Terms and removal from the property."
+          ]
+        },
+        "s11": {
+          "title": "11. Illegal or dangerous items",
+          "body": [
+            "11.1 Illegal drugs, weapons, and dangerous items are prohibited.",
+            "11.2 We may confiscate prohibited items where permitted and/or report matters to law enforcement as required."
+          ]
+        },
+        "s12": {
+          "title": "12. Bed bugs (Guest responsibilities)",
+          "body": [
+            "12.1 If you suspect bed bugs, report immediately. Do not move rooms/beds or transport linens/soft items through the property without staff instruction.",
+            "12.2 You may be required to follow containment steps (bagging belongings, laundering) to prevent spread.",
+            "12.3 Charges for remediation are governed by the Booking Terms and will be based on evidence and applicable law."
+          ]
+        },
+        "s13": {
+          "title": "13. Check‑out, late check‑out, and belongings",
+          "body": [
+            "13.1 Check‑out time is 07:30–10:30 unless you have written approval for late check‑out.",
+            "13.2 Late check‑out (if offered) is subject to availability and written confirmation, valid until 12:00, and costs EUR 40.",
+            "13.3 If you fail to check out on time, we may: secure your belongings (pack and store them in a reasonable manner); restrict access to rooms/guest‑only areas; apply fees or charges as permitted under the Booking Terms.",
+            "13.4 Unclaimed belongings: items left behind may be stored for 30 days and then disposed of or donated where lawful."
+          ]
+        },
+        "s14": {
+          "title": "14. Enforcement",
+          "body": [
+            "14.1 We may issue warnings for minor breaches.",
+            "14.2 Serious or repeated breaches may result in removal and Termination for Breach under the Booking Terms.",
+            "14.3 Where charges apply (damages, excessive cleaning, fees), they will be handled under the Booking Terms."
+          ]
+        }
+      },
+      "faqItems": [
+        {
+          "id": "guide-faq-1",
+          "question": "What kind of breakfast is served at Hostel Brikette?",
+          "answer": "Guests enjoy a highly-rated à la carte menu. Book direct for complimentary breakfast.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-2",
+          "question": "What are the check-in and check-out times at Hostel Brikette?",
+          "answer": "Regular check-in is from 15:00 to 22:30, and check-out is from 07:30 to 10:30.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-3",
+          "question": "How much does it cost to stay at Hostel Brikette?",
+          "answer": "Prices vary by date and room type. For up-to-date prices, search by room and date.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-4",
+          "question": "What is there to do at Hostel Brikette?",
+          "answer": "The hostel organises or recommends hiking; additional activities may incur charges.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-5",
+          "question": "How far is Hostel Brikette from the centre of Positano?",
+          "answer": "The property is about 350 metres from the centre of Positano.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-6",
+          "question": "How close to the beach is Hostel Brikette?",
+          "answer": "The nearest beach is roughly 350 metres away.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-7",
+          "question": "What room types are available at Hostel Brikette?",
+          "answer": "You can book mixed dormitory beds, female-only dormitory beds, or private double rooms with ensuite.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-8",
+          "question": "Does Hostel Brikette have a terrace with sea views?",
+          "answer": "Yes — a large shared terrace overlooks Positano, offering panoramic sea views.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-9",
+          "question": "Is free Wi-Fi provided?",
+          "answer": "Yes — complimentary Wi-Fi is available throughout the property.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-10",
+          "question": "Is breakfast included in the rate?",
+          "answer": "Breakfast is included in the rate if you book directly; otherwise it is charged additionally.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-11",
+          "question": "Does Hostel Brikette have an on-site bar?",
+          "answer": "Yes — the bar serves coffee, light snacks, breakfast, evening meals, and drinks between 07:30 and 23:30 each day.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-12",
+          "question": "Can I store my luggage before check-in or after check-out?",
+          "answer": "Yes — luggage storage is available from 10:30 for guests checking in, and from 07:30 to 15:30 for those checking out.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-13",
+          "question": "Are there age restrictions at Hostel Brikette?",
+          "answer": "Check-in for dorm rooms is only possible for guests aged between 18 and 39 years. These restrictions do not apply to private rooms.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-14",
+          "question": "Are children allowed?",
+          "answer": "Dorm rooms are adults-only and cannot accommodate children. Book private rooms to overcome age restrictions.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-15",
+          "question": "Are pets allowed?",
+          "answer": "Sorry, pets are not permitted on the premises.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-16",
+          "question": "Does the hostel have its own parking?",
+          "answer": "The hostel does not have on-site parking; public parking garages are available in Positano for a fee.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-17",
+          "question": "Is air-conditioning available?",
+          "answer": "Yes — all rooms and dorms are air-conditioned.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-18",
+          "question": "Are lockers provided in the dormitories?",
+          "answer": "Yes — each bed has an individual locker; bring your own padlock or purchase one at reception.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-19",
+          "question": "Are towels included?",
+          "answer": "A shower towel is provided at check-in. Beach towels are available to rent.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-20",
+          "question": "Is bed linen included?",
+          "answer": "Yes — fresh linen is provided on check in.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-21",
+          "question": "Does Hostel Brikette have laundry facilities?",
+          "answer": "The hostel does not have laundry facilities; however, there are some close by.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-22",
+          "question": "Does Hostel Brikette have quiet hours?",
+          "answer": "Quiet hours are observed from 23:30 to 07:30.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-23",
+          "question": "How do I get to Hostel Brikette from Naples Airport?",
+          "answer": "Take the Curreri shuttle to Sorrento, then the SITA bus to Positano; get off at Chiesa Nuova bus stop.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-24",
+          "question": "Where is the nearest bus stop?",
+          "answer": "The Chiesa Nuova bus stop is less than 80 m (250 ft) away with no stairs to the hostel.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-25",
+          "question": "What payment methods are accepted?",
+          "answer": "Visa, Mastercard, Maestro, ATM card, and cash are accepted at reception.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-26",
+          "question": "Is reception open 24 hours?",
+          "answer": "Reception opens at 07:30 and closes at 22:30. Late arrivals must be arranged in advance.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-27",
+          "question": "Does Hostel Brikette have a shared kitchen?",
+          "answer": "No communal kitchen is available, but guests have access to a fridge, kettle, and microwave.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-28",
+          "question": "Does Hostel Brikette offer female-only dorms?",
+          "answer": "Yes — female-only dorm beds can be booked.",
+          "source": "guide"
+        },
+        {
+          "id": "guide-faq-29",
+          "question": "Is the property wheelchair accessible?",
+          "answer": "The hostel is not wheelchair accessible.",
+          "source": "guide"
+        }
+      ]
+    }
+  }
+}

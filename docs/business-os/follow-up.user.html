@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Follow-up — Startup Loop</title>
+  <style>
+    :root{--bg:#0e1016;--surface:#161921;--surface-2:#1e2230;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--text-dim:#454d6a;--amber:#f5a623;--amber-bg:rgba(245,166,35,0.10);--amber-border:rgba(245,166,35,0.28);--green:#4ade80;--green-bg:rgba(74,222,128,0.08);--green-border:rgba(74,222,128,0.25);--red:#f05c5c;--radius:8px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.6;}
+    .sl-content{max-width:860px;margin:0 auto;padding:32px 24px 80px;}
+    .page-header{border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:28px;}
+    .page-header h1{font-size:22px;font-weight:600;letter-spacing:-0.3px;}
+    .page-header p{color:var(--text-muted);font-size:13px;margin-top:4px;}
+    .summary-row{display:flex;gap:12px;margin-bottom:28px;}
+    .summary-pill{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;}
+    .pill-amber{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);}
+    .pill-green{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);}
+    .debt-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:20px 22px;margin-bottom:14px;}
+    .debt-card.open{border-left:3px solid var(--amber);}
+    .debt-card.resolved{border-left:3px solid var(--green);opacity:0.65;}
+    .card-header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:10px;}
+    .card-title{font-size:15px;font-weight:600;line-height:1.3;}
+    .card-title a{color:var(--text);text-decoration:none;}
+    .card-title a:hover{color:#5b9cf6;}
+    .status-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:12px;white-space:nowrap;flex-shrink:0;}
+    .badge-open{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber);}
+    .badge-resolved{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green);}
+    .card-desc{font-size:13px;color:var(--text-muted);margin-bottom:12px;line-height:1.55;}
+    .card-meta{display:flex;flex-wrap:wrap;gap:16px;font-size:12px;color:var(--text-dim);}
+    .card-meta span{display:flex;align-items:center;gap:5px;}
+    .card-meta strong{color:var(--text-muted);}
+    .card-action{margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:13px;}
+    .card-action a{color:#5b9cf6;font-weight:500;}
+    #sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap;}
+    #sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0;}
+    #sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0;}
+    #sl-nav a:hover{color:#e4e7f2;}
+    #sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6;}
+    #sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1;}
+    .sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f5a623;color:#111;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1;}
+  </style>
+  <script>(function(){try{var t=localStorage.getItem("sl-theme");document.documentElement.setAttribute("data-theme",t||"dark")}catch(e){}})()</script>
+</head>
+<body>
+<nav id="sl-nav">
+  <span class="sl-brand">Startup Loop</span>
+  <a href="startup-loop-workflow.user.html">Workflow</a>
+  <a href="startup-loop-files.user.html">Loop Files</a>
+  <a href="startup-loop-output-registry.user.html">Output Registry</a>
+  <a href="ideas.user.html">Ideas</a>
+  <a href="process-improvements.user.html">Process</a>
+  <a href="follow-up.user.html">Follow-up <span class="sl-dot">1</span></a>
+  <button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button>
+  <script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop().split("?")[0]===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script>
+</nav>
+
+<div class="sl-content">
+  <div class="page-header">
+    <h1>Follow-up</h1>
+    <p>Builds that need a results check after going live. Clear these within 7 days of the due date.</p>
+  </div>
+
+  <div class="summary-row">
+    <span class="summary-pill pill-amber">1 open</span>
+    <span class="summary-pill pill-green">2 resolved</span>
+  </div>
+
+  <!-- OPEN -->
+
+  <div class="debt-card open">
+    <div class="card-header">
+      <div class="card-title"><a href="../plans/_archive/brikette-deeper-route-funnel-cro/reflection-debt.user.html">Brikette booking improvements</a></div>
+      <span class="status-badge badge-open">Open</span>
+    </div>
+    <div class="card-desc">
+      Added booking buttons to the How to get here, Experiences, and Assistance pages.
+      Fixed a session bug that was hiding the booking prompt after one dismissal.
+      Now live on dev — needs a GA4 check after ~30 days to confirm clicks are up.
+    </div>
+    <div class="card-meta">
+      <span><strong>Due</strong> 4 Mar 2026</span>
+      <span><strong>Business</strong> Brikette</span>
+    </div>
+    <div class="card-action">
+      <a href="../plans/_archive/brikette-deeper-route-funnel-cro/reflection-debt.user.html">See what to do →</a>
+    </div>
+  </div>
+
+  <!-- RESOLVED -->
+
+  <div class="debt-card resolved">
+    <div class="card-header">
+      <div class="card-title">Ideas pipeline — source trigger system</div>
+      <span class="status-badge badge-resolved">Resolved</span>
+    </div>
+    <div class="card-desc">4 dispatch packets processed on day one, all routed correctly to fact-find slugs with no errors.</div>
+    <div class="card-meta">
+      <span><strong>Business</strong> BOS</span>
+    </div>
+  </div>
+
+  <div class="debt-card resolved">
+    <div class="card-header">
+      <div class="card-title">Startup loop — intended outcome automation</div>
+      <span class="status-badge badge-resolved">Resolved</span>
+    </div>
+    <div class="card-desc">Results review completed.</div>
+    <div class="card-meta">
+      <span><strong>Business</strong> BOS</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

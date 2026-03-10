@@ -121,7 +121,6 @@ const DisplayDialog: React.FC<DisplayDialogProps> = ({
             guestId={guestId}
             amount={amountToCharge}
             createPaymentTransaction={createPaymentTransaction}
-            logActivity={logActivity}
             onSuccess={() => handlePaymentSuccess("paid")}
           />
         </div>

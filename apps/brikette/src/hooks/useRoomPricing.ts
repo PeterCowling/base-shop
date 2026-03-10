@@ -9,7 +9,7 @@ import { useMemo } from "react";
 import { useRates } from "@/context/RatesContext";
 import type { Room } from "@/data/roomsData";
 import { getPriceForDate } from "@/rooms/pricing";
-import { getToday } from "@/utils/dateUtils";
+import { getToday, getTodayIso } from "@/utils/dateUtils";
 
 export interface RoomPricing {
   lowestPrice?: number;
@@ -34,8 +34,24 @@ export function useRoomPricing(room: Room): RoomPricing {
     return undefined; // still loading, or missing `basePrice`
   }, [livePrice, loading, room.basePrice]);
 
-  /** Sold‑out only when we’re done loading & **no** live rate exists. */
-  const soldOut = useMemo(() => !loading && livePrice === undefined, [loading, livePrice]);
+  /**
+   * Calendar is "fresh" when at least one entry covers today or a future date.
+   * A stale calendar (all entries in the past) means we lack data to determine
+   * availability — we should not mark the room as sold out in that case.
+   */
+  const calendarIsFresh = useMemo(() => {
+    if (!rates) return false;
+    const todayIso = getTodayIso();
+    return Object.values(rates).some(
+      (entries) => Array.isArray(entries) && entries.some((e) => e.date >= todayIso),
+    );
+  }, [rates]);
+
+  /** Sold‑out only when the calendar is fresh, we’re done loading, & no live rate exists. */
+  const soldOut = useMemo(
+    () => !loading && calendarIsFresh && livePrice === undefined,
+    [loading, calendarIsFresh, livePrice],
+  );
 
   return {
     soldOut,

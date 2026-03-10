@@ -30,7 +30,7 @@
     "couples"
   ],
   "labels": {
-    "transport": "Transport",
+    "transport": "Transporter",
     "budgeting": "Budget",
     "beaches": "Stränder",
     "hiking": "Vandring",
@@ -43,7 +43,7 @@
     "culture": "Kultur",
     "events": "Evenemang",
     "nightlife": "Nattliv",
-    "shopping": "Shopping",
+    "shopping": "Shopping shopping",
     "accommodation": "Boende",
     "hostel-life": "Hostelliv",
     "faq": "Vanliga frågor",
@@ -52,12 +52,12 @@
     "porters": "Porterhjälp",
     "stairs": "Färre trappor",
     "cost": "Kostnader",
-    "tips": "Tips",
+    "tips": "Råd",
     "passes": "Kort & biljetter",
     "insurance": "Försäkring",
     "hitchhiking": "Lifta",
     "walking-tour": "Promenadtur",
-    "camping": "Camping",
+    "camping": "Campingplats",
     "work-life": "Jobb & resa",
     "souvenirs": "Souvenirer",
     "comparison": "Jämför",
@@ -123,7 +123,7 @@
     "ravello": "Guider till Ravello",
     "capri": "Capri på budget",
     "naples": "Neapel ↔ Positano",
-    "salerno": "Salerno ↔ Positano"
+    "salerno": "Salerno - Positano"
   },
   "descriptions": {
     "transport": "Beslutsstöd för bussar, färjor, shuttles och transfers – med bagagevänliga råd.",

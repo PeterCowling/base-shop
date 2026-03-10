@@ -18,7 +18,7 @@ const mockReadGuestSession = jest.fn(() => ({
   verifiedAt: null,
 }));
 
-jest.mock('@/lib/auth/guestSessionGuard', () => ({
+jest.mock('../../../lib/auth/guestSessionGuard', () => ({
   readGuestSession: () => mockReadGuestSession(),
 }));
 
@@ -65,7 +65,7 @@ function getRequestUrl(input: RequestInfo | URL): string {
   return typeof input.url === 'string' ? input.url : String(input);
 }
 
-jest.mock('@/services/firebase', () => ({
+jest.mock('../../../services/firebase', () => ({
   db: { id: 'db' },
   firebaseApp: { name: '[DEFAULT]' },
   storage: { id: 'storage' },
@@ -88,7 +88,7 @@ jest.mock('@/services/firebase', () => ({
   update: (...args: unknown[]) => mockUpdate(...args),
 }));
 
-jest.mock('@/services/useFirebase', () => ({
+jest.mock('../../../services/useFirebase', () => ({
   useFirebaseDatabase: jest.fn(() => ({ id: 'db' })),
 }));
 

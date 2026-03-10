@@ -11,7 +11,7 @@ description: S10 weekly orchestration wrapper. Coordinates the full weekly decis
 
 | Surface | Authority | Non-authority |
 |---|---|---|
-| `docs/business-os/startup-loop/loop-spec.yaml` | Stage graph, stage ordering | Not weekly memo content |
+| `docs/business-os/startup-loop/specifications/loop-spec.yaml` | Stage graph, stage ordering | Not weekly memo content |
 | `docs/business-os/workflow-prompts/_templates/weekly-kpcs-decision-prompt.md` | Weekly decision content (Sections A–H) | Not stage graph |
 | `/lp-weekly` | Execution order, preflight checks, lane sequencing, packetization, cross-artifact linking | Does NOT replace prompt authority or stage graph authority |
 
@@ -51,7 +51,7 @@ Derived from UTC date at invocation using ISO 8601 week numbering. Week boundary
 
 - Replacing or modifying the canonical weekly KPCS decision memo.
 - Introducing new hard stage blocks or gate-semantics changes (first iteration no-block posture).
-- Modifying `docs/business-os/startup-loop/loop-spec.yaml` stage graph.
+- Modifying `docs/business-os/startup-loop/specifications/loop-spec.yaml` stage graph.
 - Removing or suppressing `/lp-signal-review`, GATE-BD-08, or GATE-LOOP-GAP-03 dispatch behaviors.
 - Silent failure: partial inputs must produce `restricted` lane state + REM, not silent degraded output.
 - Destructive shell or git commands.
@@ -137,4 +137,4 @@ During S10 advance, `/startup-loop` routes through `/lp-weekly` before returning
 ## Orchestration Contract
 
 Full S10 sequence, lane contracts, authority isolation, and idempotency rules:
-`docs/business-os/startup-loop/s10-weekly-orchestration-contract-v1.md`
+`docs/business-os/startup-loop/contracts/s10-weekly-orchestration-contract-v1.md`

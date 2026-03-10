@@ -94,7 +94,7 @@ export default function ComponentEditorClient() {
           <div
             className={
               isError
-                ? "text-xs rounded border border-red-300 bg-red-50 text-red-700 px-2 py-1"
+                ? "text-xs rounded border border-danger/40 bg-danger/5 text-danger-fg px-2 py-1"
                 : "text-xs text-muted-foreground"
             }
             role={isError ? "alert" : undefined}

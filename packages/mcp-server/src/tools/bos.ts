@@ -79,8 +79,6 @@ const STARTUP_LOOP_STAGES = [
   "SELL-07",
   "SELL-08",
   "S4",
-  "S5A",
-  "S5B",
   "WEBSITE",
   "WEBSITE-01",
   "WEBSITE-02",
@@ -234,7 +232,7 @@ export const bosToolPoliciesRaw = {
   bos_stage_doc_patch_guarded: {
     permission: "guarded_write",
     sideEffects: "bos_write",
-    allowedStages: ["S5B", "DO", "S9B", "S10"],
+    allowedStages: ["DO", "S9B", "S10"],
     auditTag: "bos:stage-doc:patch",
     contextRequired: ["business", "cardId", "runId", "current_stage"],
     requiresEntitySha: true,

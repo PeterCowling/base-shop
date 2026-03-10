@@ -31,27 +31,27 @@ export default function ProductRowActions({
     <div className="flex flex-wrap gap-2">
       <Link
         href={`/cms/shop/${shop}/products/${product.id}/edit`}
-        className="bg-primary hover:bg-primary/90 rounded px-2 py-1 text-xs text-primary-fg inline-flex items-center justify-center min-h-10 min-w-10"
+        className="bg-primary hover:bg-primary/90 rounded px-2 py-1 text-xs text-primary-fg inline-flex items-center justify-center min-h-11 min-w-11"
       >
         {tf("cms.products.actions.edit", "Edit") as string}
       </Link>
       <Link
         href={`/en/product/${product.id}`}
-        className="rounded border px-2 py-1 text-xs hover:bg-muted inline-flex items-center justify-center min-h-10 min-w-10"
+        className="rounded border px-2 py-1 text-xs hover:bg-muted inline-flex items-center justify-center min-h-11 min-w-11"
       >
         {tf("cms.products.actions.view", "View") as string}
       </Link>
       <Button
         onClick={() => onDuplicate(product.id)}
         variant="outline"
-        className="px-2 py-1 text-xs min-h-10 min-w-10"
+        className="px-2 py-1 text-xs min-h-11 min-w-11"
       >
         {tf("cms.products.actions.duplicate", "Duplicate") as string}
       </Button>
       <Button
         onClick={() => onDelete(product.id)}
         variant="outline"
-        className="px-2 py-1 text-xs min-h-10 min-w-10 hover:bg-danger hover:text-danger-foreground"
+        className="px-2 py-1 text-xs min-h-11 min-w-11 hover:bg-danger hover:text-danger-foreground"
         data-token={DANGER_TOKEN}
       >
         {tf("cms.products.actions.delete", "Delete") as string}

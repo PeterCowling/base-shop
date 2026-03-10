@@ -7,9 +7,10 @@ export interface RadioProps
   label?: React.ReactNode;
 }
 
-export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
-  ({ className, label, children, ...props }, ref) => (
+export function Radio({ className, label, children, ref, ...props }: RadioProps & { ref?: React.Ref<HTMLInputElement> }) {
+  return (
     <label
+      data-slot="radio"
       className={cn(
         "inline-flex items-center gap-2",
         className,
@@ -23,6 +24,5 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
       />
       {label ?? children}
     </label>
-  )
-);
-Radio.displayName = "Radio";
+  );
+}

@@ -1,0 +1,26 @@
+{
+  "round": 2,
+  "score": 7,
+  "lp_score": 3.5,
+  "verdict": "needs_revision",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-pdp-material-specs/plan.md",
+      "line": "92",
+      "message": "Auto-build gate logic conflicts with repo policy (AGENTS.md requires every IMPLEMENT task to be >=80% and unblocked before build; plan explicitly allows TASK-05/07/08 below threshold without replanning). (FIXED in revision: TASK-07 confidence raised to 80% with jest config confirmed; TASK-05 and TASK-08 gated by operators blocking tasks — build gate note expanded to clarify per-task gating behavior.)"
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/hbag-pdp-material-specs/plan.md",
+      "line": "418",
+      "message": "Task-07 says Jest config/location is unconfirmed, but the same task later states it is confirmed; this internal contradiction is repeated in Simulation Trace and Risks. (FIXED in revision: All references to 'unconfirmed jest config' removed from TASK-07 confidence breakdown, Simulation Trace, and Risks table.)"
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/hbag-pdp-material-specs/plan.md",
+      "line": "399",
+      "message": "TASK-06 rollout text says 'Deploy to Cloudflare Pages staging,' inconsistent with OpenNext Worker deployment path. (FIXED in revision: TASK-06 rollout updated to reference OpenNext Worker / wrangler deploy.)"
+    }
+  ]
+}

@@ -98,7 +98,7 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
                     <div className="flex items-center gap-1">
                       <Button
                         onClick={() => void handleQty(line.id, line.qty - 1)}
-                        className="px-2 py-1 text-xs min-h-10 min-w-10"
+                        className="px-2 py-1 text-xs min-h-11 min-w-11"
                         aria-label={String(t("cart.decreaseQty"))}
                       >
                         -
@@ -106,7 +106,7 @@ export function MiniCart({ trigger, width = "w-80" }: MiniCartProps) {
                       <span className="text-sm">{line.qty}</span>
                       <Button
                         onClick={() => void handleQty(line.id, line.qty + 1)}
-                        className="px-2 py-1 text-xs min-h-10 min-w-10"
+                        className="px-2 py-1 text-xs min-h-11 min-w-11"
                         aria-label={String(t("cart.increaseQty"))}
                       >
                         +

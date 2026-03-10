@@ -29,9 +29,11 @@ export async function POST(
     await inventoryRepository.write(shop, parsed.data);
     return NextResponse.json({ success: true });
   } catch (err) {
-    console.error("Inventory write failed", err); // i18n-exempt -- non-UX log
     const message = (err as Error).message;
     const status = /delegate is unavailable/i.test(message) ? 503 : 400;
+    if (status !== 503) {
+      console.error("Inventory write failed", err); // i18n-exempt -- non-UX log
+    }
     return NextResponse.json(
       { error: message },
       { status }

@@ -38,7 +38,7 @@
       ],
       "detail": "소렌토 출발 행을 찾아 원하는 버스 시간을 확인한 뒤, 같은 열의 포지타노(Chiesa Nuova) 행을 살펴 도착 시간을 확인하세요.",
       "outro": "<TimetableLink>positano.com</TimetableLink>에서 최신 시간표를 확인하세요.",
-      "linkLabel": "positano.com"
+      "linkLabel": "사이트 맵"
     },
     "positanoStop": {
       "title": "포지타노 버스 정류장",

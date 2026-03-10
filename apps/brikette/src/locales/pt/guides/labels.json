@@ -17,9 +17,9 @@
   "faqsHeading": "Perguntas frequentes",
   "costBreakdownTitle": "Detalhamento diário de custos",
   "costBreakdownCurrencySuffix": "em {{currency}}",
-  "costBreakdownSliceLabel": "{{label}}: {{value}}%{{suffix}}",
+  "costBreakdownSliceLabel": "__TOK0_: _TOK1__%__TOK2_",
   "backLink": "Voltar",
   "typicalCostsHeading": "Custos típicos",
   "essentialsHeading": "Essenciais",
-  "tocSectionFallback": "Section"
+  "tocSectionFallback": "Secção"
 }

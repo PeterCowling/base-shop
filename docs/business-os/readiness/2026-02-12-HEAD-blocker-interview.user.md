@@ -6,7 +6,7 @@ Date: 2026-02-12
 Owner: Pete
 Readiness-Source: docs/business-os/readiness/2026-02-12-idea-readiness.user.md
 Plan-Source: docs/business-os/strategy/HEAD/plan.user.md
-Seed-Source: docs/business-os/startup-baselines/HEAD-forecast-seed.user.md
+Seed-Source: docs/business-os/startup-baselines/HEAD/forecast-seed.user.md
 ---
 
 # HEAD Blocker Interview Pack

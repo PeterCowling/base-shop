@@ -166,6 +166,7 @@ describe('updateAggregates', () => {
   beforeEach(async () => {
     jest.resetModules();
     jest.unmock('fs');
+    jest.useFakeTimers({ now: new Date('2024-01-01T00:00:00.000Z') });
     readShop.mockReset();
     getShopSettings.mockReset();
     tmp = await fs.mkdtemp(path.join(os.tmpdir(), 'analytics-'));
@@ -175,6 +176,10 @@ describe('updateAggregates', () => {
       analytics: { provider: 'console', enabled: true },
     });
     (globalThis.fetch as any) = jest.fn();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
   });
 
   test('aggregates events per day', async () => {

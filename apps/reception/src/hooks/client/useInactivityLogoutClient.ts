@@ -2,12 +2,14 @@
 import { useCallback, useEffect, useRef } from "react";
 
 import { useAuth } from "../../context/AuthContext";
+import { hasRole } from "../../lib/roles";
 
 /**
  * Tracks user inactivity (mouse/keyboard/touch/scroll) and calls the `onLogout`
  * callback after the specified timeout (default: 30 seconds).
  *
- * If the current user's name is "Cristiana", this hook will not apply any inactivity timeout.
+ * If the current user has the "admin" role, this hook will not apply any inactivity timeout
+ * (supports fixed-desk terminals that should never auto-logout).
  *
  * @param isUserLoggedIn - Whether the user is currently logged in
  * @param onLogout - Function to call when logout is required
@@ -19,7 +21,6 @@ export default function useInactivityLogout(
   timeoutMs = 30000
 ): void {
   const { user } = useAuth();
-  const username = user?.user_name;
 
   const lastActivityRef = useRef<number>(Date.now());
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -33,7 +34,7 @@ export default function useInactivityLogout(
    * Attaches global event listeners and periodically checks for inactivity.
    */
   useEffect(() => {
-    if (!isUserLoggedIn || username === "Cristiana") return;
+    if (!isUserLoggedIn || hasRole(user ?? null, "admin")) return;
 
     // Record activity on mount so the timer starts now
     recordActivity();
@@ -64,5 +65,5 @@ export default function useInactivityLogout(
         window.removeEventListener(event, recordActivity);
       });
     };
-  }, [isUserLoggedIn, username, timeoutMs, onLogout, recordActivity]);
+  }, [isUserLoggedIn, user, timeoutMs, onLogout, recordActivity]);
 }

@@ -26,6 +26,7 @@ import {
 import {
   buildObservationSignalHints,
   isNonePlaceholderMetaObservation,
+  normalizeSignalText,
 } from "./self-evolving-signal-helpers.js";
 
 interface BridgeOptions {
@@ -149,6 +150,22 @@ export function extractBulletCandidates(markdown: string | null): string[] {
   }
 
   return candidates;
+}
+
+export function extractResultsReviewSeeds(
+  markdown: string | null,
+  resultsReviewPath?: string,
+): ObservationSeed[] {
+  return extractBulletCandidates(markdown).map((candidate): ObservationSeed => ({
+    label: `idea:${candidate.slice(0, 80)}`,
+    refs:
+      typeof resultsReviewPath === "string" && resultsReviewPath.trim().length > 0
+        ? [resultsReviewPath]
+        : [],
+    recurrenceKeyParts: [candidate],
+    texts: [candidate],
+    problemStatement: `Reduce recurring build-output idea work for ${candidate}.`,
+  }));
 }
 
 interface PatternReflectionFrontmatterEntry {
@@ -297,6 +314,50 @@ function uniqueRefs(values: readonly string[]): string[] {
   return [...new Set(values.map((value) => value.trim()).filter((value) => value.length > 0))];
 }
 
+function mergeObservationSeeds(seeds: readonly ObservationSeed[]): ObservationSeed[] {
+  const merged = new Map<string, ObservationSeed>();
+
+  for (const seed of seeds) {
+    const recurrenceParts =
+      seed.recurrenceKeyParts && seed.recurrenceKeyParts.length > 0
+        ? seed.recurrenceKeyParts
+        : seed.texts && seed.texts.length > 0
+          ? seed.texts
+          : [seed.label];
+    const key =
+      recurrenceParts
+        .map((part) => normalizeSignalText(part))
+        .filter((part) => part.length > 0)
+        .join("|") || normalizeSignalText(seed.label);
+    const existing = merged.get(key);
+    if (!existing) {
+      merged.set(key, {
+        ...seed,
+        refs: uniqueRefs(seed.refs),
+        recurrenceKeyParts: recurrenceParts,
+        texts: seed.texts ? [...seed.texts] : undefined,
+      });
+      continue;
+    }
+
+    merged.set(key, {
+      ...existing,
+      refs: uniqueRefs([...existing.refs, ...seed.refs]),
+      recurrenceKeyParts: [
+        ...new Set([...(existing.recurrenceKeyParts ?? []), ...recurrenceParts]),
+      ],
+      texts: [
+        ...new Set([...(existing.texts ?? []), ...(seed.texts ?? [])]),
+      ],
+      problemStatement: existing.problemStatement ?? seed.problemStatement ?? null,
+      candidateTypeHint: existing.candidateTypeHint ?? seed.candidateTypeHint ?? null,
+      executorDomainHint: existing.executorDomainHint ?? seed.executorDomainHint ?? null,
+    });
+  }
+
+  return [...merged.values()];
+}
+
 function buildObservation(
   options: BridgeOptions,
   seed: ObservationSeed,
@@ -408,10 +469,20 @@ export function runSelfEvolvingFromBuildOutput(options: BridgeOptions): BridgeRe
   }
 
   const buildRecordAbs = resolvePath(options.rootDir, options.buildRecordPath);
+  const resultsReviewAbs = resolvePath(options.rootDir, options.resultsReviewPath);
+  const patternReflectionAbs = resolvePath(options.rootDir, options.patternReflectionPath);
 
   const buildRecord = safeRead(buildRecordAbs);
+  const resultsReview = safeRead(resultsReviewAbs);
+  const patternReflection = safeRead(patternReflectionAbs);
 
   if (!buildRecord) warnings.push(`Missing build-record artifact: ${options.buildRecordPath}`);
+  if (!resultsReview) {
+    warnings.push(`Missing results-review artifact: ${options.resultsReviewPath}`);
+  }
+  if (!patternReflection) {
+    warnings.push(`Missing pattern-reflection artifact: ${options.patternReflectionPath}`);
+  }
 
   const observationSeeds: ObservationSeed[] = [];
   if (buildRecord) {
@@ -420,6 +491,30 @@ export function runSelfEvolvingFromBuildOutput(options: BridgeOptions): BridgeRe
       refs: [options.buildRecordPath],
       texts: [options.planSlug, buildRecord],
     });
+  }
+  if (resultsReview) {
+    const resultsReviewSeeds = extractResultsReviewSeeds(
+      resultsReview,
+      options.resultsReviewPath,
+    );
+    if (resultsReviewSeeds.length === 0) {
+      warnings.push(
+        `No results-review idea seeds extracted: ${options.resultsReviewPath}`,
+      );
+    }
+    observationSeeds.push(...resultsReviewSeeds);
+  }
+  if (patternReflection) {
+    const patternSeeds = extractPatternReflectionSeeds(patternReflection).map((seed) => ({
+      ...seed,
+      refs: uniqueRefs([options.patternReflectionPath, ...seed.refs]),
+    }));
+    if (patternSeeds.length === 0) {
+      warnings.push(
+        `No pattern-reflection seeds extracted: ${options.patternReflectionPath}`,
+      );
+    }
+    observationSeeds.push(...patternSeeds);
   }
 
   if (observationSeeds.length === 0) {
@@ -431,7 +526,8 @@ export function runSelfEvolvingFromBuildOutput(options: BridgeOptions): BridgeRe
     };
   }
 
-  const observations = observationSeeds
+  const mergedSeeds = mergeObservationSeeds(observationSeeds);
+  const observations = mergedSeeds
     .map((seed) => buildObservation(options, seed))
     .filter((observation) => !isNonePlaceholderMetaObservation(observation));
 
@@ -474,7 +570,13 @@ export function runSelfEvolvingFromBuildOutput(options: BridgeOptions): BridgeRe
     followup_hard_failed_candidate_ids: followupConsume.hard_failed_candidate_ids,
     followup_unresolved_candidate_ids: followupConsume.unresolved_candidate_ids,
     followup_queue_entries_written: followupConsume.queue_entries_written,
-    source_artifacts: [...(buildRecord ? [options.buildRecordPath] : [])],
+    source_artifacts: uniqueRefs(
+      [
+        buildRecord ? options.buildRecordPath : null,
+        resultsReview ? options.resultsReviewPath : null,
+        patternReflection ? options.patternReflectionPath : null,
+      ].filter((value): value is string => typeof value === "string"),
+    ),
     warnings,
     orchestrator: {
       observations_count: orchestrator.observations_count,

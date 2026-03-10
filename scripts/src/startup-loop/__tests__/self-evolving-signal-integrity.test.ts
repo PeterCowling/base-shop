@@ -342,7 +342,7 @@ describe("self-evolving sidecar-prefer branches", () => {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
-  it("TC-05-01: results-review sidecar no longer generates self-evolving idea observations", () => {
+  it("TC-05-01: empty richer review artifacts degrade explicitly without changing build-record-only output", () => {
     writeStartupState();
 
     const planSlug = "test-sidecar-plan";
@@ -384,7 +384,23 @@ describe("self-evolving sidecar-prefer branches", () => {
     const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
     expect(result.ok).toBe(true);
     expect(result.observations_generated).toBe(1);
-    expect(result.source_artifacts).toEqual([`docs/plans/${planSlug}/build-record.user.md`]);
+    expect(result.source_artifacts).toEqual(
+      expect.arrayContaining([
+        `docs/plans/${planSlug}/build-record.user.md`,
+        `docs/plans/${planSlug}/results-review.user.md`,
+        `docs/plans/${planSlug}/pattern-reflection.user.md`,
+      ]),
+    );
+    expect(
+      result.warnings.some((warning) =>
+        warning.includes(`No results-review idea seeds extracted: docs/plans/${planSlug}/results-review.user.md`),
+      ),
+    ).toBe(true);
+    expect(
+      result.warnings.some((warning) =>
+        warning.includes(`No pattern-reflection seeds extracted: docs/plans/${planSlug}/pattern-reflection.user.md`),
+      ),
+    ).toBe(true);
     const observationsPath = path.join(
       tmpDir,
       "docs",
@@ -463,7 +479,7 @@ describe("self-evolving sidecar-prefer branches", () => {
     expect(result.observations_generated).toBe(1);
   });
 
-  it("TC-05-02: build-output bridge no longer depends on results-review markdown parsing", () => {
+  it("TC-05-02: results-review markdown now contributes richer observation seeds", () => {
     writeStartupState();
 
     const planSlug = "test-sidecar-plan";
@@ -479,11 +495,11 @@ describe("self-evolving sidecar-prefer branches", () => {
 
     const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
     expect(result.ok).toBe(true);
-    expect(result.observations_generated).toBe(1);
+    expect(result.observations_generated).toBe(2);
     expect(result.warnings.some((w) => w.includes("sidecar parse failed"))).toBe(false);
   });
 
-  it("TC-05-03: malformed results-review sidecar no longer affects build-output bridge", () => {
+  it("TC-05-03: malformed results-review sidecar does not block markdown-derived richer sensing", () => {
     writeStartupState();
 
     const planSlug = "test-sidecar-plan";
@@ -503,7 +519,7 @@ describe("self-evolving sidecar-prefer branches", () => {
 
     const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
     expect(result.ok).toBe(true);
-    expect(result.observations_generated).toBe(1);
+    expect(result.observations_generated).toBe(2);
     expect(result.warnings.some((w) => w.includes("sidecar parse failed"))).toBe(false);
   });
 
@@ -552,7 +568,7 @@ describe("self-evolving sidecar-prefer branches", () => {
     expect(result.observations_generated).toBe(1);
   });
 
-  it("TC-05-05: pattern-reflection markdown no longer changes build-output observation count", () => {
+  it("TC-05-05: pattern-reflection markdown now contributes richer observation seeds", () => {
     writeStartupState();
 
     const planSlug = "test-sidecar-plan";
@@ -581,7 +597,45 @@ describe("self-evolving sidecar-prefer branches", () => {
 
     const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
     expect(result.ok).toBe(true);
-    expect(result.observations_generated).toBe(1);
+    expect(result.observations_generated).toBe(2);
     expect(result.warnings.some((w) => w.includes("sidecar parse failed"))).toBe(false);
+  });
+
+  it("TC-05-06: richer review seeds merge by normalized recurrence key instead of double-counting", () => {
+    writeStartupState();
+
+    const planSlug = "test-sidecar-plan";
+    writeTmpFile(
+      `docs/plans/${planSlug}/results-review.user.md`,
+      [
+        "---",
+        "Business-Unit: BRIK",
+        "---",
+        "",
+        "## New Idea Candidates",
+        "- Tighten queue completion write-back",
+      ].join("\n"),
+    );
+    writeTmpFile(
+      `docs/plans/${planSlug}/pattern-reflection.user.md`,
+      [
+        "---",
+        "entries:",
+        "  - pattern_summary: Tighten queue completion write-back",
+        "    category: new-loop-process",
+        "    routing_target: loop_update",
+        "    occurrence_count: 2",
+        "    evidence_refs: []",
+        "---",
+        "",
+        "## Patterns",
+        "See frontmatter.",
+      ].join("\n"),
+    );
+    writeTmpFile(`docs/plans/${planSlug}/build-record.user.md`, "# Build Record\n");
+
+    const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
+    expect(result.ok).toBe(true);
+    expect(result.observations_generated).toBe(2);
   });
 });

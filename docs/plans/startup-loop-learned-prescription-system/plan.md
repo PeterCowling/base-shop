@@ -38,7 +38,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - [x] TASK-04: Extend policy journaling and evaluation for prescription-choice learning — Complete (2026-03-10)
 - [x] TASK-05: Map milestone roots to runtime producers and unify activation thresholds — Complete (2026-03-10)
 - [ ] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation
-- [ ] TASK-07: Widen live sensing for richer prescription evidence
+- [x] TASK-07: Widen live sensing for richer prescription evidence — Complete (2026-03-10)
 - [ ] TASK-08: Define and enforce the discovery-output contract for unknown prescriptions
 - [ ] TASK-09: Add a guarded promotion path for proven prescriptions
 - [ ] TASK-10: Checkpoint resulting-system coherence and rollout readiness
@@ -437,8 +437,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-signal-helpers.ts`, related startup-loop docs/contracts
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-signal-helpers.ts`, `scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts`
 - **Depends on:** TASK-01, TASK-02
 - **Blocks:** TASK-08, TASK-10
 - **Confidence:** 80%
@@ -470,6 +470,15 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - Update self-evolving bridge notes to explain richer evidence usage and degradation behavior.
 - **Notes / references:**
   - [self-evolving-from-build-output.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: the bridge already accepted `results-review` and `pattern-reflection` paths, but the live seed path still ingested only `build-record`, which starved the learned-prescription system of the richer build-review evidence surface it already described.
+  - Green: `runSelfEvolvingFromBuildOutput()` now extracts richer observation seeds from `results-review.user.md` and `pattern-reflection.user.md`, merges duplicate seeds by normalized recurrence key before observation emission, and records explicit degradation warnings when richer artifacts are missing or contain no usable seeds.
+  - Normalization boundary: richer review artifacts still enter the loop as `meta-observation.v2` records, but they now do so through one merged observation-seed path instead of side-channel-only artifact awareness. This preserves the existing self-evolving normalization spine rather than inventing a second parser-to-policy route.
+  - TC-01: pass. Integrity tests now prove that real `results-review` markdown and `pattern-reflection` markdown increase build-output observation count beyond the `build-record` baseline without regressing existing build-record behavior.
+  - TC-02: pass. Duplicate richer review signals now merge by normalized recurrence key, so the bridge does not double-count equivalent results-review and pattern-reflection findings.
+  - TC-03: pass. Missing or empty richer artifacts no longer disappear silently: the bridge emits explicit warnings for missing artifacts and for present artifacts that yield no usable richer seeds.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` and targeted `pnpm exec eslint --no-warn-ignored ...` passed on the TASK-07 surface.
+  - Precursor completion propagation: TASK-07 no longer blocks TASK-08 or TASK-10. The next runnable task is TASK-08, with TASK-06 still available as the milestone-trigger lane.
 
 ### TASK-08: Define and enforce the discovery-output contract for unknown prescriptions
 - **Type:** IMPLEMENT

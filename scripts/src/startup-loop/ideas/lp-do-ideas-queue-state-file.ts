@@ -8,6 +8,7 @@ import type {
   PrescriptionMaturity,
   PrescriptionReference,
   RequirementPosture,
+  UnknownPrescriptionDiscoveryContract,
 } from "../self-evolving/self-evolving-contracts.js";
 
 export type QueueStateKey =
@@ -27,6 +28,7 @@ export interface DispatchSelfEvolvingLink {
   requirement_posture?: RequirementPosture;
   blocking_scope?: BlockingScope;
   prescription_maturity?: PrescriptionMaturity;
+  discovery_contract?: UnknownPrescriptionDiscoveryContract;
   policy_version: string;
   recommended_route_origin: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build";
   executor_path: string;

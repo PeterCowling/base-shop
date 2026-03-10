@@ -39,7 +39,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - [x] TASK-05: Map milestone roots to runtime producers and unify activation thresholds — Complete (2026-03-10)
 - [ ] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation
 - [x] TASK-07: Widen live sensing for richer prescription evidence — Complete (2026-03-10)
-- [ ] TASK-08: Define and enforce the discovery-output contract for unknown prescriptions
+- [x] TASK-08: Define and enforce the discovery-output contract for unknown prescriptions — Complete (2026-03-10)
 - [ ] TASK-09: Add a guarded promotion path for proven prescriptions
 - [ ] TASK-10: Checkpoint resulting-system coherence and rollout readiness
 
@@ -116,12 +116,12 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Define canonical `gap-case.v1` and `prescription.v1` contracts | 82% | M | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04, TASK-06, TASK-07, TASK-08 |
 | TASK-02 | IMPLEMENT | Normalize existing suggestion seams onto canonical gap-case and prescription shapes | 80% | M | Complete (2026-03-10) | TASK-01 | TASK-03, TASK-04, TASK-07 |
-| TASK-03 | IMPLEMENT | Add requirement posture and prescription maturity to queue and policy routing | 81% | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09 |
-| TASK-04 | IMPLEMENT | Extend policy journaling and evaluation for prescription-choice learning | 81% | M | Pending | TASK-01, TASK-03 | TASK-08, TASK-09 |
+| TASK-03 | IMPLEMENT | Add requirement posture and prescription maturity to queue and policy routing | 81% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09 |
+| TASK-04 | IMPLEMENT | Extend policy journaling and evaluation for prescription-choice learning | 81% | M | Complete (2026-03-10) | TASK-01, TASK-03 | TASK-08, TASK-09 |
 | TASK-05 | INVESTIGATE | Map milestone roots to runtime producers and unify activation thresholds | 78% | M | Complete (2026-03-10) | - | TASK-06, TASK-09 |
 | TASK-06 | IMPLEMENT | Add milestone-event triggers, producers, and lateral bundle generation | 80% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-05 | TASK-09, TASK-10 |
-| TASK-07 | IMPLEMENT | Widen live sensing for richer prescription evidence | 80% | M | Pending | TASK-01, TASK-02 | TASK-08, TASK-10 |
-| TASK-08 | IMPLEMENT | Define and enforce the discovery-output contract for unknown prescriptions | 80% | M | Pending | TASK-01, TASK-03, TASK-07 | TASK-09, TASK-10 |
+| TASK-07 | IMPLEMENT | Widen live sensing for richer prescription evidence | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-08, TASK-10 |
+| TASK-08 | IMPLEMENT | Define and enforce the discovery-output contract for unknown prescriptions | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-07 | TASK-09, TASK-10 |
 | TASK-09 | IMPLEMENT | Add a guarded promotion path for proven prescriptions | 80% | M | Pending | TASK-03, TASK-04, TASK-06, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Check resulting-system coherence and rollout readiness | 95% | S | Pending | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
 
@@ -487,8 +487,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `.claude/skills/lp-do-fact-find/SKILL.md`, `scripts/src/startup-loop/self-evolving/*`, `scripts/src/startup-loop/ideas/*`, related startup-loop docs/contracts
+- **Status:** Complete (2026-03-10)
+- **Affects:** `.claude/skills/lp-do-fact-find/SKILL.md`, `docs/plans/_templates/fact-find-planning.md`, `docs/business-os/startup-loop/contracts/loop-output-contracts.md`, `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts`
 - **Depends on:** TASK-01, TASK-03, TASK-07
 - **Blocks:** TASK-09, TASK-10
 - **Confidence:** 80%
@@ -522,6 +522,15 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - Update fact-find/future workflow docs to explain unknown-prescription discovery outputs.
 - **Notes / references:**
   - [.claude/skills/lp-do-fact-find/SKILL.md](/Users/petercowling/base-shop/.claude/skills/lp-do-fact-find/SKILL.md)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: `unknown` and `hypothesized` prescriptions could be routed back to fact-find, but neither queue handoff nor fact-find output had an explicit machine contract for what discovery had to return. That left the runtime relying on convention and narrative prose to mature a prescription.
+  - Green: added canonical `UnknownPrescriptionDiscoveryContract` and `DiscoveryPrescriptionCandidate` types plus validators/builders in `self-evolving-contracts.ts`; queue self-evolving links can now carry a typed discovery contract; `dispatch.v2` validation now requires that contract for `unknown` and `hypothesized` prescription maturity and verifies its gap-case and recommended-prescription linkage; self-evolving backbone consume now emits the discovery contract plus a concrete fact-find scope string; and the fact-find skill/template/output contract docs now require a `## Discovery Contract Output` section with the minimum machine fields.
+  - TC-01: pass. Unknown-maturity and hypothesized-maturity dispatches cannot bypass discovery contract validation; focused `dispatch.v2` tests now fail when the contract is missing and pass when the typed contract is present.
+  - TC-02: pass. The discovery contract now enforces the minimum machine fields needed by later queue and policy consumers: `gap_case_id`, `prescription_candidates[]`, `recommended_first_prescription_id`, `required_inputs`, `expected_artifacts`, and `expected_signals`.
+  - TC-03: pass. The runtime route from `unknown` / `hypothesized` to structured discovery is explicit in both code and workflow docs: queue handoff emits the discovery contract, `lp-do-fact-find` is instructed to return the structured output, and the shared fact-find template/output contract now names the required section and fields.
+  - TC-04: pass. Narrative rationale remains allowed, but it cannot substitute for structure: the skill, template, and loop output contract all now require the machine-readable discovery fields when a self-evolving discovery contract is present.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`, targeted `pnpm exec eslint --no-warn-ignored ...`, `pnpm plans:lint`, `git diff --check`, and `bash scripts/validate-changes.sh` all passed on the TASK-08 surface.
+  - Precursor completion propagation: TASK-08 no longer blocks TASK-09 or TASK-10. The next runnable implementation task is TASK-06, which must land before guarded promotion work can proceed.
 
 ### TASK-09: Add a guarded promotion path for proven prescriptions
 - **Type:** IMPLEMENT

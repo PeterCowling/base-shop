@@ -21,6 +21,7 @@ import {
   validateGapCaseReference,
   validatePrescription,
   validatePrescriptionReference,
+  validateUnknownPrescriptionDiscoveryContract,
 } from "../self-evolving/self-evolving-contracts.js";
 
 import {
@@ -633,6 +634,29 @@ export function validateDispatchV2(
         ),
       );
     }
+    if (link.discovery_contract) {
+      errors.push(
+        ...validateUnknownPrescriptionDiscoveryContract(link.discovery_contract).map(
+          (error) => `[dispatch.v2] self_evolving.discovery_contract.${error}`,
+        ),
+      );
+      if (
+        link.gap_case &&
+        link.discovery_contract.gap_case_id !== link.gap_case.gap_case_id
+      ) {
+        errors.push(
+          `[dispatch.v2] self_evolving.discovery_contract.gap_case_id must match self_evolving.gap_case.gap_case_id.`,
+        );
+      }
+      if (
+        link.prescription &&
+        link.discovery_contract.recommended_first_prescription_id !== link.prescription.prescription_id
+      ) {
+        errors.push(
+          `[dispatch.v2] self_evolving.discovery_contract.recommended_first_prescription_id must match self_evolving.prescription.prescription_id.`,
+        );
+      }
+    }
     if (
       link.requirement_posture !== undefined &&
       link.requirement_posture !== "absolute_required" &&
@@ -659,6 +683,15 @@ export function validateDispatchV2(
       link.prescription_maturity !== "retired"
     ) {
       errors.push(`[dispatch.v2] self_evolving.prescription_maturity is invalid.`);
+    }
+    if (
+      (link.prescription_maturity === "unknown" ||
+        link.prescription_maturity === "hypothesized") &&
+      !link.discovery_contract
+    ) {
+      errors.push(
+        `[dispatch.v2] self_evolving.discovery_contract is required when self_evolving.prescription_maturity is unknown or hypothesized.`,
+      );
     }
   }
 

@@ -358,6 +358,142 @@ describe("TC-01-E: artifact_delta dispatch auto-populated values carry source: '
     ).toBe(true);
   });
 
+  it("accepts unknown-maturity self_evolving links when a discovery contract is present", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      self_evolving: {
+        candidate_id: "cand-1",
+        decision_id: "decision-1",
+        requirement_posture: "relative_required",
+        blocking_scope: "degrades_quality",
+        prescription_maturity: "unknown",
+        gap_case: {
+          gap_case_id: "gap-1",
+          candidate_id: "cand-1",
+          binding_mode: "compiled_to_candidate",
+        },
+        prescription: {
+          prescription_id: "prescription-1",
+          prescription_family: "build-origin-bridge-fact-find",
+          required_route: "lp-do-fact-find",
+        },
+        discovery_contract: {
+          schema_version: "unknown-prescription-discovery.v1",
+          gap_case_id: "gap-1",
+          discovery_reason: "prescription_unknown",
+          prescription_candidates: [
+            {
+              prescription_id: "prescription-1",
+              prescription_family: "build-origin-bridge-fact-find",
+              required_route: "lp-do-fact-find",
+              required_inputs: ["results-review.signals.json"],
+              expected_artifacts: ["fact-find.md"],
+              expected_signals: [
+                "Gap becomes structured enough for canonical queue admission.",
+              ],
+            },
+          ],
+          recommended_first_prescription_id: "prescription-1",
+          required_inputs: ["results-review.signals.json"],
+          expected_artifacts: ["fact-find.md"],
+          expected_signals: [
+            "Gap becomes structured enough for canonical queue admission.",
+          ],
+        },
+        policy_version: "self-evolving-policy.v1",
+        recommended_route_origin: "lp-do-fact-find",
+        executor_path: "lp-do-build:container:website-v3",
+        handoff_emitted_at: FIXED_DATE.toISOString(),
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  it("rejects unknown-maturity self_evolving links without a discovery contract", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      self_evolving: {
+        candidate_id: "cand-1",
+        decision_id: "decision-1",
+        prescription_maturity: "unknown",
+        policy_version: "self-evolving-policy.v1",
+        recommended_route_origin: "lp-do-fact-find",
+        executor_path: "lp-do-build:container:website-v3",
+        handoff_emitted_at: FIXED_DATE.toISOString(),
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(false);
+    expect(
+      result.errors.some((error) => error.includes("self_evolving.discovery_contract is required")),
+    ).toBe(true);
+  });
+
+  it("rejects discovery contracts whose recommended prescription drifts from self_evolving.prescription", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      self_evolving: {
+        candidate_id: "cand-1",
+        decision_id: "decision-1",
+        prescription_maturity: "hypothesized",
+        gap_case: {
+          gap_case_id: "gap-1",
+          candidate_id: "cand-1",
+          binding_mode: "compiled_to_candidate",
+        },
+        prescription: {
+          prescription_id: "prescription-1",
+          prescription_family: "build-origin-bridge-fact-find",
+          required_route: "lp-do-fact-find",
+        },
+        discovery_contract: {
+          schema_version: "unknown-prescription-discovery.v1",
+          gap_case_id: "gap-1",
+          discovery_reason: "prescription_hypothesized",
+          prescription_candidates: [
+            {
+              prescription_id: "prescription-other",
+              prescription_family: "build-origin-bridge-fact-find",
+              required_route: "lp-do-fact-find",
+              required_inputs: ["results-review.signals.json"],
+              expected_artifacts: ["fact-find.md"],
+              expected_signals: [
+                "Gap becomes structured enough for canonical queue admission.",
+              ],
+            },
+          ],
+          recommended_first_prescription_id: "prescription-other",
+          required_inputs: ["results-review.signals.json"],
+          expected_artifacts: ["fact-find.md"],
+          expected_signals: [
+            "Gap becomes structured enough for canonical queue admission.",
+          ],
+        },
+        policy_version: "self-evolving-policy.v1",
+        recommended_route_origin: "lp-do-fact-find",
+        executor_path: "lp-do-build:container:website-v3",
+        handoff_emitted_at: FIXED_DATE.toISOString(),
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(false);
+    expect(
+      result.errors.some((error) =>
+        error.includes(
+          "self_evolving.discovery_contract.recommended_first_prescription_id must match self_evolving.prescription.prescription_id",
+        ),
+      ),
+    ).toBe(true);
+  });
+
   it("rejects self_evolving gap-case references that drift from candidate identity", () => {
     const packet = makeV2Packet({
       trigger: "operator_idea",

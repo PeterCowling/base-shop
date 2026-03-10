@@ -162,6 +162,26 @@ export interface PrescriptionChoiceContext {
   maturity_at_choice: PrescriptionMaturity | null;
 }
 
+export interface DiscoveryPrescriptionCandidate {
+  prescription_id: string;
+  prescription_family: string;
+  required_route: CanonicalRecommendedRoute;
+  required_inputs: string[];
+  expected_artifacts: string[];
+  expected_signals: string[];
+}
+
+export interface UnknownPrescriptionDiscoveryContract {
+  schema_version: "unknown-prescription-discovery.v1";
+  gap_case_id: string;
+  discovery_reason: "prescription_unknown" | "prescription_hypothesized";
+  prescription_candidates: DiscoveryPrescriptionCandidate[];
+  recommended_first_prescription_id: string;
+  required_inputs: string[];
+  expected_artifacts: string[];
+  expected_signals: string[];
+}
+
 export interface ObservationSignalHints {
   recurrence_key?: string | null;
   problem_statement?: string | null;
@@ -879,6 +899,117 @@ export function buildPrescriptionChoiceContext(input: {
     required_route: input.prescription.required_route,
     expected_signal_change: input.prescription.expected_signal_change,
     maturity_at_choice: input.maturity_at_choice ?? input.prescription.maturity ?? null,
+  };
+}
+
+function validateStringArray(values: unknown, label: string): string[] {
+  if (!Array.isArray(values) || values.length === 0) {
+    return [label];
+  }
+  if (values.some((value) => !nonEmptyString(value))) {
+    return [label];
+  }
+  return [];
+}
+
+function validateDiscoveryPrescriptionCandidate(
+  candidate: DiscoveryPrescriptionCandidate,
+): string[] {
+  const errors: string[] = [];
+  for (const [label, value] of Object.entries({
+    prescription_id: candidate.prescription_id,
+    prescription_family: candidate.prescription_family,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    candidate.required_route !== "lp-do-fact-find" &&
+    candidate.required_route !== "lp-do-plan" &&
+    candidate.required_route !== "lp-do-build" &&
+    candidate.required_route !== "lp-do-briefing"
+  ) {
+    errors.push("required_route");
+  }
+  errors.push(...validateStringArray(candidate.required_inputs, "required_inputs"));
+  errors.push(...validateStringArray(candidate.expected_artifacts, "expected_artifacts"));
+  errors.push(...validateStringArray(candidate.expected_signals, "expected_signals"));
+  return errors;
+}
+
+export function validateUnknownPrescriptionDiscoveryContract(
+  contract: UnknownPrescriptionDiscoveryContract,
+): string[] {
+  const errors: string[] = [];
+  if (contract.schema_version !== "unknown-prescription-discovery.v1") {
+    errors.push("schema_version");
+  }
+  if (!nonEmptyString(contract.gap_case_id)) {
+    errors.push("gap_case_id");
+  }
+  if (
+    contract.discovery_reason !== "prescription_unknown" &&
+    contract.discovery_reason !== "prescription_hypothesized"
+  ) {
+    errors.push("discovery_reason");
+  }
+  if (
+    !Array.isArray(contract.prescription_candidates) ||
+    contract.prescription_candidates.length === 0
+  ) {
+    errors.push("prescription_candidates");
+  } else {
+    contract.prescription_candidates.forEach((candidate, index) => {
+      errors.push(
+        ...validateDiscoveryPrescriptionCandidate(candidate).map(
+          (error) => `prescription_candidates[${index}].${error}`,
+        ),
+      );
+    });
+  }
+  if (!nonEmptyString(contract.recommended_first_prescription_id)) {
+    errors.push("recommended_first_prescription_id");
+  } else if (
+    Array.isArray(contract.prescription_candidates) &&
+    !contract.prescription_candidates.some(
+      (candidate) => candidate.prescription_id === contract.recommended_first_prescription_id,
+    )
+  ) {
+    errors.push("recommended_first_prescription_id_not_found");
+  }
+  errors.push(...validateStringArray(contract.required_inputs, "required_inputs"));
+  errors.push(...validateStringArray(contract.expected_artifacts, "expected_artifacts"));
+  errors.push(...validateStringArray(contract.expected_signals, "expected_signals"));
+  return errors;
+}
+
+export function buildUnknownPrescriptionDiscoveryContract(input: {
+  gap_case: GapCase;
+  prescription: Prescription;
+  maturity: PrescriptionMaturity;
+}): UnknownPrescriptionDiscoveryContract {
+  return {
+    schema_version: "unknown-prescription-discovery.v1",
+    gap_case_id: input.gap_case.gap_case_id,
+    discovery_reason:
+      input.maturity === "hypothesized"
+        ? "prescription_hypothesized"
+        : "prescription_unknown",
+    prescription_candidates: [
+      {
+        prescription_id: input.prescription.prescription_id,
+        prescription_family: input.prescription.prescription_family,
+        required_route: input.prescription.required_route,
+        required_inputs: [...input.prescription.required_inputs],
+        expected_artifacts: [...input.prescription.expected_artifacts],
+        expected_signals: [input.prescription.expected_signal_change],
+      },
+    ],
+    recommended_first_prescription_id: input.prescription.prescription_id,
+    required_inputs: [...input.prescription.required_inputs],
+    expected_artifacts: [...input.prescription.expected_artifacts],
+    expected_signals: [input.prescription.expected_signal_change],
   };
 }
 

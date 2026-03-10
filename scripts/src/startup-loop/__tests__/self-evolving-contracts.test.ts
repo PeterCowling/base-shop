@@ -22,6 +22,7 @@ import {
   validatePolicyState,
   validatePrescription,
   validateStartupState,
+  validateUnknownPrescriptionDiscoveryContract,
 } from "../self-evolving/self-evolving-contracts.js";
 import {
   appendSelfEvolvingEvent,
@@ -243,10 +244,35 @@ function buildValidPrescription(): Prescription {
   };
 }
 
+function buildValidDiscoveryContract() {
+  return {
+    schema_version: "unknown-prescription-discovery.v1" as const,
+    gap_case_id: "gap-1",
+    discovery_reason: "prescription_unknown" as const,
+    prescription_candidates: [
+      {
+        prescription_id: "prescription-1",
+        prescription_family: "build-origin-bridge-fact-find",
+        required_route: "lp-do-fact-find" as const,
+        required_inputs: ["results-review.signals.json"],
+        expected_artifacts: ["fact-find.md"],
+        expected_signals: ["Gap becomes structured enough for canonical queue admission."],
+      },
+    ],
+    recommended_first_prescription_id: "prescription-1",
+    required_inputs: ["results-review.signals.json"],
+    expected_artifacts: ["fact-find.md"],
+    expected_signals: ["Gap becomes structured enough for canonical queue admission."],
+  };
+}
+
 describe("self-evolving contract validators", () => {
   it("TASK-01 TC-01 validates canonical gap-case and prescription contracts", () => {
     expect(validateGapCase(buildValidGapCase())).toEqual([]);
     expect(validatePrescription(buildValidPrescription())).toEqual([]);
+    expect(validateUnknownPrescriptionDiscoveryContract(buildValidDiscoveryContract())).toEqual(
+      [],
+    );
   });
 
   it("rejects invalid posture and maturity enum values", () => {

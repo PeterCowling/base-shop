@@ -951,12 +951,16 @@ describe("handlePublishImpl — publish action feedback", () => {
   });
 
   it("TC-05: publish is blocked while autosave is dirty", async () => {
+    let resolveAutosave: ((response: Response) => void) | null = null;
+
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
       if (url.startsWith("/api/catalog/products?storefront=")) {
         if (init?.method === "POST") {
-          return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-1" });
+          return await new Promise<Response>((resolve) => {
+            resolveAutosave = resolve;
+          });
         }
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
       }
@@ -982,12 +986,19 @@ describe("handlePublishImpl — publish action feedback", () => {
       );
     });
     expect(global.fetch).not.toHaveBeenCalledWith("/api/catalog/publish", expect.anything());
+
+    await act(async () => {
+      resolveAutosave?.(jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-1" }));
+    });
   });
 
   it("TC-06: publish success surfaces partial-success warnings", async () => {
     global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
       const url = String(input);
       if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=") && init?.method === "POST") {
+        return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-1" });
+      }
       if (url.startsWith("/api/catalog/products?storefront=") && !init?.method) {
         return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-1" } });
       }

@@ -56,13 +56,21 @@ export class CatalogDraftConflictError extends Error {
   override name = "CatalogDraftConflictError";
 }
 
-const CATALOG_CONTRACT_BASE_URL = (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
-const CATALOG_CONTRACT_WRITE_TOKEN = (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
-const CATALOG_CONTRACT_READ_TOKEN = (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
+function getCatalogContractBaseUrl(): string {
+  return (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
+}
+
+function getCatalogContractWriteToken(): string {
+  return (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
+}
+
+function getCatalogContractReadToken(): string {
+  return (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
+}
 
 
 function buildContractUrl(pathname: string): string {
-  const baseUrl = CATALOG_CONTRACT_BASE_URL;
+  const baseUrl = getCatalogContractBaseUrl();
   if (!baseUrl) {
     throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
   }
@@ -92,7 +100,7 @@ function resolveCurrencyRatesUrl(storefront: XaCatalogStorefront): string {
 }
 
 function getWriteTokenHeader(): Record<string, string> {
-  const writeToken = CATALOG_CONTRACT_WRITE_TOKEN;
+  const writeToken = getCatalogContractWriteToken();
   if (!writeToken) {
     throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_WRITE_TOKEN is not configured.");
   }
@@ -100,12 +108,12 @@ function getWriteTokenHeader(): Record<string, string> {
 }
 
 function getReadTokenHeader(): Record<string, string> {
-  const readToken = CATALOG_CONTRACT_READ_TOKEN;
+  const readToken = getCatalogContractReadToken();
   if (readToken) {
     return { "X-XA-Catalog-Token": readToken };
   }
 
-  const writeToken = CATALOG_CONTRACT_WRITE_TOKEN;
+  const writeToken = getCatalogContractWriteToken();
   if (writeToken) {
     return { "X-XA-Catalog-Token": writeToken };
   }

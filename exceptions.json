@@ -108,7 +108,7 @@
     },
     "BRIK-2161": {
       "allow": [
-        "apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx"
+        "apps/brikette/src/app/*/dorms/RoomsPageContent.tsx"
       ],
       "expires": "2026-12-31",
       "notes": "Dorm booking query synchronization intentionally runs from resolved query fields only; hook dependency follow-up tracked separately."

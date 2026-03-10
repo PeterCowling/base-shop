@@ -46,23 +46,32 @@ export class CatalogPublishError extends Error {
   }
 }
 
-const CATALOG_CONTRACT_BASE_URL = (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
-const CATALOG_CONTRACT_WRITE_TOKEN = (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
+function getCatalogContractBaseUrl(): string {
+  return (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
+}
+
+function getCatalogContractWriteToken(): string {
+  return (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
+}
+
+function getCatalogContractTimeoutMs(): number {
+  return toPositiveInt(process.env.XA_CATALOG_CONTRACT_TIMEOUT_MS, 20_000, 1);
+}
 
 export function getCatalogContractReadiness(): { configured: boolean; errors: string[] } {
   const errors: string[] = [];
+  const baseUrl = getCatalogContractBaseUrl();
+  const writeToken = getCatalogContractWriteToken();
   // i18n-exempt -- XAUP-118 [ttl=2026-12-31] non-UI diagnostics for readiness payload
-  if (!CATALOG_CONTRACT_BASE_URL) errors.push("XA_CATALOG_CONTRACT_BASE_URL not set");
+  if (!baseUrl) errors.push("XA_CATALOG_CONTRACT_BASE_URL not set");
   // i18n-exempt -- XAUP-118 [ttl=2026-12-31] non-UI diagnostics for readiness payload
-  if (!CATALOG_CONTRACT_WRITE_TOKEN) errors.push("XA_CATALOG_CONTRACT_WRITE_TOKEN not set");
+  if (!writeToken) errors.push("XA_CATALOG_CONTRACT_WRITE_TOKEN not set");
   return { configured: errors.length === 0, errors };
 }
 
-const CATALOG_CONTRACT_TIMEOUT_MS = toPositiveInt(process.env.XA_CATALOG_CONTRACT_TIMEOUT_MS, 20_000, 1);
-
 
 function buildCatalogContractPublishUrl(storefrontId: XaCatalogStorefront): string {
-  const baseUrl = CATALOG_CONTRACT_BASE_URL;
+  const baseUrl = getCatalogContractBaseUrl();
   if (!baseUrl) {
     throw new CatalogPublishError(
       "unconfigured",
@@ -146,7 +155,7 @@ export async function publishCatalogPayloadToContract(params: {
     mediaIndex: unknown;
   };
 }): Promise<CatalogPublishResult> {
-  const writeToken = CATALOG_CONTRACT_WRITE_TOKEN;
+  const writeToken = getCatalogContractWriteToken();
   if (!writeToken) {
     throw new CatalogPublishError(
       "unconfigured",
@@ -157,7 +166,7 @@ export async function publishCatalogPayloadToContract(params: {
   const publishUrl = buildCatalogContractPublishUrl(params.storefrontId);
 
   const controller = new AbortController();
-  const timeoutHandle = setTimeout(() => controller.abort(), CATALOG_CONTRACT_TIMEOUT_MS);
+  const timeoutHandle = setTimeout(() => controller.abort(), getCatalogContractTimeoutMs());
 
   let response: Response;
   try {

@@ -64,6 +64,7 @@ describe("PATCH /admin/api/inventory/:sku", () => {
       "caryina-silver",
       { color: "silver" },
       expect.any(Function),
+      { backend: "prisma" },
     );
   });
 
@@ -100,6 +101,7 @@ describe("PATCH /admin/api/inventory/:sku", () => {
       "caryina-silver",
       {},
       expect.any(Function),
+      { backend: "prisma" },
     );
   });
 

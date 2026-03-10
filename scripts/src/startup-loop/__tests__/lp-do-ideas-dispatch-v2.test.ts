@@ -238,6 +238,38 @@ describe("TC-01-E: artifact_delta dispatch auto-populated values carry source: '
         results_review_sidecar_path: "docs/plans/test-feature/results-review.signals.json",
         pattern_reflection_path: null,
         pattern_reflection_sidecar_path: null,
+        gap_case: {
+          schema_version: "gap-case.v1",
+          gap_case_id: "gap-123",
+          source_kind: "build_origin",
+          business_id: "HBAG",
+          stage_id: null,
+          capability_id: null,
+          gap_type: "build_origin_review_signal",
+          reason_code: "build_origin_signal",
+          severity: 0.7,
+          evidence_refs: ["docs/plans/test-feature/results-review.user.md"],
+          recurrence_key: "recur-123",
+          structural_context: {
+            plan_slug: "test-feature",
+          },
+          runtime_binding: {
+            binding_mode: "compiled_to_candidate",
+            candidate_id: "cand-123",
+          },
+        },
+        prescription: {
+          schema_version: "prescription.v1",
+          prescription_id: "rx-123",
+          prescription_family: "build_origin_fact_find_candidate",
+          source: "build_origin",
+          gap_types_supported: ["build_origin_review_signal"],
+          required_route: "lp-do-fact-find",
+          required_inputs: ["docs/plans/test-feature/results-review.signals.json"],
+          expected_artifacts: ["fact-find.md"],
+          expected_signal_change: "Address the build-origin signal through the canonical queue path.",
+          risk_class: "low",
+        },
       },
     });
     const result = validateDispatchV2(packet);

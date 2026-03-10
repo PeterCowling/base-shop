@@ -124,6 +124,10 @@ describe("lp-do-ideas-build-origin-bridge", () => {
       results_review_signal: true,
       pattern_reflection_entry: true,
     });
+    expect(dispatch.build_origin?.gap_case?.source_kind).toBe("build_origin");
+    expect(dispatch.build_origin?.gap_case?.runtime_binding.candidate_id).toMatch(/^cand-/);
+    expect(dispatch.build_origin?.prescription?.source).toBe("build_origin");
+    expect(dispatch.build_origin?.prescription?.required_route).toBe("lp-do-plan");
   });
 
   it("TC-02: rerun suppresses duplicate queue admission by canonical cluster fingerprint", () => {

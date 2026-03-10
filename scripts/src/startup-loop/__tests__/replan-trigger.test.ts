@@ -145,6 +145,10 @@ describe("replan-trigger", () => {
       expect(trigger!.resolved_at).toBeNull();
       expect(trigger!.persistence_threshold).toBe(3);
       expect(trigger!.min_severity).toBe("moderate");
+      expect(trigger!.gap_case?.source_kind).toBe("bottleneck");
+      expect(trigger!.gap_case?.runtime_binding.candidate_id).toMatch(/^cand-/);
+      expect(trigger!.prescription?.source).toBe("replan_trigger");
+      expect(trigger!.prescription?.required_route).toBe("lp-do-fact-find");
 
       // Verify file was written
       const triggerPath = path.join(

@@ -269,6 +269,97 @@
         "pattern_reflection_sidecar_path": {
           "type": ["string", "null"]
         },
+        "gap_case": {
+          "type": "object",
+          "properties": {
+            "schema_version": { "type": "string", "const": "gap-case.v1" },
+            "gap_case_id": { "type": "string", "minLength": 1 },
+            "source_kind": {
+              "type": "string",
+              "enum": ["bottleneck", "build_origin", "signal_review", "milestone", "self_evolving"]
+            },
+            "business_id": { "type": "string", "minLength": 1 },
+            "stage_id": { "type": ["string", "null"] },
+            "capability_id": { "type": ["string", "null"] },
+            "gap_type": { "type": "string", "minLength": 1 },
+            "reason_code": { "type": "string", "minLength": 1 },
+            "severity": { "type": "number", "minimum": 0, "maximum": 1 },
+            "evidence_refs": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "recurrence_key": { "type": "string", "minLength": 1 },
+            "structural_context": { "type": "object" },
+            "runtime_binding": {
+              "type": "object",
+              "properties": {
+                "binding_mode": { "type": "string", "const": "compiled_to_candidate" },
+                "candidate_id": { "type": "string", "minLength": 1 }
+              },
+              "required": ["binding_mode", "candidate_id"],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "schema_version",
+            "gap_case_id",
+            "source_kind",
+            "business_id",
+            "stage_id",
+            "capability_id",
+            "gap_type",
+            "reason_code",
+            "severity",
+            "evidence_refs",
+            "recurrence_key",
+            "structural_context",
+            "runtime_binding"
+          ],
+          "additionalProperties": false
+        },
+        "prescription": {
+          "type": "object",
+          "properties": {
+            "schema_version": { "type": "string", "const": "prescription.v1" },
+            "prescription_id": { "type": "string", "minLength": 1 },
+            "prescription_family": { "type": "string", "minLength": 1 },
+            "source": {
+              "type": "string",
+              "enum": ["replan_trigger", "signal_review", "build_origin", "milestone_bundle", "self_evolving"]
+            },
+            "gap_types_supported": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "required_route": {
+              "type": "string",
+              "enum": ["lp-do-fact-find", "lp-do-plan", "lp-do-build", "lp-do-briefing"]
+            },
+            "required_inputs": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "expected_artifacts": {
+              "type": "array",
+              "items": { "type": "string", "minLength": 1 }
+            },
+            "expected_signal_change": { "type": "string", "minLength": 1 },
+            "risk_class": { "type": "string", "enum": ["low", "medium", "high"] }
+          },
+          "required": [
+            "schema_version",
+            "prescription_id",
+            "prescription_family",
+            "source",
+            "gap_types_supported",
+            "required_route",
+            "required_inputs",
+            "expected_artifacts",
+            "expected_signal_change",
+            "risk_class"
+          ],
+          "additionalProperties": false
+        },
         "reflection_fields": {
           "type": "object",
           "properties": {

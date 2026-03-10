@@ -3,6 +3,15 @@ import path from "node:path";
 
 import { load as loadYaml } from "js-yaml";
 
+import type { GapCase, Prescription } from "../self-evolving/self-evolving-contracts.js";
+import {
+  buildCanonicalGapCase,
+  buildCanonicalPrescription,
+  buildCompiledCandidateId,
+  expectedArtifactsForRoute,
+  normalizeCanonicalToken,
+} from "../self-evolving/self-evolving-prescription-normalization.js";
+
 const SIGNAL_REVIEW_REQUIRED_SCHEMA_VERSION = "signal-review.review-required.v1";
 const DEFAULT_OWNER = "Pete";
 
@@ -23,6 +32,8 @@ export interface SignalReviewReviewRequiredItem {
   latest_seen_run_date: string;
   source_signal_review_path: string;
   suggested_action: string;
+  gap_case?: GapCase;
+  prescription?: Prescription;
 }
 
 export interface SignalReviewReviewRequiredSidecar {
@@ -199,6 +210,68 @@ function deriveDueDate(
   return addDays(latestSeenRunDate, 7);
 }
 
+function deriveSeverity(
+  escalationState: ReviewRequiredEscalationState,
+  recurrenceCount: number,
+): number {
+  const base =
+    escalationState === "escalated" ? 0.8 : escalationState === "overdue" ? 0.85 : 0.6;
+  const recurrenceBonus = Math.max(0, recurrenceCount - 2) * 0.05;
+  return Math.min(0.95, base + recurrenceBonus);
+}
+
+function buildCanonicalSignalReviewFields(input: {
+  business: string;
+  fingerprint: string;
+  title: string;
+  recurrence_count: number;
+  escalation_state: ReviewRequiredEscalationState;
+  source_signal_review_path: string;
+  suggested_action: string;
+}): { gap_case: GapCase; prescription: Prescription } {
+  const gapType = `signal_review_repeat_${normalizeCanonicalToken(input.fingerprint)}`;
+  const candidateId = buildCompiledCandidateId({
+    business_id: input.business,
+    source_kind: "signal_review",
+    recurrence_key: input.fingerprint,
+    gap_type: gapType,
+  });
+
+  return {
+    gap_case: buildCanonicalGapCase({
+      business_id: input.business,
+      source_kind: "signal_review",
+      stage_id: null,
+      capability_id: null,
+      gap_type: gapType,
+      reason_code: normalizeCanonicalToken(`repeat_${input.escalation_state}`),
+      severity: deriveSeverity(input.escalation_state, input.recurrence_count),
+      evidence_refs: [input.source_signal_review_path],
+      recurrence_key: input.fingerprint,
+      structural_context: {
+        fingerprint: input.fingerprint,
+        title: input.title,
+        recurrence_count: input.recurrence_count,
+        escalation_state: input.escalation_state,
+        suggested_action: input.suggested_action,
+        source_kind: "signal_review",
+      },
+      candidate_id: candidateId,
+    }),
+    prescription: buildCanonicalPrescription({
+      prescription_family: "signal_review_manual_promotion_review",
+      source: "signal_review",
+      gap_types_supported: [gapType],
+      required_route: "lp-do-fact-find",
+      required_inputs: [input.source_signal_review_path, input.fingerprint],
+      expected_artifacts: expectedArtifactsForRoute("lp-do-fact-find"),
+      expected_signal_change:
+        `Turn repeat signal-review finding ${input.fingerprint} into a validated next move or an explicit close rationale.`,
+      risk_class: "low",
+    }),
+  };
+}
+
 export function extractSignalReviewRequiredItems(
   signalReviewPath: string,
   options: {
@@ -239,6 +312,16 @@ export function extractSignalReviewRequiredItems(
     const nextAction =
       extractSummaryNext(finding.body) ??
       `Review ${fingerprint} and decide whether to promote it into a fact-find or close it with rationale.`;
+    const relativeSourcePath = toRelativePath(repoRoot, signalReviewPath);
+    const canonical = buildCanonicalSignalReviewFields({
+      business,
+      fingerprint,
+      title: finding.title,
+      recurrence_count: recurrenceCount,
+      escalation_state: escalationState,
+      source_signal_review_path: relativeSourcePath,
+      suggested_action: nextAction,
+    });
 
     items.push({
       fingerprint,
@@ -252,8 +335,10 @@ export function extractSignalReviewRequiredItems(
       recurrence_count: recurrenceCount,
       first_seen_run_date: firstSeenRunDate,
       latest_seen_run_date: latestSeenRunDate,
-      source_signal_review_path: toRelativePath(repoRoot, signalReviewPath),
+      source_signal_review_path: relativeSourcePath,
       suggested_action: nextAction,
+      gap_case: canonical.gap_case,
+      prescription: canonical.prescription,
     });
   }
 

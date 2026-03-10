@@ -15,7 +15,11 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 
 import {
+  type GapCase,
+  type Prescription,
+  validateGapCase,
   validateGapCaseReference,
+  validatePrescription,
   validatePrescriptionReference,
 } from "../self-evolving/self-evolving-contracts.js";
 
@@ -425,6 +429,8 @@ export interface DispatchBuildOriginProvenance {
   results_review_sidecar_path: string | null;
   pattern_reflection_path: string | null;
   pattern_reflection_sidecar_path: string | null;
+  gap_case?: GapCase;
+  prescription?: Prescription;
   reflection_fields?: {
     category: string | null;
     routing_target: string | null;
@@ -626,6 +632,37 @@ export function validateDispatchV2(
           (error) => `[dispatch.v2] self_evolving.prescription.${error}`,
         ),
       );
+    }
+  }
+
+  const buildOrigin = packet.build_origin;
+  if (buildOrigin && typeof buildOrigin === "object") {
+    if (buildOrigin.gap_case) {
+      errors.push(
+        ...validateGapCase(buildOrigin.gap_case).map(
+          (error) => `[dispatch.v2] build_origin.gap_case.${error}`,
+        ),
+      );
+    }
+    if (buildOrigin.prescription) {
+      errors.push(
+        ...validatePrescription(buildOrigin.prescription).map(
+          (error) => `[dispatch.v2] build_origin.prescription.${error}`,
+        ),
+      );
+      if (buildOrigin.prescription.required_route !== packet.recommended_route) {
+        errors.push(
+          `[dispatch.v2] build_origin.prescription.required_route must match packet.recommended_route.`,
+        );
+      }
+      if (
+        buildOrigin.gap_case &&
+        !buildOrigin.prescription.gap_types_supported.includes(buildOrigin.gap_case.gap_type)
+      ) {
+        errors.push(
+          `[dispatch.v2] build_origin.prescription.gap_types_supported must include build_origin.gap_case.gap_type.`,
+        );
+      }
     }
   }
 

@@ -33,7 +33,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 
 ## Active tasks
 - [x] TASK-01: Define canonical `gap-case.v1` and `prescription.v1` contracts — Complete (2026-03-10)
-- [ ] TASK-02: Normalize existing suggestion seams onto canonical gap-case and prescription shapes
+- [x] TASK-02: Normalize existing suggestion seams onto canonical gap-case and prescription shapes — Complete (2026-03-10)
 - [ ] TASK-03: Add requirement posture and prescription maturity to queue and policy routing
 - [ ] TASK-04: Extend policy journaling and evaluation for prescription-choice learning
 - [x] TASK-05: Map milestone roots to runtime producers and unify activation thresholds — Complete (2026-03-10)
@@ -115,7 +115,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Define canonical `gap-case.v1` and `prescription.v1` contracts | 82% | M | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04, TASK-06, TASK-07, TASK-08 |
-| TASK-02 | IMPLEMENT | Normalize existing suggestion seams onto canonical gap-case and prescription shapes | 80% | M | Pending | TASK-01 | TASK-03, TASK-04, TASK-07 |
+| TASK-02 | IMPLEMENT | Normalize existing suggestion seams onto canonical gap-case and prescription shapes | 80% | M | Complete (2026-03-10) | TASK-01 | TASK-03, TASK-04, TASK-07 |
 | TASK-03 | IMPLEMENT | Add requirement posture and prescription maturity to queue and policy routing | 81% | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-04 | IMPLEMENT | Extend policy journaling and evaluation for prescription-choice learning | 81% | M | Pending | TASK-01, TASK-03 | TASK-08, TASK-09 |
 | TASK-05 | INVESTIGATE | Map milestone roots to runtime producers and unify activation thresholds | 78% | M | Complete (2026-03-10) | - | TASK-06, TASK-09 |
@@ -203,8 +203,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/replan-trigger.ts`, `scripts/src/startup-loop/diagnostics/signal-review-review-required.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-prescription-normalization.ts`, `scripts/src/startup-loop/replan-trigger.ts`, `scripts/src/startup-loop/diagnostics/signal-review-review-required.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/__tests__/replan-trigger.test.ts`, `scripts/src/startup-loop/__tests__/signal-review-review-required.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-build-origin-bridge.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts`, `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`, `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03, TASK-04, TASK-07
 - **Confidence:** 80%
@@ -237,6 +237,15 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - [replan-trigger.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/replan-trigger.ts)
   - [signal-review-review-required.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/diagnostics/signal-review-review-required.ts)
   - [lp-do-ideas-build-origin-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: `replan-trigger`, `signal-review-review-required`, and `lp-do-ideas-build-origin-bridge` each carried their own prescriptive text (`recommended_focus`, `suggested_action`, `next_scope_now`) without a shared canonical `gap_case` / `prescription` object.
+  - Green: added `self-evolving-prescription-normalization.ts` as the shared deterministic builder for compiled candidate IDs, `gap_case`, and `prescription`; replan triggers and signal-review review-required sidecars now emit canonical objects; build-origin dispatch provenance now carries canonical objects and `dispatch.v2` validates them when present.
+  - Compatibility scope: preserved the existing human-readable fields and current queue routing behavior, but demoted them to derived narrative alongside canonical identities rather than separate prescriptive authorities.
+  - TC-01: pass. Replan trigger output now emits canonical bottleneck `gap_case` / `prescription` identity, and focused trigger tests assert the normalized source and required route.
+  - TC-02: pass. Build-origin bridge queue admissions now carry canonical build-origin `gap_case` / `prescription` provenance while preserving current route/status behavior, and the dispatch contract/schema accept and validate those fields.
+  - TC-03: pass. Signal-review sidecars now preserve their actionable operator narrative while emitting canonical signal-review `gap_case` / `prescription` identity; focused tests assert both narrative continuity and canonical fields.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`, targeted `pnpm exec eslint --no-warn-ignored ...`, `pnpm plans:lint`, and `bash scripts/validate-changes.sh` all passed.
+  - Precursor completion propagation: TASK-02 no longer blocks TASK-03, TASK-04, or TASK-07. The next runnable task is TASK-03.
 
 ### TASK-03: Add requirement posture and prescription maturity to queue and policy routing
 - **Type:** IMPLEMENT

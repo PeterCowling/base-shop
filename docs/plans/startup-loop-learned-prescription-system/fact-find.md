@@ -5,7 +5,8 @@ Status: Ready-for-planning
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-10
-Last-updated: 2026-03-10
+Last-reviewed: 2026-03-10
+Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: startup-loop-learned-prescription-system
 Execution-Track: mixed
 Deliverable-Family: multi
@@ -15,7 +16,6 @@ Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: startup-loop-gap-fill
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-do-fact-find, lp-do-plan, lp-do-ideas, startup-loop
-Related-Plan: docs/plans/startup-loop-learned-prescription-system/plan.md
 Trigger-Why: The startup loop already detects many weaknesses and already emits some suggested next moves, but those prescriptions are fragmented, not learned as a system, and not yet able to distinguish absolute requirements, relative requirements, unknown remedies, and milestone-triggered lateral follow-up.
 Trigger-Intended-Outcome: "type: operational | statement: The repo has a code-backed account of the true missing parts needed for a single learned prescription system in the startup loop, framed as planning-ready improvement opportunities with explicit boundaries, trigger classes, and outcome-learning seams. | source: operator"
 ---
@@ -24,14 +24,15 @@ Trigger-Intended-Outcome: "type: operational | statement: The repo has a code-ba
 
 ## Scope
 ### Summary
-The startup loop does not start from zero. It already has multiple prescriptive seams: persistent bottlenecks emit `recommended_focus`, build-origin findings carry `suggested_action` into queue dispatches, signal review repeats persist `suggested_action`, and the self-evolving runtime already chooses between `lp-do-fact-find`, `lp-do-plan`, `lp-do-build`, and `reject`. The real gap is not "add prescriptions." The real gap is that prescriptions are fragmented across different subsystems, are not tracked as first-class policy choices, do not distinguish absolute vs relative necessity, do not model "prescription unknown" as a normal state, and do not have a milestone-trigger class for events like first sale, first qualified lead, or first stockist placement. This fact-find wraps those missing parts into one planning-ready thread.
+The startup loop does not start from zero. It already has multiple prescriptive seams: persistent bottlenecks emit `recommended_focus`, build-origin findings carry `suggested_action` into queue dispatches, signal review repeats persist `suggested_action`, and the self-evolving runtime already chooses between `lp-do-fact-find`, `lp-do-plan`, `lp-do-build`, and `reject`. The real gap is not "add prescriptions." The real gap is that prescriptions are fragmented across different subsystems, are not tracked as first-class policy choices, do not distinguish absolute vs relative necessity, do not model "prescription unknown" as a normal state, do not define one canonical `gap_case` unit, and do not have a milestone-trigger class for code-backed activation roots such as first qualified lead, first transaction data, first repeat signal, or `wholesale_accounts > 0`. Higher-level runtime names like `first_sale` or `first_stockist_live` are still design choices, not current contract truth. This fact-find wraps those missing parts into one planning-ready thread.
 
 ### Goals
 - Describe the current code-backed prescriptive capability that already exists in the startup loop.
 - Identify the true missing parts needed for a single learned prescription system.
 - Distinguish hard requirements from relative opportunities and optional improvements.
+- Define the canonical `gap_case` unit that prescriptions and learning would operate on.
 - Define the missing trigger classes, decision contracts, and learning seams required for prescriptions to improve over time.
-- Record the milestone-event gap explicitly, using current CAP-05, CAP-06, GTM-2, GTM-3, and GTM-4 contracts as evidence.
+- Record the milestone-event gap explicitly, using current CAP-05, CAP-06, GTM-2, GTM-3, and GTM-4 contracts as evidence while keeping proposed runtime event names separate from current contract roots.
 - Produce a planning-ready opportunity set rather than a generic architecture essay.
 
 ### Non-goals
@@ -52,6 +53,8 @@ The startup loop does not start from zero. It already has multiple prescriptive 
   - Milestone events are different from gap events and need their own trigger class.
 
 ## Outcome Contract
+- **Decision Owner:** startup-loop maintainers acting for the operator
+- **Decision Question:** Should the startup loop extend the existing queue/policy/evaluation spine with a single learned prescription system, and if so which missing contracts must land first for that to be coherent?
 - **Why:** The startup loop already detects many weaknesses and already emits some suggested next moves, but those prescriptions are fragmented, not learned as a system, and not yet able to distinguish absolute requirements, relative requirements, unknown remedies, and milestone-triggered lateral follow-up.
 - **Intended Outcome Type:** operational
 - **Intended Outcome Statement:** The repo has a code-backed account of the true missing parts needed for a single learned prescription system in the startup loop, framed as planning-ready improvement opportunities with explicit boundaries, trigger classes, and outcome-learning seams.
@@ -170,6 +173,7 @@ None.
 6. Outcomes are recorded back against candidate and decision identity.
 
 What does **not** happen is just as important:
+- the runtime does not normalize all upstream signals into one typed `gap_case`
 - the runtime does not choose among typed prescriptions
 - the runtime does not record prescription choice in the decision journal
 - the runtime does not learn which remedy worked best for a gap type
@@ -177,7 +181,24 @@ What does **not** happen is just as important:
 - the runtime does not explicitly say whether something is absolutely required, relatively required, or merely improvable
 
 ## True Missing Parts
-### 1. Canonical Prescription Contract
+### 1. Canonical Gap Case Contract
+The repo needs one typed `gap_case` unit before it can learn prescriptions coherently.
+
+It should define:
+- `gap_case_id`
+- `source_kind`
+- `business`
+- `stage_id` or `capability_id`
+- `gap_type`
+- `reason_code`
+- `severity`
+- `evidence_refs`
+- `recurrence_key`
+- `structural_context`
+
+Right now the brief names `gap_case_id` later in policy and evaluation fields, but the repo does not yet define the thing those fields would point to. Without this, prescription learning stays tied to ad hoc candidate or signal shapes and cannot generalize cleanly across bottlenecks, build-origin findings, and milestone bundles.
+
+### 2. Canonical Prescription Contract
 The repo needs one typed `prescription` contract that subsumes:
 - `recommended_focus`
 - `suggested_action`
@@ -196,7 +217,7 @@ It should define:
 
 Without this, the repo has prescriptions, but not a prescription system.
 
-### 2. Requirement Posture
+### 3. Requirement Posture
 The repo needs an explicit requirement classifier:
 - `absolute_required`
 - `relative_required`
@@ -210,7 +231,7 @@ And separately:
 
 The current code already separates hard rules from utility selection, but it does not persist this posture explicitly.
 
-### 3. Prescription Maturity
+### 4. Prescription Maturity
 The repo needs to treat unknown remedy as a normal state:
 - `unknown`
 - `hypothesized`
@@ -220,7 +241,7 @@ The repo needs to treat unknown remedy as a normal state:
 
 This is the missing bridge between "gap recognized" and "well-formed idea exists."
 
-### 4. Prescription Choice as a Policy Decision
+### 5. Prescription Choice as a Policy Decision
 The policy journal needs a new decision type:
 - `prescription_choice`
 
@@ -235,7 +256,7 @@ That decision should record:
 
 Without this, the loop can learn routing quality but not remedy quality.
 
-### 5. Prescription-Level Outcome Learning
+### 6. Prescription-Level Outcome Learning
 The evaluation dataset needs to join outcomes back to:
 - `gap_case_id`
 - `prescription_id`
@@ -246,35 +267,38 @@ The evaluation dataset needs to join outcomes back to:
 
 The current dataset is already the right spine; it is simply missing prescription identity.
 
-### 6. Milestone-Event Trigger Family
+### 7. Milestone-Event Trigger Family
 The loop needs a native trigger class for state transitions and milestones, not just deltas and operator ideas.
 
-Examples:
-- `first_sale`
+Code-backed activation roots already present in repo contracts:
 - `first_qualified_lead`
-- `first_stockist_live`
-- `first_transaction`
+- `first_transaction_data_available`
 - `first_repeat_signal`
 - `wholesale_accounts_crossed_zero`
 
-These should generate lateral prescription bundles rather than a single blunt task.
+Candidate higher-level runtime names like `first_sale` or `first_stockist_live` may still be worth introducing, but they are not current contract truth and should not be treated as such in planning.
 
-### 7. Lateral Bundle Expansion for Milestones
+These milestone roots should generate lateral prescription bundles rather than a single blunt task.
+
+### 8. Lateral Bundle Expansion for Milestones
 A milestone should fan out into candidate follow-ups, each with requirement posture.
 
 Examples:
-- `first_sale`
+- `first_transaction_data_available`
   - evaluate GTM-4 activation
   - evaluate CAP-06 activation posture
   - check whether lifecycle instrumentation or retention artifact work is now relatively required
-- `first_stockist_live`
+- `wholesale_accounts_crossed_zero`
+  - evaluate GTM-3 / CAP-05 activation
+  - evaluate pipeline artifact requirements
+- physical-product stockist-target activation
   - evaluate GTM-2 channel ops work
   - evaluate stockist-tracking artifact requirements
-  - if wholesale account flow now exists, evaluate GTM-3 / CAP-05 activation
+  - if wholesale account flow now exists, evaluate GTM-3 / CAP-05 activation as a separate milestone root
 
 The output should be a small ranked bundle, not an unconditional work explosion.
 
-### 8. Activation Threshold Unification
+### 9. Activation Threshold Unification
 Milestone-sensitive contracts are not fully aligned.
 
 Current example:
@@ -283,13 +307,13 @@ Current example:
 
 These thresholds need one canonical activation source before milestone triggers become live runtime logic.
 
-### 9. Richer Live Sensing For Prescriptions
+### 10. Richer Live Sensing For Prescriptions
 The self-evolving build-output bridge still seeds live observations only from `build-record`, despite exposing `resultsReviewPath` and `patternReflectionPath`.
 - Evidence: [self-evolving-from-build-output.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts#L31), [self-evolving-from-build-output.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts#L412)
 
 Prescription quality will remain limited if the sensing layer stays narrower than the available review data.
 
-### 10. Promotion Path For Proven Prescriptions
+### 11. Promotion Path For Proven Prescriptions
 The repo already has a manual write-back surface and a low-risk autofix helper, but no live runtime promotion path for proven prescriptions.
 - Evidence: [self-evolving-write-back.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-write-back.ts#L10), [self-evolving-autofix.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-autofix.ts#L9)
 
@@ -300,16 +324,17 @@ The missing piece is not full autonomy. It is a guarded path from `proven prescr
 - bounded autofix class
 
 ## Opportunities To Improve
-1. Create one canonical `prescription` schema and migrate existing suggestion seams onto it.
-2. Add `requirement_posture` and `blocking_scope` to queue and policy decisions.
-3. Add `prescription_maturity` and make `unknown` route explicitly to `lp-do-fact-find`.
-4. Extend the policy journal with `prescription_choice`.
-5. Extend the replay/evaluation dataset with prescription-level success attribution.
-6. Add a new `milestone_event` trigger family to `dispatch.v2` and upstream intake paths.
-7. Build milestone bundle generators for first sale, first qualified lead, first stockist, and first repeat signal.
-8. Reconcile CAP/GTM activation thresholds into canonical milestone rules.
-9. Widen the live self-evolving build-output sensing path to consume richer build-review evidence.
-10. Add a guarded promotion path so proven prescriptions can update the system that uses them.
+1. Create one canonical `gap_case` schema and normalize bottlenecks, build-origin findings, and milestone expansions onto it.
+2. Create one canonical `prescription` schema and migrate existing suggestion seams onto it.
+3. Add `requirement_posture` and `blocking_scope` to queue and policy decisions.
+4. Add `prescription_maturity` and make `unknown` route explicitly to `lp-do-fact-find`.
+5. Extend the policy journal with `prescription_choice`.
+6. Extend the replay/evaluation dataset with prescription-level success attribution.
+7. Add a new `milestone_event` trigger family to `dispatch.v2` and upstream intake paths, using current contract roots first.
+8. Build milestone bundle generators for first qualified lead, first transaction data, first repeat signal, and `wholesale_accounts > 0`; treat `first_sale` or `first_stockist_live` as optional higher-level aliases only after contract mapping exists.
+9. Reconcile CAP/GTM activation thresholds into canonical milestone rules.
+10. Widen the live self-evolving build-output sensing path to consume richer build-review evidence.
+11. Add a guarded promotion path so proven prescriptions can update the system that uses them.
 
 ## Questions
 ### Resolved
@@ -331,19 +356,19 @@ None. The remaining decisions are architectural and contract decisions that can 
 
 ## Confidence Inputs
 - Implementation: 86%
-  - Basis: the missing parts fit naturally into existing policy, queue, and evaluation seams.
-  - What raises it to >=90: a concrete field-level extension sketch for `prescription_choice` and milestone events.
-- Approach: 90%
-  - Basis: this extends the current architecture instead of replacing it.
-  - What raises it to >=90: none beyond detailed planning.
+  - Basis: the missing parts fit naturally into existing policy, queue, and evaluation seams, but the missing `gap_case` contract adds one more foundational seam than the earlier framing admitted.
+  - What raises it to >=90: a concrete field-level extension sketch for `gap_case`, `prescription_choice`, and milestone events.
+- Approach: 86%
+  - Basis: this extends the current architecture instead of replacing it, but milestone runtime vocabulary still needs explicit mapping from current contract roots to any higher-level event names.
+  - What raises it to >=90: a short contract note that maps current milestone roots to allowed runtime event names.
 - Impact: 92%
   - Basis: these are the real missing pieces between isolated suggestions and a learnable prescription system.
-  - What raises it to >=90: milestone-trigger examples traced through one live business profile.
-- Delivery-Readiness: 84%
-  - Basis: work is bounded to repo-local contracts and scripts, but touches multiple seams.
-  - What raises it to >=90: a sequenced plan that splits contract work from runtime work.
+  - What raises it to >=90: milestone-trigger examples traced through one live business profile and one build-origin gap case.
+- Delivery-Readiness: 82%
+  - Basis: work is bounded to repo-local contracts and scripts, but touches multiple seams and now clearly depends on defining the missing `gap_case` layer first.
+  - What raises it to >=90: a sequenced plan that splits gap-case/contract work from runtime work.
 - Testability: 83%
-  - Basis: current scripts tests provide a good base, but milestone triggers and prescription-level replay need new coverage.
+  - Basis: current scripts tests provide a good base, but milestone triggers, prescription-level replay, and gap-case normalization need new coverage.
   - What raises it to >=90: add a draft test matrix in planning.
 
 ## Risks
@@ -351,6 +376,7 @@ None. The remaining decisions are architectural and contract decisions that can 
 |---|---|---|---|
 | Prescription system becomes a second parallel queue vocabulary | Medium | High | Reuse `dispatch.v2`, queue linkage, and policy/evaluation spine rather than adding a new store |
 | Milestone triggers create too many lateral tasks | High | Medium | Require requirement posture and bundle ranking before admission |
+| Proposed milestone names drift away from current contract roots | Medium | High | Normalize milestone roots first; only add higher-level aliases once their contract mapping is explicit |
 | Hard requirements get softened into probabilistic suggestions | Medium | High | Keep hard gates declarative and outside learned prescription choice |
 | Relative improvements are over-prioritized | Medium | Medium | Make `absolute_required` vs `relative_required` explicit and portfolio-constrained |
 | Activation-threshold conflicts create contradictory milestone behavior | High | Medium | Unify canonical activation rules before runtime trigger rollout |
@@ -358,9 +384,11 @@ None. The remaining decisions are architectural and contract decisions that can 
 
 ## Planning Constraints & Notes
 - Must-follow patterns:
+  - Define and normalize `gap_case` before adding prescription-choice learning on top.
   - Extend existing queue and policy contracts; do not build a parallel system.
   - Keep fact-find as the default route for `prescription_maturity = unknown`.
   - Keep milestone bundles advisory until posture and activation-rule logic are validated.
+  - Treat higher-level milestone names as aliases layered over contract roots, not as the first source of truth.
 - Rollout/rollback expectations:
   - Start with contract and shadow-mode additions before authoritative runtime changes.
   - Milestone events should enter in shadow/advisory mode first.
@@ -369,9 +397,10 @@ None. The remaining decisions are architectural and contract decisions that can 
   - Evaluation/reporting must expose prescription-level replay coverage once added.
 
 ## Suggested Task Seeds (Non-binding)
+- Define `gap-case.v1` contract and normalize current upstream seams onto it.
 - Define `prescription.v1` contract and add queue/policy references.
 - Define `requirement-posture.v1` contract and inject into dispatch and policy records.
-- Add `milestone_event` to dispatch trigger model and design bundle generator rules.
+- Add `milestone_event` to dispatch trigger model and design bundle generator rules, starting from current contract roots.
 - Add `prescription_choice` to policy journal and replay dataset.
 - Reconcile CAP-06 / GTM-4 activation thresholds.
 
@@ -397,7 +426,8 @@ None. The remaining decisions are architectural and contract decisions that can 
 | Policy/evaluation learning seam | Yes | None | No |
 | Requirement posture and prioritization boundary | Yes | None | No |
 | Unknown-prescription routing | Yes | None | No |
-| Milestone-trigger contracts | Partial | Major: activation exists in contracts but not runtime trigger model | Yes |
+| Gap-case normalization | No | Major: later sections assume `gap_case_id` but the brief did not previously define a canonical gap-case unit | Yes |
+| Milestone-trigger contracts | Partial | Major: activation exists in contracts but the brief previously overstated proposed event names beyond current runtime/contract truth | Yes |
 | Live sensing depth for prescriptions | Partial | Major: build-output bridge surface is richer than live observation seed path | Yes |
 
 ## Scope Signal
@@ -408,7 +438,9 @@ Rationale: the topic is broad conceptually, but the repo evidence collapses it i
 ## Evidence Gap Review
 ### Gaps Addressed
 - Distinguished between missing prescriptions and missing prescription learning.
+- Added the missing `gap_case` layer that later policy and evaluation fields already assumed.
 - Verified milestone activation exists in contracts, not runtime triggers.
+- Separated current contract-backed milestone roots from proposed higher-level runtime event names.
 - Verified unknown-remedy fallback already exists via fact-find routing.
 - Verified the live build-output bridge is narrower than its interface suggests.
 

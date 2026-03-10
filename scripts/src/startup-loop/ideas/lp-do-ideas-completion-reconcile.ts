@@ -2,6 +2,10 @@ import { createHash } from "node:crypto";
 import { existsSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+import {
+  IDEAS_COMPLETED_IDEAS_PATH,
+  IDEAS_TRIAL_QUEUE_STATE_PATH,
+} from "./lp-do-ideas-paths.js";
 import { finalizeSelfEvolvingCompletionIfMatured } from "./lp-do-ideas-queue-state-completion.js";
 import {
   atomicWriteQueueState,
@@ -77,9 +81,9 @@ export type IdeaCompletionReconcileSnapshotResult =
     }
   | (Omit<ReconcileResult, "ok"> & { ok: false });
 
-const DEFAULT_QUEUE_STATE_PATH = "docs/business-os/startup-loop/ideas/trial/queue-state.json";
-const DEFAULT_COMPLETED_IDEAS_PATH = "docs/business-os/_data/completed-ideas.json";
-const QUEUE_SOURCE_PATH = "docs/business-os/startup-loop/ideas/trial/queue-state.json";
+const DEFAULT_QUEUE_STATE_PATH = IDEAS_TRIAL_QUEUE_STATE_PATH;
+const DEFAULT_COMPLETED_IDEAS_PATH = IDEAS_COMPLETED_IDEAS_PATH;
+const QUEUE_SOURCE_PATH = IDEAS_TRIAL_QUEUE_STATE_PATH;
 const PLAN_ROOT = "docs/plans";
 
 function parseArgs(argv: string[]): IdeaCompletionReconcileOptions {

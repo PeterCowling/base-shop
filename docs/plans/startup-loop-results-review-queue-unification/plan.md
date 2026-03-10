@@ -33,7 +33,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [x] TASK-11: Implement the chosen self-evolving build-origin alignment — Complete (2026-03-10)
 - [x] TASK-13: Choose the canonical queue surface and admission seam for build-origin ideas — Complete (2026-03-10)
 - [x] TASK-14: Wire build-origin admission into the real build lifecycle — Complete (2026-03-10)
-- [ ] TASK-15: Align report and closure consumers to the canonical queue surface
+- [x] TASK-15: Align report and closure consumers to the canonical queue surface — Complete (2026-03-10)
 - [ ] TASK-07: Canonical queue-path readiness checkpoint
 - [ ] TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
 - [ ] TASK-09: Cutover split checkpoint
@@ -111,7 +111,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 80% | M | Complete (2026-03-10) | TASK-06 | TASK-13, TASK-07 |
 | TASK-13 | INVESTIGATE | Choose the canonical queue surface and admission seam for build-origin ideas | 75% | M | Complete (2026-03-10) | TASK-03, TASK-04, TASK-05, TASK-11 | TASK-14, TASK-15, TASK-07 |
 | TASK-14 | IMPLEMENT | Wire build-origin admission into the real build lifecycle on the chosen queue surface | 80% | M | Complete (2026-03-10) | TASK-13 | TASK-07 |
-| TASK-15 | IMPLEMENT | Align report and closure consumers to the canonical queue surface | 80% | M | Pending | TASK-13 | TASK-07 |
+| TASK-15 | IMPLEMENT | Align report and closure consumers to the canonical queue surface | 80% | M | Complete (2026-03-10) | TASK-13 | TASK-07 |
 | TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11, TASK-14, TASK-15 | TASK-08, TASK-09, TASK-10, TASK-12 |
 | TASK-08 | INVESTIGATE | Audit historical backlog carry-over and produce bounded carry-over evidence | 70% | M | Pending | TASK-07 | TASK-09, TASK-10, TASK-12 |
 | TASK-09 | CHECKPOINT | Decide in-thread cutover versus separate carry-over project | 95% | S | Pending | TASK-08 | TASK-10, TASK-12 |
@@ -464,8 +464,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/build/generate-process-improvements.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`, and any queue-path docs/tests touched by the chosen surface
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/build/generate-process-improvements.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-paths.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`, and any queue-path docs/tests touched by the chosen surface
 - **Depends on:** TASK-13
 - **Blocks:** TASK-07
 - **Confidence:** 80%
@@ -482,6 +482,12 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - TC-02: completion/reconcile and keyword calibration operate against that same queue file by default.
   - TC-03: no active code path required for this thread still defaults to the non-chosen queue file.
 - **What would make this >=90%:** one integration-style fixture showing admission, report readback, and completion/reconcile all round-trip through the same queue file.
+- **Build completion evidence (2026-03-10):**
+  - Added the shared queue-path module [lp-do-ideas-paths.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-paths.ts) so the chosen trial queue and telemetry paths are defined once.
+  - Moved [generate-process-improvements.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/generate-process-improvements.ts), [lp-do-ideas-build-origin-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts), [lp-do-ideas-completion-reconcile.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts), [lp-do-ideas-keyword-calibrate.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts), and [lp-do-ideas-queue-state-completion.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts) onto those shared constants.
+  - Result: the active report, build-origin admission, completion reconcile, keyword calibration, and queue-state completion defaults now all point at the same trial queue surface in code.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` passed; targeted ESLint passed on the touched queue-path files.
+  - Outcome: affirming. TASK-07 is now the next runnable checkpoint.
 
 ### TASK-07: Canonical queue-path readiness checkpoint
 - **Type:** CHECKPOINT

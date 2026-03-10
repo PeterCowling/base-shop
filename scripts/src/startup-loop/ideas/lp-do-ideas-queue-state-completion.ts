@@ -21,6 +21,7 @@ import {
   createLifecycleEvent,
 } from "../self-evolving/self-evolving-events.js";
 
+import { IDEAS_TRIAL_QUEUE_STATE_PATH } from "./lp-do-ideas-paths.js";
 import {
   atomicWriteQueueState,
   buildCounts,
@@ -30,7 +31,7 @@ import {
   readQueueStateFile,
 } from "./lp-do-ideas-queue-state-file.js";
 
-const DEFAULT_QUEUE_STATE_PATH = "docs/business-os/startup-loop/ideas/trial/queue-state.json";
+const DEFAULT_QUEUE_STATE_PATH = IDEAS_TRIAL_QUEUE_STATE_PATH;
 
 export interface SelfEvolvingMeasurementInput {
   kpi_name: string;

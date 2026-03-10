@@ -21,6 +21,10 @@ import {
   type IdeaClassificationInput,
 } from "./lp-do-ideas-classifier.js";
 import { computeClusterFingerprint } from "./lp-do-ideas-fingerprint.js";
+import {
+  IDEAS_TRIAL_QUEUE_STATE_PATH,
+  IDEAS_TRIAL_TELEMETRY_PATH,
+} from "./lp-do-ideas-paths.js";
 import { enqueueQueueDispatches } from "./lp-do-ideas-queue-admission.js";
 import { routeDispatchV2 } from "./lp-do-ideas-routing-adapter.js";
 import {
@@ -101,8 +105,8 @@ export interface BuildOriginDispatchValidationResult {
   error?: string;
 }
 
-const DEFAULT_QUEUE_STATE_PATH = "docs/business-os/startup-loop/ideas/trial/queue-state.json";
-const DEFAULT_TELEMETRY_PATH = "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl";
+const DEFAULT_QUEUE_STATE_PATH = IDEAS_TRIAL_QUEUE_STATE_PATH;
+const DEFAULT_TELEMETRY_PATH = IDEAS_TRIAL_TELEMETRY_PATH;
 
 function resolvePath(rootDir: string, relativeOrAbsolutePath: string): string {
   return path.isAbsolute(relativeOrAbsolutePath)

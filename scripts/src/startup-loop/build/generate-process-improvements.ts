@@ -13,6 +13,11 @@ import {
 import { backfillSyntheticDispatch } from "../ideas/lp-do-ideas-synthetic-dispatch-narrative.js";
 import type { DispatchBuildOriginProvenance } from "../ideas/lp-do-ideas-trial.js";
 import {
+  IDEAS_COMPLETED_IDEAS_PATH,
+  IDEAS_TRIAL_QUEUE_STATE_PATH,
+  IDEAS_TRIAL_TELEMETRY_PATH,
+} from "../ideas/lp-do-ideas-paths.js";
+import {
   MISSING_VALUE,
   classifyIdeaItem,
   normalizeNewlines,
@@ -30,11 +35,11 @@ import {
 
 const PROCESS_HTML_RELATIVE_PATH = "docs/business-os/process-improvements.user.html";
 const PROCESS_DATA_RELATIVE_PATH = "docs/business-os/_data/process-improvements.json";
-export const COMPLETED_IDEAS_RELATIVE_PATH = "docs/business-os/_data/completed-ideas.json";
+export const COMPLETED_IDEAS_RELATIVE_PATH = IDEAS_COMPLETED_IDEAS_PATH;
 const PLANS_ROOT = "docs/plans";
 const STRATEGY_ROOT = "docs/business-os/strategy";
-export const QUEUE_STATE_RELATIVE_PATH = "docs/business-os/startup-loop/ideas/trial/queue-state.json";
-const QUEUE_TELEMETRY_RELATIVE_PATH = "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl";
+export const QUEUE_STATE_RELATIVE_PATH = IDEAS_TRIAL_QUEUE_STATE_PATH;
+const QUEUE_TELEMETRY_RELATIVE_PATH = IDEAS_TRIAL_TELEMETRY_PATH;
 
 export type ProcessImprovementType = "idea" | "risk" | "pending-review";
 

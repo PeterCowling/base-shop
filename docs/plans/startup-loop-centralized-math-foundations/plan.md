@@ -38,7 +38,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-11: Implement the causal-evaluation contract and promotion-quality gate — Complete (2026-03-10)
 - [x] TASK-12: Implement stability controls and anti-gaming utility governance — Complete (2026-03-10)
 - [x] TASK-13: Implement calibration, regret, override, and policy audit telemetry — Complete (2026-03-10)
-- [ ] TASK-17: Enforce the policy authority ladder at queue and promotion seams
+- [x] TASK-17: Enforce the policy authority ladder at queue and promotion seams — Complete (2026-03-10)
 - [ ] TASK-18: Produce real shadow-run policy artifacts and checkpoint evidence
 - [ ] TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - [ ] TASK-15: Final checkpoint - authoritative mathematical policy readiness
@@ -127,7 +127,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-11 | IMPLEMENT | Implement the causal-evaluation contract and promotion-quality gate | 80% | M | Complete (2026-03-10) | TASK-04, TASK-06, TASK-16, TASK-08, TASK-09 | TASK-12, TASK-13, TASK-14 |
 | TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 80% | M | Complete (2026-03-10) | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
 | TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
-| TASK-17 | IMPLEMENT | Enforce the authority ladder so shadow and advisory policy cannot silently actuate queue or promotion state | 85% | M | Pending | TASK-07, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-14, TASK-15 |
+| TASK-17 | IMPLEMENT | Enforce the authority ladder so shadow and advisory policy cannot silently actuate queue or promotion state | 85% | M | Complete (2026-03-10) | TASK-07, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-14, TASK-15 |
 | TASK-18 | IMPLEMENT | Produce real self-evolving shadow-run policy artifacts and checkpoint evidence from repo outputs | 80% | M | Pending | TASK-13, TASK-17 | TASK-14, TASK-15 |
 | TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18 | TASK-15 |
 | TASK-15 | CHECKPOINT | Final checkpoint - authoritative mathematical policy readiness | 95% | S | Pending | TASK-14 | - |
@@ -893,8 +893,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-exploration.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-release-replay.test.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-authority.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-exploration.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-candidates.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-policy-audit.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-exploration.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-backbone-queue.test.ts`
 - **Depends on:** TASK-07, TASK-10, TASK-11, TASK-12, TASK-13
 - **Blocks:** TASK-14, TASK-15
 - **Confidence:** 85%
@@ -930,6 +930,20 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`
+- **Build Evidence (2026-03-10):**
+  - Green: added `self-evolving-authority.ts` as the single authority helper and switched queue, exploration, and promotion-facing candidate annotation code onto it instead of scattered ad hoc checks.
+  - Green: `enqueueBackboneCandidates()` now ignores portfolio and exploration ordering signals unless the persisted policy state is `guarded_trial`; `shadow` and `advisory` fall back to baseline queue priority ordering.
+  - Green: `consumeBackboneQueueToIdeasWorkflow()` now ignores `portfolio_selected` suppression unless authority is `guarded_trial`, so `shadow` and `advisory` compute recommendations without suppressing follow-up dispatch emission.
+  - Green: exploration outputs now distinguish `guarded_trial` explicitly in contract/report surfaces, and only `guarded_trial` marks exploration as applied.
+  - Green: promotion-gate decisions are still journaled for every run, but ranked-candidate promotion action/reason fields now stay null until `guarded_trial`, so shadow/advisory no longer mutate promotion-facing candidate state.
+  - TC-01: pass by integration coverage and local validation. `self-evolving-orchestrator-integration.test.ts` now proves that shadow-mode pending entries with `portfolio_selected: false` still emit follow-up dispatches.
+  - TC-02: pass by integration coverage and local validation. The same integration path now proves `advisory` preserves dispatch emission while `self-evolving-exploration.test.ts` proves advisory exploration remains recommendation-only (`applied === false`).
+  - TC-03: pass by unit/integration coverage and local validation. `self-evolving-backbone-queue.test.ts` proves guarded-trial queue ordering honors portfolio selection, `self-evolving-orchestrator-integration.test.ts` proves guarded-trial consume suppresses deferred entries, and promotion annotations only surface on ranked candidates once guarded trial authority is active.
+  - Validation:
+    - `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
+    - `pnpm exec eslint scripts/src/startup-loop/self-evolving/self-evolving-authority.ts scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts scripts/src/startup-loop/self-evolving/self-evolving-candidates.ts scripts/src/startup-loop/self-evolving/self-evolving-policy-audit.ts scripts/src/startup-loop/self-evolving/self-evolving-exploration.ts scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts scripts/src/startup-loop/self-evolving/self-evolving-report.ts scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts scripts/src/startup-loop/__tests__/self-evolving-exploration.test.ts scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts scripts/src/startup-loop/__tests__/self-evolving-backbone-queue.test.ts`
+  - Test execution note: local Jest remains out of scope under repo policy, so the new and updated tests were added but not run locally.
+  - Precursor completion propagation: TASK-17 is no longer a blocker for TASK-14 or TASK-15. TASK-18 is now the next runnable build task, and both checkpoints remain blocked on real shadow-run evidence.
 
 ### TASK-18: Produce real self-evolving shadow-run policy artifacts and checkpoint evidence
 - **Type:** IMPLEMENT

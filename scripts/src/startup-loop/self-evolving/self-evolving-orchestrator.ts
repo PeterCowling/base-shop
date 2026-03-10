@@ -2,6 +2,7 @@ import path from "node:path";
 
 import { readQueueStateFile } from "../ideas/lp-do-ideas-queue-state-file.js";
 
+import { promotionActuationEnabled } from "./self-evolving-authority.js";
 import { mapCandidateToBackboneRoute } from "./self-evolving-backbone.js";
 import {
   DEFAULT_MATURE_BOUNDARY_THRESHOLDS,
@@ -714,6 +715,9 @@ export function runSelfEvolvingOrchestrator(
   const promotionGateDecisionByCandidateId = new Map(
     promotionGateDecisions.map((decision) => [decision.candidate_id, decision] as const),
   );
+  const allowPromotionActuation = promotionActuationEnabled(
+    nextPolicyState.authority_level,
+  );
   const fullyAnnotatedCandidates = portfolioAnnotatedCandidates.map((rankedCandidate) => {
     const promotionGateDecision = promotionGateDecisionByCandidateId.get(
       rankedCandidate.candidate.candidate_id,
@@ -729,10 +733,13 @@ export function runSelfEvolvingOrchestrator(
       policy_context: rankedCandidate.policy_context
         ? {
             ...rankedCandidate.policy_context,
-            promotion_gate_decision_id: promotionGateDecision?.decision_id ?? null,
-            promotion_gate_action: promotionGateAction,
-            promotion_gate_reason:
-              promotionGateDecision?.promotion_gate?.reason_code ?? null,
+            promotion_gate_decision_id: allowPromotionActuation
+              ? (promotionGateDecision?.decision_id ?? null)
+              : null,
+            promotion_gate_action: allowPromotionActuation ? promotionGateAction : null,
+            promotion_gate_reason: allowPromotionActuation
+              ? (promotionGateDecision?.promotion_gate?.reason_code ?? null)
+              : null,
           }
         : rankedCandidate.policy_context,
     };

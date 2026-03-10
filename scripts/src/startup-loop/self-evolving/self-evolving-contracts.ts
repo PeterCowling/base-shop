@@ -306,7 +306,7 @@ export interface PortfolioSelectionContext {
   signal_snapshot: PortfolioSelectionSignalSnapshot;
 }
 
-export type ExplorationPolicyMode = "off" | "shadow" | "advisory";
+export type ExplorationPolicyMode = "off" | "shadow" | "advisory" | "guarded_trial";
 
 export interface ExplorationRankSignalSnapshot {
   baseline_adjusted_utility: number;
@@ -1106,7 +1106,8 @@ function validateExplorationRankContext(
   if (
     context.policy_mode !== "off" &&
     context.policy_mode !== "shadow" &&
-    context.policy_mode !== "advisory"
+    context.policy_mode !== "advisory" &&
+    context.policy_mode !== "guarded_trial"
   ) {
     errors.push("policy_mode");
   }

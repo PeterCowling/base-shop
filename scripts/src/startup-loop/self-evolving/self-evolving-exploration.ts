@@ -1,16 +1,20 @@
 import { thompsonSampling } from "@acme/lib/math/experimentation";
 import { SeededRandom } from "@acme/lib/math/random";
 
+import {
+  explorationActuationEnabled,
+  resolveExplorationPolicyMode,
+} from "./self-evolving-authority.js";
 import type { RankedCandidate } from "./self-evolving-candidates.js";
-import type {
-  BetaPosterior,
-  ExplorationPolicyMode,
-  ExplorationRankContext,
-  PolicyDecisionRecord,
-  SelfEvolvingPolicyState,
-  UtilityBreakdown,
+import {
+  type BetaPosterior,
+  type ExplorationPolicyMode,
+  type ExplorationRankContext,
+  type PolicyDecisionRecord,
+  type SelfEvolvingPolicyState,
+  stableHash,
+  type UtilityBreakdown,
 } from "./self-evolving-contracts.js";
-import { stableHash } from "./self-evolving-contracts.js";
 
 interface ExplorationArm {
   ranked_candidate: RankedCandidate;
@@ -38,14 +42,6 @@ function compareStrings(left: string, right: string): number {
 
 function resolveBudgetSlots(policyState: SelfEvolvingPolicyState): number {
   return policyState.active_constraint_profile.exploration_budget_slots ?? 0;
-}
-
-function resolvePolicyMode(policyState: SelfEvolvingPolicyState): ExplorationPolicyMode {
-  const budgetSlots = resolveBudgetSlots(policyState);
-  if (budgetSlots <= 0) {
-    return "off";
-  }
-  return policyState.authority_level === "shadow" ? "shadow" : "advisory";
 }
 
 function candidateSetHash(arms: readonly ExplorationArm[]): string {
@@ -318,8 +314,11 @@ export function buildExplorationDecisionLayer(input: {
   const explorationBatchId = batchHash.slice(0, 16);
   const seed = seedFromHash(batchHash);
   const budgetSlots = resolveBudgetSlots(input.policy_state);
-  const policyMode = resolvePolicyMode(input.policy_state);
-  const applied = policyMode === "advisory";
+  const policyMode = resolveExplorationPolicyMode({
+    authority_level: input.policy_state.authority_level,
+    budget_slots: budgetSlots,
+  });
+  const applied = explorationActuationEnabled(policyMode);
 
   if (arms.length === 0) {
     return {

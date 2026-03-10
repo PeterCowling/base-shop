@@ -29,7 +29,7 @@ export interface PolicyCalibrationTelemetry {
 
 export interface ExplorationRegretBatchReplay {
   exploration_batch_id: string;
-  policy_mode: "off" | "shadow" | "advisory";
+  policy_mode: "off" | "shadow" | "advisory" | "guarded_trial";
   budget_slots: number;
   total_candidates: number;
   observed_candidates: number;

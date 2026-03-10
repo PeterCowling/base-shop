@@ -17,6 +17,12 @@ import {
   runSelfEvolvingFromIdeas,
 } from "../self-evolving/self-evolving-from-ideas.js";
 import { runSelfEvolvingOrchestrator } from "../self-evolving/self-evolving-orchestrator.js";
+import { createDefaultPolicyState } from "../self-evolving/self-evolving-scoring.js";
+import {
+  createStartupStateStore,
+  readPolicyState,
+  writePolicyState,
+} from "../self-evolving/self-evolving-startup-state.js";
 
 function buildStartupState(): StartupState {
   return {
@@ -182,6 +188,14 @@ function rewriteBackboneEntriesAsPending(
   backboneQueuePath: string,
   queuedAt: string,
 ): string[] {
+  return rewriteBackboneEntries(backboneQueuePath, queuedAt);
+}
+
+function rewriteBackboneEntries(
+  backboneQueuePath: string,
+  queuedAt: string,
+  mutate?: (entry: Record<string, unknown>) => Record<string, unknown>,
+): string[] {
   const entries = readFileSync(backboneQueuePath, "utf-8")
     .trim()
     .split("\n")
@@ -196,6 +210,7 @@ function rewriteBackboneEntriesAsPending(
     followup_dispatch_id: null,
     followup_queue_state: null,
     followup_route: null,
+    ...(mutate ? mutate(entry) : {}),
   }));
   writeFileSync(
     backboneQueuePath,
@@ -359,6 +374,189 @@ describe("self-evolving orchestrator integration", () => {
     expect(repeated.pending_entries).toBe(0);
     expect(repeated.emitted_dispatches).toBe(0);
     expect(extractSelfEvolvingDispatches(tempRoot)).toHaveLength(staleCandidateIds.length);
+    rmSync(tempRoot, { recursive: true, force: true });
+  });
+
+  it("TASK-17 TC-01 and TC-03 only honor portfolio suppression once guarded trial authority is active", () => {
+    const tempRoot = mkdtempSync(path.join(os.tmpdir(), "self-evolving-authority-consume-"));
+    const initial = runSelfEvolvingFromIdeas({
+      rootDir: tempRoot,
+      business: "BRIK",
+      run_id: "run-1",
+      session_id: "session-1",
+      startup_state: buildStartupState(),
+      dispatches: [buildDispatchPacket("d-1"), buildDispatchPacket("d-2")],
+      now: new Date("2026-03-02T00:00:00.000Z"),
+    });
+
+    const queueStatePath = path.join(
+      tempRoot,
+      "docs",
+      "business-os",
+      "startup-loop",
+      "ideas",
+      "trial",
+      "queue-state.json",
+    );
+    const telemetryPath = path.join(
+      tempRoot,
+      "docs",
+      "business-os",
+      "startup-loop",
+      "ideas",
+      "trial",
+      "telemetry.jsonl",
+    );
+    const store = createStartupStateStore(tempRoot);
+    const policyState = readPolicyState(store, "BRIK");
+    expect(policyState?.authority_level).toBe("shadow");
+
+    const deferredCandidateIds = rewriteBackboneEntries(
+      initial.backbone_queue_path,
+      "2026-03-01T00:00:00.000Z",
+      () => ({ portfolio_selected: false }),
+    );
+    writeFileSync(
+      queueStatePath,
+      `${JSON.stringify({ last_updated: "2026-03-03T00:00:00.000Z", dispatches: [] }, null, 2)}\n`,
+      "utf-8",
+    );
+
+    const shadowResult = consumeBackboneQueueToIdeasWorkflow({
+      rootDir: tempRoot,
+      business: "BRIK",
+      queueStatePath,
+      telemetryPath,
+    });
+
+    expect(shadowResult.ok).toBe(true);
+    expect(shadowResult.closure_state).toBe("stale-repairable");
+    expect(shadowResult.emitted_dispatches).toBe(deferredCandidateIds.length);
+
+    const advisoryState = readPolicyState(store, "BRIK");
+    expect(advisoryState).not.toBeNull();
+    writePolicyState(store, {
+      ...(advisoryState ?? createDefaultPolicyState("BRIK", "2026-03-03T00:00:00.000Z")),
+      authority_level: "advisory",
+      updated_at: "2026-03-03T00:00:00.000Z",
+    });
+    rewriteBackboneEntries(
+      initial.backbone_queue_path,
+      "2026-03-01T00:00:00.000Z",
+      () => ({ portfolio_selected: false }),
+    );
+    writeFileSync(
+      queueStatePath,
+      `${JSON.stringify({ last_updated: "2026-03-03T01:00:00.000Z", dispatches: [] }, null, 2)}\n`,
+      "utf-8",
+    );
+
+    const advisoryResult = consumeBackboneQueueToIdeasWorkflow({
+      rootDir: tempRoot,
+      business: "BRIK",
+      queueStatePath,
+      telemetryPath,
+    });
+
+    expect(advisoryResult.ok).toBe(true);
+    expect(advisoryResult.closure_state).toBe("stale-repairable");
+    expect(advisoryResult.emitted_dispatches).toBe(deferredCandidateIds.length);
+
+    const guardedTrialState = readPolicyState(store, "BRIK");
+    expect(guardedTrialState).not.toBeNull();
+    writePolicyState(store, {
+      ...(guardedTrialState ?? createDefaultPolicyState("BRIK", "2026-03-03T02:00:00.000Z")),
+      authority_level: "guarded_trial",
+      updated_at: "2026-03-03T02:00:00.000Z",
+    });
+    rewriteBackboneEntries(
+      initial.backbone_queue_path,
+      "2026-03-01T00:00:00.000Z",
+      () => ({ portfolio_selected: false }),
+    );
+    writeFileSync(
+      queueStatePath,
+      `${JSON.stringify({ last_updated: "2026-03-03T02:00:00.000Z", dispatches: [] }, null, 2)}\n`,
+      "utf-8",
+    );
+
+    const guardedTrialResult = consumeBackboneQueueToIdeasWorkflow({
+      rootDir: tempRoot,
+      business: "BRIK",
+      queueStatePath,
+      telemetryPath,
+    });
+
+    expect(guardedTrialResult.ok).toBe(true);
+    expect(guardedTrialResult.closure_state).toBe("closed");
+    expect(guardedTrialResult.pending_entries).toBe(0);
+    expect(guardedTrialResult.emitted_dispatches).toBe(0);
+    rmSync(tempRoot, { recursive: true, force: true });
+  });
+
+  it("TASK-17 promotion recommendations only surface on ranked candidates once guarded trial authority is active", () => {
+    const tempRoot = mkdtempSync(path.join(os.tmpdir(), "self-evolving-authority-promotion-"));
+    const shadowResult = runSelfEvolvingOrchestrator({
+      rootDir: tempRoot,
+      business: "BRIK",
+      run_id: "run-1",
+      session_id: "session-1",
+      startup_state: buildStartupState(),
+      observations: [
+        buildRouteObservation({
+          id: "obs-1",
+          timestamp: "2026-03-02T00:00:00.000Z",
+          hardSignature: "sig-guarded",
+          evidenceGrade: "measured",
+        }),
+        buildRouteObservation({
+          id: "obs-2",
+          timestamp: "2026-03-02T01:00:00.000Z",
+          hardSignature: "sig-guarded",
+          evidenceGrade: "measured",
+        }),
+      ],
+      now: new Date("2026-03-02T02:00:00.000Z"),
+    });
+
+    expect(shadowResult.ranked_candidates[0]?.policy_context?.promotion_gate_action).toBeNull();
+    expect(shadowResult.ranked_candidates[0]?.policy_context?.promotion_gate_reason).toBeNull();
+
+    const store = createStartupStateStore(tempRoot);
+    const policyState = readPolicyState(store, "BRIK");
+    expect(policyState).not.toBeNull();
+    writePolicyState(store, {
+      ...(policyState ?? createDefaultPolicyState("BRIK", "2026-03-02T03:00:00.000Z")),
+      authority_level: "guarded_trial",
+      updated_at: "2026-03-02T03:00:00.000Z",
+    });
+
+    const guardedTrialResult = runSelfEvolvingOrchestrator({
+      rootDir: tempRoot,
+      business: "BRIK",
+      run_id: "run-2",
+      session_id: "session-2",
+      startup_state: buildStartupState(),
+      observations: [
+        buildRouteObservation({
+          id: "obs-3",
+          timestamp: "2026-03-02T03:00:00.000Z",
+          hardSignature: "sig-guarded",
+          evidenceGrade: "measured",
+        }),
+        buildRouteObservation({
+          id: "obs-4",
+          timestamp: "2026-03-02T04:00:00.000Z",
+          hardSignature: "sig-guarded",
+          evidenceGrade: "measured",
+        }),
+      ],
+      now: new Date("2026-03-02T05:00:00.000Z"),
+    });
+
+    expect(guardedTrialResult.ranked_candidates[0]?.policy_context?.promotion_gate_decision_id).toBeTruthy();
+    expect(guardedTrialResult.ranked_candidates[0]?.policy_context?.promotion_gate_action).toBe("hold");
+    expect(guardedTrialResult.ranked_candidates[0]?.policy_context?.promotion_gate_reason).toBeTruthy();
     rmSync(tempRoot, { recursive: true, force: true });
   });
 

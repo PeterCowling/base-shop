@@ -9,30 +9,41 @@ import {
   type QueueFileShape,
   readQueueStateFile,
 } from "../ideas/lp-do-ideas-queue-state-file.js";
-import type {
-  DeliverableFamily,
-  TrialDispatchPacketV2,
-} from "../ideas/lp-do-ideas-trial.js";
 import {
+  type DeliverableFamily,
   statusForRecommendedRoute,
+  type TrialDispatchPacketV2,
   validateDispatchV2,
 } from "../ideas/lp-do-ideas-trial.js";
 
+import {
+  queueActuationEnabled,
+  resolvePolicyAuthorityLevel,
+} from "./self-evolving-authority.js";
 import {
   readBackboneQueue,
   resolveBackboneQueuePath,
   type SelfEvolvingBackboneQueueEntry,
   writeBackboneQueue,
 } from "./self-evolving-backbone-queue.js";
-import type { RankedCandidate } from "./self-evolving-candidates.js";
-import { readCandidateLedger } from "./self-evolving-candidates.js";
-import type { ImprovementCandidate, MetaObservation } from "./self-evolving-contracts.js";
-import { stableHash } from "./self-evolving-contracts.js";
+import {
+  type RankedCandidate,
+  readCandidateLedger,
+} from "./self-evolving-candidates.js";
+import {
+  type ImprovementCandidate,
+  type MetaObservation,
+  stableHash,
+} from "./self-evolving-contracts.js";
 import {
   appendSelfEvolvingEvent,
   createLifecycleEvent,
   readMetaObservations,
 } from "./self-evolving-events.js";
+import {
+  createStartupStateStore,
+  readPolicyState,
+} from "./self-evolving-startup-state.js";
 
 const DEFAULT_STALE_AFTER_MS = 60 * 60 * 1000;
 
@@ -575,11 +586,14 @@ export function consumeBackboneQueueToIdeasWorkflow(
 ): SelfEvolvingBackboneConsumeResult {
   const now = new Date();
   const staleAfterMs = options.staleAfterMs ?? DEFAULT_STALE_AFTER_MS;
+  const store = createStartupStateStore(options.rootDir);
+  const authorityLevel = resolvePolicyAuthorityLevel(readPolicyState(store, options.business));
+  const allowQueueActuation = queueActuationEnabled(authorityLevel);
   const backboneQueuePath = resolveBackboneQueuePath(options.rootDir, options.business);
   const backboneEntries = readBackboneQueue(options.rootDir, options.business);
   const pendingEntries = backboneEntries.filter(
     (entry) =>
-      (entry.portfolio_selected ?? true) &&
+      (!allowQueueActuation || (entry.portfolio_selected ?? true)) &&
       entry.followup_dispatch_id == null &&
       entry.consumed_at == null &&
       (!options.staleOnly || isStalePendingEntry(entry, now, staleAfterMs)),

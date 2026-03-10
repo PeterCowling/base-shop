@@ -235,7 +235,7 @@ describe("self-evolving contract validators", () => {
         exploration_batch_id: "explore-1",
         candidate_set_hash: "hash-1",
         portfolio_id: "portfolio-1",
-        policy_mode: "shadow" as const,
+        policy_mode: "guarded_trial" as const,
         budget_slots: 1,
         seed: 42,
         prioritized_candidate_ids: ["cand-1"],

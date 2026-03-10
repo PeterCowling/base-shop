@@ -318,7 +318,8 @@ describe("buildExplorationDecisionLayer", () => {
       created_at: "2026-03-10T00:00:00.000Z",
     });
 
-    expect(result.applied).toBe(true);
+    expect(result.applied).toBe(false);
+    expect(result.policy_mode).toBe("advisory");
     expect([...result.prioritized_candidate_ids]).toEqual(["cand-uncertain"]);
     expect(result.decision_records).toEqual(
       expect.arrayContaining([
@@ -331,6 +332,22 @@ describe("buildExplorationDecisionLayer", () => {
         }),
       ]),
     );
+  });
+
+  it("TASK-17 TC-02 only applies exploration ranking once guarded trial authority is active", () => {
+    const certain = buildRankedCandidate({ id: "cand-certain", utility: 2.4 });
+    const uncertain = buildRankedCandidate({ id: "cand-uncertain", utility: 2.35 });
+    const result = buildExplorationDecisionLayer({
+      business_id: "BRIK",
+      ranked_candidates: [certain, uncertain],
+      portfolio_decisions: [certain, uncertain].map(buildPortfolioDecision),
+      policy_state: buildPolicyState("guarded_trial", 1),
+      created_at: "2026-03-10T00:00:00.000Z",
+    });
+
+    expect(result.applied).toBe(true);
+    expect(result.policy_mode).toBe("guarded_trial");
+    expect([...result.prioritized_candidate_ids]).toEqual(["cand-uncertain"]);
   });
 
   it("TASK-10 TC-02 collapses to exploit-only ordering when the exploration budget is zero", () => {

@@ -35,7 +35,7 @@ export interface RankedCandidate {
     portfolio_selected_at?: string | null;
     portfolio_adjusted_utility?: number | null;
     exploration_decision_id?: string | null;
-    exploration_mode?: "off" | "shadow" | "advisory" | null;
+    exploration_mode?: "off" | "shadow" | "advisory" | "guarded_trial" | null;
     exploration_selected?: boolean | null;
     exploration_selected_at?: string | null;
     exploration_priority_score?: number | null;

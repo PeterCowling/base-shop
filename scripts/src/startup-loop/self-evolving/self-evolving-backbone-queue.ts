@@ -1,7 +1,15 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+import {
+  queueActuationEnabled,
+  resolvePolicyAuthorityLevel,
+} from "./self-evolving-authority.js";
 import type { RankedCandidate } from "./self-evolving-candidates.js";
+import {
+  createStartupStateStore,
+  readPolicyState,
+} from "./self-evolving-startup-state.js";
 
 const SELF_EVOLVING_ROOT = path.join(
   "docs",
@@ -24,7 +32,7 @@ export interface SelfEvolvingBackboneQueueEntry {
   portfolio_selected_at?: string | null;
   portfolio_adjusted_utility?: number | null;
   exploration_decision_id?: string | null;
-  exploration_mode?: "off" | "shadow" | "advisory" | null;
+  exploration_mode?: "off" | "shadow" | "advisory" | "guarded_trial" | null;
   exploration_selected?: boolean | null;
   exploration_selected_at?: string | null;
   exploration_priority_score?: number | null;
@@ -128,6 +136,9 @@ export function enqueueBackboneCandidates(
   candidates: RankedCandidate[],
   now: Date = new Date(),
 ): BackboneQueueWriteResult {
+  const store = createStartupStateStore(rootDir);
+  const authorityLevel = resolvePolicyAuthorityLevel(readPolicyState(store, business));
+  const allowQueueActuation = queueActuationEnabled(authorityLevel);
   const existingEntries = readBackboneQueue(rootDir, business);
   const byCandidateId = new Map(
     existingEntries.map((entry) => [entry.candidate_id, entry] as const),
@@ -161,36 +172,42 @@ export function enqueueBackboneCandidates(
   const mergedEntries = [...byCandidateId.values()].sort((left, right) => {
     if (left.consumed_at == null && right.consumed_at != null) return -1;
     if (left.consumed_at != null && right.consumed_at == null) return 1;
-    if ((left.portfolio_selected ?? true) !== (right.portfolio_selected ?? true)) {
-      return (left.portfolio_selected ?? true) ? -1 : 1;
-    }
-    if ((left.exploration_applied ?? false) !== (right.exploration_applied ?? false)) {
-      return (left.exploration_applied ?? false) ? -1 : 1;
-    }
-    if (
-      (left.exploration_applied ?? false) &&
-      (right.exploration_applied ?? false) &&
-      (left.exploration_selected ?? false) !== (right.exploration_selected ?? false)
-    ) {
-      return (left.exploration_selected ?? false) ? -1 : 1;
-    }
-    const leftExplorationObjective =
-      left.exploration_applied && left.exploration_priority_score != null
-        ? left.exploration_priority_score
-        : null;
-    const rightExplorationObjective =
-      right.exploration_applied && right.exploration_priority_score != null
-        ? right.exploration_priority_score
-        : null;
-    if (leftExplorationObjective != null || rightExplorationObjective != null) {
-      if (leftExplorationObjective == null) return 1;
-      if (rightExplorationObjective == null) return -1;
-      if (leftExplorationObjective !== rightExplorationObjective) {
-        return rightExplorationObjective - leftExplorationObjective;
+    if (allowQueueActuation) {
+      if ((left.portfolio_selected ?? true) !== (right.portfolio_selected ?? true)) {
+        return (left.portfolio_selected ?? true) ? -1 : 1;
+      }
+      if ((left.exploration_applied ?? false) !== (right.exploration_applied ?? false)) {
+        return (left.exploration_applied ?? false) ? -1 : 1;
+      }
+      if (
+        (left.exploration_applied ?? false) &&
+        (right.exploration_applied ?? false) &&
+        (left.exploration_selected ?? false) !== (right.exploration_selected ?? false)
+      ) {
+        return (left.exploration_selected ?? false) ? -1 : 1;
+      }
+      const leftExplorationObjective =
+        left.exploration_applied && left.exploration_priority_score != null
+          ? left.exploration_priority_score
+          : null;
+      const rightExplorationObjective =
+        right.exploration_applied && right.exploration_priority_score != null
+          ? right.exploration_priority_score
+          : null;
+      if (leftExplorationObjective != null || rightExplorationObjective != null) {
+        if (leftExplorationObjective == null) return 1;
+        if (rightExplorationObjective == null) return -1;
+        if (leftExplorationObjective !== rightExplorationObjective) {
+          return rightExplorationObjective - leftExplorationObjective;
+        }
       }
     }
-    const leftObjective = left.portfolio_adjusted_utility ?? left.priority;
-    const rightObjective = right.portfolio_adjusted_utility ?? right.priority;
+    const leftObjective = allowQueueActuation
+      ? (left.portfolio_adjusted_utility ?? left.priority)
+      : left.priority;
+    const rightObjective = allowQueueActuation
+      ? (right.portfolio_adjusted_utility ?? right.priority)
+      : right.priority;
     if (leftObjective !== rightObjective) {
       return rightObjective - leftObjective;
     }

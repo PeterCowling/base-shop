@@ -242,7 +242,7 @@ function summarizeExplorationDecisions(
     if (decision.chosen_action === "prioritized") {
       prioritized += 1;
     }
-    if (decision.exploration_rank?.policy_mode === "advisory") {
+    if (decision.exploration_rank?.policy_mode === "guarded_trial") {
       applied += 1;
     }
     if (decision.exploration_rank?.policy_mode === "shadow") {

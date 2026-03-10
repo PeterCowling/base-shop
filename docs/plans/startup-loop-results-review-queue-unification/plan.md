@@ -26,7 +26,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 ## Active tasks
 - [x] TASK-01: Define the canonical build-origin signal contract — Complete (2026-03-10)
 - [x] TASK-02: Harden build-review emitters around the canonical contract — Complete (2026-03-10)
-- [ ] TASK-03: Implement build-review-to-queue admission and dedupe
+- [x] TASK-03: Implement build-review-to-queue admission and dedupe — Complete (2026-03-10)
 - [ ] TASK-04: Switch process-improvements idea backlog to queue-only sourcing
 - [ ] TASK-05: Demote `completed-ideas.json` from active backlog control
 - [ ] TASK-06: Determine the self-evolving build-origin alignment model
@@ -98,7 +98,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Define the canonical build-origin signal contract | 75% | M | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-02 | IMPLEMENT | Harden build-review emitters around the canonical contract and fail-closed surfacing | 85% | M | Complete (2026-03-10) | TASK-01 | TASK-03, TASK-04, TASK-06, TASK-07, TASK-08, TASK-10 |
-| TASK-03 | IMPLEMENT | Implement build-review-to-queue admission and dedupe | 80% | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
+| TASK-03 | IMPLEMENT | Implement build-review-to-queue admission and dedupe | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-04 | IMPLEMENT | Switch process-improvements idea backlog to queue-only sourcing | 85% | M | Pending | TASK-03 | TASK-05, TASK-07, TASK-08, TASK-10 |
 | TASK-05 | IMPLEMENT | Demote `completed-ideas.json` from active backlog control | 80% | M | Pending | TASK-03, TASK-04 | TASK-07, TASK-08, TASK-10 |
 | TASK-06 | INVESTIGATE | Determine the self-evolving build-origin alignment model | 70% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-11 |
@@ -208,8 +208,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/ideas/`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-work-packages.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-*.test.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-admission.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-codebase-signals-bridge.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-agent-session-bridge.ts`, `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`, `scripts/src/startup-loop/__tests__/lp-do-ideas-build-origin-bridge.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts`
 - **Depends on:** TASK-01, TASK-02
 - **Blocks:** TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10
 - **Confidence:** 80%
@@ -231,6 +231,13 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - Canonical queue dispatch identity is consumed by work-package processing and completion reconcile.
 - **Held-back test:** no single unresolved unknown would drop this below 80 because TASK-01 and TASK-02 will have fixed contract, identity, and failure surfaces before the bridge is built.
 - **What would make this >=90%:** a real dry-run over current build artifacts proving stable queue admission counts and zero duplicate leakage.
+- **Build completion evidence (2026-03-10):**
+  - Added the canonical build-origin queue bridge in [lp-do-ideas-build-origin-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts), merging `pattern-reflection.entries.json` and `results-review.signals.json` by `build_signal_id` and emitting queue-native `dispatch.v2` packets with `build_origin` provenance.
+  - Added shared queue admission logic in [lp-do-ideas-queue-admission.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-queue-admission.ts) and moved existing codebase/agent-session bridges onto it in [lp-do-ideas-codebase-signals-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-codebase-signals-bridge.ts) and [lp-do-ideas-agent-session-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-agent-session-bridge.ts), so dedupe and queue persistence now share one path.
+  - Extended the canonical dispatch contract in [lp-do-ideas-trial.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts) and [lp-do-ideas-dispatch.v2.schema.json](/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json) to allow `artifact_id: null` for build-origin `operator_idea` packets and to persist first-class `build_origin` provenance.
+  - Added regression coverage in [lp-do-ideas-build-origin-bridge.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/lp-do-ideas-build-origin-bridge.test.ts) and [lp-do-ideas-dispatch-v2.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts) for cross-sidecar merge, duplicate suppression on rerun, and route/status validation.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` passed; targeted ESLint passed on the bridge, shared queue admission helper, refactored bridges, dispatch contract, and new tests.
+  - Outcome: affirming. Queue-backed build-origin admission is now real, and TASK-04/TASK-06 are the next runnable wave.
 
 ### TASK-04: Switch process-improvements idea backlog to queue-only sourcing
 - **Type:** IMPLEMENT

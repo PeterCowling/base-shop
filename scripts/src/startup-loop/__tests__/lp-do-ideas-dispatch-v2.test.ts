@@ -217,6 +217,35 @@ describe("TC-01-E: artifact_delta dispatch auto-populated values carry source: '
     expect(result.valid).toBe(true);
   });
 
+  it("operator_idea packets may carry artifact_id=null and build_origin provenance", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      build_origin: {
+        schema_version: "dispatch-build-origin.v1",
+        build_signal_id: "signal-123",
+        recurrence_key: "recur-123",
+        review_cycle_key: "test-feature",
+        plan_slug: "test-feature",
+        canonical_title: "Queue-backed build origin bridge",
+        primary_source: "results-review.signals.json",
+        merge_state: "single_source",
+        source_presence: {
+          results_review_signal: true,
+          pattern_reflection_entry: false,
+        },
+        results_review_path: "docs/plans/test-feature/results-review.user.md",
+        results_review_sidecar_path: "docs/plans/test-feature/results-review.signals.json",
+        pattern_reflection_path: null,
+        pattern_reflection_sidecar_path: null,
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
   it("auto-generated values produce quality_warnings about auto source", () => {
     const packet = makeV2Packet({
       trigger: "artifact_delta",

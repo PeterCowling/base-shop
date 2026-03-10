@@ -403,6 +403,30 @@ export interface IntendedOutcomeV2 {
   source: "operator" | "auto";
 }
 
+export interface DispatchBuildOriginProvenance {
+  schema_version: "dispatch-build-origin.v1";
+  build_signal_id: string;
+  recurrence_key: string;
+  review_cycle_key: string;
+  plan_slug: string;
+  canonical_title: string;
+  primary_source: "pattern-reflection.entries.json" | "results-review.signals.json";
+  merge_state: "single_source" | "merged_cross_sidecar";
+  source_presence: {
+    results_review_signal: boolean;
+    pattern_reflection_entry: boolean;
+  };
+  results_review_path: string | null;
+  results_review_sidecar_path: string | null;
+  pattern_reflection_path: string | null;
+  pattern_reflection_sidecar_path: string | null;
+  reflection_fields?: {
+    category: string | null;
+    routing_target: string | null;
+    occurrence_count: number | null;
+  };
+}
+
 /**
  * dispatch.v2 packet type.
  *
@@ -423,7 +447,7 @@ export interface TrialDispatchPacketV2 {
   mode: PacketMode;
   business: string;
   trigger: "artifact_delta" | "operator_idea";
-  artifact_id: string;
+  artifact_id: string | null;
   before_sha: string | null;
   after_sha: string;
   root_event_id: string;
@@ -445,6 +469,7 @@ export interface TrialDispatchPacketV2 {
   created_at: string;
   queue_state: QueueState;
   self_evolving?: DispatchSelfEvolvingLink;
+  build_origin?: DispatchBuildOriginProvenance;
   /**
    * Why this work is happening now.
    * Required, non-empty string.

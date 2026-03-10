@@ -31,9 +31,9 @@
       "description": "Trigger type. 'artifact_delta' — a standing artifact was updated; this dispatch processes the diff. 'operator_idea' — new information provided directly by the operator."
     },
     "artifact_id": {
-      "type": "string",
+      "type": ["string", "null"],
       "minLength": 1,
-      "description": "Registered artifact key from the standing registry."
+      "description": "Registered artifact key from the standing registry for artifact_delta packets. Null is permitted for operator_idea packets."
     },
     "before_sha": {
       "type": ["string", "null"],
@@ -108,12 +108,12 @@
     },
     "recommended_route": {
       "type": "string",
-      "enum": ["lp-do-fact-find", "lp-do-build", "lp-do-briefing"],
+      "enum": ["lp-do-fact-find", "lp-do-plan", "lp-do-build", "lp-do-briefing"],
       "description": "Downstream routing recommendation."
     },
     "status": {
       "type": "string",
-      "enum": ["fact_find_ready", "micro_build_ready", "briefing_ready", "auto_executed", "logged_no_action"],
+      "enum": ["fact_find_ready", "plan_ready", "micro_build_ready", "briefing_ready", "auto_executed", "logged_no_action"],
       "description": "Dispatch lifecycle status."
     },
     "priority": {
@@ -179,11 +179,11 @@
       "properties": {
         "target_route": {
           "type": "string",
-          "enum": ["lp-do-fact-find", "lp-do-build", "lp-do-briefing"]
+          "enum": ["lp-do-fact-find", "lp-do-plan", "lp-do-build", "lp-do-briefing"]
         },
         "target_kind": {
           "type": "string",
-          "enum": ["fact-find", "build", "briefing"]
+          "enum": ["fact-find", "plan", "build", "briefing"]
         },
         "target_slug": {
           "type": "string",
@@ -211,6 +211,90 @@
         }
       },
       "required": ["processed_at", "route"],
+      "additionalProperties": false
+    },
+    "build_origin": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "dispatch-build-origin.v1"
+        },
+        "build_signal_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "recurrence_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "review_cycle_key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "plan_slug": {
+          "type": "string",
+          "minLength": 1
+        },
+        "canonical_title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "primary_source": {
+          "type": "string",
+          "enum": ["pattern-reflection.entries.json", "results-review.signals.json"]
+        },
+        "merge_state": {
+          "type": "string",
+          "enum": ["single_source", "merged_cross_sidecar"]
+        },
+        "source_presence": {
+          "type": "object",
+          "properties": {
+            "results_review_signal": { "type": "boolean" },
+            "pattern_reflection_entry": { "type": "boolean" }
+          },
+          "required": ["results_review_signal", "pattern_reflection_entry"],
+          "additionalProperties": false
+        },
+        "results_review_path": {
+          "type": ["string", "null"]
+        },
+        "results_review_sidecar_path": {
+          "type": ["string", "null"]
+        },
+        "pattern_reflection_path": {
+          "type": ["string", "null"]
+        },
+        "pattern_reflection_sidecar_path": {
+          "type": ["string", "null"]
+        },
+        "reflection_fields": {
+          "type": "object",
+          "properties": {
+            "category": { "type": ["string", "null"] },
+            "routing_target": { "type": ["string", "null"] },
+            "occurrence_count": { "type": ["integer", "null"], "minimum": 0 }
+          },
+          "required": ["category", "routing_target", "occurrence_count"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "build_signal_id",
+        "recurrence_key",
+        "review_cycle_key",
+        "plan_slug",
+        "canonical_title",
+        "primary_source",
+        "merge_state",
+        "source_presence",
+        "results_review_path",
+        "results_review_sidecar_path",
+        "pattern_reflection_path",
+        "pattern_reflection_sidecar_path"
+      ],
       "additionalProperties": false
     },
     "triggered_by": {

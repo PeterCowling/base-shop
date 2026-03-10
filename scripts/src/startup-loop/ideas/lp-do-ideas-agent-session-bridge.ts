@@ -3,6 +3,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, statSync,
 import os from "node:os";
 import { basename, dirname, join, resolve, sep } from "node:path";
 
+import { enqueueQueueDispatches } from "./lp-do-ideas-queue-admission.js";
 import type { RegistryV2ArtifactEntry } from "./lp-do-ideas-registry-migrate-v1-v2.js";
 import {
   type ArtifactDeltaEvent,
@@ -12,12 +13,6 @@ import {
 
 interface RegistryDocument {
   artifacts: RegistryV2ArtifactEntry[];
-}
-
-interface LegacyQueueShape {
-  dispatches?: TrialDispatchPacket[];
-  counts?: Record<string, number>;
-  last_updated?: string;
 }
 
 interface BridgeState {
@@ -478,105 +473,16 @@ function computeFindingsHash(findings: SessionFinding[]): string {
   return hashValue(JSON.stringify(normalized));
 }
 
-function buildCounts(dispatches: TrialDispatchPacket[]): Record<string, number> {
-  const counts: Record<string, number> = {
-    enqueued: 0,
-    processed: 0,
-    skipped: 0,
-    error: 0,
-    suppressed: 0,
-    auto_executed: 0,
-    completed: 0,
-    fact_find_ready: 0,
-    micro_build_ready: 0,
-    total: dispatches.length,
-  };
-
-  for (const dispatch of dispatches) {
-    const queueState = dispatch.queue_state;
-    if (typeof queueState === "string" && Object.hasOwn(counts, queueState)) {
-      counts[queueState] += 1;
-    }
-    if (queueState === "enqueued") {
-      if (dispatch.status === "fact_find_ready") counts.fact_find_ready += 1;
-      if (dispatch.status === "micro_build_ready") counts.micro_build_ready += 1;
-    }
-  }
-
-  return counts;
-}
-
 function enqueueDispatches(
   options: AgentSessionSignalsBridgeOptions,
   packets: TrialDispatchPacket[],
 ): number {
-  const absoluteQueuePath = resolvePath(options.rootDir, options.queueStatePath);
-  const existing = readJsonFile<LegacyQueueShape>(absoluteQueuePath) ?? { dispatches: [] };
-  if (!Array.isArray(existing.dispatches)) {
-    throw new Error(`Queue state at ${options.queueStatePath} does not contain dispatches[]`);
-  }
-
-  const dispatches = existing.dispatches;
-  const seenDispatchIds = new Set(dispatches.map((entry) => entry.dispatch_id));
-  const seenClusters = new Set(
-    dispatches.map((entry) => `${entry.cluster_key}:${entry.cluster_fingerprint}`),
-  );
-
-  let appended = 0;
-  const appendedPackets: TrialDispatchPacket[] = [];
-  for (const packet of packets) {
-    const clusterKey = `${packet.cluster_key}:${packet.cluster_fingerprint}`;
-    if (seenDispatchIds.has(packet.dispatch_id) || seenClusters.has(clusterKey)) {
-      continue;
-    }
-    dispatches.push(packet);
-    seenDispatchIds.add(packet.dispatch_id);
-    seenClusters.add(clusterKey);
-    appended += 1;
-    appendedPackets.push(packet);
-  }
-
-  if (appended === 0) {
-    return 0;
-  }
-
-  const nowIso = new Date().toISOString();
-  const updated: LegacyQueueShape = {
-    ...existing,
-    last_updated: nowIso,
-    dispatches,
-    counts: buildCounts(dispatches),
-  };
-  atomicWrite(absoluteQueuePath, `${JSON.stringify(updated, null, 2)}\n`);
-
-  const absoluteTelemetryPath = resolvePath(options.rootDir, options.telemetryPath);
-  mkdirSync(dirname(absoluteTelemetryPath), { recursive: true });
-  const telemetryLines = appendedPackets
-    .map((packet) =>
-      JSON.stringify({
-        recorded_at: nowIso,
-        dispatch_id: packet.dispatch_id,
-        mode: "trial",
-        business: packet.business,
-        queue_state: "enqueued",
-        kind: "enqueued",
-        reason: "agent_session_signal_bridge",
-      }),
-    )
-    .join("\n");
-  if (telemetryLines.length > 0) {
-    const prefix =
-      existsSync(absoluteTelemetryPath) &&
-      readFileSync(absoluteTelemetryPath, "utf8").trim().length > 0
-        ? "\n"
-        : "";
-    writeFileSync(absoluteTelemetryPath, `${prefix}${telemetryLines}\n`, {
-      encoding: "utf8",
-      flag: "a",
-    });
-  }
-
-  return appended;
+  return enqueueQueueDispatches({
+    queueStatePath: resolvePath(options.rootDir, options.queueStatePath),
+    telemetryPath: resolvePath(options.rootDir, options.telemetryPath),
+    telemetryReason: "agent_session_signal_bridge",
+    packets,
+  }).appended;
 }
 
 function deriveEvent(

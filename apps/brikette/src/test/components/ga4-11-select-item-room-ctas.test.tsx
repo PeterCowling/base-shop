@@ -31,7 +31,11 @@ jest.mock("@acme/ui/organisms/RoomsSection", () => ({
     onRoomSelect?: (ctx: { roomSku: string; plan: "nr" | "flex"; index: number }) => void;
     singleCtaMode?: boolean;
   }) => (
-    <div data-testid="rooms-section-organism" data-single-cta-mode={String(Boolean(singleCtaMode))}>
+    <div
+      data-cy="rooms-section-organism"
+      data-testid="rooms-section-organism"
+      data-single-cta-mode={String(Boolean(singleCtaMode))}
+    >
       <button
         type="button"
         aria-label="checkRatesSingle"

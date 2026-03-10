@@ -10,6 +10,7 @@ import {
   deriveIdeaKey,
   loadCompletedIdeasRegistry,
   QUEUE_STATE_RELATIVE_PATH,
+  runBuildOriginBridgeForProcessImprovements,
   runCheck,
   updateProcessImprovementsHtml,
 } from "../build/generate-process-improvements";
@@ -71,6 +72,91 @@ function makeBuildOriginProvenance(
     },
     ...overrides,
   };
+}
+
+async function writeBuildOriginSidecars(
+  root: string,
+  planDirRelative: string,
+  overrides: {
+    planSlug?: string;
+    reviewCycleKey?: string;
+    title?: string;
+    buildSignalId?: string;
+    recurrenceKey?: string;
+  } = {},
+): Promise<void> {
+  const planSlug = overrides.planSlug ?? path.basename(planDirRelative);
+  const reviewCycleKey = overrides.reviewCycleKey ?? planSlug;
+  const title = overrides.title ?? "Queue-backed build-origin idea";
+  const buildSignalId = overrides.buildSignalId ?? "build-signal-123";
+  const recurrenceKey = overrides.recurrenceKey ?? "recurrence-123";
+
+  await writeFile(
+    root,
+    `${planDirRelative}/results-review.signals.json`,
+    `${JSON.stringify(
+      {
+        schema_version: "results-review.signals.v1",
+        generated_at: "2026-03-10T09:00:00.000Z",
+        plan_slug: planSlug,
+        review_cycle_key: reviewCycleKey,
+        source_path: `${planDirRelative}/results-review.user.md`,
+        build_origin_status: "ready",
+        failures: [],
+        items: [
+          {
+            type: "idea",
+            business: "BRIK",
+            title,
+            body: "This came up again during build review.",
+            source: "results-review.user.md",
+            date: "2026-03-10T09:00:00.000Z",
+            path: `${planDirRelative}/results-review.user.md`,
+            idea_key: `legacy-${buildSignalId}`,
+            review_cycle_key: reviewCycleKey,
+            canonical_title: title,
+            build_signal_id: buildSignalId,
+            recurrence_key: recurrenceKey,
+            build_origin_status: "ready",
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
+
+  await writeFile(
+    root,
+    `${planDirRelative}/pattern-reflection.entries.json`,
+    `${JSON.stringify(
+      {
+        schema_version: "pattern-reflection.entries.v1",
+        generated_at: "2026-03-10T09:05:00.000Z",
+        plan_slug: planSlug,
+        review_cycle_key: reviewCycleKey,
+        source_path: `${planDirRelative}/pattern-reflection.user.md`,
+        build_origin_status: "ready",
+        failures: [],
+        entries: [
+          {
+            review_cycle_key: reviewCycleKey,
+            canonical_title: title,
+            pattern_summary: title,
+            category: "new-loop-process",
+            routing_target: "loop_update",
+            occurrence_count: 3,
+            evidence_refs: [`${planDirRelative}/results-review.user.md`],
+            build_signal_id: buildSignalId,
+            recurrence_key: recurrenceKey,
+            build_origin_status: "ready",
+          },
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+  );
 }
 
 describe("generate-process-improvements", () => {
@@ -635,6 +721,40 @@ Review-date: 2026-03-06
     expect(updated).toContain('"build_origin"');
     expect(updated).toContain('"build_signal_id": "build-signal-123"');
     expect(updated).toContain('"results_review_path": "docs/plans/queue-unification-task/results-review.user.md"');
+  });
+
+  it("TC-14-01: build-origin bridge auto-admits active plan sidecars into the trial queue", async () => {
+    await writeBuildOriginSidecars(tmpDir, "docs/plans/queue-unification-task");
+
+    const bridgeResult = runBuildOriginBridgeForProcessImprovements(tmpDir);
+
+    expect(bridgeResult.ok).toBe(true);
+    expect(bridgeResult.plans_considered).toBe(1);
+    expect(bridgeResult.dispatches_enqueued).toBe(1);
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.title).toBe("Queue-backed build-origin idea");
+    expect(data.ideaItems[0]?.build_origin?.build_signal_id).toBe("build-signal-123");
+  });
+
+  it("TC-14-02: build-origin bridge ignores archived plan sidecars during automatic admission", async () => {
+    await writeBuildOriginSidecars(tmpDir, "docs/plans/_archive/old-feature", {
+      planSlug: "old-feature",
+      reviewCycleKey: "old-feature",
+      title: "Archived build-origin idea",
+      buildSignalId: "archived-signal-123",
+      recurrenceKey: "archived-recurrence-123",
+    });
+
+    const bridgeResult = runBuildOriginBridgeForProcessImprovements(tmpDir);
+
+    expect(bridgeResult.ok).toBe(true);
+    expect(bridgeResult.plans_considered).toBe(0);
+    expect(bridgeResult.dispatches_enqueued).toBe(0);
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(0);
   });
 
   it("appendCompletedIdea is idempotent — calling twice yields one entry", async () => {

@@ -20,6 +20,7 @@ import {
   sanitizeText,
   toIsoDate,
 } from "./lp-do-build-results-review-parse.js";
+import { runBuildOriginSignalsBridge } from "../ideas/lp-do-ideas-build-origin-bridge.js";
 import { runCodebaseSignalsBridge } from "../ideas/lp-do-ideas-codebase-signals-bridge.js";
 import { runAgentSessionSignalsBridge } from "../ideas/lp-do-ideas-agent-session-bridge.js";
 import {
@@ -33,6 +34,7 @@ export const COMPLETED_IDEAS_RELATIVE_PATH = "docs/business-os/_data/completed-i
 const PLANS_ROOT = "docs/plans";
 const STRATEGY_ROOT = "docs/business-os/strategy";
 export const QUEUE_STATE_RELATIVE_PATH = "docs/business-os/startup-loop/ideas/trial/queue-state.json";
+const QUEUE_TELEMETRY_RELATIVE_PATH = "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl";
 
 export type ProcessImprovementType = "idea" | "risk" | "pending-review";
 
@@ -132,6 +134,18 @@ interface SignalReviewReviewRequiredSidecarFile {
   schema_version?: string;
   source_path?: string;
   items?: SignalReviewReviewRequiredItem[];
+}
+
+export interface BuildOriginBridgeSummary {
+  ok: boolean;
+  plans_scanned: number;
+  plans_considered: number;
+  signals_considered: number;
+  signals_admitted: number;
+  dispatches_enqueued: number;
+  suppressed: number;
+  noop: number;
+  warnings: string[];
 }
 
 interface BugScanFindingItem {
@@ -757,6 +771,67 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
   };
 }
 
+export function runBuildOriginBridgeForProcessImprovements(repoRoot: string): BuildOriginBridgeSummary {
+  const plansRoot = path.join(repoRoot, PLANS_ROOT);
+  const summary: BuildOriginBridgeSummary = {
+    ok: true,
+    plans_scanned: 0,
+    plans_considered: 0,
+    signals_considered: 0,
+    signals_admitted: 0,
+    dispatches_enqueued: 0,
+    suppressed: 0,
+    noop: 0,
+    warnings: [],
+  };
+
+  if (!existsSync(plansRoot)) {
+    return summary;
+  }
+
+  const planEntries = readdirSync(plansRoot, { withFileTypes: true }).filter(
+    (entry) => entry.isDirectory() && entry.name !== "_archive",
+  );
+  summary.plans_scanned = planEntries.length;
+
+  for (const planEntry of planEntries) {
+    const planDirAbs = path.join(plansRoot, planEntry.name);
+    const hasResultsReviewSidecar = existsSync(path.join(planDirAbs, "results-review.signals.json"));
+    const hasPatternReflectionSidecar = existsSync(
+      path.join(planDirAbs, "pattern-reflection.entries.json"),
+    );
+    if (!hasResultsReviewSidecar && !hasPatternReflectionSidecar) {
+      continue;
+    }
+
+    summary.plans_considered += 1;
+
+    const planDir = toPosixPath(path.join(PLANS_ROOT, planEntry.name));
+    const result = runBuildOriginSignalsBridge({
+      rootDir: repoRoot,
+      planDir,
+      queueStatePath: QUEUE_STATE_RELATIVE_PATH,
+      telemetryPath: QUEUE_TELEMETRY_RELATIVE_PATH,
+    });
+
+    summary.ok &&= result.ok;
+    summary.signals_considered += result.signals_considered;
+    summary.signals_admitted += result.signals_admitted;
+    summary.dispatches_enqueued += result.dispatches_enqueued;
+    summary.suppressed += result.suppressed;
+    summary.noop += result.noop;
+
+    for (const warning of result.warnings) {
+      summary.warnings.push(`[${planDir}] ${warning}`);
+    }
+    if (result.error) {
+      summary.warnings.push(`[${planDir}] ${result.error}`);
+    }
+  }
+
+  return summary;
+}
+
 function replaceArrayAssignment(html: string, variableName: string, items: ProcessImprovementItem[]): string {
   const serialized = JSON.stringify(items, null, 2)
     .split("\n")
@@ -920,6 +995,7 @@ function writeFileAtomic(filePath: string, content: string): void {
 
 function runCli(): void {
   const repoRoot = path.resolve(process.cwd(), "..");
+  const buildOriginBridgeResult = runBuildOriginBridgeForProcessImprovements(repoRoot);
   const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);
   const dataPath = path.join(repoRoot, PROCESS_DATA_RELATIVE_PATH);
   const now = new Date();
@@ -940,6 +1016,14 @@ function runCli(): void {
   process.stdout.write(
     `[generate-process-improvements] wrote ${PROCESS_DATA_RELATIVE_PATH}\n`,
   );
+  process.stdout.write(
+    `[generate-process-improvements] build-origin bridge: ok=${buildOriginBridgeResult.ok} plans=${buildOriginBridgeResult.plans_considered}/${buildOriginBridgeResult.plans_scanned} signals=${buildOriginBridgeResult.signals_considered} admitted=${buildOriginBridgeResult.signals_admitted} enqueued=${buildOriginBridgeResult.dispatches_enqueued}\n`,
+  );
+  if (buildOriginBridgeResult.warnings.length > 0) {
+    for (const warning of buildOriginBridgeResult.warnings) {
+      process.stdout.write(`[generate-process-improvements] build-origin bridge warning: ${warning}\n`);
+    }
+  }
 
   const latestBugScanArtifactPath =
     data.ideaItems.find((item) => item.source === "bug-scan-findings.user.json")?.path ?? null;

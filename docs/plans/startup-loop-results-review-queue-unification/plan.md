@@ -32,7 +32,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [x] TASK-06: Determine the self-evolving build-origin alignment model — Complete (2026-03-10)
 - [x] TASK-11: Implement the chosen self-evolving build-origin alignment — Complete (2026-03-10)
 - [x] TASK-13: Choose the canonical queue surface and admission seam for build-origin ideas — Complete (2026-03-10)
-- [ ] TASK-14: Wire build-origin admission into the real build lifecycle
+- [x] TASK-14: Wire build-origin admission into the real build lifecycle — Complete (2026-03-10)
 - [ ] TASK-15: Align report and closure consumers to the canonical queue surface
 - [ ] TASK-07: Canonical queue-path readiness checkpoint
 - [ ] TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
@@ -110,7 +110,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-06 | INVESTIGATE | Determine the self-evolving build-origin alignment model | 70% | M | Complete (2026-03-10) | TASK-01, TASK-02, TASK-03 | TASK-11 |
 | TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 80% | M | Complete (2026-03-10) | TASK-06 | TASK-13, TASK-07 |
 | TASK-13 | INVESTIGATE | Choose the canonical queue surface and admission seam for build-origin ideas | 75% | M | Complete (2026-03-10) | TASK-03, TASK-04, TASK-05, TASK-11 | TASK-14, TASK-15, TASK-07 |
-| TASK-14 | IMPLEMENT | Wire build-origin admission into the real build lifecycle on the chosen queue surface | 80% | M | Pending | TASK-13 | TASK-07 |
+| TASK-14 | IMPLEMENT | Wire build-origin admission into the real build lifecycle on the chosen queue surface | 80% | M | Complete (2026-03-10) | TASK-13 | TASK-07 |
 | TASK-15 | IMPLEMENT | Align report and closure consumers to the canonical queue surface | 80% | M | Pending | TASK-13 | TASK-07 |
 | TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11, TASK-14, TASK-15 | TASK-08, TASK-09, TASK-10, TASK-12 |
 | TASK-08 | INVESTIGATE | Audit historical backlog carry-over and produce bounded carry-over evidence | 70% | M | Pending | TASK-07 | TASK-09, TASK-10, TASK-12 |
@@ -432,7 +432,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Affects:** `scripts/src/startup-loop/build/generate-process-improvements.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`, and focused tests around build-origin admission
 - **Depends on:** TASK-13
 - **Blocks:** TASK-07
@@ -450,6 +450,12 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - TC-02: rerunning the same seam does not duplicate dispatches.
   - TC-03: emitted dispatches preserve canonical `build_origin` provenance.
 - **What would make this >=90%:** a fixture-backed end-to-end run from build-output artifacts through the chosen automated seam into the chosen queue file.
+- **Build completion evidence (2026-03-10):**
+  - Updated [generate-process-improvements.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/generate-process-improvements.ts) to run a pre-collect build-origin bridge pass via `runBuildOriginBridgeForProcessImprovements()`, targeting the trial queue and telemetry paths before backlog rendering.
+  - The new helper only scans active top-level plan dirs under `docs/plans/` and explicitly skips `_archive`, so historical carry-over is not silently backfilled during this tranche.
+  - Added regression coverage in [generate-process-improvements.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/generate-process-improvements.test.ts) for same-run queue admission and archive exclusion.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` passed; targeted ESLint passed on the touched generator and test files.
+  - Outcome: affirming. TASK-15 is now the next runnable implementation task.
 
 ### TASK-15: Align report and closure consumers to the canonical queue surface
 - **Type:** IMPLEMENT

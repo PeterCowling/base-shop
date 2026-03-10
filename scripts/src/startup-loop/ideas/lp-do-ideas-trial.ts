@@ -15,6 +15,11 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 
 import {
+  validateGapCaseReference,
+  validatePrescriptionReference,
+} from "../self-evolving/self-evolving-contracts.js";
+
+import {
   classifyIdea,
   type IdeaClassification,
   type IdeaClassificationInput,
@@ -596,6 +601,30 @@ export function validateDispatchV2(
       quality_warnings.push(
         `[dispatch.v2] intended_outcome.source is "auto" — this value was auto-generated and will be ` +
           `excluded from operator-quality metrics. Operator should review and update at Option B confirmation.`,
+      );
+    }
+  }
+
+  const selfEvolving = packet.self_evolving;
+  if (selfEvolving && typeof selfEvolving === "object") {
+    const link = selfEvolving as DispatchSelfEvolvingLink;
+    if (link.gap_case) {
+      errors.push(
+        ...validateGapCaseReference(link.gap_case).map(
+          (error) => `[dispatch.v2] self_evolving.gap_case.${error}`,
+        ),
+      );
+      if (link.gap_case.candidate_id !== link.candidate_id) {
+        errors.push(
+          `[dispatch.v2] self_evolving.gap_case.candidate_id must match self_evolving.candidate_id.`,
+        );
+      }
+    }
+    if (link.prescription) {
+      errors.push(
+        ...validatePrescriptionReference(link.prescription).map(
+          (error) => `[dispatch.v2] self_evolving.prescription.${error}`,
+        ),
       );
     }
   }

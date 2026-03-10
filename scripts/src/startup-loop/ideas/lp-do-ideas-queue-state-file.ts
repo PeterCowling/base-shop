@@ -2,6 +2,11 @@ import { randomBytes } from "node:crypto";
 import { existsSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve, sep } from "node:path";
 
+import type {
+  GapCaseReference,
+  PrescriptionReference,
+} from "../self-evolving/self-evolving-contracts.js";
+
 export type QueueStateKey =
   | "enqueued"
   | "processed"
@@ -14,6 +19,8 @@ export type QueueStateKey =
 export interface DispatchSelfEvolvingLink {
   candidate_id: string;
   decision_id: string;
+  gap_case?: GapCaseReference;
+  prescription?: PrescriptionReference;
   policy_version: string;
   recommended_route_origin: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build";
   executor_path: string;
@@ -23,6 +30,8 @@ export interface DispatchSelfEvolvingLink {
 export interface QueueCompletedSelfEvolving {
   candidate_id: string;
   decision_id: string;
+  gap_case?: GapCaseReference;
+  prescription?: PrescriptionReference;
   dispatch_id: string;
   maturity_due_at: string;
   maturity_status: "pending" | "matured";

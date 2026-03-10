@@ -25,8 +25,14 @@ The fact-find proved the startup loop already has prescriptions, but not a presc
 
 This plan keeps the existing queue and self-evolving spine. It does not introduce a second planning vocabulary or a parallel loop. It also stays inside shadow/advisory boundaries until milestone producers, prescription learning, and guarded promotion can be proven against the current runtime rather than just described in docs.
 
+Four issues are load-bearing throughout this plan and must be treated as design proofs, not advisory notes:
+- `gap_case` must compile into the current candidate-centric runtime without creating a second live identity layer.
+- milestone logic must be event-backed by real producers, not left as contract-only activation prose.
+- `requirement_posture` must fit into one explicit precedence model with hard rules, utility, and governance.
+- promotion must prove both efficacy and safety; those are separate checks and must stay separate.
+
 ## Active tasks
-- [ ] TASK-01: Define canonical `gap-case.v1` and `prescription.v1` contracts
+- [x] TASK-01: Define canonical `gap-case.v1` and `prescription.v1` contracts — Complete (2026-03-10)
 - [ ] TASK-02: Normalize existing suggestion seams onto canonical gap-case and prescription shapes
 - [ ] TASK-03: Add requirement posture and prescription maturity to queue and policy routing
 - [ ] TASK-04: Extend policy journaling and evaluation for prescription-choice learning
@@ -45,6 +51,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 - Add milestone-triggered lateral thinking using contract-backed roots instead of prose-only expectations.
 - Extend self-evolving evaluation so the loop can learn remedy quality, not just candidate-route quality.
 - Keep promotion guarded and trial-scoped.
+- Prove the resulting system is coherent enough to take forward without dual identity drift, contract-only milestone semantics, or promotion-safety shortcuts.
 
 ## Non-goals
 - Replacing the queue or the self-evolving runtime with a new orchestration system.
@@ -65,6 +72,13 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
   - Unknown prescriptions should continue to route to fact-find, but with a stronger discovery-output contract than exists today.
   - Milestone producers can be added without inventing a separate event bus outside startup-loop scripts.
   - Guarded promotion can build on the existing manual write-back and low-risk autofix seams instead of bypassing them.
+
+## Design Proofs Required
+- **Identity proof:** `gap_case` must either deterministically compile into `candidate_id`/`ImprovementCandidate` or deliberately replace a bounded part of that model. A parallel live identity layer is not acceptable.
+- **Milestone producer proof:** every milestone root admitted into runtime must have a concrete producer seam; contract prose alone is not enough.
+- **Precedence proof:** `requirement_posture` must participate in one explicit ordering with hard rules, utility, and governance. It cannot be a fourth conflicting opinion layer.
+- **Discovery proof:** unknown-prescription outputs must be structured enough to mature into a usable prescription without degenerating into narrative-only bureaucracy.
+- **Promotion proof:** “worked before” and “safe to promote” must remain separate thresholds all the way through rollout.
 
 ## Inherited Outcome Contract
 - **Why:** The startup loop already detects many weaknesses and already emits some suggested next moves, but those prescriptions are fragmented, not learned as a system, and not yet able to distinguish absolute requirements, relative requirements, unknown remedies, and milestone-triggered lateral follow-up.
@@ -100,7 +114,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Define canonical `gap-case.v1` and `prescription.v1` contracts | 82% | M | Pending | - | TASK-02, TASK-03, TASK-04, TASK-06, TASK-07, TASK-08 |
+| TASK-01 | IMPLEMENT | Define canonical `gap-case.v1` and `prescription.v1` contracts | 82% | M | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04, TASK-06, TASK-07, TASK-08 |
 | TASK-02 | IMPLEMENT | Normalize existing suggestion seams onto canonical gap-case and prescription shapes | 80% | M | Pending | TASK-01 | TASK-03, TASK-04, TASK-07 |
 | TASK-03 | IMPLEMENT | Add requirement posture and prescription maturity to queue and policy routing | 81% | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09 |
 | TASK-04 | IMPLEMENT | Extend policy journaling and evaluation for prescription-choice learning | 81% | M | Pending | TASK-01, TASK-03 | TASK-08, TASK-09 |
@@ -117,7 +131,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 | 1 | TASK-01, TASK-05 | - | Lock the two foundations first: identity/contracts and milestone-root truth |
 | 2 | TASK-02, TASK-03 | TASK-01 | Normalize current seams, then make requirement posture and maturity first-class |
 | 3 | TASK-04 | TASK-01, TASK-03 | Add learning only after the runtime can name what it is learning about |
-| 4 | TASK-06, TASK-07 | Relevant prerequisites complete | Milestone runtime work and richer sensing can proceed in parallel once contracts and normalization are stable |
+| 4 | TASK-06, TASK-07 | Relevant prerequisites complete | Milestone runtime work and richer sensing can be analysed in parallel, but integration should land serially because both touch core intake/self-evolving seams |
 | 5 | TASK-08 | TASK-03, TASK-07 | Discovery outputs should land after unknown-prescription routing semantics and richer evidence are in place |
 | 6 | TASK-09 | TASK-04, TASK-06, TASK-08 | Promotion only makes sense after learning, milestone routing, and discovery outputs are in place |
 | 7 | TASK-10 | TASK-04 through TASK-09 | Rehearse the resulting system before any build continuation beyond the plan |
@@ -127,20 +141,21 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 - A source inventory showing where milestone roots can actually be emitted from today, not just where the contracts mention them.
 - A draft discovery-output schema for unknown-prescription fact-finds.
 - A stricter proof that `gap_case` can compile into the current candidate-centric model without dual identity drift.
+- A draft promotion proof-threshold table that separates “effective enough to nominate” from “safe enough to promote”.
 
 ## Tasks
 
 ### TASK-01: Define canonical `gap-case.v1` and `prescription.v1` contracts
 - **Type:** IMPLEMENT
-- **Deliverable:** typed `gap-case.v1` and `prescription.v1` contracts wired into startup-loop type surfaces and referenced by queue/self-evolving code paths
+- **Deliverable:** typed `gap-case.v1` and `prescription.v1` contracts wired into startup-loop type surfaces, plus an explicit mapping contract between `gap_case` and the current candidate-centric runtime
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `[readonly] docs/plans/startup-loop-learned-prescription-system/fact-find.md`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts`, `[readonly] docs/plans/startup-loop-learned-prescription-system/fact-find.md`
 - **Depends on:** -
-- **Blocks:** TASK-02, TASK-03, TASK-04, TASK-06, TASK-07
+- **Blocks:** TASK-02, TASK-03, TASK-04, TASK-06, TASK-07, TASK-08
 - **Confidence:** 82%
   - Implementation: 82% - the missing contract fields are now concrete in the fact-find and map onto known type seams.
   - Approach: 84% - defining identity and prescription contracts first is the only coherent sequencing.
@@ -148,11 +163,12 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 - **Acceptance:**
   - `gap_case` is a first-class typed runtime concept with stable identity and source metadata.
   - `prescription` is a first-class typed runtime concept that can replace existing suggestion strings over time.
+  - The plan leaves an explicit mapping rule for `gap_case` against `candidate_id` / `ImprovementCandidate`; “both exist somehow” is not acceptable.
   - The plan leaves no ambiguity about which current seams must consume the new contracts first.
 - **Validation contract (TC-01):**
   - TC-01: startup-loop types compile with explicit `gap_case` and `prescription` interfaces.
   - TC-02: no downstream task in this plan still relies on fragmented suggestion strings as its primary identity model.
-  - TC-03: queue/self-evolving call sites can reference the new contracts without introducing a second queue envelope.
+  - TC-03: queue/self-evolving call sites can reference the new contracts without introducing a second queue envelope or a second live identity model.
 - **Execution plan:** Red -> add or update contract tests/types that prove the new shapes are missing; Green -> add the contracts and thread references into core runtime types; Refactor -> remove duplicate temporary field aliases that would preserve ambiguity.
 - **Planning validation (required for M/L):**
   - Checks run: verified current runtime remains candidate-centric and lacks both `gap_case` and `prescription` contracts.
@@ -161,15 +177,24 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 - **Scouts:** None: the contract gap is directly evidenced.
 - **Edge Cases & Hardening:** avoid introducing dual identity drift between `gap_case_id` and `candidate_id`; preserve backward compatibility for existing queue packets where needed.
 - **What would make this >=90%:**
-  - A concrete draft field map from current `ImprovementCandidate` and dispatch linkage fields onto `gap_case`.
+  - A concrete draft field map from current `ImprovementCandidate` and dispatch linkage fields onto `gap_case`, with one worked example traced end to end.
 - **Rollout / rollback:**
   - Rollout: add types first, then thread them through runtime seams in dependent tasks.
   - Rollback: remove contract additions only if the identity model proves unworkable; do not fall back to free-text suggestion fields.
 - **Documentation impact:**
   - Update the fact-find and any later plan artifacts that reference the new contracts.
+  - Scope expansion note: queue self-evolving link types and focused contract tests are included because the new identity contracts must be referenced by real queue surfaces and validated in place.
 - **Notes / references:**
   - [self-evolving-contracts.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts)
   - [lp-do-ideas-trial.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: the runtime remained candidate-centric with no canonical `gap_case` or `prescription` contracts, and queue/self-evolving linkage surfaces could not carry those identities.
+  - Green: added canonical `GapCase`, `Prescription`, and reference/runtime-binding validators in `self-evolving-contracts.ts`, then threaded optional canonical references into `ImprovementCandidate`, `ImprovementOutcome`, `PolicyDecisionRecord`, queue self-evolving links, and `dispatch.v2` validation.
+  - Scope control: kept the change bounded to contract surfaces plus the minimum queue/test seams required to prove the new identities are usable in real runtime envelopes.
+  - TC-01: pass. `pnpm exec tsc -p scripts/tsconfig.json --noEmit` completed successfully with explicit `gap_case` and `prescription` contract shapes in the startup-loop type surfaces.
+  - TC-02: pass. The canonical identity model is now expressed in code and the plan no longer relies on fragmented suggestion strings as the primary identity spine for downstream tasks; those strings remain only as normalization inputs for TASK-02.
+  - TC-03: pass. `pnpm exec eslint --no-warn-ignored scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts` completed successfully, and focused tests now cover queue/self-evolving references without adding a second queue envelope or a second live identity model.
+  - Precursor completion propagation: TASK-01 no longer blocks TASK-02, TASK-03, TASK-04, TASK-06, TASK-07, or TASK-08. The next runnable wave is still gated by confidence and sequencing, with TASK-05 remaining independently runnable as the milestone-root investigation and TASK-02/TASK-03 waiting on their own implementation windows.
 
 ### TASK-02: Normalize existing suggestion seams onto canonical gap-case and prescription shapes
 - **Type:** IMPLEMENT
@@ -215,7 +240,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 
 ### TASK-03: Add requirement posture and prescription maturity to queue and policy routing
 - **Type:** IMPLEMENT
-- **Deliverable:** runtime and queue contracts carry explicit `requirement_posture`, `blocking_scope`, and `prescription_maturity`, with `unknown` forcing fact-find routing
+- **Deliverable:** runtime and queue contracts carry explicit `requirement_posture`, `blocking_scope`, and `prescription_maturity`, with `unknown` forcing fact-find routing and one ordered precedence model for hard rules, posture, utility, and governance
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
@@ -231,11 +256,12 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 - **Acceptance:**
   - The runtime can say whether a gap is absolute, relative, or optional.
   - Unknown prescriptions deterministically route to fact-find rather than plan/build.
-  - Hard rules, utility, and governance have an explicit precedence story instead of parallel contradictory judgments.
+  - Hard rules, utility, governance, and `requirement_posture` have one explicit precedence story instead of parallel contradictory judgments.
 - **Validation contract (TC-03):**
   - TC-01: an `unknown` prescription cannot bypass fact-find.
   - TC-02: absolute requirements can still block stages/routes regardless of utility.
   - TC-03: relative and optional items remain portfolio-constrained rather than becoming implicit blockers.
+  - TC-04: precedence is documented as an ordered model, not inferred from scattered checks.
 - **Execution plan:** Red -> add routing tests that prove posture/maturity are absent today; Green -> add fields and precedence logic; Refactor -> remove duplicate inferred posture logic left in downstream consumers.
 - **Planning validation (required for M/L):**
   - Checks run: verified hard rules and utility selection already coexist, but requirement posture is not explicit.
@@ -244,7 +270,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 - **Scouts:** None: the precedence issue is already visible in the current runtime layering.
 - **Edge Cases & Hardening:** ensure optional improvements do not become hidden blockers; ensure absolute requirements cannot be softened by stochastic exploration later.
 - **What would make this >=90%:**
-  - A truth table showing precedence across posture, portfolio hard rules, governance overrides, and route selection.
+  - A truth table showing precedence across posture, portfolio hard rules, governance overrides, exploration, and route selection.
 - **Rollout / rollback:**
   - Rollout: add fields and precedence in one slice so downstream behavior stays internally consistent.
   - Rollback: revert routing precedence changes together; do not leave posture fields present but ignored.
@@ -296,7 +322,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 
 ### TASK-05: Map milestone roots to runtime producers and unify activation thresholds
 - **Type:** INVESTIGATE
-- **Deliverable:** an analysis artifact appended to the plan or a sibling artifact that maps contract-backed milestone roots to concrete runtime producer seams, alias policy, and unified activation precedence
+- **Deliverable:** [milestone-root-producer-map.md](/Users/petercowling/base-shop/docs/plans/startup-loop-learned-prescription-system/artifacts/milestone-root-producer-map.md) with contract-backed milestone roots, concrete runtime producer seams, alias policy, and unified activation precedence
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
@@ -315,6 +341,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 - **Acceptance:**
   - One authoritative milestone-root map exists for this feature.
   - Producer seams are named concretely enough for TASK-06 to implement without a second discovery pass.
+  - Each proposed runtime root is either backed by a producer seam or explicitly deferred; contract-only roots cannot silently pass through.
   - Threshold conflicts are either resolved or reduced to one bounded implementation choice.
 - **Validation contract:** planning-ready artifact with explicit milestone roots, producers, and precedence rules; no open ambiguity remains about current contract truth.
 - **Planning validation:** existing contract references already audited in the fact-find; this task exists because producer seams are not yet explicit in code.
@@ -345,6 +372,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
   - `dispatch.v2` and upstream intake paths can represent milestone events.
   - Runtime producers emit milestone roots grounded in current contracts, not invented aliases.
   - Lateral bundle generation is bounded, ranked, and non-actuating by default.
+  - No milestone root is emitted from runtime without a producer mapping proven in TASK-05.
 - **Validation contract (TC-06):**
   - TC-01: milestone events can be admitted without abusing `artifact_delta` or `operator_idea`.
   - TC-02: bundle generation uses requirement posture and does not explode into unconditional work.
@@ -356,6 +384,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
   - Unexpected findings: milestone runtime work would reintroduce fragmentation if it bypassed the canonical normalization layer, so TASK-02 is a hard dependency rather than an optional cleanup.
 - **Scouts:** TASK-05
 - **Edge Cases & Hardening:** prevent duplicate milestone emissions across multiple upstream sources; keep bundle generation advisory until rollout checkpoint.
+  - Keep “first sale” or “first stockist live” as optional higher-level aliases only after lower-level contract roots are observable in code.
 - **What would make this >=90%:**
   - A concrete producer inventory from TASK-05 with one sample event payload per root.
 - **Rollout / rollback:**
@@ -385,6 +414,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
   - The self-evolving build bridge consumes richer review artifacts than `build-record` alone.
   - Richer evidence is normalized into canonical gap/prescription inputs rather than side-channel heuristics.
   - Missing richer artifacts fail closed or degrade explicitly instead of silently pretending no evidence exists.
+  - The richer sensing surface is good enough that TASK-08 can shape discovery outputs from evidence rather than narrative guesswork.
 - **Validation contract (TC-07):**
   - TC-01: build-output observation seeding can include richer review evidence without regressing existing behavior.
   - TC-02: richer review artifacts are consumed through canonical normalization rather than ad hoc parsing.
@@ -408,7 +438,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 
 ### TASK-08: Define and enforce the discovery-output contract for unknown prescriptions
 - **Type:** IMPLEMENT
-- **Deliverable:** an explicit startup-loop fact-find discovery-output contract for unknown prescriptions, plus routing/runtime enforcement that uses it
+- **Deliverable:** an explicit startup-loop fact-find discovery-output contract for unknown prescriptions, with minimum machine fields (`gap_case_id`, `prescription_candidates[]`, `recommended_first_prescription`, `required_inputs`, `expected_artifacts`, `expected_signals`), plus routing/runtime enforcement that uses it
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
@@ -425,10 +455,12 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
   - Unknown prescriptions route to fact-find with an explicit discovery-output contract.
   - Discovery outputs are specific enough to create a `structured` prescription candidate without free-text interpretation.
   - The runtime can distinguish “unknown”, “hypothesized”, and “structured” prescriptions operationally.
+  - The discovery contract is minimal enough to be routinely usable and strict enough to block narrative-only pseudo-structure.
 - **Validation contract (TC-08):**
   - TC-01: unknown prescriptions cannot bypass the discovery contract.
   - TC-02: discovery outputs contain the minimum fields needed for later policy and queue consumers.
   - TC-03: the route from `unknown` to `structured` is explicit in code/docs, not only by convention.
+  - TC-04: narrative rationale may enrich discovery outputs, but cannot substitute for the required machine fields.
 - **Execution plan:** Red -> add tests/assertions around missing discovery outputs; Green -> define the contract and enforce routing/use of it; Refactor -> centralize state transitions so discovery maturation is not reimplemented per seam.
 - **Planning validation (required for M/L):**
   - Checks run: verified fact-find fallback exists today, but not as an explicit discovery-output contract.
@@ -436,6 +468,7 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
   - Unexpected findings: none beyond the expected behavior-vs-contract gap.
 - **Scouts:** None: the contract gap is already directly evidenced.
 - **Edge Cases & Hardening:** prevent empty or narrative-only discovery outputs from being treated as structured prescriptions.
+  - Avoid making first-encounter fact-finds so heavy that the runtime starts bypassing the contract in practice.
 - **What would make this >=90%:**
   - One real example of an unknown prescription maturing into a structured prescription through the new output contract.
 - **Rollout / rollback:**
@@ -465,10 +498,12 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
   - Proven prescriptions can be nominated for guarded promotion without bypassing existing safety boundaries.
   - Promotion remains bounded to prompts/contracts/write-back or low-risk autofix classes rather than general autonomy.
   - Reports can distinguish proven-but-unpromoted from promoted prescriptions.
+  - Promotion proof and promotion safety remain separate recorded checks all the way to the writer surface.
 - **Validation contract (TC-09):**
   - TC-01: promotion candidates require proof from prescription-level outcomes, not narrative selection.
   - TC-02: guarded promotion cannot silently actuate high-risk changes.
   - TC-03: write-back/autofix surfaces remain opt-in and auditable.
+  - TC-04: “proven effective” does not imply “safe to promote” unless a second safety threshold is also met.
 - **Execution plan:** Red -> add tests/assertions around absent promotion path; Green -> implement guarded nomination and promotion flow; Refactor -> centralize proof thresholds and promotion reason codes.
 - **Planning validation (required for M/L):**
   - Checks run: verified write-back is manual and autofix has no live runtime caller.
@@ -506,10 +541,13 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
   - The checkpoint can explain how `gap_case`, prescription choice, milestone triggers, discovery outputs, and guarded promotion fit together end to end.
   - Any unresolved contradictions are explicit and severity-ranked.
   - The checkpoint states whether the plan can move to build continuation without another replan.
+  - The checkpoint explicitly decides whether identity mapping, milestone producer coverage, posture precedence, and promotion safety are each good enough to proceed.
 - **Validation contract (TC-10):**
   - TC-01: resulting-system walk-through is grounded in code and artifacts, not plan intent alone.
   - TC-02: no critical contradiction remains between candidate identity, gap-case identity, and queue/runtime behavior.
   - TC-03: rollout boundary is explicit: shadow/advisory vs guarded.
+  - TC-04: no milestone-trigger behavior depends on contract prose without a runtime producer.
+  - TC-05: promotion efficacy and promotion safety are each evaluated explicitly.
 - **Execution plan:** Rehearse -> verify -> decide.
 - **Planning validation:** None: checkpoint task.
 - **Rollout / rollback:** None: checkpoint task.
@@ -526,9 +564,9 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 - Requirement posture conflicts with existing hard rules and governance.
   - Mitigation: TASK-03 must define precedence explicitly and test it.
 - Unknown prescriptions stay vague even after routing to fact-find.
-  - Mitigation: TASK-07 adds a discovery-output contract rather than relying on convention.
+  - Mitigation: TASK-08 adds a discovery-output contract rather than relying on convention, and TASK-07 ensures the evidence surface can feed it.
 - Promotion proof is confused with promotion safety.
-  - Mitigation: TASK-08 must keep those as separate checks.
+  - Mitigation: TASK-09 keeps those as separate checks and TASK-10 verifies the separation holds at rollout time.
 
 ## Observability
 - Logging:
@@ -575,13 +613,13 @@ This plan keeps the existing queue and self-evolving spine. It does not introduc
 ## Rehearsal Trace
 | Step | Preconditions Met | Issues Found | Resolution Required |
 |---|---|---|---|
-| TASK-01: Define canonical `gap-case.v1` and `prescription.v1` contracts | Yes | None | No |
+| TASK-01: Define canonical `gap-case.v1` and `prescription.v1` contracts | Yes | Major: identity mapping must become explicit at the contract layer or every later task risks dual live identity drift | Yes |
 | TASK-05: Map milestone roots to runtime producers and unify activation thresholds | Yes | Moderate: contract roots exist, but producer seams are not yet explicit in code | Yes |
 | TASK-02: Normalize existing suggestion seams onto canonical shapes | Yes | Moderate: three fragmented seams preserve different operator-readable wording that must not be lost during normalization | Yes |
-| TASK-03: Add requirement posture and prescription maturity | Yes | Moderate: posture must not become a parallel opinion layer beside hard rules and governance | Yes |
+| TASK-03: Add requirement posture and prescription maturity | Yes | Moderate: posture must not become a parallel opinion layer beside hard rules and governance; precedence must be explicit and testable | Yes |
 | TASK-04: Extend policy journaling and evaluation | Yes | Moderate: candidate-centric history must remain readable while prescription identity is introduced | Yes |
-| TASK-06: Add milestone-event triggers, producers, and bundle generation | Partial | Major: milestone runtime work is unsafe if TASK-05 does not pin canonical roots and producers first | Yes |
-| TASK-07: Widen live sensing for richer prescription evidence | Yes | Moderate: build-output widening must fail closed when richer review artifacts are absent or malformed | Yes |
-| TASK-08: Define and enforce the discovery-output contract for unknown prescriptions | Yes | Moderate: discovery outputs must be specific enough to mature unknown prescriptions without turning narrative prose into fake structure | Yes |
-| TASK-09: Add a guarded promotion path for proven prescriptions | Partial | Major: promotion proof and promotion safety are easy to conflate unless guarded thresholds remain separate | Yes |
-| TASK-10: Check resulting-system coherence and rollout readiness | Yes | None, provided TASK-05 through TASK-09 close their major issues | No |
+| TASK-06: Add milestone-event triggers, producers, and bundle generation | Partial | Major: milestone runtime work is unsafe if TASK-05 does not pin canonical roots and producers first; event-backed producers are a hard prerequisite | Yes |
+| TASK-07: Widen live sensing for richer prescription evidence | Yes | Moderate: build-output widening must fail closed when richer review artifacts are absent or malformed, or the maturity wave stays underfed | Yes |
+| TASK-08: Define and enforce the discovery-output contract for unknown prescriptions | Yes | Moderate: discovery outputs must be specific enough to mature unknown prescriptions without turning narrative prose into fake structure, but light enough to remain usable | Yes |
+| TASK-09: Add a guarded promotion path for proven prescriptions | Partial | Major: promotion proof and promotion safety are easy to conflate unless guarded thresholds remain separate and reported separately | Yes |
+| TASK-10: Check resulting-system coherence and rollout readiness | Yes | None, provided TASK-01 through TASK-09 close their identity, producer, precedence, discovery, and promotion issues | No |

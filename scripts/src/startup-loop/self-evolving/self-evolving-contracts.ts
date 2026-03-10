@@ -68,6 +68,71 @@ export type PolicyDecisionType =
   | "promotion_gate"
   | "override_record";
 export type PolicyDecisionMode = "deterministic" | "stochastic";
+export type GapCaseSourceKind =
+  | "bottleneck"
+  | "build_origin"
+  | "signal_review"
+  | "milestone"
+  | "self_evolving";
+export type GapCaseBindingMode = "compiled_to_candidate";
+export type PrescriptionSourceKind =
+  | "replan_trigger"
+  | "signal_review"
+  | "build_origin"
+  | "milestone_bundle"
+  | "self_evolving";
+export type CanonicalRecommendedRoute =
+  | "lp-do-fact-find"
+  | "lp-do-plan"
+  | "lp-do-build"
+  | "lp-do-briefing";
+export type PrescriptionRiskClass = "low" | "medium" | "high";
+
+export interface GapCaseRuntimeBinding {
+  binding_mode: GapCaseBindingMode;
+  candidate_id: string;
+}
+
+export interface GapCase {
+  schema_version: "gap-case.v1";
+  gap_case_id: string;
+  source_kind: GapCaseSourceKind;
+  business_id: string;
+  stage_id: string | null;
+  capability_id: string | null;
+  gap_type: string;
+  reason_code: string;
+  severity: number;
+  evidence_refs: string[];
+  recurrence_key: string;
+  structural_context: Record<string, unknown>;
+  runtime_binding: GapCaseRuntimeBinding;
+}
+
+export interface GapCaseReference {
+  gap_case_id: string;
+  candidate_id: string;
+  binding_mode: GapCaseBindingMode;
+}
+
+export interface Prescription {
+  schema_version: "prescription.v1";
+  prescription_id: string;
+  prescription_family: string;
+  source: PrescriptionSourceKind;
+  gap_types_supported: string[];
+  required_route: CanonicalRecommendedRoute;
+  required_inputs: string[];
+  expected_artifacts: string[];
+  expected_signal_change: string;
+  risk_class: PrescriptionRiskClass;
+}
+
+export interface PrescriptionReference {
+  prescription_id: string;
+  prescription_family: string;
+  required_route: CanonicalRecommendedRoute;
+}
 
 export interface ObservationSignalHints {
   recurrence_key?: string | null;
@@ -121,6 +186,8 @@ export interface MetaObservation {
 export interface ImprovementCandidate {
   schema_version: string;
   candidate_id: string;
+  gap_case?: GapCase;
+  prescription?: Prescription;
   candidate_type: CandidateType;
   candidate_state: CandidateState;
   problem_statement: string;
@@ -150,6 +217,8 @@ export interface ImprovementCandidate {
 export interface ImprovementOutcome {
   schema_version: string;
   candidate_id: string;
+  gap_case?: GapCaseReference | null;
+  prescription?: PrescriptionReference | null;
   dispatch_id?: string | null;
   decision_id?: string | null;
   policy_version?: string | null;
@@ -351,6 +420,8 @@ export interface PolicyDecisionRecord {
   decision_id: string;
   business_id: string;
   candidate_id: string;
+  gap_case?: GapCaseReference | null;
+  prescription?: PrescriptionReference | null;
   decision_type: PolicyDecisionType;
   decision_mode: PolicyDecisionMode;
   policy_version: string;
@@ -508,8 +579,163 @@ function nonEmptyString(input: unknown): boolean {
   return typeof input === "string" && input.trim().length > 0;
 }
 
+function isObjectRecord(input: unknown): input is Record<string, unknown> {
+  return typeof input === "object" && input !== null && !Array.isArray(input);
+}
+
 export function stableHash(input: string): string {
   return createHash("sha256").update(input, "utf-8").digest("hex");
+}
+
+export function validateGapCaseRuntimeBinding(binding: GapCaseRuntimeBinding): string[] {
+  const errors: string[] = [];
+  if (binding.binding_mode !== "compiled_to_candidate") {
+    errors.push("binding_mode");
+  }
+  if (!nonEmptyString(binding.candidate_id)) {
+    errors.push("candidate_id");
+  }
+  return errors;
+}
+
+export function validateGapCase(gapCase: GapCase): string[] {
+  const errors: string[] = [];
+  if (gapCase.schema_version !== "gap-case.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    gap_case_id: gapCase.gap_case_id,
+    business_id: gapCase.business_id,
+    gap_type: gapCase.gap_type,
+    reason_code: gapCase.reason_code,
+    recurrence_key: gapCase.recurrence_key,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    gapCase.source_kind !== "bottleneck" &&
+    gapCase.source_kind !== "build_origin" &&
+    gapCase.source_kind !== "signal_review" &&
+    gapCase.source_kind !== "milestone" &&
+    gapCase.source_kind !== "self_evolving"
+  ) {
+    errors.push("source_kind");
+  }
+  if (gapCase.stage_id !== null && !nonEmptyString(gapCase.stage_id)) {
+    errors.push("stage_id");
+  }
+  if (gapCase.capability_id !== null && !nonEmptyString(gapCase.capability_id)) {
+    errors.push("capability_id");
+  }
+  if (
+    typeof gapCase.severity !== "number" ||
+    Number.isNaN(gapCase.severity) ||
+    gapCase.severity < 0 ||
+    gapCase.severity > 1
+  ) {
+    errors.push("severity");
+  }
+  if (!Array.isArray(gapCase.evidence_refs)) {
+    errors.push("evidence_refs");
+  }
+  if (!isObjectRecord(gapCase.structural_context)) {
+    errors.push("structural_context");
+  }
+  errors.push(
+    ...validateGapCaseRuntimeBinding(gapCase.runtime_binding).map(
+      (error) => `runtime_binding.${error}`,
+    ),
+  );
+  return errors;
+}
+
+export function validateGapCaseReference(reference: GapCaseReference): string[] {
+  const errors: string[] = [];
+  for (const [label, value] of Object.entries({
+    gap_case_id: reference.gap_case_id,
+    candidate_id: reference.candidate_id,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (reference.binding_mode !== "compiled_to_candidate") {
+    errors.push("binding_mode");
+  }
+  return errors;
+}
+
+export function validatePrescription(prescription: Prescription): string[] {
+  const errors: string[] = [];
+  if (prescription.schema_version !== "prescription.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    prescription_id: prescription.prescription_id,
+    prescription_family: prescription.prescription_family,
+    expected_signal_change: prescription.expected_signal_change,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    prescription.source !== "replan_trigger" &&
+    prescription.source !== "signal_review" &&
+    prescription.source !== "build_origin" &&
+    prescription.source !== "milestone_bundle" &&
+    prescription.source !== "self_evolving"
+  ) {
+    errors.push("source");
+  }
+  if (
+    prescription.required_route !== "lp-do-fact-find" &&
+    prescription.required_route !== "lp-do-plan" &&
+    prescription.required_route !== "lp-do-build" &&
+    prescription.required_route !== "lp-do-briefing"
+  ) {
+    errors.push("required_route");
+  }
+  if (
+    prescription.risk_class !== "low" &&
+    prescription.risk_class !== "medium" &&
+    prescription.risk_class !== "high"
+  ) {
+    errors.push("risk_class");
+  }
+  if (!Array.isArray(prescription.gap_types_supported)) {
+    errors.push("gap_types_supported");
+  }
+  if (!Array.isArray(prescription.required_inputs)) {
+    errors.push("required_inputs");
+  }
+  if (!Array.isArray(prescription.expected_artifacts)) {
+    errors.push("expected_artifacts");
+  }
+  return errors;
+}
+
+export function validatePrescriptionReference(reference: PrescriptionReference): string[] {
+  const errors: string[] = [];
+  for (const [label, value] of Object.entries({
+    prescription_id: reference.prescription_id,
+    prescription_family: reference.prescription_family,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    reference.required_route !== "lp-do-fact-find" &&
+    reference.required_route !== "lp-do-plan" &&
+    reference.required_route !== "lp-do-build" &&
+    reference.required_route !== "lp-do-briefing"
+  ) {
+    errors.push("required_route");
+  }
+  return errors;
 }
 
 export function validateMetaObservation(observation: MetaObservation): string[] {
@@ -604,6 +830,17 @@ export function validateImprovementCandidate(candidate: ImprovementCandidate): s
   const errors: string[] = [];
   if (!nonEmptyString(candidate.schema_version)) errors.push("schema_version");
   if (!nonEmptyString(candidate.candidate_id)) errors.push("candidate_id");
+  if (candidate.gap_case) {
+    errors.push(...validateGapCase(candidate.gap_case).map((error) => `gap_case.${error}`));
+    if (candidate.gap_case.runtime_binding.candidate_id !== candidate.candidate_id) {
+      errors.push("gap_case.runtime_binding.candidate_id_mismatch");
+    }
+  }
+  if (candidate.prescription) {
+    errors.push(
+      ...validatePrescription(candidate.prescription).map((error) => `prescription.${error}`),
+    );
+  }
   if (!nonEmptyString(candidate.problem_statement)) {
     errors.push("problem_statement");
   }
@@ -642,6 +879,19 @@ export function validateImprovementOutcome(outcome: ImprovementOutcome): string[
     errors.push("unsupported_schema_version");
   }
   if (!nonEmptyString(outcome.candidate_id)) errors.push("candidate_id");
+  if (outcome.gap_case) {
+    errors.push(...validateGapCaseReference(outcome.gap_case).map((error) => `gap_case.${error}`));
+    if (outcome.gap_case.candidate_id !== outcome.candidate_id) {
+      errors.push("gap_case.candidate_id_mismatch");
+    }
+  }
+  if (outcome.prescription) {
+    errors.push(
+      ...validatePrescriptionReference(outcome.prescription).map(
+        (error) => `prescription.${error}`,
+      ),
+    );
+  }
   if (
     outcome.implementation_status !== "success" &&
     outcome.implementation_status !== "failed" &&
@@ -1247,6 +1497,19 @@ export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): stri
     if (!nonEmptyString(value)) {
       errors.push(label);
     }
+  }
+  if (record.gap_case) {
+    errors.push(...validateGapCaseReference(record.gap_case).map((error) => `gap_case.${error}`));
+    if (record.gap_case.candidate_id !== record.candidate_id) {
+      errors.push("gap_case.candidate_id_mismatch");
+    }
+  }
+  if (record.prescription) {
+    errors.push(
+      ...validatePrescriptionReference(record.prescription).map(
+        (error) => `prescription.${error}`,
+      ),
+    );
   }
   if (
     record.decision_type !== "candidate_route" &&

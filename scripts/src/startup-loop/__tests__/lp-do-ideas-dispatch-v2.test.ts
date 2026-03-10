@@ -270,6 +270,63 @@ describe("TC-01-E: artifact_delta dispatch auto-populated values carry source: '
     expect(result.errors).toHaveLength(0);
   });
 
+  it("self_evolving links may carry canonical gap-case and prescription references", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      self_evolving: {
+        candidate_id: "cand-1",
+        decision_id: "decision-1",
+        gap_case: {
+          gap_case_id: "gap-1",
+          candidate_id: "cand-1",
+          binding_mode: "compiled_to_candidate",
+        },
+        prescription: {
+          prescription_id: "prescription-1",
+          prescription_family: "build-origin-bridge-fact-find",
+          required_route: "lp-do-fact-find",
+        },
+        policy_version: "self-evolving-policy.v1",
+        recommended_route_origin: "lp-do-plan",
+        executor_path: "lp-do-build:container:website-v3",
+        handoff_emitted_at: FIXED_DATE.toISOString(),
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  it("rejects self_evolving gap-case references that drift from candidate identity", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      self_evolving: {
+        candidate_id: "cand-1",
+        decision_id: "decision-1",
+        gap_case: {
+          gap_case_id: "gap-1",
+          candidate_id: "cand-other",
+          binding_mode: "compiled_to_candidate",
+        },
+        policy_version: "self-evolving-policy.v1",
+        recommended_route_origin: "lp-do-plan",
+        executor_path: "lp-do-build:container:website-v3",
+        handoff_emitted_at: FIXED_DATE.toISOString(),
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(false);
+    expect(
+      result.errors.some((error) =>
+        error.includes("self_evolving.gap_case.candidate_id must match self_evolving.candidate_id"),
+      ),
+    ).toBe(true);
+  });
+
   it("auto-generated values produce quality_warnings about auto source", () => {
     const packet = makeV2Packet({
       trigger: "artifact_delta",

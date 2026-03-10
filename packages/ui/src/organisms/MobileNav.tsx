@@ -9,6 +9,7 @@ import { Menu, X } from "lucide-react";
 import { useCurrentLanguage } from "../hooks/useCurrentLanguage";
 import { type AppLanguage,i18nConfig } from "../i18n.config";
 import { resolvePrimaryCtaLabel } from "../shared";
+import { resolveHeaderPrimaryCtaHref } from "../utils/headerPrimaryCtaHref";
 import { translatePath } from "../utils/translate-path";
 
 const logoIcon = "/img/hostel_brikette_icon.png"; // original raster – small icon
@@ -55,30 +56,21 @@ function MobileNav({
   const { t, ready } = useTranslation("header", { lng: lang });
   const { t: tTokens, ready: tokensReady } = useTranslation("_tokens", { lng: lang });
   const pathname = usePathname();
-  // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
-  // booking page instead of opening the hostel booking modal.
-  const apartmentPath = `/${translatePath("apartment", lang)}`;
-  const privateBookingPath = `/${lang}/${translatePath("privateBooking", lang)}`;
-  const isApartmentRoute =
-    pathname.startsWith(`/${lang}${apartmentPath}`) || pathname.startsWith(privateBookingPath);
-  const bookHref =
-    primaryCtaHref ??
-    (isApartmentRoute
-      ? privateBookingPath
-      : `/${lang}/${translatePath("book", lang)}`);
+  const hostelBookingPath = `/${lang}/${translatePath("book", lang)}`;
+  const bookHref = resolveHeaderPrimaryCtaHref({ lang, pathname, primaryCtaHref });
+  const isDirectNavigationRoute = bookHref !== hostelBookingPath;
 
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), [setMenuOpen]);
   const onBookingClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>) => {
-      // On apartment routes let normal navigation handle the link — no modal.
-      if (isApartmentRoute) return;
+      if (isDirectNavigationRoute) return;
       // Preserve semantic link navigation unless the callback explicitly handles routing.
       const handledByCallback = onPrimaryCtaClick?.() === true;
       if (handledByCallback) {
         event.preventDefault();
       }
     },
-    [onPrimaryCtaClick, isApartmentRoute]
+    [isDirectNavigationRoute, onPrimaryCtaClick]
   );
   const ctaClass = "cta-light";
   const primaryCtaLabel = useMemo(() => {

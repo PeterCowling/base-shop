@@ -39,7 +39,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-12: Implement stability controls and anti-gaming utility governance — Complete (2026-03-10)
 - [x] TASK-13: Implement calibration, regret, override, and policy audit telemetry — Complete (2026-03-10)
 - [x] TASK-17: Enforce the policy authority ladder at queue and promotion seams — Complete (2026-03-10)
-- [ ] TASK-18: Produce real shadow-run policy artifacts and checkpoint evidence
+- [x] TASK-18: Produce real shadow-run policy artifacts and checkpoint evidence — Complete (2026-03-10)
 - [ ] TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - [ ] TASK-15: Final checkpoint - authoritative mathematical policy readiness
 
@@ -128,7 +128,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 80% | M | Complete (2026-03-10) | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
 | TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
 | TASK-17 | IMPLEMENT | Enforce the authority ladder so shadow and advisory policy cannot silently actuate queue or promotion state | 85% | M | Complete (2026-03-10) | TASK-07, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-14, TASK-15 |
-| TASK-18 | IMPLEMENT | Produce real self-evolving shadow-run policy artifacts and checkpoint evidence from repo outputs | 80% | M | Pending | TASK-13, TASK-17 | TASK-14, TASK-15 |
+| TASK-18 | IMPLEMENT | Produce real self-evolving shadow-run policy artifacts and checkpoint evidence from repo outputs | 80% | M | Complete (2026-03-10) | TASK-13, TASK-17 | TASK-14, TASK-15 |
 | TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18 | TASK-15 |
 | TASK-15 | CHECKPOINT | Final checkpoint - authoritative mathematical policy readiness | 95% | S | Pending | TASK-14 | - |
 
@@ -952,8 +952,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `docs/business-os/startup-loop/self-evolving/<business>/policy-state.json`, `docs/business-os/startup-loop/self-evolving/<business>/policy-decisions.jsonl`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/<business>-shadow-run-report.json`, `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `docs/business-os/startup-loop/self-evolving/<business>/policy-state.json`, `docs/business-os/startup-loop/self-evolving/<business>/policy-decisions.jsonl`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/<business>-shadow-run-result.json`, `docs/plans/startup-loop-centralized-math-foundations/artifacts/<business>-shadow-run-report.json`, `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-signal-helpers.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
 - **Depends on:** TASK-13, TASK-17
 - **Blocks:** TASK-14, TASK-15
 - **Confidence:** 80%
@@ -990,6 +990,23 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`
   - `docs/business-os/startup-loop/self-evolving/BRIK/`
+- **Build Evidence (2026-03-10):**
+  - Red: the first live `BRIK` shadow run failed inside `buildObservationSignalHints()` because real queue packets include legacy string `intended_outcome` values and sparse optional text fields; the runner had been assuming every signal text was already a non-empty string.
+  - Green: hardened the runner seam rather than papering over live data. `self-evolving-from-ideas.ts` now accepts `string` or object `intended_outcome` forms, resolves safe fallback text for recurrence and problem statements, and emits CLI evidence metadata (`business`, `run_id`, `session_id`, `generation_source`, `source_paths`). `self-evolving-signal-helpers.ts` now filters non-string text inputs instead of throwing on real queue data.
+  - Green: added non-actuating shadow evidence mode to `self-evolving-from-ideas.ts` via `followupConsumeMode: "skip"` / `--followup-consume-mode skip`, plus integration coverage proving reruns keep policy artifacts stable and do not create follow-up queue mutations.
+  - Green: generated the first real shadow evidence pack for `BRIK` through the live bounded runner:
+    - `docs/business-os/startup-loop/self-evolving/BRIK/policy-state.json`
+    - `docs/business-os/startup-loop/self-evolving/BRIK/policy-decisions.jsonl`
+    - `docs/plans/startup-loop-centralized-math-foundations/artifacts/BRIK-shadow-run-result.json`
+    - `docs/plans/startup-loop-centralized-math-foundations/artifacts/BRIK-shadow-run-report.json`
+  - Generation path:
+    - `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts --business BRIK --run-id task-18-shadow-brik-2026-03-10 --session-id task-18-shadow-brik-2026-03-10-session --followup-consume-mode skip --output docs/plans/startup-loop-centralized-math-foundations/artifacts/BRIK-shadow-run-result.json`
+    - `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK > docs/plans/startup-loop-centralized-math-foundations/artifacts/BRIK-shadow-run-report.json`
+  - TC-01: pass. The bounded `BRIK` shadow run wrote runtime-produced `policy-state.json` and `policy-decisions.jsonl`, and the saved result artifact records the exact generation source, business, run ID, session ID, and input paths.
+  - TC-02: pass. `BRIK-shadow-run-report.json` has `warnings: []`; the missing policy-state and policy-decision warnings are gone.
+  - TC-03: pass. The report shows `policy_state_present: true`, `authority_level: "shadow"`, and `decision_records: 12` on real repo outputs.
+  - TC-04: pass by integration coverage and live guard semantics. `self-evolving-orchestrator-integration.test.ts` now proves rerunning the same bounded input set in `skip` mode preserves `policy-state.json` / `policy-decisions.jsonl` content and never creates the legacy follow-up queue file; the live `BRIK` evidence run also enforced an unchanged `ideas/trial/queue-state.json` hash before and after execution.
+  - Residual issue carried forward to TASK-14: the evidence pack is real, but it is still dominated by structural-only signals (`measurement_ready_observation_rate: 0`, `exploration_decisions: 0`, calibration/regret still `insufficient_data`), so the checkpoint must judge guarded-trial readiness against honest sparse-data outputs rather than missing artifacts.
 
 ### TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - **Type:** CHECKPOINT

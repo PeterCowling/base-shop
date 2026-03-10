@@ -1,4 +1,11 @@
-import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import os from "node:os";
 import path from "node:path";
 
@@ -20,6 +27,7 @@ import { runSelfEvolvingOrchestrator } from "../self-evolving/self-evolving-orch
 import { createDefaultPolicyState } from "../self-evolving/self-evolving-scoring.js";
 import {
   createStartupStateStore,
+  readPolicyDecisionJournal,
   readPolicyState,
   writePolicyState,
 } from "../self-evolving/self-evolving-startup-state.js";
@@ -237,6 +245,28 @@ describe("self-evolving orchestrator integration", () => {
     expect(observation.schema_version).toBe("meta-observation.v2");
     expect(observation.evidence_grade).toBe("structural");
     expect(observation.measurement_contract_status).toBe("declared");
+    expect(validateMetaObservation(observation)).toEqual([]);
+  });
+
+  it("accepts legacy queue packets with string intended outcomes and sparse optional text", () => {
+    const legacyPacket = {
+      ...buildDispatchPacket("d-legacy"),
+      current_truth: "",
+      next_scope_now: "",
+      why: undefined,
+      intended_outcome: "Use lp-do-build to automate terms-and-conditions generation.",
+    } as unknown as TrialDispatchPacket;
+
+    const observation = dispatchToMetaObservation(legacyPacket, {
+      business: "BRIK",
+      run_id: "run-legacy",
+      session_id: "session-legacy",
+      index: 0,
+      now: new Date("2026-03-02T00:00:00.000Z"),
+    });
+
+    expect(observation.context_path).toBe("lp-do-ideas/website-legal-terms");
+    expect(observation.signal_hints.problem_statement).toContain("website-legal-terms");
     expect(validateMetaObservation(observation)).toEqual([]);
   });
 
@@ -491,6 +521,77 @@ describe("self-evolving orchestrator integration", () => {
     expect(guardedTrialResult.closure_state).toBe("closed");
     expect(guardedTrialResult.pending_entries).toBe(0);
     expect(guardedTrialResult.emitted_dispatches).toBe(0);
+    rmSync(tempRoot, { recursive: true, force: true });
+  });
+
+  it("TASK-18 writes shadow policy artifacts without mutating the follow-up queue and reruns stably", () => {
+    const tempRoot = mkdtempSync(path.join(os.tmpdir(), "self-evolving-shadow-evidence-"));
+    const runnerInput = {
+      rootDir: tempRoot,
+      business: "BRIK" as const,
+      run_id: "shadow-run-1",
+      session_id: "shadow-session-1",
+      startup_state: buildStartupState(),
+      dispatches: [buildDispatchPacket("d-1"), buildDispatchPacket("d-2"), buildDispatchPacket("d-3")],
+      followupConsumeMode: "skip" as const,
+      now: new Date("2026-03-02T00:00:00.000Z"),
+    };
+
+    const firstResult = runSelfEvolvingFromIdeas(runnerInput);
+    expect(firstResult.followup_consume_mode).toBe("skip");
+    expect(firstResult.followup_closure_state).toBe("closed");
+    expect(firstResult.followup_dispatches_emitted).toBe(0);
+    expect(firstResult.followup_pending_entries).toBe(0);
+    expect(firstResult.followup_consumed_entries).toBe(0);
+    expect(firstResult.followup_queue_entries_written).toBe(0);
+
+    const store = createStartupStateStore(tempRoot);
+    const policyState = readPolicyState(store, "BRIK");
+    const policyDecisions = readPolicyDecisionJournal(store, "BRIK");
+    expect(policyState).not.toBeNull();
+    expect(policyState?.authority_level).toBe("shadow");
+    expect(policyDecisions.length).toBeGreaterThan(0);
+
+    const policyStatePath = path.join(
+      tempRoot,
+      "docs",
+      "business-os",
+      "startup-loop",
+      "self-evolving",
+      "BRIK",
+      "policy-state.json",
+    );
+    const policyDecisionPath = path.join(
+      tempRoot,
+      "docs",
+      "business-os",
+      "startup-loop",
+      "self-evolving",
+      "BRIK",
+      "policy-decisions.jsonl",
+    );
+    const followupQueuePath = path.join(
+      tempRoot,
+      "docs",
+      "business-os",
+      "startup-loop",
+      "ideas",
+      "trial",
+      "queue-state.json",
+    );
+    const firstPolicyStateBody = readFileSync(policyStatePath, "utf-8");
+    const firstPolicyDecisionBody = readFileSync(policyDecisionPath, "utf-8");
+
+    expect(existsSync(followupQueuePath)).toBe(false);
+
+    const secondResult = runSelfEvolvingFromIdeas(runnerInput);
+    expect(secondResult.followup_consume_mode).toBe("skip");
+    expect(secondResult.followup_dispatches_emitted).toBe(0);
+    expect(secondResult.followup_queue_entries_written).toBe(0);
+    expect(readFileSync(policyStatePath, "utf-8")).toBe(firstPolicyStateBody);
+    expect(readFileSync(policyDecisionPath, "utf-8")).toBe(firstPolicyDecisionBody);
+    expect(existsSync(followupQueuePath)).toBe(false);
+
     rmSync(tempRoot, { recursive: true, force: true });
   });
 

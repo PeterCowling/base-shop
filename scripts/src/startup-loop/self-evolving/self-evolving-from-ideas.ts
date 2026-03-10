@@ -42,9 +42,10 @@ export interface IdeasDispatchPacket {
   current_truth: string;
   next_scope_now: string;
   adjacent_later: string[];
-  recommended_route: "lp-do-fact-find" | "lp-do-build" | "lp-do-briefing";
+  recommended_route: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build" | "lp-do-briefing";
   status:
     | "fact_find_ready"
+    | "plan_ready"
     | "micro_build_ready"
     | "briefing_ready"
     | "auto_executed"
@@ -55,11 +56,13 @@ export interface IdeasDispatchPacket {
   created_at: string;
   queue_state: "enqueued" | "processed" | "skipped" | "error";
   why?: string;
-  intended_outcome?: {
-    type: "measurable" | "operational";
-    statement: string;
-    source: "operator" | "auto";
-  };
+  intended_outcome?:
+    | {
+        type: "measurable" | "operational";
+        statement: string;
+        source: "operator" | "auto";
+      }
+    | string;
 }
 
 function deriveObservationType(
@@ -68,6 +71,39 @@ function deriveObservationType(
   if (packet.status === "logged_no_action") return "routing_override";
   if (packet.status === "briefing_ready") return "operator_intervention";
   return "execution_event";
+}
+
+function firstNonEmptyText(
+  ...values: Array<string | null | undefined>
+): string | null {
+  for (const value of values) {
+    if (typeof value !== "string") {
+      continue;
+    }
+    const trimmed = value.trim();
+    if (trimmed.length > 0) {
+      return trimmed;
+    }
+  }
+  return null;
+}
+
+function resolveIntendedOutcomeStatement(packet: IdeasDispatchPacket): string {
+  const intendedOutcome =
+    typeof packet.intended_outcome === "string"
+      ? packet.intended_outcome
+      : packet.intended_outcome?.statement;
+  return (
+    firstNonEmptyText(
+      intendedOutcome,
+      packet.next_scope_now,
+      packet.current_truth,
+      packet.why,
+      packet.area_anchor,
+      packet.cluster_key,
+      packet.dispatch_id,
+    ) ?? "Route recurring startup-loop work into a reusable path."
+  );
 }
 
 export function dispatchToMetaObservation(
@@ -80,12 +116,14 @@ export function dispatchToMetaObservation(
     now: Date;
   },
 ): MetaObservation {
-  const intendedOutcomeStatement = packet.intended_outcome?.statement ?? packet.next_scope_now;
+  const areaAnchor =
+    firstNonEmptyText(packet.area_anchor, packet.cluster_key, packet.dispatch_id) ?? "unknown";
+  const intendedOutcomeStatement = resolveIntendedOutcomeStatement(packet);
   const signalHints = buildObservationSignalHints({
-    recurrenceKeyParts: [packet.area_anchor, intendedOutcomeStatement, packet.why ?? ""],
-    problemStatement: `Reduce recurring ${packet.area_anchor} work and route it into a reusable lp-do-build path for ${packet.business}.`,
+    recurrenceKeyParts: [areaAnchor, intendedOutcomeStatement, packet.why ?? ""],
+    problemStatement: `Reduce recurring ${areaAnchor} work and route it into a reusable lp-do-build path for ${packet.business}.`,
     texts: [
-      packet.area_anchor,
+      areaAnchor,
       packet.current_truth,
       packet.next_scope_now,
       packet.why ?? "",
@@ -111,7 +149,7 @@ export function dispatchToMetaObservation(
     : packet.dispatch_id;
 
   return {
-    schema_version: "meta-observation.v1",
+    schema_version: "meta-observation.v2",
     observation_id: stableHash(`lp-do-ideas|${packet.dispatch_id}|${observationSeed}`).slice(
       0,
       16,
@@ -125,7 +163,7 @@ export function dispatchToMetaObservation(
     skill_id: "lp-do-ideas",
     container_id: null,
     artifact_refs: packet.evidence_refs,
-    context_path: `lp-do-ideas/${packet.area_anchor}`,
+    context_path: `lp-do-ideas/${areaAnchor}`,
     hard_signature: hardSignature,
     soft_cluster_id: stableHash(signalHints.recurrence_key ?? packet.cluster_fingerprint).slice(
       0,
@@ -143,10 +181,10 @@ export function dispatchToMetaObservation(
     ),
     toolchain_version: "lp-do-ideas.v3",
     model_version: null,
-    kpi_name: hasKpiHint ? "activation_rate" : null,
+    kpi_name: null,
     kpi_value: null,
-    kpi_unit: hasKpiHint ? "ratio" : null,
-    aggregation_method: hasKpiHint ? "rate" : null,
+    kpi_unit: null,
+    aggregation_method: null,
     sample_size: null,
     data_quality_status: hasKpiHint ? "unknown" : null,
     data_quality_reason_code: hasKpiHint ? "dispatch_only_signal" : null,
@@ -154,6 +192,8 @@ export function dispatchToMetaObservation(
     measurement_window: hasKpiHint ? "7d" : null,
     traffic_segment: null,
     evidence_refs: packet.evidence_refs,
+    evidence_grade: hasKpiHint ? "structural" : "exploratory",
+    measurement_contract_status: hasKpiHint ? "declared" : "none",
     signal_hints: signalHints,
   };
 }
@@ -165,16 +205,29 @@ export interface SelfEvolvingFromIdeasInput {
   session_id: string;
   startup_state: StartupState;
   dispatches: IdeasDispatchPacket[];
+  followupConsumeMode?: "consume" | "skip";
   followupQueueStatePath?: string;
   followupTelemetryPath?: string;
   now?: Date;
 }
 
 export interface SelfEvolvingFromIdeasResult {
+  business: string;
+  run_id: string;
+  session_id: string;
+  generation_source: "self-evolving-from-ideas";
   observations_generated: number;
   backbone_queue_path: string;
   backbone_queued: number;
+  followup_consume_mode: "consume" | "skip";
+  followup_closure_state: "closed" | "stale-repairable" | "hard-failed";
   followup_dispatches_emitted: number;
+  followup_pending_entries: number;
+  followup_consumed_entries: number;
+  followup_closed_candidate_ids: string[];
+  followup_stale_repairable_candidate_ids: string[];
+  followup_hard_failed_candidate_ids: string[];
+  followup_unresolved_candidate_ids: string[];
   followup_queue_entries_written: number;
   warnings: string[];
   orchestrator: SelfEvolvingOrchestratorResult;
@@ -184,6 +237,7 @@ export function runSelfEvolvingFromIdeas(
   input: SelfEvolvingFromIdeasInput,
 ): SelfEvolvingFromIdeasResult {
   const now = input.now ?? new Date();
+  const followupConsumeMode = input.followupConsumeMode ?? "consume";
   const observations = input.dispatches.map((packet, index) =>
     dispatchToMetaObservation(packet, {
       business: input.business,
@@ -210,6 +264,30 @@ export function runSelfEvolvingFromIdeas(
     orchestrator.ranked_candidates,
     now,
   );
+  if (followupConsumeMode === "skip") {
+    return {
+      business: input.business,
+      run_id: input.run_id,
+      session_id: input.session_id,
+      generation_source: "self-evolving-from-ideas",
+      observations_generated: observations.length,
+      backbone_queue_path: queueWrite.path,
+      backbone_queued: queueWrite.queued,
+      followup_consume_mode: followupConsumeMode,
+      followup_closure_state: "closed",
+      followup_dispatches_emitted: 0,
+      followup_pending_entries: 0,
+      followup_consumed_entries: 0,
+      followup_closed_candidate_ids: [],
+      followup_stale_repairable_candidate_ids: [],
+      followup_hard_failed_candidate_ids: [],
+      followup_unresolved_candidate_ids: [],
+      followup_queue_entries_written: 0,
+      warnings: [],
+      orchestrator,
+    };
+  }
+
   const followupQueueStatePath =
     input.followupQueueStatePath ??
     path.join(
@@ -240,10 +318,22 @@ export function runSelfEvolvingFromIdeas(
   });
 
   return {
+    business: input.business,
+    run_id: input.run_id,
+    session_id: input.session_id,
+    generation_source: "self-evolving-from-ideas",
     observations_generated: observations.length,
     backbone_queue_path: queueWrite.path,
     backbone_queued: queueWrite.queued,
+    followup_consume_mode: followupConsumeMode,
+    followup_closure_state: followupConsume.closure_state,
     followup_dispatches_emitted: followupConsume.emitted_dispatches,
+    followup_pending_entries: followupConsume.pending_entries,
+    followup_consumed_entries: followupConsume.consumed_entries_marked,
+    followup_closed_candidate_ids: followupConsume.closed_candidate_ids,
+    followup_stale_repairable_candidate_ids: followupConsume.stale_repairable_candidate_ids,
+    followup_hard_failed_candidate_ids: followupConsume.hard_failed_candidate_ids,
+    followup_unresolved_candidate_ids: followupConsume.unresolved_candidate_ids,
     followup_queue_entries_written: followupConsume.queue_entries_written,
     warnings: [
       ...followupConsume.warnings,
@@ -258,6 +348,7 @@ interface CliArgs {
   business: string;
   dispatchesPath: string;
   startupStatePath: string;
+  followupConsumeMode: "consume" | "skip";
   followupQueueStatePath: string;
   followupTelemetryPath: string;
   runId: string;
@@ -281,6 +372,7 @@ function parseArgs(argv: string[]): CliArgs {
     : process.cwd();
   const rootDir = flags.get("root-dir") ?? defaultRootDir;
   const business = flags.get("business") ?? "BRIK";
+  const followupConsumeMode = flags.get("followup-consume-mode");
   return {
     rootDir,
     business,
@@ -304,6 +396,10 @@ function parseArgs(argv: string[]): CliArgs {
         business,
         "startup-state.json",
       ),
+    followupConsumeMode:
+      followupConsumeMode === "skip" || followupConsumeMode === "consume"
+        ? followupConsumeMode
+        : "consume",
     followupQueueStatePath:
       flags.get("followup-queue-state") ??
       path.join(
@@ -374,6 +470,8 @@ function main(): void {
   const args = parseArgs(process.argv.slice(2));
   const dispatchesPath = resolvePath(args.rootDir, args.dispatchesPath);
   const startupStatePath = resolvePath(args.rootDir, args.startupStatePath);
+  const followupQueueStatePath = resolvePath(args.rootDir, args.followupQueueStatePath);
+  const followupTelemetryPath = resolvePath(args.rootDir, args.followupTelemetryPath);
   const outputPath = args.outputPath ? resolvePath(args.rootDir, args.outputPath) : null;
   const dispatches = readDispatches(dispatchesPath, args.business);
   const startupState = readStartupState(startupStatePath);
@@ -384,11 +482,23 @@ function main(): void {
     session_id: args.sessionId,
     startup_state: startupState,
     dispatches,
-    followupQueueStatePath: resolvePath(args.rootDir, args.followupQueueStatePath),
-    followupTelemetryPath: resolvePath(args.rootDir, args.followupTelemetryPath),
+    followupConsumeMode: args.followupConsumeMode,
+    followupQueueStatePath,
+    followupTelemetryPath,
   });
-
-  const body = `${JSON.stringify(result, null, 2)}\n`;
+  const body = `${JSON.stringify(
+    {
+      ...result,
+      source_paths: {
+        dispatches: dispatchesPath,
+        startup_state: startupStatePath,
+        followup_queue_state: followupQueueStatePath,
+        followup_telemetry: followupTelemetryPath,
+      },
+    },
+    null,
+    2,
+  )}\n`;
   if (outputPath) {
     mkdirSync(path.dirname(outputPath), { recursive: true });
     writeFileSync(outputPath, body, "utf-8");

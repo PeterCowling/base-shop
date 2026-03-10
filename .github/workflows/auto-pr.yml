@@ -81,6 +81,11 @@ jobs:
                 color: "1d76db",
                 description: "Release pipeline PRs (dev → main)",
               },
+              {
+                name: "promote-app:brikette",
+                color: "1d76db",
+                description: "Promotion pipeline scope label.",
+              },
             ];
             for (const label of labels) {
               try {
@@ -95,7 +100,7 @@ jobs:
               owner,
               repo,
               issue_number: number,
-              labels: ["pipeline"],
+              labels: ["pipeline", "promote-app:brikette"],
             });
       - name: Enable auto-merge (best effort)
         uses: actions/github-script@v7

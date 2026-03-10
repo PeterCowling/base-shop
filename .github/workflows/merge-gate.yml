@@ -138,6 +138,17 @@ jobs:
               context.eventName === "pull_request" &&
               context.payload.pull_request.base?.ref === "main" &&
               scopedPromotionApps.length > 0;
+            const isBriketteMainPromotion =
+              context.eventName === "pull_request" &&
+              context.payload.pull_request.base?.ref === "main" &&
+              need.brikette &&
+              !need.cms_deploy &&
+              !need.cms_e2e &&
+              !need.skylar &&
+              !need.prime &&
+              !need.product_pipeline &&
+              !need.storybook &&
+              !need.consent_analytics;
 
             if (isScopedMainPromotion) {
               core.notice(
@@ -177,6 +188,11 @@ jobs:
                 }
               }
               requiredWorkflows.push(...dedup.values());
+            } else if (isBriketteMainPromotion) {
+              core.notice(
+                "Brikette main promotion detected. Merge Gate will require only Deploy Brikette."
+              );
+              requiredWorkflows.push({ id: "brikette.yml", name: "Deploy Brikette" });
             } else {
               if (need.core) requiredWorkflows.push({ id: "ci.yml", name: "Core Platform CI" });
               if (need.cms_e2e) requiredWorkflows.push({ id: "cypress.yml", name: "CMS E2E & Component Tests" });

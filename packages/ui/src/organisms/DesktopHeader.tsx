@@ -40,11 +40,13 @@ const IS_STATIC_EXPORT = process.env.NEXT_PUBLIC_OUTPUT_EXPORT === "1";
 
 function DesktopHeader({
   lang: explicitLang,
+  primaryCtaHref,
   onPrimaryCtaClick,
   experienceNavItems,
   howToGetHereNavItems,
 }: {
   lang?: AppLanguage;
+  primaryCtaHref?: string;
   onPrimaryCtaClick?: () => boolean | void;
   experienceNavItems?: NavItemChild[];
   howToGetHereNavItems?: NavItemChild[];
@@ -71,9 +73,11 @@ function DesktopHeader({
   const privateBookingPath = `/${lang}/${translatePath("privateBooking", lang)}`;
   const isApartmentRoute =
     pathname.startsWith(`/${lang}${apartmentPath}`) || pathname.startsWith(privateBookingPath);
-  const bookHref = isApartmentRoute
-    ? privateBookingPath
-    : `/${lang}/${translatePath("book", lang)}`;
+  const bookHref =
+    primaryCtaHref ??
+    (isApartmentRoute
+      ? privateBookingPath
+      : `/${lang}/${translatePath("book", lang)}`);
   const onBookClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>) => {
       // On apartment routes let normal navigation handle the link — no modal.

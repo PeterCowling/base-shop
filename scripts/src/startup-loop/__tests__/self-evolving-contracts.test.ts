@@ -6,17 +6,21 @@ import { describe, expect, it } from "@jest/globals";
 
 import {
   type ContainerContract,
+  type GapCase,
   type ImprovementCandidate,
   type ImprovementOutcome,
   type MetaObservation,
   type PolicyDecisionRecord,
+  type Prescription,
   type SelfEvolvingPolicyState,
   type StartupState,
   validateContainerContract,
+  validateGapCase,
   validateImprovementCandidate,
   validateMetaObservation,
   validatePolicyDecisionRecord,
   validatePolicyState,
+  validatePrescription,
   validateStartupState,
 } from "../self-evolving/self-evolving-contracts.js";
 import {
@@ -179,7 +183,50 @@ function buildValidPolicyDecision(): PolicyDecisionRecord {
   };
 }
 
+function buildValidGapCase(): GapCase {
+  return {
+    schema_version: "gap-case.v1",
+    gap_case_id: "gap-1",
+    source_kind: "build_origin",
+    business_id: "BRIK",
+    stage_id: "IDEAS",
+    capability_id: null,
+    gap_type: "queue_contract_missing",
+    reason_code: "MISSING_CANONICAL_CONTRACT",
+    severity: 0.7,
+    evidence_refs: ["docs/plans/startup-loop-learned-prescription-system/fact-find.md"],
+    recurrence_key: "build-origin:queue-contract-missing",
+    structural_context: {
+      source_path: "docs/plans/test/results-review.signals.json",
+    },
+    runtime_binding: {
+      binding_mode: "compiled_to_candidate",
+      candidate_id: "cand-1",
+    },
+  };
+}
+
+function buildValidPrescription(): Prescription {
+  return {
+    schema_version: "prescription.v1",
+    prescription_id: "prescription-1",
+    prescription_family: "build-origin-bridge-fact-find",
+    source: "build_origin",
+    gap_types_supported: ["queue_contract_missing"],
+    required_route: "lp-do-fact-find",
+    required_inputs: ["results-review.signals.json"],
+    expected_artifacts: ["fact-find.md"],
+    expected_signal_change: "Gap becomes structured enough for canonical queue admission.",
+    risk_class: "low",
+  };
+}
+
 describe("self-evolving contract validators", () => {
+  it("TASK-01 TC-01 validates canonical gap-case and prescription contracts", () => {
+    expect(validateGapCase(buildValidGapCase())).toEqual([]);
+    expect(validatePrescription(buildValidPrescription())).toEqual([]);
+  });
+
   it("TASK-01 TC-01 validates MetaObservation required fields", () => {
     const observation: MetaObservation = {
       schema_version: "meta-observation.v2",
@@ -603,6 +650,53 @@ describe("self-evolving contract validators", () => {
     expect(validateImprovementCandidate(blockedCandidate)).toContain(
       "blocked_reason_code_required",
     );
+  });
+
+  it("TASK-01 TC-03 rejects gap-case bindings that drift from candidate identity", () => {
+    const candidate: ImprovementCandidate = {
+      schema_version: "candidate.v1",
+      candidate_id: "cand-1",
+      gap_case: buildValidGapCase(),
+      prescription: buildValidPrescription(),
+      candidate_type: "container_update",
+      candidate_state: "validated",
+      problem_statement: "Queue contract missing",
+      trigger_observations: ["obs-1"],
+      executor_path: "lp-do-build",
+      change_scope: "business_only",
+      applicability_predicates: ["business=BRIK"],
+      expected_benefit: "Reduce fragmented prescription reasoning",
+      risk_level: "low",
+      blast_radius_tag: "small",
+      autonomy_level_required: 2,
+      estimated_effort: "M",
+      recommended_action: "Define the canonical contracts first",
+      owners: ["ops"],
+      approvers: ["lead"],
+      test_plan: "contract tests",
+      validation_contract: "TC-01",
+      rollout_plan: "shadow only",
+      rollback_contract: "revert the contract fields together",
+      kill_switch: "disable contract consumers",
+      blocked_reason_code: null,
+      unblock_requirements: [],
+      blocked_since: null,
+      expiry_at: "2026-04-01T00:00:00.000Z",
+    };
+
+    expect(validateImprovementCandidate(candidate)).toEqual([]);
+    expect(
+      validateImprovementCandidate({
+        ...candidate,
+        gap_case: {
+          ...candidate.gap_case!,
+          runtime_binding: {
+            ...candidate.gap_case!.runtime_binding,
+            candidate_id: "cand-other",
+          },
+        },
+      }),
+    ).toContain("gap_case.runtime_binding.candidate_id_mismatch");
   });
 
   it("TASK-17 TC-01 validates container contract structure", () => {

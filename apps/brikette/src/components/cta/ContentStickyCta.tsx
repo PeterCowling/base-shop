@@ -17,6 +17,7 @@ import { useEntryAttribution } from "@/hooks/useEntryAttribution";
 import type { AppLanguage } from "@/i18n.config";
 import { writeAttribution } from "@/utils/entryAttribution";
 import { type CtaLocation, fireCtaClick } from "@/utils/ga4-events";
+import { HEADER_BOOKING_OPTIONS_ID } from "@/utils/headerPrimaryCtaTarget";
 import { buildIntentAwareBookingCopy } from "@/utils/intentAwareBookingCopy";
 import { resolveIntentAwareBookingSurface } from "@/utils/intentAwareBookingSurface";
 import { resolveIntent } from "@/utils/intentResolver";
@@ -377,52 +378,57 @@ function ContentStickyCta({ lang, ctaLocation, isPrivateRoute = false }: Content
   }
 
   return (
-    <div
-      className="pointer-events-none fixed inset-x-0 bottom-4 z-40 flex justify-center px-4 sm:inset-auto sm:bottom-auto sm:end-6 sm:top-1/3 sm:justify-end"
-      aria-hidden={false}
-      data-testid="content-sticky-cta"
-    >
-      <Section
-        as="div"
-        padding="none"
-        className="pointer-events-auto relative w-full max-w-md rounded-3xl border border-brand-outline/40 bg-brand-surface/90 p-5 shadow-xl backdrop-blur sm:max-w-sm sm:p-6"
+    <>
+      {ctaLocation === "how_to_get_here" ? (
+        <span id={HEADER_BOOKING_OPTIONS_ID} className="block h-0" aria-hidden="true" />
+      ) : null}
+      <div
+        className="pointer-events-none fixed inset-x-0 bottom-4 z-40 flex justify-center px-4 sm:inset-auto sm:bottom-auto sm:end-6 sm:top-1/3 sm:justify-end"
+        aria-hidden={false}
+        data-testid="content-sticky-cta"
       >
-        <button
-          type="button"
-          onClick={onDismiss}
-          className="absolute end-4 top-4 inline-flex size-11 items-center justify-center rounded-full bg-brand-surface/70 text-brand-heading transition hover:bg-brand-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
-          aria-label={tTokens("close", { defaultValue: "Close" }) as string}
+        <Section
+          as="div"
+          padding="none"
+          className="pointer-events-auto relative w-full max-w-md rounded-3xl border border-brand-outline/40 bg-brand-surface/90 p-5 shadow-xl backdrop-blur sm:max-w-sm sm:p-6"
         >
-          <X aria-hidden className="h-4 w-4" />
-        </button>
-        <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-brand-heading/80">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-terracotta/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-primary">
-            <Sparkles aria-hidden className="h-3.5 w-3.5" />
-            {perksEyebrow}
-          </span>
-          <span className="inline-flex items-center gap-2 text-sm text-brand-heading">
-            <BadgeCheck aria-hidden className="h-4 w-4 text-brand-primary" />
-            {guaranteeLabel}
-          </span>
-        </div>
-
-        <div className="mt-6 flex flex-col gap-5">
-          <div className="flex-1">
-            <p className="text-lg font-semibold text-brand-heading sm:text-xl">{stickyCopy.headline}</p>
-            <p className="mt-1 text-sm text-brand-text/80 sm:text-base">{stickyCopy.subcopy}</p>
+          <button
+            type="button"
+            onClick={onDismiss}
+            className="absolute end-4 top-4 inline-flex size-11 items-center justify-center rounded-full bg-brand-surface/70 text-brand-heading transition hover:bg-brand-surface focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-primary"
+            aria-label={tTokens("close", { defaultValue: "Close" }) as string}
+          >
+            <X aria-hidden className="h-4 w-4" />
+          </button>
+          <div className="flex flex-wrap items-center gap-3 text-sm font-medium text-brand-heading/80">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-brand-terracotta/15 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-brand-primary">
+              <Sparkles aria-hidden className="h-3.5 w-3.5" />
+              {perksEyebrow}
+            </span>
+            <span className="inline-flex items-center gap-2 text-sm text-brand-heading">
+              <BadgeCheck aria-hidden className="h-4 w-4 text-brand-primary" />
+              {guaranteeLabel}
+            </span>
           </div>
-          <StickyCtaActions
-            segmentedRouting={segmentedRouting}
-            targetUrl={targetUrl}
-            ctaLabel={ctaLabel}
-            hostelLabel={hostelLabel}
-            privateLabel={privateBookingLabel}
-            onDefaultClick={onCtaClick}
-            onSegmentedClick={onSegmentedClick}
-          />
-        </div>
-      </Section>
-    </div>
+
+          <div className="mt-6 flex flex-col gap-5">
+            <div className="flex-1">
+              <p className="text-lg font-semibold text-brand-heading sm:text-xl">{stickyCopy.headline}</p>
+              <p className="mt-1 text-sm text-brand-text/80 sm:text-base">{stickyCopy.subcopy}</p>
+            </div>
+            <StickyCtaActions
+              segmentedRouting={segmentedRouting}
+              targetUrl={targetUrl}
+              ctaLabel={ctaLabel}
+              hostelLabel={hostelLabel}
+              privateLabel={privateBookingLabel}
+              onDefaultClick={onCtaClick}
+              onSegmentedClick={onSegmentedClick}
+            />
+          </div>
+        </Section>
+      </div>
+    </>
   );
 }
 

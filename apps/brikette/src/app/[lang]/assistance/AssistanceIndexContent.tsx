@@ -27,6 +27,7 @@ import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { writeAttribution } from "@/utils/entryAttribution";
+import { HEADER_BOOKING_OPTIONS_ID } from "@/utils/headerPrimaryCtaTarget";
 import { buildIntentAwareBookingCopy } from "@/utils/intentAwareBookingCopy";
 import { resolveIntentAwareBookingSurface } from "@/utils/intentAwareBookingSurface";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
@@ -233,7 +234,7 @@ function AssistanceBookingPanel({
   translate: TFunction<"assistanceSection">;
 }): JSX.Element {
   return (
-    <Section className="mt-8">
+    <Section id={HEADER_BOOKING_OPTIONS_ID} className="mt-8">
       <div className="rounded-3xl border border-brand-outline/20 bg-gradient-to-br from-brand-surface/60 via-brand-bg to-brand-bg p-8 shadow-sm dark:border-brand-outline/20 dark:from-brand-surface/90 dark:via-brand-surface/70 dark:to-brand-surface/50">
         <Stack className="gap-6 lg:flex-row lg:items-start lg:justify-between">
           <Container className="max-w-xl space-y-4">

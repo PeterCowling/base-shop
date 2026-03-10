@@ -172,7 +172,7 @@ jobs:
                 for (const workflow of workflows) {
                   dedup.set(workflow.id, workflow);
                 }
-                if (scopedApp === "brikette" || scopedApp === "shop" || scopedApp === "skylar") {
+                if (scopedApp === "shop" || scopedApp === "skylar") {
                   dedup.set("ci-lighthouse.yml", { id: "ci-lighthouse.yml", name: "Lighthouse CI" });
                 }
               }
@@ -192,7 +192,17 @@ jobs:
               // Require it only in those cases.
               if (context.eventName === "pull_request") {
                 const hasRunLabel = labels.includes("run-lhci");
-                if (need.lhci || hasRunLabel) {
+                const isBriketteOnlyPromotion =
+                  need.brikette &&
+                  !need.core &&
+                  !need.cms_deploy &&
+                  !need.cms_e2e &&
+                  !need.skylar &&
+                  !need.prime &&
+                  !need.product_pipeline &&
+                  !need.storybook &&
+                  !need.consent_analytics;
+                if ((need.lhci || hasRunLabel) && !isBriketteOnlyPromotion) {
                   requiredWorkflows.push({ id: "ci-lighthouse.yml", name: "Lighthouse CI" });
                 }
               } else if (context.eventName === "push" && context.ref === "refs/heads/main") {

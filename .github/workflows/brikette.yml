@@ -140,10 +140,7 @@ jobs:
     name: Release CI
     if: >-
       ${{
-        (
-          github.ref == 'refs/heads/dev' ||
-          (github.event_name == 'pull_request' && github.base_ref == 'main')
-        ) &&
+        github.ref == 'refs/heads/dev' &&
         (
           github.event_name != 'pull_request' ||
           github.base_ref != 'main' ||
@@ -154,9 +151,9 @@ jobs:
     uses: ./.github/workflows/reusable-app.yml
     with:
       app-filter: "@apps/brikette"
-      # Release CI validates the dev branch delta and the dev->main PR path.
-      # It does not publish any environment; staging pushes use the dedicated
-      # fast-path workflow, and main pushes own production publishing.
+      # Release CI validates the dev branch delta only. dev->main promotions
+      # rely on the already-green dev branch and keep only PR-specific
+      # smoke/export checks in this workflow.
       # Build deps with turbo, then run static export (OUTPUT_EXPORT=1 -> output:'export' in next.config)
       # Hide routes incompatible with static export before building; restore after.
       # Generate Cloudflare Pages redirects instead of recursive static aliases to

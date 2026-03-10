@@ -117,12 +117,12 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
             {/* eslint-disable ds/no-hardcoded-copy -- i18n-exempt: apartment card, pending full i18n TASK-08 [ttl=2026-12-31] */}
             <h2 className="text-xl font-semibold text-brand-heading">The Apartment</h2>
             <p className="mt-2 text-sm leading-relaxed text-brand-text/80">
-              100 sqm private apartment on the cliff edge with sea-view terrace, full kitchen, and
+              85 sqm private apartment on the cliff edge with sea-view terrace, full kitchen, and
               two bathrooms. Perfect for couples or small groups.
             </p>
             <ul className="mt-4 space-y-1.5 text-sm text-brand-text">
               {[
-                "Up to 4 guests · 100 sqm",
+                "Up to 4 guests · 85 sqm",
                 "Full kitchen with dining area",
                 "2 bathrooms · sea-view terrace",
                 "Wi-Fi, A/C, washer & dryer",

@@ -45,9 +45,7 @@ export interface Offer {
 
 export interface HotelGraph {
   "@context": "https://schema.org";
-  hotel: Hotel;
-  rooms: HotelRoom[];
-  offers: Offer[];
+  "@graph": Array<Hotel | HotelRoom | Offer>;
 }
 
 /* helper types for utils/schema.ts only */

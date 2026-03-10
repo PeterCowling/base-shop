@@ -281,10 +281,68 @@ function buildCandidateFromRepeat(input: {
       : candidateType === "container_update" || candidateType === "deterministic_extraction"
         ? "structured"
         : "hypothesized";
+  const requiredRoute =
+    candidateType === "container_update"
+      ? "lp-do-build"
+      : candidateType === "deterministic_extraction" || candidateType === "skill_refactor"
+        ? "lp-do-plan"
+        : "lp-do-fact-find";
 
   return {
     schema_version: "candidate.v1",
     candidate_id: candidateId,
+    gap_case: {
+      schema_version: "gap-case.v1",
+      gap_case_id: stableHash(`${candidateId}|gap-case`).slice(0, 16),
+      source_kind: "self_evolving",
+      business_id: input.business,
+      stage_id: input.startupState.stage,
+      capability_id: null,
+      gap_type: `repeat_${candidateType}`,
+      reason_code: "repeat_work_detected",
+      severity: Math.min(
+        1,
+        Math.max(...input.observations.map((observation) => observation.severity), 0),
+      ),
+      evidence_refs: Array.from(
+        new Set(
+          input.observations.flatMap((observation) => observation.evidence_refs ?? []),
+        ),
+      ),
+      recurrence_key: input.repeat.hard_signature,
+      requirement_posture: "relative_required",
+      blocking_scope: "degrades_quality",
+      structural_context: {
+        hard_signature: input.repeat.hard_signature,
+        recurrence_count: input.repeat.recurrence_count,
+        observation_count: input.observations.length,
+      },
+      runtime_binding: {
+        binding_mode: "compiled_to_candidate",
+        candidate_id: candidateId,
+      },
+    },
+    prescription: {
+      schema_version: "prescription.v1",
+      prescription_id: stableHash(`${candidateId}|prescription`).slice(0, 16),
+      prescription_family: `self_evolving_${candidateType}`,
+      source: "self_evolving",
+      gap_types_supported: [`repeat_${candidateType}`],
+      required_route: requiredRoute,
+      required_inputs: ["self-evolving observations"],
+      expected_artifacts:
+        requiredRoute === "lp-do-build"
+          ? ["micro-build.md"]
+          : requiredRoute === "lp-do-plan"
+            ? ["plan.md"]
+            : ["fact-find.md"],
+      expected_signal_change:
+        candidateType === "new_skill"
+          ? "Research the unknown repeat-work remedy and mature it into a structured prescription."
+          : "Reduce repeated operator/manual workflow load for this recurring signature.",
+      risk_class: candidateType === "container_update" ? "medium" : "low",
+      maturity: prescriptionMaturity,
+    },
     candidate_type: candidateType,
     requirement_posture: "relative_required",
     blocking_scope: "degrades_quality",
@@ -443,6 +501,8 @@ function buildRankedCandidate(input: {
   const decision = buildPolicyDecisionRecord({
     business_id: input.business,
     candidate_id: input.candidate.candidate_id,
+    gap_case: input.candidate.gap_case ?? null,
+    prescription: input.candidate.prescription ?? null,
     chosen_action: routed.route.route,
     created_at: input.generatedAt,
     structural_snapshot: structuralSnapshot,

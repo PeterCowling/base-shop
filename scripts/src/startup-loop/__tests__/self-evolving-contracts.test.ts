@@ -134,6 +134,25 @@ function buildValidPolicyDecision(): PolicyDecisionRecord {
     decision_id: "decision-1",
     business_id: "BRIK",
     candidate_id: "cand-1",
+    gap_case: {
+      gap_case_id: "gap-1",
+      candidate_id: "cand-1",
+      binding_mode: "compiled_to_candidate",
+    },
+    prescription: {
+      prescription_id: "prescription-1",
+      prescription_family: "build-origin-bridge-fact-find",
+      required_route: "lp-do-fact-find",
+    },
+    prescription_choice: {
+      schema_version: "prescription-choice.v1",
+      gap_case_id: "gap-1",
+      prescription_id: "prescription-1",
+      prescription_family: "build-origin-bridge-fact-find",
+      required_route: "lp-do-fact-find",
+      expected_signal_change: "Gap becomes structured enough for canonical queue admission.",
+      maturity_at_choice: "structured",
+    },
     decision_type: "candidate_route",
     decision_mode: "deterministic",
     policy_version: "self-evolving-policy.v1",
@@ -243,6 +262,18 @@ describe("self-evolving contract validators", () => {
         maturity: "eventually" as never,
       }),
     ).toContain("maturity");
+  });
+
+  it("rejects prescription-choice references that drift from the chosen prescription", () => {
+    expect(
+      validatePolicyDecisionRecord({
+        ...buildValidPolicyDecision(),
+        prescription_choice: {
+          ...buildValidPolicyDecision().prescription_choice!,
+          prescription_id: "prescription-other",
+        },
+      }),
+    ).toContain("prescription_choice.prescription_id_mismatch");
   });
 
   it("TASK-01 TC-01 validates MetaObservation required fields", () => {

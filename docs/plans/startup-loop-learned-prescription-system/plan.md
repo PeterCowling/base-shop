@@ -35,7 +35,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - [x] TASK-01: Define canonical `gap-case.v1` and `prescription.v1` contracts — Complete (2026-03-10)
 - [x] TASK-02: Normalize existing suggestion seams onto canonical gap-case and prescription shapes — Complete (2026-03-10)
 - [x] TASK-03: Add requirement posture and prescription maturity to queue and policy routing — Complete (2026-03-10)
-- [ ] TASK-04: Extend policy journaling and evaluation for prescription-choice learning
+- [x] TASK-04: Extend policy journaling and evaluation for prescription-choice learning — Complete (2026-03-10)
 - [x] TASK-05: Map milestone roots to runtime producers and unify activation thresholds — Complete (2026-03-10)
 - [ ] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation
 - [ ] TASK-07: Widen live sensing for richer prescription evidence
@@ -306,8 +306,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-evaluation.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-report.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`
 - **Depends on:** TASK-01, TASK-03
 - **Blocks:** TASK-08, TASK-09
 - **Confidence:** 81%
@@ -338,6 +338,15 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - Update the learned-prescription fact-find and any self-evolving reporting notes.
 - **Notes / references:**
   - [self-evolving-evaluation.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: policy decisions could only learn route quality. Even after canonical `gap_case` / `prescription` references existed, route decisions did not record an explicit chosen prescription, evaluation records could not summarize remedy-family replay coverage, and the main repeat-work candidate builder still emitted prescription-free candidates.
+  - Green: added `prescription-choice.v1` to the policy-decision contract; `buildPolicyDecisionRecord()` now journals canonical gap/prescription references plus an explicit `prescription_choice`; repeat-work candidates now emit canonical self-evolving `gap_case` and `prescription` objects; queue completion stamps those references into outcome payloads; and evaluation/report/dashboard surfaces now expose prescription-level attribution, replay coverage, and observed-outcome counts.
+  - Identity continuity: the same canonical prescription identity now survives candidate creation, route decision, queue handoff, completion outcome emission, evaluation replay, and reporting. This closes the earlier gap where prescription learning would have been mostly dead data for self-evolving repeat candidates.
+  - TC-01: pass. Policy decision records can now encode `prescription_choice`, and contract tests cover valid and mismatch cases so the journal cannot silently drift away from the chosen prescription.
+  - TC-02: pass. Evaluation records now carry `gap_case_id`, `prescription_id`, `prescription_family`, and `prescription_choice_present`, and summary telemetry counts attributed, replay-ready, and observed prescription decisions.
+  - TC-03: pass. Reporting surfaces now expose prescription-level replay coverage and top prescription-family outcomes, while the dashboard shows prescription attribution counts and rates alongside the existing candidate-level audit surfaces.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` and targeted `pnpm exec eslint --no-warn-ignored ...` passed on the full TASK-04 surface.
+  - Precursor completion propagation: TASK-04 no longer blocks TASK-08 or TASK-09. The next runnable implementation wave is TASK-06 and TASK-07, with TASK-07 the narrower evidence-surface slice.
 
 ### TASK-05: Map milestone roots to runtime producers and unify activation thresholds
 - **Type:** INVESTIGATE

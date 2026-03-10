@@ -19,13 +19,84 @@ import type {
 } from "./self-evolving-contracts.js";
 import { buildDashboardSnapshot } from "./self-evolving-dashboard.js";
 import { buildDependencyGraphSnapshot } from "./self-evolving-dependency-graph.js";
-import { buildPolicyEvaluationDataset } from "./self-evolving-evaluation.js";
+import {
+  buildPolicyEvaluationDataset,
+  type PolicyEvaluationRecord,
+} from "./self-evolving-evaluation.js";
 import type { SelfEvolvingEvent } from "./self-evolving-events.js";
 import { buildPolicyAuditTelemetry } from "./self-evolving-policy-audit.js";
 import { buildPromotionGateDataset } from "./self-evolving-promotion-gate.js";
 import type { ShadowHandoffRecord } from "./self-evolving-shadow-handoffs.js";
 import { deriveBoundarySignalSnapshotFromStartupState } from "./self-evolving-signal-helpers.js";
 import { buildSurvivalPolicySignals } from "./self-evolving-survival.js";
+
+function summarizePrescriptionFamilies(
+  records: readonly PolicyEvaluationRecord[],
+): Array<{
+  prescription_family: string;
+  decision_count: number;
+  observed_count: number;
+  replay_ready_count: number;
+  positive_outcome_rate: number | null;
+}> {
+  const byFamily = new Map<
+    string,
+    {
+      decision_count: number;
+      observed_count: number;
+      replay_ready_count: number;
+      positive_sample_size: number;
+      positive_outcome_count: number;
+    }
+  >();
+
+  for (const record of records) {
+    if (!record.prescription_family) {
+      continue;
+    }
+    const current =
+      byFamily.get(record.prescription_family) ?? {
+        decision_count: 0,
+        observed_count: 0,
+        replay_ready_count: 0,
+        positive_sample_size: 0,
+        positive_outcome_count: 0,
+      };
+    current.decision_count += 1;
+    if (record.evaluation_status === "observed") {
+      current.observed_count += 1;
+    }
+    if (record.evaluation_ready) {
+      current.replay_ready_count += 1;
+    }
+    if (record.positive_outcome !== null) {
+      current.positive_sample_size += 1;
+      if (record.positive_outcome) {
+        current.positive_outcome_count += 1;
+      }
+    }
+    byFamily.set(record.prescription_family, current);
+  }
+
+  return [...byFamily.entries()]
+    .map(([prescription_family, summary]) => ({
+      prescription_family,
+      decision_count: summary.decision_count,
+      observed_count: summary.observed_count,
+      replay_ready_count: summary.replay_ready_count,
+      positive_outcome_rate:
+        summary.positive_sample_size > 0
+          ? Number((summary.positive_outcome_count / summary.positive_sample_size).toFixed(6))
+          : null,
+    }))
+    .sort(
+      (left, right) =>
+        right.observed_count - left.observed_count ||
+        right.decision_count - left.decision_count ||
+        left.prescription_family.localeCompare(right.prescription_family),
+    )
+    .slice(0, 5);
+}
 
 interface CliArgs {
   rootDir: string;
@@ -383,12 +454,20 @@ export function buildSelfEvolvingReportData(input: {
     },
     policy_evaluation: {
       summary: evaluation.summary,
+      prescription_summary: {
+        attributed_decisions: evaluation.summary.prescription_attributed_decisions,
+        replay_ready_attributed_decisions:
+          evaluation.summary.replay_ready_prescription_decisions,
+        observed_attributed_decisions: evaluation.summary.observed_prescription_decisions,
+        top_families: summarizePrescriptionFamilies(evaluation.records),
+      },
       sample_unready_records: evaluation.records
         .filter((record) => !record.evaluation_ready)
         .slice(0, 5)
         .map((record) => ({
           decision_id: record.decision_id,
           candidate_id: record.candidate_id,
+          prescription_family: record.prescription_family,
           evaluation_status: record.evaluation_status,
           queue_state: record.queue_state,
           maturity_status: record.maturity_status,

@@ -960,6 +960,13 @@ describe("self-evolving orchestrator integration", () => {
     expect(result.ranked_candidates[0]?.candidate.requirement_posture).toBe("relative_required");
     expect(result.policy_decisions[0]?.requirement_posture).toBe("relative_required");
     expect(result.policy_decisions[0]?.prescription_maturity).toBe("unknown");
+    expect(result.policy_decisions[0]?.prescription_choice).toEqual(
+      expect.objectContaining({
+        prescription_family: "self_evolving_new_skill",
+        required_route: "lp-do-fact-find",
+        maturity_at_choice: "unknown",
+      }),
+    );
     rmSync(tempRoot, { recursive: true, force: true });
   });
 

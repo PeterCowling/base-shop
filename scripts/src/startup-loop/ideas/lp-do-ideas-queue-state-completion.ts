@@ -184,6 +184,8 @@ function buildPendingOutcomeEventPayload(input: {
   return {
     schema_version: "outcome.v2",
     candidate_id: input.link.candidate_id,
+    gap_case: input.link.gap_case ?? null,
+    prescription: input.link.prescription ?? null,
     dispatch_id: input.dispatchId,
     decision_id: input.link.decision_id,
     policy_version: input.link.policy_version,
@@ -370,6 +372,8 @@ export function buildSelfEvolvingCompletionState(input: {
   const state: QueueCompletedSelfEvolving = {
     candidate_id: link.candidate_id,
     decision_id: link.decision_id,
+    gap_case: link.gap_case,
+    prescription: link.prescription,
     dispatch_id: dispatchId,
     maturity_due_at: maturityDueAt,
     maturity_status: Date.parse(maturityDueAt) <= Date.parse(input.completedAt) ? "matured" : "pending",

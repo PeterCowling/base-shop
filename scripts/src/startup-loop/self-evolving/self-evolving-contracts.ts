@@ -152,6 +152,16 @@ export interface PrescriptionReference {
   required_route: CanonicalRecommendedRoute;
 }
 
+export interface PrescriptionChoiceContext {
+  schema_version: "prescription-choice.v1";
+  gap_case_id: string | null;
+  prescription_id: string;
+  prescription_family: string;
+  required_route: CanonicalRecommendedRoute;
+  expected_signal_change: string;
+  maturity_at_choice: PrescriptionMaturity | null;
+}
+
 export interface ObservationSignalHints {
   recurrence_key?: string | null;
   problem_statement?: string | null;
@@ -443,6 +453,7 @@ export interface PolicyDecisionRecord {
   candidate_id: string;
   gap_case?: GapCaseReference | null;
   prescription?: PrescriptionReference | null;
+  prescription_choice?: PrescriptionChoiceContext | null;
   requirement_posture?: RequirementPosture;
   blocking_scope?: BlockingScope;
   prescription_maturity?: PrescriptionMaturity;
@@ -796,6 +807,79 @@ export function validatePrescriptionReference(reference: PrescriptionReference):
     errors.push("required_route");
   }
   return errors;
+}
+
+export function validatePrescriptionChoiceContext(
+  context: PrescriptionChoiceContext,
+): string[] {
+  const errors: string[] = [];
+  if (context.schema_version !== "prescription-choice.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    prescription_id: context.prescription_id,
+    prescription_family: context.prescription_family,
+    expected_signal_change: context.expected_signal_change,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    context.gap_case_id !== null &&
+    context.gap_case_id !== undefined &&
+    !nonEmptyString(context.gap_case_id)
+  ) {
+    errors.push("gap_case_id");
+  }
+  if (
+    context.required_route !== "lp-do-fact-find" &&
+    context.required_route !== "lp-do-plan" &&
+    context.required_route !== "lp-do-build" &&
+    context.required_route !== "lp-do-briefing"
+  ) {
+    errors.push("required_route");
+  }
+  if (
+    context.maturity_at_choice !== null &&
+    context.maturity_at_choice !== undefined &&
+    !isPrescriptionMaturity(context.maturity_at_choice)
+  ) {
+    errors.push("maturity_at_choice");
+  }
+  return errors;
+}
+
+export function toGapCaseReference(gapCase: GapCase): GapCaseReference {
+  return {
+    gap_case_id: gapCase.gap_case_id,
+    candidate_id: gapCase.runtime_binding.candidate_id,
+    binding_mode: gapCase.runtime_binding.binding_mode,
+  };
+}
+
+export function toPrescriptionReference(prescription: Prescription): PrescriptionReference {
+  return {
+    prescription_id: prescription.prescription_id,
+    prescription_family: prescription.prescription_family,
+    required_route: prescription.required_route,
+  };
+}
+
+export function buildPrescriptionChoiceContext(input: {
+  gap_case: GapCase | null;
+  prescription: Prescription;
+  maturity_at_choice?: PrescriptionMaturity | null;
+}): PrescriptionChoiceContext {
+  return {
+    schema_version: "prescription-choice.v1",
+    gap_case_id: input.gap_case?.gap_case_id ?? null,
+    prescription_id: input.prescription.prescription_id,
+    prescription_family: input.prescription.prescription_family,
+    required_route: input.prescription.required_route,
+    expected_signal_change: input.prescription.expected_signal_change,
+    maturity_at_choice: input.maturity_at_choice ?? input.prescription.maturity ?? null,
+  };
 }
 
 export function validateMetaObservation(observation: MetaObservation): string[] {
@@ -1585,6 +1669,38 @@ export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): stri
         (error) => `prescription.${error}`,
       ),
     );
+  }
+  if (record.prescription_choice) {
+    errors.push(
+      ...validatePrescriptionChoiceContext(record.prescription_choice).map(
+        (error) => `prescription_choice.${error}`,
+      ),
+    );
+    if (
+      record.prescription &&
+      record.prescription_choice.prescription_id !== record.prescription.prescription_id
+    ) {
+      errors.push("prescription_choice.prescription_id_mismatch");
+    }
+    if (
+      record.prescription &&
+      record.prescription_choice.prescription_family !== record.prescription.prescription_family
+    ) {
+      errors.push("prescription_choice.prescription_family_mismatch");
+    }
+    if (
+      record.prescription &&
+      record.prescription_choice.required_route !== record.prescription.required_route
+    ) {
+      errors.push("prescription_choice.required_route_mismatch");
+    }
+    if (
+      record.gap_case &&
+      record.prescription_choice.gap_case_id !== null &&
+      record.prescription_choice.gap_case_id !== record.gap_case.gap_case_id
+    ) {
+      errors.push("prescription_choice.gap_case_id_mismatch");
+    }
   }
   if (
     record.requirement_posture !== undefined &&

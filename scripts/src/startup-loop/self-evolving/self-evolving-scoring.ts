@@ -5,11 +5,13 @@ import type {
   CandidateBeliefState,
   ConstraintProfile,
   DataQualityStatus,
+  GapCase,
   ImprovementCandidate,
   ImprovementOutcome,
   MaturityBucket,
   MaturityWindowProfile,
   PolicyDecisionRecord,
+  Prescription,
   PrescriptionMaturity,
   RequirementPosture,
   SelfEvolvingPolicyState,
@@ -17,7 +19,12 @@ import type {
   StructuralFeatureSnapshot,
   UtilityBreakdown,
 } from "./self-evolving-contracts.js";
-import { stableHash } from "./self-evolving-contracts.js";
+import {
+  buildPrescriptionChoiceContext,
+  stableHash,
+  toGapCaseReference,
+  toPrescriptionReference,
+} from "./self-evolving-contracts.js";
 
 export const POLICY_VERSION = "self-evolving-policy.v1";
 export const UTILITY_VERSION = "self-evolving-utility.v1";
@@ -726,6 +733,8 @@ export function computeUtilityBreakdown(input: {
 export function buildPolicyDecisionRecord(input: {
   business_id: string;
   candidate_id: string;
+  gap_case?: GapCase | null;
+  prescription?: Prescription | null;
   chosen_action: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build" | "reject";
   created_at: string;
   structural_snapshot: StructuralFeatureSnapshot;
@@ -749,6 +758,15 @@ export function buildPolicyDecisionRecord(input: {
     ).slice(0, 16),
     business_id: input.business_id,
     candidate_id: input.candidate_id,
+    gap_case: input.gap_case ? toGapCaseReference(input.gap_case) : null,
+    prescription: input.prescription ? toPrescriptionReference(input.prescription) : null,
+    prescription_choice: input.prescription
+      ? buildPrescriptionChoiceContext({
+          gap_case: input.gap_case ?? null,
+          prescription: input.prescription,
+          maturity_at_choice: input.routing_semantics?.prescription_maturity ?? null,
+        })
+      : null,
     requirement_posture: input.routing_semantics?.requirement_posture,
     blocking_scope: input.routing_semantics?.blocking_scope,
     prescription_maturity: input.routing_semantics?.prescription_maturity,

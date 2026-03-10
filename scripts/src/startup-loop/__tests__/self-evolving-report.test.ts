@@ -132,6 +132,25 @@ function buildDecision(): PolicyDecisionRecord {
     decision_id: "decision-1",
     business_id: "BRIK",
     candidate_id: "cand-1",
+    gap_case: {
+      gap_case_id: "gap-1",
+      candidate_id: "cand-1",
+      binding_mode: "compiled_to_candidate",
+    },
+    prescription: {
+      prescription_id: "prescription-1",
+      prescription_family: "build-origin-bridge-fact-find",
+      required_route: "lp-do-fact-find",
+    },
+    prescription_choice: {
+      schema_version: "prescription-choice.v1",
+      gap_case_id: "gap-1",
+      prescription_id: "prescription-1",
+      prescription_family: "build-origin-bridge-fact-find",
+      required_route: "lp-do-fact-find",
+      expected_signal_change: "Gap becomes structured enough for canonical queue admission.",
+      maturity_at_choice: "structured",
+    },
     decision_type: "candidate_route",
     decision_mode: "deterministic",
     policy_version: "self-evolving-policy.v1",
@@ -322,6 +341,19 @@ describe("buildSelfEvolvingReportData", () => {
           total_decisions: 1,
           observed_decisions: 1,
           replay_ready_decisions: 1,
+          prescription_attributed_decisions: 1,
+        }),
+        prescription_summary: expect.objectContaining({
+          attributed_decisions: 1,
+          replay_ready_attributed_decisions: 1,
+          observed_attributed_decisions: 1,
+          top_families: [
+            expect.objectContaining({
+              prescription_family: "build-origin-bridge-fact-find",
+              decision_count: 1,
+              observed_count: 1,
+            }),
+          ],
         }),
       }),
     );
@@ -341,6 +373,11 @@ describe("buildSelfEvolvingReportData", () => {
         evaluation: expect.objectContaining({
           total_decisions: 1,
           replay_ready_decisions: 1,
+          prescription_attributed_decisions: 1,
+          prescription_attribution_rate: expect.objectContaining({
+            sample_size: 1,
+            successes: 1,
+          }),
           shadow_handoff_decisions: 0,
         }),
         audit: expect.objectContaining({

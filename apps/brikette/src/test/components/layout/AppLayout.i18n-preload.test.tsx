@@ -26,9 +26,7 @@ jest.mock("@acme/ui/molecules", () => ({
   NotificationBanner: () => null,
 }));
 
-jest.mock("@acme/ui/organisms/Header", () => ({
-  Header: () => null,
-}));
+jest.mock("@/components/header/Header", () => () => null);
 
 jest.mock("@/components/footer/Footer", () => ({
   Footer: () => null,

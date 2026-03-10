@@ -37,6 +37,7 @@ export function DealsPerksSection({
 
 export function DealsPrimaryCtaSection({
   actions,
+  sectionId,
   subtitle,
   title,
 }: {
@@ -45,11 +46,12 @@ export function DealsPrimaryCtaSection({
     onClick: NonNullable<ComponentProps<typeof Button>["onClick"]>;
     tone?: ComponentProps<typeof Button>["tone"];
   }>;
+  sectionId?: string;
   subtitle?: string;
   title?: string;
 }): JSX.Element {
   return (
-    <Section padding="default" className="text-center">
+    <Section id={sectionId} padding="default" className="text-center">
       {title ? <h2 className="text-2xl font-semibold text-brand-heading">{title}</h2> : null}
       {subtitle ? (
         <p className="mt-3 text-base text-brand-text/80">{subtitle}</p>

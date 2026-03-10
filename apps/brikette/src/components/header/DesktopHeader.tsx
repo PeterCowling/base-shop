@@ -6,9 +6,11 @@ import type { AppLanguage } from "@/i18n.config";
 
 function DesktopHeader({
   lang,
+  primaryCtaHref,
   onPrimaryCtaClick,
 }: {
   lang?: AppLanguage;
+  primaryCtaHref?: string;
   onPrimaryCtaClick?: () => boolean | void;
 }) {
   const resolvedLang = lang ?? ("en" as AppLanguage);
@@ -17,7 +19,8 @@ function DesktopHeader({
 
   return (
     <UiDesktopHeader
-      lang={lang}
+      lang={resolvedLang}
+      primaryCtaHref={primaryCtaHref}
       onPrimaryCtaClick={onPrimaryCtaClick}
       experienceNavItems={experienceNavItems}
       howToGetHereNavItems={howToGetHereNavItems}

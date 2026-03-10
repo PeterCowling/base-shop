@@ -22,6 +22,7 @@ import { getDealStatus } from "@/routes/deals/status";
 import { useDealContent } from "@/routes/deals/useDealContent";
 import { writeAttribution } from "@/utils/entryAttribution";
 import { fireSelectPromotion, fireViewItemList, fireViewPromotion } from "@/utils/ga4-events";
+import { HEADER_BOOKING_OPTIONS_ID } from "@/utils/headerPrimaryCtaTarget";
 import { buildIntentAwareBookingCopy } from "@/utils/intentAwareBookingCopy";
 import { resolveIntentAwareBookingSurface } from "@/utils/intentAwareBookingSurface";
 import { getBookPath } from "@/utils/localizedRoutes";
@@ -478,6 +479,7 @@ function DealsPageContent({ lang }: Props) {
       />
 
       <DealsPrimaryCtaSection
+        sectionId={HEADER_BOOKING_OPTIONS_ID}
         title={dealsPrimaryCta.title}
         subtitle={dealsPrimaryCta.subtitle}
         actions={dealsPrimaryCta.actions}

@@ -30,6 +30,7 @@ interface Props {
   setMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
   lang?: AppLanguage;
   bannerHeight?: number;
+  primaryCtaHref?: string;
   onPrimaryCtaClick?: () => boolean | void;
 }
 
@@ -38,6 +39,7 @@ function MobileNav({
   setMenuOpen,
   lang: explicitLang,
   bannerHeight = 0,
+  primaryCtaHref,
   onPrimaryCtaClick,
 }: Props): JSX.Element {
   const fallbackLang = useCurrentLanguage();
@@ -59,9 +61,11 @@ function MobileNav({
   const privateBookingPath = `/${lang}/${translatePath("privateBooking", lang)}`;
   const isApartmentRoute =
     pathname.startsWith(`/${lang}${apartmentPath}`) || pathname.startsWith(privateBookingPath);
-  const bookHref = isApartmentRoute
-    ? privateBookingPath
-    : `/${lang}/${translatePath("book", lang)}`;
+  const bookHref =
+    primaryCtaHref ??
+    (isApartmentRoute
+      ? privateBookingPath
+      : `/${lang}/${translatePath("book", lang)}`);
 
   const toggleMenu = useCallback(() => setMenuOpen((prev) => !prev), [setMenuOpen]);
   const onBookingClick = useCallback(

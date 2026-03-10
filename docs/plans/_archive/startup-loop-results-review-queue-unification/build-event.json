@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-2026-03-10-closeout",
+  "feature_slug": "startup-loop-results-review-queue-unification",
+  "emitted_at": "2026-03-10T00:00:00.000Z",
+  "why": "The visible process-improvements backlog was structurally split: queue state held one pipeline, while build-review sidecars and completed-ideas.json still fed a parallel report-only backlog outside normal grading and closure.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Queue state is the only canonical actionable backlog for idea items, while build-review outputs enter that queue through the normal ideas path and historical archive carry-over is handled explicitly without reviving legacy backlog reads.",
+    "source": "operator"
+  }
+}

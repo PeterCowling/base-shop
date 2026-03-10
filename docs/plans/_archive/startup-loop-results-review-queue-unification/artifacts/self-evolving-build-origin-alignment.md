@@ -4,7 +4,7 @@ Status: Active
 Domain: Platform
 Last-reviewed: 2026-03-10
 Relates-to:
-  - /Users/petercowling/base-shop/docs/plans/startup-loop-results-review-queue-unification/plan.md
+  - /Users/petercowling/base-shop/docs/plans/_archive/startup-loop-results-review-queue-unification/plan.md
 ---
 
 # Self-Evolving Build-Origin Alignment

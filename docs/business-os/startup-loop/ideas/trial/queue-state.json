@@ -1,18 +1,18 @@
 {
-  "last_updated": "2026-03-10T11:40:27.950Z",
+  "last_updated": "2026-03-10T12:00:46.499Z",
   "counts": {
-    "enqueued": 21,
+    "enqueued": 23,
     "processed": 7,
     "skipped": 0,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 270,
-    "fact_find_ready": 17,
+    "fact_find_ready": 19,
     "plan_ready": 0,
     "micro_build_ready": 0,
     "briefing_ready": 0,
-    "total": 497
+    "total": 499
   },
   "dispatches": [
     {
@@ -22858,6 +22858,126 @@
           "routing_target": "defer",
           "occurrence_count": 1
         }
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310114243-0001",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "40f93ad0fc766ff22d9595ef81376074935b77cd",
+      "root_event_id": "build-origin:reception-mutation-return-type-standardisation:40f93ad0fc766ff22d9595ef81376074935b77cd",
+      "anchor_key": "possible-a-mutation-hook-migration-skill-could-automate-the-pattern-of-reading-h",
+      "cluster_key": "build-origin:bos:reception-mutation-return-type-standardisation:possible-a-mutation-hook-migration-skill-could-automate-the-pattern-of-reading-h",
+      "cluster_fingerprint": "927e20058ed3316d0bfed93ef98052b09d8aed3fb8825585f97aa955f86f6415",
+      "lineage_depth": 0,
+      "area_anchor": "Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.",
+      "location_anchors": [
+        "docs/plans/reception-mutation-return-type-standardisation/results-review.user.md",
+        "docs/plans/reception-mutation-return-type-standardisation/results-review.signals.json",
+        "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.user.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "New skill — Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.",
+      "next_scope_now": "Fact-find the build-origin improvement candidate \"Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.\" and validate the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.55,
+      "evidence_refs": [
+        "docs/plans/reception-mutation-return-type-standardisation/results-review.user.md",
+        "docs/plans/reception-mutation-return-type-standardisation/results-review.signals.json",
+        "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.user.md"
+      ],
+      "created_at": "2026-03-10T11:42:43.081Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced \"Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.\" with supporting narrative: New skill — Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete..",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "40f93ad0fc766ff22d9595ef81376074935b77cd",
+        "recurrence_key": "3fe15b472e75d35371a30d96580fa34c83b9d93f",
+        "review_cycle_key": "reception-mutation-return-type-standardisation",
+        "plan_slug": "reception-mutation-return-type-standardisation",
+        "canonical_title": "Possible: a \"mutation hook migration\" skill could automate the pattern of reading hook files, detecting pattern type (A/B/C/D/E), and applying the correct migration template. Low priority given Pattern D hooks are deferred and this migration is mostly complete.",
+        "primary_source": "results-review.signals.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": false
+        },
+        "results_review_path": "docs/plans/reception-mutation-return-type-standardisation/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/reception-mutation-return-type-standardisation/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": null
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310120046-0001",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "06336770b37eda8656ba267c79896cf5bce42824",
+      "root_event_id": "build-origin:reception-theme-dark-mode-base-tokens:06336770b37eda8656ba267c79896cf5bce42824",
+      "anchor_key": "the-contrast-pre-verification-step-running-pnpm-tokens-contrast-check-with-propo",
+      "cluster_key": "build-origin:bos:reception-theme-dark-mode-base-tokens:the-contrast-pre-verification-step-running-pnpm-tokens-contrast-check-with-propo",
+      "cluster_fingerprint": "703a5ed7918a34f27bd7582e411b84533125fd1f8b467985d7ddde3386bacdc0",
+      "lineage_depth": 0,
+      "area_anchor": "The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet.",
+      "location_anchors": [
+        "docs/plans/reception-theme-dark-mode-base-tokens/results-review.user.md",
+        "docs/plans/reception-theme-dark-mode-base-tokens/results-review.signals.json",
+        "docs/plans/reception-theme-dark-mode-base-tokens/pattern-reflection.user.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "AI-to-mechanistic — The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet.",
+      "next_scope_now": "Fact-find the build-origin improvement candidate \"The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet.\" and validate the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.55,
+      "evidence_refs": [
+        "docs/plans/reception-theme-dark-mode-base-tokens/results-review.user.md",
+        "docs/plans/reception-theme-dark-mode-base-tokens/results-review.signals.json",
+        "docs/plans/reception-theme-dark-mode-base-tokens/pattern-reflection.user.md"
+      ],
+      "created_at": "2026-03-10T12:00:46.494Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced \"The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet.\" with supporting narrative: AI-to-mechanistic — The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet..",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "06336770b37eda8656ba267c79896cf5bce42824",
+        "recurrence_key": "f69b52549df335c0a1a424cccd1ad712a1b006a1",
+        "review_cycle_key": "reception-theme-dark-mode-base-tokens",
+        "plan_slug": "reception-theme-dark-mode-base-tokens",
+        "canonical_title": "The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet.",
+        "primary_source": "results-review.signals.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": false
+        },
+        "results_review_path": "docs/plans/reception-theme-dark-mode-base-tokens/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/reception-theme-dark-mode-base-tokens/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/reception-theme-dark-mode-base-tokens/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": null
       }
     }
   ]

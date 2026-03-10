@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-10
@@ -36,10 +36,10 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [x] TASK-15: Align report and closure consumers to the canonical queue surface — Complete (2026-03-10)
 - [x] TASK-16: Refresh active build-review sidecars to the canonical build-origin schema — Complete (2026-03-10)
 - [x] TASK-07: Canonical queue-path readiness checkpoint — Complete (2026-03-10)
-- [ ] TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
-- [ ] TASK-09: Cutover split checkpoint
-- [ ] TASK-10: Execute bounded carry-over cutover
-- [ ] TASK-12: Emit the dedicated carry-over follow-on project
+- [x] TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence — Complete (2026-03-10)
+- [x] TASK-09: Cutover split checkpoint — Complete (2026-03-10, selected follow-on project)
+- [x] TASK-10: Execute bounded carry-over cutover — Not selected (2026-03-10)
+- [x] TASK-12: Emit the dedicated carry-over follow-on project — Complete (2026-03-10)
 
 ## Goals
 - Define one canonical build-origin signal contract for queue admission, reporting, and downstream joins.
@@ -77,7 +77,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Source:** operator
 
 ## Fact-Find Reference
-- Related brief: [fact-find.md](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-queue-unification/fact-find.md)
+- Related brief: [fact-find.md](/Users/petercowling/base-shop/docs/plans/_archive/startup-loop-results-review-queue-unification/fact-find.md)
 - Key findings used:
   - `generate-process-improvements.ts` currently builds `ideaItems` from both queue state and results-review artifacts.
   - `pattern-reflection.entries.json` is not queue-ready as persisted today.
@@ -115,10 +115,10 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-15 | IMPLEMENT | Align report and closure consumers to the canonical queue surface | 80% | M | Complete (2026-03-10) | TASK-13 | TASK-07 |
 | TASK-16 | IMPLEMENT | Refresh active build-review sidecars to the canonical build-origin schema | 80% | M | Complete (2026-03-10) | TASK-14, TASK-15 | TASK-07 |
 | TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Complete (2026-03-10) | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11, TASK-14, TASK-15, TASK-16 | TASK-08, TASK-09, TASK-10, TASK-12 |
-| TASK-08 | INVESTIGATE | Audit historical backlog carry-over and produce bounded carry-over evidence | 70% | M | Pending | TASK-07 | TASK-09, TASK-10, TASK-12 |
-| TASK-09 | CHECKPOINT | Decide in-thread cutover versus separate carry-over project | 95% | S | Pending | TASK-08 | TASK-10, TASK-12 |
-| TASK-10 | IMPLEMENT | Execute bounded carry-over cutover | 75% | M | Pending | TASK-09 | - |
-| TASK-12 | IMPLEMENT | Emit the dedicated carry-over follow-on project | 90% | S | Pending | TASK-09 | - |
+| TASK-08 | INVESTIGATE | Audit historical backlog carry-over and produce bounded carry-over evidence | 70% | M | Complete (2026-03-10) | TASK-07 | TASK-09, TASK-10, TASK-12 |
+| TASK-09 | CHECKPOINT | Decide in-thread cutover versus separate carry-over project | 95% | S | Complete (2026-03-10) | TASK-08 | TASK-10, TASK-12 |
+| TASK-10 | IMPLEMENT | Execute bounded carry-over cutover | 75% | M | Not selected (2026-03-10) | TASK-09 | - |
+| TASK-12 | IMPLEMENT | Emit the dedicated carry-over follow-on project | 90% | S | Complete (2026-03-10) | TASK-09 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -141,7 +141,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 
 ### TASK-01: Define the canonical build-origin signal contract
 - **Type:** INVESTIGATE
-- **Deliverable:** `docs/plans/startup-loop-results-review-queue-unification/artifacts/build-origin-signal-contract.md`
+- **Deliverable:** `docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/build-origin-signal-contract.md`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
@@ -172,7 +172,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
     - current source precedence and title-based identity would be replaced; all direct readers must be named in the contract.
 - **What would make this >=90%:** a fixture set proving the contract against both sidecar formats and one real duplicate case.
 - **Build completion evidence (2026-03-10):**
-  - Wrote [build-origin-signal-contract.md](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-queue-unification/artifacts/build-origin-signal-contract.md).
+  - Wrote [build-origin-signal-contract.md](/Users/petercowling/base-shop/docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/build-origin-signal-contract.md).
   - Verified current producer seams in [lp-do-build-results-review-extract.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/lp-do-build-results-review-extract.ts), [lp-do-build-pattern-reflection-extract.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts), [generate-process-improvements.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/generate-process-improvements.ts), and [self-evolving-from-build-output.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts).
   - Captured one real duplicate-sidecar case from [results-review.signals.json](/Users/petercowling/base-shop/docs/plans/_archive/startup-loop-structured-sidecar-introduction/results-review.signals.json) and [pattern-reflection.entries.json](/Users/petercowling/base-shop/docs/plans/_archive/startup-loop-structured-sidecar-introduction/pattern-reflection.entries.json).
   - Outcome: affirming. TASK-02, TASK-03, and TASK-06 stay at current confidence, but the contract ambiguity gate is now closed and Wave 2 is eligible.
@@ -328,7 +328,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 
 ### TASK-06: Determine the self-evolving build-origin alignment model
 - **Type:** INVESTIGATE
-- **Deliverable:** `docs/plans/startup-loop-results-review-queue-unification/artifacts/self-evolving-build-origin-alignment.md`
+- **Deliverable:** `docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/self-evolving-build-origin-alignment.md`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
@@ -355,7 +355,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
     - chosen `build_signal_id` join behavior is consumed by self-evolving observation generation and downstream audit/reporting.
 - **What would make this >=90%:** a tiny prototype proving one alignment model on real build-origin artifacts.
 - **Build completion evidence (2026-03-10):**
-  - Wrote the alignment decision in [self-evolving-build-origin-alignment.md](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-queue-unification/artifacts/self-evolving-build-origin-alignment.md).
+  - Wrote the alignment decision in [self-evolving-build-origin-alignment.md](/Users/petercowling/base-shop/docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/self-evolving-build-origin-alignment.md).
   - Traced the current raw self-evolving intake in [self-evolving-from-build-output.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts): it still reads `results-review.signals.json` and `pattern-reflection.entries.json` directly and turns them into idea observations outside queue authority.
   - Traced the canonical queue-backed path in [lp-do-ideas-build-origin-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts) and [self-evolving-from-ideas.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts), and identified the missing bridge: `self-evolving-from-ideas.ts` does not yet consume `build_origin` provenance.
   - Chosen model: queue-backed build-origin dispatches are the only authoritative self-evolving intake for build-origin ideas; `self-evolving-from-build-output.ts` is narrowed to non-authoritative structural build observation.
@@ -398,7 +398,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 
 ### TASK-13: Choose the canonical queue surface and admission seam for build-origin ideas
 - **Type:** INVESTIGATE
-- **Deliverable:** `docs/plans/startup-loop-results-review-queue-unification/artifacts/canonical-queue-surface-decision.md`
+- **Deliverable:** `docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/canonical-queue-surface-decision.md`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
@@ -422,7 +422,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - TC-03: the decision states what must change before TASK-07 can pass.
 - **What would make this >=90%:** one dry-run of the chosen automation seam writing to the chosen queue surface with report and completion consumers pointed at the same file.
 - **Build completion evidence (2026-03-10):**
-  - Wrote [canonical-queue-surface-decision.md](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-queue-unification/artifacts/canonical-queue-surface-decision.md).
+  - Wrote [canonical-queue-surface-decision.md](/Users/petercowling/base-shop/docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/canonical-queue-surface-decision.md).
   - Decision: this thread stays on [trial/queue-state.json](/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/trial/queue-state.json) as the canonical build-review backlog surface; [live/queue-state.json](/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/live/queue-state.json) remains part of the broader go-live seam and is explicitly out of scope for this thread’s readiness claim.
   - Decision: the real automation seam is [generate-process-improvements.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/generate-process-improvements.ts), because the build flow already runs it post-build and it already hosts the adjacent queue bridges.
   - Rejected [lp-do-ideas-build-commit-hook.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-build-commit-hook.ts) as the build-origin admission seam because it is standing-registry diff driven, has no `planDir`, and targets the live queue by default.
@@ -585,12 +585,12 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 
 ### TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
 - **Type:** INVESTIGATE
-- **Deliverable:** `docs/plans/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md`
+- **Deliverable:** `docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Depends on:** TASK-07
 - **Blocks:** TASK-09, TASK-10, TASK-12
 - **Confidence:** 70%
@@ -608,6 +608,12 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - TC-02: worthwhile-item criteria are explicit enough to reproduce.
   - TC-03: output gives a clear size/risk basis for TASK-09 split.
 - **What would make this >=90%:** a deterministic sampling script or fixture-backed audit helper.
+- **Build completion evidence (2026-03-10):**
+  - Wrote [historical-carryover-audit.md](/Users/petercowling/base-shop/docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md).
+  - Audited both archived source buckets: `results-review.signals.json` contributed `12` raw idea rows across `8` files; `pattern-reflection.entries.json` contributed `10` raw candidate rows across `6` files.
+  - Normalized the archive surface to `12` thematic candidates after collapsing legacy truncated-title duplicates.
+  - Classified `6` candidates as worthwhile unresolved and `6` as moot, superseded, or already resolved.
+  - Outcome: affirming. The audit produced the bounded evidence required for TASK-09 and proved that historical cutover is a separate, still-manual problem.
 
 ### TASK-09: Cutover split checkpoint
 - **Type:** CHECKPOINT
@@ -616,7 +622,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Depends on:** TASK-08
 - **Blocks:** TASK-10, TASK-12
 - **Acceptance:**
@@ -625,6 +631,10 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - Decision threshold is explicit:
     - continue in-thread only if the carry-forward set is `<=10` items, `manual-judgment-required = 0`, and each item maps deterministically to the canonical build-origin contract or queue packet shape;
     - otherwise emit a dedicated carry-over cutover project.
+- **Checkpoint result (2026-03-10): selected TASK-12**
+  - The audit found `12` human-normalized thematic candidates in the archive, which already exceeds the in-thread threshold.
+  - The worthwhile unresolved subset is `6`, but `manual-judgment-required = 6` and deterministic canonical mapping is `0 / 6`.
+  - Result: the honest path is a separate carry-over project. TASK-10 is not selected and no legacy backlog read is re-enabled.
 
 ### TASK-10: Execute bounded carry-over cutover
 - **Type:** IMPLEMENT
@@ -633,7 +643,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Not selected (2026-03-10)
 - **Depends on:** TASK-09
 - **Blocks:** -
 - **Confidence:** 75%
@@ -649,6 +659,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - TC-02: every carried-forward item is traceable to a queue dispatch.
   - TC-03: no convenience fallback keeps the old backlog alive.
 - **What would make this >=90%:** completion of TASK-08 with a proven small carry-over set.
+- **Resolution note (2026-03-10):**
+  - Not executed. TASK-09 selected the split path because archive carry-over remains manual and non-deterministic.
 
 ### TASK-12: Emit the dedicated carry-over follow-on project
 - **Type:** IMPLEMENT
@@ -657,7 +669,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Depends on:** TASK-09
 - **Blocks:** -
 - **Confidence:** 90%
@@ -673,6 +685,10 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - TC-02: this plan records that TASK-10 did not execute because TASK-09 selected the split path.
   - TC-03: no code or report change re-enables the old backlog as a convenience compatibility path.
 - **What would make this >=90%:** a completed TASK-08 audit showing the carry-over set clearly exceeds the in-thread threshold.
+- **Build completion evidence (2026-03-10):**
+  - Emitted the dedicated follow-on project at [startup-loop-results-review-historical-carryover/fact-find.md](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-historical-carryover/fact-find.md) and [startup-loop-results-review-historical-carryover/plan.md](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-historical-carryover/plan.md).
+  - The follow-on scope is the six worthwhile unresolved historical candidates identified by TASK-08.
+  - This plan now records the split explicitly and does not claim that historical cutover was finished in-thread.
 
 ## Risks & Mitigations
 - Canonical contract lands, but emitters still diverge in subtle ways.
@@ -700,12 +716,12 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - none required initially; process-improvements JSON/HTML and queue metrics are sufficient for first rollout.
 
 ## Acceptance Criteria (overall)
-- [ ] One canonical build-origin signal contract exists and is used by build-review emitters.
-- [ ] New actionable build-origin ideas enter the queue through the normal ideas path.
-- [ ] `process-improvements` idea backlog is sourced only from queue state.
-- [ ] `completed-ideas.json` no longer governs active idea backlog visibility.
-- [ ] Self-evolving build-output intake uses the canonical build-origin identity or an explicitly queue-backed equivalent in code.
-- [ ] The old report-only backlog path is either cut over in-thread or explicitly split into a dedicated carry-over project with no hidden dual-read fallback.
+- [x] One canonical build-origin signal contract exists and is used by build-review emitters.
+- [x] New actionable build-origin ideas enter the queue through the normal ideas path.
+- [x] `process-improvements` idea backlog is sourced only from queue state.
+- [x] `completed-ideas.json` no longer governs active idea backlog visibility.
+- [x] Self-evolving build-output intake uses the canonical build-origin identity or an explicitly queue-backed equivalent in code.
+- [x] The old report-only backlog path is either cut over in-thread or explicitly split into a dedicated carry-over project with no hidden dual-read fallback.
 
 ## Decision Log
 - 2026-03-10: Chose contract-first instead of direct bridge-first because current build-review sidecars are not queue-ready.
@@ -718,6 +734,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - 2026-03-10: Chose the trial queue, not the live queue, as the canonical surface for this thread; the live queue remains part of the broader go-live seam and is out of scope here.
 - 2026-03-10: Readiness rerun proved the code path is live but the current active sidecars are still legacy-shaped, so active-sidecar refresh is now an explicit precursor task.
 - 2026-03-10: Active non-archive sidecars were refreshed onto the canonical schema, allowing the readiness checkpoint to pass on real queue admissions rather than fixture-only evidence.
+- 2026-03-10: Historical carry-over was split into `startup-loop-results-review-historical-carryover` because the archive still requires manual normalization and triage even after the live queue path was fixed.
 
 ## Rehearsal Trace
 | Step | Preconditions Met | Issues Found | Resolution Required |

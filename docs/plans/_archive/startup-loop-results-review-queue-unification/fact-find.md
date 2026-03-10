@@ -15,7 +15,7 @@ Deliverable-Type: multi-deliverable
 Startup-Deliverable-Alias: none
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-do-fact-find, lp-do-ideas, startup-loop
-Related-Plan: docs/plans/startup-loop-results-review-queue-unification/plan.md
+Related-Plan: docs/plans/_archive/startup-loop-results-review-queue-unification/plan.md
 Trigger-Source: direct-operator-decision: results-review-backlog-queue-unification
 Trigger-Why: The visible process-improvements backlog is currently fed by both queue-state.json and archived/current build-review sidecars, so build-spotted ideas bypass canonical grading, queue lifecycle, and closure tracking.
 Trigger-Intended-Outcome: "type: operational | statement: Queue state becomes the only canonical actionable backlog for idea items, while build-review outputs are admitted into that queue through regular grading, dedupe, and closure paths. | source: operator"

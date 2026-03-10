@@ -43,12 +43,16 @@ So the real target is:
 3. make the report queue-only for idea backlog,
 4. demote or retire `completed-ideas.json` from active backlog control.
 
+This thread also needs an explicit end-state commitment: there must be a real cutover where the legacy report-only backlog no longer exists. Historical backlog items from that legacy path should either be carried forward into the queue because they are still worthwhile, or intentionally left behind with a documented reason. If the historical carry-over turns out to be too large or messy for the same tranche, that carry-over should become its own follow-on project rather than silently preserving dual backlog systems.
+
 ### Goals
 
 - Define a canonical build-origin signal contract before queue admission.
 - Make `queue-state.json` the sole canonical actionable backlog for idea items.
 - Route build-generated idea candidates through normal `lp-do-ideas` admission and grading instead of direct HTML scraping.
 - Collapse closure semantics onto queue lifecycle so report suppression and completion no longer depend on a parallel results-review registry.
+- Reach a real cutover where the legacy report-only backlog ceases to exist.
+- Ensure worthwhile historical backlog items are explicitly carried forward into the queue, or separated into a documented follow-on carry-over project.
 - Preserve build-review and pattern-reflection artifacts as evidence/intake, not as a second backlog database.
 
 ### Non-goals
@@ -56,7 +60,7 @@ So the real target is:
 - Replacing `results-review.user.md` as the operator-authored post-build observation artifact.
 - Removing `risk` or `pending-review` sections from `process-improvements.user.html`.
 - Redesigning self-evolving policy or autonomous promotion.
-- Forcing a full historical migration in one cut if a bounded compatibility window is safer.
+- Forcing a full historical carry-over inside the same implementation tranche if the audit shows it should be split into a dedicated follow-on cutover project.
 
 ### Constraints & Assumptions
 
@@ -66,6 +70,7 @@ So the real target is:
   - Queue migration must stay additive and idempotent while the trial queue remains live.
   - Historical archived build-review artifacts may lack `pattern-reflection.entries.json`, so cutover needs a compatibility rule.
   - Build-review extraction currently fails open; queue-only backlog cannot depend on silent extractor failure.
+  - The end-state cannot preserve a hidden legacy backlog path for convenience; dual-read must be temporary only.
 - Assumptions:
   - The correct architecture is “artifacts produce signals, queue owns work,” not “reports aggregate multiple work stores.”
   - `pattern-reflection.entries.json` is not queue-ready as-is; it can only become a primary intake source after a contract-hardening step adds stable identity and queue-classifier fields.
@@ -344,6 +349,7 @@ None.
   - The report may continue to source `risk` and `pending-review` from their current artifacts even after idea backlog unification.
 - Rollout/rollback expectations:
   - Safe sequence is: define build-origin signal contract -> add bridge -> validate queue admission -> switch report to queue-only ideas -> migrate/demote `completed-ideas.json`.
+  - The final state must include an explicit cutover of the old backlog path, not an indefinite compatibility read.
   - Rollback should be possible by keeping the direct report source behind a temporary compatibility branch until queue-backed build intake is proven.
 - Observability expectations:
   - Report/data output should expose whether an idea item is queue-backed and whether its origin was build-review intake.
@@ -356,6 +362,7 @@ None.
 3. Change `generate-process-improvements.ts` so `ideaItems` come only from canonical queue state, not directly from results-review sidecars or markdown.
 4. Migrate or demote `completed-ideas.json` so active backlog suppression and completion are queue-derived rather than registry-derived.
 5. Define and implement a bounded historical cutover: either backfill archived build-review-origin ideas into queue or explicitly exclude pre-cutover review artifacts from active backlog.
+6. If the historical carry-over set is too large or too ambiguous for the same tranche, emit a separate cutover project rather than preserving legacy backlog reads.
 
 ## Execution Routing Packet
 
@@ -394,7 +401,7 @@ None.
 ### Remaining Assumptions
 
 - Current build workflows generate enough structured reflection data to support a canonical build-origin signal contract without inventing a wholly new operator artifact.
-- Historical archive behavior can be handled by either bounded backfill or explicit cutover, without needing indefinite dual-read mode.
+- Historical archive behavior can be handled by either bounded backfill or explicit cutover, without needing indefinite dual-read mode, even if the carry-over itself is split into a separate follow-on project.
 
 ## Planning Readiness
 

@@ -7,19 +7,13 @@ import type { StageDoc } from "@/lib/types";
 import { MarkdownContent } from "./MarkdownContent";
 
 interface CardStageDocsProps {
-  stageDocs: {
-    factFind?: StageDoc;
-    plan?: StageDoc;
-    build?: StageDoc;
-    reflect?: StageDoc;
-  };
-  cardId: string;
+  stageDocs: StageDoc[];
 }
 
 /* eslint-disable ds/no-hardcoded-copy, ds/min-tap-size -- BOS-12: Phase 0 scaffold UI */
 export function CardStageDocs({ stageDocs }: CardStageDocsProps) {
   const [openStages, setOpenStages] = useState<Set<string>>(
-    new Set(["factFind"])
+    new Set(stageDocs[0] ? [stageDocs[0].Stage] : [])
   );
 
   const toggleStage = (stage: string) => {
@@ -34,34 +28,37 @@ export function CardStageDocs({ stageDocs }: CardStageDocsProps) {
     });
   };
 
-  const stages = [
-    { key: "factFind", label: "Fact Finding", doc: stageDocs.factFind },
-    { key: "plan", label: "Plan", doc: stageDocs.plan },
-    { key: "build", label: "Build Log", doc: stageDocs.build },
-    { key: "reflect", label: "Reflection", doc: stageDocs.reflect },
-  ];
-
-  const availableStages = stages.filter((stage) => stage.doc);
-
-  if (availableStages.length === 0) {
+  if (stageDocs.length === 0) {
     return null;
   }
 
+  const availableStages = [...stageDocs].sort((left, right) =>
+    left.Stage.localeCompare(right.Stage)
+  );
+
+  const formatStageLabel = (stage: string) =>
+    stage
+      .split("-")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join(" ");
+
   return (
     <div className="bg-panel rounded-lg border border-border-1 p-6">
-      <h2 className="text-lg font-semibold text-fg mb-4">Stage Documents</h2>
+      <h2 className="text-lg font-semibold text-fg mb-4">Card Documents</h2>
       <div className="space-y-3">
-        {availableStages.map(({ key, label, doc }) => (
-          <div key={key} className="border border-border-1 rounded-lg">
+        {availableStages.map((doc) => (
+          <div key={doc.Stage} className="border border-border-1 rounded-lg">
             <button
               type="button"
-              onClick={() => toggleStage(key)}
+              onClick={() => toggleStage(doc.Stage)}
               className="w-full flex items-center justify-between px-4 py-3 text-start hover:bg-surface-1"
             >
-              <span className="text-sm font-medium text-fg">{label}</span>
+              <span className="text-sm font-medium text-fg">
+                {formatStageLabel(doc.Stage)}
+              </span>
               <svg
                 className={`w-5 h-5 text-muted transition-transform ${
-                  openStages.has(key) ? "transform rotate-180" : ""
+                  openStages.has(doc.Stage) ? "transform rotate-180" : ""
                 }`}
                 fill="none"
                 viewBox="0 0 24 24"
@@ -75,7 +72,7 @@ export function CardStageDocs({ stageDocs }: CardStageDocsProps) {
                 />
               </svg>
             </button>
-            {openStages.has(key) && doc && (
+            {openStages.has(doc.Stage) && (
               <div className="px-4 pb-4 border-t border-border-1">
                 <MarkdownContent content={doc.content} />
               </div>

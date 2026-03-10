@@ -24,6 +24,7 @@ import {
 import { ArrivalCodePanel, UtilityActionStrip } from '@acme/ui';
 
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
+import { getFunnelSessionKey } from '../../lib/analytics/funnelSessionKey';
 import type { GuestKeycardStatus } from '../../lib/preArrival/keycardStatus';
 import type { ChecklistProgress,PreArrivalData } from '../../types/preArrival';
 import { CheckInQR } from '../check-in/CheckInQR';
@@ -78,17 +79,6 @@ const DEFAULT_KEYCARD_STATUS: GuestKeycardStatus = {
   latestTransactionAt: null,
 };
 
-function getFunnelSessionKey(): string {
-  if (typeof window === 'undefined') {
-    return 'unknown-session';
-  }
-
-  return (
-    localStorage.getItem('prime_guest_uuid') ||
-    localStorage.getItem('prime_guest_booking_id') ||
-    'unknown-session'
-  );
-}
 
 const NextStepItem: FC<NextStepItemProps> = memo(function NextStepItem({
   index,

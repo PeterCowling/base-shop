@@ -138,7 +138,7 @@ describe("useBookingDatesMutator", () => {
     expect(
       saveFinancialsRoomMock.mock.invocationCallOrder[0]
     ).toBeLessThan(updateMock.mock.invocationCallOrder[0]);
-    expect(result.current.isError).toBe(false);
+    expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
   });
 
@@ -208,7 +208,7 @@ describe("useBookingDatesMutator", () => {
       ).rejects.toThrow("fail");
     });
 
-    expect(result.current.isError).toBe(true);
+    expect(result.current.loading).toBe(false);
     expect(result.current.error).toBe(err);
   });
 
@@ -229,7 +229,7 @@ describe("useBookingDatesMutator", () => {
       ).rejects.toThrow(/network connection/i);
     });
 
-    expect(result.current.isError).toBe(true);
+    expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeInstanceOf(Error);
     expect(updateMock).not.toHaveBeenCalled();
   });

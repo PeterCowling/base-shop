@@ -11,6 +11,7 @@ import {
   XA_CATALOG_STOREFRONTS,
 } from "../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
+import { sleep } from "../../lib/typeGuards";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
 import {
@@ -32,6 +33,7 @@ import {
 import {
   type ActionFeedback,
   type ActionFeedbackState,
+  type AutosaveStatus,
   type CatalogListResponse,
   createInitialActionFeedbackState,
   errorToMessage,
@@ -59,7 +61,6 @@ type SyncReadinessState = {
   contractConfigErrors: string[];
 };
 
-type AutosaveStatus = "saving" | "saved" | "unsaved";
 
 function getUploaderRuntimeConfig(): {
   uploaderMode: "vendor" | "internal";
@@ -143,19 +144,14 @@ async function loadCatalogFromServer(params: {
   return data;
 }
 
-function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => {
-    setTimeout(resolve, ms);
-  });
-}
 
 async function waitForBusyToClear(
   busyLockRef: React.MutableRefObject<boolean>,
-  maxAttempts = 250,
+  maxAttempts = 80,
 ): Promise<void> {
   for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
     if (!busyLockRef.current) return;
-    await sleep(16);
+    await sleep(50);
   }
 }
 
@@ -862,9 +858,28 @@ function useCatalogDraftHandlers(
 function useCatalogPublishHandlers(state: CatalogConsoleState) {
   const handlePublish = async (
     publishState: "live" | "out_of_stock" = "live",
-  ): Promise<PublishResult> =>
-    handlePublishImpl({
-      draft: state.draft,
+  ): Promise<PublishResult> => {
+    if (state.isAutosaveDirty || state.isAutosaveSaving) {
+      updateActionFeedback(state.setActionFeedback, "draft", {
+        kind: "error",
+        message: state.t("publishBlockedAutosavePending"),
+      });
+      return { status: "error", error: state.t("publishBlockedAutosavePending") };
+    }
+
+    const draftId = (state.draft.id ?? "").trim();
+    const draftRevision = (state.draftRevision ?? "").trim();
+    if (!draftId || !draftRevision) {
+      updateActionFeedback(state.setActionFeedback, "draft", {
+        kind: "error",
+        message: state.t("publishBlockedSaveRequired"),
+      });
+      return { status: "error", error: state.t("publishBlockedSaveRequired") };
+    }
+
+    return await handlePublishImpl({
+      draftId,
+      draftRevision,
       publishState,
       storefront: state.storefront,
       t: state.t,
@@ -873,6 +888,7 @@ function useCatalogPublishHandlers(state: CatalogConsoleState) {
       setActionFeedback: state.setActionFeedback,
       loadCatalog: state.loadCatalog,
     });
+  };
 
   return { handlePublish };
 }

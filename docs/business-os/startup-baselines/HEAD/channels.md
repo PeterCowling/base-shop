@@ -157,6 +157,7 @@ Why selected:
 - Keep own-site as primary if CVR and CAC remain inside contract guardrails.
 - Expand referral lane if low-CAC quality traffic repeats.
 - Keep Etsy as probe unless contribution outperforms own-site by clear threshold.
+- If retailer, clinic, or distributor outreach is reopened later, track targets first in `docs/business-os/strategy/HEAD/stockist-target-list.user.md` before activating a GTM-2 operating lane.
 - Reopen Amazon only when operational capacity and contribution case are evidence-backed.
 
 ---
@@ -177,6 +178,6 @@ Why selected:
 - `docs/business-os/startup-baselines/HEAD/offer.md`
 - `docs/business-os/strategy/HEAD/decisions/DEC-HEAD-CH-01.user.md`
 - `docs/business-os/strategy/HEAD/lp-other-products-results.user.md`
+- `docs/business-os/strategy/HEAD/stockist-target-list.user.md`
 - `docs/business-os/market-research/HEAD/2026-02-20-market-intelligence.user.md`
 - `docs/business-os/contracts/HEAD/outcome-contract.user.md`
-

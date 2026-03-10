@@ -6,7 +6,7 @@ import { toPositiveInt } from "@acme/lib";
 
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 import type { UploaderKvNamespace } from "./syncMutex";
-import { isRecord } from "./typeGuards";
+import { getErrorMessage, isRecord, sleep } from "./typeGuards";
 import {
   XA_B_DEPLOY_HOOK_REQUIRED_ENV,
   XA_B_DEPLOY_HOOK_TOKEN_ENV,
@@ -79,24 +79,18 @@ function parseBooleanFlag(rawValue: string | undefined): boolean | null {
   return null;
 }
 
-function getDeployHookMaxRetries(): number {
+const DEPLOY_HOOK_MAX_RETRIES = (() => {
   const raw = process.env.XA_B_DEPLOY_HOOK_MAX_RETRIES?.trim();
   if (!raw) return DEPLOY_HOOK_MAX_RETRIES_DEFAULT;
   const parsed = Number.parseInt(raw, 10);
-  if (!Number.isFinite(parsed) || parsed < 0) {
-    return DEPLOY_HOOK_MAX_RETRIES_DEFAULT;
-  }
+  if (!Number.isFinite(parsed) || parsed < 0) return DEPLOY_HOOK_MAX_RETRIES_DEFAULT;
   return Math.min(parsed, DEPLOY_HOOK_MAX_RETRIES_LIMIT);
-}
+})();
 
-function getDeployHookRetryBaseDelayMs(): number {
-  const parsed = toPositiveInt(
-    process.env.XA_B_DEPLOY_HOOK_RETRY_BASE_DELAY_MS,
-    DEPLOY_HOOK_RETRY_BASE_DELAY_MS_DEFAULT,
-    1,
-  );
-  return Math.min(parsed, DEPLOY_HOOK_RETRY_BASE_DELAY_MS_MAX);
-}
+const DEPLOY_HOOK_RETRY_BASE_DELAY_MS = Math.min(
+  toPositiveInt(process.env.XA_B_DEPLOY_HOOK_RETRY_BASE_DELAY_MS, DEPLOY_HOOK_RETRY_BASE_DELAY_MS_DEFAULT, 1),
+  DEPLOY_HOOK_RETRY_BASE_DELAY_MS_MAX,
+);
 
 function getDeployHookCooldownKey(storefrontId: XaCatalogStorefront): string {
   return `xa-deploy-cooldown:${storefrontId}`;
@@ -201,29 +195,10 @@ async function deleteDeployState(params: {
   await fs.rm(params.statePath, { force: true });
 }
 
-function getDeployHookTimeoutMs(): number {
-  return toPositiveInt(
-    process.env.XA_B_DEPLOY_HOOK_TIMEOUT_MS,
-    DEPLOY_HOOK_TIMEOUT_MS_DEFAULT,
-    1,
-  );
-}
-
-function getDeployHookCooldownSeconds(): number {
-  return toPositiveInt(
-    process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS,
-    DEPLOY_HOOK_COOLDOWN_SECONDS_DEFAULT,
-    1,
-  );
-}
-
-function getDeployHookUrl(): string {
-  return (process.env[XA_B_DEPLOY_HOOK_URL_ENV] ?? "").trim();
-}
-
-function getDeployHookToken(): string {
-  return (process.env[XA_B_DEPLOY_HOOK_TOKEN_ENV] ?? "").trim();
-}
+const DEPLOY_HOOK_TIMEOUT_MS = toPositiveInt(process.env.XA_B_DEPLOY_HOOK_TIMEOUT_MS, DEPLOY_HOOK_TIMEOUT_MS_DEFAULT, 1);
+const DEPLOY_HOOK_COOLDOWN_SECONDS = toPositiveInt(process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS, DEPLOY_HOOK_COOLDOWN_SECONDS_DEFAULT, 1);
+const DEPLOY_HOOK_URL = (process.env[XA_B_DEPLOY_HOOK_URL_ENV] ?? "").trim();
+const DEPLOY_HOOK_TOKEN = (process.env[XA_B_DEPLOY_HOOK_TOKEN_ENV] ?? "").trim();
 
 function shouldUseDeployServiceBinding(hookUrl: string): boolean {
   try {
@@ -264,14 +239,11 @@ async function requestDeployHook(hookUrl: string, init: RequestInit): Promise<Re
 }
 
 function buildRetryDelayMs(attemptNumber: number): number {
-  const baseDelayMs = getDeployHookRetryBaseDelayMs();
+  const baseDelayMs = DEPLOY_HOOK_RETRY_BASE_DELAY_MS;
   const exponent = Math.max(0, attemptNumber - 1);
   return baseDelayMs * 2 ** exponent;
 }
 
-async function sleep(ms: number): Promise<void> {
-  await new Promise((resolve) => setTimeout(resolve, ms));
-}
 
 function isTransientHttpStatus(status: number): boolean {
   return status === 408 || status === 425 || status === 429 || status >= 500;
@@ -353,11 +325,11 @@ async function triggerDeployHookOnce(params: {
   storefrontId: XaCatalogStorefront;
 }): Promise<DeployHookAttemptResult> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), getDeployHookTimeoutMs());
+  const timeout = setTimeout(() => controller.abort(), DEPLOY_HOOK_TIMEOUT_MS);
   let response: Response;
   try {
     const headers: Record<string, string> = { "Content-Type": "application/json" };
-    const token = getDeployHookToken();
+    const token = DEPLOY_HOOK_TOKEN;
     if (token) {
       headers["X-XA-Deploy-Token"] = token;
     }
@@ -374,7 +346,7 @@ async function triggerDeployHookOnce(params: {
     });
   } catch (error) {
     clearTimeout(timeout);
-    const message = error instanceof Error ? error.message : String(error);
+    const message = getErrorMessage(error);
     return {
       ok: false,
       transient: true,
@@ -439,7 +411,7 @@ export function resolveDeployStatePaths(
 }
 
 export function isDeployHookConfigured(): boolean {
-  return Boolean(getDeployHookUrl());
+  return Boolean(DEPLOY_HOOK_URL);
 }
 
 export function isDeployHookRequired(): boolean {
@@ -496,15 +468,11 @@ async function writeDeployCooldown(params: {
   nextEligibleAtMs: number;
   statePath?: string;
 }): Promise<void> {
-  const payload = JSON.stringify(
-    {
-      storefront: params.storefrontId,
-      nextEligibleAt: new Date(params.nextEligibleAtMs).toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    null,
-    2,
-  );
+  const payload = JSON.stringify({
+    storefront: params.storefrontId,
+    nextEligibleAt: new Date(params.nextEligibleAtMs).toISOString(),
+    updatedAt: new Date().toISOString(),
+  });
 
   await writeDeployStateRaw({
     kv: params.kv,
@@ -607,12 +575,12 @@ export async function maybeTriggerXaBDeploy(params: {
   kv: UploaderKvNamespace | null;
   statePaths?: DeployStatePaths;
 }): Promise<DeployTriggerResult> {
-  const hookUrl = getDeployHookUrl();
+  const hookUrl = DEPLOY_HOOK_URL;
   if (!hookUrl) {
     return { status: "skipped_unconfigured", reason: "deploy_hook_unconfigured" };
   }
 
-  const cooldownSeconds = getDeployHookCooldownSeconds();
+  const cooldownSeconds = DEPLOY_HOOK_COOLDOWN_SECONDS;
   const nowMs = Date.now();
   const nextEligibleAtMs = await readDeployCooldownEpochMs({
     storefrontId: params.storefrontId,
@@ -626,7 +594,7 @@ export async function maybeTriggerXaBDeploy(params: {
     };
   }
 
-  const maxAttempts = getDeployHookMaxRetries() + 1;
+  const maxAttempts = DEPLOY_HOOK_MAX_RETRIES + 1;
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     const result = await triggerDeployHookOnce({
       hookUrl,

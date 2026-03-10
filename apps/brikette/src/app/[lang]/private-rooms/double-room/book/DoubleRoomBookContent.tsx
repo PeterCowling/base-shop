@@ -193,7 +193,7 @@ function DoubleRoomBookContent({ lang }: Props) {
               type="button"
               onClick={() => handleCheckout("nr")}
               disabled={!isValidRange}
-              className="group flex flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-accent hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent disabled:pointer-events-none disabled:opacity-50"
+              className="group flex min-h-11 min-w-11 flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-accent hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent disabled:pointer-events-none disabled:opacity-50"
             >
               <div className="flex flex-1 flex-col p-4">
                 <div className="mb-2 flex items-start justify-between gap-2">
@@ -220,7 +220,7 @@ function DoubleRoomBookContent({ lang }: Props) {
               type="button"
               onClick={() => handleCheckout("flex")}
               disabled={!isValidRange}
-              className="group flex flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-primary hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:pointer-events-none disabled:opacity-50"
+              className="group flex min-h-11 min-w-11 flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-primary hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:pointer-events-none disabled:opacity-50"
             >
               <div className="flex flex-1 flex-col p-4">
                 <div className="mb-2 flex items-start justify-between gap-2">

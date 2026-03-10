@@ -20,6 +20,7 @@ import {
 import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
 import { formatDate, safeParseIso } from "@/utils/dateUtils";
 import { fireCtaClick } from "@/utils/ga4-events";
+import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
 import { getBookPath } from "@/utils/localizedRoutes";
 
 
@@ -45,7 +46,7 @@ function resolveTranslatedCopy(value: unknown, fallback: string, unresolvedKey?:
   const trimmed = value.trim();
   if (!trimmed) return fallback;
   if (unresolvedKey && trimmed === unresolvedKey) return fallback;
-  if (trimmed.includes(".")) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
   return trimmed;
 }
 

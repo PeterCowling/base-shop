@@ -3,8 +3,8 @@ Type: Business-Plan
 Status: Active
 Business: HBAG
 Created: 2026-02-11
-Updated: 2026-02-17
-Last-reviewed: 2026-02-17
+Updated: 2026-03-09
+Last-reviewed: 2026-03-09
 Owner: Pete
 Review-trigger: After each completed build cycle touching this document.
 ---
@@ -61,23 +61,33 @@ _No learnings recorded yet. This section is append-only — learnings are added 
 |---|---|
 | **Outcome-ID** | `HBAG-OUT-2026Q1-01` |
 | **Outcome** | Achieve first paid demand signal: 10 sales or €500 revenue across active channels, validating premium (€80–€150) positioning for mini handbag variants |
-| **Baseline** | Revenue: €0. Sales: 0. Date: 2026-02-17. Source: HBAG business plan §Metrics |
+| **Baseline** | Revenue: €14.50 net. Sales: 1. Dates: pilot placement at Luisa Positano started approximately 2026-03-02; first recorded sale on 2026-03-08. Source: `docs/business-os/strategy/HBAG/channel-health-log.user.md` |
 | **Target** | 10 paid sales OR €500 cumulative revenue — whichever comes first |
 | **By** | 2026-05-17 (90 days) |
 | **Owner** | Pete |
 | **Leading-Indicator-1** | Weekly Etsy listing views + add-to-cart count (tracked in `docs/plans/mini-handbag-pmf/demand-log.md`) |
-| **Leading-Indicator-2** | Weekly Instagram/TikTok DM purchase inquiries (tracked in demand-log) |
+| **Leading-Indicator-2** | Weekly Instagram/TikTok DM purchase inquiries (tracked in `docs/plans/mini-handbag-pmf/demand-log.md`) |
+| **Leading-Indicator-3** | Weekly in-destination sell-through at Luisa Positano / other placements (tracked in `docs/business-os/strategy/HBAG/channel-health-log.user.md`) |
 | **Decision-Link** | `DEC-HBAG-01` — if 0 sales by 2026-04-17 (60-day gate): pause channel spend, run `/lp-do-replan` on pricing and variant selection before continuing |
 | **Stop/Pivot Threshold** | 0 sales across all active channels after 60 days → halt, replan. Fewer than 3 Etsy views/day after 14 days → investigate tags/title before waiting full 28 days |
-| **Evidence-Pointers** | `docs/plans/mini-handbag-pmf/fact-find.md`, `docs/plans/mini-handbag-pmf/plan.md` |
+| **Evidence-Pointers** | `docs/plans/mini-handbag-pmf/fact-find.md`, `docs/plans/mini-handbag-pmf/plan.md`, `docs/business-os/strategy/HBAG/channel-health-log.user.md`, `docs/plans/mini-handbag-pmf/demand-log.md` |
 
 ## Metrics
 
-### Validation Signals (Updated: 2026-02-17)
+### Validation Signals (Updated: 2026-03-09)
 
-- **First-Purchase Signal:** Not yet measured (demand test launching — TASK-06 → TASK-07/08)
+- **First-Purchase Signal:** 1 paid in-destination sale recorded at Luisa Positano on 2026-03-08
   - Target: 10 sales or €500 by 2026-05-17
-  - Measurement: Weekly — `docs/plans/mini-handbag-pmf/demand-log.md`
+  - Measurement: Weekly — `docs/plans/mini-handbag-pmf/demand-log.md` plus `docs/business-os/strategy/HBAG/channel-health-log.user.md`
+
+- **Offline Boutique Pilot Economics:** First Luisa Positano sale recorded off-season
+  - Retail price: EUR 29.00
+  - Commission rate: 50%
+  - Net revenue to Caryina: EUR 14.50
+  - Landed cost: EUR 3.00
+  - Contribution after commission and landed cost: EUR 11.50
+  - Contribution margin on net revenue: 79.3%
+  - Note: encouraging early signal, but sample size is 1 and should not yet be treated as decision-grade validation
 
 - **Contribution Margin Proxy:** Not yet measured (awaiting TASK-02 supplier quote)
   - Target: ≥35% contribution margin at €80–€150 retail after all costs

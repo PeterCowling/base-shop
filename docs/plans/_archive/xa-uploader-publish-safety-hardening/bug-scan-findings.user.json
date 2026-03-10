@@ -1,0 +1,6 @@
+{
+  "status": "not_run_locally",
+  "reason": "No scoped bug-scan artifact was generated in this turn; repo policy still blocks local Jest/e2e, but bug-scan itself was not invoked.",
+  "business_scope": "XA",
+  "feature_slug": "xa-uploader-publish-safety-hardening"
+}

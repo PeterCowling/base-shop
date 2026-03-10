@@ -1,5 +1,3 @@
-import crypto from "node:crypto";
-
 import { NextResponse } from "next/server";
 
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
@@ -13,7 +11,7 @@ import {
 } from "../../../../lib/deployHook";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { getUploaderKv } from "../../../../lib/syncMutex";
-import { hasUploaderSession } from "../../../../lib/uploaderAuth";
+import { hasUploaderSession, timingSafeEqual } from "../../../../lib/uploaderAuth";
 import { XA_UPLOADER_DEPLOY_DRAIN_TOKEN_ENV } from "../../../../lib/uploaderRuntimeConfig";
 
 export const runtime = "nodejs";
@@ -24,13 +22,6 @@ const DEPLOY_DRAIN_MAX_REQUESTS = 30;
 
 function extractBearerToken(request: Request): string {
   return request.headers.get("authorization")?.replace(/^Bearer\s+/i, "").trim() ?? "";
-}
-
-function timingSafeEqual(left: string, right: string): boolean {
-  const leftBuffer = Buffer.from(left);
-  const rightBuffer = Buffer.from(right);
-  if (leftBuffer.length !== rightBuffer.length) return false;
-  return crypto.timingSafeEqual(leftBuffer, rightBuffer);
 }
 
 function hasDeployDrainToken(request: Request): boolean {

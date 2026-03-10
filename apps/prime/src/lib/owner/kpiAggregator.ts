@@ -5,7 +5,7 @@
  * These are designed to be called by a scheduled job or on-demand endpoint.
  *
  * IMPORTANT: This module contains PURE functions only - no Firebase I/O.
- * See kpiWriter.ts for persistence and kpiReader.ts for retrieval.
+ * Pair with a server-side writer for persistence and kpiReader.ts for retrieval.
  */
 
 import { mean as libMean, median as libMedian } from "@acme/lib/math/statistics";

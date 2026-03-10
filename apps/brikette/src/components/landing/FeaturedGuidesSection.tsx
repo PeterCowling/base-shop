@@ -9,6 +9,7 @@ import { getGuideLinkLabels } from "@/guides/slugs/labels";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { renderGuideLinkTokens, sanitizeLinkLabel } from "@/routes/guides/utils/linkTokens";
+import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 type Props = {
@@ -42,7 +43,7 @@ const FALLBACK_GUIDES_SECTION_SUBTITLE =
 function resolveTranslatedCopy(value: unknown, fallback: string): string {
   if (typeof value !== "string") return fallback;
   const trimmed = value.trim();
-  if (!trimmed || trimmed.includes(".")) return fallback;
+  if (!trimmed || I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
   return trimmed;
 }
 

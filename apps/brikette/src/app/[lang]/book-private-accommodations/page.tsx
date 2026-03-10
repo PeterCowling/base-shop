@@ -137,7 +137,7 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
             <div className="mt-6">
               <a
                 href={doubleRoomPath}
-                className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-2.5 text-sm font-semibold text-brand-on-primary hover:bg-brand-primary/90"
+                className="inline-flex min-h-11 min-w-11 w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-2.5 text-sm font-semibold text-brand-on-primary hover:bg-brand-primary/90"
               >
                 {doubleRoomTitle} →
               </a>
@@ -159,7 +159,7 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
             <div className="mt-6">
               <a
                 href={apartmentPath}
-                className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-2.5 text-sm font-semibold text-brand-on-primary hover:bg-brand-primary/90"
+                className="inline-flex min-h-11 min-w-11 w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-2.5 text-sm font-semibold text-brand-on-primary hover:bg-brand-primary/90"
               >
                 {apartmentTitle} →
               </a>
@@ -190,7 +190,7 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
           {exploreDorms && (
             <a
               href={getLocalizedSectionPath(validLang, "book")}
-              className="min-h-11 text-brand-primary underline hover:text-brand-primary/80"
+              className="inline-flex min-h-11 min-w-11 items-center text-brand-primary underline hover:text-brand-primary/80"
             >
               {exploreDorms}
             </a>
@@ -198,7 +198,7 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
           {exploreExperiences && (
             <a
               href={getLocalizedSectionPath(validLang, "experiences")}
-              className="min-h-11 text-brand-primary underline hover:text-brand-primary/80"
+              className="inline-flex min-h-11 min-w-11 items-center text-brand-primary underline hover:text-brand-primary/80"
             >
               {exploreExperiences}
             </a>
@@ -206,7 +206,7 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
           {exploreLocation && (
             <a
               href={getLocalizedSectionPath(validLang, "howToGetHere")}
-              className="min-h-11 text-brand-primary underline hover:text-brand-primary/80"
+              className="inline-flex min-h-11 min-w-11 items-center text-brand-primary underline hover:text-brand-primary/80"
             >
               {exploreLocation}
             </a>

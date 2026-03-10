@@ -2,7 +2,6 @@ import type { NextResponse } from "next/server";
 
 import { toPositiveInt } from "@acme/lib";
 
-import { getTrustedRequestIp } from "./requestIp";
 
 type RateLimitEntry = {
   count: number;
@@ -22,9 +21,7 @@ declare global {
   var __xaUploaderRateLimitStore: Map<string, RateLimitEntry> | undefined;
 }
 
-function getMaxEntries(): number {
-  return toPositiveInt(process.env.XA_UPLOADER_RATE_LIMIT_MAX_KEYS, 20_000, 1);
-}
+const MAX_ENTRIES = toPositiveInt(process.env.XA_UPLOADER_RATE_LIMIT_MAX_KEYS, 20_000, 1);
 
 function getStore() {
   if (!globalThis.__xaUploaderRateLimitStore) {
@@ -41,10 +38,9 @@ function pruneStore(now: number) {
     }
   }
 
-  const maxEntries = getMaxEntries();
-  if (store.size <= maxEntries) return;
+  if (store.size <= MAX_ENTRIES) return;
 
-  const overflow = store.size - maxEntries;
+  const overflow = store.size - MAX_ENTRIES;
   const candidates = [...store.entries()]
     .sort((a, b) => a[1].lastSeenAt - b[1].lastSeenAt)
     .slice(0, overflow);
@@ -53,9 +49,7 @@ function pruneStore(now: number) {
   }
 }
 
-export function getRequestIp(request: Request): string {
-  return getTrustedRequestIp(request);
-}
+export { getTrustedRequestIp as getRequestIp } from "./requestIp";
 
 export function rateLimit({
   key,

@@ -3,6 +3,12 @@ main = "worker-entry.ts"
 compatibility_date = "2025-06-20"
 compatibility_flags = ["nodejs_compat"]
 
+# Local release path:
+#   pnpm --filter @apps/reception deploy:worker:safe
+# This loads apps/reception/.env.local for NEXT_PUBLIC_FIREBASE_* build vars and
+# repo-root .env.local for CLOUDFLARE_* deploy auth, then fails closed if either
+# set is missing.
+
 [assets]
 directory = ".open-next/assets"
 binding = "ASSETS"

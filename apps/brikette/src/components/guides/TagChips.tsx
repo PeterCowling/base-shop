@@ -46,10 +46,13 @@ function TagChips({ tags, className = "" }: Props): JSX.Element | null {
 
   if (!list.length) return null;
 
+  const experiencesSlug = getSlug("experiences", lang);
+  const tagsSlug = getSlug("guidesTags", lang);
+
   return (
     <div className={clsx(WRAPPER_CLASSES, className)}>
       {list.map((tag) => {
-        const path = `/${lang}/${getSlug("experiences", lang)}/${getSlug("guidesTags", lang)}/${encodeURIComponent(tag)}`;
+        const path = `/${lang}/${experiencesSlug}/${tagsSlug}/${encodeURIComponent(tag)}`;
         const content = (
           <>
             <span className="sr-only">{`#${tag}`}</span>

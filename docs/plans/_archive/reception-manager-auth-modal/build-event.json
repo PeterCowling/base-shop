@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-09T11:47:47.560Z",
+  "why": "Duplicate manager-auth modal code means any UX or auth pattern change must be applied to two identical files."
+}

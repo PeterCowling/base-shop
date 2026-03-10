@@ -39,7 +39,7 @@ export type PrimeReviewThreadDetail = {
     links?: unknown[] | null;
     attachments?: unknown[] | null;
     cards?: unknown[] | null;
-    audience?: string;
+    audience?: string | null;
     campaignId?: string | null;
   }>;
   admissions: Array<{
@@ -318,7 +318,7 @@ export function isPrimeInboxThreadId(threadId: string): boolean {
   return parsePrimeInboxThreadId(threadId) !== null;
 }
 
-export function isPrimeThreadVisibleInInbox(row: { reviewStatus: string }): boolean {
+export function isPrimeThreadVisibleInInbox(row: { reviewStatus: PrimeReviewThreadSummary["reviewStatus"] }): boolean {
   return row.reviewStatus !== 'resolved' && row.reviewStatus !== 'sent' && row.reviewStatus !== 'auto_archived';
 }
 

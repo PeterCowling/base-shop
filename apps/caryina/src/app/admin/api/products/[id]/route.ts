@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+import { readInventory } from "@acme/platform-core/repositories/inventory.server";
 import {
   deleteProductFromRepo,
   getProductById,
@@ -8,6 +9,7 @@ import {
 import type { ProductPublication } from "@acme/types";
 
 import { updateProductSchema } from "@/lib/adminSchemas";
+import { CARYINA_INVENTORY_BACKEND } from "@/lib/inventoryBackend";
 
 const SHOP = "caryina";
 
@@ -34,6 +36,17 @@ export async function PATCH(request: Request, { params }: RouteContext) {
   const existing = await getProductById(SHOP, id);
   if (!existing) {
     return NextResponse.json({ ok: false, error: "not_found" }, { status: 404 });
+  }
+
+  if (existing.status !== "active" && parsed.data.status === "active") {
+    const inventory = await readInventory(SHOP, { backend: CARYINA_INVENTORY_BACKEND });
+    const sellableStock = inventory
+      .filter((item) => item.productId === existing.id || item.productId === existing.sku)
+      .reduce((sum, item) => sum + (typeof item.quantity === "number" ? item.quantity : 0), 0);
+
+    if (sellableStock <= 0) {
+      return NextResponse.json({ ok: false, error: "active_requires_stock" }, { status: 400 });
+    }
   }
 
   const { title, description, ...rest } = parsed.data;

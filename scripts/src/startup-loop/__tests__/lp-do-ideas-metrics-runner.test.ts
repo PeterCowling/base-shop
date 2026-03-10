@@ -291,6 +291,34 @@ describe("runMetricsRollup", () => {
     expect(result.rollup.lane_mix.IMPROVE_completed).toBe(0);
   });
 
+  it("TC-07-D2: plan_ready packets count as DO lane work", () => {
+    const dir = makeTmpDir();
+
+    const telemetryPath = writeTelemetry(dir, [makeCycleSnapshot()]);
+    const queueStatePath = writeQueueState(dir, [
+      makeQueueEntry({
+        dispatch_id: "IDEA-DISPATCH-20260220000000-0004",
+        queue_state: "processed",
+        packet: {
+          ...((makeQueueEntry() as { packet: object }).packet),
+          dispatch_id: "IDEA-DISPATCH-20260220000000-0004",
+          recommended_route: "lp-do-plan",
+          status: "plan_ready",
+        },
+      }),
+    ]);
+
+    const result = runMetricsRollup({
+      telemetryPath,
+      queueStatePath,
+      now: new Date("2026-02-25T00:00:00.000Z"),
+    });
+
+    expect(result.ready).toBe(true);
+    expect(result.rollup.lane_mix.DO_completed).toBe(1);
+    expect(result.rollup.lane_mix.IMPROVE_completed).toBe(0);
+  });
+
   it("TC-07-E: generated_at field is an ISO-8601 string in the output", () => {
     const dir = makeTmpDir();
 

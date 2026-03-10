@@ -4,7 +4,6 @@ import React, {
   createContext,
   type ReactNode,
   useContext,
-  useMemo,
 } from "react";
 
 import {
@@ -28,7 +27,7 @@ export const SafeDataProvider: React.FC<SafeDataProviderProps> = ({
   endAt,
 }) => {
   const safeLogic = useSafeLogic({ startAt, endAt });
-  const value = useMemo(() => safeLogic, [safeLogic]);
+  const value = safeLogic;
   return (
     <SafeDataContext.Provider value={value}>{children}</SafeDataContext.Provider>
   );

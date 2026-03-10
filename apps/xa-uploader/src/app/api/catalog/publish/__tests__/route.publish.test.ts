@@ -123,7 +123,7 @@ describe("catalog publish route", () => {
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
       }),
     );
 
@@ -149,6 +149,7 @@ describe("catalog publish route", () => {
       expect.objectContaining({
         storefront: "xa-b",
         products: [expect.objectContaining({ id: "p1", publishState: "live" })],
+        revisionsById: expect.objectContaining({ p1: expect.any(String) }),
       }),
     );
     expect(maybeTriggerXaBDeployMock).not.toHaveBeenCalled();
@@ -172,7 +173,8 @@ describe("catalog publish route", () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           storefront: "xa-b",
-          draft: VALID_CLOUD_PRODUCT,
+          draftId: "p1",
+          ifMatch: "rev-1",
           publishState: "out_of_stock",
         }),
       }),
@@ -188,9 +190,31 @@ describe("catalog publish route", () => {
     expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith(
       expect.objectContaining({
         products: [expect.objectContaining({ id: "p1", publishState: "out_of_stock" })],
+        revisionsById: expect.objectContaining({ p1: expect.any(String) }),
       }),
     );
     expect(publishCatalogPayloadToContractMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("returns conflict when the saved revision no longer matches", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "stale-rev" }),
+      }),
+    );
+
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({
+        ok: false,
+        error: "conflict",
+        reason: "revision_conflict",
+      }),
+    );
+    expect(publishCatalogPayloadToContractMock).not.toHaveBeenCalled();
   });
 
   it("maps catalog publish failures to 502 catalog_publish_failed", async () => {
@@ -201,7 +225,7 @@ describe("catalog publish route", () => {
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
       }),
     );
 
@@ -228,7 +252,7 @@ describe("catalog publish route", () => {
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
       }),
     );
 
@@ -250,7 +274,7 @@ describe("catalog publish route", () => {
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
       }),
     );
 
@@ -305,7 +329,7 @@ describe("catalog publish route", () => {
       new Request("http://localhost/api/catalog/publish", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ storefront: "xa-b", draft: VALID_CLOUD_PRODUCT }),
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1" }),
       }),
     );
 

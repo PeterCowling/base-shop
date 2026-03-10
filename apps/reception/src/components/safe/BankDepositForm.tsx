@@ -6,6 +6,8 @@ import { Button } from "@acme/design-system/atoms";
 import { showToast } from "../../utils/toastUtils";
 import { PasswordReauthInline } from "../common/PasswordReauthInline";
 
+import { safeTransactionFormSchema } from "./schemas";
+
 export interface BankDepositFormProps {
   currentKeycards: number;
   onConfirm: (
@@ -26,14 +28,18 @@ export const BankDepositForm = memo(function BankDepositForm({
 
   const handleSubmit = () => {
     const parsedAmount = parseFloat(amount);
-    if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      showToast("Please enter a valid amount", "error");
-      return;
-    }
-
     const keycardDiff = keycardInput ? parseInt(keycardInput, 10) : 0;
     if (keycardInput && isNaN(keycardDiff)) {
       showToast("Please enter a valid keycard count", "error");
+      return;
+    }
+
+    const validation = safeTransactionFormSchema.safeParse({
+      amount: parsedAmount,
+      keycardDifference: keycardDiff,
+    });
+    if (!validation.success) {
+      showToast("Please enter valid values", "error");
       return;
     }
 

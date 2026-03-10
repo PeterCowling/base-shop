@@ -2,6 +2,7 @@ import crypto from "node:crypto";
 
 import { NextResponse } from "next/server";
 
+import { toPositiveInt } from "@acme/lib";
 import { type CatalogProductDraftInput,catalogProductDraftSchema, slugify } from "@acme/lib/xa";
 
 import {
@@ -13,7 +14,7 @@ import {
 import { parseStorefront } from "../../../../../lib/catalogStorefront.ts";
 import { catalogContractUnavailableResponse } from "../../../../../lib/localFsGuard";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../../lib/rateLimit";
-import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../../lib/requestJson";
+import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../../lib/requestJson";
 import { hasUploaderSession } from "../../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -31,23 +32,21 @@ type BulkDiagnostic = {
 };
 
 
-function getBulkPayloadMaxBytes(): number {
-  const raw = Number.parseInt(process.env.XA_UPLOADER_BULK_PAYLOAD_MAX_BYTES ?? "", 10);
-  if (!Number.isFinite(raw) || raw <= 0) return BULK_PAYLOAD_MAX_BYTES_CEILING;
-  return Math.min(raw, BULK_PAYLOAD_MAX_BYTES_CEILING);
-}
+const BULK_PAYLOAD_MAX_BYTES = Math.min(
+  toPositiveInt(process.env.XA_UPLOADER_BULK_PAYLOAD_MAX_BYTES, BULK_PAYLOAD_MAX_BYTES_CEILING, 1),
+  BULK_PAYLOAD_MAX_BYTES_CEILING,
+);
 
-function getBulkMaxProducts(): number {
-  const raw = Number.parseInt(process.env.XA_UPLOADER_BULK_MAX_PRODUCTS ?? "", 10);
-  if (!Number.isFinite(raw) || raw <= 0) return BULK_MAX_PRODUCTS_CEILING;
-  return Math.min(raw, BULK_MAX_PRODUCTS_CEILING);
-}
+const BULK_MAX_PRODUCTS = Math.min(
+  toPositiveInt(process.env.XA_UPLOADER_BULK_MAX_PRODUCTS, BULK_MAX_PRODUCTS_CEILING, 1),
+  BULK_MAX_PRODUCTS_CEILING,
+);
 
 function validateBulkProducts(input: unknown): {
   products: CatalogProductDraftInput[];
   diagnostics: BulkDiagnostic[];
 } {
-  const maxProducts = getBulkMaxProducts();
+  const maxProducts = BULK_MAX_PRODUCTS;
   if (!Array.isArray(input)) {
     throw new Error("products_array_required");
   }
@@ -113,17 +112,11 @@ export async function POST(request: Request) {
 
   let payload: Record<string, unknown>;
   try {
-    payload = (await readJsonBodyWithLimit(request, getBulkPayloadMaxBytes())) as Record<string, unknown>;
+    payload = (await readJsonBodyWithLimit(request, BULK_PAYLOAD_MAX_BYTES)) as Record<string, unknown>;
   } catch (error) {
     if (error instanceof PayloadTooLargeError) {
       return withRateHeaders(
         NextResponse.json({ ok: false, error: "payload_too_large", reason: "payload_too_large" }, { status: 413 }),
-        limit,
-      );
-    }
-    if (error instanceof InvalidJsonError) {
-      return withRateHeaders(
-        NextResponse.json({ ok: false, error: "invalid", reason: "invalid_json" }, { status: 400 }),
         limit,
       );
     }

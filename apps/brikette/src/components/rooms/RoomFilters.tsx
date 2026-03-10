@@ -3,7 +3,8 @@ import React, { memo } from "react";
 import { useTranslation } from "react-i18next";
 import clsx from "clsx";
 
-export type RoomFilter = "all" | "private" | "dorms";
+const ROOM_FILTERS = ["all", "private", "dorms"] as const;
+export type RoomFilter = (typeof ROOM_FILTERS)[number];
 
 interface RoomFiltersProps {
   selected: RoomFilter;
@@ -43,7 +44,7 @@ const IDLE_BUTTON_CLASSES = [
 function RoomFilters({ selected, onChange, lang }: RoomFiltersProps): JSX.Element {
   const translationOptions = lang ? { lng: lang } : undefined;
   const { t } = useTranslation("roomsPage", translationOptions);
-  const filters: RoomFilter[] = ["all", "private", "dorms"];
+  const filters = ROOM_FILTERS;
 
   return (
     <Inline

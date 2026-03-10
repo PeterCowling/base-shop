@@ -1,0 +1,27 @@
+{
+  "round": 1,
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-refetch-boilerplate/fact-find.md",
+      "line": "76",
+      "message": "The brief misclassifies `useFetchGuestProfile` and `useFetchQuestProgress` as having custom logic inside their `refetch` wrappers. In both files, the `refetch` body is still the plain `await refetchQuery()` wrapper; the staleness logic is derived afterward from `data` and `currentBookingId`. That makes the later recommendation to exclude these two hooks from the pure-cast path evidence-weak."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-refetch-boilerplate/fact-find.md",
+      "line": "140",
+      "message": "The mock-compatibility evidence is inaccurate. The three manual pureData mocks in `apps/prime/src/hooks/pureData/__mocks__/` do not expose `refetch` at all; they are not typed as `() => Promise<void>`. This overstates current mock parity and understates the cleanup needed if those mocks are ever used in refetch-aware tests."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-refetch-boilerplate/fact-find.md",
+      "line": "321",
+      "message": "The validation commands do not follow repo policy. This package is `@apps/prime`, not `prime`, and the brief also omits the required `bash scripts/validate-changes.sh` gate from its acceptance package."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "lp_score": 3.5
+}

@@ -181,7 +181,6 @@ export function CurrencyRatesPanel({
   };
 
   const inputsDisabled = busy || saving || loadState !== "ready";
-  const saveDisabled = inputsDisabled;
   const setRate = React.useCallback((code: EditableCurrencyCode, nextValue: string) => {
     setRates((prev) => ({
       ...prev,
@@ -201,7 +200,7 @@ export function CurrencyRatesPanel({
         <button
           type="button"
           onClick={() => void handleSaveAndSync()}
-          disabled={saveDisabled}
+          disabled={inputsDisabled}
            
           className={BTN_PRIMARY_CLASS}
           // eslint-disable-next-line ds/no-hardcoded-copy -- XAUP-0001 test-id

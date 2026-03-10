@@ -1,6 +1,6 @@
 /* eslint-disable ds/enforce-layout-primitives -- BRIK-DS-001: in-progress design-system migration */
 // src/components/landing/SocialProofSection.tsx
-import { memo } from "react";
+import { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
 import { Section } from "@acme/design-system/atoms";
@@ -8,6 +8,7 @@ import { Section } from "@acme/design-system/atoms";
 import hotel, { RATINGS_SNAPSHOT_DATE } from "@/config/hotel";
 import type { AppLanguage } from "@/i18n.config";
 import { Star } from "@/icons";
+import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
 
 type Testimonial = {
   rating?: number;
@@ -19,7 +20,6 @@ const SOURCE_KEYS: Record<string, string> = {
   Hostelworld: "hostelworld",
   "Booking.com": "booking",
 };
-const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
 const FALLBACK_SOCIAL_PROOF_TITLE =
   // i18n-exempt -- BRIK-1267 [ttl=2026-12-31] fallback copy for missing locale bundles.
   "Guests love Brikette";
@@ -57,13 +57,13 @@ const SocialProofSection = memo(function SocialProofSection({
   const { t: tModals } = useTranslation("modals", translationOptions);
   const ratings = hotel.ratings ?? [];
 
-  const featured: Testimonial[] = (() => {
+  const featured = useMemo<Testimonial[]>(() => {
     if (!ready) return [];
     const raw = tTestimonials("hostelworld.featured", { returnObjects: true }) as unknown;
     return Array.isArray(raw) ? (raw as Testimonial[]).slice(0, 2) : [];
-  })();
+  }, [ready, tTestimonials]);
 
-  const perks: string[] = (() => {
+  const perks = useMemo<string[]>(() => {
     if (!showPerks) return [];
     const raw = tModals("directPerks.items", {
       returnObjects: true,
@@ -77,7 +77,7 @@ const SocialProofSection = memo(function SocialProofSection({
       ],
     });
     return Array.isArray(raw) ? (raw as string[]) : [];
-  })();
+  }, [showPerks, tModals]);
 
   if (!ratings.length && !featured.length) return null;
 

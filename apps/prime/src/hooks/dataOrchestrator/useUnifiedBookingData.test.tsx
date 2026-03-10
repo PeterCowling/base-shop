@@ -3,7 +3,7 @@ import '@testing-library/jest-dom';
 import { useTranslation } from 'react-i18next';
 import { renderHook, waitFor } from '@testing-library/react';
 
-import { normalizeLocale } from '../../lib/i18n/normalizeLocale';
+import { normalizeUiLocale } from '@acme/i18n';
 
 import { useDateInfo } from './useDateInfo';
 import { useMealPlanEligibility } from './useMealPlanEligibility';
@@ -15,8 +15,8 @@ import { useUpgradeInfo } from './useUpgradeInfo';
 jest.mock('react-i18next', () => ({
   useTranslation: jest.fn(),
 }));
-jest.mock('../../lib/i18n/normalizeLocale', () => ({
-  normalizeLocale: jest.fn(),
+jest.mock('@acme/i18n', () => ({
+  normalizeUiLocale: jest.fn(),
 }));
 jest.mock('./useOccupantDataSources', () => ({
   useOccupantDataSources: jest.fn(),
@@ -35,7 +35,7 @@ jest.mock('./useUpgradeInfo', () => ({
 }));
 
 const mockUseTranslation = useTranslation as jest.MockedFunction<typeof useTranslation>;
-const mockNormalizeLocale = normalizeLocale as jest.MockedFunction<typeof normalizeLocale>;
+const mockNormalizeUiLocale = normalizeUiLocale as jest.MockedFunction<typeof normalizeUiLocale>;
 const mockUseOccupantDataSources = useOccupantDataSources as jest.MockedFunction<typeof useOccupantDataSources>;
 const mockUseOccupantTransform = useOccupantTransform as jest.MockedFunction<typeof useOccupantTransform>;
 const mockUseDateInfo = useDateInfo as jest.MockedFunction<typeof useDateInfo>;
@@ -58,7 +58,7 @@ describe('useUnifiedBookingData', () => {
       ready: true,
     } as any);
 
-    mockNormalizeLocale.mockImplementation((value) => value || 'en');
+    mockNormalizeUiLocale.mockImplementation((value) => value || 'en');
 
     mockUseOccupantDataSources.mockReturnValue({
       bookingsData: { reservationCode: 'RES-001' } as any,

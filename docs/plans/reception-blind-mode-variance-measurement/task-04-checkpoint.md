@@ -2,7 +2,7 @@
 Type: Validation
 Status: Complete
 Domain: Platform
-Last-updated: 2026-03-04
+Last-updated: 2026-03-09
 Feature-Slug: reception-blind-mode-variance-measurement
 Task-ID: TASK-04
 ---
@@ -14,6 +14,7 @@ Task-ID: TASK-04
   - `docs/plans/reception-blind-mode-variance-measurement/artifacts/blind-mode-variance-weekly.sample.md`
   - `docs/plans/reception-blind-mode-variance-measurement/artifacts/blind-mode-variance-weekly.sample.json`
 - Generation path: `reception:blind-mode-variance-report` CLI.
+- Validation scope: fixture-backed dry run only. No committed live production export artifact exists yet.
 
 ## Spot-Check (Fixture)
 Input fixtures:
@@ -36,8 +37,11 @@ Matches generator output in sample JSON.
 ## Known Limitations
 - Current validation uses fixture data, not live production export.
 - Missing-day treatment is currently zero-discrepancy by contract; this should be revisited if daily completeness markers become available.
+- Production activation date and first live weekly artifact still need to be recorded before the intended outcome can be treated as measured in results review.
+- Live export attempt on 2026-03-09 authenticated successfully but failed on infrastructure lookup: `getaddrinfo ENOTFOUND firebasedatabase.googleapis.com` while fetching RTDB instance details for `prime-f3652-default-rtdb`.
 
 ## Readiness Verdict
 - Deterministic generation: pass.
 - Contract adherence: pass.
-- Operational readiness for weekly use: pass (pending live data export hookup).
+- Operational readiness for weekly use: pass.
+- Live outcome evidence: pending first production export + weekly action note.

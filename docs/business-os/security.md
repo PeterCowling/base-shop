@@ -107,6 +107,7 @@ docs/business-os/**
 
 - Writes occur in the main Base-Shop checkout (restricted to `docs/business-os/**` by allowlist)
 - Writes are serialized by the Base-Shop writer lock (`scripts/git/writer-lock.sh`)
+- Locked shell sessions require explicit opt-in; command-mode shells such as `scripts/agents/with-writer-lock.sh -- bash` are forbidden because they can hold the repo writer lock indefinitely
 - Prevents overlapping commits/pushes in a shared checkout
 
 **File Permissions:**

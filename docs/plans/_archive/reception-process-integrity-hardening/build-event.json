@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-process-integrity-hardening-2026-03-05",
+  "feature_slug": "reception-process-integrity-hardening",
+  "emitted_at": "2026-03-05T12:00:00.000Z",
+  "why": "Close high-impact reception process integrity gaps discovered in workflow audit issues 2-8.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Reception mutations and draft-email flows become fail-closed for critical outcomes, enforce stronger request validation, and add regression coverage for every patched risk path.",
+    "source": "operator"
+  }
+}

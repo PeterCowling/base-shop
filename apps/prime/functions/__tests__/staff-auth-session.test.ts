@@ -2,7 +2,8 @@
  * @jest-environment node
  */
 
-import { hashPin } from '../../src/utils/pinSecurity';
+import { hash } from 'bcryptjs';
+
 import { onRequestPost } from '../api/staff-auth-session';
 
 import { createMockEnv, createMockKv, createPagesContext } from './helpers';
@@ -37,7 +38,7 @@ async function createServiceAccountTestKeyPair(): Promise<{ email: string; priva
 describe('/api/staff-auth-session', () => {
   it('TC-01: valid staff PIN hash comparison returns authenticated session payload with role claims', async () => {
     const kv = createMockKv();
-    const pinHash = await hashPin('2468');
+    const pinHash = await hash('2468', 10);
     const serviceAccount = await createServiceAccountTestKeyPair();
 
     const response = await onRequestPost(
@@ -78,7 +79,7 @@ describe('/api/staff-auth-session', () => {
 
   it('TC-02: invalid PIN attempt returns deterministic failure and preserves lockout counters', async () => {
     const kv = createMockKv();
-    const pinHash = await hashPin('2468');
+    const pinHash = await hash('2468', 10);
     const serviceAccount = await createServiceAccountTestKeyPair();
 
     const env = createMockEnv({

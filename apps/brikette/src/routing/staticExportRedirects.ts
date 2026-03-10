@@ -252,6 +252,7 @@ function matchRedirectSourcePattern(sourcePattern: string, pathname: string): Re
     regexPattern += escapeRegex(char);
   }
 
+  // eslint-disable-next-line security/detect-non-literal-regexp -- BRIK-2145 route regex is assembled from escaped literals plus constrained param tokens only
   const match = pathname.match(new RegExp(`^${regexPattern}$`));
   if (!match) {
     return { matched: false, groups: {} };

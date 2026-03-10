@@ -66,19 +66,81 @@ describe("ProductForm", () => {
     fireEvent.change(screen.getByLabelText(/Price/i), {
       target: { value: "89.00" },
     });
+    fireEvent.change(screen.getByLabelText(/Initial stock/i), {
+      target: { value: "12" },
+    });
+    fireEvent.change(screen.getByLabelText(/Status/i), {
+      target: { value: "active" },
+    });
 
     fireEvent.click(screen.getByRole("button", { name: "Create product" }));
 
     await waitFor(() => {
       expect(global.fetch).toHaveBeenCalledWith(
         "/admin/api/products",
-        expect.objectContaining({ method: "POST" }),
+        expect.objectContaining({
+          method: "POST",
+          body: JSON.stringify({
+            sku: "new-sku",
+            title: "New Product",
+            description: "",
+            price: 8900,
+            status: "active",
+            forSale: true,
+            media: [],
+            initialStock: 12,
+          }),
+        }),
       );
     });
 
     await waitFor(() => {
       expect(pushMock).toHaveBeenCalledWith("/admin/products");
       expect(refreshMock).toHaveBeenCalled();
+    });
+  });
+
+  it("blocks active create submit when initial stock is zero", () => {
+    render(<ProductForm />);
+
+    fireEvent.change(screen.getByLabelText(/^SKU/i), {
+      target: { value: "new-sku" },
+    });
+    fireEvent.change(screen.getByLabelText(/Title/i), {
+      target: { value: "New Product" },
+    });
+    fireEvent.change(screen.getByLabelText(/Price/i), {
+      target: { value: "89.00" },
+    });
+    fireEvent.change(screen.getByLabelText(/Status/i), {
+      target: { value: "active" },
+    });
+
+    fireEvent.click(screen.getByRole("button", { name: "Create product" }));
+
+    expect(
+      screen.getByText("Active products need stock greater than 0 before publish."),
+    ).toBeInTheDocument();
+    expect(global.fetch).not.toHaveBeenCalled();
+  });
+
+  it("maps active_requires_stock to actionable copy", async () => {
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: false,
+      json: async () => ({ error: "active_requires_stock" }),
+    });
+
+    render(<ProductForm product={{ ...EXISTING_PRODUCT, status: "draft" }} />);
+
+    fireEvent.change(screen.getByLabelText(/Status/i), {
+      target: { value: "active" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Active products need stock greater than 0 before publish."),
+      ).toBeInTheDocument();
     });
   });
 

@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "17cf3075ea",
+  "feature_slug": "prime-refetch-boilerplate",
+  "emitted_at": "2026-03-09T10:47:00.000Z",
+  "why": "Reduce mechanical repetition across 12 hooks so the standard hook shape is enforced in one place — lowering maintenance surface and preventing divergence as new hooks are added.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All React Query-backed pureData hooks expose refetch via a single shared mechanism with zero per-hook wrapper boilerplate.",
+    "source": "auto"
+  }
+}

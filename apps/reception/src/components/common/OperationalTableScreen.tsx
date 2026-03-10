@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { ScreenHeader } from "./ScreenHeader";
+
 export interface OperationalTableScreenProps {
   title: string;
   children: React.ReactNode;
@@ -34,14 +36,7 @@ export const OperationalTableScreen = memo(function OperationalTableScreen({
     <div
       className={`bg-gradient-to-b from-surface-2 to-surface-3 min-h-80vh p-4 font-sans text-foreground${className ? ` ${className}` : ""}`}
     >
-      {headerSlot ?? (
-        <div className="mb-6 flex items-center gap-3">
-          <div className="h-7 w-1 rounded-full bg-primary-main" aria-hidden="true" />
-          <h1 className="text-2xl font-heading font-semibold text-foreground">
-            {title}
-          </h1>
-        </div>
-      )}
+      {headerSlot ?? <ScreenHeader title={title} />}
       {children}
     </div>
   );

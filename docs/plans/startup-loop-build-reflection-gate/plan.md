@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: STRATEGY
 Workstream: Mixed
 Created: 2026-02-27
@@ -23,9 +23,9 @@ artifact: plan
 
 ## Summary
 
-The startup loop currently has no structured post-build step that captures patterns for future improvement. This plan adds a lightweight reflection gate inside `/lp-do-build` that produces a `pattern-reflection.user.md` artifact at plan completion, classifies patterns (deterministic or ad-hoc), and routes them to one of two destinations: an existing loop stage or skill update, or a new `tool-*` skill proposal. The plan also adds an "access declarations" step to the fact-find phase so that required data sources are verified before a build starts rather than being rediscovered mid-task. Work is sequenced as: SPIKE (schema + routing design) → IMPLEMENT (SKILL.md wiring + contracts) → IMPLEMENT (fact-find access declarations) → CHECKPOINT (pilot validation).
+This plan implemented the build reflection gate inside `/lp-do-build`. The delivered workflow produces a `pattern-reflection.user.md` artifact at plan completion, classifies patterns (deterministic or ad-hoc), and routes them to one of two destinations: an existing loop stage or skill update, or a new `tool-*` skill proposal. The plan also added an "access declarations" step to the fact-find phase so required data sources are verified before a build starts rather than being rediscovered mid-task. This work is complete and should not remain in active idea discovery as an unmet gap.
 
-## Active tasks
+## Completed tasks
 
 - [x] TASK-01: SPIKE — schema design and routing criteria — Complete (2026-02-27)
 - [x] TASK-02: IMPLEMENT — wire pattern-reflection gate into lp-do-build + register artifact contract — Complete (2026-02-27)

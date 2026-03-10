@@ -61,6 +61,10 @@ describe("GET /api/statistics/yoy", () => {
       previousYear: number;
       monthly: Array<{ month: string; currentValue: number; previousValue: number }>;
       summary: { currentYtd: number; previousYtd: number };
+      provenance: {
+        rules: { timezone: string };
+        previousSource: { fallbackUsed: boolean; sourceKind: string };
+      };
     };
 
     expect(response.status).toBe(200);
@@ -69,6 +73,40 @@ describe("GET /api/statistics/yoy", () => {
     expect(payload.previousYear).toBe(2025);
     expect(payload.monthly[0]).toMatchObject({ month: "01", currentValue: 100, previousValue: 80 });
     expect(payload.summary.currentYtd).toBe(100);
+    expect(payload.provenance.rules.timezone).toBe("UTC");
+    expect(payload.provenance.previousSource.sourceKind).toBe("dedicated-archive-db");
+    expect(payload.provenance.previousSource.fallbackUsed).toBe(false);
+  });
+
+  it("publishes archive-mirror fallback metadata when dedicated archive DB is not configured", async () => {
+    process.env.NEXT_PUBLIC_FIREBASE_ARCHIVE_DATABASE_URL = "";
+
+    global.fetch = jest
+      .fn()
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          tx1: { timestamp: "2026-01-15T00:00:00.000Z", amount: 100, type: "roomPayment" },
+        }),
+      } as Response)
+      .mockResolvedValueOnce({
+        ok: true,
+        json: async () => ({
+          tx2: { timestamp: "2025-01-15T00:00:00.000Z", amount: 80, type: "roomPayment" },
+        }),
+      } as Response) as unknown as typeof fetch;
+
+    const response = await GET(makeRequest());
+    const payload = (await response.json()) as {
+      source: { previous: string };
+      provenance: { previousSource: { path: string; sourceKind: string; fallbackUsed: boolean } };
+    };
+
+    expect(response.status).toBe(200);
+    expect(payload.source.previous).toBe("current-db:archive/allFinancialTransactions");
+    expect(payload.provenance.previousSource.path).toBe("archive/allFinancialTransactions");
+    expect(payload.provenance.previousSource.sourceKind).toBe("archive-mirror");
+    expect(payload.provenance.previousSource.fallbackUsed).toBe(true);
   });
 
   it("returns 403 for users without statistics roles", async () => {

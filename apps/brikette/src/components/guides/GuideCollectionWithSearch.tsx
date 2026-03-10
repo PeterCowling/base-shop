@@ -81,17 +81,13 @@ function GuideCollectionWithSearch({
     }
 
     // Map search results back to guide metadata
-    const resultKeySet = new Set(results.map((r) => r.key));
+    const resultIndexMap = new Map(results.map((r, i) => [r.key, i]));
     const guidesArray = Array.isArray(guides) ? guides : Array.from(guides);
 
     // Sort guides by search result order (relevance)
     const sortedGuides = guidesArray
-      .filter((g) => resultKeySet.has(g.key))
-      .sort((a, b) => {
-        const aIndex = results.findIndex((r) => r.key === a.key);
-        const bIndex = results.findIndex((r) => r.key === b.key);
-        return aIndex - bIndex;
-      });
+      .filter((g) => resultIndexMap.has(g.key))
+      .sort((a, b) => (resultIndexMap.get(a.key) ?? 0) - (resultIndexMap.get(b.key) ?? 0));
 
     return sortedGuides;
   }, [guides, query, results, isReady]);

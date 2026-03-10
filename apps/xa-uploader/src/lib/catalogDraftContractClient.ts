@@ -56,21 +56,13 @@ export class CatalogDraftConflictError extends Error {
   override name = "CatalogDraftConflictError";
 }
 
-function getCatalogContractBaseUrl(): string {
-  return (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
-}
-
-function getCatalogContractWriteToken(): string {
-  return (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
-}
-
-function getCatalogContractReadToken(): string {
-  return (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
-}
+const CATALOG_CONTRACT_BASE_URL = (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
+const CATALOG_CONTRACT_WRITE_TOKEN = (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
+const CATALOG_CONTRACT_READ_TOKEN = (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
 
 
 function buildContractUrl(pathname: string): string {
-  const baseUrl = getCatalogContractBaseUrl();
+  const baseUrl = CATALOG_CONTRACT_BASE_URL;
   if (!baseUrl) {
     throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
   }
@@ -100,7 +92,7 @@ function resolveCurrencyRatesUrl(storefront: XaCatalogStorefront): string {
 }
 
 function getWriteTokenHeader(): Record<string, string> {
-  const writeToken = getCatalogContractWriteToken();
+  const writeToken = CATALOG_CONTRACT_WRITE_TOKEN;
   if (!writeToken) {
     throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_WRITE_TOKEN is not configured.");
   }
@@ -108,12 +100,12 @@ function getWriteTokenHeader(): Record<string, string> {
 }
 
 function getReadTokenHeader(): Record<string, string> {
-  const readToken = getCatalogContractReadToken();
+  const readToken = CATALOG_CONTRACT_READ_TOKEN;
   if (readToken) {
     return { "X-XA-Catalog-Token": readToken };
   }
 
-  const writeToken = getCatalogContractWriteToken();
+  const writeToken = CATALOG_CONTRACT_WRITE_TOKEN;
   if (writeToken) {
     return { "X-XA-Catalog-Token": writeToken };
   }
@@ -538,6 +530,15 @@ export function upsertProductsInCloudSnapshot(params: {
   const nextProducts = [...params.snapshot.products];
   const nextRevisions = { ...params.snapshot.revisionsById };
 
+  const idToIndex = new Map<string, number>();
+  const slugToIndex = new Map<string, number>();
+  for (const [i, p] of nextProducts.entries()) {
+    const pid = (p.id ?? "").trim();
+    if (pid) idToIndex.set(pid, i);
+    const slug = getProductNormalizedSlug(p);
+    if (slug) slugToIndex.set(slug, i);
+  }
+
   for (const input of params.products) {
     const parsed = catalogProductDraftSchema.parse(input);
     const normalizedSlug = getProductNormalizedSlug(parsed);
@@ -548,12 +549,9 @@ export function upsertProductsInCloudSnapshot(params: {
     const id = (parsed.id ?? "").trim() || crypto.randomUUID();
     const nextProduct: CatalogProductDraftInput = { ...parsed, id, slug: normalizedSlug };
 
-    const existingIndex = nextProducts.findIndex((e) => (e.id ?? "").trim() === id);
-    const duplicateSlug = nextProducts.some((e, i) => {
-      if (i === existingIndex) return false;
-      return getProductNormalizedSlug(e) === normalizedSlug;
-    });
-    if (duplicateSlug) {
+    const existingIndex = idToIndex.get(id) ?? -1;
+    const slugIndex = slugToIndex.get(normalizedSlug) ?? -1;
+    if (slugIndex >= 0 && slugIndex !== existingIndex) {
       throw new Error(`Duplicate product slug "${normalizedSlug}".`);
     }
 
@@ -561,7 +559,9 @@ export function upsertProductsInCloudSnapshot(params: {
       nextProducts[existingIndex] = nextProduct;
     } else {
       nextProducts.push(nextProduct);
+      idToIndex.set(id, nextProducts.length - 1);
     }
+    slugToIndex.set(normalizedSlug, existingIndex >= 0 ? existingIndex : nextProducts.length - 1);
     nextRevisions[id] = createRevision();
   }
 

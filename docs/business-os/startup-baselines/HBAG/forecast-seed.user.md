@@ -3,8 +3,8 @@ Type: Startup-Baseline-Seed
 Status: Active
 Business: HBAG
 Created: 2026-02-20
-Updated: 2026-02-20
-Last-reviewed: 2026-02-20
+Updated: 2026-03-09
+Last-reviewed: 2026-03-09
 Owner: Pete
 Seed-Source: docs/business-os/startup-baselines/HBAG/S3-forecast/2026-02-20-lp-forecast.user.md
 Review-trigger: After each completed build cycle touching this document.
@@ -16,11 +16,12 @@ Review-trigger: After each completed build cycle touching this document.
 
 - Outcome-ID: `HBAG-OUT-2026Q1-01`
 - Outcome statement: Achieve first paid demand signal for HBAG — 10 sales or €500 revenue from Etsy and Instagram/TikTok — validating that premium €80–€150 Birkin-style mini handbag accessories find buyers at launch scale.
-- Baseline (2026-02-17):
-  - paid orders: 0
-  - net revenue: €0
-  - contribution margin: not measured (awaiting TASK-02 supplier quote)
+- Baseline (updated 2026-03-09):
+  - paid orders: 1
+  - net revenue: EUR 14.50 from first recorded sale
+  - contribution margin: 79.3% on net revenue for the Luisa Positano pilot sale (`EUR 29.00` retail, `50%` commission, `EUR 3.00` landed cost)
   - return rate: not measured
+  - note: pilot placement at Luisa Positano started approximately 2026-03-02; first recorded sale landed on 2026-03-08, which is a stronger-than-expected off-season signal but still only `n=1`
 - Target (90 days — conservative first-signal target):
   - paid orders: 10 OR net revenue €500 — whichever comes first (P10 planning target)
   - P50 stretch: 34 Etsy orders + 8 in-destination = 42 combined orders, ~€2,787 net revenue
@@ -33,6 +34,7 @@ Review-trigger: After each completed build cycle touching this document.
   - weekly Instagram/TikTok DM purchase inquiries
   - weekly Etsy favourites per listing
   - in-destination sales count (weekly, June–Sept only)
+  - in-destination placement sell-through by partner/store
 - Decision link: `DEC-HBAG-01` — if 0 sales by 2026-04-17 (60-day gate), pause channel spend, run `/lp-do-replan` on pricing and variant selection
 - Stop/Pivot guardrails:
   - if 0 sales across all active channels after 60 days: halt, replan
@@ -51,6 +53,7 @@ Confirmed available now:
 - PMF plan active: `docs/plans/mini-handbag-pmf/plan.md` (4 of 11 tasks complete)
 - Photography brief ready: `docs/plans/mini-handbag-pmf/task-06-photography-brief.md`
 - Operator is based in Positano — in-destination channel available June–September
+- Off-season boutique pilot live: Luisa Positano placement started approximately 2026-03-02 and produced first recorded sale on 2026-03-08
 
 Still missing / needs confirmation before channel launch:
 - Unit cost, MOQ, China→EU shipping (TASK-02 — critical for margin stack)
@@ -68,12 +71,13 @@ Reuse-existing:
 - CE marking investigation findings from `docs/plans/mini-handbag-pmf/ce-marking-investigation.md`
 
 Adapt-existing:
-- Convert PMF plan tasks into live weekly demand tracker once TASK-07/08 launch
+- Convert PMF plan tasks into live weekly demand tracker now that first offline actuals exist
 - Refine ICP from "fashion-conscious women" to tracked buyer segment after first 10 sales (age, location, purchase trigger)
 - Shift offer from single-SKU per variant to potential bundle once demand signal confirms both H1 and H2 are selling
 
 New required artifacts:
 - `docs/plans/mini-handbag-pmf/demand-log.md` (weekly: Etsy views/favs/sales + DM log)
+- `docs/business-os/strategy/HBAG/channel-health-log.user.md` (standing offline placement and partner sell-through log)
 - `docs/plans/mini-handbag-pmf/supply-chain-investigation.md` (TASK-02 output)
 - Photography directory `docs/plans/mini-handbag-pmf/photography/` (TASK-06 output)
 - Brand naming research prompt via `/brand-naming-research` (pre-Etsy launch)

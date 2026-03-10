@@ -143,7 +143,7 @@ export function RecoveryQuoteCapture({
             type="checkbox"
             checked={consent}
             onChange={(event) => setConsent(event.target.checked)}
-            className="mt-1"
+            className="mt-1 min-h-11 min-w-11 shrink-0"
             disabled={disabled}
           />
           {t("recovery.consent") as string}
@@ -155,7 +155,7 @@ export function RecoveryQuoteCapture({
         <button
           type="submit"
           disabled={disabled}
-          className="min-h-11 rounded-xl bg-brand-primary px-4 py-2 text-sm font-semibold text-brand-on-primary disabled:opacity-50"
+          className="min-h-11 min-w-11 rounded-xl bg-brand-primary px-4 py-2 text-sm font-semibold text-brand-on-primary disabled:opacity-50"
         >
           {loading
             ? (t("recovery.sending") as string)

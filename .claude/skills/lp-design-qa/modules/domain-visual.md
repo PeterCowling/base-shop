@@ -10,7 +10,8 @@
   - Read the component file
   - Grep for the specified token class (e.g., `bg-primary`)
   - Verify it's used on the correct element/property
-  - Check for arbitrary values (`#hex`, `rgb(`, `hsl(`, inline styles with hardcoded colors)
+  - Check for arbitrary values (`#hex`, literal `rgb(`/`hsl(`/`oklch(` colors, inline styles with hardcoded colors)
+  - Do not flag semantic wrappers or modifiers as arbitrary by default: `hsl(var(--...))`, app-level `@theme` aliases, or opacity modifiers like `bg-primary/90`
 - **Pass:** All specified tokens present, no arbitrary values
 - **Fail:** Missing tokens, arbitrary values found, wrong tokens used
 

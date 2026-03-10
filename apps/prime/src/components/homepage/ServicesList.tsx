@@ -7,13 +7,15 @@
 
 'use client';
 
-import { memo } from 'react';
+import { memo, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import type { ServiceCardData } from '../../config/homepage/servicesConfig';
 
 import ServiceCard from './cards/ServiceCard';
-import ServiceCard2 from './cards/ServiceCard2';
+
+// Static: IDs that use vertical card layout
+const VERTICAL_CARD_IDS = new Set(['mainDoorService', 'digitalAssistantService']);
 
 export interface ServicesListProps {
   services: ServiceCardData[];
@@ -31,15 +33,15 @@ export const ServicesList = memo(function ServicesList({
   const { t } = useTranslation('Homepage');
 
   // Filter visible cards here if not pre-filtered by getServicesConfig
-  const visibleServices = services.filter((card) => card.visible);
+  const visibleServices = useMemo(
+    () => services.filter((card) => card.visible),
+    [services],
+  );
 
   // Only render if there is at least one visible service card
-  if (!visibleServices || visibleServices.length === 0) {
+  if (visibleServices.length === 0) {
     return null;
   }
-
-  // Define ids that should use CardType2 (vertical layout)
-  const cardType2Ids = new Set(['mainDoorService', 'digitalAssistantService']);
 
   return (
     <div className={className}>
@@ -59,19 +61,15 @@ export const ServicesList = memo(function ServicesList({
           const description = t(descriptionKey);
           const alt = t(altKey, { defaultValue: title });
 
-          // Determine which card component to use
-          const CardComponent = cardType2Ids.has(card.id)
-            ? ServiceCard2
-            : ServiceCard;
-
           return (
-            <CardComponent
+            <ServiceCard
               key={card.id}
               image={card.image}
               alt={alt}
               title={title}
               to={card.to}
               description={description}
+              layout={VERTICAL_CARD_IDS.has(card.id) ? 'vertical' : 'horizontal'}
             />
           );
         })}

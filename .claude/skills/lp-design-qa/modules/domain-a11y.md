@@ -34,9 +34,10 @@
 ## A11Y-04: Contrast Compliance
 
 - For each token combination in spec's "Token Binding":
-  - Calculate contrast ratio (or flag for manual check if auto-check unavailable)
+  - Calculate contrast ratio when the token source is statically clear; otherwise flag for manual/runtime check
   - Verify ≥4.5:1 for normal text, ≥3:1 for large text/UI components (WCAG AA)
-  - Check both light and dark modes
+  - Check both light and dark modes when the feature supports both; for dark-first surfaces, verify the active dark path and note light-mode scope explicitly
+  - Prefer existing repo validation commands when available for the relevant theme; do not infer a failure solely from mixed `oklch()`/HSL token plumbing
 - **Pass:** All combinations meet WCAG AA
 - **Fail:** Contrast ratios below threshold, token combinations not checked
 

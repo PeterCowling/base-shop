@@ -8,9 +8,9 @@
  * Missing days return zero-safe defaults to maintain cost safety.
  */
 
-import { get,getDatabase, ref } from 'firebase/database';
+import { get, getDatabase, ref } from 'firebase/database';
 
-import { type DailyKpiRecord,ZERO_SAFE_DEFAULTS } from './kpiAggregator';
+import { type DailyKpiRecord, ZERO_SAFE_DEFAULTS } from './kpiAggregator';
 
 /**
  * Read daily KPI aggregate for a specific date.

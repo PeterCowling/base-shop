@@ -173,7 +173,7 @@ function CostBreakdown({
   });
 
   return (
-    <figure className={`not-prose my-6 ${className}`}>
+    <figure className={clsx("not-prose my-6", className)}>
       {resolvedTitle ? (
         <figcaption className="mb-2 text-sm font-medium text-secondary">
           {resolvedTitle}

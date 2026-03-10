@@ -8,6 +8,26 @@ import {
   type ProductsDataMap,
 } from "../../../types/bar/BarTypes";
 
+/* ---------------------------------------------------------------- */
+/* Top‑level category mapping (module‑level constant)              */
+/* ---------------------------------------------------------------- */
+const categoryIdToType: Record<number, CategoryType> = {
+  1: "Sweet",
+  2: "Savory",
+  3: "Coffee",
+  4: "Tea",
+  5: "Beer",
+  6: "Wine",
+  7: "Spritz",
+  8: "Mixed Drinks",
+  9: "Cocktails",
+  10: "Other",
+  11: "Gelato",
+  13: "Juices",
+  14: "Smoothies",
+  15: "Soda",
+};
+
 /**
  * useProducts
  * ------------------------------------------------------------------
@@ -31,28 +51,6 @@ import {
  * ------------------------------------------------------------------
  */
 export function useProducts() {
-  /* ---------------------------------------------------------------- */
-  /* Top‑level category mapping                                       */
-  /* ---------------------------------------------------------------- */
-  const categoryIdToType: Record<number, CategoryType> = useMemo(
-    () => ({
-      1: "Sweet",
-      2: "Savory",
-      3: "Coffee",
-      4: "Tea",
-      5: "Beer",
-      6: "Wine",
-      7: "Spritz",
-      8: "Mixed Drinks",
-      9: "Cocktails",
-      10: "Other",
-      11: "Gelato",
-      13: "Juices",
-      14: "Smoothies",
-      15: "Soda",
-    }),
-    []
-  );
 
   /* ---------------------------------------------------------------- */
   /* Product data                                                     */

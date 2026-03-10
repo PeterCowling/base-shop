@@ -39,6 +39,25 @@ Additional context fields (optional but recommended):
 - **Time to competence**: How long to learn the channel if team is new to it?
 - **Creative demands**: What assets are needed? (Video, images, copy, landing pages)
 
+### Companion GTM Artifacts (conditional, do not skip when applicable)
+
+If any selected or month-2 candidate channel is a physical-product distribution lane
+(boutique, stockist, retailer, distributor, hotel shop, resort pilot, wholesale account):
+
+- Create or refresh `docs/business-os/strategy/<BIZ>/stockist-target-list.user.md`.
+- Record named targets when known; otherwise record explicit coverage slots, target-buyer profile, and store-selection criteria.
+- If a placement or account is already live, treat `docs/business-os/strategy/<BIZ>/channel-health-log.user.md` as the source of truth for actuals and reference it directly.
+
+If the channel strategy introduces partner-term, allocation, or pricing-conflict rules:
+
+- Create or refresh `docs/business-os/strategy/<BIZ>/channel-policy.user.md`.
+- Capture margin floors, discount/consignment rules, allocation rules, and exception owner.
+
+If the strategy is execution-ready for the next 7 days:
+
+- Create or refresh `docs/business-os/strategy/<BIZ>/weekly-demand-plan.user.md`.
+- Convert the first 7 days of launch actions into an operator-owned sprint with owner, metric, stop condition, and review date.
+
 ### Success Metrics (30-Day Targets)
 
 - **Volume metric**: Impressions, reach, sessions, or views

@@ -15,4 +15,12 @@ describe("formatEuro", () => {
   it("formats zero", () => {
     expect(formatEuro(0)).toBe("€0.00");
   });
+
+  it("formats localized euro output when requested", () => {
+    expect(formatEuro(1234.5, { style: "locale" })).toBe("1.234,50 €");
+  });
+
+  it("formats positive values with an explicit sign when requested", () => {
+    expect(formatEuro(5, { signDisplay: "always" })).toBe("€+5.00");
+  });
 });

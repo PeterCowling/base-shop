@@ -12,6 +12,12 @@
     "domain": "Repo / Agents"
   },
   {
+    "path": "docs/audits/breakpoint-sweeps/2026-03-06-xa-staging/breakpoint-sweep-report.md",
+    "type": "Breakpoint-Sweep-Report",
+    "status": "Complete",
+    "domain": null
+  },
+  {
     "path": "docs/audits/commerce-core-readiness-fact-check-2026-02-01.md",
     "type": "Audit",
     "status": "Historical",
@@ -43,6 +49,18 @@
   },
   {
     "path": "docs/audits/contrast-sweeps/2026-03-02-xa-uploader/contrast-uniformity-report.md",
+    "type": "Contrast-Uniformity-Report",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/audits/contrast-sweeps/2026-03-04-xa-b-pdp/contrast-uniformity-report.md",
+    "type": "Contrast-Uniformity-Report",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/audits/contrast-sweeps/2026-03-04-xa-uploader-dark/contrast-uniformity-report.md",
     "type": "Contrast-Uniformity-Report",
     "status": "Complete",
     "domain": null
@@ -270,6 +288,18 @@
     "domain": "<CMS | Platform | UI | API | Data | Infra | etc.>"
   },
   {
+    "path": "docs/briefs/brik-recovery-quote-server-email-send-point-briefing.md",
+    "type": "Briefing",
+    "status": "Active",
+    "domain": "SELL"
+  },
+  {
+    "path": "docs/briefs/brikette-route-localization-briefing.md",
+    "type": "Briefing",
+    "status": "Active",
+    "domain": "UI"
+  },
+  {
     "path": "docs/briefs/cloudflare-code-mode-mcp-research.md",
     "type": "Briefing",
     "status": "Active",
@@ -328,6 +358,12 @@
     "type": "Briefing",
     "status": "Active",
     "domain": "Venture-Studio / Startup-Loop"
+  },
+  {
+    "path": "docs/briefs/xa-uploader-hard-blockers-briefing.md",
+    "type": "Briefing",
+    "status": "Active",
+    "domain": "UI"
   },
   {
     "path": "docs/business-os/README.md",
@@ -1476,6 +1512,12 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/platform-capability/skill-efficiency-ideas-2026-03-04.md",
+    "type": "Idea Pack",
+    "status": "Active",
+    "domain": "Skills / Platform"
+  },
+  {
     "path": "docs/business-os/readiness/2026-02-10-ideas-readiness.agent.md",
     "type": "Ideas-Readiness",
     "status": "Historical",
@@ -1704,6 +1746,18 @@
     "domain": null
   },
   {
+    "path": "docs/business-os/startup-baselines/HBAG/pdp-funnel-feed-runbook.user.md",
+    "type": "Runbook",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/business-os/startup-baselines/HBAG/pdp-funnel-feed.user.md",
+    "type": "Baseline",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md",
     "type": "Startup-Intake-Packet",
     "status": "Active",
@@ -1820,6 +1874,12 @@
   {
     "path": "docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md",
     "type": "Capability-Contract",
+    "status": "Active",
+    "domain": "Venture-Studio"
+  },
+  {
+    "path": "docs/business-os/startup-loop/contracts/naming-round-analytics-cadence-v1.md",
+    "type": "Process-Contract",
     "status": "Active",
     "domain": "Venture-Studio"
   },
@@ -3522,6 +3582,12 @@
     "domain": "<CMS | Platform | UI | API | Data | Infra | etc.>"
   },
   {
+    "path": "docs/plans/_templates/micro-build.md",
+    "type": "Micro-Build",
+    "status": "<Active | Complete | Archived>",
+    "domain": null
+  },
+  {
     "path": "docs/plans/_templates/plan.md",
     "type": "Plan",
     "status": "<Draft | Active | Archived | Superseded>",
@@ -3750,10 +3816,46 @@
     "domain": "Brikette/UX"
   },
   {
+    "path": "docs/plans/brikette-calendar-hydration-contrast-fixes/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Brikette/UX"
+  },
+  {
+    "path": "docs/plans/brikette-calendar-hydration-contrast-fixes/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Brikette/UX"
+  },
+  {
     "path": "docs/plans/brikette-ci-targeted-test-selection-fact-find.md",
     "type": "Fact-Find",
     "status": "Proposed",
     "domain": "CI/Infrastructure"
+  },
+  {
+    "path": "docs/plans/brikette-cohesive-sales-funnel/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Brikette Funnel"
+  },
+  {
+    "path": "docs/plans/brikette-cohesive-sales-funnel/task-07-env-gate-findings.md",
+    "type": "INVESTIGATE",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/brikette-cohesive-sales-funnel/task-08-iframe-findings.md",
+    "type": "INVESTIGATE",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/brikette-cohesive-sales-funnel/task-12a-double-room-endpoint-decision.md",
+    "type": "Task-Artifact",
+    "status": "Complete",
+    "domain": null
   },
   {
     "path": "docs/plans/brikette-cta-sales-funnel-ga4/build-record.user.md",
@@ -3804,6 +3906,30 @@
     "domain": null
   },
   {
+    "path": "docs/plans/brikette-funnel-test-hardening/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/brikette-funnel-test-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI | QA"
+  },
+  {
+    "path": "docs/plans/brikette-funnel-test-hardening/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI | QA"
+  },
+  {
+    "path": "docs/plans/brikette-funnel-test-hardening/results-review.user.md",
+    "type": "Results-Review",
+    "status": "Draft",
+    "domain": null
+  },
+  {
     "path": "docs/plans/brikette-google-hotel-free-listing/fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
@@ -3814,6 +3940,48 @@
     "type": "Plan",
     "status": "Active",
     "domain": "Repo"
+  },
+  {
+    "path": "docs/plans/brikette-live-sales-funnel-smoke/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "QA | E2E | Browser Compatibility | Sales"
+  },
+  {
+    "path": "docs/plans/brikette-live-sales-funnel-smoke/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "QA | E2E | Browser Compatibility | Sales"
+  },
+  {
+    "path": "docs/plans/brikette-live-usability-smoke/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "QA | E2E | Browser Compatibility"
+  },
+  {
+    "path": "docs/plans/brikette-live-usability-smoke/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "QA | E2E | Browser Compatibility"
+  },
+  {
+    "path": "docs/plans/brikette-locale-missing-files-backfill/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/brikette-locale-missing-files-backfill/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/brikette-localized-route-canonicalization/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "SEO | Routing"
   },
   {
     "path": "docs/plans/brikette-octorate-funnel-reduction/artifacts/octorate-export-observed-schema-2026-02-17.md",
@@ -4086,6 +4254,18 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/brikette-weekly-watchdog/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/brikette-weekly-watchdog/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Infra"
+  },
+  {
     "path": "docs/plans/business-os-card-presentation-fact-find.md",
     "type": "Fact-find",
     "status": "Reference",
@@ -4236,6 +4416,18 @@
     "domain": "Business-Ops"
   },
   {
+    "path": "docs/plans/email-day-to-day-readiness/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/email-deterministic-workload-migration-parity/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "STRATEGY"
+  },
+  {
     "path": "docs/plans/email-draft-quality-upgrade-v2/plan.md",
     "type": "Plan",
     "status": "Complete",
@@ -4272,6 +4464,12 @@
     "domain": null
   },
   {
+    "path": "docs/plans/email-draft-refine-quality-gate-fail-closed/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "STRATEGY"
+  },
+  {
     "path": "docs/plans/email-draft-self-improving-system/critique-history.md",
     "type": "Reference",
     "status": "Active",
@@ -4302,6 +4500,18 @@
     "domain": "Repo/Git"
   },
   {
+    "path": "docs/plans/gmail-guard-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/gmail-guard-hardening/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/plans/google-maps-api-integration/fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
@@ -4312,6 +4522,18 @@
     "type": "Plan",
     "status": "Active",
     "domain": "UI"
+  },
+  {
+    "path": "docs/plans/governed-telemetry-actor-attribution/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/governed-telemetry-actor-attribution/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Platform"
   },
   {
     "path": "docs/plans/guide-areas-comparison-briefing.md",
@@ -4402,6 +4624,24 @@
     "type": "Plan",
     "status": "Active",
     "domain": "SELL"
+  },
+  {
+    "path": "docs/plans/hbag-pdp-ga4-funnel-feed/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/hbag-pdp-ga4-funnel-feed/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Data"
+  },
+  {
+    "path": "docs/plans/hbag-pdp-ga4-funnel-feed/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Data"
   },
   {
     "path": "docs/plans/hbag-pdp-material-specs/fact-find.md",
@@ -4518,6 +4758,18 @@
     "domain": "Business-OS"
   },
   {
+    "path": "docs/plans/ideas-micro-build-direct-lane/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "BOS | Startup Loop"
+  },
+  {
+    "path": "docs/plans/ideas-micro-build-direct-lane/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "BOS | Startup Loop"
+  },
+  {
     "path": "docs/plans/ideas-readiness-bos-outcome-contract-fact-find.md",
     "type": "Fact-Find",
     "status": "Needs-input",
@@ -4582,6 +4834,30 @@
     "type": "Fact-Find",
     "status": "Needs-input",
     "domain": "Business-OS"
+  },
+  {
+    "path": "docs/plans/ideas-work-package-promotion/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "BOS | Startup Loop"
+  },
+  {
+    "path": "docs/plans/ideas-work-package-promotion/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "BOS | Startup Loop"
+  },
+  {
+    "path": "docs/plans/internal-bug-scan-mvp/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/internal-bug-scan-mvp/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
   },
   {
     "path": "docs/plans/jest-runaway-process-prevention/critique-history.md",
@@ -4704,6 +4980,18 @@
     "domain": null
   },
   {
+    "path": "docs/plans/naming-sidecar-round-analytics/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Data"
+  },
+  {
+    "path": "docs/plans/naming-sidecar-round-analytics/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Data"
+  },
+  {
     "path": "docs/plans/nextjs-16-upgrade-plan.md",
     "type": "Plan",
     "status": "Active",
@@ -4764,6 +5052,18 @@
     "domain": "UI"
   },
   {
+    "path": "docs/plans/prime-edge-tls-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Infra"
+  },
+  {
+    "path": "docs/plans/prime-edge-tls-hardening/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Infra"
+  },
+  {
     "path": "docs/plans/prime-main-door-access/critique-history.md",
     "type": "Critique-History",
     "status": "Reference",
@@ -4782,6 +5082,30 @@
     "domain": "Prime"
   },
   {
+    "path": "docs/plans/prime-process-reliability-hardening/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/prime-reception-unified-messaging/architecture.md",
+    "type": "Architecture",
+    "status": "Active",
+    "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/prime-reception-unified-messaging/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Prime"
+  },
+  {
+    "path": "docs/plans/prime-reception-unified-messaging/replan-notes.md",
+    "type": "Replan Notes",
+    "status": "Active",
+    "domain": null
+  },
+  {
     "path": "docs/plans/prime-staff-auth-architecture-decision.md",
     "type": "Decision-Memo",
     "status": "Accepted",
@@ -4798,6 +5122,120 @@
     "type": "Plan",
     "status": "Active",
     "domain": "BOS"
+  },
+  {
+    "path": "docs/plans/reception-app-native-inbox/artifacts/cass-context.md",
+    "type": "Startup-Loop-CASS-Context",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-app-native-inbox/draft-pipeline-port-map.md",
+    "type": "Investigation",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-app-native-inbox/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-app-native-inbox/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-app-native-inbox/replan-notes.md",
+    "type": "Notes",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-app-native-inbox/spike-gmail-adapter.md",
+    "type": "Spike",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-app-native-inbox/spike-gmail-history-sync.md",
+    "type": "Spike",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-blind-mode-variance-measurement/artifacts/blind-mode-variance-weekly.sample.md",
+    "type": "Report",
+    "status": "Draft",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-blind-mode-variance-measurement/artifacts/live-export-runbook.md",
+    "type": "Runbook",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-blind-mode-variance-measurement/artifacts/task-02-validation.md",
+    "type": "Validation",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-blind-mode-variance-measurement/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-blind-mode-variance-measurement/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-blind-mode-variance-measurement/task-01-kpi-contract.md",
+    "type": "Spec",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-blind-mode-variance-measurement/task-03-review-cadence.md",
+    "type": "Runbook",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-blind-mode-variance-measurement/task-04-checkpoint.md",
+    "type": "Validation",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/reception-contrast-and-visual-polish/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-contrast-and-visual-polish/pattern-reflection.user.md",
+    "type": "Pattern-Reflection",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-contrast-and-visual-polish/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-contrast-and-visual-polish/results-review.user.md",
+    "type": "Results-Review",
+    "status": "Draft",
+    "domain": null
   },
   {
     "path": "docs/plans/reception-ds-centralization-growth-first/artifacts/migration-inventory.md",
@@ -4848,6 +5286,24 @@
     "domain": "UI"
   },
   {
+    "path": "docs/plans/reception-firebase-subscription-parallelization/critique-history.md",
+    "type": "Critique-History",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-firebase-subscription-parallelization/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Draft",
+    "domain": "Data"
+  },
+  {
+    "path": "docs/plans/reception-firebase-subscription-parallelization/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Data"
+  },
+  {
     "path": "docs/plans/reception-guest-email-cutover-fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
@@ -4858,6 +5314,156 @@
     "type": "Plan",
     "status": "Active",
     "domain": "Automation"
+  },
+  {
+    "path": "docs/plans/reception-inbox-context-history-bound/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "API"
+  },
+  {
+    "path": "docs/plans/reception-inbox-context-history-bound/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "API"
+  },
+  {
+    "path": "docs/plans/reception-inbox-draft-dedup/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-inbox-draft-dedup/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "API"
+  },
+  {
+    "path": "docs/plans/reception-inbox-draft-dedup/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "API"
+  },
+  {
+    "path": "docs/plans/reception-inbox-draft-dedup/results-review.user.md",
+    "type": "Results-Review",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-inbox-draft-edit-tracking/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Data"
+  },
+  {
+    "path": "docs/plans/reception-inbox-draft-edit-tracking/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Data"
+  },
+  {
+    "path": "docs/plans/reception-inbox-guest-context/artifacts/cass-context.md",
+    "type": "Startup-Loop-CASS-Context",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-inbox-prime-correctness/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-inbox-prime-correctness/pattern-reflection.user.md",
+    "type": "Pattern-Reflection",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-inbox-prime-correctness/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "Product-Engineering"
+  },
+  {
+    "path": "docs/plans/reception-inbox-prime-correctness/results-review.user.md",
+    "type": "Results-Review",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-inbox-quality-check-debug/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "API"
+  },
+  {
+    "path": "docs/plans/reception-inbox-quality-check-debug/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "API"
+  },
+  {
+    "path": "docs/plans/reception-process-integrity-deploy-readiness-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI/API/Data"
+  },
+  {
+    "path": "docs/plans/reception-process-integrity-deploy-readiness-hardening/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI/API/Data"
+  },
+  {
+    "path": "docs/plans/reception-process-integrity-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI/API/Data"
+  },
+  {
+    "path": "docs/plans/reception-process-integrity-hardening/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI/API/Data"
+  },
+  {
+    "path": "docs/plans/reception-process-integrity-reaudit-followup/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI/API/Data"
+  },
+  {
+    "path": "docs/plans/reception-process-integrity-reaudit-followup/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI/API/Data"
+  },
+  {
+    "path": "docs/plans/reception-process-integrity-reaudit-opportunities/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI/API/Data"
+  },
+  {
+    "path": "docs/plans/reception-process-integrity-reaudit-opportunities/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI/API/Data"
+  },
+  {
+    "path": "docs/plans/reception-process-integrity-silent-failure-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI/API/Data"
+  },
+  {
+    "path": "docs/plans/reception-process-integrity-silent-failure-hardening/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI/API/Data"
   },
   {
     "path": "docs/plans/reception-remove-light-mode/fact-find.md",
@@ -4920,6 +5526,78 @@
     "domain": null
   },
   {
+    "path": "docs/plans/reception-staff-accounts-lifecycle-permissions/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "API"
+  },
+  {
+    "path": "docs/plans/reception-staff-accounts-modal-entry/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-staff-accounts-pete-only-access/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Needs-input",
+    "domain": "API"
+  },
+  {
+    "path": "docs/plans/reception-statistics-yoy-aggregation-api/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "API"
+  },
+  {
+    "path": "docs/plans/reception-statistics-yoy-data-contract/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Data"
+  },
+  {
+    "path": "docs/plans/reception-statistics-yoy-switchable-ui/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-theme-dark-mode-base-tokens/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-theme-dark-mode-base-tokens/pattern-reflection.user.md",
+    "type": "Pattern-Reflection",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-theme-dark-mode-base-tokens/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-theme-dark-mode-base-tokens/results-review.user.md",
+    "type": "Results-Review",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/reception-theme-inline-cascade/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/reception-theme-inline-cascade/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "UI"
+  },
+  {
     "path": "docs/plans/reception-visual-ux-audit/fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
@@ -4932,10 +5610,28 @@
     "domain": "UI"
   },
   {
+    "path": "docs/plans/repo-maturity-strictness-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "BOS"
+  },
+  {
+    "path": "docs/plans/repo-maturity-strictness-hardening/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "BOS"
+  },
+  {
     "path": "docs/plans/repo-native-business-os-kanban-system-prompt.md",
     "type": "Guide",
     "status": "Draft",
     "domain": "Business OS / Kanban"
+  },
+  {
+    "path": "docs/plans/self-evolving-per-business-reorg/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Infeasible",
+    "domain": "Data"
   },
   {
     "path": "docs/plans/skylar-marketing-promotion/fact-find.md",
@@ -5178,6 +5874,12 @@
     "domain": null
   },
   {
+    "path": "docs/plans/startup-loop-placeholder-signal-hygiene/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/plans/startup-loop-process-map-generator/task-01-stage-annotations.md",
     "type": "INVESTIGATE",
     "status": "Complete",
@@ -5244,6 +5946,18 @@
     "domain": "Platform / Business-OS"
   },
   {
+    "path": "docs/plans/startup-loop-self-evolving-evidence-rigor/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/startup-loop-self-evolving-evidence-rigor/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
     "path": "docs/plans/startup-loop-self-evolving-launch-accelerator/artifacts/manual-terms-and-conditions-simulation.md",
     "type": "Simulation-Record",
     "status": "Complete",
@@ -5254,6 +5968,30 @@
     "type": "Plan",
     "status": "Complete",
     "domain": "Business-OS / Platform"
+  },
+  {
+    "path": "docs/plans/startup-loop-self-improvement-integrity-fixes/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/startup-loop-self-improvement-integrity-fixes/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/startup-loop-self-improvement-workflow-closure/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/startup-loop-self-improvement-workflow-closure/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Platform"
   },
   {
     "path": "docs/plans/startup-loop-signal-strengthening-review/fact-find.md",
@@ -5520,10 +6258,46 @@
     "domain": "Repo"
   },
   {
+    "path": "docs/plans/writer-lock-scope-reduction/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/writer-lock-scope-reduction/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/xa-b-live-catalog-client-runtime/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-b-live-catalog-client-runtime/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-b-live-catalog-client-runtime/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
     "path": "docs/plans/xa-b-user-testing/fact-find.md",
     "type": "Fact-Find",
     "status": "Ready-for-planning",
     "domain": "Product"
+  },
+  {
+    "path": "docs/plans/xa-content-deploy-lane/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "Products"
   },
   {
     "path": "docs/plans/xa-free-tier-anti-copy-hardening/fact-find.md",
@@ -5604,10 +6378,112 @@
     "domain": "Platform"
   },
   {
+    "path": "docs/plans/xa-uploader-deploy-state-hardening/build-record.user.md",
+    "type": "Build-Record",
+    "status": "Complete",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/xa-uploader-deploy-state-hardening/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Products"
+  },
+  {
+    "path": "docs/plans/xa-uploader-deploy-state-hardening/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Products"
+  },
+  {
+    "path": "docs/plans/xa-uploader-dual-upload-zones/plan.md",
+    "type": "Plan",
+    "status": "Archived",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-dual-upload-zones/results-review.user.md",
+    "type": "Results-Review",
+    "status": "Draft",
+    "domain": null
+  },
+  {
+    "path": "docs/plans/xa-uploader-edit-filter-select/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-edit-filter-select/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-free-tier-hardening/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Products"
+  },
+  {
+    "path": "docs/plans/xa-uploader-loading-skeleton/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-loading-skeleton/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "UI"
+  },
+  {
     "path": "docs/plans/xa-uploader-media-path-and-publish-flow-hardening/plan.md",
     "type": "Plan",
     "status": "Complete",
     "domain": "Platform"
+  },
+  {
+    "path": "docs/plans/xa-uploader-nav-layer-fixes/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-nav-layer-fixes/plan.md",
+    "type": "Plan",
+    "status": "Active",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-status-and-media-model-rewrite/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-status-and-media-model-rewrite/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-status-and-media-model-rewrite/replan-notes.md",
+    "type": "Replan-Notes",
+    "status": "Active",
+    "domain": "UI"
+  },
+  {
+    "path": "docs/plans/xa-uploader-sync-fast-path/fact-find.md",
+    "type": "Fact-Find",
+    "status": "Ready-for-planning",
+    "domain": "Products"
+  },
+  {
+    "path": "docs/plans/xa-uploader-sync-fast-path/plan.md",
+    "type": "Plan",
+    "status": "Complete",
+    "domain": "Products"
   },
   {
     "path": "docs/plans/xa-uploader-usability-hardening/artifacts/scope-decision.md",
@@ -5725,6 +6601,12 @@
   },
   {
     "path": "docs/runbooks/xa-catalog-contract-staging-checklist.md",
+    "type": "Runbook",
+    "status": "Active",
+    "domain": null
+  },
+  {
+    "path": "docs/runbooks/xa-cloudflare-account-migration.md",
     "type": "Runbook",
     "status": "Active",
     "domain": null

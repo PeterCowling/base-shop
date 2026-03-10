@@ -8,6 +8,7 @@ usage() {
   echo ""
   echo "Acquires the Base-Shop single-writer lock and exports BASESHOP_WRITER_LOCK_TOKEN"
   echo "for child processes (git hooks use this to enforce single-writer commits/pushes)."
+  echo "Command-mode interactive shells such as '-- bash' are forbidden; use --interactive-shell instead."
   echo ""
   echo "Options:"
   echo "  --interactive-shell  Explicitly open a locked interactive shell (rare)"
@@ -68,6 +69,22 @@ Anti-retry list:
 - scripts/agents/with-writer-lock.sh
 - scripts/agents/with-writer-lock.sh --wait-forever
 - scripts/agents/with-writer-lock.sh --timeout 0
+Escalation/stop condition: if you genuinely need a rare interactive locked shell for a bounded repair, rerun with scripts/agents/with-writer-lock.sh --interactive-shell and exit as soon as the serialized write window closes.
+EOF
+  exit 1
+}
+
+block_command_mode_interactive_shell() {
+  cat >&2 <<'EOF'
+ERROR: command-mode interactive shells are forbidden while holding the writer lock.
+Failure reason: invocations such as scripts/agents/with-writer-lock.sh -- bash still open a locked interactive shell and can hold the Base-Shop writer lock indefinitely.
+Retry posture: retry-forbidden
+Exact next step: scripts/agents/with-writer-lock.sh -- <git-write-command>
+Anti-retry list:
+- scripts/agents/with-writer-lock.sh -- bash
+- scripts/agents/with-writer-lock.sh -- sh
+- scripts/agents/with-writer-lock.sh -- zsh
+- scripts/agents/with-writer-lock.sh -- scripts/agents/with-git-guard.sh -- bash
 Escalation/stop condition: if you genuinely need a rare interactive locked shell for a bounded repair, rerun with scripts/agents/with-writer-lock.sh --interactive-shell and exit as soon as the serialized write window closes.
 EOF
   exit 1
@@ -152,6 +169,12 @@ fi
 if ! [[ "$poll_sec" =~ ^[0-9]+$ ]]; then
   echo "ERROR: --poll must be an integer number of seconds (0 or greater)." >&2
   exit 2
+fi
+
+if [[ "$command_mode" == "1" ]]; then
+  if detect_interactive_shell "$@" >/dev/null; then
+    block_command_mode_interactive_shell
+  fi
 fi
 
 if [[ "$command_mode" == "1" && "$agent_write_session" != "1" ]]; then

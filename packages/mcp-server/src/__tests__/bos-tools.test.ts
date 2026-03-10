@@ -46,8 +46,6 @@ describe("bos tools", () => {
 
     const result = await handleBosTool("bos_cards_list", {
       business: "BRIK",
-      runId: "run-001",
-      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -96,8 +94,6 @@ describe("bos tools", () => {
       business: "BRIK",
       cardId: "BRIK-ENG-0001",
       stage: "fact-find",
-      runId: "run-001",
-      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -125,8 +121,6 @@ describe("bos tools", () => {
 
     const result = await handleBosTool("bos_cards_list", {
       business: "BRIK",
-      runId: "run-001",
-      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -148,8 +142,6 @@ describe("bos tools", () => {
       business: "BRIK",
       cardId: "BRIK-ENG-0001",
       stage: "fact-find",
-      runId: "run-001",
-      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -169,8 +161,6 @@ describe("bos tools", () => {
 
     const result = await handleBosTool("bos_cards_list", {
       business: "BRIK",
-      runId: "run-001",
-      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -184,8 +174,6 @@ describe("bos tools", () => {
 
     const result = await handleBosTool("bos_cards_list", {
       business: "BRIK",
-      runId: "run-001",
-      current_stage: "DO",
     });
 
     const payload = JSON.parse(result.content[0].text);
@@ -214,8 +202,6 @@ describe("bos tools", () => {
       business: "BRIK",
       cardId: "BRIK-ENG-0001",
       stage: "plan",
-      runId: "run-001",
-      current_stage: "DO",
       write_reason: "sync latest plan state",
       baseEntitySha: "sha-prev",
       patch: {
@@ -261,8 +247,6 @@ describe("bos tools", () => {
       business: "BRIK",
       cardId: "BRIK-ENG-0001",
       stage: "plan",
-      runId: "run-001",
-      current_stage: "DO",
       write_reason: "sync latest plan state",
       baseEntitySha: "sha-stale",
       patch: {

@@ -20,6 +20,7 @@ export const createProductSchema = z.object({
   status: z.enum(["draft", "active", "archived"]).default("draft"),
   media: z.array(mediaItemInputSchema).default([]),
   forSale: z.boolean().optional().default(true),
+  initialStock: z.number().int().min(0).default(0),
 });
 
 /**

@@ -25,6 +25,7 @@ import {
 import { getSlug } from "@/utils/slug";
 
 const NON_DORM_ROOM_IDS = new Set(["double_room", "apartment"]);
+const PUBLISHED_GUIDES = GUIDES_INDEX.filter((g) => g.status === "live");
 const APP_PRIVATE_ROOM_DETAIL_SEGMENTS = [
   "double-room",
   "apartment",
@@ -72,7 +73,7 @@ export function listAppRouterUrls(): string[] {
     }
 
     // Dynamic: Guides (namespace-aware)
-    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
+    const publishedGuides = PUBLISHED_GUIDES;
     for (const guide of publishedGuides) {
       const base = guideNamespace(lang, guide.key);
       const slug = guideSlug(lang, guide.key);
@@ -128,7 +129,7 @@ export function listLocalizedPublicUrls(): string[] {
       urls.push(`/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang)}`);
     }
 
-    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
+    const publishedGuides = PUBLISHED_GUIDES;
     for (const guide of publishedGuides) {
       const slug = guideSlug(lang, guide.key);
       if (resolveGuideKeyFromSlug(slug, lang) !== guide.key) continue;
@@ -176,7 +177,7 @@ export function listLocalizedCanonicalAppUrls(): string[] {
       urls.push(`/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang)}`);
     }
 
-    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
+    const publishedGuides = PUBLISHED_GUIDES;
     for (const guide of publishedGuides) {
       const slug = guideSlug(lang, guide.key);
       if (resolveGuideKeyFromSlug(slug, lang) !== guide.key) continue;
@@ -214,7 +215,7 @@ export function getUrlCounts(): Record<string, number> {
     privateRoomDetails: langCount * APP_PRIVATE_ROOM_DETAIL_SEGMENTS.length,
     rooms: langCount * dormRoomCount,
     // NOTE: guides count now includes how-to-get-here routes (via GUIDES_INDEX)
-    guides: langCount * GUIDES_INDEX.filter((g) => g.status === "live").length,
+    guides: langCount * PUBLISHED_GUIDES.length,
     tags: langCount * new Set(GUIDES_INDEX.flatMap((g) => g.tags)).size,
     // howToGetHere now enumerated from guide key list (TASK-05)
     howToGetHere: langCount * HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS.length,

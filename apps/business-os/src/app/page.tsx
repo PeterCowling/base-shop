@@ -6,9 +6,27 @@ export default function HomePage() {
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center gap-8 p-12">
       <h1 className="text-3xl font-bold text-brand-heading">Business OS</h1>
+      {/* eslint-disable-next-line ds/container-widths-only-at -- GS-001: landing page intro copy */}
+      <p className="max-w-3xl text-center text-sm text-brand-text/70">
+        Workflow-first operating console for ideas, plans, startup-loop execution,
+        and process improvement. Legacy board views remain available for compatibility.
+      </p>
 
       {/* eslint-disable-next-line ds/container-widths-only-at -- GS-001: landing page layout */}
       <div className="grid w-full max-w-5xl grid-cols-1 gap-6 md:grid-cols-3">
+        <Link
+          href="/ideas"
+          className="flex flex-col items-center gap-3 rounded-xl border border-brand-outline/30 bg-brand-surface p-8 shadow-sm transition-all hover:border-brand-secondary/50 hover:shadow-md"
+        >
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-brand-secondary">
+            <path d="M12 3l2.8 5.7 6.2.9-4.5 4.4 1.1 6.2L12 17.3 6.4 20.2l1.1-6.2L3 9.6l6.2-.9L12 3z" />
+          </svg>
+          <span className="text-lg font-semibold text-brand-heading">Ideas</span>
+          <span className="text-center text-sm text-brand-text/70">
+            Capture opportunities, triage signals, and start workflow-native follow-up.
+          </span>
+        </Link>
+
         <Link
           href="/guides"
           className="flex flex-col items-center gap-3 rounded-xl border border-brand-outline/30 bg-brand-surface p-8 shadow-sm transition-all hover:border-brand-primary/50 hover:shadow-md"
@@ -27,22 +45,6 @@ export default function HomePage() {
         </Link>
 
         <Link
-          href="/boards/global"
-          className="flex flex-col items-center gap-3 rounded-xl border border-brand-outline/30 bg-brand-surface p-8 shadow-sm transition-all hover:border-brand-secondary/50 hover:shadow-md"
-        >
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-brand-secondary">
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
-          </svg>
-          <span className="text-lg font-semibold text-brand-heading">Kanban Board</span>
-          <span className="text-center text-sm text-brand-text/70">
-            Plan and track work across boards for humans and agents
-          </span>
-        </Link>
-
-        <Link
           href="/workflows"
           className="flex flex-col items-center gap-3 rounded-xl border border-brand-outline/30 bg-brand-surface p-8 shadow-sm transition-all hover:border-brand-accent/50 hover:shadow-md"
         >
@@ -53,7 +55,23 @@ export default function HomePage() {
           </svg>
           <span className="text-lg font-semibold text-brand-heading">Workflows</span>
           <span className="text-center text-sm text-brand-text/70">
-            View rendered workflow artifacts including platform capability baselines
+            View rendered workflow artifacts, operating baselines, and startup-loop context.
+          </span>
+        </Link>
+
+        <Link
+          href="/boards/global"
+          className="flex flex-col items-center gap-3 rounded-xl border border-brand-outline/30 bg-brand-surface p-8 shadow-sm transition-all hover:border-brand-primary/50 hover:shadow-md"
+        >
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="text-brand-primary">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          <span className="text-lg font-semibold text-brand-heading">Legacy Board</span>
+          <span className="text-center text-sm text-brand-text/70">
+            Compatibility view for existing cards while workflow-first operations replace kanban usage.
           </span>
         </Link>
       </div>

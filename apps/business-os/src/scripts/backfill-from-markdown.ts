@@ -89,8 +89,6 @@ const DEFAULT_REPOSITORIES: BackfillRepositories = {
   appendAuditEntry,
 };
 
-const STAGE_FILES: StageType[] = ["fact-find", "plan", "build", "reflect"];
-
 const AUDIT_SOURCE = "backfill";
 const REASON_CARD_CONFLICT = "Existing card differs from markdown"; // i18n-exempt -- BOS-00 [ttl=2026-03-31]
 const REASON_IDEA_CONFLICT = "Existing idea differs from markdown"; // i18n-exempt -- BOS-00 [ttl=2026-03-31]
@@ -330,8 +328,7 @@ async function readStageDocEntries(repoRoot: string): Promise<StageDocEntry[]> {
 
     for (const stageEntry of stageEntries) {
       if (!stageEntry.isFile()) continue;
-      const stageName = stageEntry.name.replace(/\.user\.md$/u, "");
-      if (!STAGE_FILES.includes(stageName as StageType)) continue;
+      if (!stageEntry.name.endsWith(".user.md")) continue;
 
       const filePath = path.join(cardDir, stageEntry.name);
       const { data, content, raw, frontmatterOrder } = await readMarkdownFile(repoRoot, filePath);

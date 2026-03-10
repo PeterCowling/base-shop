@@ -464,15 +464,6 @@ describe('TASK-12: Route pages — DS migration', () => {
     assertNoArbitraryColors(html, 'find-my-stay');
   });
 
-  it('admin/login/page.tsx has no raw palette classes', () => {
-    const AdminLoginPage = jest.requireActual('../admin/login/page').default;
-    const { container } = render(<AdminLoginPage />);
-    const html = container.innerHTML;
-    assertNoRawPaletteClasses(html, 'admin-login');
-    assertNoRawWhite(html, 'admin-login');
-    assertNoArbitraryColors(html, 'admin-login');
-  });
-
   it('owner/setup/page.tsx has no raw palette classes', async () => {
     const OwnerSetupPage = (await import('../owner/setup/page')).default;
     const el = await OwnerSetupPage();
@@ -518,13 +509,4 @@ describe('TASK-12: Route pages — DS migration', () => {
     assertNoArbitraryColors(html, 'root');
   });
 
-  it('admin/users/page.tsx has no raw palette classes', async () => {
-    const AdminUsersPage = (await import('../admin/users/page')).default;
-    const el = await AdminUsersPage();
-    const { container } = render(el);
-    const html = container.innerHTML;
-    assertNoRawPaletteClasses(html, 'admin-users');
-    assertNoRawWhite(html, 'admin-users');
-    assertNoArbitraryColors(html, 'admin-users');
-  });
 });

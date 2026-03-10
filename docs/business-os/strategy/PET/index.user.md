@@ -1,7 +1,7 @@
 ---
 Type: Strategy-Index
 Business-Unit: PET
-Last-updated: 2026-02-17
+Last-updated: 2026-03-09
 Status: Active
 Owner: Pete
 Review-trigger: After each completed build cycle touching this document.
@@ -20,6 +20,16 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | Competitive Positioning | `docs/business-os/strategy/PET/competitive-positioning.user.md` | — | — |
 | Messaging Hierarchy | `docs/business-os/strategy/PET/messaging-hierarchy.user.md` | — | — |
 | Creative Voice Brief | `docs/business-os/strategy/PET/creative-voice-brief.user.md` | — | — |
+
+## Startup-Loop Canonical Artifacts
+
+| Stage | Artifact | Path | Status | Last-reviewed |
+|-------|----------|------|--------|---------------|
+| ASSESSMENT-09 | Intake packet | `docs/business-os/startup-baselines/PET/2026-02-12-assessment-intake-packet.user.md` | Active | 2026-02-12 |
+| S2B | Offer | `docs/business-os/startup-baselines/PET/offer.md` | Active | 2026-02-17 |
+| S3 | Forecast seed | `docs/business-os/startup-baselines/PET/forecast-seed.user.md` | Active | 2026-02-12 |
+| CAP-02 | Message variants | `docs/business-os/strategy/PET/message-variants.user.md` | Draft | 2026-03-09 |
+| GTM-2 | Stockist target list | `docs/business-os/strategy/PET/stockist-target-list.user.md` | Active | 2026-03-09 |
 
 **Status vocabulary:**
 - `—` Not yet created

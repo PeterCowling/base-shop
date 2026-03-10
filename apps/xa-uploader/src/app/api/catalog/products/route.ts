@@ -19,7 +19,7 @@ import { normalizeCatalogPath } from "../../../../lib/catalogPath";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import { catalogContractUnavailableResponse } from "../../../../lib/localFsGuard";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
-import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
+import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -126,12 +126,6 @@ async function parseProductsUpsertPayload(
           buildProductsErrorResponse("payload_too_large", 413, "payload_too_large"),
           limit,
         ),
-      };
-    }
-    if (error instanceof InvalidJsonError) {
-      return {
-        ok: false,
-        response: withRateHeaders(buildProductsErrorResponse("invalid", 400, "invalid_json"), limit),
       };
     }
     return {

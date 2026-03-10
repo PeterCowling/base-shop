@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "build-20260309114901-cap02",
+  "feature_slug": "startup-loop-cap02-message-variants",
+  "emitted_at": "2026-03-09T11:49:01Z",
+  "why": "CAP-02 was being referenced as if it existed, but there was still no canonical schema, seeded ledger, or producer/consumer contract behind it. That left message learning stranded in chat and made boutique, website, and social framing impossible to track consistently.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "CAP-02 now has a canonical message-variants schema, seeded product-loop artifacts, and explicit skill consumers so message testing can be logged and reused instead of living only in chat.",
+    "source": "operator"
+  }
+}

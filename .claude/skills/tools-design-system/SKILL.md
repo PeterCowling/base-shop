@@ -1,87 +1,199 @@
 ---
 name: tools-design-system
-description: Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.
+description: Apply the repo's current design-system contracts correctly. Use semantic tokens, DS component props, and app-level Tailwind v4 `@theme` aliases where appropriate. Avoid hardcoded colors and stale HSL-only guidance.
 operating_mode: GENERATE
-trigger_conditions: design tokens, semantic colors, spacing, typography, borders, shadows, Tailwind tokens, arbitrary values
+trigger_conditions: design tokens, semantic colors, spacing, typography, borders, shadows, Tailwind tokens, app theme aliases, arbitrary values
 related_skills: tools-refactor, lp-design-spec, lp-design-qa, tools-ui-contrast-sweep
 ---
 
 # Apply Design System
 
-Use design tokens exclusively. Never use arbitrary values (`[#hex]`, `[16px]`, etc.).
+Use the design system that exists in the target app now, not the oldest generic theming examples in the repo.
 
-## Color Tokens
+## Source Of Truth Order
 
-### Backgrounds
-`bg-bg`, `bg-primary`, `bg-accent`, `bg-muted`, `bg-primary-soft`, `bg-accent-soft`
+When sources disagree, use this order:
 
-Layered surfaces: `bg-[hsl(var(--surface-1))]`, `bg-[hsl(var(--surface-2))]`, `bg-[hsl(var(--surface-3))]`
+1. Existing component API contracts in the code you are editing
+2. App-level token registration in the target app's `globals.css` / Tailwind v4 `@theme`
+3. Theme package tokens in `packages/themes/<theme>/src/tokens.ts`
+4. Shared Tailwind preset/plugin wiring
+5. Older handbook examples and generic docs
 
-### Text
-`text-fg`, `text-fg-muted`, `text-primary-foreground`, `text-accent-foreground`
+For example, reception exposes utilities through `apps/reception/src/app/globals.css` using `@theme { --color-surface-2: var(--surface-2) ... }`, so classes like `bg-surface-2`, `text-muted-foreground`, and `border-border-strong` are valid even when they are not literal keys in `tokens.ts`.
 
-### Borders
-`border-[hsl(var(--color-border))]`, `border-[hsl(var(--color-border-strong))]`, `border-[hsl(var(--color-border-muted))]`
+## Core Rules
 
-## Spacing (Padding/Margin/Gap)
+- Prefer public DS component props over class-level restyling when the component already exposes the contract.
+- Prefer semantic utility classes over raw color values.
+- Prefer app/theme token aliases over ad hoc component-local CSS variables.
+- Do not edit generated token artifacts directly.
+- Do not assume every `hsl(var(--...))` pattern is valid in JSX utility classes; check whether the app already exposes a semantic alias first.
 
-8-pt rhythm: `0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16` — e.g., `p-4`, `gap-6`, `space-y-4`
+## Component Contracts First
 
-## Typography
+Before adding classes, check whether the primitive already exposes the right contract.
 
-- **Sizes**: `text-xs`, `text-sm`, `text-base`, `text-lg`, `text-xl`, `text-2xl`, `text-3xl`, `text-4xl`
-- **Weights**: `font-normal`, `font-medium`, `font-semibold`, `font-bold`
-- **Families**: `font-sans`, `font-heading`, `font-mono`
+Common current contracts:
 
-## Borders & Radius
+- `Button`, `Tag`, `Chip`, similar action/status primitives:
+  - `color="primary|accent|success|info|warning|danger"`
+  - `tone="solid|soft|outline|ghost|quiet"`
+  - `size="sm|md|lg"`
+- Core primitives and surfaces may expose:
+  - `shape="square|soft|pill"`
+  - `radius="none|xs|sm|md|lg|xl|2xl|3xl|4xl|full"`
 
-`rounded-none`, `rounded-xs`, `rounded-sm`, `rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-2xl`, `rounded-3xl`, `rounded-4xl`, `rounded-full`
+Use those props before hardcoding `rounded-*`, `bg-*`, or size classes in reusable components.
 
-## Shadows
+## Token Plumbing Model
 
-`shadow-sm`, `shadow-md`, `shadow-lg` (mapped to `var(--shadow-*)` tokens)
+This repo currently has two valid token-consumption paths:
+
+### 1. Shared preset/plugin utilities
+
+Many apps rely on shared semantic utilities such as:
+
+- Backgrounds: `bg-bg`, `bg-primary`, `bg-accent`, `bg-muted`, `bg-panel`, `bg-surface`
+- Text: `text-fg`, `text-primary-fg`, `text-muted-foreground`
+- Borders: `border-border`, `border-input`, `ring-ring`
+
+These are commonly wired through shared Tailwind config/plugin layers that still use `hsl(var(--...))` under the hood.
+
+### 2. App-level Tailwind v4 `@theme` aliases
+
+Some apps, including reception, register additional semantic aliases in app `globals.css`.
+
+Examples of valid app-level utilities:
+
+- `bg-surface-2`
+- `bg-surface-3`
+- `text-foreground`
+- `text-muted-foreground`
+- `border-border`
+- `border-border-strong`
+- `bg-input`
+
+When working in an app with `@theme`, treat those aliases as first-class utilities.
+
+## Color Guidance
+
+Prefer these kinds of semantic utilities:
+
+- Backgrounds:
+  - `bg-bg`
+  - `bg-panel`
+  - `bg-surface`
+  - `bg-surface-2`
+  - `bg-surface-3`
+  - `bg-primary`
+  - `bg-primary-soft`
+  - `bg-accent`
+  - `bg-muted`
+- Text:
+  - `text-fg`
+  - `text-foreground`
+  - `text-muted-foreground`
+  - `text-primary-fg`
+  - `text-primary-foreground` when that alias already exists in the target app
+- Borders/rings:
+  - `border-border`
+  - `border-border-strong`
+  - `border-border-muted`
+  - `ring-ring`
+
+Use opacity modifiers when they are part of a semantic class, for example:
+
+- `bg-primary/90`
+- `bg-surface-2/60`
+- `text-foreground/80`
+
+Those are not the same thing as hardcoded colors.
+
+## Spacing, Radius, Shadow, Typography
+
+Prefer the repo scales:
+
+- Spacing: `0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16`
+- Radius: `rounded-none|xs|sm|md|lg|xl|2xl|3xl|4xl|full`
+- Shadow: `shadow-sm|md|lg`
+- Typography:
+  - sizes: `text-xs|sm|base|lg|xl|2xl|3xl|4xl`
+  - weights: `font-normal|medium|semibold|bold`
+  - families: `font-sans|heading|mono`
+
+If a primitive already exposes `size`, `shape`, or `radius`, use the prop instead of duplicating the class at call sites.
 
 ## Common Patterns
 
-**Card:** `bg-[hsl(var(--surface-2))] text-fg rounded-lg border-[hsl(var(--color-border))] shadow-sm p-6`
-
-**Primary button:** `bg-primary text-primary-foreground hover:bg-[hsl(var(--color-primary-hover))] px-4 py-2 rounded-md font-medium`
-
-**Input:** `flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm`
-
-**Container:** `container mx-auto px-4 py-8`
-
-## Using `cn()` for class merging
+Prefer patterns like:
 
 ```tsx
-import { cn } from '@acme/design-system/utils/style'
-
-<div className={cn('base-styles', { 'conditional': variant === 'x' }, className)}>
+<div className="rounded-lg border border-border bg-surface text-foreground shadow-sm p-6" />
 ```
 
-## Responsive (mobile-first)
+```tsx
+<div className="rounded-lg border border-border-strong bg-surface-2 text-foreground shadow-lg" />
+```
 
-`md:` (768px+), `lg:` (1024px+), `xl:` (1280px+)
+```tsx
+<Button color="primary" tone="solid" size="lg">Save</Button>
+```
+
+```tsx
+<Input className="bg-input text-foreground" />
+```
+
+## Bracket Syntax: Allowed Vs Not Allowed
+
+Do not treat all bracket syntax as invalid.
+
+Usually acceptable:
+
+- `data-[state=open]:...`
+- `aria-[selected=true]:...`
+- valid layout values with no DS utility equivalent, such as viewport-safe units
+- targeted selectors needed to style DS primitives when no prop/API exists
+
+Usually not acceptable:
+
+- `bg-[#ff0000]`
+- `text-[rgb(255,0,0)]`
+- `border-[oklch(...)]` in component JSX when a semantic token should exist
+- arbitrary spacing/sizing when the repo scale already covers it
+
+## When Tokens Do Not Exist
+
+Use the narrowest correct layer.
+
+1. Reuse an existing semantic utility if one already expresses the intent.
+2. If the app needs a new alias for an existing theme token, add it in the target app's `globals.css` `@theme` block.
+3. If the theme truly needs a new semantic token value, add it in `packages/themes/<theme>/src/tokens.ts`.
+4. Regenerate any derived artifacts when the theme pipeline requires it.
+5. Only update shared token/preset layers when the token is genuinely cross-app design-system surface area.
+
+Do not jump straight to `packages/design-tokens/` or Tailwind config for app-local needs.
 
 ## Anti-Patterns
 
-- `bg-[#FF0000]` — use semantic tokens
-- `bg-red-500` — use semantic tokens
-- `p-[16px]` — use `p-4`
-- `style={{ ... }}` — use Tailwind classes
-- `w-[250px]` — use `w-64` or similar
+- Hardcoded hex/RGB/HSL/OKLCH colors in component JSX
+- Default Tailwind palette classes such as `bg-red-500`
+- Editing generated `tokens.css` directly
+- Replacing DS component props with local class hacks in reusable primitives
+- Assuming handbook examples are authoritative when the target app's `globals.css` and current components say otherwise
 
-## When Tokens Don't Exist
+## Quick Checks Before Editing
 
-1. Check for a close semantic token
-2. Add to design tokens package (`packages/design-tokens/`)
-3. Update Tailwind config
-4. Document in `docs/typography-and-color.md`
+- Which app am I in?
+- Does this app expose extra semantic aliases in `globals.css`?
+- Does the component already expose `color`, `tone`, `size`, `shape`, or `radius`?
+- Is this a theme-token change, an app-alias change, or just a component usage change?
+- Am I about to introduce a raw value where a semantic token already exists?
 
 ## Integration
 
-This skill is a **supporting reference**, not a pipeline stage. It is consulted on demand by pipeline skills throughout the UI design chain. Do not insert it into sequential pipeline ordering.
+This skill is a supporting reference, not a pipeline stage.
 
-- **Role:** Token and design system reference — consulted by any skill needing semantic color, spacing, typography, border, or shadow values.
-- **Consumers:** `lp-design-spec`, `tools-ui-frontend-design`, `lp-design-qa`, `tools-refactor` (and any other skill that handles UI implementation or review).
-- **Not a pipeline stage:** `tools-design-system` has no upstream trigger and no downstream handoff. It is invoked on demand whenever a pipeline skill needs token guidance.
+- **Role:** Current-state design-system guidance for token usage, DS component contracts, and app-level alias handling.
+- **Consumers:** `lp-design-spec`, `tools-ui-frontend-design`, `lp-design-qa`, `tools-refactor`, and UI implementation/review work generally.
+- **Not a pipeline stage:** consult it when UI work touches tokens, classes, component props, or design-system contract decisions.

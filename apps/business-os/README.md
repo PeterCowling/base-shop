@@ -1,6 +1,6 @@
 # Business OS
 
-Repo-native Business OS + Kanban system that coordinates human and agent work across all business functions.
+Repo-native Business OS workflow console for ideas, plans, startup-loop execution, and process improvement across all business functions.
 
 ## Phase 0 (Local, Single-User)
 
@@ -12,6 +12,8 @@ Repo-native Business OS + Kanban system that coordinates human and agent work ac
 - Local git operations via `simple-git`
 - Auto-PR workflow to main
 - Direct filesystem access to `docs/business-os/`
+- Workflow-first navigation for ideas, plans, and rendered operating workflows
+- Legacy board/card views retained only for compatibility during transition
 
 **Architecture:**
 - Next.js 15 App Router
@@ -182,7 +184,7 @@ docs/business-os/          # Canonical storage (markdown + JSON)
 ├── ideas/
 │   ├── inbox/             # Raw ideas
 │   └── worked/            # Worked ideas (with cards)
-├── cards/                 # Cards (<ID>.user.md + <ID>.agent.md)
+├── cards/                 # Legacy compatibility cards (<ID>.user.md + <ID>.agent.md)
 │   └── <ID>/
 │       ├── comments/      # File-per-comment
 │       ├── fact-find.*.md
@@ -201,3 +203,9 @@ docs/business-os/          # Canonical storage (markdown + JSON)
 ## Plan Reference
 
 See: `docs/plans/business-os-kanban-plan.md`
+
+## Direction
+
+- The intended operating model is workflow-first, not kanban-first.
+- Use Ideas, Plans, startup-loop artifacts, and process/workflow documents as the primary surfaces.
+- Board and card flows remain available only to preserve legacy data and references while the kanban model is retired.

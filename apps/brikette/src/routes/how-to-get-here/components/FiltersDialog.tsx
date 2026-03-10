@@ -89,7 +89,7 @@ export function FiltersDialog({
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
-            {filtersHelper ? filtersHelper : description}
+            {filtersHelper || description}
           </DialogDescription>
         </DialogHeader>
 

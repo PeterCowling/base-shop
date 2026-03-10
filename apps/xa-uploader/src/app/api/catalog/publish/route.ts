@@ -1,11 +1,10 @@
 import { NextResponse } from "next/server";
 
-import { type CatalogProductDraftInput, catalogProductDraftSchema } from "@acme/lib/xa";
-
 import { applyCloudMediaExistenceValidation } from "../../../../lib/catalogCloudPublish";
 import { publishCatalogPayloadToContract } from "../../../../lib/catalogContractClient";
 import {
   acquireCloudSyncLock,
+  CatalogDraftConflictError,
   CatalogDraftContractError,
   type CloudSyncLockLease,
   readCloudCurrencyRates,
@@ -14,6 +13,8 @@ import {
   writeCloudDraftSnapshot,
 } from "../../../../lib/catalogDraftContractClient";
 import { buildCatalogArtifactsFromDrafts } from "../../../../lib/catalogDraftToContract";
+import { updateProductPublishStateInCloudSnapshot } from "../../../../lib/catalogPublishState";
+import { parseStorefront } from "../../../../lib/catalogStorefront";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
 import {
   maybeTriggerXaBDeploy,
@@ -21,7 +22,7 @@ import {
 } from "../../../../lib/deployHook";
 import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import { getUploaderKv } from "../../../../lib/syncMutex";
-import { isRecord } from "../../../../lib/typeGuards";
+import { getErrorMessage, isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -30,7 +31,8 @@ const PUBLISH_PAYLOAD_MAX_BYTES = 64 * 1024;
 
 type PublishRequestPayload = {
   storefront: string;
-  draft: CatalogProductDraftInput;
+  draftId: string;
+  ifMatch: string;
   publishState?: "live" | "out_of_stock";
 };
 
@@ -40,13 +42,14 @@ function parsePublishRequestPayload(input: unknown): PublishRequestPayload | nul
 
   const storefront = typeof input.storefront === "string" ? input.storefront.trim() : "";
   if (!storefront) return null;
-
-  const parsedDraft = catalogProductDraftSchema.safeParse(input.draft);
-  if (!parsedDraft.success) return null;
+  const draftId = typeof input.draftId === "string" ? input.draftId.trim() : "";
+  const ifMatch = typeof input.ifMatch === "string" ? input.ifMatch.trim() : "";
+  if (!draftId || !ifMatch) return null;
 
   return {
     storefront,
-    draft: parsedDraft.data,
+    draftId,
+    ifMatch,
     publishState: input.publishState === "out_of_stock" ? "out_of_stock" : "live",
   };
 }
@@ -61,10 +64,6 @@ function getInvalidPayloadResponse(error?: unknown): NextResponse {
   return NextResponse.json({ ok: false, error: "invalid", reason: "invalid_payload" }, { status: 400 });
 }
 
-async function resolveDeployStateContext(_storefrontId: XaCatalogStorefront) {
-  const kv = await getUploaderKv();
-  return { kv, statePaths: undefined };
-}
 
 function buildPublishContractErrorResponse(error: CatalogDraftContractError): NextResponse {
   const isInvalidRates = error.code === "invalid_response";
@@ -80,7 +79,9 @@ function buildPublishContractErrorResponse(error: CatalogDraftContractError): Ne
 
 async function executeCloudPublish(params: {
   storefront: XaCatalogStorefront;
-  publishedDraft: CatalogProductDraftInput;
+  draftId: string;
+  ifMatch: string;
+  publishState: "live" | "out_of_stock";
 }): Promise<NextResponse> {
   const [snapshot, currencyRates] = await Promise.all([
     readCloudDraftSnapshot(params.storefront),
@@ -93,21 +94,22 @@ async function executeCloudPublish(params: {
     );
   }
 
-  const liveDraftId = (params.publishedDraft.id ?? "").trim();
-  const existingIndex =
-    liveDraftId.length > 0
-      ? snapshot.products.findIndex((product) => (product.id ?? "").trim() === liveDraftId)
-      : -1;
-  const mergedProducts =
-    existingIndex >= 0
-      ? snapshot.products.map((product, index) =>
-          index === existingIndex ? params.publishedDraft : product,
-        )
-      : [...snapshot.products, params.publishedDraft];
+  const updatedSnapshot = updateProductPublishStateInCloudSnapshot({
+    snapshot,
+    productId: params.draftId,
+    ifMatch: params.ifMatch,
+    publishState: params.publishState,
+  });
+  if (!updatedSnapshot) {
+    return NextResponse.json(
+      { ok: false, error: "not_found", reason: "product_not_found" },
+      { status: 404 },
+    );
+  }
 
   const artifacts = await buildCatalogArtifactsFromDrafts({
     storefront: params.storefront,
-    products: mergedProducts,
+    products: updatedSnapshot.products,
     currencyRates,
     strict: false,
     mediaValidationPolicy: "warn",
@@ -137,27 +139,23 @@ async function executeCloudPublish(params: {
   try {
     await writeCloudDraftSnapshot({
       storefront: params.storefront,
-      products: mergedProducts,
-      revisionsById: snapshot.revisionsById,
+      products: updatedSnapshot.products,
+      revisionsById: updatedSnapshot.revisionsById,
       ifMatchDocRevision: snapshot.docRevision,
     });
   } catch {
     warnings.push("publish_state_promotion_failed");
   }
 
-  const deployStateContext = await resolveDeployStateContext(params.storefront);
+  const kv = await getUploaderKv();
   const deployResult =
     params.storefront === "xa-b"
       ? { status: "skipped_runtime_live_catalog" as const, reason: "live_catalog_runtime_enabled" }
-      : await maybeTriggerXaBDeploy({
-          storefrontId: params.storefront,
-          kv: deployStateContext.kv,
-          statePaths: deployStateContext.statePaths,
-        });
+      : await maybeTriggerXaBDeploy({ storefrontId: params.storefront, kv, statePaths: undefined });
   await reconcileDeployPendingState({
     storefrontId: params.storefront,
-    kv: deployStateContext.kv,
-    statePaths: deployStateContext.statePaths,
+    kv,
+    statePaths: undefined,
     result: deployResult,
   }).catch(() => null);
 
@@ -188,12 +186,7 @@ export async function POST(request: Request) {
     return getInvalidPayloadResponse();
   }
 
-  const storefront = payload.storefront as XaCatalogStorefront;
-  const publishState = payload.publishState ?? "live";
-  const publishedDraft: CatalogProductDraftInput = {
-    ...payload.draft,
-    publishState,
-  };
+  const storefront: XaCatalogStorefront = parseStorefront(payload.storefront);
 
   let cloudSyncLock: CloudSyncLockLease | null = null;
 
@@ -204,20 +197,28 @@ export async function POST(request: Request) {
     }
     cloudSyncLock = acquired.lock;
   } catch (lockError) {
-    const message = lockError instanceof Error ? lockError.message : String(lockError);
+    const message = getErrorMessage(lockError);
     return NextResponse.json({ ok: false, error: "lock_failed", reason: message }, { status: 503 });
   }
 
   try {
     return await executeCloudPublish({
       storefront,
-      publishedDraft,
+      draftId: payload.draftId,
+      ifMatch: payload.ifMatch,
+      publishState: payload.publishState ?? "live",
     });
   } catch (internalError) {
+    if (internalError instanceof CatalogDraftConflictError) {
+      return NextResponse.json(
+        { ok: false, error: "conflict", reason: "revision_conflict" },
+        { status: 409 },
+      );
+    }
     if (internalError instanceof CatalogDraftContractError) {
       return buildPublishContractErrorResponse(internalError);
     }
-    const message = internalError instanceof Error ? internalError.message : String(internalError);
+    const message = getErrorMessage(internalError);
     return NextResponse.json({ ok: false, error: "internal_error", reason: message }, { status: 500 });
   } finally {
     if (cloudSyncLock) {

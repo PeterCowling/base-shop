@@ -5,6 +5,7 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
 
+import { ActivityCode } from "../../constants/activities";
 import useBookingSearchClient from "../../hooks/client/useBookingSearchClient";
 import { type BookingSearchRow, type Guest } from "../../types/component/bookingSearch";
 import { showToast } from "../../utils/toastUtils";
@@ -64,7 +65,7 @@ function getActivityLevel(activities: BookingSearchRow["activities"]): string {
   const codes = activities.map((act) => act.code);
 
   // Top-tier endings: if any of these exist, display that and ignore the rest
-  const definitiveEndings = [4, 7, 22];
+  const definitiveEndings = [ActivityCode.AUTO_CANCEL_NO_TNC, ActivityCode.AUTO_CANCEL_NO_PAYMENT, ActivityCode.SYSTEM_GENERATED_CANCELLATION];
   for (const ending of definitiveEndings) {
     if (codes.includes(ending)) {
       return activityCodes[ending];
@@ -73,7 +74,12 @@ function getActivityLevel(activities: BookingSearchRow["activities"]): string {
 
   // Next tier (rightmost in this array is highest priority)
   const orderedCodes = [
-    1, 2, 3, 21, 5, 6, 8, 23, 9, 10, 11, 12, 13, 14, 15, 16,
+    ActivityCode.BOOKING_CREATED, ActivityCode.FIRST_REMINDER, ActivityCode.SECOND_REMINDER,
+    ActivityCode.AGREED_NONREFUNDABLE_TNC, ActivityCode.FAILED_ROOM_PAYMENT_1, ActivityCode.FAILED_ROOM_PAYMENT_2,
+    ActivityCode.ROOM_PAYMENT_MADE, ActivityCode.BAGS_DROPPED, ActivityCode.CITY_TAX_PAYMENT,
+    ActivityCode.KEYCARD_DEPOSIT_MADE, ActivityCode.DOCUMENT_DETAILS_TAKEN, ActivityCode.CHECKIN_COMPLETE,
+    ActivityCode.KEYCARD_REFUND_MADE, ActivityCode.CHECKOUT_COMPLETE, ActivityCode.BAG_DROP_TNC,
+    ActivityCode.BAGS_PICKED_UP,
   ];
   for (let i = orderedCodes.length - 1; i >= 0; i--) {
     if (codes.includes(orderedCodes[i])) {

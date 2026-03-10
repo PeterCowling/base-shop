@@ -11,6 +11,3 @@ export function catalogContractUnavailableResponse() {
   );
 }
 
-export function localFsUnavailableResponse() {
-  return catalogContractUnavailableResponse();
-}

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Guide ToC fallbacks and debug tags are retained while localized coverage is completed. */
 // src/routes/guides/guide-seo/toc.ts
 import type { TOptions } from "i18next";
 

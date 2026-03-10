@@ -92,7 +92,10 @@ export function BookPageSearchPanel({
         <div className="mt-4">
           <BookingNotice>
             {t("bookingConstraints.notice") as string}{" "}
-            <a className="underline" href="mailto:hostelpositano@gmail.com?subject=Split%20booking%20help">
+            <a
+              className="inline-flex min-h-11 min-w-11 items-center underline"
+              href="mailto:hostelpositano@gmail.com?subject=Split%20booking%20help"
+            >
               {t("bookingConstraints.assistedLink") as string}
             </a>
             .

@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------------
 
 import { memo, useCallback, useState } from "react";
+import clsx from "clsx";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import { useScrollProgress } from "@/hooks/useScrollProgress";
@@ -96,7 +97,7 @@ function Header({ lang }: { lang?: AppLanguage }): JSX.Element {
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(progress)}
-        className={`progress-bar fixed left-0 top-0 z-[70] h-0.5 ${barClass}`}
+        className={clsx("progress-bar fixed left-0 top-0 z-[70] h-0.5", barClass)}
         style={{ width: `${progress}%` }}
       />
 

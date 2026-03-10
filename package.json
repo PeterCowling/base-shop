@@ -163,7 +163,11 @@
     "bug-scan:rules": "node --import tsx scripts/src/quality/bug-scan.ts --list-rules",
     "bug-scan:changed:json": "node --import tsx scripts/src/quality/bug-scan.ts --changed --format=json",
     "bug-scan:changed:critical": "node --import tsx scripts/src/quality/bug-scan.ts --changed --fail-on=critical",
-    "bug-scan:baseline:write": "node --import tsx scripts/src/quality/bug-scan.ts --changed --fail-on=none --write-baseline=tools/bug-scan-baseline.json"
+    "bug-scan:baseline:write": "node --import tsx scripts/src/quality/bug-scan.ts --changed --fail-on=none --write-baseline=tools/bug-scan-baseline.json",
+    "dead-code-audit": "node --import tsx scripts/src/quality/dead-code-audit.ts",
+    "dead-code-audit:reception": "node --import tsx scripts/src/quality/dead-code-audit.ts --app=reception",
+    "dead-code-audit:brikette": "node --import tsx scripts/src/quality/dead-code-audit.ts --app=brikette",
+    "dead-code-audit:json": "node --import tsx scripts/src/quality/dead-code-audit.ts --format=json"
   },
   "lint-staged": {
     "**/*.{ts,tsx,js,jsx}": [

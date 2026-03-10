@@ -11,7 +11,7 @@ const updateBookingDates = jest.fn();
 const showToastMock = jest.fn();
 jest.mock("../../../../hooks/mutations/useChangeBookingDatesMutator", () => ({
   __esModule: true,
-  useBookingDatesMutator: () => ({ updateBookingDates, isLoading: false }),
+  useBookingDatesMutator: () => ({ updateBookingDates, loading: false }),
 }));
 jest.mock("../../../../utils/toastUtils", () => ({
   __esModule: true,

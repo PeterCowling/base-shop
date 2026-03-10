@@ -120,6 +120,7 @@ Run Section H checks and monthly deep-audit trigger check; link signal-review an
 | KPCS decision artifact (or prior-week ref) | `prior_decision_ref` or step 3.3 ref |
 | Exception tickets / CAP state | Operator-provided or `run_root` artifacts |
 | Prior REM items | `docs/business-os/strategy/<BIZ>/` |
+| CAP-02 ledger | `docs/business-os/strategy/<BIZ>/message-variants.user.md` |
 | Signal review artifact | Emitted by `/lp-signal-review` sub-flow |
 | Feedback loop audit artifact | Emitted by GATE-LOOP-GAP-03 sub-flow |
 
@@ -164,14 +165,33 @@ Using the KPCS decision artifact (or prior-week reference if current week is pen
 - Record `section_h_status: complete | incomplete | pending-decision-memo`.
 - If `incomplete`: emit REM task: `REM-<BIZ>-<YYYYMMDD>-2: Section H incomplete in weekly KPCS memo. Review and complete before next cycle.`
 
-#### 4.5 — Monthly deep-audit trigger check
+#### 4.5 — CAP-02 weekly message-variant check
+
+Check for the CAP-02 ledger:
+```
+ls docs/business-os/strategy/<BIZ>/message-variants.user.md 2>/dev/null
+```
+
+If absent:
+- Record `message_variants_status: missing`.
+- If the business has active channel work, active retailer outreach, or paid-channel planning underway, emit REM task:
+  `REM-<BIZ>-<YYYYMMDD>-3: CAP-02 ledger missing. Create docs/business-os/strategy/<BIZ>/message-variants.user.md before the next messaging or paid-activation decision.`
+
+If present:
+- Review whether active variants were observed in the last 14 days and whether any rows are `denominator-bearing`.
+- Record `message_variants_status: missing | initialized | denominator-bearing | stale`.
+- If all active rows are still `planned` or `qualitative-only`, note that CAP-02 is initialized but not yet paid-gate ready.
+- If rows are older than 14 days with no refresh, emit REM task:
+  `REM-<BIZ>-<YYYYMMDD>-3: CAP-02 ledger is stale. Refresh active variants and decisions before next cycle.`
+
+#### 4.6 — Monthly deep-audit trigger check
 
 Check `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md` monthly trigger rule:
 - If this week is the monthly trigger week (as defined in the contract): emit advisory noting monthly deep-audit is due.
 - Record `monthly_audit_trigger: due | not-due | unknown`.
 - If `due` and no monthly audit artifact found for this month: emit REM task: `REM-<BIZ>-<YYYYMMDD>-3: Monthly deep-audit due. No audit artifact found for <YYYY-MM>. Schedule and complete before next weekly cycle.`
 
-#### 4.6 — CI findings dedup
+#### 4.7 — CI findings dedup
 
 Collect finding IDs from:
 - Signal review artifact (Finding Briefs).
@@ -179,20 +199,20 @@ Collect finding IDs from:
 
 Apply dedup rule: if the same finding key appears in both artifacts (matched by process-artifact path or finding description), record it once in the REM delta. Do not emit duplicate REM tasks for the same root cause.
 
-#### 4.7 — REM delta compilation
+#### 4.8 — REM delta compilation
 
 Compile all new REM tasks emitted in this step into a `rem_delta` block:
 ```
 rem_delta:
   new:
     - id: REM-<BIZ>-<YYYYMMDD>-<n>
-      source: <signal-review | feedback-audit | section-h | monthly-trigger>
+      source: <signal-review | feedback-audit | section-h | cap-02 | monthly-trigger>
       description: <summary>
   resolved: []  # operator-confirmed closures from prior REM list
   carryover: <count of prior unresolved REM tasks not yet closed>
 ```
 
-#### 4.8 — Pending reviews scan
+#### 4.9 — Pending reviews scan
 
 Scan for items requiring operator attention and update the pending reviews registry.
 

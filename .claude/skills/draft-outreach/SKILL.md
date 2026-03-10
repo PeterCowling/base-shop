@@ -37,6 +37,11 @@ For inbox triage workflows, prefer `/ops-inbox`.
 - **Objection map** (from S2B lp-offer)
 - **Tone and brand constraints**
 - **CTA and response deadline** (if any)
+- **Channel ops context** when outreach is retailer, stockist, boutique, distributor, hotel-shop, or partner-facing:
+  - `docs/business-os/strategy/<BIZ>/stockist-target-list.user.md` for target notes and prioritization
+  - `docs/business-os/strategy/<BIZ>/channel-policy.user.md` for term and conflict constraints
+  - `docs/business-os/strategy/<BIZ>/channel-health-log.user.md` for live-account context if the outreach is a reorder, check-in, or recovery message
+  - `docs/business-os/strategy/<BIZ>/message-variants.user.md` for the pitch frames already being tested or retired
 
 ## Output
 
@@ -97,6 +102,8 @@ Structure:
 ## Workflow
 
 1. **Restate objective and audience** — confirm outreach type (dm/email/follow-up) and recipient profile.
+   - If this is retailer/stockist outreach, load the relevant target row or slot from `stockist-target-list.user.md` before drafting.
+   - If a message-variants ledger exists, align the outreach with an active frame or explain why a new frame is needed.
 2. **Draft primary script** — optimize for personalization hook, clarity, and action.
 3. **Build follow-up sequence** — 2-3 touchpoints that add value (not just reminders).
 4. **Write objection handlers** — map to S2B offer objections, keep responses concise.
@@ -118,6 +125,11 @@ Structure:
 **Upstream:**
 - `lp-channels` (S6B) identifies outreach channels and platform-specific tactics
 - `lp-offer` (S2B) provides positioning, value props, and objection map
+- GTM standing artifacts provide operator context for partner-specific outreach:
+  - `stockist-target-list.user.md`
+  - `channel-policy.user.md`
+  - `channel-health-log.user.md`
+  - `message-variants.user.md`
 
 **Downstream:**
 - Outreach scripts are used directly in sales execution (founder-led or delegated)

@@ -3,7 +3,8 @@
 ## Output Path
 
 ```
-docs/plans/<slug>-design-qa-report.md
+Preferred: docs/plans/<slug>/design-qa-report.md
+Legacy fallback: docs/plans/<slug>-design-qa-report.md
 ```
 
 ## Frontmatter
@@ -17,7 +18,10 @@ Business-Unit: <BIZ>
 Audit-Scope: <full | responsive | a11y | tokens | visual>
 Created: <YYYY-MM-DD>
 Last-updated: <YYYY-MM-DD>
-Design-Spec: docs/plans/<slug>-design-spec.md
+Audit-Baseline: <design-spec | plan-anchored>
+Plan-Doc: <docs/plans/<slug>/plan.md | docs/plans/<slug>-plan.md>
+Design-Spec: <docs/plans/<slug>/design-spec.md | docs/plans/<slug>-design-spec.md | none>
+Fact-Find: <docs/plans/<slug>/fact-find.md | docs/plans/<slug>-fact-find.md | none>
 Issues-Found: <count>
 Critical-Issues: <count>
 ---
@@ -80,8 +84,8 @@ List of checks that passed with evidence (do not mark "Pass" without evidence).
 
 - [ ] All Critical issues resolved
 - [ ] All Major issues resolved or deferred with justification
-- [ ] Design spec compliance verified
+- [ ] Design spec compliance verified, or plan-anchored expected state documented
 - [ ] Brand language patterns applied
 - [ ] WCAG AA compliance achieved
-- [ ] Dark mode tested (code-level)
+- [ ] Dark mode tested (code-level) or explicitly delegated to runtime sweep
 - [ ] Ready for `/lp-launch-qa` functional audit

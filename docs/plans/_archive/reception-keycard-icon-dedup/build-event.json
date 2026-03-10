@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-09T12:43:49.000Z",
+  "why": "Duplicated icon mapping means new deposit types or icon tweaks must be applied in multiple places and can drift."
+}

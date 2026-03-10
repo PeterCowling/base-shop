@@ -16,6 +16,7 @@ import { canAccess, Permissions } from "../../lib/roles";
 import type { SafeCount } from "../../types/hooks/data/safeCountData";
 import { formatEnGbDateTimeFromIso } from "../../utils/dateUtils";
 import { getErrorMessage } from "../../utils/errorMessage";
+import { formatEuro } from "../../utils/format";
 import { showToast } from "../../utils/toastUtils";
 import { runTransaction } from "../../utils/transaction";
 import { PageShell } from "../common/PageShell";
@@ -74,6 +75,18 @@ function SafeManagement(): JSX.Element {
     }
   }, [error]);
 
+  const runSafeTransaction = async (
+    steps: Parameters<typeof runTransaction>[0],
+    errorMessage: string
+  ): Promise<void> => {
+    try {
+      await runTransaction(steps);
+      setActiveModal(null);
+    } catch {
+      showToast(errorMessage, "error");
+    }
+  };
+
   const handleDeposit = async (
     amount: number,
     keycardCount: number,
@@ -99,30 +112,23 @@ function SafeManagement(): JSX.Element {
       });
     }
 
-    try {
-      await runTransaction(steps);
-      setActiveModal(null);
-    } catch {
-      showToast("Failed to record deposit.", "error");
-    }
+    await runSafeTransaction(steps, "Failed to record deposit.");
   };
 
   const handleWithdrawal = async (
     amount: number,
     breakdown: Record<string, number>
   ) => {
-    try {
-      await runTransaction([
+    await runSafeTransaction(
+      [
         {
           run: () => recordWithdrawal(amount, breakdown),
           rollback: () => recordDeposit(amount, 0, 0, breakdown),
         },
         { run: () => recordFloatEntry(amount) },
-      ]);
-      setActiveModal(null);
-    } catch {
-      showToast("Failed to record withdrawal.", "error");
-    }
+      ],
+      "Failed to record withdrawal."
+    );
   };
 
   const handleExchange = async (
@@ -165,8 +171,8 @@ function SafeManagement(): JSX.Element {
   };
 
   const handleOpen = async (count: number, keycards: number) => {
-    try {
-      await runTransaction([
+    await runSafeTransaction(
+      [
         {
           run: async () => {
             await updateSafeKeycards(keycards);
@@ -178,11 +184,9 @@ function SafeManagement(): JSX.Element {
         {
           run: () => recordOpening(count, keycards),
         },
-      ]);
-      setActiveModal(null);
-    } catch {
-      showToast("Failed to record opening.", "error");
-    }
+      ],
+      "Failed to record opening."
+    );
   };
 
   const handleReset = async (
@@ -191,8 +195,8 @@ function SafeManagement(): JSX.Element {
     keycardDifference: number,
     breakdown: Record<string, number>
   ) => {
-    try {
-      await runTransaction([
+    await runSafeTransaction(
+      [
         {
           run: async () => {
             await updateSafeKeycards(keycards);
@@ -205,11 +209,9 @@ function SafeManagement(): JSX.Element {
           run: () =>
             recordReset(count, keycards, keycardDifference, breakdown),
         },
-      ]);
-      setActiveModal(null);
-    } catch {
-      showToast("Failed to record reset.", "error");
-    }
+      ],
+      "Failed to record reset."
+    );
   };
 
   const handleReconcile = async (
@@ -219,8 +221,8 @@ function SafeManagement(): JSX.Element {
     keycardDifference: number,
     breakdown: Record<string, number>
   ) => {
-    try {
-      await runTransaction([
+    await runSafeTransaction(
+      [
         {
           run: async () => {
             await updateSafeKeycards(keycards);
@@ -239,11 +241,9 @@ function SafeManagement(): JSX.Element {
               breakdown
             ),
         },
-      ]);
-      setActiveModal(null);
-    } catch {
-      showToast("Failed to record reconciliation.", "error");
-    }
+      ],
+      "Failed to record reconciliation."
+    );
   };
 
   const handleBankDeposit = async (
@@ -266,12 +266,7 @@ function SafeManagement(): JSX.Element {
       });
     }
 
-    try {
-      await runTransaction(steps);
-      setActiveModal(null);
-    } catch {
-      showToast("Failed to record bank deposit.", "error");
-    }
+    await runSafeTransaction(steps, "Failed to record bank deposit.");
   };
 
   const handlePettyCash = async (amount: number) => {
@@ -369,7 +364,7 @@ function SafeManagement(): JSX.Element {
         <div className="flex flex-wrap gap-4">
           <StatPanel
             label="Safe Balance"
-            value={`€${safeBalance.toFixed(2)}`}
+            value={formatEuro(safeBalance)}
             icon={<Wallet className="text-primary-main" size={24} />}
           />
           <StatPanel
@@ -536,9 +531,9 @@ function SafeManagement(): JSX.Element {
                       <TableCell className="p-2">{s.type}</TableCell>
                       <TableCell className="p-2">
                         {s.amount !== undefined
-                          ? `€${s.amount.toFixed(2)}`
+                          ? formatEuro(s.amount)
                           : s.count !== undefined
-                          ? `€${s.count.toFixed(2)}${
+                          ? `${formatEuro(s.count)}${
                               s.difference !== undefined
                                 ? ` (${s.difference >= 0 ? "+" : ""}${s.difference.toFixed(2)})`
                                 : ""

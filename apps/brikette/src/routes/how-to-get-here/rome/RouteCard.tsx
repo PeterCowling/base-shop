@@ -4,18 +4,11 @@ import { useTranslation } from "react-i18next";
 import { Cluster } from "../ui";
 
 import { ProsCons } from "./ProsCons";
+import { resolveTranslatedCopy } from "./resolveTranslatedCopy";
 import type { RouteOption } from "./types";
 
 interface RouteCardProps {
   route: RouteOption;
-}
-
-function resolveTranslatedCopy(value: unknown, key: string, fallback = ""): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (trimmed === key) return fallback;
-  return trimmed;
 }
 
 function RouteCardBase({ route }: RouteCardProps) {
@@ -25,7 +18,7 @@ function RouteCardBase({ route }: RouteCardProps) {
   const tags = ready
     ? route.tagsKeys
         .map((key) => resolveTranslatedCopy(t(key), key))
-        .filter((label) => Boolean(label))
+        .filter(Boolean)
     : [];
   const title = resolveTranslatedCopy(t(route.titleKey, { defaultValue: "Route option" }), route.titleKey, "Route option");
   const summary = resolveTranslatedCopy(t(route.shortSummaryKey, { defaultValue: "" }), route.shortSummaryKey, "");

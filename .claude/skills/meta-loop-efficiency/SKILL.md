@@ -13,12 +13,14 @@ Weekly audit of startup-loop skill files. Read-only scan. Writes one committed a
 /meta-loop-efficiency                     # default scan, commit artifact
 /meta-loop-efficiency --threshold <N>    # custom line threshold (default 200)
 /meta-loop-efficiency --dry-run          # print findings; do not commit
+# implementation path: pnpm --filter scripts startup-loop:meta-loop-efficiency-audit -- --dry-run
 ```
 
 ## Operating Mode
 
 **AUDIT ONLY** — no skill file modifications permitted.
 Writes and commits one artifact per run (skipped on `--dry-run`).
+Use the script-backed audit engine in `scripts/src/startup-loop/diagnostics/meta-loop-efficiency-audit.ts` for report generation.
 
 ## Audit Scope
 
@@ -121,7 +123,7 @@ Any `lp-*` skill not listed above defaults to **low** tier. Add new skills here 
 Always write the artifact. Emit planning anchor ONLY when findings are new:
 
 1. Locate previous artifact: glob `docs/business-os/platform-capability/skill-efficiency-audit-[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]-[0-9][0-9][0-9][0-9].md`, sort lexicographically, take last. Files not matching this exact pattern are excluded (lexicographic order equals timestamp order for this format).
-2. For each skill flagged in List 1 or List 2:
+2. For each skill flagged in List 1, List 2, or List 3:
    - Not in previous artifact → **new-to-HIGH** → emit planning anchor.
    - Already flagged → status: `known` (suppress anchor for that skill).
 3. Any previously compliant skill now flagged → always emit planning anchor (regression).

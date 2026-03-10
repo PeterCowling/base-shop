@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import type { GuideMeta } from "@/data/guides.index";
 import { GUIDE_TOPICS, matchesGuideTopic } from "@/data/guideTopics";
 import type { AppLanguage } from "@/i18n.config";
-import { getTagMeta } from "@/utils/tags/resolvers";
+import { buildTagDictionary } from "@/utils/tags/resolvers";
 
 import type { GuideFilterOption } from "./useGuideFilterOptions";
 
@@ -13,6 +13,7 @@ export const useGuideTopicOptions = (
   lang: AppLanguage,
 ): GuideFilterOption[] =>
   useMemo(() => {
+    const langDict = buildTagDictionary([lang])[lang] ?? {};
     const options: GuideFilterOption[] = [];
 
     for (const topic of GUIDE_TOPICS) {
@@ -22,7 +23,7 @@ export const useGuideTopicOptions = (
       );
       if (count <= 0) continue;
 
-      const label = getTagMeta(lang, topic.id).label || topic.id;
+      const label = langDict[topic.id]?.label || topic.id;
       options.push({ value: topic.id, label, count });
     }
 

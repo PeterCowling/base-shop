@@ -35,9 +35,9 @@ export interface RateCodes {
  * Render policy: omit section when absent (no "not applicable" copy).
  */
 export interface RoomFeatures {
-  bedSpec: string; // e.g. "1 double bed" - always populated
-  bathroomSpec: string; // e.g. "Ensuite bathroom" - always populated
-  viewSpec?: string; // e.g. "Sea view" - absent for no-view rooms
+  bedSpec: string; // roomsPage translation key under detailsLine.beds.*
+  bathroomSpec: string; // roomsPage translation key under facilities.*
+  viewSpec?: string; // roomsPage translation key under filters.views.*
   terracePresent?: boolean; // true when room has a terrace
   inRoomLockers?: boolean; // true when room has in-room keycard lockers
 }
@@ -119,9 +119,9 @@ const roomsData: Room[] = [
     landingImage: "/img/7/landing.webp",
     roomsHref: "/private-rooms/double-room",
     features: {
-      bedSpec: "1 double bed",
-      bathroomSpec: "Ensuite bathroom",
-      viewSpec: "Sea view",
+      bedSpec: "detailsLine.beds.doubleBedForTwo",
+      bathroomSpec: "facilities.bathroomEnsuite",
+      viewSpec: "filters.views.sea",
       terracePresent: true,
     },
     octorateRoomCategory: "Double",
@@ -151,8 +151,8 @@ const roomsData: Room[] = [
     landingImage: "/img/10/landing.webp",
     roomsHref: "/rooms/room_10",
     features: {
-      bedSpec: "3 bunk beds (6 beds total)",
-      bathroomSpec: "Ensuite bathroom",
+      bedSpec: "detailsLine.beds.threeDormBedsSixGuests",
+      bathroomSpec: "facilities.bathroomEnsuite",
     },
     octorateRoomCategory: "Dorm",
   },
@@ -183,9 +183,9 @@ const roomsData: Room[] = [
     landingImage: "/img/11/landing.webp",
     roomsHref: "/rooms/room_11",
     features: {
-      bedSpec: "3 bunk beds (6 beds total)",
-      bathroomSpec: "Ensuite bathroom",
-      viewSpec: "Sea view",
+      bedSpec: "detailsLine.beds.threeDormBedsSixGuests",
+      bathroomSpec: "facilities.bathroomEnsuite",
+      viewSpec: "filters.views.sea",
       terracePresent: true,
       inRoomLockers: true,
     },
@@ -218,9 +218,9 @@ const roomsData: Room[] = [
     landingImage: "/img/12/landing.webp",
     roomsHref: "/rooms/room_12",
     features: {
-      bedSpec: "3 bunk beds (6 beds total)",
-      bathroomSpec: "Private bathroom",
-      viewSpec: "Sea view",
+      bedSpec: "detailsLine.beds.threeDormBedsSixGuests",
+      bathroomSpec: "facilities.bathroomPrivate",
+      viewSpec: "filters.views.sea",
       terracePresent: true,
       inRoomLockers: true,
     },
@@ -252,8 +252,8 @@ const roomsData: Room[] = [
     landingImage: "/img/3/landing.webp",
     roomsHref: "/rooms/room_3",
     features: {
-      bedSpec: "4 bunk beds (8 beds total)",
-      bathroomSpec: "Shared female bathroom",
+      bedSpec: "detailsLine.beds.fourDormBedsEightGuests",
+      bathroomSpec: "facilities.bathroomSharedFemale",
     },
     octorateRoomCategory: "Dorm",
   },
@@ -282,8 +282,8 @@ const roomsData: Room[] = [
     landingImage: "/img/4/landing.webp",
     roomsHref: "/rooms/room_4",
     features: {
-      bedSpec: "4 bunk beds (8 beds total)",
-      bathroomSpec: "Shared female bathroom",
+      bedSpec: "detailsLine.beds.fourDormBedsEightGuests",
+      bathroomSpec: "facilities.bathroomSharedFemale",
     },
     octorateRoomCategory: "Dorm",
   },
@@ -315,9 +315,9 @@ const roomsData: Room[] = [
     landingImage: "/img/5/landing.webp",
     roomsHref: "/rooms/room_5",
     features: {
-      bedSpec: "3 bunk beds (6 beds total)",
-      bathroomSpec: "Ensuite bathroom",
-      viewSpec: "Sea view",
+      bedSpec: "detailsLine.beds.threeDormBedsSixGuests",
+      bathroomSpec: "facilities.bathroomEnsuite",
+      viewSpec: "filters.views.sea",
       terracePresent: true,
     },
     octorateRoomCategory: "Dorm",
@@ -349,9 +349,9 @@ const roomsData: Room[] = [
     landingImage: "/img/6/landing.webp",
     roomsHref: "/rooms/room_6",
     features: {
-      bedSpec: "3 bunk beds + 1 single (7 beds total)",
-      bathroomSpec: "Ensuite bathroom",
-      viewSpec: "Sea view",
+      bedSpec: "detailsLine.beds.threeDormBedsPlusSingleSevenGuests",
+      bathroomSpec: "facilities.bathroomEnsuite",
+      viewSpec: "filters.views.sea",
       terracePresent: true,
     },
     octorateRoomCategory: "Dorm",
@@ -382,9 +382,9 @@ const roomsData: Room[] = [
     landingImage: "/img/9/landing.webp",
     roomsHref: "/rooms/room_9",
     features: {
-      bedSpec: "3 single beds",
-      bathroomSpec: "Ensuite bathroom",
-      viewSpec: "Courtyard view",
+      bedSpec: "detailsLine.beds.threeSingleBedsThreeGuests",
+      bathroomSpec: "facilities.bathroomEnsuite",
+      viewSpec: "filters.views.courtyard",
     },
     octorateRoomCategory: "Dorm",
   },
@@ -415,11 +415,11 @@ const roomsData: Room[] = [
     landingImage: "/img/8/landing.webp",
     roomsHref: "/rooms/room_8",
     features: {
-      bedSpec: "1 bunk bed (2 beds total)",
-      bathroomSpec: "Shared female bathroom",
-      viewSpec: "Garden view",
+      bedSpec: "detailsLine.beds.oneDormBedTwoGuests",
+      bathroomSpec: "facilities.bathroomSharedFemale",
+      viewSpec: "filters.views.garden",
     },
-    octorateRoomCategory: "Dorm Room with One Bunkbed",
+    octorateRoomCategory: "Dorm Room with One Bunkbed", // i18n-exempt -- TECH-000 [ttl=2026-12-31] Canonical Octorate category label for pricing match only.
     isVisibleOnWebsite: false, // Temporarily unavailable for 2026 season: keep data, hide public listing.
   },
 

@@ -15,6 +15,11 @@ import { createBrikClickId, fireSelectItem, type ItemListId, type RatePlan } fro
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
 import { translatePath } from "@/utils/translate-path";
 
+const visibleRoomsData =
+  Array.isArray(websiteVisibleRoomsData) && websiteVisibleRoomsData.length > 0
+    ? websiteVisibleRoomsData
+    : roomsData;
+
 export type RoomsSectionBookingQuery = {
   checkIn?: string;
   checkOut?: string;
@@ -63,22 +68,14 @@ export function RoomsSection({
   includeRoomIds,
   ...props
 }: RoomsSectionProps & Omit<RoomsSectionBaseProps, "itemListId" | "onRoomSelect">) {
-  const visibleRooms = useMemo(
-    () => (Array.isArray(websiteVisibleRoomsData) && websiteVisibleRoomsData.length > 0
-      ? websiteVisibleRoomsData
-      : roomsData),
-    [],
-  );
-
   const effectiveExcludeRoomIds = useMemo(() => {
-    const hiddenRoomIds = roomsData
-      .filter((room) => room.isVisibleOnWebsite === false)
-      .map((room) => room.id);
     const includedSet = includeRoomIds ? new Set(includeRoomIds) : null;
-    const notIncludedRoomIds = includedSet
-      ? roomsData.filter((room) => !includedSet.has(room.id)).map((room) => room.id)
-      : [];
-    return Array.from(new Set([...(props.excludeRoomIds ?? []), ...hiddenRoomIds, ...notIncludedRoomIds]));
+    const derived: string[] = [];
+    for (const room of roomsData) {
+      if (room.isVisibleOnWebsite === false) derived.push(room.id);
+      else if (includedSet && !includedSet.has(room.id)) derived.push(room.id);
+    }
+    return Array.from(new Set([...(props.excludeRoomIds ?? []), ...derived]));
   }, [includeRoomIds, props.excludeRoomIds]);
 
   // Map availabilityRooms to roomPrices (keyed by room.id) via name-based category matching.
@@ -86,7 +83,7 @@ export function RoomsSection({
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
     if (!availabilityRooms || availabilityRooms.length === 0) return roomPricesOverride;
     const prices: Record<string, RoomCardPrice> = { ...(roomPricesOverride ?? {}) };
-    for (const room of visibleRooms) {
+    for (const room of visibleRoomsData) {
       if (!room.octorateRoomCategory) continue;
       const avRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
       if (!avRoom) continue;
@@ -102,7 +99,7 @@ export function RoomsSection({
       }
     }
     return Object.keys(prices).length > 0 ? prices : undefined;
-  }, [availabilityRooms, roomPricesOverride, visibleRooms]);
+  }, [availabilityRooms, roomPricesOverride, visibleRoomsData]);
 
   // Ref-level guard prevents duplicate begin_checkout events on rapid re-clicks.
   // It must be reset on `pageshow` because back/forward cache can restore a page
@@ -130,7 +127,7 @@ export function RoomsSection({
   }, []);
 
   const resolveValidBookingUrl = (ctx: { roomSku: string; plan: RatePlan }): string | null => {
-    const room = visibleRooms.find((r) => r.id === ctx.roomSku);
+    const room = visibleRoomsData.find((r) => r.id === ctx.roomSku);
     if (!room) return null;
     const result = buildOctorateUrl({
       checkin: props.bookingQuery?.checkIn ?? "",

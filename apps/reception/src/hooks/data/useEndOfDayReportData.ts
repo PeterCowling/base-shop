@@ -376,17 +376,21 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
     [keycardTransactions]
   );
 
-  const { openingCash, closingCash, floatTotal, tenderRemovalTotal } = useMemo(() => {
-    const sameDayCounts = cashCounts
-      .filter((c) => sameItalyDate(c.timestamp, targetDateStr))
-      .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+  const sameDayCashCounts = useMemo(
+    () =>
+      cashCounts
+        .filter((c) => sameItalyDate(c.timestamp, targetDateStr))
+        .sort((a, b) => a.timestamp.localeCompare(b.timestamp)),
+    [cashCounts, targetDateStr]
+  );
 
+  const { openingCash, closingCash, floatTotal, tenderRemovalTotal } = useMemo(() => {
     let opening: number | undefined;
     let closing: number | undefined;
     let float = 0;
     let tenderRemoval = 0;
 
-    sameDayCounts.forEach((c) => {
+    sameDayCashCounts.forEach((c) => {
       if (c.type === "opening" && typeof c.count === "number" && opening === undefined) {
         opening = c.count;
       }
@@ -408,12 +412,9 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
       floatTotal: float,
       tenderRemovalTotal: tenderRemoval,
     };
-  }, [cashCounts, targetDateStr]);
+  }, [sameDayCashCounts]);
 
   const { openingKeycards, closingKeycards } = useMemo(() => {
-    const sameDayCashCounts = cashCounts
-      .filter((c) => sameItalyDate(c.timestamp, targetDateStr))
-      .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
     const sameDaySafeCounts = safeCounts
       .filter((c) => sameItalyDate(c.timestamp, targetDateStr))
       .sort((a, b) => a.timestamp.localeCompare(b.timestamp));
@@ -449,7 +450,7 @@ export function useEndOfDayReportData(date: Date): EndOfDayReportData {
       openingKeycards: (openingTill ?? 0) + (openingSafe ?? 0),
       closingKeycards: (closingTill ?? 0) + (closingSafe ?? 0),
     };
-  }, [cashCounts, safeCounts, targetDateStr]);
+  }, [sameDayCashCounts, safeCounts, targetDateStr]);
 
   const beginningSafeBalance = useMemo(() => {
     const midnight = new Date(startOfDayIso(date)).getTime();

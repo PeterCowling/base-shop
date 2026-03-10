@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: API
 Workstream: Engineering
 Created: 2026-03-02
-Last-reviewed: 2026-03-02
-Last-updated: 2026-03-02
+Last-reviewed: 2026-03-09
+Last-updated: 2026-03-09
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: caryina-inventory-addition-flow-hardening
 Deliverable-Type: code-change
@@ -22,16 +22,19 @@ Auto-Build-Intent: plan+auto
 
 ## Summary
 
-Caryina admin inventory updates currently fail for brand-new SKUs because the PATCH route only updates existing records and returns `not_found` when no inventory row exists. This conflicts with the admin UI copy and blocks the intended operator flow from product creation to customer-visible in-stock state. The chosen approach keeps the existing PATCH endpoint and upgrades it to support first-write creation when the SKU exists in the product catalog, preserving route shape while fixing the broken contract. The same task also aligns admin error messaging with the backend contract and expands unit coverage for both route and UI behavior. A follow-up CI verification task captures repository policy that tests run in CI only.
+Caryina originally failed to create first-write inventory for brand-new SKUs because the PATCH route only updated existing rows and returned `not_found`. That contract was fixed on 2026-03-02 by allowing PATCH create-on-missing for valid product SKUs. A follow-on hardening pass on 2026-03-09 closes the remaining sellability gap by adding initial stock to product creation, bootstrapping the stock row during create, and blocking new/first activation to `active` unless stock exists. Together these changes restore a deterministic admin flow from product creation to customer-visible in-stock state.
 
-## Active tasks
+## Completed tasks
 
 - [x] TASK-01: Implement inventory PATCH first-write creation and align admin messaging/tests
 - [x] TASK-02: Verify CI test/lint/typecheck outcomes and close rollout notes (Caryina scope)
+- [x] TASK-03: Bootstrap initial stock during product creation and block activation without stock
 
 ## Goals
 
 - Allow admin inventory PATCH to create an initial inventory record for a valid product SKU when no inventory row exists.
+- Allow admin product creation to persist initial stock in the same operator flow.
+- Prevent creating or first-activating an `active` Caryina product when sellable stock is zero.
 - Preserve safe not-found behavior for invalid SKUs.
 - Align `InventoryEditor` operator messaging with the effective API contract.
 - Add regression coverage for the first-write creation path and updated UI error handling.
@@ -87,6 +90,7 @@ Caryina admin inventory updates currently fail for brand-new SKUs because the PA
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Implement PATCH first-write create contract, align UI copy/error handling, expand route/UI unit coverage | 85% | M | Complete (2026-03-02) | - | TASK-02 |
 | TASK-02 | INVESTIGATE | Capture CI validation evidence and rollout notes for TASK-01 | 80% | S | Complete (2026-03-02, Caryina scope) | TASK-01 | - |
+| TASK-03 | IMPLEMENT | Add initial-stock product create flow and activation guardrails so newly created active products are sellable immediately | 88% | M | Complete (2026-03-09) | TASK-02 | - |
 
 ## Parallelism Guide
 
@@ -241,6 +245,54 @@ Caryina admin inventory updates currently fail for brand-new SKUs because the PA
     - Lint exceptions governance failed in `apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts` (ticket XAUP-118 path allowlist mismatch).
     - Unit-test failure in `@apps/business-os` governed calibration harness (`ERR_MODULE_NOT_FOUND` for scripts test dependency path).
   - Operator scope directive applied: ignore XA and focus only on Caryina for this task.
+
+---
+
+### TASK-03: Bootstrap initial stock during product creation and block activation without stock
+
+- **Type:** IMPLEMENT
+- **Deliverable:** code-change across Caryina product-create/update API, create form, tests, and plan/queue bookkeeping
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Complete (2026-03-09)
+- **Affects:** `apps/caryina/src/lib/adminSchemas.ts`, `apps/caryina/src/app/admin/api/products/route.ts`, `apps/caryina/src/app/admin/api/products/[id]/route.ts`, `apps/caryina/src/components/admin/ProductForm.client.tsx`, `apps/caryina/src/app/admin/api/products/route.test.ts`, `apps/caryina/src/app/admin/api/products/[id]/route.test.ts`, `apps/caryina/src/components/admin/ProductForm.client.test.tsx`, `docs/business-os/startup-loop/ideas/trial/queue-state.json`, `docs/plans/caryina-inventory-addition-flow-hardening/plan.md`
+- **Depends on:** TASK-02
+- **Blocks:** -
+- **Confidence:** 88%
+  - Implementation: 90% - changes are localized to Caryina admin create/edit paths and existing tests already cover these surfaces.
+  - Approach: 88% - create-time stock bootstrap plus activation guard removes the remaining operator gap without introducing a second publish workflow.
+  - Impact: 88% - new active products can become sellable in one step, and first activation now fails closed when stock is missing.
+- **Acceptance:**
+  - Product create payload accepts `initialStock`.
+  - Creating an `active` product with `initialStock <= 0` returns `active_requires_stock`.
+  - Creating a product with `initialStock > 0` bootstraps the first inventory row during create.
+  - If inventory bootstrap fails, the product create flow rolls back and returns `inventory_bootstrap_failed`.
+  - First activation from non-active to `active` is blocked when sellable stock is zero.
+  - Product form shows create-time stock input and operator-friendly error copy.
+- **Validation contract (TC-03):**
+  - TC-03-01: Create active product + positive initial stock -> `201` and inventory bootstrap call issued.
+  - TC-03-02: Create active product + zero initial stock -> `400 active_requires_stock`.
+  - TC-03-03: Inventory bootstrap failure during create -> product rollback attempt and `500 inventory_bootstrap_failed`.
+  - TC-03-04: First activation from draft -> `400 active_requires_stock` when inventory total is zero.
+  - TC-03-05: Product form blocks active create with zero stock and sends `initialStock` in create payload.
+- **Build completion evidence (2026-03-09):**
+  - Files changed:
+    - `apps/caryina/src/lib/adminSchemas.ts`
+    - `apps/caryina/src/app/admin/api/products/route.ts`
+    - `apps/caryina/src/app/admin/api/products/[id]/route.ts`
+    - `apps/caryina/src/components/admin/ProductForm.client.tsx`
+    - `apps/caryina/src/app/admin/api/products/route.test.ts`
+    - `apps/caryina/src/app/admin/api/products/[id]/route.test.ts`
+    - `apps/caryina/src/components/admin/ProductForm.client.test.tsx`
+    - `docs/business-os/startup-loop/ideas/trial/queue-state.json`
+    - `docs/plans/caryina-inventory-addition-flow-hardening/plan.md`
+  - Validation results:
+    - `pnpm --filter @apps/caryina typecheck`
+    - `pnpm --filter @apps/caryina lint`
+  - Tests:
+    - Updated local unit coverage only; execution deferred to CI per repo testing policy.
 
 ## Simulation Trace
 

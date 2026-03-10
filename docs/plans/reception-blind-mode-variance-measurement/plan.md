@@ -4,8 +4,8 @@ Status: Complete
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-04
-Last-reviewed: 2026-03-04
-Last-updated: 2026-03-04
+Last-reviewed: 2026-03-09
+Last-updated: 2026-03-09
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-blind-mode-variance-measurement
 Deliverable-Type: code-change
@@ -22,7 +22,7 @@ Auto-Build-Intent: plan+auto
 # Reception Blind-Mode Variance Measurement Plan
 
 ## Summary
-Implement a deterministic post-deployment measurement loop for Reception blind till close mode using existing Firebase discrepancy records. The outcome is a weekly artifact reporting baseline-vs-post-launch variance change with explicit threshold actions.
+Implement a deterministic post-deployment measurement loop for Reception blind till close mode using existing Firebase cash/keycard discrepancy records. The code path and runbook exist; the remaining evidence gap is the first live production export and recorded weekly action note.
 
 ## Active tasks
 - [x] TASK-01: Define KPI and measurement contract
@@ -126,11 +126,12 @@ Implement a deterministic post-deployment measurement loop for Reception blind t
 | Baseline window polluted by rollout period | Medium | Medium | Use explicit activation date and fixed windows |
 | Data quality anomalies distort trend | Medium | Medium | Add exclusion/outlier policy and annotate anomalies |
 | Report not consumed operationally | Medium | High | TASK-03 makes cadence/owner/action contract mandatory |
+| Live evidence never gets recorded despite shipped tooling | Medium | High | Use the runbook to export RTDB discrepancy nodes and save the first weekly live artifact + action note |
 
 ## What would make this >=90%
 - Confirm exact production activation date for blind-mode behavior.
 - Verify discrepancy field-level schema in Firebase with one sampled week.
-- Complete first full extraction dry-run and reconcile output against raw records.
+- Complete first live extraction and reconcile output against raw records.
 
 ## Validation Gate (Execution)
 - Scoped checks only for touched package(s):
@@ -143,4 +144,4 @@ Implement a deterministic post-deployment measurement loop for Reception blind t
 - All tasks marked complete.
 - Weekly artifact generation path is running deterministically.
 - Threshold-based action loop is documented and actionable.
-- Results-review can mark intended outcome as measurable with live evidence.
+- Results-review can mark intended outcome as measurable after the first saved live weekly artifact and action note.

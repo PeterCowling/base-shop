@@ -86,6 +86,30 @@ describe("tool policy gates", () => {
     expect(result).toBeNull();
   });
 
+  it("TC-03B: wildcard-stage strict tool passes without current_stage", () => {
+    const policyMap = parsePolicyMap({
+      bos_cards_list: {
+        permission: "read",
+        sideEffects: "none",
+        allowedStages: ["*"],
+        auditTag: "bos:cards:list",
+        contextRequired: ["business"],
+        sensitiveFields: [],
+      },
+    });
+
+    const result = preflightToolCallPolicy({
+      toolName: "bos_cards_list",
+      args: {
+        business: "BRIK",
+      },
+      knownToolNames: new Set(["bos_cards_list"]),
+      policyMap,
+    });
+
+    expect(result).toBeNull();
+  });
+
   it("TC-04: strict guarded_write tool requires write_reason and baseEntitySha", () => {
     const policyMap = parsePolicyMap({
       bos_stage_doc_patch_guarded: {

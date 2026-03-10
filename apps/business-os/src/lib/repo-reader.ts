@@ -247,23 +247,35 @@ export class RepoReader {
    * Get all stage docs for a card
    */
   async getCardStageDocs(cardId: string): Promise<{
-    factFind?: StageDoc;
-    plan?: StageDoc;
-    build?: StageDoc;
-    reflect?: StageDoc;
+    docs: StageDoc[];
   }> {
-    const [factFind, plan, build, reflect] = await Promise.all([
-      this.getStageDoc(cardId, "fact-find"),
-      this.getStageDoc(cardId, "plan"),
-      this.getStageDoc(cardId, "build"),
-      this.getStageDoc(cardId, "reflect"),
-    ]);
+    const stageDocs: StageDoc[] = [];
+    const cardPath = path.join(this.businessOsPath, "cards", cardId);
+
+    try {
+      const entries = await readdirWithinRoot(this.repoRoot, cardPath, {
+        withFileTypes: true,
+      });
+
+      for (const entry of entries) {
+        if (!entry.isFile()) continue;
+        if (!entry.name.endsWith(".user.md")) continue;
+        if (entry.name.startsWith(".")) continue;
+
+        const stageName = entry.name.replace(/\.user\.md$/u, "");
+        const stageDoc = await this.getStageDoc(cardId, stageName);
+        if (stageDoc) {
+          stageDocs.push(stageDoc);
+        }
+      }
+    } catch (err) {
+      if ((err as NodeJS.ErrnoException).code !== "ENOENT") {
+        throw err;
+      }
+    }
 
     return {
-      factFind: factFind ?? undefined,
-      plan: plan ?? undefined,
-      build: build ?? undefined,
-      reflect: reflect ?? undefined,
+      docs: stageDocs.sort((left, right) => left.Stage.localeCompare(right.Stage)),
     };
   }
 

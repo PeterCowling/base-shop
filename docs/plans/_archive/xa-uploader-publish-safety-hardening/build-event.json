@@ -1,0 +1,12 @@
+{
+  "feature_slug": "xa-uploader-publish-safety-hardening",
+  "artifact": "micro-build",
+  "business": "XA",
+  "completed_at": "2026-03-09T10:45:00.000Z",
+  "outcome": {
+    "why": "Hosted-only XA still had a publish side door that bypassed save/conflict safety and hid partial snapshot-write failures.",
+    "type": "operational",
+    "statement": "XA publish now requires a saved hosted revision, publishes from the canonical snapshot rather than browser draft JSON, and reports partial-success warnings instead of silent success.",
+    "source": "operator"
+  }
+}

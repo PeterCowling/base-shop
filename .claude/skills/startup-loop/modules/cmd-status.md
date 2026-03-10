@@ -9,7 +9,7 @@
 1. Read latest stage artifacts for that business.
 2. Re-evaluate gates and sync requirements for the current stage:
    - For stages ASSESSMENT-09–MARKET-06: apply Gate A / Gate B / Gate C (defined in `cmd-start.md`).
-   - For advance-blocking gates (including ASSESSMENT-09 Intake contract validation `GATE-ASSESSMENT-00`, ASSESSMENT container completeness `GATE-ASSESSMENT-01`, plus GATE-BD-03, GATE-BD-08, GATE-SELL-STRAT-01, GATE-SELL-ACT-01): see `cmd-advance.md` for gate definitions.
+   - For advance-blocking gates (including ASSESSMENT-09 Intake contract validation `GATE-ASSESSMENT-00`, ASSESSMENT container completeness `GATE-ASSESSMENT-01`, plus GATE-BD-03, GATE-BD-08, GATE-SELL-STRAT-01, GATE-SELL-ACT-01): see `cmd-advance.md` and its `modules/cmd-advance/*.md` submodules for gate definitions.
 3. Return run packet with current stage/status.
 
 ## Gate Evaluation Note

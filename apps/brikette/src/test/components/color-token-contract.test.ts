@@ -1,3 +1,4 @@
+/* eslint-disable security/detect-non-literal-fs-filename, security/detect-non-literal-regexp -- TEST-000 [ttl=2026-12-31] Controlled fixture paths and regex probes in contract tests. */
 import fs from "fs";
 import path from "path";
 

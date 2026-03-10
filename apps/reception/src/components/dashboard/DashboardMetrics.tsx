@@ -6,6 +6,8 @@ import { AlertTriangle,DollarSign, TrendingUp, Users } from 'lucide-react'
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { MetricsCard } from '@acme/ui/operations'
 
+import { formatEuro } from "../../utils/format";
+
 interface Transaction {
   timestamp?: string
   amount?: number
@@ -88,13 +90,6 @@ export function DashboardMetrics({ transactions, loading }: DashboardMetricsProp
     }
   }, [metrics])
 
-  const formatEuro = (amount: number) => {
-    return new Intl.NumberFormat('it-IT', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(amount)
-  }
-
   if (loading) {
     return (
       <Grid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
@@ -112,7 +107,7 @@ export function DashboardMetrics({ transactions, loading }: DashboardMetricsProp
     <Grid columns={{ base: 1, md: 2, lg: 4 }} gap={4}>
       <MetricsCard
         label="Today's Revenue"
-        value={formatEuro(metrics.todayRevenue)}
+        value={formatEuro(metrics.todayRevenue, { style: 'locale' })}
         icon={DollarSign}
         variant={metrics.todayRevenue > 0 ? 'success' : 'default'}
         trend={revenueTrend || undefined}
@@ -128,7 +123,7 @@ export function DashboardMetrics({ transactions, loading }: DashboardMetricsProp
 
       <MetricsCard
         label="Avg Transaction"
-        value={formatEuro(metrics.avgTransaction)}
+        value={formatEuro(metrics.avgTransaction, { style: 'locale' })}
         icon={Users}
         description="Per transaction"
       />
@@ -138,7 +133,7 @@ export function DashboardMetrics({ transactions, loading }: DashboardMetricsProp
         value={`${Math.round((metrics.cashTotal / (metrics.todayRevenue || 1)) * 100)}%`}
         icon={AlertTriangle}
         variant={metrics.cashTotal > metrics.cardTotal ? 'warning' : 'default'}
-        description={`€${metrics.cashTotal.toFixed(2)} cash`}
+        description={`${formatEuro(metrics.cashTotal)} cash`}
       />
     </Grid>
   )

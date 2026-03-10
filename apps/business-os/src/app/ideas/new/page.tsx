@@ -25,16 +25,16 @@ export default async function NewIdeaPage() {
         <div className="mb-8">
           <div className="flex items-center gap-4 mb-4">
             <Link
-              href="/boards/global"
+              href="/ideas"
               className="text-info-fg hover:text-info-fg"
             >
-              ← Back to Board
+              ← Back to Ideas
             </Link>
           </div>
           <h1 className="text-3xl font-bold text-fg">Create New Idea</h1>
           <p className="mt-2 text-muted">
             Submit a raw idea to the inbox. It will be reviewed and potentially
-            worked up into a card.
+            worked up into a workflow follow-up, plan, or targeted build.
           </p>
         </div>
 
@@ -54,8 +54,8 @@ export default async function NewIdeaPage() {
               items
             </li>
             <li>
-              • They start in the inbox and can be worked up into cards through
-              the fact-find/plan process
+              • They start in the inbox and can be routed into a follow-up task,
+              planning artifact, or direct build brief
             </li>
             <li>
               • Keep the title concise and the description focused on the core

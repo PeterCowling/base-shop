@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 import { slugify, splitList } from "@acme/lib/xa/catalogAdminSchema";
 
 import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
+import { ABSOLUTE_HTTP_URL_RE } from "../../../../lib/catalogPath";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
 import { getMediaBucket } from "../../../../lib/r2Media";
@@ -103,11 +104,13 @@ function parseUploadQueryParams(requestUrl: string): {
   return { ok: true, storefront, slug };
 }
 
+const LEADING_SLASHES_RE = /^\/+/;
+
 function normalizeCatalogPath(pathValue: string): string {
   const trimmed = pathValue.trim();
   if (!trimmed) return "";
-  if (/^https?:\/\//i.test(trimmed)) return "";
-  return trimmed.replace(/^\/+/, "");
+  if (ABSOLUTE_HTTP_URL_RE.test(trimmed)) return "";
+  return trimmed.replace(LEADING_SLASHES_RE, "");
 }
 
 function parseDeleteQueryParams(requestUrl: string): {

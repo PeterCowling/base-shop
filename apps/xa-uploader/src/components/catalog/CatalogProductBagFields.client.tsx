@@ -4,7 +4,6 @@ import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
 
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 
-import { INPUT_CLASS as _INPUT_CLASS } from "./catalogStyles";
 
 export function CatalogProductBagFields({
   draft: _draft,

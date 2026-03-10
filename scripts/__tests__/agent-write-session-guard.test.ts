@@ -12,6 +12,10 @@ const WRITER_LOCK_SCRIPT = path.join(
   REPO_ROOT,
   "scripts/agents/with-writer-lock.sh",
 );
+const GIT_GUARD_SCRIPT = path.join(
+  REPO_ROOT,
+  "scripts/agents/with-git-guard.sh",
+);
 
 interface ScriptResult {
   status: number | null;
@@ -37,6 +41,7 @@ function runScript(script: string, args: string[]): ScriptResult {
 beforeAll(() => {
   fs.chmodSync(INTEGRATOR_SCRIPT, 0o755);
   fs.chmodSync(WRITER_LOCK_SCRIPT, 0o755);
+  fs.chmodSync(GIT_GUARD_SCRIPT, 0o755);
 });
 
 describe("Agent write-session guards", () => {
@@ -106,6 +111,45 @@ describe("Agent write-session guards", () => {
     expect(result.stderr).toContain("--agent-write-session");
   });
 
+  test("integrator blocks direct interactive bash in command mode", () => {
+    const result = runScript(INTEGRATOR_SCRIPT, ["--", "bash"]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(
+      "command-mode interactive writer shells are forbidden",
+    );
+    expect(result.stderr).toContain("--interactive-write-shell");
+  });
+
+  test("integrator blocks wrapped interactive bash in command mode", () => {
+    const result = runScript(INTEGRATOR_SCRIPT, [
+      "--",
+      GIT_GUARD_SCRIPT,
+      "--",
+      "bash",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(
+      "command-mode interactive writer shells are forbidden",
+    );
+    expect(result.stderr).toContain("with-git-guard.sh -- bash");
+  });
+
+  test("integrator blocks wrapped codex without explicit opt-in", () => {
+    const result = runScript(INTEGRATOR_SCRIPT, [
+      "--",
+      GIT_GUARD_SCRIPT,
+      "--",
+      "codex",
+      "--version",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("codex session");
+    expect(result.stderr).toContain("--agent-write-session");
+  });
+
   test("integrator blocks direct node codex launcher without explicit opt-in", () => {
     const result = runScript(INTEGRATOR_SCRIPT, [
       "--",
@@ -153,6 +197,45 @@ describe("Agent write-session guards", () => {
     expect(result.status).toBe(1);
     expect(result.stderr).toContain("codex session");
     expect(result.stderr).toContain("retry-forbidden");
+  });
+
+  test("with-writer-lock blocks direct interactive bash in command mode", () => {
+    const result = runScript(WRITER_LOCK_SCRIPT, ["--", "bash"]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(
+      "command-mode interactive shells are forbidden while holding the writer lock",
+    );
+    expect(result.stderr).toContain("--interactive-shell");
+  });
+
+  test("with-writer-lock blocks wrapped interactive bash in command mode", () => {
+    const result = runScript(WRITER_LOCK_SCRIPT, [
+      "--",
+      GIT_GUARD_SCRIPT,
+      "--",
+      "bash",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(
+      "command-mode interactive shells are forbidden while holding the writer lock",
+    );
+    expect(result.stderr).toContain("with-git-guard.sh -- bash");
+  });
+
+  test("with-writer-lock blocks wrapped codex without explicit opt-in", () => {
+    const result = runScript(WRITER_LOCK_SCRIPT, [
+      "--",
+      GIT_GUARD_SCRIPT,
+      "--",
+      "codex",
+      "--version",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("codex session");
+    expect(result.stderr).toContain("--agent-write-session");
   });
 
   test("with-writer-lock blocks npx codex wrapper without explicit opt-in", () => {

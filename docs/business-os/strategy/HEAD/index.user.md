@@ -1,7 +1,7 @@
 ---
 Type: Strategy-Index
 Business-Unit: HEAD
-Last-updated: 2026-02-26
+Last-updated: 2026-03-09
 Brand-name: Facilella
 Brand-domain: facilella.com
 Domain-registered: 2026-02-26
@@ -44,6 +44,8 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | S2B | Offer | `docs/business-os/startup-baselines/HEAD/offer.md` | Active | 2026-02-20 |
 | S3 | Forecast | `docs/business-os/startup-baselines/HEAD/S3-forecast/2026-02-20-lp-forecast.user.md` | Active | 2026-02-20 |
 | S6B | Channels | `docs/business-os/startup-baselines/HEAD/channels.md` | Active | 2026-02-20 |
+| CAP-02 | Message variants | `docs/business-os/strategy/HEAD/message-variants.user.md` | Draft | 2026-03-09 |
+| GTM-2 | Stockist target list | `docs/business-os/strategy/HEAD/stockist-target-list.user.md` | Active | 2026-03-09 |
 | S3B | Adjacent product + naming research | `docs/business-os/strategy/HEAD/lp-other-products-results.user.md` | Active | 2026-02-20 |
 | S4 | Prioritization | `docs/business-os/strategy/HEAD/2026-02-12-prioritization-scorecard.user.md` | Active | 2026-02-20 |
 

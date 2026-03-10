@@ -164,7 +164,7 @@ function buildDetails(draft: ReturnType<typeof catalogProductDraftSchema.parse>)
   return Object.keys(out).length > 0 ? out : undefined;
 }
 
-function parseCloudCurrencyRates(): CurrencyRates {
+function parseCloudCurrencyRatesFromEnv(): CurrencyRates {
   const raw = (process.env.XA_UPLOADER_CLOUD_SYNC_CURRENCY_RATES ?? "").trim();
   if (!raw) return DEFAULT_CURRENCY_RATES;
   try {
@@ -181,12 +181,17 @@ function parseCloudCurrencyRates(): CurrencyRates {
   }
 }
 
+const FALLBACK_CURRENCY_RATES = parseCloudCurrencyRatesFromEnv();
+
+const LEADING_SLASHES_RE = /^\/+/;
+const HTTPS_URL_RE = /^https:\/\//i;
+
 function normalizeCatalogPath(rawPath: string): string {
-  return rawPath.trim().replace(/^\/+/, "");
+  return rawPath.trim().replace(LEADING_SLASHES_RE, "");
 }
 
 function isHttpsUrl(value: string): boolean {
-  return /^https:\/\//i.test(value);
+  return HTTPS_URL_RE.test(value);
 }
 
 function parseAllowedExternalHosts(hosts: string[] | undefined): Set<string> {
@@ -361,7 +366,7 @@ export function buildCatalogArtifactsFromDrafts(params: {
   const mediaValidationPolicy = params.mediaValidationPolicy === "strict" ? "strict" : "warn";
   const allowedExternalHosts = parseAllowedExternalHosts(params.allowedExternalImageHosts);
   const warnings: string[] = [];
-  const rates = params.currencyRates ?? parseCloudCurrencyRates();
+  const rates = params.currencyRates ?? FALLBACK_CURRENCY_RATES;
   const seenSlugs = new Set<string>();
   const seenIds = new Set<string>();
   const collectionsByHandle = new Map<string, CatalogCollection>();

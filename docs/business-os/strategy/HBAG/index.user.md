@@ -1,7 +1,7 @@
 ---
 Type: Strategy-Index
 Business-Unit: HBAG
-Last-updated: 2026-02-23
+Last-updated: 2026-03-09
 Business-Name: Caryina
 Status: Active
 Owner: Pete
@@ -50,13 +50,17 @@ Gates read `Status` from this table — not from individual file frontmatters.
 | S3 | Forecast seed | `docs/business-os/startup-baselines/HBAG/forecast-seed.user.md` | Active | 2026-02-20 |
 | S6B | Channels | `docs/business-os/startup-baselines/HBAG/channels.md` | Active | 2026-02-20 |
 | S6B gate | Demand evidence pack | `docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md` | Active | 2026-02-20 |
+| CAP-02 | Message variants | `docs/business-os/strategy/HBAG/message-variants.user.md` | Draft | 2026-03-09 |
+| GTM-2 | Stockist target list | `docs/business-os/strategy/HBAG/stockist-target-list.user.md` | Active | 2026-03-09 |
+| GTM-2 | Channel health log | `docs/business-os/strategy/HBAG/channel-health-log.user.md` | Active | 2026-03-09 |
+| PMF tracker | Demand log | `docs/plans/mini-handbag-pmf/demand-log.md` | Active | 2026-03-09 |
 | WEBSITE-CONTENT-01 | Website content packet | `docs/business-os/startup-baselines/HBAG/content-packet.md` | Active | 2026-02-23 |
 | S4 | Prioritization scorecard | — | — | — |
 | PRODUCT-01 | Product from photo | `docs/business-os/strategy/HBAG/2026-02-22-product-from-photo.user.md` | Draft | 2026-02-22 |
 
 > S2/S2B/S3/S6B backfill completed 2026-02-20 from `mini-handbag-pmf` fact-find and plan evidence.
-> All stage artifacts are hypothesis-quality — not yet validated by first-party HBAG sales data.
-> TASK-09 checkpoint (4-week demand probe) will provide first-party validation data for refresh.
+> First first-party HBAG validation signal arrived on 2026-03-08 via the Luisa Positano boutique pilot.
+> Signal quality is still early-stage (`n=1`); TASK-09 remains the decision-grade checkpoint for refresh.
 
 **Status vocabulary:**
 - `—` Not yet created

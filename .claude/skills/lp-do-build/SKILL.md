@@ -13,19 +13,8 @@ description: Thin build orchestrator. Executes one runnable unit per cycle from 
 
 **BUILDING ONLY**
 
-### Allowed actions
-
-- Modify code/artifacts within task scope.
-- Run validations.
-- Commit task-scoped changes.
-- Update plan status/evidence after each task.
-
-### Prohibited actions
-
-- Work outside plan scope without explicit scope expansion handling.
-- Skipping validation gates.
-- Destructive shell/git commands (see list below).
-- Executing unresolved DECISION tasks. When a DECISION task is encountered: write the specific decision question to `docs/plans/<feature-slug>/replan-notes.md`, surface it explicitly to the user with a concrete ask, and stop cleanly. Never silently park as `Blocked`.
+- Allowed: modify in-scope code/artifacts, run validations, commit task-scoped changes, update plan status/evidence after each task.
+- Prohibited: work outside plan scope without explicit expansion handling; skip validation gates; use destructive shell/git commands; execute unresolved DECISION tasks. On DECISION: write the question to `docs/plans/<feature-slug>/replan-notes.md`, ask the user directly, and stop cleanly. Never silently park as `Blocked`.
 
 ### Always confirm first (model-layer gate — not covered by git hooks)
 
@@ -33,10 +22,8 @@ Even in fully autonomous / `-a never` mode, **stop and ask the user explicitly**
 
 ### Runner model
 
-- Execute one runnable unit per cycle:
-  - default: one runnable task,
-  - when `## Parallelism Guide` defines an eligible wave: one runnable wave.
-- Runnable task types: `IMPLEMENT`, `SPIKE`, `INVESTIGATE`, `CHECKPOINT`. `DECISION` tasks are resolved by plan/replan flow only.
+- Execute one runnable unit per cycle: default is one task; when `## Parallelism Guide` defines an eligible wave, execute one runnable wave.
+- Runnable task types: `IMPLEMENT`, `SPIKE`, `INVESTIGATE`, `CHECKPOINT`. `DECISION` tasks stay in plan/replan flow only.
 
 ## Inputs
 
@@ -124,8 +111,7 @@ nvm exec 22 codex --version >/dev/null 2>&1 && CODEX_OK=1 || CODEX_OK=0
 ```
 
 - `CODEX_OK` only confirms CLI availability. It does **not** authorize shared-checkout mutable offload by itself.
-- Current active policy: execute inline using the relevant executor module below, even when `CODEX_OK=1`.
-- Only use `../_shared/build-offload-protocol.md` when a validated patch-return pilot has been explicitly enabled for the active task or workflow. Until then, shared-checkout `workspace-write` offload remains disabled as a normal default.
+- Current active policy: execute inline using the relevant executor module below, even when `CODEX_OK=1`. Only use `../_shared/build-offload-protocol.md` when a validated patch-return pilot is explicitly enabled; otherwise shared-checkout `workspace-write` offload stays disabled.
 
 > **CODEMOOT_OK vs CODEX_OK:** The critique loop uses `CODEMOOT_OK` (checks `codemoot` availability). Build offload uses `CODEX_OK` (checks `codex` directly). These are independent checks for separate features. When both are needed in the same build cycle, run each check independently — they are not interchangeable.
 
@@ -204,6 +190,17 @@ Post-build artifacts are reflective only — they must not contain unexecuted wo
    - Enforce `## Outcome Contract` presence and populated fields (`Why`, `Intended Outcome Type`, `Intended Outcome Statement`, `Source`) before proceeding. Use explicit `TBD/auto` fallback only when canonical values are unavailable.
 1.5 Emit canonical `build-event.json` in `docs/plans/<slug>/` using `scripts/src/startup-loop/build/lp-do-build-event-emitter.ts` (`emitBuildEvent()` + `writeBuildEvent()`) with values sourced from `build-record.user.md` `## Outcome Contract`.
    - Verify file exists and is non-empty before continuing.
+1.6 **Run bounded assessment post-build refresh when the build touched later assessment decisions.** This path is separate from `results-review.user.md` and exists only for explicitly mapped revision-mode assessment targets.
+   - Current supported source mapping: `docs/business-os/strategy/<BIZ>/assessment/DEC-<BIZ>-NAME-*.user.md`
+   - Current allowed targets: `assessment-intake-packet.user.md` naming summary and Section B revision-mode naming fields
+   - Protected targets: seed-once/live-owned downstream docs such as `current-problem-framing.user.md`
+   - Run:
+   ```
+   pnpm --filter scripts startup-loop:assessment-post-build-refresh --root-dir . --changed-file <path-to-each-qualifying-decision-doc>
+   ```
+   - If no qualifying decision docs were changed: skip silently.
+   - If the utility reports `noop`: continue.
+   - If the utility reports `applied`: include the refreshed intake packet in the same task/build scope and note the updated targets in build evidence.
 1.7 **Pre-fill results-review scaffold (deterministic).** Run:
    ```
    pnpm --filter scripts startup-loop:results-review-prefill -- --slug <slug> --plan-dir docs/plans/<slug>
@@ -270,24 +267,26 @@ Post-build artifacts are reflective only — they must not contain unexecuted wo
 5. Run `pnpm --filter scripts startup-loop:generate-process-improvements`. Confirm the output line `updated docs/business-os/process-improvements.user.html` appears before continuing.
 6. For each idea in `## New Idea Candidates` that was directly actioned by this build, add an entry to `docs/business-os/_data/completed-ideas.json` by calling `appendCompletedIdea()` from `scripts/src/startup-loop/build/generate-process-improvements.ts` (or by writing the JSON entry directly). Record `plan_slug` (the slug of the plan just completed), `output_link` (path to the archived plan directory), `completed_at` (today's date in ISO format), `source_path` (relative path to the results-review file where the idea was found), and `title` (the sanitized idea title as it appears in the report). Re-run `pnpm --filter scripts startup-loop:generate-process-improvements` after appending so the report reflects the exclusion immediately. Only mark ideas as complete if they were directly delivered by this build; deferred or future ideas remain in the report.
 7. Set plan `Status: Archived`. Archive per `../_shared/plan-archiving.md`.
-7.5. **Queue-state completion hook** — inside the writer lock scope (which must already be held from step 7 onward and continues through step 8), invoke `markDispatchesCompleted()` from `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts` to mark the originating dispatch as completed in `docs/business-os/startup-loop/ideas/trial/queue-state.json`:
+7.5. **Queue-state completion hook** — inside the writer lock scope (which must already be held from step 7 onward and continues through step 8), run the queue completion CLI to mark the originating dispatch as completed in `docs/business-os/startup-loop/ideas/trial/queue-state.json`:
 
-   ```typescript
-   import { markDispatchesCompleted } from "scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.js";
-
-   const result = await markDispatchesCompleted({
-     queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-     featureSlug: "<feature-slug>",          // the archived plan slug
-     planPath: "docs/plans/_archive/<feature-slug>/plan.md",  // the archived plan path from step 7
-     outcome: "<one-line outcome from build-record ## Outcome Contract>",
-     business: "<BUSINESS>",  // optional; include when known to prevent cross-business slug collision
-   });
+   ```bash
+   pnpm --filter scripts startup-loop:queue-state-complete \
+     --queue-state-path docs/business-os/startup-loop/ideas/trial/queue-state.json \
+     --feature-slug <feature-slug> \
+     --plan-path docs/plans/_archive/<feature-slug>/plan.md \
+     --outcome "<one-line outcome summary>" \
+     --business <BUSINESS>
    ```
+
+   Notes:
+   - `--business` is optional but recommended when known to avoid cross-business slug collisions.
+   - The command prints JSON to stdout on success and on benign `no_match`.
+   - The command exits non-zero only for real failures (`parse_error`, `write_error`, `file_not_found`).
 
    **Failure policy (must enforce before proceeding to step 8):**
    - `{ ok: true }` — log `mutated` count and continue.
-   - `{ ok: false, reason: "no_match" }` — benign no-op (plan was not triggered by a dispatch); log a notice and continue.
-   - `{ ok: false, reason: "parse_error" | "write_error" | "file_not_found" }` — **stop immediately and escalate to the operator**. Do not proceed to step 8. The commit must not happen while queue-state sync has failed — doing so would permanently lose the completion record for these dispatches. Surface the `reason` and `error` fields in the build output.
+   - `{ ok: false, reason: "no_match" }` with exit code 0 — benign no-op (plan was not triggered by a dispatch); log a notice and continue.
+   - Non-zero exit / `{ ok: false, reason: "parse_error" | "write_error" | "file_not_found" }` — **stop immediately and escalate to the operator**. Do not proceed to step 8. The commit must not happen while queue-state sync has failed — doing so would permanently lose the completion record for these dispatches. Surface the `reason` and `error` fields in the build output.
 
    The writer lock scope covers steps 7.5 through 8 as a single atomic unit (hook write + commit). Do not release the lock between step 7.5 and step 8.
 

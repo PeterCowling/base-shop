@@ -1,5 +1,10 @@
 // src/utils/i18nContent.ts
 // Helpers for coercing translation payloads into predictable array shapes.
+
+// eslint-disable-next-line security/detect-unsafe-regex -- BRIK-2145 Static pattern for validating i18n key format; no user input
+export const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
+// eslint-disable-next-line security/detect-unsafe-regex -- BRIK-2145 Static pattern for validating uppercase token format; no user input
+export const UPPER_I18N_KEY_TOKEN_PATTERN = /^[A-Z0-9_]+(?:\.[A-Z0-9_]+)+$/u;
 // Some locales return a string when translators haven't supplied the structured
 // JSON variant yet. These helpers normalise the values so rendering logic can
 // safely iterate without crashing tests or runtime users.

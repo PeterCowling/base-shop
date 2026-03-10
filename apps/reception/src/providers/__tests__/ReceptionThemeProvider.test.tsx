@@ -7,21 +7,17 @@ import { ReceptionThemeProvider } from "../ReceptionThemeProvider";
 
 // Mock the full ThemeProvider from @acme/ui so we don't need the full
 // platform-core provider chain in a unit test.
-jest.mock("@acme/ui/providers/ThemeProvider", () => ({
-  ThemeProvider: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
-}));
+const themeProviderMock = jest.fn(
+  ({ children }: { children: React.ReactNode }) => <>{children}</>
+);
 
-// Mock useTheme so we can verify DarkModeBridge calls setMode("dark").
-const mockSetMode = jest.fn();
-jest.mock("@acme/ui/hooks/useTheme", () => ({
-  useTheme: () => ({ setMode: mockSetMode }),
+jest.mock("@acme/ui/providers/ThemeProvider", () => ({
+  ThemeProvider: (props: { children: React.ReactNode }) => themeProviderMock(props),
 }));
 
 describe("ReceptionThemeProvider", () => {
   beforeEach(() => {
-    mockSetMode.mockClear();
+    themeProviderMock.mockClear();
   });
 
   it("renders children without throwing", () => {
@@ -33,12 +29,12 @@ describe("ReceptionThemeProvider", () => {
     expect(getByText("hello")).toBeInTheDocument();
   });
 
-  it("calls setMode with dark on mount", () => {
+  it("delegates theme state to the shared ThemeProvider without forcing a mode", () => {
     render(
       <ReceptionThemeProvider>
         <span>child</span>
       </ReceptionThemeProvider>
     );
-    expect(mockSetMode).toHaveBeenCalledWith("dark");
+    expect(themeProviderMock).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,4 +1,0 @@
-export {
-  XA_PRODUCTS_CSV_COLUMN_ORDER,
-  XA_PRODUCTS_CSV_MUTABLE_COLUMNS,
-} from "@acme/lib/xa";

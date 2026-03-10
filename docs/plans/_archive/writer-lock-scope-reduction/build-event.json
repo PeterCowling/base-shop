@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "writer-lock-scope-reduction-2026-03-09",
+  "feature_slug": "writer-lock-scope-reduction",
+  "emitted_at": "2026-03-09T13:20:00.000Z",
+  "why": "A long remote deploy blocked unrelated commit work because the writer lock scope is broader than the resource it is meant to protect.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Base-Shop runbooks clearly require the writer lock only for serialized repo writes, and they direct build or deploy steps to run outside the lock after artifacts are prepared.",
+    "source": "operator"
+  }
+}

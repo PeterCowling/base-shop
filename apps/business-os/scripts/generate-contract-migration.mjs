@@ -10,7 +10,7 @@ function main() {
 
   const sourcePath = path.join(
     repoRoot,
-    "docs/business-os/startup-loop/operations/contract-migration.yaml"
+    "docs/business-os/operations/contract-migration.yaml"
   );
   const outPath = path.join(
     repoRoot,

@@ -66,7 +66,7 @@ The following table covers all fields written or managed by `assessment-intake-s
 | Execution posture | revision | ASSESSMENT-08 Section A | Transitions to `link` at ASSESSMENT-09 gate |
 | Channel decision | link (after ASSESSMENT-08 Section D decision ref is written) | ASSESSMENT-06 Section C + ASSESSMENT-08 Section D | `revision` until ASSESSMENT-08 Section D decision reference (DEC-BIZ-CH-*) is recorded; `link` thereafter |
 | Measurement method | revision | ASSESSMENT-07 Section A | Transitions to `link` at ASSESSMENT-09 gate |
-| Naming status | revision | ASSESSMENT-04 shortlist status | Remains `revision` until name is confirmed; transitions to `link` on name confirmation |
+| Naming status | revision | ASSESSMENT-04 shortlist status; after confirmation `DEC-<BIZ>-NAME-*` | Remains `revision` until name is confirmed; later name decision may update the intake packet during bounded post-build refresh; transitions to `link` on name confirmation |
 | Open caveats | revision | ASSESSMENT-03 (regulatory, tether gate) | Remains `revision` until each caveat is resolved or accepted |
 
 ### Section B — Business and Product Packet
@@ -74,8 +74,8 @@ The following table covers all fields written or managed by `assessment-intake-s
 | Field | Carry Mode | Source | Transition Notes |
 |---|---|---|---|
 | Business code | link | Assigned at business creation | Set once; never overwritten |
-| Business name | revision | ASSESSMENT-04 top recommended name | Transitions to `link` when name is confirmed and domain is registered |
-| Business name status | revision | ASSESSMENT-04 shortlist status | Remains `revision` until name is confirmed |
+| Business name | revision | ASSESSMENT-04 top recommended name; after confirmation `DEC-<BIZ>-NAME-*` selected brand name | Transitions to `link` when name is confirmed and domain is registered |
+| Business name status | revision | ASSESSMENT-04 shortlist status; after confirmation `DEC-<BIZ>-NAME-*` decision status | Remains `revision` until name is confirmed |
 | Region | revision | ASSESSMENT-01 Problem Boundary | Transitions to `link` at ASSESSMENT-09 gate if region is committed |
 | Product 1 | revision | ASSESSMENT-03 selected option name | Transitions to `link` at ASSESSMENT-09 gate |
 | Product 1 status | revision | ASSESSMENT-08 Section B | Remains `revision` — stock dates and status change frequently |
@@ -155,6 +155,17 @@ When `assessment-intake-sync.md` executes a refresh cycle, it must apply carry-m
 3. **Apply revision writes** only to `revision`-mode fields. Do not touch `link`-mode fields.
 4. **Append new items** (Section D rows, Section F gaps) without removing existing items.
 5. **Record transition** when a `revision`-mode field becomes `link` (e.g. when a decision reference is added to a channel row). The transition must be recorded by the operator, not assumed by the sync process.
+
+## Post-Build Decision Refresh
+
+Bounded post-build assessment refresh follows the same carry-mode rules but uses later strategy decisions rather than ASSESSMENT-01..08 precursor docs.
+
+- Only explicitly mapped `revision` targets may be refreshed.
+- The first supported mapping is name confirmation:
+  - Source: `docs/business-os/strategy/<BIZ>/assessment/DEC-<BIZ>-NAME-*.user.md`
+  - Allowed targets: intake naming summary plus Section B `Business name`, `Business name status`, and related revision-mode naming notes.
+- Seed-once/live-owned downstream docs are excluded even if they were originally seeded from the intake packet.
+- Unknown source artifacts default to no-op until a target mapping is added here or in a stricter downstream contract.
 
 ---
 

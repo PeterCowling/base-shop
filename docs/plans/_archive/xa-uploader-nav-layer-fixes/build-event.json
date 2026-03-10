@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "xa-uploader-nav-layer-fixes-2026-03-09",
+  "feature_slug": "xa-uploader-nav-layer-fixes",
+  "emitted_at": "2026-03-09T13:30:00.000Z",
+  "why": "xa-uploader UI review found that operators must navigate the brand→collection cascade to reach any product with no shortcut. The onHeaderExtra portal couples child screen state to parent layout and is fragile to restructuring.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Deliver a plan and implementation that (1) adds a browse-all or search mode to EditProductFilterSelector so operators can see and select any product without filtering, and (2) replaces the onHeaderExtra portal with self-contained inline navigation inside CatalogConsole.",
+    "source": "operator"
+  }
+}

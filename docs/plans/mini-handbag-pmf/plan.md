@@ -131,7 +131,7 @@ See `## Tasks` section for the active task list.
 | TASK-07  | IMPLEMENT   | Instagram/TikTok demand probe — H1 bag charm       | 70%       | S      | Pending | TASK-06              | TASK-09              |
 | TASK-08  | IMPLEMENT   | Open Etsy shop — H1 bag charm + H2 AirPod holder   | 75%       | M      | Pending | TASK-02, TASK-06     | TASK-09              |
 | TASK-09  | CHECKPOINT  | 4-week demand signal gate; reassess downstream     | 95%       | S      | Pending | TASK-07, TASK-08     | TASK-10, TASK-11     |
-| TASK-10  | IMPLEMENT   | In-destination trial: Brikette + 1 Positano shop   | 60%       | M      | Pending | TASK-09              | —                    |
+| TASK-10  | IMPLEMENT   | In-destination trial: Brikette + 1 Positano shop   | 60%       | M      | Partial (Luisa Positano pilot live 2026-03-02; first sale 2026-03-08) | TASK-09 | — |
 | TASK-11  | IMPLEMENT   | `/meta-reflect` — startup loop PMF methodology gaps | 88%      | S      | Pending | TASK-09              | —                    |
 
 ---
@@ -607,13 +607,13 @@ See `## Tasks` section for the active task list.
 - **Execution-Track:** business-artifact
 - **Startup-Deliverable-Alias:** startup-demand-test-protocol
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Partial (off-season Luisa Positano pilot live since approximately 2026-03-02; first recorded sale on 2026-03-08)
 - **Artifact-Destination:** Physical in-destination sales + consignment arrangement.
 - **Reviewer:** Pete
 - **Approval-Evidence:** Pete confirms boutique agreement.
-- **Measurement-Readiness:** In-destination sales logged in `demand-log.md`; weekly
-  count; split by channel (hostel vs boutique).
-- **Affects:** `docs/plans/mini-handbag-pmf/demand-log.md`
+- **Measurement-Readiness:** In-destination sales logged in `docs/plans/mini-handbag-pmf/demand-log.md`; weekly
+  count split by channel (hostel vs boutique) and mirrored in `docs/business-os/strategy/HBAG/channel-health-log.user.md`.
+- **Affects:** `docs/plans/mini-handbag-pmf/demand-log.md`, `docs/business-os/strategy/HBAG/channel-health-log.user.md`
 - **Depends on:** TASK-09 (CHECKPOINT — confidence re-scored from real demand data)
 - **Blocks:** —
 - **Confidence:** 60%
@@ -624,6 +624,8 @@ See `## Tasks` section for the active task list.
   - Impact: 72% — in-destination is the highest-value distribution for H3 (Amalfi
     location variant); but season window is narrow (June–Sept).
 - **Acceptance:**
+  - [x] One Positano boutique pilot placement is live (Luisa Positano, approximately 2026-03-02).
+  - [x] First recorded boutique sale logged (2026-03-08).
   - [ ] Product placed at Brikette reception with price tag and brief display.
   - [ ] Outreach sent to ≥3 local Positano boutiques; ≥1 consignment agreement reached.
   - [ ] Consignment terms agreed: % split, minimum stock, review period.
@@ -633,8 +635,8 @@ See `## Tasks` section for the active task list.
     boutique combined) within first 4 weeks of trial; else reassess whether H3
     (location variant) is viable as a channel anchor.
 - **Execution plan:**
-  - Red evidence plan: no in-destination sales; no boutique agreement.
-  - Green evidence plan: place stock; approach boutiques with product + pricing proposal.
+  - Red evidence plan: no additional in-destination sales beyond the initial Luisa Positano result; no second placement or broader agreement.
+  - Green evidence plan: maintain Luisa Positano pilot, place stock at Brikette, and approach additional boutiques with product + pricing proposal.
   - Refactor evidence plan: adjust consignment terms or display placement if sales < 2
     in first 2 weeks.
 - **Planning validation:** None: physical sales task; post-checkpoint.

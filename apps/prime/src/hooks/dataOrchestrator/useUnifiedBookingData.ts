@@ -18,7 +18,8 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { normalizeLocale } from '../../lib/i18n/normalizeLocale';
+import { normalizeUiLocale } from '@acme/i18n';
+
 import type { BagStorageRecord } from '../../types/bagStorage';
 import type { CityTaxOccupantRecord } from '../../types/cityTax';
 import type { OccupantCompletedTasks } from '../../types/completedTasks';
@@ -201,15 +202,18 @@ export function useUnifiedBookingData(): UnifiedBookingData {
     t,
   });
 
-  // 6) Manage language sync
+  // 6) Manage language sync — depend only on the language field, not the full
+  // occupantData object, to avoid triggering a language re-sync whenever any
+  // other occupant field changes (room number, tasks, etc.).
   const [hasSyncedLanguage, setHasSyncedLanguage] = useState<boolean>(false);
+  const occupantLanguage = occupantData?.language ?? null;
 
   useEffect(() => {
-    if (!occupantData) {
+    if (!occupantLanguage) {
       setHasSyncedLanguage(false);
       return;
     }
-    const occupantLang = normalizeLocale(occupantData.language);
+    const occupantLang = normalizeUiLocale(occupantLanguage);
 
     if (i18n.language === occupantLang) {
       setHasSyncedLanguage(true);
@@ -229,7 +233,7 @@ export function useUnifiedBookingData(): UnifiedBookingData {
         // Fail open in production UI if i18n runtime cannot switch language.
         setHasSyncedLanguage(true);
       });
-  }, [occupantData, i18n]);
+  }, [occupantLanguage, i18n]);
 
   // 7) Determine initial sync complete status
   const isInitialSyncComplete =

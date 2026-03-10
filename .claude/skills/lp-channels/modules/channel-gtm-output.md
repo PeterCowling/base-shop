@@ -40,7 +40,12 @@ Produce a sequenced timeline with dependencies and milestones.
    ---
    ```
 3. Append evidence register at end: list all sources consulted (competitor channel analysis, ICP research, cost benchmarks)
-4. Self-audit against Quality Checks below
+4. Conditionally initialize or refresh companion GTM artifacts:
+   - `docs/business-os/strategy/<BIZ>/stockist-target-list.user.md` for physical-product distribution lanes before targets go live
+   - `docs/business-os/strategy/<BIZ>/channel-policy.user.md` when partner/channel-conflict governance is required
+   - `docs/business-os/strategy/<BIZ>/weekly-demand-plan.user.md` when the next 7-day execution sprint is clear enough to operate
+   - Never use `channel-health-log.user.md` for pre-live target capture; reserve it for live account actuals
+5. Self-audit against Quality Checks below
 
 ## Quality Checks
 
@@ -54,6 +59,9 @@ Produce a sequenced timeline with dependencies and milestones.
 - QC-08: Timeline includes critical path identification (what must happen on time)
 - QC-09: Risk register has ≥3 risks with mitigation plans
 - QC-10: Evidence register cites ≥3 sources (competitor analysis, cost benchmarks, or ICP research)
+- QC-11: If any selected or directional channel is a physical-product distribution lane, `stockist-target-list.user.md` is initialized/refreshed or the artifact is explicitly deferred with a reason
+- QC-12: If partner governance rules were defined, `channel-policy.user.md` is initialized/refreshed or the defer reason is explicit
+- QC-13: If the first 7-day sprint is fully specified, `weekly-demand-plan.user.md` is initialized/refreshed or the defer reason is explicit
 
 ## Red Flags
 
@@ -68,3 +76,4 @@ Invalid outputs that MUST be rejected:
 - Success metrics missing cost metrics (CPC, CPL, CPA)
 - Positioning from lp-offer not referenced in channel selection rationale
 - Evidence register empty or cites non-existent files
+- Physical-product retail/stockist channel selected but no companion stockist artifact created or deferred explicitly

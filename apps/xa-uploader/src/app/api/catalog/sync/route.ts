@@ -26,6 +26,7 @@ import {
   writeCloudDraftSnapshot,
 } from "../../../../lib/catalogDraftContractClient";
 import { buildCatalogArtifactsFromDrafts } from "../../../../lib/catalogDraftToContract";
+import { promoteDerivedPublishStatesInCloudSnapshot } from "../../../../lib/catalogPublishState";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
 import type { CurrencyRates } from "../../../../lib/currencyRates";
@@ -39,12 +40,12 @@ import {
   reconcileDeployPendingState,
 } from "../../../../lib/deployHook";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
-import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
+import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import {
   getUploaderKv,
   type UploaderKvNamespace,
 } from "../../../../lib/syncMutex";
-import { isRecord } from "../../../../lib/typeGuards";
+import { getErrorMessage, isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
 
 export const runtime = "nodejs";
@@ -91,22 +92,18 @@ function parseSyncOptions(input: unknown): SyncOptions {
   };
 }
 
-function getDefaultCloudMediaValidationPolicy(): MediaValidationPolicy {
-  const raw = (process.env.XA_UPLOADER_CLOUD_MEDIA_VALIDATION_POLICY ?? "warn")
-    .trim()
-    .toLowerCase();
+const DEFAULT_CLOUD_MEDIA_VALIDATION_POLICY: MediaValidationPolicy = (() => {
+  const raw = (process.env.XA_UPLOADER_CLOUD_MEDIA_VALIDATION_POLICY ?? "warn").trim().toLowerCase();
   return raw === "strict" ? "strict" : "warn";
-}
+})();
+
+const CLOUD_ALLOWED_EXTERNAL_IMAGE_HOSTS: string[] = (process.env.XA_UPLOADER_CLOUD_MEDIA_ALLOWED_HOSTS ?? "")
+  .split(",")
+  .map((entry) => entry.trim())
+  .filter(Boolean);
 
 function resolveCloudMediaValidationPolicy(options: SyncOptions): MediaValidationPolicy {
-  return options.mediaValidationPolicy ?? getDefaultCloudMediaValidationPolicy();
-}
-
-function getCloudAllowedExternalImageHosts(): string[] {
-  return (process.env.XA_UPLOADER_CLOUD_MEDIA_ALLOWED_HOSTS ?? "")
-    .split(",")
-    .map((entry) => entry.trim())
-    .filter(Boolean);
+  return options.mediaValidationPolicy ?? DEFAULT_CLOUD_MEDIA_VALIDATION_POLICY;
 }
 
 async function parseSyncPayload(request: Request): Promise<SyncPayload> {
@@ -122,12 +119,6 @@ function getPayloadParseErrorResponse(error: unknown): NextResponse {
     return NextResponse.json(
       { ok: false, error: "payload_too_large", reason: "payload_too_large" },
       { status: 413 },
-    );
-  }
-  if (error instanceof InvalidJsonError) {
-    return NextResponse.json(
-      { ok: false, error: "invalid", reason: "invalid_json" },
-      { status: 400 },
     );
   }
   return NextResponse.json({ ok: false, error: "invalid", reason: "invalid_json" }, { status: 400 });
@@ -183,16 +174,15 @@ async function finalizeCloudPublishStateAndDeploy(params: {
   kv: UploaderKvNamespace | null;
   warnings: string[];
 }): Promise<{ deployResult: DeployTriggerResult; deployPending: DeployPendingState | null }> {
-  const promotedProducts = params.snapshot.products.map((product) => ({
-    ...product,
-    publishState: deriveCatalogPublishState(product),
-  }));
+  const promotedSnapshot = promoteDerivedPublishStatesInCloudSnapshot({
+    snapshot: params.snapshot,
+  });
 
   try {
     await writeCloudDraftSnapshot({
       storefront: params.storefrontId,
-      products: promotedProducts,
-      revisionsById: params.snapshot.revisionsById,
+      products: promotedSnapshot.products,
+      revisionsById: promotedSnapshot.revisionsById,
       ifMatchDocRevision: params.snapshot.docRevision,
     });
   } catch {
@@ -232,7 +222,7 @@ async function tryPublishCloudCatalogPayload(params: {
     if (process.env.NODE_ENV !== "test") {
       console.error({
         route: "POST /api/catalog/sync",
-        error: error instanceof Error ? error.message : String(error),
+        error: getErrorMessage(error),
         durationMs: Date.now() - params.startedAt,
       });
     }
@@ -425,7 +415,7 @@ async function runCloudSyncPipeline(params: {
       currencyRates,
       strict: payload.options.strict === true,
       mediaValidationPolicy,
-      allowedExternalImageHosts: getCloudAllowedExternalImageHosts(),
+      allowedExternalImageHosts: CLOUD_ALLOWED_EXTERNAL_IMAGE_HOSTS,
     });
   } catch (error) {
     return NextResponse.json(
@@ -434,7 +424,7 @@ async function runCloudSyncPipeline(params: {
         error: "validation_failed",
         recovery: "review_validation_logs",
         durationMs: Date.now() - startedAt,
-        details: error instanceof Error ? error.message : String(error),
+        details: getErrorMessage(error),
       },
       { status: 400 },
     );
@@ -499,7 +489,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false }, { status: 404 });
   }
 
-  const payloadRequest = request.clone();
   const authenticated = await hasUploaderSession(request);
   if (!authenticated) {
     // Intentionally do not attach rate-limit headers on unauthenticated 404
@@ -522,7 +511,7 @@ export async function POST(request: Request) {
 
   let payload: SyncPayload = { options: {}, storefront: null };
   try {
-    payload = await parseSyncPayload(payloadRequest);
+    payload = await parseSyncPayload(request);
   } catch (error) {
     return withRateHeaders(getPayloadParseErrorResponse(error), limit);
   }

@@ -12,6 +12,8 @@ import {
 } from 'react';
 import { push } from 'firebase/database';
 
+import logger from '@acme/lib/logger/client';
+
 import { readGuestSession } from '@/lib/auth/guestSessionGuard';
 import {
   buildDirectMessageChannelId,
@@ -29,7 +31,6 @@ import {
   get,
   limitToFirst,
   limitToLast,
-  off,
   onChildAdded,
   onChildChanged,
   onChildRemoved,
@@ -202,9 +203,17 @@ function normalizeDirectMessages(payload: unknown): Message[] {
     return [];
   }
 
-  return rawMessages
-    .filter((entry): entry is Message => MessageSchema.safeParse(entry).success)
-    .sort((left, right) => left.createdAt - right.createdAt);
+  const parsed: Message[] = [];
+  for (const entry of rawMessages) {
+    const result = MessageSchema.safeParse(entry);
+    if (result.success) {
+      parsed.push(result.data as Message);
+    } else {
+      // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic string [ttl=2026-12-31]
+      logger.warn('normalizeDirectMessages: dropped invalid message entry', result.error.issues);
+    }
+  }
+  return parsed.sort((left, right) => left.createdAt - right.createdAt);
 }
 
 const initialState: ChatState = { activities: {}, messages: {} };
@@ -246,7 +255,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
           await update(ref(db), updates);
         }
       } catch (err) {
-        console.error('Failed to remove system messages', err);
+        // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic [ttl=2026-12-31]
+        logger.error('Failed to remove system messages', err);
       }
     },
     [db],
@@ -274,7 +284,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
           ),
         );
       } catch (err) {
-        console.error('Failed to post initial messages', err);
+        // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic [ttl=2026-12-31]
+        logger.error('Failed to post initial messages', err);
       }
     },
     [db],
@@ -319,7 +330,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
       dispatch({ type: 'setActivities', activities: filtered });
     });
     return () => {
-      off(q);
       unsubValue();
     };
   }, [db, activitiesLimit, postInitialMessages, removeSystemMessages]);
@@ -403,7 +413,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
             messages: normalizeDirectMessages(payload),
           });
         } catch (error) {
-          console.error('Failed to load direct messages', error);
+          // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic [ttl=2026-12-31]
+        logger.error('Failed to load direct messages', error);
         }
       };
 
@@ -471,10 +482,6 @@ export function ChatProvider({ children }: ChatProviderProps) {
     const unsubRemove = onChildRemoved(q, handleRemove);
 
     messageListenerRef.current = () => {
-      off(q, 'child_added', handleAdd);
-      off(q, 'child_changed', handleChange);
-      off(q, 'child_removed', handleRemove);
-      off(q);
       unsubAdd();
       unsubChange();
       unsubRemove();
@@ -546,7 +553,8 @@ export function ChatProvider({ children }: ChatProviderProps) {
             dispatch({ type: 'prependMessages', channelId, messages });
           }
         } catch (error) {
-          console.error('Failed to load older direct messages', error);
+          // eslint-disable-next-line ds/no-hardcoded-copy -- PRIME-CHAT-001 developer diagnostic [ttl=2026-12-31]
+        logger.error('Failed to load older direct messages', error);
         }
 
         return;

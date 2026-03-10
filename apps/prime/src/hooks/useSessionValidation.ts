@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { validateGuestToken } from '../lib/auth/guestSessionGuard';
 
@@ -17,6 +17,11 @@ export function useSessionValidation({
   intervalMs = DEFAULT_INTERVAL_MS,
   onInvalidOrExpired,
 }: UseSessionValidationOptions): void {
+  // Store the latest callback in a ref so the interval doesn't restart when
+  // callers pass an inline (non-memoized) function on each render.
+  const callbackRef = useRef(onInvalidOrExpired);
+  callbackRef.current = onInvalidOrExpired;
+
   useEffect(() => {
     if (!enabled) {
       return;
@@ -33,7 +38,7 @@ export function useSessionValidation({
       }
 
       if (result === 'expired' || result === 'invalid') {
-        onInvalidOrExpired();
+        callbackRef.current();
       }
     };
 
@@ -46,7 +51,7 @@ export function useSessionValidation({
       isActive = false;
       window.clearInterval(intervalId);
     };
-  }, [enabled, intervalMs, onInvalidOrExpired]);
+  }, [enabled, intervalMs]);
 }
 
 export default useSessionValidation;

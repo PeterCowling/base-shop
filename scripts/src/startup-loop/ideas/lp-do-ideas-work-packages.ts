@@ -36,7 +36,7 @@ export interface MarkDispatchesProcessedOptions {
   factFindPath?: string;
   targetSlug?: string;
   targetPath?: string;
-  targetRoute?: "lp-do-fact-find" | "lp-do-build" | "lp-do-briefing";
+  targetRoute?: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build" | "lp-do-briefing";
   route?: "dispatch-routed" | "direct-inject";
   business?: string;
   clock?: () => Date;
@@ -53,8 +53,8 @@ export type MarkDispatchesProcessedResult =
 function resolveProcessedTarget(
   options: MarkDispatchesProcessedOptions,
 ): {
-  targetRoute: "lp-do-fact-find" | "lp-do-build" | "lp-do-briefing";
-  targetKind: "fact-find" | "build" | "briefing";
+  targetRoute: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build" | "lp-do-briefing";
+  targetKind: "fact-find" | "plan" | "build" | "briefing";
   targetSlug: string;
   targetPath: string;
 } | {
@@ -85,6 +85,8 @@ function resolveProcessedTarget(
   const targetKind =
     targetRoute === "lp-do-build"
       ? "build"
+      : targetRoute === "lp-do-plan"
+        ? "plan"
       : targetRoute === "lp-do-briefing"
         ? "briefing"
         : "fact-find";
@@ -392,12 +394,52 @@ export function markDispatchesProcessed(
       (processedBy?.target_slug === target.targetSlug &&
         processedBy?.target_path === target.targetPath &&
         processedBy?.target_route === target.targetRoute) ||
+      (target.targetRoute === "lp-do-build" &&
+        processedBy?.feature_slug === target.targetSlug &&
+        processedBy?.target_path == null &&
+        processedBy?.micro_build_path == null) ||
       (target.targetRoute === "lp-do-fact-find" &&
         processedBy?.fact_find_slug === target.targetSlug &&
         processedBy?.fact_find_path === target.targetPath);
 
     if (sameTarget && (dispatch.queue_state === "processed" || dispatch.queue_state === "completed")) {
-      skipped += 1;
+      let normalized = false;
+      if (!dispatch.processed_by || typeof dispatch.processed_by !== "object") {
+        dispatch.processed_by = {};
+      }
+      dispatch.processed_by.route ??= options.route ?? "dispatch-routed";
+      dispatch.processed_by.processed_at ??= clock().toISOString();
+      if (dispatch.processed_by.target_route !== target.targetRoute) {
+        dispatch.processed_by.target_route = target.targetRoute;
+        normalized = true;
+      }
+      if (dispatch.processed_by.target_kind !== target.targetKind) {
+        dispatch.processed_by.target_kind = target.targetKind;
+        normalized = true;
+      }
+      if (dispatch.processed_by.target_slug !== target.targetSlug) {
+        dispatch.processed_by.target_slug = target.targetSlug;
+        normalized = true;
+      }
+      if (dispatch.processed_by.target_path !== target.targetPath) {
+        dispatch.processed_by.target_path = target.targetPath;
+        normalized = true;
+      }
+      if (target.targetRoute === "lp-do-fact-find") {
+        if (dispatch.processed_by.fact_find_slug !== target.targetSlug) {
+          dispatch.processed_by.fact_find_slug = target.targetSlug;
+          normalized = true;
+        }
+        if (dispatch.processed_by.fact_find_path !== target.targetPath) {
+          dispatch.processed_by.fact_find_path = target.targetPath;
+          normalized = true;
+        }
+      }
+      if (normalized) {
+        mutated += 1;
+      } else {
+        skipped += 1;
+      }
       continue;
     }
 
@@ -411,7 +453,14 @@ export function markDispatchesProcessed(
       };
     }
 
-    if (dispatch.queue_state && dispatch.queue_state !== "enqueued") {
+    const canRepairProcessedWithoutClaim =
+      dispatch.queue_state === "processed" &&
+      (processedBy == null ||
+        (typeof processedBy === "object" &&
+          processedBy !== null &&
+          Object.keys(processedBy).length === 0));
+
+    if (dispatch.queue_state && dispatch.queue_state !== "enqueued" && !canRepairProcessedWithoutClaim) {
       return {
         ok: false,
         reason: "conflict",
@@ -427,13 +476,17 @@ export function markDispatchesProcessed(
       target_kind: target.targetKind,
       target_slug: target.targetSlug,
       target_path: target.targetPath,
-      processed_at: clock().toISOString(),
+      processed_at: processedBy?.processed_at ?? clock().toISOString(),
       ...(target.targetRoute === "lp-do-fact-find"
         ? {
             fact_find_slug: target.targetSlug,
             fact_find_path: target.targetPath,
           }
-        : {}),
+        : target.targetRoute === "lp-do-build"
+          ? {
+              micro_build_path: target.targetPath,
+            }
+          : {}),
     };
     mutated += 1;
   }

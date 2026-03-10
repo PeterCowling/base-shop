@@ -9,7 +9,7 @@
  *   node --import tsx scripts/src/quality/dead-code-audit.ts [options]
  *
  * Options:
- *   --app=reception|brikette|xa-uploader|all   (default: all)
+ *   --app=reception|brikette|xa-uploader|prime|all   (default: all)
  *   --category=api|pages|exports|flags|all     (default: all)
  *   --format=md|json                           (default: md)
  *   --help
@@ -30,7 +30,7 @@ import * as ts from "typescript";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-export type AppId = "reception" | "brikette" | "xa-uploader";
+export type AppId = "reception" | "brikette" | "xa-uploader" | "prime";
 export type Category = "api" | "pages" | "exports" | "flags";
 export type Confidence = "high" | "medium" | "low";
 
@@ -58,8 +58,10 @@ interface AppConfig {
   appDir: string; // Next.js app directory
   apiDir: string; // API routes directory
   productionDirs: string[]; // dirs to scan for export reachability
+  moduleGraphRoots?: string[]; // roots to scan for inbound imports into srcRoot
   envFile: string | null; // feature flag source
   envExampleFile: string | null;
+  knownLiveUnlinkedRoutes?: string[]; // intentional hidden routes
 }
 
 const APP_CONFIGS: Record<AppId, AppConfig> = {
@@ -101,6 +103,27 @@ const APP_CONFIGS: Record<AppId, AppConfig> = {
     envFile: null,
     envExampleFile: null,
   },
+  prime: {
+    srcRoot: "apps/prime/src",
+    appDir: "apps/prime/src/app",
+    apiDir: "apps/prime/src/app/api",
+    productionDirs: [
+      "apps/prime/src/hooks",
+      "apps/prime/src/lib",
+      "apps/prime/src/utils",
+      "apps/prime/src/services",
+    ],
+    moduleGraphRoots: [
+      "apps/prime/src",
+      "apps/prime/functions",
+    ],
+    envFile: null,
+    envExampleFile: null,
+    knownLiveUnlinkedRoutes: [
+      "/owner/scorecard",
+      "/language-selector",
+    ],
+  },
 };
 
 interface ModuleGraph {
@@ -113,7 +136,7 @@ const MODULE_GRAPH_CACHE = new Map<string, ModuleGraph>();
 // ─── CLI parsing ─────────────────────────────────────────────────────────────
 
 function parseArgs(argv: string[]): CliOptions {
-  let apps: AppId[] = ["reception", "brikette", "xa-uploader"];
+  let apps: AppId[] = ["reception", "brikette", "xa-uploader", "prime"];
   let categories: Category[] = ["api", "pages", "exports", "flags"];
   let format: "md" | "json" = "md";
 
@@ -121,8 +144,8 @@ function parseArgs(argv: string[]): CliOptions {
     if (arg.startsWith("--app=")) {
       const v = arg.slice("--app=".length);
       if (v === "all") {
-        apps = ["reception", "brikette", "xa-uploader"];
-      } else if (v === "reception" || v === "brikette" || v === "xa-uploader") {
+        apps = ["reception", "brikette", "xa-uploader", "prime"];
+      } else if (v === "reception" || v === "brikette" || v === "xa-uploader" || v === "prime") {
         apps = [v];
       } else {
         throw new Error(`Unknown app: ${v}`);
@@ -167,7 +190,7 @@ function printHelp(): void {
       "Usage: node --import tsx scripts/src/quality/dead-code-audit.ts [options]",
       "",
       "Options:",
-      "  --app=reception|brikette|xa-uploader|all  (default: all)",
+      "  --app=reception|brikette|xa-uploader|prime|all  (default: all)",
       "  --category=api|pages|exports|flags|all    (default: all)",
       "  --format=md|json                          (default: md)",
       "  --help",
@@ -378,26 +401,29 @@ function buildModuleGraph(app: AppId, cfg: AppConfig, repoRoot: string): ModuleG
   if (cached) return cached;
 
   const srcRoot = join(repoRoot, cfg.srcRoot);
+  const graphRoots = (cfg.moduleGraphRoots ?? [cfg.srcRoot]).map((root) => join(repoRoot, root));
 
   const graph: ModuleGraph = {
     productionInbound: new Map<string, Set<string>>(),
     testInbound: new Map<string, Set<string>>(),
   };
 
-  for (const sourceFilePath of walkFiles(srcRoot, SOURCE_EXTS)) {
-    const importerPath = resolve(sourceFilePath);
-    const importerIsTest = isTestFile(importerPath);
-    const sourceText = readFileSync(sourceFilePath, "utf8");
-    for (const specifier of collectModuleSpecifiers(sourceText, sourceFilePath)) {
-      const dependencyPath = resolveAppModuleSpecifier(sourceFilePath, specifier, srcRoot);
-      if (!dependencyPath) continue;
-      if (!dependencyPath.startsWith(resolve(srcRoot))) continue;
-      if (!SOURCE_EXTS.has(extname(dependencyPath))) continue;
-      addInboundEdge(
-        importerIsTest ? graph.testInbound : graph.productionInbound,
-        dependencyPath,
-        importerPath,
-      );
+  for (const graphRoot of graphRoots) {
+    for (const sourceFilePath of walkFiles(graphRoot, SOURCE_EXTS)) {
+      const importerPath = resolve(sourceFilePath);
+      const importerIsTest = isTestFile(importerPath);
+      const sourceText = readFileSync(sourceFilePath, "utf8");
+      for (const specifier of collectModuleSpecifiers(sourceText, sourceFilePath)) {
+        const dependencyPath = resolveAppModuleSpecifier(sourceFilePath, specifier, srcRoot);
+        if (!dependencyPath) continue;
+        if (!dependencyPath.startsWith(resolve(srcRoot))) continue;
+        if (!SOURCE_EXTS.has(extname(dependencyPath))) continue;
+        addInboundEdge(
+          importerIsTest ? graph.testInbound : graph.productionInbound,
+          dependencyPath,
+          importerPath,
+        );
+      }
     }
   }
 
@@ -455,6 +481,8 @@ function auditPages(app: AppId, cfg: AppConfig, repoRoot: string): Finding[] {
     return auditBrikettePages(cfg, repoRoot, appDir, findings);
   } else if (app === "xa-uploader") {
     return auditXaUploaderPages(cfg, repoRoot, appDir, findings);
+  } else if (app === "prime") {
+    return auditPrimePages(cfg, repoRoot, appDir, findings);
   }
   return findings;
 }
@@ -667,6 +695,77 @@ function auditXaUploaderPages(
     }
   }
   return findings;
+}
+
+function pageFileToPublicRoute(pagePath: string, appDir: string): string | null {
+  const relativePath = relative(appDir, pagePath).replace(/\\/g, "/");
+  if (relativePath === "page.tsx") return "/";
+  if (!relativePath.endsWith("/page.tsx")) return null;
+
+  const rawSegments = relativePath.replace(/\/page\.tsx$/, "").split("/");
+  const segments = rawSegments.filter((segment) => segment.length > 0 && !/^\(.+\)$/.test(segment));
+
+  return `/${segments.join("/")}`;
+}
+
+function auditPrimePages(
+  cfg: AppConfig,
+  repoRoot: string,
+  appDir: string,
+  findings: Finding[],
+): Finding[] {
+  const srcRoot = join(repoRoot, cfg.srcRoot);
+  const pageFiles = walkFiles(appDir).filter((filePath) => basename(filePath) === "page.tsx");
+  const knownLiveUnlinkedRoutes = new Set(cfg.knownLiveUnlinkedRoutes ?? []);
+
+  for (const pagePath of pageFiles) {
+    if (isTestFile(pagePath)) continue;
+
+    const routePath = pageFileToPublicRoute(pagePath, appDir);
+    if (!routePath || routePath === "/") continue;
+    if (knownLiveUnlinkedRoutes.has(routePath)) continue;
+
+    const pageContent = readFileSync(pagePath, "utf8");
+    if (isSimpleRedirectAliasPage(pageContent)) continue;
+
+    const relPath = rel(repoRoot, pagePath);
+    const productionRefs = filterOutFile(
+      findFilesContainingLiteral(srcRoot, routePath, { excludeTests: true }),
+      pagePath,
+    );
+    if (productionRefs.length > 0) {
+      continue;
+    }
+
+    const testRefs = filterOutFile(
+      findFilesContainingLiteral(srcRoot, routePath, { excludeTests: false }).filter(isTestFile),
+      pagePath,
+    );
+    const baseConfidence: Confidence = testRefs.length > 0 ? "low" : "medium";
+    const evidenceNote = testRefs.length > 0
+      ? `route string appears in ${testRefs.length} test file(s)`
+      : undefined;
+    const { confidence, note } = downgradeIfRecent(baseConfidence, repoRoot, relPath);
+    findings.push({
+      app: "prime",
+      category: "pages",
+      filePath: relPath,
+      displayPath: relPath.replace(/.*apps\/prime\/src\/app\//, "app/"),
+      reason: `No production route reference found for "${routePath}" in Prime app source`,
+      confidence,
+      note: [evidenceNote, note].filter(Boolean).join("; ") || undefined,
+    });
+  }
+
+  return findings;
+}
+
+function isSimpleRedirectAliasPage(pageContent: string): boolean {
+  return (
+    pageContent.includes("GuardedRouteRedirect")
+    || /redirect\s*\(/.test(pageContent)
+    || /permanentRedirect\s*\(/.test(pageContent)
+  );
 }
 
 // ─── Phase 2: API route call graph ───────────────────────────────────────────

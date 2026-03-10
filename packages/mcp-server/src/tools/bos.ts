@@ -89,8 +89,8 @@ const STARTUP_LOOP_STAGES = [
 
 const cardsListSchema = z.object({
   business: z.string().min(1),
-  runId: z.string().min(1),
-  current_stage: z.string().min(1),
+  runId: z.string().min(1).optional(),
+  current_stage: z.string().min(1).optional(),
   lane: z.string().min(1).optional(),
 });
 
@@ -98,16 +98,16 @@ const stageDocGetSchema = z.object({
   business: z.string().min(1),
   cardId: z.string().min(1),
   stage: z.string().min(1),
-  runId: z.string().min(1),
-  current_stage: z.string().min(1),
+  runId: z.string().min(1).optional(),
+  current_stage: z.string().min(1).optional(),
 });
 
 const stageDocPatchSchema = z.object({
   business: z.string().min(1),
   cardId: z.string().min(1),
   stage: z.string().min(1),
-  runId: z.string().min(1),
-  current_stage: z.string().min(1),
+  runId: z.string().min(1).optional(),
+  current_stage: z.string().min(1).optional(),
   write_reason: z.string().min(1),
   baseEntitySha: z.string().min(1),
   patch: z.record(z.unknown()),
@@ -216,25 +216,25 @@ export const bosToolPoliciesRaw = {
   bos_cards_list: {
     permission: "read",
     sideEffects: "none",
-    allowedStages: [...STARTUP_LOOP_STAGES],
+    allowedStages: ["*"],
     auditTag: "bos:cards:list",
-    contextRequired: ["business", "runId", "current_stage"],
+    contextRequired: ["business"],
     sensitiveFields: ["baseEntitySha"],
   },
   bos_stage_doc_get: {
     permission: "read",
     sideEffects: "none",
-    allowedStages: [...STARTUP_LOOP_STAGES],
+    allowedStages: ["*"],
     auditTag: "bos:stage-doc:get",
-    contextRequired: ["business", "cardId", "runId", "current_stage"],
+    contextRequired: ["business", "cardId"],
     sensitiveFields: ["baseEntitySha"],
   },
   bos_stage_doc_patch_guarded: {
     permission: "guarded_write",
     sideEffects: "bos_write",
-    allowedStages: ["DO", "S9B", "S10"],
+    allowedStages: ["*"],
     auditTag: "bos:stage-doc:patch",
-    contextRequired: ["business", "cardId", "runId", "current_stage"],
+    contextRequired: ["business", "cardId"],
     requiresEntitySha: true,
     sensitiveFields: ["baseEntitySha"],
   },
@@ -285,31 +285,31 @@ export const bosToolPoliciesRaw = {
 export const bosTools = [
   {
     name: "bos_cards_list",
-    description: "List Business OS cards for a business with startup-loop context",
+    description: "List Business OS cards for a business",
     inputSchema: {
       type: "object",
       properties: {
         business: { type: "string", description: "Business code (for example BRIK)" },
-        runId: { type: "string", description: "Startup-loop run identifier" },
-        current_stage: { type: "string", description: "Current startup-loop stage" },
+        runId: { type: "string", description: "Optional legacy startup-loop run identifier" },
+        current_stage: { type: "string", description: "Optional legacy startup-loop stage" },
         lane: { type: "string", description: "Optional lane filter" },
       },
-      required: ["business", "runId", "current_stage"],
+      required: ["business"],
     },
   },
   {
     name: "bos_stage_doc_get",
-    description: "Fetch a Business OS stage doc with entitySha for startup-loop workflows",
+    description: "Fetch a Business OS stage doc with entitySha",
     inputSchema: {
       type: "object",
       properties: {
         business: { type: "string", description: "Business code (for example BRIK)" },
         cardId: { type: "string", description: "Business OS card ID" },
         stage: { type: "string", description: "Stage doc type" },
-        runId: { type: "string", description: "Startup-loop run identifier" },
-        current_stage: { type: "string", description: "Current startup-loop stage" },
+        runId: { type: "string", description: "Optional legacy startup-loop run identifier" },
+        current_stage: { type: "string", description: "Optional legacy startup-loop stage" },
       },
-      required: ["business", "cardId", "stage", "runId", "current_stage"],
+      required: ["business", "cardId", "stage"],
     },
   },
   {
@@ -322,8 +322,8 @@ export const bosTools = [
         business: { type: "string", description: "Business code (for example BRIK)" },
         cardId: { type: "string", description: "Business OS card ID" },
         stage: { type: "string", description: "Stage doc type" },
-        runId: { type: "string", description: "Startup-loop run identifier" },
-        current_stage: { type: "string", description: "Current startup-loop stage" },
+        runId: { type: "string", description: "Optional legacy startup-loop run identifier" },
+        current_stage: { type: "string", description: "Optional legacy startup-loop stage" },
         write_reason: { type: "string", description: "Reason for guarded write" },
         baseEntitySha: { type: "string", description: "Optimistic concurrency base SHA" },
         patch: { type: "object", description: "JSON merge patch payload" },
@@ -332,8 +332,6 @@ export const bosTools = [
         "business",
         "cardId",
         "stage",
-        "runId",
-        "current_stage",
         "write_reason",
         "baseEntitySha",
         "patch",

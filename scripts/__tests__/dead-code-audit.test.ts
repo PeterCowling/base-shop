@@ -52,6 +52,76 @@ describe("dead-code-audit safeguards", () => {
     ).toBeUndefined();
   });
 
+  it("normalizes prime route groups before checking page reachability", () => {
+    const findings = runDeadCodeAudit({
+      apps: ["prime"],
+      categories: ["pages"],
+      format: "json",
+      repoRoot,
+    });
+
+    expect(
+      findings.find((finding) =>
+        finding.filePath === "apps/prime/src/app/(guarded)/activities/page.tsx"
+      ),
+    ).toBeUndefined();
+  });
+
+  it("does not flag intentionally hidden prime routes", () => {
+    const findings = runDeadCodeAudit({
+      apps: ["prime"],
+      categories: ["pages"],
+      format: "json",
+      repoRoot,
+    });
+
+    expect(
+      findings.find((finding) =>
+        finding.filePath === "apps/prime/src/app/owner/scorecard/page.tsx"
+      ),
+    ).toBeUndefined();
+    expect(
+      findings.find((finding) =>
+        finding.filePath === "apps/prime/src/app/(guarded)/language-selector/page.tsx"
+      ),
+    ).toBeUndefined();
+  });
+
+  it("does not flag prime redirect alias pages as dead code", () => {
+    const findings = runDeadCodeAudit({
+      apps: ["prime"],
+      categories: ["pages"],
+      format: "json",
+      repoRoot,
+    });
+
+    expect(
+      findings.find((finding) =>
+        finding.filePath === "apps/prime/src/app/(guarded)/chat/activities/page.tsx"
+      ),
+    ).toBeUndefined();
+    expect(
+      findings.find((finding) =>
+        finding.filePath === "apps/prime/src/app/(guarded)/chat/activities/manage/page.tsx"
+      ),
+    ).toBeUndefined();
+  });
+
+  it("counts prime functions imports before flagging shared src modules", () => {
+    const findings = runDeadCodeAudit({
+      apps: ["prime"],
+      categories: ["exports"],
+      format: "json",
+      repoRoot,
+    });
+
+    expect(
+      findings.find((finding) =>
+        finding.filePath === "apps/prime/src/lib/messaging/queue-processor.ts"
+      ),
+    ).toBeUndefined();
+  });
+
   it("resolves relative imports before flagging exports", () => {
     const findings = runDeadCodeAudit({
       apps: ["brikette"],

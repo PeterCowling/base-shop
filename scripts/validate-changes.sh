@@ -143,6 +143,19 @@ if ! printf '%s\n' "$ALL_CHANGED" | node "$REPO_ROOT/scripts/src/ci/check-jest-c
 fi
 echo "OK: Jest config path policy check passed"
 
+CORE_TRIAD_BUDGET_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^(\\.claude/skills/lp-do-fact-find/SKILL\.md|\\.claude/skills/lp-do-plan/SKILL\.md|\\.claude/skills/lp-do-build/SKILL\.md|scripts/package\.json|scripts/validate-changes\.sh|scripts/src/startup-loop/diagnostics/(meta-loop-efficiency-audit|skill-size-metrics|core-triad-size-budget-validator)\.ts|scripts/src/startup-loop/diagnostics/core-triad-skill-budgets\.json|scripts/src/startup-loop/__tests__/(meta-loop-efficiency-audit|core-triad-size-budget-validator)\.test\.ts)$' || true)
+if [ -n "$CORE_TRIAD_BUDGET_CHANGED" ]; then
+    echo ""
+    echo "Checking core triad skill size budgets..."
+    if ! pnpm --filter scripts startup-loop:validate-core-triad-size-budgets; then
+        echo "FAIL: core triad skill size budget check failed (${CHANGE_MODE})"
+        exit 1
+    fi
+    echo "OK: core triad skill size budgets passed"
+else
+    echo "Skipping core triad skill size budget check (no relevant path changes)"
+fi
+
 I18N_RESOLVER_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^(packages/i18n/|packages/next-config/)|^packages/[^/]+/tsconfig[^/]*\.json$' || true)
 if [ -n "$I18N_RESOLVER_CHANGED" ]; then
     echo ""

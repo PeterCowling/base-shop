@@ -285,6 +285,104 @@ describe("runQualityChecks", () => {
     }
   });
 
+  it("populates failed_check_details for missing required references", () => {
+    const result = runQualityChecks({
+      actionPlan: {
+        language: "EN",
+        intents: {
+          questions: [{ text: "Can you modify my booking?", evidence: "Can you modify my booking" }],
+          requests: [],
+          confirmations: [],
+        },
+        workflow_triggers: {
+          booking_action_required: true,
+          booking_context: true,
+          prepayment: false,
+          terms_and_conditions: false,
+        },
+        scenario: { category: "booking-issues", confidence: 0.8 },
+        scenarios: [{ category: "booking-issues", confidence: 0.8 }],
+        actionPlanVersion: "1.1.0",
+      },
+      draft: {
+        bodyPlain: "Please confirm your request details. Best regards, Hostel Brikette",
+        bodyHtml: "<p>Please confirm your request details.</p>",
+      },
+    });
+
+    expect(result.failed_checks).toContain("missing_required_reference");
+    expect(result.failed_check_details["missing_required_reference"]).toEqual(
+      expect.arrayContaining(["https://hostel-positano.com/en/assistance/bookings"]),
+    );
+  });
+
+  it("populates failed_check_details for inapplicable references", () => {
+    const result = runQualityChecks({
+      actionPlan: {
+        language: "EN",
+        intents: {
+          questions: [{ text: "Can you modify my booking?", evidence: "Can you modify my booking" }],
+          requests: [],
+          confirmations: [],
+        },
+        workflow_triggers: {
+          booking_action_required: true,
+          booking_context: true,
+          prepayment: false,
+          terms_and_conditions: false,
+        },
+        scenario: { category: "booking-issues", confidence: 0.8 },
+        scenarios: [{ category: "booking-issues", confidence: 0.8 }],
+        actionPlanVersion: "1.1.0",
+      },
+      draft: {
+        bodyPlain:
+          "Use this guide for updates: https://unrelated.example.org/guide. Best regards, Hostel Brikette",
+        bodyHtml: "<p>Use this guide for updates.</p>",
+      },
+    });
+
+    expect(result.failed_checks).toContain("reference_not_applicable");
+    expect(result.failed_check_details["reference_not_applicable"]).toEqual(
+      expect.arrayContaining(["https://hostel-positano.com/en/assistance/bookings"]),
+    );
+  });
+
+  it("populates failed_check_details for contradicted thread commitments", () => {
+    const result = runQualityChecks({
+      actionPlan: {
+        language: "EN",
+        intents: {
+          questions: [{ text: "Can we check in early?", evidence: "Can we check in early" }],
+          requests: [],
+          confirmations: [],
+        },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+          prepayment: false,
+          terms_and_conditions: false,
+        },
+        scenario: { category: "check-in", confidence: 0.8 },
+        scenarios: [{ category: "check-in", confidence: 0.8 }],
+        actionPlanVersion: "1.1.0",
+        thread_summary: {
+          prior_commitments: ["We will arrange early check-in for your stay."],
+        },
+      },
+      draft: {
+        bodyPlain:
+          "Unfortunately we cannot provide the early check-in you requested. Best regards, Hostel Brikette",
+        bodyHtml: "<p>We cannot provide early check-in.</p>",
+      },
+    });
+
+    expect(result.failed_checks).toContain("contradicts_thread");
+    expect(result.failed_check_details["contradicts_thread"]).toEqual(
+      expect.arrayContaining(["We will arrange early check-in for your stay."]),
+    );
+  });
+
   it("returns question coverage breakdown for multi-question drafts", () => {
     const result = runQualityChecks({
       actionPlan: {

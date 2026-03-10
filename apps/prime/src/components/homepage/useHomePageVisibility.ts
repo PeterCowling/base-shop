@@ -76,27 +76,34 @@ export function useHomePageVisibility(): UseHomePageVisibilityReturn {
   }, [occupantData]);
 
   /**
-   * 4) Build tasks from config, factoring occupant's eligibility/room.
+   * 4) Normalize eligibility booleans once for all downstream consumers.
    */
-  const tasks = useMemo(() => {
-    if (!occupantEligibility) return [];
-    const safeOccupantId = occupantId ?? '';
-    const safeEligibility: Eligibility = {
+  const safeEligibility = useMemo<Eligibility | null>(() => {
+    if (!occupantEligibility) return null;
+    return {
       isEligibleForComplimentaryBreakfast:
         occupantEligibility.isEligibleForComplimentaryBreakfast || false,
       isEligibleForEveningDrink:
         occupantEligibility.isEligibleForEveningDrink || false,
     };
+  }, [occupantEligibility]);
+
+  /**
+   * 5a) Build tasks from config, factoring occupant's eligibility/room.
+   */
+  const tasks = useMemo(() => {
+    if (!safeEligibility) return [];
+    const safeOccupantId = occupantId ?? '';
     const rawTasks = getTasks(
       safeOccupantId,
       safeEligibility,
       occupantAllocatedRoomNumber,
     );
     return transformTasks(rawTasks);
-  }, [occupantEligibility, occupantAllocatedRoomNumber, occupantId]);
+  }, [safeEligibility, occupantAllocatedRoomNumber, occupantId]);
 
   /**
-   * 5) occupantTasks are the occupant's recorded completions.
+   * 5b) occupantTasks are the occupant's recorded completions.
    */
   const occupantTasks = useMemo(() => {
     return occupantData?.completedTasks || {};
@@ -114,14 +121,14 @@ export function useHomePageVisibility(): UseHomePageVisibilityReturn {
    * 7) Filter tasks to see if occupant has completed them all.
    */
   const relevantTasksForCompletionCheck = useMemo(() => {
-    if (!occupantEligibility) return [];
-    const isEligible = occupantEligibility.isEligibleForComplimentaryBreakfast;
+    if (!safeEligibility) return [];
+    const isEligible = safeEligibility.isEligibleForComplimentaryBreakfast;
     return tasks.filter((task) => {
       if (task.id === 'complimentaryBreakfast' && !isEligible) return false;
       if (task.id === 'exploreBreakfastMenu' && isEligible) return false;
       return true;
     });
-  }, [tasks, occupantEligibility]);
+  }, [tasks, safeEligibility]);
 
   const allTasksCompleted = useMemo(() => {
     if (!relevantTasksForCompletionCheck.length) return false;
@@ -134,33 +141,19 @@ export function useHomePageVisibility(): UseHomePageVisibilityReturn {
    * 8) Filter for only the tasks occupant still needs to see/do.
    */
   const filteredTasks = useMemo(() => {
-    if (!occupantEligibility) return [];
-    const isEligible = occupantEligibility.isEligibleForComplimentaryBreakfast;
-    return tasks.filter((task) => {
-      if (task.id === 'complimentaryBreakfast' && !isEligible) return false;
-      if (task.id === 'exploreBreakfastMenu' && isEligible) return false;
-      // Only display tasks the occupant hasn't completed
-      return !isTaskCompleted(task.id);
-    });
-  }, [tasks, occupantEligibility, isTaskCompleted]);
+    return relevantTasksForCompletionCheck.filter((task) => !isTaskCompleted(task.id));
+  }, [relevantTasksForCompletionCheck, isTaskCompleted]);
 
   /**
    * 9) Service cards from config – no additional logic except passing completions.
    */
   const serviceCards = useMemo(() => {
-    if (!occupantEligibility) return [];
+    if (!safeEligibility) return [];
     const completedIds = Object.keys(occupantTasks).filter(
       (k) => occupantTasks[k] === 'true',
     );
-    const safeOccupantId = occupantId ?? '';
-    const safeEligibility: Eligibility = {
-      isEligibleForComplimentaryBreakfast:
-        occupantEligibility.isEligibleForComplimentaryBreakfast || false,
-      isEligibleForEveningDrink:
-        occupantEligibility.isEligibleForEveningDrink || false,
-    };
-    return getServicesConfig(safeOccupantId, safeEligibility, completedIds);
-  }, [occupantEligibility, occupantTasks, occupantId]);
+    return getServicesConfig(occupantId ?? '', safeEligibility, completedIds);
+  }, [safeEligibility, occupantTasks, occupantId]);
 
   /**
    * 10) Public method to mark a task completed.
@@ -183,14 +176,7 @@ export function useHomePageVisibility(): UseHomePageVisibilityReturn {
     occupantError,
     occupantData: occupantData ?? null,
     occupantId: occupantId ?? null,
-    eligibility: occupantEligibility
-      ? {
-          isEligibleForComplimentaryBreakfast:
-            occupantEligibility.isEligibleForComplimentaryBreakfast,
-          isEligibleForEveningDrink:
-            occupantEligibility.isEligibleForEveningDrink,
-        }
-      : null,
+    eligibility: safeEligibility,
     isTaskCompleted,
     handleTaskCompletion,
     allTasksCompleted,

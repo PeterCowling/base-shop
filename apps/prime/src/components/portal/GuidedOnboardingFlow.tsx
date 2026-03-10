@@ -13,6 +13,7 @@ import { ROUTES_TO_POSITANO } from '../../data/routes';
 import { usePreArrivalMutator } from '../../hooks/mutator/usePreArrivalMutator';
 import { useFetchPreArrivalData } from '../../hooks/pureData/useFetchPreArrivalData';
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
+import { getFunnelSessionKey } from '../../lib/analytics/funnelSessionKey';
 import {
   type ActivationExperimentVariants,
   assignActivationVariants,
@@ -52,16 +53,6 @@ function normalizeMethod(method: string | null): EtaMethod | null {
     return method;
   }
   return null;
-}
-function getFunnelSessionKey(): string {
-  if (typeof window === 'undefined') {
-    return 'unknown-session';
-  }
-  return (
-    localStorage.getItem('prime_guest_uuid') ||
-    localStorage.getItem('prime_guest_booking_id') ||
-    'unknown-session'
-  );
 }
 function normalizeConfidence(confidence: string | null): ArrivalConfidence | null {
   if (confidence === 'confident' || confidence === 'need-guidance') {

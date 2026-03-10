@@ -11,7 +11,7 @@ function BackToTopButton({ label }: { label: string }): JSX.Element {
     <a
       href="#top"
       aria-label={label}
-      className="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-bg transition-colors hover:text-brand-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current dark:text-brand-text dark:hover:text-brand-secondary"
+      className="inline-flex min-h-11 min-w-11 items-center gap-1.5 text-sm font-semibold text-brand-bg transition-colors hover:text-brand-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-current dark:text-brand-text dark:hover:text-brand-secondary"
     >
       <svg
         aria-hidden="true"

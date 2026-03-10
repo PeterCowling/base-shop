@@ -152,9 +152,10 @@ export class TrendingService {
     }
 
     const items = tracker.getTrending();
-    return items.slice(0, limit).map((id) => ({
+    const total = items.length;
+    return items.slice(0, limit).map((id, index) => ({
       id,
-      score: this.getScore(type, id),
+      score: Math.max(1, total - index),
     }));
   }
 

@@ -1,18 +1,18 @@
 {
-  "last_updated": "2026-03-10T12:25:35.035Z",
+  "last_updated": "2026-03-10T12:37:48.937Z",
   "counts": {
-    "enqueued": 29,
+    "enqueued": 30,
     "processed": 7,
     "skipped": 0,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 270,
-    "fact_find_ready": 25,
+    "fact_find_ready": 26,
     "plan_ready": 0,
     "micro_build_ready": 0,
     "briefing_ready": 0,
-    "total": 505
+    "total": 506
   },
   "dispatches": [
     {
@@ -23320,6 +23320,75 @@
           "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
         ],
         "backfilled_at": "2026-03-10T12:25:35.035Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310123748-0001",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "7f2d01d810fd54f71c02c39acd994a070eadd7a0",
+      "root_event_id": "build-origin:startup-loop-cap02-message-variants:7f2d01d810fd54f71c02c39acd994a070eadd7a0",
+      "anchor_key": "capability-references-drift-ahead-of-the-artifact-and-schema-they-require",
+      "cluster_key": "build-origin:bos:startup-loop-cap02-message-variants:capability-references-drift-ahead-of-the-artifact-and-schema-they-require",
+      "cluster_fingerprint": "87817b21f46421db49450dfa798314245db8be0ca47865e5d9ad351b15f85300",
+      "lineage_depth": 0,
+      "area_anchor": "Capability references drift ahead of the artifact and schema they require",
+      "location_anchors": [
+        "docs/plans/startup-loop-cap02-message-variants/results-review.user.md",
+        "docs/plans/startup-loop-cap02-message-variants/pattern-reflection.user.md",
+        "docs/plans/startup-loop-cap02-message-variants/pattern-reflection.entries.json",
+        "docs/plans/startup-loop-cap02-message-variants/build-record.user.md#what-was-built",
+        "docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "Capability references drift ahead of the artifact and schema they require",
+      "next_scope_now": "Fact-find the build-origin improvement candidate \"Capability references drift ahead of the artifact and schema they require\" and validate the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.5700000000000001,
+      "evidence_refs": [
+        "docs/plans/startup-loop-cap02-message-variants/results-review.user.md",
+        "docs/plans/startup-loop-cap02-message-variants/pattern-reflection.user.md",
+        "docs/plans/startup-loop-cap02-message-variants/pattern-reflection.entries.json",
+        "docs/plans/startup-loop-cap02-message-variants/build-record.user.md#what-was-built",
+        "docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md"
+      ],
+      "created_at": "2026-03-10T12:37:48.931Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced recurring follow-up work: Capability references drift ahead of the artifact and schema they require",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for Capability references drift ahead of the artifact and schema they require.",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "7f2d01d810fd54f71c02c39acd994a070eadd7a0",
+        "recurrence_key": "0162d8d3e27f1da757168aa2218a2342b73afd3c",
+        "review_cycle_key": "startup-loop-cap02-message-variants",
+        "plan_slug": "startup-loop-cap02-message-variants",
+        "canonical_title": "Capability references drift ahead of the artifact and schema they require",
+        "primary_source": "pattern-reflection.entries.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": false,
+          "pattern_reflection_entry": true
+        },
+        "results_review_path": "docs/plans/startup-loop-cap02-message-variants/results-review.user.md",
+        "results_review_sidecar_path": null,
+        "pattern_reflection_path": "docs/plans/startup-loop-cap02-message-variants/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": "docs/plans/startup-loop-cap02-message-variants/pattern-reflection.entries.json",
+        "reflection_fields": {
+          "category": "deterministic",
+          "routing_target": "loop_update",
+          "occurrence_count": 1
+        }
       }
     }
   ]

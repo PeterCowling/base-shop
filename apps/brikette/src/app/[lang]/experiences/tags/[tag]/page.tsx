@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const path = `/${validLang}/${experiencesSlug}/${tagsSlug}/${encodeURIComponent(tag)}`;
 
   // Don't index tag pages with fewer than 3 guides
-  const itemCount = GUIDES_INDEX.filter((g) => g.tags.includes(tag) && isGuideLive(g.key)).length;
+  const itemCount = LIVE_GUIDES.filter((g) => g.tags.includes(tag)).length;
   const isPublished = itemCount >= 3;
   const description =
     tagMeta.description ||

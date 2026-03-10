@@ -5,7 +5,7 @@ Version: 1.0.0
 Domain: Venture-Studio
 Workstream: Mixed
 Created: 2026-02-17
-Last-updated: 2026-02-17
+Last-updated: 2026-03-09
 Owner: startup-loop maintainers
 Source: docs/plans/startup-loop-marketing-sales-capability-gap-audit/fact-find.md
 Related-capability: CAP-02 (docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md)
@@ -18,11 +18,13 @@ Related-plan: docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.
 
 Defines the minimum evidence an operator must collect before treating message or channel confidence as above `low`. Required prior to GATE-SELL-ACT-01 (spend authorization). Enforced by `lp-channels` at activation time and referenced by `lp-readiness` for early capture guidance.
 
+The DEP aggregates from the standing CAP-02 ledger at `docs/business-os/strategy/<BIZ>/message-variants.user.md`. The message-variants ledger is the row-level source; the DEP is the gate-level rollup.
+
 ## When to Use
 
 | Gate | Action |
 |---|---|
-| ASSESSMENT / MEASURE-01 | Begin DEP capture — register hypotheses, set up message variant log |
+| ASSESSMENT / MEASURE-01 | Begin DEP capture — register hypotheses and initialize `message-variants.user.md` |
 | Pre-SELL strategy design (GATE-SELL-STRAT-01) | DEP capture must be underway or completed |
 | SELL spend authorization (GATE-SELL-ACT-01) | Full DEP pass-floor check required — blocks spend without pass |
 
@@ -32,7 +34,7 @@ Defines the minimum evidence an operator must collect before treating message or
 |---|---|---|---|
 | `hypothesis_id` | string | **yes** | Stable ID linked to offer or channel hypothesis; must not change across capture windows |
 | `capture_window` | date range | **yes** | `start` and `end` ISO timestamps both present |
-| `message_variants` | list | **yes** | ≥2 variants per hypothesis; each has `channel`, `audience_slice`, `asset_ref`, `timestamp` |
+| `message_variants` | list | **yes** | ≥2 variants per hypothesis; each row must reconcile to the CAP-02 schema in `message-variants-schema.md` |
 | `denominators` | object | **yes** | Variant-level denominators present; one of: `impressions`, `conversations`, `visits`; value must be a positive integer |
 | `intent_events` | list | **yes** | Each event has `event_type`, `source_tag`, `count`, `timestamp`; `source_tag` must be non-empty |
 | `objection_log` | list | **yes** | Verbatim objection text + `frequency_count`; OR explicit `none_observed: true` with `sample_size` note |
@@ -43,14 +45,14 @@ Defines the minimum evidence an operator must collect before treating message or
 
 A DEP record is **valid** only when ALL of the following are true:
 
-1. ≥2 message variants tested per active hypothesis.
-2. Every variant has a denominator (`impressions`, `conversations`, or `visits`) and a `source_tag`.
+1. ≥2 denominator-bearing message variants tested per active hypothesis.
+2. Every denominator-bearing variant has a denominator (`impressions`, `conversations`, `visits`, or other schema-valid denominator) and a `source_tag`.
 3. Objection log contains either ≥5 tagged objections with verbatim text, OR explicit `none_observed: true` with `sample_size` ≥5.
 4. Speed-to-lead metric includes `sample_size` ≥1 and a timestamped `capture_window`.
 
 A DEP record is **invalid** (failure reason must be explicit) when any of:
 - `denominators` missing or empty for any variant → `FAIL: missing denominator for variant <variant_id>`
-- `message_variants` count < 2 → `FAIL: fewer than 2 variants tested for hypothesis <hypothesis_id>`
+- fewer than 2 denominator-bearing variants for any active hypothesis → `FAIL: fewer than 2 denominator-bearing variants tested for hypothesis <hypothesis_id>`
 - `source_tag` absent on any intent event → `FAIL: missing source_tag on intent event <event_type>`
 - `objection_log` empty with no `none_observed` flag → `FAIL: objection log missing; required either ≥5 entries or none_observed: true`
 - `speed_to_lead.sample_size` < 1 → `FAIL: speed_to_lead sample_size must be ≥1`
@@ -189,6 +191,7 @@ For each selected channel in the channel plan, the following fields are required
 ## References
 
 - Marketing/sales capability contract: `docs/business-os/startup-loop/contracts/marketing-sales-capability-contract.md` (CAP-02)
+- CAP-02 ledger schema: `docs/business-os/startup-loop/schemas/message-variants-schema.md`
 - Capability plan: `docs/plans/startup-loop-marketing-sales-capability-gap-audit/plan.md` (TASK-05)
 - Consumer: `.claude/skills/lp-channels/SKILL.md` (GATE-SELL-ACT-01 enforcement)
 - Consumer: `.claude/skills/lp-readiness/SKILL.md` (capture initiation advisory)

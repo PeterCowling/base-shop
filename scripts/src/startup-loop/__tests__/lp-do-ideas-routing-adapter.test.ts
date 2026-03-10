@@ -2,21 +2,22 @@
  * Tests for the lp-do-ideas dispatch routing adapter.
  *
  * TC-01: fact_find_ready packet with all required fields → RouteSuccess with FactFindInvocationPayload
- * TC-02: micro_build_ready packet with all required fields → RouteSuccess with MicroBuildInvocationPayload
- * TC-03: briefing_ready packet with required fields → RouteSuccess with BriefingInvocationPayload
- * TC-03: auto_executed status → RouteError RESERVED_STATUS
- * TC-04: logged_no_action status → RouteError UNKNOWN_STATUS
- * TC-05: Invalid schema_version → RouteError INVALID_SCHEMA_VERSION
- * TC-06: Invalid mode → RouteError INVALID_MODE
- * TC-07: Status/route mismatch → RouteError ROUTE_STATUS_MISMATCH
- * TC-08: Empty area_anchor → RouteError MISSING_AREA_ANCHOR
- * TC-09: Empty evidence_refs → RouteError MISSING_EVIDENCE_REFS
- * TC-10: Missing location_anchors on fact-find path → RouteError MISSING_LOCATION_ANCHORS
- * TC-11: Missing provisional_deliverable_family on fact-find path → RouteError MISSING_DELIVERABLE_FAMILY
- * TC-12: Case normalisation (mixed-case status/route values)
- * TC-13: Unknown status → RouteError UNKNOWN_STATUS
- * TC-14: Unknown route → RouteError UNKNOWN_ROUTE
- * TC-15: Payload fields are correctly mapped from source packet
+ * TC-02: plan_ready packet with all required fields → RouteSuccess with PlanInvocationPayload
+ * TC-03: micro_build_ready packet with all required fields → RouteSuccess with MicroBuildInvocationPayload
+ * TC-04: briefing_ready packet with required fields → RouteSuccess with BriefingInvocationPayload
+ * TC-05: auto_executed status → RouteError RESERVED_STATUS
+ * TC-06: logged_no_action status → RouteError UNKNOWN_STATUS
+ * TC-07: Invalid schema_version → RouteError INVALID_SCHEMA_VERSION
+ * TC-08: Invalid mode → RouteError INVALID_MODE
+ * TC-09: Status/route mismatch → RouteError ROUTE_STATUS_MISMATCH
+ * TC-10: Empty area_anchor → RouteError MISSING_AREA_ANCHOR
+ * TC-11: Empty evidence_refs → RouteError MISSING_EVIDENCE_REFS
+ * TC-12: Missing location_anchors on fact-find path → RouteError MISSING_LOCATION_ANCHORS
+ * TC-13: Missing provisional_deliverable_family on fact-find path → RouteError MISSING_DELIVERABLE_FAMILY
+ * TC-14: Case normalisation (mixed-case status/route values)
+ * TC-15: Unknown status → RouteError UNKNOWN_STATUS
+ * TC-16: Unknown route → RouteError UNKNOWN_ROUTE
+ * TC-17: Payload fields are correctly mapped from source packet
  */
 
 import { createHash } from "node:crypto";
@@ -27,6 +28,7 @@ import {
   type BriefingInvocationPayload,
   type FactFindInvocationPayload,
   type MicroBuildInvocationPayload,
+  type PlanInvocationPayload,
   routeDispatch,
   routeDispatchV2,
   type RouteError,
@@ -130,6 +132,22 @@ function makeMicroBuildPacket(
   };
 }
 
+function makePlanPacket(
+  overrides: Partial<TrialDispatchPacket> = {},
+): TrialDispatchPacket {
+  return {
+    ...makeFactFindPacket(),
+    dispatch_id: "IDEA-DISPATCH-20260224153000-0004",
+    area_anchor: "self-evolving route preservation",
+    location_anchors: ["scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts"],
+    current_truth: "Self-evolving routing loses plan-ready truth at canonical handoff",
+    next_scope_now: "Produce a guarded implementation plan for preserving plan-ready dispatches",
+    recommended_route: "lp-do-plan",
+    status: "plan_ready",
+    ...overrides,
+  };
+}
+
 // ---------------------------------------------------------------------------
 // TC-01: fact_find_ready → RouteSuccess with FactFindInvocationPayload
 // ---------------------------------------------------------------------------
@@ -166,10 +184,42 @@ describe("TC-01: fact_find_ready → FactFindInvocationPayload", () => {
 });
 
 // ---------------------------------------------------------------------------
-// TC-02: micro_build_ready → RouteSuccess with MicroBuildInvocationPayload
+// TC-02: plan_ready → RouteSuccess with PlanInvocationPayload
 // ---------------------------------------------------------------------------
 
-describe("TC-02: micro_build_ready → MicroBuildInvocationPayload", () => {
+describe("TC-02: plan_ready → PlanInvocationPayload", () => {
+  it("returns RouteSuccess for a valid plan_ready packet", () => {
+    const packet = makePlanPacket();
+    const result = routeDispatch(packet);
+
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.route).toBe("lp-do-plan");
+      expect(result.payload.skill).toBe("lp-do-plan");
+    }
+  });
+
+  it("payload contains all required PlanInvocationPayload fields", () => {
+    const packet = makePlanPacket();
+    const result = routeDispatch(packet) as RouteSuccess;
+
+    expect(result.ok).toBe(true);
+    const payload = result.payload as PlanInvocationPayload;
+    expect(payload.skill).toBe("lp-do-plan");
+    expect(payload.dispatch_id).toBe(packet.dispatch_id);
+    expect(payload.business).toBe(packet.business);
+    expect(payload.area_anchor).toBe(packet.area_anchor);
+    expect(payload.location_anchors).toEqual(packet.location_anchors);
+    expect(payload.provisional_deliverable_family).toBe(packet.provisional_deliverable_family);
+    expect(payload.evidence_refs).toEqual(packet.evidence_refs);
+  });
+});
+
+// ---------------------------------------------------------------------------
+// TC-03: micro_build_ready → RouteSuccess with MicroBuildInvocationPayload
+// ---------------------------------------------------------------------------
+
+describe("TC-03: micro_build_ready → MicroBuildInvocationPayload", () => {
   it("returns RouteSuccess for a valid micro_build_ready packet", () => {
     const packet = makeMicroBuildPacket();
     const result = routeDispatch(packet);
@@ -198,10 +248,10 @@ describe("TC-02: micro_build_ready → MicroBuildInvocationPayload", () => {
 });
 
 // ---------------------------------------------------------------------------
-// TC-03: briefing_ready → RouteSuccess with BriefingInvocationPayload
+// TC-04: briefing_ready → RouteSuccess with BriefingInvocationPayload
 // ---------------------------------------------------------------------------
 
-describe("TC-03: briefing_ready → BriefingInvocationPayload", () => {
+describe("TC-04: briefing_ready → BriefingInvocationPayload", () => {
   it("returns RouteSuccess for a valid briefing_ready packet", () => {
     const packet = makeBriefingPacket();
     const result = routeDispatch(packet);

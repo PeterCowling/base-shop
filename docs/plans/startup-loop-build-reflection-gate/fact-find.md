@@ -26,7 +26,7 @@ artifact: fact-find
 
 ### Summary
 
-The startup loop has no structured post-build reflection step that captures reuse patterns for loop or skill improvement. When a build completes, incidental learnings — such as the need to configure data-source access upfront, repeated ad-hoc discovery steps, or multi-step patterns that are always executed the same way — are lost. Two specific routing requirements are out of scope for the existing `results-review.user.md` template: (1) folding deterministic patterns back into an existing loop stage or skill file, and (2) promoting a recurring ad-hoc pattern into a new named `tool-*` skill. This fact-find scopes where a structured reflection gate should sit, what it must produce, how routing decisions are made, and what concrete tasks the plan should contain.
+At the time of this fact-find, the startup loop had no structured post-build reflection step that captured reuse patterns for loop or skill improvement. That gap has since been implemented: build completion now produces and processes `pattern-reflection` artifacts, and fact-find includes access declarations. This document remains as the original planning record for that delivered change.
 
 ### Goals
 

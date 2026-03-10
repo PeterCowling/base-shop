@@ -91,7 +91,7 @@ export default async function IdeasPage({ searchParams }: IdeasPageProps) {
                 href="/boards/global"
                 className="rounded-md border border-2 px-4 py-2 text-sm font-medium text-secondary hover:bg-surface-1"
               >
-                Open Board
+                Open Legacy Board
               </Link>
             </div>
           </div>
@@ -103,7 +103,7 @@ export default async function IdeasPage({ searchParams }: IdeasPageProps) {
           <header className="rounded-lg border border-info-soft bg-info-soft px-4 py-3">
             <h2 className="text-lg font-semibold text-info-fg">Primary Ideas (P1-P3)</h2>
             <p className="text-sm text-info-fg">
-              Top-priority ideas for immediate fact-find and execution planning.
+              Top-priority ideas for immediate workflow follow-up, investigation, and execution planning.
             </p>
           </header>
           <IdeasPagination
@@ -122,7 +122,7 @@ export default async function IdeasPage({ searchParams }: IdeasPageProps) {
           <header className="rounded-lg border border-1 bg-surface-1 px-4 py-3">
             <h2 className="text-lg font-semibold text-fg">Secondary Ideas (P4-P5)</h2>
             <p className="text-sm text-secondary">
-              Lower-priority backlog ideas tracked separately from immediate execution candidates.
+              Lower-priority ideas tracked separately from immediate workflow candidates.
             </p>
           </header>
           <IdeasPagination

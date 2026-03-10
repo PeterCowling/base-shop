@@ -28,6 +28,7 @@ import { type AppLanguage, i18nConfig } from "@/i18n.config";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { buildRoomItem, fireEventAndNavigate, resolveItemListName } from "@/utils/ga4-events";
+import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
 import { getBookPath } from "@/utils/localizedRoutes";
 
 const PRICE_LOADING_TEST_ID = "price-loading" as const; // legacy test id consumed by app unit tests
@@ -126,8 +127,6 @@ function coerceString(value: unknown): string {
   return "";
 }
 
-const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
-
 function resolveTranslatedCopy(value: unknown, key: string, fallback: string): string {
   const trimmed = coerceString(value).trim();
   if (!trimmed) return fallback;
@@ -223,32 +222,16 @@ export default memo(function RoomCard({
   })();
 
   // Precompute Octorate URLs when queryState === "valid"
-  const nrOctorateUrl = useMemo(() => {
-    if (queryState !== "valid") return null;
-    const result = buildOctorateUrl({
-      checkin: checkIn,
-      checkout: checkOut,
-      pax: adults,
-      plan: "nr",
-      roomSku: room.sku,
-      octorateRateCode: room.rateCodes.direct.nr,
-      bookingCode: BOOKING_CODE,
-    });
-    return result.ok ? result.url : null;
-  }, [queryState, checkIn, checkOut, adults, room]);
-
-  const flexOctorateUrl = useMemo(() => {
-    if (queryState !== "valid") return null;
-    const result = buildOctorateUrl({
-      checkin: checkIn,
-      checkout: checkOut,
-      pax: adults,
-      plan: "flex",
-      roomSku: room.sku,
-      octorateRateCode: room.rateCodes.direct.flex,
-      bookingCode: BOOKING_CODE,
-    });
-    return result.ok ? result.url : null;
+  const { nrOctorateUrl, flexOctorateUrl } = useMemo(() => {
+    if (queryState !== "valid") return { nrOctorateUrl: null, flexOctorateUrl: null };
+    const buildUrl = (plan: "nr" | "flex", octorateRateCode: string | undefined) => {
+      const result = buildOctorateUrl({ checkin: checkIn, checkout: checkOut, pax: adults, plan, roomSku: room.sku, octorateRateCode, bookingCode: BOOKING_CODE });
+      return result.ok ? result.url : null;
+    };
+    return {
+      nrOctorateUrl: buildUrl("nr", room.rateCodes.direct.nr),
+      flexOctorateUrl: buildUrl("flex", room.rateCodes.direct.flex),
+    };
   }, [queryState, checkIn, checkOut, adults, room]);
 
   // title is declared here (before openNonRefundable/openFlexible) to avoid a TDZ in

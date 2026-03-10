@@ -17,7 +17,7 @@ Use this skill when a plan task outputs campaign-ready content (email campaign c
 
 **Allowed:** craft copy variants, define CTA, map message to audience and channel constraints.
 
-**Not allowed:** fabricate proof points, ignore channel limits, produce generic copy without positioning.
+**Not allowed:** fabricate proof points, ignore channel limits, produce generic copy without positioning, or ignore the active message ledger when one already exists.
 
 ## Inputs
 
@@ -28,6 +28,7 @@ Use this skill when a plan task outputs campaign-ready content (email campaign c
 - Evidence/proof points available
 - CTA and conversion event
 - Tone/brand constraints
+- Existing message-testing context from `docs/business-os/strategy/<BIZ>/message-variants.user.md`, when the business already has a CAP-02 ledger
 
 ### Mode Behavior
 
@@ -97,8 +98,10 @@ Required sections:
 ## Strategy Snapshot
 - Channel:
 - Audience:
+- Hypothesis:
 - Positioning:
 - CTA:
+- Source tag(s):
 
 ## Primary Asset Draft
 ...
@@ -131,10 +134,11 @@ Required sections:
 ### Final Mode
 
 1. Lock channel + audience + objective.
-2. Draft primary asset with one clear CTA.
-3. Add one to two variants only when strategically justified.
-4. Attach measurement plan and QA checklist.
-5. Save artifact and list recommended next action.
+2. If a CAP-02 ledger already exists, choose the hypothesis/frame the asset belongs to before drafting fresh copy.
+3. Draft primary asset with one clear CTA.
+4. Add one to two variants only when strategically justified, and keep them traceable back to the selected hypothesis.
+5. Attach measurement plan, source tags, and QA checklist.
+6. Save artifact and list recommended next action.
 
 ## Completion Message
 

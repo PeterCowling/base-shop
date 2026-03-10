@@ -49,7 +49,7 @@ export function MyWorkView({
               href="/boards/global"
               className="px-4 py-2 text-sm font-medium text-secondary bg-panel border border-border-2 rounded-md hover:bg-surface-1"
             >
-              View All Boards
+              View Legacy Board
             </Link>
             <Link
               href="/"
@@ -132,9 +132,9 @@ export function MyWorkView({
                   href="/boards/global"
                   className="text-info-fg hover:underline"
                 >
-                  board
+                  legacy board
                 </Link>{" "}
-                to claim tasks.
+                to inspect or claim compatibility work.
               </div>
             ) : (
               <Grid cols={1} gap={4} className="md:grid-cols-2 lg:grid-cols-3">

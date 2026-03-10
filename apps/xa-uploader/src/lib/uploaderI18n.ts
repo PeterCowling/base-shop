@@ -32,6 +32,7 @@ const messages = {
     loadFailed: "Load failed",
     unauthorized: "Unauthorized",
     loginFailed: "Login failed",
+    logout: "Sign out",
     logoutFailed: "Logout failed",
     fixValidationErrorsBeforeSaving: "Fix validation errors before saving.",
     saveFailed: "Save failed.",
@@ -55,6 +56,7 @@ const messages = {
     syncSucceededRebuildRequired:
       "Catalog published. Rebuild xa-b to apply changes to the live site.",
     syncWarningsSummary: "Warnings: {warnings}",
+    publishWarningsSummary: "Publish warnings: {warnings}",
     syncWarningPublishStatePromotionFailed:
       "Some product publish states could not be updated to live in uploader records. Storefront publish still completed.",
     syncWarningCloudMediaMissingPruned:
@@ -150,12 +152,6 @@ const messages = {
     syncRateLimitedActionable: "Sync is rate limited. Wait about one minute before retrying.",
     syncRecoveryReviewSyncLogs:
       "Review sync log output, fix the pipeline error, then retry.",
-    submissionValidationFailed:
-      "Submission validation failed. Check product count, image sizes, and image files, then retry.",
-    exportFailed: "Export failed.",
-    buildingZip: "Building package…",
-    uploadingZip: "Uploading…",
-
     loginIntro: "Admin access requires the console token.",
     loginTokenLabel: "Console token",
     loginShowToken: "Show token",
@@ -186,6 +182,10 @@ const messages = {
     makeLiveSuccessFailed: "Published. Site rebuild trigger failed; manual rebuild may be required.",
     makeLiveSuccessUnconfigured: "Published. (No deploy hook configured.)",
     makeLiveFailed: "Publish failed. Please try again.",
+    publishBlockedAutosavePending:
+      "Image autosave is still running or pending. Save those changes before publishing.",
+    publishBlockedSaveRequired:
+      "Save this product first, then publish the saved revision.",
     markOutOfStockRunning: "Updating stock...",
     markOutOfStockComplete: "Complete",
     markOutOfStockSuccess: "Published as out of stock. Site rebuild triggered.",
@@ -209,7 +209,6 @@ const messages = {
     workflowLive: "Published to catalog",
     workflowOutOfStock: "Published as out of stock",
     workflowImageRequired: "Add a main image to publish",
-    workflowReadyForSubmission: "Ready to submit",
     workflowImageBlocked: "Complete the product details first, then add images.",
 
     validateAndSync: "Validate & sync",
@@ -233,31 +232,6 @@ const messages = {
     syncOptionRecursive: "recursive",
     syncOptionReplace: "replace",
     syncOptionDryRun: "dry run",
-
-    submissionTitle: "Submission package",
-    submissionHint: "Selected {count}/{max}. Export a ZIP for handoff.",
-    clearSelection: "Clear selection",
-    exportZip: "Export ZIP",
-    exporting: "Exporting...",
-    submissionRulesTitle: "Guidelines",
-    submissionRuleMaxProducts: "Max {max} products per submission.",
-    submissionRuleMaxSize: "Max ZIP size {maxMb}MB.",
-    submissionRuleLocalRun: "Run this console locally so it can read your image files.",
-    submissionRuleImageSpec: "Images must be JPG/PNG/WebP and at least {minEdge}px on the shortest edge.",
-    submissionRuleNewLink: "Use a new upload link for each submission.",
-    submissionNeedsImages: "Add image files before including this product in a submission.",
-    r2UploadTitle: "Submission upload",
-    r2DestinationLabel: "Destination",
-    r2UploadUrlLabel: "Upload link",
-    r2UploadUrlPlaceholder: "Paste the one-time upload link you were given",
-    r2UploadHint:
-      "This uploads directly to the handoff endpoint (no direct storefront connection). Ask the coordinator for a new link for each submission.",
-    uploadToR2: "Upload submission",
-    uploadingToR2: "Uploading...",
-    submissionReady: "Submission ID: {id}",
-    submissionUploaded: "Uploaded submission {id}.",
-    selectForSubmission: "Select for submission",
-    selectionLimitReached: "Reached the {max} product limit.",
 
     fieldTitle: "Title",
     fieldSlug: "Slug",
@@ -535,6 +509,7 @@ const messages = {
     loadFailed: "加载失败",
     unauthorized: "未授权",
     loginFailed: "登录失败",
+    logout: "退出登录",
     logoutFailed: "退出失败",
     fixValidationErrorsBeforeSaving: "保存前请先修复校验错误。",
     saveFailed: "保存失败。",
@@ -555,6 +530,7 @@ const messages = {
     syncSucceededDeployFailed: "目录已发布。网站重建触发失败，请手动重新构建。",
     syncSucceededRebuildRequired: "目录已发布。请重新构建 xa-b 以将变更应用到线上网站。",
     syncWarningsSummary: "警告：{warnings}",
+    publishWarningsSummary: "发布警告：{warnings}",
     syncWarningPublishStatePromotionFailed:
       "部分商品的发布状态未能在上传器记录中更新为 live。店铺发布已完成。",
     syncWarningCloudMediaMissingPruned:
@@ -634,11 +610,6 @@ const messages = {
     syncPipelineFailedActionable: "同步流水线执行失败。",
     syncRateLimitedActionable: "同步请求过于频繁。请等待约 1 分钟后重试。",
     syncRecoveryReviewSyncLogs: "请查看同步日志，修复流水线错误后重试。",
-    submissionValidationFailed: "提交验证失败。请检查产品数量、图片尺寸及图片文件，然后重试。",
-    exportFailed: "导出失败。",
-    buildingZip: "正在构建压缩包…",
-    uploadingZip: "正在上传…",
-
     loginIntro: "管理员访问需要控制台令牌。",
     loginTokenLabel: "控制台令牌",
     loginShowToken: "显示令牌",
@@ -668,6 +639,8 @@ const messages = {
     makeLiveSuccessFailed: "已发布。网站重建触发失败，可能需要手动重建。",
     makeLiveSuccessUnconfigured: "已发布。（未配置部署钩子。）",
     makeLiveFailed: "发布失败，请重试。",
+    publishBlockedAutosavePending: "图片自动保存仍在进行或有待保存。请先保存这些变更，再执行发布。",
+    publishBlockedSaveRequired: "请先保存此商品，再发布已保存的修订版本。",
     markOutOfStockRunning: "更新库存中…",
     markOutOfStockComplete: "已完成",
     markOutOfStockSuccess: "已发布为缺货。网站重建已触发。",
@@ -688,7 +661,6 @@ const messages = {
     workflowLive: "已发布至目录",
     workflowOutOfStock: "已发布为缺货",
     workflowImageRequired: "请添加主图后再发布",
-    workflowReadyForSubmission: "可提交",
     workflowImageBlocked: "请先完成产品信息，再添加图片。",
 
     validateAndSync: "校验与同步",
@@ -708,31 +680,6 @@ const messages = {
     syncOptionRecursive: "递归扫描",
     syncOptionReplace: "替换图片",
     syncOptionDryRun: "演练（不写入）",
-
-    submissionTitle: "提交包",
-    submissionHint: "已选择 {count}/{max}。导出 ZIP 以交付。",
-    clearSelection: "清除选择",
-    exportZip: "导出 ZIP",
-    exporting: "导出中…",
-    submissionRulesTitle: "指南",
-    submissionRuleMaxProducts: "每次提交最多 {max} 个商品。",
-    submissionRuleMaxSize: "ZIP 最大 {maxMb}MB。",
-    submissionRuleLocalRun: "请在本机运行此控制台，以便读取本地图片文件。",
-    submissionRuleImageSpec: "图片需为 JPG/PNG/WebP，且短边至少 {minEdge}px。",
-    submissionRuleNewLink: "每次提交请使用新的上传链接。",
-    submissionNeedsImages: "请先补充图片文件，再将该商品加入提交包。",
-    r2UploadTitle: "提交上传",
-    r2DestinationLabel: "目标",
-    r2UploadUrlLabel: "上传链接",
-    r2UploadUrlPlaceholder: "粘贴一次性上传链接",
-    r2UploadHint:
-      "将直接上传到交付端点（不直接连接到店铺站点）。每次提交请向协调方获取新的链接。",
-    uploadToR2: "上传提交包",
-    uploadingToR2: "上传中…",
-    submissionReady: "提交 ID：{id}",
-    submissionUploaded: "已上传提交 {id}。",
-    selectForSubmission: "加入提交包",
-    selectionLimitReached: "已达到 {max} 个商品上限。",
 
     fieldTitle: "标题",
     fieldSlug: "Slug（URL 标识）",

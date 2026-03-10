@@ -23,6 +23,7 @@ import { buildBookingQueryString } from "@/utils/bookingQuery";
 import { hydrateBookingSearch } from "@/utils/bookingSearch";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { fireViewItemList } from "@/utils/ga4-events";
+import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
 
 type Props = {
   lang: AppLanguage;
@@ -32,8 +33,6 @@ type Props = {
   /** Server-resolved hero subheading from the RSC page wrapper. */
   serverSubtitle?: string;
 };
-
-const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
 
 function resolveTranslatedCopy(value: unknown, fallback: string): string {
   if (typeof value !== "string") return fallback;
@@ -147,7 +146,7 @@ function useRoomsBookingModel(bookingQuery: RoomsSectionBookingQuery | undefined
   const router = useRouter();
   const searchParams = useSearchParams();
   const hydratedBookingQuery = useMemo(() => hydrateRoomsBookingQuery(searchParams), [searchParams]);
-  const resolvedBookingQuery = bookingQuery ?? hydratedBookingQuery;
+  const resolvedBookingQuery = useMemo(() => bookingQuery ?? hydratedBookingQuery, [bookingQuery, hydratedBookingQuery]);
   const [range, setRange] = useState<DateRange>(getInitialRange(resolvedBookingQuery));
   const [pax, setPax] = useState<number>(parsePax(resolvedBookingQuery?.pax));
   const checkinInput = range.from ? formatDate(range.from) : "";
@@ -158,6 +157,7 @@ function useRoomsBookingModel(bookingQuery: RoomsSectionBookingQuery | undefined
   useEffect(() => {
     setRange(getInitialRange(resolvedBookingQuery));
     setPax(parsePax(resolvedBookingQuery?.pax));
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- BRIK-2161 sync state from resolved booking query fields only
   }, [resolvedBookingQuery?.checkIn, resolvedBookingQuery?.checkOut, resolvedBookingQuery?.pax]);
 
   const availabilityInputs = deriveAvailabilityInputs(normalizedBookingQuery);
@@ -221,7 +221,10 @@ function RoomsSearchPanel({
         {queryState === "invalid" ? (
           <BookingNotice className="mt-4">
             {t("bookingConstraints.notice") as string}{" "}
-            <a className="underline" href="mailto:hostelpositano@gmail.com?subject=Split%20booking%20help">
+            <a
+              className="inline-flex min-h-11 min-w-11 items-center underline"
+              href="mailto:hostelpositano@gmail.com?subject=Split%20booking%20help"
+            >
               {t("bookingConstraints.assistedLink") as string}
             </a>
             .

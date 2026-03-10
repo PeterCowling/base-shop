@@ -194,30 +194,6 @@
       "idea_key": "572757fdd0bba34405fd93224e9550770c6e264c"
     },
     {
-      "title": "BRIK email pipeline — intent extraction collapses clause-level questions, double-counts intents",
-      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "plan_slug": "email-pipeline-simulation-hardening",
-      "completed_at": "2026-03-07",
-      "output_link": "docs/plans/_archive/email-pipeline-simulation-hardening/",
-      "idea_key": "d43413db46f90885adb8d4dc6bb5412de1461a69"
-    },
-    {
-      "title": "BRIK email pipeline — quality gate advisory-only; coverage scoring lexical-only",
-      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "plan_slug": "email-pipeline-simulation-hardening",
-      "completed_at": "2026-03-07",
-      "output_link": "docs/plans/_archive/email-pipeline-simulation-hardening/",
-      "idea_key": "aec822c528962f09e44d8e7c344cb7dbcb032826"
-    },
-    {
-      "title": "BRIK email pipeline — template ranker accepts weak matches, booking_monitor triggers too broadly",
-      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "plan_slug": "email-pipeline-simulation-hardening",
-      "completed_at": "2026-03-07",
-      "output_link": "docs/plans/_archive/email-pipeline-simulation-hardening/",
-      "idea_key": "3ef11aab144ca4886b477bb50a313590a6f4abfe"
-    },
-    {
       "idea_key": "45c2c3206cdc51c21a92943c0b0d1e7e6fc81004",
       "title": "IDEA-DISPATCH-20260309103000-9302",
       "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
@@ -1320,6 +1296,613 @@
       "plan_slug": "reception-modal-mode-discriminated-unions",
       "completed_at": "2026-03-09",
       "output_link": "docs/plans/_archive/reception-modal-mode-discriminated-unions/plan.md"
+    },
+    {
+      "idea_key": "2e07f0c63f7abec7998f2806df7a4552b879c171",
+      "title": "IDEA-DISPATCH-20260307153740-9204",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-inbox-context-history-bound",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-inbox-context-history-bound/plan.md"
+    },
+    {
+      "idea_key": "faa53e3ec16e111772ef0cd5052fa8213af91d07",
+      "title": "IDEA-DISPATCH-20260309140000-0003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-guided-onboarding-step-config",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/prime-guided-onboarding-step-config/prime-guided-onboarding-step-config/plan.md"
+    },
+    {
+      "idea_key": "c9c8d331aab2e85c4947ee40ebf07030c4cd149d",
+      "title": "IDEA-DISPATCH-20260309140000-0004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-refetch-boilerplate",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/prime-refetch-boilerplate/plan.md"
+    },
+    {
+      "idea_key": "35fd2f4ef56514161955b4f811590396721168a9",
+      "title": "IDEA-DISPATCH-20260305164000-2201",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-hardening",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+    },
+    {
+      "idea_key": "1b614b623c7ed1ad864ea4cdafc15589842d9d36",
+      "title": "IDEA-DISPATCH-20260305164000-2202",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-hardening",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+    },
+    {
+      "idea_key": "a28b29973996a19bdef9b91fe6ae727745894ace",
+      "title": "IDEA-DISPATCH-20260305164000-2203",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-hardening",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+    },
+    {
+      "idea_key": "1a4b7a6c0c173315f4f5ab145fa546a30b035562",
+      "title": "IDEA-DISPATCH-20260305164000-2204",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-hardening",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+    },
+    {
+      "idea_key": "3f1c00d6f95a491126e9142798db68063f32bbdb",
+      "title": "IDEA-DISPATCH-20260305164000-2205",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-hardening",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+    },
+    {
+      "idea_key": "e86cd72f99e0a0b3069814aebdff2c47f9176fba",
+      "title": "IDEA-DISPATCH-20260305164000-2206",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-hardening",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+    },
+    {
+      "idea_key": "0a43c12aaaf327738a04939039d66f3e43cc50e6",
+      "title": "IDEA-DISPATCH-20260305164000-2207",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-hardening",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-hardening/plan.md"
+    },
+    {
+      "idea_key": "7162d875bf82770fb22c338b740a73e1c1943b6c",
+      "title": "IDEA-DISPATCH-20260305204000-2301",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-reaudit-followup",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
+    },
+    {
+      "idea_key": "0d8a817bd62483b72cb697c9c2d62a48b11e2052",
+      "title": "IDEA-DISPATCH-20260305204000-2302",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-reaudit-followup",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
+    },
+    {
+      "idea_key": "d1556d157378ad4d4c686791ffa828c93d8f428f",
+      "title": "IDEA-DISPATCH-20260305204000-2303",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-reaudit-followup",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
+    },
+    {
+      "idea_key": "7c80d6679c7eac1b4fd70bad69eaf3f462bd8739",
+      "title": "IDEA-DISPATCH-20260305204000-2304",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-reaudit-followup",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
+    },
+    {
+      "idea_key": "b660aa04a1a474fd1f6f15f56b44948a83808eb1",
+      "title": "IDEA-DISPATCH-20260305204000-2305",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-reaudit-followup",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
+    },
+    {
+      "idea_key": "a0a6d2dc9fa783718555274b0b6a788e175d9c05",
+      "title": "IDEA-DISPATCH-20260305204000-2306",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-reaudit-followup",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
+    },
+    {
+      "idea_key": "1fa5714e02af8057e119f5ac77a4a50dc4af890a",
+      "title": "IDEA-DISPATCH-20260305204000-2307",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-reaudit-followup",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-process-integrity-reaudit-followup/plan.md"
+    },
+    {
+      "idea_key": "b7ef4a69bf1d32567bc0239e68c4c07ab984d871",
+      "title": "IDEA-DISPATCH-20260309140000-0002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-chatprovider-zod-migration",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/prime-chatprovider-zod-migration/plan.md"
+    },
+    {
+      "idea_key": "355b0f705bd597ab6878b215a8bd2ba63dd416f4",
+      "title": "IDEA-DISPATCH-20260305214500-5501",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-uploader-free-tier-hardening",
+      "completed_at": "2026-03-05",
+      "output_link": "docs/plans/xa-uploader-free-tier-hardening/plan.md"
+    },
+    {
+      "idea_key": "bf5f1b08e830fd6a7b00da86096fb4f586749ea8",
+      "title": "IDEA-DISPATCH-20260305192303-4411",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-content-deploy-lane",
+      "completed_at": "2026-03-05",
+      "output_link": "docs/plans/xa-content-deploy-lane/plan.md"
+    },
+    {
+      "idea_key": "e712f1b89fcaee5b3e5034649f1f63b52b5c4e03",
+      "title": "IDEA-DISPATCH-20260305184919-9026",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-uploader-sync-fast-path",
+      "completed_at": "2026-03-05",
+      "output_link": "docs/plans/xa-uploader-sync-fast-path/plan.md"
+    },
+    {
+      "idea_key": "e8bc7d36642ee5ab0a4e584539764457a82c6148",
+      "title": "IDEA-DISPATCH-20260228-0072",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-uploader-design-token-migration",
+      "completed_at": "2026-02-28",
+      "output_link": "docs/plans/_archive/xa-uploader-design-token-migration/plan.md"
+    },
+    {
+      "idea_key": "b3898d0bf6fa0fec12b09bc78ed9f272a40ee6d7",
+      "title": "IDEA-DISPATCH-20260228-0070",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-uploader-sync-health-check",
+      "completed_at": "2026-02-28",
+      "output_link": "docs/plans/_archive/xa-uploader-sync-health-check/plan.md"
+    },
+    {
+      "idea_key": "1be14ffbf6494606e21d0c67717a2da53564d1c1",
+      "title": "IDEA-DISPATCH-20260228-0009",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-apply-room-names",
+      "completed_at": "2026-02-28",
+      "output_link": "docs/plans/_archive/brik-apply-room-names/plan.md"
+    },
+    {
+      "idea_key": "99a73112b8ee211e857c9b227f94f654cc3f8ba1",
+      "title": "IDEA-DISPATCH-20260228-0006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "hbag-pdp-return-visit-capture",
+      "completed_at": "2026-02-28",
+      "output_link": "docs/plans/_archive/hbag-pdp-return-visit-capture/plan.md"
+    },
+    {
+      "idea_key": "c2d9c85fa128ba8c35a7482cd7322aad1c6c3f84",
+      "title": "IDEA-DISPATCH-20260228-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-header-rooms-dropdown",
+      "completed_at": "2026-02-28",
+      "output_link": "docs/plans/_archive/brik-header-rooms-dropdown/plan.md"
+    },
+    {
+      "idea_key": "6a5da1b42f8941ba428c003af4799800e6a3d14c",
+      "title": "IDEA-DISPATCH-20260226-0030",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "pwrb-brand-name",
+      "completed_at": "2026-03-02"
+    },
+    {
+      "idea_key": "3dc52b566ec54e9af972ad55f40b369986fbec9c",
+      "title": "IDEA-DISPATCH-20260225-0003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-remove-light-mode",
+      "completed_at": "2026-03-02",
+      "output_link": "docs/plans/reception-remove-light-mode/plan.md"
+    },
+    {
+      "idea_key": "2d1cf7a0501a265f0dff3b8c9ec777979a968eb0",
+      "title": "IDEA-DISPATCH-20260226-0022",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-apps-ci-staging",
+      "completed_at": "2026-02-26",
+      "output_link": "docs/plans/_archive/xa-apps-ci-staging/plan.md"
+    },
+    {
+      "idea_key": "5baba884c6d0d30ac0f91b0d246b2ac250e11e08",
+      "title": "IDEA-DISPATCH-20260227-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "caryina-axerve-payment-gateway",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/caryina-axerve-payment-gateway/plan.md"
+    },
+    {
+      "idea_key": "566a44d7f63135a2aeaac92ede79a8562dbc5045",
+      "title": "IDEA-DISPATCH-20260227-0033",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-meal-order-menu-wizard",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/prime-meal-order-menu-wizard/plan.md"
+    },
+    {
+      "idea_key": "5f215ee09817bcf7962d4dbc1f9d842ae4a4df42",
+      "title": "IDEA-DISPATCH-20260227-0035",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "workflow-skills-simulation-tdd",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/workflow-skills-simulation-tdd/plan.md"
+    },
+    {
+      "idea_key": "bd892f2a04bcc3757a498a8a28d4d2eaac8b2a56",
+      "title": "IDEA-DISPATCH-20260227-0037",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-b-static-export",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/xa-b-static-export/plan.md"
+    },
+    {
+      "idea_key": "6d66f74518c61a2535eb9924a113d63903198ca5",
+      "title": "IDEA-DISPATCH-20260227-0038",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-digital-assistant-llm-upgrade",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/prime-digital-assistant-llm-upgrade/plan.md"
+    },
+    {
+      "idea_key": "fb6f69634e48f07364d19a0da5b7a8ead5e38059",
+      "title": "IDEA-DISPATCH-20260227-0039",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "caryina-merchant-order-notification",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/caryina-merchant-order-notification/plan.md"
+    },
+    {
+      "idea_key": "54b2f8071a5a17d7b32d5e776a2ced78db0234d8",
+      "title": "IDEA-DISPATCH-20260227-0044",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-rbac-migration-code",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/reception-rbac-migration-code/plan.md"
+    },
+    {
+      "idea_key": "816c3a6c42d7b162c135f5a7f221d98baa2fb68e",
+      "title": "IDEA-DISPATCH-20260227-0045",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-rbac-pin-user-roles",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/reception-rbac-pin-user-roles/plan.md"
+    },
+    {
+      "idea_key": "6e998d6593fad2941ccca263bf20b3ef84b9fa7e",
+      "title": "IDEA-DISPATCH-20260227-0048",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-reception-user-provisioning",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/brik-reception-user-provisioning/plan.md"
+    },
+    {
+      "idea_key": "f3e179ac281f04daa2f2d8077acd6bb3b8efcda6",
+      "title": "IDEA-DISPATCH-20260227-0049",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "process-improvements-transitions",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/process-improvements-transitions/plan.md"
+    },
+    {
+      "idea_key": "05a5027b72ad802c53ac13450e4e70d935b78469",
+      "title": "IDEA-DISPATCH-20260227-0055",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "tool-skill-discovery-protocol",
+      "completed_at": "2026-03-02",
+      "output_link": "docs/plans/tool-skill-discovery-protocol/plan.md"
+    },
+    {
+      "idea_key": "bc00edea69d2e74dadcc74d80971b1d74b8b014a",
+      "title": "IDEA-DISPATCH-20260227-0057",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-alloggiati-jsonp-timeout",
+      "completed_at": "2026-02-27",
+      "output_link": "docs/plans/_archive/reception-alloggiati-jsonp-timeout/plan.md"
+    },
+    {
+      "idea_key": "28f80f67aa32c50050db97f4081c979ec7220258",
+      "title": "IDEA-DISPATCH-20260228-0063",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "prime-staging-deploy-unblock",
+      "completed_at": "2026-02-28",
+      "output_link": "docs/plans/_archive/prime-staging-deploy-unblock/plan.md"
+    },
+    {
+      "idea_key": "3822abc960eb9187ca55ff631bb6cf4fda3bcecf",
+      "title": "IDEA-DISPATCH-20260228-0066",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-eod-closeout",
+      "completed_at": "2026-02-28",
+      "output_link": "docs/plans/_archive/reception-eod-closeout/plan.md"
+    },
+    {
+      "idea_key": "e331d4778f9173920f7fafd8e6a02f1b32f10b84",
+      "title": "IDEA-DISPATCH-20260228-0068",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "brik-date-range-picker",
+      "completed_at": "2026-02-28",
+      "output_link": "docs/plans/_archive/brik-date-range-picker/plan.md"
+    },
+    {
+      "idea_key": "b95f5894287d2a3123d1cde7d140dc8521d06b49",
+      "title": "IDEA-DISPATCH-20260301-0085",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-two-lane-free-tier-hardening",
+      "completed_at": "2026-03-01",
+      "output_link": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
+    },
+    {
+      "idea_key": "f9bf8fd208c88dbd0fc709823d9e79ad33c09e00",
+      "title": "IDEA-DISPATCH-20260301-0086",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-two-lane-free-tier-hardening",
+      "completed_at": "2026-03-01",
+      "output_link": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
+    },
+    {
+      "idea_key": "5e4eafb7fe31789cdf4f3f672dd2b4b422edf955",
+      "title": "IDEA-DISPATCH-20260301-0087",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-two-lane-free-tier-hardening",
+      "completed_at": "2026-03-01",
+      "output_link": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
+    },
+    {
+      "idea_key": "c4a7d3433e4d82169fb08db24c3cdf7475afb80a",
+      "title": "IDEA-DISPATCH-20260301-0088",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-two-lane-free-tier-hardening",
+      "completed_at": "2026-03-01",
+      "output_link": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
+    },
+    {
+      "idea_key": "fbd853d065e1333142f0bab7c66f47cf961905da",
+      "title": "IDEA-DISPATCH-20260301-0089",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-two-lane-free-tier-hardening",
+      "completed_at": "2026-03-01",
+      "output_link": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
+    },
+    {
+      "idea_key": "7eda35fb2643e429ac94adbf4f40370284825cb5",
+      "title": "IDEA-DISPATCH-20260301-0090",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-two-lane-free-tier-hardening",
+      "completed_at": "2026-03-01",
+      "output_link": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
+    },
+    {
+      "idea_key": "7b49696d64b1954be371a8248fc8804f566ea401",
+      "title": "IDEA-DISPATCH-20260301-0091",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-two-lane-free-tier-hardening",
+      "completed_at": "2026-03-01",
+      "output_link": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
+    },
+    {
+      "idea_key": "e5a75a22f8a2dbd21fa76e4cbae1a5b2624e4c07",
+      "title": "IDEA-DISPATCH-20260301-0092",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-two-lane-free-tier-hardening",
+      "completed_at": "2026-03-01",
+      "output_link": "docs/plans/xa-two-lane-free-tier-hardening/plan.md"
+    },
+    {
+      "idea_key": "5e4d72334ea3995098d55d103e7ce58bbfa7097a",
+      "title": "IDEA-DISPATCH-20260302-0094",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-uploader-submission-ux",
+      "completed_at": "2026-03-02",
+      "output_link": "docs/plans/_archive/xa-uploader-submission-ux/plan.md"
+    },
+    {
+      "idea_key": "9b43a7b4e7a64a516b6ad3cb93bcd6acb4cf77c3",
+      "title": "IDEA-DISPATCH-20260303120000-0131",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "assessment-naming-workbench",
+      "completed_at": "2026-03-03",
+      "output_link": "docs/plans/_archive/assessment-naming-workbench/plan.md"
+    },
+    {
+      "idea_key": "4bb92c2cd6920b3f72de9f5c4351c639a40dfd92",
+      "title": "IDEA-DISPATCH-20260303120000-0135",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "startup-loop-deprecation-sweep",
+      "completed_at": "2026-03-03",
+      "output_link": "docs/plans/startup-loop-deprecation-sweep/fact-find.md"
+    },
+    {
+      "idea_key": "477e8f0f53f18e92ddc7a04a16e3956115392aac",
+      "title": "IDEA-DISPATCH-20260305181029-2308",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-silent-failure-hardening",
+      "completed_at": "2026-03-05",
+      "output_link": "docs/plans/reception-process-integrity-silent-failure-hardening/plan.md"
+    },
+    {
+      "idea_key": "09f81c661f342756a71b2a4cf25b729e5933328d",
+      "title": "IDEA-DISPATCH-20260305184751-2401",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-process-integrity-reaudit-opportunities",
+      "completed_at": "2026-03-05",
+      "output_link": "docs/plans/reception-process-integrity-reaudit-opportunities/plan.md"
+    },
+    {
+      "idea_key": "30b7684c584690dd470b29c2f85505fcbebdf411",
+      "title": "IDEA-DISPATCH-20260308214000-0004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-mutation-return-type-standardisation",
+      "completed_at": "2026-03-08",
+      "output_link": "docs/plans/_archive/reception-mutation-return-type-standardisation/plan.md"
+    },
+    {
+      "idea_key": "03008fd2731e7d4c859a465b3ac0824b9cf61d1c",
+      "title": "IDEA-DISPATCH-20260309114901-9305",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "startup-loop-cap02-message-variants",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/startup-loop-cap02-message-variants/micro-build.md"
+    },
+    {
+      "idea_key": "1e692b64c66f8ce2acb0f0ad1eabe30fac707690",
+      "title": "IDEA-DISPATCH-20260306150000-0002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "xa-uploader-nav-layer-fixes",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/xa-uploader-nav-layer-fixes/plan.md"
+    },
+    {
+      "idea_key": "8a95b9f33955f42db2e60585275319a1eb52e578",
+      "title": "IDEA-DISPATCH-20260307153740-9203",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-inbox-quality-check-debug",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-inbox-quality-check-debug/plan.md"
+    },
+    {
+      "idea_key": "6cb0d28da31df82aea5ba850726c8f94b4c92009",
+      "title": "IDEA-DISPATCH-20260307170050-8071",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "writer-lock-scope-reduction",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/writer-lock-scope-reduction/plan.md"
+    },
+    {
+      "idea_key": "7ce29070bfc13ae64cca610eb272ba4cbd50f2a9",
+      "title": "IDEA-DISPATCH-20260309113000-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-date-selector-unification",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-date-selector-unification/plan.md"
+    },
+    {
+      "idea_key": "3a35df776326b158e5a9ca42c7ed78bf3e7ca42e",
+      "title": "IDEA-DISPATCH-20260309143500-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-count-input-modal",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-count-input-modal/micro-build.md"
+    },
+    {
+      "idea_key": "766068179b365911da3187a38aa4fad817f59051",
+      "title": "IDEA-DISPATCH-20260309143500-0002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-manager-auth-modal",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-manager-auth-modal/micro-build.md"
+    },
+    {
+      "idea_key": "750eecf2ad9c5cba510ce6d7b3c7a4167cfdd3a5",
+      "title": "IDEA-DISPATCH-20260309100000-0003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-format-euro-consolidation",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-format-euro-consolidation/micro-build.md"
+    },
+    {
+      "idea_key": "cc0b7b77b6e18df1af5bdb8356592c0cc38f71a4",
+      "title": "IDEA-DISPATCH-20260309100000-0004",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-bar-menutype-dedup",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-bar-menutype-dedup/micro-build.md"
+    },
+    {
+      "idea_key": "1a380c7ee088c84d7b0676c42a853e9775209d92",
+      "title": "IDEA-DISPATCH-20260309100000-0005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-sort-utils-dedup",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-sort-utils-dedup/micro-build.md"
+    },
+    {
+      "idea_key": "d0d4c3629ab5cebccebd4e950d26c2c176dd49ef",
+      "title": "IDEA-DISPATCH-20260309100000-0006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-keycard-icon-dedup",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-keycard-icon-dedup/micro-build.md"
+    },
+    {
+      "idea_key": "574009e5bef468a805818a14ab8e2bf552406c35",
+      "title": "IDEA-DISPATCH-20260303221001-0146",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-staff-accounts-pete-only-access",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-staff-accounts-pete-only-access/fact-find.md"
+    },
+    {
+      "idea_key": "64f7baaa3838cca62d0e2c7a1425ae247d85e22a",
+      "title": "IDEA-DISPATCH-20260303221000-0145",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-staff-accounts-modal-entry",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-staff-accounts-modal-entry/plan.md"
+    },
+    {
+      "idea_key": "e6db7ae866698770516f26d4556ce83e4ad44702",
+      "title": "IDEA-DISPATCH-20260303221002-0147",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-staff-accounts-lifecycle-permissions",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-staff-accounts-lifecycle-permissions/plan.md"
+    },
+    {
+      "idea_key": "5b6f2bef63e0f3d9bca405ebf7b459e60521d558",
+      "title": "IDEA-DISPATCH-20260303233001-0149",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-statistics-yoy-aggregation-api",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-statistics-yoy-aggregation-api/plan.md"
+    },
+    {
+      "idea_key": "ef3642e72970f858652e860afbf55cc17da778f4",
+      "title": "IDEA-DISPATCH-20260303233002-0150",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-statistics-yoy-switchable-ui",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-statistics-yoy-switchable-ui/plan.md"
+    },
+    {
+      "idea_key": "b929dc4fed57add6b5644feea8442801831c83a2",
+      "title": "IDEA-DISPATCH-20260303233000-0148",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-statistics-yoy-data-contract",
+      "completed_at": "2026-03-09",
+      "output_link": "docs/plans/_archive/reception-statistics-yoy-data-contract/plan.md"
+    },
+    {
+      "idea_key": "8421acd4938bfdb0008b3d7ac7d8818f8e2315a5",
+      "title": "IDEA-DISPATCH-20260304103029-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "ideas-keyword-calibration-feedback-loop",
+      "completed_at": "2026-03-04",
+      "output_link": "docs/plans/_archive/ideas-keyword-calibration-feedback-loop/plan.md"
     }
   ]
 }

@@ -1,6 +1,7 @@
 // src/components/guides/ProsConsTable.tsx
 import { memo } from "react";
 import Link from "next/link";
+import clsx from "clsx";
 
 type Row = { title: string; pros: string[]; cons: string[]; href?: string };
 type Props = { rows: Row[]; className?: string };
@@ -8,7 +9,7 @@ type Props = { rows: Row[]; className?: string };
 function ProsConsTable({ rows, className = "" }: Props): JSX.Element | null {
   if (!rows?.length) return null;
   return (
-    <div className={`not-prose my-6 overflow-x-auto ${className}`}>
+    <div className={clsx("not-prose my-6 overflow-x-auto", className)}>
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr>

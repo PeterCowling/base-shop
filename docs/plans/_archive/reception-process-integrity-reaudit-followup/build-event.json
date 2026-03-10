@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-process-integrity-reaudit-followup-2026-03-05",
+  "feature_slug": "reception-process-integrity-reaudit-followup",
+  "emitted_at": "2026-03-05T12:00:00.000Z",
+  "why": "Close the follow-up reception mutation-integrity risks left after the first hardening pass, especially around fail-closed UI behavior, extension compensation, authoritative activity logging, and failure-path verification.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Reception follow-up mutation paths become fail-closed on save and extension partial failures, booking-email activity logging uses authoritative hook results, and final failure-path tests close the re-audit verification gap.",
+    "source": "operator"
+  }
+}

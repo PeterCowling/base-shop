@@ -203,6 +203,12 @@ function queueNotes(item) {
   if (item.signal === "H3") {
     return "Wave-dispatch advisory; add protocol reference only if execution actually runs in waves.";
   }
+  if (item.signal === "H4") {
+    return "Deterministic-extraction candidate; move rule-like logic into typed TS/JSON/YAML artifacts with validation coverage.";
+  }
+  if (item.signal === "H5") {
+    return "Anti-gaming regression; reduce markdown complexity via real simplification or typed artifact extraction rather than prose reshuffling.";
+  }
   return item.notes || "";
 }
 

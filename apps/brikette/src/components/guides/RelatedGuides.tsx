@@ -19,14 +19,15 @@ const BASE_SECTION_CLASS = [
   "sm:px-6",
   "lg:px-8",
 ] as const;
+const BASE_SECTION_CLASS_STR = BASE_SECTION_CLASS.join(" ");
 
 const BASE_LIST_CLASS = ["grid", "gap-3", "sm:grid-cols-2", "lg:grid-cols-3"] as const;
-const LIST_LAYOUT_CLASS_TOKENS = {
-  default: BASE_LIST_CLASS,
-  twoColumn: ["grid", "gap-3", "sm:grid-cols-2"] as const,
+const LIST_LAYOUT_CLASSES = {
+  default: BASE_LIST_CLASS.join(" "),
+  twoColumn: "grid gap-3 sm:grid-cols-2",
 } as const;
 
-type RelatedGuidesLayout = keyof typeof LIST_LAYOUT_CLASS_TOKENS;
+type RelatedGuidesLayout = keyof typeof LIST_LAYOUT_CLASSES;
 
 export interface RelatedItem {
   readonly key: GuideKey; // key under guides.links and route mapping
@@ -58,9 +59,8 @@ function RelatedGuides({
   const fallbackGuides = (translation?.i18n?.getFixedT?.("en", "guides") ?? ((key: string) => key)) as TFunction;
 
   const resolvedSectionClass = className ?? "mt-10";
-  const sectionClassName = [...BASE_SECTION_CLASS, resolvedSectionClass].filter(Boolean).join(" ");
-  const layoutTokens = LIST_LAYOUT_CLASS_TOKENS[listLayout] ?? LIST_LAYOUT_CLASS_TOKENS.default;
-  const listClassNameValue = listClassName ?? layoutTokens.join(" ");
+  const sectionClassName = `${BASE_SECTION_CLASS_STR} ${resolvedSectionClass}`;
+  const listClassNameValue = listClassName ?? (LIST_LAYOUT_CLASSES[listLayout] ?? LIST_LAYOUT_CLASSES.default);
   const publishedItems = items.filter(({ key }) => isGuideLive(key));
 
   if (publishedItems.length === 0) {

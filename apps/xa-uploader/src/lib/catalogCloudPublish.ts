@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { toPositiveInt } from "@acme/lib";
 
 import type { buildCatalogArtifactsFromDrafts } from "./catalogDraftToContract";
+import { ABSOLUTE_HTTP_URL_RE } from "./catalogPath";
 import { getMediaBucket } from "./r2Media";
 
 export type MediaValidationPolicy = "warn" | "strict";
@@ -10,13 +11,14 @@ export type MediaValidationPolicy = "warn" | "strict";
 export type CloudBuiltArtifacts = Awaited<ReturnType<typeof buildCatalogArtifactsFromDrafts>>;
 
 const CLOUD_MEDIA_HEAD_MAX_KEYS_DEFAULT = 300;
-const ABSOLUTE_HTTP_URL_RE = /^https?:\/\//i;
 
-export function getCloudMediaHeadMaxKeys(): number {
-  return toPositiveInt(process.env.XA_UPLOADER_CLOUD_MEDIA_HEAD_MAX_KEYS, CLOUD_MEDIA_HEAD_MAX_KEYS_DEFAULT, 1);
-}
+const CLOUD_MEDIA_HEAD_MAX_KEYS = toPositiveInt(
+  process.env.XA_UPLOADER_CLOUD_MEDIA_HEAD_MAX_KEYS,
+  CLOUD_MEDIA_HEAD_MAX_KEYS_DEFAULT,
+  1,
+);
 
-export function isAbsoluteHttpUrl(pathValue: string): boolean {
+function isAbsoluteHttpUrl(pathValue: string): boolean {
   return ABSOLUTE_HTTP_URL_RE.test(pathValue);
 }
 
@@ -81,7 +83,7 @@ export async function applyCloudMediaExistenceValidation(params: {
     return { ok: true, artifacts: params.artifacts, warnings: [] };
   }
 
-  const maxKeys = getCloudMediaHeadMaxKeys();
+  const maxKeys = CLOUD_MEDIA_HEAD_MAX_KEYS;
   const keysToCheck = mediaKeys.slice(0, maxKeys);
   const skippedCount = mediaKeys.length - keysToCheck.length;
   if (params.policy === "strict" && skippedCount > 0) {

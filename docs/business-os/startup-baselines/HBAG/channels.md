@@ -4,14 +4,14 @@ Status: Active
 business: HBAG
 artifact: channel-strategy
 created: 2026-02-20
-status: ready-to-execute
+status: active-pilot
 selected-channels:
   - Etsy marketplace (primary DTC)
   - Instagram and TikTok organic (demand probe and discovery)
   - In-destination Positano (Brikette hostel + boutique consignment, seasonal H3)
 budget-month-1: EUR 0
 owner: Pete
-last_updated: 2026-02-20
+last_updated: 2026-03-09
 source_of_truth: true
 depends_on:
   - docs/business-os/startup-baselines/HBAG/offer.md
@@ -26,11 +26,12 @@ decisions:
 ## Executive Summary
 
 HBAG will run Etsy as the primary DTC conversion surface, supported by Instagram/TikTok organic
-demand probes and a seasonal in-destination trial at Brikette hostel + Positano boutique (H3
-Amalfi location variant only). This is a zero-paid-ads launch: organic Etsy search, social
-"DM to buy", and in-destination physical placement are the three channels. No own-site, no app,
-no paid acquisition until at least 10 Etsy/social sales confirm demand at premium pricing.
-GATE-S6B-ACT-01 is explicitly HOLD until first-party demand data arrives from TASK-09 checkpoint.
+demand probes and an in-destination Positano lane. An off-season pilot placement at Luisa
+Positano started approximately 2026-03-02 and produced its first recorded sale on 2026-03-08.
+This is a zero-paid-ads launch: organic Etsy search, social "DM to buy", and in-destination
+physical placement are the three channels. No own-site, no app, no paid acquisition until at
+least 10 Etsy/social sales confirm demand at premium pricing. GATE-S6B-ACT-01 remains HOLD:
+the pilot signal is encouraging, but still only first-party `n=1`.
 
 ---
 
@@ -43,7 +44,7 @@ Scale: 1–5 per dimension. Total = sum (max 15).
 | Etsy marketplace | 5 | 5 | 4 | 14 | Best fit: artisan fashion accessories category; no infrastructure needed; trusted platform |
 | Instagram organic | 5 | 5 | 4 | 14 | Bag charm trend is Instagram-native; "DM to buy" model established in artisan category |
 | TikTok organic | 4 | 5 | 5 | 14 | High organic reach potential for trend content; shorter shelf life per video |
-| In-destination Positano | 5 | 4 | 3 | 12 | Operator advantage is unique; low cost (no platform fees); seasonal constraint June–Sept |
+| In-destination Positano | 5 | 4 | 4 | 13 | Operator advantage is unique; Luisa Positano pilot produced 1 off-season sale on 2026-03-08; still seasonal at scale |
 | Pinterest | 3 | 4 | 2 | 9 | +700% bag charm growth on Pinterest; discovery not direct sales; slower signal |
 | Own-site DTC | 3 | 2 | 2 | 7 | No site exists; build cost and time prohibitive for demand probe phase |
 | Wholesale B2B | 3 | 3 | 1 | 7 | JOOR data shows wholesale buyers looking; deferred to post-50 DTC sales |
@@ -106,7 +107,7 @@ Scale: 1–5 per dimension. Total = sum (max 15).
 
 ---
 
-### Channel C: In-Destination Positano (H3 Amalfi Location — Seasonal)
+### Channel C: In-Destination Positano (H3 Amalfi Location — Pilot Live)
 
 **Why selected:**
 1. Operator (Pete) is physically based in Positano — the only HBAG-specific competitive advantage that cannot be replicated by any other brand online.
@@ -114,13 +115,19 @@ Scale: 1–5 per dimension. Total = sum (max 15).
 3. 2.3M annual Amalfi Coast visitors; fashion/accessories = 12.2% of Italy tourist spend — destination-level demand is confirmed.
 4. Low cost: product placed at Brikette reception requires no platform fee; consignment to 1 boutique requires no upfront spend.
 5. Differentiates H3 (location variant) from H1/H2 — in-destination-only availability creates scarcity and location story.
+6. Door coverage, named targets, and town expansion slots should be maintained in `docs/business-os/strategy/HBAG/stockist-target-list.user.md` before any new placement goes live.
 
-**30-day success metrics (TASK-10 VC-01, June–Sept only):**
-- ≥5 in-destination sales (hostel + boutique combined) within 4 weeks of trial start
+**Current pilot status (as of 2026-03-09):**
+- Luisa Positano placement started approximately 2026-03-02
+- 1 recorded sale on 2026-03-08 at `EUR 29.00` retail
+- Economics on first sale: `50%` commission, `EUR 14.50` net revenue to Caryina, `EUR 3.00` landed cost, `EUR 11.50` contribution
+
+**30-day success metrics (TASK-10 VC-01, tourist-season scale test):**
+- ≥5 in-destination sales (hostel + boutique combined) within 4 weeks of trial start once tourist-season inventory is live
 - ≥1 consignment agreement with a Positano boutique
 
 **Channel constraints:**
-- Seasonal window: June–September only — requires TASK-09 checkpoint clearance by end of April to enable May boutique outreach
+- Seasonal window: June–September only — the current Luisa Positano result is off-season and should be treated as an early signal, not full tourist-season validation
 - Boutique consignment terms to negotiate: typically 30–50% split; minimum stock placed; review period
 - H3 product requires Amalfi location imagery on bag body — depends on whether supplier can apply custom graphics (Q4 from Pete, currently unverified)
 - If supplier cannot apply Amalfi imagery, H3 in-destination trial uses H1 bag charm variant with location story in verbal pitch
@@ -176,6 +183,7 @@ Scale: 1–5 per dimension. Total = sum (max 15).
 | Week 2 | Check DM inquiries: ≥5 genuine purchase inquiries? | Pete | Social | 14 days of posts | TASK-07 VC-01 gate |
 | Week 2 | If Etsy views <20: activate €15–30 Etsy Ads experiment | Pete | Etsy | Gate fails | Views supplemented |
 | Week 3 | Post #4: H3 Amalfi teaser (location imagery / Positano backdrop) | Pete | Instagram + TikTok | — | H3 variant introduced |
+| Week 0 | Log Luisa Positano pilot placement and first sale in `channel-health-log.user.md` and `demand-log.md` | Pete | In-destination | Pilot live | First-party offline signal captured |
 | Week 3 | Start boutique outreach prep for H3 in-destination (TASK-10 pre-work) | Pete | In-destination | — | Outreach list prepared for May |
 | Week 4 | Check ≥3 Etsy sales in 28 days (TASK-08 VC-01) and ≥2 DM intent confirms (TASK-07 VC-02) | Pete | All | 28 days live | TASK-09 CHECKPOINT data collected |
 | Week 4 | Run `/lp-do-replan` on TASK-10/11 with observed demand data | Pete | — | 28-day data | Downstream tasks re-scored |
@@ -194,6 +202,7 @@ Scale: 1–5 per dimension. Total = sum (max 15).
 
 - If Etsy + social signal is strong (≥3 sales in 28 days): expand to more product photos, a second Etsy listing variant (H3 online), and continue social with higher frequency
 - If in-destination trial (June+) produces ≥5 sales in 4 weeks: maintain and expand to 2 boutiques; consider "Positano exclusive" positioning for H3
+- Use `docs/business-os/strategy/HBAG/stockist-target-list.user.md` as the source of truth for which boutiques and towns are in scope before expanding beyond the current live account
 - Wholesale/B2B: open only when ≥50 DTC sales confirmed; approach JOOR-registered buyers with H1 (bag charm) — JOOR shows wholesale buyers actively seeking this category
 - Own-site / app (cover-me-pretty): build only after ≥50 DTC sales confirm demand; design via `/lp-design-spec`; advance brand dossier to Active first
 
@@ -217,6 +226,8 @@ Scale: 1–5 per dimension. Total = sum (max 15).
 - Mini-handbag PMF fact-find: `docs/plans/mini-handbag-pmf/fact-find.md` (2026-02-17)
 - HBAG offer design: `docs/business-os/startup-baselines/HBAG/offer.md`
 - HBAG demand evidence pack: `docs/business-os/startup-baselines/HBAG/demand-evidence-pack.md`
+- HBAG stockist target list: `docs/business-os/strategy/HBAG/stockist-target-list.user.md`
+- HBAG channel health log: `docs/business-os/strategy/HBAG/channel-health-log.user.md`
 - Market intelligence backfill: `docs/business-os/market-research/HBAG/2026-02-20-market-intelligence.user.md`
 - Outcome contract: `docs/business-os/strategy/HBAG/plan.user.md` §HBAG-OUT-2026Q1-01
 - JOOR wholesale data: cited in fact-find §Existing Signal Coverage H1

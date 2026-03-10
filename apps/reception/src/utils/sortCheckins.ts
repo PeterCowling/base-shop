@@ -1,4 +1,5 @@
 // File: src/utils/sortCheckins.ts
+import { ActivityCode } from "../constants/activities";
 import { type CheckInRow } from "../types/component/CheckinRow";
 
 import { getBookingMinAllocatedRoom, parseAllocatedRoomNumber } from "./sortHelpers";
@@ -40,15 +41,15 @@ export function sortCheckinsData(checkins: CheckInRow[]): CheckInRow[] {
   ): number => {
     if (!activities || activities.length === 0) return 0;
     return activities.reduce(
-      (acc, act) => (act.code === 12 || act.code === 23 ? acc + 1 : acc),
+      (acc, act) => (act.code === ActivityCode.CHECKIN_COMPLETE || act.code === ActivityCode.BAGS_DROPPED ? acc + 1 : acc),
       0
     );
   };
 
-  const statusFromToggles = (toggles: number): 0 | 23 | 12 => {
+  const statusFromToggles = (toggles: number): 0 | ActivityCode.BAGS_DROPPED | ActivityCode.CHECKIN_COMPLETE => {
     const remainder = toggles % 4;
-    if (remainder === 2) return 12;
-    if (remainder === 1 || remainder === 3) return 23;
+    if (remainder === 2) return ActivityCode.CHECKIN_COMPLETE;
+    if (remainder === 1 || remainder === 3) return ActivityCode.BAGS_DROPPED;
     return 0;
   };
 
@@ -58,8 +59,8 @@ export function sortCheckinsData(checkins: CheckInRow[]): CheckInRow[] {
     let hasBagsDropped = false;
     for (const r of rows) {
       const occupantStatus = statusFromToggles(countToggles(r.activities));
-      if (occupantStatus === 12) return 2;
-      if (occupantStatus === 23) hasBagsDropped = true;
+      if (occupantStatus === ActivityCode.CHECKIN_COMPLETE) return 2;
+      if (occupantStatus === ActivityCode.BAGS_DROPPED) hasBagsDropped = true;
     }
     return hasBagsDropped ? 1 : 0;
   };

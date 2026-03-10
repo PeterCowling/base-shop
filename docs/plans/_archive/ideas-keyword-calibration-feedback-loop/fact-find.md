@@ -16,6 +16,7 @@ Startup-Deliverable-Alias: none
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Plan: docs/plans/ideas-keyword-calibration-feedback-loop/plan.md
+Dispatch-ID: IDEA-DISPATCH-20260304103029-0001
 Trigger-Why:
 Trigger-Intended-Outcome:
 ---

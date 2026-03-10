@@ -13,6 +13,7 @@ usage() {
   echo "  - Read-only mode: enables command guards without taking writer lock"
   echo "  - Agent write session mode: explicit opt-in for long-lived agent CLIs that edit the shared checkout"
   echo "  - Enables command guards (git safety + broad-test safety)"
+  echo "  - Command-mode interactive shells such as '-- bash' are forbidden; use --interactive-write-shell instead"
   echo ""
   echo "Options:"
   echo "  --read-only       Guard-only mode (no writer lock; use for long audits/dry-runs)"
@@ -59,6 +60,22 @@ Anti-retry list:
 - scripts/agents/integrator-shell.sh
 - scripts/agents/integrator-shell.sh --write
 - scripts/agents/integrator-shell.sh --wait-forever
+Escalation/stop condition: if you genuinely need a rare interactive write shell for a bounded repair, rerun with scripts/agents/integrator-shell.sh --interactive-write-shell and exit as soon as the serialized write window closes.
+EOF
+  exit 1
+}
+
+block_command_mode_interactive_write_shell() {
+  cat >&2 <<'EOF'
+ERROR: command-mode interactive writer shells are forbidden.
+Failure reason: invocations such as scripts/agents/integrator-shell.sh -- bash still open a locked interactive shell and can hold the Base-Shop writer lock indefinitely.
+Retry posture: retry-forbidden
+Exact next step: scripts/agents/integrator-shell.sh -- <write-command> [args...]
+Anti-retry list:
+- scripts/agents/integrator-shell.sh -- bash
+- scripts/agents/integrator-shell.sh -- sh
+- scripts/agents/integrator-shell.sh -- zsh
+- scripts/agents/integrator-shell.sh -- scripts/agents/with-git-guard.sh -- bash
 Escalation/stop condition: if you genuinely need a rare interactive write shell for a bounded repair, rerun with scripts/agents/integrator-shell.sh --interactive-write-shell and exit as soon as the serialized write window closes.
 EOF
   exit 1
@@ -211,6 +228,12 @@ fi
 if ! [[ "$lock_poll" =~ ^[0-9]+$ ]]; then
   echo "ERROR: --poll must be an integer number of seconds (0 or greater)." >&2
   exit 2
+fi
+
+if [[ "$command_mode" == "1" ]]; then
+  if detect_interactive_shell "$@" >/dev/null; then
+    block_command_mode_interactive_write_shell
+  fi
 fi
 
 # Non-interactive agents must not wait forever, and must poll (check) periodically.

@@ -20,6 +20,21 @@ function eurosToMinorUnits(euros: string): number {
   return Math.round(parseFloat(euros) * 100);
 }
 
+function mapProductError(error?: string): string {
+  switch (error) {
+    case "active_requires_stock":
+      return "Active products need stock greater than 0 before publish.";
+    case "inventory_bootstrap_failed":
+      return "Product was not saved because the initial stock record could not be created.";
+    case "validation_error":
+      return "Product details were invalid. Review the form and try again.";
+    case "invalid_body":
+      return "The product request could not be read. Please try again.";
+    default:
+      return error ?? "Something went wrong.";
+  }
+}
+
 // --------------- Sub-components ---------------
 
 interface MediaSectionProps {
@@ -131,6 +146,7 @@ export function ProductForm({ product }: ProductFormProps) {
   const [title, setTitle] = useState(product?.title.en ?? "");
   const [description, setDescription] = useState(product?.description.en ?? "");
   const [price, setPrice] = useState(product ? priceToEuros(product.price) : "");
+  const [initialStock, setInitialStock] = useState("0");
   const [status, setStatus] = useState<"draft" | "active">(
     product?.status === "active" ? "active" : "draft",
   );
@@ -155,9 +171,18 @@ export function ProductForm({ product }: ProductFormProps) {
     e.preventDefault();
     setError(null);
     const priceNum = parseFloat(price);
+    const initialStockNum = Number.parseInt(initialStock, 10);
     if (!isEdit && !sku.trim()) { setError("SKU is required."); return; }
     if (!title.trim()) { setError("Title is required."); return; }
     if (isNaN(priceNum) || priceNum <= 0) { setError("Price must be greater than 0."); return; }
+    if (!isEdit && (!Number.isFinite(initialStockNum) || initialStockNum < 0)) {
+      setError("Initial stock must be 0 or greater.");
+      return;
+    }
+    if (!isEdit && status === "active" && initialStockNum <= 0) {
+      setError("Active products need stock greater than 0 before publish.");
+      return;
+    }
 
     setPending(true);
     try {
@@ -166,12 +191,24 @@ export function ProductForm({ product }: ProductFormProps) {
         .map((r) => ({ url: r.url.trim(), type: r.type, ...(r.altText.trim() ? { altText: r.altText.trim() } : {}) }));
       const payload = isEdit
         ? { title: title.trim(), description: description.trim(), price: eurosToMinorUnits(price), status, forSale, media }
-        : { sku: sku.trim(), title: title.trim(), description: description.trim(), price: eurosToMinorUnits(price), status, forSale, media };
+        : {
+            sku: sku.trim(),
+            title: title.trim(),
+            description: description.trim(),
+            price: eurosToMinorUnits(price),
+            status,
+            forSale,
+            media,
+            initialStock: initialStockNum,
+          };
       const res = isEdit
         ? await fetch(`/admin/api/products/${product.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
         : await fetch("/admin/api/products", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
       if (res.ok) { router.push("/admin/products"); router.refresh(); }
-      else { const d = (await res.json()) as { error?: string }; setError(d.error ?? "Something went wrong."); }
+      else {
+        const d = (await res.json()) as { error?: string };
+        setError(mapProductError(d.error));
+      }
     } catch { setError("Network error. Please try again."); }
     finally { setPending(false); }
   }
@@ -228,6 +265,27 @@ export function ProductForm({ product }: ProductFormProps) {
           </select>
         </div>
       </div>
+      {!isEdit ? (
+        <div className="space-y-1.5">
+          <label htmlFor="pf-initial-stock" className="block text-sm font-medium">
+            Initial stock
+          </label>
+          <input
+            id="pf-initial-stock"
+            type="number"
+            min="0"
+            step="1"
+            value={initialStock}
+            onChange={(e) => setInitialStock(e.target.value)}
+            className="block w-full rounded-lg border border-border px-3 py-2 text-sm"
+          />
+          <p className="text-sm text-muted-foreground">
+            {status === "active"
+              ? "Active products require stock greater than 0 before publish."
+              : "Draft products can start with no stock and be activated later."}
+          </p>
+        </div>
+      ) : null}
       <div className="flex items-center gap-2">
         <input
           id="pf-for-sale"

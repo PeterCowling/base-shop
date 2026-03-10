@@ -11,7 +11,7 @@
  *     "^.+\\.(ts|tsx)$": ["<path>/jest-import-meta-transform.cjs", { tsconfig, ... }]
  *   }
  */
-/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable @typescript-eslint/no-require-imports -- TEST-000 [ttl=2026-12-31] CommonJS Jest transformer intentionally uses require. */
 
 const IMPORT_META_PATTERN = /\bimport\.meta\b/;
 

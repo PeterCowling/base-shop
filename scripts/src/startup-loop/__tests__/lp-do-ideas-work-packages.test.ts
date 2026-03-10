@@ -22,10 +22,15 @@ interface TestDispatch {
   area_anchor: string;
   location_anchors: string[];
   processed_by?: {
-    route: string;
-    processed_at: string;
-    fact_find_slug: string;
-    fact_find_path: string;
+    route?: string;
+    processed_at?: string;
+    target_route?: string;
+    target_kind?: string;
+    target_slug?: string;
+    target_path?: string;
+    fact_find_slug?: string;
+    fact_find_path?: string;
+    [key: string]: unknown;
   };
 }
 
@@ -195,6 +200,128 @@ describe("markDispatchesProcessed", () => {
     expect(result).toEqual({ ok: true, mutated: 0, skipped: 1 });
     const queue = readQueue(queueStatePath);
     expect(queue.dispatches[0].processed_by?.processed_at).toBe("2026-03-06T18:00:00.000Z");
+  });
+
+  it("normalizes legacy fact-find claimant metadata when the same target is re-applied", () => {
+    const dir = makeTmpDir();
+    const queueStatePath = join(dir, "queue-state.json");
+    writeFileSync(
+      queueStatePath,
+      queueFixture([
+        makeDispatch({
+          dispatch_id: "IDEA-DISPATCH-20260306-0003",
+          queue_state: "processed",
+          processed_by: {
+            route: "dispatch-routed",
+            processed_at: "2026-03-06T18:00:00.000Z",
+            fact_find_slug: "email-logging-observability",
+            fact_find_path: "docs/plans/email-logging-observability/fact-find.md",
+          },
+        }),
+      ]) + "\n",
+      "utf-8",
+    );
+
+    const result = markDispatchesProcessed({
+      queueStatePath,
+      dispatchIds: ["IDEA-DISPATCH-20260306-0003"],
+      featureSlug: "email-logging-observability",
+      factFindPath: "docs/plans/email-logging-observability/fact-find.md",
+      clock: () => new Date("2026-03-06T19:00:00.000Z"),
+    });
+
+    expect(result).toEqual({ ok: true, mutated: 1, skipped: 0 });
+    const queue = readQueue(queueStatePath);
+    expect(queue.dispatches[0].processed_by?.target_route).toBe("lp-do-fact-find");
+    expect(queue.dispatches[0].processed_by?.target_kind).toBe("fact-find");
+    expect(queue.dispatches[0].processed_by?.target_slug).toBe("email-logging-observability");
+    expect(queue.dispatches[0].processed_by?.target_path).toBe(
+      "docs/plans/email-logging-observability/fact-find.md",
+    );
+    expect(queue.dispatches[0].processed_by?.processed_at).toBe("2026-03-06T18:00:00.000Z");
+  });
+
+  it("normalizes legacy micro-build claimant metadata when only feature_slug was stamped", () => {
+    const dir = makeTmpDir();
+    const queueStatePath = join(dir, "queue-state.json");
+    writeFileSync(
+      queueStatePath,
+      queueFixture([
+        makeDispatch({
+          dispatch_id: "IDEA-DISPATCH-20260306-0004",
+          status: "micro_build_ready",
+          recommended_route: "lp-do-build",
+          queue_state: "processed",
+          processed_by: {
+            route: "dispatch-routed",
+            processed_at: "2026-03-06T18:00:00.000Z",
+            feature_slug: "shared-currency-formatting",
+          },
+        }),
+      ]) + "\n",
+      "utf-8",
+    );
+
+    const result = markDispatchesProcessed({
+      queueStatePath,
+      dispatchIds: ["IDEA-DISPATCH-20260306-0004"],
+      targetSlug: "shared-currency-formatting",
+      targetPath: "docs/plans/shared-currency-formatting/micro-build.md",
+      targetRoute: "lp-do-build",
+      clock: () => new Date("2026-03-06T19:00:00.000Z"),
+    });
+
+    expect(result).toEqual({ ok: true, mutated: 1, skipped: 0 });
+    const queue = readQueue(queueStatePath);
+    expect(queue.dispatches[0].processed_by?.target_route).toBe("lp-do-build");
+    expect(queue.dispatches[0].processed_by?.target_kind).toBe("build");
+    expect(queue.dispatches[0].processed_by?.target_slug).toBe("shared-currency-formatting");
+    expect(queue.dispatches[0].processed_by?.target_path).toBe(
+      "docs/plans/shared-currency-formatting/micro-build.md",
+    );
+    expect(queue.dispatches[0].processed_by?.micro_build_path).toBe(
+      "docs/plans/shared-currency-formatting/micro-build.md",
+    );
+    expect(queue.dispatches[0].processed_by?.processed_at).toBe("2026-03-06T18:00:00.000Z");
+  });
+
+  it("repairs processed micro-build dispatches that are missing claimant metadata entirely", () => {
+    const dir = makeTmpDir();
+    const queueStatePath = join(dir, "queue-state.json");
+    writeFileSync(
+      queueStatePath,
+      queueFixture([
+        makeDispatch({
+          dispatch_id: "IDEA-DISPATCH-20260306-0005",
+          status: "micro_build_ready",
+          recommended_route: "lp-do-build",
+          queue_state: "processed",
+          processed_by: undefined,
+        }),
+      ]) + "\n",
+      "utf-8",
+    );
+
+    const fixedClock = () => new Date("2026-03-06T19:30:00.000Z");
+    const result = markDispatchesProcessed({
+      queueStatePath,
+      dispatchIds: ["IDEA-DISPATCH-20260306-0005"],
+      targetSlug: "shared-room-sort-utils",
+      targetPath: "docs/plans/shared-room-sort-utils/micro-build.md",
+      targetRoute: "lp-do-build",
+      clock: fixedClock,
+    });
+
+    expect(result).toEqual({ ok: true, mutated: 1, skipped: 0 });
+    const queue = readQueue(queueStatePath);
+    expect(queue.dispatches[0].queue_state).toBe("processed");
+    expect(queue.dispatches[0].processed_by?.target_route).toBe("lp-do-build");
+    expect(queue.dispatches[0].processed_by?.target_kind).toBe("build");
+    expect(queue.dispatches[0].processed_by?.target_slug).toBe("shared-room-sort-utils");
+    expect(queue.dispatches[0].processed_by?.micro_build_path).toBe(
+      "docs/plans/shared-room-sort-utils/micro-build.md",
+    );
+    expect(queue.dispatches[0].processed_by?.processed_at).toBe(fixedClock().toISOString());
   });
 
   it("fails closed on a conflicting processed_by assignment", () => {

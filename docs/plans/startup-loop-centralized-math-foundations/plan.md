@@ -40,7 +40,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-13: Implement calibration, regret, override, and policy audit telemetry — Complete (2026-03-10)
 - [x] TASK-17: Enforce the policy authority ladder at queue and promotion seams — Complete (2026-03-10)
 - [x] TASK-18: Produce real shadow-run policy artifacts and checkpoint evidence — Complete (2026-03-10)
-- [ ] TASK-19: Persist shadow handoff replay state for non-actuating policy runs
+- [x] TASK-19: Persist shadow handoff replay state for non-actuating policy runs — Complete (2026-03-10)
 - [ ] TASK-20: Find or prove the absence of a real-data cohort that exercises selected and exploration policy paths
 - [ ] TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - [ ] TASK-15: Final checkpoint - authoritative mathematical policy readiness
@@ -131,7 +131,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
 | TASK-17 | IMPLEMENT | Enforce the authority ladder so shadow and advisory policy cannot silently actuate queue or promotion state | 85% | M | Complete (2026-03-10) | TASK-07, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-14, TASK-15 |
 | TASK-18 | IMPLEMENT | Produce real self-evolving shadow-run policy artifacts and checkpoint evidence from repo outputs | 80% | M | Complete (2026-03-10) | TASK-13, TASK-17 | TASK-14, TASK-15 |
-| TASK-19 | IMPLEMENT | Persist shadow handoff records so non-actuating runs enter replay and maturity accounting | 80% | M | Pending | TASK-18 | TASK-14, TASK-15 |
+| TASK-19 | IMPLEMENT | Persist shadow handoff records so non-actuating runs enter replay and maturity accounting | 80% | M | Complete (2026-03-10) | TASK-18 | TASK-14, TASK-15 |
 | TASK-20 | INVESTIGATE | Find or prove the absence of a real-data cohort that exercises portfolio selection and exploration | 70% | M | Pending | TASK-18 | TASK-14, TASK-15 |
 | TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18, TASK-19, TASK-20 | TASK-15 |
 | TASK-15 | CHECKPOINT | Final checkpoint - authoritative mathematical policy readiness | 95% | S | Pending | TASK-14 | - |
@@ -1019,7 +1019,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Affects:** `docs/business-os/startup-loop/self-evolving/<business>/shadow-handoffs.jsonl`, `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`
 - **Depends on:** TASK-18
 - **Blocks:** TASK-14, TASK-15
@@ -1035,6 +1035,14 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-01: rerunning the same bounded shadow input set dedupes `shadow-handoffs.jsonl`.
   - TC-02: `self-evolving-report.ts` shows non-null queue or handoff state for shadow decisions when the ledger exists.
   - TC-03: canonical queue state remains byte-for-byte unchanged in shadow mode.
+- **Build Evidence (2026-03-10):**
+  - Green: added `self-evolving-shadow-handoffs.ts` and wired `self-evolving-from-ideas.ts` to persist a deduped `docs/business-os/startup-loop/self-evolving/BRIK/shadow-handoffs.jsonl` ledger during `followupConsumeMode: "skip"` runs, keyed by `decision_id` + `candidate_id`.
+  - Green: `self-evolving-evaluation.ts`, `self-evolving-report.ts`, and `self-evolving-dashboard.ts` now treat those records as explicit `handoff_state: "shadow_handoff"` inputs, so real shadow decisions move into `pending` or `missing` maturity accounting instead of staying permanently censored.
+  - Green: reran the bounded `BRIK` shadow pack and regenerated the report. `BRIK-shadow-run-result.json` now shows `shadow_handoffs_written: 4`, `followup_dispatches_emitted: 0`, and `warnings: []`. `BRIK-shadow-run-report.json` now shows `shadow_handoff_count: 4`, `pending_decisions: 4`, `shadow_handoff_decisions: 4`, `pending_shadow_handoffs: 4`, `matured_shadow_handoffs: 0`, and sample evaluation records with `queue_state: "shadow_handoff"`.
+  - TC-01: pass. The skip-mode integration test now proves first-run write plus second-run dedupe for `shadow-handoffs.jsonl`, and the ledger writer now dedupes on the `decision_id` + `candidate_id` handoff key rather than `decision_id` alone.
+  - TC-02: pass. The report path now accepts `--shadow-handoffs`, loads the persisted ledger, and the evaluation/report tests cover both pending and matured shadow-handoff states.
+  - TC-03: pass. Shadow-mode evidence generation preserved the canonical queue untouched: `git diff --quiet -- docs/business-os/startup-loop/ideas/trial/queue-state.json` returned success after the bounded `BRIK` rerun.
+  - Residual blocker handed to TASK-20/TASK-14: replay state now exists, but the real-data cohort still exercises no selected or exploration branch. The refreshed evidence pack still shows `replay_ready_decisions: 0`, `portfolio_selected: false` on all current candidates, and `policy_decisions.exploration.total = 0`.
 
 ### TASK-20: Find or prove the absence of a real-data cohort that exercises selected and exploration policy paths
 - **Type:** INVESTIGATE

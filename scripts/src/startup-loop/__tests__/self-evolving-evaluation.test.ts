@@ -7,6 +7,7 @@ import type {
 } from "../self-evolving/self-evolving-contracts.js";
 import { buildPolicyEvaluationDataset } from "../self-evolving/self-evolving-evaluation.js";
 import type { SelfEvolvingEvent } from "../self-evolving/self-evolving-events.js";
+import type { ShadowHandoffRecord } from "../self-evolving/self-evolving-shadow-handoffs.js";
 
 function buildDecision(overrides: Partial<PolicyDecisionRecord> = {}): PolicyDecisionRecord {
   return {
@@ -151,6 +152,32 @@ function buildOutcomeEvent(input: {
             }
           : null,
     },
+  };
+}
+
+function buildShadowHandoff(
+  overrides: Partial<ShadowHandoffRecord> = {},
+): ShadowHandoffRecord {
+  return {
+    schema_version: "shadow-handoff.v1",
+    business_id: "BRIK",
+    decision_id: "decision-shadow",
+    candidate_id: "cand-shadow",
+    recommended_route: "lp-do-plan",
+    policy_version: "self-evolving-policy.v1",
+    executor_path: "lp-do-build:container:website-v3",
+    authority_level: "shadow",
+    handoff_emitted_at: "2026-03-09T00:00:00.000Z",
+    maturity_due_at: "2026-03-12T00:00:00.000Z",
+    source_component: "self-evolving-from-ideas",
+    run_id: "run-1",
+    session_id: "session-1",
+    backbone_queue_path: "docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
+    candidate_path: "docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
+    portfolio_selected: false,
+    exploration_applied: false,
+    exploration_selected: false,
+    ...overrides,
   };
 }
 
@@ -379,6 +406,77 @@ describe("buildPolicyEvaluationDataset", () => {
         measurement_status: "verified_degraded",
         outcome_source_path: "docs/plans/example/plan.md",
         positive_outcome: true,
+      }),
+    );
+  });
+
+  it("TASK-19 TC-02 classifies shadow handoffs as pending or missing without canonical queue mutation", () => {
+    const pendingDataset = buildPolicyEvaluationDataset({
+      decisions: [
+        buildDecision({
+          decision_id: "decision-shadow",
+          candidate_id: "cand-shadow",
+        }),
+      ],
+      queue_dispatches: [],
+      shadow_handoffs: [buildShadowHandoff()],
+      lifecycle_events: [],
+      now: new Date("2026-03-11T00:00:00.000Z"),
+    });
+
+    expect(pendingDataset.summary).toEqual(
+      expect.objectContaining({
+        total_decisions: 1,
+        pending_decisions: 1,
+        missing_decisions: 0,
+        shadow_handoff_decisions: 1,
+        pending_shadow_handoffs: 1,
+        matured_shadow_handoffs: 0,
+      }),
+    );
+    expect(pendingDataset.records[0]).toEqual(
+      expect.objectContaining({
+        queue_state: "shadow_handoff",
+        handoff_state: "shadow_handoff",
+        evaluation_status: "pending",
+        maturity_status: "pending",
+        measurement_status: "pending",
+      }),
+    );
+
+    const maturedDataset = buildPolicyEvaluationDataset({
+      decisions: [
+        buildDecision({
+          decision_id: "decision-shadow",
+          candidate_id: "cand-shadow",
+        }),
+      ],
+      queue_dispatches: [],
+      shadow_handoffs: [
+        buildShadowHandoff({
+          maturity_due_at: "2026-03-10T00:00:00.000Z",
+        }),
+      ],
+      lifecycle_events: [],
+      now: new Date("2026-03-12T00:00:00.000Z"),
+    });
+
+    expect(maturedDataset.summary).toEqual(
+      expect.objectContaining({
+        pending_decisions: 0,
+        missing_decisions: 1,
+        shadow_handoff_decisions: 1,
+        pending_shadow_handoffs: 0,
+        matured_shadow_handoffs: 1,
+      }),
+    );
+    expect(maturedDataset.records[0]).toEqual(
+      expect.objectContaining({
+        queue_state: "shadow_handoff",
+        handoff_state: "shadow_handoff",
+        evaluation_status: "missing",
+        maturity_status: "matured",
+        measurement_status: "missing",
       }),
     );
   });

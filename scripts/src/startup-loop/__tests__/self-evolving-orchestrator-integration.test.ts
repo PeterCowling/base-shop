@@ -544,6 +544,8 @@ describe("self-evolving orchestrator integration", () => {
     expect(firstResult.followup_pending_entries).toBe(0);
     expect(firstResult.followup_consumed_entries).toBe(0);
     expect(firstResult.followup_queue_entries_written).toBe(0);
+    expect(firstResult.shadow_handoffs_written).toBeGreaterThan(0);
+    expect(firstResult.shadow_handoff_path).toContain("shadow-handoffs.jsonl");
 
     const store = createStartupStateStore(tempRoot);
     const policyState = readPolicyState(store, "BRIK");
@@ -579,17 +581,30 @@ describe("self-evolving orchestrator integration", () => {
       "trial",
       "queue-state.json",
     );
+    const shadowHandoffPath = path.join(
+      tempRoot,
+      "docs",
+      "business-os",
+      "startup-loop",
+      "self-evolving",
+      "BRIK",
+      "shadow-handoffs.jsonl",
+    );
     const firstPolicyStateBody = readFileSync(policyStatePath, "utf-8");
     const firstPolicyDecisionBody = readFileSync(policyDecisionPath, "utf-8");
+    const firstShadowHandoffBody = readFileSync(shadowHandoffPath, "utf-8");
 
     expect(existsSync(followupQueuePath)).toBe(false);
+    expect(firstShadowHandoffBody).toContain("\"schema_version\":\"shadow-handoff.v1\"");
 
     const secondResult = runSelfEvolvingFromIdeas(runnerInput);
     expect(secondResult.followup_consume_mode).toBe("skip");
     expect(secondResult.followup_dispatches_emitted).toBe(0);
     expect(secondResult.followup_queue_entries_written).toBe(0);
+    expect(secondResult.shadow_handoffs_written).toBe(0);
     expect(readFileSync(policyStatePath, "utf-8")).toBe(firstPolicyStateBody);
     expect(readFileSync(policyDecisionPath, "utf-8")).toBe(firstPolicyDecisionBody);
+    expect(readFileSync(shadowHandoffPath, "utf-8")).toBe(firstShadowHandoffBody);
     expect(existsSync(followupQueuePath)).toBe(false);
 
     rmSync(tempRoot, { recursive: true, force: true });

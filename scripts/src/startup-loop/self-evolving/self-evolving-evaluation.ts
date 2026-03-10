@@ -7,6 +7,7 @@ import type {
   PolicyDecisionRecord,
 } from "./self-evolving-contracts.js";
 import type { SelfEvolvingEvent } from "./self-evolving-events.js";
+import type { ShadowHandoffRecord } from "./self-evolving-shadow-handoffs.js";
 
 export type PolicyEvaluationStatus = "observed" | "pending" | "censored" | "missing";
 
@@ -25,6 +26,7 @@ export interface PolicyEvaluationRecord {
   decision_created_at: string;
   dispatch_id: string | null;
   queue_state: string | null;
+  handoff_state: "canonical_queue" | "shadow_handoff" | null;
   completed_at: string | null;
   maturity_due_at: string | null;
   maturity_status: ImprovementOutcome["maturity_status"] | null;
@@ -52,6 +54,9 @@ export interface PolicyEvaluationSummary {
   censored_decisions: number;
   missing_decisions: number;
   replay_ready_decisions: number;
+  shadow_handoff_decisions: number;
+  pending_shadow_handoffs: number;
+  matured_shadow_handoffs: number;
   deterministic_decisions: number;
   stochastic_decisions: number;
   policy_version_counts: Record<string, number>;
@@ -217,6 +222,9 @@ function summarizePolicyEvaluationRecords(
   let censored = 0;
   let missing = 0;
   let replayReady = 0;
+  let shadowHandoffDecisions = 0;
+  let pendingShadowHandoffs = 0;
+  let maturedShadowHandoffs = 0;
   let deterministic = 0;
   let stochastic = 0;
 
@@ -228,6 +236,16 @@ function summarizePolicyEvaluationRecords(
       stochastic += 1;
     } else {
       deterministic += 1;
+    }
+
+    if (record.handoff_state === "shadow_handoff") {
+      shadowHandoffDecisions += 1;
+      if (record.maturity_status === "pending") {
+        pendingShadowHandoffs += 1;
+      }
+      if (record.maturity_status === "matured") {
+        maturedShadowHandoffs += 1;
+      }
     }
 
     if (record.evaluation_ready) {
@@ -247,16 +265,32 @@ function summarizePolicyEvaluationRecords(
     censored_decisions: censored,
     missing_decisions: missing,
     replay_ready_decisions: replayReady,
+    shadow_handoff_decisions: shadowHandoffDecisions,
+    pending_shadow_handoffs: pendingShadowHandoffs,
+    matured_shadow_handoffs: maturedShadowHandoffs,
     deterministic_decisions: deterministic,
     stochastic_decisions: stochastic,
     policy_version_counts: policyVersionCounts,
   };
 }
 
+function isPendingShadowHandoff(
+  record: ShadowHandoffRecord,
+  nowIso: string,
+): boolean {
+  const maturityDueAtMs = Date.parse(record.maturity_due_at);
+  const nowMs = Date.parse(nowIso);
+  if (Number.isNaN(maturityDueAtMs) || Number.isNaN(nowMs)) {
+    return true;
+  }
+  return nowMs < maturityDueAtMs;
+}
+
 export function buildPolicyEvaluationDataset(input: {
   decisions: readonly PolicyDecisionRecord[];
   queue_dispatches: readonly QueueDispatch[];
   lifecycle_events?: readonly SelfEvolvingEvent[];
+  shadow_handoffs?: readonly ShadowHandoffRecord[];
   now?: Date;
 }): PolicyEvaluationDataset {
   const nowIso = (input.now ?? new Date()).toISOString();
@@ -275,11 +309,15 @@ export function buildPolicyEvaluationDataset(input: {
   }
 
   const { byEventId, byDecisionId } = buildOutcomeEventMaps(input.lifecycle_events ?? []);
+  const shadowHandoffsByDecisionId = new Map(
+    (input.shadow_handoffs ?? []).map((record) => [record.decision_id, record] as const),
+  );
   const records = input.decisions
     .filter((decision) => decision.decision_type === "candidate_route")
     .map((decision): PolicyEvaluationRecord => {
       const linkedDispatches = dispatchesByDecisionId.get(decision.decision_id) ?? [];
       const selectedDispatch = selectBestDispatch(linkedDispatches);
+      const shadowHandoff = shadowHandoffsByDecisionId.get(decision.decision_id) ?? null;
       const completion = selectedDispatch?.completed_by?.self_evolving ?? null;
       const completionStatus = completion
         ? classifyOutcomeStatus({
@@ -288,10 +326,11 @@ export function buildPolicyEvaluationDataset(input: {
           })
         : null;
       const outcomeProjection = byDecisionId.get(decision.decision_id);
+      const shadowPending = shadowHandoff ? isPendingShadowHandoff(shadowHandoff, nowIso) : false;
       const evaluationStatus =
         completionStatus ??
         outcomeProjection?.evaluation_status ??
-        (selectedDispatch ? "censored" : "censored");
+        (shadowHandoff ? (shadowPending ? "pending" : "missing") : "censored");
       const outcomeEventId = completion?.outcome_event_id ?? outcomeProjection?.event_id ?? null;
       const completedAt =
         selectedDispatch?.completed_by?.completed_at ??
@@ -318,12 +357,22 @@ export function buildPolicyEvaluationDataset(input: {
         decision_created_at: decision.created_at,
         dispatch_id: dispatchId,
         queue_state:
-          typeof selectedDispatch?.queue_state === "string" ? selectedDispatch.queue_state : null,
+          typeof selectedDispatch?.queue_state === "string"
+            ? selectedDispatch.queue_state
+            : shadowHandoff
+              ? "shadow_handoff"
+              : null,
+        handoff_state: selectedDispatch ? "canonical_queue" : shadowHandoff ? "shadow_handoff" : null,
         completed_at: completedAt,
-        maturity_due_at: completion?.maturity_due_at ?? null,
-        maturity_status: completion?.maturity_status ?? outcomeProjection?.maturity_status ?? null,
+        maturity_due_at: completion?.maturity_due_at ?? shadowHandoff?.maturity_due_at ?? null,
+        maturity_status:
+          completion?.maturity_status ??
+          outcomeProjection?.maturity_status ??
+          (shadowHandoff ? (shadowPending ? "pending" : "matured") : null),
         measurement_status:
-          completion?.measurement_status ?? outcomeProjection?.measurement_status ?? null,
+          completion?.measurement_status ??
+          outcomeProjection?.measurement_status ??
+          (shadowHandoff ? (shadowPending ? "pending" : "missing") : null),
         evaluation_status: evaluationStatus,
         evaluation_ready: evaluationStatus === "observed",
         outcome_event_id: outcomeEventId,

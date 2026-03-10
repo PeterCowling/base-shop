@@ -23,6 +23,7 @@ import { buildPolicyEvaluationDataset } from "./self-evolving-evaluation.js";
 import type { SelfEvolvingEvent } from "./self-evolving-events.js";
 import { buildPolicyAuditTelemetry } from "./self-evolving-policy-audit.js";
 import { buildPromotionGateDataset } from "./self-evolving-promotion-gate.js";
+import type { ShadowHandoffRecord } from "./self-evolving-shadow-handoffs.js";
 import { deriveBoundarySignalSnapshotFromStartupState } from "./self-evolving-signal-helpers.js";
 import { buildSurvivalPolicySignals } from "./self-evolving-survival.js";
 
@@ -33,6 +34,7 @@ interface CliArgs {
   startupStatePath: string;
   policyStatePath: string;
   policyDecisionPath: string;
+  shadowHandoffPath: string;
   queueStatePath: string;
   eventsPath: string;
   business: string;
@@ -91,6 +93,10 @@ function parseArgs(argv: string[]): CliArgs {
     policyDecisionPath: resolvePath(
       rootDir,
       flags.get("policy-decisions") ?? path.join(defaultBusinessRoot, "policy-decisions.jsonl"),
+    ),
+    shadowHandoffPath: resolvePath(
+      rootDir,
+      flags.get("shadow-handoffs") ?? path.join(defaultBusinessRoot, "shadow-handoffs.jsonl"),
     ),
     queueStatePath: resolvePath(
       rootDir,
@@ -164,6 +170,24 @@ function readPolicyDecisionFile(filePath: string): PolicyDecisionRecord[] {
       .split("\n")
       .filter((line) => line.trim().length > 0)
       .map((line) => JSON.parse(line) as PolicyDecisionRecord);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") {
+      return [];
+    }
+    throw error;
+  }
+}
+
+function readShadowHandoffFile(filePath: string): ShadowHandoffRecord[] {
+  try {
+    const raw = readFileSync(filePath, "utf-8").trim();
+    if (!raw) {
+      return [];
+    }
+    return raw
+      .split("\n")
+      .filter((line) => line.trim().length > 0)
+      .map((line) => JSON.parse(line) as ShadowHandoffRecord);
   } catch (error) {
     if ((error as NodeJS.ErrnoException).code === "ENOENT") {
       return [];
@@ -262,6 +286,7 @@ export function buildSelfEvolvingReportData(input: {
     startup_state: string;
     policy_state: string;
     policy_decisions: string;
+    shadow_handoffs: string;
     queue_state: string;
     events: string;
   };
@@ -271,6 +296,7 @@ export function buildSelfEvolvingReportData(input: {
   startup_state: StartupState | null;
   policy_state: SelfEvolvingPolicyState | null;
   policy_decisions: PolicyDecisionRecord[];
+  shadow_handoffs: ShadowHandoffRecord[];
   queue_dispatches: QueueDispatch[];
   lifecycle_events: SelfEvolvingEvent[];
 }): Record<string, unknown> {
@@ -278,6 +304,7 @@ export function buildSelfEvolvingReportData(input: {
     decisions: input.policy_decisions,
     queue_dispatches: input.queue_dispatches,
     lifecycle_events: input.lifecycle_events,
+    shadow_handoffs: input.shadow_handoffs,
     now: new Date(input.generated_at),
   });
   const dependencyGraph = buildDependencyGraphSnapshot({
@@ -327,6 +354,7 @@ export function buildSelfEvolvingReportData(input: {
     warnings: input.warnings,
     startup_state_present: input.startup_state != null,
     policy_state_present: input.policy_state != null,
+    shadow_handoff_count: input.shadow_handoffs.length,
     lifecycle_events_count: input.lifecycle_events.length,
     queue_dispatch_count: input.queue_dispatches.length,
     dashboard,
@@ -409,6 +437,7 @@ function main(): void {
   const startupState = readStartupState(args.startupStatePath);
   const policyState = readPolicyStateFile(args.policyStatePath);
   const policyDecisions = readPolicyDecisionFile(args.policyDecisionPath);
+  const shadowHandoffs = readShadowHandoffFile(args.shadowHandoffPath);
   const queueResult = readQueueStateFile(args.queueStatePath);
   const queueDispatches = queueResult.ok ? queueResult.queue.dispatches : [];
   const lifecycleEvents = readLifecycleEventsFile(args.eventsPath);
@@ -423,6 +452,7 @@ function main(): void {
       startup_state: args.startupStatePath,
       policy_state: args.policyStatePath,
       policy_decisions: args.policyDecisionPath,
+      shadow_handoffs: args.shadowHandoffPath,
       queue_state: args.queueStatePath,
       events: args.eventsPath,
     },
@@ -432,6 +462,7 @@ function main(): void {
     startup_state: startupState,
     policy_state: policyState,
     policy_decisions: policyDecisions,
+    shadow_handoffs: shadowHandoffs,
     queue_dispatches: queueDispatches,
     lifecycle_events: lifecycleEvents,
   });

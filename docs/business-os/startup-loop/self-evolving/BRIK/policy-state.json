@@ -30,7 +30,7 @@
     "455be690c726c386": {
       "schema_version": "candidate-belief.v1",
       "candidate_id": "455be690c726c386",
-      "structural_snapshot_id": "dc0a07a9ca8e9d7d",
+      "structural_snapshot_id": "880351e99f95d778",
       "success_if_attempted": {
         "family": "beta_binomial",
         "prior_alpha": 2.8,
@@ -97,14 +97,14 @@
       "evidence_floor_met": true,
       "last_verified_outcome_at": null,
       "last_outcome_event_id": null,
-      "last_decision_id": "e14a9b1acba67c82",
+      "last_decision_id": "acb4001f445c142c",
       "last_override_id": null,
-      "updated_at": "2026-03-10T08:27:15.755Z"
+      "updated_at": "2026-03-10T08:46:13.255Z"
     },
     "ab5320678b656800": {
       "schema_version": "candidate-belief.v1",
       "candidate_id": "ab5320678b656800",
-      "structural_snapshot_id": "8fbd01320ee44eb9",
+      "structural_snapshot_id": "73a9149ce3b6fd0d",
       "success_if_attempted": {
         "family": "beta_binomial",
         "prior_alpha": 2.8,
@@ -171,14 +171,14 @@
       "evidence_floor_met": true,
       "last_verified_outcome_at": null,
       "last_outcome_event_id": null,
-      "last_decision_id": "19f63181ae17edac",
+      "last_decision_id": "bed21ada3d255ccb",
       "last_override_id": null,
-      "updated_at": "2026-03-10T08:27:15.755Z"
+      "updated_at": "2026-03-10T08:46:13.255Z"
     },
     "fd5ed6ad188ac1a9": {
       "schema_version": "candidate-belief.v1",
       "candidate_id": "fd5ed6ad188ac1a9",
-      "structural_snapshot_id": "91f6500ac4e266e8",
+      "structural_snapshot_id": "a2d6578f652c8c1a",
       "success_if_attempted": {
         "family": "beta_binomial",
         "prior_alpha": 2.8,
@@ -245,14 +245,14 @@
       "evidence_floor_met": true,
       "last_verified_outcome_at": null,
       "last_outcome_event_id": null,
-      "last_decision_id": "c194973197d928c3",
+      "last_decision_id": "e25b61d2eda4cc59",
       "last_override_id": null,
-      "updated_at": "2026-03-10T08:27:15.755Z"
+      "updated_at": "2026-03-10T08:46:13.255Z"
     },
     "300444927b4c7dec": {
       "schema_version": "candidate-belief.v1",
       "candidate_id": "300444927b4c7dec",
-      "structural_snapshot_id": "365627929aece1a9",
+      "structural_snapshot_id": "b97c6d3785ee0dda",
       "success_if_attempted": {
         "family": "beta_binomial",
         "prior_alpha": 2.8,
@@ -319,12 +319,12 @@
       "evidence_floor_met": true,
       "last_verified_outcome_at": null,
       "last_outcome_event_id": null,
-      "last_decision_id": "ea5674d5b3dd3305",
+      "last_decision_id": "35fd6cac9220caee",
       "last_override_id": null,
-      "updated_at": "2026-03-10T08:27:15.755Z"
+      "updated_at": "2026-03-10T08:46:13.255Z"
     }
   },
-  "last_decision_id": "8ad3c2e4b8422f6f",
-  "updated_at": "2026-03-10T08:27:15.755Z",
+  "last_decision_id": "bca8754d7f08db23",
+  "updated_at": "2026-03-10T08:46:13.255Z",
   "updated_by": "self-evolving-orchestrator"
 }

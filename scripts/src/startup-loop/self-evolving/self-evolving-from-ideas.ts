@@ -7,6 +7,7 @@ import {
 import {
   enqueueBackboneCandidates,
 } from "./self-evolving-backbone-queue.js";
+import type { RankedCandidate } from "./self-evolving-candidates.js";
 import type { MetaObservation, StartupState } from "./self-evolving-contracts.js";
 import { stableHash } from "./self-evolving-contracts.js";
 import { buildHardSignature } from "./self-evolving-detector.js";
@@ -14,7 +15,15 @@ import {
   runSelfEvolvingOrchestrator,
   type SelfEvolvingOrchestratorResult,
 } from "./self-evolving-orchestrator.js";
+import {
+  appendShadowHandoffs,
+  type ShadowHandoffRecord,
+} from "./self-evolving-shadow-handoffs.js";
 import { buildObservationSignalHints } from "./self-evolving-signal-helpers.js";
+import {
+  createStartupStateStore,
+  readPolicyState,
+} from "./self-evolving-startup-state.js";
 
 export interface IdeasDispatchPacket {
   schema_version: "dispatch.v1" | "dispatch.v2";
@@ -219,6 +228,8 @@ export interface SelfEvolvingFromIdeasResult {
   observations_generated: number;
   backbone_queue_path: string;
   backbone_queued: number;
+  shadow_handoff_path: string | null;
+  shadow_handoffs_written: number;
   followup_consume_mode: "consume" | "skip";
   followup_closure_state: "closed" | "stale-repairable" | "hard-failed";
   followup_dispatches_emitted: number;
@@ -231,6 +242,62 @@ export interface SelfEvolvingFromIdeasResult {
   followup_queue_entries_written: number;
   warnings: string[];
   orchestrator: SelfEvolvingOrchestratorResult;
+}
+
+function addDaysIso(timestamp: string, days: number): string {
+  const parsed = Date.parse(timestamp);
+  if (Number.isNaN(parsed)) {
+    return timestamp;
+  }
+  return new Date(parsed + days * 24 * 60 * 60 * 1000).toISOString();
+}
+
+function buildShadowHandoffRecords(input: {
+  business: string;
+  run_id: string;
+  session_id: string;
+  authority_level: "shadow" | "advisory" | "guarded_trial";
+  hold_window_days: number;
+  emitted_at: string;
+  backbone_queue_path: string;
+  candidate_path: string;
+  ranked_candidates: readonly RankedCandidate[];
+}): ShadowHandoffRecord[] {
+  return input.ranked_candidates
+    .filter(
+      (
+        candidate,
+      ): candidate is RankedCandidate & {
+        route: RankedCandidate["route"] & {
+          route: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build";
+        };
+      } => candidate.route.route !== "reject",
+    )
+    .map((candidate) => ({
+      schema_version: "shadow-handoff.v1",
+      business_id: input.business,
+      decision_id:
+        candidate.policy_context?.decision_id ??
+        stableHash(`${input.business}|${candidate.candidate.candidate_id}|shadow-handoff`).slice(
+          0,
+          16,
+        ),
+      candidate_id: candidate.candidate.candidate_id,
+      recommended_route: candidate.route.route,
+      policy_version: candidate.policy_context?.policy_version ?? "self-evolving-policy.v1",
+      executor_path: candidate.candidate.executor_path,
+      authority_level: input.authority_level,
+      handoff_emitted_at: input.emitted_at,
+      maturity_due_at: addDaysIso(input.emitted_at, input.hold_window_days),
+      source_component: "self-evolving-from-ideas",
+      run_id: input.run_id,
+      session_id: input.session_id,
+      backbone_queue_path: input.backbone_queue_path,
+      candidate_path: input.candidate_path,
+      portfolio_selected: candidate.policy_context?.portfolio_selected ?? true,
+      exploration_applied: candidate.policy_context?.exploration_applied ?? false,
+      exploration_selected: candidate.policy_context?.exploration_selected ?? false,
+    }));
 }
 
 export function runSelfEvolvingFromIdeas(
@@ -264,7 +331,24 @@ export function runSelfEvolvingFromIdeas(
     orchestrator.ranked_candidates,
     now,
   );
+  const store = createStartupStateStore(input.rootDir);
+  const policyState = readPolicyState(store, input.business);
   if (followupConsumeMode === "skip") {
+    const shadowHandoffWrite = appendShadowHandoffs(
+      input.rootDir,
+      input.business,
+      buildShadowHandoffRecords({
+        business: input.business,
+        run_id: input.run_id,
+        session_id: input.session_id,
+        authority_level: policyState?.authority_level ?? "shadow",
+        hold_window_days: policyState?.active_constraint_profile.hold_window_days ?? 7,
+        emitted_at: orchestrator.generated_at,
+        backbone_queue_path: queueWrite.path,
+        candidate_path: orchestrator.candidate_path,
+        ranked_candidates: orchestrator.ranked_candidates,
+      }),
+    );
     return {
       business: input.business,
       run_id: input.run_id,
@@ -273,6 +357,8 @@ export function runSelfEvolvingFromIdeas(
       observations_generated: observations.length,
       backbone_queue_path: queueWrite.path,
       backbone_queued: queueWrite.queued,
+      shadow_handoff_path: shadowHandoffWrite.path,
+      shadow_handoffs_written: shadowHandoffWrite.written,
       followup_consume_mode: followupConsumeMode,
       followup_closure_state: "closed",
       followup_dispatches_emitted: 0,
@@ -325,6 +411,8 @@ export function runSelfEvolvingFromIdeas(
     observations_generated: observations.length,
     backbone_queue_path: queueWrite.path,
     backbone_queued: queueWrite.queued,
+    shadow_handoff_path: null,
+    shadow_handoffs_written: 0,
     followup_consume_mode: followupConsumeMode,
     followup_closure_state: followupConsume.closure_state,
     followup_dispatches_emitted: followupConsume.emitted_dispatches,

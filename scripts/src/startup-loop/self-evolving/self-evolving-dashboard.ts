@@ -72,6 +72,9 @@ export interface DashboardSnapshot {
     censored_decisions: number;
     missing_decisions: number;
     replay_ready_decisions: number;
+    shadow_handoff_decisions: number;
+    pending_shadow_handoffs: number;
+    matured_shadow_handoffs: number;
     maturity_debt_decisions: number;
     replay_ready_rate: DashboardRateMetric;
   };
@@ -110,6 +113,9 @@ const EMPTY_EVALUATION_SUMMARY: PolicyEvaluationSummary = {
   censored_decisions: 0,
   missing_decisions: 0,
   replay_ready_decisions: 0,
+  shadow_handoff_decisions: 0,
+  pending_shadow_handoffs: 0,
+  matured_shadow_handoffs: 0,
   deterministic_decisions: 0,
   stochastic_decisions: 0,
   policy_version_counts: {},
@@ -267,6 +273,9 @@ export function buildDashboardSnapshot(input: {
       censored_decisions: evaluationSummary.censored_decisions,
       missing_decisions: evaluationSummary.missing_decisions,
       replay_ready_decisions: evaluationSummary.replay_ready_decisions,
+      shadow_handoff_decisions: evaluationSummary.shadow_handoff_decisions,
+      pending_shadow_handoffs: evaluationSummary.pending_shadow_handoffs,
+      matured_shadow_handoffs: evaluationSummary.matured_shadow_handoffs,
       maturity_debt_decisions: maturityDebtDecisions,
       replay_ready_rate: buildRateMetric(
         evaluationSummary.replay_ready_decisions,

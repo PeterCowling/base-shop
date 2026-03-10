@@ -9,6 +9,7 @@ import type {
 } from "../self-evolving/self-evolving-contracts.js";
 import type { SelfEvolvingEvent } from "../self-evolving/self-evolving-events.js";
 import { buildSelfEvolvingReportData } from "../self-evolving/self-evolving-report.js";
+import type { ShadowHandoffRecord } from "../self-evolving/self-evolving-shadow-handoffs.js";
 
 function buildObservation(): MetaObservation {
   return {
@@ -258,6 +259,29 @@ function buildLifecycleEvent(): SelfEvolvingEvent {
   };
 }
 
+function buildShadowHandoff(): ShadowHandoffRecord {
+  return {
+    schema_version: "shadow-handoff.v1",
+    business_id: "BRIK",
+    decision_id: "decision-1",
+    candidate_id: "cand-1",
+    recommended_route: "lp-do-plan",
+    policy_version: "self-evolving-policy.v1",
+    executor_path: "lp-do-build:container:website-v3",
+    authority_level: "shadow",
+    handoff_emitted_at: "2026-03-09T00:05:00.000Z",
+    maturity_due_at: "2026-03-12T00:00:00.000Z",
+    source_component: "self-evolving-from-ideas",
+    run_id: "run-1",
+    session_id: "session-1",
+    backbone_queue_path: "docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
+    candidate_path: "docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
+    portfolio_selected: false,
+    exploration_applied: false,
+    exploration_selected: false,
+  };
+}
+
 describe("buildSelfEvolvingReportData", () => {
   it("TASK-16 TC-03 reports replay-ready evaluation summary without inventing missing data", () => {
     const report = buildSelfEvolvingReportData({
@@ -269,6 +293,7 @@ describe("buildSelfEvolvingReportData", () => {
         startup_state: "startup-state.json",
         policy_state: "policy-state.json",
         policy_decisions: "policy-decisions.jsonl",
+        shadow_handoffs: "shadow-handoffs.jsonl",
         queue_state: "queue-state.json",
         events: "events.jsonl",
       },
@@ -278,6 +303,7 @@ describe("buildSelfEvolvingReportData", () => {
       startup_state: buildStartupState(),
       policy_state: buildPolicyState(),
       policy_decisions: [buildDecision()],
+      shadow_handoffs: [buildShadowHandoff()],
       queue_dispatches: [buildDispatch()],
       lifecycle_events: [buildLifecycleEvent()],
     });
@@ -286,6 +312,7 @@ describe("buildSelfEvolvingReportData", () => {
       expect.objectContaining({
         startup_state_present: true,
         policy_state_present: true,
+        shadow_handoff_count: 1,
         queue_dispatch_count: 1,
       }),
     );
@@ -314,6 +341,7 @@ describe("buildSelfEvolvingReportData", () => {
         evaluation: expect.objectContaining({
           total_decisions: 1,
           replay_ready_decisions: 1,
+          shadow_handoff_decisions: 0,
         }),
         audit: expect.objectContaining({
           calibration_status: "measured",

@@ -20,3 +20,26 @@
 | Prior ID | Severity | Rounds Open | Summary |
 |---|---|---|---|
 | None | - | - | None |
+
+## Round 2 — 2026-03-10
+
+### Issues Opened This Round
+| ID | Severity | Target | Summary |
+|---|---|---|---|
+| 2-01 | Major | plan.md | Overall-confidence arithmetic and header value were inconsistent with the task-weight calculation. |
+| 2-02 | Major | plan.md | The original TASK-07 bundled richer sensing and unknown-prescription discovery outputs into one task, which was too wide to be one logical unit. |
+| 2-03 | Major | plan.md | Milestone runtime implementation could have bypassed the normalization layer because TASK-06 did not depend on the seam-normalization task. |
+| 2-04 | Moderate | plan.md | Validation contract IDs became inconsistent after the task split. |
+
+### Issues Confirmed Resolved This Round
+| Prior ID | Severity | Summary | How resolved |
+|---|---|---|---|
+| 2-01 | Major | Overall-confidence arithmetic mismatch | Updated the weighted calculation and header to `81%` with corrected task totals. |
+| 2-02 | Major | Over-wide TASK-07 | Split the work into TASK-07 (richer sensing) and TASK-08 (discovery-output contract), then resequenced downstream tasks. |
+| 2-03 | Major | Milestone runtime could bypass normalization | Added TASK-02 as a dependency for TASK-06 and made the normalization requirement explicit in the task notes. |
+| 2-04 | Moderate | Validation contract IDs inconsistent | Renumbered the affected validation contract labels so each task now has a unique ID. |
+
+### Issues Carried Open (not yet resolved)
+| Prior ID | Severity | Rounds Open | Summary |
+|---|---|---|---|
+| None | - | - | None |

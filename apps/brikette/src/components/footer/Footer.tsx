@@ -11,10 +11,13 @@ import { Cluster } from "@/components/ui/flex";
 import hotel, { CONTACT_EMAIL } from "@/config/hotel";
 import { isGuideLive } from "@/data/guides.index";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
+import { useEntryAttribution } from "@/hooks/useEntryAttribution";
 import { type AppLanguage, i18nConfig } from "@/i18n.config";
 import { Facebook, Instagram } from "@/icons";
 import footerEn from "@/locales/en/footer.json";
 import { type GuideKey,guideNamespace, guideSlug } from "@/routes.guides-helpers";
+import { buildIntentAwareBookingCopy } from "@/utils/intentAwareBookingCopy";
+import { resolveSharedBookingSurface, shouldUseIntentAwareSharedBookingSurface } from "@/utils/sharedBookingSurface";
 import { getSlug } from "@/utils/slug";
 
 import FooterLegalRow from "./FooterLegalRow";
@@ -26,6 +29,9 @@ const FOOTER_PREFETCH = false;
 const SAFE_BOTTOM_PADDING_STYLE = {
   paddingBottom: "calc(var(--safe-bottom) + var(--space-3))",
 } as const;
+const PRIVATE_BOOKING_FALLBACK =
+  /* i18n-exempt -- BRIK-2145 [ttl=2026-12-31] English fallback when footer locale is missing the private booking label. */
+  "Book private accommodations";
 
 // eslint-disable-next-line max-lines-per-function -- BRIK-DS-001: large component pending refactor
 const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { lang?: AppLanguage }): JSX.Element {
@@ -41,6 +47,7 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
   const { t: tFooter } = useTranslation("footer", { lng: lang });
   const rawPathname = usePathname();
   const pathname = rawPathname ?? "";
+  const currentAttribution = useEntryAttribution();
 
   const mapUrl = (() => {
     const googleMaps = hotel.sameAs.find((link) => link.includes("maps.google.com"));
@@ -210,6 +217,13 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
   const emailLabel = resolveFooterLabel("email");
   const emailLinkLabel = `${emailLabel}: ${CONTACT_EMAIL}`;
   const bookDirectCtaLabel = resolveFooterLabel("bookDirect", "Book direct");
+  const dormsLabel = resolveFooterLabel("rooms");
+  const privateBookingLabel = resolveFooterLabel("bookPrivate", PRIVATE_BOOKING_FALLBACK);
+  const bookingCopy = buildIntentAwareBookingCopy({ dormsLabel, privateBookingLabel });
+  const useIntentAwareBooking = shouldUseIntentAwareSharedBookingSurface(pathname, lang, currentAttribution);
+  const bookingSurface = useIntentAwareBooking
+    ? resolveSharedBookingSurface(lang, pathname, currentAttribution)
+    : null;
   const navAriaLabel = resolveFooterLabel("navAriaLabel");
 
   return (
@@ -221,12 +235,32 @@ const FooterComponent = memo(function FooterComponent({ lang: explicitLang }: { 
           <div className="flex flex-col gap-4 sm:col-span-2 xl:col-span-1">
             <p className="text-xl font-semibold tracking-tight">{brandName}</p>
             <p className="text-sm text-brand-bg/80 dark:text-brand-text/80">{brandDescription}</p>
-            <Link
-              href={`/${lang}/${getSlug("book", lang)}`}
-              className="self-start text-sm font-medium text-brand-secondary hover:underline"
-            >
-              {bookDirectCtaLabel} →
-            </Link>
+            {bookingSurface?.mode === "chooser" ? (
+              <div className="flex flex-wrap gap-3">
+                <Link
+                  href={bookingSurface.hostel.href}
+                  className="self-start text-sm font-medium text-brand-secondary hover:underline"
+                >
+                  {bookingCopy.chooser.primaryLabel} →
+                </Link>
+                <Link
+                  href={bookingSurface.private.href}
+                  className="self-start text-sm font-medium text-brand-secondary hover:underline"
+                >
+                  {bookingCopy.chooser.secondaryLabel} →
+                </Link>
+              </div>
+            ) : (
+              <Link
+                href={bookingSurface?.mode === "direct" ? bookingSurface.primary.href : `/${lang}/${getSlug("book", lang)}`}
+                className="self-start text-sm font-medium text-brand-secondary hover:underline"
+              >
+                {bookingSurface?.mode === "direct" && bookingSurface.primary.resolvedIntent === "private"
+                  ? privateBookingLabel
+                  : bookDirectCtaLabel}{" "}
+                →
+              </Link>
+            )}
             <div className="flex flex-col gap-2 pt-1">
               <p className="text-xs font-semibold uppercase tracking-widest text-brand-bg/75 dark:text-brand-text/75">
                 {resolveFooterLabel("locationHeading")}

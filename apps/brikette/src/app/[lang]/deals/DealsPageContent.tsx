@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy, ds/container-widths-only-at, ds/enforce-layout-primitives, @typescript-eslint/no-unused-vars -- BRIK-DS-001: in-progress design-system migration */
+/* eslint-disable ds/no-hardcoded-copy, ds/container-widths-only-at, ds/enforce-layout-primitives -- BRIK-DS-001: in-progress design-system migration */
 "use client";
 
 // src/app/[lang]/deals/DealsPageContent.tsx
@@ -22,6 +22,7 @@ import { getDealStatus } from "@/routes/deals/status";
 import { useDealContent } from "@/routes/deals/useDealContent";
 import { writeAttribution } from "@/utils/entryAttribution";
 import { fireSelectPromotion, fireViewItemList, fireViewPromotion } from "@/utils/ga4-events";
+import { buildIntentAwareBookingCopy } from "@/utils/intentAwareBookingCopy";
 import { resolveIntentAwareBookingSurface } from "@/utils/intentAwareBookingSurface";
 import { getBookPath } from "@/utils/localizedRoutes";
 import { getPrivateRoomsPath } from "@/utils/privateRoomPaths";
@@ -69,6 +70,24 @@ type DealListingsProps = {
   termsHref: string;
   onOpenBooking: ({ kind, dealId }: { kind: "deal" | "standard"; dealId?: string }) => void;
   referenceDate: Date;
+};
+
+type RoutedDealOption = {
+  href: string;
+  resolvedIntent: "hostel" | "private";
+  productType: string | null;
+  decisionMode: "direct_resolution" | "chooser";
+  destinationFunnel: "hostel_central" | "private";
+};
+
+type DealsPrimaryCtaModel = {
+  title: string;
+  subtitle: string;
+  actions: Array<{
+    label: string;
+    onClick: () => void;
+    tone?: "outline";
+  }>;
 };
 
 function DealGridSection({
@@ -144,10 +163,6 @@ function DealListings({
       )}
     </Fragment>
   );
-}
-
-function resolveCheckAvailabilityLabel(label: string | undefined): string {
-  return label && label !== "checkAvailability" ? label : "Check Availability";
 }
 
 function resolveHeadlineStatus(activeDeals: DealEntry[], upcomingDeals: DealEntry[]): DealStatus {
@@ -228,6 +243,71 @@ function resolvePageCopy({
   };
 }
 
+function buildDealsPrimaryCta(params: {
+  bookingCopy: ReturnType<typeof buildIntentAwareBookingCopy>;
+  bookingSurface: ReturnType<typeof resolveIntentAwareBookingSurface>;
+  lang: AppLanguage;
+  routeDealsSelection: (input: RoutedDealOption) => void;
+}): DealsPrimaryCtaModel {
+  const { bookingCopy, bookingSurface, lang, routeDealsSelection } = params;
+
+  if (bookingSurface.mode === "direct") {
+    const branch =
+      bookingSurface.primary.resolvedIntent === "private"
+        ? bookingCopy.direct.private
+        : bookingCopy.direct.hostel;
+
+    return {
+      title: branch.heading,
+      subtitle: branch.subcopy,
+      actions: [
+        {
+          label: branch.primaryLabel,
+          onClick: () => routeDealsSelection(bookingSurface.primary),
+        },
+        {
+          label: branch.secondaryLabel,
+          tone: "outline",
+          onClick: () =>
+            routeDealsSelection(
+              bookingSurface.primary.resolvedIntent === "private"
+                ? {
+                    href: getBookPath(lang),
+                    resolvedIntent: "hostel",
+                    productType: null,
+                    decisionMode: "chooser",
+                    destinationFunnel: "hostel_central",
+                  }
+                : {
+                    href: getPrivateRoomsPath(lang),
+                    resolvedIntent: "private",
+                    productType: null,
+                    decisionMode: "chooser",
+                    destinationFunnel: "private",
+                  },
+            ),
+        },
+      ],
+    };
+  }
+
+  return {
+    title: bookingCopy.chooser.heading,
+    subtitle: bookingCopy.chooser.subcopy,
+    actions: [
+      {
+        label: bookingCopy.chooser.primaryLabel,
+        onClick: () => routeDealsSelection(bookingSurface.hostel),
+      },
+      {
+        label: bookingCopy.chooser.secondaryLabel,
+        tone: "outline",
+        onClick: () => routeDealsSelection(bookingSurface.private),
+      },
+    ],
+  };
+}
+
 function DealsPageContent({ lang }: Props) {
   const { t } = useTranslation("dealsPage", { lng: lang });
   const { t: tHeader } = useTranslation("header", { lng: lang });
@@ -236,9 +316,6 @@ function DealsPageContent({ lang }: Props) {
   usePagePreload({ lang, namespaces: ["dealsPage", "header", "_tokens"] });
 
   const { translate: ft, perks, labels } = useDealContent(lang);
-  const checkAvailabilityCta = resolveCheckAvailabilityLabel(labels.checkAvailabilityLabel);
-  const perksLinkLabel = typeof labels.perksLinkLabel === "string" ? labels.perksLinkLabel : "";
-
   const openBooking = useCallback(
     ({ kind, dealId }: { kind: "deal" | "standard"; dealId?: string }) => {
       if (kind === "deal" && dealId) {
@@ -340,13 +417,16 @@ function DealsPageContent({ lang }: Props) {
     () => resolveIntentAwareBookingSurface(lang, currentAttribution),
     [currentAttribution, lang],
   );
-  const routeDealsSelection = useCallback((input: {
-    href: string;
-    resolvedIntent: "hostel" | "private";
-    productType: string | null;
-    decisionMode: "direct_resolution" | "chooser";
-    destinationFunnel: "hostel_central" | "private";
-  }) => {
+  const dormsLabel = (tHeader("rooms", { defaultValue: "Dorms" }) as string) || "Dorms";
+  const privateBookingLabel =
+    (tHeader("navChildren.apartment.bookPrivate", {
+      defaultValue: "Book private accommodations",
+    }) as string) || "Book private accommodations";
+  const bookingCopy = useMemo(
+    () => buildIntentAwareBookingCopy({ dormsLabel, privateBookingLabel }),
+    [dormsLabel, privateBookingLabel],
+  );
+  const routeDealsSelection = useCallback((input: RoutedDealOption) => {
     writeAttribution({
       source_surface: "deals_page",
       source_cta: "deals_primary_cta",
@@ -361,58 +441,10 @@ function DealsPageContent({ lang }: Props) {
 
     router.push(input.href);
   }, [lang, router]);
-  const dealsActions = useMemo(() => {
-    const dormsLabel = (tHeader("rooms", { defaultValue: "Dorms" }) as string) || "Dorms";
-    const privateLabel = (tHeader("apartment", { defaultValue: "Private Rooms" }) as string) || "Private Rooms";
-
-    if (bookingSurface.mode === "direct") {
-      return [
-        {
-          label:
-            bookingSurface.primary.resolvedIntent === "private"
-              ? privateLabel
-              : checkAvailabilityCta,
-          onClick: () => routeDealsSelection(bookingSurface.primary),
-        },
-        {
-          label:
-            bookingSurface.primary.resolvedIntent === "private"
-              ? dormsLabel
-              : privateLabel,
-          tone: "outline" as const,
-          onClick: () => routeDealsSelection(
-            bookingSurface.primary.resolvedIntent === "private"
-              ? {
-                  href: getBookPath(lang),
-                  resolvedIntent: "hostel",
-                  productType: null,
-                  decisionMode: "chooser",
-                  destinationFunnel: "hostel_central",
-                }
-              : {
-                  href: getPrivateRoomsPath(lang),
-                  resolvedIntent: "private",
-                  productType: null,
-                  decisionMode: "chooser",
-                  destinationFunnel: "private",
-                },
-          ),
-        },
-      ];
-    }
-
-    return [
-      {
-        label: dormsLabel,
-        onClick: () => routeDealsSelection(bookingSurface.hostel),
-      },
-      {
-        label: privateLabel,
-        tone: "outline" as const,
-        onClick: () => routeDealsSelection(bookingSurface.private),
-      },
-    ];
-  }, [bookingSurface, checkAvailabilityCta, lang, routeDealsSelection, tHeader]);
+  const dealsPrimaryCta = useMemo(
+    () => buildDealsPrimaryCta({ bookingCopy, bookingSurface, lang, routeDealsSelection }),
+    [bookingCopy, bookingSurface, lang, routeDealsSelection],
+  );
 
   return (
     <Fragment>
@@ -446,7 +478,9 @@ function DealsPageContent({ lang }: Props) {
       />
 
       <DealsPrimaryCtaSection
-        actions={dealsActions}
+        title={dealsPrimaryCta.title}
+        subtitle={dealsPrimaryCta.subtitle}
+        actions={dealsPrimaryCta.actions}
       />
     </Fragment>
   );

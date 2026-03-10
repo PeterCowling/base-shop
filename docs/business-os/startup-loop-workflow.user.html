@@ -99,7 +99,7 @@
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../../business-os/startup-loop-workflow.user.html">Workflow</a><a href="../../business-os/startup-loop-files.user.html">Loop Files</a><a href="../../business-os/startup-loop-file-types.user.html">File Types</a><a href="../../business-os/startup-loop-output-registry.user.html">Output Registry</a><a href="#self-improving-loop">Self Improving</a><a href="../../business-os/process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){var href=a.getAttribute("href")||"";if(href.charAt(0)==="#"&&location.hash===href)a.classList.add("sl-on");else if(href.charAt(0)!=="#"&&href.split("/").pop()===p&&location.hash==="")a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="startup-loop-workflow.user.html">Workflow</a><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="#self-improving-loop">Self Improving</a><a href="process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){var href=a.getAttribute("href")||"";if(href.charAt(0)==="#"&&location.hash===href)a.classList.add("sl-on");else if(href.charAt(0)!=="#"&&href.split("/").pop()===p&&location.hash==="")a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
   <main>
     <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
       Show technical details
@@ -129,6 +129,21 @@
 
     A --> B --> C --> D --> E --> F --> G --> A</pre>
 <p>The point is not to automate everything. The point is to make better choices over time, with evidence.</p>
+<h2>Three linked cycles</h2>
+<p>The self-improving loop is easier to understand if you think of it as three cycles working together.</p>
+<h3>Sensing</h3>
+<p>First, the loop notices what keeps going wrong or taking too much effort.</p>
+<p>This is the sensing cycle. It is about collecting enough raw signal to notice that a pattern may be real.</p>
+<h3>Choosing</h3>
+<p>Second, the loop decides which patterns are worth acting on now.</p>
+<p>This is the choosing cycle. It is about comparing possible improvements, applying limits, and selecting only a small set.</p>
+<h3>Learning</h3>
+<p>Third, the loop compares its choices with later outcomes.</p>
+<p>This is the learning cycle. It is about asking whether the loop was right, partly right, too cautious, or too confident.</p>
+<p>All three cycles matter.</p>
+<p>If sensing is weak, the loop misses real problems.</p>
+<p>If choosing is weak, the loop chases the wrong work.</p>
+<p>If learning is weak, the loop keeps making the same quality of decision forever.</p>
 <h2>How the loop works</h2>
 <h3>1. It notices repeat work</h3>
 <p>The loop starts by collecting signals from the work already happening around it.</p>
@@ -140,12 +155,24 @@
 </ul>
 <p>Each signal is saved as an observation. An observation is a small record of what happened, where it happened, what kind of problem it was, and any evidence that came with it.</p>
 <p>This gives the loop raw material to work with. A single signal may be noise. A pattern of similar signals is more interesting.</p>
+<p>The quality of these observations matters a lot.</p>
+<p>If they are vague, the loop cannot tell one kind of problem from another.</p>
+<p>If they are too narrow, the loop misses recurrence because the same pain is described in slightly different words.</p>
+<p>So the observation layer is doing an important job. It is turning messy workflow events into signals the loop can compare.</p>
 <h3>2. It turns repeat signals into candidates</h3>
 <p>When the loop sees similar observations coming back again and again, it groups them together.</p>
 <p>That group becomes an improvement candidate.</p>
 <p>A candidate is the loop's way of saying:</p>
 <p>"This looks like the same problem returning in different runs. It may be worth fixing in a more permanent way."</p>
 <p>Each candidate has its own identity. That matters, because the loop needs to keep talking about the same problem over time instead of losing it and recreating it from scratch.</p>
+<p>This grouping step is where the loop stops being a list of complaints and starts becoming a system.</p>
+<p>Without grouping, every fresh failure would look new.</p>
+<p>With grouping, the loop can say:</p>
+<ul>
+<li>this is happening again</li>
+<li>it is happening in the same part of the flow</li>
+<li>it may now be worth fixing in a durable way</li>
+</ul>
 <h3>3. It keeps memory for each candidate</h3>
 <p>The loop keeps more than a title and a score. It keeps memory.</p>
 <p>That memory includes:</p>
@@ -159,6 +186,9 @@
 </ul>
 <p>This means the loop can remember whether a candidate is new, recurring, blocked, reverted, monitored, or already partly understood.</p>
 <p>Without that memory, the loop would only be a recurrence detector. With memory, it becomes capable of learning.</p>
+<p>This memory also stops the loop from becoming forgetful in a dangerous way.</p>
+<p>If a candidate was already tried and failed, or was reviewed and deliberately held back, the loop should not behave as if none of that happened.</p>
+<p>That is why candidate history is not an optional extra. It is what lets the loop build judgement instead of just spotting repetition.</p>
 <h3>4. It scores the candidates</h3>
 <p>The policy layer reads the candidate memory and decides how promising each candidate looks.</p>
 <p>It does not only ask, "How often did this happen?"</p>
@@ -173,6 +203,15 @@
 </ul>
 <p>This turns the candidate list into something the loop can reason about.</p>
 <p>Some candidates are obvious and well supported. Others are uncertain. The policy layer can treat them differently.</p>
+<p>This is where belief starts to matter.</p>
+<p>The loop is not only storing facts about the candidate. It is also storing a view of how believable those facts are.</p>
+<p>For example:</p>
+<ul>
+<li>a candidate with many repeat observations may still be weak if all the evidence is structural and none of it is measured</li>
+<li>a candidate with fewer observations may still matter if the downside is large</li>
+<li>a candidate may look promising, but still carry too much uncertainty to deserve a strong route</li>
+</ul>
+<p>So the policy layer is not just counting. It is judging under uncertainty.</p>
 <h3>5. It builds a portfolio, not just a ranking</h3>
 <p>The loop does not simply pick the single highest score and ignore the rest.</p>
 <p>Instead, it builds a portfolio: a small set of candidates worth acting on now.</p>
@@ -185,6 +224,16 @@
 <li>varied enough to keep learning</li>
 </ul>
 <p>This is also where exploration appears. If the loop is too conservative, it only repeats what it already believes. If it is too adventurous, it creates noise. The portfolio step is where that balance starts.</p>
+<p>This is one of the deepest parts of the loop.</p>
+<p>The loop is trying to answer two questions at once:</p>
+<ul>
+<li>what is most worth doing now</li>
+<li>what do we still need to learn</li>
+</ul>
+<p>Those questions are not the same.</p>
+<p>If the loop only follows the safest-looking option, it may become narrow and stale.</p>
+<p>If it chases uncertainty too often, it may waste time and damage trust.</p>
+<p>So the portfolio is doing more than ranking. It is balancing exploitation and learning.</p>
 <h3>6. It applies control before anything moves</h3>
 <p>Before the selected candidates are handed off, the governance layer checks whether the choices are stable.</p>
 <p>This is where the loop tries to avoid thrashing.</p>
@@ -193,6 +242,12 @@
 <p>"Pick whatever is highest right now."</p>
 <p>It is closer to:</p>
 <p>"Pick a sensible set, then keep the system steady enough for the results to mean something."</p>
+<p>This matters because a self-improving loop can fool itself very easily.</p>
+<p>If it changes too many things too quickly, then later outcomes become hard to interpret.</p>
+<p>Was the improvement real?</p>
+<p>Was the change caused by the new policy?</p>
+<p>Was it just noise?</p>
+<p>Governance helps protect the loop from learning the wrong lesson from unstable choices.</p>
 <h3>7. It hands work into the normal queue</h3>
 <p>Once a candidate survives scoring and control, it is handed back into the same queue as other work.</p>
 <p>That handoff can send the work to:</p>
@@ -203,6 +258,9 @@
 </ul>
 <p>This is important. The self-improving loop does not run outside the real workflow. It does not create a private side road where improvement work escapes normal discipline.</p>
 <p>It sends work into the same queue, where it has to be understood, planned, and built like anything else.</p>
+<p>That is a big design choice.</p>
+<p>It means the self-improving loop is not allowed to grade its own homework in private.</p>
+<p>Its candidates have to survive contact with the same fact-finding, planning, and build discipline as any other work item.</p>
 <h3>8. It records what happened after handoff</h3>
 <p>After the queued work moves forward, the loop records what happened.</p>
 <p>That record may show:</p>
@@ -218,6 +276,15 @@
 <p>"What did we choose?"</p>
 <p>It is also asking:</p>
 <p>"What happened after we chose it?"</p>
+<p>This is the closure seam.</p>
+<p>If the loop cannot connect a decision to what happened later, then it cannot tell the difference between:</p>
+<ul>
+<li>a good idea that worked</li>
+<li>a good idea that was never really tried</li>
+<li>a bad idea that was correctly rejected</li>
+<li>an uncertain idea that still needs more time</li>
+</ul>
+<p>Outcome closure is what turns action into learning.</p>
 <h3>9. It learns from the results</h3>
 <p>The audit layer reads the stored decisions and compares them with later results.</p>
 <p>This is where the loop checks whether its own judgement is improving.</p>
@@ -230,6 +297,85 @@
 </ul>
 <p>That learning then feeds the next run.</p>
 <p>So the next time the loop scores candidates, it can use more than recurrence alone. It can use the memory of what worked, what failed, and where it was too sure or not sure enough.</p>
+<p>That feedback is what makes the loop self-improving.</p>
+<p>The loop is not self-improving because it generates ideas about itself.</p>
+<p>It is self-improving because each round can change the quality of the next round's judgement.</p>
+<h2>One candidate through the loop</h2>
+<p>It helps to see one candidate move through the system.</p>
+<p>Imagine the same build pain appears several times:</p>
+<ul>
+<li>a manual step keeps being repeated during builds</li>
+<li>the same fix keeps being rediscovered</li>
+<li>the same class of failure keeps showing up in output and post-build notes</li>
+</ul>
+<p>The loop would handle that pattern like this:</p>
+<pre class="mermaid">sequenceDiagram
+    participant S as Signal sources
+    participant C as Candidate memory
+    participant P as Policy engine
+    participant G as Governance
+    participant Q as Normal queue
+    participant O as Outcome records
+    participant A as Audit layer
+
+    S->>C: repeated observations arrive
+    C->>C: group into one candidate
+    C->>P: candidate with memory and evidence
+    P->>G: ranked candidate and route suggestion
+    G->>Q: safe handoff to fact-find, plan, or build
+    Q->>O: work happens and result is recorded
+    O->>A: outcome is compared with prior decision
+    A->>C: beliefs and judgement are updated</pre>
+<p>The important point is that the candidate does not disappear when the work leaves the queue.</p>
+<p>The loop keeps watching it before, during, and after the handoff.</p>
+<p>That is how it learns whether its earlier judgement was sound.</p>
+<h2>How evidence gets stronger</h2>
+<p>Not all evidence is equal.</p>
+<p>The loop tries to move from weaker evidence toward stronger evidence.</p>
+<h3>Structural evidence</h3>
+<p>This is evidence that something happened in the workflow.</p>
+<p>For example:</p>
+<ul>
+<li>repeated build failures</li>
+<li>repeated manual fixes</li>
+<li>repeated follow-up work</li>
+</ul>
+<p>Structural evidence is useful because it shows recurrence.</p>
+<p>But it does not yet prove that a change improved the outcome.</p>
+<h3>Measured evidence</h3>
+<p>This is evidence tied to a measurable effect.</p>
+<p>For example:</p>
+<ul>
+<li>time saved</li>
+<li>failure rate reduced</li>
+<li>fewer repeats of the same manual step</li>
+</ul>
+<p>Measured evidence is stronger because it starts to connect a change with an effect you can compare.</p>
+<h3>Verified evidence</h3>
+<p>This is measured evidence that has survived enough checking to be trusted.</p>
+<p>That usually means the outcome is linked back to the candidate, the measurement window is known, and the result is not just a one-off snapshot with no context.</p>
+<p>The loop needs this ladder of evidence because self-improvement can easily become storytelling.</p>
+<p>A team can feel that a change helped.</p>
+<p>The loop is trying to know whether it helped.</p>
+<h2>How the loop changes its own judgement</h2>
+<p>The loop does not only collect new facts. It also updates how it judges similar problems in the future.</p>
+<p>That update can happen in several ways.</p>
+<h3>It changes confidence</h3>
+<p>If the loop keeps making correct calls in one kind of situation, confidence can rise.</p>
+<p>If it keeps being wrong, confidence should fall.</p>
+<h3>It changes route strength</h3>
+<p>Some candidates deserve fact-find because the evidence is still weak.</p>
+<p>Others deserve direct planning or build attention because the pattern is clearer and the risk is controlled.</p>
+<p>The loop learns that difference over time.</p>
+<h3>It changes how much it explores</h3>
+<p>If the loop is already well calibrated in one area, it may not need much exploration there.</p>
+<p>If it is uncertain or repeatedly surprised, it may need to learn more before becoming confident.</p>
+<h3>It changes how cautious it is</h3>
+<p>If one class of decision creates instability or poor outcomes, the loop should become more conservative there.</p>
+<p>If another class is consistently well judged, it may be safe to give that class a little more room.</p>
+<p>This is why the loop needs both memory and audit.</p>
+<p>Without memory, it forgets the past.</p>
+<p>Without audit, it remembers the past but does not know what it means.</p>
 <h2>What the loop stores</h2>
 <p>The self-improving loop works because it keeps several kinds of records at once.</p>
 <h3>Observations</h3>
@@ -252,6 +398,17 @@
 <li>what happened afterwards</li>
 </ul>
 <p>That chain is what makes learning possible.</p>
+<p>This stored chain also makes the loop inspectable.</p>
+<p>When the loop makes a poor decision, the goal is not just to notice that it was poor.</p>
+<p>The goal is to be able to ask:</p>
+<ul>
+<li>was the signal weak</li>
+<li>was the grouping wrong</li>
+<li>was the policy too confident</li>
+<li>did governance fail to slow it down</li>
+<li>did the queue work never really close</li>
+</ul>
+<p>That is a much more useful kind of failure than a black box mistake.</p>
 <h2>Safety ladder</h2>
 <p>The self-improving loop does not behave the same way at all times. It has different modes of authority.</p>
 <pre class="mermaid">flowchart LR
@@ -263,12 +420,39 @@
 <h3>Shadow</h3>
 <p>In <code>Shadow</code>, the loop watches the workflow, scores candidates, and records what it would have done.</p>
 <p>It learns without changing the queue.</p>
+<p>Shadow is valuable because it lets the loop build a history before it is trusted with influence.</p>
+<p>The loop can ask:</p>
+<ul>
+<li>what would I have selected</li>
+<li>what actually happened instead</li>
+<li>would my choice have been better, worse, or simply different</li>
+</ul>
 <h3>Advisory</h3>
 <p>In <code>Advisory</code>, the loop can rank and recommend candidates, but a human still decides what to act on.</p>
 <p>The loop is now part of the judgement process, but not yet part of the actuation path.</p>
+<p>Advisory mode is where the loop starts to prove whether its recommendations are useful to a human operator.</p>
+<p>If the advice is consistently poor, the loop should not move upward.</p>
+<p>If the advice is consistently strong, the loop can earn more trust.</p>
 <h3>Guarded trial</h3>
 <p>In <code>Guarded trial</code>, the loop can influence a small, fenced part of the workflow.</p>
 <p>This is the narrowest form of real control. The loop is now affecting what happens next, but only inside a bounded, monitored area.</p>
+<p>Guarded trial exists because full control is not the first goal.</p>
+<p>The first goal is to find out whether the loop can influence real work without becoming unstable, overconfident, or hard to audit.</p>
+<h2>What can go wrong</h2>
+<p>The self-improving loop is useful, but it has failure modes of its own.</p>
+<h3>It can chase noise</h3>
+<p>If the signal layer is weak, the loop may treat random recurrence as a meaningful pattern.</p>
+<h3>It can become too confident</h3>
+<p>If the loop starts trusting thin evidence, it may route work too strongly and too early.</p>
+<h3>It can become too timid</h3>
+<p>If the loop only waits for perfect evidence, it may never help with real improvement.</p>
+<h3>It can forget why a choice was made</h3>
+<p>If decision records are weak, later audits cannot tell whether a result came from bad judgement, missing evidence, or simple bad luck.</p>
+<h3>It can learn from the wrong window</h3>
+<p>If outcomes are recorded too early, too late, or without enough context, the loop may update itself on the basis of misleading data.</p>
+<p>That is why the system has safety ladders, hold windows, and audit surfaces.</p>
+<p>The loop is not trying to be fearless.</p>
+<p>It is trying to become more reliable without fooling itself.</p>
 <h2>Why this matters</h2>
 <p>Without the self-improving loop, the startup loop can still do useful work, but it does not improve its own judgement very well.</p>
 <p>It can spot work. It can route work. It can finish work.</p>
@@ -276,7 +460,7 @@
 <p>The self-improving loop adds that extra layer. It helps the system notice repeated friction, remember what it has already tried, compare decisions with outcomes, and make the next round of choices a little better than the last.</p>
     <div class="meta">
       <div>Source: <code>docs/business-os/startup-loop-workflow.user.md</code></div>
-      <div>Generated: 2026-03-10T15:16:14.942Z</div>
+      <div>Generated: 2026-03-10T15:23:41.092Z</div>
     </div>
   </main>
   <script type="module">

@@ -81,12 +81,12 @@ describe("buildLinks", () => {
     expect(it?.href).toBe(`${origin}/it/${getSlug("assistance", "it")}/arrivo-in-traghetto`);
   });
 
-  it("produces localized alternates for apartment page", () => {
-    const links = buildLinks({ lang: "en", origin, path: "/en/private-rooms" });
+  it("produces localized alternates for private booking page", () => {
+    const links = buildLinks({ lang: "en", origin, path: "/en/book-private-accommodations" });
     const fr = links.find((link) => link.hrefLang === "fr");
     const it = links.find((link) => link.hrefLang === "it");
-    expect(fr?.href).toBe(`${origin}/fr/chambres-privees`);
-    expect(it?.href).toBe(`${origin}/it/camere-private`);
+    expect(fr?.href).toBe(`${origin}/fr/reserver-hebergements-prives`);
+    expect(it?.href).toBe(`${origin}/it/prenota-alloggi-privati`);
   });
 
   it("produces localized alternates for guides pages", () => {

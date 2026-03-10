@@ -27,6 +27,7 @@ import { resolveGuideCardImage } from "@/lib/guides/guideCardImage";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import { getGuideManifestEntry } from "@/routes/guides/guide-manifest";
 import { writeAttribution } from "@/utils/entryAttribution";
+import { buildIntentAwareBookingCopy } from "@/utils/intentAwareBookingCopy";
 import { resolveIntentAwareBookingSurface } from "@/utils/intentAwareBookingSurface";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
@@ -133,19 +134,6 @@ function seedBundle(lang: string, namespace: string, bundle: Record<string, unkn
   i18n.addResourceBundle(lang, namespace, bundle, true, true);
 }
 
-function resolveHeroIntro(t: TFunction<"assistanceSection">): string {
-  const heroIntroKey = "heroIntro" as const;
-  const heroIntroRaw = t(heroIntroKey, { defaultValue: "" }) as string;
-  if (heroIntroRaw && heroIntroRaw !== heroIntroKey) {
-    return heroIntroRaw;
-  }
-
-  return t("amaParagraph1", {
-    defaultValue:
-      "Message us to plan terrace evenings, hikes, or transfers; we’ll reply with curated tips and confirmations.",
-  }) as string;
-}
-
 function resolvePopularGuidesHeading(t: TFunction<"assistanceSection">): string {
   const popularGuidesHeadingKey = "popularGuides" as const;
   const popularGuidesHeadingRaw = t(popularGuidesHeadingKey, { defaultValue: "" }) as string;
@@ -162,15 +150,15 @@ function resolvePopularGuidesHeading(t: TFunction<"assistanceSection">): string 
 
 function AssistanceBookingActions({
   bookingSurface,
+  chooserLabel,
   dormsLabel,
-  privateLabel,
-  bookDirectLabel,
+  privateBookingLabel,
   onSelect,
 }: {
   bookingSurface: ReturnType<typeof resolveIntentAwareBookingSurface>;
+  chooserLabel: string;
   dormsLabel: string;
-  privateLabel: string;
-  bookDirectLabel: string;
+  privateBookingLabel: string;
   onSelect: (input: {
     href: string;
     resolvedIntent: "hostel" | "private";
@@ -186,7 +174,7 @@ function AssistanceBookingActions({
           href={bookingSurface.primary.href}
           onClick={() => onSelect(bookingSurface.primary)}
         >
-          {bookingSurface.primary.resolvedIntent === "private" ? privateLabel : bookDirectLabel}
+          {bookingSurface.primary.resolvedIntent === "private" ? privateBookingLabel : dormsLabel}
         </Link>
       </Button>
     );
@@ -194,6 +182,9 @@ function AssistanceBookingActions({
 
   return (
     <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+      <p className="sm:col-span-2 text-sm font-medium text-brand-text/80 dark:text-brand-text/80">
+        {chooserLabel}
+      </p>
       <Button asChild size="sm" className="w-full">
         <Link
           href={bookingSurface.hostel.href}
@@ -207,10 +198,88 @@ function AssistanceBookingActions({
           href={bookingSurface.private.href}
           onClick={() => onSelect(bookingSurface.private)}
         >
-          {privateLabel}
+          {privateBookingLabel}
         </Link>
       </Button>
     </div>
+  );
+}
+
+function AssistanceBookingPanel({
+  assistanceBookingPanel,
+  bookingCopy,
+  bookingOptions,
+  bookingSurface,
+  buttonClassName,
+  dormsLabel,
+  onSelect,
+  privateBookingLabel,
+  translate,
+}: {
+  assistanceBookingPanel: ReturnType<typeof buildIntentAwareBookingCopy>["chooser"];
+  bookingCopy: ReturnType<typeof buildIntentAwareBookingCopy>;
+  bookingOptions: Partial<Record<string, string>>;
+  bookingSurface: ReturnType<typeof resolveIntentAwareBookingSurface>;
+  buttonClassName: string;
+  dormsLabel: string;
+  onSelect: (input: {
+    href: string;
+    resolvedIntent: "hostel" | "private";
+    productType: string | null;
+    decisionMode: "direct_resolution" | "chooser";
+    destinationFunnel: "hostel_central" | "private";
+  }) => void;
+  privateBookingLabel: string;
+  translate: TFunction<"assistanceSection">;
+}): JSX.Element {
+  return (
+    <Section className="mt-8">
+      <div className="rounded-3xl border border-brand-outline/20 bg-gradient-to-br from-brand-surface/60 via-brand-bg to-brand-bg p-8 shadow-sm dark:border-brand-outline/20 dark:from-brand-surface/90 dark:via-brand-surface/70 dark:to-brand-surface/50">
+        <Stack className="gap-6 lg:flex-row lg:items-start lg:justify-between">
+          <Container className="max-w-xl space-y-4">
+            <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary dark:text-brand-secondary">
+              {translate("heroEyebrow", {
+                defaultValue: translate("heading", { defaultValue: "Help Centre" }) as string,
+              })}
+            </p>
+            <h2 className="text-3xl font-bold leading-tight text-brand-heading dark:text-brand-text">
+              {assistanceBookingPanel.heading}
+            </h2>
+            <p className="text-base text-brand-text/80 dark:text-brand-text/80">
+              {assistanceBookingPanel.subcopy}
+            </p>
+          </Container>
+          <Container className="w-full max-w-sm rounded-2xl bg-brand-bg/80 p-6 shadow-inner backdrop-blur dark:bg-brand-surface/60">
+            <dl className="space-y-2 text-sm text-brand-text dark:text-brand-text">
+              <div>
+                <dt className="font-semibold text-brand-heading dark:text-brand-text">
+                  {translate("addressLabel", { defaultValue: "Address" })}
+                </dt>
+                <dd>{translate("addressValue", { defaultValue: "Via G. Marconi, 358, 84017, Positano" })}</dd>
+              </div>
+            </dl>
+            <div className="mt-5">
+              <AssistanceBookingActions
+                bookingSurface={bookingSurface}
+                chooserLabel={bookingCopy.chooser.subcopy}
+                dormsLabel={dormsLabel}
+                privateBookingLabel={privateBookingLabel}
+                onSelect={onSelect}
+              />
+            </div>
+            <p className="mt-4 text-sm font-semibold text-brand-heading dark:text-brand-text">
+              {translate("otherBookingOptions", { defaultValue: "Other booking options" })}
+            </p>
+            <Cluster className="mt-3">
+              <BookingOptionsButtons
+                bookingOptions={bookingOptions}
+                buttonClassName={buttonClassName}
+              />
+            </Cluster>
+          </Container>
+        </Stack>
+      </div>
+    </Section>
   );
 }
 
@@ -255,7 +324,6 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
       typeof i18n?.getFixedT === "function" ? i18n.getFixedT("en", "assistance") : undefined;
     return typeof maybeFixed === "function" ? (maybeFixed as TFunction) : (tAssistance as TFunction);
   })();
-  const heroIntro = resolveHeroIntro(t);
   const bookingOptions =
     (t("bookingOptions", { returnObjects: true }) as Partial<Record<string, string>>) || {};
   const popularGuidesHeading = resolvePopularGuidesHeading(t);
@@ -280,7 +348,19 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
     [currentAttribution, resolvedLang],
   );
   const dormsLabel = (tHeader("rooms", { defaultValue: "Dorms" }) as string) || "Dorms";
-  const privateLabel = (tHeader("apartment", { defaultValue: "Private Rooms" }) as string) || "Private Rooms";
+  const privateBookingLabel =
+    (tHeader("navChildren.apartment.bookPrivate", {
+      defaultValue: "Book private accommodations",
+    }) as string) || "Book private accommodations";
+  const bookingCopy = useMemo(
+    () => buildIntentAwareBookingCopy({ dormsLabel, privateBookingLabel }),
+    [dormsLabel, privateBookingLabel],
+  );
+  const assistanceBookingPanel = bookingSurface.mode === "direct"
+    ? bookingSurface.primary.resolvedIntent === "private"
+      ? bookingCopy.direct.private
+      : bookingCopy.direct.hostel
+    : bookingCopy.chooser;
   const handleBookingSelection = useCallback((input: {
     href: string;
     resolvedIntent: "hostel" | "private";
@@ -365,51 +445,17 @@ function AssistanceIndexContent({ lang, serverI18n }: Props): JSX.Element {
         renderLink={renderAssistanceLink}
       />
 
-      <Section className="mt-8">
-        <div className="rounded-3xl border border-brand-outline/20 bg-gradient-to-br from-brand-surface/60 via-brand-bg to-brand-bg p-8 shadow-sm dark:border-brand-outline/20 dark:from-brand-surface/90 dark:via-brand-surface/70 dark:to-brand-surface/50">
-          <Stack className="gap-6 lg:flex-row lg:items-start lg:justify-between">
-            <Container className="max-w-xl space-y-4">
-              <p className="text-sm font-semibold uppercase tracking-wide text-brand-primary dark:text-brand-secondary">
-                {t("heroEyebrow", {
-                  defaultValue: t("heading", { defaultValue: "Help Centre" }) as string,
-                })}
-              </p>
-              <h2 className="text-3xl font-bold leading-tight text-brand-heading dark:text-brand-text">
-                {t("subheading", { defaultValue: "Book, explore & connect with us online." })}
-              </h2>
-              <p className="text-base text-brand-text/80 dark:text-brand-text/80">{heroIntro}</p>
-            </Container>
-            <Container className="w-full max-w-sm rounded-2xl bg-brand-bg/80 p-6 shadow-inner backdrop-blur dark:bg-brand-surface/60">
-              <dl className="space-y-2 text-sm text-brand-text dark:text-brand-text">
-                <div>
-                  <dt className="font-semibold text-brand-heading dark:text-brand-text">
-                    {t("addressLabel", { defaultValue: "Address" })}
-                  </dt>
-                  <dd>{t("addressValue", { defaultValue: "Via G. Marconi, 358, 84017, Positano" })}</dd>
-                </div>
-              </dl>
-              <div className="mt-5">
-                <AssistanceBookingActions
-                  bookingSurface={bookingSurface}
-                  dormsLabel={dormsLabel}
-                  privateLabel={privateLabel}
-                  bookDirectLabel={t("bookDirect", { defaultValue: "Book Direct" }) as string}
-                  onSelect={handleBookingSelection}
-                />
-              </div>
-              <p className="mt-4 text-sm font-semibold text-brand-heading dark:text-brand-text">
-                {t("otherBookingOptions", { defaultValue: "Other booking options" })}
-              </p>
-              <Cluster className="mt-3">
-                <BookingOptionsButtons
-                  bookingOptions={bookingOptions}
-                  buttonClassName={BOOKING_BUTTON_CLASSNAME}
-                />
-              </Cluster>
-            </Container>
-          </Stack>
-        </div>
-      </Section>
+      <AssistanceBookingPanel
+        assistanceBookingPanel={assistanceBookingPanel}
+        bookingCopy={bookingCopy}
+        bookingOptions={bookingOptions}
+        bookingSurface={bookingSurface}
+        buttonClassName={BOOKING_BUTTON_CLASSNAME}
+        dormsLabel={dormsLabel}
+        onSelect={handleBookingSelection}
+        privateBookingLabel={privateBookingLabel}
+        translate={t}
+      />
 
       {/* Popular guides cluster for internal linking */}
       <AssistanceQuickLinksSectionUi

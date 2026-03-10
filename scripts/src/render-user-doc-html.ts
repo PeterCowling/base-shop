@@ -4,6 +4,8 @@ import path from "node:path";
 import process from "node:process";
 import { pathToFileURL } from "node:url";
 
+import { load as loadYaml } from "js-yaml";
+
 const VALID_TEMPLATES = ["basic", "rich"] as const;
 type Template = (typeof VALID_TEMPLATES)[number];
 
@@ -16,6 +18,13 @@ type CliOptions = {
   template: Template;
   palette: Palette;
   paletteFile?: string;
+};
+
+type RenderNavMode = "default" | "self-improving";
+
+type ParsedMarkdown = {
+  body: string;
+  frontmatter: Record<string, unknown>;
 };
 
 function printUsage(): void {
@@ -109,13 +118,96 @@ function parseArgs(argv: string[]): CliOptions {
   return options;
 }
 
-function stripFrontMatter(markdown: string): string {
-  if (!markdown.startsWith("---\n")) return markdown;
+function parseFrontMatter(markdown: string): ParsedMarkdown {
+  if (!markdown.startsWith("---\n")) {
+    return { body: markdown, frontmatter: {} };
+  }
 
   const closingFence = markdown.indexOf("\n---\n", 4);
-  if (closingFence < 0) return markdown;
+  if (closingFence < 0) {
+    return { body: markdown, frontmatter: {} };
+  }
 
-  return markdown.slice(closingFence + 5).replace(/^\n+/, "");
+  const rawFrontmatter = markdown.slice(4, closingFence);
+  const body = markdown.slice(closingFence + 5).replace(/^\n+/, "");
+
+  try {
+    const parsed = loadYaml(rawFrontmatter);
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+      return { body, frontmatter: parsed as Record<string, unknown> };
+    }
+  } catch {
+    // Ignore malformed frontmatter and fall back to body-only rendering.
+  }
+
+  return { body, frontmatter: {} };
+}
+
+function toPosixRelative(value: string): string {
+  return value.split(path.sep).join("/");
+}
+
+function resolveRenderNavMode(frontmatter: Record<string, unknown>): RenderNavMode {
+  const raw = frontmatter["Render-Nav"];
+  if (raw === "self-improving") {
+    return raw;
+  }
+
+  return "default";
+}
+
+function buildNavLink(targetPath: string, outputDir: string): string {
+  return toPosixRelative(path.relative(outputDir, targetPath));
+}
+
+function buildNavHtml(outputPath: string, navMode: RenderNavMode): string {
+  const outputDir = path.dirname(outputPath);
+  const businessOsDir = path.resolve("docs/business-os");
+  const workflowHref = buildNavLink(path.join(businessOsDir, "startup-loop-workflow.user.html"), outputDir);
+  const loopFilesHref = buildNavLink(path.join(businessOsDir, "startup-loop-files.user.html"), outputDir);
+  const fileTypesHref = buildNavLink(path.join(businessOsDir, "startup-loop-file-types.user.html"), outputDir);
+  const outputRegistryHref = buildNavLink(
+    path.join(businessOsDir, "startup-loop-output-registry.user.html"),
+    outputDir
+  );
+  const ideasHref = buildNavLink(path.join(businessOsDir, "ideas.user.html"), outputDir);
+  const processHref = buildNavLink(path.join(businessOsDir, "process-improvements.user.html"), outputDir);
+  const followUpHref = buildNavLink(path.join(businessOsDir, "follow-up.user.html"), outputDir);
+
+  const links =
+    navMode === "self-improving"
+      ? [
+          `<a href="${workflowHref}">Workflow</a>`,
+          `<a href="${loopFilesHref}">Loop Files</a>`,
+          `<a href="${fileTypesHref}">File Types</a>`,
+          `<a href="${outputRegistryHref}">Output Registry</a>`,
+          `<a href="#self-improving-loop">Self Improving</a>`,
+          `<a href="${processHref}">Process</a>`,
+        ]
+      : [
+          `<a href="${workflowHref}">Workflow</a>`,
+          `<a href="${loopFilesHref}">Loop Files</a>`,
+          `<a href="${fileTypesHref}">File Types</a>`,
+          `<a href="${outputRegistryHref}">Output Registry</a>`,
+          `<a href="${ideasHref}">Ideas</a>`,
+          `<a href="${processHref}">Process</a>`,
+          `<a href="${followUpHref}">Follow-up</a>`,
+        ];
+
+  const activeScript =
+    navMode === "self-improving"
+      ? `(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){var href=a.getAttribute("href")||"";if(href.charAt(0)==="#"&&location.hash===href)a.classList.add("sl-on");else if(href.charAt(0)!=="#"&&href.split("/").pop()===p&&location.hash==="")a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()`
+      : `(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()`;
+
+  return `<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span>${links.join("")}<button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>${activeScript}</script></nav>`;
+}
+
+function applyNavAnchors(html: string, navMode: RenderNavMode): string {
+  if (navMode !== "self-improving") {
+    return html;
+  }
+
+  return html.replace("<h1>Self Improving Loop</h1>", '<h1 id="self-improving-loop">Self Improving Loop</h1>');
 }
 
 function extractTitle(markdownBody: string, sourcePath: string): string {
@@ -288,12 +380,13 @@ const PALETTE_CSS: Record<Palette, string> = {
 
 function applyTemplate(
   template: string,
-  params: { title: string; sourcePath: string; htmlBody: string; palette: Palette },
+  params: { title: string; sourcePath: string; htmlBody: string; palette: Palette; navHtml: string },
 ): string {
   const generatedAtIso = new Date().toISOString();
   const sourceRelative = path.relative(process.cwd(), params.sourcePath);
   return template
     .replace("{{TITLE}}", params.title)
+    .replace("{{NAV_HTML}}", params.navHtml)
     .replace("{{BODY}}", params.htmlBody)
     .replace("{{SOURCE}}", sourceRelative)
     .replace("{{GENERATED_AT}}", generatedAtIso)
@@ -533,13 +626,16 @@ async function processFile(
 ): Promise<void> {
   const absoluteInputPath = path.resolve(inputPath);
   const markdownRaw = await fs.readFile(absoluteInputPath, "utf8");
-  const markdownBody = stripFrontMatter(markdownRaw);
+  const parsedMarkdown = parseFrontMatter(markdownRaw);
+  const markdownBody = parsedMarkdown.body;
   const title = extractTitle(markdownBody, absoluteInputPath);
+  const outputPath = resolveOutputPath(absoluteInputPath, options.outDir ? path.resolve(options.outDir) : undefined);
+  const navMode = resolveRenderNavMode(parsedMarkdown.frontmatter);
 
   const rawHtmlBody = await renderMarkdownToHtml(markdownBody);
   const mermaidHtmlBody = transformMermaidBlocks(rawHtmlBody);
   const chartHtmlBody = transformChartBlocks(mermaidHtmlBody);
-  const htmlBody = wrapEngineeringAppendix(chartHtmlBody);
+  const htmlBody = applyNavAnchors(wrapEngineeringAppendix(chartHtmlBody), navMode);
 
   // Try to use a template file; fall back to inline HTML (basic backward compat).
   const templateContent = await loadTemplate(options.template);
@@ -551,6 +647,7 @@ async function processFile(
       sourcePath: absoluteInputPath,
       htmlBody,
       palette: options.palette,
+      navHtml: buildNavHtml(outputPath, navMode),
     });
     // --palette-file overrides the named palette with custom CSS content.
     if (options.paletteFile) {
@@ -570,7 +667,6 @@ async function processFile(
     wrappedHtml = wrappedHtml.replace("</body>", `${CHARTJS_LOADER}\n</body>`);
   }
 
-  const outputPath = resolveOutputPath(absoluteInputPath, options.outDir ? path.resolve(options.outDir) : undefined);
   await fs.mkdir(path.dirname(outputPath), { recursive: true });
   await fs.writeFile(outputPath, wrappedHtml, "utf8");
 

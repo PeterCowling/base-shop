@@ -37,15 +37,23 @@ export function DealsPerksSection({
 
 export function DealsPrimaryCtaSection({
   actions,
+  subtitle,
+  title,
 }: {
   actions: Array<{
     label: string;
     onClick: NonNullable<ComponentProps<typeof Button>["onClick"]>;
     tone?: ComponentProps<typeof Button>["tone"];
   }>;
+  subtitle?: string;
+  title?: string;
 }): JSX.Element {
   return (
     <Section padding="default" className="text-center">
+      {title ? <h2 className="text-2xl font-semibold text-brand-heading">{title}</h2> : null}
+      {subtitle ? (
+        <p className="mt-3 text-base text-brand-text/80">{subtitle}</p>
+      ) : null}
       <Cluster justify="center" className="gap-3">
         {actions.map((action) => (
           <Button key={action.label} onClick={action.onClick} size="md" tone={action.tone}>

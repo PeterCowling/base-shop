@@ -1,6 +1,11 @@
 import fs from "node:fs";
 import path from "node:path";
 
+import { getPrivateRoomChildSlug } from "@acme/ui/config/privateRoomChildSlugs";
+
+import { type AppLanguage, i18nConfig } from "../src/i18n.config";
+import { getSlug } from "../src/utils/slug";
+
 const DEFAULT_OUT_DIR = "out";
 
 type RouteAudit = {
@@ -10,6 +15,26 @@ type RouteAudit = {
   forbiddenHtml?: string[];
   forbiddenText?: string[];
 };
+
+const APARTMENT_HTML_KEY_LEAKS = [
+  "heroTitle",
+  "galleryHeading",
+  "fitCheck.heading",
+  "fitCheck.arrival.label",
+  "fitCheck.inside.label",
+  "fitCheck.sleeping.label",
+  "fitCheck.sound.label",
+  "fitCheck.bestFit.label",
+] as const;
+
+function buildApartmentRouteAudits(): RouteAudit[] {
+  return (i18nConfig.supportedLngs as AppLanguage[]).map((lang) => ({
+    route: `/${lang}/${getSlug("apartment", lang)}/${getPrivateRoomChildSlug("apartment", lang)}`,
+    expectedHtmlLang: lang,
+    expectedHtmlDir: lang === "ar" ? "rtl" : "ltr",
+    forbiddenHtml: [...APARTMENT_HTML_KEY_LEAKS],
+  }));
+}
 
 // Scope note:
 // - This guard owns rendered static HTML leaks on high-value commercial routes.
@@ -120,6 +145,7 @@ const ROUTE_AUDITS: RouteAudit[] = [
       "Book direct with Octorate",
     ],
   },
+  ...buildApartmentRouteAudits(),
 ];
 
 type Finding = {

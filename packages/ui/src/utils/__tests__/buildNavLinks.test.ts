@@ -51,7 +51,8 @@ describe("buildNavLinks", () => {
   it("apartment nav links to private booking and keeps detail children", () => {
     const { navLinks, slugs } = buildNavLinks("en", stub);
     const apartment = navLinks.find((l) => l.key === "apartment")!;
-    expect(apartment.to).toBe(slugs["apartment"]);
+    expect(apartment.to).toBe("/book-private-accommodations");
+    expect(apartment.to).not.toBe(slugs["apartment"]);
     expect(apartment.children?.[0]).toEqual({
       key: "apartment_book_private",
       to: "/book-private-accommodations",

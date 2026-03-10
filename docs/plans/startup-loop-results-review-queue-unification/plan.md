@@ -24,7 +24,7 @@ Auto-Build-Intent: plan-only
 The current startup-loop backlog is structurally split: `process-improvements.user.html` presents one idea backlog, but that backlog is still aggregated from both canonical queue state and build-review sidecars plus `completed-ideas.json` suppression. This plan fixes that in the only defensible order. First, define a canonical build-origin signal contract and harden the build-review emitters around it; then admit build-origin ideas into the normal ideas queue; then switch reporting and closure to queue-backed authority. Historical carry-over is treated explicitly, not hand-waved: after the live canonical path is in place, the plan audits the old report-only backlog and either executes a bounded carry-forward cutover in-thread or emits a dedicated follow-on project if the carry-over set is too large or too judgment-heavy.
 
 ## Active tasks
-- [ ] TASK-01: Define the canonical build-origin signal contract
+- [x] TASK-01: Define the canonical build-origin signal contract — Complete (2026-03-10)
 - [ ] TASK-02: Harden build-review emitters around the canonical contract
 - [ ] TASK-03: Implement build-review-to-queue admission and dedupe
 - [ ] TASK-04: Switch process-improvements idea backlog to queue-only sourcing
@@ -91,12 +91,12 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - Foundation Gate: Pass
 - Sequenced: Yes
 - Edge-case review complete: Yes
-- Auto-build eligible: No
+- Auto-build eligible: Yes
 
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | INVESTIGATE | Define the canonical build-origin signal contract | 75% | M | Pending | - | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
+| TASK-01 | INVESTIGATE | Define the canonical build-origin signal contract | 75% | M | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-02 | IMPLEMENT | Harden build-review emitters around the canonical contract and fail-closed surfacing | 85% | M | Pending | TASK-01 | TASK-03, TASK-04, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-03 | IMPLEMENT | Implement build-review-to-queue admission and dedupe | 80% | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-04 | IMPLEMENT | Switch process-improvements idea backlog to queue-only sourcing | 85% | M | Pending | TASK-03 | TASK-05, TASK-07, TASK-08, TASK-10 |
@@ -132,7 +132,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Affects:** `scripts/src/startup-loop/build/lp-do-build-results-review-extract.ts`, `scripts/src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts`, `scripts/src/startup-loop/build/generate-process-improvements.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10
@@ -157,6 +157,11 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - Modified behavior check:
     - current source precedence and title-based identity would be replaced; all direct readers must be named in the contract.
 - **What would make this >=90%:** a fixture set proving the contract against both sidecar formats and one real duplicate case.
+- **Build completion evidence (2026-03-10):**
+  - Wrote [build-origin-signal-contract.md](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-queue-unification/artifacts/build-origin-signal-contract.md).
+  - Verified current producer seams in [lp-do-build-results-review-extract.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/lp-do-build-results-review-extract.ts), [lp-do-build-pattern-reflection-extract.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts), [generate-process-improvements.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/generate-process-improvements.ts), and [self-evolving-from-build-output.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts).
+  - Captured one real duplicate-sidecar case from [results-review.signals.json](/Users/petercowling/base-shop/docs/plans/_archive/startup-loop-structured-sidecar-introduction/results-review.signals.json) and [pattern-reflection.entries.json](/Users/petercowling/base-shop/docs/plans/_archive/startup-loop-structured-sidecar-introduction/pattern-reflection.entries.json).
+  - Outcome: affirming. TASK-02, TASK-03, and TASK-06 stay at current confidence, but the contract ambiguity gate is now closed and Wave 2 is eligible.
 
 ### TASK-02: Harden build-review emitters around the canonical contract and fail-closed surfacing
 - **Type:** IMPLEMENT

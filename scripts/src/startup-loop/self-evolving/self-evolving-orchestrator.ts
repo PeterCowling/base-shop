@@ -55,6 +55,7 @@ import {
   enforceCreationGate,
   validateTransition,
 } from "./self-evolving-lifecycle.js";
+import { buildPolicyAuditTelemetry } from "./self-evolving-policy-audit.js";
 import { buildPortfolioSelection } from "./self-evolving-portfolio.js";
 import { buildPromotionGateDecisions } from "./self-evolving-promotion-gate.js";
 import {
@@ -768,6 +769,18 @@ export function runSelfEvolvingOrchestrator(
     nextPolicyState.last_decision_id = policyDecisions[policyDecisions.length - 1]?.decision_id ?? null;
   }
 
+  const dashboardEvaluation = buildPolicyEvaluationDataset({
+    decisions: [...priorPolicyDecisions, ...policyDecisions],
+    queue_dispatches: queueDispatches,
+    lifecycle_events: allEvents,
+    now,
+  });
+  const policyAudit = buildPolicyAuditTelemetry({
+    decisions: [...priorPolicyDecisions, ...policyDecisions],
+    evaluation_dataset: dashboardEvaluation,
+    generated_at: generatedAt,
+  });
+
   for (const candidate of generatedSeeds) {
     if (existingCandidateIds.has(candidate.candidate.candidate_id)) {
       continue;
@@ -814,7 +827,8 @@ export function runSelfEvolvingOrchestrator(
     policy_state: nextPolicyState,
     decision_records_count: decisionsBefore + policyDecisions.length,
     policy_decisions: policyDecisions,
-    evaluation_summary: historicalEvaluation.summary,
+    evaluation_summary: dashboardEvaluation.summary,
+    policy_audit: policyAudit,
     dependency_graph: dependencyGraph,
     survival_signals: survivalSignals,
   });

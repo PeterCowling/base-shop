@@ -35,6 +35,12 @@ export interface PolicyEvaluationRecord {
   verified_observation_ids: string[];
   outcome_reason_code: string | null;
   outcome_source_path: string | null;
+  implementation_status: ImprovementOutcome["implementation_status"] | null;
+  kept_or_reverted: ImprovementOutcome["kept_or_reverted"] | null;
+  measured_impact: number | null;
+  impact_confidence: number | null;
+  regressions_detected: number | null;
+  positive_outcome: boolean | null;
   linked_dispatch_count: number;
   recorded_at: string;
 }
@@ -61,6 +67,7 @@ export interface PolicyEvaluationDataset {
 interface OutcomeEventProjection {
   event_id: string;
   dispatch_id: string | null;
+  outcome: ImprovementOutcome | null;
   measurement_status: NonNullable<ImprovementOutcome["measurement_status"]> | null;
   maturity_status: ImprovementOutcome["maturity_status"] | null;
   completed_at: string;
@@ -137,6 +144,22 @@ function classifyOutcomeStatus(input: {
   return "censored";
 }
 
+function classifyPositiveOutcome(outcome: ImprovementOutcome | null): boolean | null {
+  if (!outcome) {
+    return null;
+  }
+  const measurementVerified =
+    outcome.measurement_status === "verified" ||
+    outcome.measurement_status === "verified_degraded";
+  return (
+    measurementVerified &&
+    outcome.implementation_status === "success" &&
+    outcome.kept_or_reverted === "kept" &&
+    outcome.measured_impact > 0 &&
+    outcome.regressions_detected === 0
+  );
+}
+
 function buildOutcomeEventMaps(events: readonly SelfEvolvingEvent[]): {
   byEventId: Map<string, SelfEvolvingEvent>;
   byDecisionId: Map<string, OutcomeEventProjection>;
@@ -157,6 +180,7 @@ function buildOutcomeEventMaps(events: readonly SelfEvolvingEvent[]): {
     const nextProjection: OutcomeEventProjection = {
       event_id: event.event_id,
       dispatch_id: outcome.dispatch_id ?? event.lifecycle?.dispatch_id ?? null,
+      outcome,
       measurement_status: outcome.measurement_status ?? null,
       maturity_status: outcome.maturity_status ?? null,
       completed_at: event.timestamp,
@@ -310,6 +334,12 @@ export function buildPolicyEvaluationDataset(input: {
           selectedDispatch?.completed_by?.micro_build_path ??
           outcomeProjection?.outcome_source_path ??
           null,
+        implementation_status: outcomeProjection?.outcome?.implementation_status ?? null,
+        kept_or_reverted: outcomeProjection?.outcome?.kept_or_reverted ?? null,
+        measured_impact: outcomeProjection?.outcome?.measured_impact ?? null,
+        impact_confidence: outcomeProjection?.outcome?.impact_confidence ?? null,
+        regressions_detected: outcomeProjection?.outcome?.regressions_detected ?? null,
+        positive_outcome: classifyPositiveOutcome(outcomeProjection?.outcome ?? null),
         linked_dispatch_count: linkedDispatches.length,
         recorded_at: completedAt ?? decision.created_at ?? nowIso,
       };

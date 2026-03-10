@@ -155,6 +155,14 @@ function buildValidPolicyDecision(): PolicyDecisionRecord {
       constraint_refs: ["risk:low"],
     },
     belief_state_id: "belief-1",
+    belief_audit: {
+      schema_version: "policy-belief-audit.v1",
+      success_probability_mean: 0.7,
+      positive_impact_probability_mean: 0.65,
+      guardrail_breach_probability_mean: 0.08,
+      evidence_weight: 0.85,
+      evidence_floor_met: true,
+    },
     eligible_actions: ["lp-do-fact-find", "lp-do-plan", "lp-do-build"],
     chosen_action: "lp-do-build",
     action_probability: null,
@@ -496,6 +504,22 @@ describe("self-evolving contract validators", () => {
     );
 
     rmSync(tempRoot, { recursive: true, force: true });
+  });
+
+  it("TASK-13 TC-01 rejects invalid belief audit snapshots on policy decisions", () => {
+    expect(
+      validatePolicyDecisionRecord({
+        ...buildValidPolicyDecision(),
+        belief_audit: {
+          schema_version: "policy-belief-audit.v1",
+          success_probability_mean: 1.2,
+          positive_impact_probability_mean: 0.4,
+          guardrail_breach_probability_mean: 0.1,
+          evidence_weight: 0.8,
+          evidence_floor_met: true,
+        },
+      }),
+    ).toContain("belief_audit.success_probability_mean");
   });
 
   it("TASK-07 TC-01 requires portfolio payloads on portfolio-selection decisions", () => {

@@ -251,6 +251,15 @@ export interface CandidateBeliefState {
   updated_at: string;
 }
 
+export interface PolicyBeliefAuditSnapshot {
+  schema_version: "policy-belief-audit.v1";
+  success_probability_mean: number;
+  positive_impact_probability_mean: number;
+  guardrail_breach_probability_mean: number;
+  evidence_weight: number;
+  evidence_floor_met: boolean;
+}
+
 export interface UtilityBreakdown {
   expected_reward: number;
   downside_penalty: number;
@@ -350,6 +359,7 @@ export interface PolicyDecisionRecord {
   decision_context_id: string;
   structural_snapshot: StructuralFeatureSnapshot;
   belief_state_id: string;
+  belief_audit?: PolicyBeliefAuditSnapshot | null;
   eligible_actions: string[];
   chosen_action: string;
   action_probability: number | null;
@@ -1189,6 +1199,34 @@ function validatePromotionGateContext(
   return errors;
 }
 
+export function validatePolicyBeliefAuditSnapshot(
+  snapshot: PolicyBeliefAuditSnapshot,
+): string[] {
+  const errors: string[] = [];
+  if (snapshot.schema_version !== "policy-belief-audit.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    success_probability_mean: snapshot.success_probability_mean,
+    positive_impact_probability_mean: snapshot.positive_impact_probability_mean,
+    guardrail_breach_probability_mean: snapshot.guardrail_breach_probability_mean,
+    evidence_weight: snapshot.evidence_weight,
+  })) {
+    if (
+      typeof value !== "number" ||
+      Number.isNaN(value) ||
+      value < 0 ||
+      value > 1
+    ) {
+      errors.push(label);
+    }
+  }
+  if (typeof snapshot.evidence_floor_met !== "boolean") {
+    errors.push("evidence_floor_met");
+  }
+  return errors;
+}
+
 export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): string[] {
   const errors: string[] = [];
   if (record.schema_version !== "policy-decision.v1") {
@@ -1239,6 +1277,13 @@ export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): stri
   errors.push(
     ...validateUtilityBreakdown(record.utility).map((error) => `utility.${error}`),
   );
+  if (record.belief_audit) {
+    errors.push(
+      ...validatePolicyBeliefAuditSnapshot(record.belief_audit).map(
+        (error) => `belief_audit.${error}`,
+      ),
+    );
+  }
   if (record.decision_type === "portfolio_selection" && !record.portfolio_selection) {
     errors.push("portfolio_selection");
   }

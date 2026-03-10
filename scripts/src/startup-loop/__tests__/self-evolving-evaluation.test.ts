@@ -330,6 +330,18 @@ describe("buildPolicyEvaluationDataset", () => {
     expect(missingRecord?.evaluation_status).toBe("missing");
     expect(missingRecord?.outcome_reason_code).toBe("metric_not_available");
 
+    const observedRecord = dataset.records.find(
+      (record) => record.decision_id === "decision-observed",
+    );
+    expect(observedRecord).toEqual(
+      expect.objectContaining({
+        evaluation_status: "observed",
+        implementation_status: "success",
+        positive_outcome: true,
+        measured_impact: 0.2,
+      }),
+    );
+
     const censoredRecord = dataset.records.find(
       (record) => record.decision_id === "decision-censored",
     );
@@ -366,6 +378,7 @@ describe("buildPolicyEvaluationDataset", () => {
         evaluation_ready: true,
         measurement_status: "verified_degraded",
         outcome_source_path: "docs/plans/example/plan.md",
+        positive_outcome: true,
       }),
     );
   });

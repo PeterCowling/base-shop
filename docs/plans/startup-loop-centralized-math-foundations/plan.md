@@ -37,7 +37,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-10: Implement bounded contextual exploration with internal Thompson-style ranking — Complete (2026-03-10)
 - [x] TASK-11: Implement the causal-evaluation contract and promotion-quality gate — Complete (2026-03-10)
 - [x] TASK-12: Implement stability controls and anti-gaming utility governance — Complete (2026-03-10)
-- [ ] TASK-13: Implement calibration, regret, override, and policy audit telemetry
+- [x] TASK-13: Implement calibration, regret, override, and policy audit telemetry — Complete (2026-03-10)
 - [ ] TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - [ ] TASK-15: Final checkpoint - authoritative mathematical policy readiness
 
@@ -124,7 +124,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-10 | IMPLEMENT | Implement bounded contextual exploration with internal Thompson-style ranking | 80% | M | Complete (2026-03-10) | TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07 | TASK-12, TASK-13, TASK-14 |
 | TASK-11 | IMPLEMENT | Implement the causal-evaluation contract and promotion-quality gate | 80% | M | Complete (2026-03-10) | TASK-04, TASK-06, TASK-16, TASK-08, TASK-09 | TASK-12, TASK-13, TASK-14 |
 | TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 80% | M | Complete (2026-03-10) | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
-| TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 80% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
+| TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
 | TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-15 |
 | TASK-15 | CHECKPOINT | Final checkpoint - authoritative mathematical policy readiness | 95% | S | Pending | TASK-14 | - |
 
@@ -824,8 +824,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-policy-audit.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-evaluation.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-policy-audit.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-report.test.ts`
 - **Depends on:** TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12
 - **Blocks:** TASK-14
 - **Confidence:** 80%
@@ -861,6 +861,25 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`
+- **Build Evidence (2026-03-10):**
+  - Scope expansion: added `self-evolving-policy-audit.ts` plus narrow journal/evaluation fields because exact calibration was not mathematically defensible from the pre-existing route journal alone. The expansion stayed inside TASK-13's truth-serum objective.
+  - Green: route decisions now persist a `policy-belief-audit.v1` snapshot, so candidate-route calibration uses recorded belief probabilities rather than reconstructed heuristics.
+  - Green: policy evaluation records now carry outcome-quality fields (`implementation_status`, `kept_or_reverted`, `measured_impact`, `impact_confidence`, `regressions_detected`, `positive_outcome`) derived from verified lifecycle outcomes.
+  - Green: `self-evolving-policy-audit.ts` now emits three first-class audit surfaces:
+    - belief quality: exact candidate-route calibration from belief snapshots and verified outcomes
+    - policy quality: replay-backed exploration-batch regret plus policy-version comparison summaries
+    - operator intervention: override cohort analysis with reason-code and source-layer attribution
+  - Green: the report and dashboard now surface the audit layer explicitly, and the live orchestrator dashboard uses combined prior-plus-current decision journals for audit summaries while retaining prior-only survival inputs.
+  - Validation:
+    - `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
+    - targeted `pnpm exec eslint` across touched startup-loop runtime and test files
+    - `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK`
+    - `pnpm plans:lint`
+  - Test execution note: local Jest remains out of scope under repo policy, so focused fixtures were added but not run locally.
+  - TC-01: covered by `self-evolving-policy-audit.test.ts` candidate-route calibration case and the new `policy-belief-audit.v1` journal snapshot.
+  - TC-02: covered by `self-evolving-policy-audit.test.ts` exploration-batch replay case, which computes measured regret only when the full batch has observed outcomes.
+  - TC-03: covered by `self-evolving-policy-audit.test.ts` override attribution case plus report/dashboard assertions in `self-evolving-report.test.ts`.
+  - Precursor completion propagation: TASK-13 is no longer a blocker for TASK-14. The next correct move is the replay and guarded-trial checkpoint rather than another build wave.
 
 ### TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - **Type:** CHECKPOINT

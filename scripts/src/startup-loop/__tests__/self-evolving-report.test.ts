@@ -156,6 +156,14 @@ function buildDecision(): PolicyDecisionRecord {
       constraint_refs: [],
     },
     belief_state_id: "belief-1",
+    belief_audit: {
+      schema_version: "policy-belief-audit.v1",
+      success_probability_mean: 0.72,
+      positive_impact_probability_mean: 0.68,
+      guardrail_breach_probability_mean: 0.08,
+      evidence_weight: 0.9,
+      evidence_floor_met: true,
+    },
     eligible_actions: ["lp-do-fact-find", "lp-do-plan", "lp-do-build"],
     chosen_action: "lp-do-plan",
     action_probability: null,
@@ -307,6 +315,11 @@ describe("buildSelfEvolvingReportData", () => {
           total_decisions: 1,
           replay_ready_decisions: 1,
         }),
+        audit: expect.objectContaining({
+          calibration_status: "measured",
+          calibration_sample_size: 1,
+          override_count: 0,
+        }),
         policy: expect.objectContaining({
           exploration_decisions: 0,
           promotion_gate_decisions: 0,
@@ -327,6 +340,22 @@ describe("buildSelfEvolvingReportData", () => {
     expect(report.survival_policy).toEqual(
       expect.objectContaining({
         total_records: 1,
+      }),
+    );
+    expect(report.policy_audit).toEqual(
+      expect.objectContaining({
+        belief_quality: expect.objectContaining({
+          calibration: expect.objectContaining({
+            status: "measured",
+            sample_size: 1,
+            positive_outcome_count: 1,
+          }),
+        }),
+        operator_intervention: expect.objectContaining({
+          overrides: expect.objectContaining({
+            total_overrides: 0,
+          }),
+        }),
       }),
     );
   });

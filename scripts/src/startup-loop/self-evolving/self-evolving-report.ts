@@ -21,6 +21,7 @@ import { buildDashboardSnapshot } from "./self-evolving-dashboard.js";
 import { buildDependencyGraphSnapshot } from "./self-evolving-dependency-graph.js";
 import { buildPolicyEvaluationDataset } from "./self-evolving-evaluation.js";
 import type { SelfEvolvingEvent } from "./self-evolving-events.js";
+import { buildPolicyAuditTelemetry } from "./self-evolving-policy-audit.js";
 import { buildPromotionGateDataset } from "./self-evolving-promotion-gate.js";
 import { deriveBoundarySignalSnapshotFromStartupState } from "./self-evolving-signal-helpers.js";
 import { buildSurvivalPolicySignals } from "./self-evolving-survival.js";
@@ -290,6 +291,11 @@ export function buildSelfEvolvingReportData(input: {
     evaluation_dataset: evaluation,
     hold_window_days: input.policy_state?.active_constraint_profile.hold_window_days ?? 7,
   });
+  const policyAudit = buildPolicyAuditTelemetry({
+    decisions: input.policy_decisions,
+    evaluation_dataset: evaluation,
+    generated_at: input.generated_at,
+  });
 
   const dashboard = buildDashboardSnapshot({
     observations: input.observations,
@@ -299,6 +305,7 @@ export function buildSelfEvolvingReportData(input: {
     decision_records_count: input.policy_decisions.length,
     policy_decisions: input.policy_decisions,
     evaluation_summary: evaluation.summary,
+    policy_audit: policyAudit,
     dependency_graph: dependencyGraph,
     survival_signals: survivalSignals,
   });
@@ -361,6 +368,7 @@ export function buildSelfEvolvingReportData(input: {
           outcome_reason_code: record.outcome_reason_code,
         })),
     },
+    policy_audit: policyAudit,
     policy_decisions: {
       total: input.policy_decisions.length,
       exploration: explorationSummary,

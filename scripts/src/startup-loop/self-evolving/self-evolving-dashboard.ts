@@ -13,6 +13,7 @@ import {
   type ObservationPostureSummary,
   summarizeObservationPosture,
 } from "./self-evolving-evidence-posture.js";
+import type { PolicyAuditTelemetry } from "./self-evolving-policy-audit.js";
 import type { SurvivalPolicySignals } from "./self-evolving-survival.js";
 
 const ACTIVE_STATES: ReadonlySet<CandidateState> = new Set([
@@ -73,6 +74,18 @@ export interface DashboardSnapshot {
     replay_ready_decisions: number;
     maturity_debt_decisions: number;
     replay_ready_rate: DashboardRateMetric;
+  };
+  audit: {
+    calibration_status: "measured" | "insufficient_data";
+    calibration_sample_size: number;
+    calibration_brier_score: number | null;
+    exploration_regret_status: "measured" | "insufficient_data";
+    exploration_regret_batches: number;
+    exploration_regret_measured_batches: number;
+    exploration_total_regret: number | null;
+    override_count: number;
+    overridden_candidates: number;
+    policy_versions_compared: number;
   };
   graph: {
     snapshot_id: string | null;
@@ -143,6 +156,7 @@ export function buildDashboardSnapshot(input: {
   decision_records_count?: number;
   policy_decisions?: readonly PolicyDecisionRecord[] | null;
   evaluation_summary?: PolicyEvaluationSummary | null;
+  policy_audit?: PolicyAuditTelemetry | null;
   dependency_graph?: SelfEvolvingDependencyGraphSnapshot | null;
   survival_signals?: SurvivalPolicySignals | null;
 }): DashboardSnapshot {
@@ -191,6 +205,7 @@ export function buildDashboardSnapshot(input: {
   const evaluationSummary = input.evaluation_summary ?? EMPTY_EVALUATION_SUMMARY;
   const maturityDebtDecisions =
     evaluationSummary.pending_decisions + evaluationSummary.censored_decisions;
+  const policyAudit = input.policy_audit ?? null;
   const dependencyGraph = input.dependency_graph ?? null;
   const survivalSignals = input.survival_signals ?? null;
 
@@ -257,6 +272,28 @@ export function buildDashboardSnapshot(input: {
         evaluationSummary.replay_ready_decisions,
         evaluationSummary.total_decisions,
       ),
+    },
+    audit: {
+      calibration_status:
+        policyAudit?.belief_quality.calibration.status ?? "insufficient_data",
+      calibration_sample_size:
+        policyAudit?.belief_quality.calibration.sample_size ?? 0,
+      calibration_brier_score:
+        policyAudit?.belief_quality.calibration.brier_score ?? null,
+      exploration_regret_status:
+        policyAudit?.policy_quality.exploration_regret.status ?? "insufficient_data",
+      exploration_regret_batches:
+        policyAudit?.policy_quality.exploration_regret.total_batches ?? 0,
+      exploration_regret_measured_batches:
+        policyAudit?.policy_quality.exploration_regret.measured_batches ?? 0,
+      exploration_total_regret:
+        policyAudit?.policy_quality.exploration_regret.total_regret ?? null,
+      override_count:
+        policyAudit?.operator_intervention.overrides.total_overrides ?? 0,
+      overridden_candidates:
+        policyAudit?.operator_intervention.overrides.overridden_candidates ?? 0,
+      policy_versions_compared:
+        policyAudit?.policy_quality.policy_version_comparison.length ?? 0,
     },
     graph: {
       snapshot_id: dependencyGraph?.snapshot_id ?? null,

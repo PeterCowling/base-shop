@@ -619,6 +619,25 @@ function effortPenalty(candidate: ImprovementCandidate, dimensions: ScoreDimensi
   return effortBase + clampScore(dimensions.implementation_effort_score) * 0.18;
 }
 
+function buildPolicyBeliefAuditSnapshot(
+  beliefState: CandidateBeliefState,
+): PolicyDecisionRecord["belief_audit"] {
+  return {
+    schema_version: "policy-belief-audit.v1",
+    success_probability_mean: Number(
+      posterMean(beliefState.success_if_attempted).toFixed(6),
+    ),
+    positive_impact_probability_mean: Number(
+      posterMean(beliefState.positive_impact_if_attempted).toFixed(6),
+    ),
+    guardrail_breach_probability_mean: Number(
+      posterMean(beliefState.guardrail_breach_if_attempted).toFixed(6),
+    ),
+    evidence_weight: Number(beliefState.evidence_weight.toFixed(6)),
+    evidence_floor_met: beliefState.evidence_floor_met,
+  };
+}
+
 function instabilityPenalty(candidate: ImprovementCandidate): number {
   if (candidate.candidate_state === "blocked" || candidate.candidate_state === "reverted") {
     return 0.9;
@@ -707,6 +726,7 @@ export function buildPolicyDecisionRecord(input: {
     belief_state_id: stableHash(
       `${input.candidate_id}|${input.belief_state.structural_snapshot_id}|belief`,
     ).slice(0, 16),
+    belief_audit: buildPolicyBeliefAuditSnapshot(input.belief_state),
     eligible_actions: ["lp-do-fact-find", "lp-do-plan", "lp-do-build"],
     chosen_action: input.chosen_action,
     action_probability: null,

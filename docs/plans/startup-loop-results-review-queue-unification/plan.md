@@ -29,11 +29,13 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [ ] TASK-03: Implement build-review-to-queue admission and dedupe
 - [ ] TASK-04: Switch process-improvements idea backlog to queue-only sourcing
 - [ ] TASK-05: Demote `completed-ideas.json` from active backlog control
-- [ ] TASK-06: Align self-evolving build-output intake with the canonical build-origin identity
+- [ ] TASK-06: Determine the self-evolving build-origin alignment model
+- [ ] TASK-11: Implement the chosen self-evolving build-origin alignment
 - [ ] TASK-07: Canonical queue-path readiness checkpoint
-- [ ] TASK-08: Audit historical backlog carry-over and triage worthwhile items
+- [ ] TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
 - [ ] TASK-09: Cutover split checkpoint
-- [ ] TASK-10: Execute bounded carry-over cutover or emit the follow-on project
+- [ ] TASK-10: Execute bounded carry-over cutover
+- [ ] TASK-12: Emit the dedicated carry-over follow-on project
 
 ## Goals
 - Define one canonical build-origin signal contract for queue admission, reporting, and downstream joins.
@@ -99,11 +101,13 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-03 | IMPLEMENT | Implement build-review-to-queue admission and dedupe | 80% | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-04 | IMPLEMENT | Switch process-improvements idea backlog to queue-only sourcing | 85% | M | Pending | TASK-03 | TASK-05, TASK-07, TASK-08, TASK-10 |
 | TASK-05 | IMPLEMENT | Demote `completed-ideas.json` from active backlog control | 80% | M | Pending | TASK-03, TASK-04 | TASK-07, TASK-08, TASK-10 |
-| TASK-06 | INVESTIGATE | Align self-evolving build-output intake to the canonical build-origin identity | 70% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-07, TASK-10 |
-| TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-08, TASK-09, TASK-10 |
-| TASK-08 | INVESTIGATE | Audit historical backlog carry-over and triage worthwhile items | 70% | M | Pending | TASK-07 | TASK-09, TASK-10 |
-| TASK-09 | CHECKPOINT | Decide in-thread cutover versus separate carry-over project | 95% | S | Pending | TASK-08 | TASK-10 |
-| TASK-10 | IMPLEMENT | Execute bounded carry-over cutover or emit the follow-on project | 75% | M | Pending | TASK-09 | - |
+| TASK-06 | INVESTIGATE | Determine the self-evolving build-origin alignment model | 70% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-11 |
+| TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 75% | M | Pending | TASK-06 | TASK-07 |
+| TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11 | TASK-08, TASK-09, TASK-10, TASK-12 |
+| TASK-08 | INVESTIGATE | Audit historical backlog carry-over and produce bounded carry-over evidence | 70% | M | Pending | TASK-07 | TASK-09, TASK-10, TASK-12 |
+| TASK-09 | CHECKPOINT | Decide in-thread cutover versus separate carry-over project | 95% | S | Pending | TASK-08 | TASK-10, TASK-12 |
+| TASK-10 | IMPLEMENT | Execute bounded carry-over cutover | 75% | M | Pending | TASK-09 | - |
+| TASK-12 | IMPLEMENT | Emit the dedicated carry-over follow-on project | 90% | S | Pending | TASK-09 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -111,12 +115,13 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | 1 | TASK-01 | - | Establish the canonical build-origin contract before any queue work |
 | 2 | TASK-02 | TASK-01 | Harden emitters and failure behavior around the new contract |
 | 3 | TASK-03 | TASK-01, TASK-02 | Bridge build-origin signals into queue with canonical identity and dedupe |
-| 4 | TASK-04, TASK-05 | TASK-03 | Report and closure can move in parallel once queue admission is real |
-| 5 | TASK-06 | TASK-01, TASK-02, TASK-03 | Resolve self-evolving overlap before claiming one authoritative build-origin path |
-| 6 | TASK-07 | TASK-02 through TASK-06 | Check whether queue-backed canonical path is genuinely ready |
-| 7 | TASK-08 | TASK-07 | Audit and triage historical backlog carry-over |
-| 8 | TASK-09 | TASK-08 | Self-resolve whether carry-over stays in-thread or becomes a separate project |
-| 9 | TASK-10 | TASK-09 | Execute only if the cutover remains bounded after audit |
+| 4 | TASK-04, TASK-06 | TASK-03 | Queue-only reporting and self-evolving analysis can start once queue admission is real |
+| 5 | TASK-05 | TASK-03, TASK-04 | Demote the compatibility registry only after the visible backlog is queue-only |
+| 6 | TASK-11 | TASK-06 | Turn the chosen self-evolving alignment into real code before any readiness claim |
+| 7 | TASK-07 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11 | Check whether queue-backed canonical path is genuinely ready |
+| 8 | TASK-08 | TASK-07 | Produce historical carry-over evidence only; do not decide project split here |
+| 9 | TASK-09 | TASK-08 | Decide whether carry-over stays in-thread or becomes a separate project |
+| 10 | TASK-10 or TASK-12 | TASK-09 | Exactly one conditional endgame task executes after the split checkpoint |
 
 ## Tasks
 
@@ -274,7 +279,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Held-back test:** no single unresolved unknown would drop this below 80 because the current consumers are already concrete and limited in number.
 - **What would make this >=90%:** a full call-site inventory proving no remaining active behavior depends on the registry.
 
-### TASK-06: Align self-evolving build-output intake with the canonical build-origin identity
+### TASK-06: Determine the self-evolving build-origin alignment model
 - **Type:** INVESTIGATE
 - **Deliverable:** `docs/plans/startup-loop-results-review-queue-unification/artifacts/self-evolving-build-origin-alignment.md`
 - **Execution-Skill:** lp-do-build
@@ -284,7 +289,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Status:** Pending
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`
 - **Depends on:** TASK-01, TASK-02, TASK-03
-- **Blocks:** TASK-07, TASK-10
+- **Blocks:** TASK-11
 - **Confidence:** 70%
   - Implementation: 70% - the seam is explicit, but the right authority split still needs proof.
   - Approach: 75% - either shared join-key or queue-backed intake can work, but one must be chosen clearly.
@@ -292,7 +297,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Acceptance:**
   - Artifact states the chosen alignment model and why.
   - Artifact names all self-evolving consumers affected.
-  - Recommendation is decisive enough to become an IMPLEMENT task in replan if needed.
+  - Recommendation is decisive enough to drive a bounded IMPLEMENT task without reopening model choice.
 - **Validation contract (TC-06):**
   - TC-01: both current self-evolving source reads are traced.
   - TC-02: the recommended model preserves build-origin joinability and does not recreate a second backlog authority.
@@ -303,6 +308,35 @@ The current startup-loop backlog is structurally split: `process-improvements.us
     - chosen `build_signal_id` join behavior is consumed by self-evolving observation generation and downstream audit/reporting.
 - **What would make this >=90%:** a tiny prototype proving one alignment model on real build-origin artifacts.
 
+### TASK-11: Implement the chosen self-evolving build-origin alignment in code
+- **Type:** IMPLEMENT
+- **Deliverable:** code-level self-evolving alignment so build-output intake uses the canonical build-origin identity or explicit queue-backed equivalent
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`, related tests under `scripts/src/startup-loop/__tests__/`
+- **Depends on:** TASK-06
+- **Blocks:** TASK-07
+- **Confidence:** 75%
+  - Implementation: 75% - the seam is narrow, but the chosen model still has to survive real call-site joins.
+  - Approach: 80% - once TASK-06 chooses the model, the implementation path is bounded.
+  - Impact: 85% - readiness is not credible while self-evolving still reads a second build-origin truth path.
+- **Acceptance:**
+  - Self-evolving build-output intake no longer relies on incompatible raw build-origin identity.
+  - The chosen model is enforced in code, not just documented.
+  - Tests cover provenance/join behavior for the aligned path.
+  - The resulting path cannot recreate a second authoritative backlog.
+- **Validation contract (TC-11):**
+  - TC-01: self-evolving build-origin observations use the canonical build-origin fingerprint or a queue-backed equivalent that preserves joinability.
+  - TC-02: direct raw-sidecar reads, if retained, are explicitly observational and non-authoritative by construction.
+  - TC-03: alignment behavior is covered by regression tests on at least one real build-origin fixture shape.
+- **Execution plan:** implement the TASK-06 alignment choice, update tests, and verify the self-evolving seam is no longer outside the canonical identity model.
+- **Consumer tracing:**
+  - aligned build-origin identity is consumed by self-evolving observation generation, downstream audit joins, and the readiness checkpoint.
+- **What would make this >=90%:** one end-to-end fixture proving queue provenance and self-evolving provenance remain joinable after alignment.
+
 ### TASK-07: Canonical queue-path readiness checkpoint
 - **Type:** CHECKPOINT
 - **Deliverable:** checkpoint note embedded in the plan or `artifacts/canonical-queue-readiness.md`
@@ -311,15 +345,15 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Pending
-- **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-06
-- **Blocks:** TASK-08, TASK-09, TASK-10
+- **Depends on:** TASK-02, TASK-03, TASK-04, TASK-05, TASK-11
+- **Blocks:** TASK-08, TASK-09, TASK-10, TASK-12
 - **Acceptance:**
   - Queue-backed build-origin path exists.
   - Active idea backlog is queue-only.
   - `completed-ideas.json` no longer governs active idea visibility.
-  - Remaining self-evolving overlap is either resolved or explicitly bounded.
+  - Self-evolving build-output intake is aligned in code to the canonical build-origin identity or queue-backed equivalent.
 
-### TASK-08: Audit historical backlog carry-over and triage worthwhile items
+### TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
 - **Type:** INVESTIGATE
 - **Deliverable:** `docs/plans/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md`
 - **Execution-Skill:** lp-do-build
@@ -328,16 +362,17 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Effort:** M
 - **Status:** Pending
 - **Depends on:** TASK-07
-- **Blocks:** TASK-09, TASK-10
+- **Blocks:** TASK-09, TASK-10, TASK-12
 - **Confidence:** 70%
   - Implementation: 70% - the archive is large and item quality varies.
   - Approach: 75% - explicit triage is the right way to avoid cargo-cult backfill.
   - Impact: 80% - cutover integrity depends on not dropping worthwhile legacy work silently.
 - **Acceptance:**
   - Audit inventories remaining legacy backlog-origin idea items.
-  - Each item is tagged `carry-forward`, `do-not-carry`, or `needs-follow-on-project`.
+  - Each item records worthwhile-item evidence, mapping feasibility, and whether admission is deterministic versus manual-judgment-required.
   - Worthwhile-item criteria are explicit and defensible.
   - Output includes a bounded carry-over count and effort estimate.
+  - Output does not decide whether a separate project is required; it only supplies the evidence for TASK-09.
 - **Validation contract (TC-08):**
   - TC-01: audit samples archived and current legacy backlog inputs, not just one source bucket.
   - TC-02: worthwhile-item criteria are explicit enough to reproduce.
@@ -353,17 +388,17 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Effort:** S
 - **Status:** Pending
 - **Depends on:** TASK-08
-- **Blocks:** TASK-10
+- **Blocks:** TASK-10, TASK-12
 - **Acceptance:**
-  - If worthwhile carry-over is bounded and deterministic, continue to TASK-10.
-  - If worthwhile carry-over is too large or too judgment-heavy, emit a new fact-find/plan slug for the cutover project and do not preserve legacy backlog reads as a convenience fallback.
+  - If worthwhile carry-over is bounded and deterministic, continue to TASK-10 only.
+  - If worthwhile carry-over is too large or too judgment-heavy, continue to TASK-12 only and do not preserve legacy backlog reads as a convenience fallback.
   - Decision threshold is explicit:
-    - continue in-thread only if the carry-forward set is `<=10` items and each item maps deterministically to the canonical build-origin contract or queue packet shape;
+    - continue in-thread only if the carry-forward set is `<=10` items, `manual-judgment-required = 0`, and each item maps deterministically to the canonical build-origin contract or queue packet shape;
     - otherwise emit a dedicated carry-over cutover project.
 
-### TASK-10: Execute bounded carry-over cutover or emit the follow-on project
+### TASK-10: Execute bounded carry-over cutover
 - **Type:** IMPLEMENT
-- **Deliverable:** either the final bounded cutover in this thread, or a created follow-on cutover fact-find if TASK-09 splits scope
+- **Deliverable:** final bounded carry-over cutover inside this thread
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
@@ -372,19 +407,42 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Depends on:** TASK-09
 - **Blocks:** -
 - **Confidence:** 75%
-  - Implementation: 75% - bounded if TASK-09 keeps it in-thread, but otherwise intentionally split.
-  - Approach: 80% - explicit cutover or explicit project split is the correct endpoint.
+  - Implementation: 75% - only valid if TASK-09 proves the carry-forward set is small and deterministic.
+  - Approach: 85% - bounded cutover is safe once the checkpoint proves it is actually bounded.
   - Impact: 90% - this is where the legacy backlog path actually dies.
 - **Acceptance:**
   - Legacy report-only idea backlog path is removed.
   - Worthwhile historical items are carried forward into queue when the set is bounded.
-  - If the set is not bounded, a follow-on project is emitted and this plan records the split rather than faking completion.
   - No hidden dual backlog read remains after the chosen cutover path.
 - **Validation contract (TC-10):**
   - TC-01: after cutover, active idea backlog reads only queue-backed items.
-  - TC-02: every carried-forward item is traceable to a queue dispatch or follow-on project packet.
+  - TC-02: every carried-forward item is traceable to a queue dispatch.
   - TC-03: no convenience fallback keeps the old backlog alive.
 - **What would make this >=90%:** completion of TASK-08 with a proven small carry-over set.
+
+### TASK-12: Emit the dedicated carry-over follow-on project
+- **Type:** IMPLEMENT
+- **Deliverable:** dedicated follow-on carry-over project artifact set plus explicit split record in this plan
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** S
+- **Status:** Pending
+- **Depends on:** TASK-09
+- **Blocks:** -
+- **Confidence:** 90%
+  - Implementation: 90% - emitting a dedicated follow-on project is a bounded documentation/project-routing task.
+  - Approach: 90% - once TASK-09 proves cutover is too large or judgment-heavy, splitting is the correct non-deceptive endpoint.
+  - Impact: 85% - prevents the current thread from pretending to have finished historical cutover while keeping the live queue path clean.
+- **Acceptance:**
+  - A dedicated follow-on project slug is created for historical carry-over cutover.
+  - This plan records the split explicitly and does not preserve legacy backlog reads as fallback.
+  - The follow-on artifact names the worthwhile-item set, judgment load, and why in-thread cutover was rejected.
+- **Validation contract (TC-12):**
+  - TC-01: follow-on project artifact set exists at a concrete slug/path.
+  - TC-02: this plan records that TASK-10 did not execute because TASK-09 selected the split path.
+  - TC-03: no code or report change re-enables the old backlog as a convenience compatibility path.
+- **What would make this >=90%:** a completed TASK-08 audit showing the carry-over set clearly exceeds the in-thread threshold.
 
 ## Risks & Mitigations
 - Canonical contract lands, but emitters still diverge in subtle ways.
@@ -394,7 +452,9 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - `completed-ideas.json` remains an accidental control surface after report switch.
   - Mitigation: TASK-05 targets all active consumers together.
 - Self-evolving continues to act like a second authority over build-origin signals.
-  - Mitigation: TASK-06 and TASK-07 block authoritative cutover claims until that seam is explicitly bounded.
+  - Mitigation: TASK-06 chooses the model and TASK-11 implements it before TASK-07 can pass.
+- Historical carry-over split logic gets hidden inside implementation instead of an explicit checkpoint.
+  - Mitigation: TASK-08 produces evidence only, TASK-09 decides, and TASK-10/TASK-12 are atomic conditional endpoints.
 
 ## Observability
 - Logging:
@@ -414,12 +474,16 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [ ] New actionable build-origin ideas enter the queue through the normal ideas path.
 - [ ] `process-improvements` idea backlog is sourced only from queue state.
 - [ ] `completed-ideas.json` no longer governs active idea backlog visibility.
+- [ ] Self-evolving build-output intake uses the canonical build-origin identity or an explicitly queue-backed equivalent in code.
 - [ ] The old report-only backlog path is either cut over in-thread or explicitly split into a dedicated carry-over project with no hidden dual-read fallback.
 
 ## Decision Log
 - 2026-03-10: Chose contract-first instead of direct bridge-first because current build-review sidecars are not queue-ready.
 - 2026-03-10: Chose explicit cutover as the target end state rather than indefinite compatibility mode.
 - 2026-03-10: Chose a self-resolving split checkpoint for historical carry-over rather than a DECISION task; if the carry-forward set is too large, a separate project will be emitted automatically.
+- 2026-03-10: Split self-evolving alignment into investigation plus required implementation so readiness cannot pass on documentation alone.
+- 2026-03-10: Split the conditional endgame into atomic TASK-10 and TASK-12 so implementation never mixes two opposite outcomes.
+- 2026-03-10: Narrowed historical audit output to evidence only; project-split choice now belongs solely to TASK-09.
 
 ## Rehearsal Trace
 | Step | Preconditions Met | Issues Found | Resolution Required |
@@ -429,15 +493,18 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-03: Queue admission bridge | Yes (TASK-01 and TASK-02 complete) | None | No |
 | TASK-04: Queue-only report sourcing | Yes (TASK-03 queue admission live) | None | No |
 | TASK-05: `completed-ideas.json` demotion | Yes (TASK-03 and TASK-04 complete) | Moderate: queue-only closure must not leave calibration on stale compatibility reads | Yes |
-| TASK-06: Self-evolving alignment | Partial (depends on final bridge identity details) | Moderate: alignment choice still needs proof, so this remains INVESTIGATE not IMPLEMENT | Yes |
-| TASK-07: Canonical readiness checkpoint | Partial (depends on TASK-06 recommendation) | None | No |
-| TASK-08: Historical carry-over audit | Yes (after TASK-07) | None | No |
+| TASK-06: Self-evolving alignment investigation | Partial (depends on final bridge identity details) | Major: investigation alone is not enough for a readiness claim | Yes |
+| TASK-11: Self-evolving alignment implementation | Partial (depends on TASK-06 choice) | Moderate: must enforce the chosen model in code, not just in an artifact | Yes |
+| TASK-07: Canonical readiness checkpoint | Partial (depends on TASK-11, not just TASK-06) | Major: checkpoint would be false-positive if it relied only on an investigation result | Yes |
+| TASK-08: Historical carry-over audit | Yes (after TASK-07) | Moderate: audit must produce evidence, not smuggle in the split decision | Yes |
 | TASK-09: Cutover split checkpoint | Yes (after TASK-08) | None | No |
-| TASK-10: Final cutover or follow-on split | Partial (depends on TASK-09 outcome) | Moderate: conditional by design; cannot be built credibly before carry-over scope is known | Yes |
+| TASK-10: Bounded carry-over cutover | Partial (depends on TASK-09 continue-in-thread outcome) | Moderate: only valid for a small deterministic carry-forward set | Yes |
+| TASK-12: Follow-on project emission | Partial (depends on TASK-09 split outcome) | None | No |
 
 ## What would make this >=90%
 - A concrete call-site inventory proving every active `completed-ideas.json` consumer to be migrated.
 - A fixture-backed canonical build-origin contract with one real duplicate-sidecar example.
+- A tiny proven prototype for the chosen self-evolving alignment model.
 - A small pilot audit showing the historical carry-forward set is bounded enough to remain in-thread.
 
 ## Overall-confidence Calculation
@@ -448,9 +515,11 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - TASK-04: 85% * 2 = 170
 - TASK-05: 80% * 2 = 160
 - TASK-06: 70% * 2 = 140
+- TASK-11: 75% * 2 = 150
 - TASK-08: 70% * 2 = 140
 - TASK-10: 75% * 2 = 150
-- Overall = (150 + 170 + 160 + 170 + 160 + 140 + 140 + 150) / 16 = 78%
+- TASK-12: 90% * 1 = 90
+- Overall = (150 + 170 + 160 + 170 + 160 + 140 + 150 + 140 + 150 + 90) / 19 = 78%
 
 ## Section Omission Rule
 

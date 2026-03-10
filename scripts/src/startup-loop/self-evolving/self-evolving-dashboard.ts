@@ -1,4 +1,4 @@
-import { betaBinomialPosterior } from "@acme/lib/math/experimentation";
+import { betaBinomialPosterior } from "@acme/lib/math";
 
 import type { RankedCandidate } from "./self-evolving-candidates.js";
 import type {

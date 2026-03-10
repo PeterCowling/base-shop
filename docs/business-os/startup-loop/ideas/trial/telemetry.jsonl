@@ -387,3 +387,8 @@
 {"recorded_at":"2026-03-10T12:25:35.035Z","dispatch_id":"IDEA-DISPATCH-20260310122535-0005","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"historical_carryover_bridge"}
 
 {"recorded_at":"2026-03-10T12:25:35.035Z","dispatch_id":"IDEA-DISPATCH-20260310122535-0006","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"historical_carryover_bridge"}
+
+{"recorded_at":"2026-03-10T20:21:36.346Z","dispatch_id":"IDEA-DISPATCH-20260307154926-7845","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"self_evolving_backbone_consume"}
+{"recorded_at":"2026-03-10T20:21:36.346Z","dispatch_id":"IDEA-DISPATCH-20260307154926-2772","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"self_evolving_backbone_consume"}
+{"recorded_at":"2026-03-10T20:21:36.346Z","dispatch_id":"IDEA-DISPATCH-20260307154926-8737","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"self_evolving_backbone_consume"}
+{"recorded_at":"2026-03-10T20:21:36.346Z","dispatch_id":"IDEA-DISPATCH-20260308123258-2908","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"self_evolving_backbone_consume"}

@@ -1,18 +1,18 @@
 {
-  "last_updated": "2026-03-10T14:59:26.543Z",
+  "last_updated": "2026-03-10T20:21:36.346Z",
   "counts": {
-    "enqueued": 30,
+    "enqueued": 34,
     "processed": 8,
     "skipped": 0,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 270,
-    "fact_find_ready": 26,
+    "fact_find_ready": 30,
     "plan_ready": 0,
     "micro_build_ready": 0,
     "briefing_ready": 0,
-    "total": 507
+    "total": 511
   },
   "dispatches": [
     {
@@ -23443,6 +23443,238 @@
         "target_path": "docs/plans/brikette-support-deals-intent-routing/micro-build.md",
         "processed_at": "2026-03-10T14:46:00.000Z",
         "micro_build_path": "docs/plans/brikette-support-deals-intent-routing/micro-build.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307154926-7845",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "artifact_id": "self-evolving.candidate.455be690c726c386",
+      "before_sha": null,
+      "after_sha": "98a821390f63f14f",
+      "root_event_id": "self-evolving:candidate:455be690c726c386",
+      "anchor_key": "new-standing-data-source-add-a-standing-ops-feed-for-inbox-recovery-outcomes",
+      "cluster_key": "self-evolving-new-standing-data-source-add-a-standing-ops-feed-for-inbox-recovery-outcomes",
+      "cluster_fingerprint": "c485cb732af12ecd67377e2943b7c58107d96f5204b466ecbe0adae5185371c3",
+      "lineage_depth": 0,
+      "area_anchor": "new standing data source add a standing ops feed for inbox recovery outcomes",
+      "location_anchors": [
+        "docs/plans/reception-inbox-inprogress-recovery/pattern-reflection.user.md",
+        "docs/plans/reception-inbox-inprogress-recovery/results-review.user.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "New standing data source — Add a standing ops feed for inbox recovery outcomes Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window.",
+      "next_scope_now": "Run lp-do-fact-find to validate whether this recurring gap should become a reusable skill or process improvement.",
+      "adjacent_later": [
+        "Downstream self-evolving route hint: lp-do-fact-find",
+        "Suggested executor path: lp-do-build:container:analytics-v1"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "self-evolving-candidate:455be690c726c386",
+        "self-evolving-backbone-route:lp-do-fact-find",
+        "docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
+        "docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
+        "docs/plans/reception-inbox-inprogress-recovery/pattern-reflection.user.md",
+        "docs/plans/reception-inbox-inprogress-recovery/results-review.user.md"
+      ],
+      "created_at": "2026-03-07T15:49:26.394Z",
+      "queue_state": "enqueued",
+      "self_evolving": {
+        "candidate_id": "455be690c726c386",
+        "decision_id": "1e7a1d0a5207f696",
+        "policy_version": "self-evolving-policy.v1",
+        "recommended_route_origin": "lp-do-fact-find",
+        "executor_path": "lp-do-build:container:analytics-v1",
+        "requirement_posture": "relative_required",
+        "blocking_scope": "degrades_quality",
+        "prescription_maturity": "structured",
+        "handoff_emitted_at": "2026-03-07T15:49:26.394Z"
+      },
+      "why": "New standing data source — Add a standing ops feed for inbox recovery outcomes Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window. Route this validated self-evolving candidate back through the canonical workflow.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a planning-ready fact-find for new standing data source add a standing ops feed for inbox recovery outcomes with preserved executor path lp-do-build:container:analytics-v1.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307154926-2772",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "artifact_id": "self-evolving.candidate.ab5320678b656800",
+      "before_sha": null,
+      "after_sha": "c23e346fb6e9bf7e",
+      "root_event_id": "self-evolving:candidate:ab5320678b656800",
+      "anchor_key": "new-loop-process-add-a-post-deploy-recovery-telemetry-review-checkpoint",
+      "cluster_key": "self-evolving-new-loop-process-add-a-post-deploy-recovery-telemetry-review-checkpoint",
+      "cluster_fingerprint": "c071f19c8319516a106a956eccbb079c36c835b8c5ca352e7ba9788bf8b22bce",
+      "lineage_depth": 0,
+      "area_anchor": "new loop process add a post deploy recovery telemetry review checkpoint",
+      "location_anchors": [
+        "docs/plans/reception-inbox-inprogress-recovery/pattern-reflection.user.md",
+        "docs/plans/reception-inbox-inprogress-recovery/results-review.user.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "New loop process — Add a post-deploy recovery telemetry review checkpoint Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window.",
+      "next_scope_now": "Run lp-do-fact-find to validate whether this recurring gap should become a reusable skill or process improvement.",
+      "adjacent_later": [
+        "Downstream self-evolving route hint: lp-do-fact-find",
+        "Suggested executor path: lp-do-build:container:feedback-intel-v1"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "self-evolving-candidate:ab5320678b656800",
+        "self-evolving-backbone-route:lp-do-fact-find",
+        "docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
+        "docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
+        "docs/plans/reception-inbox-inprogress-recovery/pattern-reflection.user.md",
+        "docs/plans/reception-inbox-inprogress-recovery/results-review.user.md"
+      ],
+      "created_at": "2026-03-07T15:49:26.394Z",
+      "queue_state": "enqueued",
+      "self_evolving": {
+        "candidate_id": "ab5320678b656800",
+        "decision_id": "3da11ca5cb6e3100",
+        "policy_version": "self-evolving-policy.v1",
+        "recommended_route_origin": "lp-do-fact-find",
+        "executor_path": "lp-do-build:container:feedback-intel-v1",
+        "requirement_posture": "relative_required",
+        "blocking_scope": "degrades_quality",
+        "prescription_maturity": "structured",
+        "handoff_emitted_at": "2026-03-07T15:49:26.394Z"
+      },
+      "why": "New loop process — Add a post-deploy recovery telemetry review checkpoint Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window. Route this validated self-evolving candidate back through the canonical workflow.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a planning-ready fact-find for new loop process add a post deploy recovery telemetry review checkpoint with preserved executor path lp-do-build:container:feedback-intel-v1.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260307154926-8737",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "artifact_id": "self-evolving.candidate.fd5ed6ad188ac1a9",
+      "before_sha": null,
+      "after_sha": "bd1850ef899105e1",
+      "root_event_id": "self-evolving:candidate:fd5ed6ad188ac1a9",
+      "anchor_key": "ai-to-mechanistic-schedule-gmail-in-progress-reconciliation-outside-the-agent-loop",
+      "cluster_key": "self-evolving-ai-to-mechanistic-schedule-gmail-in-progress-reconciliation-outside-the-agent-loop",
+      "cluster_fingerprint": "24a05f1834c0e3b91d7a0573dbbbdc12e921eee0f26e578da23c9a19416387fe",
+      "lineage_depth": 0,
+      "area_anchor": "ai to mechanistic schedule gmail in progress reconciliation outside the agent loop",
+      "location_anchors": [
+        "docs/plans/reception-inbox-inprogress-recovery/pattern-reflection.user.md",
+        "docs/plans/reception-inbox-inprogress-recovery/results-review.user.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "AI-to-mechanistic — Schedule Gmail In-Progress reconciliation outside the agent loop Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window.",
+      "next_scope_now": "Run lp-do-fact-find to validate whether this recurring gap should become a reusable skill or process improvement.",
+      "adjacent_later": [
+        "Downstream self-evolving route hint: lp-do-fact-find",
+        "Suggested executor path: lp-do-build:container:analytics-v1"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "self-evolving-candidate:fd5ed6ad188ac1a9",
+        "self-evolving-backbone-route:lp-do-fact-find",
+        "docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
+        "docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
+        "docs/plans/reception-inbox-inprogress-recovery/pattern-reflection.user.md",
+        "docs/plans/reception-inbox-inprogress-recovery/results-review.user.md"
+      ],
+      "created_at": "2026-03-07T15:49:26.394Z",
+      "queue_state": "enqueued",
+      "self_evolving": {
+        "candidate_id": "fd5ed6ad188ac1a9",
+        "decision_id": "c82f7be5e7989462",
+        "policy_version": "self-evolving-policy.v1",
+        "recommended_route_origin": "lp-do-fact-find",
+        "executor_path": "lp-do-build:container:analytics-v1",
+        "requirement_posture": "relative_required",
+        "blocking_scope": "degrades_quality",
+        "prescription_maturity": "structured",
+        "handoff_emitted_at": "2026-03-07T15:49:26.394Z"
+      },
+      "why": "AI-to-mechanistic — Schedule Gmail In-Progress reconciliation outside the agent loop Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window. Route this validated self-evolving candidate back through the canonical workflow.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a planning-ready fact-find for ai to mechanistic schedule gmail in progress reconciliation outside the agent loop with preserved executor path lp-do-build:container:analytics-v1.",
+        "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260308123258-2908",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "artifact_id": "self-evolving.candidate.300444927b4c7dec",
+      "before_sha": null,
+      "after_sha": "ea229b9fe3b590f7",
+      "root_event_id": "self-evolving:candidate:300444927b4c7dec",
+      "anchor_key": "ai-to-mechanistic-extract-shared-pin-digit-colour-array-into-a-single-constant",
+      "cluster_key": "self-evolving-ai-to-mechanistic-extract-shared-pin-digit-colour-array-into-a-single-constant",
+      "cluster_fingerprint": "601dedaac6db8641f0908aa5e91914385ddedc0c93abb2a1d7c932a5e6f911f8",
+      "lineage_depth": 0,
+      "area_anchor": "ai to mechanistic extract shared pin digit colour array into a single constant",
+      "location_anchors": [
+        "docs/plans/reception-component-token-compliance/pattern-reflection.user.md",
+        "docs/plans/reception-component-token-compliance/results-review.user.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "AI-to-mechanistic — Extract shared PIN digit colour array into a single constant Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window.",
+      "next_scope_now": "Run lp-do-fact-find to validate whether this recurring gap should become a reusable skill or process improvement.",
+      "adjacent_later": [
+        "Downstream self-evolving route hint: lp-do-fact-find",
+        "Suggested executor path: lp-do-build:container:analytics-v1"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.75,
+      "evidence_refs": [
+        "self-evolving-candidate:300444927b4c7dec",
+        "self-evolving-backbone-route:lp-do-fact-find",
+        "docs/business-os/startup-loop/self-evolving/BRIK/candidates.json",
+        "docs/business-os/startup-loop/self-evolving/BRIK/backbone-queue.jsonl",
+        "docs/plans/reception-component-token-compliance/pattern-reflection.user.md",
+        "docs/plans/reception-component-token-compliance/results-review.user.md"
+      ],
+      "created_at": "2026-03-08T12:32:58.823Z",
+      "queue_state": "enqueued",
+      "self_evolving": {
+        "candidate_id": "300444927b4c7dec",
+        "decision_id": "0954cca631b06757",
+        "policy_version": "self-evolving-policy.v1",
+        "recommended_route_origin": "lp-do-fact-find",
+        "executor_path": "lp-do-build:container:analytics-v1",
+        "requirement_posture": "relative_required",
+        "blocking_scope": "degrades_quality",
+        "prescription_maturity": "structured",
+        "handoff_emitted_at": "2026-03-08T12:32:58.823Z"
+      },
+      "why": "AI-to-mechanistic — Extract shared PIN digit colour array into a single constant Observed 1 times in pattern reflection output. Recurred 2 times in the active detector window. Route this validated self-evolving candidate back through the canonical workflow.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a planning-ready fact-find for ai to mechanistic extract shared pin digit colour array into a single constant with preserved executor path lp-do-build:container:analytics-v1.",
+        "source": "auto"
       }
     }
   ]

@@ -1,4 +1,4 @@
-import { thompsonSampling } from "@acme/lib/math/experimentation";
+import { thompsonSampling } from "@acme/lib/math";
 import { SeededRandom } from "@acme/lib/math/random";
 
 import {

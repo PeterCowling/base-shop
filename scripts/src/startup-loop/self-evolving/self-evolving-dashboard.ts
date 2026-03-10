@@ -64,6 +64,7 @@ export interface DashboardSnapshot {
     stochastic_decisions: number;
     exploration_decisions: number;
     promotion_gate_decisions: number;
+    promotion_nomination_decisions: number;
   };
   evaluation: {
     total_decisions: number;
@@ -272,6 +273,9 @@ export function buildDashboardSnapshot(input: {
       ).length,
       promotion_gate_decisions: policyDecisions.filter(
         (decision) => decision.decision_type === "promotion_gate",
+      ).length,
+      promotion_nomination_decisions: policyDecisions.filter(
+        (decision) => decision.decision_type === "promotion_nomination",
       ).length,
     },
     evaluation: {

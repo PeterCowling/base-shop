@@ -26,6 +26,7 @@ import {
 import type { SelfEvolvingEvent } from "./self-evolving-events.js";
 import { buildPolicyAuditTelemetry } from "./self-evolving-policy-audit.js";
 import { buildPromotionGateDataset } from "./self-evolving-promotion-gate.js";
+import { buildPromotionNominationDataset } from "./self-evolving-promotion-path.js";
 import type { ShadowHandoffRecord } from "./self-evolving-shadow-handoffs.js";
 import { deriveBoundarySignalSnapshotFromStartupState } from "./self-evolving-signal-helpers.js";
 import { buildSurvivalPolicySignals } from "./self-evolving-survival.js";
@@ -411,6 +412,9 @@ export function buildSelfEvolvingReportData(input: {
   const promotionGateSummary = buildPromotionGateDataset({
     decisions: input.policy_decisions,
   });
+  const promotionNominationSummary = buildPromotionNominationDataset({
+    decisions: input.policy_decisions,
+  });
 
   const boundarySnapshot = deriveBoundarySignalSnapshotFromStartupState(input.startup_state);
   const boundaryDecision = evaluateMatureBoundary(
@@ -480,6 +484,7 @@ export function buildSelfEvolvingReportData(input: {
       total: input.policy_decisions.length,
       exploration: explorationSummary,
       promotion_gate: promotionGateSummary,
+      promotion_nomination: promotionNominationSummary,
     },
     evidence_policy: {
       route_policy: {

@@ -59,6 +59,7 @@ import {
 import { buildPolicyAuditTelemetry } from "./self-evolving-policy-audit.js";
 import { buildPortfolioSelection } from "./self-evolving-portfolio.js";
 import { buildPromotionGateDecisions } from "./self-evolving-promotion-gate.js";
+import { buildPromotionNominationDecisions } from "./self-evolving-promotion-path.js";
 import {
   assessEvidenceProfile,
   buildPolicyDecisionRecord,
@@ -581,7 +582,8 @@ export function runSelfEvolvingOrchestrator(
   const budgetPolicy = input.budget_policy ?? DEFAULT_BUDGET_POLICY;
 
   const store = createStartupStateStore(input.rootDir);
-  const startupStatePath = writeStartupState(store, input.startup_state);
+  let nextStartupState = input.startup_state;
+  let startupStatePath = writeStartupState(store, nextStartupState);
   const priorPolicyState =
     readPolicyState(store, input.business) ?? createDefaultPolicyState(input.business, generatedAt);
 
@@ -882,6 +884,19 @@ export function runSelfEvolvingOrchestrator(
     ...promotionGateDecisions,
     ...overrideRecords,
   ];
+  const promotionNominationResult = buildPromotionNominationDecisions({
+    startup_state: nextStartupState,
+    authority_level: nextPolicyState.authority_level,
+    ranked_candidates: fullyAnnotatedCandidates,
+    route_decisions: governedRouteDecisions,
+    evaluation_dataset: historicalEvaluation,
+    created_at: generatedAt,
+  });
+  if (promotionNominationResult.startup_state_changed) {
+    nextStartupState = promotionNominationResult.startup_state;
+    startupStatePath = writeStartupState(store, nextStartupState);
+  }
+  policyDecisions.push(...promotionNominationResult.decision_records);
 
   if (policyDecisions.length > 0) {
     nextPolicyState.last_decision_id = policyDecisions[policyDecisions.length - 1]?.decision_id ?? null;
@@ -953,7 +968,7 @@ export function runSelfEvolvingOrchestrator(
 
   const boundarySignals =
     input.boundary_signals ??
-    deriveBoundarySignalSnapshotFromStartupState(input.startup_state).signals;
+    deriveBoundarySignalSnapshotFromStartupState(nextStartupState).signals;
   const boundary = evaluateMatureBoundary(
     boundarySignals,
     input.boundary_thresholds ?? DEFAULT_MATURE_BOUNDARY_THRESHOLDS,

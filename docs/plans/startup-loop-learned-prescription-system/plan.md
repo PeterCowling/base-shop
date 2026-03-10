@@ -40,7 +40,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - [x] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation — Complete (2026-03-10)
 - [x] TASK-07: Widen live sensing for richer prescription evidence — Complete (2026-03-10)
 - [x] TASK-08: Define and enforce the discovery-output contract for unknown prescriptions — Complete (2026-03-10)
-- [ ] TASK-09: Add a guarded promotion path for proven prescriptions
+- [x] TASK-09: Add a guarded promotion path for proven prescriptions — Complete (2026-03-10)
 - [ ] TASK-10: Checkpoint resulting-system coherence and rollout readiness
 
 ## Goals
@@ -122,7 +122,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 | TASK-06 | IMPLEMENT | Add milestone-event triggers, producers, and lateral bundle generation | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02, TASK-03, TASK-05 | TASK-09, TASK-10 |
 | TASK-07 | IMPLEMENT | Widen live sensing for richer prescription evidence | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-08, TASK-10 |
 | TASK-08 | IMPLEMENT | Define and enforce the discovery-output contract for unknown prescriptions | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-07 | TASK-09, TASK-10 |
-| TASK-09 | IMPLEMENT | Add a guarded promotion path for proven prescriptions | 80% | M | Pending | TASK-03, TASK-04, TASK-06, TASK-08 | TASK-10 |
+| TASK-09 | IMPLEMENT | Add a guarded promotion path for proven prescriptions | 80% | M | Complete (2026-03-10) | TASK-03, TASK-04, TASK-06, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Check resulting-system coherence and rollout readiness | 95% | S | Pending | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
 
 ## Parallelism Guide
@@ -551,8 +551,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-write-back.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-autofix.ts`, related self-evolving promotion/reporting code, relevant prompt/contract docs
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-promotion-path.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-index.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-autofix.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-promotion-path.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-report.test.ts`
 - **Depends on:** TASK-03, TASK-04, TASK-06, TASK-08
 - **Blocks:** TASK-10
 - **Confidence:** 80%
@@ -586,6 +586,18 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Notes / references:**
   - [self-evolving-write-back.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-write-back.ts)
   - [self-evolving-autofix.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-autofix.ts)
+  - [self-evolving-promotion-path.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-promotion-path.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: the loop could learn prescription quality, but there was still no first-class promotion nomination path, no separation between proof and safety at the writer seam, and no report surface that could distinguish proven-but-unpromoted prescriptions from those actually promoted.
+  - Green: added `promotion_nomination` as a first-class policy decision with its own audited context; the new promotion-path module now derives promotion nominations from prescription-level outcome evidence, records separate `proof_status` and `safety_status`, and classifies bounded target surfaces instead of treating “worked before” as blanket promotion permission.
+  - Guarded writer boundary: the first slice keeps nearly all promotions nomination-only. Container/prompt-contract targets remain advisory, while the only live writer is the existing website-v1 low-risk startup-state autofix, and that only actuates when authority is `guarded_trial`, proof is eligible, and the autofix actually has something safe to patch.
+  - Reporting boundary: report and dashboard surfaces now expose promotion nomination counts, target-surface mix, applied-vs-nominated status, and proven-but-unpromoted totals so the loop can prove that efficacy and safety are being tracked separately instead of hand-waved together.
+  - TC-01: pass. Promotion nominations now require prescription-level observed outcomes; without a proven prescription and observed positive outcomes the path records `insufficient_data` or `ineligible` instead of silently nominating.
+  - TC-02: pass. Guarded promotion cannot silently actuate high-risk changes. Non-autofix surfaces stay advisory-only, and the only automatic writer in this tranche is the narrow website-v1 brand-rules autofix under `guarded_trial`.
+  - TC-03: pass. The promotion path is auditable through policy-decision records and report summaries: target surface, proof status, safety status, actuation status, and latest outcome evidence are all recorded.
+  - TC-04: pass. “Proven effective” no longer implies “safe to promote”: proof and safety are separate statuses in the promotion nomination context, and report output shows proven-but-unpromoted counts explicitly.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`, targeted `pnpm exec eslint --no-warn-ignored ...`, `pnpm plans:lint`, `git diff --check`, and `bash scripts/validate-changes.sh` passed on the TASK-09 surface.
+  - Precursor completion propagation: TASK-09 no longer blocks TASK-10. The next runnable task is the final checkpoint.
 
 ### TASK-10: Check resulting-system coherence and rollout readiness
 - **Type:** CHECKPOINT

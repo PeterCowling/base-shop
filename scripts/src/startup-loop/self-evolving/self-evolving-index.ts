@@ -16,6 +16,7 @@ export * from "./self-evolving-from-ideas.js";
 export * from "./self-evolving-lifecycle.js";
 export * from "./self-evolving-orchestrator.js";
 export * from "./self-evolving-pilot.js";
+export * from "./self-evolving-promotion-path.js";
 export * from "./self-evolving-release-controls.js";
 export * from "./self-evolving-replay.js";
 export * from "./self-evolving-scoring.js";

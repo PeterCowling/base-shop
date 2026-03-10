@@ -99,7 +99,7 @@ export function RoomsSection({
       }
     }
     return Object.keys(prices).length > 0 ? prices : undefined;
-  }, [availabilityRooms, roomPricesOverride, visibleRoomsData]);
+  }, [availabilityRooms, roomPricesOverride]);
 
   // Ref-level guard prevents duplicate begin_checkout events on rapid re-clicks.
   // It must be reset on `pageshow` because back/forward cache can restore a page

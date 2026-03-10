@@ -1,6 +1,6 @@
 "use client";
 
-/* eslint-disable ds/no-hardcoded-copy, complexity -- PUB-05 pre-existing */
+/* eslint-disable ds/no-hardcoded-copy -- PUB-05 pre-existing */
 // src/app/[lang]/experiences/tags/[tag]/GuidesTagContent.tsx
 // Client component for guide tag page
 import React, { memo, useEffect, useMemo } from "react";

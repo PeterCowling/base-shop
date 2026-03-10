@@ -284,6 +284,7 @@ function buildDefaultConstraintProfile(): ConstraintProfile {
     max_guarded_trial_blast_radius: "medium",
     minimum_evidence_floor: "instrumented",
     hold_window_days: 7,
+    exploration_budget_slots: 1,
   };
 }
 

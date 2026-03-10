@@ -21,6 +21,7 @@ import { buildDashboardSnapshot } from "./self-evolving-dashboard.js";
 import { buildDependencyGraphSnapshot } from "./self-evolving-dependency-graph.js";
 import { buildPolicyEvaluationDataset } from "./self-evolving-evaluation.js";
 import type { SelfEvolvingEvent } from "./self-evolving-events.js";
+import { buildPromotionGateDataset } from "./self-evolving-promotion-gate.js";
 import { deriveBoundarySignalSnapshotFromStartupState } from "./self-evolving-signal-helpers.js";
 import { buildSurvivalPolicySignals } from "./self-evolving-survival.js";
 
@@ -214,6 +215,43 @@ function collectWarnings(args: CliArgs): string[] {
   return warnings;
 }
 
+function summarizeExplorationDecisions(
+  decisions: readonly PolicyDecisionRecord[],
+): {
+  total: number;
+  stochastic: number;
+  prioritized: number;
+  applied: number;
+  shadow: number;
+} {
+  let total = 0;
+  let stochastic = 0;
+  let prioritized = 0;
+  let applied = 0;
+  let shadow = 0;
+
+  for (const decision of decisions) {
+    if (decision.decision_type !== "exploration_rank") {
+      continue;
+    }
+    total += 1;
+    if (decision.decision_mode === "stochastic") {
+      stochastic += 1;
+    }
+    if (decision.chosen_action === "prioritized") {
+      prioritized += 1;
+    }
+    if (decision.exploration_rank?.policy_mode === "advisory") {
+      applied += 1;
+    }
+    if (decision.exploration_rank?.policy_mode === "shadow") {
+      shadow += 1;
+    }
+  }
+
+  return { total, stochastic, prioritized, applied, shadow };
+}
+
 export function buildSelfEvolvingReportData(input: {
   business: string;
   generated_at: string;
@@ -259,9 +297,14 @@ export function buildSelfEvolvingReportData(input: {
     wipCap: 10,
     policy_state: input.policy_state,
     decision_records_count: input.policy_decisions.length,
+    policy_decisions: input.policy_decisions,
     evaluation_summary: evaluation.summary,
     dependency_graph: dependencyGraph,
     survival_signals: survivalSignals,
+  });
+  const explorationSummary = summarizeExplorationDecisions(input.policy_decisions);
+  const promotionGateSummary = buildPromotionGateDataset({
+    decisions: input.policy_decisions,
   });
 
   const boundarySnapshot = deriveBoundarySignalSnapshotFromStartupState(input.startup_state);
@@ -317,6 +360,11 @@ export function buildSelfEvolvingReportData(input: {
           measurement_status: record.measurement_status,
           outcome_reason_code: record.outcome_reason_code,
         })),
+    },
+    policy_decisions: {
+      total: input.policy_decisions.length,
+      exploration: explorationSummary,
+      promotion_gate: promotionGateSummary,
     },
     evidence_policy: {
       route_policy: {

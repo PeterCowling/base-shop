@@ -43,6 +43,7 @@ import {
   readSelfEvolvingEvents,
 } from "./self-evolving-events.js";
 import { deriveCandidateEvidencePosture } from "./self-evolving-evidence-posture.js";
+import { buildExplorationDecisionLayer } from "./self-evolving-exploration.js";
 import {
   canCreateCandidate,
   type CandidateBudgetPolicy,
@@ -50,6 +51,7 @@ import {
   validateTransition,
 } from "./self-evolving-lifecycle.js";
 import { buildPortfolioSelection } from "./self-evolving-portfolio.js";
+import { buildPromotionGateDecisions } from "./self-evolving-promotion-gate.js";
 import {
   assessEvidenceProfile,
   buildPolicyDecisionRecord,
@@ -627,12 +629,21 @@ export function runSelfEvolvingOrchestrator(
   const portfolioDecisionByCandidateId = new Map(
     portfolioSelection.decision_records.map((decision) => [decision.candidate_id, decision] as const),
   );
-  const policyDecisions: PolicyDecisionRecord[] = [
-    ...routePolicyDecisions,
-    ...portfolioSelection.decision_records,
-  ];
+  const explorationLayer = buildExplorationDecisionLayer({
+    business_id: input.business,
+    ranked_candidates: rerankedCandidates,
+    portfolio_decisions: portfolioSelection.decision_records,
+    policy_state: nextPolicyState,
+    created_at: generatedAt,
+  });
+  const explorationDecisionByCandidateId = new Map(
+    explorationLayer.decision_records.map((decision) => [decision.candidate_id, decision] as const),
+  );
   const portfolioAnnotatedCandidates = rerankedCandidates.map((rankedCandidate) => {
     const portfolioDecision = portfolioDecisionByCandidateId.get(
+      rankedCandidate.candidate.candidate_id,
+    );
+    const explorationDecision = explorationDecisionByCandidateId.get(
       rankedCandidate.candidate.candidate_id,
     );
     return {
@@ -648,10 +659,59 @@ export function runSelfEvolvingOrchestrator(
             portfolio_adjusted_utility:
               portfolioDecision?.portfolio_selection?.signal_snapshot.adjusted_utility ??
               null,
+            exploration_decision_id: explorationDecision?.decision_id ?? null,
+            exploration_mode: explorationDecision?.exploration_rank?.policy_mode ?? null,
+            exploration_selected: explorationDecision?.chosen_action === "prioritized",
+            exploration_selected_at: generatedAt,
+            exploration_priority_score:
+              explorationDecision?.exploration_rank?.signal_snapshot.exploration_score ??
+              null,
+            exploration_applied: explorationLayer.applied,
           }
         : rankedCandidate.policy_context,
     };
   });
+  const promotionGateDecisions = buildPromotionGateDecisions({
+    startup_state: input.startup_state,
+    ranked_candidates: portfolioAnnotatedCandidates,
+    route_decisions: routePolicyDecisions,
+    evaluation_dataset: historicalEvaluation,
+    observations: allObservations,
+    lifecycle_events: allEvents,
+    created_at: generatedAt,
+  });
+  const promotionGateDecisionByCandidateId = new Map(
+    promotionGateDecisions.map((decision) => [decision.candidate_id, decision] as const),
+  );
+  const fullyAnnotatedCandidates = portfolioAnnotatedCandidates.map((rankedCandidate) => {
+    const promotionGateDecision = promotionGateDecisionByCandidateId.get(
+      rankedCandidate.candidate.candidate_id,
+    );
+    const promotionGateAction: "promote" | "revert" | "hold" | null =
+      promotionGateDecision?.chosen_action === "promote" ||
+      promotionGateDecision?.chosen_action === "revert" ||
+      promotionGateDecision?.chosen_action === "hold"
+        ? promotionGateDecision.chosen_action
+        : null;
+    return {
+      ...rankedCandidate,
+      policy_context: rankedCandidate.policy_context
+        ? {
+            ...rankedCandidate.policy_context,
+            promotion_gate_decision_id: promotionGateDecision?.decision_id ?? null,
+            promotion_gate_action: promotionGateAction,
+            promotion_gate_reason:
+              promotionGateDecision?.promotion_gate?.reason_code ?? null,
+          }
+        : rankedCandidate.policy_context,
+    };
+  });
+  const policyDecisions: PolicyDecisionRecord[] = [
+    ...routePolicyDecisions,
+    ...portfolioSelection.decision_records,
+    ...explorationLayer.decision_records,
+    ...promotionGateDecisions,
+  ];
 
   if (policyDecisions.length > 0) {
     nextPolicyState.last_decision_id = policyDecisions[policyDecisions.length - 1]?.decision_id ?? null;
@@ -684,7 +744,7 @@ export function runSelfEvolvingOrchestrator(
   const candidatePath = writeCandidateLedger(
     input.rootDir,
     input.business,
-    portfolioAnnotatedCandidates,
+    fullyAnnotatedCandidates,
   );
   const policyStatePath = writePolicyState(store, nextPolicyState);
   const policyDecisionPath = appendPolicyDecisionJournal(
@@ -698,10 +758,11 @@ export function runSelfEvolvingOrchestrator(
 
   const dashboard = buildDashboardSnapshot({
     observations: allObservations,
-    ranked_candidates: portfolioAnnotatedCandidates,
+    ranked_candidates: fullyAnnotatedCandidates,
     wipCap: budgetPolicy.max_active_candidates,
     policy_state: nextPolicyState,
     decision_records_count: decisionsBefore + policyDecisions.length,
+    policy_decisions: policyDecisions,
     evaluation_summary: historicalEvaluation.summary,
     dependency_graph: dependencyGraph,
     survival_signals: survivalSignals,
@@ -727,7 +788,7 @@ export function runSelfEvolvingOrchestrator(
     repeat_candidates_detected: detectedRepeats.length,
     candidates_generated: generatedSeeds.length,
     candidate_rejections: rejections,
-    ranked_candidates: portfolioAnnotatedCandidates,
+    ranked_candidates: fullyAnnotatedCandidates,
     dashboard,
     boundary,
   };

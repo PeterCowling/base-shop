@@ -652,8 +652,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `packages/lib/src/math/experimentation/index.ts`, `packages/lib/src/math/random/index.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-exploration.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/__tests__/self-evolving-exploration.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-report.test.ts`
 - **Depends on:** TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07
 - **Blocks:** TASK-12, TASK-13, TASK-14
 - **Confidence:** 80%
@@ -689,6 +689,17 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `packages/lib/src/math/experimentation/index.ts`
   - `packages/lib/src/math/random/index.ts`
+- **Build Evidence (2026-03-10):**
+  - Added first-class `exploration_rank` policy decisions and journal payloads with seeded stochastic traces, candidate-set hash, prioritized candidate IDs, and per-candidate sampled signal snapshots.
+  - Added explicit exploration budget semantics on the active constraint profile through `exploration_budget_slots`; the default policy state now carries a non-zero budget while authority still controls whether exploration is shadow-only or applied.
+  - Implemented the bounded first slice in `self-evolving-exploration.ts`: exploration reranks only the already-selected portfolio set, using belief posteriors, adjusted utility, evidence class, startup stage, graph pressure, and survival penalty as context.
+  - Wired exploration provenance into candidate policy context, backbone queue entries, queue ordering, dashboard policy summaries, and the report surface.
+  - Validation:
+    - `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
+    - targeted `pnpm exec eslint` across touched startup-loop runtime and test files
+    - `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK`
+  - Test execution note: local Jest remains out of scope under repo policy, so the new exploration fixtures were added but not run locally.
+  - Precursor completion propagation: TASK-10 is no longer a blocker for TASK-12, TASK-13, or TASK-14.
 
 ### TASK-11: Implement the causal-evaluation contract and promotion-quality gate
 - **Type:** IMPLEMENT
@@ -697,8 +708,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-promotion-gate.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/__tests__/self-evolving-promotion-gate.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-report.test.ts`
 - **Depends on:** TASK-04, TASK-06, TASK-16, TASK-08, TASK-09
 - **Blocks:** TASK-12, TASK-13, TASK-14
 - **Confidence:** 80%
@@ -733,7 +744,18 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`
-  - Next execution gate: `TASK-10` and `TASK-11` now meet the `IMPLEMENT` confidence floor and form the next runnable wave. `TASK-12` and `TASK-13` remain below threshold pending real exploration and promotion-gate runtime evidence.
+- **Build Evidence (2026-03-10):**
+  - Added first-class `promotion_gate` policy decisions and journal payloads with explicit causal eligibility, evaluation status, hook contract, verified observation IDs, target KPI, sample size, runtime hours, and recorded reason code.
+  - Implemented the narrow first promotion-quality slice in `self-evolving-promotion-gate.ts`: only executor paths backed by a declared container `experiment_hook_contract` can clear the gate; all other paths hold fail-closed.
+  - Wired the gate to use existing verified outcome closure plus verified measurement observations; structural graph signals and survival risk remain inputs to allocation, but cannot satisfy promotion quality on their own.
+  - Promotion gate decisions are now surfaced in candidate policy context, dashboard policy summaries, and report summaries for later audit and follow-on governance work.
+  - Validation:
+    - `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
+    - targeted `pnpm exec eslint` across touched startup-loop runtime and test files
+    - `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK`
+  - Test execution note: local Jest remains out of scope under repo policy, so the new gate fixtures were added but not run locally.
+  - Precursor completion propagation: TASK-11 is no longer a blocker for TASK-12, TASK-13, or TASK-14.
+  - Next execution gate: `TASK-12` and `TASK-13` remain below the `IMPLEMENT` floor; the next correct step is `/lp-do-replan` rather than another blind build cycle.
 
 ### TASK-12: Implement stability controls and anti-gaming utility governance
 - **Type:** IMPLEMENT

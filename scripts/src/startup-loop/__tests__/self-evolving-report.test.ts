@@ -290,11 +290,26 @@ describe("buildSelfEvolvingReportData", () => {
         }),
       }),
     );
+    expect(report.policy_decisions).toEqual(
+      expect.objectContaining({
+        total: 1,
+        exploration: expect.objectContaining({
+          total: 0,
+        }),
+        promotion_gate: expect.objectContaining({
+          total: 0,
+        }),
+      }),
+    );
     expect(report.dashboard).toEqual(
       expect.objectContaining({
         evaluation: expect.objectContaining({
           total_decisions: 1,
           replay_ready_decisions: 1,
+        }),
+        policy: expect.objectContaining({
+          exploration_decisions: 0,
+          promotion_gate_decisions: 0,
         }),
         graph: expect.objectContaining({
           node_count: expect.any(Number),

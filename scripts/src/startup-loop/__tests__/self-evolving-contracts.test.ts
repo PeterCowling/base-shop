@@ -215,6 +215,61 @@ describe("self-evolving contract validators", () => {
     expect(validateMetaObservation(observation)).toEqual([]);
   });
 
+  it("TASK-10 TC-03 validates exploration_rank policy decisions", () => {
+    const decision = {
+      ...buildValidPolicyDecision(),
+      decision_type: "exploration_rank" as const,
+      decision_mode: "stochastic" as const,
+      chosen_action: "prioritized",
+      action_probability: 0.42,
+      exploration_rank: {
+        schema_version: "exploration-rank.v1" as const,
+        exploration_batch_id: "explore-1",
+        candidate_set_hash: "hash-1",
+        portfolio_id: "portfolio-1",
+        policy_mode: "shadow" as const,
+        budget_slots: 1,
+        seed: 42,
+        prioritized_candidate_ids: ["cand-1"],
+        signal_snapshot: {
+          baseline_adjusted_utility: 1.3,
+          sampled_success_probability: 0.61,
+          sampled_impact_probability: 0.58,
+          uncertainty_width: 0.4,
+          context_weight: 0.05,
+          exploration_bonus: 0.22,
+          exploration_score: 1.52,
+        },
+      },
+    };
+    expect(validatePolicyDecisionRecord(decision)).toEqual([]);
+  });
+
+  it("TASK-11 TC-03 validates promotion_gate policy decisions", () => {
+    const decision = {
+      ...buildValidPolicyDecision(),
+      decision_type: "promotion_gate" as const,
+      chosen_action: "hold",
+      action_probability: 1,
+      promotion_gate: {
+        schema_version: "promotion-gate.v1" as const,
+        estimator_version: "promotion-gate.v1",
+        container_name: "website-v3",
+        experiment_hook_contract: "website_upgrade_variants",
+        causal_status: "insufficient_data" as const,
+        evaluation_status: "pending" as const,
+        outcome_event_id: null,
+        verified_observation_ids: [],
+        target_kpi: "activation_rate",
+        measured_impact: null,
+        sample_size: null,
+        runtime_hours: null,
+        reason_code: "evaluation_status_pending",
+      },
+    };
+    expect(validatePolicyDecisionRecord(decision)).toEqual([]);
+  });
+
   it("TASK-01 TC-02 accepts legacy v1 observations without admission metadata", () => {
     const legacyObservation: MetaObservation = {
       schema_version: "meta-observation.v1",

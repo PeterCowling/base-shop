@@ -4,6 +4,7 @@ import type { RankedCandidate } from "./self-evolving-candidates.js";
 import type {
   CandidateState,
   MetaObservation,
+  PolicyDecisionRecord,
   SelfEvolvingPolicyState,
 } from "./self-evolving-contracts.js";
 import type { SelfEvolvingDependencyGraphSnapshot } from "./self-evolving-dependency-graph.js";
@@ -59,6 +60,9 @@ export interface DashboardSnapshot {
     authority_level: string | null;
     candidate_beliefs: number;
     decision_records: number;
+    stochastic_decisions: number;
+    exploration_decisions: number;
+    promotion_gate_decisions: number;
   };
   evaluation: {
     total_decisions: number;
@@ -137,6 +141,7 @@ export function buildDashboardSnapshot(input: {
   wipCap: number;
   policy_state?: SelfEvolvingPolicyState | null;
   decision_records_count?: number;
+  policy_decisions?: readonly PolicyDecisionRecord[] | null;
   evaluation_summary?: PolicyEvaluationSummary | null;
   dependency_graph?: SelfEvolvingDependencyGraphSnapshot | null;
   survival_signals?: SurvivalPolicySignals | null;
@@ -182,6 +187,7 @@ export function buildDashboardSnapshot(input: {
     input.ranked_candidates.length - measuredEvidenceCandidateCount;
   const posture = summarizeObservationPosture(input.observations);
   const policyState = input.policy_state ?? null;
+  const policyDecisions = input.policy_decisions ?? [];
   const evaluationSummary = input.evaluation_summary ?? EMPTY_EVALUATION_SUMMARY;
   const maturityDebtDecisions =
     evaluationSummary.pending_decisions + evaluationSummary.censored_decisions;
@@ -229,6 +235,15 @@ export function buildDashboardSnapshot(input: {
       authority_level: policyState?.authority_level ?? null,
       candidate_beliefs: Object.keys(policyState?.candidate_beliefs ?? {}).length,
       decision_records: input.decision_records_count ?? 0,
+      stochastic_decisions: policyDecisions.filter(
+        (decision) => decision.decision_mode === "stochastic",
+      ).length,
+      exploration_decisions: policyDecisions.filter(
+        (decision) => decision.decision_type === "exploration_rank",
+      ).length,
+      promotion_gate_decisions: policyDecisions.filter(
+        (decision) => decision.decision_type === "promotion_gate",
+      ).length,
     },
     evaluation: {
       total_decisions: evaluationSummary.total_decisions,

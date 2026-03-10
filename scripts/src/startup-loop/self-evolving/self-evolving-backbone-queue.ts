@@ -23,6 +23,12 @@ export interface SelfEvolvingBackboneQueueEntry {
   portfolio_decision_id?: string | null;
   portfolio_selected_at?: string | null;
   portfolio_adjusted_utility?: number | null;
+  exploration_decision_id?: string | null;
+  exploration_mode?: "off" | "shadow" | "advisory" | null;
+  exploration_selected?: boolean | null;
+  exploration_selected_at?: string | null;
+  exploration_priority_score?: number | null;
+  exploration_applied?: boolean | null;
   consumed_at?: string | null;
   consumed_by?: string | null;
   followup_dispatch_id?: string | null;
@@ -102,6 +108,12 @@ function toQueueEntry(
     portfolio_decision_id: candidate.policy_context?.portfolio_decision_id ?? null,
     portfolio_selected_at: candidate.policy_context?.portfolio_selected_at ?? null,
     portfolio_adjusted_utility: candidate.policy_context?.portfolio_adjusted_utility ?? null,
+    exploration_decision_id: candidate.policy_context?.exploration_decision_id ?? null,
+    exploration_mode: candidate.policy_context?.exploration_mode ?? null,
+    exploration_selected: candidate.policy_context?.exploration_selected ?? null,
+    exploration_selected_at: candidate.policy_context?.exploration_selected_at ?? null,
+    exploration_priority_score: candidate.policy_context?.exploration_priority_score ?? null,
+    exploration_applied: candidate.policy_context?.exploration_applied ?? null,
     consumed_at: existing?.consumed_at ?? null,
     consumed_by: existing?.consumed_by ?? null,
     followup_dispatch_id: existing?.followup_dispatch_id ?? null,
@@ -151,6 +163,31 @@ export function enqueueBackboneCandidates(
     if (left.consumed_at != null && right.consumed_at == null) return 1;
     if ((left.portfolio_selected ?? true) !== (right.portfolio_selected ?? true)) {
       return (left.portfolio_selected ?? true) ? -1 : 1;
+    }
+    if ((left.exploration_applied ?? false) !== (right.exploration_applied ?? false)) {
+      return (left.exploration_applied ?? false) ? -1 : 1;
+    }
+    if (
+      (left.exploration_applied ?? false) &&
+      (right.exploration_applied ?? false) &&
+      (left.exploration_selected ?? false) !== (right.exploration_selected ?? false)
+    ) {
+      return (left.exploration_selected ?? false) ? -1 : 1;
+    }
+    const leftExplorationObjective =
+      left.exploration_applied && left.exploration_priority_score != null
+        ? left.exploration_priority_score
+        : null;
+    const rightExplorationObjective =
+      right.exploration_applied && right.exploration_priority_score != null
+        ? right.exploration_priority_score
+        : null;
+    if (leftExplorationObjective != null || rightExplorationObjective != null) {
+      if (leftExplorationObjective == null) return 1;
+      if (rightExplorationObjective == null) return -1;
+      if (leftExplorationObjective !== rightExplorationObjective) {
+        return rightExplorationObjective - leftExplorationObjective;
+      }
     }
     const leftObjective = left.portfolio_adjusted_utility ?? left.priority;
     const rightObjective = right.portfolio_adjusted_utility ?? right.priority;

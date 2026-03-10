@@ -184,6 +184,7 @@ export interface ConstraintProfile {
   max_guarded_trial_blast_radius: "small" | "medium" | "large";
   minimum_evidence_floor: "instrumented" | "measured";
   hold_window_days: number;
+  exploration_budget_slots?: number;
 }
 
 export interface MaturityWindowProfile {
@@ -296,6 +297,46 @@ export interface PortfolioSelectionContext {
   signal_snapshot: PortfolioSelectionSignalSnapshot;
 }
 
+export type ExplorationPolicyMode = "off" | "shadow" | "advisory";
+
+export interface ExplorationRankSignalSnapshot {
+  baseline_adjusted_utility: number;
+  sampled_success_probability: number;
+  sampled_impact_probability: number;
+  uncertainty_width: number;
+  context_weight: number;
+  exploration_bonus: number;
+  exploration_score: number;
+}
+
+export interface ExplorationRankContext {
+  schema_version: "exploration-rank.v1";
+  exploration_batch_id: string;
+  candidate_set_hash: string;
+  portfolio_id: string | null;
+  policy_mode: ExplorationPolicyMode;
+  budget_slots: number;
+  seed: number;
+  prioritized_candidate_ids: string[];
+  signal_snapshot: ExplorationRankSignalSnapshot;
+}
+
+export interface PromotionGateContext {
+  schema_version: "promotion-gate.v1";
+  estimator_version: string;
+  container_name: string | null;
+  experiment_hook_contract: string | null;
+  causal_status: "eligible" | "ineligible" | "insufficient_data" | "evaluated";
+  evaluation_status: "observed" | "pending" | "censored" | "missing" | "none";
+  outcome_event_id: string | null;
+  verified_observation_ids: string[];
+  target_kpi: string | null;
+  measured_impact: number | null;
+  sample_size: number | null;
+  runtime_hours: number | null;
+  reason_code: string;
+}
+
 export interface PolicyDecisionRecord {
   schema_version: "policy-decision.v1";
   decision_id: string;
@@ -314,6 +355,8 @@ export interface PolicyDecisionRecord {
   action_probability: number | null;
   utility: UtilityBreakdown;
   portfolio_selection?: PortfolioSelectionContext | null;
+  exploration_rank?: ExplorationRankContext | null;
+  promotion_gate?: PromotionGateContext | null;
   created_at: string;
 }
 
@@ -774,6 +817,13 @@ export function validateConstraintProfile(profile: ConstraintProfile): string[] 
     errors.push("hold_window_days");
   }
   if (
+    profile.exploration_budget_slots !== undefined &&
+    (!Number.isInteger(profile.exploration_budget_slots) ||
+      profile.exploration_budget_slots < 0)
+  ) {
+    errors.push("exploration_budget_slots");
+  }
+  if (
     profile.max_guarded_trial_blast_radius !== "small" &&
     profile.max_guarded_trial_blast_radius !== "medium" &&
     profile.max_guarded_trial_blast_radius !== "large"
@@ -1002,6 +1052,143 @@ function validatePortfolioSelectionContext(
   return errors;
 }
 
+function validateExplorationRankSignalSnapshot(
+  snapshot: ExplorationRankSignalSnapshot,
+): string[] {
+  const errors: string[] = [];
+  for (const [label, value] of Object.entries({
+    baseline_adjusted_utility: snapshot.baseline_adjusted_utility,
+    sampled_success_probability: snapshot.sampled_success_probability,
+    sampled_impact_probability: snapshot.sampled_impact_probability,
+    uncertainty_width: snapshot.uncertainty_width,
+    context_weight: snapshot.context_weight,
+    exploration_bonus: snapshot.exploration_bonus,
+    exploration_score: snapshot.exploration_score,
+  })) {
+    if (typeof value !== "number" || Number.isNaN(value)) {
+      errors.push(label);
+    }
+  }
+  return errors;
+}
+
+function validateExplorationRankContext(
+  context: ExplorationRankContext,
+): string[] {
+  const errors: string[] = [];
+  if (context.schema_version !== "exploration-rank.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    exploration_batch_id: context.exploration_batch_id,
+    candidate_set_hash: context.candidate_set_hash,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    context.portfolio_id !== null &&
+    !nonEmptyString(context.portfolio_id)
+  ) {
+    errors.push("portfolio_id");
+  }
+  if (
+    context.policy_mode !== "off" &&
+    context.policy_mode !== "shadow" &&
+    context.policy_mode !== "advisory"
+  ) {
+    errors.push("policy_mode");
+  }
+  if (!Number.isInteger(context.budget_slots) || context.budget_slots < 0) {
+    errors.push("budget_slots");
+  }
+  if (!Number.isInteger(context.seed) || context.seed < 0) {
+    errors.push("seed");
+  }
+  if (!Array.isArray(context.prioritized_candidate_ids)) {
+    errors.push("prioritized_candidate_ids");
+  } else {
+    for (const [index, candidateId] of context.prioritized_candidate_ids.entries()) {
+      if (!nonEmptyString(candidateId)) {
+        errors.push(`prioritized_candidate_ids.${index}`);
+      }
+    }
+  }
+  errors.push(
+    ...validateExplorationRankSignalSnapshot(context.signal_snapshot).map(
+      (error) => `signal_snapshot.${error}`,
+    ),
+  );
+  return errors;
+}
+
+function validatePromotionGateContext(
+  context: PromotionGateContext,
+): string[] {
+  const errors: string[] = [];
+  if (context.schema_version !== "promotion-gate.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    estimator_version: context.estimator_version,
+    reason_code: context.reason_code,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  for (const [label, value] of Object.entries({
+    container_name: context.container_name,
+    experiment_hook_contract: context.experiment_hook_contract,
+    target_kpi: context.target_kpi,
+    outcome_event_id: context.outcome_event_id,
+  })) {
+    if (value !== null && !nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    context.causal_status !== "eligible" &&
+    context.causal_status !== "ineligible" &&
+    context.causal_status !== "insufficient_data" &&
+    context.causal_status !== "evaluated"
+  ) {
+    errors.push("causal_status");
+  }
+  if (
+    context.evaluation_status !== "observed" &&
+    context.evaluation_status !== "pending" &&
+    context.evaluation_status !== "censored" &&
+    context.evaluation_status !== "missing" &&
+    context.evaluation_status !== "none"
+  ) {
+    errors.push("evaluation_status");
+  }
+  if (!Array.isArray(context.verified_observation_ids)) {
+    errors.push("verified_observation_ids");
+  } else {
+    for (const [index, observationId] of context.verified_observation_ids.entries()) {
+      if (!nonEmptyString(observationId)) {
+        errors.push(`verified_observation_ids.${index}`);
+      }
+    }
+  }
+  for (const [label, value] of Object.entries({
+    measured_impact: context.measured_impact,
+    sample_size: context.sample_size,
+    runtime_hours: context.runtime_hours,
+  })) {
+    if (
+      value !== null &&
+      (typeof value !== "number" || Number.isNaN(value))
+    ) {
+      errors.push(label);
+    }
+  }
+  return errors;
+}
+
 export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): string[] {
   const errors: string[] = [];
   if (record.schema_version !== "policy-decision.v1") {
@@ -1061,6 +1248,35 @@ export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): stri
         (error) => `portfolio_selection.${error}`,
       ),
     );
+  }
+  if (record.decision_type !== "portfolio_selection" && record.portfolio_selection) {
+    errors.push("portfolio_selection_unexpected_for_decision_type");
+  }
+  if (record.decision_type === "exploration_rank" && !record.exploration_rank) {
+    errors.push("exploration_rank");
+  }
+  if (record.exploration_rank) {
+    errors.push(
+      ...validateExplorationRankContext(record.exploration_rank).map(
+        (error) => `exploration_rank.${error}`,
+      ),
+    );
+  }
+  if (record.decision_type !== "exploration_rank" && record.exploration_rank) {
+    errors.push("exploration_rank_unexpected_for_decision_type");
+  }
+  if (record.decision_type === "promotion_gate" && !record.promotion_gate) {
+    errors.push("promotion_gate");
+  }
+  if (record.promotion_gate) {
+    errors.push(
+      ...validatePromotionGateContext(record.promotion_gate).map(
+        (error) => `promotion_gate.${error}`,
+      ),
+    );
+  }
+  if (record.decision_type !== "promotion_gate" && record.promotion_gate) {
+    errors.push("promotion_gate_unexpected_for_decision_type");
   }
   return errors;
 }

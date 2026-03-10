@@ -34,6 +34,15 @@ export interface RankedCandidate {
     portfolio_selected?: boolean | null;
     portfolio_selected_at?: string | null;
     portfolio_adjusted_utility?: number | null;
+    exploration_decision_id?: string | null;
+    exploration_mode?: "off" | "shadow" | "advisory" | null;
+    exploration_selected?: boolean | null;
+    exploration_selected_at?: string | null;
+    exploration_priority_score?: number | null;
+    exploration_applied?: boolean | null;
+    promotion_gate_decision_id?: string | null;
+    promotion_gate_action?: "promote" | "revert" | "hold" | null;
+    promotion_gate_reason?: string | null;
   };
 }
 

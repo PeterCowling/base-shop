@@ -30,7 +30,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [x] TASK-04: Switch process-improvements idea backlog to queue-only sourcing — Complete (2026-03-10)
 - [x] TASK-05: Demote `completed-ideas.json` from active backlog control — Complete (2026-03-10)
 - [x] TASK-06: Determine the self-evolving build-origin alignment model — Complete (2026-03-10)
-- [ ] TASK-11: Implement the chosen self-evolving build-origin alignment
+- [x] TASK-11: Implement the chosen self-evolving build-origin alignment — Complete (2026-03-10)
 - [ ] TASK-07: Canonical queue-path readiness checkpoint
 - [ ] TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
 - [ ] TASK-09: Cutover split checkpoint
@@ -102,7 +102,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-04 | IMPLEMENT | Switch process-improvements idea backlog to queue-only sourcing | 85% | M | Complete (2026-03-10) | TASK-03 | TASK-05, TASK-07, TASK-08, TASK-10 |
 | TASK-05 | IMPLEMENT | Demote `completed-ideas.json` from active backlog control | 80% | M | Complete (2026-03-10) | TASK-03, TASK-04 | TASK-07, TASK-08, TASK-10 |
 | TASK-06 | INVESTIGATE | Determine the self-evolving build-origin alignment model | 70% | M | Complete (2026-03-10) | TASK-01, TASK-02, TASK-03 | TASK-11 |
-| TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 80% | M | Pending | TASK-06 | TASK-07 |
+| TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 80% | M | Complete (2026-03-10) | TASK-06 | TASK-07 |
 | TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11 | TASK-08, TASK-09, TASK-10, TASK-12 |
 | TASK-08 | INVESTIGATE | Audit historical backlog carry-over and produce bounded carry-over evidence | 70% | M | Pending | TASK-07 | TASK-09, TASK-10, TASK-12 |
 | TASK-09 | CHECKPOINT | Decide in-thread cutover versus separate carry-over project | 95% | S | Pending | TASK-08 | TASK-10, TASK-12 |
@@ -354,8 +354,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`, related tests under `scripts/src/startup-loop/__tests__/`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-07
 - **Confidence:** 80%
@@ -375,6 +375,12 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Consumer tracing:**
   - aligned build-origin identity is consumed by self-evolving observation generation, downstream audit joins, and the readiness checkpoint.
 - **What would make this >=90%:** one end-to-end fixture proving queue provenance and self-evolving provenance remain joinable after alignment.
+- **Build completion evidence (2026-03-10):**
+  - Updated [self-evolving-from-ideas.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts) so queue-backed `build_origin` provenance becomes first-class self-evolving context: canonical `recurrence_key` now drives signal hints, `build-origin-signal:<id>` is preserved in evidence refs, and build-origin observations get a stable `lp-do-ideas/build-origin/<review_cycle_key>/<build_signal_id>` context path.
+  - Narrowed [self-evolving-from-build-output.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts) to non-authoritative structural build observation only: it no longer turns `results-review.signals.json` or `pattern-reflection.entries.json` into self-evolving idea observations, and `source_artifacts` now report only `build-record.user.md`.
+  - Added regression coverage in [self-evolving-orchestrator-integration.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts) for queue-backed build-origin recurrence identity, and updated [self-evolving-signal-integrity.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts) so raw build-output sidecars are explicitly non-authoritative.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` passed; targeted ESLint passed on the touched self-evolving files and tests.
+  - Outcome: affirming. TASK-07 is now the next runnable checkpoint.
 
 ### TASK-07: Canonical queue-path readiness checkpoint
 - **Type:** CHECKPOINT

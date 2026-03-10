@@ -342,7 +342,7 @@ describe("self-evolving sidecar-prefer branches", () => {
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
-  it("TC-05-01: results-review sidecar present → observations_generated reflects sidecar item count", () => {
+  it("TC-05-01: results-review sidecar no longer generates self-evolving idea observations", () => {
     writeStartupState();
 
     const planSlug = "test-sidecar-plan";
@@ -383,8 +383,8 @@ describe("self-evolving sidecar-prefer branches", () => {
 
     const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
     expect(result.ok).toBe(true);
-    // One idea from sidecar + build-record seed = 2 observations
-    expect(result.observations_generated).toBeGreaterThanOrEqual(1);
+    expect(result.observations_generated).toBe(1);
+    expect(result.source_artifacts).toEqual([`docs/plans/${planSlug}/build-record.user.md`]);
     const observationsPath = path.join(
       tmpDir,
       "docs",
@@ -412,7 +412,7 @@ describe("self-evolving sidecar-prefer branches", () => {
     ).toBe(true);
   });
 
-  it("TC-05-01b: results-review sidecar placeholders are ignored before observation generation", () => {
+  it("TC-05-01b: results-review sidecar content does not change build-output observation count", () => {
     writeStartupState();
 
     const planSlug = "test-sidecar-plan";
@@ -460,10 +460,10 @@ describe("self-evolving sidecar-prefer branches", () => {
 
     const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
     expect(result.ok).toBe(true);
-    expect(result.observations_generated).toBe(2);
+    expect(result.observations_generated).toBe(1);
   });
 
-  it("TC-05-02: no sidecar present → existing markdown parse path taken (no warnings about sidecar)", () => {
+  it("TC-05-02: build-output bridge no longer depends on results-review markdown parsing", () => {
     writeStartupState();
 
     const planSlug = "test-sidecar-plan";
@@ -479,11 +479,11 @@ describe("self-evolving sidecar-prefer branches", () => {
 
     const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
     expect(result.ok).toBe(true);
-    // No sidecar-related warnings
+    expect(result.observations_generated).toBe(1);
     expect(result.warnings.some((w) => w.includes("sidecar parse failed"))).toBe(false);
   });
 
-  it("TC-05-03: malformed results-review sidecar → fallback to markdown; warning in result.warnings", () => {
+  it("TC-05-03: malformed results-review sidecar no longer affects build-output bridge", () => {
     writeStartupState();
 
     const planSlug = "test-sidecar-plan";
@@ -503,10 +503,11 @@ describe("self-evolving sidecar-prefer branches", () => {
 
     const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
     expect(result.ok).toBe(true);
-    expect(result.warnings.some((w) => w.includes("sidecar parse failed"))).toBe(true);
+    expect(result.observations_generated).toBe(1);
+    expect(result.warnings.some((w) => w.includes("sidecar parse failed"))).toBe(false);
   });
 
-  it("TC-05-04: pattern-reflection sidecar present with 2 entries → observations include pattern seeds", () => {
+  it("TC-05-04: pattern-reflection sidecar no longer generates duplicate self-evolving idea observations", () => {
     writeStartupState();
 
     const planSlug = "test-sidecar-plan";
@@ -548,11 +549,10 @@ describe("self-evolving sidecar-prefer branches", () => {
 
     const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
     expect(result.ok).toBe(true);
-    // build-record (1) + 2 pattern seeds = 3 observations at minimum
-    expect(result.observations_generated).toBeGreaterThanOrEqual(2);
+    expect(result.observations_generated).toBe(1);
   });
 
-  it("TC-05-05: pattern-reflection sidecar absent → fallback to extractPatternReflectionSeeds from markdown", () => {
+  it("TC-05-05: pattern-reflection markdown no longer changes build-output observation count", () => {
     writeStartupState();
 
     const planSlug = "test-sidecar-plan";
@@ -581,9 +581,7 @@ describe("self-evolving sidecar-prefer branches", () => {
 
     const result = runSelfEvolvingFromBuildOutput(baseBridgeOptions());
     expect(result.ok).toBe(true);
-    // build-record + 1 pattern seed from markdown = 2 observations
-    expect(result.observations_generated).toBeGreaterThanOrEqual(1);
-    // No sidecar-related warnings
+    expect(result.observations_generated).toBe(1);
     expect(result.warnings.some((w) => w.includes("sidecar parse failed"))).toBe(false);
   });
 });

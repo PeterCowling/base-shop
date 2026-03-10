@@ -270,6 +270,57 @@ describe("self-evolving orchestrator integration", () => {
     expect(validateMetaObservation(observation)).toEqual([]);
   });
 
+  it("preserves canonical build-origin recurrence identity on queue-backed observations", () => {
+    const packet = {
+      ...buildDispatchPacket("d-build-origin"),
+      trigger: "operator_idea",
+      artifact_id: null,
+      area_anchor: "Queue-backed build-origin idea",
+      current_truth: "Queue-backed build-origin idea",
+      build_origin: {
+        schema_version: "dispatch-build-origin.v1",
+        build_signal_id: "signal-queue-123",
+        recurrence_key: "queue-backed-build-origin-recurrence",
+        review_cycle_key: "queue-unification-task",
+        plan_slug: "queue-unification-task",
+        canonical_title: "Queue-backed build-origin idea",
+        primary_source: "pattern-reflection.entries.json",
+        merge_state: "merged_cross_sidecar",
+        source_presence: {
+          results_review_signal: true,
+          pattern_reflection_entry: true,
+        },
+        results_review_path: "docs/plans/queue-unification-task/results-review.user.md",
+        results_review_sidecar_path:
+          "docs/plans/queue-unification-task/results-review.signals.json",
+        pattern_reflection_path:
+          "docs/plans/queue-unification-task/pattern-reflection.user.md",
+        pattern_reflection_sidecar_path:
+          "docs/plans/queue-unification-task/pattern-reflection.entries.json",
+      },
+    } as TrialDispatchPacket;
+
+    const observation = dispatchToMetaObservation(packet, {
+      business: "BRIK",
+      run_id: "run-build-origin",
+      session_id: "session-build-origin",
+      index: 0,
+      now: new Date("2026-03-10T00:00:00.000Z"),
+    });
+
+    expect(observation.signal_hints.recurrence_key).toBe("queue-backed-build-origin-recurrence");
+    expect(observation.context_path).toBe(
+      "lp-do-ideas/build-origin/queue-unification-task/signal-queue-123",
+    );
+    expect(observation.evidence_refs).toEqual(
+      expect.arrayContaining([
+        "build-origin-signal:signal-queue-123",
+        "docs/plans/queue-unification-task/results-review.user.md",
+      ]),
+    );
+    expect(validateMetaObservation(observation)).toEqual([]);
+  });
+
   it("routes weak-evidence candidates back into fact-find instead of direct build", () => {
     const tempRoot = mkdtempSync(path.join(os.tmpdir(), "self-evolving-integration-"));
     const result = runSelfEvolvingFromIdeas({

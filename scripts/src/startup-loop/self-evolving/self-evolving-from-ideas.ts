@@ -1,6 +1,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 
+import type { DispatchBuildOriginProvenance } from "../ideas/lp-do-ideas-trial.js";
+
 import {
   consumeBackboneQueueToIdeasWorkflow,
 } from "./self-evolving-backbone-consume.js";
@@ -31,7 +33,7 @@ export interface IdeasDispatchPacket {
   mode: "trial" | "live";
   business: string;
   trigger: "artifact_delta" | "operator_idea";
-  artifact_id?: string;
+  artifact_id?: string | null;
   before_sha: string | null;
   after_sha: string;
   root_event_id: string;
@@ -65,6 +67,7 @@ export interface IdeasDispatchPacket {
   created_at: string;
   queue_state: "enqueued" | "processed" | "skipped" | "error";
   why?: string;
+  build_origin?: DispatchBuildOriginProvenance;
   intended_outcome?:
     | {
         type: "measurable" | "operational";
@@ -95,6 +98,26 @@ function firstNonEmptyText(
     }
   }
   return null;
+}
+
+function uniqueRefs(values: readonly string[]): [string, ...string[]] {
+  const refs = [...new Set(values.map((value) => value.trim()).filter((value) => value.length > 0))];
+  return (refs.length > 0 ? refs : ["lp-do-ideas"]) as [string, ...string[]];
+}
+
+function normalizeBuildOriginProvenance(
+  value: DispatchBuildOriginProvenance | undefined,
+): DispatchBuildOriginProvenance | null {
+  if (!value || value.schema_version !== "dispatch-build-origin.v1") {
+    return null;
+  }
+  const buildSignalId = value.build_signal_id?.trim() ?? "";
+  const recurrenceKey = value.recurrence_key?.trim() ?? "";
+  const reviewCycleKey = value.review_cycle_key?.trim() ?? "";
+  if (!buildSignalId || !recurrenceKey || !reviewCycleKey) {
+    return null;
+  }
+  return value;
 }
 
 function resolveIntendedOutcomeStatement(packet: IdeasDispatchPacket): string {
@@ -128,8 +151,18 @@ export function dispatchToMetaObservation(
   const areaAnchor =
     firstNonEmptyText(packet.area_anchor, packet.cluster_key, packet.dispatch_id) ?? "unknown";
   const intendedOutcomeStatement = resolveIntendedOutcomeStatement(packet);
+  const buildOrigin = normalizeBuildOriginProvenance(packet.build_origin);
+  const buildOriginEvidenceRefs = buildOrigin
+    ? [
+        `build-origin-signal:${buildOrigin.build_signal_id}`,
+        buildOrigin.results_review_path ?? "",
+        buildOrigin.pattern_reflection_path ?? "",
+      ]
+    : [];
   const signalHints = buildObservationSignalHints({
-    recurrenceKeyParts: [areaAnchor, intendedOutcomeStatement, packet.why ?? ""],
+    recurrenceKeyParts: buildOrigin
+      ? [buildOrigin.recurrence_key]
+      : [areaAnchor, intendedOutcomeStatement, packet.why ?? ""],
     problemStatement: `Reduce recurring ${areaAnchor} work and route it into a reusable lp-do-build path for ${packet.business}.`,
     texts: [
       areaAnchor,
@@ -137,6 +170,8 @@ export function dispatchToMetaObservation(
       packet.next_scope_now,
       packet.why ?? "",
       intendedOutcomeStatement,
+      buildOrigin?.canonical_title ?? "",
+      buildOrigin?.review_cycle_key ?? "",
     ],
   });
   const hardSignature = buildHardSignature({
@@ -157,6 +192,11 @@ export function dispatchToMetaObservation(
     ? packet.root_event_id
     : packet.dispatch_id;
 
+  const evidenceRefs = uniqueRefs([...packet.evidence_refs, ...buildOriginEvidenceRefs]);
+  const contextPath = buildOrigin
+    ? `lp-do-ideas/build-origin/${buildOrigin.review_cycle_key}/${buildOrigin.build_signal_id}`
+    : `lp-do-ideas/${areaAnchor}`;
+
   return {
     schema_version: "meta-observation.v2",
     observation_id: stableHash(`lp-do-ideas|${packet.dispatch_id}|${observationSeed}`).slice(
@@ -171,8 +211,8 @@ export function dispatchToMetaObservation(
     session_id: input.session_id,
     skill_id: "lp-do-ideas",
     container_id: null,
-    artifact_refs: packet.evidence_refs,
-    context_path: `lp-do-ideas/${areaAnchor}`,
+    artifact_refs: evidenceRefs,
+    context_path: contextPath,
     hard_signature: hardSignature,
     soft_cluster_id: stableHash(signalHints.recurrence_key ?? packet.cluster_fingerprint).slice(
       0,
@@ -200,7 +240,7 @@ export function dispatchToMetaObservation(
     baseline_ref: null,
     measurement_window: hasKpiHint ? "7d" : null,
     traffic_segment: null,
-    evidence_refs: packet.evidence_refs,
+    evidence_refs: evidenceRefs,
     evidence_grade: hasKpiHint ? "structural" : "exploratory",
     measurement_contract_status: hasKpiHint ? "declared" : "none",
     signal_hints: signalHints,

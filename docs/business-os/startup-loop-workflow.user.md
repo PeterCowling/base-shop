@@ -6,6 +6,7 @@ Created: 2026-02-12
 Updated: 2026-03-10
 Last-reviewed: 2026-03-10
 Owner: Pete
+Render-Nav: self-improving
 ---
 
 # Self Improving Loop

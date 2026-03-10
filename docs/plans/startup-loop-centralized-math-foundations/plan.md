@@ -4,8 +4,8 @@ Status: Active
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-09
-Last-reviewed: 2026-03-09
-Last-updated: 2026-03-09
+Last-reviewed: 2026-03-10
+Last-updated: 2026-03-10
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: startup-loop-centralized-math-foundations
 Deliverable-Type: multi-deliverable
@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-do-fact-find, lp-do-ideas, startup-loop
-Overall-confidence: 76%
+Overall-confidence: 80%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan-only
 ---
@@ -34,8 +34,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-07: Replace pure priority sorting with constrained portfolio optimization — Complete (2026-03-10)
 - [x] TASK-08: Integrate graph dependency and bottleneck analysis into policy inputs — Complete (2026-03-10)
 - [x] TASK-09: Integrate survival and time-to-event risk into policy inputs — Complete (2026-03-10)
-- [ ] TASK-10: Implement bounded contextual exploration with internal Thompson-style ranking
-- [ ] TASK-11: Implement the causal-evaluation contract and promotion-quality gate
+- [x] TASK-10: Implement bounded contextual exploration with internal Thompson-style ranking — Complete (2026-03-10)
+- [x] TASK-11: Implement the causal-evaluation contract and promotion-quality gate — Complete (2026-03-10)
 - [ ] TASK-12: Implement stability controls and anti-gaming utility governance
 - [ ] TASK-13: Implement calibration, regret, override, and policy audit telemetry
 - [ ] TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
@@ -121,9 +121,9 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-07 | IMPLEMENT | Replace pure priority sorting with constrained portfolio optimization | 80% | M | Complete (2026-03-10) | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-10, TASK-12, TASK-13, TASK-14 |
 | TASK-08 | IMPLEMENT | Integrate graph dependency and bottleneck analysis into policy inputs | 80% | M | Complete (2026-03-10) | TASK-02, TASK-03, TASK-05 | TASK-11, TASK-13, TASK-14 |
 | TASK-09 | IMPLEMENT | Integrate survival and time-to-event risk into policy inputs | 80% | M | Complete (2026-03-10) | TASK-02, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-11, TASK-13, TASK-14 |
-| TASK-10 | IMPLEMENT | Implement bounded contextual exploration with internal Thompson-style ranking | 80% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07 | TASK-12, TASK-13, TASK-14 |
-| TASK-11 | IMPLEMENT | Implement the causal-evaluation contract and promotion-quality gate | 80% | M | Pending | TASK-04, TASK-06, TASK-16, TASK-08, TASK-09 | TASK-12, TASK-13, TASK-14 |
-| TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 75% | M | Pending | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
+| TASK-10 | IMPLEMENT | Implement bounded contextual exploration with internal Thompson-style ranking | 80% | M | Complete (2026-03-10) | TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07 | TASK-12, TASK-13, TASK-14 |
+| TASK-11 | IMPLEMENT | Implement the causal-evaluation contract and promotion-quality gate | 80% | M | Complete (2026-03-10) | TASK-04, TASK-06, TASK-16, TASK-08, TASK-09 | TASK-12, TASK-13, TASK-14 |
+| TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 80% | M | Pending | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
 | TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 75% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
 | TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-15 |
 | TASK-15 | CHECKPOINT | Final checkpoint - authoritative mathematical policy readiness | 95% | S | Pending | TASK-14 | - |
@@ -768,8 +768,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`
 - **Depends on:** TASK-03, TASK-05, TASK-07, TASK-10, TASK-11
 - **Blocks:** TASK-13, TASK-14
-- **Confidence:** 75%
-  - Implementation: 75% - the controls are conceptually simple but touch multiple policy seams.
+- **Confidence:** 80%
+  - Implementation: 80% - the controls still touch multiple policy seams, but Wave 5 made the exact first slice concrete by creating live exploration and promotion-gate outputs to stabilize.
   - Approach: 85% - without damping and counter-metrics, richer policy is dangerous.
   - Impact: 90% - this is what stops the loop from thrashing or gaming itself.
 - **Acceptance criteria:**
@@ -782,9 +782,13 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-03: guardrail or counter-metric breaches hold or revert policy actions deterministically.
 - **Execution plan:** Red -> add stability and guardrail policy tests; Green -> implement control and governance rules; Refactor -> centralize policy guardrails so optimizer, exploration, and promotion all reuse them.
 - **Planning validation (required for M/L):**
-  - Checks run: traced current eligibility, queue, and release-control seams that would be prone to oscillation or gaming.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: Wave 4 created real shared policy surfaces, but this task still lacks two required upstream facts in code: live exploration behavior and live promotion gating. Without those, the shared governance layer is still partly hypothetical, so confidence is unchanged.
+  - Checks run: traced current eligibility, queue, release-control, exploration, and promotion-gate seams that would be prone to oscillation or gaming.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `scripts/src/startup-loop/self-evolving/self-evolving-exploration.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-promotion-gate.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+  - Unexpected findings: Wave 5 removed the upstream ambiguity that previously kept this below threshold. The first governance slice is now bounded and concrete:
+    - live `exploration_rank` and `promotion_gate` decisions already exist as policy records
+    - `hold_window_days`, `instability_penalty`, and authority-level state already exist as policy inputs
+    - the missing work is now explicit control logic, bounded candidate-set churn, counter-metric enforcement, and a first-class `override_record` writer
+    - remaining uncertainty is integration breadth across orchestrator, queue, report, and release-control seams, not missing design authority
 - **Scouts:** None: the controls are required by the target architecture.
 - **Edge Cases & Hardening:** repeated overrides, counter-metric data gaps, and delayed guardrail observations.
 - **What would make this >=90%:**
@@ -823,9 +827,13 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - TC-03: operator overrides and policy-version changes are attributable in reporting.
 - **Execution plan:** Red -> add metric fixture tests and report expectations; Green -> emit and surface the telemetry; Refactor -> centralize metric definitions for dashboard and checkpoint consumers.
 - **Planning validation (required for M/L):**
-  - Checks run: traced existing dashboard/report outputs and the new telemetry dependencies from belief, outcome, replay, exploration, and governance layers.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`
-  - Unexpected findings: Wave 4 materially improved the future audit seam because candidate-route decisions now have portfolio, graph, and survival context, but the runtime still lacks live stochastic exploration decisions, override records, and promotion-gate outcomes. Confidence is therefore unchanged.
+  - Checks run: traced existing dashboard/report/evaluation outputs and the new telemetry dependencies from belief, outcome, replay, exploration, promotion, and planned governance layers.
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-exploration.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-promotion-gate.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+  - Unexpected findings: Wave 5 materially improved the future audit seam because the runtime now has live stochastic exploration decisions, promotion-gate outcomes, policy-version counts, and action-probability traces. What still keeps this below threshold is not raw input absence; it is missing truth-serum behavior:
+    - no live `override_record` writer yet
+    - no post-TASK-12 stability/governance outputs to attribute human damping versus policy behavior
+    - no implemented calibration or regret metric definitions in reporting
+    - confidence therefore remains unchanged until TASK-12 lands and makes those audit surfaces real
 - **Scouts:** None: the audit role is already explicitly required by the fact-find.
 - **Edge Cases & Hardening:** sparse matured histories, policy version rollover, and override data missing for legacy records.
 - **What would make this >=90%:**

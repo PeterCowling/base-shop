@@ -4,7 +4,7 @@ Status: Active
 Created: 2026-03-09
 Last-updated: 2026-03-10
 Relates-to: docs/plans/startup-loop-centralized-math-foundations/plan.md
-Replan-round: 5
+Replan-round: 6
 ---
 
 # Replan Notes: TASK-02 Readiness (2026-03-09)
@@ -268,3 +268,57 @@ What did **not** move enough:
 Ready.
 
 `TASK-10` and `TASK-11` now both meet the `IMPLEMENT` confidence floor and form the next runnable wave. `TASK-12` and `TASK-13` remain below threshold, but they are not the next execution gate because they are still blocked on unfinished upstream work.
+
+## Round 6 Trigger
+After Wave 5 completed, the next correct step was `/lp-do-replan` for `TASK-12` and `TASK-13`. The plan was also carrying stale top-level status for `TASK-10` and `TASK-11`, so the Wave 6 replan needed to both reassess readiness and repair the planning surface.
+
+## Round 6 Evidence Reviewed
+- `scripts/src/startup-loop/self-evolving/self-evolving-exploration.ts`
+  - live `exploration_rank` decisions now exist with seeded stochastic traces, `decision_mode`, `action_probability`, and applied/advisory policy modes
+- `scripts/src/startup-loop/self-evolving/self-evolving-promotion-gate.ts`
+  - live `promotion_gate` decisions now exist with explicit reason codes, causal eligibility, and fail-closed hold behavior
+- `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`
+- `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+  - reporting now exposes exploration decision counts, promotion-gate counts, policy-version counts, hold-window state, replay readiness, and maturity debt
+- `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`
+  - evaluation records now carry the stochastic and policy-version fields later telemetry will consume
+- `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`
+  - `hold_window_days`, `last_override_id`, `instability_penalty`, and `override_record` are contract-level concepts, but `override_record` still has no live writer
+- `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`
+- `scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts`
+  - utility and selected-set adjustment seams already expose the candidate-set churn and guardrail surfaces `TASK-12` must govern
+
+## Round 6 Assessment
+The main reason `TASK-12` sat below the `IMPLEMENT` floor was that the shared governance layer was still partly hypothetical. That is no longer true:
+- exploration is now a live policy layer, so hysteresis and hold-window logic have a real stochastic seam to stabilize
+- promotion gating is now a live policy layer, so anti-gaming and guardrail logic have a real promotion seam to constrain
+- the first governance slice is bounded to concrete work:
+  - hold-window and hysteresis behavior over repeated portfolio and exploration decisions
+  - bounded candidate-set churn and route delta limits
+  - counter-metric enforcement on utility-driven actions
+  - first-class `override_record` writes so later telemetry can attribute human stabilization versus policy behavior
+
+What did **not** move enough:
+- `TASK-13` still cannot be promoted honestly because the runtime does not yet emit override records or governance outputs, and it still lacks implemented calibration/regret metrics
+- the telemetry inputs are stronger than before, but the truth-serum layer still depends on `TASK-12` making stabilization and override events real
+
+## Round 6 Task Deltas Applied
+- `TASK-12` confidence raised from `75%` to `80%`
+  - Implementation: `80%`
+  - Approach: `85%`
+  - Impact: `90%`
+- `TASK-13` confidence remains `75%`
+  - live exploration and promotion traces now exist, but override and governance telemetry still do not
+- Plan maintenance:
+  - marked `TASK-10` and `TASK-11` complete in the top-level active-task checklist
+  - updated the Task Summary table so Wave 5 completion state is no longer stale
+
+## Round 6 Sequencing Impact
+- No topology change.
+- Stable task IDs preserved.
+- No `/lp-do-sequence` run required.
+
+## Round 6 Readiness Decision
+Partially ready.
+
+`TASK-12` now meets the `IMPLEMENT` confidence floor and is the next runnable build task. `TASK-13` remains below threshold and blocked on `TASK-12`, so the next correct step is `/lp-do-build` for `TASK-12` only.

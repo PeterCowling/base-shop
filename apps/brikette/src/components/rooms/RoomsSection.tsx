@@ -233,7 +233,6 @@ export function RoomsSection({
     <RoomsSectionBase
       {...props}
       excludeRoomIds={effectiveExcludeRoomIds}
-      singleCtaMode
       itemListId={props.itemListId}
       onRoomSelect={onRoomSelect}
       {...(roomPrices ? { roomPrices } : {})}

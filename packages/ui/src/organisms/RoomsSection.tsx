@@ -324,12 +324,18 @@ function RoomsSection({
               ROOM_DROPDOWN_NAMES[room.id] ?? "Room"
             );
             const nonRefundableLabel = resolveTranslatedCopy(
-              t("checkRatesNonRefundable", { defaultValue: "Non-Refundable Rates" }),
-              "Non-Refundable Rates"
+              t("ctaSuffix.nonRefundable", { defaultValue: "Non Refundable" }),
+              resolveTranslatedCopy(
+                t("checkRatesNonRefundable", { defaultValue: "Non Refundable" }),
+                "Non Refundable"
+              )
             );
             const flexibleLabel = resolveTranslatedCopy(
-              t("checkRatesFlexible", { defaultValue: "Flexible Rates" }),
-              "Flexible Rates"
+              t("ctaSuffix.flexible", { defaultValue: "Flexible" }),
+              resolveTranslatedCopy(
+                t("checkRatesFlexible", { defaultValue: "Flexible" }),
+                "Flexible"
+              )
             );
             const checkRatesSingleLabel = resolveTranslatedCopy(
               t("checkRatesSingle", { defaultValue: "Check Rates" }),

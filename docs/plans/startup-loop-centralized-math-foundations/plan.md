@@ -41,7 +41,9 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-17: Enforce the policy authority ladder at queue and promotion seams — Complete (2026-03-10)
 - [x] TASK-18: Produce real shadow-run policy artifacts and checkpoint evidence — Complete (2026-03-10)
 - [x] TASK-19: Persist shadow handoff replay state for non-actuating policy runs — Complete (2026-03-10)
-- [ ] TASK-20: Find or prove the absence of a real-data cohort that exercises selected and exploration policy paths
+- [x] TASK-20: Find or prove the absence of a real-data cohort that exercises selected and exploration policy paths — Complete (2026-03-10)
+- [ ] TASK-22: Audit selection starvation and define the first mathematically sound path to a real selected cohort
+- [ ] TASK-21: Rerun shadow evidence after the first live maturity window closes
 - [ ] TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - [ ] TASK-15: Final checkpoint - authoritative mathematical policy readiness
 
@@ -132,8 +134,10 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-17 | IMPLEMENT | Enforce the authority ladder so shadow and advisory policy cannot silently actuate queue or promotion state | 85% | M | Complete (2026-03-10) | TASK-07, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-14, TASK-15 |
 | TASK-18 | IMPLEMENT | Produce real self-evolving shadow-run policy artifacts and checkpoint evidence from repo outputs | 80% | M | Complete (2026-03-10) | TASK-13, TASK-17 | TASK-14, TASK-15 |
 | TASK-19 | IMPLEMENT | Persist shadow handoff records so non-actuating runs enter replay and maturity accounting | 80% | M | Complete (2026-03-10) | TASK-18 | TASK-14, TASK-15 |
-| TASK-20 | INVESTIGATE | Find or prove the absence of a real-data cohort that exercises portfolio selection and exploration | 70% | M | Pending | TASK-18 | TASK-14, TASK-15 |
-| TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18, TASK-19, TASK-20 | TASK-15 |
+| TASK-20 | INVESTIGATE | Find or prove the absence of a real-data cohort that exercises portfolio selection and exploration | 70% | M | Complete (2026-03-10) | TASK-18 | TASK-14, TASK-15 |
+| TASK-22 | INVESTIGATE | Audit selection starvation and define the first mathematically sound path to a real selected cohort | 75% | M | Pending | TASK-20 | TASK-14, TASK-15 |
+| TASK-21 | CHECKPOINT | Rerun shadow evidence after the first live maturity window closes | 95% | S | Pending | TASK-19 | TASK-14, TASK-15 |
+| TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18, TASK-19, TASK-20, TASK-21, TASK-22 | TASK-15 |
 | TASK-15 | CHECKPOINT | Final checkpoint - authoritative mathematical policy readiness | 95% | S | Pending | TASK-14 | - |
 
 ## Parallelism Guide
@@ -147,7 +151,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | 6 | TASK-12, TASK-13 | TASK-07, TASK-10, TASK-11 plus supporting prerequisites | Stabilize, govern, and audit the mathematical policy before any readiness checkpoint |
 | 7 | TASK-17, TASK-18 | TASK-13 plus supporting policy seams | Fix authority leakage and produce real checkpoint evidence before rerunning the guarded-trial gate |
 | 8 | TASK-19, TASK-20 | TASK-18 | Close the remaining shadow replay gap and prove whether a real-data selected/exploration cohort exists before rerunning the checkpoint |
-| 9 | TASK-14, TASK-15 | TASK-07 through TASK-13, TASK-17, TASK-20 | Replay/guarded-trial checkpoint first, then authoritative-claim checkpoint last |
+| 9 | TASK-22, TASK-21 | TASK-20, TASK-19 | Resolve selection starvation, then rerun the shadow evidence pack on or after the first live maturity date before retrying the guarded-trial checkpoint |
+| 10 | TASK-14, TASK-15 | TASK-07 through TASK-13, TASK-17, TASK-21, TASK-22 | Replay/guarded-trial checkpoint first, then authoritative-claim checkpoint last |
 
 ## Tasks
 
@@ -1050,7 +1055,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Skill:** lp-do-replan
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Affects:** `docs/plans/startup-loop-centralized-math-foundations/artifacts/guarded-trial-cohort-audit.md`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`
 - **Depends on:** TASK-18
 - **Blocks:** TASK-14, TASK-15
@@ -1062,6 +1067,54 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - The audit examines actual repo businesses and bounded input sets, not synthetic fixtures.
   - The result identifies at least one cohort with `portfolio_selected > 0` or `exploration.total > 0`, or proves that no current cohort can do so without new live data or policy changes.
   - The plan records the chosen cohort path or the explicit data blocker before rerunning TASK-14.
+- **Build Evidence (2026-03-10):**
+  - Green: added `docs/plans/startup-loop-centralized-math-foundations/artifacts/guarded-trial-cohort-audit.md` and completed the bounded audit against actual on-disk self-evolving businesses.
+  - Inventory result: only `docs/business-os/startup-loop/self-evolving/BRIK/` currently has live policy artifacts (`policy-state.json`, `policy-decisions.jsonl`, `shadow-handoffs.jsonl`), so there is no second real-data business cohort to test.
+  - Proof of absence: the live `BRIK` cohort cannot exercise the selected or exploration branches under current code and current data.
+    - Every route decision already has `utility.net_utility: -1.1714`.
+    - Every portfolio decision records `chosen_action: "deferred"`, `selected_candidate_ids: []`, and `objective_value: 0`.
+    - `self-evolving-portfolio.ts` sends those negative utilities into a maximize portfolio model, so the empty set is the optimal real-data solution.
+    - `self-evolving-exploration.ts` only creates arms from portfolio decisions with `chosen_action === "selected"`, so zero selected candidates implies zero exploration decisions.
+    - `BRIK-shadow-run-report.json` confirms `exploration_decisions: 0` and `exploration_regret_status: "insufficient_data"`.
+  - Result: TASK-20 is satisfied via explicit proof of absence, not by manufacturing a synthetic cohort.
+
+### TASK-22: Audit selection starvation and define the first mathematically sound path to a real selected cohort
+- **Type:** INVESTIGATE
+- **Deliverable:** a bounded audit artifact that explains whether the current zero-selection outcome is the correct consequence of current live data or an over-conservative policy model, and defines the exact next non-shortcut path to the first real selected cohort
+- **Execution-Skill:** lp-do-replan
+- **Execution-Track:** mixed
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `docs/plans/startup-loop-centralized-math-foundations/artifacts/selection-starvation-audit.md`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`
+- **Depends on:** TASK-20
+- **Blocks:** TASK-14, TASK-15
+- **Confidence:** 75%
+  - Implementation: 75% - TASK-20 proved the absence cleanly, so the remaining question is now explicit and bounded.
+  - Approach: 75% - guarded-trial readiness cannot be recovered by forcing minimum selection just to exercise a branch.
+  - Impact: 85% - until the zero-selection outcome is either defended or corrected, the mathematical loop cannot prove that it can graduate from deferral to real action selection on live data.
+- **Acceptance criteria:**
+  - The audit quantifies the current real-data route utility, portfolio-adjusted utility, and empty-set portfolio result.
+  - The audit distinguishes data scarcity from policy conservatism and names the exact seam responsible for selection starvation.
+  - If a policy change is warranted, the audit defines the next build task without using fake minimum-selection or other branch-forcing shortcuts.
+
+### TASK-21: Rerun shadow evidence after the first live maturity window closes
+- **Type:** CHECKPOINT
+- **Deliverable:** refreshed real shadow evidence and plan notes after the first persisted shadow-handoff cohort exits `pending` maturity status
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Effort:** S
+- **Status:** Pending
+- **Affects:** `docs/plans/startup-loop-centralized-math-foundations/artifacts/BRIK-shadow-run-report.json`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`
+- **Depends on:** TASK-19
+- **Blocks:** TASK-14, TASK-15
+- **Confidence:** 95%
+  - Implementation: 95% - the evidence seam already exists; the missing ingredient is elapsed time against a real maturity window.
+  - Approach: 95% - replay, calibration, and regret should not be claimed before the first live cohort can age out of `pending`.
+  - Impact: 90% - this converts the current shadow evidence from “freshly emitted” into a real maturity test.
+- **Acceptance criteria:**
+  - The rerun happens on or after the earliest live `maturity_due_at` in `shadow-handoffs.jsonl` for the bounded business cohort.
+  - The refreshed report shows whether the first shadow cohort moved into `observed` or `missing` status instead of remaining wholly `pending`.
+  - The plan records the resulting replay/calibration/regret posture before TASK-14 is retried.
 
 ### TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - **Type:** CHECKPOINT
@@ -1107,6 +1160,21 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - Fail: guarded-trial policy branches remain unproven on real data. `BRIK-shadow-run-result.json` shows `backbone_queued: 0`, every ranked candidate has `portfolio_selected: false`, and the report shows `policy_decisions.exploration.total = 0`; the mathematical loop can currently prove “select nothing under current evidence,” but not that selected or exploratory branches behave correctly on actual repo inputs.
   - Fail: repo search over `docs/business-os/startup-loop/ideas/trial/queue-state.json` found no existing `self_evolving` links to piggyback for replay, so there is no historical canonical queue cohort that closes this gap automatically.
   - Result: TASK-14 stays pending. Added TASK-19 and TASK-20; rerun this checkpoint only after shadow handoff replay state exists and a real selected/exploration cohort is either found or explicitly proven absent.
+- **Checkpoint Attempt (2026-03-10, rerun after TASK-19 and TASK-20): failed -> replan required**
+  - Pass: shadow replay state is now real.
+    - `BRIK` now has a persisted `shadow-handoffs.jsonl` ledger produced by the live runner in skip mode.
+    - `BRIK-shadow-run-report.json` now reports `shadow_handoff_count: 4`, `pending_decisions: 4`, `shadow_handoff_decisions: 4`, and sample evaluation records with `queue_state: "shadow_handoff"`.
+    - The canonical ideas queue still remained untouched during shadow evidence generation.
+  - Pass: the selected/exploration gap is now explained rather than merely observed.
+    - `TASK-20` proved that only `BRIK` currently has live self-evolving policy artifacts on disk.
+    - The same audit proved that every current real-data candidate has negative route and portfolio-adjusted utility, so the empty portfolio is the mathematically optimal real-data result and exploration receives zero arms.
+  - Fail: replay readiness is still not mature enough for guarded-trial claims.
+    - The current live shadow cohort has not yet reached its first real `maturity_due_at`, so `pending_shadow_handoffs: 4`, `matured_shadow_handoffs: 0`, and `replay_ready_decisions: 0` remain the truthful state.
+    - Calibration and exploration regret therefore remain `insufficient_data` on real outcomes, not because the machinery is missing, but because no live cohort has aged or closed yet.
+  - Fail: guarded-trial action selection is still unproven on real data.
+    - The current repo has no real self-evolving cohort with `selected_candidate_ids` or exploration decisions.
+    - That is now a principled blocker, not a missing-artifact blocker, and it needs its own audit rather than a forced branch exercise.
+  - Result: TASK-14 stays pending. Added TASK-21 and TASK-22; rerun this checkpoint only after the first live shadow cohort matures and the zero-selection result is audited for policy correctness.
 
 ### TASK-15: Final checkpoint - authoritative mathematical policy readiness
 - **Type:** CHECKPOINT

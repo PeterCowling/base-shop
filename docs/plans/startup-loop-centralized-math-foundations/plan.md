@@ -42,7 +42,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-18: Produce real shadow-run policy artifacts and checkpoint evidence — Complete (2026-03-10)
 - [x] TASK-19: Persist shadow handoff replay state for non-actuating policy runs — Complete (2026-03-10)
 - [x] TASK-20: Find or prove the absence of a real-data cohort that exercises selected and exploration policy paths — Complete (2026-03-10)
-- [ ] TASK-22: Audit selection starvation and define the first mathematically sound path to a real selected cohort
+- [x] TASK-22: Audit selection starvation and define the first mathematically sound path to a real selected cohort — Complete (2026-03-10)
 - [ ] TASK-21: Rerun shadow evidence after the first live maturity window closes
 - [ ] TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - [ ] TASK-15: Final checkpoint - authoritative mathematical policy readiness
@@ -135,7 +135,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-18 | IMPLEMENT | Produce real self-evolving shadow-run policy artifacts and checkpoint evidence from repo outputs | 80% | M | Complete (2026-03-10) | TASK-13, TASK-17 | TASK-14, TASK-15 |
 | TASK-19 | IMPLEMENT | Persist shadow handoff records so non-actuating runs enter replay and maturity accounting | 80% | M | Complete (2026-03-10) | TASK-18 | TASK-14, TASK-15 |
 | TASK-20 | INVESTIGATE | Find or prove the absence of a real-data cohort that exercises portfolio selection and exploration | 70% | M | Complete (2026-03-10) | TASK-18 | TASK-14, TASK-15 |
-| TASK-22 | INVESTIGATE | Audit selection starvation and define the first mathematically sound path to a real selected cohort | 75% | M | Pending | TASK-20 | TASK-14, TASK-15 |
+| TASK-22 | INVESTIGATE | Audit selection starvation and define the first mathematically sound path to a real selected cohort | 75% | M | Complete (2026-03-10) | TASK-20 | TASK-14, TASK-15 |
 | TASK-21 | CHECKPOINT | Rerun shadow evidence after the first live maturity window closes | 95% | S | Pending | TASK-19 | TASK-14, TASK-15 |
 | TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13, TASK-17, TASK-18, TASK-19, TASK-20, TASK-21, TASK-22 | TASK-15 |
 | TASK-15 | CHECKPOINT | Final checkpoint - authoritative mathematical policy readiness | 95% | S | Pending | TASK-14 | - |
@@ -1084,7 +1084,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Skill:** lp-do-replan
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Affects:** `docs/plans/startup-loop-centralized-math-foundations/artifacts/selection-starvation-audit.md`, `docs/plans/startup-loop-centralized-math-foundations/plan.md`
 - **Depends on:** TASK-20
 - **Blocks:** TASK-14, TASK-15
@@ -1096,6 +1096,15 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
   - The audit quantifies the current real-data route utility, portfolio-adjusted utility, and empty-set portfolio result.
   - The audit distinguishes data scarcity from policy conservatism and names the exact seam responsible for selection starvation.
   - If a policy change is warranted, the audit defines the next build task without using fake minimum-selection or other branch-forcing shortcuts.
+- **Build Evidence (2026-03-10):**
+  - Green: added `docs/plans/startup-loop-centralized-math-foundations/artifacts/selection-starvation-audit.md` and closed the question with code-backed analysis instead of policy folklore.
+  - Result: current zero-selection is coherent under present live data.
+    - `candidates.json` shows every current live candidate already has `utility.net_utility: -1.1714` before portfolio penalties.
+    - `policy-decisions.jsonl` shows every portfolio decision has `selected_candidate_ids: []`, `objective_value: 0`, and `chosen_action: "deferred"`.
+    - `self-evolving-portfolio.ts` plus `solveBinaryPortfolio(...)` confirm the empty set is the mathematically correct outcome when all adjusted utilities are negative.
+    - `self-evolving-exploration.ts` confirms exploration starvation is downstream of zero selected candidates, not a separate defect.
+  - Decision: no live policy relaxation is justified yet. The first sound path is to let real shadow cohorts mature and/or obtain richer live candidates, then revisit the model only if starvation persists under better evidence.
+  - Residual blocker handed to TASK-21/TASK-14: guarded-trial readiness remains blocked until a live cohort matures and a real selected cohort either appears or remains absent under matured evidence.
 
 ### TASK-21: Rerun shadow evidence after the first live maturity window closes
 - **Type:** CHECKPOINT

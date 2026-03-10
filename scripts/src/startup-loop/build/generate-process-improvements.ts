@@ -11,16 +11,13 @@ import {
   validateResultsReviewFile,
 } from "./lp-do-build-reflection-debt.js";
 import { backfillSyntheticDispatch } from "../ideas/lp-do-ideas-synthetic-dispatch-narrative.js";
+import type { DispatchBuildOriginProvenance } from "../ideas/lp-do-ideas-trial.js";
 import {
   MISSING_VALUE,
   classifyIdeaItem,
-  extractBulletItems,
-  isNonePlaceholderIdeaCandidate,
   normalizeNewlines,
-  parseIdeaCandidate,
   parseSections,
   sanitizeText,
-  stripHtmlComments,
   toIsoDate,
 } from "./lp-do-build-results-review-parse.js";
 import { runCodebaseSignalsBridge } from "../ideas/lp-do-ideas-codebase-signals-bridge.js";
@@ -77,6 +74,8 @@ export interface ProcessImprovementItem {
   latest_seen_date?: string;
   /** Count of review occurrences observed so far. */
   recurrence_count?: number;
+  /** Canonical build-review provenance for queue-backed build-origin ideas. */
+  build_origin?: DispatchBuildOriginProvenance;
 }
 
 export interface CompletedIdeaEntry {
@@ -113,7 +112,7 @@ interface ReflectionDebtLedger {
 
 interface DispatchPacket {
   dispatch_id?: string;
-  artifact_id?: string;
+  artifact_id?: string | null;
   business?: string;
   area_anchor?: string;
   current_truth?: string;
@@ -122,6 +121,7 @@ interface DispatchPacket {
   priority?: string;
   queue_state?: string;
   created_at?: string;
+  build_origin?: DispatchBuildOriginProvenance;
 }
 
 interface QueueStateFile {
@@ -261,6 +261,82 @@ function inferFeatureSlugFromPath(sourcePath: string): string {
     return parts[plansIndex + 2] ?? "unknown-feature";
   }
   return first;
+}
+
+function normalizeOptionalPathValue(value: unknown): string | null {
+  if (typeof value !== "string") {
+    return null;
+  }
+  const normalized = sanitizeText(value);
+  return normalized.length > 0 ? normalized : null;
+}
+
+function normalizeBuildOriginProvenance(
+  value: DispatchBuildOriginProvenance | undefined,
+): DispatchBuildOriginProvenance | undefined {
+  if (!value || value.schema_version !== "dispatch-build-origin.v1") {
+    return undefined;
+  }
+
+  const buildSignalId = sanitizeText(value.build_signal_id);
+  const recurrenceKey = sanitizeText(value.recurrence_key);
+  const reviewCycleKey = sanitizeText(value.review_cycle_key);
+  const planSlug = sanitizeText(value.plan_slug);
+  const canonicalTitle = sanitizeText(value.canonical_title);
+  const primarySource = sanitizeText(value.primary_source);
+  const mergeState = sanitizeText(value.merge_state);
+
+  if (
+    buildSignalId.length === 0 ||
+    recurrenceKey.length === 0 ||
+    reviewCycleKey.length === 0 ||
+    planSlug.length === 0 ||
+    canonicalTitle.length === 0 ||
+    (primarySource !== "pattern-reflection.entries.json" &&
+      primarySource !== "results-review.signals.json") ||
+    (mergeState !== "single_source" && mergeState !== "merged_cross_sidecar")
+  ) {
+    return undefined;
+  }
+
+  const reflectionFields = value.reflection_fields
+    ? {
+        category: normalizeOptionalPathValue(value.reflection_fields.category),
+        routing_target: normalizeOptionalPathValue(value.reflection_fields.routing_target),
+        occurrence_count:
+          typeof value.reflection_fields.occurrence_count === "number" &&
+            Number.isInteger(value.reflection_fields.occurrence_count) &&
+            value.reflection_fields.occurrence_count >= 0
+            ? value.reflection_fields.occurrence_count
+            : null,
+      }
+    : undefined;
+
+  return {
+    schema_version: "dispatch-build-origin.v1",
+    build_signal_id: buildSignalId,
+    recurrence_key: recurrenceKey,
+    review_cycle_key: reviewCycleKey,
+    plan_slug: planSlug,
+    canonical_title: canonicalTitle,
+    primary_source:
+      primarySource === "pattern-reflection.entries.json"
+        ? "pattern-reflection.entries.json"
+        : "results-review.signals.json",
+    merge_state:
+      mergeState === "merged_cross_sidecar" ? "merged_cross_sidecar" : "single_source",
+    source_presence: {
+      results_review_signal: value.source_presence?.results_review_signal === true,
+      pattern_reflection_entry: value.source_presence?.pattern_reflection_entry === true,
+    },
+    results_review_path: normalizeOptionalPathValue(value.results_review_path),
+    results_review_sidecar_path: normalizeOptionalPathValue(value.results_review_sidecar_path),
+    pattern_reflection_path: normalizeOptionalPathValue(value.pattern_reflection_path),
+    pattern_reflection_sidecar_path: normalizeOptionalPathValue(
+      value.pattern_reflection_sidecar_path,
+    ),
+    reflection_fields: reflectionFields,
+  };
 }
 
 function parseReflectionDebtItems(markdown: string): ReflectionDebtLedgerItem[] {
@@ -419,9 +495,6 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
     // Signal Review review-required sidecars are optional.
   }
 
-  const resultsReviewPaths = allPaths.filter((sourcePath) =>
-    sourcePath.endsWith("/results-review.user.md"),
-  );
   const buildRecordPaths = allPaths.filter((sourcePath) =>
     sourcePath.endsWith("/build-record.user.md"),
   );
@@ -439,125 +512,6 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
   const riskItems: ProcessImprovementItem[] = [];
   const pendingReviewItems: ProcessImprovementItem[] = [];
   const signalReviewPendingByFingerprint = new Map<string, ProcessImprovementItem>();
-
-  for (const sourcePath of resultsReviewPaths) {
-    if (sourcePath.includes("/_templates/")) {
-      continue;
-    }
-    const absPath = path.join(repoRoot, sourcePath);
-
-    // Sidecar-prefer branch: if results-review.signals.json exists, read items from it directly.
-    const sidecarPath = path.join(path.dirname(absPath), "results-review.signals.json");
-    if (existsSync(sidecarPath)) {
-      process.stderr.write(
-        `[generate-process-improvements] info: reading sidecar for ${sourcePath}\n`,
-      );
-      let sidecarItems: ProcessImprovementItem[] | null = null;
-      let sidecarSchemaVersion: string | null = null;
-      try {
-        const sidecarRaw = readFileSync(sidecarPath, "utf8");
-        const sidecarJson = JSON.parse(sidecarRaw) as {
-          schema_version?: unknown;
-          items?: unknown;
-        };
-        sidecarSchemaVersion = typeof sidecarJson.schema_version === "string"
-          ? sidecarJson.schema_version
-          : null;
-        if (
-          sidecarSchemaVersion !== "results-review.signals.v1" ||
-          !Array.isArray(sidecarJson.items)
-        ) {
-          throw new Error(
-            `unrecognized schema_version "${String(sidecarSchemaVersion)}" or missing items array`,
-          );
-        }
-        sidecarItems = sidecarJson.items as ProcessImprovementItem[];
-      } catch (err) {
-        process.stderr.write(
-          `[generate-process-improvements] warn: sidecar parse failed for ${sidecarPath}, falling back to markdown: ${String(err)}\n`,
-        );
-        sidecarItems = null;
-      }
-
-      if (sidecarItems !== null) {
-        for (const item of sidecarItems) {
-          const ideaKey = item.idea_key;
-          if (ideaKey && completedKeys.has(ideaKey)) {
-            continue;
-          }
-          ideaItems.push(item);
-        }
-        continue;
-      }
-      // Fall through to markdown parse if sidecar was malformed.
-    }
-
-    const raw = readFileSync(absPath, "utf8");
-    const parsed = parseFrontmatter(raw);
-    const sections = parseSections(parsed.body);
-    const ideasSection = sections.get("new idea candidates");
-    if (!ideasSection) {
-      continue;
-    }
-
-    const ideasRaw = extractBulletItems(stripHtmlComments(ideasSection))
-      .filter((item) => {
-        if (/^~~.+~~(\s*\|.*)?$/.test(item.trim())) {
-          process.stderr.write(
-            `[generate-process-improvements] info: suppressing struck-through idea in ${sourcePath}: "${item.trim().slice(0, 60)}..."\n`,
-          );
-          return false;
-        }
-        return true;
-      })
-      .filter((item) => {
-        const raw = item.trim();
-        if (isNonePlaceholderIdeaCandidate(raw)) {
-          process.stderr.write(
-            `[generate-process-improvements] info: suppressing none-placeholder idea in ${sourcePath}: "${raw.slice(0, 80)}"\n`,
-          );
-          return false;
-        }
-        return true;
-      });
-    if (ideasRaw.length === 0) {
-      continue;
-    }
-
-    const business = inferBusinessFromFrontmatter(parsed.frontmatter);
-    const date =
-      extractFrontmatterString(parsed.frontmatter, ["Review-date", "date"]) ??
-      statSync(absPath).mtime.toISOString();
-
-    for (const ideaRaw of ideasRaw) {
-      const idea = parseIdeaCandidate(ideaRaw);
-      const ideaKey = deriveIdeaKey(sourcePath, idea.title);
-
-      if (completedKeys.has(ideaKey)) {
-        continue;
-      }
-
-      if (idea.title.length > 100) {
-        process.stderr.write(
-          `[generate-process-improvements] warn: idea title exceeds 100 chars in ${sourcePath} — shorten at source: "${idea.title.slice(0, 60)}..."\n`,
-        );
-      }
-      const ideaItem: ProcessImprovementItem = {
-        type: "idea",
-        business,
-        title: idea.title,
-        body: idea.body,
-        suggested_action: idea.suggestedAction,
-        source: "results-review.user.md",
-        date: toIsoDate(date),
-        path: sourcePath,
-        idea_key: ideaKey,
-      };
-      classifyIdeaItem(ideaItem);
-
-      ideaItems.push(ideaItem);
-    }
-  }
 
   for (const sourcePath of bugScanPaths) {
     const absPath = path.join(repoRoot, sourcePath);
@@ -629,8 +583,11 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
           const enrichedDispatch = backfillSyntheticDispatch(dispatch, {
             rootDir: repoRoot,
           }).dispatch as DispatchPacket;
-          const title = sanitizeText(enrichedDispatch.current_truth ?? "") ||
-            sanitizeText(enrichedDispatch.area_anchor ?? "");
+          const buildOrigin = normalizeBuildOriginProvenance(enrichedDispatch.build_origin);
+          const title =
+            sanitizeText(enrichedDispatch.current_truth ?? "") ||
+            sanitizeText(enrichedDispatch.area_anchor ?? "") ||
+            (buildOrigin?.canonical_title ?? "");
           if (!title) {
             continue;
           }
@@ -660,6 +617,7 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
             date,
             path: QUEUE_STATE_RELATIVE_PATH,
             idea_key: ideaKey,
+            build_origin: buildOrigin,
           };
           classifyIdeaItem(ideaItem);
           ideaItems.push(ideaItem);
@@ -899,12 +857,10 @@ function buildArrayAssignmentBlock(variableName: string, items: ProcessImproveme
  * (avoids false positives from the date-stamp footer) plus the full JSON data file.
  * Exits 0 if up-to-date, exits 1 if drift detected.
  *
- * The drift check works by re-running `collectProcessImprovements` (which reads
- * `completed-ideas.json`) and comparing the fresh output against committed files.
- * Any change to the registry — whether a new entry is appended or an entry is removed —
- * will cause `collectProcessImprovements` to produce different `ideaItems`, which the
- * drift check will detect here. No modification to this function is required to cover
- * registry-driven filtering.
+ * The drift check works by re-running `collectProcessImprovements` and comparing the
+ * fresh output against committed files. Active idea backlog now comes from canonical
+ * queue state plus bug-scan artifacts, while `completed-ideas.json` still suppresses
+ * queue-visible ideas until TASK-05 retires that compatibility rail.
  */
 export function runCheck(repoRoot: string): void {
   const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);

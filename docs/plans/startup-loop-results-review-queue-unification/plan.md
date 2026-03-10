@@ -27,7 +27,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [x] TASK-01: Define the canonical build-origin signal contract — Complete (2026-03-10)
 - [x] TASK-02: Harden build-review emitters around the canonical contract — Complete (2026-03-10)
 - [x] TASK-03: Implement build-review-to-queue admission and dedupe — Complete (2026-03-10)
-- [ ] TASK-04: Switch process-improvements idea backlog to queue-only sourcing
+- [x] TASK-04: Switch process-improvements idea backlog to queue-only sourcing — Complete (2026-03-10)
 - [ ] TASK-05: Demote `completed-ideas.json` from active backlog control
 - [ ] TASK-06: Determine the self-evolving build-origin alignment model
 - [ ] TASK-11: Implement the chosen self-evolving build-origin alignment
@@ -99,7 +99,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-01 | INVESTIGATE | Define the canonical build-origin signal contract | 75% | M | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-02 | IMPLEMENT | Harden build-review emitters around the canonical contract and fail-closed surfacing | 85% | M | Complete (2026-03-10) | TASK-01 | TASK-03, TASK-04, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-03 | IMPLEMENT | Implement build-review-to-queue admission and dedupe | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
-| TASK-04 | IMPLEMENT | Switch process-improvements idea backlog to queue-only sourcing | 85% | M | Pending | TASK-03 | TASK-05, TASK-07, TASK-08, TASK-10 |
+| TASK-04 | IMPLEMENT | Switch process-improvements idea backlog to queue-only sourcing | 85% | M | Complete (2026-03-10) | TASK-03 | TASK-05, TASK-07, TASK-08, TASK-10 |
 | TASK-05 | IMPLEMENT | Demote `completed-ideas.json` from active backlog control | 80% | M | Pending | TASK-03, TASK-04 | TASK-07, TASK-08, TASK-10 |
 | TASK-06 | INVESTIGATE | Determine the self-evolving build-origin alignment model | 70% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-11 |
 | TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 75% | M | Pending | TASK-06 | TASK-07 |
@@ -246,7 +246,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Affects:** `scripts/src/startup-loop/build/generate-process-improvements.ts`, `docs/business-os/process-improvements.user.html`, `docs/business-os/_data/process-improvements.json`, `scripts/src/startup-loop/__tests__/generate-process-improvements.test.ts`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-05, TASK-07, TASK-08, TASK-10
@@ -267,6 +267,13 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Consumer tracing:**
   - Removed direct sidecar reads change the input surface for report generation only; queue readers remain authoritative.
 - **What would make this >=90%:** a before/after fixture pair proving that the same worthwhile build item survives only when admitted into queue.
+- **Build completion evidence (2026-03-10):**
+  - Removed direct results-review markdown and sidecar idea ingestion from [generate-process-improvements.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/generate-process-improvements.ts); active `ideaItems` now come from canonical queue state plus existing bug-scan artifacts only, while `risk` and `pending-review` collection stayed intact.
+  - Surfaced queue-backed build-origin provenance on process-improvement items and wired the visible report template in [process-improvements.user.html](/Users/petercowling/base-shop/docs/business-os/process-improvements.user.html) to show build signal, review cycle, and build-review path for those queue-backed items.
+  - Rewrote [generate-process-improvements.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/generate-process-improvements.test.ts) around the new queue-only contract: direct results-review sources no longer create backlog items, queue-backed build-origin items retain provenance, and sorting still works across canonical sources.
+  - Refreshed [process-improvements.user.html](/Users/petercowling/base-shop/docs/business-os/process-improvements.user.html) and [process-improvements.json](/Users/petercowling/base-shop/docs/business-os/_data/process-improvements.json) from the new logic without invoking the normal bridge side effects.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`, targeted ESLint on the generator and test, and `pnpm --filter scripts check-process-improvements` all passed.
+  - Outcome: affirming. The visible backlog is now queue-backed for idea items, and TASK-05 is the next runnable closure tranche.
 
 ### TASK-05: Demote `completed-ideas.json` from active backlog control
 - **Type:** IMPLEMENT

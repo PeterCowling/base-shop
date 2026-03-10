@@ -45,6 +45,11 @@ import {
 import { deriveCandidateEvidencePosture } from "./self-evolving-evidence-posture.js";
 import { buildExplorationDecisionLayer } from "./self-evolving-exploration.js";
 import {
+  governExplorationSelections,
+  governPortfolioSelections,
+  governRouteDecisions,
+} from "./self-evolving-governance.js";
+import {
   canCreateCandidate,
   type CandidateBudgetPolicy,
   enforceCreationGate,
@@ -598,6 +603,17 @@ export function runSelfEvolvingOrchestrator(
     return rebuilt.ranked;
   });
 
+  const governedRouteLayer = governRouteDecisions({
+    ranked_candidates: rerankedCandidates,
+    route_decisions: routePolicyDecisions,
+    prior_policy_decisions: priorPolicyDecisions,
+    policy_state: nextPolicyState,
+    startup_state: input.startup_state,
+    created_at: generatedAt,
+  });
+  const governedRankedCandidates = governedRouteLayer.ranked_candidates;
+  const governedRouteDecisions = governedRouteLayer.decision_records;
+
   const queueStateResult = readQueueStateFile(resolveTrialQueueStatePath(input.rootDir));
   const queueDispatches = queueStateResult.ok ? queueStateResult.queue.dispatches : [];
   const historicalEvaluation = buildPolicyEvaluationDataset({
@@ -612,34 +628,48 @@ export function runSelfEvolvingOrchestrator(
   });
   const dependencyGraph = buildDependencyGraphSnapshot({
     business_id: input.business,
-    ranked_candidates: rerankedCandidates,
-    policy_decisions: routePolicyDecisions,
+    ranked_candidates: governedRankedCandidates,
+    policy_decisions: governedRouteDecisions,
     generated_at: generatedAt,
     snapshot_id: stableHash(`${input.business}|${generatedAt}|dependency-graph`).slice(0, 16),
   });
   const portfolioSelection = buildPortfolioSelection({
     business_id: input.business,
-    ranked_candidates: rerankedCandidates,
-    candidate_route_decisions: routePolicyDecisions,
+    ranked_candidates: governedRankedCandidates,
+    candidate_route_decisions: governedRouteDecisions,
     constraint_profile: nextPolicyState.active_constraint_profile,
     dependency_graph: dependencyGraph,
     survival_signals: survivalSignals,
     created_at: generatedAt,
   });
-  const portfolioDecisionByCandidateId = new Map(
-    portfolioSelection.decision_records.map((decision) => [decision.candidate_id, decision] as const),
-  );
-  const explorationLayer = buildExplorationDecisionLayer({
-    business_id: input.business,
-    ranked_candidates: rerankedCandidates,
-    portfolio_decisions: portfolioSelection.decision_records,
+  const governedPortfolioLayer = governPortfolioSelections({
+    ranked_candidates: governedRankedCandidates,
+    decision_records: portfolioSelection.decision_records,
+    prior_policy_decisions: priorPolicyDecisions,
     policy_state: nextPolicyState,
     created_at: generatedAt,
   });
-  const explorationDecisionByCandidateId = new Map(
-    explorationLayer.decision_records.map((decision) => [decision.candidate_id, decision] as const),
+  const portfolioDecisionByCandidateId = new Map(
+    governedPortfolioLayer.decision_records.map((decision) => [decision.candidate_id, decision] as const),
   );
-  const portfolioAnnotatedCandidates = rerankedCandidates.map((rankedCandidate) => {
+  const explorationLayer = buildExplorationDecisionLayer({
+    business_id: input.business,
+    ranked_candidates: governedRankedCandidates,
+    portfolio_decisions: governedPortfolioLayer.decision_records,
+    policy_state: nextPolicyState,
+    created_at: generatedAt,
+  });
+  const governedExplorationLayer = governExplorationSelections({
+    decision_records: explorationLayer.decision_records,
+    prior_policy_decisions: priorPolicyDecisions,
+    policy_state: nextPolicyState,
+    selected_candidate_ids: governedPortfolioLayer.selected_candidate_ids,
+    created_at: generatedAt,
+  });
+  const explorationDecisionByCandidateId = new Map(
+    governedExplorationLayer.decision_records.map((decision) => [decision.candidate_id, decision] as const),
+  );
+  const portfolioAnnotatedCandidates = governedRankedCandidates.map((rankedCandidate) => {
     const portfolioDecision = portfolioDecisionByCandidateId.get(
       rankedCandidate.candidate.candidate_id,
     );
@@ -652,7 +682,7 @@ export function runSelfEvolvingOrchestrator(
         ? {
             ...rankedCandidate.policy_context,
             portfolio_decision_id: portfolioDecision?.decision_id ?? null,
-            portfolio_selected: portfolioSelection.selected_candidate_ids.has(
+            portfolio_selected: governedPortfolioLayer.selected_candidate_ids.has(
               rankedCandidate.candidate.candidate_id,
             ),
             portfolio_selected_at: generatedAt,
@@ -674,7 +704,7 @@ export function runSelfEvolvingOrchestrator(
   const promotionGateDecisions = buildPromotionGateDecisions({
     startup_state: input.startup_state,
     ranked_candidates: portfolioAnnotatedCandidates,
-    route_decisions: routePolicyDecisions,
+    route_decisions: governedRouteDecisions,
     evaluation_dataset: historicalEvaluation,
     observations: allObservations,
     lifecycle_events: allEvents,
@@ -706,11 +736,32 @@ export function runSelfEvolvingOrchestrator(
         : rankedCandidate.policy_context,
     };
   });
+  const overrideRecords: PolicyDecisionRecord[] = [
+    ...governedRouteLayer.override_records,
+    ...governedPortfolioLayer.override_records,
+    ...governedExplorationLayer.override_records,
+  ];
+  for (const [candidateId, belief] of Object.entries(nextPolicyState.candidate_beliefs)) {
+    const governedRouteDecision = governedRouteDecisions.find(
+      (decision) => decision.candidate_id === candidateId,
+    );
+    if (governedRouteDecision) {
+      belief.last_decision_id = governedRouteDecision.decision_id;
+    }
+    const lastOverride = [...overrideRecords]
+      .reverse()
+      .find((record) => record.candidate_id === candidateId);
+    if (lastOverride) {
+      belief.last_override_id = lastOverride.decision_id;
+    }
+    belief.updated_at = generatedAt;
+  }
   const policyDecisions: PolicyDecisionRecord[] = [
-    ...routePolicyDecisions,
-    ...portfolioSelection.decision_records,
-    ...explorationLayer.decision_records,
+    ...governedRouteDecisions,
+    ...governedPortfolioLayer.decision_records,
+    ...governedExplorationLayer.decision_records,
     ...promotionGateDecisions,
+    ...overrideRecords,
   ];
 
   if (policyDecisions.length > 0) {

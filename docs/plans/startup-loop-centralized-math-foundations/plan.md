@@ -36,7 +36,7 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - [x] TASK-09: Integrate survival and time-to-event risk into policy inputs — Complete (2026-03-10)
 - [x] TASK-10: Implement bounded contextual exploration with internal Thompson-style ranking — Complete (2026-03-10)
 - [x] TASK-11: Implement the causal-evaluation contract and promotion-quality gate — Complete (2026-03-10)
-- [ ] TASK-12: Implement stability controls and anti-gaming utility governance
+- [x] TASK-12: Implement stability controls and anti-gaming utility governance — Complete (2026-03-10)
 - [ ] TASK-13: Implement calibration, regret, override, and policy audit telemetry
 - [ ] TASK-14: Horizon checkpoint - replay and guarded-trial policy readiness
 - [ ] TASK-15: Final checkpoint - authoritative mathematical policy readiness
@@ -123,8 +123,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 | TASK-09 | IMPLEMENT | Integrate survival and time-to-event risk into policy inputs | 80% | M | Complete (2026-03-10) | TASK-02, TASK-04, TASK-05, TASK-06, TASK-16 | TASK-11, TASK-13, TASK-14 |
 | TASK-10 | IMPLEMENT | Implement bounded contextual exploration with internal Thompson-style ranking | 80% | M | Complete (2026-03-10) | TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07 | TASK-12, TASK-13, TASK-14 |
 | TASK-11 | IMPLEMENT | Implement the causal-evaluation contract and promotion-quality gate | 80% | M | Complete (2026-03-10) | TASK-04, TASK-06, TASK-16, TASK-08, TASK-09 | TASK-12, TASK-13, TASK-14 |
-| TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 80% | M | Pending | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
-| TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 75% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
+| TASK-12 | IMPLEMENT | Implement stability controls and anti-gaming utility governance | 80% | M | Complete (2026-03-10) | TASK-03, TASK-05, TASK-07, TASK-10, TASK-11 | TASK-13, TASK-14 |
+| TASK-13 | IMPLEMENT | Implement calibration, regret, override, and policy audit telemetry | 80% | M | Pending | TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12 | TASK-14 |
 | TASK-14 | CHECKPOINT | Horizon checkpoint - replay and guarded-trial policy readiness | 95% | S | Pending | TASK-07, TASK-08, TASK-09, TASK-10, TASK-11, TASK-12, TASK-13 | TASK-15 |
 | TASK-15 | CHECKPOINT | Final checkpoint - authoritative mathematical policy readiness | 95% | S | Pending | TASK-14 | - |
 
@@ -764,8 +764,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-governance.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`, `[readonly] scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/__tests__/self-evolving-governance.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-release-replay.test.ts`
 - **Depends on:** TASK-03, TASK-05, TASK-07, TASK-10, TASK-11
 - **Blocks:** TASK-13, TASK-14
 - **Confidence:** 80%
@@ -801,6 +801,21 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Notes / references:**
   - `scripts/src/startup-loop/self-evolving/self-evolving-release-controls.ts`
   - `scripts/src/startup-loop/self-evolving/self-evolving-backbone-queue.ts`
+- **Build Evidence (2026-03-10):**
+  - Scope expansion: added `self-evolving-governance.ts` plus focused governance/release/orchestrator tests because the existing seams were too cross-cutting to implement safely inside `self-evolving-orchestrator.ts` alone. Expansion stayed inside TASK-12's stated objective.
+  - Green: introduced a pure governance layer that stabilizes route, portfolio, and exploration decisions against recent policy history using `hold_window_days`, bounded addition rules, and explicit `override_record` emission.
+  - Green: wired the orchestrator to use governed route decisions before dependency/portfolio selection, governed portfolio decisions before exploration, and governed override IDs back into candidate belief state.
+  - Green: added counter-metric governance for missing primary and guardrail KPI contracts at the route layer, plus recent-override instability penalties in effective policy utility.
+  - Green: strengthened the canary seam in `self-evolving-release-controls.ts` with confirmation-window gating so single-window healthy/unhealthy noise holds rather than flips state immediately.
+  - Validation:
+    - `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
+    - targeted `pnpm exec eslint` across touched startup-loop runtime and test files
+    - `pnpm exec tsx scripts/src/startup-loop/self-evolving/self-evolving-report.ts --business BRIK`
+  - Test execution note: local Jest remains out of scope under repo policy, so the new governance fixtures were added but not run locally.
+  - TC-01: covered by `self-evolving-governance.test.ts` route-hysteresis case and orchestrator wiring that now reuses governed route decisions instead of raw instantaneous promotions.
+  - TC-02: covered by `self-evolving-governance.test.ts` portfolio/exploration bounded-delta cases, which preserve recent selected/prioritized choices and block fresh additions within the hold window.
+  - TC-03: covered by the governance counter-metric downgrades in `self-evolving-governance.test.ts` and the confirmation-window release-control case in `self-evolving-release-replay.test.ts`.
+  - Precursor completion propagation: TASK-12 is no longer a blocker for TASK-13 or TASK-14. TASK-13 now meets the `IMPLEMENT` confidence floor because override records and governance outputs are live runtime surfaces rather than planned seams.
 
 ### TASK-13: Implement calibration, regret, override, and policy audit telemetry
 - **Type:** IMPLEMENT
@@ -813,8 +828,8 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-events.ts`
 - **Depends on:** TASK-01, TASK-03, TASK-04, TASK-05, TASK-06, TASK-16, TASK-07, TASK-10, TASK-11, TASK-12
 - **Blocks:** TASK-14
-- **Confidence:** 75%
-  - Implementation: 75% - the telemetry seams are concrete, but the exact audit metrics need disciplined definitions.
+- **Confidence:** 80%
+  - Implementation: 80% - TASK-12 turned override and governance behavior into live runtime artifacts, so the remaining work is metric definition and reporting rather than missing substrate.
   - Approach: 90% - without calibration and regret, the loop cannot prove that its mathematics is improving anything.
   - Impact: 90% - this is the truth-serum layer for the whole architecture.
 - **Acceptance criteria:**
@@ -828,12 +843,12 @@ The fact-find now defines the correct target: a genuine mathematical self-improv
 - **Execution plan:** Red -> add metric fixture tests and report expectations; Green -> emit and surface the telemetry; Refactor -> centralize metric definitions for dashboard and checkpoint consumers.
 - **Planning validation (required for M/L):**
   - Checks run: traced existing dashboard/report/evaluation outputs and the new telemetry dependencies from belief, outcome, replay, exploration, promotion, and planned governance layers.
-  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-exploration.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-promotion-gate.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
-  - Unexpected findings: Wave 5 materially improved the future audit seam because the runtime now has live stochastic exploration decisions, promotion-gate outcomes, policy-version counts, and action-probability traces. What still keeps this below threshold is not raw input absence; it is missing truth-serum behavior:
-    - no live `override_record` writer yet
-    - no post-TASK-12 stability/governance outputs to attribute human damping versus policy behavior
-    - no implemented calibration or regret metric definitions in reporting
-    - confidence therefore remains unchanged until TASK-12 lands and makes those audit surfaces real
+  - Validation artifacts: `docs/plans/startup-loop-centralized-math-foundations/fact-find.md`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-exploration.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-promotion-gate.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-governance.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+  - Unexpected findings: TASK-12 materially improved the audit seam because the runtime now has live `override_record` writes, bounded-delta governance outputs, and candidate-belief links to recent overrides. What remains is the actual truth-serum layer:
+    - calibration metrics still need disciplined definitions
+    - regret and counterfactual comparison logic still need to be computed from matured route decisions
+    - reporting still needs to separate belief quality, policy quality, and operator/governance intervention explicitly
+    - with the missing substrate now landed, confidence rises to the `IMPLEMENT` floor
 - **Scouts:** None: the audit role is already explicitly required by the fact-find.
 - **Edge Cases & Hardening:** sparse matured histories, policy version rollover, and override data missing for legacy records.
 - **What would make this >=90%:**

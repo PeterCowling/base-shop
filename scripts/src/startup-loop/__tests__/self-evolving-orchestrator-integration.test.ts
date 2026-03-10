@@ -47,6 +47,12 @@ function buildStartupState(): StartupState {
     credential_refs: ["cred-1"],
     kpi_definitions: [
       { name: "activation_rate", unit: "ratio", aggregation_method: "rate", kind: "primary" },
+      {
+        name: "regressions_detected",
+        unit: "count",
+        aggregation_method: "sum",
+        kind: "guardrail",
+      },
     ],
     asset_refs: ["asset-1"],
     constraints: ["no medical claims"],

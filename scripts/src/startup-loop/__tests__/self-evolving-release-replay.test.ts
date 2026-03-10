@@ -101,6 +101,50 @@ describe("self-evolving release controls + replay + auto-fix", () => {
     expect(decision.action).toBe("revert");
   });
 
+  it("TASK-12 TC-03 requires repeated healthy or unhealthy windows before changing canary state", () => {
+    const holdBeforePromote = evaluateCanaryOutcome(
+      buildCanaryCandidate(),
+      {
+        max_error_rate: 0.02,
+        max_guardrail_kpi_drop: 0.01,
+        monitoring_window_minutes: 30,
+        required_confirmation_windows: 2,
+      },
+      {
+        candidate_id: "cand-1",
+        error_rate: 0.01,
+        guardrail_kpi_delta: 0.005,
+        elapsed_minutes: 60,
+        confirmed_healthy_windows: 1,
+      },
+    );
+    expect(holdBeforePromote).toEqual({
+      action: "hold",
+      reason: "healthy_window_confirmation_pending",
+    });
+
+    const holdBeforeRevert = evaluateCanaryOutcome(
+      buildCanaryCandidate(),
+      {
+        max_error_rate: 0.02,
+        max_guardrail_kpi_drop: 0.01,
+        monitoring_window_minutes: 30,
+        required_confirmation_windows: 2,
+      },
+      {
+        candidate_id: "cand-1",
+        error_rate: 0.03,
+        guardrail_kpi_delta: -0.02,
+        elapsed_minutes: 60,
+        confirmed_unhealthy_windows: 1,
+      },
+    );
+    expect(holdBeforeRevert).toEqual({
+      action: "hold",
+      reason: "error_rate_guardrail_confirmation_pending",
+    });
+  });
+
   it("TASK-09 TC-01 runs replay harness and summarizes pass/fail", () => {
     const contract = getContainerContract("website-v1");
     const results = [

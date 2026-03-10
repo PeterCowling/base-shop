@@ -26,6 +26,12 @@ const COPY = {
   widgetHostLabel: "Secure booking widget host",
 } as const;
 
+type WindowGlobals = Record<string, unknown>;
+
+function getWindowGlobals(): WindowGlobals {
+  return window as unknown as WindowGlobals;
+}
+
 function triggerScriptEvent(src: string, eventName: "load" | "error"): HTMLScriptElement {
   const script = document.querySelector(`script[src="${src}"]`);
   if (!(script instanceof HTMLScriptElement)) {
@@ -132,7 +138,7 @@ describe("OctorateCustomPageShell", () => {
     const directUrl = getDirectUrl();
     const widgetScriptSrc = "https://cdn.example.test/octorate-widget.js";
     const globalBootstrap = jest.fn(() => undefined);
-    (window as Record<string, unknown>).OctorateWidgetBootstrap = globalBootstrap;
+    getWindowGlobals().OctorateWidgetBootstrap = globalBootstrap;
 
     render(
       <OctorateCustomPageShell
@@ -171,7 +177,7 @@ describe("OctorateCustomPageShell", () => {
   it("falls back when the external widget script loads without exposing the global bootstrap", async () => {
     const directUrl = getDirectUrl();
     const widgetScriptSrc = "https://cdn.example.test/octorate-widget-missing.js";
-    delete (window as Record<string, unknown>).MissingBootstrap;
+    delete getWindowGlobals().MissingBootstrap;
 
     render(
       <OctorateCustomPageShell
@@ -222,7 +228,7 @@ describe("OctorateCustomPageShell", () => {
   });
 
   afterEach(() => {
-    delete (window as Record<string, unknown>).OctorateWidgetBootstrap;
-    delete (window as Record<string, unknown>).MissingBootstrap;
+    delete getWindowGlobals().OctorateWidgetBootstrap;
+    delete getWindowGlobals().MissingBootstrap;
   });
 });

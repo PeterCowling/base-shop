@@ -106,6 +106,13 @@
       "expires": "2026-12-31",
       "notes": "Brikette SEO audit, CTA, guide, routes, and schema lint exceptions (security/detect-non-literal-regexp, max-params, complexity) pending refactor."
     },
+    "BRIK-2161": {
+      "allow": [
+        "apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Dorm booking query synchronization intentionally runs from resolved query fields only; hook dependency follow-up tracked separately."
+    },
     "BRIK-2": {
       "allow": [
         "apps/prime/src/**"
@@ -439,10 +446,24 @@
       "expires": "2026-12-31",
       "notes": "Prime review API machine-readable errors, developer logs, and repository SQL literals are non-UI strings."
     },
+    "PRIME-CHAT-001": {
+      "allow": [
+        "apps/prime/src/contexts/messaging/ChatProvider.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Prime chat provider developer diagnostic strings remain hardcoded until messaging telemetry copy is centralized."
+    },
     "PRIME-DATE-UTILS-001": {
       "allow": ["apps/prime/src/utils/dateUtils.ts"],
       "expires": "2026-12-31",
       "notes": "Prime date utility parser/formatter constants and internal log labels are intentionally non-localized."
+    },
+    "PRIME-PUREDATA-001": {
+      "allow": [
+        "apps/prime/src/hooks/pureData/useFetchBagStorageData.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Prime pureData bag-storage fetch hook keeps a developer diagnostic string hardcoded until logging helpers are shared."
     },
     "PRIME-ROUTES-001": {
       "allow": ["apps/prime/src/data/routes.ts"],

@@ -35,6 +35,12 @@ jest.mock("@/app/[lang]/assistance/page.shared", () => ({
 }));
 
 describe("/[lang]/help route", () => {
+  type HelpPageModule = typeof import("@/app/[lang]/help/page");
+
+  async function loadHelpPageModule(): Promise<HelpPageModule> {
+    return (await import("@/app/[lang]/help/page")) as HelpPageModule;
+  }
+
   beforeEach(() => {
     mockPermanentRedirect.mockClear();
     mockGenerateAssistanceIndexMetadata.mockClear();
@@ -42,7 +48,7 @@ describe("/[lang]/help route", () => {
   });
 
   it("renders the shared assistance index instead of redirecting when help is the canonical slug", async () => {
-    const module = await import("@/app/[lang]/help/page");
+    const module = await loadHelpPageModule();
 
     await expect(
       module.default({
@@ -55,7 +61,7 @@ describe("/[lang]/help route", () => {
   });
 
   it("reuses assistance metadata when help is the canonical slug", async () => {
-    const module = await import("@/app/[lang]/help/page");
+    const module = await loadHelpPageModule();
     const metadata = (await module.generateMetadata({
       params: Promise.resolve({ lang: "en" }),
     })) as Metadata;
@@ -65,7 +71,7 @@ describe("/[lang]/help route", () => {
   });
 
   it("keeps /[lang]/help as a legacy redirect when another localized slug is canonical", async () => {
-    const module = await import("@/app/[lang]/help/page");
+    const module = await loadHelpPageModule();
 
     await expect(
       module.default({
@@ -78,7 +84,7 @@ describe("/[lang]/help route", () => {
   });
 
   it("returns empty metadata for legacy redirect locales", async () => {
-    const module = await import("@/app/[lang]/help/page");
+    const module = await loadHelpPageModule();
     const metadata = (await module.generateMetadata({
       params: Promise.resolve({ lang: "fr" }),
     })) as Metadata;

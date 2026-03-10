@@ -185,6 +185,29 @@ Before moving to Phase 6.5, enforce outcome-contract continuity:
   - `Source: auto`
 - Do not leave outcome fields blank and do not fabricate operator-authored values.
 
+## Phase 6.2: Unknown Prescription Discovery Contract (When Present)
+
+If the queued work item carries `self_evolving.discovery_contract`, the fact-find must emit a machine-readable discovery output in the brief body. This is required for unknown or hypothesized prescriptions and is not optional narrative.
+
+Write a `## Discovery Contract Output` section with:
+- `Gap Case ID: <gap_case_id>`
+- `Recommended First Prescription: <prescription_id>`
+- `Required Inputs:` flat list
+- `Expected Artifacts:` flat list
+- `Expected Signals:` flat list
+- `Prescription Candidates:` one flat bullet per candidate, each including:
+  - `Prescription ID`
+  - `Prescription Family`
+  - `Required Route`
+  - `Required Inputs`
+  - `Expected Artifacts`
+  - `Expected Signals`
+
+Rules:
+- Narrative may explain the recommendation, but it cannot replace these machine fields.
+- `Recommended First Prescription` must match one candidate in `Prescription Candidates`.
+- If evidence is still insufficient, keep the section but mark unresolved fields explicitly; do not omit the section.
+
 ## Phase 6.5: Open Question Self-Resolve Gate
 
 Before running the evidence gap review or critique, review every question currently marked as Open.

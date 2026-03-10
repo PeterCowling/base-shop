@@ -66,6 +66,28 @@ use Why: TBD and Source: auto — these are excluded from quality metrics.
 - **Intended Outcome Statement:** <non-empty statement; for measurable: include metric + target + timeframe; for operational: describe process/doc deliverable; use TBD placeholder if unknown>
 - **Source:** <operator | auto> <!-- "operator" = confirmed by operator at Option B; "auto" = auto-generated fallback, excluded from quality metrics -->
 
+## Discovery Contract Output
+
+<!--
+OPTIONAL SECTION. Required when the incoming queued work item carries
+`self_evolving.discovery_contract` for an unknown or hypothesized prescription.
+Do not omit in that case, and do not replace the machine fields below with prose.
+-->
+
+- **Gap Case ID:** <gap_case_id or "n/a">
+- **Recommended First Prescription:** <prescription_id or "n/a">
+- **Required Inputs:**
+  - ...
+- **Expected Artifacts:**
+  - ...
+- **Expected Signals:**
+  - ...
+
+### Prescription Candidates
+| Prescription ID | Prescription Family | Required Route | Required Inputs | Expected Artifacts | Expected Signals |
+|---|---|---|---|---|---|
+| ... | ... | ... | ... | ... | ... |
+
 ## Evidence Audit (Current State)
 ### Entry Points
 - `path/to/entry` - <role>

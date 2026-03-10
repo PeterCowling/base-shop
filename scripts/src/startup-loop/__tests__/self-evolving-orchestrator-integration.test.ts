@@ -908,6 +908,68 @@ describe("self-evolving orchestrator integration", () => {
     rmSync(tempRoot, { recursive: true, force: true });
   });
 
+  it("forces measured but unknown prescriptions back into fact-find", () => {
+    const tempRoot = mkdtempSync(path.join(os.tmpdir(), "self-evolving-unknown-prescription-"));
+    const result = runSelfEvolvingOrchestrator({
+      rootDir: tempRoot,
+      business: "BRIK",
+      run_id: "run-1",
+      session_id: "session-1",
+      startup_state: buildStartupState(),
+      observations: [
+        {
+          ...buildRouteObservation({
+            id: "obs-1",
+            timestamp: "2026-03-02T00:00:00.000Z",
+            hardSignature: "sig-unknown-prescription",
+            evidenceGrade: "measured",
+          }),
+          signal_hints: {
+            recurrence_key: "repeat-new-skill",
+            problem_statement: "New recurring remediation needs discovery.",
+            candidate_type_hint: "new_skill",
+            executor_domain_hint: "website",
+            executor_path_hint: "lp-do-build:container:website-v3",
+          },
+        },
+        {
+          ...buildRouteObservation({
+            id: "obs-2",
+            timestamp: "2026-03-02T01:00:00.000Z",
+            hardSignature: "sig-unknown-prescription",
+            evidenceGrade: "measured",
+          }),
+          signal_hints: {
+            recurrence_key: "repeat-new-skill",
+            problem_statement: "New recurring remediation needs discovery.",
+            candidate_type_hint: "new_skill",
+            executor_domain_hint: "website",
+            executor_path_hint: "lp-do-build:container:website-v3",
+          },
+        },
+      ],
+      now: new Date("2026-03-02T02:00:00.000Z"),
+    });
+
+    expect(result.ranked_candidates).toHaveLength(1);
+    expect(result.ranked_candidates[0]?.route).toEqual({
+      route: "lp-do-fact-find",
+      reason: "prescription_unknown_requires_fact_find",
+    });
+    expect(result.ranked_candidates[0]?.candidate.prescription_maturity).toBe("unknown");
+    expect(result.ranked_candidates[0]?.candidate.requirement_posture).toBe("relative_required");
+    expect(result.policy_decisions[0]?.requirement_posture).toBe("relative_required");
+    expect(result.policy_decisions[0]?.prescription_maturity).toBe("unknown");
+    expect(result.policy_decisions[0]?.prescription_choice).toEqual(
+      expect.objectContaining({
+        prescription_family: "self_evolving_new_skill",
+        required_route: "lp-do-fact-find",
+        maturity_at_choice: "unknown",
+      }),
+    );
+    rmSync(tempRoot, { recursive: true, force: true });
+  });
+
   it("promotes to a stronger route when the current evidence tranche ends in measured observations", () => {
     const tempRoot = mkdtempSync(path.join(os.tmpdir(), "self-evolving-current-tranche-"));
     const result = runSelfEvolvingOrchestrator({

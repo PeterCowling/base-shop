@@ -31,6 +31,7 @@ import {
   readCandidateLedger,
 } from "./self-evolving-candidates.js";
 import {
+  buildUnknownPrescriptionDiscoveryContract,
   type ImprovementCandidate,
   type MetaObservation,
   stableHash,
@@ -197,6 +198,13 @@ function buildNextScope(
   candidate: ImprovementCandidate,
   entry: SelfEvolvingBackboneQueueEntry,
 ): string {
+  if (
+    entry.route === "lp-do-fact-find" &&
+    (candidate.prescription_maturity === "unknown" ||
+      candidate.prescription_maturity === "hypothesized")
+  ) {
+    return "Run lp-do-fact-find to research this unknown prescription and return a structured discovery output with gap_case_id, prescription_candidates[], recommended_first_prescription, required_inputs, expected_artifacts, and expected_signals.";
+  }
   if (entry.route === "lp-do-build") {
     return `Run lp-do-build against this recurring gap using preserved executor path ${candidate.executor_path} and validate the change under guarded trial controls.`;
   }
@@ -236,6 +244,23 @@ function buildFollowupDispatch(
     policy_version: rankedCandidate.policy_context?.policy_version ?? "self-evolving-policy.v1",
     recommended_route_origin: entry.route,
     executor_path: candidate.executor_path,
+    requirement_posture:
+      candidate.requirement_posture ?? candidate.gap_case?.requirement_posture,
+    blocking_scope: candidate.blocking_scope ?? candidate.gap_case?.blocking_scope,
+    prescription_maturity:
+      candidate.prescription_maturity ?? candidate.prescription?.maturity,
+    discovery_contract:
+      (candidate.prescription_maturity === "unknown" ||
+        candidate.prescription_maturity === "hypothesized") &&
+      candidate.gap_case &&
+      candidate.prescription
+        ? buildUnknownPrescriptionDiscoveryContract({
+            gap_case: candidate.gap_case,
+            prescription: candidate.prescription,
+            maturity:
+              candidate.prescription_maturity ?? candidate.prescription.maturity ?? "unknown",
+          })
+        : undefined,
     handoff_emitted_at: entry.queued_at,
   };
 

@@ -98,6 +98,12 @@ Run-date: 20260218
     expect(sidecar?.items[0]?.recurrence_count).toBe(2);
     expect(sidecar?.items[0]?.first_seen_run_date).toBe("2026-02-18");
     expect(sidecar?.items[0]?.latest_seen_run_date).toBe("2026-02-26");
+    expect(sidecar?.items[0]?.gap_case?.source_kind).toBe("signal_review");
+    expect(sidecar?.items[0]?.gap_case?.runtime_binding.candidate_id).toMatch(/^cand-/);
+    expect(sidecar?.items[0]?.gap_case?.requirement_posture).toBe("relative_required");
+    expect(sidecar?.items[0]?.prescription?.source).toBe("signal_review");
+    expect(sidecar?.items[0]?.prescription?.required_route).toBe("lp-do-fact-find");
+    expect(sidecar?.items[0]?.prescription?.maturity).toBe("unknown");
   });
 
   it("writes an adjacent review-required sidecar file", async () => {

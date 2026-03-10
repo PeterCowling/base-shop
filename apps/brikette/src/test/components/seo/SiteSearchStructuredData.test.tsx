@@ -5,7 +5,6 @@ import { renderWithProviders } from "@tests/renderers";
 import SiteSearchStructuredData from "@/components/seo/SiteSearchStructuredData";
 import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
-import { getSlug } from "@/utils/slug";
 
 const getJsonLd = (container: HTMLElement): Record<string, unknown> => {
   const script = container.querySelector('script[type="application/ld+json"]');
@@ -17,61 +16,43 @@ const getJsonLd = (container: HTMLElement): Record<string, unknown> => {
 };
 
 describe("SiteSearchStructuredData", () => {
-  it("uses localized assistance slug in SearchAction target (English)", () => {
+  it("does not emit a SearchAction until a real localized results page exists (English)", () => {
     const { container } = renderWithProviders(<SiteSearchStructuredData lang="en" />);
     const json = getJsonLd(container);
-    const action = json.potentialAction as Record<string, unknown>;
-
-    const expectedTarget = `${BASE_URL}/en/${getSlug("assistance", "en")}?q={search_term_string}`;
-
-    expect(action.target).toBe(expectedTarget);
+    expect(json.potentialAction).toBeUndefined();
   });
 
-  it("uses localized assistance slug in SearchAction target (German)", () => {
+  it("does not emit a SearchAction until a real localized results page exists (German)", () => {
     const { container } = renderWithProviders(<SiteSearchStructuredData lang="de" />);
     const json = getJsonLd(container);
-    const action = json.potentialAction as Record<string, unknown>;
-
-    const expectedTarget = `${BASE_URL}/de/${getSlug("assistance", "de")}?q={search_term_string}`;
-
-    expect(action.target).toBe(expectedTarget);
+    expect(json.potentialAction).toBeUndefined();
   });
 
-  it("uses localized assistance slug in SearchAction target (French)", () => {
+  it("does not emit a SearchAction until a real localized results page exists (French)", () => {
     const { container } = renderWithProviders(<SiteSearchStructuredData lang="fr" />);
     const json = getJsonLd(container);
-    const action = json.potentialAction as Record<string, unknown>;
-
-    const expectedTarget = `${BASE_URL}/fr/${getSlug("assistance", "fr")}?q={search_term_string}`;
-
-    expect(action.target).toBe(expectedTarget);
+    expect(json.potentialAction).toBeUndefined();
   });
 
-  it("uses localized assistance slug in SearchAction target (all supported locales)", () => {
+  it("keeps the same WebSite contract across supported locales", () => {
     const testLocales: AppLanguage[] = ["en", "es", "de", "fr", "it", "ja"];
 
     testLocales.forEach((lang) => {
       const { container } = renderWithProviders(<SiteSearchStructuredData lang={lang} />);
       const json = getJsonLd(container);
-      const action = json.potentialAction as Record<string, unknown>;
-
-      const expectedTarget = `${BASE_URL}/${lang}/${getSlug("assistance", lang)}?q={search_term_string}`;
-
-      expect(action.target).toBe(expectedTarget);
+      expect(json.potentialAction).toBeUndefined();
+      expect(json.inLanguage).toBe(lang);
     });
   });
 
-  it("includes required SearchAction schema fields", () => {
+  it("includes the required WebSite schema fields", () => {
     const { container } = renderWithProviders(<SiteSearchStructuredData lang="en" />);
     const json = getJsonLd(container);
 
     expect(json["@type"]).toBe("WebSite");
     expect(json["@context"]).toBe("https://schema.org");
     expect(json.url).toBe(BASE_URL);
-
-    const action = json.potentialAction as Record<string, unknown>;
-    expect(action["@type"]).toBe("SearchAction");
-    expect(action["query-input"]).toBe("required name=search_term_string");
-    expect(action.target).toBeDefined();
+    expect(json.inLanguage).toBe("en");
+    expect(json.potentialAction).toBeUndefined();
   });
 });

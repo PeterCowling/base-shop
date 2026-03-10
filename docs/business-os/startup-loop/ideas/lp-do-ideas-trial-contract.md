@@ -114,7 +114,7 @@ Optional provenance blocks are permitted on `operator_idea` packets when the que
 
 | Field | Purpose |
 |---|---|
-| `build_origin` | Canonical live build-review provenance from the build-origin bridge |
+| `build_origin` | Canonical live build-review provenance from the build-origin bridge, including optional canonical `gap_case` / `prescription` objects for normalized prescription learning |
 | `historical_carryover` | One-time archive carry-over provenance linking the packet back to the audited historical manifest |
 
 Dispatches failing schema validation must enter `status: error` and must not be

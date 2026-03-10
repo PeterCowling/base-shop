@@ -14,6 +14,13 @@ import type {
   ResultsReviewSignalItem,
 } from "../build/lp-do-build-results-review-extract.js";
 import { MISSING_VALUE } from "../build/lp-do-build-results-review-parse.js";
+import {
+  buildCanonicalGapCase,
+  buildCanonicalPrescription,
+  buildCompiledCandidateId,
+  expectedArtifactsForRoute,
+  normalizeCanonicalToken,
+} from "../self-evolving/self-evolving-prescription-normalization.js";
 
 import {
   classifyIdea,
@@ -276,7 +283,97 @@ function buildCurrentTruth(signal: BuildOriginSignal): string {
   return signal.canonical_title;
 }
 
-function buildBuildOriginProvenance(signal: BuildOriginSignal): DispatchBuildOriginProvenance {
+function buildBuildOriginProvenance(
+  signal: BuildOriginSignal,
+  classification: IdeaClassification,
+  recommendedRoute: RecommendedRoute,
+): DispatchBuildOriginProvenance {
+  const gapType = `build_origin_${normalizeCanonicalToken(
+    signal.reflection_fields?.category ??
+      signal.results_review_fields?.reason_code ??
+      signal.reflection_fields?.routing_target ??
+      "review_signal",
+  )}`;
+  const candidateId = buildCompiledCandidateId({
+    business_id: signal.business,
+    source_kind: "build_origin",
+    recurrence_key: signal.recurrence_key,
+    gap_type: gapType,
+  });
+  const sourceInputs = repoPathList([
+    signal.provenance.results_review_sidecar_path,
+    signal.provenance.pattern_reflection_sidecar_path,
+  ]);
+  const prescriptionFamily =
+    signal.reflection_fields?.routing_target === "loop_update"
+      ? "build_origin_loop_update"
+      : signal.reflection_fields?.routing_target === "skill_proposal"
+        ? "build_origin_skill_proposal"
+        : recommendedRoute === "lp-do-plan"
+          ? "build_origin_plan_candidate"
+          : "build_origin_fact_find_candidate";
+  const canonical = {
+    gap_case: buildCanonicalGapCase({
+      business_id: signal.business,
+      source_kind: "build_origin",
+      stage_id: null,
+      capability_id: null,
+      gap_type: gapType,
+      reason_code: normalizeCanonicalToken(
+        signal.results_review_fields?.reason_code ??
+          signal.reflection_fields?.routing_target ??
+          "build_origin_signal",
+      ),
+      severity:
+        classification.priority_tier === "P1" ||
+        classification.priority_tier === "P1M" ||
+        classification.priority_tier === "P0" ||
+        classification.priority_tier === "P0R"
+          ? 0.85
+          : classification.priority_tier === "P2"
+            ? 0.7
+            : classification.priority_tier === "P3"
+              ? 0.55
+              : signal.merge_state === "merged_cross_sidecar"
+                ? 0.65
+                : 0.5,
+      evidence_refs: buildEvidenceRefs(signal),
+      recurrence_key: signal.recurrence_key,
+      requirement_posture:
+        classification.priority_tier === "P1" || classification.priority_tier === "P2"
+          ? "relative_required"
+          : "optional_improvement",
+      blocking_scope: "degrades_quality",
+      structural_context: {
+        plan_slug: signal.plan_slug,
+        review_cycle_key: signal.review_cycle_key,
+        primary_source: signal.primary_source,
+        merge_state: signal.merge_state,
+        source_presence: signal.source_presence,
+        results_review_fields: signal.results_review_fields,
+        reflection_fields: signal.reflection_fields,
+      },
+      candidate_id: candidateId,
+    }),
+    prescription: buildCanonicalPrescription({
+      prescription_family: prescriptionFamily,
+      source: "build_origin",
+      gap_types_supported: [gapType],
+      required_route: recommendedRoute,
+      required_inputs: sourceInputs,
+      expected_artifacts: expectedArtifactsForRoute(recommendedRoute),
+      expected_signal_change:
+        `Address build-origin signal "${signal.canonical_title}" through the canonical ${recommendedRoute} queue path.`,
+      risk_class: recommendedRoute === "lp-do-plan" ? "medium" : "low",
+      maturity:
+        recommendedRoute === "lp-do-plan"
+          ? "structured"
+          : signal.suggested_action
+            ? "hypothesized"
+            : "unknown",
+    }),
+  };
+
   return {
     schema_version: "dispatch-build-origin.v1",
     build_signal_id: signal.build_signal_id,
@@ -298,6 +395,8 @@ function buildBuildOriginProvenance(signal: BuildOriginSignal): DispatchBuildOri
           occurrence_count: signal.reflection_fields.occurrence_count,
         }
       : undefined,
+    gap_case: canonical.gap_case,
+    prescription: canonical.prescription,
   };
 }
 
@@ -387,7 +486,7 @@ function signalToDispatchPacket(
           : `Produce a validated fact-find and next action for ${signal.canonical_title}.`,
       source: "auto",
     },
-    build_origin: buildBuildOriginProvenance(signal),
+    build_origin: buildBuildOriginProvenance(signal, classification, recommendedRoute),
   };
 }
 

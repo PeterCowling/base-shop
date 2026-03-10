@@ -17,6 +17,11 @@ export interface PolicyEvaluationRecord {
   decision_context_id: string;
   business_id: string;
   candidate_id: string;
+  gap_case_id: string | null;
+  prescription_id: string | null;
+  prescription_family: string | null;
+  prescription_required_route: string | null;
+  prescription_choice_present: boolean;
   chosen_action: string;
   policy_version: string;
   utility_version: string;
@@ -54,12 +59,16 @@ export interface PolicyEvaluationSummary {
   censored_decisions: number;
   missing_decisions: number;
   replay_ready_decisions: number;
+  prescription_attributed_decisions: number;
+  replay_ready_prescription_decisions: number;
+  observed_prescription_decisions: number;
   shadow_handoff_decisions: number;
   pending_shadow_handoffs: number;
   matured_shadow_handoffs: number;
   deterministic_decisions: number;
   stochastic_decisions: number;
   policy_version_counts: Record<string, number>;
+  prescription_family_counts: Record<string, number>;
 }
 
 export interface PolicyEvaluationDataset {
@@ -217,11 +226,15 @@ function summarizePolicyEvaluationRecords(
   records: readonly PolicyEvaluationRecord[],
 ): PolicyEvaluationSummary {
   const policyVersionCounts: Record<string, number> = {};
+  const prescriptionFamilyCounts: Record<string, number> = {};
   let observed = 0;
   let pending = 0;
   let censored = 0;
   let missing = 0;
   let replayReady = 0;
+  let prescriptionAttributed = 0;
+  let replayReadyPrescription = 0;
+  let observedPrescription = 0;
   let shadowHandoffDecisions = 0;
   let pendingShadowHandoffs = 0;
   let maturedShadowHandoffs = 0;
@@ -251,6 +264,19 @@ function summarizePolicyEvaluationRecords(
     if (record.evaluation_ready) {
       replayReady += 1;
     }
+    if (record.prescription_choice_present) {
+      prescriptionAttributed += 1;
+      if (record.evaluation_ready) {
+        replayReadyPrescription += 1;
+      }
+      if (record.evaluation_status === "observed") {
+        observedPrescription += 1;
+      }
+      if (record.prescription_family) {
+        prescriptionFamilyCounts[record.prescription_family] =
+          (prescriptionFamilyCounts[record.prescription_family] ?? 0) + 1;
+      }
+    }
 
     if (record.evaluation_status === "observed") observed += 1;
     if (record.evaluation_status === "pending") pending += 1;
@@ -265,12 +291,16 @@ function summarizePolicyEvaluationRecords(
     censored_decisions: censored,
     missing_decisions: missing,
     replay_ready_decisions: replayReady,
+    prescription_attributed_decisions: prescriptionAttributed,
+    replay_ready_prescription_decisions: replayReadyPrescription,
+    observed_prescription_decisions: observedPrescription,
     shadow_handoff_decisions: shadowHandoffDecisions,
     pending_shadow_handoffs: pendingShadowHandoffs,
     matured_shadow_handoffs: maturedShadowHandoffs,
     deterministic_decisions: deterministic,
     stochastic_decisions: stochastic,
     policy_version_counts: policyVersionCounts,
+    prescription_family_counts: prescriptionFamilyCounts,
   };
 }
 
@@ -341,6 +371,31 @@ export function buildPolicyEvaluationDataset(input: {
         (nonEmptyString(selectedDispatch?.dispatch_id) ? selectedDispatch.dispatch_id : null) ??
         outcomeProjection?.dispatch_id ??
         null;
+      const prescriptionChoice = decision.prescription_choice ?? null;
+      const gapCaseId =
+        prescriptionChoice?.gap_case_id ??
+        decision.gap_case?.gap_case_id ??
+        completion?.gap_case?.gap_case_id ??
+        outcomeProjection?.outcome?.gap_case?.gap_case_id ??
+        null;
+      const prescriptionId =
+        prescriptionChoice?.prescription_id ??
+        decision.prescription?.prescription_id ??
+        completion?.prescription?.prescription_id ??
+        outcomeProjection?.outcome?.prescription?.prescription_id ??
+        null;
+      const prescriptionFamily =
+        prescriptionChoice?.prescription_family ??
+        decision.prescription?.prescription_family ??
+        completion?.prescription?.prescription_family ??
+        outcomeProjection?.outcome?.prescription?.prescription_family ??
+        null;
+      const prescriptionRequiredRoute =
+        prescriptionChoice?.required_route ??
+        decision.prescription?.required_route ??
+        completion?.prescription?.required_route ??
+        outcomeProjection?.outcome?.prescription?.required_route ??
+        null;
 
       return {
         schema_version: "policy-evaluation.v1",
@@ -348,6 +403,11 @@ export function buildPolicyEvaluationDataset(input: {
         decision_context_id: decision.decision_context_id,
         business_id: decision.business_id,
         candidate_id: decision.candidate_id,
+        gap_case_id: gapCaseId,
+        prescription_id: prescriptionId,
+        prescription_family: prescriptionFamily,
+        prescription_required_route: prescriptionRequiredRoute,
+        prescription_choice_present: prescriptionId !== null,
         chosen_action: decision.chosen_action,
         policy_version: decision.policy_version,
         utility_version: decision.utility_version,

@@ -170,6 +170,16 @@ function candidateAllowedByHardRules(
   return true;
 }
 
+function postureSelectionBonus(decision: PolicyDecisionRecord | null): number {
+  if (!decision || decision.decision_type !== "candidate_route") {
+    return 0;
+  }
+  if (decision.requirement_posture === "absolute_required") {
+    return 100;
+  }
+  return 0;
+}
+
 export interface PortfolioSelectionResult {
   portfolio_id: string;
   candidate_set_hash: string;
@@ -206,6 +216,9 @@ export function buildPortfolioSelection(input: {
   const portfolioId = stableHash(
     `${input.business_id}|${candidateSetHash}|${input.created_at}|portfolio`,
   ).slice(0, 16);
+  const routeDecisionByCandidateId = new Map(
+    input.candidate_route_decisions.map((decision) => [decision.candidate_id, decision] as const),
+  );
 
   const signalSnapshotByCandidateId = new Map<string, PortfolioSelectionSignalSnapshot>();
   const selectableCandidates = orderedCandidates.filter((rankedCandidate) => {
@@ -229,9 +242,12 @@ export function buildPortfolioSelection(input: {
           options: selectableCandidates.map((rankedCandidate) => ({
             id: rankedCandidate.candidate.candidate_id,
             utility:
-              signalSnapshotByCandidateId.get(rankedCandidate.candidate.candidate_id)
+              (signalSnapshotByCandidateId.get(rankedCandidate.candidate.candidate_id)
                 ?.adjusted_utility ??
-              0,
+                0) +
+              postureSelectionBonus(
+                routeDecisionByCandidateId.get(rankedCandidate.candidate.candidate_id) ?? null,
+              ),
             coefficients: {
               wip_cap: 1,
               [`route:${rankedCandidate.route.route}`]: 1,
@@ -257,9 +273,6 @@ export function buildPortfolioSelection(input: {
     ranked_candidates: orderedCandidates,
     selected_candidate_ids: selectedCandidateIds,
   });
-  const routeDecisionByCandidateId = new Map(
-    input.candidate_route_decisions.map((decision) => [decision.candidate_id, decision] as const),
-  );
 
   const decisionRecords = orderedCandidates.map((rankedCandidate): PolicyDecisionRecord => {
     const routeDecision = routeDecisionByCandidateId.get(rankedCandidate.candidate.candidate_id);

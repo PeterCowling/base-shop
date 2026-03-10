@@ -238,6 +238,38 @@ describe("TC-01-E: artifact_delta dispatch auto-populated values carry source: '
         results_review_sidecar_path: "docs/plans/test-feature/results-review.signals.json",
         pattern_reflection_path: null,
         pattern_reflection_sidecar_path: null,
+        gap_case: {
+          schema_version: "gap-case.v1",
+          gap_case_id: "gap-123",
+          source_kind: "build_origin",
+          business_id: "HBAG",
+          stage_id: null,
+          capability_id: null,
+          gap_type: "build_origin_review_signal",
+          reason_code: "build_origin_signal",
+          severity: 0.7,
+          evidence_refs: ["docs/plans/test-feature/results-review.user.md"],
+          recurrence_key: "recur-123",
+          structural_context: {
+            plan_slug: "test-feature",
+          },
+          runtime_binding: {
+            binding_mode: "compiled_to_candidate",
+            candidate_id: "cand-123",
+          },
+        },
+        prescription: {
+          schema_version: "prescription.v1",
+          prescription_id: "rx-123",
+          prescription_family: "build_origin_fact_find_candidate",
+          source: "build_origin",
+          gap_types_supported: ["build_origin_review_signal"],
+          required_route: "lp-do-fact-find",
+          required_inputs: ["docs/plans/test-feature/results-review.signals.json"],
+          expected_artifacts: ["fact-find.md"],
+          expected_signal_change: "Address the build-origin signal through the canonical queue path.",
+          risk_class: "low",
+        },
       },
     });
     const result = validateDispatchV2(packet);
@@ -277,6 +309,9 @@ describe("TC-01-E: artifact_delta dispatch auto-populated values carry source: '
       self_evolving: {
         candidate_id: "cand-1",
         decision_id: "decision-1",
+        requirement_posture: "relative_required",
+        blocking_scope: "degrades_quality",
+        prescription_maturity: "structured",
         gap_case: {
           gap_case_id: "gap-1",
           candidate_id: "cand-1",
@@ -297,6 +332,166 @@ describe("TC-01-E: artifact_delta dispatch auto-populated values carry source: '
 
     expect(result.valid).toBe(true);
     expect(result.errors).toHaveLength(0);
+  });
+
+  it("rejects invalid learned-prescription posture fields on self_evolving links", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      self_evolving: {
+        candidate_id: "cand-1",
+        decision_id: "decision-1",
+        requirement_posture: "someday" as never,
+        blocking_scope: "degrades_quality",
+        prescription_maturity: "structured",
+        policy_version: "self-evolving-policy.v1",
+        recommended_route_origin: "lp-do-plan",
+        executor_path: "lp-do-build:container:website-v3",
+        handoff_emitted_at: FIXED_DATE.toISOString(),
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(false);
+    expect(
+      result.errors.some((error) => error.includes("self_evolving.requirement_posture")),
+    ).toBe(true);
+  });
+
+  it("accepts unknown-maturity self_evolving links when a discovery contract is present", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      self_evolving: {
+        candidate_id: "cand-1",
+        decision_id: "decision-1",
+        requirement_posture: "relative_required",
+        blocking_scope: "degrades_quality",
+        prescription_maturity: "unknown",
+        gap_case: {
+          gap_case_id: "gap-1",
+          candidate_id: "cand-1",
+          binding_mode: "compiled_to_candidate",
+        },
+        prescription: {
+          prescription_id: "prescription-1",
+          prescription_family: "build-origin-bridge-fact-find",
+          required_route: "lp-do-fact-find",
+        },
+        discovery_contract: {
+          schema_version: "unknown-prescription-discovery.v1",
+          gap_case_id: "gap-1",
+          discovery_reason: "prescription_unknown",
+          prescription_candidates: [
+            {
+              prescription_id: "prescription-1",
+              prescription_family: "build-origin-bridge-fact-find",
+              required_route: "lp-do-fact-find",
+              required_inputs: ["results-review.signals.json"],
+              expected_artifacts: ["fact-find.md"],
+              expected_signals: [
+                "Gap becomes structured enough for canonical queue admission.",
+              ],
+            },
+          ],
+          recommended_first_prescription_id: "prescription-1",
+          required_inputs: ["results-review.signals.json"],
+          expected_artifacts: ["fact-find.md"],
+          expected_signals: [
+            "Gap becomes structured enough for canonical queue admission.",
+          ],
+        },
+        policy_version: "self-evolving-policy.v1",
+        recommended_route_origin: "lp-do-fact-find",
+        executor_path: "lp-do-build:container:website-v3",
+        handoff_emitted_at: FIXED_DATE.toISOString(),
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
+  it("rejects unknown-maturity self_evolving links without a discovery contract", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      self_evolving: {
+        candidate_id: "cand-1",
+        decision_id: "decision-1",
+        prescription_maturity: "unknown",
+        policy_version: "self-evolving-policy.v1",
+        recommended_route_origin: "lp-do-fact-find",
+        executor_path: "lp-do-build:container:website-v3",
+        handoff_emitted_at: FIXED_DATE.toISOString(),
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(false);
+    expect(
+      result.errors.some((error) => error.includes("self_evolving.discovery_contract is required")),
+    ).toBe(true);
+  });
+
+  it("rejects discovery contracts whose recommended prescription drifts from self_evolving.prescription", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      self_evolving: {
+        candidate_id: "cand-1",
+        decision_id: "decision-1",
+        prescription_maturity: "hypothesized",
+        gap_case: {
+          gap_case_id: "gap-1",
+          candidate_id: "cand-1",
+          binding_mode: "compiled_to_candidate",
+        },
+        prescription: {
+          prescription_id: "prescription-1",
+          prescription_family: "build-origin-bridge-fact-find",
+          required_route: "lp-do-fact-find",
+        },
+        discovery_contract: {
+          schema_version: "unknown-prescription-discovery.v1",
+          gap_case_id: "gap-1",
+          discovery_reason: "prescription_hypothesized",
+          prescription_candidates: [
+            {
+              prescription_id: "prescription-other",
+              prescription_family: "build-origin-bridge-fact-find",
+              required_route: "lp-do-fact-find",
+              required_inputs: ["results-review.signals.json"],
+              expected_artifacts: ["fact-find.md"],
+              expected_signals: [
+                "Gap becomes structured enough for canonical queue admission.",
+              ],
+            },
+          ],
+          recommended_first_prescription_id: "prescription-other",
+          required_inputs: ["results-review.signals.json"],
+          expected_artifacts: ["fact-find.md"],
+          expected_signals: [
+            "Gap becomes structured enough for canonical queue admission.",
+          ],
+        },
+        policy_version: "self-evolving-policy.v1",
+        recommended_route_origin: "lp-do-fact-find",
+        executor_path: "lp-do-build:container:website-v3",
+        handoff_emitted_at: FIXED_DATE.toISOString(),
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(false);
+    expect(
+      result.errors.some((error) =>
+        error.includes(
+          "self_evolving.discovery_contract.recommended_first_prescription_id must match self_evolving.prescription.prescription_id",
+        ),
+      ),
+    ).toBe(true);
   });
 
   it("rejects self_evolving gap-case references that drift from candidate identity", () => {

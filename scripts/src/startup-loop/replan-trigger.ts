@@ -10,6 +10,15 @@ import * as path from "node:path";
 
 import { checkConstraintPersistence, getRecentBottlenecks } from "./diagnostics/bottleneck-history";
 import { type DiagnosisSnapshot } from "./diagnostics/diagnosis-snapshot";
+import type { GapCase, Prescription } from "./self-evolving/self-evolving-contracts.js";
+import {
+  buildCanonicalGapCase,
+  buildCanonicalPrescription,
+  buildCompiledCandidateId,
+  expectedArtifactsForRoute,
+  normalizeCanonicalToken,
+  severityScoreFromLabel,
+} from "./self-evolving/self-evolving-prescription-normalization.js";
 
 // -- Type definitions --
 
@@ -35,6 +44,8 @@ export interface ReplanTrigger {
   run_history: string[];
   reason: string;
   recommended_focus: string;
+  gap_case?: GapCase;
+  prescription?: Prescription;
   min_severity: string;
   persistence_threshold: number;
   non_persistent_count?: number;
@@ -69,33 +80,72 @@ function atomicWriteTrigger(triggerPath: string, trigger: ReplanTrigger): void {
 }
 
 function getRecommendedFocus(constraintKey: string): string {
+  return getPrescriptionBlueprint(constraintKey).focus;
+}
+
+function getPrescriptionBlueprint(constraintKey: string): {
+  prescription_family: string;
+  focus: string;
+  required_route: "lp-do-fact-find";
+  risk_class: "low" | "medium";
+} {
   // SIGNALS-01/cvr (legacy S3/cvr) → conversion optimization
   if (constraintKey === "SIGNALS-01/cvr" || constraintKey === "S3/cvr") {
-    return "Improve conversion rate through offer clarity, trust signals, or checkout optimization";
+    return {
+      prescription_family: "conversion_optimization_review",
+      focus: "Improve conversion rate through offer clarity, trust signals, or checkout optimization",
+      required_route: "lp-do-fact-find",
+      risk_class: "medium",
+    };
   }
 
   // SELL-01/traffic → traffic acquisition
   if (constraintKey === "SELL-01/traffic") {
-    return "Increase traffic through SEO, paid acquisition, or content marketing";
+    return {
+      prescription_family: "traffic_acquisition_review",
+      focus: "Increase traffic through SEO, paid acquisition, or content marketing",
+      required_route: "lp-do-fact-find",
+      risk_class: "medium",
+    };
   }
 
   // SELL-01/cac → cost optimization
   if (constraintKey === "SELL-01/cac") {
-    return "Reduce customer acquisition cost through channel optimization or targeting";
+    return {
+      prescription_family: "acquisition_cost_optimization_review",
+      focus: "Reduce customer acquisition cost through channel optimization or targeting",
+      required_route: "lp-do-fact-find",
+      risk_class: "medium",
+    };
   }
 
   // MARKET-06/aov → AOV optimization (MARKET-06/aov retained for legacy runs)
   if (constraintKey === "MARKET-06/aov" || constraintKey === "MARKET-06/aov") {
-    return "Increase average order value through upsells, bundles, or pricing";
+    return {
+      prescription_family: "average_order_value_optimization_review",
+      focus: "Increase average order value through upsells, bundles, or pricing",
+      required_route: "lp-do-fact-find",
+      risk_class: "medium",
+    };
   }
 
   // Any stage_blocked → blocker resolution
   if (constraintKey.includes("stage_blocked")) {
-    return "Resolve stage blocker before addressing metric constraints";
+    return {
+      prescription_family: "blocker_resolution_review",
+      focus: "Resolve stage blocker before addressing metric constraints",
+      required_route: "lp-do-fact-find",
+      risk_class: "low",
+    };
   }
 
   // Default
-  return "Review constraint and plan targeted intervention";
+  return {
+    prescription_family: "targeted_intervention_review",
+    focus: "Review constraint and plan targeted intervention",
+    required_route: "lp-do-fact-find",
+    risk_class: "low",
+  };
 }
 
 function checkSeverityGate(severity: string, minSeverity: "moderate" | "critical"): boolean {
@@ -110,6 +160,88 @@ function checkSeverityGate(severity: string, minSeverity: "moderate" | "critical
   const actualRank = severityRank[severity] ?? 0;
 
   return actualRank >= minRank;
+}
+
+function buildConstraintGapType(constraintKey: string, metric: string | null): string {
+  if (constraintKey.includes("stage_blocked")) {
+    return "bottleneck_stage_blocked";
+  }
+  if (metric && metric.trim().length > 0) {
+    return `bottleneck_metric_${normalizeCanonicalToken(metric)}`;
+  }
+  return `bottleneck_${normalizeCanonicalToken(constraintKey)}`;
+}
+
+function buildCanonicalReplanFields(input: {
+  business: string;
+  trigger: Pick<ReplanTrigger, "constraint" | "recommended_focus" | "reason" | "persistence_threshold">;
+  minSeverity: string;
+}): { gap_case: GapCase; prescription: Prescription } {
+  const constraintKey = input.trigger.constraint.constraint_key;
+  const stageId =
+    typeof input.trigger.constraint.stage === "string" && input.trigger.constraint.stage.length > 0
+      ? input.trigger.constraint.stage
+      : null;
+  const metric =
+    typeof input.trigger.constraint.metric === "string" && input.trigger.constraint.metric.length > 0
+      ? input.trigger.constraint.metric
+      : null;
+  const gapType = buildConstraintGapType(constraintKey, metric);
+  const candidateId = buildCompiledCandidateId({
+    business_id: input.business,
+    source_kind: "bottleneck",
+    recurrence_key: constraintKey,
+    gap_type: gapType,
+    stage_id: stageId,
+  });
+  const blueprint = getPrescriptionBlueprint(constraintKey);
+
+  return {
+    gap_case: buildCanonicalGapCase({
+      business_id: input.business,
+      source_kind: "bottleneck",
+      stage_id: stageId,
+      capability_id: null,
+      gap_type: gapType,
+      reason_code: normalizeCanonicalToken(
+        metric ? `persistent_metric_constraint_${metric}` : "persistent_stage_constraint",
+      ),
+      severity: severityScoreFromLabel(input.trigger.constraint.severity),
+      evidence_refs: [`docs/business-os/startup-baselines/${input.business}/bottleneck-history.jsonl`],
+      recurrence_key: constraintKey,
+      requirement_posture: constraintKey.includes("stage_blocked")
+        ? "absolute_required"
+        : "relative_required",
+      blocking_scope: constraintKey.includes("stage_blocked")
+        ? "blocks_stage"
+        : "degrades_quality",
+      structural_context: {
+        constraint_key: constraintKey,
+        stage: stageId,
+        metric,
+        severity_label: input.trigger.constraint.severity,
+        min_severity_gate: input.minSeverity,
+        persistence_threshold: input.trigger.persistence_threshold,
+        recommended_focus: input.trigger.recommended_focus,
+        reason: input.trigger.reason,
+      },
+      candidate_id: candidateId,
+    }),
+    prescription: buildCanonicalPrescription({
+      prescription_family: blueprint.prescription_family,
+      source: "replan_trigger",
+      gap_types_supported: [gapType],
+      required_route: blueprint.required_route,
+      required_inputs: [
+        `docs/business-os/startup-baselines/${input.business}/bottleneck-history.jsonl`,
+        constraintKey,
+      ],
+      expected_artifacts: expectedArtifactsForRoute(blueprint.required_route),
+      expected_signal_change: `Reduce or resolve persistent bottleneck ${constraintKey} before it recurs again.`,
+      risk_class: blueprint.risk_class,
+      maturity: "hypothesized",
+    }),
+  };
 }
 
 // -- Main function --
@@ -148,6 +280,13 @@ export function checkAndTriggerReplan(
         resolved_at: new Date().toISOString(),
         non_persistent_count: nonPersistentCount,
       };
+      const canonical = buildCanonicalReplanFields({
+        business,
+        trigger: resolvedTrigger,
+        minSeverity: resolvedTrigger.min_severity,
+      });
+      resolvedTrigger.gap_case = canonical.gap_case;
+      resolvedTrigger.prescription = canonical.prescription;
 
       atomicWriteTrigger(triggerPath, resolvedTrigger);
       return resolvedTrigger;
@@ -159,6 +298,13 @@ export function checkAndTriggerReplan(
       last_evaluated_at: new Date().toISOString(),
       non_persistent_count: nonPersistentCount,
     };
+    const canonical = buildCanonicalReplanFields({
+      business,
+      trigger: updatedTrigger,
+      minSeverity: updatedTrigger.min_severity,
+    });
+    updatedTrigger.gap_case = canonical.gap_case;
+    updatedTrigger.prescription = canonical.prescription;
 
     atomicWriteTrigger(triggerPath, updatedTrigger);
     return updatedTrigger;
@@ -181,6 +327,13 @@ export function checkAndTriggerReplan(
         last_evaluated_at: new Date().toISOString(),
         non_persistent_count: 0, // Reset non-persistent count since we have persistence
       };
+      const canonical = buildCanonicalReplanFields({
+        business,
+        trigger: updatedTrigger,
+        minSeverity,
+      });
+      updatedTrigger.gap_case = canonical.gap_case;
+      updatedTrigger.prescription = canonical.prescription;
 
       atomicWriteTrigger(triggerPath, updatedTrigger);
       return updatedTrigger;
@@ -194,6 +347,7 @@ export function checkAndTriggerReplan(
   const now = new Date().toISOString();
 
   if (!existingTrigger) {
+    const recommendedFocus = getRecommendedFocus(constraintKey);
     // Create new trigger
     const newTrigger: ReplanTrigger = {
       status: "open",
@@ -210,17 +364,25 @@ export function checkAndTriggerReplan(
       },
       run_history: runHistory,
       reason: `Constraint ${constraintKey} persisted for ${persistenceThreshold} runs with ${constraintSeverity} severity`,
-      recommended_focus: getRecommendedFocus(constraintKey),
+      recommended_focus: recommendedFocus,
       min_severity: minSeverity,
       persistence_threshold: persistenceThreshold,
       non_persistent_count: 0,
     };
+    const canonical = buildCanonicalReplanFields({
+      business,
+      trigger: newTrigger,
+      minSeverity,
+    });
+    newTrigger.gap_case = canonical.gap_case;
+    newTrigger.prescription = canonical.prescription;
 
     atomicWriteTrigger(triggerPath, newTrigger);
     return newTrigger;
   }
 
   if (existingTrigger.status === "resolved") {
+    const recommendedFocus = getRecommendedFocus(constraintKey);
     // Reopen trigger
     const reopenedTrigger: ReplanTrigger = {
       ...existingTrigger,
@@ -237,9 +399,16 @@ export function checkAndTriggerReplan(
       },
       run_history: runHistory,
       reason: `Constraint ${constraintKey} persisted again after resolution`,
-      recommended_focus: getRecommendedFocus(constraintKey),
+      recommended_focus: recommendedFocus,
       non_persistent_count: 0,
     };
+    const canonical = buildCanonicalReplanFields({
+      business,
+      trigger: reopenedTrigger,
+      minSeverity,
+    });
+    reopenedTrigger.gap_case = canonical.gap_case;
+    reopenedTrigger.prescription = canonical.prescription;
 
     atomicWriteTrigger(triggerPath, reopenedTrigger);
     return reopenedTrigger;
@@ -258,6 +427,13 @@ export function checkAndTriggerReplan(
     run_history: runHistory,
     non_persistent_count: 0,
   };
+  const canonical = buildCanonicalReplanFields({
+    business,
+    trigger: updatedTrigger,
+    minSeverity,
+  });
+  updatedTrigger.gap_case = canonical.gap_case;
+  updatedTrigger.prescription = canonical.prescription;
 
   atomicWriteTrigger(triggerPath, updatedTrigger);
   return updatedTrigger;

@@ -15,8 +15,13 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 
 import {
+  type GapCase,
+  type Prescription,
+  validateGapCase,
   validateGapCaseReference,
+  validatePrescription,
   validatePrescriptionReference,
+  validateUnknownPrescriptionDiscoveryContract,
 } from "../self-evolving/self-evolving-contracts.js";
 
 import {
@@ -425,6 +430,8 @@ export interface DispatchBuildOriginProvenance {
   results_review_sidecar_path: string | null;
   pattern_reflection_path: string | null;
   pattern_reflection_sidecar_path: string | null;
+  gap_case?: GapCase;
+  prescription?: Prescription;
   reflection_fields?: {
     category: string | null;
     routing_target: string | null;
@@ -626,6 +633,96 @@ export function validateDispatchV2(
           (error) => `[dispatch.v2] self_evolving.prescription.${error}`,
         ),
       );
+    }
+    if (link.discovery_contract) {
+      errors.push(
+        ...validateUnknownPrescriptionDiscoveryContract(link.discovery_contract).map(
+          (error) => `[dispatch.v2] self_evolving.discovery_contract.${error}`,
+        ),
+      );
+      if (
+        link.gap_case &&
+        link.discovery_contract.gap_case_id !== link.gap_case.gap_case_id
+      ) {
+        errors.push(
+          `[dispatch.v2] self_evolving.discovery_contract.gap_case_id must match self_evolving.gap_case.gap_case_id.`,
+        );
+      }
+      if (
+        link.prescription &&
+        link.discovery_contract.recommended_first_prescription_id !== link.prescription.prescription_id
+      ) {
+        errors.push(
+          `[dispatch.v2] self_evolving.discovery_contract.recommended_first_prescription_id must match self_evolving.prescription.prescription_id.`,
+        );
+      }
+    }
+    if (
+      link.requirement_posture !== undefined &&
+      link.requirement_posture !== "absolute_required" &&
+      link.requirement_posture !== "relative_required" &&
+      link.requirement_posture !== "optional_improvement"
+    ) {
+      errors.push(`[dispatch.v2] self_evolving.requirement_posture is invalid.`);
+    }
+    if (
+      link.blocking_scope !== undefined &&
+      link.blocking_scope !== "blocks_route" &&
+      link.blocking_scope !== "blocks_stage" &&
+      link.blocking_scope !== "degrades_quality" &&
+      link.blocking_scope !== "improves_if_time_allows"
+    ) {
+      errors.push(`[dispatch.v2] self_evolving.blocking_scope is invalid.`);
+    }
+    if (
+      link.prescription_maturity !== undefined &&
+      link.prescription_maturity !== "unknown" &&
+      link.prescription_maturity !== "hypothesized" &&
+      link.prescription_maturity !== "structured" &&
+      link.prescription_maturity !== "proven" &&
+      link.prescription_maturity !== "retired"
+    ) {
+      errors.push(`[dispatch.v2] self_evolving.prescription_maturity is invalid.`);
+    }
+    if (
+      (link.prescription_maturity === "unknown" ||
+        link.prescription_maturity === "hypothesized") &&
+      !link.discovery_contract
+    ) {
+      errors.push(
+        `[dispatch.v2] self_evolving.discovery_contract is required when self_evolving.prescription_maturity is unknown or hypothesized.`,
+      );
+    }
+  }
+
+  const buildOrigin = packet.build_origin;
+  if (buildOrigin && typeof buildOrigin === "object") {
+    if (buildOrigin.gap_case) {
+      errors.push(
+        ...validateGapCase(buildOrigin.gap_case).map(
+          (error) => `[dispatch.v2] build_origin.gap_case.${error}`,
+        ),
+      );
+    }
+    if (buildOrigin.prescription) {
+      errors.push(
+        ...validatePrescription(buildOrigin.prescription).map(
+          (error) => `[dispatch.v2] build_origin.prescription.${error}`,
+        ),
+      );
+      if (buildOrigin.prescription.required_route !== packet.recommended_route) {
+        errors.push(
+          `[dispatch.v2] build_origin.prescription.required_route must match packet.recommended_route.`,
+        );
+      }
+      if (
+        buildOrigin.gap_case &&
+        !buildOrigin.prescription.gap_types_supported.includes(buildOrigin.gap_case.gap_type)
+      ) {
+        errors.push(
+          `[dispatch.v2] build_origin.prescription.gap_types_supported must include build_origin.gap_case.gap_type.`,
+        );
+      }
     }
   }
 

@@ -3,8 +3,12 @@ import { existsSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve, sep } from "node:path";
 
 import type {
+  BlockingScope,
   GapCaseReference,
+  PrescriptionMaturity,
   PrescriptionReference,
+  RequirementPosture,
+  UnknownPrescriptionDiscoveryContract,
 } from "../self-evolving/self-evolving-contracts.js";
 
 export type QueueStateKey =
@@ -21,6 +25,10 @@ export interface DispatchSelfEvolvingLink {
   decision_id: string;
   gap_case?: GapCaseReference;
   prescription?: PrescriptionReference;
+  requirement_posture?: RequirementPosture;
+  blocking_scope?: BlockingScope;
+  prescription_maturity?: PrescriptionMaturity;
+  discovery_contract?: UnknownPrescriptionDiscoveryContract;
   policy_version: string;
   recommended_route_origin: "lp-do-fact-find" | "lp-do-plan" | "lp-do-build";
   executor_path: string;

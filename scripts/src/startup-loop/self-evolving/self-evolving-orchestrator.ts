@@ -68,6 +68,7 @@ import {
   computeScoreResult,
   createDefaultPolicyState,
   deriveCandidateBeliefState,
+  deriveCandidateRoutingSemantics,
   POLICY_VERSION,
   type PolicyScoreInput,
   type ScoreDimensionsV2,
@@ -224,6 +225,42 @@ function applyEvidenceAwareRoute(
   };
 }
 
+function applyLearnedPrescriptionRouting(input: {
+  candidate: ImprovementCandidate;
+  base_route: ReturnType<typeof mapCandidateToBackboneRoute>;
+}): {
+  route: ReturnType<typeof mapCandidateToBackboneRoute>;
+  semantics: ReturnType<typeof deriveCandidateRoutingSemantics>;
+} {
+  const semantics = deriveCandidateRoutingSemantics(input.candidate);
+  let route = input.base_route;
+
+  if (semantics.prescription_maturity === "retired") {
+    route =
+      semantics.requirement_posture === "absolute_required"
+        ? { route: "lp-do-fact-find", reason: "retired_prescription_requires_new_fact_find" }
+        : { route: "reject", reason: "prescription_retired" };
+  } else if (
+    semantics.prescription_maturity === "unknown" ||
+    semantics.prescription_maturity === "hypothesized"
+  ) {
+    route = {
+      route: "lp-do-fact-find",
+      reason: `prescription_${semantics.prescription_maturity}_requires_fact_find`,
+    };
+  } else if (route.route === "reject" && semantics.requirement_posture === "absolute_required") {
+    route = {
+      route: "lp-do-fact-find",
+      reason:
+        semantics.blocking_scope === "blocks_stage"
+          ? "absolute_required_stage_blocker_requires_fact_find"
+          : "absolute_required_requires_fact_find",
+    };
+  }
+
+  return { route, semantics };
+}
+
 function buildCandidateFromRepeat(input: {
   business: string;
   repeat: RepeatWorkCandidate;
@@ -238,11 +275,78 @@ function buildCandidateFromRepeat(input: {
     candidateType === "container_update" ? "medium" : "small";
   const candidateId = stableHash(`${input.business}|${input.repeat.hard_signature}`).slice(0, 16);
   const expiryAt = new Date(input.now.getTime() + 30 * 24 * 60 * 60 * 1000).toISOString();
+  const prescriptionMaturity: ImprovementCandidate["prescription_maturity"] =
+    candidateType === "new_skill"
+      ? "unknown"
+      : candidateType === "container_update" || candidateType === "deterministic_extraction"
+        ? "structured"
+        : "hypothesized";
+  const requiredRoute =
+    candidateType === "container_update"
+      ? "lp-do-build"
+      : candidateType === "deterministic_extraction" || candidateType === "skill_refactor"
+        ? "lp-do-plan"
+        : "lp-do-fact-find";
 
   return {
     schema_version: "candidate.v1",
     candidate_id: candidateId,
+    gap_case: {
+      schema_version: "gap-case.v1",
+      gap_case_id: stableHash(`${candidateId}|gap-case`).slice(0, 16),
+      source_kind: "self_evolving",
+      business_id: input.business,
+      stage_id: input.startupState.stage,
+      capability_id: null,
+      gap_type: `repeat_${candidateType}`,
+      reason_code: "repeat_work_detected",
+      severity: Math.min(
+        1,
+        Math.max(...input.observations.map((observation) => observation.severity), 0),
+      ),
+      evidence_refs: Array.from(
+        new Set(
+          input.observations.flatMap((observation) => observation.evidence_refs ?? []),
+        ),
+      ),
+      recurrence_key: input.repeat.hard_signature,
+      requirement_posture: "relative_required",
+      blocking_scope: "degrades_quality",
+      structural_context: {
+        hard_signature: input.repeat.hard_signature,
+        recurrence_count: input.repeat.recurrence_count,
+        observation_count: input.observations.length,
+      },
+      runtime_binding: {
+        binding_mode: "compiled_to_candidate",
+        candidate_id: candidateId,
+      },
+    },
+    prescription: {
+      schema_version: "prescription.v1",
+      prescription_id: stableHash(`${candidateId}|prescription`).slice(0, 16),
+      prescription_family: `self_evolving_${candidateType}`,
+      source: "self_evolving",
+      gap_types_supported: [`repeat_${candidateType}`],
+      required_route: requiredRoute,
+      required_inputs: ["self-evolving observations"],
+      expected_artifacts:
+        requiredRoute === "lp-do-build"
+          ? ["micro-build.md"]
+          : requiredRoute === "lp-do-plan"
+            ? ["plan.md"]
+            : ["fact-find.md"],
+      expected_signal_change:
+        candidateType === "new_skill"
+          ? "Research the unknown repeat-work remedy and mature it into a structured prescription."
+          : "Reduce repeated operator/manual workflow load for this recurring signature.",
+      risk_class: candidateType === "container_update" ? "medium" : "low",
+      maturity: prescriptionMaturity,
+    },
     candidate_type: candidateType,
+    requirement_posture: "relative_required",
+    blocking_scope: "degrades_quality",
+    prescription_maturity: prescriptionMaturity,
     candidate_state: "draft",
     problem_statement: buildRepeatProblemStatement(
       input.observations,
@@ -390,14 +494,21 @@ function buildRankedCandidate(input: {
     posture,
     score.evidence.classification,
   );
+  const routed = applyLearnedPrescriptionRouting({
+    candidate: input.candidate,
+    base_route: route,
+  });
   const decision = buildPolicyDecisionRecord({
     business_id: input.business,
     candidate_id: input.candidate.candidate_id,
-    chosen_action: route.route,
+    gap_case: input.candidate.gap_case ?? null,
+    prescription: input.candidate.prescription ?? null,
+    chosen_action: routed.route.route,
     created_at: input.generatedAt,
     structural_snapshot: structuralSnapshot,
     belief_state: beliefState,
     utility: score.utility,
+    routing_semantics: routed.semantics,
   });
 
   const nextBelief = {
@@ -410,7 +521,7 @@ function buildRankedCandidate(input: {
     ranked: {
       candidate: input.candidate,
       score,
-      route,
+      route: routed.route,
       source_hard_signature: input.source_hard_signature,
       generated_at: input.generatedAt,
       policy_context: {

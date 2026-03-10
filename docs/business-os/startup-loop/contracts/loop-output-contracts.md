@@ -43,6 +43,8 @@ Skills MUST NOT store outputs at ad-hoc paths. All loop output artifacts in this
 
 Additional sections produced by the fact-find template (`## Evidence Gap Review`, `## Open Questions`, `## Risk Inventory`) are permitted but the four above are mandatory minimums.
 
+When the queued work item carries a self-evolving unknown-prescription discovery contract, `fact-find.md` must also include `## Discovery Contract Output` with machine-readable fields for `Gap Case ID`, `Recommended First Prescription`, `Required Inputs`, `Expected Artifacts`, `Expected Signals`, and `Prescription Candidates`. Narrative rationale may enrich this section but cannot substitute for those fields.
+
 ### Required Frontmatter Fields
 
 ```yaml

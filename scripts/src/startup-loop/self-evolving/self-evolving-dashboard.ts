@@ -72,11 +72,15 @@ export interface DashboardSnapshot {
     censored_decisions: number;
     missing_decisions: number;
     replay_ready_decisions: number;
+    prescription_attributed_decisions: number;
+    replay_ready_prescription_decisions: number;
+    observed_prescription_decisions: number;
     shadow_handoff_decisions: number;
     pending_shadow_handoffs: number;
     matured_shadow_handoffs: number;
     maturity_debt_decisions: number;
     replay_ready_rate: DashboardRateMetric;
+    prescription_attribution_rate: DashboardRateMetric;
   };
   audit: {
     calibration_status: "measured" | "insufficient_data";
@@ -113,12 +117,16 @@ const EMPTY_EVALUATION_SUMMARY: PolicyEvaluationSummary = {
   censored_decisions: 0,
   missing_decisions: 0,
   replay_ready_decisions: 0,
+  prescription_attributed_decisions: 0,
+  replay_ready_prescription_decisions: 0,
+  observed_prescription_decisions: 0,
   shadow_handoff_decisions: 0,
   pending_shadow_handoffs: 0,
   matured_shadow_handoffs: 0,
   deterministic_decisions: 0,
   stochastic_decisions: 0,
   policy_version_counts: {},
+  prescription_family_counts: {},
 };
 
 function buildRateMetric(successes: number, sampleSize: number): DashboardRateMetric {
@@ -273,12 +281,20 @@ export function buildDashboardSnapshot(input: {
       censored_decisions: evaluationSummary.censored_decisions,
       missing_decisions: evaluationSummary.missing_decisions,
       replay_ready_decisions: evaluationSummary.replay_ready_decisions,
+      prescription_attributed_decisions: evaluationSummary.prescription_attributed_decisions,
+      replay_ready_prescription_decisions:
+        evaluationSummary.replay_ready_prescription_decisions,
+      observed_prescription_decisions: evaluationSummary.observed_prescription_decisions,
       shadow_handoff_decisions: evaluationSummary.shadow_handoff_decisions,
       pending_shadow_handoffs: evaluationSummary.pending_shadow_handoffs,
       matured_shadow_handoffs: evaluationSummary.matured_shadow_handoffs,
       maturity_debt_decisions: maturityDebtDecisions,
       replay_ready_rate: buildRateMetric(
         evaluationSummary.replay_ready_decisions,
+        evaluationSummary.total_decisions,
+      ),
+      prescription_attribution_rate: buildRateMetric(
+        evaluationSummary.prescription_attributed_decisions,
         evaluationSummary.total_decisions,
       ),
     },

@@ -33,13 +33,13 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 
 ## Active tasks
 - [x] TASK-01: Define canonical `gap-case.v1` and `prescription.v1` contracts — Complete (2026-03-10)
-- [ ] TASK-02: Normalize existing suggestion seams onto canonical gap-case and prescription shapes
-- [ ] TASK-03: Add requirement posture and prescription maturity to queue and policy routing
-- [ ] TASK-04: Extend policy journaling and evaluation for prescription-choice learning
+- [x] TASK-02: Normalize existing suggestion seams onto canonical gap-case and prescription shapes — Complete (2026-03-10)
+- [x] TASK-03: Add requirement posture and prescription maturity to queue and policy routing — Complete (2026-03-10)
+- [x] TASK-04: Extend policy journaling and evaluation for prescription-choice learning — Complete (2026-03-10)
 - [x] TASK-05: Map milestone roots to runtime producers and unify activation thresholds — Complete (2026-03-10)
 - [ ] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation
-- [ ] TASK-07: Widen live sensing for richer prescription evidence
-- [ ] TASK-08: Define and enforce the discovery-output contract for unknown prescriptions
+- [x] TASK-07: Widen live sensing for richer prescription evidence — Complete (2026-03-10)
+- [x] TASK-08: Define and enforce the discovery-output contract for unknown prescriptions — Complete (2026-03-10)
 - [ ] TASK-09: Add a guarded promotion path for proven prescriptions
 - [ ] TASK-10: Checkpoint resulting-system coherence and rollout readiness
 
@@ -115,13 +115,13 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Define canonical `gap-case.v1` and `prescription.v1` contracts | 82% | M | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04, TASK-06, TASK-07, TASK-08 |
-| TASK-02 | IMPLEMENT | Normalize existing suggestion seams onto canonical gap-case and prescription shapes | 80% | M | Pending | TASK-01 | TASK-03, TASK-04, TASK-07 |
-| TASK-03 | IMPLEMENT | Add requirement posture and prescription maturity to queue and policy routing | 81% | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09 |
-| TASK-04 | IMPLEMENT | Extend policy journaling and evaluation for prescription-choice learning | 81% | M | Pending | TASK-01, TASK-03 | TASK-08, TASK-09 |
+| TASK-02 | IMPLEMENT | Normalize existing suggestion seams onto canonical gap-case and prescription shapes | 80% | M | Complete (2026-03-10) | TASK-01 | TASK-03, TASK-04, TASK-07 |
+| TASK-03 | IMPLEMENT | Add requirement posture and prescription maturity to queue and policy routing | 81% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-04, TASK-06, TASK-07, TASK-08, TASK-09 |
+| TASK-04 | IMPLEMENT | Extend policy journaling and evaluation for prescription-choice learning | 81% | M | Complete (2026-03-10) | TASK-01, TASK-03 | TASK-08, TASK-09 |
 | TASK-05 | INVESTIGATE | Map milestone roots to runtime producers and unify activation thresholds | 78% | M | Complete (2026-03-10) | - | TASK-06, TASK-09 |
 | TASK-06 | IMPLEMENT | Add milestone-event triggers, producers, and lateral bundle generation | 80% | M | Pending | TASK-01, TASK-02, TASK-03, TASK-05 | TASK-09, TASK-10 |
-| TASK-07 | IMPLEMENT | Widen live sensing for richer prescription evidence | 80% | M | Pending | TASK-01, TASK-02 | TASK-08, TASK-10 |
-| TASK-08 | IMPLEMENT | Define and enforce the discovery-output contract for unknown prescriptions | 80% | M | Pending | TASK-01, TASK-03, TASK-07 | TASK-09, TASK-10 |
+| TASK-07 | IMPLEMENT | Widen live sensing for richer prescription evidence | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-08, TASK-10 |
+| TASK-08 | IMPLEMENT | Define and enforce the discovery-output contract for unknown prescriptions | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-07 | TASK-09, TASK-10 |
 | TASK-09 | IMPLEMENT | Add a guarded promotion path for proven prescriptions | 80% | M | Pending | TASK-03, TASK-04, TASK-06, TASK-08 | TASK-10 |
 | TASK-10 | CHECKPOINT | Check resulting-system coherence and rollout readiness | 95% | S | Pending | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
 
@@ -203,8 +203,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/replan-trigger.ts`, `scripts/src/startup-loop/diagnostics/signal-review-review-required.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-prescription-normalization.ts`, `scripts/src/startup-loop/replan-trigger.ts`, `scripts/src/startup-loop/diagnostics/signal-review-review-required.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/__tests__/replan-trigger.test.ts`, `scripts/src/startup-loop/__tests__/signal-review-review-required.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-build-origin-bridge.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts`, `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`, `docs/business-os/startup-loop/ideas/lp-do-ideas-trial-contract.md`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03, TASK-04, TASK-07
 - **Confidence:** 80%
@@ -237,6 +237,15 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - [replan-trigger.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/replan-trigger.ts)
   - [signal-review-review-required.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/diagnostics/signal-review-review-required.ts)
   - [lp-do-ideas-build-origin-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: `replan-trigger`, `signal-review-review-required`, and `lp-do-ideas-build-origin-bridge` each carried their own prescriptive text (`recommended_focus`, `suggested_action`, `next_scope_now`) without a shared canonical `gap_case` / `prescription` object.
+  - Green: added `self-evolving-prescription-normalization.ts` as the shared deterministic builder for compiled candidate IDs, `gap_case`, and `prescription`; replan triggers and signal-review review-required sidecars now emit canonical objects; build-origin dispatch provenance now carries canonical objects and `dispatch.v2` validates them when present.
+  - Compatibility scope: preserved the existing human-readable fields and current queue routing behavior, but demoted them to derived narrative alongside canonical identities rather than separate prescriptive authorities.
+  - TC-01: pass. Replan trigger output now emits canonical bottleneck `gap_case` / `prescription` identity, and focused trigger tests assert the normalized source and required route.
+  - TC-02: pass. Build-origin bridge queue admissions now carry canonical build-origin `gap_case` / `prescription` provenance while preserving current route/status behavior, and the dispatch contract/schema accept and validate those fields.
+  - TC-03: pass. Signal-review sidecars now preserve their actionable operator narrative while emitting canonical signal-review `gap_case` / `prescription` identity; focused tests assert both narrative continuity and canonical fields.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`, targeted `pnpm exec eslint --no-warn-ignored ...`, `pnpm plans:lint`, and `bash scripts/validate-changes.sh` all passed.
+  - Precursor completion propagation: TASK-02 no longer blocks TASK-03, TASK-04, or TASK-07. The next runnable task is TASK-03.
 
 ### TASK-03: Add requirement posture and prescription maturity to queue and policy routing
 - **Type:** IMPLEMENT
@@ -245,8 +254,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-prescription-normalization.ts`, `scripts/src/startup-loop/replan-trigger.ts`, `scripts/src/startup-loop/diagnostics/signal-review-review-required.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts`, `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/replan-trigger.test.ts`, `scripts/src/startup-loop/__tests__/signal-review-review-required.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-build-origin-bridge.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-portfolio.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts`
 - **Depends on:** TASK-01, TASK-02
 - **Blocks:** TASK-04, TASK-06, TASK-07, TASK-08, TASK-09
 - **Confidence:** 81%
@@ -279,6 +288,16 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Notes / references:**
   - [self-evolving-scoring.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts)
   - [self-evolving-portfolio.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: the runtime could carry canonical `gap_case` and `prescription` identities, but it still treated urgency and remedy maturity as implicit heuristics. Unknown remedies were not a tracked state, absolute requirements were not expressible in routing/selection, and queue handoff could not preserve those semantics.
+  - Green: added first-class `requirement_posture`, `blocking_scope`, and `prescription_maturity` enums to startup-loop contracts; normalized seam emitters now populate those fields; queue/self-evolving linkage preserves them across handoff; route decisions derive one shared semantics object; and the orchestrator now forces `unknown` / `hypothesized` prescriptions back to `lp-do-fact-find` while absolute-required rejects reopen as fact-find rather than disappearing.
+  - Precedence model implemented: hard rules still filter first, learned-prescription routing semantics then constrain the candidate route, portfolio selection applies an explicit absolute-required selection bonus only after hard-rule admissibility, and later governance/exploration layers continue to operate on that bounded candidate set. This keeps posture inside one ordered model instead of creating a fourth conflicting opinion surface.
+  - TC-01: pass. A new orchestrator integration case proves measured `new_skill` observations still route to `lp-do-fact-find` with `prescription_unknown_requires_fact_find`, and the resulting policy decision records preserve `requirement_posture` and `prescription_maturity`.
+  - TC-02: pass. A new portfolio-selection case proves an `absolute_required` candidate is selected ahead of higher-utility relative work when both satisfy the same hard rules, so stage-blocking posture survives utility ranking without bypassing admissibility constraints.
+  - TC-03: pass. Relative and optional work remain portfolio-constrained: no hard-rule filters were loosened, non-fact-find evidence floors still apply, and dispatch/self-evolving link validation now carries posture/maturity semantics without turning them into unconditional blockers.
+  - TC-04: pass. The precedence model is now explicit in runtime code and this plan task: seam normalization emits posture/maturity, `deriveCandidateRoutingSemantics()` centralizes the defaults, the orchestrator applies learned-prescription routing after evidence-aware routing, and portfolio selection applies posture only after hard-rule admissibility is known.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` and targeted `pnpm exec eslint --no-warn-ignored ...` passed on the full touched TASK-03 surface.
+  - Precursor completion propagation: TASK-03 no longer blocks TASK-04, TASK-06, TASK-07, TASK-08, or TASK-09. The next runnable wave is TASK-04 and TASK-07, with TASK-04 the next core learning step.
 
 ### TASK-04: Extend policy journaling and evaluation for prescription-choice learning
 - **Type:** IMPLEMENT
@@ -287,8 +306,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-report.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-dashboard.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-evaluation.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-report.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`
 - **Depends on:** TASK-01, TASK-03
 - **Blocks:** TASK-08, TASK-09
 - **Confidence:** 81%
@@ -319,6 +338,15 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - Update the learned-prescription fact-find and any self-evolving reporting notes.
 - **Notes / references:**
   - [self-evolving-evaluation.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-evaluation.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: policy decisions could only learn route quality. Even after canonical `gap_case` / `prescription` references existed, route decisions did not record an explicit chosen prescription, evaluation records could not summarize remedy-family replay coverage, and the main repeat-work candidate builder still emitted prescription-free candidates.
+  - Green: added `prescription-choice.v1` to the policy-decision contract; `buildPolicyDecisionRecord()` now journals canonical gap/prescription references plus an explicit `prescription_choice`; repeat-work candidates now emit canonical self-evolving `gap_case` and `prescription` objects; queue completion stamps those references into outcome payloads; and evaluation/report/dashboard surfaces now expose prescription-level attribution, replay coverage, and observed-outcome counts.
+  - Identity continuity: the same canonical prescription identity now survives candidate creation, route decision, queue handoff, completion outcome emission, evaluation replay, and reporting. This closes the earlier gap where prescription learning would have been mostly dead data for self-evolving repeat candidates.
+  - TC-01: pass. Policy decision records can now encode `prescription_choice`, and contract tests cover valid and mismatch cases so the journal cannot silently drift away from the chosen prescription.
+  - TC-02: pass. Evaluation records now carry `gap_case_id`, `prescription_id`, `prescription_family`, and `prescription_choice_present`, and summary telemetry counts attributed, replay-ready, and observed prescription decisions.
+  - TC-03: pass. Reporting surfaces now expose prescription-level replay coverage and top prescription-family outcomes, while the dashboard shows prescription attribution counts and rates alongside the existing candidate-level audit surfaces.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` and targeted `pnpm exec eslint --no-warn-ignored ...` passed on the full TASK-04 surface.
+  - Precursor completion propagation: TASK-04 no longer blocks TASK-08 or TASK-09. The next runnable implementation wave is TASK-06 and TASK-07, with TASK-07 the narrower evidence-surface slice.
 
 ### TASK-05: Map milestone roots to runtime producers and unify activation thresholds
 - **Type:** INVESTIGATE
@@ -409,8 +437,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-signal-helpers.ts`, related startup-loop docs/contracts
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-signal-helpers.ts`, `scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts`
 - **Depends on:** TASK-01, TASK-02
 - **Blocks:** TASK-08, TASK-10
 - **Confidence:** 80%
@@ -442,6 +470,15 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - Update self-evolving bridge notes to explain richer evidence usage and degradation behavior.
 - **Notes / references:**
   - [self-evolving-from-build-output.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: the bridge already accepted `results-review` and `pattern-reflection` paths, but the live seed path still ingested only `build-record`, which starved the learned-prescription system of the richer build-review evidence surface it already described.
+  - Green: `runSelfEvolvingFromBuildOutput()` now extracts richer observation seeds from `results-review.user.md` and `pattern-reflection.user.md`, merges duplicate seeds by normalized recurrence key before observation emission, and records explicit degradation warnings when richer artifacts are missing or contain no usable seeds.
+  - Normalization boundary: richer review artifacts still enter the loop as `meta-observation.v2` records, but they now do so through one merged observation-seed path instead of side-channel-only artifact awareness. This preserves the existing self-evolving normalization spine rather than inventing a second parser-to-policy route.
+  - TC-01: pass. Integrity tests now prove that real `results-review` markdown and `pattern-reflection` markdown increase build-output observation count beyond the `build-record` baseline without regressing existing build-record behavior.
+  - TC-02: pass. Duplicate richer review signals now merge by normalized recurrence key, so the bridge does not double-count equivalent results-review and pattern-reflection findings.
+  - TC-03: pass. Missing or empty richer artifacts no longer disappear silently: the bridge emits explicit warnings for missing artifacts and for present artifacts that yield no usable richer seeds.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` and targeted `pnpm exec eslint --no-warn-ignored ...` passed on the TASK-07 surface.
+  - Precursor completion propagation: TASK-07 no longer blocks TASK-08 or TASK-10. The next runnable task is TASK-08, with TASK-06 still available as the milestone-trigger lane.
 
 ### TASK-08: Define and enforce the discovery-output contract for unknown prescriptions
 - **Type:** IMPLEMENT
@@ -450,8 +487,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `.claude/skills/lp-do-fact-find/SKILL.md`, `scripts/src/startup-loop/self-evolving/*`, `scripts/src/startup-loop/ideas/*`, related startup-loop docs/contracts
+- **Status:** Complete (2026-03-10)
+- **Affects:** `.claude/skills/lp-do-fact-find/SKILL.md`, `docs/plans/_templates/fact-find-planning.md`, `docs/business-os/startup-loop/contracts/loop-output-contracts.md`, `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts`
 - **Depends on:** TASK-01, TASK-03, TASK-07
 - **Blocks:** TASK-09, TASK-10
 - **Confidence:** 80%
@@ -485,6 +522,15 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - Update fact-find/future workflow docs to explain unknown-prescription discovery outputs.
 - **Notes / references:**
   - [.claude/skills/lp-do-fact-find/SKILL.md](/Users/petercowling/base-shop/.claude/skills/lp-do-fact-find/SKILL.md)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: `unknown` and `hypothesized` prescriptions could be routed back to fact-find, but neither queue handoff nor fact-find output had an explicit machine contract for what discovery had to return. That left the runtime relying on convention and narrative prose to mature a prescription.
+  - Green: added canonical `UnknownPrescriptionDiscoveryContract` and `DiscoveryPrescriptionCandidate` types plus validators/builders in `self-evolving-contracts.ts`; queue self-evolving links can now carry a typed discovery contract; `dispatch.v2` validation now requires that contract for `unknown` and `hypothesized` prescription maturity and verifies its gap-case and recommended-prescription linkage; self-evolving backbone consume now emits the discovery contract plus a concrete fact-find scope string; and the fact-find skill/template/output contract docs now require a `## Discovery Contract Output` section with the minimum machine fields.
+  - TC-01: pass. Unknown-maturity and hypothesized-maturity dispatches cannot bypass discovery contract validation; focused `dispatch.v2` tests now fail when the contract is missing and pass when the typed contract is present.
+  - TC-02: pass. The discovery contract now enforces the minimum machine fields needed by later queue and policy consumers: `gap_case_id`, `prescription_candidates[]`, `recommended_first_prescription_id`, `required_inputs`, `expected_artifacts`, and `expected_signals`.
+  - TC-03: pass. The runtime route from `unknown` / `hypothesized` to structured discovery is explicit in both code and workflow docs: queue handoff emits the discovery contract, `lp-do-fact-find` is instructed to return the structured output, and the shared fact-find template/output contract now names the required section and fields.
+  - TC-04: pass. Narrative rationale remains allowed, but it cannot substitute for structure: the skill, template, and loop output contract all now require the machine-readable discovery fields when a self-evolving discovery contract is present.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit`, targeted `pnpm exec eslint --no-warn-ignored ...`, `pnpm plans:lint`, `git diff --check`, and `bash scripts/validate-changes.sh` all passed on the TASK-08 surface.
+  - Precursor completion propagation: TASK-08 no longer blocks TASK-09 or TASK-10. The next runnable implementation task is TASK-06, which must land before guarded promotion work can proceed.
 
 ### TASK-09: Add a guarded promotion path for proven prescriptions
 - **Type:** IMPLEMENT

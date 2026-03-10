@@ -87,6 +87,21 @@ export type CanonicalRecommendedRoute =
   | "lp-do-build"
   | "lp-do-briefing";
 export type PrescriptionRiskClass = "low" | "medium" | "high";
+export type RequirementPosture =
+  | "absolute_required"
+  | "relative_required"
+  | "optional_improvement";
+export type BlockingScope =
+  | "blocks_route"
+  | "blocks_stage"
+  | "degrades_quality"
+  | "improves_if_time_allows";
+export type PrescriptionMaturity =
+  | "unknown"
+  | "hypothesized"
+  | "structured"
+  | "proven"
+  | "retired";
 
 export interface GapCaseRuntimeBinding {
   binding_mode: GapCaseBindingMode;
@@ -105,6 +120,8 @@ export interface GapCase {
   severity: number;
   evidence_refs: string[];
   recurrence_key: string;
+  requirement_posture?: RequirementPosture;
+  blocking_scope?: BlockingScope;
   structural_context: Record<string, unknown>;
   runtime_binding: GapCaseRuntimeBinding;
 }
@@ -126,12 +143,43 @@ export interface Prescription {
   expected_artifacts: string[];
   expected_signal_change: string;
   risk_class: PrescriptionRiskClass;
+  maturity?: PrescriptionMaturity;
 }
 
 export interface PrescriptionReference {
   prescription_id: string;
   prescription_family: string;
   required_route: CanonicalRecommendedRoute;
+}
+
+export interface PrescriptionChoiceContext {
+  schema_version: "prescription-choice.v1";
+  gap_case_id: string | null;
+  prescription_id: string;
+  prescription_family: string;
+  required_route: CanonicalRecommendedRoute;
+  expected_signal_change: string;
+  maturity_at_choice: PrescriptionMaturity | null;
+}
+
+export interface DiscoveryPrescriptionCandidate {
+  prescription_id: string;
+  prescription_family: string;
+  required_route: CanonicalRecommendedRoute;
+  required_inputs: string[];
+  expected_artifacts: string[];
+  expected_signals: string[];
+}
+
+export interface UnknownPrescriptionDiscoveryContract {
+  schema_version: "unknown-prescription-discovery.v1";
+  gap_case_id: string;
+  discovery_reason: "prescription_unknown" | "prescription_hypothesized";
+  prescription_candidates: DiscoveryPrescriptionCandidate[];
+  recommended_first_prescription_id: string;
+  required_inputs: string[];
+  expected_artifacts: string[];
+  expected_signals: string[];
 }
 
 export interface ObservationSignalHints {
@@ -188,6 +236,9 @@ export interface ImprovementCandidate {
   candidate_id: string;
   gap_case?: GapCase;
   prescription?: Prescription;
+  requirement_posture?: RequirementPosture;
+  blocking_scope?: BlockingScope;
+  prescription_maturity?: PrescriptionMaturity;
   candidate_type: CandidateType;
   candidate_state: CandidateState;
   problem_statement: string;
@@ -422,6 +473,10 @@ export interface PolicyDecisionRecord {
   candidate_id: string;
   gap_case?: GapCaseReference | null;
   prescription?: PrescriptionReference | null;
+  prescription_choice?: PrescriptionChoiceContext | null;
+  requirement_posture?: RequirementPosture;
+  blocking_scope?: BlockingScope;
+  prescription_maturity?: PrescriptionMaturity;
   decision_type: PolicyDecisionType;
   decision_mode: PolicyDecisionMode;
   policy_version: string;
@@ -583,6 +638,33 @@ function isObjectRecord(input: unknown): input is Record<string, unknown> {
   return typeof input === "object" && input !== null && !Array.isArray(input);
 }
 
+function isRequirementPosture(input: unknown): input is RequirementPosture {
+  return (
+    input === "absolute_required" ||
+    input === "relative_required" ||
+    input === "optional_improvement"
+  );
+}
+
+function isBlockingScope(input: unknown): input is BlockingScope {
+  return (
+    input === "blocks_route" ||
+    input === "blocks_stage" ||
+    input === "degrades_quality" ||
+    input === "improves_if_time_allows"
+  );
+}
+
+function isPrescriptionMaturity(input: unknown): input is PrescriptionMaturity {
+  return (
+    input === "unknown" ||
+    input === "hypothesized" ||
+    input === "structured" ||
+    input === "proven" ||
+    input === "retired"
+  );
+}
+
 export function stableHash(input: string): string {
   return createHash("sha256").update(input, "utf-8").digest("hex");
 }
@@ -639,6 +721,12 @@ export function validateGapCase(gapCase: GapCase): string[] {
   }
   if (!Array.isArray(gapCase.evidence_refs)) {
     errors.push("evidence_refs");
+  }
+  if (gapCase.requirement_posture !== undefined && !isRequirementPosture(gapCase.requirement_posture)) {
+    errors.push("requirement_posture");
+  }
+  if (gapCase.blocking_scope !== undefined && !isBlockingScope(gapCase.blocking_scope)) {
+    errors.push("blocking_scope");
   }
   if (!isObjectRecord(gapCase.structural_context)) {
     errors.push("structural_context");
@@ -714,6 +802,9 @@ export function validatePrescription(prescription: Prescription): string[] {
   if (!Array.isArray(prescription.expected_artifacts)) {
     errors.push("expected_artifacts");
   }
+  if (prescription.maturity !== undefined && !isPrescriptionMaturity(prescription.maturity)) {
+    errors.push("maturity");
+  }
   return errors;
 }
 
@@ -736,6 +827,190 @@ export function validatePrescriptionReference(reference: PrescriptionReference):
     errors.push("required_route");
   }
   return errors;
+}
+
+export function validatePrescriptionChoiceContext(
+  context: PrescriptionChoiceContext,
+): string[] {
+  const errors: string[] = [];
+  if (context.schema_version !== "prescription-choice.v1") {
+    errors.push("schema_version");
+  }
+  for (const [label, value] of Object.entries({
+    prescription_id: context.prescription_id,
+    prescription_family: context.prescription_family,
+    expected_signal_change: context.expected_signal_change,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    context.gap_case_id !== null &&
+    context.gap_case_id !== undefined &&
+    !nonEmptyString(context.gap_case_id)
+  ) {
+    errors.push("gap_case_id");
+  }
+  if (
+    context.required_route !== "lp-do-fact-find" &&
+    context.required_route !== "lp-do-plan" &&
+    context.required_route !== "lp-do-build" &&
+    context.required_route !== "lp-do-briefing"
+  ) {
+    errors.push("required_route");
+  }
+  if (
+    context.maturity_at_choice !== null &&
+    context.maturity_at_choice !== undefined &&
+    !isPrescriptionMaturity(context.maturity_at_choice)
+  ) {
+    errors.push("maturity_at_choice");
+  }
+  return errors;
+}
+
+export function toGapCaseReference(gapCase: GapCase): GapCaseReference {
+  return {
+    gap_case_id: gapCase.gap_case_id,
+    candidate_id: gapCase.runtime_binding.candidate_id,
+    binding_mode: gapCase.runtime_binding.binding_mode,
+  };
+}
+
+export function toPrescriptionReference(prescription: Prescription): PrescriptionReference {
+  return {
+    prescription_id: prescription.prescription_id,
+    prescription_family: prescription.prescription_family,
+    required_route: prescription.required_route,
+  };
+}
+
+export function buildPrescriptionChoiceContext(input: {
+  gap_case: GapCase | null;
+  prescription: Prescription;
+  maturity_at_choice?: PrescriptionMaturity | null;
+}): PrescriptionChoiceContext {
+  return {
+    schema_version: "prescription-choice.v1",
+    gap_case_id: input.gap_case?.gap_case_id ?? null,
+    prescription_id: input.prescription.prescription_id,
+    prescription_family: input.prescription.prescription_family,
+    required_route: input.prescription.required_route,
+    expected_signal_change: input.prescription.expected_signal_change,
+    maturity_at_choice: input.maturity_at_choice ?? input.prescription.maturity ?? null,
+  };
+}
+
+function validateStringArray(values: unknown, label: string): string[] {
+  if (!Array.isArray(values) || values.length === 0) {
+    return [label];
+  }
+  if (values.some((value) => !nonEmptyString(value))) {
+    return [label];
+  }
+  return [];
+}
+
+function validateDiscoveryPrescriptionCandidate(
+  candidate: DiscoveryPrescriptionCandidate,
+): string[] {
+  const errors: string[] = [];
+  for (const [label, value] of Object.entries({
+    prescription_id: candidate.prescription_id,
+    prescription_family: candidate.prescription_family,
+  })) {
+    if (!nonEmptyString(value)) {
+      errors.push(label);
+    }
+  }
+  if (
+    candidate.required_route !== "lp-do-fact-find" &&
+    candidate.required_route !== "lp-do-plan" &&
+    candidate.required_route !== "lp-do-build" &&
+    candidate.required_route !== "lp-do-briefing"
+  ) {
+    errors.push("required_route");
+  }
+  errors.push(...validateStringArray(candidate.required_inputs, "required_inputs"));
+  errors.push(...validateStringArray(candidate.expected_artifacts, "expected_artifacts"));
+  errors.push(...validateStringArray(candidate.expected_signals, "expected_signals"));
+  return errors;
+}
+
+export function validateUnknownPrescriptionDiscoveryContract(
+  contract: UnknownPrescriptionDiscoveryContract,
+): string[] {
+  const errors: string[] = [];
+  if (contract.schema_version !== "unknown-prescription-discovery.v1") {
+    errors.push("schema_version");
+  }
+  if (!nonEmptyString(contract.gap_case_id)) {
+    errors.push("gap_case_id");
+  }
+  if (
+    contract.discovery_reason !== "prescription_unknown" &&
+    contract.discovery_reason !== "prescription_hypothesized"
+  ) {
+    errors.push("discovery_reason");
+  }
+  if (
+    !Array.isArray(contract.prescription_candidates) ||
+    contract.prescription_candidates.length === 0
+  ) {
+    errors.push("prescription_candidates");
+  } else {
+    contract.prescription_candidates.forEach((candidate, index) => {
+      errors.push(
+        ...validateDiscoveryPrescriptionCandidate(candidate).map(
+          (error) => `prescription_candidates[${index}].${error}`,
+        ),
+      );
+    });
+  }
+  if (!nonEmptyString(contract.recommended_first_prescription_id)) {
+    errors.push("recommended_first_prescription_id");
+  } else if (
+    Array.isArray(contract.prescription_candidates) &&
+    !contract.prescription_candidates.some(
+      (candidate) => candidate.prescription_id === contract.recommended_first_prescription_id,
+    )
+  ) {
+    errors.push("recommended_first_prescription_id_not_found");
+  }
+  errors.push(...validateStringArray(contract.required_inputs, "required_inputs"));
+  errors.push(...validateStringArray(contract.expected_artifacts, "expected_artifacts"));
+  errors.push(...validateStringArray(contract.expected_signals, "expected_signals"));
+  return errors;
+}
+
+export function buildUnknownPrescriptionDiscoveryContract(input: {
+  gap_case: GapCase;
+  prescription: Prescription;
+  maturity: PrescriptionMaturity;
+}): UnknownPrescriptionDiscoveryContract {
+  return {
+    schema_version: "unknown-prescription-discovery.v1",
+    gap_case_id: input.gap_case.gap_case_id,
+    discovery_reason:
+      input.maturity === "hypothesized"
+        ? "prescription_hypothesized"
+        : "prescription_unknown",
+    prescription_candidates: [
+      {
+        prescription_id: input.prescription.prescription_id,
+        prescription_family: input.prescription.prescription_family,
+        required_route: input.prescription.required_route,
+        required_inputs: [...input.prescription.required_inputs],
+        expected_artifacts: [...input.prescription.expected_artifacts],
+        expected_signals: [input.prescription.expected_signal_change],
+      },
+    ],
+    recommended_first_prescription_id: input.prescription.prescription_id,
+    required_inputs: [...input.prescription.required_inputs],
+    expected_artifacts: [...input.prescription.expected_artifacts],
+    expected_signals: [input.prescription.expected_signal_change],
+  };
 }
 
 export function validateMetaObservation(observation: MetaObservation): string[] {
@@ -840,6 +1115,21 @@ export function validateImprovementCandidate(candidate: ImprovementCandidate): s
     errors.push(
       ...validatePrescription(candidate.prescription).map((error) => `prescription.${error}`),
     );
+  }
+  if (
+    candidate.requirement_posture !== undefined &&
+    !isRequirementPosture(candidate.requirement_posture)
+  ) {
+    errors.push("requirement_posture");
+  }
+  if (candidate.blocking_scope !== undefined && !isBlockingScope(candidate.blocking_scope)) {
+    errors.push("blocking_scope");
+  }
+  if (
+    candidate.prescription_maturity !== undefined &&
+    !isPrescriptionMaturity(candidate.prescription_maturity)
+  ) {
+    errors.push("prescription_maturity");
   }
   if (!nonEmptyString(candidate.problem_statement)) {
     errors.push("problem_statement");
@@ -1510,6 +1800,53 @@ export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): stri
         (error) => `prescription.${error}`,
       ),
     );
+  }
+  if (record.prescription_choice) {
+    errors.push(
+      ...validatePrescriptionChoiceContext(record.prescription_choice).map(
+        (error) => `prescription_choice.${error}`,
+      ),
+    );
+    if (
+      record.prescription &&
+      record.prescription_choice.prescription_id !== record.prescription.prescription_id
+    ) {
+      errors.push("prescription_choice.prescription_id_mismatch");
+    }
+    if (
+      record.prescription &&
+      record.prescription_choice.prescription_family !== record.prescription.prescription_family
+    ) {
+      errors.push("prescription_choice.prescription_family_mismatch");
+    }
+    if (
+      record.prescription &&
+      record.prescription_choice.required_route !== record.prescription.required_route
+    ) {
+      errors.push("prescription_choice.required_route_mismatch");
+    }
+    if (
+      record.gap_case &&
+      record.prescription_choice.gap_case_id !== null &&
+      record.prescription_choice.gap_case_id !== record.gap_case.gap_case_id
+    ) {
+      errors.push("prescription_choice.gap_case_id_mismatch");
+    }
+  }
+  if (
+    record.requirement_posture !== undefined &&
+    !isRequirementPosture(record.requirement_posture)
+  ) {
+    errors.push("requirement_posture");
+  }
+  if (record.blocking_scope !== undefined && !isBlockingScope(record.blocking_scope)) {
+    errors.push("blocking_scope");
+  }
+  if (
+    record.prescription_maturity !== undefined &&
+    !isPrescriptionMaturity(record.prescription_maturity)
+  ) {
+    errors.push("prescription_maturity");
   }
   if (
     record.decision_type !== "candidate_route" &&

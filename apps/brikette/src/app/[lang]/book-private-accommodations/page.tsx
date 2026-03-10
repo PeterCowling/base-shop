@@ -16,6 +16,10 @@ type Props = {
   params: Promise<{ lang: string }>;
 };
 
+function pickFirstNonEmpty(...values: string[]): string {
+  return values.find((value) => value.trim().length > 0) ?? "";
+}
+
 export async function generateStaticParams() {
   return generateLangParams();
 }
@@ -26,23 +30,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const tBook = await getTranslations(validLang, ["bookPage"]);
   const tHeader = await getTranslations(validLang, ["header"]);
   const tApartment = await getTranslations(validLang, ["apartmentPage"]);
+  const tRooms = await getTranslations(validLang, ["roomsPage"]);
 
-  const pageTitle = (tHeader("apartment", { defaultValue: "" }) as string) || "";
+  const pageTitle = pickFirstNonEmpty(
+    tHeader("navigation.apartment.bookPrivate", { defaultValue: "" }) as string,
+    tHeader("apartment", { defaultValue: "" }) as string,
+    tBook("apartment.heading", { defaultValue: "" }) as string,
+  );
   const brandTitle = (tHeader("title", { defaultValue: "" }) as string) || "";
-  const doubleRoomIntro = (await getTranslations(validLang, ["roomsPage"]))(
-    "rooms.double_room.bed_intro",
-    { defaultValue: "" },
-  ) as string;
+  const doubleRoomIntro = (tRooms("rooms.double_room.bed_intro", { defaultValue: "" }) as string) || "";
   const apartmentBody = (tApartment("body", { defaultValue: "" }) as string) || "";
   const fallbackDescription = [doubleRoomIntro, apartmentBody].filter(Boolean).join(" ");
 
-  const title =
-    (tBook("apartment.meta.title", { defaultValue: "" }) as string) ||
-    [pageTitle, brandTitle].filter(Boolean).join(" | ");
-  const description =
-    (tBook("apartment.meta.description", { defaultValue: "" }) as string) ||
-    (tApartment("book.meta.description", { defaultValue: "" }) as string) ||
-    fallbackDescription;
+  const title = [pageTitle, brandTitle].filter(Boolean).join(" | ");
+  const description = fallbackDescription;
   const path = getLocalizedSectionPath(validLang, "privateBooking");
 
   const image = buildCfImageUrl("/img/apt1.jpg", {
@@ -70,9 +71,11 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
   const tApartment = await getTranslations(validLang, ["apartmentPage"]);
   const tRooms = await getTranslations(validLang, ["roomsPage"]);
 
-  const pageTitle =
-    (tHeader("apartment", { defaultValue: "" }) as string) ||
-    (tBook("apartment.heading", { defaultValue: "" }) as string);
+  const pageTitle = pickFirstNonEmpty(
+    tHeader("navigation.apartment.bookPrivate", { defaultValue: "" }) as string,
+    tHeader("apartment", { defaultValue: "" }) as string,
+    tBook("apartment.heading", { defaultValue: "" }) as string,
+  );
   const whyDirectTitle = tBook("apartment.landing.whyDirectTitle", { defaultValue: "" }) as string;
   const whyDirectItems = tBook("apartment.landing.whyDirectItems", { returnObjects: true }) as string[];
   const exploreDorms = tBook("apartment.landing.exploreDorms", { defaultValue: "" }) as string;

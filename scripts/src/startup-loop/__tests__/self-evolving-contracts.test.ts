@@ -22,6 +22,7 @@ import {
   validatePolicyState,
   validatePrescription,
   validateStartupState,
+  validateUnknownPrescriptionDiscoveryContract,
 } from "../self-evolving/self-evolving-contracts.js";
 import {
   appendSelfEvolvingEvent,
@@ -134,6 +135,25 @@ function buildValidPolicyDecision(): PolicyDecisionRecord {
     decision_id: "decision-1",
     business_id: "BRIK",
     candidate_id: "cand-1",
+    gap_case: {
+      gap_case_id: "gap-1",
+      candidate_id: "cand-1",
+      binding_mode: "compiled_to_candidate",
+    },
+    prescription: {
+      prescription_id: "prescription-1",
+      prescription_family: "build-origin-bridge-fact-find",
+      required_route: "lp-do-fact-find",
+    },
+    prescription_choice: {
+      schema_version: "prescription-choice.v1",
+      gap_case_id: "gap-1",
+      prescription_id: "prescription-1",
+      prescription_family: "build-origin-bridge-fact-find",
+      required_route: "lp-do-fact-find",
+      expected_signal_change: "Gap becomes structured enough for canonical queue admission.",
+      maturity_at_choice: "structured",
+    },
     decision_type: "candidate_route",
     decision_mode: "deterministic",
     policy_version: "self-evolving-policy.v1",
@@ -196,6 +216,8 @@ function buildValidGapCase(): GapCase {
     severity: 0.7,
     evidence_refs: ["docs/plans/startup-loop-learned-prescription-system/fact-find.md"],
     recurrence_key: "build-origin:queue-contract-missing",
+    requirement_posture: "relative_required",
+    blocking_scope: "degrades_quality",
     structural_context: {
       source_path: "docs/plans/test/results-review.signals.json",
     },
@@ -218,6 +240,29 @@ function buildValidPrescription(): Prescription {
     expected_artifacts: ["fact-find.md"],
     expected_signal_change: "Gap becomes structured enough for canonical queue admission.",
     risk_class: "low",
+    maturity: "structured",
+  };
+}
+
+function buildValidDiscoveryContract() {
+  return {
+    schema_version: "unknown-prescription-discovery.v1" as const,
+    gap_case_id: "gap-1",
+    discovery_reason: "prescription_unknown" as const,
+    prescription_candidates: [
+      {
+        prescription_id: "prescription-1",
+        prescription_family: "build-origin-bridge-fact-find",
+        required_route: "lp-do-fact-find" as const,
+        required_inputs: ["results-review.signals.json"],
+        expected_artifacts: ["fact-find.md"],
+        expected_signals: ["Gap becomes structured enough for canonical queue admission."],
+      },
+    ],
+    recommended_first_prescription_id: "prescription-1",
+    required_inputs: ["results-review.signals.json"],
+    expected_artifacts: ["fact-find.md"],
+    expected_signals: ["Gap becomes structured enough for canonical queue admission."],
   };
 }
 
@@ -225,6 +270,36 @@ describe("self-evolving contract validators", () => {
   it("TASK-01 TC-01 validates canonical gap-case and prescription contracts", () => {
     expect(validateGapCase(buildValidGapCase())).toEqual([]);
     expect(validatePrescription(buildValidPrescription())).toEqual([]);
+    expect(validateUnknownPrescriptionDiscoveryContract(buildValidDiscoveryContract())).toEqual(
+      [],
+    );
+  });
+
+  it("rejects invalid posture and maturity enum values", () => {
+    expect(
+      validateGapCase({
+        ...buildValidGapCase(),
+        requirement_posture: "maybe" as never,
+      }),
+    ).toContain("requirement_posture");
+    expect(
+      validatePrescription({
+        ...buildValidPrescription(),
+        maturity: "eventually" as never,
+      }),
+    ).toContain("maturity");
+  });
+
+  it("rejects prescription-choice references that drift from the chosen prescription", () => {
+    expect(
+      validatePolicyDecisionRecord({
+        ...buildValidPolicyDecision(),
+        prescription_choice: {
+          ...buildValidPolicyDecision().prescription_choice!,
+          prescription_id: "prescription-other",
+        },
+      }),
+    ).toContain("prescription_choice.prescription_id_mismatch");
   });
 
   it("TASK-01 TC-01 validates MetaObservation required fields", () => {

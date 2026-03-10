@@ -76,6 +76,18 @@ const ROOM_BASE_SEGMENTS_BY_LANG = new Map<AppLanguage, Set<string>>(
   ]),
 );
 
+function buildCanonicalAssistanceRootExcludes(): string[] {
+  const excludes = new Set<string>();
+
+  for (const lang of i18nConfig.supportedLngs as AppLanguage[]) {
+    const canonicalPath = `/${lang}/${getSlug("assistance", lang)}`;
+    excludes.add(canonicalPath);
+    excludes.add(withTrailingSlash(canonicalPath));
+  }
+
+  return [...excludes].sort();
+}
+
 function withTrailingSlash(routePath: string): string {
   return routePath.endsWith("/") ? routePath : `${routePath}/`;
 }
@@ -138,41 +150,52 @@ export function buildStructuralRedirectRules(): StaticRedirectRule[] {
   addDirectRedirect(rules, seen, "/privacy-policy", "/en/privacy-policy");
   addRule(rules, seen, "/directions/:slug", "/en/how-to-get-here/:slug", 301);
 
-  addRule(rules, seen, "https://stepfreepositano.com", "/en/private-rooms/", 301);
-  addRule(rules, seen, "https://stepfreepositano.com/", "/en/private-rooms/", 301);
+  addRule(rules, seen, "https://stepfreepositano.com", `${englishPrivateBooking}/`, 301);
+  addRule(rules, seen, "https://stepfreepositano.com/", `${englishPrivateBooking}/`, 301);
   addRule(rules, seen, "https://stepfreepositano.com/*", "/en/private-rooms/:splat", 301);
-  addRule(rules, seen, "https://www.stepfreepositano.com", "/en/private-rooms/", 301);
-  addRule(rules, seen, "https://www.stepfreepositano.com/", "/en/private-rooms/", 301);
+  addRule(rules, seen, "https://www.stepfreepositano.com", `${englishPrivateBooking}/`, 301);
+  addRule(rules, seen, "https://www.stepfreepositano.com/", `${englishPrivateBooking}/`, 301);
   addRule(rules, seen, "https://www.stepfreepositano.com/*", "/en/private-rooms/:splat", 301);
 
   addNestedRedirect(rules, seen, "/en/rooms", "/en/dorms");
   addDirectRedirect(rules, seen, "/en/book", "/en/book-dorm-bed");
   addDirectRedirect(rules, seen, "/en/dorms", "/en/book-dorm-bed");
+  addDirectRedirect(rules, seen, "/en/private-rooms", englishPrivateBooking);
   addDirectRedirect(rules, seen, "/en/private-rooms/book", englishPrivateBooking);
   addDirectRedirect(rules, seen, "/en/apartment/book", englishPrivateBooking);
-  addNestedRedirect(rules, seen, "/en/apartment", "/en/private-rooms");
+  addDirectRedirect(rules, seen, "/en/apartment", englishPrivateBooking);
+  addRule(rules, seen, "/en/apartment/:splat", "/en/private-rooms/:splat", 301);
   addDirectRedirect(rules, seen, "/en/dorms/double_room", "/en/private-rooms/double-room");
 
   for (const [from, to] of [
-    ["/de/wohnungen", "/de/privatzimmer"],
-    ["/es/apartamentos", "/es/habitaciones-privadas"],
-    ["/fr/appartements", "/fr/chambres-privees"],
-    ["/it/appartamenti", "/it/camere-private"],
-    ["/ja/apaato", "/ja/kojin-heya"],
-    ["/ko/apateu", "/ko/gaein-sil"],
-    ["/pt/apartamentos", "/pt/quartos-privados"],
-    ["/ru/kvartiry", "/ru/chastnye-nomera"],
-    ["/zh/gongyu", "/zh/siren-kefang"],
-    ["/ar/shuqaq", "/ar/ghuraf-khassa"],
-    ["/hi/awas", "/hi/niji-kamre"],
-    ["/vi/can-ho", "/vi/phong-rieng"],
-    ["/pl/apartamenty", "/pl/pokoje-prywatne"],
-    ["/sv/lagenheter", "/sv/privata-rum"],
-    ["/no/leiligheter", "/no/private-rom"],
-    ["/da/lejligheder", "/da/private-vaerelser"],
-    ["/hu/apartmanok", "/hu/privat-szobak"],
+    ["/de/wohnungen", "/de/privatunterkunft-buchen"],
+    ["/es/apartamentos", "/es/reservar-alojamientos-privados"],
+    ["/fr/appartements", "/fr/reserver-hebergements-prives"],
+    ["/it/appartamenti", "/it/prenota-alloggi-privati"],
+    ["/ja/apaato", "/ja/kojin-heya-yoyaku"],
+    ["/ko/apateu", "/ko/gaein-sil-yeyak"],
+    ["/pt/apartamentos", "/pt/reservar-acomodacoes-privadas"],
+    ["/ru/kvartiry", "/ru/bronirovat-chastnoe-prozhivanie"],
+    ["/zh/gongyu", "/zh/yuding-siren-zhusu"],
+    ["/ar/shuqaq", "/ar/hajz-iqama-khassa"],
+    ["/hi/awas", "/hi/niji-aavaas-aarakshan"],
+    ["/vi/can-ho", "/vi/dat-cho-o-rieng-tu"],
+    ["/pl/apartamenty", "/pl/rezerwuj-prywatny-pobyt"],
+    ["/sv/lagenheter", "/sv/boka-privat-boende"],
+    ["/no/leiligheter", "/no/bestill-privat-opphold"],
+    ["/da/lejligheder", "/da/bestil-privat-ophold"],
+    ["/hu/apartmanok", "/hu/privat-szallas-foglalas"],
   ] as const) {
-    addNestedRedirect(rules, seen, from, to);
+    addDirectRedirect(rules, seen, from, to);
+  }
+
+  for (const lang of SUPPORTED_LANGUAGES) {
+    addDirectRedirect(
+      rules,
+      seen,
+      `/${lang}/${getSlug("apartment", lang)}`,
+      `/${lang}/${getSlug("privateBooking", lang)}`,
+    );
   }
 
   return rules;
@@ -371,8 +394,9 @@ export function buildLegacyFunctionRouteConfig(
       ],
     ),
   ).sort();
+  const exclude = buildCanonicalAssistanceRootExcludes();
 
-  const routeCount = include.length;
+  const routeCount = include.length + exclude.length;
   if (routeCount > PAGES_FUNCTION_ROUTE_LIMIT) {
     throw new Error(
       `Generated ${routeCount} Pages Function include rules; limit is ${PAGES_FUNCTION_ROUTE_LIMIT}.`,
@@ -382,7 +406,10 @@ export function buildLegacyFunctionRouteConfig(
   return {
     version: 1,
     include,
-    exclude: [],
+    // Canonical help hubs must bypass the legacy redirect function so Pages
+    // serves the exported HTML directly; only legacy nested help paths should
+    // continue through the function.
+    exclude,
   };
 }
 

@@ -26,6 +26,7 @@ import { getSlug } from "@/utils/slug";
 
 const NON_DORM_ROOM_IDS = new Set(["double_room", "apartment"]);
 const PUBLISHED_GUIDES = GUIDES_INDEX.filter((g) => g.status === "live");
+const REDIRECT_ONLY_SECTION_KEYS = new Set(["apartment"]);
 const APP_PRIVATE_ROOM_DETAIL_SEGMENTS = [
   "double-room",
   "apartment",
@@ -116,6 +117,7 @@ export function listLocalizedPublicUrls(): string[] {
     urls.push(`/${lang}`);
 
     for (const key of PUBLIC_INDEXABLE_SECTION_KEYS) {
+      if (REDIRECT_ONLY_SECTION_KEYS.has(key)) continue;
       urls.push(`/${lang}/${getSlug(key, lang)}`);
     }
 
@@ -164,6 +166,7 @@ export function listLocalizedCanonicalAppUrls(): string[] {
     urls.push(`/${lang}`);
 
     for (const key of STATIC_EXPORT_SECTION_KEYS) {
+      if (REDIRECT_ONLY_SECTION_KEYS.has(key)) continue;
       urls.push(`/${lang}/${getSlug(key, lang)}`);
     }
 

@@ -17,6 +17,7 @@ import { useEntryAttribution } from "@/hooks/useEntryAttribution";
 import type { AppLanguage } from "@/i18n.config";
 import { writeAttribution } from "@/utils/entryAttribution";
 import { type CtaLocation, fireCtaClick } from "@/utils/ga4-events";
+import { buildIntentAwareBookingCopy } from "@/utils/intentAwareBookingCopy";
 import { resolveIntentAwareBookingSurface } from "@/utils/intentAwareBookingSurface";
 import { resolveIntent } from "@/utils/intentResolver";
 import { getBookPath } from "@/utils/localizedRoutes";
@@ -40,6 +41,73 @@ type RoutedStickyOption = {
 };
 
 type StickySegmentedRouting = ReturnType<typeof resolveIntentAwareBookingSurface> | null;
+
+function resolveStickyCtaLabel(params: {
+  ready: boolean;
+  tokensReady: boolean;
+  t: ReturnType<typeof useTranslation>["t"];
+  tTokens: Parameters<typeof resolveBookingCtaLabel>[0];
+}): string {
+  const { ready, tokensReady, t, tTokens } = params;
+  if (!ready && !tokensReady) {
+    return "Check availability";
+  }
+
+  const checkAvailabilityToken = tTokens("checkAvailability") as string;
+  if (
+    checkAvailabilityToken &&
+    checkAvailabilityToken.trim() &&
+    checkAvailabilityToken !== "checkAvailability"
+  ) {
+    return checkAvailabilityToken;
+  }
+
+  return (
+    resolveBookingCtaLabel(tTokens, {
+      fallback: () => {
+        const modalAvailability = t("modals:booking.buttonAvailability") as string;
+        if (
+          modalAvailability &&
+          modalAvailability.trim() &&
+          modalAvailability !== "modals:booking.buttonAvailability"
+        ) {
+          return modalAvailability;
+        }
+        return "Check availability";
+      },
+    }) ?? "Check availability"
+  );
+}
+
+function resolveStickyCopy(params: {
+  bookingCopy: ReturnType<typeof buildIntentAwareBookingCopy>;
+  highlightHeadline: string;
+  highlightSubcopy: string;
+  segmentedRouting: StickySegmentedRouting;
+}): { headline: string; subcopy: string } {
+  const { bookingCopy, highlightHeadline, highlightSubcopy, segmentedRouting } = params;
+
+  if (!segmentedRouting) {
+    return { headline: highlightHeadline, subcopy: highlightSubcopy };
+  }
+
+  if (segmentedRouting.mode === "direct") {
+    return segmentedRouting.primary.resolvedIntent === "private"
+      ? {
+          headline: bookingCopy.direct.private.heading,
+          subcopy: bookingCopy.direct.private.subcopy,
+        }
+      : {
+          headline: bookingCopy.direct.hostel.heading,
+          subcopy: bookingCopy.direct.hostel.subcopy,
+        };
+  }
+
+  return {
+    headline: bookingCopy.chooser.heading,
+    subcopy: bookingCopy.chooser.subcopy,
+  };
+}
 
 function StickyCtaActions({
   segmentedRouting,
@@ -200,38 +268,10 @@ function ContentStickyCta({ lang, ctaLocation, isPrivateRoute = false }: Content
     [t, ready]
   );
 
-  const ctaLabel = useMemo(() => {
-    if (!ready && !tokensReady) {
-      return "Check availability";
-    }
-
-    // Primary: _tokens:checkAvailability
-    const checkAvailabilityToken = tTokens("checkAvailability") as string;
-    if (
-      checkAvailabilityToken &&
-      checkAvailabilityToken.trim() &&
-      checkAvailabilityToken !== "checkAvailability"
-    ) {
-      return checkAvailabilityToken;
-    }
-
-    // Fallback chain
-    return (
-      resolveBookingCtaLabel(tTokens, {
-        fallback: () => {
-          const modalAvailability = t("modals:booking.buttonAvailability") as string;
-          if (
-            modalAvailability &&
-            modalAvailability.trim() &&
-            modalAvailability !== "modals:booking.buttonAvailability"
-          ) {
-            return modalAvailability;
-          }
-          return "Check availability";
-        },
-      }) ?? "Check availability"
-    );
-  }, [t, tTokens, ready, tokensReady]);
+  const ctaLabel = useMemo(
+    () => resolveStickyCtaLabel({ ready, tokensReady, t, tTokens }),
+    [ready, t, tTokens, tokensReady],
+  );
 
   const segmentedSurface = ctaLocation === "assistance" || ctaLocation === "how_to_get_here";
   const segmentedRouting = useMemo(
@@ -245,12 +285,22 @@ function ContentStickyCta({ lang, ctaLocation, isPrivateRoute = false }: Content
         : "Dorms",
     [headerReady, tHeader],
   );
-  const privateLabel = useMemo(
+  const privateBookingLabel = useMemo(
     () =>
       headerReady
-        ? ((tHeader("apartment", { defaultValue: "Private Rooms" }) as string) || "Private Rooms")
-        : "Private Rooms",
+        ? ((tHeader("navChildren.apartment.bookPrivate", {
+            defaultValue: "Book private accommodations",
+          }) as string) || "Book private accommodations")
+        : "Book private accommodations",
     [headerReady, tHeader],
+  );
+  const bookingCopy = useMemo(
+    () => buildIntentAwareBookingCopy({ dormsLabel: hostelLabel, privateBookingLabel }),
+    [hostelLabel, privateBookingLabel],
+  );
+  const stickyCopy = useMemo(
+    () => resolveStickyCopy({ bookingCopy, highlightHeadline, highlightSubcopy, segmentedRouting }),
+    [bookingCopy, highlightHeadline, highlightSubcopy, segmentedRouting],
   );
 
   // Resolve intent and target URL at render time (SSR-safe, pure).
@@ -358,15 +408,15 @@ function ContentStickyCta({ lang, ctaLocation, isPrivateRoute = false }: Content
 
         <div className="mt-6 flex flex-col gap-5">
           <div className="flex-1">
-            <p className="text-lg font-semibold text-brand-heading sm:text-xl">{highlightHeadline}</p>
-            <p className="mt-1 text-sm text-brand-text/80 sm:text-base">{highlightSubcopy}</p>
+            <p className="text-lg font-semibold text-brand-heading sm:text-xl">{stickyCopy.headline}</p>
+            <p className="mt-1 text-sm text-brand-text/80 sm:text-base">{stickyCopy.subcopy}</p>
           </div>
           <StickyCtaActions
             segmentedRouting={segmentedRouting}
             targetUrl={targetUrl}
             ctaLabel={ctaLabel}
             hostelLabel={hostelLabel}
-            privateLabel={privateLabel}
+            privateLabel={privateBookingLabel}
             onDefaultClick={onCtaClick}
             onSegmentedClick={onSegmentedClick}
           />

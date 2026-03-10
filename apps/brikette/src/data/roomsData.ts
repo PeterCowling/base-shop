@@ -450,7 +450,7 @@ const roomsData: Room[] = [
       security: "/img/keycard-tap.avif",
     },
     landingImage: "/img/apt1.jpg",
-    roomsHref: "/private-rooms",
+    roomsHref: "/book-private-accommodations",
     octorateRoomCategory: "Apartment",
   },
 ];

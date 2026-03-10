@@ -12,7 +12,7 @@ describe("resolveIntentAwareBookingSurface", () => {
     }
 
     expect(result.hostel.href).toBe("/en/book");
-    expect(result.private.href).toBe("/en/private-rooms");
+    expect(result.private.href).toBe("/en/book-private-accommodations");
     expect(result.hostel.decisionMode).toBe("chooser");
     expect(result.private.decisionMode).toBe("chooser");
   });

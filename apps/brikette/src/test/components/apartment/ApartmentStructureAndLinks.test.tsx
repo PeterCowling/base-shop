@@ -106,14 +106,14 @@ describe("TASK-07: apartment-context CTA, legal label, and perks-route behavior"
 });
 
 describe("Hub page structure", () => {
-  // TC-01: HeroSection renders before intent cards (source order check)
-  it("HeroSection appears before intent-routing cards in source", () => {
+  // TC-01: Hero markup renders before intent cards (source order check)
+  it("hero section appears before intent-routing cards in source", () => {
     const content = fs.readFileSync(
       path.join(APP_DIR, "ApartmentPageContent.tsx"),
       "utf-8"
     );
-    const heroIdx = content.indexOf("<HeroSection");
-    const cardIdx = content.indexOf("hub.streetLevelCard");
+    const heroIdx = content.indexOf("hero.title");
+    const cardIdx = content.indexOf("hubCards.streetLevel.title");
     expect(heroIdx).toBeGreaterThan(-1);
     expect(cardIdx).toBeGreaterThan(-1);
     expect(heroIdx).toBeLessThan(cardIdx);
@@ -134,14 +134,9 @@ describe("Hub page structure", () => {
       path.join(APP_DIR, "ApartmentPageContent.tsx"),
       "utf-8"
     );
-    const heroContent = fs.readFileSync(
-      path.resolve(__dirname, "../../../../../../packages/ui/src/organisms/ApartmentHeroSection.tsx"),
-      "utf-8"
-    );
 
-    expect(pageContent).toContain('headingTag="h1"');
+    expect(pageContent).toContain("<h1");
+    expect(pageContent).toContain("{hero.title}");
     expect(pageContent).not.toContain('<h1 className="sr-only">');
-    expect(heroContent).toContain('headingTag?: "h1" | "h2"');
-    expect(heroContent).toContain("<HeadingTag");
   });
 });

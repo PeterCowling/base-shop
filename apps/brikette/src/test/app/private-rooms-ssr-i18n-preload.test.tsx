@@ -2,10 +2,16 @@ import type { ReactElement } from "react";
 import React from "react";
 
 const getNamespaceBundlesMock = jest.fn(async () => ({ apartmentPage: {}, _tokens: {} }));
+const getMultipleTranslationsMock = jest.fn(async () => ({
+  apartmentPage: ((key: string) => key) as unknown,
+  _tokens: ((key: string) => key) as unknown,
+}));
 
 jest.mock("@/app/_lib/i18n-server", () => ({
   toAppLanguage: (lang: string) => lang,
   getTranslations: jest.fn(),
+  getMultipleTranslations: (...args: unknown[]) =>
+    getMultipleTranslationsMock(...(args as [string, readonly string[]])),
   getNamespaceBundles: (...args: unknown[]) =>
     getNamespaceBundlesMock(...(args as [string, readonly string[]])),
 }));
@@ -28,26 +34,33 @@ jest.mock("@/app/[lang]/private-rooms/private-stay/PrivateStayContent", () => ({
 type PreloadProps = {
   lang: string;
   preloadedNamespaceBundles?: Record<string, Record<string, unknown>>;
+  privateBookingPath?: string;
 };
 
 describe("private-room SSR i18n preload contract", () => {
   beforeEach(() => {
     getNamespaceBundlesMock.mockClear();
+    getMultipleTranslationsMock.mockClear();
     getNamespaceBundlesMock.mockResolvedValue({ apartmentPage: {}, _tokens: {} });
+    getMultipleTranslationsMock.mockResolvedValue({
+      apartmentPage: ((key: string) => key) as unknown,
+      _tokens: ((key: string) => key) as unknown,
+    });
   });
 
-  it("preloads apartment namespaces for the sea-view apartment route", async () => {
+  it("loads apartment and token translations on the server for the sea-view apartment route", async () => {
     const { default: ApartmentPage } = await import("@/app/[lang]/private-rooms/apartment/page");
     const element = (await ApartmentPage({
       params: Promise.resolve({ lang: "de" }),
     })) as ReactElement<PreloadProps>;
 
-    expect(getNamespaceBundlesMock).toHaveBeenCalledWith(
+    expect(getMultipleTranslationsMock).toHaveBeenCalledWith(
       "de",
       expect.arrayContaining(["apartmentPage", "_tokens"]),
     );
+    expect(getNamespaceBundlesMock).not.toHaveBeenCalled();
     expect(element.props.lang).toBe("de");
-    expect(element.props.preloadedNamespaceBundles).toEqual({ apartmentPage: {}, _tokens: {} });
+    expect(element.props.privateBookingPath).toMatch(/^\/de\//);
   });
 
   it("preloads apartment namespace for private-stay route variants", async () => {

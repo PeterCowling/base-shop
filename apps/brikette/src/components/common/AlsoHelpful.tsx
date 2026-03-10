@@ -2,16 +2,20 @@
 import React, { memo, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import clsx from "clsx";
 
 import { Section } from "@acme/design-system/atoms";
 
 import { type GuideSection,isGuideLive } from "@/data/guides.index";
+import { useEntryAttribution } from "@/hooks/useEntryAttribution";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref, type GuideKey } from "@/routes.guides-helpers";
 import type { TFunction } from "@/utils/i18nSafe";
 import { getNamespaceTranslator, getStringWithFallback } from "@/utils/i18nSafe";
+import { buildIntentAwareBookingCopy } from "@/utils/intentAwareBookingCopy";
 import { relatedGuidesByTags } from "@/utils/related";
+import { resolveSharedBookingSurface, shouldUseIntentAwareSharedBookingSurface } from "@/utils/sharedBookingSurface";
 import { getSlug } from "@/utils/slug";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
@@ -128,6 +132,9 @@ const FEATURED_CARD_VARIANTS = [
 const STANDARD_TITLE_CLASS =
   "dark:text-brand-text group-hover:text-brand-primary dark:group-hover:text-brand-secondary";
 const FEATURED_TITLE_CLASS = "group-hover:text-brand-primary dark:group-hover:text-brand-secondary";
+const PRIVATE_BOOKING_FALLBACK =
+  /* i18n-exempt -- BRIK-2145 [ttl=2026-12-31] English fallback when header booking label is unavailable. */
+  "Book private accommodations";
 
 type AlsoHelpfulCardProps = {
   href: string;
@@ -195,11 +202,15 @@ function AlsoHelpful({
   section,
 }: Props): JSX.Element | null {
   const { t: tAssistance, i18n } = useTranslation("assistanceCommon", { lng: lang });
+  const pathname = usePathname();
+  const currentAttribution = useEntryAttribution();
 
   // Cross-namespace translators
   const guidesT = safeGetNs(i18n, lang, "guides");
   const guidesEnT = safeGetNs(i18n, "en", "guides");
   const assistanceEnT = safeGetNs(i18n, "en", "assistanceCommon");
+  const headerT = safeGetNs(i18n, lang, "header");
+  const headerEnT = safeGetNs(i18n, "en", "header");
 
   const related = useMemo<GuideKey[]>(() => {
     return relatedGuidesByTags(tags, {
@@ -241,6 +252,18 @@ function AlsoHelpful({
     if (typeof str === "string" && str.trim()) return str.trim();
     return "Book";
   })();
+  const dormsLabel =
+    safeGetStr(headerT, headerEnT, "rooms") ??
+    safeGetStr(tAssistance, assistanceEnT, "roomsCta") ??
+    "Dorms";
+  const privateBookingLabel =
+    safeGetStr(headerT, headerEnT, "navChildren.apartment.bookPrivate") ??
+    PRIVATE_BOOKING_FALLBACK;
+  const bookingCopy = buildIntentAwareBookingCopy({ dormsLabel, privateBookingLabel });
+  const useIntentAwareBooking = shouldUseIntentAwareSharedBookingSurface(pathname, lang, currentAttribution);
+  const bookingSurface = useIntentAwareBooking
+    ? resolveSharedBookingSurface(lang, pathname, currentAttribution)
+    : null;
 
   const hasAny = includeRooms || liveRelated.length > 0;
   if (!hasAny) return null;
@@ -317,14 +340,49 @@ function AlsoHelpful({
               }) as unknown;
               const labelFromTokens = joinTokens(roomsTokens, " ");
               const roomsLabel = labelFromTokens || (safeGetStr(tAssistance, assistanceEnT, "roomsCta") ?? "");
-              const roomsLabelText = roomsLabel.trim();
-              const roomsCtaText = buildSeoCta(bookCtaPrefix, roomsLabelText);
+              if (bookingSurface?.mode === "chooser") {
+                const chooserCards = [
+                  {
+                    key: "rooms",
+                    href: bookingSurface.hostel.href,
+                    title: bookingCopy.chooser.primaryLabel,
+                  },
+                  {
+                    key: "private-booking",
+                    href: bookingSurface.private.href,
+                    title: bookingCopy.chooser.secondaryLabel,
+                  },
+                ];
+
+                return chooserCards.map((card) => (
+                  <li key={card.key} className="h-full">
+                    <AlsoHelpfulCard
+                      href={card.href}
+                      prefetch={false}
+                      title={card.title}
+                      ctaText={buildSeoCta(bookCtaPrefix, card.title)}
+                      variant="featured"
+                      titleClassName={FEATURED_TITLE_CLASS}
+                    />
+                  </li>
+                ));
+              }
+
+              const title =
+                bookingSurface?.mode === "direct" && bookingSurface.primary.resolvedIntent === "private"
+                  ? privateBookingLabel
+                  : roomsLabel;
+              const href =
+                bookingSurface?.mode === "direct"
+                  ? bookingSurface.primary.href
+                  : `/${lang}/${getSlug("book", lang)}`;
+              const roomsCtaText = buildSeoCta(bookCtaPrefix, title.trim());
               return (
                 <li key="rooms" className="h-full">
                   <AlsoHelpfulCard
-                    href={`/${lang}/${getSlug("book", lang)}`}
+                    href={href}
                     prefetch={false}
-                    title={roomsLabel}
+                    title={title}
                     ctaText={roomsCtaText}
                     variant="featured"
                     titleClassName={FEATURED_TITLE_CLASS}

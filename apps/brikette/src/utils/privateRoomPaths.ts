@@ -5,9 +5,14 @@ import {
 } from "@acme/ui/utils/privateRoomPaths";
 
 import type { AppLanguage } from "@/i18n.config";
+import { getSlug } from "@/utils/slug";
 
 export function getPrivateRoomsPath(lang: AppLanguage): string {
   return `/${lang}${getSharedPrivateRoomsPath(lang)}`;
+}
+
+export function getPrivateRoomsSectionPath(lang: AppLanguage): string {
+  return `/${lang}/${getSlug("apartment", lang)}`;
 }
 
 export function getPrivateRoomChildPath(

@@ -4,8 +4,15 @@ import * as path from "node:path";
 
 import { afterEach, beforeEach, describe, expect, it } from "@jest/globals";
 
+import type { PatternReflectionSidecar } from "../build/lp-do-build-pattern-reflection-extract";
+import { extractPatternReflectionSignals } from "../build/lp-do-build-pattern-reflection-extract";
+import type { ResultsReviewSidecar } from "../build/lp-do-build-results-review-extract";
+import { extractResultsReviewSignals } from "../build/lp-do-build-results-review-extract";
 import type { TrialDispatchPacket } from "../ideas/lp-do-ideas-trial.js";
-import type { StartupState } from "../self-evolving/self-evolving-contracts.js";
+import {
+  type StartupState,
+  validateMetaObservation,
+} from "../self-evolving/self-evolving-contracts.js";
 import {
   extractBulletCandidates,
   extractPatternReflectionSeeds,
@@ -158,6 +165,73 @@ None identified.
     expect(seeds[1]?.candidateTypeHint).toBe("new_skill");
   });
 
+  it("emits the same build_signal_id for duplicate results-review and pattern-reflection findings", async () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "build-origin-identity-"));
+    try {
+      fs.writeFileSync(
+        path.join(tmpDir, "results-review.user.md"),
+        [
+          "---",
+          "Business-Unit: BOS",
+          "---",
+          "",
+          "## New Idea Candidates",
+          "- New loop process — Post-authoring sidecar extraction as a reusable loop process",
+          "",
+        ].join("\n"),
+        "utf8",
+      );
+
+      fs.writeFileSync(
+        path.join(tmpDir, "pattern-reflection.user.md"),
+        [
+          "---",
+          "entries:",
+          "  - canonical_title: Post-authoring sidecar extraction as a reusable loop process",
+          "    pattern_summary: Post-authoring sidecar extraction as a reusable loop process",
+          "    category: new-loop-process",
+          "    routing_target: loop_update",
+          "    occurrence_count: 1",
+          "    evidence_refs: []",
+          "---",
+          "",
+          "## Patterns",
+          "See YAML frontmatter.",
+        ].join("\n"),
+        "utf8",
+      );
+
+      await extractResultsReviewSignals(tmpDir, { repoRoot: tmpDir });
+      await extractPatternReflectionSignals(tmpDir, { repoRoot: tmpDir });
+
+      const reviewSidecar = JSON.parse(
+        fs.readFileSync(path.join(tmpDir, "results-review.signals.json"), "utf8"),
+      ) as ResultsReviewSidecar;
+      const reflectionSidecar = JSON.parse(
+        fs.readFileSync(path.join(tmpDir, "pattern-reflection.entries.json"), "utf8"),
+      ) as PatternReflectionSidecar;
+
+      expect(reviewSidecar.build_origin_status).toBe("ready");
+      expect(reflectionSidecar.build_origin_status).toBe("ready");
+      expect(reviewSidecar.items).toHaveLength(1);
+      expect(reflectionSidecar.entries).toHaveLength(1);
+      expect(reviewSidecar.items[0]?.canonical_title).toBe(
+        "Post-authoring sidecar extraction as a reusable loop process",
+      );
+      expect(reflectionSidecar.entries[0]?.canonical_title).toBe(
+        "Post-authoring sidecar extraction as a reusable loop process",
+      );
+      expect(reviewSidecar.items[0]?.build_signal_id).toBe(
+        reflectionSidecar.entries[0]?.build_signal_id,
+      );
+      expect(reviewSidecar.items[0]?.recurrence_key).toBe(
+        reflectionSidecar.entries[0]?.recurrence_key,
+      );
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+
   it("stabilizes repeat identity across semantically equivalent dispatches", () => {
     const first = dispatchToMetaObservation(buildDispatchPacket("d-1"), {
       business: "BRIK",
@@ -183,6 +257,8 @@ None identified.
 
     expect(first.hard_signature).toBe(second.hard_signature);
     expect(first.signal_hints?.recurrence_key).toBe(second.signal_hints?.recurrence_key);
+    expect(validateMetaObservation(first)).toEqual([]);
+    expect(validateMetaObservation(second)).toEqual([]);
   });
 
   it("derives mature-boundary inputs with explicit provenance", () => {
@@ -309,6 +385,31 @@ describe("self-evolving sidecar-prefer branches", () => {
     expect(result.ok).toBe(true);
     // One idea from sidecar + build-record seed = 2 observations
     expect(result.observations_generated).toBeGreaterThanOrEqual(1);
+    const observationsPath = path.join(
+      tmpDir,
+      "docs",
+      "business-os",
+      "startup-loop",
+      "self-evolving",
+      "BRIK",
+      "observations.jsonl",
+    );
+    const observations = fs
+      .readFileSync(observationsPath, "utf-8")
+      .trim()
+      .split("\n")
+      .filter((line) => line.trim().length > 0)
+      .map((line) => JSON.parse(line) as { schema_version?: string; evidence_grade?: string; measurement_contract_status?: string });
+    expect(observations.length).toBeGreaterThan(0);
+    expect(observations.every((observation) => observation.schema_version === "meta-observation.v2")).toBe(true);
+    expect(observations.every((observation) => observation.evidence_grade === "structural")).toBe(
+      true,
+    );
+    expect(
+      observations.every(
+        (observation) => observation.measurement_contract_status === "declared",
+      ),
+    ).toBe(true);
   });
 
   it("TC-05-01b: results-review sidecar placeholders are ignored before observation generation", () => {

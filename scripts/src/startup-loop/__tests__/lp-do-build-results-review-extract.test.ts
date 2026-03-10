@@ -61,17 +61,26 @@ describe("lp-do-build-results-review-extract", () => {
       ].join("\n"),
     );
 
-    await extractResultsReviewSignals(tmpDir);
+    await extractResultsReviewSignals(tmpDir, { repoRoot: tmpDir });
 
     expect(sidecarExists()).toBe(true);
     const sidecar = readSidecar();
     expect(sidecar.schema_version).toBe("results-review.signals.v1");
+    expect(sidecar.build_origin_status).toBe("ready");
+    expect(sidecar.failures).toEqual([]);
     expect(typeof sidecar.generated_at).toBe("string");
     expect(new Date(sidecar.generated_at).toISOString()).toBe(sidecar.generated_at);
     expect(sidecar.items).toHaveLength(1);
     expect(sidecar.items[0]?.title).toBe("Add rate limiting to the BOS API");
+    expect(sidecar.items[0]?.canonical_title).toBe("Add rate limiting to the BOS API");
+    expect(sidecar.items[0]?.build_origin_status).toBe("ready");
+    expect(sidecar.items[0]?.review_cycle_key).toBe(path.basename(tmpDir));
     expect(typeof sidecar.items[0]?.idea_key).toBe("string");
     expect((sidecar.items[0]?.idea_key ?? "").length).toBe(40); // SHA-1 hex
+    expect(typeof sidecar.items[0]?.build_signal_id).toBe("string");
+    expect((sidecar.items[0]?.build_signal_id ?? "").length).toBe(40);
+    expect(typeof sidecar.items[0]?.recurrence_key).toBe("string");
+    expect((sidecar.items[0]?.recurrence_key ?? "").length).toBe(40);
     expect(typeof sidecar.items[0]?.priority_tier).toBe("string");
   });
 
@@ -90,7 +99,7 @@ describe("lp-do-build-results-review-extract", () => {
       ].join("\n"),
     );
 
-    await extractResultsReviewSignals(tmpDir);
+    await extractResultsReviewSignals(tmpDir, { repoRoot: tmpDir });
 
     expect(sidecarExists()).toBe(true);
     const sidecar = readSidecar();
@@ -122,10 +131,19 @@ describe("lp-do-build-results-review-extract", () => {
     );
   });
 
-  // TC-03: Missing .user.md exits 0 cleanly, no sidecar.
-  it("TC-03: missing results-review.user.md exits cleanly with no sidecar written", async () => {
-    await expect(extractResultsReviewSignals(tmpDir)).resolves.toBeUndefined();
-    expect(sidecarExists()).toBe(false);
+  // TC-03: Missing .user.md emits explicit machine-readable failure state.
+  it("TC-03: missing results-review.user.md emits source_missing sidecar", async () => {
+    await expect(extractResultsReviewSignals(tmpDir, { repoRoot: tmpDir })).resolves.toBeUndefined();
+    expect(sidecarExists()).toBe(true);
+    const sidecar = readSidecar();
+    expect(sidecar.build_origin_status).toBe("source_missing");
+    expect(sidecar.failures).toEqual([
+      {
+        code: "source_missing",
+        message: "results-review.user.md not found",
+      },
+    ]);
+    expect(sidecar.items).toEqual([]);
   });
 
   // TC-04: Struck-through idea is suppressed.
@@ -143,7 +161,7 @@ describe("lp-do-build-results-review-extract", () => {
       ].join("\n"),
     );
 
-    await extractResultsReviewSignals(tmpDir);
+    await extractResultsReviewSignals(tmpDir, { repoRoot: tmpDir });
 
     const sidecar = readSidecar();
     expect(sidecar.items).toHaveLength(1);
@@ -166,7 +184,7 @@ describe("lp-do-build-results-review-extract", () => {
       ].join("\n"),
     );
 
-    await extractResultsReviewSignals(tmpDir);
+    await extractResultsReviewSignals(tmpDir, { repoRoot: tmpDir });
 
     const sidecar = readSidecar();
     expect(sidecar.items).toHaveLength(1);
@@ -187,7 +205,7 @@ describe("lp-do-build-results-review-extract", () => {
       ].join("\n"),
     );
 
-    await extractResultsReviewSignals(tmpDir);
+    await extractResultsReviewSignals(tmpDir, { repoRoot: tmpDir });
 
     expect(sidecarExists()).toBe(true);
     expect(
@@ -209,7 +227,7 @@ describe("lp-do-build-results-review-extract", () => {
       ].join("\n"),
     );
 
-    await extractResultsReviewSignals(tmpDir);
+    await extractResultsReviewSignals(tmpDir, { repoRoot: tmpDir });
 
     const sidecar = readSidecar();
     expect(sidecar.schema_version).toBe("results-review.signals.v1");

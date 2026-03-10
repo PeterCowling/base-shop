@@ -25,7 +25,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 
 ## Active tasks
 - [x] TASK-01: Define the canonical build-origin signal contract — Complete (2026-03-10)
-- [ ] TASK-02: Harden build-review emitters around the canonical contract
+- [x] TASK-02: Harden build-review emitters around the canonical contract — Complete (2026-03-10)
 - [ ] TASK-03: Implement build-review-to-queue admission and dedupe
 - [ ] TASK-04: Switch process-improvements idea backlog to queue-only sourcing
 - [ ] TASK-05: Demote `completed-ideas.json` from active backlog control
@@ -97,7 +97,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Define the canonical build-origin signal contract | 75% | M | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
-| TASK-02 | IMPLEMENT | Harden build-review emitters around the canonical contract and fail-closed surfacing | 85% | M | Pending | TASK-01 | TASK-03, TASK-04, TASK-06, TASK-07, TASK-08, TASK-10 |
+| TASK-02 | IMPLEMENT | Harden build-review emitters around the canonical contract and fail-closed surfacing | 85% | M | Complete (2026-03-10) | TASK-01 | TASK-03, TASK-04, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-03 | IMPLEMENT | Implement build-review-to-queue admission and dedupe | 80% | M | Pending | TASK-01, TASK-02 | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-04 | IMPLEMENT | Switch process-improvements idea backlog to queue-only sourcing | 85% | M | Pending | TASK-03 | TASK-05, TASK-07, TASK-08, TASK-10 |
 | TASK-05 | IMPLEMENT | Demote `completed-ideas.json` from active backlog control | 80% | M | Pending | TASK-03, TASK-04 | TASK-07, TASK-08, TASK-10 |
@@ -170,8 +170,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/build/lp-do-build-results-review-extract.ts`, `scripts/src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts`, `scripts/src/startup-loop/build/lp-do-build-pattern-reflection-prefill.ts`, `scripts/src/startup-loop/__tests__/lp-do-build-results-review-extract.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/build/build-origin-signal.ts`, `scripts/src/startup-loop/build/lp-do-build-results-review-extract.ts`, `scripts/src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts`, `scripts/src/startup-loop/build/lp-do-build-pattern-reflection-prefill.ts`, `scripts/src/startup-loop/build/lp-do-pattern-promote-loop-update.ts`, `scripts/src/startup-loop/__tests__/lp-do-build-results-review-extract.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-build-pattern-reflection-extract.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03, TASK-04, TASK-06, TASK-07, TASK-08, TASK-10
 - **Confidence:** 85%
@@ -193,6 +193,13 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - New failure-state output is consumed by the bridge and any pending-review surfacing.
 - **Held-back test:** no single unresolved unknown would drop this below 80 because TASK-01 will already have fixed the identity and precedence contract before implementation starts.
 - **What would make this >=90%:** one real repo fixture from archived build output passing through both emitters with no contract ambiguity.
+- **Build completion evidence (2026-03-10):**
+  - Added shared canonical identity helpers in [build-origin-signal.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/build-origin-signal.ts).
+  - Hardened [lp-do-build-results-review-extract.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/lp-do-build-results-review-extract.ts) and [lp-do-build-pattern-reflection-extract.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts) to emit `review_cycle_key`, `canonical_title`, `build_signal_id`, `recurrence_key`, and explicit `build_origin_status` / `failures`.
+  - Brought [lp-do-build-pattern-reflection-prefill.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/lp-do-build-pattern-reflection-prefill.ts) and [lp-do-pattern-promote-loop-update.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/lp-do-pattern-promote-loop-update.ts) onto the same category and identity vocabulary.
+  - Added regression coverage in [lp-do-build-results-review-extract.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/lp-do-build-results-review-extract.test.ts), [lp-do-build-pattern-reflection-extract.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/lp-do-build-pattern-reflection-extract.test.ts), and [self-evolving-signal-integrity.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts).
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` passed; targeted ESLint returned only ignore-pattern warnings for build-side files, with no rule violations.
+  - Outcome: affirming. TASK-03 is now the next runnable implementation task.
 
 ### TASK-03: Implement build-review-to-queue admission and dedupe
 - **Type:** IMPLEMENT
@@ -508,7 +515,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 
 ## What would make this >=90%
 - A concrete call-site inventory proving every active `completed-ideas.json` consumer to be migrated.
-- A fixture-backed canonical build-origin contract with one real duplicate-sidecar example.
+- A real dry-run of the build-origin queue bridge showing stable admission counts and zero duplicate leakage.
 - A tiny proven prototype for the chosen self-evolving alignment model.
 - A small pilot audit showing the historical carry-forward set is bounded enough to remain in-thread.
 

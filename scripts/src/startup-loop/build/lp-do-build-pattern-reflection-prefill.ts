@@ -8,11 +8,19 @@
  *
  * `deriveRecurrenceKey(title)` is LOCAL — differs from `deriveIdeaKey()`
  * which includes sourcePath (producing artificially low cross-plan counts).
+ *
+ * Pattern categories intentionally preserve the review-facing vocabulary
+ * (`new-loop-process`, `new-skill`, etc.). Downstream queue routing must
+ * derive canonical routes separately; `routing_target` remains advisory.
  */
 
 import * as fs from "node:fs";
 import * as path from "node:path";
-import { createHash } from "node:crypto";
+
+import {
+  deriveRecurrenceKey as deriveBuildOriginRecurrenceKey,
+  normalizeBuildOriginTitle,
+} from "./build-origin-signal.js";
 
 export interface PatternReflectionInput {
   featureSlug: string;
@@ -21,10 +29,20 @@ export interface PatternReflectionInput {
   generatedAt?: string;
 }
 
-export type PatternCategory = "deterministic" | "ad_hoc" | "access_gap" | "unclassified";
+export type PatternCategory =
+  | "deterministic"
+  | "ad_hoc"
+  | "access_gap"
+  | "unclassified"
+  | "ai-to-mechanistic"
+  | "new-loop-process"
+  | "new-skill"
+  | "new-open-source-package"
+  | "new-standing-data-source";
 export type RoutingTarget = "loop_update" | "skill_proposal" | "defer";
 
 export interface PatternEntry {
+  canonical_title?: string;
   pattern_summary: string;
   category: PatternCategory;
   routing_target: RoutingTarget;
@@ -32,12 +50,8 @@ export interface PatternEntry {
   evidence_refs: string[];
 }
 
-function normalizeTitle(title: string): string {
-  return title.toLowerCase().trim().replace(/\s+/g, " ");
-}
-
 export function deriveRecurrenceKey(title: string): string {
-  return createHash("sha1").update(normalizeTitle(title)).digest("hex");
+  return deriveBuildOriginRecurrenceKey(title);
 }
 
 function extractIdeasSection(markdown: string): string | null {
@@ -92,11 +106,11 @@ function stripHtmlComments(text: string): string {
  * Keys are lowercased prefix fragments matched against the bullet content start.
  */
 const CATEGORY_PREFIX_MAP: Array<[RegExp, PatternCategory]> = [
-  [/^ai[-\s]to[-\s]mechanistic\b/i, "deterministic"],
-  [/^new\s+loop\s+process\b/i, "deterministic"],
-  [/^new\s+skill\b/i, "ad_hoc"],
-  [/^new\s+open[-\s]source\s+package\b/i, "ad_hoc"],
-  [/^new\s+standing\s+data\s+source\b/i, "ad_hoc"],
+  [/^ai[-\s]to[-\s]mechanistic\b/i, "ai-to-mechanistic"],
+  [/^new\s+loop\s+process\b/i, "new-loop-process"],
+  [/^new\s+skill\b/i, "new-skill"],
+  [/^new\s+open[-\s]source\s+package\b/i, "new-open-source-package"],
+  [/^new\s+standing\s+data\s+source\b/i, "new-standing-data-source"],
 ];
 
 function extractCategoryFromPrefix(raw: string): PatternCategory | undefined {
@@ -174,10 +188,19 @@ export function applyRoutingDecisionTree(
   category: PatternCategory,
   occurrenceCount: number,
 ): RoutingTarget {
-  if (category === "unclassified") return "defer";
-  if (category === "deterministic") return occurrenceCount >= 3 ? "loop_update" : "defer";
-  if (category === "ad_hoc") return occurrenceCount >= 2 ? "skill_proposal" : "defer";
-  return "defer"; // access_gap
+  if (category === "unclassified" || category === "access_gap") return "defer";
+  if (category === "deterministic" || category === "ai-to-mechanistic" || category === "new-loop-process") {
+    return occurrenceCount >= 3 ? "loop_update" : "defer";
+  }
+  if (
+    category === "ad_hoc" ||
+    category === "new-skill" ||
+    category === "new-open-source-package" ||
+    category === "new-standing-data-source"
+  ) {
+    return occurrenceCount >= 2 ? "skill_proposal" : "defer";
+  }
+  return "defer";
 }
 
 function escapeYaml(value: string): string {
@@ -194,13 +217,18 @@ function renderFrontmatter(slug: string, ts: string, entries: PatternEntry[]): s
   } else {
     l.push("entries:");
     for (const e of entries) {
-      l.push(`  - pattern_summary: ${escapeYaml(e.pattern_summary)}`);
+      if (e.canonical_title) {
+        l.push(`  - canonical_title: ${escapeYaml(e.canonical_title)}`);
+        l.push(`    pattern_summary: ${escapeYaml(e.pattern_summary)}`);
+      } else {
+        l.push(`  - pattern_summary: ${escapeYaml(e.pattern_summary)}`);
+      }
       l.push(`    category: ${e.category}`);
       l.push(`    routing_target: ${e.routing_target}`);
       l.push(`    occurrence_count: ${e.occurrence_count}`);
       if (e.evidence_refs.length > 0) {
         l.push("    evidence_refs:");
-        for (const ref of e.evidence_refs) l.push(`      - ${ref}`);
+        for (const ref of e.evidence_refs) l.push(`      - ${escapeYaml(ref)}`);
       }
     }
   }
@@ -224,11 +252,14 @@ export function prefillPatternReflection(input: PatternReflectionInput): string 
   const recurrenceMap = scanArchiveForRecurrences(input.archiveDir, ideas);
   const entries: PatternEntry[] = [];
   for (const idea of ideas) {
-    const key = deriveRecurrenceKey(idea.title);
+    const canonicalTitle = normalizeBuildOriginTitle(idea.title);
+    const key = deriveRecurrenceKey(canonicalTitle);
     const rec = recurrenceMap.get(key) ?? { count: 1, refs: [] };
     const category: PatternCategory = (idea.category as PatternCategory | undefined) ?? "unclassified";
-    const summary = idea.title.length > 100 ? idea.title.slice(0, 97) + "..." : idea.title;
+    const summary =
+      canonicalTitle.length > 100 ? canonicalTitle.slice(0, 97) + "..." : canonicalTitle;
     entries.push({
+      canonical_title: canonicalTitle,
       pattern_summary: summary,
       category,
       routing_target: applyRoutingDecisionTree(category, rec.count),

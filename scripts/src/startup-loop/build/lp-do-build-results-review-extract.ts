@@ -9,7 +9,8 @@
  *
  * Sidecar schema version: results-review.signals.v1
  *
- * Fail-open: all errors emit warnings; never throws; always exits 0.
+ * Fail-closed for backlog intake: all errors emit machine-readable sidecars,
+ * but the extractor itself never throws and always exits 0.
  * Atomic write: write to temp, then rename (same pattern as generate-process-improvements.ts).
  *
  * Used by: generate-process-improvements.ts (TASK-04), self-evolving-from-build-output.ts (TASK-05)
@@ -30,6 +31,13 @@ import {
   toIsoDate,
   type ProcessImprovementItem,
 } from "./lp-do-build-results-review-parse.js";
+import {
+  type BuildOriginFailure,
+  type BuildOriginStatus,
+  detectRepoRoot,
+  deriveBuildOriginIdentity,
+  toRepoRelativePath,
+} from "./build-origin-signal.js";
 
 /* ------------------------------------------------------------------ */
 /*  Internal helpers (mirrored from generate-process-improvements.ts)  */
@@ -109,8 +117,44 @@ export interface ResultsReviewSidecar {
   schema_version: "results-review.signals.v1";
   generated_at: string;
   plan_slug: string;
+  review_cycle_key: string;
   source_path: string;
-  items: ProcessImprovementItem[];
+  build_origin_status: BuildOriginStatus;
+  failures: BuildOriginFailure[];
+  items: ResultsReviewSignalItem[];
+}
+
+export interface ResultsReviewSignalItem extends ProcessImprovementItem {
+  review_cycle_key: string;
+  canonical_title: string;
+  build_signal_id: string;
+  recurrence_key: string;
+  build_origin_status: "ready";
+}
+
+function writeSidecar(
+  sidecarPath: string,
+  sidecar: ResultsReviewSidecar,
+): void {
+  const tmpPath = `${sidecarPath}.tmp`;
+  try {
+    fs.writeFileSync(tmpPath, JSON.stringify(sidecar, null, 2) + "\n", "utf8");
+    fs.renameSync(tmpPath, sidecarPath);
+    process.stderr.write(
+      `[results-review-extract] info: wrote ${sidecarPath} (${sidecar.items.length} items, status=${sidecar.build_origin_status})\n`,
+    );
+  } catch (err) {
+    try {
+      if (fs.existsSync(tmpPath)) {
+        fs.unlinkSync(tmpPath);
+      }
+    } catch {
+      // Ignore cleanup errors.
+    }
+    process.stderr.write(
+      `[results-review-extract] warn: failed to write sidecar at ${sidecarPath}: ${String(err)}\n`,
+    );
+  }
 }
 
 /* ------------------------------------------------------------------ */
@@ -128,18 +172,30 @@ export async function extractResultsReviewSignals(
   planDir: string,
   options: { repoRoot?: string } = {},
 ): Promise<void> {
-  const repoRoot = options.repoRoot ?? process.cwd();
+  const repoRoot = options.repoRoot ?? detectRepoRoot(process.cwd());
   const sourcePath = path.join(planDir, "results-review.user.md");
   const sidecarPath = path.join(planDir, "results-review.signals.json");
-  const tmpPath = `${sidecarPath}.tmp`;
-
   const planSlug = path.basename(planDir);
+  const reviewCycleKey = planSlug;
+  const relativeSourcePath = toRepoRelativePath(repoRoot, sourcePath);
 
   // Guard: .user.md must exist.
   if (!fs.existsSync(sourcePath)) {
-    process.stderr.write(
-      `[results-review-extract] warn: ${sourcePath} not found, skipping sidecar emit\n`,
-    );
+    writeSidecar(sidecarPath, {
+      schema_version: "results-review.signals.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: planSlug,
+      review_cycle_key: reviewCycleKey,
+      source_path: relativeSourcePath,
+      build_origin_status: "source_missing",
+      failures: [
+        {
+          code: "source_missing",
+          message: `${relativeSourcePath} not found`,
+        },
+      ],
+      items: [],
+    });
     return;
   }
 
@@ -147,9 +203,21 @@ export async function extractResultsReviewSignals(
   try {
     raw = fs.readFileSync(sourcePath, "utf8");
   } catch (err) {
-    process.stderr.write(
-      `[results-review-extract] warn: failed to read ${sourcePath}: ${String(err)}\n`,
-    );
+    writeSidecar(sidecarPath, {
+      schema_version: "results-review.signals.v1",
+      generated_at: new Date().toISOString(),
+      plan_slug: planSlug,
+      review_cycle_key: reviewCycleKey,
+      source_path: relativeSourcePath,
+      build_origin_status: "parse_failed",
+      failures: [
+        {
+          code: "read_failed",
+          message: String(err),
+        },
+      ],
+      items: [],
+    });
     return;
   }
 
@@ -158,7 +226,7 @@ export async function extractResultsReviewSignals(
   const sections = parseSections(parsed.body);
   const ideasSection = sections.get("new idea candidates");
 
-  const items: ProcessImprovementItem[] = [];
+  const items: ResultsReviewSignalItem[] = [];
 
   if (ideasSection) {
     const business = inferBusiness(parsed.frontmatter);
@@ -167,23 +235,16 @@ export async function extractResultsReviewSignals(
       new Date().toISOString();
     const date = toIsoDate(dateRaw);
 
-    // Relative source path for idea_key derivation (matching generate-process-improvements.ts).
-    let relSourcePath: string;
-    try {
-      relSourcePath = path.relative(repoRoot, sourcePath).replace(/\\/g, "/");
-    } catch {
-      relSourcePath = sourcePath;
-    }
-
     const ideasRaw = extractBulletItems(stripHtmlComments(ideasSection))
       .filter((item) => !isStruckThrough(item))
       .filter((item) => !isNonePlaceholderIdeaCandidate(item));
 
     for (const ideaRaw of ideasRaw) {
       const idea = parseIdeaCandidate(ideaRaw);
-      const ideaKey = deriveIdeaKey(relSourcePath, idea.title);
+      const ideaKey = deriveIdeaKey(relativeSourcePath, idea.title);
+      const identity = deriveBuildOriginIdentity(reviewCycleKey, idea.title);
 
-      const ideaItem: ProcessImprovementItem = {
+      const ideaItem: ResultsReviewSignalItem = {
         type: "idea",
         business,
         title: idea.title,
@@ -191,8 +252,13 @@ export async function extractResultsReviewSignals(
         suggested_action: idea.suggestedAction,
         source: "results-review.user.md",
         date,
-        path: relSourcePath,
+        path: relativeSourcePath,
         idea_key: ideaKey,
+        review_cycle_key: reviewCycleKey,
+        canonical_title: identity.canonical_title,
+        build_signal_id: identity.build_signal_id,
+        recurrence_key: identity.recurrence_key,
+        build_origin_status: identity.build_origin_status,
       };
 
       // Classify — fail-open (classifyIdeaItem is wrapped in try/catch internally).
@@ -202,41 +268,18 @@ export async function extractResultsReviewSignals(
     }
   }
 
-  // Compute relative source_path for the sidecar.
-  let relativeSourcePath: string;
-  try {
-    relativeSourcePath = path.relative(repoRoot, sourcePath).replace(/\\/g, "/");
-  } catch {
-    relativeSourcePath = sourcePath;
-  }
-
   const sidecar: ResultsReviewSidecar = {
     schema_version: "results-review.signals.v1",
     generated_at: new Date().toISOString(),
     plan_slug: planSlug,
+    review_cycle_key: reviewCycleKey,
     source_path: relativeSourcePath,
+    build_origin_status: "ready",
+    failures: [],
     items,
   };
 
-  // Atomic write: temp file then rename.
-  try {
-    fs.writeFileSync(tmpPath, JSON.stringify(sidecar, null, 2) + "\n", "utf8");
-    fs.renameSync(tmpPath, sidecarPath);
-    process.stderr.write(
-      `[results-review-extract] info: wrote ${sidecarPath} (${items.length} items)\n`,
-    );
-  } catch (err) {
-    try {
-      if (fs.existsSync(tmpPath)) {
-        fs.unlinkSync(tmpPath);
-      }
-    } catch {
-      // Ignore cleanup errors.
-    }
-    process.stderr.write(
-      `[results-review-extract] warn: failed to write sidecar at ${sidecarPath}: ${String(err)}\n`,
-    );
-  }
+  writeSidecar(sidecarPath, sidecar);
 }
 
 /* ------------------------------------------------------------------ */

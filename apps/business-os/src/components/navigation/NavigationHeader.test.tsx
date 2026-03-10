@@ -67,7 +67,7 @@ describe("NavigationHeader", () => {
     );
 
     expect(screen.getByRole("link", { name: /home/i })).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: /boards/i })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /legacy board/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /workflows/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /ideas/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /people/i })).toBeInTheDocument();
@@ -83,7 +83,7 @@ describe("NavigationHeader", () => {
       />
     );
 
-    const boardsLink = screen.getByRole("link", { name: /boards/i });
+    const boardsLink = screen.getByRole("link", { name: /legacy board/i });
     expect(boardsLink).toHaveAttribute("aria-current", "page");
   });
 

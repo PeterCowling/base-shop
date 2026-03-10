@@ -288,8 +288,8 @@
   "checkRatesFlexible": "Elastyczne stawki",
   "checkRatesSingle": "Sprawdź stawki",
   "ctaSuffix": {
-    "nonRefundable": "Niezbędne",
-    "flexible": "Elastyczny"
+    "nonRefundable": "Bezzwrotna",
+    "flexible": "Elastyczna"
   },
   "details": "Szczegóły",
   "ratesFrom": "Od €{{price}}",

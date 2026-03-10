@@ -286,10 +286,10 @@
   "filtersAria": "Filtrer par type de chambre",
   "checkRatesNonRefundable": "Tarifs non remboursables",
   "checkRatesFlexible": "Tarifs flexibles",
-  "checkRatesSingle": "Taux de vérification",
+  "checkRatesSingle": "Voir les tarifs",
   "ctaSuffix": {
     "nonRefundable": "Non remboursable",
-    "flexible": "Souple"
+    "flexible": "Flexible"
   },
   "details": "Détails",
   "ratesFrom": "À partir de €{{price}}",

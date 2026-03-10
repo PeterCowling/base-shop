@@ -286,10 +286,10 @@
   "filtersAria": "Lọc theo loại phòng",
   "checkRatesNonRefundable": "Giá không hoàn tiền",
   "checkRatesFlexible": "Giá linh hoạt",
-  "checkRatesSingle": "Kiểm tra tỷ lệ",
+  "checkRatesSingle": "Xem giá",
   "ctaSuffix": {
-    "nonRefundable": "Không thể thay thế được",
-    "flexible": "Dễ uốn cong"
+    "nonRefundable": "Không hoàn tiền",
+    "flexible": "Linh hoạt"
   },
   "details": "Chi tiết",
   "ratesFrom": "Từ €{{price}}",

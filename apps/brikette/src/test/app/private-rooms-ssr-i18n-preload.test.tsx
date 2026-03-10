@@ -1,19 +1,23 @@
 import type { ReactElement } from "react";
 import React from "react";
 
-const getNamespaceBundlesMock = jest.fn(async () => ({ apartmentPage: {}, _tokens: {} }));
-const getMultipleTranslationsMock = jest.fn(async () => ({
+const getMultipleTranslationsMock = jest.fn<
+  Promise<Record<string, unknown>>,
+  [string, readonly string[]]
+>(async () => ({
   apartmentPage: ((key: string) => key) as unknown,
   _tokens: ((key: string) => key) as unknown,
 }));
+const getNamespaceBundlesMock = jest.fn<
+  Promise<Record<string, Record<string, unknown>>>,
+  [string, readonly string[]]
+>(async () => ({ apartmentPage: {}, _tokens: {} }));
 
 jest.mock("@/app/_lib/i18n-server", () => ({
   toAppLanguage: (lang: string) => lang,
   getTranslations: jest.fn(),
-  getMultipleTranslations: (...args: unknown[]) =>
-    getMultipleTranslationsMock(...(args as [string, readonly string[]])),
-  getNamespaceBundles: (...args: unknown[]) =>
-    getNamespaceBundlesMock(...(args as [string, readonly string[]])),
+  getMultipleTranslations: (...args: [string, readonly string[]]) => getMultipleTranslationsMock(...args),
+  getNamespaceBundles: (...args: [string, readonly string[]]) => getNamespaceBundlesMock(...args),
 }));
 
 jest.mock("@/app/[lang]/private-rooms/ApartmentPageContent", () => ({

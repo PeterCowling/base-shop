@@ -29,6 +29,9 @@ const FEATURED_GUIDE_CANDIDATES: readonly GuideKey[] = [
 ] as const;
 
 const MAX_FEATURED_GUIDES = 8;
+const featuredGuides = FEATURED_GUIDE_CANDIDATES.filter((guideKey) =>
+  isGuideLive(guideKey),
+).slice(0, MAX_FEATURED_GUIDES);
 const FALLBACK_GUIDES_SECTION_TITLE =
   // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] fallback copy for localized featured-guides section when landingPage bundle is late.
   "Guides";
@@ -51,11 +54,6 @@ function FeaturedGuidesSection({ lang }: Props): JSX.Element | null {
     guidesTranslation.i18n?.getFixedT?.("en", "guides") ??
     ((key: string): string => key);
   const guideLinkLabels = useMemo(() => getGuideLinkLabels(lang), [lang]);
-
-  const featuredGuides = useMemo(
-    () => FEATURED_GUIDE_CANDIDATES.filter((guideKey) => isGuideLive(guideKey)).slice(0, MAX_FEATURED_GUIDES),
-    [],
-  );
 
   if (featuredGuides.length === 0) {
     return null;

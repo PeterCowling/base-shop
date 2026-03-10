@@ -10,11 +10,11 @@ import { Home, MapPin, Sparkles } from "lucide-react";
 import { Section } from "@acme/design-system/atoms";
 import AmenitiesSection from "@acme/ui/organisms/ApartmentAmenitiesSection";
 import DetailsSection from "@acme/ui/organisms/ApartmentDetailsSection";
-import HeroSection from "@acme/ui/organisms/ApartmentHeroSection";
 import HighlightsSection from "@acme/ui/organisms/ApartmentHighlightsSection";
 
 import FitCheck from "@/components/apartment/FitCheck";
 import GallerySection from "@/components/apartment/GallerySection";
+import HeroSection from "@/components/apartment/HeroSection";
 import ApartmentStructuredData from "@/components/seo/ApartmentStructuredData";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
@@ -45,8 +45,7 @@ function ApartmentPageContent({ lang }: Props) {
 
       <Section padding="none" className="mx-auto max-w-6xl p-6 pt-24 sm:pt-10">
         <section className="scroll-mt-24 space-y-16">
-          <HeroSection lang={lang} bookingUrl={`${privateBookingPath}/`} />
-          <h1 className="sr-only">{t("title")}</h1>
+          <HeroSection lang={lang} bookingUrl={`${privateBookingPath}/`} headingTag="h1" />
           <Section as="div" padding="none" width="full" className="mx-auto max-w-3xl">
             <p className="text-center text-brand-text md:text-lg">{t("body")}</p>
           </Section>

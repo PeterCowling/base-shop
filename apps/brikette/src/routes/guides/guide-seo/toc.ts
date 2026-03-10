@@ -5,6 +5,8 @@ import { IS_DEV } from "@/config/env";
 
 import type { GuideSeoTemplateContext, TocItem } from "./types";
 
+const SECTION_ID_RE = /^section-\d+$/;
+
 type Options = {
   /** When true and no items provided, treat as explicit opt-out. */
   customBuilderProvided?: boolean;
@@ -38,7 +40,7 @@ function normaliseHref(
   if (hasExplicitHref) {
     const prefixed = candidate.startsWith("#") ? candidate : `#${candidate}`;
     const normalisedLower = prefixed.toLowerCase();
-    if (/^#\d+$/u.test(normalisedLower) || /^#section-\d+$/u.test(normalisedLower)) {
+    if (/^#\d+$/u.test(normalisedLower) || SECTION_ID_RE.test(normalisedLower.slice(1))) {
       if (options?.preserveNumberedAnchors && hasExplicitHref) {
         return prefixed.startsWith("#section-") ? prefixed : `#section-${index}`;
       }
@@ -53,7 +55,7 @@ function normaliseHref(
   // When preserving numbered anchors (custom builders), keep the provided id
   // so bespoke numbering schemes remain intact.
   const normalised = (() => {
-    if (!/^section-\d+$/.test(id)) return id;
+    if (!SECTION_ID_RE.test(id)) return id;
     if (options?.preserveNumberedAnchors && hasExplicitHref) return id;
     return `section-${index}`;
   })();
@@ -237,7 +239,7 @@ function buildFromSections(ctx: GuideSeoTemplateContext): TocItem[] {
     .filter((s) => isMeaningfulString(s.title) && Array.isArray(s.body) && s.body.length > 0)
     .map((s, idx) => {
       const id = isMeaningfulString(s.id) ? s.id.trim() : `section-${idx}`;
-      const normalisedId = /^section-\d+$/.test(id) ? `section-${idx}` : id;
+      const normalisedId = SECTION_ID_RE.test(id) ? `section-${idx}` : id;
       return { href: `#${normalisedId}`, label: s.title!.trim() } satisfies TocItem;
     });
   return dedupeTocItems(items);

@@ -128,4 +128,20 @@ describe("Hub page structure", () => {
     expect(content).toContain("click_check_availability");
     expect(content).toContain("click_whatsapp");
   });
+
+  it("apartment hero owns the semantic h1 instead of hiding it sr-only", () => {
+    const pageContent = fs.readFileSync(
+      path.join(APP_DIR, "ApartmentPageContent.tsx"),
+      "utf-8"
+    );
+    const heroContent = fs.readFileSync(
+      path.resolve(__dirname, "../../../../../../packages/ui/src/organisms/ApartmentHeroSection.tsx"),
+      "utf-8"
+    );
+
+    expect(pageContent).toContain('headingTag="h1"');
+    expect(pageContent).not.toContain('<h1 className="sr-only">');
+    expect(heroContent).toContain('headingTag?: "h1" | "h2"');
+    expect(heroContent).toContain("<HeadingTag");
+  });
 });

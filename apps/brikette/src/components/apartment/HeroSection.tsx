@@ -1,6 +1,14 @@
 // src/components/apartment/HeroSection.tsx
-export { default } from "@acme/ui/organisms/ApartmentHeroSection";
-export { default as HeroSection } from "@acme/ui/organisms/ApartmentHeroSection";
+import type { ComponentProps } from "react";
+
+import ApartmentHeroSection from "@acme/ui/organisms/ApartmentHeroSection";
+
+export type HeroSectionProps = ComponentProps<typeof ApartmentHeroSection>;
+
+const HeroSection = ApartmentHeroSection;
+
+export default HeroSection;
+export { HeroSection };
 
 /*
   Hero banner for the apartment page.

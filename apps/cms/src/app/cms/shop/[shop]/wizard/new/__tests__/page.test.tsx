@@ -37,8 +37,8 @@ jest.mock("@acme/i18n", () => ({
 jest.mock("../components/SpecForm", () => ({
   __esModule: true,
   default: ({ onNext }: any) => (
-    <div data-testid="spec-form">
-      <button data-testid="next" onClick={() => onNext(mockSpec)}>
+    <div data-cy="spec-form">
+      <button data-cy="next" onClick={() => onNext(mockSpec)}>
         next
       </button>
     </div>
@@ -48,8 +48,8 @@ jest.mock("../components/SpecForm", () => ({
 jest.mock("../components/PreviewPane", () => ({
   __esModule: true,
   default: ({ onConfirm }: any) => (
-    <div data-testid="preview-pane">
-      <button data-testid="confirm" onClick={onConfirm}>
+    <div data-cy="preview-pane">
+      <button data-cy="confirm" onClick={onConfirm}>
         confirm
       </button>
     </div>

@@ -29,7 +29,7 @@ This plan is deliberately separate because archive carry-over is manual and audi
 ## Active tasks
 
 - [x] TASK-01: Define the historical carry-over manifest and provenance contract — Complete (2026-03-10)
-- [ ] TASK-02: Build the audited historical carry-over manifest for the 12 thematic candidates
+- [x] TASK-02: Build the audited historical carry-over manifest for the 12 thematic candidates — Complete (2026-03-10)
 - [ ] TASK-03: Admit the worthwhile unresolved historical candidates into the canonical queue
 - [ ] TASK-04: Record discard rationale for non-carried candidates and verify queue-only canonicality remains intact
 
@@ -56,7 +56,7 @@ This plan is deliberately separate because archive carry-over is manual and audi
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Define the historical carry-over manifest and provenance contract | 80% | S | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04 |
-| TASK-02 | IMPLEMENT | Build the audited historical carry-over manifest for the 12 thematic candidates | 80% | M | Pending | TASK-01 | TASK-03, TASK-04 |
+| TASK-02 | IMPLEMENT | Build the audited historical carry-over manifest for the 12 thematic candidates | 80% | M | Complete (2026-03-10) | TASK-01 | TASK-03, TASK-04 |
 | TASK-03 | IMPLEMENT | Admit the worthwhile unresolved historical candidates into the canonical queue | 75% | M | Pending | TASK-02 | TASK-04 |
 | TASK-04 | CHECKPOINT | Record discard rationale and verify queue-only canonicality remains intact | 95% | S | Pending | TASK-03 | - |
 
@@ -83,3 +83,13 @@ This plan is deliberately separate because archive carry-over is manual and audi
 - Locked the separation between live build-origin provenance and manual archive carry-over provenance: no fabricated `build_signal_id`, no reuse of the active build-origin bridge, and no archive reads reintroduced into the live backlog path.
 - Added explicit post-admission traceability requirements so carried items must record `dispatch_id`, queue outcome, and telemetry reason inside the manifest after TASK-03 instead of leaving the audit trail split across queue state and prose.
 - Precursor completion propagation: TASK-02 is now unblocked and can build the audited 12-item manifest against the fixed contract.
+
+### TASK-02 (2026-03-10)
+
+- Wrote the audited manifest at [historical-carryover-manifest.json](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json).
+- Normalized the archive into exactly `12` thematic candidates with stable `historical_candidate_id` values, matching the upstream audit.
+- Preserved source provenance for every item (`source_plan_slugs`, `source_paths`, `source_titles`) rather than collapsing the archive into summary prose.
+- Locked explicit disposition for the full set:
+  - `6` items classified `worthwhile_unresolved` and prepared for queue carry-over with queue mappings.
+  - `6` items classified `resolved`, `superseded`, or `moot` and held as explicit do-not-carry records.
+- Precursor completion propagation: TASK-03 is now unblocked and can admit only the six carry-forward items without redoing archive triage.

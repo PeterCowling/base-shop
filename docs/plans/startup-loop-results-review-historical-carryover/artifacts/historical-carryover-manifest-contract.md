@@ -114,10 +114,12 @@ For `carry_forward` items, `queue_mapping` becomes required:
     "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
     "source_plan_slugs": ["archive-plan-slug"],
     "source_paths": ["docs/plans/_archive/..."],
-    "backfilled_at": "ISO-8601"
+    "backfilled_at": null
   }
 }
 ```
+
+`queue_mapping.provenance.backfilled_at` is `null` during TASK-02 and becomes an ISO-8601 timestamp only after TASK-03 performs the actual queue admission.
 
 After queue admission, `admission_result` becomes required for carried items:
 

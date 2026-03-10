@@ -1,0 +1,345 @@
+{
+  "schema_version": "historical-carryover-manifest.v1",
+  "generated_at": "2026-03-10T14:15:00.000Z",
+  "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+  "items": [
+    {
+      "historical_candidate_id": "hc_96cb17616884",
+      "title": "Build artifact caching for staging",
+      "category": "new_loop_process",
+      "source_plan_slugs": ["brikette-staging-upload-speed"],
+      "source_paths": [
+        "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+        "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
+      ],
+      "source_titles": [
+        "New loop process — Build artifact caching for staging: The 1m 51s Next.js build now dominates the job. Caching the .next/cache directory between runs (e.g. via GitHub Actions cache) could reduce repeat build times. Trigger observation: Next.js build time unchanged between Run 2 and Run 3 despite identical code, suggesting no incremental cache was available.",
+        "New loop process — Build artifact caching for staging: The 1m 51s Next.js build now dominates the..."
+      ],
+      "current_state": "worthwhile_unresolved",
+      "carry_forward_decision": "carry_forward",
+      "decision_reason": "The archived observation is still specific, no later queue-backed follow-up exists, and the repo does not show a staging-specific caching follow-on that closes the idea.",
+      "manual_judgment_notes": "Carry forward as fresh fact-find work because the archived evidence is old and the current operational value of staging caching must be revalidated against today's deployment path.",
+      "queue_mapping": {
+        "business": "BRIK",
+        "route": "lp-do-fact-find",
+        "status": "fact_find_ready",
+        "target_slug": "brikette-staging-artifact-caching",
+        "target_path": "docs/plans/brikette-staging-artifact-caching/fact-find.md",
+        "provenance": {
+          "schema_version": "dispatch-historical-carryover.v1",
+          "historical_candidate_id": "hc_96cb17616884",
+          "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+          "source_plan_slugs": ["brikette-staging-upload-speed"],
+          "source_paths": [
+            "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+            "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
+          ],
+          "backfilled_at": null
+        }
+      },
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_6485c412d161",
+      "title": "Chunk count monitoring for Brikette staging",
+      "category": "ai_to_mechanistic",
+      "source_plan_slugs": ["brikette-staging-upload-speed"],
+      "source_paths": [
+        "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+        "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
+      ],
+      "source_titles": [
+        "AI-to-mechanistic — Chunk count monitoring: The ~13k _next/static files dominate the upload regardless of language filter. A deterministic script checking chunk count against a threshold could flag regressions. Trigger observation: CF upload time is bounded from below by the cost of hashing ~13k files locally (~30-40s), not by network transfer.",
+        "AI-to-mechanistic — Chunk count monitoring: The ~13k _next/static files dominate the upload regar..."
+      ],
+      "current_state": "worthwhile_unresolved",
+      "carry_forward_decision": "carry_forward",
+      "decision_reason": "The repo still shows no queue-backed monitoring follow-on for chunk explosion, and the archived signal remains a concrete mechanization candidate rather than a vague aspiration.",
+      "manual_judgment_notes": "Carry forward as fresh fact-find work because the archived threshold and operational relevance need to be re-established before any monitoring gate is specified.",
+      "queue_mapping": {
+        "business": "BRIK",
+        "route": "lp-do-fact-find",
+        "status": "fact_find_ready",
+        "target_slug": "brikette-staging-chunk-count-monitoring",
+        "target_path": "docs/plans/brikette-staging-chunk-count-monitoring/fact-find.md",
+        "provenance": {
+          "schema_version": "dispatch-historical-carryover.v1",
+          "historical_candidate_id": "hc_6485c412d161",
+          "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+          "source_plan_slugs": ["brikette-staging-upload-speed"],
+          "source_paths": [
+            "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+            "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
+          ],
+          "backfilled_at": null
+        }
+      },
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_91453caa737f",
+      "title": "Divergence detection for app-nav dual sources",
+      "category": "ai_to_mechanistic",
+      "source_plan_slugs": ["reception-appnav-dual-source"],
+      "source_paths": [
+        "docs/plans/_archive/reception-appnav-dual-source/results-review.signals.json"
+      ],
+      "source_titles": [
+        "AI-to-mechanistic — divergence detection between multiple hardcoded arrays could be automated by a script that compares route sets across the app; now moot since divergences are eliminated, but the pattern of \"multiple files containing equivalent data\" could trigger a lint rule"
+      ],
+      "current_state": "moot",
+      "carry_forward_decision": "do_not_carry",
+      "decision_reason": "The archived result-review row itself records the issue as moot once the divergent arrays were eliminated.",
+      "manual_judgment_notes": "Deterministic do-not-carry: the source artifact explicitly states the motivating divergence no longer exists.",
+      "queue_mapping": null,
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_d7efdd386a11",
+      "title": "Extract shared PIN digit colour array into a single constant",
+      "category": "ai_to_mechanistic",
+      "source_plan_slugs": ["reception-component-token-compliance"],
+      "source_paths": [
+        "docs/plans/_archive/reception-component-token-compliance/results-review.signals.json",
+        "docs/plans/_archive/reception-component-token-compliance/pattern-reflection.entries.json"
+      ],
+      "source_titles": [
+        "AI-to-mechanistic — Extract shared PIN digit colour array into a single constant",
+        "AI-to-mechanistic — Extract shared PIN digit colour array into a single constant"
+      ],
+      "current_state": "worthwhile_unresolved",
+      "carry_forward_decision": "carry_forward",
+      "decision_reason": "The duplicate `PIN_BG_CLASSES` arrays still exist in current code, so the archived finding remains unresolved and concrete.",
+      "manual_judgment_notes": "Carry forward as fact-find rather than direct build so the current duplication surface and best extraction seam can be rechecked against any subsequent auth-flow changes.",
+      "queue_mapping": {
+        "business": "BRIK",
+        "route": "lp-do-fact-find",
+        "status": "fact_find_ready",
+        "target_slug": "reception-pin-digit-colour-constant-extraction",
+        "target_path": "docs/plans/reception-pin-digit-colour-constant-extraction/fact-find.md",
+        "provenance": {
+          "schema_version": "dispatch-historical-carryover.v1",
+          "historical_candidate_id": "hc_d7efdd386a11",
+          "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+          "source_plan_slugs": ["reception-component-token-compliance"],
+          "source_paths": [
+            "docs/plans/_archive/reception-component-token-compliance/results-review.signals.json",
+            "docs/plans/_archive/reception-component-token-compliance/pattern-reflection.entries.json"
+          ],
+          "backfilled_at": null
+        }
+      },
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_33071236f714",
+      "title": "Duplicate component detection before drift compounds",
+      "category": "ai_to_mechanistic",
+      "source_plan_slugs": ["reception-date-selector-unification"],
+      "source_paths": [
+        "docs/plans/_archive/reception-date-selector-unification/results-review.signals.json",
+        "docs/plans/_archive/reception-date-selector-unification/pattern-reflection.entries.json"
+      ],
+      "source_titles": [
+        "AI-to-mechanistic — Duplicate component detection (identify near-identical components by AST similarity before duplication compounds) could be mechanistic",
+        "AI-to-mechanistic — Duplicate component detection (identify near-identical components by AST simi..."
+      ],
+      "current_state": "worthwhile_unresolved",
+      "carry_forward_decision": "carry_forward",
+      "decision_reason": "The repo still shows the archival insight as unresolved: no detector or analysis tool now enforces early duplicate-component discovery.",
+      "manual_judgment_notes": "Carry forward as fact-find because the archived proposal names one detection strategy, but the correct current implementation shape still needs fresh design work.",
+      "queue_mapping": {
+        "business": "BRIK",
+        "route": "lp-do-fact-find",
+        "status": "fact_find_ready",
+        "target_slug": "reception-duplicate-component-detection",
+        "target_path": "docs/plans/reception-duplicate-component-detection/fact-find.md",
+        "provenance": {
+          "schema_version": "dispatch-historical-carryover.v1",
+          "historical_candidate_id": "hc_33071236f714",
+          "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+          "source_plan_slugs": ["reception-date-selector-unification"],
+          "source_paths": [
+            "docs/plans/_archive/reception-date-selector-unification/results-review.signals.json",
+            "docs/plans/_archive/reception-date-selector-unification/pattern-reflection.entries.json"
+          ],
+          "backfilled_at": null
+        }
+      },
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_33f3a5c1c2c2",
+      "title": "Schedule Gmail In-Progress reconciliation outside the agent loop",
+      "category": "ai_to_mechanistic",
+      "source_plan_slugs": ["reception-inbox-inprogress-recovery"],
+      "source_paths": [
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
+      ],
+      "source_titles": [
+        "AI-to-mechanistic — Schedule Gmail In-Progress reconciliation outside the agent loop",
+        "AI-to-mechanistic — Schedule Gmail In-Progress reconciliation outside the agent loop"
+      ],
+      "current_state": "superseded",
+      "carry_forward_decision": "do_not_carry",
+      "decision_reason": "Later guard hardening work wired `gmail_reconcile_in_progress` into ops-inbox preflight, which resolves the practical reminder gap called out by the archive row.",
+      "manual_judgment_notes": "Deterministic do-not-carry: later repo state provides the operational follow-through that the archived candidate sought.",
+      "queue_mapping": null,
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_137150cc51c2",
+      "title": "Add a post-deploy recovery telemetry review checkpoint",
+      "category": "new_loop_process",
+      "source_plan_slugs": ["reception-inbox-inprogress-recovery"],
+      "source_paths": [
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
+      ],
+      "source_titles": [
+        "New loop process — Add a post-deploy recovery telemetry review checkpoint",
+        "New loop process — Add a post-deploy recovery telemetry review checkpoint"
+      ],
+      "current_state": "worthwhile_unresolved",
+      "carry_forward_decision": "carry_forward",
+      "decision_reason": "Recovery telemetry exists, but there is still no standing review checkpoint consuming it, so the archived process gap remains live.",
+      "manual_judgment_notes": "Carry forward as fact-find because the checkpoint should be designed against the current telemetry and ops cadence rather than blindly replaying the archived suggestion.",
+      "queue_mapping": {
+        "business": "BRIK",
+        "route": "lp-do-fact-find",
+        "status": "fact_find_ready",
+        "target_slug": "reception-inbox-recovery-telemetry-review-checkpoint",
+        "target_path": "docs/plans/reception-inbox-recovery-telemetry-review-checkpoint/fact-find.md",
+        "provenance": {
+          "schema_version": "dispatch-historical-carryover.v1",
+          "historical_candidate_id": "hc_137150cc51c2",
+          "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+          "source_plan_slugs": ["reception-inbox-inprogress-recovery"],
+          "source_paths": [
+            "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+            "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
+          ],
+          "backfilled_at": null
+        }
+      },
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_8161e60c69f4",
+      "title": "Add a standing ops feed for inbox recovery outcomes",
+      "category": "new_standing_data_source",
+      "source_plan_slugs": ["reception-inbox-inprogress-recovery"],
+      "source_paths": [
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
+      ],
+      "source_titles": [
+        "New standing data source — Add a standing ops feed for inbox recovery outcomes",
+        "New standing data source — Add a standing ops feed for inbox recovery outcomes"
+      ],
+      "current_state": "worthwhile_unresolved",
+      "carry_forward_decision": "carry_forward",
+      "decision_reason": "The telemetry source exists, but there is still no standing artifact or feed that turns those outcomes into an ongoing operational input.",
+      "manual_judgment_notes": "Carry forward as fact-find because the right standing artifact, owner, and reporting cadence remain open design decisions rather than settled implementation details.",
+      "queue_mapping": {
+        "business": "BRIK",
+        "route": "lp-do-fact-find",
+        "status": "fact_find_ready",
+        "target_slug": "reception-inbox-recovery-ops-feed",
+        "target_path": "docs/plans/reception-inbox-recovery-ops-feed/fact-find.md",
+        "provenance": {
+          "schema_version": "dispatch-historical-carryover.v1",
+          "historical_candidate_id": "hc_8161e60c69f4",
+          "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+          "source_plan_slugs": ["reception-inbox-inprogress-recovery"],
+          "source_paths": [
+            "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+            "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
+          ],
+          "backfilled_at": null
+        }
+      },
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_4ff035d6183c",
+      "title": "Mechanize contrast pre-verification before token edits",
+      "category": "ai_to_mechanistic",
+      "source_plan_slugs": ["reception-theme-dark-mode-base-tokens"],
+      "source_paths": [
+        "docs/plans/_archive/reception-theme-dark-mode-base-tokens/results-review.signals.json"
+      ],
+      "source_titles": [
+        "AI-to-mechanistic — The contrast pre-verification step (running pnpm tokens:contrast:check with proposed values before committing) could be a mechanistic pre-build check rather than a manual task step. Trigger observation: TASK-01 Red step required manual verification; this could be automated as a pre-token-edit gate. Signal is weak (single occurrence); not actionable yet."
+      ],
+      "current_state": "resolved",
+      "carry_forward_decision": "do_not_carry",
+      "decision_reason": "Later guardrail work already mechanized the main contrast-check step through `scripts/validate-changes.sh` and `pnpm tokens:contrast:check`.",
+      "manual_judgment_notes": "Deterministic do-not-carry: the motivating guardrail now exists in current repo policy and validation code.",
+      "queue_mapping": null,
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_231db3021a73",
+      "title": "Build-record structured extraction",
+      "category": "ai_to_mechanistic",
+      "source_plan_slugs": ["startup-loop-structured-sidecar-introduction"],
+      "source_paths": [
+        "docs/plans/_archive/startup-loop-structured-sidecar-introduction/results-review.signals.json",
+        "docs/plans/_archive/startup-loop-structured-sidecar-introduction/pattern-reflection.entries.json"
+      ],
+      "source_titles": [
+        "Build-record structured extraction as AI-to-mechanistic candidate",
+        "Build-record structured extraction as AI-to-mechanistic candidate"
+      ],
+      "current_state": "resolved",
+      "carry_forward_decision": "do_not_carry",
+      "decision_reason": "The repo now has `lp-do-build-event-emitter.ts` and per-plan `build-event.json`, which deliver the machine-readable build-record companion the archive item proposed.",
+      "manual_judgment_notes": "Deterministic do-not-carry: the requested structured extraction path exists in current code and build outputs.",
+      "queue_mapping": null,
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_fc7e832bd0fb",
+      "title": "Post-authoring sidecar extraction as reusable loop process",
+      "category": "new_loop_process",
+      "source_plan_slugs": ["startup-loop-structured-sidecar-introduction"],
+      "source_paths": [
+        "docs/plans/_archive/startup-loop-structured-sidecar-introduction/results-review.signals.json",
+        "docs/plans/_archive/startup-loop-structured-sidecar-introduction/pattern-reflection.entries.json"
+      ],
+      "source_titles": [
+        "Post-authoring sidecar extraction as a reusable loop process",
+        "Post-authoring sidecar extraction as a reusable loop process"
+      ],
+      "current_state": "superseded",
+      "carry_forward_decision": "do_not_carry",
+      "decision_reason": "The queue-unification thread already consumed this capability as the downstream carry of sidecar extraction, so carrying it again would just restate completed work.",
+      "manual_judgment_notes": "Deterministic do-not-carry: later startup-loop work already operationalized the same process direction.",
+      "queue_mapping": null,
+      "admission_result": null
+    },
+    {
+      "historical_candidate_id": "hc_ee7c44c373a4",
+      "title": "Split parity-completion checkpoint from runtime-cleanup migration",
+      "category": "new_loop_process",
+      "source_plan_slugs": ["xa-uploader-cloud-parity-completion"],
+      "source_paths": [
+        "docs/plans/_archive/xa-uploader-cloud-parity-completion/results-review.signals.json",
+        "docs/plans/_archive/xa-uploader-cloud-parity-completion/pattern-reflection.entries.json"
+      ],
+      "source_titles": [
+        "New loop process — Split parity-completion checkpoint from runtime-cleanup migration",
+        "New loop process — Split parity-completion checkpoint from runtime-cleanup migration"
+      ],
+      "current_state": "resolved",
+      "carry_forward_decision": "do_not_carry",
+      "decision_reason": "The source plan itself already performed the parity/runtime-cleanup separation and recorded the remaining environment-support branches explicitly.",
+      "manual_judgment_notes": "Deterministic do-not-carry: the source plan closed the idea in its own narrowing work and evidence pack.",
+      "queue_mapping": null,
+      "admission_result": null
+    }
+  ]
+}

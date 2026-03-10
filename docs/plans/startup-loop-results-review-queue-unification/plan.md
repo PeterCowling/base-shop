@@ -29,7 +29,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [x] TASK-03: Implement build-review-to-queue admission and dedupe — Complete (2026-03-10)
 - [x] TASK-04: Switch process-improvements idea backlog to queue-only sourcing — Complete (2026-03-10)
 - [x] TASK-05: Demote `completed-ideas.json` from active backlog control — Complete (2026-03-10)
-- [ ] TASK-06: Determine the self-evolving build-origin alignment model
+- [x] TASK-06: Determine the self-evolving build-origin alignment model — Complete (2026-03-10)
 - [ ] TASK-11: Implement the chosen self-evolving build-origin alignment
 - [ ] TASK-07: Canonical queue-path readiness checkpoint
 - [ ] TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
@@ -101,8 +101,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-03 | IMPLEMENT | Implement build-review-to-queue admission and dedupe | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 |
 | TASK-04 | IMPLEMENT | Switch process-improvements idea backlog to queue-only sourcing | 85% | M | Complete (2026-03-10) | TASK-03 | TASK-05, TASK-07, TASK-08, TASK-10 |
 | TASK-05 | IMPLEMENT | Demote `completed-ideas.json` from active backlog control | 80% | M | Complete (2026-03-10) | TASK-03, TASK-04 | TASK-07, TASK-08, TASK-10 |
-| TASK-06 | INVESTIGATE | Determine the self-evolving build-origin alignment model | 70% | M | Pending | TASK-01, TASK-02, TASK-03 | TASK-11 |
-| TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 75% | M | Pending | TASK-06 | TASK-07 |
+| TASK-06 | INVESTIGATE | Determine the self-evolving build-origin alignment model | 70% | M | Complete (2026-03-10) | TASK-01, TASK-02, TASK-03 | TASK-11 |
+| TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 80% | M | Pending | TASK-06 | TASK-07 |
 | TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11 | TASK-08, TASK-09, TASK-10, TASK-12 |
 | TASK-08 | INVESTIGATE | Audit historical backlog carry-over and produce bounded carry-over evidence | 70% | M | Pending | TASK-07 | TASK-09, TASK-10, TASK-12 |
 | TASK-09 | CHECKPOINT | Decide in-thread cutover versus separate carry-over project | 95% | S | Pending | TASK-08 | TASK-10, TASK-12 |
@@ -319,7 +319,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-10)
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** TASK-11
@@ -340,6 +340,12 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - New outputs check:
     - chosen `build_signal_id` join behavior is consumed by self-evolving observation generation and downstream audit/reporting.
 - **What would make this >=90%:** a tiny prototype proving one alignment model on real build-origin artifacts.
+- **Build completion evidence (2026-03-10):**
+  - Wrote the alignment decision in [self-evolving-build-origin-alignment.md](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-queue-unification/artifacts/self-evolving-build-origin-alignment.md).
+  - Traced the current raw self-evolving intake in [self-evolving-from-build-output.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts): it still reads `results-review.signals.json` and `pattern-reflection.entries.json` directly and turns them into idea observations outside queue authority.
+  - Traced the canonical queue-backed path in [lp-do-ideas-build-origin-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts) and [self-evolving-from-ideas.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-ideas.ts), and identified the missing bridge: `self-evolving-from-ideas.ts` does not yet consume `build_origin` provenance.
+  - Chosen model: queue-backed build-origin dispatches are the only authoritative self-evolving intake for build-origin ideas; `self-evolving-from-build-output.ts` is narrowed to non-authoritative structural build observation.
+  - Outcome: affirming. TASK-11 is now bounded and crosses the implement floor.
 
 ### TASK-11: Implement the chosen self-evolving build-origin alignment in code
 - **Type:** IMPLEMENT
@@ -352,8 +358,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts`, related tests under `scripts/src/startup-loop/__tests__/`
 - **Depends on:** TASK-06
 - **Blocks:** TASK-07
-- **Confidence:** 75%
-  - Implementation: 75% - the seam is narrow, but the chosen model still has to survive real call-site joins.
+- **Confidence:** 80%
+  - Implementation: 80% - TASK-06 fixed the model choice, and the remaining code seam is now narrow and explicit.
   - Approach: 80% - once TASK-06 chooses the model, the implementation path is bounded.
   - Impact: 85% - readiness is not credible while self-evolving still reads a second build-origin truth path.
 - **Acceptance:**

@@ -12,6 +12,7 @@ import {
   QUEUE_STATE_RELATIVE_PATH,
   runBuildOriginBridgeForProcessImprovements,
   runCheck,
+  updateProcessImprovementsArtifacts,
   updateProcessImprovementsHtml,
 } from "../build/generate-process-improvements";
 import type { DispatchBuildOriginProvenance } from "../ideas/lp-do-ideas-trial";
@@ -792,6 +793,39 @@ Review-date: 2026-03-06
 
     const data = collectProcessImprovements(tmpDir);
     expect(data.ideaItems).toHaveLength(0);
+  });
+
+  it("TC-14-03: render-only artifact updates do not auto-admit build-origin sidecars", async () => {
+    await writeBuildOriginSidecars(tmpDir, "docs/plans/queue-unification-task");
+    await writeFile(tmpDir, "docs/business-os/process-improvements.user.html", HTML_TEMPLATE);
+
+    const result = updateProcessImprovementsArtifacts(tmpDir, {
+      sync_build_origin_bridge: false,
+      sync_codebase_signals_bridge: false,
+      sync_agent_session_signals_bridge: false,
+      now: new Date("2026-03-10T12:00:00.000Z"),
+    });
+
+    expect(result.data.ideaItems).toHaveLength(0);
+
+    const queueStatePath = path.join(tmpDir, QUEUE_STATE_RELATIVE_PATH);
+    await expect(fs.stat(queueStatePath)).rejects.toThrow();
+  });
+
+  it("TC-14-04: build-origin sync can still be run explicitly before artifact updates", async () => {
+    await writeBuildOriginSidecars(tmpDir, "docs/plans/queue-unification-task");
+    await writeFile(tmpDir, "docs/business-os/process-improvements.user.html", HTML_TEMPLATE);
+
+    const result = updateProcessImprovementsArtifacts(tmpDir, {
+      sync_build_origin_bridge: true,
+      sync_codebase_signals_bridge: false,
+      sync_agent_session_signals_bridge: false,
+      now: new Date("2026-03-10T12:00:00.000Z"),
+    });
+
+    expect(result.build_origin_bridge?.dispatches_enqueued).toBe(1);
+    expect(result.data.ideaItems).toHaveLength(1);
+    expect(result.data.ideaItems[0]?.title).toBe("Queue-backed build-origin idea");
   });
 
   it("appendCompletedIdea is idempotent — calling twice yields one entry", async () => {

@@ -470,6 +470,22 @@ export interface ProcessImprovementsData {
   pendingReviewItems: ProcessImprovementItem[];
 }
 
+export interface UpdateProcessImprovementsArtifactsOptions {
+  sync_build_origin_bridge?: boolean;
+  sync_codebase_signals_bridge?: boolean;
+  sync_agent_session_signals_bridge?: boolean;
+  now?: Date;
+}
+
+export interface UpdateProcessImprovementsArtifactsResult {
+  data: ProcessImprovementsData;
+  date_iso: string;
+  generated_at: string;
+  build_origin_bridge: BuildOriginBridgeSummary | null;
+  codebase_signals_bridge: ReturnType<typeof runCodebaseSignalsBridge> | null;
+  agent_session_signals_bridge: ReturnType<typeof runAgentSessionSignalsBridge> | null;
+}
+
 /**
  * Derive a stable, deterministic key for an idea based on its source file path and title.
  * The key is the SHA-1 hash of `${sourcePath}::${title}`.
@@ -1048,78 +1064,123 @@ function writeFileAtomic(filePath: string, content: string): void {
   renameSync(tempPath, filePath);
 }
 
-function runCli(): void {
-  const repoRoot = path.resolve(process.cwd(), "..");
-  const buildOriginBridgeResult = runBuildOriginBridgeForProcessImprovements(repoRoot);
+export function updateProcessImprovementsArtifacts(
+  repoRoot: string,
+  options: UpdateProcessImprovementsArtifactsOptions = {},
+): UpdateProcessImprovementsArtifactsResult {
+  const syncBuildOriginBridge = options.sync_build_origin_bridge ?? true;
+  const syncCodebaseSignalsBridge = options.sync_codebase_signals_bridge ?? true;
+  const syncAgentSessionSignalsBridge = options.sync_agent_session_signals_bridge ?? true;
+
+  const buildOriginBridgeResult = syncBuildOriginBridge
+    ? runBuildOriginBridgeForProcessImprovements(repoRoot)
+    : null;
   const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);
   const dataPath = path.join(repoRoot, PROCESS_DATA_RELATIVE_PATH);
-  const now = new Date();
+  const now = options.now ?? new Date();
   const dateIso = now.toISOString().slice(0, 10);
-  const genTs = now.toISOString();
+  const generatedAt = now.toISOString();
 
   const data = collectProcessImprovements(repoRoot);
   const html = readFileSync(htmlPath, "utf8");
-  const updatedHtml = updateProcessImprovementsHtml(html, data, dateIso, genTs);
+  const updatedHtml = updateProcessImprovementsHtml(html, data, dateIso, generatedAt);
 
   writeFileAtomic(htmlPath, updatedHtml);
   mkdirSync(path.dirname(dataPath), { recursive: true });
   writeFileSync(dataPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 
+  const latestBugScanArtifactPath =
+    data.ideaItems.find((item) => item.source === "bug-scan-findings.user.json")?.path ?? null;
+  const codebaseSignalsBridgeResult = syncCodebaseSignalsBridge
+    ? runCodebaseSignalsBridge({
+        rootDir: repoRoot,
+        business: "BOS",
+        registryPath: "docs/business-os/startup-loop/ideas/standing-registry.json",
+        queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+        telemetryPath: "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",
+        statePath: "docs/business-os/startup-loop/ideas/trial/codebase-signal-bridge-state.json",
+        bugScanArtifactPath: latestBugScanArtifactPath,
+        fromRef: "HEAD~1",
+        toRef: "HEAD",
+        bugSeverityThreshold: "critical",
+      })
+    : null;
+  const agentSessionBridgeResult = syncAgentSessionSignalsBridge
+    ? runAgentSessionSignalsBridge({
+        rootDir: repoRoot,
+        business: "BOS",
+        registryPath: "docs/business-os/startup-loop/ideas/standing-registry.json",
+        queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+        telemetryPath: "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",
+        statePath: "docs/business-os/startup-loop/ideas/trial/agent-session-signal-bridge-state.json",
+        artifactPath: "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
+        transcriptsRoot: path.join(
+          os.homedir(),
+          ".claude",
+          "projects",
+          "-Users-petercowling-base-shop",
+        ),
+        sessionLimit: 20,
+      })
+    : null;
+
+  return {
+    data,
+    date_iso: dateIso,
+    generated_at: generatedAt,
+    build_origin_bridge: buildOriginBridgeResult,
+    codebase_signals_bridge: codebaseSignalsBridgeResult,
+    agent_session_signals_bridge: agentSessionBridgeResult,
+  };
+}
+
+function runCli(): void {
+  const repoRoot = path.resolve(process.cwd(), "..");
+  const renderOnly = process.argv.includes("--render-only");
+  const result = updateProcessImprovementsArtifacts(repoRoot, {
+    sync_build_origin_bridge: !renderOnly,
+    sync_codebase_signals_bridge: !renderOnly,
+    sync_agent_session_signals_bridge: !renderOnly,
+  });
+
   process.stdout.write(
-    `[generate-process-improvements] updated ${PROCESS_HTML_RELATIVE_PATH} (ideas=${data.ideaItems.length}, risks=${data.riskItems.length}, pending=${data.pendingReviewItems.length})\n`,
+    `[generate-process-improvements] updated ${PROCESS_HTML_RELATIVE_PATH} (ideas=${result.data.ideaItems.length}, risks=${result.data.riskItems.length}, pending=${result.data.pendingReviewItems.length})\n`,
   );
   process.stdout.write(
     `[generate-process-improvements] wrote ${PROCESS_DATA_RELATIVE_PATH}\n`,
   );
-  process.stdout.write(
-    `[generate-process-improvements] build-origin bridge: ok=${buildOriginBridgeResult.ok} plans=${buildOriginBridgeResult.plans_considered}/${buildOriginBridgeResult.plans_scanned} signals=${buildOriginBridgeResult.signals_considered} admitted=${buildOriginBridgeResult.signals_admitted} enqueued=${buildOriginBridgeResult.dispatches_enqueued}\n`,
-  );
-  if (buildOriginBridgeResult.warnings.length > 0) {
-    for (const warning of buildOriginBridgeResult.warnings) {
-      process.stdout.write(`[generate-process-improvements] build-origin bridge warning: ${warning}\n`);
+  if (renderOnly) {
+    process.stdout.write("[generate-process-improvements] render-only mode: bridge sync skipped\n");
+    return;
+  }
+  if (result.build_origin_bridge) {
+    process.stdout.write(
+      `[generate-process-improvements] build-origin bridge: ok=${result.build_origin_bridge.ok} plans=${result.build_origin_bridge.plans_considered}/${result.build_origin_bridge.plans_scanned} signals=${result.build_origin_bridge.signals_considered} admitted=${result.build_origin_bridge.signals_admitted} enqueued=${result.build_origin_bridge.dispatches_enqueued}\n`,
+    );
+    if (result.build_origin_bridge.warnings.length > 0) {
+      for (const warning of result.build_origin_bridge.warnings) {
+        process.stdout.write(`[generate-process-improvements] build-origin bridge warning: ${warning}\n`);
+      }
     }
   }
-
-  const latestBugScanArtifactPath =
-    data.ideaItems.find((item) => item.source === "bug-scan-findings.user.json")?.path ?? null;
-  const bridgeResult = runCodebaseSignalsBridge({
-    rootDir: repoRoot,
-    business: "BOS",
-    registryPath: "docs/business-os/startup-loop/ideas/standing-registry.json",
-    queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-    telemetryPath: "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",
-    statePath: "docs/business-os/startup-loop/ideas/trial/codebase-signal-bridge-state.json",
-    bugScanArtifactPath: latestBugScanArtifactPath,
-    fromRef: "HEAD~1",
-    toRef: "HEAD",
-    bugSeverityThreshold: "critical",
-  });
-  process.stdout.write(
-    `[generate-process-improvements] signal bridge: ok=${bridgeResult.ok} events=${bridgeResult.events_considered} admitted=${bridgeResult.events_admitted} enqueued=${bridgeResult.dispatches_enqueued}\n`,
-  );
-  if (bridgeResult.warnings.length > 0) {
-    for (const warning of bridgeResult.warnings) {
-      process.stdout.write(`[generate-process-improvements] signal bridge warning: ${warning}\n`);
+  if (result.codebase_signals_bridge) {
+    process.stdout.write(
+      `[generate-process-improvements] signal bridge: ok=${result.codebase_signals_bridge.ok} events=${result.codebase_signals_bridge.events_considered} admitted=${result.codebase_signals_bridge.events_admitted} enqueued=${result.codebase_signals_bridge.dispatches_enqueued}\n`,
+    );
+    if (result.codebase_signals_bridge.warnings.length > 0) {
+      for (const warning of result.codebase_signals_bridge.warnings) {
+        process.stdout.write(`[generate-process-improvements] signal bridge warning: ${warning}\n`);
+      }
     }
   }
-
-  const sessionBridgeResult = runAgentSessionSignalsBridge({
-    rootDir: repoRoot,
-    business: "BOS",
-    registryPath: "docs/business-os/startup-loop/ideas/standing-registry.json",
-    queueStatePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-    telemetryPath: "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl",
-    statePath: "docs/business-os/startup-loop/ideas/trial/agent-session-signal-bridge-state.json",
-    artifactPath: "docs/business-os/startup-loop/ideas/trial/agent-session-findings.latest.json",
-    transcriptsRoot: path.join(os.homedir(), ".claude", "projects", "-Users-petercowling-base-shop"),
-    sessionLimit: 20,
-  });
-  process.stdout.write(
-    `[generate-process-improvements] agent-session bridge: ok=${sessionBridgeResult.ok} scanned=${sessionBridgeResult.sessions_scanned} with_findings=${sessionBridgeResult.sessions_with_findings} enqueued=${sessionBridgeResult.dispatches_enqueued}\n`,
-  );
-  if (sessionBridgeResult.warnings.length > 0) {
-    for (const warning of sessionBridgeResult.warnings) {
-      process.stdout.write(`[generate-process-improvements] agent-session bridge warning: ${warning}\n`);
+  if (result.agent_session_signals_bridge) {
+    process.stdout.write(
+      `[generate-process-improvements] agent-session bridge: ok=${result.agent_session_signals_bridge.ok} scanned=${result.agent_session_signals_bridge.sessions_scanned} with_findings=${result.agent_session_signals_bridge.sessions_with_findings} enqueued=${result.agent_session_signals_bridge.dispatches_enqueued}\n`,
+    );
+    if (result.agent_session_signals_bridge.warnings.length > 0) {
+      for (const warning of result.agent_session_signals_bridge.warnings) {
+        process.stdout.write(`[generate-process-improvements] agent-session bridge warning: ${warning}\n`);
+      }
     }
   }
 }

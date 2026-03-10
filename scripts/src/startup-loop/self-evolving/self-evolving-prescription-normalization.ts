@@ -1,10 +1,13 @@
 import {
+  type BlockingScope,
   type CanonicalRecommendedRoute,
   type GapCase,
   type GapCaseSourceKind,
   type Prescription,
+  type PrescriptionMaturity,
   type PrescriptionRiskClass,
   type PrescriptionSourceKind,
+  type RequirementPosture,
   stableHash,
   validateGapCase,
   validatePrescription,
@@ -29,6 +32,8 @@ interface GapCaseInput {
   severity: number;
   evidence_refs: string[];
   recurrence_key: string;
+  requirement_posture?: RequirementPosture;
+  blocking_scope?: BlockingScope;
   structural_context: Record<string, unknown>;
   candidate_id: string;
 }
@@ -42,6 +47,7 @@ interface PrescriptionInput {
   expected_artifacts: string[];
   expected_signal_change: string;
   risk_class: PrescriptionRiskClass;
+  maturity?: PrescriptionMaturity;
 }
 
 function compactStableId(prefix: string, key: string): string {
@@ -141,6 +147,8 @@ export function buildCanonicalGapCase(input: GapCaseInput): GapCase {
     severity: clampSeverity(input.severity),
     evidence_refs: filterStringList(input.evidence_refs),
     recurrence_key: input.recurrence_key,
+    requirement_posture: input.requirement_posture,
+    blocking_scope: input.blocking_scope,
     structural_context: input.structural_context,
     runtime_binding: {
       binding_mode: "compiled_to_candidate",
@@ -171,6 +179,7 @@ export function buildCanonicalPrescription(input: PrescriptionInput): Prescripti
     expected_artifacts: filterStringList(input.expected_artifacts),
     expected_signal_change: input.expected_signal_change.trim(),
     risk_class: input.risk_class,
+    maturity: input.maturity,
   };
   assertValid(validatePrescription(prescription), "prescription");
   return prescription;

@@ -34,7 +34,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 ## Active tasks
 - [x] TASK-01: Define canonical `gap-case.v1` and `prescription.v1` contracts — Complete (2026-03-10)
 - [x] TASK-02: Normalize existing suggestion seams onto canonical gap-case and prescription shapes — Complete (2026-03-10)
-- [ ] TASK-03: Add requirement posture and prescription maturity to queue and policy routing
+- [x] TASK-03: Add requirement posture and prescription maturity to queue and policy routing — Complete (2026-03-10)
 - [ ] TASK-04: Extend policy journaling and evaluation for prescription-choice learning
 - [x] TASK-05: Map milestone roots to runtime producers and unify activation thresholds — Complete (2026-03-10)
 - [ ] TASK-06: Implement milestone-event triggers, producers, and lateral bundle generation
@@ -254,8 +254,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`
+- **Status:** Complete (2026-03-10)
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-contracts.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-prescription-normalization.ts`, `scripts/src/startup-loop/replan-trigger.ts`, `scripts/src/startup-loop/diagnostics/signal-review-review-required.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts`, `docs/business-os/startup-loop/ideas/schemas/lp-do-ideas-dispatch.v2.schema.json`, `scripts/src/startup-loop/__tests__/self-evolving-contracts.test.ts`, `scripts/src/startup-loop/__tests__/replan-trigger.test.ts`, `scripts/src/startup-loop/__tests__/signal-review-review-required.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-build-origin-bridge.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-portfolio.test.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-dispatch-v2.test.ts`
 - **Depends on:** TASK-01, TASK-02
 - **Blocks:** TASK-04, TASK-06, TASK-07, TASK-08, TASK-09
 - **Confidence:** 81%
@@ -288,6 +288,16 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Notes / references:**
   - [self-evolving-scoring.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-scoring.ts)
   - [self-evolving-portfolio.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-portfolio.ts)
+- **Build Evidence (2026-03-10):**
+  - Red evidence: the runtime could carry canonical `gap_case` and `prescription` identities, but it still treated urgency and remedy maturity as implicit heuristics. Unknown remedies were not a tracked state, absolute requirements were not expressible in routing/selection, and queue handoff could not preserve those semantics.
+  - Green: added first-class `requirement_posture`, `blocking_scope`, and `prescription_maturity` enums to startup-loop contracts; normalized seam emitters now populate those fields; queue/self-evolving linkage preserves them across handoff; route decisions derive one shared semantics object; and the orchestrator now forces `unknown` / `hypothesized` prescriptions back to `lp-do-fact-find` while absolute-required rejects reopen as fact-find rather than disappearing.
+  - Precedence model implemented: hard rules still filter first, learned-prescription routing semantics then constrain the candidate route, portfolio selection applies an explicit absolute-required selection bonus only after hard-rule admissibility, and later governance/exploration layers continue to operate on that bounded candidate set. This keeps posture inside one ordered model instead of creating a fourth conflicting opinion surface.
+  - TC-01: pass. A new orchestrator integration case proves measured `new_skill` observations still route to `lp-do-fact-find` with `prescription_unknown_requires_fact_find`, and the resulting policy decision records preserve `requirement_posture` and `prescription_maturity`.
+  - TC-02: pass. A new portfolio-selection case proves an `absolute_required` candidate is selected ahead of higher-utility relative work when both satisfy the same hard rules, so stage-blocking posture survives utility ranking without bypassing admissibility constraints.
+  - TC-03: pass. Relative and optional work remain portfolio-constrained: no hard-rule filters were loosened, non-fact-find evidence floors still apply, and dispatch/self-evolving link validation now carries posture/maturity semantics without turning them into unconditional blockers.
+  - TC-04: pass. The precedence model is now explicit in runtime code and this plan task: seam normalization emits posture/maturity, `deriveCandidateRoutingSemantics()` centralizes the defaults, the orchestrator applies learned-prescription routing after evidence-aware routing, and portfolio selection applies posture only after hard-rule admissibility is known.
+  - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` and targeted `pnpm exec eslint --no-warn-ignored ...` passed on the full touched TASK-03 surface.
+  - Precursor completion propagation: TASK-03 no longer blocks TASK-04, TASK-06, TASK-07, TASK-08, or TASK-09. The next runnable wave is TASK-04 and TASK-07, with TASK-04 the next core learning step.
 
 ### TASK-04: Extend policy journaling and evaluation for prescription-choice learning
 - **Type:** IMPLEMENT

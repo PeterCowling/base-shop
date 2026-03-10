@@ -248,6 +248,8 @@ function buildCanonicalSignalReviewFields(input: {
       severity: deriveSeverity(input.escalation_state, input.recurrence_count),
       evidence_refs: [input.source_signal_review_path],
       recurrence_key: input.fingerprint,
+      requirement_posture: "relative_required",
+      blocking_scope: "degrades_quality",
       structural_context: {
         fingerprint: input.fingerprint,
         title: input.title,
@@ -268,6 +270,7 @@ function buildCanonicalSignalReviewFields(input: {
       expected_signal_change:
         `Turn repeat signal-review finding ${input.fingerprint} into a validated next move or an explicit close rationale.`,
       risk_class: "low",
+      maturity: "unknown",
     }),
   };
 }

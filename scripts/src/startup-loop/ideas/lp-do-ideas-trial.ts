@@ -633,6 +633,33 @@ export function validateDispatchV2(
         ),
       );
     }
+    if (
+      link.requirement_posture !== undefined &&
+      link.requirement_posture !== "absolute_required" &&
+      link.requirement_posture !== "relative_required" &&
+      link.requirement_posture !== "optional_improvement"
+    ) {
+      errors.push(`[dispatch.v2] self_evolving.requirement_posture is invalid.`);
+    }
+    if (
+      link.blocking_scope !== undefined &&
+      link.blocking_scope !== "blocks_route" &&
+      link.blocking_scope !== "blocks_stage" &&
+      link.blocking_scope !== "degrades_quality" &&
+      link.blocking_scope !== "improves_if_time_allows"
+    ) {
+      errors.push(`[dispatch.v2] self_evolving.blocking_scope is invalid.`);
+    }
+    if (
+      link.prescription_maturity !== undefined &&
+      link.prescription_maturity !== "unknown" &&
+      link.prescription_maturity !== "hypothesized" &&
+      link.prescription_maturity !== "structured" &&
+      link.prescription_maturity !== "proven" &&
+      link.prescription_maturity !== "retired"
+    ) {
+      errors.push(`[dispatch.v2] self_evolving.prescription_maturity is invalid.`);
+    }
   }
 
   const buildOrigin = packet.build_origin;

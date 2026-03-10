@@ -236,6 +236,11 @@ function buildFollowupDispatch(
     policy_version: rankedCandidate.policy_context?.policy_version ?? "self-evolving-policy.v1",
     recommended_route_origin: entry.route,
     executor_path: candidate.executor_path,
+    requirement_posture:
+      candidate.requirement_posture ?? candidate.gap_case?.requirement_posture,
+    blocking_scope: candidate.blocking_scope ?? candidate.gap_case?.blocking_scope,
+    prescription_maturity:
+      candidate.prescription_maturity ?? candidate.prescription?.maturity,
     handoff_emitted_at: entry.queued_at,
   };
 

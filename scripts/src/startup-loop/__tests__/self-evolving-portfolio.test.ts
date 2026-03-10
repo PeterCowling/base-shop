@@ -144,6 +144,9 @@ function buildRouteDecision(candidate: RankedCandidate): PolicyDecisionRecord {
     chosen_action: candidate.route.route,
     action_probability: null,
     utility: candidate.score.utility,
+    requirement_posture: "relative_required",
+    blocking_scope: "degrades_quality",
+    prescription_maturity: "structured",
     created_at: "2026-03-10T00:00:00.000Z",
   };
 }
@@ -219,6 +222,66 @@ describe("buildPortfolioSelection", () => {
         }),
         expect.objectContaining({
           candidate_id: "cand-plan-weak",
+          chosen_action: "deferred",
+        }),
+      ]),
+    );
+  });
+
+  it("selects absolute-required candidates ahead of higher-utility relative work when hard rules allow both", () => {
+    const absoluteRequired = buildRankedCandidate({
+      id: "cand-absolute",
+      route: "lp-do-fact-find",
+      evidence: "structural_only",
+      blastRadius: "small",
+      utility: 0.2,
+    });
+    const higherUtilityRelative = buildRankedCandidate({
+      id: "cand-relative",
+      route: "lp-do-fact-find",
+      evidence: "structural_only",
+      blastRadius: "small",
+      utility: 6,
+    });
+
+    const selection = buildPortfolioSelection({
+      business_id: "BRIK",
+      ranked_candidates: [absoluteRequired, higherUtilityRelative],
+      candidate_route_decisions: [
+        {
+          ...buildRouteDecision(absoluteRequired),
+          requirement_posture: "absolute_required",
+          blocking_scope: "blocks_stage",
+          prescription_maturity: "unknown",
+        },
+        buildRouteDecision(higherUtilityRelative),
+      ],
+      constraint_profile: {
+        schema_version: "constraint-profile.v1",
+        wip_cap: 1,
+        max_candidates_per_route: {
+          "lp-do-build": 1,
+          "lp-do-plan": 1,
+          "lp-do-fact-find": 1,
+        },
+        max_guarded_trial_blast_radius: "medium",
+        minimum_evidence_floor: "instrumented",
+        hold_window_days: 7,
+      },
+      dependency_graph: null,
+      survival_signals: null,
+      created_at: "2026-03-10T00:00:00.000Z",
+    });
+
+    expect([...selection.selected_candidate_ids]).toEqual(["cand-absolute"]);
+    expect(selection.decision_records).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          candidate_id: "cand-absolute",
+          chosen_action: "selected",
+        }),
+        expect.objectContaining({
+          candidate_id: "cand-relative",
           chosen_action: "deferred",
         }),
       ]),

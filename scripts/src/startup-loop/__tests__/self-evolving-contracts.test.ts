@@ -196,6 +196,8 @@ function buildValidGapCase(): GapCase {
     severity: 0.7,
     evidence_refs: ["docs/plans/startup-loop-learned-prescription-system/fact-find.md"],
     recurrence_key: "build-origin:queue-contract-missing",
+    requirement_posture: "relative_required",
+    blocking_scope: "degrades_quality",
     structural_context: {
       source_path: "docs/plans/test/results-review.signals.json",
     },
@@ -218,6 +220,7 @@ function buildValidPrescription(): Prescription {
     expected_artifacts: ["fact-find.md"],
     expected_signal_change: "Gap becomes structured enough for canonical queue admission.",
     risk_class: "low",
+    maturity: "structured",
   };
 }
 
@@ -225,6 +228,21 @@ describe("self-evolving contract validators", () => {
   it("TASK-01 TC-01 validates canonical gap-case and prescription contracts", () => {
     expect(validateGapCase(buildValidGapCase())).toEqual([]);
     expect(validatePrescription(buildValidPrescription())).toEqual([]);
+  });
+
+  it("rejects invalid posture and maturity enum values", () => {
+    expect(
+      validateGapCase({
+        ...buildValidGapCase(),
+        requirement_posture: "maybe" as never,
+      }),
+    ).toContain("requirement_posture");
+    expect(
+      validatePrescription({
+        ...buildValidPrescription(),
+        maturity: "eventually" as never,
+      }),
+    ).toContain("maturity");
   });
 
   it("TASK-01 TC-01 validates MetaObservation required fields", () => {

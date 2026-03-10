@@ -339,6 +339,11 @@ function buildBuildOriginProvenance(
                 : 0.5,
       evidence_refs: buildEvidenceRefs(signal),
       recurrence_key: signal.recurrence_key,
+      requirement_posture:
+        classification.priority_tier === "P1" || classification.priority_tier === "P2"
+          ? "relative_required"
+          : "optional_improvement",
+      blocking_scope: "degrades_quality",
       structural_context: {
         plan_slug: signal.plan_slug,
         review_cycle_key: signal.review_cycle_key,
@@ -360,6 +365,12 @@ function buildBuildOriginProvenance(
       expected_signal_change:
         `Address build-origin signal "${signal.canonical_title}" through the canonical ${recommendedRoute} queue path.`,
       risk_class: recommendedRoute === "lp-do-plan" ? "medium" : "low",
+      maturity:
+        recommendedRoute === "lp-do-plan"
+          ? "structured"
+          : signal.suggested_action
+            ? "hypothesized"
+            : "unknown",
     }),
   };
 

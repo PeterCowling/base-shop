@@ -87,6 +87,21 @@ export type CanonicalRecommendedRoute =
   | "lp-do-build"
   | "lp-do-briefing";
 export type PrescriptionRiskClass = "low" | "medium" | "high";
+export type RequirementPosture =
+  | "absolute_required"
+  | "relative_required"
+  | "optional_improvement";
+export type BlockingScope =
+  | "blocks_route"
+  | "blocks_stage"
+  | "degrades_quality"
+  | "improves_if_time_allows";
+export type PrescriptionMaturity =
+  | "unknown"
+  | "hypothesized"
+  | "structured"
+  | "proven"
+  | "retired";
 
 export interface GapCaseRuntimeBinding {
   binding_mode: GapCaseBindingMode;
@@ -105,6 +120,8 @@ export interface GapCase {
   severity: number;
   evidence_refs: string[];
   recurrence_key: string;
+  requirement_posture?: RequirementPosture;
+  blocking_scope?: BlockingScope;
   structural_context: Record<string, unknown>;
   runtime_binding: GapCaseRuntimeBinding;
 }
@@ -126,6 +143,7 @@ export interface Prescription {
   expected_artifacts: string[];
   expected_signal_change: string;
   risk_class: PrescriptionRiskClass;
+  maturity?: PrescriptionMaturity;
 }
 
 export interface PrescriptionReference {
@@ -188,6 +206,9 @@ export interface ImprovementCandidate {
   candidate_id: string;
   gap_case?: GapCase;
   prescription?: Prescription;
+  requirement_posture?: RequirementPosture;
+  blocking_scope?: BlockingScope;
+  prescription_maturity?: PrescriptionMaturity;
   candidate_type: CandidateType;
   candidate_state: CandidateState;
   problem_statement: string;
@@ -422,6 +443,9 @@ export interface PolicyDecisionRecord {
   candidate_id: string;
   gap_case?: GapCaseReference | null;
   prescription?: PrescriptionReference | null;
+  requirement_posture?: RequirementPosture;
+  blocking_scope?: BlockingScope;
+  prescription_maturity?: PrescriptionMaturity;
   decision_type: PolicyDecisionType;
   decision_mode: PolicyDecisionMode;
   policy_version: string;
@@ -583,6 +607,33 @@ function isObjectRecord(input: unknown): input is Record<string, unknown> {
   return typeof input === "object" && input !== null && !Array.isArray(input);
 }
 
+function isRequirementPosture(input: unknown): input is RequirementPosture {
+  return (
+    input === "absolute_required" ||
+    input === "relative_required" ||
+    input === "optional_improvement"
+  );
+}
+
+function isBlockingScope(input: unknown): input is BlockingScope {
+  return (
+    input === "blocks_route" ||
+    input === "blocks_stage" ||
+    input === "degrades_quality" ||
+    input === "improves_if_time_allows"
+  );
+}
+
+function isPrescriptionMaturity(input: unknown): input is PrescriptionMaturity {
+  return (
+    input === "unknown" ||
+    input === "hypothesized" ||
+    input === "structured" ||
+    input === "proven" ||
+    input === "retired"
+  );
+}
+
 export function stableHash(input: string): string {
   return createHash("sha256").update(input, "utf-8").digest("hex");
 }
@@ -639,6 +690,12 @@ export function validateGapCase(gapCase: GapCase): string[] {
   }
   if (!Array.isArray(gapCase.evidence_refs)) {
     errors.push("evidence_refs");
+  }
+  if (gapCase.requirement_posture !== undefined && !isRequirementPosture(gapCase.requirement_posture)) {
+    errors.push("requirement_posture");
+  }
+  if (gapCase.blocking_scope !== undefined && !isBlockingScope(gapCase.blocking_scope)) {
+    errors.push("blocking_scope");
   }
   if (!isObjectRecord(gapCase.structural_context)) {
     errors.push("structural_context");
@@ -713,6 +770,9 @@ export function validatePrescription(prescription: Prescription): string[] {
   }
   if (!Array.isArray(prescription.expected_artifacts)) {
     errors.push("expected_artifacts");
+  }
+  if (prescription.maturity !== undefined && !isPrescriptionMaturity(prescription.maturity)) {
+    errors.push("maturity");
   }
   return errors;
 }
@@ -840,6 +900,21 @@ export function validateImprovementCandidate(candidate: ImprovementCandidate): s
     errors.push(
       ...validatePrescription(candidate.prescription).map((error) => `prescription.${error}`),
     );
+  }
+  if (
+    candidate.requirement_posture !== undefined &&
+    !isRequirementPosture(candidate.requirement_posture)
+  ) {
+    errors.push("requirement_posture");
+  }
+  if (candidate.blocking_scope !== undefined && !isBlockingScope(candidate.blocking_scope)) {
+    errors.push("blocking_scope");
+  }
+  if (
+    candidate.prescription_maturity !== undefined &&
+    !isPrescriptionMaturity(candidate.prescription_maturity)
+  ) {
+    errors.push("prescription_maturity");
   }
   if (!nonEmptyString(candidate.problem_statement)) {
     errors.push("problem_statement");
@@ -1510,6 +1585,21 @@ export function validatePolicyDecisionRecord(record: PolicyDecisionRecord): stri
         (error) => `prescription.${error}`,
       ),
     );
+  }
+  if (
+    record.requirement_posture !== undefined &&
+    !isRequirementPosture(record.requirement_posture)
+  ) {
+    errors.push("requirement_posture");
+  }
+  if (record.blocking_scope !== undefined && !isBlockingScope(record.blocking_scope)) {
+    errors.push("blocking_scope");
+  }
+  if (
+    record.prescription_maturity !== undefined &&
+    !isPrescriptionMaturity(record.prescription_maturity)
+  ) {
+    errors.push("prescription_maturity");
   }
   if (
     record.decision_type !== "candidate_route" &&

@@ -209,6 +209,12 @@ function buildCanonicalReplanFields(input: {
       severity: severityScoreFromLabel(input.trigger.constraint.severity),
       evidence_refs: [`docs/business-os/startup-baselines/${input.business}/bottleneck-history.jsonl`],
       recurrence_key: constraintKey,
+      requirement_posture: constraintKey.includes("stage_blocked")
+        ? "absolute_required"
+        : "relative_required",
+      blocking_scope: constraintKey.includes("stage_blocked")
+        ? "blocks_stage"
+        : "degrades_quality",
       structural_context: {
         constraint_key: constraintKey,
         stage: stageId,
@@ -233,6 +239,7 @@ function buildCanonicalReplanFields(input: {
       expected_artifacts: expectedArtifactsForRoute(blueprint.required_route),
       expected_signal_change: `Reduce or resolve persistent bottleneck ${constraintKey} before it recurs again.`,
       risk_class: blueprint.risk_class,
+      maturity: "hypothesized",
     }),
   };
 }

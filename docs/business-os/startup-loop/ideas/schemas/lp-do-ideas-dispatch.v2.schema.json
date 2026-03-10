@@ -289,6 +289,14 @@
               "items": { "type": "string", "minLength": 1 }
             },
             "recurrence_key": { "type": "string", "minLength": 1 },
+            "requirement_posture": {
+              "type": "string",
+              "enum": ["absolute_required", "relative_required", "optional_improvement"]
+            },
+            "blocking_scope": {
+              "type": "string",
+              "enum": ["blocks_route", "blocks_stage", "degrades_quality", "improves_if_time_allows"]
+            },
             "structural_context": { "type": "object" },
             "runtime_binding": {
               "type": "object",
@@ -344,7 +352,11 @@
               "items": { "type": "string", "minLength": 1 }
             },
             "expected_signal_change": { "type": "string", "minLength": 1 },
-            "risk_class": { "type": "string", "enum": ["low", "medium", "high"] }
+            "risk_class": { "type": "string", "enum": ["low", "medium", "high"] },
+            "maturity": {
+              "type": "string",
+              "enum": ["unknown", "hypothesized", "structured", "proven", "retired"]
+            }
           },
           "required": [
             "schema_version",

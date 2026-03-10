@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-10
@@ -41,7 +41,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - [x] TASK-07: Widen live sensing for richer prescription evidence — Complete (2026-03-10)
 - [x] TASK-08: Define and enforce the discovery-output contract for unknown prescriptions — Complete (2026-03-10)
 - [x] TASK-09: Add a guarded promotion path for proven prescriptions — Complete (2026-03-10)
-- [ ] TASK-10: Checkpoint resulting-system coherence and rollout readiness
+- [x] TASK-10: Checkpoint resulting-system coherence and rollout readiness — Complete (2026-03-10)
 
 ## Goals
 - Create one canonical identity layer for improvement work: `gap_case` plus `prescription`.
@@ -123,7 +123,7 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 | TASK-07 | IMPLEMENT | Widen live sensing for richer prescription evidence | 80% | M | Complete (2026-03-10) | TASK-01, TASK-02 | TASK-08, TASK-10 |
 | TASK-08 | IMPLEMENT | Define and enforce the discovery-output contract for unknown prescriptions | 80% | M | Complete (2026-03-10) | TASK-01, TASK-03, TASK-07 | TASK-09, TASK-10 |
 | TASK-09 | IMPLEMENT | Add a guarded promotion path for proven prescriptions | 80% | M | Complete (2026-03-10) | TASK-03, TASK-04, TASK-06, TASK-08 | TASK-10 |
-| TASK-10 | CHECKPOINT | Check resulting-system coherence and rollout readiness | 95% | S | Pending | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
+| TASK-10 | CHECKPOINT | Check resulting-system coherence and rollout readiness | 95% | S | Complete (2026-03-10) | TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -606,8 +606,8 @@ Four issues are load-bearing throughout this plan and must be treated as design 
 - **Execution-Track:** mixed
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
-- **Affects:** plan evidence, replay/report artifacts, any guarded rollout notes
+- **Status:** Complete (2026-03-10)
+- **Affects:** plan evidence, replay/report artifacts, guarded rollout notes
 - **Depends on:** TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09
 - **Blocks:** -
 - **Confidence:** 95%
@@ -632,6 +632,25 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - Update this plan with checkpoint evidence and any resulting replan.
 - **Notes / references:**
   - [fact-find.md](/Users/petercowling/base-shop/docs/plans/startup-loop-learned-prescription-system/fact-find.md)
+  - [self-evolving-report.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-report.ts)
+- **Build Evidence (2026-03-10):**
+  - Resulting-system walkthrough, grounded in code:
+    1. upstream seams now normalize into canonical `gap_case` / `prescription` identities before queue or policy learning (`self-evolving-prescription-normalization.ts`, `lp-do-ideas-build-origin-bridge.ts`, `replan-trigger.ts`, `signal-review-review-required.ts`)
+    2. routing semantics now carry `requirement_posture` and `prescription_maturity`, with unknown/hypothesized prescriptions forced through the explicit discovery contract path (`self-evolving-scoring.ts`, `self-evolving-backbone-consume.ts`, `lp-do-ideas-trial.ts`)
+    3. policy decisions and evaluation now learn prescription choice and prescription outcomes, not just route choice (`self-evolving-contracts.ts`, `self-evolving-evaluation.ts`)
+    4. milestone-triggered lateral bundles now enter as first-class `milestone_event` packets only for contract roots with real producers (`lp-do-ideas-milestone-bridge.ts`, `lp-do-ideas-trial.ts`)
+    5. richer build-review sensing feeds the self-evolving layer beyond `build-record` alone (`self-evolving-from-build-output.ts`)
+    6. proven prescriptions now have an audited guarded promotion path with separate proof and safety states (`self-evolving-promotion-path.ts`, `self-evolving-report.ts`)
+  - TC-01: pass. The checkpoint is grounded in code and artifacts, not plan intent alone. I verified the runtime contracts, milestone bridge, discovery contract enforcement, promotion nomination path, and a live report smoke run for `BRIK`.
+  - TC-02: pass. No critical contradiction remains between candidate identity and `gap_case` identity. The runtime is still candidate-centric by design, but `gap_case.runtime_binding.candidate_id`, `GapCaseReference`, and queue self-evolving linkage all enforce deterministic compilation instead of a second live identity layer.
+  - TC-03: pass. Rollout boundary is explicit and still conservative. Queue influence, exploration influence, and promotion actuation remain authority-gated, and the first promotion writer is intentionally narrower than the nomination surface.
+  - TC-04: pass. No milestone-trigger behavior depends on prose-only roots. Only `transaction_data_available`, `qualified_lead_or_enquiry_flow_present`, and `repeat_signal_present` emit in runtime; `wholesale_accounts_positive` and `weekly_cycles_post_launch_gte_4` remain explicitly non-emitting until producers exist.
+  - TC-05: pass. Promotion efficacy and promotion safety are evaluated separately. `promotion_nomination` records carry both statuses, report output surfaces `proven_but_unpromoted` separately from `applied`, and only the website-v1 low-risk autofix can auto-apply under `guarded_trial`.
+  - Remaining issues, severity-ranked:
+    - Moderate: the live `BRIK` cohort has not yet exercised the new prescription-attribution and promotion-nomination lanes. The report smoke still shows `prescription_attributed_decisions: 0` and `promotion_nomination_decisions: 0`, so current confidence comes from code/tests plus a smoke report, not mature live evidence.
+    - Low: the milestone layer is intentionally partial by producer truth. That is a bounded coverage limit, not a design contradiction.
+    - Low: guarded promotion is intentionally asymmetric. Prompt/contract and write-back surfaces are nomination-only in this tranche; the only live writer is the website-v1 low-risk autofix.
+  - Checkpoint decision: proceed without replan. The learned-prescription system is now coherent enough to take forward inside current trial boundaries. The remaining work is operational exercise and evidence accumulation, not missing architecture.
 
 ## Risks & Mitigations
 - Dual identity drift between `gap_case` and `candidate_id`.
@@ -660,16 +679,17 @@ Four issues are load-bearing throughout this plan and must be treated as design 
   - flag promotion attempts without proof-quality thresholds met
 
 ## Acceptance Criteria (overall)
-- [ ] The startup loop has one canonical `gap_case` and `prescription` vocabulary instead of fragmented suggestion seams.
-- [ ] The runtime can distinguish absolute, relative, and optional work, plus unknown vs structured vs proven prescriptions.
-- [ ] The self-evolving journal/evaluation layer can learn remedy quality, not just route quality.
-- [ ] Milestone-triggered lateral bundles are grounded in current contract roots and emitted by real runtime producers.
-- [ ] Unknown prescriptions have an explicit fact-find discovery contract.
-- [ ] Proven prescriptions have a guarded promotion path that stays within trial boundaries.
+- [x] The startup loop has one canonical `gap_case` and `prescription` vocabulary instead of fragmented suggestion seams.
+- [x] The runtime can distinguish absolute, relative, and optional work, plus unknown vs structured vs proven prescriptions.
+- [x] The self-evolving journal/evaluation layer can learn remedy quality, not just route quality.
+- [x] Milestone-triggered lateral bundles are grounded in current contract roots and emitted by real runtime producers.
+- [x] Unknown prescriptions have an explicit fact-find discovery contract.
+- [x] Proven prescriptions have a guarded promotion path that stays within trial boundaries.
 
 ## Decision Log
 - 2026-03-10: Chose a contract-first plan rather than adding milestone and prescription behavior directly into the current candidate-centric runtime.
 - 2026-03-10: Kept the plan in `plan-only` mode because the operator explicitly asked for planning and critique, not immediate build execution.
+- 2026-03-10: Closed the plan at checkpoint: the resulting system is coherent enough to take forward in trial mode without another replan; remaining limits are operational evidence gaps, not architectural contradictions.
 
 ## Overall-confidence Calculation
 - S=1, M=2, L=3

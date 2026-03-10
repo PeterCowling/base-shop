@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-do-fact-find, lp-do-ideas, startup-loop
-Overall-confidence: 78%
+Overall-confidence: 77%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan-only
 ---
@@ -31,6 +31,9 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - [x] TASK-05: Demote `completed-ideas.json` from active backlog control — Complete (2026-03-10)
 - [x] TASK-06: Determine the self-evolving build-origin alignment model — Complete (2026-03-10)
 - [x] TASK-11: Implement the chosen self-evolving build-origin alignment — Complete (2026-03-10)
+- [ ] TASK-13: Choose the canonical queue surface and admission seam for build-origin ideas
+- [ ] TASK-14: Wire build-origin admission into the real build lifecycle
+- [ ] TASK-15: Align report and closure consumers to the canonical queue surface
 - [ ] TASK-07: Canonical queue-path readiness checkpoint
 - [ ] TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
 - [ ] TASK-09: Cutover split checkpoint
@@ -40,6 +43,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 ## Goals
 - Define one canonical build-origin signal contract for queue admission, reporting, and downstream joins.
 - Make `queue-state.json` the sole canonical actionable backlog for idea items.
+- Make the active backlog/report/closure path use one explicit queue surface rather than an accidental mix of `trial` and `live`.
 - Remove direct build-review idea sourcing from `process-improvements`.
 - Remove `completed-ideas.json` from active backlog control and make queue lifecycle authoritative.
 - Reach a real cutover where the legacy report-only backlog no longer exists.
@@ -49,6 +53,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - Replacing `results-review.user.md` as the operator-authored narrative review artifact.
 - Replacing `risk` or `pending-review` sourcing in `process-improvements`.
 - Redesigning self-evolving policy more broadly than the build-origin identity seam required here.
+- Solving the full `lp-do-ideas` go-live program beyond the queue-surface choice required to make this backlog canonical.
 - Guaranteeing that the full historical carry-over happens inside this same plan if the audit proves it is a separate project.
 
 ## Constraints & Assumptions
@@ -57,6 +62,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - Existing ideas classifier and queue persistence must be reused, not bypassed.
   - Temporary compatibility reads are acceptable only during rollout; the end state cannot keep a hidden dual backlog.
   - Build-review extraction must become queue-safe; fail-open silent drop behavior is not acceptable once the queue becomes canonical.
+  - Readiness cannot pass while build-origin admission, reporting, and closure point at different queue files.
   - Historical archived backlog items may require a separate cutover project if the carry-over set is too large or too judgment-heavy.
 - Assumptions:
   - The correct approach is contract-first, then bridge, then report/closure cutover.
@@ -102,8 +108,11 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-04 | IMPLEMENT | Switch process-improvements idea backlog to queue-only sourcing | 85% | M | Complete (2026-03-10) | TASK-03 | TASK-05, TASK-07, TASK-08, TASK-10 |
 | TASK-05 | IMPLEMENT | Demote `completed-ideas.json` from active backlog control | 80% | M | Complete (2026-03-10) | TASK-03, TASK-04 | TASK-07, TASK-08, TASK-10 |
 | TASK-06 | INVESTIGATE | Determine the self-evolving build-origin alignment model | 70% | M | Complete (2026-03-10) | TASK-01, TASK-02, TASK-03 | TASK-11 |
-| TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 80% | M | Complete (2026-03-10) | TASK-06 | TASK-07 |
-| TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11 | TASK-08, TASK-09, TASK-10, TASK-12 |
+| TASK-11 | IMPLEMENT | Implement the chosen self-evolving build-origin alignment in code | 80% | M | Complete (2026-03-10) | TASK-06 | TASK-13, TASK-07 |
+| TASK-13 | INVESTIGATE | Choose the canonical queue surface and admission seam for build-origin ideas | 75% | M | Pending | TASK-03, TASK-04, TASK-05, TASK-11 | TASK-14, TASK-15, TASK-07 |
+| TASK-14 | IMPLEMENT | Wire build-origin admission into the real build lifecycle on the chosen queue surface | 75% | M | Pending | TASK-13 | TASK-07 |
+| TASK-15 | IMPLEMENT | Align report and closure consumers to the canonical queue surface | 75% | M | Pending | TASK-13 | TASK-07 |
+| TASK-07 | CHECKPOINT | Canonical queue-path readiness checkpoint | 95% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11, TASK-14, TASK-15 | TASK-08, TASK-09, TASK-10, TASK-12 |
 | TASK-08 | INVESTIGATE | Audit historical backlog carry-over and produce bounded carry-over evidence | 70% | M | Pending | TASK-07 | TASK-09, TASK-10, TASK-12 |
 | TASK-09 | CHECKPOINT | Decide in-thread cutover versus separate carry-over project | 95% | S | Pending | TASK-08 | TASK-10, TASK-12 |
 | TASK-10 | IMPLEMENT | Execute bounded carry-over cutover | 75% | M | Pending | TASK-09 | - |
@@ -118,10 +127,12 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | 4 | TASK-04, TASK-06 | TASK-03 | Queue-only reporting and self-evolving analysis can start once queue admission is real |
 | 5 | TASK-05 | TASK-03, TASK-04 | Demote the compatibility registry only after the visible backlog is queue-only |
 | 6 | TASK-11 | TASK-06 | Turn the chosen self-evolving alignment into real code before any readiness claim |
-| 7 | TASK-07 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11 | Check whether queue-backed canonical path is genuinely ready |
-| 8 | TASK-08 | TASK-07 | Produce historical carry-over evidence only; do not decide project split here |
-| 9 | TASK-09 | TASK-08 | Decide whether carry-over stays in-thread or becomes a separate project |
-| 10 | TASK-10 or TASK-12 | TASK-09 | Exactly one conditional endgame task executes after the split checkpoint |
+| 7 | TASK-13 | TASK-03, TASK-04, TASK-05, TASK-11 | Resolve the canonical queue surface and real admission seam before declaring the queue path ready |
+| 8 | TASK-14, TASK-15 | TASK-13 | After the queue-surface decision, wire automated admission and align report/closure consumers |
+| 9 | TASK-07 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-11, TASK-14, TASK-15 | Check whether queue-backed canonical path is genuinely ready |
+| 10 | TASK-08 | TASK-07 | Produce historical carry-over evidence only; do not decide project split here |
+| 11 | TASK-09 | TASK-08 | Decide whether carry-over stays in-thread or becomes a separate project |
+| 12 | TASK-10 or TASK-12 | TASK-09 | Exactly one conditional endgame task executes after the split checkpoint |
 
 ## Tasks
 
@@ -380,7 +391,85 @@ The current startup-loop backlog is structurally split: `process-improvements.us
   - Narrowed [self-evolving-from-build-output.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/self-evolving/self-evolving-from-build-output.ts) to non-authoritative structural build observation only: it no longer turns `results-review.signals.json` or `pattern-reflection.entries.json` into self-evolving idea observations, and `source_artifacts` now report only `build-record.user.md`.
   - Added regression coverage in [self-evolving-orchestrator-integration.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts) for queue-backed build-origin recurrence identity, and updated [self-evolving-signal-integrity.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/self-evolving-signal-integrity.test.ts) so raw build-output sidecars are explicitly non-authoritative.
   - Validation: `pnpm exec tsc -p scripts/tsconfig.json --noEmit` passed; targeted ESLint passed on the touched self-evolving files and tests.
-  - Outcome: affirming. TASK-07 is now the next runnable checkpoint.
+  - Outcome: affirming. This closed the self-evolving identity gap, but the readiness checkpoint still depends on resolving the queue-surface and automation seams discovered afterward.
+
+### TASK-13: Choose the canonical queue surface and admission seam for build-origin ideas
+- **Type:** INVESTIGATE
+- **Deliverable:** `docs/plans/startup-loop-results-review-queue-unification/artifacts/canonical-queue-surface-decision.md`
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** mixed
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-build-commit-hook.ts`, `scripts/src/startup-loop/build/generate-process-improvements.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`
+- **Depends on:** TASK-03, TASK-04, TASK-05, TASK-11
+- **Blocks:** TASK-14, TASK-15, TASK-07
+- **Confidence:** 75%
+  - Implementation: 75% - the code paths are visible, but the canonical queue surface is still ambiguous.
+  - Approach: 80% - the correct next move is to choose one queue surface and one automation seam, not to keep patching around both.
+  - Impact: 90% - readiness is false if admission, reporting, and closure are split across different queue files.
+- **Acceptance:**
+  - One queue surface is chosen explicitly for build-origin admission, active backlog reporting, and closure.
+  - The real automation seam is named explicitly: standalone CLI is either replaced or demoted.
+  - Every active producer/consumer that must align to the chosen surface is listed with file references.
+  - The non-chosen queue surface is classified as compatibility-only, out-of-scope, or follow-on with explicit reason.
+- **Validation contract (TC-13):**
+  - TC-01: the decision traces all currently active queue-path defaults across bridge, report, completion, and calibration code.
+  - TC-02: the chosen seam is an actually runnable lifecycle seam, not a manual CLI convenience path.
+  - TC-03: the decision states what must change before TASK-07 can pass.
+- **What would make this >=90%:** one dry-run of the chosen automation seam writing to the chosen queue surface with report and completion consumers pointed at the same file.
+
+### TASK-14: Wire build-origin admission into the real build lifecycle
+- **Type:** IMPLEMENT
+- **Deliverable:** automated build-origin admission on the chosen queue surface
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `scripts/src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts`, build-completion or commit-hook seam chosen in TASK-13, and focused tests around build-origin admission
+- **Depends on:** TASK-13
+- **Blocks:** TASK-07
+- **Confidence:** 75%
+  - Implementation: 75% - the bridge exists, but it is not yet attached to the real lifecycle seam.
+  - Approach: 75% - the right fix is to wire the existing bridge into the real path, not to preserve a manual side tool.
+  - Impact: 90% - the canonical queue path is not real until build-review ideas actually enter it automatically.
+- **Acceptance:**
+  - Build completion or build commit flow automatically admits build-origin signals into the chosen queue surface.
+  - Duplicate suppression and telemetry remain intact.
+  - Queue admission is no longer dependent on a standalone manual CLI invocation.
+  - Tests cover the chosen automated seam.
+- **Validation contract (TC-14):**
+  - TC-01: a build-origin artifact set on the real seam produces queue dispatches without manual intervention.
+  - TC-02: rerunning the same seam does not duplicate dispatches.
+  - TC-03: emitted dispatches preserve canonical `build_origin` provenance.
+- **What would make this >=90%:** a fixture-backed end-to-end run from build-output artifacts through the chosen automated seam into the chosen queue file.
+
+### TASK-15: Align report and closure consumers to the canonical queue surface
+- **Type:** IMPLEMENT
+- **Deliverable:** report, completion, and calibration consumers aligned to the chosen queue surface
+- **Execution-Skill:** lp-do-build
+- **Execution-Track:** code
+- **Startup-Deliverable-Alias:** none
+- **Effort:** M
+- **Status:** Pending
+- **Affects:** `scripts/src/startup-loop/build/generate-process-improvements.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-keyword-calibrate.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`, and any queue-path docs/tests touched by the chosen surface
+- **Depends on:** TASK-13
+- **Blocks:** TASK-07
+- **Confidence:** 75%
+  - Implementation: 75% - the affected consumers are known, but they must be updated consistently.
+  - Approach: 80% - once the surface is chosen, these defaults and docs should converge on it in one tranche.
+  - Impact: 90% - readiness is false while report and closure read a different queue file from admission.
+- **Acceptance:**
+  - `process-improvements` idea backlog reads the chosen canonical queue surface.
+  - Completion and calibration consumers use the same queue surface as admission.
+  - No active backlog or closure logic silently points at the wrong queue file.
+  - Tests and docs reflect the chosen queue surface.
+- **Validation contract (TC-15):**
+  - TC-01: report generation reflects dispatches written to the chosen queue file.
+  - TC-02: completion/reconcile and keyword calibration operate against that same queue file by default.
+  - TC-03: no active code path required for this thread still defaults to the non-chosen queue file.
+- **What would make this >=90%:** one integration-style fixture showing admission, report readback, and completion/reconcile all round-trip through the same queue file.
 
 ### TASK-07: Canonical queue-path readiness checkpoint
 - **Type:** CHECKPOINT
@@ -394,9 +483,24 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - **Blocks:** TASK-08, TASK-09, TASK-10, TASK-12
 - **Acceptance:**
   - Queue-backed build-origin path exists.
+  - Build-origin queue admission is automated on the chosen lifecycle seam, not a standalone manual CLI.
+  - Backlog reporting, completion, and calibration all point at the same canonical queue surface.
   - Active idea backlog is queue-only.
   - `completed-ideas.json` no longer governs active idea visibility.
   - Self-evolving build-output intake is aligned in code to the canonical build-origin identity or queue-backed equivalent.
+- **Checkpoint Attempt (2026-03-10): failed -> replan required**
+  - Pass: the code now closes the originally scoped seams.
+    - `generate-process-improvements.ts` no longer reads build-review idea sidecars directly for idea backlog items.
+    - `completed-ideas.json` no longer suppresses active queue backlog visibility.
+    - `self-evolving-from-ideas.ts` now preserves queue-backed `build_origin` identity, and `self-evolving-from-build-output.ts` is narrowed to structural build observation only.
+  - Fail: the build-origin queue path is still not live.
+    - `lp-do-ideas-build-origin-bridge.ts` exists as a standalone CLI/utility seam, but repo search found no runtime caller outside tests, docs, and the package script.
+    - `rg` over both `docs/business-os/startup-loop/ideas/live/queue-state.json` and `docs/business-os/startup-loop/ideas/trial/queue-state.json` found no persisted `build_origin` dispatches, so there is no evidence of actual build-review admission into queue.
+  - Fail: queue surface authority is still split.
+    - `generate-process-improvements.ts`, `lp-do-ideas-build-origin-bridge.ts`, `lp-do-ideas-completion-reconcile.ts`, `lp-do-ideas-keyword-calibrate.ts`, and `lp-do-ideas-queue-state-completion.ts` default to `docs/business-os/startup-loop/ideas/trial/queue-state.json`.
+    - `lp-do-ideas-build-commit-hook.ts` defaults to `docs/business-os/startup-loop/ideas/live/queue-state.json`.
+    - That means admission, report, and closure do not yet share one canonical queue surface.
+  - Result: TASK-07 stays pending. Added TASK-13, TASK-14, and TASK-15; rerun this checkpoint only after the queue-surface decision is explicit and the real admission seam is wired.
 
 ### TASK-08: Audit historical backlog carry-over and produce bounded carry-over evidence
 - **Type:** INVESTIGATE
@@ -529,6 +633,7 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - 2026-03-10: Split self-evolving alignment into investigation plus required implementation so readiness cannot pass on documentation alone.
 - 2026-03-10: Split the conditional endgame into atomic TASK-10 and TASK-12 so implementation never mixes two opposite outcomes.
 - 2026-03-10: Narrowed historical audit output to evidence only; project-split choice now belongs solely to TASK-09.
+- 2026-03-10: Readiness checkpoint exposed an unwired build-origin admission seam and a `trial`/`live` queue split, so queue-surface choice and automation wiring are now explicit precursor tasks.
 
 ## Rehearsal Trace
 | Step | Preconditions Met | Issues Found | Resolution Required |
@@ -540,7 +645,10 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 | TASK-05: `completed-ideas.json` demotion | Yes (TASK-03 and TASK-04 complete) | Moderate: queue-only closure must not leave calibration on stale compatibility reads | Yes |
 | TASK-06: Self-evolving alignment investigation | Partial (depends on final bridge identity details) | Major: investigation alone is not enough for a readiness claim | Yes |
 | TASK-11: Self-evolving alignment implementation | Partial (depends on TASK-06 choice) | Moderate: must enforce the chosen model in code, not just in an artifact | Yes |
-| TASK-07: Canonical readiness checkpoint | Partial (depends on TASK-11, not just TASK-06) | Major: checkpoint would be false-positive if it relied only on an investigation result | Yes |
+| TASK-13: Queue surface + automation seam decision | Yes (after TASK-03, TASK-04, TASK-05, TASK-11) | Major: readiness cannot pass while admission, reporting, and closure point at different queue files | Yes |
+| TASK-14: Automated build-origin admission | Partial (depends on TASK-13 decision) | Major: the bridge exists only as a manual seam today | Yes |
+| TASK-15: Queue-surface consumer alignment | Partial (depends on TASK-13 decision) | Major: report and closure defaults still point at a different queue surface from one active hook | Yes |
+| TASK-07: Canonical readiness checkpoint | Partial (depends on TASK-14 and TASK-15 as well as TASK-11) | Major: checkpoint would be false-positive while admission is manual or queue surfaces are split | Yes |
 | TASK-08: Historical carry-over audit | Yes (after TASK-07) | Moderate: audit must produce evidence, not smuggle in the split decision | Yes |
 | TASK-09: Cutover split checkpoint | Yes (after TASK-08) | None | No |
 | TASK-10: Bounded carry-over cutover | Partial (depends on TASK-09 continue-in-thread outcome) | Moderate: only valid for a small deterministic carry-forward set | Yes |
@@ -548,7 +656,8 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 
 ## What would make this >=90%
 - A concrete call-site inventory proving every active `completed-ideas.json` consumer to be migrated.
-- A real dry-run of the build-origin queue bridge showing stable admission counts and zero duplicate leakage.
+- A real dry-run of the chosen automated build-origin seam writing into the chosen canonical queue surface.
+- A concrete queue-path inventory proving report, completion, and calibration all default to the same queue file.
 - A tiny proven prototype for the chosen self-evolving alignment model.
 - A small pilot audit showing the historical carry-forward set is bounded enough to remain in-thread.
 
@@ -560,11 +669,14 @@ The current startup-loop backlog is structurally split: `process-improvements.us
 - TASK-04: 85% * 2 = 170
 - TASK-05: 80% * 2 = 160
 - TASK-06: 70% * 2 = 140
-- TASK-11: 75% * 2 = 150
+- TASK-11: 80% * 2 = 160
+- TASK-13: 75% * 2 = 150
+- TASK-14: 75% * 2 = 150
+- TASK-15: 75% * 2 = 150
 - TASK-08: 70% * 2 = 140
 - TASK-10: 75% * 2 = 150
 - TASK-12: 90% * 1 = 90
-- Overall = (150 + 170 + 160 + 170 + 160 + 140 + 150 + 140 + 150 + 90) / 19 = 78%
+- Overall = (150 + 170 + 160 + 170 + 160 + 140 + 160 + 150 + 150 + 150 + 140 + 150 + 90) / 25 = 77%
 
 ## Section Omission Rule
 

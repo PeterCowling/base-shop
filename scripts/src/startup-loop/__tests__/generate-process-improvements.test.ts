@@ -696,6 +696,43 @@ Review-date: 2026-03-06
     );
   });
 
+  it("TC-04-03A: historical carry-over queue items use the area anchor as backlog title", async () => {
+    await writeQueueState(
+      tmpDir,
+      [
+        makeQueueDispatch({
+          dispatch_id: "DISPATCH-HISTORICAL-001",
+          area_anchor: "Build artifact caching for staging",
+          current_truth:
+            "The archived observation is still specific, no later queue-backed follow-up exists, and the repo does not show a staging-specific caching follow-on that closes the idea.",
+          why: "Backfilled from the historical carry-over audit.",
+          historical_carryover: {
+            schema_version: "dispatch-historical-carryover.v1",
+            manifest_path:
+              "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
+            historical_candidate_id: "hc_96cb17616884",
+            source_audit_path:
+              "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+            source_plan_slugs: ["brikette-staging-upload-speed"],
+            source_paths: [
+              "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+              "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json",
+            ],
+            backfilled_at: "2026-03-10T12:25:35.035Z",
+          },
+        }),
+      ],
+    );
+
+    const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(1);
+    expect(data.ideaItems[0]?.source).toBe("queue-state.json");
+    expect(data.ideaItems[0]?.title).toBe("Build artifact caching for staging");
+    expect(data.ideaItems[0]?.historical_carryover?.historical_candidate_id).toBe(
+      "hc_96cb17616884",
+    );
+  });
+
   it("TC-04-04: updated HTML embeds build-origin provenance for queue-backed ideas", () => {
     const updated = updateProcessImprovementsHtml(
       HTML_TEMPLATE,

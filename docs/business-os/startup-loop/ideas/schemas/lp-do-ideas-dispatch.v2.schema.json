@@ -297,6 +297,57 @@
       ],
       "additionalProperties": false
     },
+    "historical_carryover": {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "type": "string",
+          "const": "dispatch-historical-carryover.v1"
+        },
+        "manifest_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "historical_candidate_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_audit_path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_plan_slugs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "source_paths": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "minItems": 1
+        },
+        "backfilled_at": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "schema_version",
+        "manifest_path",
+        "historical_candidate_id",
+        "source_audit_path",
+        "source_plan_slugs",
+        "source_paths",
+        "backfilled_at"
+      ],
+      "additionalProperties": false
+    },
     "triggered_by": {
       "type": "string",
       "description": "Dispatch ID of the packet whose downstream build produced the artifact change that triggered this dispatch. Absent for direct operator actions."

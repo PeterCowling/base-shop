@@ -11,7 +11,10 @@ import {
   validateResultsReviewFile,
 } from "./lp-do-build-reflection-debt.js";
 import { backfillSyntheticDispatch } from "../ideas/lp-do-ideas-synthetic-dispatch-narrative.js";
-import type { DispatchBuildOriginProvenance } from "../ideas/lp-do-ideas-trial.js";
+import type {
+  DispatchBuildOriginProvenance,
+  DispatchHistoricalCarryoverProvenance,
+} from "../ideas/lp-do-ideas-trial.js";
 import {
   IDEAS_COMPLETED_IDEAS_PATH,
   IDEAS_TRIAL_QUEUE_STATE_PATH,
@@ -83,6 +86,8 @@ export interface ProcessImprovementItem {
   recurrence_count?: number;
   /** Canonical build-review provenance for queue-backed build-origin ideas. */
   build_origin?: DispatchBuildOriginProvenance;
+  /** Canonical historical carry-over provenance for archive-backfilled queue ideas. */
+  historical_carryover?: DispatchHistoricalCarryoverProvenance;
 }
 
 export interface CompletedIdeaEntry {
@@ -129,6 +134,7 @@ interface DispatchPacket {
   queue_state?: string;
   created_at?: string;
   build_origin?: DispatchBuildOriginProvenance;
+  historical_carryover?: DispatchHistoricalCarryoverProvenance;
 }
 
 interface QueueStateFile {
@@ -355,6 +361,46 @@ function normalizeBuildOriginProvenance(
       value.pattern_reflection_sidecar_path,
     ),
     reflection_fields: reflectionFields,
+  };
+}
+
+function normalizeHistoricalCarryoverProvenance(
+  value: DispatchHistoricalCarryoverProvenance | undefined,
+): DispatchHistoricalCarryoverProvenance | undefined {
+  if (!value || value.schema_version !== "dispatch-historical-carryover.v1") {
+    return undefined;
+  }
+
+  const manifestPath = sanitizeText(value.manifest_path);
+  const historicalCandidateId = sanitizeText(value.historical_candidate_id);
+  const sourceAuditPath = sanitizeText(value.source_audit_path);
+  const backfilledAt = sanitizeText(value.backfilled_at);
+  const sourcePlanSlugs = Array.isArray(value.source_plan_slugs)
+    ? value.source_plan_slugs.map((entry) => sanitizeText(entry)).filter((entry) => entry.length > 0)
+    : [];
+  const sourcePaths = Array.isArray(value.source_paths)
+    ? value.source_paths.map((entry) => sanitizeText(entry)).filter((entry) => entry.length > 0)
+    : [];
+
+  if (
+    manifestPath.length === 0 ||
+    historicalCandidateId.length === 0 ||
+    sourceAuditPath.length === 0 ||
+    backfilledAt.length === 0 ||
+    sourcePlanSlugs.length === 0 ||
+    sourcePaths.length === 0
+  ) {
+    return undefined;
+  }
+
+  return {
+    schema_version: "dispatch-historical-carryover.v1",
+    manifest_path: manifestPath,
+    historical_candidate_id: historicalCandidateId,
+    source_audit_path: sourceAuditPath,
+    source_plan_slugs: sourcePlanSlugs,
+    source_paths: sourcePaths,
+    backfilled_at: backfilledAt,
   };
 }
 
@@ -596,9 +642,12 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
             rootDir: repoRoot,
           }).dispatch as DispatchPacket;
           const buildOrigin = normalizeBuildOriginProvenance(enrichedDispatch.build_origin);
+          const historicalCarryover = normalizeHistoricalCarryoverProvenance(
+            enrichedDispatch.historical_carryover,
+          );
           const title =
-            sanitizeText(enrichedDispatch.current_truth ?? "") ||
             sanitizeText(enrichedDispatch.area_anchor ?? "") ||
+            sanitizeText(enrichedDispatch.current_truth ?? "") ||
             (buildOrigin?.canonical_title ?? "");
           if (!title) {
             continue;
@@ -626,6 +675,7 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
             path: QUEUE_STATE_RELATIVE_PATH,
             idea_key: deriveIdeaKey(QUEUE_STATE_RELATIVE_PATH, dispatchId),
             build_origin: buildOrigin,
+            historical_carryover: historicalCarryover,
           };
           classifyIdeaItem(ideaItem);
           ideaItems.push(ideaItem);

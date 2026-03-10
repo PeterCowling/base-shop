@@ -246,6 +246,30 @@ describe("TC-01-E: artifact_delta dispatch auto-populated values carry source: '
     expect(result.errors).toHaveLength(0);
   });
 
+  it("operator_idea packets may carry historical_carryover provenance", () => {
+    const packet = makeV2Packet({
+      trigger: "operator_idea",
+      artifact_id: null,
+      historical_carryover: {
+        schema_version: "dispatch-historical-carryover.v1",
+        manifest_path:
+          "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
+        historical_candidate_id: "hc_1234",
+        source_audit_path:
+          "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        source_plan_slugs: ["reception-component-token-compliance"],
+        source_paths: [
+          "docs/plans/_archive/reception-component-token-compliance/results-review.signals.json",
+        ],
+        backfilled_at: "2026-03-10T15:00:00.000Z",
+      },
+    });
+    const result = validateDispatchV2(packet);
+
+    expect(result.valid).toBe(true);
+    expect(result.errors).toHaveLength(0);
+  });
+
   it("auto-generated values produce quality_warnings about auto source", () => {
     const packet = makeV2Packet({
       trigger: "artifact_delta",

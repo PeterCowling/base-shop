@@ -1,18 +1,18 @@
 {
-  "last_updated": "2026-03-10T12:00:46.499Z",
+  "last_updated": "2026-03-10T12:25:35.035Z",
   "counts": {
-    "enqueued": 23,
+    "enqueued": 29,
     "processed": 7,
     "skipped": 0,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 270,
-    "fact_find_ready": 19,
+    "fact_find_ready": 25,
     "plan_ready": 0,
     "micro_build_ready": 0,
     "briefing_ready": 0,
-    "total": 499
+    "total": 505
   },
   "dispatches": [
     {
@@ -22978,6 +22978,348 @@
         "results_review_sidecar_path": "docs/plans/reception-theme-dark-mode-base-tokens/results-review.signals.json",
         "pattern_reflection_path": "docs/plans/reception-theme-dark-mode-base-tokens/pattern-reflection.user.md",
         "pattern_reflection_sidecar_path": null
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310122535-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "hc_96cb17616884",
+      "root_event_id": "historical-carryover:brik:hc_96cb17616884",
+      "anchor_key": "build-artifact-caching-for-staging",
+      "cluster_key": "BRIK:historical-carryover:hc_96cb17616884:build-artifact-caching-for-staging",
+      "cluster_fingerprint": "d8325da19c081bd8427bef98cac30041b902d0ee26e65624a59ea01f7d942bf8",
+      "lineage_depth": 0,
+      "area_anchor": "Build artifact caching for staging",
+      "location_anchors": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+        "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json",
+        "docs/plans/brikette-staging-artifact-caching/fact-find.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The archived observation is still specific, no later queue-backed follow-up exists, and the repo does not show a staging-specific caching follow-on that closes the idea.",
+      "next_scope_now": "Validate the historical carry-over candidate \"Build artifact caching for staging\" against current repo state and decide the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.62,
+      "evidence_refs": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+        "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-10T12:25:35.035Z",
+      "queue_state": "enqueued",
+      "why": "Historical carry-over audit found archived backlog item \"Build artifact caching for staging\" still worthwhile and unresolved. Backfilling it into the canonical queue prevents the old archive-only backlog rail from surviving outside queue state.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for historical carry-over candidate \"Build artifact caching for staging\".",
+        "source": "auto"
+      },
+      "historical_carryover": {
+        "schema_version": "dispatch-historical-carryover.v1",
+        "manifest_path": "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
+        "historical_candidate_id": "hc_96cb17616884",
+        "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "source_plan_slugs": [
+          "brikette-staging-upload-speed"
+        ],
+        "source_paths": [
+          "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+          "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
+        ],
+        "backfilled_at": "2026-03-10T12:25:35.035Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310122535-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "hc_6485c412d161",
+      "root_event_id": "historical-carryover:brik:hc_6485c412d161",
+      "anchor_key": "chunk-count-monitoring-for-brikette-staging",
+      "cluster_key": "BRIK:historical-carryover:hc_6485c412d161:chunk-count-monitoring-for-brikette-staging",
+      "cluster_fingerprint": "3fbb5b728209270033641ced9436611a73452112d5b5634459d4143b4ab26c11",
+      "lineage_depth": 0,
+      "area_anchor": "Chunk count monitoring for Brikette staging",
+      "location_anchors": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+        "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json",
+        "docs/plans/brikette-staging-chunk-count-monitoring/fact-find.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The repo still shows no queue-backed monitoring follow-on for chunk explosion, and the archived signal remains a concrete mechanization candidate rather than a vague aspiration.",
+      "next_scope_now": "Validate the historical carry-over candidate \"Chunk count monitoring for Brikette staging\" against current repo state and decide the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.58,
+      "evidence_refs": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+        "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-10T12:25:35.035Z",
+      "queue_state": "enqueued",
+      "why": "Historical carry-over audit found archived backlog item \"Chunk count monitoring for Brikette staging\" still worthwhile and unresolved. Backfilling it into the canonical queue prevents the old archive-only backlog rail from surviving outside queue state.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for historical carry-over candidate \"Chunk count monitoring for Brikette staging\".",
+        "source": "auto"
+      },
+      "historical_carryover": {
+        "schema_version": "dispatch-historical-carryover.v1",
+        "manifest_path": "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
+        "historical_candidate_id": "hc_6485c412d161",
+        "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "source_plan_slugs": [
+          "brikette-staging-upload-speed"
+        ],
+        "source_paths": [
+          "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
+          "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
+        ],
+        "backfilled_at": "2026-03-10T12:25:35.035Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310122535-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "hc_d7efdd386a11",
+      "root_event_id": "historical-carryover:brik:hc_d7efdd386a11",
+      "anchor_key": "extract-shared-pin-digit-colour-array-into-a-single-constant",
+      "cluster_key": "BRIK:historical-carryover:hc_d7efdd386a11:extract-shared-pin-digit-colour-array-into-a-single-constant",
+      "cluster_fingerprint": "a4987f6ba35212d0699c8666b0da92e786b1cac135fdd504f99a4b66687fc112",
+      "lineage_depth": 0,
+      "area_anchor": "Extract shared PIN digit colour array into a single constant",
+      "location_anchors": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/reception-component-token-compliance/results-review.signals.json",
+        "docs/plans/_archive/reception-component-token-compliance/pattern-reflection.entries.json",
+        "docs/plans/reception-pin-digit-colour-constant-extraction/fact-find.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The duplicate `PIN_BG_CLASSES` arrays still exist in current code, so the archived finding remains unresolved and concrete.",
+      "next_scope_now": "Validate the historical carry-over candidate \"Extract shared PIN digit colour array into a single constant\" against current repo state and decide the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.58,
+      "evidence_refs": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/reception-component-token-compliance/results-review.signals.json",
+        "docs/plans/_archive/reception-component-token-compliance/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-10T12:25:35.035Z",
+      "queue_state": "enqueued",
+      "why": "Historical carry-over audit found archived backlog item \"Extract shared PIN digit colour array into a single constant\" still worthwhile and unresolved. Backfilling it into the canonical queue prevents the old archive-only backlog rail from surviving outside queue state.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for historical carry-over candidate \"Extract shared PIN digit colour array into a single constant\".",
+        "source": "auto"
+      },
+      "historical_carryover": {
+        "schema_version": "dispatch-historical-carryover.v1",
+        "manifest_path": "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
+        "historical_candidate_id": "hc_d7efdd386a11",
+        "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "source_plan_slugs": [
+          "reception-component-token-compliance"
+        ],
+        "source_paths": [
+          "docs/plans/_archive/reception-component-token-compliance/results-review.signals.json",
+          "docs/plans/_archive/reception-component-token-compliance/pattern-reflection.entries.json"
+        ],
+        "backfilled_at": "2026-03-10T12:25:35.035Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310122535-0004",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "hc_33071236f714",
+      "root_event_id": "historical-carryover:brik:hc_33071236f714",
+      "anchor_key": "duplicate-component-detection-before-drift-compounds",
+      "cluster_key": "BRIK:historical-carryover:hc_33071236f714:duplicate-component-detection-before-drift-compounds",
+      "cluster_fingerprint": "6c77c0e7329b915b4270b91d710c7be00f77c5bf90bab740267c2bf656d91945",
+      "lineage_depth": 0,
+      "area_anchor": "Duplicate component detection before drift compounds",
+      "location_anchors": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/reception-date-selector-unification/results-review.signals.json",
+        "docs/plans/_archive/reception-date-selector-unification/pattern-reflection.entries.json",
+        "docs/plans/reception-duplicate-component-detection/fact-find.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The repo still shows the archival insight as unresolved: no detector or analysis tool now enforces early duplicate-component discovery.",
+      "next_scope_now": "Validate the historical carry-over candidate \"Duplicate component detection before drift compounds\" against current repo state and decide the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.58,
+      "evidence_refs": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/reception-date-selector-unification/results-review.signals.json",
+        "docs/plans/_archive/reception-date-selector-unification/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-10T12:25:35.035Z",
+      "queue_state": "enqueued",
+      "why": "Historical carry-over audit found archived backlog item \"Duplicate component detection before drift compounds\" still worthwhile and unresolved. Backfilling it into the canonical queue prevents the old archive-only backlog rail from surviving outside queue state.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for historical carry-over candidate \"Duplicate component detection before drift compounds\".",
+        "source": "auto"
+      },
+      "historical_carryover": {
+        "schema_version": "dispatch-historical-carryover.v1",
+        "manifest_path": "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
+        "historical_candidate_id": "hc_33071236f714",
+        "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "source_plan_slugs": [
+          "reception-date-selector-unification"
+        ],
+        "source_paths": [
+          "docs/plans/_archive/reception-date-selector-unification/results-review.signals.json",
+          "docs/plans/_archive/reception-date-selector-unification/pattern-reflection.entries.json"
+        ],
+        "backfilled_at": "2026-03-10T12:25:35.035Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310122535-0005",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "hc_137150cc51c2",
+      "root_event_id": "historical-carryover:brik:hc_137150cc51c2",
+      "anchor_key": "add-a-post-deploy-recovery-telemetry-review-checkpoint",
+      "cluster_key": "BRIK:historical-carryover:hc_137150cc51c2:add-a-post-deploy-recovery-telemetry-review-checkpoint",
+      "cluster_fingerprint": "ca5e7654a860a84cfe338b5c234d86adaee9fec8b583bef0d6e8b3383e92f1b8",
+      "lineage_depth": 0,
+      "area_anchor": "Add a post-deploy recovery telemetry review checkpoint",
+      "location_anchors": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json",
+        "docs/plans/reception-inbox-recovery-telemetry-review-checkpoint/fact-find.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "Recovery telemetry exists, but there is still no standing review checkpoint consuming it, so the archived process gap remains live.",
+      "next_scope_now": "Validate the historical carry-over candidate \"Add a post-deploy recovery telemetry review checkpoint\" against current repo state and decide the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.62,
+      "evidence_refs": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-10T12:25:35.035Z",
+      "queue_state": "enqueued",
+      "why": "Historical carry-over audit found archived backlog item \"Add a post-deploy recovery telemetry review checkpoint\" still worthwhile and unresolved. Backfilling it into the canonical queue prevents the old archive-only backlog rail from surviving outside queue state.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for historical carry-over candidate \"Add a post-deploy recovery telemetry review checkpoint\".",
+        "source": "auto"
+      },
+      "historical_carryover": {
+        "schema_version": "dispatch-historical-carryover.v1",
+        "manifest_path": "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
+        "historical_candidate_id": "hc_137150cc51c2",
+        "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "source_plan_slugs": [
+          "reception-inbox-inprogress-recovery"
+        ],
+        "source_paths": [
+          "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+          "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
+        ],
+        "backfilled_at": "2026-03-10T12:25:35.035Z"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260310122535-0006",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "hc_8161e60c69f4",
+      "root_event_id": "historical-carryover:brik:hc_8161e60c69f4",
+      "anchor_key": "add-a-standing-ops-feed-for-inbox-recovery-outcomes",
+      "cluster_key": "BRIK:historical-carryover:hc_8161e60c69f4:add-a-standing-ops-feed-for-inbox-recovery-outcomes",
+      "cluster_fingerprint": "ba9a2a5b9ea2e5e2d478b76abfd0b7a1fe63046b504855b882bbc833b7dc431b",
+      "lineage_depth": 0,
+      "area_anchor": "Add a standing ops feed for inbox recovery outcomes",
+      "location_anchors": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json",
+        "docs/plans/reception-inbox-recovery-ops-feed/fact-find.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The telemetry source exists, but there is still no standing artifact or feed that turns those outcomes into an ongoing operational input.",
+      "next_scope_now": "Validate the historical carry-over candidate \"Add a standing ops feed for inbox recovery outcomes\" against current repo state and decide the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.62,
+      "evidence_refs": [
+        "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+        "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-10T12:25:35.035Z",
+      "queue_state": "enqueued",
+      "why": "Historical carry-over audit found archived backlog item \"Add a standing ops feed for inbox recovery outcomes\" still worthwhile and unresolved. Backfilling it into the canonical queue prevents the old archive-only backlog rail from surviving outside queue state.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for historical carry-over candidate \"Add a standing ops feed for inbox recovery outcomes\".",
+        "source": "auto"
+      },
+      "historical_carryover": {
+        "schema_version": "dispatch-historical-carryover.v1",
+        "manifest_path": "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
+        "historical_candidate_id": "hc_8161e60c69f4",
+        "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
+        "source_plan_slugs": [
+          "reception-inbox-inprogress-recovery"
+        ],
+        "source_paths": [
+          "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
+          "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
+        ],
+        "backfilled_at": "2026-03-10T12:25:35.035Z"
       }
     }
   ]

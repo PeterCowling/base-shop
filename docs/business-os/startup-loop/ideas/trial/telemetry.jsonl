@@ -348,3 +348,15 @@
 {"recorded_at":"2026-03-09T10:50:45.423Z","dispatch_id":"IDEA-DISPATCH-20260309105045-0417","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
 
 {"recorded_at":"2026-03-09T10:52:02.911Z","dispatch_id":"IDEA-DISPATCH-20260309105202-0903","mode":"trial","business":"BOS","queue_state":"enqueued","kind":"enqueued","reason":"agent_session_signal_bridge"}
+
+{"recorded_at":"2026-03-10T12:25:35.035Z","dispatch_id":"IDEA-DISPATCH-20260310122535-0001","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"historical_carryover_bridge"}
+
+{"recorded_at":"2026-03-10T12:25:35.035Z","dispatch_id":"IDEA-DISPATCH-20260310122535-0002","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"historical_carryover_bridge"}
+
+{"recorded_at":"2026-03-10T12:25:35.035Z","dispatch_id":"IDEA-DISPATCH-20260310122535-0003","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"historical_carryover_bridge"}
+
+{"recorded_at":"2026-03-10T12:25:35.035Z","dispatch_id":"IDEA-DISPATCH-20260310122535-0004","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"historical_carryover_bridge"}
+
+{"recorded_at":"2026-03-10T12:25:35.035Z","dispatch_id":"IDEA-DISPATCH-20260310122535-0005","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"historical_carryover_bridge"}
+
+{"recorded_at":"2026-03-10T12:25:35.035Z","dispatch_id":"IDEA-DISPATCH-20260310122535-0006","mode":"trial","business":"BRIK","queue_state":"enqueued","kind":"enqueued","reason":"historical_carryover_bridge"}

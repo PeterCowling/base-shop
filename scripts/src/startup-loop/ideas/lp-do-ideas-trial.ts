@@ -427,6 +427,16 @@ export interface DispatchBuildOriginProvenance {
   };
 }
 
+export interface DispatchHistoricalCarryoverProvenance {
+  schema_version: "dispatch-historical-carryover.v1";
+  manifest_path: string;
+  historical_candidate_id: string;
+  source_audit_path: string;
+  source_plan_slugs: string[];
+  source_paths: string[];
+  backfilled_at: string;
+}
+
 /**
  * dispatch.v2 packet type.
  *
@@ -470,6 +480,7 @@ export interface TrialDispatchPacketV2 {
   queue_state: QueueState;
   self_evolving?: DispatchSelfEvolvingLink;
   build_origin?: DispatchBuildOriginProvenance;
+  historical_carryover?: DispatchHistoricalCarryoverProvenance;
   /**
    * Why this work is happening now.
    * Required, non-empty string.

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-10
@@ -13,7 +13,7 @@ Startup-Deliverable-Alias: none
 Execution-Track: mixed
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: lp-do-fact-find, lp-do-ideas
-Overall-confidence: 78%
+Overall-confidence: 95%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan-only
 ---
@@ -30,8 +30,8 @@ This plan is deliberately separate because archive carry-over is manual and audi
 
 - [x] TASK-01: Define the historical carry-over manifest and provenance contract — Complete (2026-03-10)
 - [x] TASK-02: Build the audited historical carry-over manifest for the 12 thematic candidates — Complete (2026-03-10)
-- [ ] TASK-03: Admit the worthwhile unresolved historical candidates into the canonical queue
-- [ ] TASK-04: Record discard rationale for non-carried candidates and verify queue-only canonicality remains intact
+- [x] TASK-03: Admit the worthwhile unresolved historical candidates into the canonical queue — Complete (2026-03-10)
+- [x] TASK-04: Record discard rationale for non-carried candidates and verify queue-only canonicality remains intact — Complete (2026-03-10)
 
 ## Goals
 
@@ -57,8 +57,8 @@ This plan is deliberately separate because archive carry-over is manual and audi
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Define the historical carry-over manifest and provenance contract | 80% | S | Complete (2026-03-10) | - | TASK-02, TASK-03, TASK-04 |
 | TASK-02 | IMPLEMENT | Build the audited historical carry-over manifest for the 12 thematic candidates | 80% | M | Complete (2026-03-10) | TASK-01 | TASK-03, TASK-04 |
-| TASK-03 | IMPLEMENT | Admit the worthwhile unresolved historical candidates into the canonical queue | 75% | M | Pending | TASK-02 | TASK-04 |
-| TASK-04 | CHECKPOINT | Record discard rationale and verify queue-only canonicality remains intact | 95% | S | Pending | TASK-03 | - |
+| TASK-03 | IMPLEMENT | Admit the worthwhile unresolved historical candidates into the canonical queue | 75% | M | Complete (2026-03-10) | TASK-02 | TASK-04 |
+| TASK-04 | CHECKPOINT | Record discard rationale and verify queue-only canonicality remains intact | 95% | S | Complete (2026-03-10) | TASK-03 | - |
 
 ## Parallelism Guide
 
@@ -93,3 +93,35 @@ This plan is deliberately separate because archive carry-over is manual and audi
   - `6` items classified `worthwhile_unresolved` and prepared for queue carry-over with queue mappings.
   - `6` items classified `resolved`, `superseded`, or `moot` and held as explicit do-not-carry records.
 - Precursor completion propagation: TASK-03 is now unblocked and can admit only the six carry-forward items without redoing archive triage.
+
+### TASK-03 (2026-03-10)
+
+- Added a dedicated historical carry-over queue bridge in [lp-do-ideas-historical-carryover-bridge.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-historical-carryover-bridge.ts) plus schema/type support for first-class `historical_carryover` provenance.
+- Admitted the `6` worthwhile unresolved historical candidates into the canonical trial queue through the bridge with `0` suppressions:
+  - `IDEA-DISPATCH-20260310122535-0001` through `IDEA-DISPATCH-20260310122535-0006`
+- Persisted canonical queue and telemetry evidence at:
+  - [queue-state.json](/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/trial/queue-state.json)
+  - [telemetry.jsonl](/Users/petercowling/base-shop/docs/business-os/startup-loop/ideas/trial/telemetry.jsonl)
+- Wrote post-admission traceability back into [historical-carryover-manifest.json](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json), including `dispatch_id`, queue outcome, telemetry reason, and `backfilled_at`.
+- Precursor completion propagation: TASK-04 can now verify canonical queue-backed backlog rendering without any remaining archive-only worthwhile items.
+
+### TASK-04 (2026-03-10)
+
+- Corrected queue-backed backlog title selection in [generate-process-improvements.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/build/generate-process-improvements.ts) so surfaced queue ideas prefer `area_anchor` over `current_truth`; this keeps historical carry-over items readable in the canonical backlog instead of rendering audit rationale as the title.
+- Locked that behavior with a regression in [generate-process-improvements.test.ts](/Users/petercowling/base-shop/scripts/src/startup-loop/__tests__/generate-process-improvements.test.ts) for historical carry-over queue packets.
+- Regenerated the queue-backed backlog artifacts:
+  - [process-improvements.user.html](/Users/petercowling/base-shop/docs/business-os/process-improvements.user.html)
+  - [process-improvements.json](/Users/petercowling/base-shop/docs/business-os/_data/process-improvements.json)
+- Verified canonicality on generated output:
+  - `29` idea items surface from `queue-state.json`
+  - `0` idea items surface from archive sidecars or markdown
+  - `6` surfaced items carry first-class `historical_carryover` provenance
+- Verified discard audit integrity in [historical-carryover-manifest.json](/Users/petercowling/base-shop/docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json):
+  - `6` items remain `carry_forward`
+  - `6` items remain `do_not_carry`
+  - all `do_not_carry` items still have `admission_result: null`
+- Validation evidence:
+  - `pnpm exec tsc -p scripts/tsconfig.json --noEmit`
+  - targeted `pnpm exec eslint --no-warn-ignored ...`
+  - `pnpm --filter scripts startup-loop:generate-process-improvements`
+  - `pnpm --filter scripts check-process-improvements`

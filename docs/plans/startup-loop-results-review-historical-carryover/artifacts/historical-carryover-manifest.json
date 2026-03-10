@@ -1,13 +1,15 @@
 {
   "schema_version": "historical-carryover-manifest.v1",
-  "generated_at": "2026-03-10T14:15:00.000Z",
+  "generated_at": "2026-03-10T12:25:35.035Z",
   "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
   "items": [
     {
       "historical_candidate_id": "hc_96cb17616884",
       "title": "Build artifact caching for staging",
       "category": "new_loop_process",
-      "source_plan_slugs": ["brikette-staging-upload-speed"],
+      "source_plan_slugs": [
+        "brikette-staging-upload-speed"
+      ],
       "source_paths": [
         "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
         "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
@@ -30,21 +32,31 @@
           "schema_version": "dispatch-historical-carryover.v1",
           "historical_candidate_id": "hc_96cb17616884",
           "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
-          "source_plan_slugs": ["brikette-staging-upload-speed"],
+          "source_plan_slugs": [
+            "brikette-staging-upload-speed"
+          ],
           "source_paths": [
             "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
             "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
           ],
-          "backfilled_at": null
+          "backfilled_at": "2026-03-10T12:25:35.035Z"
         }
       },
-      "admission_result": null
+      "admission_result": {
+        "dispatch_id": "IDEA-DISPATCH-20260310122535-0001",
+        "queue_state": "enqueued",
+        "telemetry_reason": "historical_carryover_bridge",
+        "admitted_at": "2026-03-10T12:25:35.035Z",
+        "suppression_reason": null
+      }
     },
     {
       "historical_candidate_id": "hc_6485c412d161",
       "title": "Chunk count monitoring for Brikette staging",
       "category": "ai_to_mechanistic",
-      "source_plan_slugs": ["brikette-staging-upload-speed"],
+      "source_plan_slugs": [
+        "brikette-staging-upload-speed"
+      ],
       "source_paths": [
         "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
         "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
@@ -67,21 +79,31 @@
           "schema_version": "dispatch-historical-carryover.v1",
           "historical_candidate_id": "hc_6485c412d161",
           "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
-          "source_plan_slugs": ["brikette-staging-upload-speed"],
+          "source_plan_slugs": [
+            "brikette-staging-upload-speed"
+          ],
           "source_paths": [
             "docs/plans/_archive/brikette-staging-upload-speed/results-review.signals.json",
             "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
           ],
-          "backfilled_at": null
+          "backfilled_at": "2026-03-10T12:25:35.035Z"
         }
       },
-      "admission_result": null
+      "admission_result": {
+        "dispatch_id": "IDEA-DISPATCH-20260310122535-0002",
+        "queue_state": "enqueued",
+        "telemetry_reason": "historical_carryover_bridge",
+        "admitted_at": "2026-03-10T12:25:35.035Z",
+        "suppression_reason": null
+      }
     },
     {
       "historical_candidate_id": "hc_91453caa737f",
       "title": "Divergence detection for app-nav dual sources",
       "category": "ai_to_mechanistic",
-      "source_plan_slugs": ["reception-appnav-dual-source"],
+      "source_plan_slugs": [
+        "reception-appnav-dual-source"
+      ],
       "source_paths": [
         "docs/plans/_archive/reception-appnav-dual-source/results-review.signals.json"
       ],
@@ -99,7 +121,9 @@
       "historical_candidate_id": "hc_d7efdd386a11",
       "title": "Extract shared PIN digit colour array into a single constant",
       "category": "ai_to_mechanistic",
-      "source_plan_slugs": ["reception-component-token-compliance"],
+      "source_plan_slugs": [
+        "reception-component-token-compliance"
+      ],
       "source_paths": [
         "docs/plans/_archive/reception-component-token-compliance/results-review.signals.json",
         "docs/plans/_archive/reception-component-token-compliance/pattern-reflection.entries.json"
@@ -122,21 +146,31 @@
           "schema_version": "dispatch-historical-carryover.v1",
           "historical_candidate_id": "hc_d7efdd386a11",
           "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
-          "source_plan_slugs": ["reception-component-token-compliance"],
+          "source_plan_slugs": [
+            "reception-component-token-compliance"
+          ],
           "source_paths": [
             "docs/plans/_archive/reception-component-token-compliance/results-review.signals.json",
             "docs/plans/_archive/reception-component-token-compliance/pattern-reflection.entries.json"
           ],
-          "backfilled_at": null
+          "backfilled_at": "2026-03-10T12:25:35.035Z"
         }
       },
-      "admission_result": null
+      "admission_result": {
+        "dispatch_id": "IDEA-DISPATCH-20260310122535-0003",
+        "queue_state": "enqueued",
+        "telemetry_reason": "historical_carryover_bridge",
+        "admitted_at": "2026-03-10T12:25:35.035Z",
+        "suppression_reason": null
+      }
     },
     {
       "historical_candidate_id": "hc_33071236f714",
       "title": "Duplicate component detection before drift compounds",
       "category": "ai_to_mechanistic",
-      "source_plan_slugs": ["reception-date-selector-unification"],
+      "source_plan_slugs": [
+        "reception-date-selector-unification"
+      ],
       "source_paths": [
         "docs/plans/_archive/reception-date-selector-unification/results-review.signals.json",
         "docs/plans/_archive/reception-date-selector-unification/pattern-reflection.entries.json"
@@ -159,21 +193,31 @@
           "schema_version": "dispatch-historical-carryover.v1",
           "historical_candidate_id": "hc_33071236f714",
           "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
-          "source_plan_slugs": ["reception-date-selector-unification"],
+          "source_plan_slugs": [
+            "reception-date-selector-unification"
+          ],
           "source_paths": [
             "docs/plans/_archive/reception-date-selector-unification/results-review.signals.json",
             "docs/plans/_archive/reception-date-selector-unification/pattern-reflection.entries.json"
           ],
-          "backfilled_at": null
+          "backfilled_at": "2026-03-10T12:25:35.035Z"
         }
       },
-      "admission_result": null
+      "admission_result": {
+        "dispatch_id": "IDEA-DISPATCH-20260310122535-0004",
+        "queue_state": "enqueued",
+        "telemetry_reason": "historical_carryover_bridge",
+        "admitted_at": "2026-03-10T12:25:35.035Z",
+        "suppression_reason": null
+      }
     },
     {
       "historical_candidate_id": "hc_33f3a5c1c2c2",
       "title": "Schedule Gmail In-Progress reconciliation outside the agent loop",
       "category": "ai_to_mechanistic",
-      "source_plan_slugs": ["reception-inbox-inprogress-recovery"],
+      "source_plan_slugs": [
+        "reception-inbox-inprogress-recovery"
+      ],
       "source_paths": [
         "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
         "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
@@ -193,7 +237,9 @@
       "historical_candidate_id": "hc_137150cc51c2",
       "title": "Add a post-deploy recovery telemetry review checkpoint",
       "category": "new_loop_process",
-      "source_plan_slugs": ["reception-inbox-inprogress-recovery"],
+      "source_plan_slugs": [
+        "reception-inbox-inprogress-recovery"
+      ],
       "source_paths": [
         "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
         "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
@@ -216,21 +262,31 @@
           "schema_version": "dispatch-historical-carryover.v1",
           "historical_candidate_id": "hc_137150cc51c2",
           "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
-          "source_plan_slugs": ["reception-inbox-inprogress-recovery"],
+          "source_plan_slugs": [
+            "reception-inbox-inprogress-recovery"
+          ],
           "source_paths": [
             "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
             "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
           ],
-          "backfilled_at": null
+          "backfilled_at": "2026-03-10T12:25:35.035Z"
         }
       },
-      "admission_result": null
+      "admission_result": {
+        "dispatch_id": "IDEA-DISPATCH-20260310122535-0005",
+        "queue_state": "enqueued",
+        "telemetry_reason": "historical_carryover_bridge",
+        "admitted_at": "2026-03-10T12:25:35.035Z",
+        "suppression_reason": null
+      }
     },
     {
       "historical_candidate_id": "hc_8161e60c69f4",
       "title": "Add a standing ops feed for inbox recovery outcomes",
       "category": "new_standing_data_source",
-      "source_plan_slugs": ["reception-inbox-inprogress-recovery"],
+      "source_plan_slugs": [
+        "reception-inbox-inprogress-recovery"
+      ],
       "source_paths": [
         "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
         "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
@@ -253,21 +309,31 @@
           "schema_version": "dispatch-historical-carryover.v1",
           "historical_candidate_id": "hc_8161e60c69f4",
           "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
-          "source_plan_slugs": ["reception-inbox-inprogress-recovery"],
+          "source_plan_slugs": [
+            "reception-inbox-inprogress-recovery"
+          ],
           "source_paths": [
             "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
             "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
           ],
-          "backfilled_at": null
+          "backfilled_at": "2026-03-10T12:25:35.035Z"
         }
       },
-      "admission_result": null
+      "admission_result": {
+        "dispatch_id": "IDEA-DISPATCH-20260310122535-0006",
+        "queue_state": "enqueued",
+        "telemetry_reason": "historical_carryover_bridge",
+        "admitted_at": "2026-03-10T12:25:35.035Z",
+        "suppression_reason": null
+      }
     },
     {
       "historical_candidate_id": "hc_4ff035d6183c",
       "title": "Mechanize contrast pre-verification before token edits",
       "category": "ai_to_mechanistic",
-      "source_plan_slugs": ["reception-theme-dark-mode-base-tokens"],
+      "source_plan_slugs": [
+        "reception-theme-dark-mode-base-tokens"
+      ],
       "source_paths": [
         "docs/plans/_archive/reception-theme-dark-mode-base-tokens/results-review.signals.json"
       ],
@@ -285,7 +351,9 @@
       "historical_candidate_id": "hc_231db3021a73",
       "title": "Build-record structured extraction",
       "category": "ai_to_mechanistic",
-      "source_plan_slugs": ["startup-loop-structured-sidecar-introduction"],
+      "source_plan_slugs": [
+        "startup-loop-structured-sidecar-introduction"
+      ],
       "source_paths": [
         "docs/plans/_archive/startup-loop-structured-sidecar-introduction/results-review.signals.json",
         "docs/plans/_archive/startup-loop-structured-sidecar-introduction/pattern-reflection.entries.json"
@@ -305,7 +373,9 @@
       "historical_candidate_id": "hc_fc7e832bd0fb",
       "title": "Post-authoring sidecar extraction as reusable loop process",
       "category": "new_loop_process",
-      "source_plan_slugs": ["startup-loop-structured-sidecar-introduction"],
+      "source_plan_slugs": [
+        "startup-loop-structured-sidecar-introduction"
+      ],
       "source_paths": [
         "docs/plans/_archive/startup-loop-structured-sidecar-introduction/results-review.signals.json",
         "docs/plans/_archive/startup-loop-structured-sidecar-introduction/pattern-reflection.entries.json"
@@ -325,7 +395,9 @@
       "historical_candidate_id": "hc_ee7c44c373a4",
       "title": "Split parity-completion checkpoint from runtime-cleanup migration",
       "category": "new_loop_process",
-      "source_plan_slugs": ["xa-uploader-cloud-parity-completion"],
+      "source_plan_slugs": [
+        "xa-uploader-cloud-parity-completion"
+      ],
       "source_paths": [
         "docs/plans/_archive/xa-uploader-cloud-parity-completion/results-review.signals.json",
         "docs/plans/_archive/xa-uploader-cloud-parity-completion/pattern-reflection.entries.json"

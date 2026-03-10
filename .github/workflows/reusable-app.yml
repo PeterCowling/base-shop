@@ -158,6 +158,7 @@ jobs:
     timeout-minutes: 30
     outputs:
       run_validation: ${{ steps.classify.outputs.run_validation }}
+      run_tests: ${{ steps.test-strategy.outputs.run_tests }}
       run_sharded_tests: ${{ steps.test-strategy.outputs.run_sharded_tests }}
       test_scope: ${{ steps.classify.outputs.test_scope }}
       related_test_paths_json: ${{ steps.classify.outputs.related_test_paths_json }}
@@ -320,10 +321,16 @@ jobs:
           TEST_SHARD_COUNT: ${{ inputs.test-shard-count }}
         run: |
           set -euo pipefail
-          if [[ "$TEST_SHARD_COUNT" -gt 1 ]]; then
+          if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.base_ref }}" == "main" ]]; then
+            echo "run_tests=false" >> "$GITHUB_OUTPUT"
+            echo "run_sharded_tests=false" >> "$GITHUB_OUTPUT"
+            echo "::notice title=Test strategy::Skipping tests for dev->main promotion PR."
+          elif [[ "$TEST_SHARD_COUNT" -gt 1 ]]; then
+            echo "run_tests=true" >> "$GITHUB_OUTPUT"
             echo "run_sharded_tests=true" >> "$GITHUB_OUTPUT"
             echo "::notice title=Test strategy::Using sharded test mode ($TEST_SHARD_COUNT shards)."
           else
+            echo "run_tests=true" >> "$GITHUB_OUTPUT"
             echo "run_sharded_tests=false" >> "$GITHUB_OUTPUT"
             echo "::notice title=Test strategy::Using single test job."
           fi
@@ -442,7 +449,7 @@ jobs:
 
   test:
     name: Test
-    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests != 'true' && needs.validate.outputs.test_scope != 'skip' }}
+    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_tests == 'true' && needs.validate.outputs.run_sharded_tests != 'true' && needs.validate.outputs.test_scope != 'skip' }}
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -518,7 +525,7 @@ jobs:
 
   test-sharded:
     name: Test (shard ${{ matrix.shard }}/${{ inputs.test-shard-count }})
-    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_sharded_tests == 'true' && needs.validate.outputs.test_scope != 'skip' }}
+    if: ${{ needs.validate.outputs.run_validation == 'true' && needs.validate.outputs.run_tests == 'true' && needs.validate.outputs.run_sharded_tests == 'true' && needs.validate.outputs.test_scope != 'skip' }}
     needs: validate
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -616,6 +623,7 @@ jobs:
         always() &&
         inputs.e2e-smoke-cmd != '' &&
         needs.validate.outputs.run_validation == 'true' &&
+        needs.validate.outputs.run_tests == 'true' &&
         needs.validate.result == 'success' &&
         !contains(fromJSON('["failure","cancelled"]'), needs.test.result) &&
         !contains(fromJSON('["failure","cancelled"]'), needs['test-sharded'].result)

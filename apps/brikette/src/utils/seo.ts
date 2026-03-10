@@ -18,6 +18,7 @@ import { GUIDE_SLUG_LOOKUP_BY_LANG,type GuideKey, guideNamespace,guideSlug } fro
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { SLUGS } from "@/slug-map";
 import type { SlugKey, SlugMap } from "@/types/slugs";
+import { getPublicBuildLanguages } from "@/utils/buildLanguages";
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
 /* ------------------------------------------------------------------ */
@@ -62,8 +63,7 @@ const slugs: SlugMap = SLUGS;
 
 // Resolve a safe list of languages (tests may partially mock i18nConfig)
 const SUPPORTED_LANGS_SAFE: readonly AppLanguage[] = (() => {
-  const raw = (i18nConfig as { supportedLngs?: unknown }).supportedLngs;
-  const arr = Array.isArray(raw) ? (raw as readonly string[]) : ["en"];
+  const arr = getPublicBuildLanguages();
   return (arr.length > 0 ? arr : ["en"]) as readonly AppLanguage[];
 })();
 
@@ -143,31 +143,22 @@ function buildLocalizedSuffix(targetLang: AppLanguage, context: RouteContext): s
   return `/${[translatedFirst, translatedRest.replace(/^\//, "")].filter(Boolean).join("/")}`;
 }
 
-function resolveDefaultLang(
-  fallbackLng: unknown,
-  supportedLngs: unknown
-): AppLanguage {
-  const fallback = fallbackLng as AppLanguage | undefined;
-  if (fallback) return fallback;
-  if (Array.isArray(supportedLngs) && supportedLngs[0]) {
-    return supportedLngs[0] as AppLanguage;
-  }
-  return "en";
-}
-
 export function buildLinks({
   lang: declaredLang,
   origin,
   path,
 }: BuildLinksArgs): HtmlLinkDescriptor[] {
-  const { supportedLngs, fallbackLng } = i18nConfig;
-  const supportedList = (Array.isArray(supportedLngs) ? supportedLngs : []) as AppLanguage[];
+  const supportedList = getPublicBuildLanguages();
+  const fallbackLang =
+    supportedList.find((candidate) => candidate === i18nConfig.fallbackLng) ??
+    supportedList[0] ??
+    "en";
 
   /* ── Resolve active language ── */
   const urlLang =
     supportedList.find((l) => l === path.split("/")[1]) ??
     supportedList.find((l) => l === declaredLang) ??
-    (fallbackLng as AppLanguage);
+    fallbackLang;
 
   const lang: AppLanguage = urlLang;
 
@@ -200,27 +191,24 @@ export function buildLinks({
   };
 
   /* ── hreflang alternates ── */
-  const supportedLanguages = (Array.isArray(supportedLngs) ? supportedLngs : ["en"]) as string[];
-  const alternates: HtmlLinkDescriptor[] = supportedLanguages
+  const alternates: HtmlLinkDescriptor[] = supportedList
     .map((lng) => {
-      const targetLang = lng as AppLanguage;
-      const suffix = buildLocalizedSuffix(targetLang, routeContext);
+      const suffix = buildLocalizedSuffix(lng, routeContext);
 
       return {
         rel: "alternate",
-        href: normalizeHref(`${origin}/${targetLang}${suffix}`),
-        hrefLang: targetLang,
-        key: `alt-${targetLang}`,
+        href: normalizeHref(`${origin}/${lng}${suffix}`),
+        hrefLang: lng,
+        key: `alt-${lng}`,
       };
     });
 
   /* ── x-default fallback ── */
-  const defaultLang = resolveDefaultLang(fallbackLng, supportedLngs);
-  const defaultSuffix = buildLocalizedSuffix(defaultLang, routeContext);
+  const defaultSuffix = buildLocalizedSuffix(fallbackLang, routeContext);
 
   alternates.push({
     rel: "alternate",
-    href: normalizeHref(`${origin}/${defaultLang}${defaultSuffix}`),
+    href: normalizeHref(`${origin}/${fallbackLang}${defaultSuffix}`),
     hrefLang: "x-default",
   });
 

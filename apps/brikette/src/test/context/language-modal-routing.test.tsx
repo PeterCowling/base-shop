@@ -10,6 +10,7 @@ const closeModalMock = jest.fn();
 const replaceMock = jest.fn();
 const pushMock = jest.fn();
 const changeLanguageMock = jest.fn(async (_lang: string) => {});
+const originalBuildLanguages = process.env.NEXT_PUBLIC_BRIKETTE_BUILD_LANGS;
 
 let pathname = "/en/assistance/hostel-faqs";
 let searchParams = new URLSearchParams("from=language-modal");
@@ -133,6 +134,11 @@ jest.mock("@/routes.guides-helpers", () => ({
 
 describe("LanguageGlobalModal routing", () => {
   beforeEach(() => {
+    if (originalBuildLanguages === undefined) {
+      delete process.env.NEXT_PUBLIC_BRIKETTE_BUILD_LANGS;
+    } else {
+      process.env.NEXT_PUBLIC_BRIKETTE_BUILD_LANGS = originalBuildLanguages;
+    }
     pathname = "/en/assistance/hostel-faqs";
     searchParams = new URLSearchParams("from=language-modal");
     closeModalMock.mockClear();
@@ -141,6 +147,14 @@ describe("LanguageGlobalModal routing", () => {
     changeLanguageMock.mockClear();
     document.head.innerHTML = "";
     window.history.replaceState({}, "", `${pathname}?from=language-modal#faq`);
+  });
+
+  afterAll(() => {
+    if (originalBuildLanguages === undefined) {
+      delete process.env.NEXT_PUBLIC_BRIKETTE_BUILD_LANGS;
+    } else {
+      process.env.NEXT_PUBLIC_BRIKETTE_BUILD_LANGS = originalBuildLanguages;
+    }
   });
 
   it("translates internal assistance routes and nested guide slug", async () => {
@@ -198,6 +212,24 @@ describe("LanguageGlobalModal routing", () => {
 
     await waitFor(() => {
       expect(replaceMock).toHaveBeenCalledWith("/fr/assistance");
+    });
+  });
+
+  it("limits selector options to locales included in the current build", async () => {
+    process.env.NEXT_PUBLIC_BRIKETTE_BUILD_LANGS = "en,it";
+    pathname = "/en";
+    searchParams = new URLSearchParams("");
+    window.history.replaceState({}, "", pathname);
+
+    const user = userEvent.setup();
+    renderWithProviders(<LanguageGlobalModal />);
+
+    expect(screen.queryByRole("button", { name: "select-fr" })).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "select-it" }));
+
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith("/it");
     });
   });
 

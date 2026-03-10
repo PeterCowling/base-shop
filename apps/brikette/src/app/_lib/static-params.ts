@@ -1,26 +1,14 @@
 // src/app/_lib/static-params.ts
 // Shared static params generation utilities for App Router
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import { getServerBuildLanguages } from "@/utils/buildLanguages";
 
 function isAppLanguage(value: string): value is AppLanguage {
   return i18nConfig.supportedLngs.includes(value as AppLanguage);
 }
 
 export function getBuildLanguages(): AppLanguage[] {
-  const requestedLanguages = process.env.BRIKETTE_STAGING_LANGS
-    ?.split(",")
-    .map((value) => value.trim())
-    .filter(Boolean);
-
-  if (!requestedLanguages?.length) {
-    return i18nConfig.supportedLngs.filter(isAppLanguage);
-  }
-
-  const filteredLanguages = Array.from(new Set(requestedLanguages.filter(isAppLanguage)));
-
-  return filteredLanguages.length
-    ? filteredLanguages
-    : i18nConfig.supportedLngs.filter(isAppLanguage);
+  return getServerBuildLanguages().filter(isAppLanguage);
 }
 
 /**

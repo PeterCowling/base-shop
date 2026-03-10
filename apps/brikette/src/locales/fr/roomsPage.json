@@ -266,7 +266,7 @@
     "clickToEnlarge": "Cliquez sur l’image pour l’agrandir",
     "prevAria": "Image précédente",
     "nextAria": "Image suivante",
-    "pagination": "{{current}}XQTOKEN2QXZ",
+    "pagination": "{{current}} / {{total}}",
     "photoAlt": "Photo de {{room}}",
     "noImage": "Aucune image disponible"
   },

@@ -24,6 +24,10 @@ jest.mock("../catalogWorkflow", () => ({
     missingFieldPaths: [],
     missingRoles: [],
   }),
+  getWorkflowStatusDisplay: () => ({
+    label: "workflowReadyForLive",
+    dotClass: "bg-gate-status-ready",
+  }),
 }));
 
 jest.mock("../CatalogProductBaseFields.client", () => ({

@@ -5,7 +5,9 @@ import type { NextResponse } from "next/server";
 const COOKIE_NAME = "xa_uploader_admin";
 const SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * 7;
 
-const IS_VENDOR_MODE = process.env.XA_UPLOADER_MODE === "vendor";
+function isVendorMode(): boolean {
+  return process.env.XA_UPLOADER_MODE === "vendor";
+}
 
 export function timingSafeEqual(a: string, b: string): boolean {
   const aBuf = Buffer.from(a);
@@ -57,7 +59,7 @@ function vendorToken(): string {
 }
 
 function expectedLoginToken(): string {
-  return IS_VENDOR_MODE ? vendorToken() : adminToken();
+  return isVendorMode() ? vendorToken() : adminToken();
 }
 
 function issueSessionToken(secret: string): string {

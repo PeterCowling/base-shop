@@ -134,19 +134,24 @@ describe("POST /admin/api/products", () => {
 
   it("rolls back the product when initial inventory bootstrap fails", async () => {
     updateInventoryItem.mockRejectedValue(new Error("inventory backend unavailable"));
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => undefined);
 
-    const req = new Request("http://localhost/admin/api/products", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(VALID_BODY),
-    });
+    try {
+      const req = new Request("http://localhost/admin/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(VALID_BODY),
+      });
 
-    const res = await POST(req);
+      const res = await POST(req);
 
-    expect(res.status).toBe(500);
-    const body = (await res.json()) as { ok: boolean; error: string };
-    expect(body.ok).toBe(false);
-    expect(body.error).toBe("inventory_bootstrap_failed");
-    expect(deleteProductFromRepo).toHaveBeenCalledTimes(1);
+      expect(res.status).toBe(500);
+      const body = (await res.json()) as { ok: boolean; error: string };
+      expect(body.ok).toBe(false);
+      expect(body.error).toBe("inventory_bootstrap_failed");
+      expect(deleteProductFromRepo).toHaveBeenCalledTimes(1);
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
   });
 });

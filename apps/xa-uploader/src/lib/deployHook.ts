@@ -79,18 +79,24 @@ function parseBooleanFlag(rawValue: string | undefined): boolean | null {
   return null;
 }
 
-const DEPLOY_HOOK_MAX_RETRIES = (() => {
+function getDeployHookMaxRetries(): number {
   const raw = process.env.XA_B_DEPLOY_HOOK_MAX_RETRIES?.trim();
   if (!raw) return DEPLOY_HOOK_MAX_RETRIES_DEFAULT;
   const parsed = Number.parseInt(raw, 10);
   if (!Number.isFinite(parsed) || parsed < 0) return DEPLOY_HOOK_MAX_RETRIES_DEFAULT;
   return Math.min(parsed, DEPLOY_HOOK_MAX_RETRIES_LIMIT);
-})();
+}
 
-const DEPLOY_HOOK_RETRY_BASE_DELAY_MS = Math.min(
-  toPositiveInt(process.env.XA_B_DEPLOY_HOOK_RETRY_BASE_DELAY_MS, DEPLOY_HOOK_RETRY_BASE_DELAY_MS_DEFAULT, 1),
-  DEPLOY_HOOK_RETRY_BASE_DELAY_MS_MAX,
-);
+function getDeployHookRetryBaseDelayMs(): number {
+  return Math.min(
+    toPositiveInt(
+      process.env.XA_B_DEPLOY_HOOK_RETRY_BASE_DELAY_MS,
+      DEPLOY_HOOK_RETRY_BASE_DELAY_MS_DEFAULT,
+      1,
+    ),
+    DEPLOY_HOOK_RETRY_BASE_DELAY_MS_MAX,
+  );
+}
 
 function getDeployHookCooldownKey(storefrontId: XaCatalogStorefront): string {
   return `xa-deploy-cooldown:${storefrontId}`;
@@ -195,10 +201,25 @@ async function deleteDeployState(params: {
   await fs.rm(params.statePath, { force: true });
 }
 
-const DEPLOY_HOOK_TIMEOUT_MS = toPositiveInt(process.env.XA_B_DEPLOY_HOOK_TIMEOUT_MS, DEPLOY_HOOK_TIMEOUT_MS_DEFAULT, 1);
-const DEPLOY_HOOK_COOLDOWN_SECONDS = toPositiveInt(process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS, DEPLOY_HOOK_COOLDOWN_SECONDS_DEFAULT, 1);
-const DEPLOY_HOOK_URL = (process.env[XA_B_DEPLOY_HOOK_URL_ENV] ?? "").trim();
-const DEPLOY_HOOK_TOKEN = (process.env[XA_B_DEPLOY_HOOK_TOKEN_ENV] ?? "").trim();
+function getDeployHookTimeoutMs(): number {
+  return toPositiveInt(process.env.XA_B_DEPLOY_HOOK_TIMEOUT_MS, DEPLOY_HOOK_TIMEOUT_MS_DEFAULT, 1);
+}
+
+function getDeployHookCooldownSeconds(): number {
+  return toPositiveInt(
+    process.env.XA_B_DEPLOY_HOOK_COOLDOWN_SECONDS,
+    DEPLOY_HOOK_COOLDOWN_SECONDS_DEFAULT,
+    1,
+  );
+}
+
+function getDeployHookUrl(): string {
+  return (process.env[XA_B_DEPLOY_HOOK_URL_ENV] ?? "").trim();
+}
+
+function getDeployHookToken(): string {
+  return (process.env[XA_B_DEPLOY_HOOK_TOKEN_ENV] ?? "").trim();
+}
 
 function shouldUseDeployServiceBinding(hookUrl: string): boolean {
   try {
@@ -239,7 +260,7 @@ async function requestDeployHook(hookUrl: string, init: RequestInit): Promise<Re
 }
 
 function buildRetryDelayMs(attemptNumber: number): number {
-  const baseDelayMs = DEPLOY_HOOK_RETRY_BASE_DELAY_MS;
+  const baseDelayMs = getDeployHookRetryBaseDelayMs();
   const exponent = Math.max(0, attemptNumber - 1);
   return baseDelayMs * 2 ** exponent;
 }
@@ -325,11 +346,11 @@ async function triggerDeployHookOnce(params: {
   storefrontId: XaCatalogStorefront;
 }): Promise<DeployHookAttemptResult> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), DEPLOY_HOOK_TIMEOUT_MS);
+  const timeout = setTimeout(() => controller.abort(), getDeployHookTimeoutMs());
   let response: Response;
   try {
     const headers: Record<string, string> = { "Content-Type": "application/json" };
-    const token = DEPLOY_HOOK_TOKEN;
+    const token = getDeployHookToken();
     if (token) {
       headers["X-XA-Deploy-Token"] = token;
     }
@@ -411,7 +432,7 @@ export function resolveDeployStatePaths(
 }
 
 export function isDeployHookConfigured(): boolean {
-  return Boolean(DEPLOY_HOOK_URL);
+  return Boolean(getDeployHookUrl());
 }
 
 export function isDeployHookRequired(): boolean {
@@ -575,12 +596,12 @@ export async function maybeTriggerXaBDeploy(params: {
   kv: UploaderKvNamespace | null;
   statePaths?: DeployStatePaths;
 }): Promise<DeployTriggerResult> {
-  const hookUrl = DEPLOY_HOOK_URL;
+  const hookUrl = getDeployHookUrl();
   if (!hookUrl) {
     return { status: "skipped_unconfigured", reason: "deploy_hook_unconfigured" };
   }
 
-  const cooldownSeconds = DEPLOY_HOOK_COOLDOWN_SECONDS;
+  const cooldownSeconds = getDeployHookCooldownSeconds();
   const nowMs = Date.now();
   const nextEligibleAtMs = await readDeployCooldownEpochMs({
     storefrontId: params.storefrontId,
@@ -594,7 +615,7 @@ export async function maybeTriggerXaBDeploy(params: {
     };
   }
 
-  const maxAttempts = DEPLOY_HOOK_MAX_RETRIES + 1;
+  const maxAttempts = getDeployHookMaxRetries() + 1;
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     const result = await triggerDeployHookOnce({
       hookUrl,

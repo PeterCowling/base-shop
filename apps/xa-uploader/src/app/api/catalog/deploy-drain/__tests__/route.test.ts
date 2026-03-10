@@ -7,6 +7,7 @@ const getUploaderKvMock = jest.fn();
 
 jest.mock("../../../../../lib/uploaderAuth", () => ({
   hasUploaderSession: (...args: unknown[]) => hasUploaderSessionMock(...args),
+  timingSafeEqual: (a: string, b: string) => a === b,
 }));
 
 jest.mock("../../../../../lib/syncMutex", () => ({

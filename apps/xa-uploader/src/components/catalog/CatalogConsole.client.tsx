@@ -181,6 +181,7 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
               onClick={openCatalogScreen}
               className={screen === "catalog" ? BTN_ACCENT_OUTLINE_CLASS : BTN_SECONDARY_CLASS}
               data-testid={CONSOLE_TAB_TEST_IDS.catalog}
+              data-cy={CONSOLE_TAB_TEST_IDS.catalog}
             >
               {t("screenCatalog")}
             </button>
@@ -189,13 +190,13 @@ export default function CatalogConsole({ monoClassName }: CatalogConsoleProps) {
               onClick={openCurrencyScreen}
               className={screen === "currency" ? BTN_ACCENT_OUTLINE_CLASS : BTN_SECONDARY_CLASS}
               data-testid={CONSOLE_TAB_TEST_IDS.currency}
+              data-cy={CONSOLE_TAB_TEST_IDS.currency}
             >
               {currencyHeaderLabel}
             </button>
           </>
         ) : null}
-        {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- XAUP-0001 operator-tool layout */}
-        <div className="ml-auto">
+        <div className="ms-auto">
           <button
             type="button"
             onClick={state.handleLogout}

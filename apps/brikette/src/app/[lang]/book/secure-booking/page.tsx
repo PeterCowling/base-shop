@@ -65,8 +65,10 @@ export default async function SecureBookingPage({ params }: Props) {
     notFound();
   }
 
-  const tBook = await getTranslations(validLang, ["bookPage"], { optional: true });
-  const tRooms = await getTranslations(validLang, ["roomsPage"], { optional: true });
+  const [tBook, tRooms] = await Promise.all([
+    getTranslations(validLang, ["bookPage"], { optional: true }),
+    getTranslations(validLang, ["roomsPage"], { optional: true }),
+  ]);
   const roomLabels = Object.fromEntries(
     roomsData.map((room) => [
       room.id,

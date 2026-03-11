@@ -20,7 +20,7 @@ import {
 import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
 import { formatDate, safeParseIso } from "@/utils/dateUtils";
 import { fireCtaClick } from "@/utils/ga4-events";
-import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
+import { resolveTranslatedCopy } from "@/utils/i18nContent";
 import { getBookPath } from "@/utils/localizedRoutes";
 
 
@@ -40,15 +40,6 @@ const FALLBACK_INVALID_DATE_RANGE_MESSAGE =
 const FALLBACK_CHECK_AVAILABILITY_LABEL =
   // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] fallback CTA copy for missing booking widget namespace during static export.
   "Check availability";
-
-function resolveTranslatedCopy(value: unknown, fallback: string, unresolvedKey?: string): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (unresolvedKey && trimmed === unresolvedKey) return fallback;
-  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
-  return trimmed;
-}
 
 const BookingWidget = memo(function BookingWidget({
   lang,
@@ -106,7 +97,6 @@ const BookingWidget = memo(function BookingWidget({
   const fallbackAvailabilityLabel = resolveTranslatedCopy(
     tModals("booking.buttonAvailability"),
     FALLBACK_CHECK_AVAILABILITY_LABEL,
-    "booking.buttonAvailability",
   );
   const checkAvailabilityLabel =
     resolvePrimaryCtaLabel(tTokens, {
@@ -150,11 +140,11 @@ const BookingWidget = memo(function BookingWidget({
             minPax={1}
             maxPax={8}
             labels={{
-              stayHelper: resolveTranslatedCopy(tModals("date.stayHelper"), "2–8 nights", "date.stayHelper"),
-              clearDates: resolveTranslatedCopy(tModals("date.clearDates"), "Clear dates", "date.clearDates"),
-              checkIn: resolveTranslatedCopy(tModals("booking.checkInLabel"), "Check in", "booking.checkInLabel"),
-              checkOut: resolveTranslatedCopy(tModals("booking.checkOutLabel"), "Check out", "booking.checkOutLabel"),
-              guests: resolveTranslatedCopy(tModals("booking.guestsLabel"), "Guests", "booking.guestsLabel"),
+              stayHelper: resolveTranslatedCopy(tModals("date.stayHelper"), "2–8 nights"),
+              clearDates: resolveTranslatedCopy(tModals("date.clearDates"), "Clear dates"),
+              checkIn: resolveTranslatedCopy(tModals("booking.checkInLabel"), "Check in"),
+              checkOut: resolveTranslatedCopy(tModals("booking.checkOutLabel"), "Check out"),
+              guests: resolveTranslatedCopy(tModals("booking.guestsLabel"), "Guests"),
               decreaseGuests: bookingControlLabels.decreaseGuestsAriaLabel,
               increaseGuests: bookingControlLabels.increaseGuestsAriaLabel,
             }}
@@ -176,7 +166,6 @@ const BookingWidget = memo(function BookingWidget({
               {resolveTranslatedCopy(
                 errorMessage,
                 FALLBACK_INVALID_DATE_RANGE_MESSAGE,
-                "bookingWidget.invalidDateRange",
               )}
             </p>
           ) : null}

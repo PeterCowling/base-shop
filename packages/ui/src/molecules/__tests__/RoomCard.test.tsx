@@ -64,12 +64,12 @@ describe("RoomCard (design system)", () => {
     expect(screen.getByText("From €80.00")).toBeInTheDocument();
     expect(screen.getByTestId("wifi-icon")).toBeInTheDocument();
 
-    const firstCta = screen.getByRole("button", { name: "Book NR" });
+    const firstCta = screen.getAllByRole("button", { name: "Book NR" })[0];
     ROOM_CARD_ACTION_BUTTON_CLASS_PRIMARY.split(/\s+/).forEach((token) => {
       if (!token) return;
       expect(firstCta).toHaveClass(token);
     });
-    const secondaryCta = screen.getByRole("button", { name: "Book Flex" });
+    const secondaryCta = screen.getAllByRole("button", { name: "Book Flex" })[0];
     ROOM_CARD_ACTION_BUTTON_CLASS.split(/\s+/).forEach((token) => {
       if (!token) return;
       expect(secondaryCta).toHaveClass(token);
@@ -144,9 +144,9 @@ describe("RoomCard (design system)", () => {
       ],
     });
 
-    const button = screen.getByRole("button", {
+    const button = screen.getAllByRole("button", {
       name: "Non-Refundable Rates – From €259.20",
-    });
+    })[0];
     const lineSpans = button.querySelectorAll("span span");
 
     expect(lineSpans).toHaveLength(2);

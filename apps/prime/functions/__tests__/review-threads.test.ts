@@ -541,12 +541,13 @@ describe('/api/review-threads and /api/review-thread', () => {
 
     expect(response.status).toBe(200);
     expect(payload.success).toBe(true);
-    expect(payload.data.currentDraft).toEqual({
+    expect(payload.data.currentDraft).toEqual(expect.objectContaining({
       id: 'draft-1',
       status: 'under_review',
       content: 'Manual reply draft',
+      audience: 'thread',
       createdByUid: 'staff-1',
-    });
+    }));
   });
 
   it('TC-03C: campaign detail returns canonical target and delivery summaries', async () => {

@@ -75,7 +75,13 @@ jest.mock("../CatalogProductImagesFields.client", () => {
       handleMakeMainImage: jest.fn(),
       handleReorderImage: jest.fn(),
     }),
-    parseImageEntries: (_files: string) => [],
+    parseImageEntries: (files: string) =>
+      files
+        ? files
+            .split("|")
+            .filter(Boolean)
+            .map((path, i) => ({ path, filename: path.split("/").pop() ?? path, isMain: i === 0 }))
+        : [],
   };
 });
 
@@ -296,12 +302,12 @@ describe("CatalogProductForm — zone 2 visibility", () => {
 
   it("TC-A: zone 2 absent when no images (imageFiles empty)", () => {
     renderForm({ draft: { ...VALID_DRAFT, imageFiles: "" } });
-    expect(document.querySelector('[data-cy="additional-images-panel"]')).not.toBeInTheDocument();
+    expect(document.querySelector('[data-testid="image-drop-zone-additional"]')).not.toBeInTheDocument();
   });
 
   it("TC-B: zone 2 present when at least one image exists", () => {
     renderForm({ draft: { ...VALID_DRAFT, imageFiles: "images/studio-jacket/a.jpg" } });
-    expect(document.querySelector('[data-cy="additional-images-panel"]')).toBeInTheDocument();
+    expect(document.querySelector('[data-testid="image-drop-zone-additional"]')).toBeInTheDocument();
   });
 
   it("TC-C: error message appears near zone 2 when upload fails", () => {

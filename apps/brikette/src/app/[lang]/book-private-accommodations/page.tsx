@@ -7,10 +7,10 @@ import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import PrivateAccomStructuredDataRsc from "@/components/seo/PrivateAccomStructuredDataRsc";
+import { BASE_URL } from "@/config/site";
 import { OG_IMAGE } from "@/utils/headConstants";
 import { getDoubleRoomBookingPath, getLocalizedSectionPath } from "@/utils/localizedRoutes";
 import { getPrivateRoomChildPath } from "@/utils/privateRoomPaths";
-import { getSlug } from "@/utils/slug";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -103,11 +103,20 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
 
   const doubleRoomPath = getDoubleRoomBookingPath(validLang);
   const apartmentPath = getPrivateRoomChildPath(validLang, "apartment");
+  const pageUrl = `${BASE_URL}${getLocalizedSectionPath(validLang, "privateBooking")}`;
 
   return (
     <>
       {/* Server-rendered structured data */}
-      <PrivateAccomStructuredDataRsc lang={validLang} slug={getSlug("privateBooking", validLang)} />
+      <PrivateAccomStructuredDataRsc
+        lang={validLang}
+        pageTitle={pageTitle}
+        pageUrl={pageUrl}
+        options={[
+          { name: doubleRoomTitle, url: `${BASE_URL}${doubleRoomPath}` },
+          { name: apartmentTitle, url: `${BASE_URL}${apartmentPath}` },
+        ]}
+      />
 
       <Section padding="default" className="mx-auto max-w-4xl">
         <h1 className="text-center text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">

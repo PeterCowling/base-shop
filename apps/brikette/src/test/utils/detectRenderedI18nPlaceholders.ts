@@ -17,7 +17,7 @@ import {
 // Types
 // ----------------------------------------------------------------------------
 
-export type PlaceholderKind = "rawKey" | "placeholderPhrase";
+export type PlaceholderKind = "rawKey" | "placeholderPhrase" | "richTextTag";
 
 export interface PlaceholderFinding {
   /** The detected value (the raw key or placeholder phrase) */
@@ -55,6 +55,15 @@ export interface DetectOptions {
    * @default 2
    */
   minDotSegments?: number;
+
+  /**
+   * Detect untranslated rich-text placeholder tags such as <Link> or <Strong>
+   * appearing in rendered copy. Disable when scanning raw locale source files
+   * that intentionally store these tokens for <Trans/> rendering.
+   *
+   * @default true
+   */
+  detectRichTextTags?: boolean;
 }
 
 export interface FormatReportOptions {
@@ -86,6 +95,7 @@ const DEFAULT_KEY_PREFIXES = [
 ];
 
 const DEFAULT_MIN_DOT_SEGMENTS = 2;
+const RICH_TEXT_TAG_PATTERN = /<\/?[A-Z][A-Za-z0-9]*>/g;
 
 // Patterns to exclude from detection (false positives)
 const URL_PATTERN = /^https?:\/\//i;
@@ -267,6 +277,19 @@ export function detectRenderedI18nPlaceholders(
     }
   }
 
+  if (options.detectRichTextTags !== false) {
+    const tagMatches = text.match(RICH_TEXT_TAG_PATTERN) ?? [];
+    for (const tag of tagMatches) {
+      if (seen.has(tag)) continue;
+      seen.add(tag);
+      findings.push({
+        value: tag,
+        kind: "richTextTag",
+        snippet: createSnippet(text, tag),
+      });
+    }
+  }
+
   return findings;
 }
 
@@ -307,6 +330,7 @@ export function formatI18nPlaceholderReport(
     const placeholders = displayFindings.filter(
       (f) => f.kind === "placeholderPhrase"
     );
+    const richTextTags = displayFindings.filter((f) => f.kind === "richTextTag");
 
     if (rawKeys.length > 0) {
       lines.push(`Raw keys (${rawKeys.length}):`);
@@ -325,9 +349,21 @@ export function formatI18nPlaceholderReport(
       }
       lines.push("");
     }
+
+    if (richTextTags.length > 0) {
+      lines.push(`Rich-text tags (${richTextTags.length}):`);
+      for (const finding of richTextTags) {
+        lines.push(`  - ${finding.value}`);
+      }
+      lines.push("");
+    }
   } else {
     for (const finding of displayFindings) {
-      const kindLabel = finding.kind === "rawKey" ? "[KEY]" : "[PHRASE]";
+      const kindLabel = finding.kind === "rawKey"
+        ? "[KEY]"
+        : finding.kind === "placeholderPhrase"
+          ? "[PHRASE]"
+          : "[TAG]";
       const snippet = finding.snippet.slice(0, maxSnippetLength);
       lines.push(`${kindLabel} ${finding.value}`);
       lines.push(`  Context: "${snippet}"`);

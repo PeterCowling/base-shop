@@ -1,0 +1,71 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260311174203-9552",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "domain": "SELL",
+  "artifact_id": null,
+  "before_sha": null,
+  "after_sha": "operator-idea-20260311",
+  "root_event_id": "operator:BRIK:SELL:brikette-commercial-richtext-seo-hardening:20260311",
+  "anchor_key": "brikette-commercial-richtext-seo-hardening",
+  "cluster_key": "BRIK:SELL:brikette-commercial-richtext-seo-hardening:operator:20260311",
+  "cluster_fingerprint": "brikette-commercial-richtext-seo-hardening-20260311",
+  "lineage_depth": 0,
+  "area_anchor": "Brikette commercial and arrival surfaces need rich-text-safe rendering and cleaner SEO canonicals",
+  "location_anchors": [
+    "apps/brikette/src/routes/how-to-get-here/components/IntroHighlights.tsx",
+    "apps/brikette/src/components/seo/PrivateAccomStructuredDataRsc.tsx",
+    "apps/brikette/scripts/generate-public-seo.ts",
+    "apps/brikette/scripts/verify-localized-commercial-copy.ts",
+    "apps/brikette/src/utils/roomsCatalog.ts",
+    "apps/brikette/src/test/utils/detectRenderedI18nPlaceholders.ts"
+  ],
+  "provisional_deliverable_family": "multi",
+  "current_truth": "The live Brikette funnel still had at least one support-surface copy leak where locale rich-text tokens such as <Link> rendered literally on /en/how-to-get-here. At the same time, sitemap and structured-data quality still lagged the revised funnel architecture: chooser pages emitted apartment markup, legacy redirect roots remained eligible for sitemap output, and homepage schema language coverage lagged the public locale surface.",
+  "next_scope_now": "Implement a bounded Brikette micro-build that fixes support-route rich-text rendering, hardens static export audits against raw <Link>/<Strong> leaks, aligns private-accommodation JSON-LD with the chooser page role, removes redirect-only private roots from sitemap generation, and adds regression coverage for these conversion and SEO contracts.",
+  "adjacent_later": [
+    "Extend rendered rich-text leakage audits to additional guide-detail surfaces if future locale content introduces new placeholder component tags",
+    "Normalize any remaining legacy-www health-check and canonical-host checks in release tooling once the unrelated workflow refactor settles"
+  ],
+  "recommended_route": "lp-do-build",
+  "status": "completed",
+  "priority": "P1",
+  "confidence": 0.94,
+  "evidence_refs": [
+    "operator-stated: /en/how-to-get-here exposed raw <Link>...</Link> copy instead of a real guest-facing link on the live funnel",
+    "https://hostel-positano.com/en/how-to-get-here",
+    "apps/brikette/src/routes/how-to-get-here/components/IntroHighlights.tsx",
+    "apps/brikette/src/components/seo/PrivateAccomStructuredDataRsc.tsx",
+    "apps/brikette/scripts/generate-public-seo.ts",
+    "apps/brikette/scripts/verify-localized-commercial-copy.ts",
+    "apps/brikette/src/utils/roomsCatalog.ts",
+    "coverage-hint: SEO",
+    "coverage-hint: i18n",
+    "coverage-hint: testing",
+    "coverage-hint: rollout-rollback"
+  ],
+  "created_at": "2026-03-11T17:42:03.000Z",
+  "queue_state": "completed",
+  "why": "The revised sales funnel is only trustworthy if support and arrival pages render cleanly in the shipped HTML and if search-facing metadata reflects the same information architecture the booking flow now uses. Raw rich-text placeholders on a live arrival page and stale chooser/apartment schema mismatches both damage trust before a guest reaches booking.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Brikette arrival and commercial support surfaces render localized rich-text safely in shipped HTML, the private-accommodation chooser exposes matching sitemap/JSON-LD contracts, and regression tests block future raw rich-text tag leaks.",
+    "source": "operator"
+  },
+  "processed_by": {
+    "route": "dispatch-routed",
+    "target_route": "lp-do-build",
+    "target_kind": "micro-build",
+    "target_slug": "brikette-commercial-richtext-seo-hardening",
+    "target_path": "docs/plans/brikette-commercial-richtext-seo-hardening/micro-build.md",
+    "processed_at": "2026-03-11T17:42:03.000Z",
+    "micro_build_path": "docs/plans/brikette-commercial-richtext-seo-hardening/micro-build.md"
+  },
+  "completed_by": {
+    "plan_path": "docs/plans/brikette-commercial-richtext-seo-hardening/micro-build.md",
+    "outcome": "Arrival intro copy now renders <Trans>-backed links/strong text, static export auditing catches leaked rich-text tags on how-to-get-here routes, chooser JSON-LD matches the private booking IA, redirect-only private roots are excluded from sitemap generation, and regression tests cover these contracts.",
+    "completed_at": "2026-03-11T17:42:03.000Z"
+  }
+}

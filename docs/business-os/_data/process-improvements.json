@@ -851,6 +851,26 @@
     {
       "type": "pending-review",
       "business": "BOS",
+      "title": "Pending results review: brikette-ci-release-lane-simplification",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/brikette-ci-release-lane-simplification/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-11T17:10:28.394Z",
+      "path": "docs/plans/brikette-ci-release-lane-simplification/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: do-workflow-stage-handoff-packets",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/do-workflow-stage-handoff-packets/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-11T12:18:07.121Z",
+      "path": "docs/plans/do-workflow-stage-handoff-packets/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
       "title": "Pending results review: do-workflow-runtime-token-capture",
       "body": "Build is complete but no results review has been written yet.",
       "suggested_action": "Write docs/plans/do-workflow-runtime-token-capture/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",

@@ -9,7 +9,7 @@ import { SLUGS } from "@/slug-map";
 import { buildBreadcrumb, buildLinks, buildMeta } from "@/utils/seo";
 import { getSlug } from "@/utils/slug";
 
-(i18nConfig.supportedLngs as unknown as string[]) = [
+const TEST_BUILD_LANGUAGES = [
   "de",
   "en",
   "es",
@@ -20,7 +20,10 @@ import { getSlug } from "@/utils/slug";
   "pt",
   "ru",
   "zh",
-];
+] as const;
+
+(i18nConfig.supportedLngs as unknown as string[]) = [...TEST_BUILD_LANGUAGES];
+process.env.NEXT_PUBLIC_BRIKETTE_BUILD_LANGS = TEST_BUILD_LANGUAGES.join(",");
 
 describe("buildLinks", () => {
   const origin = "https://example.com";
@@ -142,7 +145,7 @@ describe("buildLinks", () => {
     const canonical = links.find((link) => link.rel === "canonical");
     const alternates = links.filter((link) => link.rel === "alternate");
     expect(canonical?.href).toBe(origin);
-    expect(alternates).toHaveLength(i18nConfig.supportedLngs.length + 1);
+    expect(alternates).toHaveLength(TEST_BUILD_LANGUAGES.length + 1);
     const xDefault = alternates.find((link) => link.hrefLang === "x-default");
     expect(xDefault?.href).toBe(`${origin}/${i18nConfig.fallbackLng}`);
   });
@@ -152,10 +155,10 @@ describe("buildLinks", () => {
     const canonical = links.find((link) => link.rel === "canonical");
     const alternates = links.filter((link) => link.rel === "alternate");
     expect(canonical?.href).toBe(`${origin}/en`);
-    expect(alternates).toHaveLength(i18nConfig.supportedLngs.length + 1);
+    expect(alternates).toHaveLength(TEST_BUILD_LANGUAGES.length + 1);
     const langs = alternates.map((link) => link.hrefLang).filter(Boolean);
     expect(langs).toContain("x-default");
-    for (const lng of i18nConfig.supportedLngs) expect(langs).toContain(lng);
+    for (const lng of TEST_BUILD_LANGUAGES) expect(langs).toContain(lng);
   });
 
   it("produces no duplicate alternates and includes current language self-reference", () => {
@@ -195,7 +198,7 @@ describe("buildLinks", () => {
       const alternates = links.filter(
         (link) => link.rel === "alternate" && link.hrefLang !== "x-default",
       );
-      for (const lng of i18nConfig.supportedLngs as unknown as AppLanguage[]) {
+      for (const lng of TEST_BUILD_LANGUAGES as readonly AppLanguage[]) {
         if (lng === base) continue;
         const expected = `${origin}/${lng}/${getSlug(key as never, lng)}`;
         const got = alternates.find((link) => link.hrefLang === lng)?.href;
@@ -212,7 +215,7 @@ describe("buildLinks", () => {
       const alternates = links.filter(
         (link) => link.rel === "alternate" && link.hrefLang !== "x-default",
       );
-      for (const lng of i18nConfig.supportedLngs as unknown as AppLanguage[]) {
+      for (const lng of TEST_BUILD_LANGUAGES as readonly AppLanguage[]) {
         if (lng === base) continue;
         const expected = `${origin}/${lng}/${getSlug("assistance", lng)}/${guideSlug(
           lng as AppLanguage,

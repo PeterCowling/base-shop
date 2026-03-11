@@ -78,6 +78,7 @@ jest.mock("@/utils/primeAppI18nBundles", () => ({
   primeAppI18nBundles: () => {},
 }));
 jest.mock("@/components/booking/BookingCalendarPanel", () => ({
+  __esModule: true,
   BookingCalendarPanel: ({
     actionSlot,
   }: {

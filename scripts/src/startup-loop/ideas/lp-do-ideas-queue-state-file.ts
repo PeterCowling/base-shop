@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { existsSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve, sep } from "node:path";
 
 import type {
@@ -233,6 +233,7 @@ export function atomicWriteQueueState(
   const tmpPath = join(dir, `.${basename(resolvedPath)}.tmp.${suffix}`);
 
   try {
+    mkdirSync(dir, { recursive: true });
     writeFileSync(tmpPath, JSON.stringify(queue, null, 2) + "\n", "utf-8");
     renameSync(tmpPath, resolvedPath);
   } catch (err) {

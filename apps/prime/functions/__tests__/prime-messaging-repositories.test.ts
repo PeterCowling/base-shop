@@ -296,8 +296,8 @@ describe('prime-messaging-repositories', () => {
       `SELECT * FROM message_campaigns
        WHERE thread_id = ?
        ORDER BY updated_at DESC, created_at DESC, id DESC
-       LIMIT ?`
-    ).replace('LIMIT ?', 'LIMIT 1');
+       LIMIT 1`
+    );
     const listByThreadQuery = normalizeQuery(
       `SELECT * FROM message_campaigns
        WHERE thread_id = ?
@@ -879,6 +879,7 @@ describe('prime-messaging-repositories', () => {
            ORDER BY ma.created_at DESC, ma.id DESC
            LIMIT 1
          )
+       WHERE t.review_status NOT IN ('resolved', 'sent', 'auto_archived')
        ORDER BY t.updated_at DESC, t.created_at DESC
        LIMIT ?`
     );

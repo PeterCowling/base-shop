@@ -90,6 +90,12 @@ function resolveRootDir(inputRootDir: string | undefined): string {
     : process.cwd();
 }
 
+function resolveQueueStatePath(rootDir: string, queueStatePath: string): string {
+  return path.isAbsolute(queueStatePath)
+    ? queueStatePath
+    : path.join(rootDir, queueStatePath);
+}
+
 function readString(value: unknown): string | undefined {
   return typeof value === "string" && value.trim().length > 0
     ? value.trim()
@@ -483,8 +489,9 @@ export function handoffQueuedIdeaToRegularProcess(
   options: DoOperatorActionOptions
 ): DoOperatorActionResult {
   const rootDir = resolveRootDir(options.rootDir);
+  const resolvedQueueStatePath = resolveQueueStatePath(rootDir, options.queueStatePath);
   const clock = options.clock ?? (() => new Date());
-  const queueResult = readQueueStateFile(options.queueStatePath);
+  const queueResult = readQueueStateFile(resolvedQueueStatePath);
   if (!queueResult.ok) {
     return queueResult;
   }
@@ -527,7 +534,7 @@ export function handoffQueuedIdeaToRegularProcess(
   }
 
   const markResult = markDispatchesProcessed({
-    queueStatePath: options.queueStatePath,
+    queueStatePath: resolvedQueueStatePath,
     dispatchIds: [options.dispatchId],
     targetSlug,
     targetPath: target.targetPath,
@@ -556,8 +563,10 @@ export function handoffQueuedIdeaToRegularProcess(
 export function declineQueuedIdea(
   options: DeclineOperatorActionOptions
 ): DeclineOperatorActionResult {
+  const rootDir = resolveRootDir(options.rootDir);
+  const resolvedQueueStatePath = resolveQueueStatePath(rootDir, options.queueStatePath);
   const clock = options.clock ?? (() => new Date());
-  const queueResult = readQueueStateFile(options.queueStatePath);
+  const queueResult = readQueueStateFile(resolvedQueueStatePath);
   if (!queueResult.ok) {
     return queueResult;
   }
@@ -606,7 +615,7 @@ export function declineQueuedIdea(
   queueResult.queue.last_updated = declinedAt;
 
   const writeResult = atomicWriteQueueState(
-    options.queueStatePath,
+    resolvedQueueStatePath,
     queueResult.queue
   );
   if (!writeResult.ok) {

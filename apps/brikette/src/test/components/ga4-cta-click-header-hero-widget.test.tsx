@@ -77,6 +77,13 @@ jest.mock("@/hooks/usePagePreload", () => ({
 jest.mock("@/utils/primeAppI18nBundles", () => ({
   primeAppI18nBundles: () => {},
 }));
+jest.mock("@/components/booking/BookingCalendarPanel", () => ({
+  BookingCalendarPanel: ({
+    actionSlot,
+  }: {
+    actionSlot?: React.ReactNode;
+  }) => <div>{actionSlot}</div>,
+}));
 
 jest.mock("../../components/header/DesktopHeader", () => ({
   __esModule: true,

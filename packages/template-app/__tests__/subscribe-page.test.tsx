@@ -10,7 +10,13 @@ import { stripe } from "@acme/stripe";
 
 import SubscribePage from "../src/app/[lang]/subscribe/page";
 
-jest.mock("@acme/i18n/locales", () => ({ resolveLocale: jest.fn() }));
+jest.mock("@acme/i18n/locales", () => {
+  const actual = jest.requireActual("@acme/i18n/locales");
+  return {
+    ...actual,
+    resolveLocale: jest.fn(),
+  };
+});
 jest.mock("@acme/stripe", () => ({ stripe: { subscriptions: { create: jest.fn() } } }));
 jest.mock("@acme/platform-core/repositories/shops.server", () => ({ readShop: jest.fn() }));
 jest.mock("@auth", () => ({ getCustomerSession: jest.fn() }));

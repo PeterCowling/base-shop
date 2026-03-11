@@ -411,11 +411,21 @@ function parseOptionalString(value: unknown): string | undefined {
   return trimmed ? trimmed : undefined;
 }
 
+function isServiceBindingRequest(url: URL): boolean {
+  // Requests routed via the Cloudflare service binding arrive at the internal
+  // hostname "catalog-contract.internal", which is unreachable from the public
+  // internet. The binding relationship itself is the authentication — no shared
+  // secret is needed or checked on this path.
+  return url.hostname === "catalog-contract.internal";
+}
+
 async function requireCatalogWriteToken(
   env: Env,
   request: Request,
   url: URL,
 ): Promise<Response | string> {
+  if (isServiceBindingRequest(url)) return "service-binding";
+
   const expectedToken = (env.CATALOG_WRITE_TOKEN ?? "").trim();
   if (!expectedToken || expectedToken.length < 16) {
     return json({ ok: false }, 503);
@@ -433,6 +443,8 @@ async function requireCatalogReadToken(
   request: Request,
   url: URL,
 ): Promise<Response | string> {
+  if (isServiceBindingRequest(url)) return "service-binding";
+
   const expectedReadToken = (env.CATALOG_READ_TOKEN ?? "").trim();
   if (expectedReadToken) {
     const expectedWriteToken = (env.CATALOG_WRITE_TOKEN ?? "").trim();

@@ -24,7 +24,7 @@ Canonical localhost port assignments for repo apps. Keep ports unique. Regenerat
 | `apps/caryina` | `@apps/caryina` | `3018` | package.json script "dev" (apps/caryina/package.json)<br>package.json script "start" (apps/caryina/package.json) |
 | `apps/xa-uploader` | `@apps/xa-uploader` | `3020` | package.json script "dev" (apps/xa-uploader/package.json)<br>package.json script "start" (apps/xa-uploader/package.json) |
 | `apps/inventory-uploader` | `@acme/inventory-uploader` | `3021` | package.json script "dev" (apps/inventory-uploader/package.json)<br>package.json script "start" (apps/inventory-uploader/package.json) |
-| `apps/business-os` | `@apps/business-os` | `3022` | package.json script "start" (apps/business-os/package.json) |
+| `apps/business-os` | `@apps/business-os` | `3022` | package.json script "dev" (apps/business-os/package.json)<br>package.json script "start" (apps/business-os/package.json) |
 | `apps/reception` | `@apps/reception` | `3023` | package.json script "dev" (apps/reception/package.json)<br>package.json script "start" (apps/reception/package.json) |
 | `apps/storybook` | `@apps/storybook` | `6006` | package.json script "dev" (apps/storybook/package.json) |
 | `apps/cochlearfit-worker` | `@apps/cochlearfit-worker` | `8788` | package.json script "dev" (apps/cochlearfit-worker/package.json) |

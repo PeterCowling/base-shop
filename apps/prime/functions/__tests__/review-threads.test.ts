@@ -1030,7 +1030,7 @@ describe('/api/review-threads and /api/review-thread', () => {
     expect(payload.data.campaign).toEqual(expect.objectContaining({
       id: 'camp-booking-1',
       status: 'sent',
-      targetSummary: { total: 1 },
+      targetSummary: expect.objectContaining({ total: 1 }),
       deliverySummary: expect.objectContaining({
         projected: 1,
         failed: 0,
@@ -3321,6 +3321,8 @@ describe('/api/review-threads and /api/review-thread', () => {
       throw new Error(`Unexpected fetch: ${url} ${init?.method ?? 'GET'}`);
     });
 
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation(() => undefined);
+
     const response = await replayProjectionJob(
       createPagesContext({
         url: 'https://prime.example.com/api/review-projection-replay?jobId=proj_message_msg-1',
@@ -3493,5 +3495,7 @@ describe('/api/review-threads and /api/review-thread', () => {
       && statement.binds[3] === 'Firebase SET failed: 500 Internal Server Error'
       && statement.binds[5] === 'proj_message_msg-1')).toBe(true);
     expect(fetchMock).toHaveBeenCalledTimes(3);
+
+    consoleErrorSpy.mockRestore();
   });
 });

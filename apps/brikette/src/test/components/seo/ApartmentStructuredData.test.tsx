@@ -22,6 +22,6 @@ describe("ApartmentStructuredData", () => {
     expect(json.name).toBe("StepFree Chiesa Nuova — Private Apartment in Positano");
 
     const occupancy = json.occupancy as Record<string, unknown>;
-    expect(occupancy.value).toBe(4);
+    expect(occupancy.value).toBe(5);
   });
 });

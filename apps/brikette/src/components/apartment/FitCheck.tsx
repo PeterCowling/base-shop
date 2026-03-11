@@ -5,8 +5,12 @@ import { useTranslation } from "react-i18next";
 
 const TOPICS = ["arrival", "inside", "sleeping", "sound", "bestFit"] as const;
 
-function FitCheck() {
-  const { t } = useTranslation("apartmentPage");
+type FitCheckProps = {
+  lang?: string;
+};
+
+function FitCheck({ lang }: FitCheckProps) {
+  const { t } = useTranslation("apartmentPage", lang ? { lng: lang } : undefined);
 
   return (
     <div className="rounded-2xl border border-brand-outline/30 bg-brand-surface/50 p-5 shadow-sm backdrop-blur-sm sm:p-6">

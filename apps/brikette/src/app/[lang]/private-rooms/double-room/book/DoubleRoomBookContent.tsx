@@ -151,7 +151,7 @@ function DoubleRoomBookContent({ lang }: Props) {
 
       <div className="mt-8 space-y-6">
         {/* Date Selection */}
-        <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
+        <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm dark:border-white/30">
           <div className="mb-4 flex items-center gap-3">
             <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-brand-on-primary" aria-hidden>1</Inline>
             <h2 className="text-lg font-semibold text-brand-heading">
@@ -166,13 +166,15 @@ function DoubleRoomBookContent({ lang }: Props) {
             onPaxChange={() => {/* fixed pax, no-op */}}
             minPax={2}
             maxPax={2}
-            stayHelperText={tModals("date.stayHelper") as string}
-            clearDatesText={tModals("date.clearDates") as string}
-            checkInLabelText={tModals("booking.checkInLabel") as string}
-            checkOutLabelText={tModals("booking.checkOutLabel") as string}
-            guestsLabelText={tBook("apartment.guestLabel") as string}
-            decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
-            increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
+            labels={{
+              stayHelper: tModals("date.stayHelper") as string,
+              clearDates: tModals("date.clearDates") as string,
+              checkIn: tModals("booking.checkInLabel") as string,
+              checkOut: tModals("booking.checkOutLabel") as string,
+              guests: tBook("apartment.guestLabel") as string,
+              decreaseGuests: bookingControlLabels.decreaseGuestsAriaLabel,
+              increaseGuests: bookingControlLabels.increaseGuestsAriaLabel,
+            }}
           />
           <p className="mt-3 text-sm text-brand-text/60">
             {tBook("apartment.nightsSummary", { count: nights }) as string}
@@ -180,7 +182,7 @@ function DoubleRoomBookContent({ lang }: Props) {
         </div>
 
         {/* Rate Options */}
-        <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm">
+        <div className="rounded-xl border border-brand-outline/40 bg-brand-surface p-6 shadow-sm dark:border-white/30">
           <div className="mb-4 flex items-center gap-3">
             <Inline gap={0} wrap={false} className="size-6 shrink-0 justify-center rounded-full bg-brand-primary text-xs font-bold text-brand-on-primary" aria-hidden>2</Inline>
             <h2 className="text-lg font-semibold text-brand-heading">
@@ -193,12 +195,12 @@ function DoubleRoomBookContent({ lang }: Props) {
               type="button"
               onClick={() => handleCheckout("nr")}
               disabled={!isValidRange}
-              className="group flex flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-accent hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent disabled:pointer-events-none disabled:opacity-50"
+              className="group flex min-h-11 min-w-11 flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-primary hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:pointer-events-none disabled:opacity-50"
             >
               <div className="flex flex-1 flex-col p-4">
                 <div className="mb-2 flex items-start justify-between gap-2">
                   <h3 className="font-semibold text-brand-heading">{tBook("apartment.nr.title") as string}</h3>
-                  <span className="shrink-0 rounded-full bg-brand-secondary px-2 py-0.5 text-xs font-semibold text-brand-heading">
+                  <span className="shrink-0 rounded-full bg-brand-secondary px-2 py-0.5 text-xs font-semibold text-brand-on-accent">
                     {tBook("apartment.nr.saving") as string}
                   </span>
                 </div>
@@ -207,11 +209,11 @@ function DoubleRoomBookContent({ lang }: Props) {
                   <li>{tBook("apartment.nr.bullets.1") as string}</li>
                 </ul>
               </div>
-              <div className="flex items-center justify-between gap-2 rounded-b-lg border-t border-brand-outline/20 bg-brand-accent/10 px-4 py-3 transition-colors group-hover:bg-brand-accent">
-                <span className="text-sm font-semibold text-brand-accent group-hover:text-brand-on-accent">
+              <div className="flex items-center justify-between gap-2 rounded-b-lg border-t border-brand-outline/20 bg-brand-primary/10 px-4 py-3 transition-colors group-hover:bg-brand-primary">
+                <span className="text-sm font-semibold text-brand-primary group-hover:text-brand-on-primary">
                   {tBook("apartment.cta.nr") as string}
                 </span>
-                <ArrowRight size={15} className="shrink-0 text-brand-accent group-hover:text-brand-on-accent transition-transform group-hover:translate-x-0.5" aria-hidden />
+                <ArrowRight size={15} className="shrink-0 text-brand-primary group-hover:text-brand-on-primary transition-transform group-hover:translate-x-0.5" aria-hidden />
               </div>
             </button>
 
@@ -220,12 +222,12 @@ function DoubleRoomBookContent({ lang }: Props) {
               type="button"
               onClick={() => handleCheckout("flex")}
               disabled={!isValidRange}
-              className="group flex flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-primary hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:pointer-events-none disabled:opacity-50"
+              className="group flex min-h-11 min-w-11 flex-col rounded-lg border border-brand-outline/30 bg-brand-bg text-start transition-all hover:border-brand-primary hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary disabled:pointer-events-none disabled:opacity-50"
             >
               <div className="flex flex-1 flex-col p-4">
                 <div className="mb-2 flex items-start justify-between gap-2">
                   <h3 className="font-semibold text-brand-heading">{tBook("apartment.flex.title") as string}</h3>
-                  <span className="shrink-0 rounded-full bg-brand-secondary px-2 py-0.5 text-xs font-semibold text-brand-heading">
+                  <span className="shrink-0 rounded-full bg-brand-secondary px-2 py-0.5 text-xs font-semibold text-brand-on-accent">
                     {tBook("apartment.flex.saving") as string}
                   </span>
                 </div>
@@ -252,7 +254,7 @@ function DoubleRoomBookContent({ lang }: Props) {
             href={buildWhatsappUrl(checkinIso, checkoutIso)}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 text-base font-semibold text-brand-primary shadow-sm transition-colors hover:bg-brand-surface/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 text-base font-semibold text-brand-primary shadow-sm transition-colors hover:bg-brand-surface/80 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 dark:border-white/30"
           >
             {tRooms("moreAboutThisRoom") as string}
           </a>

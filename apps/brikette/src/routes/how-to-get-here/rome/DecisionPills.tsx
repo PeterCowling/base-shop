@@ -5,6 +5,7 @@ import clsx from "clsx";
 
 import { Cluster, Inline } from "../ui";
 
+import { resolveTranslatedCopy } from "./resolveTranslatedCopy";
 import type { PreferenceKey } from "./types";
 
 interface DecisionPillsProps {
@@ -32,14 +33,6 @@ const PREFERENCES: { key: PreferenceKey; labelKey: string; descriptionKey: strin
 
 const PRIMARY_PREFERENCES = PREFERENCES.slice(0, 2);
 const SECONDARY_PREFERENCE = PREFERENCES[2];
-
-function resolveTranslatedCopy(value: unknown, key: string, fallback: string): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (trimmed === key) return fallback;
-  return trimmed;
-}
 
 function DecisionPillsBase({ selected, onToggle }: DecisionPillsProps) {
   const { t } = useTranslation("howToGetHere");

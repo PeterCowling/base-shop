@@ -11,7 +11,7 @@ const LINK_LABEL_SUFFIX = ".linkLabel" as const;
 type AnyTFunction = TFunction<string>;
 const LEGACY_LINKS_PREFIX = "links." as const;
 
-function humanizeGuideKey(value: string): string {
+export function humanizeGuideKey(value: string): string {
   const raw = value.trim();
   if (!raw) return value;
 

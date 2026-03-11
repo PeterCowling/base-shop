@@ -258,4 +258,17 @@ describe("ContentStickyCta", () => {
       unmount();
     }
   });
+
+  it("shows explicit chooser copy on segmented support surfaces", async () => {
+    render(<ContentStickyCta lang="en" ctaLocation="how_to_get_here" />);
+
+    expect(screen.getByText("Choose your stay")).toBeInTheDocument();
+    expect(
+      screen.getByText("Pick the right booking path now so we keep you in the right funnel."),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: /dorms/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /book private accommodations/i }),
+    ).toBeInTheDocument();
+  });
 });

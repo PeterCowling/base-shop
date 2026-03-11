@@ -15,12 +15,12 @@ export type LinkDescriptor = {
 };
 
 /*   Centralised schema.org type helpers. */
-export interface SearchActionSchema {
+export interface WebsiteSchema {
   "@context": "https://schema.org";
   "@type": "WebSite";
   /** Canonical home‑page URL – include trailing slash. */
   url: string;
-  potentialAction: {
+  potentialAction?: {
     "@type": "SearchAction";
     /** Results page that a *human* can navigate to. */
     target: string;

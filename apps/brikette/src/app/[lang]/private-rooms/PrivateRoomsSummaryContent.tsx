@@ -22,8 +22,8 @@ export default async function PrivateRoomsSummaryContent({ lang }: Props) {
 
   const apartmentBookingPath = getPrivateBookingPath(lang);
   const doubleRoomBookingPath = getDoubleRoomBookingPath(lang);
-  const apartmentRoom = roomsData.find((room) => room.id === "apartment");
-  const doubleRoom = roomsData.find((room) => room.id === "double_room");
+  const apartmentRoom = roomsData.find((r) => r.id === "apartment");
+  const doubleRoom = roomsData.find((r) => r.id === "double_room");
   const apartmentDetailsRaw = tApartment("detailsList", { returnObjects: true }) as unknown;
   const apartmentDetails = Array.isArray(apartmentDetailsRaw)
     ? apartmentDetailsRaw.filter((item): item is string => typeof item === "string")

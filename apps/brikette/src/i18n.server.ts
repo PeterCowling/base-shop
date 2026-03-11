@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- TECH-000 [ttl=2026-12-31] Server-only module specifiers are technical identifiers, not UI copy. */
 // file path: src/i18n.server.ts
 // Server-only i18n backend helpers
 //

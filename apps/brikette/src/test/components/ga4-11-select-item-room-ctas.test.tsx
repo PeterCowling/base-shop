@@ -26,16 +26,24 @@ jest.mock("@acme/ui/organisms/RoomsSection", () => ({
   __esModule: true,
   default: ({
     onRoomSelect,
+    singleCtaMode,
   }: {
     onRoomSelect?: (ctx: { roomSku: string; plan: "nr" | "flex"; index: number }) => void;
+    singleCtaMode?: boolean;
   }) => (
-    <button
-      type="button"
-      aria-label="checkRatesSingle"
-      onClick={() => onRoomSelect?.({ roomSku: "room_10", plan: "nr", index: 0 })}
+    <div
+      data-cy="rooms-section-organism"
+      data-testid="rooms-section-organism"
+      data-single-cta-mode={String(Boolean(singleCtaMode))}
     >
-      checkRatesSingle
-    </button>
+      <button
+        type="button"
+        aria-label="checkRatesSingle"
+        onClick={() => onRoomSelect?.({ roomSku: "room_10", plan: "nr", index: 0 })}
+      >
+        checkRatesSingle
+      </button>
+    </div>
   ),
 }));
 
@@ -106,6 +114,19 @@ describe("GA4 select_item on room CTA clicks (GA4-11)", () => {
     fireEvent.click(buttons[0]);
 
     expect(onRequireSearchInput).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not force single CTA mode on the booking grid", () => {
+    render(
+      <RoomsSection
+        lang="en"
+        itemListId="rooms_index"
+        queryState="valid"
+        bookingQuery={{ checkIn: "2026-06-10", checkOut: "2026-06-12", pax: "2", queryString: "" }}
+      />,
+    );
+
+    expect(screen.getByTestId("rooms-section-organism")).toHaveAttribute("data-single-cta-mode", "false");
   });
 });
 

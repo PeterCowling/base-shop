@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- TECH-000 [ttl=2026-12-31] robots.txt directives are crawler protocol literals, not guest-facing copy. */
 import { BASE_URL } from "@/config/site";
 
 export function buildRobotsTxt(): string {
@@ -14,4 +15,3 @@ export function buildRobotsTxt(): string {
     "",
   ].join("\n");
 }
-

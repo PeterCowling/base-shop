@@ -55,7 +55,7 @@ export function buildHotelNode(opts?: {
   pageUrl?: string;
   publisher?: boolean;
   lang?: string;
-}): HotelGraph["hotel"] {
+}): ExtHotelNode {
   const aggregate = resolveAggregateRating();
 
   let base: ExtHotelNode = {
@@ -147,7 +147,7 @@ export function buildHotelNode(opts?: {
     base = { ...base, inLanguage: opts.lang };
   }
   base = { ...base, isPartOf: { "@id": WEBSITE_ID } };
-  return base as HotelGraph["hotel"];
+  return base as ExtHotelNode;
 }
 
 function buildRoom(room: LocalizedRoom): HotelRoom {
@@ -240,5 +240,5 @@ export function buildHomeGraph(pageUrl?: string, lang = "en"): HotelGraph {
     })
   );
 
-  return { "@context": "https://schema.org", hotel, rooms, offers };
+  return { "@context": "https://schema.org", "@graph": [hotel, ...rooms, ...offers] };
 }

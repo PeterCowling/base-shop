@@ -1,6 +1,7 @@
 // src/components/guides/EventInfo.tsx
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
 import type { AppLanguage } from "@/i18n.config";
@@ -36,7 +37,7 @@ function EventInfo({ date, location, tips = [], className = "", lang: explicitLa
   }
 
   return (
-    <aside className={`not-prose my-6 rounded-md border border-1 p-4 ${className}`}>
+    <aside className={clsx("not-prose my-6 rounded-md border border-1 p-4", className)}>
       <p className="mb-1 text-sm font-semibold text-fg">
         {t("components.eventInfo.title")}
       </p>

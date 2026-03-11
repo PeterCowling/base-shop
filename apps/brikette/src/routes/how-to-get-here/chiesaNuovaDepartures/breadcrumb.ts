@@ -1,1 +1,1 @@
-export { buildBreadcrumb } from "../chiesaNuovaArrivals/breadcrumb";
+export { buildBreadcrumb } from "../_shared/buildBreadcrumb";

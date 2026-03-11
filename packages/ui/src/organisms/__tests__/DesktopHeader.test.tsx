@@ -189,5 +189,14 @@ describe("DesktopHeader rooms dropdown", () => {
     );
   });
 
+  it("uses the explicit primary CTA href when provided", () => {
+    render(<DesktopHeader lang="en" primaryCtaHref="/en/help#booking-options" />);
+
+    expect(screen.getByRole("link", { name: "Check availability" })).toHaveAttribute(
+      "href",
+      "/en/help#booking-options",
+    );
+  });
+
   it.todo("entering portal panel clears close timer — manual browser test required");
 });

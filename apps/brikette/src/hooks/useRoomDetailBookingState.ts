@@ -6,12 +6,11 @@ import indicativePricesSeed from "@/data/indicative_prices.json";
 import type { Room, RoomId } from "@/data/roomsData";
 import { useAvailabilityForRoom } from "@/hooks/useAvailabilityForRoom";
 import { useRecoveryResumeFallback } from "@/hooks/useRecoveryResumeFallback";
+import type { RoomQueryState } from "@/types/booking";
 import { HOSTEL_MAX_PAX, isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
 import { hydrateBookingSearch, persistBookingSearch } from "@/utils/bookingSearch";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { getIndicativeAnchor } from "@/utils/indicativePricing";
-
-type QueryState = "valid" | "invalid" | "absent";
 
 type ReplaceLike = (href: string, options?: { scroll?: boolean }) => void;
 
@@ -19,7 +18,7 @@ type ParamsLike = URLSearchParams | ReadonlyURLSearchParams | null;
 
 export function useRoomDetailBookingState(params: ParamsLike, replace: ReplaceLike, room: Room, roomId: RoomId): {
   range: DateRange;
-  queryState: QueryState;
+  queryState: RoomQueryState;
   pickerAdults: number;
   maxPickerAdults: number;
   pickerCheckIn: string;
@@ -39,7 +38,7 @@ export function useRoomDetailBookingState(params: ParamsLike, replace: ReplaceLi
   const checkOut = hydratedBookingSearch.search?.checkout ?? "";
   const adults = hydratedBookingSearch.search?.pax ?? 1;
 
-  const queryState: QueryState = !hydratedBookingSearch.search
+  const queryState: RoomQueryState = !hydratedBookingSearch.search
     ? "absent"
     : hydratedBookingSearch.hasValidSearch
       ? "valid"

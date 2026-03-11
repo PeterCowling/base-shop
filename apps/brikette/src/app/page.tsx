@@ -8,9 +8,10 @@ import { LinkText, Section } from "@acme/design-system/atoms";
 import { BASE_URL } from "@/config/site";
 import i18nApp from "@/i18n";
 import { i18nConfig } from "@/i18n.config";
+import { getPublicBuildLanguages } from "@/utils/buildLanguages";
 
 const fallback = i18nConfig.fallbackLng;
-const supported = i18nConfig.supportedLngs as readonly string[];
+const supported = getPublicBuildLanguages();
 
 // Build the client-side language detection script
 const languageDetectScript = `

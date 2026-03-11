@@ -1,5 +1,6 @@
 // src/components/guides/ImageGallery.tsx
 import { memo } from "react";
+import clsx from "clsx";
 
 import { CfResponsiveImage } from "@acme/ui/atoms/CfResponsiveImage";
 
@@ -28,7 +29,7 @@ function ImageGallery({ items, className = "" }: Props): JSX.Element | null {
     <div
       data-cy={TEST_IDS.root}
       data-testid={TEST_IDS.root}
-      className={`not-prose my-8 grid items-start gap-4 sm:grid-cols-2 ${className}`}
+      className={clsx("not-prose my-8 grid items-start gap-4 sm:grid-cols-2", className)}
     >
       {items.map(({ src, alt, width = 1200, height = 800, caption }, index) => {
         const aspect = width > 0 && height > 0 ? `${width}/${height}` : undefined;

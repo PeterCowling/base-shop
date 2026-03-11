@@ -271,7 +271,7 @@ function GroupedGuideCollection({
     [topicConfigs, groupedDirectionsGuides, normalizedTopicParam],
   );
 
-  const translate = useMemo(() => t as Translator, [t]);
+  const translate = t as Translator;
   const filterHeading = copy.filterHeading || readOptionalCopy(t as Translator, "guideCollections.filters.heading");
   const filterDescription = copy.filterDescription || "";
   const clearFilterLabel =

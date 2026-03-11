@@ -109,6 +109,17 @@ describe("URL inventory", () => {
     expect(missingRules).toEqual([]);
   });
 
+  it("canonical help hubs bypass the legacy Pages redirect function", () => {
+    const routeConfig = buildStaticRuntimeArtifacts(path.join(__dirname, "../../..")).routeConfig;
+
+    expect(routeConfig.exclude).toContain("/en/help");
+    expect(routeConfig.exclude).toContain("/en/help/");
+    expect(routeConfig.exclude).toContain("/fr/aide");
+    expect(routeConfig.exclude).toContain("/fr/aide/");
+    expect(routeConfig.include).toContain("/*/help*");
+    expect(routeConfig.include).toContain("/*/aide*");
+  });
+
   itWithFixture("App Router URLs are unique (no duplicates)", () => {
     const urlList = loadUrlFixture("app-router-urls.txt");
     const uniqueUrls = new Set(urlList);

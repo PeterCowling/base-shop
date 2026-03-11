@@ -1,6 +1,6 @@
 import { addDays } from "@/utils/dateUtils";
 
-const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
+export const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/u;
 
 export const HOSTEL_MIN_STAY_NIGHTS = 2;
 export const HOSTEL_MAX_STAY_NIGHTS = 8;

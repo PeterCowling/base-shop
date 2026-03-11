@@ -1,5 +1,10 @@
 // src/utils/i18nContent.ts
 // Helpers for coercing translation payloads into predictable array shapes.
+
+// eslint-disable-next-line security/detect-unsafe-regex -- BRIK-2145 Static pattern for validating i18n key format; no user input
+export const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
+// eslint-disable-next-line security/detect-unsafe-regex -- BRIK-2145 Static pattern for validating uppercase token format; no user input
+export const UPPER_I18N_KEY_TOKEN_PATTERN = /^[A-Z0-9_]+(?:\.[A-Z0-9_]+)+$/u;
 // Some locales return a string when translators haven't supplied the structured
 // JSON variant yet. These helpers normalise the values so rendering logic can
 // safely iterate without crashing tests or runtime users.
@@ -84,4 +89,16 @@ export function ensureStringArrayPreserveWhitespace(value: unknown): string[] {
 
 export function ensureArray<T>(value: unknown): T[] {
   return Array.isArray(value) ? (value as T[]) : [];
+}
+
+/**
+ * Coerce an i18n translation result into a plain string, returning `fallback`
+ * when the value is not a string, is empty, or looks like an unresolved i18n key.
+ */
+export function resolveTranslatedCopy(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  return trimmed;
 }

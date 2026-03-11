@@ -1,6 +1,6 @@
  
 // src/components/seo/GuidesTagsStructuredData.tsx
-import { memo } from "react";
+import { memo, useMemo } from "react";
 
 import { BASE_URL } from "@/config/site";
 import { useCurrentLanguage } from "@/hooks/useCurrentLanguage";
@@ -85,7 +85,7 @@ function GuidesTagsStructuredData({
 }: GuidesTagsStructuredDataProps): JSX.Element | null {
   const lang = useCurrentLanguage();
 
-  const dictionary = buildTagDictionary([lang]);
+  const dictionary = useMemo(() => buildTagDictionary([lang]), [lang]);
   const definedTermJson = buildDefinedTermSetJson(dictionary, lang, tag);
   const hasDefinedTerms = definedTermJson.length > 0;
   const collectionJson = buildCollectionJson(lang, pageUrl, name, description, items, {

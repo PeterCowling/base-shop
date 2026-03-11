@@ -152,6 +152,13 @@ export function GuideSearchBar({
   const [isFocused, setIsFocused] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const blurTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (blurTimerRef.current !== null) clearTimeout(blurTimerRef.current);
+    };
+  }, []);
 
   const resolvedPlaceholder = placeholder ?? t("search.placeholder", { defaultValue: "Search guides..." });
   const resolvedLabel = label ?? t("search.label", { defaultValue: "Search guides" });
@@ -222,10 +229,19 @@ export function GuideSearchBar({
         type="search"
         value={query}
         onChange={(e) => onChange(e.target.value)}
-        onFocus={() => setIsFocused(true)}
+        onFocus={() => {
+          if (blurTimerRef.current !== null) {
+            clearTimeout(blurTimerRef.current);
+            blurTimerRef.current = null;
+          }
+          setIsFocused(true);
+        }}
         onBlur={() => {
-          // Delay to allow click events on suggestions
-          setTimeout(() => setIsFocused(false), 150);
+          // Delay to allow click events on suggestions; cleared on unmount and refocus
+          blurTimerRef.current = setTimeout(() => {
+            blurTimerRef.current = null;
+            setIsFocused(false);
+          }, 150);
         }}
         onKeyDown={handleKeyDown}
         placeholder={resolvedPlaceholder}

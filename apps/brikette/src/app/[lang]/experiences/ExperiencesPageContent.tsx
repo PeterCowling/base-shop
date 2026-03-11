@@ -15,14 +15,13 @@ import GuideCollection from "@/components/guides/GuideCollection";
 import GuideFaqSection, { type GuideFaq } from "@/components/guides/GuideFaqSection";
 import { useGuideTopicOptions } from "@/components/guides/useGuideTopicOptions";
 import { useOptionalModal } from "@/context/ModalContext";
-import { type GuideMeta, GUIDES_INDEX } from "@/data/guides.index";
+import { GUIDES_INDEX } from "@/data/guides.index";
 import { matchesGuideTopic, resolveGuideTopicId } from "@/data/guideTopics";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { fireCtaClick } from "@/utils/ga4-events";
-import { getBookPath } from "@/utils/localizedRoutes";
+import { getBookPath, getLocalizedSectionPath } from "@/utils/localizedRoutes";
 import { type AppNamespaceBundles, primeAppI18nBundles } from "@/utils/primeAppI18nBundles";
-import { getSlug } from "@/utils/slug";
 import { getTagMeta } from "@/utils/tags";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
 
@@ -40,11 +39,9 @@ type Props = {
 
 // Filter guides to only include published experiences.
 // Draft guides are excluded so category headers won't show for empty categories.
-function getExperienceGuides(): GuideMeta[] {
-  return GUIDES_INDEX.filter(
-    (g) => g.section === "experiences" && g.status === "live"
-  );
-}
+const EXPERIENCE_GUIDES = GUIDES_INDEX.filter(
+  (g) => g.section === "experiences" && g.status === "live"
+);
 
 function parseFaqItems(t: ReturnType<typeof useTranslation>["t"], experiencesEnT: ReturnType<typeof useEnglishFallback> | undefined): GuideFaq[] {
   type FaqItem = { question?: string; answer?: string[] };
@@ -53,9 +50,9 @@ function parseFaqItems(t: ReturnType<typeof useTranslation>["t"], experiencesEnT
     const candidates = Array.isArray(items) ? (items as FaqItem[]) : [];
     return candidates
       .map((item) => ({
-        question: normalizeString(item?.question),
-        answers: Array.isArray(item?.answer)
-          ? item.answer.filter((a): a is string => typeof a === "string").map((a) => a.trim()).filter(Boolean)
+        question: normalizeString(item.question),
+        answers: Array.isArray(item.answer)
+          ? item.answer.reduce<string[]>((acc, a) => { if (typeof a === "string") { const t = a.trim(); if (t) acc.push(t); } return acc; }, [])
           : [],
       }))
       .filter((item) => item.question && item.answers.length);
@@ -88,15 +85,10 @@ function buildGuideCopy(
   experiencesEnT: ReturnType<typeof useEnglishFallback> | undefined,
   activeFilterLabel: string
 ) {
-  const taggedHeading = activeFilterLabel
-    ? readString(t, "guideCollections.taggedHeading", experiencesEnT, { tag: activeFilterLabel })
-    : readString(t, "guideCollections.taggedHeading", experiencesEnT, { tag: "" });
-  const taggedDescription = activeFilterLabel
-    ? readString(t, "guideCollections.taggedDescription", experiencesEnT, { tag: activeFilterLabel })
-    : readString(t, "guideCollections.taggedDescription", experiencesEnT, { tag: "" });
-  const emptyMessage = activeFilterLabel
-    ? readString(t, "guideCollections.empty", experiencesEnT, { tag: activeFilterLabel })
-    : readString(t, "guideCollections.empty", experiencesEnT, { tag: "" });
+  const tag = activeFilterLabel;
+  const taggedHeading = readString(t, "guideCollections.taggedHeading", experiencesEnT, { tag });
+  const taggedDescription = readString(t, "guideCollections.taggedDescription", experiencesEnT, { tag });
+  const emptyMessage = readString(t, "guideCollections.empty", experiencesEnT, { tag });
 
   return {
     heading: readString(t, "guideCollections.heading", experiencesEnT) || "",
@@ -121,7 +113,6 @@ function ExperiencesPageContent({
 }: Props) {
   primeAppI18nBundles(lang, preloadedNamespaceBundles);
   const { t } = useTranslation("experiencesPage", { lng: lang });
-  useTranslation("guides", { lng: lang });
   const router = useRouter();
   const { openModal } = useOptionalModal();
   usePagePreload({
@@ -164,9 +155,9 @@ function ExperiencesPageContent({
     return meta.label || value;
   }, [activeFilter, isTagFilter, lang, resolvedTopicId]);
 
-  const allExperienceGuides = useMemo(() => getExperienceGuides(), []);
+  const allExperienceGuides = EXPERIENCE_GUIDES;
 
-  const clearFilterHref = `/${lang}/${getSlug("experiences", lang)}`;
+  const clearFilterHref = getLocalizedSectionPath(lang, "experiences");
 
   // Hero content
   const heroEyebrow = readString(t, "hero.eyebrow", experiencesEnT);
@@ -175,8 +166,8 @@ function ExperiencesPageContent({
   const heroScrollNudge = readString(t, "hero.scrollNudge", experiencesEnT);
 
   // CTA section hrefs
-  const barMenuHref = `/${lang}/${getSlug("barMenu", lang)}`;
-  const breakfastMenuHref = `/${lang}/${getSlug("breakfastMenu", lang)}`;
+  const barMenuHref = getLocalizedSectionPath(lang, "barMenu");
+  const breakfastMenuHref = getLocalizedSectionPath(lang, "breakfastMenu");
 
   const guideCopy = useMemo(
     () => buildGuideCopy(t, experiencesEnT, activeFilterLabel),
@@ -194,8 +185,6 @@ function ExperiencesPageContent({
   const guideFilterParam = isTagFilter ? "tag" : "topic";
   const guideFilterPredicate = isTagFilter ? undefined : matchesGuideTopic;
   const guideFilterOptions = isTagFilter ? undefined : topicOptions;
-  const _showGuideFilters = !isTagFilter;
-
   const faqTitle = readString(t, "faq.title", experiencesEnT);
   const faqItems = useMemo<GuideFaq[]>(
     () => parseFaqItems(t, experiencesEnT),

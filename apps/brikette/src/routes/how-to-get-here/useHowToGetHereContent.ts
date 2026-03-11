@@ -1,17 +1,18 @@
-/* eslint-disable max-lines-per-function -- LINT-1007 [ttl=2026-12-31] Content assembly remains centralized until planned extraction lands. */
+/* eslint-disable max-lines-per-function, ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Content assembly and localized fallback copy remain centralized until planned extraction lands. */
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 
 import type { AppLanguage } from "@/i18n.config";
+import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
 import { getSlug } from "@/utils/slug";
+import { slugify } from "@/utils/slugify";
 
 import {
   normalizeDestinationSections,
   normalizeExperienceGuides,
   normalizeRomeTable,
   normalizeSorrentoContent,
-  slugify,
 } from "./normalizers";
 import { INTRO_INTRO_KEY } from "./styles";
 import { augmentDestinationSections } from "./transport";
@@ -45,9 +46,6 @@ export type HowToGetHereContent = {
   internalBasePath: string;
   experienceGuides: ExperienceGuidesContent;
 };
-
-// eslint-disable-next-line security/detect-unsafe-regex -- BRIK-2145 Static pattern for validating i18n key format; no user input
-const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
 
 const ensureString = (value: unknown): string => {
   if (typeof value !== "string") {

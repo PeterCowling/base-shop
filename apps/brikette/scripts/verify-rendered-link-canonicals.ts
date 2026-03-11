@@ -25,8 +25,8 @@ const REPRESENTATIVE_ROUTES = [
   "/ja",
   "/it/prenota",
   "/it/prenota-alloggi-privati",
-  "/en/private-rooms",
-  "/it/camere-private",
+  "/en/book-private-accommodations",
+  "/fr/reserver-hebergements-prives",
   "/en/private-rooms/sea-view-apartment",
   "/it/camere-private/appartamento-vista-mare",
 ] as const;

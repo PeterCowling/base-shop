@@ -32,6 +32,7 @@ import type { RoutePickerSelection } from "@/routes/how-to-get-here/components/R
 import { pickBestLink } from "@/routes/how-to-get-here/pickBestLink";
 import { useDestinationFilters } from "@/routes/how-to-get-here/useDestinationFilters";
 import { useHowToGetHereContent } from "@/routes/how-to-get-here/useHowToGetHereContent";
+import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
 import { resolveLabel, useEnglishFallback } from "@/utils/translation-fallback";
 
 // Lazy load DestinationSections to prevent bundling destinations data into guide pages
@@ -53,36 +54,6 @@ type Props = {
 const ROME_SECTION_ID = "rome-travel-planner";
 const EXPERIENCE_SECTION_ID = "experience-planners";
 const INTRO_SECTION_ID = "arrival-help";
-function isI18nKeyToken(input: string): boolean {
-  // Avoid regex here: ESLint security rules can flag even safe-looking patterns.
-  // We only treat tokens like `filters.suggestion.removeDestination` as i18n keys.
-  if (!input.includes(".")) return false;
-
-  const parts = input.split(".");
-  if (parts.some((p) => p.length === 0)) return false;
-
-  for (const part of parts) {
-    for (let i = 0; i < part.length; i += 1) {
-      const code = part.charCodeAt(i);
-      const isUpper = code >= 65 && code <= 90;
-      const isLower = code >= 97 && code <= 122;
-      const isDigit = code >= 48 && code <= 57;
-      const isUnderscore = code === 95;
-
-      if (!isUpper && !isLower && !isDigit && !isUnderscore) return false;
-    }
-  }
-
-  return true;
-}
-
-function resolveUiLabel(value: unknown, fallback: string): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (isI18nKeyToken(trimmed)) return fallback;
-  return trimmed;
-}
 
 function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
   const { t, ready } = useTranslation("howToGetHere", { lng: lang });
@@ -203,15 +174,11 @@ function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
     });
   }, [content.sections, stickyOffset]);
 
-  const jumpToItems: JumpToItem[] = (() => {
+  const jumpToItems = useMemo<JumpToItem[]>(() => {
     const items: JumpToItem[] = [
       {
         id: INTRO_SECTION_ID,
-        label: resolveLabel(
-          t,
-          "jumpTo.arrival",
-          resolveLabel(fallbackT, "jumpTo.arrival", "Arrival help"),
-        ),
+        label: resolveLabel(t, "jumpTo.arrival", resolveLabel(fallbackT, "jumpTo.arrival", "Arrival help")),
         group: "quick-actions" as JumpToGroup,
       },
     ];
@@ -220,60 +187,49 @@ function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
     }
     items.push({
       id: ROME_SECTION_ID,
-      label: resolveLabel(
-        t,
-        "jumpTo.rome",
-        resolveLabel(fallbackT, "jumpTo.rome", "Rome"),
-      ),
+      label: resolveLabel(t, "jumpTo.rome", resolveLabel(fallbackT, "jumpTo.rome", "Rome")),
       group: "utility" as JumpToGroup,
     });
     items.push({
       id: EXPERIENCE_SECTION_ID,
-      label: resolveLabel(
-        t,
-        "jumpTo.experiences",
-        resolveLabel(fallbackT, "jumpTo.experiences", "Experiences"),
-      ),
+      label: resolveLabel(t, "jumpTo.experiences", resolveLabel(fallbackT, "jumpTo.experiences", "Experiences")),
       group: "utility" as JumpToGroup,
     });
     return items;
-  })();
+  }, [content.sections, t, fallbackT]);
 
-  const activeFilters: ActiveFilterChip[] = (() => {
+  const activeFilters = useMemo<ActiveFilterChip[]>(() => {
     const chips: ActiveFilterChip[] = [];
     if (destinationFilter && destinationFilter !== "all") {
-      chips.push({
-        key: "destination",
-        label: destinationFilter,
-        value: destinationFilter,
-      });
+      chips.push({ key: "destination", label: destinationFilter, value: destinationFilter });
     }
     if (transportFilter && transportFilter !== "all") {
-      chips.push({
-        key: "transport",
-        label: transportFilter,
-        value: transportFilter,
-      });
+      chips.push({ key: "transport", label: transportFilter, value: transportFilter });
     }
     if (directionFilter && directionFilter !== "all") {
       chips.push({
         key: "direction",
-                label: directionFilter === "to"
-        ? t("routeCard.direction.to", { defaultValue: "To hostel" })
-        : t("routeCard.direction.from", { defaultValue: "From hostel" }),
+        label: directionFilter === "to"
+          ? t("routeCard.direction.to", { defaultValue: "To hostel" })
+          : t("routeCard.direction.from", { defaultValue: "From hostel" }),
         value: directionFilter,
       });
     }
     return chips;
-  })();
+  }, [destinationFilter, transportFilter, directionFilter, t]);
 
   if (!ready) {
     const fallbackRoutes = content.sections
       .slice(0, 8)
-      .map((section) => ({
-        id: section.id,
-        label: resolveUiLabel(section.name, t("loadingFallback.routeLabelFallback") as string),
-      }));
+      .map((section) => {
+        const trimmed = typeof section.name === "string" ? section.name.trim() : "";
+        return {
+          id: section.id,
+          label: trimmed && !I18N_KEY_TOKEN_PATTERN.test(trimmed)
+            ? trimmed
+            : (t("loadingFallback.routeLabelFallback") as string),
+        };
+      });
 
     return (
       <HowToLoadingFallback

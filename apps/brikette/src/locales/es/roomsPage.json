@@ -266,7 +266,7 @@
     "clickToEnlarge": "Haz clic en la imagen para ampliar",
     "prevAria": "Imagen anterior",
     "nextAria": "Imagen siguiente",
-    "pagination": "{{current}}XQTOKEN2QXZ",
+    "pagination": "{{current}} / {{total}}",
     "photoAlt": "Foto de {{room}}",
     "noImage": "No hay imagen disponible"
   },
@@ -286,10 +286,10 @@
   "filtersAria": "Filtrar por tipo de habitación",
   "checkRatesNonRefundable": "Tarifas no reembolsables",
   "checkRatesFlexible": "Tarifas flexibles",
-  "checkRatesSingle": "Tasas de comprobación",
+  "checkRatesSingle": "Ver tarifas",
   "ctaSuffix": {
     "nonRefundable": "No reembolsable",
-    "flexible": "tarifa flexible"
+    "flexible": "Flexible"
   },
   "details": "Detalles",
   "ratesFrom": "Desde €{{price}}",

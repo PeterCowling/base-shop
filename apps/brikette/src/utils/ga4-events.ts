@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- TECH-000 [ttl=2026-12-31] Analytics identifiers and list labels are telemetry-only, not UI copy. */
 // src/utils/ga4-events.ts
 // Small GA4 helpers used by Brikette app surfaces.
 

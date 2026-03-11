@@ -9,6 +9,7 @@ import FacilityIcon from "@/components/rooms/FacilityIcon";
 import type { RoomFeatures } from "@/data/roomsData";
 import type { AppLanguage } from "@/i18n.config";
 import { guideHref } from "@/routes.guides-helpers";
+import { I18N_KEY_TOKEN_PATTERN, UPPER_I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 export type HeroContent = {
@@ -47,8 +48,8 @@ export function resolveCopy(value: unknown, key: string, fallback = ""): string 
   const trimmed = value.trim();
   if (!trimmed) return fallback;
   if (trimmed === key) return fallback;
-  if (/^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/u.test(trimmed)) return fallback;
-  if (/^[A-Z0-9_]+(?:\.[A-Z0-9_]+)+$/u.test(trimmed)) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  if (UPPER_I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
   return trimmed;
 }
 
@@ -112,6 +113,7 @@ export function FeatureSection({
   lockersLabel,
   privateTerraceLabel,
   inRoomLockersLabel,
+  translateFeatureValue = (value: string) => value,
 }: {
   features: RoomFeatures | undefined;
   bedsLabel: string;
@@ -121,6 +123,7 @@ export function FeatureSection({
   lockersLabel: string;
   privateTerraceLabel: string;
   inRoomLockersLabel: string;
+  translateFeatureValue?: (value: string) => string;
 }) {
   if (!features) return null;
 
@@ -129,16 +132,16 @@ export function FeatureSection({
       <dl className="space-y-2">
         <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-text/90">
           <dt className="w-28 shrink-0 font-medium">{bedsLabel}</dt>
-          <dd>{features.bedSpec}</dd>
+          <dd>{translateFeatureValue(features.bedSpec)}</dd>
         </div>
         <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-text/90">
           <dt className="w-28 shrink-0 font-medium">{bathroomLabel}</dt>
-          <dd>{features.bathroomSpec}</dd>
+          <dd>{translateFeatureValue(features.bathroomSpec)}</dd>
         </div>
         {features.viewSpec ? (
           <div className="flex items-start gap-2 text-sm text-brand-text dark:text-brand-text/90">
             <dt className="w-28 shrink-0 font-medium">{viewLabel}</dt>
-            <dd>{features.viewSpec}</dd>
+            <dd>{translateFeatureValue(features.viewSpec)}</dd>
           </div>
         ) : null}
         {features.terracePresent ? (

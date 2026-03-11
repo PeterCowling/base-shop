@@ -1,16 +1,12 @@
 // src/app/[lang]/private-rooms/page.tsx
-// Private rooms summary page - App Router version
-import type { Metadata } from "next";
+// Legacy private-rooms root. Canonical entry lives at /[lang]/book-private-accommodations.
+import { redirect } from "next/navigation";
 
-import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
-
-import { getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
-import { buildAppMetadata } from "@/app/_lib/metadata";
+import { toAppLanguage } from "@/app/_lib/i18n-server";
 import { generateLangParams } from "@/app/_lib/static-params";
-import { OG_IMAGE } from "@/utils/headConstants";
-import { getSlug } from "@/utils/slug";
+import { getPrivateBookingPath } from "@/utils/localizedRoutes";
 
-import PrivateRoomsSummaryContent from "./PrivateRoomsSummaryContent";
+import { generateMetadata as generatePrivateBookingMetadata } from "../book-private-accommodations/page";
 
 type Props = {
   params: Promise<{ lang: string }>;
@@ -20,38 +16,10 @@ export async function generateStaticParams() {
   return generateLangParams();
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export const generateMetadata = generatePrivateBookingMetadata;
+
+export default async function PrivateRoomsPage({ params }: Props): Promise<JSX.Element> {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-  const t = await getTranslations(validLang, ["apartmentPage"]);
-
-  const title = (t("meta.title") as string) || "";
-  const description = (t("meta.description") as string) || "";
-  const imageAlt = (t("heroImageAlt") as string) || "";
-
-  const apartmentSlug = getSlug("apartment", validLang);
-  const path = `/${validLang}/${apartmentSlug}`;
-
-  const image = buildCfImageUrl("/img/facade.avif", {
-    width: OG_IMAGE.width,
-    height: OG_IMAGE.height,
-    quality: 85,
-    format: "auto",
-  });
-
-  return buildAppMetadata({
-    lang: validLang,
-    title,
-    description,
-    path,
-    image: { src: image, width: OG_IMAGE.width, height: OG_IMAGE.height },
-    imageAlt,
-  });
-}
-
-export default async function PrivateRoomsPage({ params }: Props) {
-  const { lang } = await params;
-  const validLang = toAppLanguage(lang);
-
-  return <PrivateRoomsSummaryContent lang={validLang} />;
+  redirect(getPrivateBookingPath(validLang));
 }

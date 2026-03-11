@@ -1,11 +1,11 @@
 import React, { memo, useEffect } from "react";
 
 import { NotificationBanner } from "@acme/ui/molecules";
-import { Header } from "@acme/ui/organisms/Header";
 
 import { InlineBoundary } from "@/components/common/InlineBoundary";
 import ErrorBoundary from "@/components/ErrorBoundary";
 import { Footer } from "@/components/footer/Footer";
+import Header from "@/components/header/Header";
 import { HelpDrawerProvider } from "@/context/HelpDrawerContext";
 import { ModalProvider } from "@/context/ModalContext";
 import { BannerProvider } from "@/context/NotificationBannerContext";

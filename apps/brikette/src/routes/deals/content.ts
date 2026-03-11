@@ -9,7 +9,7 @@ export type PerkItem = {
   subtitle?: string;
 };
 
-const normalizePerkItem = (item: unknown): PerkItem | null => {
+export const normalizePerkItem = (item: unknown): PerkItem | null => {
   if (typeof item === "string") {
     return { title: item };
   }
@@ -26,7 +26,7 @@ const normalizePerkItem = (item: unknown): PerkItem | null => {
   return null;
 };
 
-const normalizePerks = (raw: unknown): PerkItem[] => {
+export const normalizePerks = (raw: unknown): PerkItem[] => {
   if (!Array.isArray(raw)) return [];
   return raw.map(normalizePerkItem).filter((item): item is PerkItem => Boolean(item?.title?.trim()));
 };

@@ -146,3 +146,68 @@ describe("mergeAutosaveImageTuples — image lifecycle", () => {
     expect(merged.imageFiles).not.toContain("images/jacket/remove.jpg");
   });
 });
+
+// ---------------------------------------------------------------------------
+// B3 — suppressUiBusy: autosave must not touch the setBusy dispatcher
+// ---------------------------------------------------------------------------
+describe("handleSaveImpl — suppressUiBusy keeps UI busy state unchanged", () => {
+  beforeEach(() => {
+    fetchMock.mockReset();
+  });
+
+  it("B3: setBusy is NOT called during a successful autosave", async () => {
+    const savedProduct = { ...VALID_DRAFT };
+    fetchMock.mockResolvedValueOnce(
+      makeResponse({ ok: true, product: savedProduct, revision: "rev-2" }),
+    );
+
+    const setBusy = jest.fn();
+    const result = await handleSaveImpl(
+      makeHandleSaveParams({ setBusy, suppressUiBusy: true }),
+    );
+
+    expect(result.status).toBe("saved");
+    expect(setBusy).not.toHaveBeenCalled();
+  });
+
+  it("B3: setBusy IS called during a manual save (suppressUiBusy absent)", async () => {
+    const savedProduct = { ...VALID_DRAFT };
+    fetchMock.mockResolvedValueOnce(
+      makeResponse({ ok: true, product: savedProduct, revision: "rev-2" }),
+    );
+
+    const setBusy = jest.fn();
+    const result = await handleSaveImpl(makeHandleSaveParams({ setBusy }));
+
+    expect(result.status).toBe("saved");
+    expect(setBusy).toHaveBeenCalledWith(true);
+    expect(setBusy).toHaveBeenCalledWith(false);
+  });
+
+  it("B3: setBusy is NOT called even when autosave encounters a save error", async () => {
+    fetchMock.mockResolvedValueOnce(
+      makeResponse({ ok: false, error: "server_error" }, 500),
+    );
+
+    const setBusy = jest.fn();
+    const result = await handleSaveImpl(
+      makeHandleSaveParams({ setBusy, suppressUiBusy: true }),
+    );
+
+    expect(result.status).toBe("error");
+    expect(setBusy).not.toHaveBeenCalled();
+  });
+
+  it("B3: busyLockRef is still used for mutual exclusion even when suppressUiBusy is true", async () => {
+    const busyLockRef = { current: true }; // lock already held by another operation
+    const setBusy = jest.fn();
+    const result = await handleSaveImpl(
+      makeHandleSaveParams({ busyLockRef, setBusy, suppressUiBusy: true }),
+    );
+
+    // Cannot acquire the lock → returns "busy" without calling fetch
+    expect(result.status).toBe("busy");
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(setBusy).not.toHaveBeenCalled();
+  });
+});

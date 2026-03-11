@@ -1,7 +1,11 @@
-import { describe, expect, it } from "@jest/globals";
+import { describe, expect, it, jest } from "@jest/globals";
 
 import { getUploaderMessage, type UploaderMessageKey } from "../../../lib/uploaderI18n";
-import { getCatalogApiErrorMessage } from "../catalogConsoleFeedback";
+import {
+  endBusyAction,
+  getCatalogApiErrorMessage,
+  tryBeginBusyAction,
+} from "../catalogConsoleFeedback";
 
 function translate(
   key: UploaderMessageKey,
@@ -44,5 +48,52 @@ describe("catalog console feedback helpers", () => {
     expect(getCatalogApiErrorMessage("r2_unavailable", "uploadImageErrorFailed", translate)).toContain(
       "storage is unavailable",
     );
+  });
+});
+
+// ---------------------------------------------------------------------------
+// tryBeginBusyAction / endBusyAction — suppressUiBusy option
+// ---------------------------------------------------------------------------
+describe("tryBeginBusyAction / endBusyAction — suppressUiBusy", () => {
+  it("default: acquires lock and calls setBusy(true)", () => {
+    const busyLockRef = { current: false };
+    const setBusy = jest.fn();
+    const result = tryBeginBusyAction(busyLockRef, setBusy);
+    expect(result).toBe(true);
+    expect(busyLockRef.current).toBe(true);
+    expect(setBusy).toHaveBeenCalledWith(true);
+  });
+
+  it("default: endBusyAction releases lock and calls setBusy(false)", () => {
+    const busyLockRef = { current: true };
+    const setBusy = jest.fn();
+    endBusyAction(busyLockRef, setBusy);
+    expect(busyLockRef.current).toBe(false);
+    expect(setBusy).toHaveBeenCalledWith(false);
+  });
+
+  it("suppressUiBusy: acquires lock but does NOT call setBusy", () => {
+    const busyLockRef = { current: false };
+    const setBusy = jest.fn();
+    const result = tryBeginBusyAction(busyLockRef, setBusy, { suppressUiBusy: true });
+    expect(result).toBe(true);
+    expect(busyLockRef.current).toBe(true);
+    expect(setBusy).not.toHaveBeenCalled();
+  });
+
+  it("suppressUiBusy: endBusyAction releases lock but does NOT call setBusy", () => {
+    const busyLockRef = { current: true };
+    const setBusy = jest.fn();
+    endBusyAction(busyLockRef, setBusy, { suppressUiBusy: true });
+    expect(busyLockRef.current).toBe(false);
+    expect(setBusy).not.toHaveBeenCalled();
+  });
+
+  it("returns false and leaves setBusy uncalled when lock is already held", () => {
+    const busyLockRef = { current: true };
+    const setBusy = jest.fn();
+    const result = tryBeginBusyAction(busyLockRef, setBusy);
+    expect(result).toBe(false);
+    expect(setBusy).not.toHaveBeenCalled();
   });
 });

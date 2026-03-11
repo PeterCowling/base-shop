@@ -4,7 +4,11 @@ import path from "node:path";
 import { getRepoRoot } from "@/lib/get-repo-root";
 import { readFileWithinRoot } from "@/lib/safe-fs";
 
-import { loadProcessImprovementsDecisionStates } from "./decision-ledger";
+import {
+  type ProcessImprovementsDecisionEvent,
+  readProcessImprovementsDecisionEvents,
+  reduceProcessImprovementsDecisionEvents,
+} from "./decision-ledger";
 import {
   type ProcessImprovementsQueueMode,
   resolveProcessImprovementsQueuePath,
@@ -44,16 +48,31 @@ export interface ProcessImprovementsInboxItem {
   decisionState?: ProcessImprovementsDecisionState;
 }
 
+export interface ProcessImprovementsActionedItem {
+  ideaKey: string;
+  dispatchId: string;
+  business: string;
+  title: string;
+  decision: "do" | "decline";
+  decidedAt: string;
+  actorName: string;
+  executionResult?: ProcessImprovementsExecutionResult;
+}
+
 export interface ProcessImprovementsProjectionResult {
   queueMode: ProcessImprovementsQueueMode;
   sourcePath: string;
   items: ProcessImprovementsInboxItem[];
+  actionedItems: ProcessImprovementsActionedItem[];
 }
 
 export interface LoadProcessImprovementsProjectionOptions {
   repoRoot?: string;
   env?: NodeJS.ProcessEnv;
+  /** Override both decision states and events (test mode). When provided, actionedItems will be empty. */
   decisionStates?: ReadonlyMap<string, ProcessImprovementsDecisionState>;
+  /** Override raw decision events (test mode). Takes precedence over decisionStates for actionedItems. */
+  decisionEvents?: readonly ProcessImprovementsDecisionEvent[];
 }
 
 interface QueueDispatchRecord {
@@ -178,15 +197,88 @@ export function projectProcessImprovementsInboxItems(
     });
 }
 
+/**
+ * Build the actioned-items history by cross-referencing ledger events with
+ * queue dispatch titles. Reads ALL dispatches (not just "enqueued") so titles
+ * remain resolvable after items leave the inbox.
+ *
+ * Returns the most recent "do" or "decline" event per idea, sorted newest-first.
+ */
+export function projectProcessImprovementsActionedItems(
+  queueState: QueueStateRecord,
+  events: readonly ProcessImprovementsDecisionEvent[],
+  sourcePath: string
+): ProcessImprovementsActionedItem[] {
+  // Build dispatch_id → title from every dispatch in the queue file
+  const dispatches = Array.isArray(queueState.dispatches)
+    ? queueState.dispatches
+    : [];
+  const titleByDispatchId = new Map<string, string>();
+  for (const dispatch of dispatches) {
+    const dispatchId = readString(dispatch.dispatch_id);
+    if (!dispatchId) continue;
+    titleByDispatchId.set(
+      dispatchId,
+      readString(dispatch.area_anchor) ??
+        readString(dispatch.current_truth) ??
+        dispatchId
+    );
+  }
+
+  // Keep the latest event per idea_key for actionable decisions only
+  const latestByIdeaKey = new Map<string, ProcessImprovementsDecisionEvent>();
+  for (const event of events) {
+    if (event.decision !== "do" && event.decision !== "decline") continue;
+    const existing = latestByIdeaKey.get(event.idea_key);
+    if (!existing || event.decided_at > existing.decided_at) {
+      latestByIdeaKey.set(event.idea_key, event);
+    }
+  }
+
+  return Array.from(latestByIdeaKey.values())
+    .map(
+      (event): ProcessImprovementsActionedItem => ({
+        ideaKey: event.idea_key,
+        dispatchId: event.dispatch_id,
+        business: event.business,
+        title:
+          titleByDispatchId.get(event.dispatch_id) ??
+          deriveProcessImprovementsIdeaKey(sourcePath, event.dispatch_id),
+        decision: event.decision as "do" | "decline",
+        decidedAt: event.decided_at,
+        actorName: event.actor_name,
+        executionResult: event.execution_result,
+      })
+    )
+    .sort((a, b) => b.decidedAt.localeCompare(a.decidedAt));
+}
+
 export async function loadProcessImprovementsProjection(
   options: LoadProcessImprovementsProjectionOptions = {}
 ): Promise<ProcessImprovementsProjectionResult> {
   const repoRoot = options.repoRoot ?? getRepoRoot();
-  const decisionStates =
-    options.decisionStates ??
-    (await loadProcessImprovementsDecisionStates({ repoRoot }));
   const queuePath = resolveProcessImprovementsQueuePath(options.env);
   const absoluteQueuePath = path.join(repoRoot, queuePath.relativePath);
+
+  // Resolve decision states and events. When decisionStates is provided
+  // directly (test override), skip reading events and return no history.
+  let decisionStates: ReadonlyMap<string, ProcessImprovementsDecisionState>;
+  let decisionEvents: readonly ProcessImprovementsDecisionEvent[];
+
+  if (options.decisionStates) {
+    decisionStates = options.decisionStates;
+    decisionEvents = options.decisionEvents ?? [];
+  } else if (options.decisionEvents) {
+    decisionEvents = options.decisionEvents;
+    decisionStates = reduceProcessImprovementsDecisionEvents([
+      ...decisionEvents,
+    ]);
+  } else {
+    decisionEvents = await readProcessImprovementsDecisionEvents(repoRoot);
+    decisionStates = reduceProcessImprovementsDecisionEvents([
+      ...decisionEvents,
+    ]);
+  }
 
   let raw: string;
   try {
@@ -200,6 +292,7 @@ export async function loadProcessImprovementsProjection(
       queueMode: queuePath.queueMode,
       sourcePath: queuePath.relativePath,
       items: [],
+      actionedItems: [],
     };
   }
 
@@ -211,6 +304,7 @@ export async function loadProcessImprovementsProjection(
       queueMode: queuePath.queueMode,
       sourcePath: queuePath.relativePath,
       items: [],
+      actionedItems: [],
     };
   }
 
@@ -219,6 +313,7 @@ export async function loadProcessImprovementsProjection(
       queueMode: queuePath.queueMode,
       sourcePath: queuePath.relativePath,
       items: [],
+      actionedItems: [],
     };
   }
 
@@ -230,6 +325,11 @@ export async function loadProcessImprovementsProjection(
       queuePath.relativePath,
       queuePath.queueMode,
       decisionStates
+    ),
+    actionedItems: projectProcessImprovementsActionedItems(
+      parsed,
+      decisionEvents,
+      queuePath.relativePath
     ),
   };
 }

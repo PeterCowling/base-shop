@@ -249,7 +249,9 @@ describe("CloseShiftForm", () => {
     await userEvent.click(screen.getByRole("button", { name: /next/i }));
     await userEvent.click(screen.getByRole("button", { name: /next/i }));
     await userEvent.click(screen.getByRole("button", { name: /go/i }));
+    await screen.findByText(/please recount/i);
 
+    await userEvent.click(screen.getByRole("button", { name: /go/i }));
     await userEvent.click(screen.getByRole("button", { name: /manager signoff/i }));
     await userEvent.click(screen.getByRole("button", { name: /^confirm$/i }));
 

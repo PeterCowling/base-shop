@@ -405,6 +405,7 @@ export async function handleSaveImpl({
   handleSelect,
   confirmUnpublish,
   suppressSuccessFeedback = false,
+  suppressUiBusy = false,
 }: {
   draft: CatalogProductDraftInput;
   draftRevision: string | null;
@@ -419,6 +420,7 @@ export async function handleSaveImpl({
   handleSelect: (product: CatalogProductDraftInput) => void;
   confirmUnpublish: (message: string) => boolean;
   suppressSuccessFeedback?: boolean;
+  suppressUiBusy?: boolean;
 }): Promise<SaveResult> {
   const parsed = catalogProductDraftSchema.safeParse(draft);
   if (!parsed.success) {
@@ -430,7 +432,7 @@ export async function handleSaveImpl({
     return { status: "validation_error" };
   }
 
-  if (!tryBeginBusyAction(busyLockRef, setBusy)) return { status: "busy" };
+  if (!tryBeginBusyAction(busyLockRef, setBusy, { suppressUiBusy })) return { status: "busy" };
   clearActionFeedbackDomains(setActionFeedback, ["draft"]);
   setFieldErrors({});
 
@@ -495,7 +497,7 @@ export async function handleSaveImpl({
     });
     return { status: "error" };
   } finally {
-    endBusyAction(busyLockRef, setBusy);
+    endBusyAction(busyLockRef, setBusy, { suppressUiBusy });
   }
 }
 

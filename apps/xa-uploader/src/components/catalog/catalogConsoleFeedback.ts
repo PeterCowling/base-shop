@@ -195,19 +195,21 @@ export function clearActionFeedbackDomains(
 export function tryBeginBusyAction(
   busyLockRef: BusyLockRef,
   setBusy: React.Dispatch<React.SetStateAction<boolean>>,
+  options?: { suppressUiBusy?: boolean },
 ): boolean {
   if (busyLockRef.current) return false;
   busyLockRef.current = true;
-  setBusy(true);
+  if (!options?.suppressUiBusy) setBusy(true);
   return true;
 }
 
 export function endBusyAction(
   busyLockRef: BusyLockRef,
   setBusy: React.Dispatch<React.SetStateAction<boolean>>,
+  options?: { suppressUiBusy?: boolean },
 ) {
   busyLockRef.current = false;
-  setBusy(false);
+  if (!options?.suppressUiBusy) setBusy(false);
 }
 
 function getSyncScriptLabel(

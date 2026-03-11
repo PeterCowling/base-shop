@@ -373,6 +373,7 @@ type SaveRunnerParams = {
   suppressSuccessFeedback: boolean;
   confirmUnpublish: (message: string) => boolean;
   handleSelect: (product: CatalogProductDraftInput) => void;
+  suppressUiBusy?: boolean;
 };
 
 async function runCatalogSave({
@@ -382,6 +383,7 @@ async function runCatalogSave({
   suppressSuccessFeedback,
   confirmUnpublish,
   handleSelect,
+  suppressUiBusy,
 }: SaveRunnerParams): Promise<SaveResult> {
   return await handleSaveImpl({
     draft,
@@ -397,6 +399,7 @@ async function runCatalogSave({
     handleSelect,
     confirmUnpublish,
     suppressSuccessFeedback,
+    suppressUiBusy,
   });
 }
 
@@ -547,6 +550,7 @@ async function retryAutosaveAfterConflict(params: {
     suppressSuccessFeedback: true,
     confirmUnpublish: () => false,
     handleSelect: params.handleSelect,
+    suppressUiBusy: true,
   });
 
   if (retryAttempt.status === "saved") {
@@ -728,6 +732,7 @@ function useCatalogDraftHandlers(
           suppressSuccessFeedback: true,
           confirmUnpublish: () => false,
           handleSelect: handleSelectAfterSave,
+          suppressUiBusy: true,
         });
 
         if (firstAttempt.status === "saved") {

@@ -7,12 +7,12 @@
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 270,
+    "completed": 271,
     "fact_find_ready": 32,
     "plan_ready": 0,
     "micro_build_ready": 2,
     "briefing_ready": 0,
-    "total": 515
+    "total": 516
   },
   "dispatches": [
     {
@@ -23831,6 +23831,61 @@
         "type": "operational",
         "statement": "buildIndex translation overhead is either confirmed negligible (i18next cache hit path documented) or replaced with a per-language cached index that avoids redundant lookups on language switch.",
         "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260311092144-3104",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "SELL",
+      "root_event_id": "operator:BRIK:SELL:brikette-funnel-entry-cta-integration-contracts:20260311",
+      "anchor_key": "brikette-funnel-entry-cta-integration-contracts",
+      "cluster_key": "BRIK:SELL:brikette-funnel-entry-cta-integration-contracts:operator:20260311",
+      "cluster_fingerprint": "brikette-funnel-entry-cta-integration-contracts-20260311",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK sales funnel - entry CTA analytics coverage is helper-only instead of rendered wiring proof",
+      "location_anchors": [
+        "apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx",
+        "apps/brikette/src/components/header/Header.tsx",
+        "apps/brikette/src/app/[lang]/HomeContent.tsx",
+        "apps/brikette/src/components/landing/BookingWidget.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The deterministic Brikette sales-funnel test surface covered CTA analytics payload formatting via direct helper calls, but it did not prove that the rendered desktop header, mobile nav, hero CTA, and booking widget submit interactions actually emitted those analytics events and navigated correctly.",
+      "next_scope_now": "Replace the helper-only CTA analytics test with rendered interaction contracts that exercise Header, HomeContent, and BookingWidget so entry-funnel regressions are caught at the actual click surfaces users touch first.",
+      "recommended_route": "lp-do-build",
+      "status": "completed",
+      "priority": "P1",
+      "confidence": 0.91,
+      "evidence_refs": [
+        "operator-stated: review the hostel sales funnel testing and take the gaps forward via lp-do-ideas -> lp-do-build",
+        "apps/brikette/src/test/components/ga4-cta-click-header-hero-widget.test.tsx",
+        "apps/brikette/src/components/header/Header.tsx",
+        "apps/brikette/src/app/[lang]/HomeContent.tsx",
+        "apps/brikette/src/components/landing/BookingWidget.tsx"
+      ],
+      "created_at": "2026-03-11T09:21:44.000Z",
+      "queue_state": "completed",
+      "why": "The first clicks in the funnel are only worth gating if the test proves the real rendered surfaces emit analytics and route correctly. Helper-only assertions left that integration seam unguarded in PR coverage.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Brikette's deterministic booking-funnel contract suite verifies rendered desktop header, mobile nav, hero, and booking widget CTA analytics wiring and navigation.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "brikette-funnel-entry-cta-integration-contracts",
+        "target_path": "docs/plans/brikette-funnel-entry-cta-integration-contracts/micro-build.md",
+        "processed_at": "2026-03-11T09:21:44.000Z",
+        "micro_build_path": "docs/plans/brikette-funnel-entry-cta-integration-contracts/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/brikette-funnel-entry-cta-integration-contracts/micro-build.md",
+        "completed_at": "2026-03-11T09:21:44.000Z",
+        "outcome": "Replaced helper-only CTA analytics assertions with rendered interaction contracts covering desktop header, mobile nav, home hero, and booking widget entry clicks; Brikette typecheck and lint passed."
       }
     }
   ]

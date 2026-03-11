@@ -285,6 +285,45 @@ describe("catalog publish route", () => {
     expect(acquireCloudSyncLockMock).not.toHaveBeenCalled();
   });
 
+  // B4 — Publish state transitions
+  it("B4: normalises an unknown publishState value to 'live' and completes the publish", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // "draft" is not a valid publishState; the route normalises anything != "out_of_stock" to "live"
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1", publishState: "draft" }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: true }));
+    expect(buildCatalogArtifactsFromDraftsMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        products: [expect.objectContaining({ id: "p1", publishState: "live" })],
+      }),
+    );
+  });
+
+  it("B4: accepts publishState 'out_of_stock' without normalisation", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1", publishState: "out_of_stock" }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(buildCatalogArtifactsFromDraftsMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        products: [expect.objectContaining({ publishState: "out_of_stock" })],
+      }),
+    );
+  });
+
   it("publishes with warnings when cloud images are missing in warn mode", async () => {
     buildCatalogArtifactsFromDraftsMock.mockReturnValue({
       catalog: {

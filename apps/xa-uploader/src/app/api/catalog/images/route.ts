@@ -13,6 +13,7 @@ import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.type
 import { getMediaBucket } from "../../../../lib/r2Media";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
+import { uploaderLog } from "../../../../lib/uploaderLogger";
 
 export const runtime = "nodejs";
 
@@ -226,6 +227,7 @@ export async function POST(request: Request) {
   if (!isUploadFileLike(file)) {
     return withRateHeaders(buildErrorResponse("no_file", 400, "no file field in form data"), limit);
   }
+  uploaderLog("info", "upload_start", { storefront, slug, contentType: file.type ?? "unknown", bytes: file.size });
 
   // File size check
   if (file.size > MAX_IMAGE_BYTES) {
@@ -262,8 +264,10 @@ export async function POST(request: Request) {
     await bucket.put(r2Key, arrayBuffer, {
       httpMetadata: { contentType },
     });
+    uploaderLog("info", "upload_success", { storefront, key: r2Key, bytes: buf.length });
     return withRateHeaders(NextResponse.json({ ok: true, key: r2Key }), limit);
   } catch {
+    uploaderLog("error", "upload_failed", { storefront, errorCode: "upload_failed" });
     return withRateHeaders(buildErrorResponse("upload_failed", 500, "R2 upload failed"), limit);
   }
 }

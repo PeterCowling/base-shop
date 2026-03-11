@@ -11,6 +11,7 @@ import { resolveContractRoot } from "./catalogContractUtils";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 import { type CurrencyRates,parseCurrencyRatesOrNull } from "./currencyRates";
 import { isRecord } from "./typeGuards";
+import { uploaderLog } from "./uploaderLogger";
 
 export interface CatalogContractServiceBinding {
   fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
@@ -266,6 +267,7 @@ export async function readCloudDraftSnapshot(
   });
 
   if (!response.ok) {
+    uploaderLog("error", "read_snapshot_error", { storefront, code: "request_failed", httpStatus: response.status });
     throw new CatalogDraftContractError("request_failed", "Failed to read draft contract snapshot.", {
       status: response.status,
       endpoint: sanitizeContractEndpoint(url),
@@ -304,6 +306,7 @@ export async function writeCloudDraftSnapshot(params: {
     });
   }
   if (!response.ok) {
+    uploaderLog("error", "write_snapshot_error", { storefront: params.storefront, httpStatus: response.status });
     throw new CatalogDraftContractError("request_failed", "Failed to write draft contract snapshot.", {
       status: response.status,
       endpoint: sanitizeContractEndpoint(url),
@@ -344,6 +347,7 @@ export async function acquireCloudSyncLock(
     | null;
 
   if (response.status === 409) {
+    uploaderLog("warn", "sync_lock_failed", { storefront, code: "busy" });
     return {
       status: "busy",
       expiresAt: parseOptionalString(payload?.expiresAt),

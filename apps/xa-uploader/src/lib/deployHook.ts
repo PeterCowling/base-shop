@@ -7,6 +7,7 @@ import { toPositiveInt } from "@acme/lib";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 import type { UploaderKvNamespace } from "./syncMutex";
 import { getErrorMessage, isRecord, sleep } from "./typeGuards";
+import { uploaderLog } from "./uploaderLogger";
 import {
   XA_B_DEPLOY_HOOK_REQUIRED_ENV,
   XA_B_DEPLOY_HOOK_TOKEN_ENV,
@@ -263,6 +264,10 @@ function buildRetryDelayMs(attemptNumber: number): number {
   const baseDelayMs = getDeployHookRetryBaseDelayMs();
   const exponent = Math.max(0, attemptNumber - 1);
   return baseDelayMs * 2 ** exponent;
+}
+
+function maskHookUrl(url: string): string {
+  try { return new URL(url).host; } catch { return "invalid_url"; }
 }
 
 
@@ -616,6 +621,7 @@ export async function maybeTriggerXaBDeploy(params: {
   }
 
   const maxAttempts = getDeployHookMaxRetries() + 1;
+  uploaderLog("info", "deploy_hook_triggered", { storefront: params.storefrontId, hookUrl: maskHookUrl(hookUrl) });
   for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
     const result = await triggerDeployHookOnce({
       hookUrl,
@@ -640,6 +646,7 @@ export async function maybeTriggerXaBDeploy(params: {
 
     const failedAttempt = result as Extract<DeployHookAttemptResult, { ok: false }>;
     if (!failedAttempt.transient || attempt >= maxAttempts) {
+      uploaderLog("error", "deploy_hook_failed", { storefront: params.storefrontId, reason: failedAttempt.reason, httpStatus: failedAttempt.httpStatus, attempt });
       return {
         status: "failed",
         reason:
@@ -651,9 +658,12 @@ export async function maybeTriggerXaBDeploy(params: {
       };
     }
 
-    await sleep(buildRetryDelayMs(attempt));
+    const retryDelayMs = buildRetryDelayMs(attempt);
+    uploaderLog("warn", "deploy_hook_retry", { storefront: params.storefrontId, attempt, delayMs: retryDelayMs });
+    await sleep(retryDelayMs);
   }
 
+  uploaderLog("error", "deploy_hook_exhausted", { storefront: params.storefrontId });
   return { status: "failed", reason: "deploy_hook_retry_exhausted" };
 }
 

@@ -18,7 +18,7 @@ import { buildArticlePayload } from "@/utils/seo/jsonld/article";
 import { serializeJsonLdValue } from "@/utils/seo/jsonld/serialize";
 
 // Set up supported languages for test (same as seo.test.ts)
-(i18nConfig.supportedLngs as unknown as string[]) = [
+const TEST_BUILD_LANGUAGES = [
   "de",
   "en",
   "es",
@@ -29,7 +29,10 @@ import { serializeJsonLdValue } from "@/utils/seo/jsonld/serialize";
   "pt",
   "ru",
   "zh",
-];
+] as const;
+
+(i18nConfig.supportedLngs as unknown as string[]) = [...TEST_BUILD_LANGUAGES];
+process.env.NEXT_PUBLIC_BRIKETTE_BUILD_LANGS = TEST_BUILD_LANGUAGES.join(",");
 
 describe("SEO Extraction: seo.ts re-export contract", () => {
   // TC-01: All seo.ts importers compile without changes (verified via typecheck, not unit test)

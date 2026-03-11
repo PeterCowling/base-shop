@@ -3,8 +3,8 @@
 import "server-only";
 
 import type { TFunction } from "i18next";
-import i18n from "i18next";
 
+import i18n from "@/i18n";
 import { type AppLanguage,i18nConfig } from "@/i18n.config";
 import { loadLocaleResource } from "@/locales/locale-loader";
 import { preloadI18nNamespaces, preloadNamespacesWithFallback } from "@/utils/loadI18nNs";

@@ -31,11 +31,11 @@ jest.mock("next/navigation", () => ({
   }),
 }));
 
+// @acme/design-system/atoms and @acme/design-system/primitives resolve to the
+// same Jest stub file. Keep both exports in one factory so Button/Section do not
+// overwrite each other during module initialization.
 jest.mock("@acme/design-system/atoms", () => ({
   Section: ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => <div {...props}>{children}</div>,
-}));
-
-jest.mock("@acme/design-system/primitives", () => ({
   Button: ({ children, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
     <button {...props}>{children}</button>
   ),
@@ -77,14 +77,19 @@ jest.mock("@/hooks/usePagePreload", () => ({
 jest.mock("@/utils/primeAppI18nBundles", () => ({
   primeAppI18nBundles: () => {},
 }));
-jest.mock("@/components/booking/BookingCalendarPanel", () => ({
-  __esModule: true,
-  BookingCalendarPanel: ({
+jest.mock("@/components/booking/BookingCalendarPanel", () => {
+  const MockBookingCalendarPanel = ({
     actionSlot,
   }: {
     actionSlot?: React.ReactNode;
-  }) => <div>{actionSlot}</div>,
-}));
+  }) => <div>{actionSlot}</div>;
+
+  return {
+    __esModule: true,
+    default: MockBookingCalendarPanel,
+    BookingCalendarPanel: MockBookingCalendarPanel,
+  };
+});
 
 jest.mock("../../components/header/DesktopHeader", () => ({
   __esModule: true,

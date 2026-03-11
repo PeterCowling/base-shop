@@ -73,20 +73,20 @@ jest.mock("react-i18next", () => {
         if (
           second &&
           typeof second === "object" &&
-          "defaultValue" in second &&
-          typeof (second as { defaultValue: unknown }).defaultValue === "string"
-        ) {
-          return (second as { defaultValue: string }).defaultValue;
-        }
-
-        if (
-          second &&
-          typeof second === "object" &&
           "year" in second &&
           typeof (second as { year: unknown }).year === "number"
         ) {
           const { year } = second as { year: number };
           return `© 2023 to ${year}, Skylar SRL operating as Hostel Brikette`;
+        }
+
+        if (
+          second &&
+          typeof second === "object" &&
+          "defaultValue" in second &&
+          typeof (second as { defaultValue: unknown }).defaultValue === "string"
+        ) {
+          return (second as { defaultValue: string }).defaultValue;
         }
 
         return dictionary[key] ?? key;

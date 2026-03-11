@@ -2,6 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals
 
 import { __clearRateLimitStoreForTests } from "../../../../../lib/rateLimit";
 
+class CatalogDraftConflictErrorMock extends Error {}
+
 const hasUploaderSessionMock = jest.fn();
 const publishCatalogPayloadToContractMock = jest.fn();
 const readCloudCurrencyRatesMock = jest.fn();
@@ -9,6 +11,7 @@ const readCloudDraftSnapshotMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
 const acquireCloudSyncLockMock = jest.fn();
 const releaseCloudSyncLockMock = jest.fn();
+const upsertProductInCloudSnapshotMock = jest.fn();
 const buildCatalogArtifactsFromDraftsMock = jest.fn();
 const getMediaBucketMock = jest.fn();
 const maybeTriggerXaBDeployMock = jest.fn();
@@ -56,13 +59,14 @@ jest.mock("../../../../../lib/catalogContractClient", () => ({
 }));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
-  CatalogDraftConflictError: class CatalogDraftConflictError extends Error {},
+  CatalogDraftConflictError: CatalogDraftConflictErrorMock,
   CatalogDraftContractError: class CatalogDraftContractError extends Error {},
   readCloudCurrencyRates: (...args: unknown[]) => readCloudCurrencyRatesMock(...args),
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
   writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
   acquireCloudSyncLock: (...args: unknown[]) => acquireCloudSyncLockMock(...args),
   releaseCloudSyncLock: (...args: unknown[]) => releaseCloudSyncLockMock(...args),
+  upsertProductInCloudSnapshot: (...args: unknown[]) => upsertProductInCloudSnapshotMock(...args),
 }));
 
 jest.mock("../../../../../lib/catalogDraftToContract", () => ({
@@ -102,6 +106,26 @@ describe("catalog publish route", () => {
     acquireCloudSyncLockMock.mockResolvedValue({
       status: "acquired",
       lock: { storefront: "xa-b", ownerToken: "lock-owner-1", expiresAt: "2999-01-01T00:00:00.000Z" },
+    });
+    upsertProductInCloudSnapshotMock.mockImplementation((params: unknown) => {
+      const p = params as {
+        product: typeof VALID_CLOUD_PRODUCT;
+        ifMatch?: string;
+        snapshot: { products: (typeof VALID_CLOUD_PRODUCT)[]; revisionsById: Record<string, string> };
+      };
+      const id = (p.product.id ?? "").trim();
+      const currentRevision = p.snapshot.revisionsById[id];
+      if (p.ifMatch !== undefined && p.ifMatch !== currentRevision) {
+        throw new CatalogDraftConflictErrorMock("revision_conflict");
+      }
+      return {
+        product: p.product,
+        revision: "rev-new-1",
+        products: p.snapshot.products.map((prod) =>
+          (prod.id ?? "").trim() === id ? p.product : prod
+        ),
+        revisionsById: { ...p.snapshot.revisionsById, [id]: "rev-new-1" },
+      };
     });
     releaseCloudSyncLockMock.mockResolvedValue(undefined);
     buildCatalogArtifactsFromDraftsMock.mockReturnValue({

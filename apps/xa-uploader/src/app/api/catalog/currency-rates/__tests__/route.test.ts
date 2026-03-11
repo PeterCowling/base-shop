@@ -66,10 +66,7 @@ describe("currency rates route", () => {
   });
 
   it("B5: GET returns service_unavailable when the contract endpoint is unconfigured", async () => {
-    class ContractError extends Error {
-      code = "unconfigured";
-    }
-    readCloudCurrencyRatesMock.mockRejectedValueOnce(new ContractError("unconfigured"));
+    readCloudCurrencyRatesMock.mockRejectedValueOnce(new CatalogDraftContractErrorMock("unconfigured"));
 
     const { GET } = await import("../route");
     const response = await GET(new Request("http://localhost/api/catalog/currency-rates"));

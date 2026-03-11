@@ -3,10 +3,12 @@ import { beforeEach, describe, expect, it, jest } from "@jest/globals";
 import { handleSaveImpl, mergeAutosaveImageTuples } from "../catalogConsoleActions";
 
 // ---------------------------------------------------------------------------
-// fetch mock — override globalThis.fetch before any tests run
+// fetch mock — override global.fetch before any tests run
 // ---------------------------------------------------------------------------
 const fetchMock = jest.fn<() => Promise<Response>>();
-(globalThis as Record<string, unknown>).fetch = fetchMock;
+beforeAll(() => {
+  (global as Record<string, unknown>).fetch = fetchMock;
+});
 
 function makeResponse(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {

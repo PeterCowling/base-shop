@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-11T08:21:59.673Z",
+  "plan_slug": "brikette-i18n-util-resolve-translated-copy-dedup",
+  "review_cycle_key": "brikette-i18n-util-resolve-translated-copy-dedup",
+  "source_path": "docs/plans/brikette-i18n-util-resolve-translated-copy-dedup/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

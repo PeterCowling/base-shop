@@ -1,18 +1,18 @@
 {
-  "last_updated": "2026-03-10T20:21:36.346Z",
+  "last_updated": "2026-03-11T10:00:00.000Z",
   "counts": {
-    "enqueued": 34,
+    "enqueued": 38,
     "processed": 8,
     "skipped": 0,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 270,
-    "fact_find_ready": 30,
+    "fact_find_ready": 32,
     "plan_ready": 0,
-    "micro_build_ready": 0,
+    "micro_build_ready": 2,
     "briefing_ready": 0,
-    "total": 511
+    "total": 515
   },
   "dispatches": [
     {
@@ -23675,6 +23675,162 @@
         "type": "operational",
         "statement": "Produce a planning-ready fact-find for ai to mechanistic extract shared pin digit colour array into a single constant with preserved executor path lp-do-build:container:analytics-v1.",
         "source": "auto"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260311100000-3100",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:brikette-i18n-util-resolve-translated-copy-dedup:20260311",
+      "anchor_key": "brikette-i18n-util-resolve-translated-copy-dedup",
+      "cluster_key": "BRIK:BOS:brikette-i18n-util-resolve-translated-copy-dedup:operator:20260311",
+      "cluster_fingerprint": "brikette-i18n-util-resolve-translated-copy-dedup-20260311",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK brikette app — resolveTranslatedCopy i18n helper duplicated across 4 modules",
+      "location_anchors": [
+        "apps/brikette/src/utils/bookingControlLabels.ts",
+        "apps/brikette/src/components/landing/SocialProofSection.tsx",
+        "apps/brikette/src/components/landing/LocationMiniBlock.tsx",
+        "apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "An identical resolveTranslatedCopy helper (i18n string validation + fallback) is copy-pasted verbatim in 4 separate files. Any bug fix or change to the validation pattern must be applied in all 4 locations independently.",
+      "next_scope_now": "Extract resolveTranslatedCopy to a shared utility (apps/brikette/src/utils/i18nContent.ts) and update all 4 call sites to import from it. No functional change to behaviour.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: simplify review identified resolveTranslatedCopy duplicated identically in 4 files with no shared source",
+        "apps/brikette/src/utils/bookingControlLabels.ts",
+        "apps/brikette/src/components/landing/SocialProofSection.tsx",
+        "apps/brikette/src/components/landing/LocationMiniBlock.tsx",
+        "apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx"
+      ],
+      "created_at": "2026-03-11T10:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Four-way duplication of a core i18n validation helper means any future change to the sentinel pattern must be applied in four places with no mechanism to keep them in sync. A single shared export eliminates that maintenance risk.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "resolveTranslatedCopy is defined once in apps/brikette/src/utils/i18nContent.ts and imported by all 4 former duplicates. TypeScript confirms no remaining inline copies.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260311100001-3101",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:brikette-how-to-get-here-label-reader-dedup:20260311",
+      "anchor_key": "brikette-how-to-get-here-label-reader-dedup",
+      "cluster_key": "BRIK:BOS:brikette-how-to-get-here-label-reader-dedup:operator:20260311",
+      "cluster_fingerprint": "brikette-how-to-get-here-label-reader-dedup-20260311",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK brikette app — createGuideLabelReader + buildBreadcrumb copy-pasted across 4 how-to-get-here route modules",
+      "location_anchors": [
+        "apps/brikette/src/routes/how-to-get-here/briketteToFerryDock",
+        "apps/brikette/src/routes/how-to-get-here/ferryDockToBrikette",
+        "apps/brikette/src/routes/how-to-get-here/chiesaNuovaArrivals",
+        "apps/brikette/src/routes/how-to-get-here/chiesaNuovaDepartures"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "createGuideLabelReader and buildBreadcrumb are copy-pasted verbatim across 4 how-to-get-here route modules; the only variation between copies is the GUIDE_KEY constant imported from each module's constants file. Any behaviour fix must be applied in 4 places.",
+      "next_scope_now": "Extract a createGuideLabelReaderFactory(guideKey) factory function and a shared buildBreadcrumb builder to a shared module under apps/brikette/src/routes/how-to-get-here/shared/. Each route module calls the factory with its own GUIDE_KEY.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P3",
+      "confidence": 0.90,
+      "evidence_refs": [
+        "operator-stated: simplify review identified createGuideLabelReader + buildBreadcrumb copy-pasted identically in all 4 how-to-get-here route modules",
+        "apps/brikette/src/routes/how-to-get-here/briketteToFerryDock",
+        "apps/brikette/src/routes/how-to-get-here/ferryDockToBrikette",
+        "apps/brikette/src/routes/how-to-get-here/chiesaNuovaArrivals",
+        "apps/brikette/src/routes/how-to-get-here/chiesaNuovaDepartures"
+      ],
+      "created_at": "2026-03-11T10:00:01.000Z",
+      "queue_state": "enqueued",
+      "why": "Four near-identical route modules with copy-pasted 30-line functions means a bug in the label reader or breadcrumb builder has been silently present in all routes since the last edit. A factory eliminates this propagation risk before a fifth route is added.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "createGuideLabelReader and buildBreadcrumb logic exists once in a shared module; each route module calls the factory. All 4 routes continue to pass their existing tests.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260311100002-3102",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:brikette-booking-component-prop-sprawl:20260311",
+      "anchor_key": "brikette-booking-component-prop-sprawl",
+      "cluster_key": "BRIK:BOS:brikette-booking-component-prop-sprawl:operator:20260311",
+      "cluster_fingerprint": "brikette-booking-component-prop-sprawl-20260311",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK brikette app — flat label prop signatures on BookingCalendarPanel, SecureBookingPageClient, OctorateCustomPageShell",
+      "location_anchors": [
+        "apps/brikette/src/components/booking/BookingCalendarPanel.tsx",
+        "apps/brikette/src/components/booking/SecureBookingPageClient.tsx",
+        "apps/brikette/src/components/booking/OctorateCustomPageShell.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "BookingCalendarPanel (14 props), SecureBookingPageClient (17 props), and OctorateCustomPageShell (14+ props) expose flat label strings in their signatures. Related labels (checkIn/checkOut/guests aria) are unrelated positionally. Callers must maintain long prop lists for every usage site.",
+      "next_scope_now": "Audit all 3 components and their callers to determine the right grouping strategy. Produce a plan for introducing typed label sub-objects (e.g. BookingCalendarLabels, BookingWidgetLabels) that reduce caller verbosity without breaking existing usage sites.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.78,
+      "evidence_refs": [
+        "operator-stated: simplify review flagged parameter sprawl on 3 core booking components with 14–17 flat props each",
+        "apps/brikette/src/components/booking/BookingCalendarPanel.tsx",
+        "apps/brikette/src/components/booking/SecureBookingPageClient.tsx",
+        "apps/brikette/src/components/booking/OctorateCustomPageShell.tsx"
+      ],
+      "created_at": "2026-03-11T10:00:02.000Z",
+      "queue_state": "enqueued",
+      "why": "14–17 flat label props per component makes callsites verbose and fragile — adding a new label anywhere requires touching every caller. Grouped label objects are a one-time migration that scales as the booking flow grows.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "All 3 booking components expose typed label sub-objects; existing callers are updated and tests pass. No regression in booking flow behaviour.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260311100003-3103",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:BRIK:BOS:brikette-guide-search-i18n-batching:20260311",
+      "anchor_key": "brikette-guide-search-i18n-batching",
+      "cluster_key": "BRIK:BOS:brikette-guide-search-i18n-batching:operator:20260311",
+      "cluster_fingerprint": "brikette-guide-search-i18n-batching-20260311",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK brikette app — useGuideSearch buildIndex performs per-guide t() calls on every language change",
+      "location_anchors": [
+        "apps/brikette/src/hooks/useGuideSearch.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "useGuideSearch.buildIndex calls multiple t() translation lookups per guide entry every time the language changes, without caching per language. With 50+ guides this results in O(guides × lookups) translation calls on each language switch.",
+      "next_scope_now": "Investigate the actual cost of buildIndex i18n lookups in practice: how many guides, how often language changes, whether i18next lookup is a cache hit or expensive operation. Determine if per-language caching or pre-loading translation keys is the right fix, or if the current pattern is acceptable given i18next's internal cache.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.72,
+      "evidence_refs": [
+        "operator-stated: simplify review flagged useGuideSearch buildIndex making repeated t() calls per guide per language change without batching or caching",
+        "apps/brikette/src/hooks/useGuideSearch.ts"
+      ],
+      "created_at": "2026-03-11T10:00:03.000Z",
+      "queue_state": "enqueued",
+      "why": "Language switches on a guide listing page trigger a full index rebuild with per-entry translation calls. If i18next lookup is not O(1) cached, this is measurable jank on slow devices. Needs investigation before deciding the fix approach.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "buildIndex translation overhead is either confirmed negligible (i18next cache hit path documented) or replaced with a per-language cached index that avoids redundant lookups on language switch.",
+        "source": "operator"
       }
     }
   ]

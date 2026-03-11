@@ -346,7 +346,7 @@
 
   <div class="page-footer">
     <span>docs/business-os/process-improvements.user.html</span>
-    <span>Last cleared: 2026-03-10 — extracted from build records, reflection debt, and results reviews</span>
+    <span>Last cleared: 2026-03-11 — extracted from build records, reflection debt, and results reviews</span>
     <span id="footer-generated"></span>
   </div>
 
@@ -359,7 +359,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-10T20:59:20.193Z";
+  var GEN_TS = "2026-03-11T08:25:06.255Z";
 
   var IDEA_ITEMS = [
     {
@@ -669,6 +669,70 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "BRIK brikette app — useGuideSearch buildIndex performs per-guide t() calls on every language change",
+      "body": "Language switches on a guide listing page trigger a full index rebuild with per-entry translation calls. If i18next lookup is not O(1) cached, this is measurable jank on slow devices. Needs investigation before deciding the fix approach.",
+      "source": "queue-state.json",
+      "date": "2026-03-11T10:00:03.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "d6ffd4356b6fcfcdf542c2ff3bc8728e229cbe57",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "BRIK brikette app — flat label prop signatures on BookingCalendarPanel, SecureBookingPageClient, OctorateCustomPageShell",
+      "body": "14–17 flat label props per component makes callsites verbose and fragile — adding a new label anywhere requires touching every caller. Grouped label objects are a one-time migration that scales as the booking flow grows.",
+      "source": "queue-state.json",
+      "date": "2026-03-11T10:00:02.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "573ef4465d449d629020d4ec255c3811480743e5",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "BRIK brikette app — createGuideLabelReader + buildBreadcrumb copy-pasted across 4 how-to-get-here route modules",
+      "body": "Four near-identical route modules with copy-pasted 30-line functions means a bug in the label reader or breadcrumb builder has been silently present in all routes since the last edit. A factory eliminates this propagation risk before a fifth route is added.",
+      "source": "queue-state.json",
+      "date": "2026-03-11T10:00:01.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "3bef9fde51f5247ff86194c81d26fbc9ccdc15b6",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "BRIK brikette app — resolveTranslatedCopy i18n helper duplicated across 4 modules",
+      "body": "Four-way duplication of a core i18n validation helper means any future change to the sentinel pattern must be applied in four places with no mechanism to keep them in sync. A single shared export eliminates that maintenance risk.",
+      "source": "queue-state.json",
+      "date": "2026-03-11T10:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "56c2848d654e29c29b517497d7f074e9fc1f9059",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",

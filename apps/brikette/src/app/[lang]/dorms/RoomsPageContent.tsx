@@ -23,7 +23,7 @@ import { buildBookingQueryString } from "@/utils/bookingQuery";
 import { hydrateBookingSearch } from "@/utils/bookingSearch";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { fireViewItemList } from "@/utils/ga4-events";
-import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
+import { resolveTranslatedCopy } from "@/utils/i18nContent";
 
 type Props = {
   lang: AppLanguage;
@@ -33,14 +33,6 @@ type Props = {
   /** Server-resolved hero subheading from the RSC page wrapper. */
   serverSubtitle?: string;
 };
-
-function resolveTranslatedCopy(value: unknown, fallback: string): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
-  return trimmed;
-}
 
 function hydrateRoomsBookingQuery(
   searchParams: ReturnType<typeof useSearchParams>,

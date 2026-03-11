@@ -204,6 +204,94 @@ describe("catalog sync cloud publish/finalize behavior", () => {
     );
   });
 
+  // C2 — Media validation strict mode edge cases
+
+  it("C2: returns 400 validation_failed when strict mode and media bucket is unavailable", async () => {
+    buildCatalogArtifactsFromDraftsMock.mockReturnValueOnce({
+      catalog: {
+        collections: [],
+        brands: [],
+        products: [
+          {
+            slug: "studio-jacket",
+            media: [{ type: "image", path: "xa-b/studio-jacket/front.jpg", altText: "front" }],
+          },
+        ],
+      },
+      mediaIndex: {
+        totals: { products: 1, media: 1, warnings: 0 },
+        items: [
+          {
+            productSlug: "studio-jacket",
+            sourcePath: "xa-b/studio-jacket/front.jpg",
+            catalogPath: "xa-b/studio-jacket/front.jpg",
+            altText: "front",
+          },
+        ],
+      },
+      warnings: [],
+    });
+    // getMediaBucketMock returns null by default
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", options: { mediaValidationPolicy: "strict" } }),
+      }),
+    );
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({ ok: false, error: "validation_failed" }),
+    );
+  });
+
+  it("C2: returns 400 validation_failed when strict mode and required media keys are missing from bucket", async () => {
+    buildCatalogArtifactsFromDraftsMock.mockReturnValueOnce({
+      catalog: {
+        collections: [],
+        brands: [],
+        products: [
+          {
+            slug: "studio-jacket",
+            media: [{ type: "image", path: "xa-b/studio-jacket/front.jpg", altText: "front" }],
+          },
+        ],
+      },
+      mediaIndex: {
+        totals: { products: 1, media: 1, warnings: 0 },
+        items: [
+          {
+            productSlug: "studio-jacket",
+            sourcePath: "xa-b/studio-jacket/front.jpg",
+            catalogPath: "xa-b/studio-jacket/front.jpg",
+            altText: "front",
+          },
+        ],
+      },
+      warnings: [],
+    });
+    getMediaBucketMock.mockResolvedValueOnce({
+      head: jest.fn().mockResolvedValue(null), // all keys appear missing
+    });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", options: { mediaValidationPolicy: "strict" } }),
+      }),
+    );
+
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({ ok: false, error: "validation_failed" }),
+    );
+  });
+
   it("continues with deploy when finalize draft-write fails and records warning", async () => {
     writeCloudDraftSnapshotMock.mockRejectedValueOnce(new Error("doc revision conflict"));
     const fetchSpy = jest.spyOn(global, "fetch").mockResolvedValue(new Response("", { status: 202 }));

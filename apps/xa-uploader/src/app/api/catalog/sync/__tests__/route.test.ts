@@ -202,6 +202,28 @@ describe("catalog sync route", () => {
     );
   });
 
+  // C3 — Empty catalog sync confirmation required
+
+  it("C3: POST proceeds when confirmEmptyInput is true even with no publishable products", async () => {
+    readCloudDraftSnapshotMock.mockResolvedValueOnce({
+      products: [{ ...VALID_CLOUD_PRODUCT, publishState: "draft", imageFiles: "" }],
+      revisionsById: { p1: "rev-1" },
+      docRevision: "doc-1",
+    });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", options: { confirmEmptyInput: true } }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: true }));
+  });
+
   it("POST completes the hosted publish path", async () => {
     const { POST } = await import("../route");
     const response = await POST(

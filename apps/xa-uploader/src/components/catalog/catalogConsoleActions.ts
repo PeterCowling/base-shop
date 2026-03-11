@@ -10,6 +10,7 @@ import { normalizeCatalogPath } from "../../lib/catalogPath";
 import { getStorefrontConfig } from "../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { getUploaderConfirmDelete, type UploaderLocale } from "../../lib/uploaderI18n";
+import { uploaderLog } from "../../lib/uploaderLogger";
 
 import {
   type ActionFeedbackState,
@@ -434,6 +435,7 @@ export async function handleSaveImpl({
   setFieldErrors({});
 
   const doSave = async (confirm?: boolean): Promise<SaveResult> => {
+    uploaderLog("info", "save_start", { storefront, slug: draft.slug });
     const response = await fetch(`/api/catalog/products?storefront=${encodeURIComponent(storefront)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -459,6 +461,7 @@ export async function handleSaveImpl({
     }
 
     if (response.status === 409 && data.error === "conflict" && data.reason === "revision_conflict") {
+      uploaderLog("warn", "save_conflict", { storefront, slug: draft.slug });
       return { status: "conflict" };
     }
 
@@ -468,6 +471,7 @@ export async function handleSaveImpl({
     await loadCatalog();
     handleSelect(data.product);
     setDraftRevision(data.revision ?? null);
+    uploaderLog("info", "save_success", { storefront, slug: draft.slug, revision: data.revision ?? null });
     if (!suppressSuccessFeedback) {
       updateActionFeedback(setActionFeedback, "draft", {
         kind: "success",
@@ -484,6 +488,7 @@ export async function handleSaveImpl({
   try {
     return await doSave();
   } catch (err) {
+    uploaderLog("error", "save_error", { storefront, slug: draft.slug });
     updateActionFeedback(setActionFeedback, "draft", {
       kind: "error",
       message: errorToMessage(err, t("saveFailed")),

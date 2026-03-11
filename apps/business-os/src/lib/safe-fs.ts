@@ -49,6 +49,17 @@ export async function writeFileWithinRoot(
   return fs.writeFile(safePath, data, options);
 }
 
+export async function appendFileWithinRoot(
+  root: string,
+  targetPath: string,
+  data: Parameters<typeof fs.appendFile>[1],
+  options?: Parameters<typeof fs.appendFile>[2]
+): Promise<void> {
+  const safePath = ensurePathWithinRoot(root, targetPath);
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- BOS-107 validated path [ttl=2026-03-31]
+  return fs.appendFile(safePath, data, options);
+}
+
 export async function mkdirWithinRoot(
   root: string,
   targetPath: string,

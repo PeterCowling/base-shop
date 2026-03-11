@@ -70,6 +70,9 @@ describe("NavigationHeader", () => {
     expect(screen.getByRole("link", { name: /legacy board/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /workflows/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /ideas/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /process improvements/i })
+    ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /people/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /plans/i })).toBeInTheDocument();
   });

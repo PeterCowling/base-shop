@@ -6,35 +6,36 @@ import path from "node:path";
 import { load as loadYaml } from "js-yaml";
 
 import {
-  type ReflectionRequiredSection,
-  REQUIRED_REFLECTION_SECTIONS,
-  validateResultsReviewFile,
-} from "./lp-do-build-reflection-debt.js";
-import { backfillSyntheticDispatch } from "../ideas/lp-do-ideas-synthetic-dispatch-narrative.js";
-import type {
-  DispatchBuildOriginProvenance,
-  DispatchHistoricalCarryoverProvenance,
-} from "../ideas/lp-do-ideas-trial.js";
+  SIGNAL_REVIEW_REQUIRED_SCHEMA_VERSION,
+  type SignalReviewReviewRequiredItem,
+} from "../diagnostics/signal-review-review-required.js";
+import { runAgentSessionSignalsBridge } from "../ideas/lp-do-ideas-agent-session-bridge.js";
+import { runBuildOriginSignalsBridge } from "../ideas/lp-do-ideas-build-origin-bridge.js";
+import { runCodebaseSignalsBridge } from "../ideas/lp-do-ideas-codebase-signals-bridge.js";
 import {
   IDEAS_COMPLETED_IDEAS_PATH,
   IDEAS_TRIAL_QUEUE_STATE_PATH,
   IDEAS_TRIAL_TELEMETRY_PATH,
 } from "../ideas/lp-do-ideas-paths.js";
+import { backfillSyntheticDispatch } from "../ideas/lp-do-ideas-synthetic-dispatch-narrative.js";
+import type {
+  DispatchBuildOriginProvenance,
+  DispatchHistoricalCarryoverProvenance,
+} from "../ideas/lp-do-ideas-trial.js";
+
 import {
-  MISSING_VALUE,
+  type ReflectionRequiredSection,
+  REQUIRED_REFLECTION_SECTIONS,
+  validateResultsReviewFile,
+} from "./lp-do-build-reflection-debt.js";
+import {
   classifyIdeaItem,
+  MISSING_VALUE,
   normalizeNewlines,
   parseSections,
   sanitizeText,
   toIsoDate,
 } from "./lp-do-build-results-review-parse.js";
-import { runBuildOriginSignalsBridge } from "../ideas/lp-do-ideas-build-origin-bridge.js";
-import { runCodebaseSignalsBridge } from "../ideas/lp-do-ideas-codebase-signals-bridge.js";
-import { runAgentSessionSignalsBridge } from "../ideas/lp-do-ideas-agent-session-bridge.js";
-import {
-  SIGNAL_REVIEW_REQUIRED_SCHEMA_VERSION,
-  type SignalReviewReviewRequiredItem,
-} from "../diagnostics/signal-review-review-required.js";
 
 const PROCESS_HTML_RELATIVE_PATH = "docs/business-os/process-improvements.user.html";
 const PROCESS_DATA_RELATIVE_PATH = "docs/business-os/_data/process-improvements.json";
@@ -43,6 +44,7 @@ const PLANS_ROOT = "docs/plans";
 const STRATEGY_ROOT = "docs/business-os/strategy";
 export const QUEUE_STATE_RELATIVE_PATH = IDEAS_TRIAL_QUEUE_STATE_PATH;
 const QUEUE_TELEMETRY_RELATIVE_PATH = IDEAS_TRIAL_TELEMETRY_PATH;
+const LATEST_BUG_SCAN_ARTIFACT_RELATIVE_PATH = "docs/plans/_latest/bug-scan-findings.user.json";
 
 export type ProcessImprovementType = "idea" | "risk" | "pending-review";
 
@@ -265,6 +267,59 @@ function listFilesRecursive(absDir: string, output: string[], repoRoot: string):
       output.push(toPosixPath(path.relative(repoRoot, absPath)));
     }
   }
+}
+
+function findLatestBugScanArtifactPath(repoRoot: string): string | null {
+  const preferredAbsolutePath = path.join(repoRoot, LATEST_BUG_SCAN_ARTIFACT_RELATIVE_PATH);
+  if (existsSync(preferredAbsolutePath)) {
+    return LATEST_BUG_SCAN_ARTIFACT_RELATIVE_PATH;
+  }
+
+  const absPlansRoot = path.join(repoRoot, PLANS_ROOT);
+  const allPaths: string[] = [];
+  try {
+    listFilesRecursive(absPlansRoot, allPaths, repoRoot);
+  } catch {
+    return null;
+  }
+
+  let latestPath: string | null = null;
+  let latestTimestamp = Number.NEGATIVE_INFINITY;
+
+  for (const sourcePath of allPaths) {
+    if (!sourcePath.endsWith("/bug-scan-findings.user.json")) {
+      continue;
+    }
+
+    const absPath = path.join(repoRoot, sourcePath);
+    let artifactTimestamp = Number.NEGATIVE_INFINITY;
+    try {
+      const raw = readFileSync(absPath, "utf8");
+      const parsed = JSON.parse(raw) as BugScanFindingsArtifact;
+      const generatedAt = Date.parse(parsed.generated_at ?? "");
+      artifactTimestamp = Number.isFinite(generatedAt)
+        ? generatedAt
+        : statSync(absPath).mtime.getTime();
+    } catch {
+      try {
+        artifactTimestamp = statSync(absPath).mtime.getTime();
+      } catch {
+        artifactTimestamp = Number.NEGATIVE_INFINITY;
+      }
+    }
+
+    if (
+      artifactTimestamp > latestTimestamp ||
+      (artifactTimestamp === latestTimestamp &&
+        latestPath !== null &&
+        sourcePath.localeCompare(latestPath) < 0)
+    ) {
+      latestPath = sourcePath;
+      latestTimestamp = artifactTimestamp;
+    }
+  }
+
+  return latestPath;
 }
 
 function inferBusinessFromFrontmatter(frontmatter: Record<string, unknown>): string {
@@ -580,9 +635,6 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
   const reflectionDebtPaths = allPaths.filter((sourcePath) =>
     sourcePath.endsWith("/reflection-debt.user.md"),
   );
-  const bugScanPaths = allPaths.filter((sourcePath) =>
-    sourcePath.endsWith("/bug-scan-findings.user.json"),
-  );
   const signalReviewRequiredPaths = strategyPaths.filter((sourcePath) =>
     /signal-review-.*\.review-required\.json$/u.test(sourcePath),
   );
@@ -591,57 +643,6 @@ export function collectProcessImprovements(repoRoot: string): ProcessImprovement
   const riskItems: ProcessImprovementItem[] = [];
   const pendingReviewItems: ProcessImprovementItem[] = [];
   const signalReviewPendingByFingerprint = new Map<string, ProcessImprovementItem>();
-
-  for (const sourcePath of bugScanPaths) {
-    const absPath = path.join(repoRoot, sourcePath);
-    let parsed: BugScanFindingsArtifact | null = null;
-    try {
-      const raw = readFileSync(absPath, "utf8");
-      parsed = JSON.parse(raw) as BugScanFindingsArtifact;
-    } catch {
-      parsed = null;
-    }
-    if (!parsed || !Array.isArray(parsed.findings)) {
-      continue;
-    }
-
-    const business =
-      sanitizeText(parsed.business_scope ?? "").toUpperCase() ||
-      sanitizeText(inferFeatureSlugFromPath(sourcePath).split("-")[0] ?? "").toUpperCase() ||
-      "BOS";
-    const ideaDate = toIsoDate(parsed.generated_at ?? statSync(absPath).mtime.toISOString());
-
-    for (const finding of parsed.findings) {
-      const ruleId = sanitizeText(finding.ruleId ?? "");
-      const file = sanitizeText(finding.file ?? "");
-      const line = Number.isFinite(finding.line) ? Number(finding.line) : 0;
-      const column = Number.isFinite(finding.column) ? Number(finding.column) : 0;
-      const message = sanitizeText(finding.message ?? "");
-      const suggestion = sanitizeText(finding.suggestion ?? "");
-      const severity = sanitizeText(finding.severity ?? "").toLowerCase();
-      if (!ruleId || !file || !message) {
-        continue;
-      }
-
-      const location =
-        line > 0 ? `${file}:${line}${column > 0 ? `:${column}` : ""}` : file;
-      const title = `Bug scan ${ruleId} at ${location}`;
-      const ideaItem: ProcessImprovementItem = {
-        type: "idea",
-        business,
-        title,
-        body: `${message} (${severity || "warning"})`,
-        suggested_action:
-          `${suggestion || "Fix the flagged pattern at source."} Re-run: pnpm bug-scan -- --only-rules=${ruleId} ${file}`,
-        source: "bug-scan-findings.user.json",
-        date: ideaDate,
-        path: sourcePath,
-        idea_key: deriveIdeaKey(sourcePath, title),
-      };
-      classifyIdeaItem(ideaItem);
-      ideaItems.push(ideaItem);
-    }
-  }
 
   // --- Dispatch queue collection (queue-state.json) ---
   const queueStatePath = path.join(repoRoot, QUEUE_STATE_RELATIVE_PATH);
@@ -1007,7 +1008,7 @@ function buildArrayAssignmentBlock(variableName: string, items: ProcessImproveme
  *
  * The drift check works by re-running `collectProcessImprovements` and comparing the
  * fresh output against committed files. Active idea backlog now comes from canonical
- * queue state plus bug-scan artifacts; `completed-ideas.json` remains a derived
+ * queue state; `completed-ideas.json` remains a derived
  * compatibility artifact and no longer suppresses active backlog visibility here.
  */
 export function runCheck(repoRoot: string): void {
@@ -1088,22 +1089,7 @@ export function updateProcessImprovementsArtifacts(
   const buildOriginBridgeResult = syncBuildOriginBridge
     ? runBuildOriginBridgeForProcessImprovements(repoRoot)
     : null;
-  const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);
-  const dataPath = path.join(repoRoot, PROCESS_DATA_RELATIVE_PATH);
-  const now = options.now ?? new Date();
-  const dateIso = now.toISOString().slice(0, 10);
-  const generatedAt = now.toISOString();
-
-  const data = collectProcessImprovements(repoRoot);
-  const html = readFileSync(htmlPath, "utf8");
-  const updatedHtml = updateProcessImprovementsHtml(html, data, dateIso, generatedAt);
-
-  writeFileAtomic(htmlPath, updatedHtml);
-  mkdirSync(path.dirname(dataPath), { recursive: true });
-  writeFileSync(dataPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
-
-  const latestBugScanArtifactPath =
-    data.ideaItems.find((item) => item.source === "bug-scan-findings.user.json")?.path ?? null;
+  const latestBugScanArtifactPath = findLatestBugScanArtifactPath(repoRoot);
   const codebaseSignalsBridgeResult = syncCodebaseSignalsBridge
     ? runCodebaseSignalsBridge({
         rootDir: repoRoot,
@@ -1136,6 +1122,19 @@ export function updateProcessImprovementsArtifacts(
         sessionLimit: 20,
       })
     : null;
+  const htmlPath = path.join(repoRoot, PROCESS_HTML_RELATIVE_PATH);
+  const dataPath = path.join(repoRoot, PROCESS_DATA_RELATIVE_PATH);
+  const now = options.now ?? new Date();
+  const dateIso = now.toISOString().slice(0, 10);
+  const generatedAt = now.toISOString();
+
+  const data = collectProcessImprovements(repoRoot);
+  const html = readFileSync(htmlPath, "utf8");
+  const updatedHtml = updateProcessImprovementsHtml(html, data, dateIso, generatedAt);
+
+  writeFileAtomic(htmlPath, updatedHtml);
+  mkdirSync(path.dirname(dataPath), { recursive: true });
+  writeFileSync(dataPath, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 
   return {
     data,

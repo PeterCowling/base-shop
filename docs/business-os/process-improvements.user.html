@@ -64,6 +64,44 @@
     .page-header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
     .page-header p  { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
 
+    .app-signpost {
+      margin-bottom: 24px;
+      padding: 14px 16px;
+      border: 1px solid var(--blue-border);
+      background: linear-gradient(135deg, var(--blue-bg), rgba(91,156,246,0.04));
+      border-radius: var(--radius);
+    }
+    .app-signpost h2 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--blue);
+      margin-bottom: 6px;
+    }
+    .app-signpost p {
+      font-size: 13px;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .app-signpost p:last-child { margin-bottom: 0; }
+    .app-signpost a {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      color: var(--blue);
+      font-weight: 600;
+    }
+    .app-signpost code {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      font-size: 12px;
+      background: var(--surface-2);
+      padding: 1px 5px;
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
     /* ── Filter bar ── */
     .filter-bar {
       display: flex;
@@ -294,8 +332,15 @@
 
   <div class="page-header">
     <h1>Process Improvements</h1>
-    <p>Improvements, risks, and pending reviews across build completion and recurring Signal Review follow-up. Filter by business or type to focus your review. Regenerate after each build cycle or Signal Review refresh.</p>
+    <p>Read-only report for improvements, risks, and pending reviews across build completion and recurring Signal Review follow-up. Filter by business or type to inspect the backlog, but use the Business OS app for decisions.</p>
   </div>
+
+  <section class="app-signpost">
+    <h2>Operator Actions Live In The App</h2>
+    <p>This report no longer acts as the decision surface. Use the Business OS app to `Do`, `Defer`, or `Decline` queue-backed ideas and to hand work into the regular process.</p>
+    <p><a href="http://127.0.0.1:3020/process-improvements" target="_blank" rel="noreferrer">Open Business OS process improvements inbox</a></p>
+    <p>If the app is not already running, start it with <code>pnpm --filter @apps/business-os dev</code>.</p>
+  </section>
 
   <div id="app"></div>
 
@@ -314,7 +359,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-10T20:25:08.908Z";
+  var GEN_TS = "2026-03-10T20:59:20.193Z";
 
   var IDEA_ITEMS = [
     {

@@ -1,8 +1,9 @@
 {
-  "last_updated": "2026-03-11T10:00:00.000Z",
+  "last_updated": "2026-03-11T11:59:39.879Z",
   "counts": {
     "enqueued": 41,
-    "processed": 8,
+    "processed": 9,
+    "declined": 0,
     "skipped": 0,
     "error": 0,
     "suppressed": 196,
@@ -12,9 +13,76 @@
     "plan_ready": 0,
     "micro_build_ready": 5,
     "briefing_ready": 0,
-    "total": 519
+    "total": 520
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260311115547-9551",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260311",
+      "root_event_id": "operator:PLAT:STRATEGY:process-improvements-operator-actions-integration:20260311",
+      "anchor_key": "process-improvements-operator-actions-integration",
+      "cluster_key": "PLAT:STRATEGY:process-improvements-operator-actions-integration:operator:20260311",
+      "cluster_fingerprint": "process-improvements-operator-actions-integration-20260311",
+      "lineage_depth": 0,
+      "area_anchor": "PLAT — Operator actions from the registry need one inbox and one source of truth",
+      "location_anchors": [
+        "docs/business-os/startup-loop-output-registry.user.html",
+        "apps/business-os/src/app/process-improvements/page.tsx",
+        "apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx",
+        "apps/business-os/src/lib/process-improvements/projection.ts",
+        "scripts/src/startup-loop/build/generate-build-summary.ts",
+        "docs/plans/process-improvements-operator-decision-inbox/plan.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The Business OS process-improvements app currently surfaces only queue-backed improvement items, while the startup-loop output registry still contains separate operator work such as open blockers, pending stage gates, next-72-hour actions, and decision-register items. The next step must not parse registry HTML at runtime. It needs one structured operator-actions source that both the app and the report can read.",
+      "next_scope_now": "Run a mixed-track fact-find for an integrated operator inbox that combines process improvements with registry-sourced operator actions via a canonical structured dataset, distinct card treatment, and type-aware action semantics, without runtime HTML parsing.",
+      "adjacent_later": [
+        "Add overdue and owner-aware triage states for operator-action cards",
+        "Unify registry and inbox counts once the canonical operator-actions dataset exists"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: registry-visible operator actions should move into the integrated process-improvements surface, but not by parsing HTML at runtime",
+        "docs/business-os/startup-loop-output-registry.user.html",
+        "apps/business-os/src/app/process-improvements/page.tsx",
+        "apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx",
+        "apps/business-os/src/lib/process-improvements/projection.ts",
+        "scripts/src/startup-loop/build/generate-build-summary.ts",
+        "docs/plans/process-improvements-operator-decision-inbox/plan.md",
+        "coverage-hint: UI",
+        "coverage-hint: UX",
+        "coverage-hint: data-contracts",
+        "coverage-hint: testing",
+        "coverage-hint: rollout-rollback"
+      ],
+      "created_at": "2026-03-11T11:55:47.000Z",
+      "queue_state": "processed",
+      "why": "The operator now has two separate places to look for work that should really be managed together: the process-improvements inbox and the output-registry operator card. That splits attention, hides overdue actions, and leaves the app unable to show the most important operator decisions. Fixing this should create one integrated inbox backed by a canonical structured operator-actions source, not a fragile HTML scrape.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Business OS has an analysis-ready fact-find for one integrated operator inbox that can show both process improvements and structured operator actions from startup-loop sources, with distinct card styling and no runtime HTML parsing.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "process-improvements-operator-actions-integration",
+        "target_path": "docs/plans/process-improvements-operator-actions-integration/fact-find.md",
+        "processed_at": "2026-03-11T11:59:39.878Z",
+        "fact_find_slug": "process-improvements-operator-actions-integration",
+        "fact_find_path": "docs/plans/process-improvements-operator-actions-integration/fact-find.md"
+      }
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260309181000-9314",

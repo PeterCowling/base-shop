@@ -10,6 +10,16 @@ import type { GuideKey } from "@/routes.guides-helpers";
 
 jest.mock("server-only", () => ({}));
 
+jest.mock("react-i18next", () => ({
+  useTranslation: (namespace: string, options?: { lng?: string }) => {
+    const lang = options?.lng ?? "en";
+    return {
+      t: i18n.getFixedT(lang, namespace),
+      i18n,
+    };
+  },
+}));
+
 jest.mock("@/components/cta/ContentStickyCta", () => ({
   ContentStickyCta: () => null,
 }));
@@ -92,10 +102,6 @@ jest.mock("next/link", () => ({
   default: ({ children, href }: { children: ReactNode; href: string }) => (
     <a href={href}>{children}</a>
   ),
-}));
-
-jest.mock("@/utils/loadI18nNs", () => ({
-  preloadNamespacesWithFallback: jest.fn().mockResolvedValue(undefined),
 }));
 
 type GuideSection = "experiences" | "assistance" | "howToGetHere";

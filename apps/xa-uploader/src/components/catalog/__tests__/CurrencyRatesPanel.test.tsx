@@ -5,8 +5,10 @@ import { act, fireEvent, render, screen, waitFor } from "@testing-library/react"
 
 import { CurrencyRatesPanel } from "../CurrencyRatesPanel.client";
 
+const MOCK_I18N = { t: (key: string) => key };
+
 jest.mock("../../../lib/uploaderI18n.client", () => ({
-  useUploaderI18n: () => ({ t: (key: string) => key }),
+  useUploaderI18n: () => MOCK_I18N,
 }));
 
 describe("CurrencyRatesPanel", () => {

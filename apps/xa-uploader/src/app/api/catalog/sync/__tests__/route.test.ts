@@ -76,6 +76,12 @@ jest.mock("../../../../../lib/syncMutex", () => ({
   getUploaderKv: (...args: unknown[]) => getUploaderKvMock(...args),
 }));
 
+jest.mock("../../../../../lib/rateLimit", () => ({
+  rateLimit: () => ({ allowed: true, remaining: 99, resetAt: Date.now() + 60000, retryAfter: 0, limit: 99 }),
+  withRateHeaders: (_res: unknown, ..._rest: unknown[]) => _res,
+  getRequestIp: () => "127.0.0.1",
+}));
+
 describe("catalog sync route", () => {
   beforeEach(() => {
     jest.clearAllMocks();

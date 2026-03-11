@@ -1,7 +1,7 @@
 {
   "last_updated": "2026-03-11T10:00:00.000Z",
   "counts": {
-    "enqueued": 38,
+    "enqueued": 41,
     "processed": 8,
     "skipped": 0,
     "error": 0,
@@ -10,9 +10,9 @@
     "completed": 271,
     "fact_find_ready": 32,
     "plan_ready": 0,
-    "micro_build_ready": 2,
+    "micro_build_ready": 5,
     "briefing_ready": 0,
-    "total": 516
+    "total": 519
   },
   "dispatches": [
     {
@@ -23887,6 +23887,131 @@
         "completed_at": "2026-03-11T09:21:44.000Z",
         "outcome": "Replaced helper-only CTA analytics assertions with rendered interaction contracts covering desktop header, mobile nav, home hero, and booking widget entry clicks; Brikette typecheck and lint passed."
       }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260311153000-0001",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:BOS:xa-uploader-structured-logging:20260311",
+      "anchor_key": "xa-uploader-structured-logging",
+      "cluster_key": "XA:BOS:xa-uploader-structured-logging:operator:20260311",
+      "cluster_fingerprint": "xa-uploader-structured-logging-20260311",
+      "lineage_depth": 0,
+      "area_anchor": "XA xa-uploader observability - no structured logging, only console.log",
+      "location_anchors": [
+        "apps/xa-uploader/src/app/api/catalog/images/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/publish/route.ts",
+        "apps/xa-uploader/src/lib/deployHook.ts",
+        "apps/xa-uploader/src/lib/catalogDraftContractClient.ts",
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts"
+      ],
+      "domain": "SELL",
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: xa-uploader golden path uses console.log only; no structured logging, no server-side logging for image uploads or deploy hook failures",
+        "coverage-hint: observability",
+        "coverage-hint: testing"
+      ],
+      "current_truth": "xa-uploader uses console.log throughout; image upload failures, deploy hook errors, draft contract errors, and publish latency are not structured-logged, making production diagnosis difficult.",
+      "next_scope_now": "Add a minimal structured logger utility to xa-uploader and instrument the golden path (image upload, save, deploy hook, draft contract, publish) with structured log calls.",
+      "why": "Operator-stated: the XA upload golden path has no structured logging, making production failures invisible in wrangler tail and operator dashboards.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "xa-uploader emits structured log events for golden-path operations (image upload, product save, deploy hook trigger/failure, draft contract errors, publish latency) so production failures can be diagnosed from wrangler tail output.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-11T15:30:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260311153000-0002",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:BOS:xa-uploader-golden-path-tests:20260311",
+      "anchor_key": "xa-uploader-golden-path-tests",
+      "cluster_key": "XA:BOS:xa-uploader-golden-path-tests:operator:20260311",
+      "cluster_fingerprint": "xa-uploader-golden-path-tests-20260311",
+      "lineage_depth": 0,
+      "area_anchor": "XA xa-uploader golden path - key edit/publish/sync paths untested",
+      "location_anchors": [
+        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-uploader/src/app/api/catalog/publish/route.ts",
+        "apps/xa-uploader/src/lib/catalogDraftContractClient.ts",
+        "apps/xa-uploader/src/lib/syncMutex.ts",
+        "apps/xa-uploader/src/lib/currencyRates.ts"
+      ],
+      "domain": "SELL",
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "confidence": 0.87,
+      "evidence_refs": [
+        "operator-stated: review test and logging coverage and lock down the xa-uploader golden path (upload pipeline) against regression",
+        "coverage-hint: testing",
+        "coverage-hint: performance-reliability"
+      ],
+      "current_truth": "xa-uploader has no tests for: autosave conflict retry behavior, image+autosave+cleanup cycle, session expiry during editing, unpublish flow, currency rates missing recovery, or concurrent sync lock enforcement.",
+      "next_scope_now": "Add unit/integration tests for the critical untested paths in the xa-uploader golden path: autosave conflict, save+image cycle, session expiry, unpublish state, currency rates fallback, and sync mutex behavior.",
+      "why": "Operator-stated: the xa-uploader upload pipeline must be locked tight against regression; key paths currently have no test coverage.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "xa-uploader golden path (edit, save, image cycle, publish, sync, deploy) has test coverage for the critical failure modes that would otherwise regress silently.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-11T15:30:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260311153000-0003",
+      "mode": "trial",
+      "business": "XA",
+      "trigger": "operator_idea",
+      "root_event_id": "operator:XA:BOS:xa-uploader-branch-coverage:20260311",
+      "anchor_key": "xa-uploader-branch-coverage",
+      "cluster_key": "XA:BOS:xa-uploader-branch-coverage:operator:20260311",
+      "cluster_fingerprint": "xa-uploader-branch-coverage-20260311",
+      "lineage_depth": 0,
+      "area_anchor": "XA xa-uploader branch coverage - edge cases and error paths untested",
+      "location_anchors": [
+        "apps/xa-uploader/src/lib/rateLimit.ts",
+        "apps/xa-uploader/src/lib/catalogCloudPublish.ts",
+        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
+        "apps/xa-uploader/src/middleware.ts",
+        "apps/xa-uploader/src/app/api/catalog/images/route.ts"
+      ],
+      "domain": "SELL",
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.86,
+      "evidence_refs": [
+        "operator-stated: review test and logging coverage and lock down the xa-uploader golden path against regression",
+        "coverage-hint: testing",
+        "coverage-hint: UX"
+      ],
+      "current_truth": "xa-uploader branch coverage gaps: rate limit headers not asserted in tests, media validation strict-mode limit-exceeded path untested, empty catalog sync confirmation flow untested, middleware malformed-cookie path untested, image reorder/promote operations untested.",
+      "next_scope_now": "Add branch-coverage tests for rate limit header assertions, media validation strict mode edge cases, empty catalog sync UI confirmation, middleware malformed cookie handling, and image reorder/promote operations.",
+      "why": "Operator-stated: edge-case branches in the upload pipeline are untested and could regress without detection.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "xa-uploader edge-case and error paths in rate limiting, media validation, sync confirmation, middleware auth, and image ordering are covered by deterministic tests.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-11T15:30:00.000Z"
     }
   ]
 }

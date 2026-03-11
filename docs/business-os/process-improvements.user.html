@@ -359,9 +359,41 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-11T10:23:31.673Z";
+  var GEN_TS = "2026-03-11T11:25:27.850Z";
 
   var IDEA_ITEMS = [
+    {
+      "type": "idea",
+      "business": "XA",
+      "title": "XA xa-uploader branch coverage - edge cases and error paths untested",
+      "body": "Operator-stated: edge-case branches in the upload pipeline are untested and could regress without detection.",
+      "source": "queue-state.json",
+      "date": "2026-03-11T15:30:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "e762499a12a68b815b3de7ad6fb6856643494f4e",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "XA",
+      "title": "XA xa-uploader golden path - key edit/publish/sync paths untested",
+      "body": "Operator-stated: the xa-uploader upload pipeline must be locked tight against regression; key paths currently have no test coverage.",
+      "source": "queue-state.json",
+      "date": "2026-03-11T15:30:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "9afb578bd1c63b2a2543feafc7c03375f7cf26aa",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
     {
       "type": "idea",
       "business": "BRIK",
@@ -669,6 +701,22 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "XA",
+      "title": "XA xa-uploader observability - no structured logging, only console.log",
+      "body": "Operator-stated: the XA upload golden path has no structured logging, making production failures invisible in wrangler tail and operator dashboards.",
+      "source": "queue-state.json",
+      "date": "2026-03-11T15:30:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "ee2b6ff333442cbc37a5ea68f1f71242346a36b1",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",
@@ -1164,6 +1212,16 @@
   var RISK_ITEMS = [];
 
   var PENDING_REVIEW_ITEMS = [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: do-workflow-hot-path-telemetry",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/do-workflow-hot-path-telemetry/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-11T10:45:00.283Z",
+      "path": "docs/plans/do-workflow-hot-path-telemetry/build-record.user.md"
+    },
     {
       "type": "pending-review",
       "business": "BOS",

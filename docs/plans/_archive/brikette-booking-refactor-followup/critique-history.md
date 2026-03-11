@@ -1,3 +1,8 @@
+---
+Type: Critique-History
+Status: Archived
+---
+
 # Critique History: brikette-booking-refactor-followup
 
 ## Round 1 — 2026-03-11

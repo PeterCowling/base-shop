@@ -1,4 +1,5 @@
 ---
+Type: Build-Record
 Plan: brikette-booking-refactor-followup
 Build-date: 2026-03-12
 Status: Complete

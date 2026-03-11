@@ -13,6 +13,14 @@ import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import { formatDate } from "@/utils/dateUtils";
 import { getBookPath } from "@/utils/localizedRoutes";
 
+export type BookPageSearchPanelLabels = {
+  stayHelper: string;
+  clearDates: string;
+  checkIn: string;
+  checkOut: string;
+  guests: string;
+};
+
 type BookPageSearchPanelProps = {
   lang?: AppLanguage;
   range: DateRange;
@@ -22,11 +30,7 @@ type BookPageSearchPanelProps = {
   onCanonicalQuery: (next: { checkin: string; checkout: string; pax: number }) => void;
   checkin: string;
   checkout: string;
-  stayHelperText: string;
-  clearDatesText: string;
-  checkInLabelText: string;
-  checkOutLabelText: string;
-  guestsLabelText: string;
+  labels: BookPageSearchPanelLabels;
   showConstraintGuidance: boolean;
   showRebuildQuotePrompt: boolean;
   calendarAnchorRef?: RefObject<HTMLDivElement | null>;
@@ -43,11 +47,7 @@ export function BookPageSearchPanel({
   onCanonicalQuery,
   checkin,
   checkout,
-  stayHelperText,
-  clearDatesText,
-  checkInLabelText,
-  checkOutLabelText,
-  guestsLabelText,
+  labels,
   showConstraintGuidance,
   showRebuildQuotePrompt,
   calendarAnchorRef,
@@ -79,11 +79,11 @@ export function BookPageSearchPanel({
         minPax={1}
         maxPax={8}
         labels={{
-          stayHelper: stayHelperText,
-          clearDates: clearDatesText,
-          checkIn: checkInLabelText,
-          checkOut: checkOutLabelText,
-          guests: guestsLabelText,
+          stayHelper: labels.stayHelper,
+          clearDates: labels.clearDates,
+          checkIn: labels.checkIn,
+          checkOut: labels.checkOut,
+          guests: labels.guests,
           decreaseGuests: bookingControlLabels.decreaseGuestsAriaLabel,
           increaseGuests: bookingControlLabels.increaseGuestsAriaLabel,
         }}

@@ -339,11 +339,13 @@ function BookPageContent({
           onCanonicalQuery={writeCanonicalBookingQuery}
           checkin={checkin}
           checkout={checkout}
-          stayHelperText={t("date.stayHelper", { defaultValue: "2–8 nights" }) as string}
-          clearDatesText={t("date.clearDates", { defaultValue: "Clear dates" }) as string}
-          checkInLabelText={t("date.checkInLabel", { defaultValue: "Check in" }) as string}
-          checkOutLabelText={t("date.checkOutLabel", { defaultValue: "Check out" }) as string}
-          guestsLabelText={t("date.guests", { defaultValue: "Guests" }) as string}
+          labels={{
+            stayHelper: t("date.stayHelper", { defaultValue: "2–8 nights" }) as string,
+            clearDates: t("date.clearDates", { defaultValue: "Clear dates" }) as string,
+            checkIn: t("date.checkInLabel", { defaultValue: "Check in" }) as string,
+            checkOut: t("date.checkOutLabel", { defaultValue: "Check out" }) as string,
+            guests: t("date.guests", { defaultValue: "Guests" }) as string,
+          }}
           showConstraintGuidance={showConstraintGuidance}
           showSelectDatesPrompt={showSelectDatesPrompt}
           selectDatesPromptText={selectDatesPromptText}

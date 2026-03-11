@@ -14,17 +14,18 @@ import { getRoomSlug } from "@acme/ui/config/roomSlugs";
 import { ASSISTANCE_GUIDES, GUIDES_INDEX } from "@/data/guides.index";
 import { HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS } from "@/data/how-to-get-here/routeGuides";
 import { websiteVisibleRoomsData } from "@/data/roomsData";
-import type { AppLanguage } from "@/i18n.config";
-import { i18nConfig } from "@/i18n.config";
 import { guideNamespace, guidePath, guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import {
   INTERNAL_SEGMENT_BY_KEY,
   PUBLIC_INDEXABLE_SECTION_KEYS,
   STATIC_EXPORT_SECTION_KEYS,
 } from "@/routing/sectionSegments";
+import { getServerBuildLanguages } from "@/utils/buildLanguages";
 import { getSlug } from "@/utils/slug";
 
 const NON_DORM_ROOM_IDS = new Set(["double_room", "apartment"]);
+const PUBLISHED_GUIDES = GUIDES_INDEX.filter((g) => g.status === "live");
+const REDIRECT_ONLY_SECTION_KEYS = new Set(["apartment"]);
 const APP_PRIVATE_ROOM_DETAIL_SEGMENTS = [
   "double-room",
   "apartment",
@@ -46,7 +47,7 @@ const PUBLIC_PRIVATE_ROOM_DETAIL_SEGMENTS = [
  * and ensures URL coverage without depending on legacy code.
  */
 export function listAppRouterUrls(): string[] {
-  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const langs = getServerBuildLanguages();
   const urls: string[] = [];
 
   for (const lang of langs) {
@@ -72,7 +73,7 @@ export function listAppRouterUrls(): string[] {
     }
 
     // Dynamic: Guides (namespace-aware)
-    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
+    const publishedGuides = PUBLISHED_GUIDES;
     for (const guide of publishedGuides) {
       const base = guideNamespace(lang, guide.key);
       const slug = guideSlug(lang, guide.key);
@@ -108,13 +109,14 @@ export function listAppRouterUrls(): string[] {
  * Lists canonical public URLs (localized slug contract) for sitemap emission.
  */
 export function listLocalizedPublicUrls(): string[] {
-  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const langs = getServerBuildLanguages();
   const urls: string[] = [];
 
   for (const lang of langs) {
     urls.push(`/${lang}`);
 
     for (const key of PUBLIC_INDEXABLE_SECTION_KEYS) {
+      if (REDIRECT_ONLY_SECTION_KEYS.has(key)) continue;
       urls.push(`/${lang}/${getSlug(key, lang)}`);
     }
 
@@ -128,7 +130,7 @@ export function listLocalizedPublicUrls(): string[] {
       urls.push(`/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang)}`);
     }
 
-    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
+    const publishedGuides = PUBLISHED_GUIDES;
     for (const guide of publishedGuides) {
       const slug = guideSlug(lang, guide.key);
       if (resolveGuideKeyFromSlug(slug, lang) !== guide.key) continue;
@@ -156,13 +158,14 @@ export function listLocalizedPublicUrls(): string[] {
  * surfaces that stay live but are intentionally excluded from sitemap/indexation.
  */
 export function listLocalizedCanonicalAppUrls(): string[] {
-  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const langs = getServerBuildLanguages();
   const urls: string[] = [];
 
   for (const lang of langs) {
     urls.push(`/${lang}`);
 
     for (const key of STATIC_EXPORT_SECTION_KEYS) {
+      if (REDIRECT_ONLY_SECTION_KEYS.has(key)) continue;
       urls.push(`/${lang}/${getSlug(key, lang)}`);
     }
 
@@ -176,7 +179,7 @@ export function listLocalizedCanonicalAppUrls(): string[] {
       urls.push(`/${lang}/${roomsSlug}/${getRoomSlug(room.id, lang)}`);
     }
 
-    const publishedGuides = GUIDES_INDEX.filter((g) => g.status === "live");
+    const publishedGuides = PUBLISHED_GUIDES;
     for (const guide of publishedGuides) {
       const slug = guideSlug(lang, guide.key);
       if (resolveGuideKeyFromSlug(slug, lang) !== guide.key) continue;
@@ -203,7 +206,7 @@ export function listLocalizedCanonicalAppUrls(): string[] {
  * Get count of all App Router URLs by category
  */
 export function getUrlCounts(): Record<string, number> {
-  const langs = i18nConfig.supportedLngs as AppLanguage[];
+  const langs = getServerBuildLanguages();
   const langCount = langs.length;
   const dormRoomCount = websiteVisibleRoomsData.filter((room) => !NON_DORM_ROOM_IDS.has(room.id)).length;
 
@@ -214,7 +217,7 @@ export function getUrlCounts(): Record<string, number> {
     privateRoomDetails: langCount * APP_PRIVATE_ROOM_DETAIL_SEGMENTS.length,
     rooms: langCount * dormRoomCount,
     // NOTE: guides count now includes how-to-get-here routes (via GUIDES_INDEX)
-    guides: langCount * GUIDES_INDEX.filter((g) => g.status === "live").length,
+    guides: langCount * PUBLISHED_GUIDES.length,
     tags: langCount * new Set(GUIDES_INDEX.flatMap((g) => g.tags)).size,
     // howToGetHere now enumerated from guide key list (TASK-05)
     howToGetHere: langCount * HOW_TO_GET_HERE_ROUTE_GUIDE_KEYS.length,

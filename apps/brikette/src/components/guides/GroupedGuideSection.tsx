@@ -10,20 +10,10 @@ import { CfImage } from "@acme/ui/atoms/CfImage";
 import { getGuideImage } from "@/data/guideImages";
 import type { GuideMeta } from "@/data/guides.index";
 import type { AppLanguage } from "@/i18n.config";
+import { humanizeGuideKey } from "@/utils/translationFallbacks";
 
 import { formatGuideCardCta } from "./formatGuideCardCta";
 import { GuideCollectionCard } from "./GuideCollectionCard";
-
-/**
- * Converts a camelCase guide key to a human-readable title.
- * e.g., "positanoMainBeach" → "Positano Main Beach"
- */
-function humanizeGuideKey(key: string): string {
-  // Insert space before each uppercase letter, then capitalize first letter of each word
-  const spaced = key.replace(/([A-Z])/g, " $1").trim();
-  // Capitalize the first letter
-  return spaced.charAt(0).toUpperCase() + spaced.slice(1);
-}
 
 export type TopicConfig = {
   id: string;

@@ -9,6 +9,7 @@ import { getGuideLinkLabels } from "@/guides/slugs/labels";
 import type { AppLanguage } from "@/i18n.config";
 import type { GuideKey } from "@/routes.guides-helpers";
 import { renderGuideLinkTokens, sanitizeLinkLabel } from "@/routes/guides/utils/linkTokens";
+import { resolveTranslatedCopy } from "@/utils/i18nContent";
 import { getGuideLinkLabel } from "@/utils/translationFallbacks";
 
 type Props = {
@@ -29,19 +30,15 @@ const FEATURED_GUIDE_CANDIDATES: readonly GuideKey[] = [
 ] as const;
 
 const MAX_FEATURED_GUIDES = 8;
+const featuredGuides = FEATURED_GUIDE_CANDIDATES.filter((guideKey) =>
+  isGuideLive(guideKey),
+).slice(0, MAX_FEATURED_GUIDES);
 const FALLBACK_GUIDES_SECTION_TITLE =
   // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] fallback copy for localized featured-guides section when landingPage bundle is late.
   "Guides";
 const FALLBACK_GUIDES_SECTION_SUBTITLE =
   // i18n-exempt -- BRIK-2160 [ttl=2026-12-31] fallback copy for localized featured-guides section when landingPage bundle is late.
   "Local tips for your trip";
-
-function resolveTranslatedCopy(value: unknown, fallback: string): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed || trimmed.includes(".")) return fallback;
-  return trimmed;
-}
 
 function FeaturedGuidesSection({ lang }: Props): JSX.Element | null {
   const { t: tLanding } = useTranslation("landingPage", { lng: lang });
@@ -51,11 +48,6 @@ function FeaturedGuidesSection({ lang }: Props): JSX.Element | null {
     guidesTranslation.i18n?.getFixedT?.("en", "guides") ??
     ((key: string): string => key);
   const guideLinkLabels = useMemo(() => getGuideLinkLabels(lang), [lang]);
-
-  const featuredGuides = useMemo(
-    () => FEATURED_GUIDE_CANDIDATES.filter((guideKey) => isGuideLive(guideKey)).slice(0, MAX_FEATURED_GUIDES),
-    [],
-  );
 
   if (featuredGuides.length === 0) {
     return null;

@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- TECH-000 [ttl=2026-12-31] Placeholder detector phrases are technical matching inputs, not guest-facing UI copy. */
 /**
  * Placeholder detection utilities for guide content.
  *

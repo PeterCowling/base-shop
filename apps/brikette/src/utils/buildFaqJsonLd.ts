@@ -60,7 +60,7 @@ export function faqEntriesToJsonLd(
 ): FaqJsonLd | null {
   // Emit nothing when there are no entries to avoid empty FAQPage payloads.
   // Consumers use an empty string as a signal to skip injecting a <script> tag.
-  const safeEntries = Array.isArray(entries) ? entries : [];
+  const safeEntries = ensureArray<NormalizedFaqEntry>(entries);
   if (safeEntries.length === 0) {
     return null;
   }

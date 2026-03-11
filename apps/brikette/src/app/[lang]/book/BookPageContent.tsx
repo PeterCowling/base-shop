@@ -27,6 +27,7 @@ import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import { useRecoveryResumeFallback } from "@/hooks/useRecoveryResumeFallback";
 import type { AppLanguage } from "@/i18n.config";
+import type { RoomQueryState } from "@/types/booking";
 import {
   isValidPax,
   isValidStayRange,
@@ -72,7 +73,7 @@ function isValidSearch(checkIn: string, checkOut: string, pax: number): boolean 
   return checkIn.length > 0 && checkOut.length > 0 && isValidStayRange(checkIn, checkOut) && isValidPax(pax);
 }
 
-function deriveRoomQueryState(checkin: string, checkout: string, pax: number): "valid" | "invalid" | "absent" {
+function deriveRoomQueryState(checkin: string, checkout: string, pax: number): RoomQueryState {
   if (!checkin || !checkout) return "absent";
   return isValidSearch(checkin, checkout, pax) ? "valid" : "invalid";
 }
@@ -148,7 +149,7 @@ function renderDealBanner(deal: string | null, t: TranslateFn): JSX.Element | nu
 function renderRecoverySection(
   availabilityRoomCount: number,
   lang: AppLanguage,
-  roomQueryState: "valid" | "invalid" | "absent",
+  roomQueryState: RoomQueryState,
   checkin: string,
   checkout: string,
   pax: number,
@@ -255,7 +256,7 @@ function BookPageContent({
     setPax(storePax);
   }, [initialCheckin, initialCheckout]);
 
-  const roomQueryState = useMemo<"valid" | "invalid" | "absent">(
+  const roomQueryState = useMemo<RoomQueryState>(
     () => deriveRoomQueryState(checkin, checkout, pax),
     [checkin, checkout, pax],
   );
@@ -339,11 +340,13 @@ function BookPageContent({
           onCanonicalQuery={writeCanonicalBookingQuery}
           checkin={checkin}
           checkout={checkout}
-          stayHelperText={t("date.stayHelper", { defaultValue: "2–8 nights" }) as string}
-          clearDatesText={t("date.clearDates", { defaultValue: "Clear dates" }) as string}
-          checkInLabelText={t("date.checkInLabel", { defaultValue: "Check in" }) as string}
-          checkOutLabelText={t("date.checkOutLabel", { defaultValue: "Check out" }) as string}
-          guestsLabelText={t("date.guests", { defaultValue: "Guests" }) as string}
+          labels={{
+            stayHelper: t("date.stayHelper", { defaultValue: "2–8 nights" }) as string,
+            clearDates: t("date.clearDates", { defaultValue: "Clear dates" }) as string,
+            checkIn: t("date.checkInLabel", { defaultValue: "Check in" }) as string,
+            checkOut: t("date.checkOutLabel", { defaultValue: "Check out" }) as string,
+            guests: t("date.guests", { defaultValue: "Guests" }) as string,
+          }}
           showConstraintGuidance={showConstraintGuidance}
           showSelectDatesPrompt={showSelectDatesPrompt}
           selectDatesPromptText={selectDatesPromptText}

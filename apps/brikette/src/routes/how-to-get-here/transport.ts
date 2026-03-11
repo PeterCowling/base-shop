@@ -71,9 +71,10 @@ const routeMetadataOverrides: Record<string, Partial<{ transportModes: Transport
   "salerno-positano-ferry": { direction: "to", transportModes: ["ferry"] },
 };
 
+const TRANSPORT_MATCHER_BY_MODE = new Map(transportMatchers.map((m) => [m.mode, m]));
+
 function resolveTransportIconFromMode(mode: TransportMode) {
-  const matchByMode = transportMatchers.find(({ mode: matcherMode }) => matcherMode === mode);
-  return matchByMode?.Icon ?? null;
+  return TRANSPORT_MODE_ICONS[mode] ?? null;
 }
 
 export function resolveTransportIcon(link: DestinationLink | AugmentedDestinationLink): IconComponent | null {
@@ -88,7 +89,7 @@ export function resolveTransportIcon(link: DestinationLink | AugmentedDestinatio
         return iconFromMode;
       }
 
-      const carMatcher = transportMatchers.find(({ mode }) => mode === "car");
+      const carMatcher = TRANSPORT_MATCHER_BY_MODE.get("car");
       if (carMatcher?.pattern.test(target)) {
         return iconFromMode;
       }

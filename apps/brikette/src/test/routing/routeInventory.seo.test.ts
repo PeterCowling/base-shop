@@ -22,6 +22,8 @@ describe("listLocalizedPublicUrls SEO contract", () => {
 
     expect(urls).toContain("/en/book-private-accommodations");
     expect(urls).toContain("/it/prenota-alloggi-privati");
+    expect(urls).not.toContain("/en/private-rooms");
+    expect(urls).not.toContain("/it/camere-private");
   });
 
   it("uses localized private-room child canonicals instead of English child aliases", () => {
@@ -52,6 +54,8 @@ describe("listLocalizedCanonicalAppUrls internal-link contract", () => {
     expect(urls).not.toContain("/it/book");
     expect(urls).not.toContain("/privacy-policy");
     expect(urls).not.toContain("/cookie-policy");
+    expect(urls).not.toContain("/en/private-rooms");
+    expect(urls).not.toContain("/it/camere-private");
     expect(urls).not.toContain("/en/private-rooms/book");
   });
 });

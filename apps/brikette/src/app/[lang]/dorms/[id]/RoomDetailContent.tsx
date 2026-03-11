@@ -205,6 +205,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
         lockersLabel={t("feature.lockers") as string}
         privateTerraceLabel={t("feature.privateTerrace") as string}
         inRoomLockersLabel={t("feature.inRoomLockers") as string}
+        translateFeatureValue={(key) => resolveCopy(t(key), key)}
       />
       <OutlineSection outline={outline} />
 

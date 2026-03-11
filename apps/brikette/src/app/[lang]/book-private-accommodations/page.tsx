@@ -16,6 +16,10 @@ type Props = {
   params: Promise<{ lang: string }>;
 };
 
+function pickFirstNonEmpty(...values: string[]): string {
+  return values.find((value) => value.trim().length > 0) ?? "";
+}
+
 export async function generateStaticParams() {
   return generateLangParams();
 }
@@ -23,10 +27,23 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-  const t = await getTranslations(validLang, ["bookPage"]);
+  const tBook = await getTranslations(validLang, ["bookPage"]);
+  const tHeader = await getTranslations(validLang, ["header"]);
+  const tApartment = await getTranslations(validLang, ["apartmentPage"]);
+  const tRooms = await getTranslations(validLang, ["roomsPage"]);
 
-  const title = t("apartment.meta.title", { defaultValue: "" }) as string;
-  const description = t("apartment.meta.description", { defaultValue: "" }) as string;
+  const pageTitle = pickFirstNonEmpty(
+    tHeader("navigation.apartment.bookPrivate", { defaultValue: "" }) as string,
+    tHeader("apartment", { defaultValue: "" }) as string,
+    tBook("apartment.heading", { defaultValue: "" }) as string,
+  );
+  const brandTitle = (tHeader("title", { defaultValue: "" }) as string) || "";
+  const doubleRoomIntro = (tRooms("rooms.double_room.bed_intro", { defaultValue: "" }) as string) || "";
+  const apartmentBody = (tApartment("body", { defaultValue: "" }) as string) || "";
+  const fallbackDescription = [doubleRoomIntro, apartmentBody].filter(Boolean).join(" ");
+
+  const title = [pageTitle, brandTitle].filter(Boolean).join(" | ");
+  const description = fallbackDescription;
   const path = getLocalizedSectionPath(validLang, "privateBooking");
 
   const image = buildCfImageUrl("/img/apt1.jpg", {
@@ -49,13 +66,40 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BookPrivateAccomodationsPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
-  const t = await getTranslations(validLang, ["bookPage"]);
+  const tBook = await getTranslations(validLang, ["bookPage"]);
+  const tHeader = await getTranslations(validLang, ["header"]);
+  const tApartment = await getTranslations(validLang, ["apartmentPage"]);
+  const tRooms = await getTranslations(validLang, ["roomsPage"]);
 
-  const whyDirectTitle = t("apartment.landing.whyDirectTitle", { defaultValue: "" }) as string;
-  const whyDirectItems = t("apartment.landing.whyDirectItems", { returnObjects: true }) as string[];
-  const exploreDorms = t("apartment.landing.exploreDorms", { defaultValue: "" }) as string;
-  const exploreExperiences = t("apartment.landing.exploreExperiences", { defaultValue: "" }) as string;
-  const exploreLocation = t("apartment.landing.exploreLocation", { defaultValue: "" }) as string;
+  const pageTitle = pickFirstNonEmpty(
+    tHeader("navigation.apartment.bookPrivate", { defaultValue: "" }) as string,
+    tHeader("apartment", { defaultValue: "" }) as string,
+    tBook("apartment.heading", { defaultValue: "" }) as string,
+  );
+  const whyDirectTitle = tBook("apartment.landing.whyDirectTitle", { defaultValue: "" }) as string;
+  const whyDirectItems = tBook("apartment.landing.whyDirectItems", { returnObjects: true }) as string[];
+  const exploreDorms = tBook("apartment.landing.exploreDorms", { defaultValue: "" }) as string;
+  const exploreExperiences = tBook("apartment.landing.exploreExperiences", { defaultValue: "" }) as string;
+  const exploreLocation = tBook("apartment.landing.exploreLocation", { defaultValue: "" }) as string;
+
+  const doubleRoomTitle = (tRooms("rooms.double_room.title", { defaultValue: "" }) as string) || "";
+  const doubleRoomDescription =
+    (tRooms("rooms.double_room.bed_description", { defaultValue: "" }) as string) || "";
+  const doubleRoomFacilityKeys = tRooms("rooms.double_room.facilities", {
+    returnObjects: true,
+    defaultValue: [],
+  }) as string[];
+  const doubleRoomFeatures = (Array.isArray(doubleRoomFacilityKeys) ? doubleRoomFacilityKeys : [])
+    .slice(0, 4)
+    .map((facilityKey) => tRooms(`facilities.${facilityKey}`, { defaultValue: facilityKey }) as string);
+
+  const apartmentTitle = (tApartment("title", { defaultValue: "" }) as string) || "";
+  const apartmentDescription = (tApartment("body", { defaultValue: "" }) as string) || "";
+  const apartmentFeatures = (
+    tApartment("detailsList", { returnObjects: true, defaultValue: [] }) as string[]
+  ).slice(0, 4);
+
+  const pageOptionsSummary = [doubleRoomTitle, apartmentTitle].filter(Boolean).join(" · ");
 
   const doubleRoomPath = getDoubleRoomBookingPath(validLang);
   const apartmentPath = getPrivateRoomChildPath(validLang, "apartment");
@@ -66,35 +110,27 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
       <PrivateAccomStructuredDataRsc lang={validLang} slug={getSlug("privateBooking", validLang)} />
 
       <Section padding="default" className="mx-auto max-w-4xl">
-        {/* eslint-disable-next-line ds/no-hardcoded-copy -- i18n-exempt: combined private booking heading, pending full i18n TASK-08 [ttl=2026-12-31] */}
         <h1 className="text-center text-3xl font-bold tracking-tight text-brand-heading sm:text-4xl">
-          Book Private Accommodations
+          {pageTitle}
         </h1>
-
-        {/* eslint-disable-next-line ds/no-hardcoded-copy -- i18n-exempt: combined private booking intro, pending full i18n TASK-08 [ttl=2026-12-31] */}
-        <p className="mx-auto mt-4 text-center text-base leading-relaxed text-brand-text/80" style={{ maxWidth: "44rem" }}>
-          We have two private accommodation options at Hostel Brikette, Positano. Choose the room
-          that suits your group — both book direct for our best rate with free breakfast included.
-        </p>
+        {pageOptionsSummary ? (
+          <p
+            className="mx-auto mt-4 text-center text-base leading-relaxed text-brand-text/80"
+            style={{ maxWidth: "44rem" }}
+          >
+            {pageOptionsSummary}
+          </p>
+        ) : null}
 
         {/* Choice cards */}
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2">
 
           {/* Double Room */}
           <div className="flex flex-col rounded-xl border border-brand-border bg-brand-surface/60 p-6">
-            {/* eslint-disable ds/no-hardcoded-copy -- i18n-exempt: double room card, pending full i18n TASK-08 [ttl=2026-12-31] */}
-            <h2 className="text-xl font-semibold text-brand-heading">Double Room</h2>
-            <p className="mt-2 text-sm leading-relaxed text-brand-text/80">
-              A private room with one double bed, ensuite bathroom, and a sea-view terrace on the
-              third floor. Ideal for couples.
-            </p>
+            <h2 className="text-xl font-semibold text-brand-heading">{doubleRoomTitle}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-brand-text/80">{doubleRoomDescription}</p>
             <ul className="mt-4 space-y-1.5 text-sm text-brand-text">
-              {[
-                "1 double bed · up to 2 guests",
-                "Ensuite bathroom · 3rd floor",
-                "Sea-view terrace · A/C · keycard entry",
-                "Bed linen and towels provided",
-              ].map((feature) => (
+              {doubleRoomFeatures.map((feature) => (
                 <li key={feature} className="flex items-start gap-1.5">
                   <span className="mt-0.5 shrink-0 text-brand-primary" aria-hidden="true">✓</span>
                   {feature}
@@ -104,29 +140,19 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
             <div className="mt-6">
               <a
                 href={doubleRoomPath}
-                className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-2.5 text-sm font-semibold text-brand-on-primary hover:bg-brand-primary/90"
+                className="inline-flex min-h-11 min-w-11 w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-2.5 text-sm font-semibold text-brand-on-primary hover:bg-brand-primary/90"
               >
-                Book the Double Room →
+                {doubleRoomTitle} →
               </a>
             </div>
-            {/* eslint-enable ds/no-hardcoded-copy */}
           </div>
 
           {/* Apartment */}
           <div className="flex flex-col rounded-xl border border-brand-border bg-brand-surface/60 p-6">
-            {/* eslint-disable ds/no-hardcoded-copy -- i18n-exempt: apartment card, pending full i18n TASK-08 [ttl=2026-12-31] */}
-            <h2 className="text-xl font-semibold text-brand-heading">The Apartment</h2>
-            <p className="mt-2 text-sm leading-relaxed text-brand-text/80">
-              100 sqm private apartment on the cliff edge with sea-view terrace, full kitchen, and
-              two bathrooms. Perfect for couples or small groups.
-            </p>
+            <h2 className="text-xl font-semibold text-brand-heading">{apartmentTitle}</h2>
+            <p className="mt-2 text-sm leading-relaxed text-brand-text/80">{apartmentDescription}</p>
             <ul className="mt-4 space-y-1.5 text-sm text-brand-text">
-              {[
-                "Up to 4 guests · 100 sqm",
-                "Full kitchen with dining area",
-                "2 bathrooms · sea-view terrace",
-                "Wi-Fi, A/C, washer & dryer",
-              ].map((feature) => (
+              {apartmentFeatures.map((feature) => (
                 <li key={feature} className="flex items-start gap-1.5">
                   <span className="mt-0.5 shrink-0 text-brand-primary" aria-hidden="true">✓</span>
                   {feature}
@@ -136,12 +162,11 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
             <div className="mt-6">
               <a
                 href={apartmentPath}
-                className="inline-flex min-h-11 w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-2.5 text-sm font-semibold text-brand-on-primary hover:bg-brand-primary/90"
+                className="inline-flex min-h-11 min-w-11 w-full items-center justify-center rounded-lg bg-brand-primary px-5 py-2.5 text-sm font-semibold text-brand-on-primary hover:bg-brand-primary/90"
               >
-                View the Apartment →
+                {apartmentTitle} →
               </a>
             </div>
-            {/* eslint-enable ds/no-hardcoded-copy */}
           </div>
         </div>
 
@@ -168,7 +193,7 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
           {exploreDorms && (
             <a
               href={getLocalizedSectionPath(validLang, "book")}
-              className="min-h-11 text-brand-primary underline hover:text-brand-primary/80"
+              className="inline-flex min-h-11 min-w-11 items-center text-brand-primary underline hover:text-brand-primary/80"
             >
               {exploreDorms}
             </a>
@@ -176,7 +201,7 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
           {exploreExperiences && (
             <a
               href={getLocalizedSectionPath(validLang, "experiences")}
-              className="min-h-11 text-brand-primary underline hover:text-brand-primary/80"
+              className="inline-flex min-h-11 min-w-11 items-center text-brand-primary underline hover:text-brand-primary/80"
             >
               {exploreExperiences}
             </a>
@@ -184,7 +209,7 @@ export default async function BookPrivateAccomodationsPage({ params }: Props) {
           {exploreLocation && (
             <a
               href={getLocalizedSectionPath(validLang, "howToGetHere")}
-              className="min-h-11 text-brand-primary underline hover:text-brand-primary/80"
+              className="inline-flex min-h-11 min-w-11 items-center text-brand-primary underline hover:text-brand-primary/80"
             >
               {exploreLocation}
             </a>

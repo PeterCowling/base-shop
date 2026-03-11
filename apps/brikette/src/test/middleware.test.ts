@@ -121,7 +121,7 @@ describe("middleware", () => {
       const response = middleware(request);
 
       expect(response?.status).toBe(301);
-      expect(response?.headers.get("location")).toContain("/de/privatzimmer/");
+      expect(response?.headers.get("location")).toContain("/de/privatunterkunft-buchen");
     });
 
     it("redirects /fr/appartements → /fr/chambres-privees/ (old apartment slug in French)", () => {
@@ -129,7 +129,7 @@ describe("middleware", () => {
       const response = middleware(request);
 
       expect(response?.status).toBe(301);
-      expect(response?.headers.get("location")).toContain("/fr/chambres-privees/");
+      expect(response?.headers.get("location")).toContain("/fr/reserver-hebergements-prives");
     });
 
     it("redirects /it/appartamenti → /it/camere-private/ (old apartment slug in Italian)", () => {
@@ -137,7 +137,7 @@ describe("middleware", () => {
       const response = middleware(request);
 
       expect(response?.status).toBe(301);
-      expect(response?.headers.get("location")).toContain("/it/camere-private/");
+      expect(response?.headers.get("location")).toContain("/it/prenota-alloggi-privati");
     });
 
     it("redirects /es/apartamentos → /es/habitaciones-privadas/ (old apartment slug in Spanish)", () => {
@@ -145,7 +145,15 @@ describe("middleware", () => {
       const response = middleware(request);
 
       expect(response?.status).toBe(301);
-      expect(response?.headers.get("location")).toContain("/es/habitaciones-privadas/");
+      expect(response?.headers.get("location")).toContain("/es/reservar-alojamientos-privados");
+    });
+
+    it("redirects canonical apartment roots to localized private booking roots", () => {
+      const request = createRequest("/it/camere-private");
+      const response = middleware(request);
+
+      expect(response?.status).toBe(301);
+      expect(response?.headers.get("location")).toContain("/it/prenota-alloggi-privati");
     });
 
     it("redirects /it/private-rooms/double-room to the localized child slug", () => {

@@ -20,6 +20,7 @@ import { ThemeToggle } from "../molecules/ThemeToggle";
 import { resolvePrimaryCtaLabel } from "../shared";
 import type { SlugMap } from "../slug-map";
 import { buildNavLinks, type NavItemChild, type TranslateFn } from "../utils/buildNavLinks";
+import { resolveHeaderPrimaryCtaHref } from "../utils/headerPrimaryCtaHref";
 import { translatePath } from "../utils/translate-path";
 
 /*  Public assets are referenced by absolute URL paths.
@@ -40,11 +41,13 @@ const IS_STATIC_EXPORT = process.env.NEXT_PUBLIC_OUTPUT_EXPORT === "1";
 
 function DesktopHeader({
   lang: explicitLang,
+  primaryCtaHref,
   onPrimaryCtaClick,
   experienceNavItems,
   howToGetHereNavItems,
 }: {
   lang?: AppLanguage;
+  primaryCtaHref?: string;
   onPrimaryCtaClick?: () => boolean | void;
   experienceNavItems?: NavItemChild[];
   howToGetHereNavItems?: NavItemChild[];
@@ -65,26 +68,20 @@ function DesktopHeader({
   const pathname = usePathname();
   const [openKey, setOpenKey] = useState<string | null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // Apartment-aware CTA routing (TASK-07): on apartment routes, link directly to apartment
-  // booking page instead of opening the hostel booking modal.
+  const hostelBookingPath = `/${lang}/${translatePath("book", lang)}`;
   const apartmentPath = `/${translatePath("apartment", lang)}`;
-  const privateBookingPath = `/${lang}/${translatePath("privateBooking", lang)}`;
-  const isApartmentRoute =
-    pathname.startsWith(`/${lang}${apartmentPath}`) || pathname.startsWith(privateBookingPath);
-  const bookHref = isApartmentRoute
-    ? privateBookingPath
-    : `/${lang}/${translatePath("book", lang)}`;
+  const bookHref = resolveHeaderPrimaryCtaHref({ lang, pathname, primaryCtaHref });
+  const isDirectNavigationRoute = bookHref !== hostelBookingPath;
   const onBookClick = useCallback(
     (event: MouseEvent<HTMLAnchorElement>) => {
-      // On apartment routes let normal navigation handle the link — no modal.
-      if (isApartmentRoute) return;
+      if (isDirectNavigationRoute) return;
       // Preserve semantic link navigation unless the callback explicitly handles routing.
       const handledByCallback = onPrimaryCtaClick?.() === true;
       if (handledByCallback) {
         event.preventDefault();
       }
     },
-    [onPrimaryCtaClick, isApartmentRoute]
+    [isDirectNavigationRoute, onPrimaryCtaClick]
   );
 
   const navTranslate = useCallback<TranslateFn>(

@@ -15,6 +15,7 @@ import enModals from "@/locales/en/modals.json";
 import { type GuideKey,guideSlug, resolveGuideKeyFromSlug } from "@/routes.guides-helpers";
 import { INTERNAL_SEGMENT_BY_KEY } from "@/routing/sectionSegments";
 import { SLUG_KEYS, type SlugMap,SLUGS } from "@/slug-map";
+import { getPublicBuildLanguages } from "@/utils/buildLanguages";
 import { preloadI18nNamespaces } from "@/utils/loadI18nNs";
 import { translatePath } from "@/utils/translate-path";
 
@@ -152,6 +153,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
   }, [router]);
 
   const pathSegments = location.pathname.split("/").filter(Boolean);
+  const availableLanguages = useMemo(() => getPublicBuildLanguages(), []);
 
   const curLang: AppLanguage = (() => {
     const first = pathSegments[0];
@@ -166,7 +168,7 @@ export function LanguageGlobalModal(): JSX.Element | null {
 
   const candidates = [
     i18nConfig.fallbackLng as AppLanguage,
-    ...((i18nConfig.supportedLngs ?? []) as AppLanguage[]),
+    ...availableLanguages,
   ];
   if (!candidates.includes(curLang)) {
     candidates.unshift(curLang);

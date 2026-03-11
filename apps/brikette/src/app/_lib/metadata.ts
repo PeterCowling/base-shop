@@ -3,9 +3,14 @@
 import type { Metadata } from "next";
 
 import { BASE_URL } from "@/config/site";
-import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import type { AppLanguage } from "@/i18n.config";
+import { getPublicBuildLanguages } from "@/utils/buildLanguages";
 import { OG_IMAGE as DEFAULT_OG_IMAGE } from "@/utils/headConstants";
 import * as seo from "@/utils/seo";
+
+const OG_SITE_NAME = "Hostel Brikette"; // i18n-exempt -- TECH-000 [ttl=2026-12-31] Open Graph site identifier, not translatable UI copy.
+const TWITTER_HANDLE = "@hostelbrikette"; // i18n-exempt -- TECH-000 [ttl=2026-12-31] Social profile identifier, not translatable UI copy.
+const BUILD_LANGUAGES = getPublicBuildLanguages();
 
 export type AppMetadataArgs = {
   lang: AppLanguage;
@@ -112,13 +117,13 @@ export function buildAppMetadata({
       languages,
     },
     openGraph: {
-      siteName: "Hostel Brikette",
+      siteName: OG_SITE_NAME,
       title,
       description,
       url: canonicalUrl,
       type: ogType,
       locale: lang,
-      alternateLocale: i18nConfig.supportedLngs.filter((l) => l !== lang),
+      alternateLocale: BUILD_LANGUAGES.filter((candidate) => candidate !== lang),
       images: [
         {
           url: ogImageUrl,
@@ -130,8 +135,8 @@ export function buildAppMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      site: "@hostelbrikette",
-      creator: "@hostelbrikette",
+      site: TWITTER_HANDLE,
+      creator: TWITTER_HANDLE,
       title,
       description,
       images: [ogImageUrl],

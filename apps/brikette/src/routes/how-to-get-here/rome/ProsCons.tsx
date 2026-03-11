@@ -1,18 +1,13 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 
+import { resolveTranslatedCopy } from "./resolveTranslatedCopy";
+
 interface ProsConsProps {
   prosKeys: string[];
   consKeys: string[];
 }
 
-function resolveTranslatedCopy(value: unknown, key: string, fallback = ""): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (trimmed === key) return fallback;
-  return trimmed;
-}
 
 function ProsConsBase({ prosKeys, consKeys }: ProsConsProps) {
   const { t } = useTranslation("howToGetHere");

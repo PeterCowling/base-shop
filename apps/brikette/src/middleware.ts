@@ -219,6 +219,10 @@ function maybeRedirectLocalizedTopLevel(params: {
     return buildRedirectResponse(request, buildPrivateBookingRedirectPath(appLang, topSegmentSuffix));
   }
 
+  if (key === "apartment" && nextParts.length === 2) {
+    return buildRedirectResponse(request, buildPrivateBookingRedirectPath(appLang, topSegmentSuffix));
+  }
+
   if (key === "apartment" && nextParts.length >= 3) {
     const canonicalPrivateRoomPath = resolvePrivateRoomChildRedirectPath(appLang, nextParts[2]);
     if (canonicalPrivateRoomPath) {
@@ -271,8 +275,7 @@ function buildGenericTopLevelRedirectPath(params: {
   }
 
   if (wrongKey === "apartment" && nextParts.length === 2) {
-    const trailingSlash = topSegmentSuffix ? "" : "/";
-    return `/${appLang}/${correctSlug}${trailingSlash}`;
+    return buildPrivateBookingRedirectPath(appLang, topSegmentSuffix);
   }
 
   if (wrongKey === "apartment" && nextParts[2]?.toLowerCase() === "book") {

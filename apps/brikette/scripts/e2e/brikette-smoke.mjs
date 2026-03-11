@@ -25,7 +25,7 @@ const TURBOPACK_DEV_LOG_LIMIT_LINES = 200;
 const BRIKETTE_NODE_POLYFILL_REQUIRE = `--require ${fileURLToPath(new URL("../ssr-polyfills.cjs", import.meta.url))}`;
 const TURBOPACK_ROUTE_ASSERTIONS = [
   {
-    route: "/en/private-rooms",
+    route: "/en/book-private-accommodations",
     pattern: /application\/ld\+json/i,
     description: "application/ld+json",
   },
@@ -204,7 +204,7 @@ async function runTurbopackSmoke() {
       appendDevLog(devLogs, "process", error.message);
     });
 
-    let privateRoomsHtml = "";
+    let privateBookingHtml = "";
     let ready = false;
     for (let second = 1; second <= TURBOPACK_READINESS_TIMEOUT_SECONDS; second += 1) {
       if (devProcess.exitCode !== null || devProcess.signalCode !== null) {
@@ -212,7 +212,7 @@ async function runTurbopackSmoke() {
       }
 
       try {
-        privateRoomsHtml = await fetchHtml(`${baseUrl}/en/private-rooms`, 5);
+        privateBookingHtml = await fetchHtml(`${baseUrl}/en/book-private-accommodations`, 5);
         ready = true;
         break;
       } catch {
@@ -222,13 +222,13 @@ async function runTurbopackSmoke() {
 
     if (!ready) {
       throw new Error(
-        `Readiness timeout (${TURBOPACK_READINESS_TIMEOUT_SECONDS}s) waiting for ${baseUrl}/en/private-rooms`,
+        `Readiness timeout (${TURBOPACK_READINESS_TIMEOUT_SECONDS}s) waiting for ${baseUrl}/en/book-private-accommodations`,
       );
     }
 
-    if (!TURBOPACK_ROUTE_ASSERTIONS[0].pattern.test(privateRoomsHtml)) {
+    if (!TURBOPACK_ROUTE_ASSERTIONS[0].pattern.test(privateBookingHtml)) {
       throw new Error(
-        `Route /en/private-rooms did not include required text: ${TURBOPACK_ROUTE_ASSERTIONS[0].description}`,
+        `Route /en/book-private-accommodations did not include required text: ${TURBOPACK_ROUTE_ASSERTIONS[0].description}`,
       );
     }
 

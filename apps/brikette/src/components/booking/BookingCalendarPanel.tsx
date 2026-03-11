@@ -1,13 +1,24 @@
 "use client";
 
-import { type ReactNode, useEffect, useId, useState } from "react";
+import { type ReactNode, useId } from "react";
 
+import { useHasMounted } from "@/hooks/useHasMounted";
 import type { AppLanguage } from "@/i18n.config";
 import { Minus, Plus } from "@/icons";
 import { formatDisplayDate } from "@/utils/dateUtils";
 
 import type { DateRange } from "./DateRangePicker";
 import { DateRangePicker } from "./DateRangePicker";
+
+export type BookingCalendarPanelLabels = {
+  stayHelper: string;
+  clearDates: string;
+  checkIn: string;
+  checkOut: string;
+  guests: string;
+  decreaseGuests: string;
+  increaseGuests: string;
+};
 
 type BookingCalendarPanelProps = {
   lang?: AppLanguage;
@@ -17,13 +28,7 @@ type BookingCalendarPanelProps = {
   onPaxChange: (next: number) => void;
   minPax?: number;
   maxPax?: number;
-  stayHelperText: string;
-  clearDatesText: string;
-  checkInLabelText: string;
-  checkOutLabelText: string;
-  guestsLabelText: string;
-  decreaseGuestsAriaLabel: string;
-  increaseGuestsAriaLabel: string;
+  labels: BookingCalendarPanelLabels;
   actionSlot?: ReactNode;
 };
 
@@ -35,21 +40,11 @@ export function BookingCalendarPanel({
   onPaxChange,
   minPax = 1,
   maxPax = 8,
-  stayHelperText,
-  clearDatesText,
-  checkInLabelText,
-  checkOutLabelText,
-  guestsLabelText,
-  decreaseGuestsAriaLabel,
-  increaseGuestsAriaLabel,
+  labels,
   actionSlot,
 }: BookingCalendarPanelProps): JSX.Element {
   const guestsLabelId = useId();
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
+  const hasMounted = useHasMounted();
 
   const stableFrom = hasMounted ? range.from : undefined;
   const stableTo = hasMounted ? range.to : undefined;
@@ -63,10 +58,10 @@ export function BookingCalendarPanel({
         <DateRangePicker
           selected={range}
           onRangeChange={onRangeChange}
-          stayHelperText={stayHelperText}
-          clearDatesText={clearDatesText}
-          checkInLabelText={checkInLabelText}
-          checkOutLabelText={checkOutLabelText}
+          stayHelperText={labels.stayHelper}
+          clearDatesText={labels.clearDates}
+          checkInLabelText={labels.checkIn}
+          checkOutLabelText={labels.checkOut}
           lang={lang}
           className="w-full"
         />
@@ -75,7 +70,7 @@ export function BookingCalendarPanel({
         <div className="hidden w-full lg:flex lg:flex-col lg:gap-2">
           <div className="flex flex-col gap-1 rounded-xl border border-brand-outline/30 bg-brand-bg px-3 py-2.5">
             <span className="text-xs font-semibold uppercase tracking-widest text-brand-text/70">
-              {checkInLabelText}
+              {labels.checkIn}
             </span>
             <span className="text-sm font-semibold tabular-nums text-brand-heading">
               {stableFrom ? formatDisplayDate(stableFrom) : <span className="text-brand-text/30">—</span>}
@@ -83,7 +78,7 @@ export function BookingCalendarPanel({
           </div>
           <div className="flex flex-col gap-1 rounded-xl border border-brand-outline/30 bg-brand-bg px-3 py-2.5">
             <span className="text-xs font-semibold uppercase tracking-widest text-brand-text/70">
-              {checkOutLabelText}
+              {labels.checkOut}
             </span>
             <span className="text-sm font-semibold tabular-nums text-brand-heading">
               {stableTo ? formatDisplayDate(stableTo) : <span className="text-brand-text/30">—</span>}
@@ -93,7 +88,7 @@ export function BookingCalendarPanel({
 
         <div className="flex w-full flex-col gap-1.5 rounded-xl border border-brand-outline/30 bg-brand-bg p-3">
           <span id={guestsLabelId} className="text-sm font-semibold text-brand-heading">
-            {guestsLabelText}
+            {labels.guests}
           </span>
           <div
             role="group"
@@ -104,7 +99,7 @@ export function BookingCalendarPanel({
               type="button"
               onClick={() => onPaxChange(Math.max(minPax, pax - 1))}
               disabled={pax <= minPax}
-              aria-label={decreaseGuestsAriaLabel}
+              aria-label={labels.decreaseGuests}
               className="flex min-h-11 min-w-11 items-center justify-center text-brand-primary transition-colors hover:bg-brand-primary/10 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Minus className="size-4" aria-hidden />
@@ -120,7 +115,7 @@ export function BookingCalendarPanel({
               type="button"
               onClick={() => onPaxChange(Math.min(maxPax, pax + 1))}
               disabled={pax >= maxPax}
-              aria-label={increaseGuestsAriaLabel}
+              aria-label={labels.increaseGuests}
               className="flex min-h-11 min-w-11 items-center justify-center text-brand-primary transition-colors hover:bg-brand-primary/10 disabled:cursor-not-allowed disabled:opacity-40"
             >
               <Plus className="size-4" aria-hidden />

@@ -17,12 +17,14 @@ import { websiteVisibleRoomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import type { RoomQueryState } from "@/types/booking";
 import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import { isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
 import { buildBookingQueryString } from "@/utils/bookingQuery";
 import { hydrateBookingSearch } from "@/utils/bookingSearch";
 import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { fireViewItemList } from "@/utils/ga4-events";
+import { resolveTranslatedCopy } from "@/utils/i18nContent";
 
 type Props = {
   lang: AppLanguage;
@@ -32,16 +34,6 @@ type Props = {
   /** Server-resolved hero subheading from the RSC page wrapper. */
   serverSubtitle?: string;
 };
-
-const I18N_KEY_TOKEN_PATTERN = /^[a-z0-9_]+(?:\.[a-z0-9_]+)+$/i;
-
-function resolveTranslatedCopy(value: unknown, fallback: string): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
-  return trimmed;
-}
 
 function hydrateRoomsBookingQuery(
   searchParams: ReturnType<typeof useSearchParams>,
@@ -79,7 +71,7 @@ function deriveQueryState(
   checkinInput: string,
   checkoutInput: string,
   pax: number,
-): "valid" | "invalid" | "absent" {
+): RoomQueryState {
   if (!normalizedBookingQuery) return "absent";
   return isValidStayRange(checkinInput, checkoutInput) && isValidPax(pax) ? "valid" : "invalid";
 }
@@ -137,7 +129,7 @@ type RoomsBookingModel = {
   range: DateRange;
   pax: number;
   normalizedBookingQuery: RoomsSectionBookingQuery | undefined;
-  queryState: "valid" | "invalid" | "absent";
+  queryState: RoomQueryState;
   availabilityRooms: ReturnType<typeof useAvailability>["rooms"];
   setRange: (range: DateRange | undefined) => void;
   setPax: (pax: number) => void;
@@ -147,7 +139,7 @@ function useRoomsBookingModel(bookingQuery: RoomsSectionBookingQuery | undefined
   const router = useRouter();
   const searchParams = useSearchParams();
   const hydratedBookingQuery = useMemo(() => hydrateRoomsBookingQuery(searchParams), [searchParams]);
-  const resolvedBookingQuery = bookingQuery ?? hydratedBookingQuery;
+  const resolvedBookingQuery = useMemo(() => bookingQuery ?? hydratedBookingQuery, [bookingQuery, hydratedBookingQuery]);
   const [range, setRange] = useState<DateRange>(getInitialRange(resolvedBookingQuery));
   const [pax, setPax] = useState<number>(parsePax(resolvedBookingQuery?.pax));
   const checkinInput = range.from ? formatDate(range.from) : "";
@@ -158,6 +150,7 @@ function useRoomsBookingModel(bookingQuery: RoomsSectionBookingQuery | undefined
   useEffect(() => {
     setRange(getInitialRange(resolvedBookingQuery));
     setPax(parsePax(resolvedBookingQuery?.pax));
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- BRIK-2161 sync state from resolved booking query fields only
   }, [resolvedBookingQuery?.checkIn, resolvedBookingQuery?.checkOut, resolvedBookingQuery?.pax]);
 
   const availabilityInputs = deriveAvailabilityInputs(normalizedBookingQuery);
@@ -210,18 +203,23 @@ function RoomsSearchPanel({
           onPaxChange={setPax}
           minPax={1}
           maxPax={8}
-          stayHelperText={t("date.stayHelper", { defaultValue: "2–8 nights" }) as string}
-          clearDatesText={t("date.clearDates", { defaultValue: "Clear dates" }) as string}
-          checkInLabelText={t("booking.checkInLabel", { defaultValue: "Check in" }) as string}
-          checkOutLabelText={t("booking.checkOutLabel", { defaultValue: "Check out" }) as string}
-          guestsLabelText={t("date.guests", { defaultValue: "Guests" }) as string}
-          decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
-          increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
+          labels={{
+            stayHelper: t("date.stayHelper", { defaultValue: "2–8 nights" }) as string,
+            clearDates: t("date.clearDates", { defaultValue: "Clear dates" }) as string,
+            checkIn: t("booking.checkInLabel", { defaultValue: "Check in" }) as string,
+            checkOut: t("booking.checkOutLabel", { defaultValue: "Check out" }) as string,
+            guests: t("date.guests", { defaultValue: "Guests" }) as string,
+            decreaseGuests: bookingControlLabels.decreaseGuestsAriaLabel,
+            increaseGuests: bookingControlLabels.increaseGuestsAriaLabel,
+          }}
         />
         {queryState === "invalid" ? (
           <BookingNotice className="mt-4">
             {t("bookingConstraints.notice") as string}{" "}
-            <a className="underline" href="mailto:hostelpositano@gmail.com?subject=Split%20booking%20help">
+            <a
+              className="inline-flex min-h-11 min-w-11 items-center underline"
+              href="mailto:hostelpositano@gmail.com?subject=Split%20booking%20help"
+            >
               {t("bookingConstraints.assistedLink") as string}
             </a>
             .

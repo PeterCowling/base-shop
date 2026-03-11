@@ -7,6 +7,7 @@ import clsx from "clsx";
 import { Coffee, Percent, Wine } from "@/icons";
 import enTokens from "@/locales/en/_tokens.json";
 import enDealsPage from "@/locales/en/dealsPage.json";
+import { normalizePerks } from "@/routes/deals/content";
 import { toAppLanguage } from "@/utils/lang";
 import { getSlug } from "@/utils/slug";
 
@@ -30,39 +31,13 @@ const FALLBACK_GUARANTEE = (enDealsPage.perksGuarantee as string | undefined) ??
 const FALLBACK_TERMS_LABEL =
   (enDealsPage.restrictions?.other as string | undefined) ?? "";
 
-type PerkItem = {
-  title: string;
-  subtitle?: string;
-};
-
-const normalizePerkItem = (item: unknown): PerkItem | null => {
-  if (typeof item === "string") {
-    return { title: item };
-  }
-  if (typeof item === "object" && item !== null) {
-    const maybe = item as { title?: unknown; subtitle?: unknown };
-    if (typeof maybe.title === "string") {
-      const perk: PerkItem = { title: maybe.title };
-      if (typeof maybe.subtitle === "string") {
-        perk.subtitle = maybe.subtitle;
-      }
-      return perk;
-    }
-  }
-  return null;
-};
-
 function DirectBookingPerks({ limit = 3, lang }: Props): JSX.Element | null {
   const translationOptions = lang ? { lng: lang } : undefined;
   const { t, i18n } = useTranslation(undefined, translationOptions);
   useTranslation("_tokens", translationOptions);
   useTranslation("dealsPage", translationOptions);
   const headingId = useId();
-  const perks = (() => {
-    const raw = t("dealsPage:perksList", { returnObjects: true });
-    if (!Array.isArray(raw)) return [];
-    return raw.map(normalizePerkItem).filter((item): item is PerkItem => Boolean(item?.title?.trim()));
-  })();
+  const perks = normalizePerks(t("dealsPage:perksList", { returnObjects: true }));
 
   const heading = (() => {
     const activeLanguage = (lang && lang.trim()) || i18n.language || i18n.languages?.[0];

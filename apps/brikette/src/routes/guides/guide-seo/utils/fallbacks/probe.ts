@@ -1,4 +1,5 @@
 import type { GuideKey } from "@/routes.guides-helpers";
+import { isPlaceholderString } from "@/routes/guides/guide-seo/content-detection/placeholders";
 import { ensureArray, ensureStringArray } from "@/utils/i18nContent";
 
 import type { FallbackTranslator, SectionLike } from "./types";
@@ -18,17 +19,14 @@ export function probeHasLocalizedStructuredContent(
       if (typeof val !== "string") return false;
       const normalisedPrefix = val.replace(/^[a-z]{2,3}:/i, "").trim();
       if (!normalisedPrefix) return false;
-      if (normalisedPrefix === expectedKey) return false;
+      if (isPlaceholderString(normalisedPrefix, expectedKey)) return false;
       if (normalisedPrefix === String(guideKey)) return false;
-      if (normalisedPrefix.startsWith(`${expectedKey}.`)) return false;
       if (
         normalisedPrefix.startsWith("content.") &&
         normalisedPrefix.includes(String(guideKey))
       ) {
         return false;
       }
-      const stripped = normalisedPrefix.replace(/[.!?…]+$/u, "").trim().toLowerCase();
-      if (stripped === "traduzione in arrivo") return false;
       return true;
     };
 

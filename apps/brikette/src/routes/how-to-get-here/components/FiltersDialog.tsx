@@ -89,13 +89,13 @@ export function FiltersDialog({
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>
-            {filtersHelper ? filtersHelper : description}
+            {filtersHelper || description}
           </DialogDescription>
         </DialogHeader>
 
         <Stack className="gap-6">
           <fieldset className="min-w-0">
-            <legend className="tracking-eyebrow text-sm font-semibold uppercase text-brand-secondary">
+            <legend className="tracking-eyebrow text-sm font-semibold uppercase text-brand-primary dark:text-brand-secondary">
               {destinationFilterLabel}
             </legend>
             <Cluster as="ul" className="mt-3">
@@ -128,7 +128,7 @@ export function FiltersDialog({
           </fieldset>
 
           <fieldset className="min-w-0">
-            <legend className="tracking-eyebrow text-sm font-semibold uppercase text-brand-secondary">
+            <legend className="tracking-eyebrow text-sm font-semibold uppercase text-brand-primary dark:text-brand-secondary">
               {t("filters.transportLabel")}
             </legend>
             <Cluster as="ul" className="mt-3">
@@ -163,7 +163,7 @@ export function FiltersDialog({
           </fieldset>
 
           <fieldset className="min-w-0">
-            <legend className="tracking-eyebrow text-sm font-semibold uppercase text-brand-secondary">
+            <legend className="tracking-eyebrow text-sm font-semibold uppercase text-brand-primary dark:text-brand-secondary">
               {t("filters.directionLabel")}
             </legend>
             <Cluster as="ul" className="mt-3">

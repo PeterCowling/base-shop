@@ -9,9 +9,18 @@ import type { DateRange } from "@/components/booking/DateRangePicker";
 import ExpiredQuoteNotice from "@/components/booking/ExpiredQuoteNotice";
 import RecoveryQuoteCapture from "@/components/booking/RecoveryQuoteCapture";
 import type { AppLanguage } from "@/i18n.config";
+import type { RoomQueryState } from "@/types/booking";
 import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import { formatDate } from "@/utils/dateUtils";
 import { getBookPath } from "@/utils/localizedRoutes";
+
+export type BookPageSearchPanelLabels = {
+  stayHelper: string;
+  clearDates: string;
+  checkIn: string;
+  checkOut: string;
+  guests: string;
+};
 
 type BookPageSearchPanelProps = {
   lang?: AppLanguage;
@@ -22,11 +31,7 @@ type BookPageSearchPanelProps = {
   onCanonicalQuery: (next: { checkin: string; checkout: string; pax: number }) => void;
   checkin: string;
   checkout: string;
-  stayHelperText: string;
-  clearDatesText: string;
-  checkInLabelText: string;
-  checkOutLabelText: string;
-  guestsLabelText: string;
+  labels: BookPageSearchPanelLabels;
   showConstraintGuidance: boolean;
   showRebuildQuotePrompt: boolean;
   calendarAnchorRef?: RefObject<HTMLDivElement | null>;
@@ -43,11 +48,7 @@ export function BookPageSearchPanel({
   onCanonicalQuery,
   checkin,
   checkout,
-  stayHelperText,
-  clearDatesText,
-  checkInLabelText,
-  checkOutLabelText,
-  guestsLabelText,
+  labels,
   showConstraintGuidance,
   showRebuildQuotePrompt,
   calendarAnchorRef,
@@ -78,13 +79,15 @@ export function BookPageSearchPanel({
         }}
         minPax={1}
         maxPax={8}
-        stayHelperText={stayHelperText}
-        clearDatesText={clearDatesText}
-        checkInLabelText={checkInLabelText}
-        checkOutLabelText={checkOutLabelText}
-        guestsLabelText={guestsLabelText}
-        decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
-        increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
+        labels={{
+          stayHelper: labels.stayHelper,
+          clearDates: labels.clearDates,
+          checkIn: labels.checkIn,
+          checkOut: labels.checkOut,
+          guests: labels.guests,
+          decreaseGuests: bookingControlLabels.decreaseGuestsAriaLabel,
+          increaseGuests: bookingControlLabels.increaseGuestsAriaLabel,
+        }}
       />
 
       {/* Notices sit below the calendar row */}
@@ -92,7 +95,10 @@ export function BookPageSearchPanel({
         <div className="mt-4">
           <BookingNotice>
             {t("bookingConstraints.notice") as string}{" "}
-            <a className="underline" href="mailto:hostelpositano@gmail.com?subject=Split%20booking%20help">
+            <a
+              className="inline-flex min-h-11 min-w-11 items-center underline"
+              href="mailto:hostelpositano@gmail.com?subject=Split%20booking%20help"
+            >
               {t("bookingConstraints.assistedLink") as string}
             </a>
             .
@@ -132,7 +138,7 @@ export function BookPageRecoverySection({
   pax,
 }: {
   lang: AppLanguage;
-  roomQueryState: "valid" | "invalid" | "absent";
+  roomQueryState: RoomQueryState;
   checkin: string;
   checkout: string;
   pax: number;

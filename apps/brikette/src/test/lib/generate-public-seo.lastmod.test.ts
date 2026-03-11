@@ -14,6 +14,7 @@ type ParsedSitemapEntry = {
   lastmod?: string;
 };
 
+// eslint-disable-next-line security/detect-unsafe-regex -- TEST-000 [ttl=2026-12-31] Static sitemap fixture matcher for contract tests.
 const URL_ENTRY_PATTERN = /<url><loc>([^<]+)<\/loc>(?:<lastmod>([^<]+)<\/lastmod>)?<\/url>/g;
 const ISO_UTC_PATTERN = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/;
 const baseUrl = BASE_URL.replace(/\/$/, "");

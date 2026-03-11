@@ -6,25 +6,17 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type roomsData from "@/data/roomsData";
 import { buildSecureBookingDirectUrl, parseSecureBookingSearchParams } from "@/utils/octorateCustomPage";
 
-import OctorateCustomPageShell from "./OctorateCustomPageShell";
+import OctorateCustomPageShell, { type OctorateCustomPageShellLabels } from "./OctorateCustomPageShell";
 
 type Props = {
   bookingCode: string;
   bookPath: string;
-  continueLabel: string;
-  fallbackBody: string;
-  fallbackTitle: string;
-  heading: string;
-  loadingText: string;
-  readyText: string;
+  labels: OctorateCustomPageShellLabels;
   ratePlanLabels: {
     flex: string;
     nr: string;
   };
   roomLabels: Partial<Record<(typeof roomsData)[number]["id"], string>>;
-  securityNote: string;
-  stepLabel: string;
-  supportingText: string;
   summaryLabels: {
     checkin: string;
     checkout: string;
@@ -33,7 +25,6 @@ type Props = {
     room: string;
   };
   widgetGlobalKey?: string;
-  widgetHostLabel: string;
   widgetScriptSrc?: string;
 };
 
@@ -59,20 +50,11 @@ function buildReturnToBookHref(
 export default function SecureBookingPageClient({
   bookingCode,
   bookPath,
-  continueLabel,
-  fallbackBody,
-  fallbackTitle,
-  heading,
-  loadingText,
-  readyText,
+  labels,
   ratePlanLabels,
   roomLabels,
-  securityNote,
-  stepLabel,
-  supportingText,
   summaryLabels,
   widgetGlobalKey,
-  widgetHostLabel,
   widgetScriptSrc,
 }: Props): JSX.Element | null {
   const router = useRouter();
@@ -98,16 +80,8 @@ export default function SecureBookingPageClient({
 
   return (
     <OctorateCustomPageShell
-      continueLabel={continueLabel}
+      labels={labels}
       directUrl={directResult.url}
-      fallbackBody={fallbackBody}
-      fallbackTitle={fallbackTitle}
-      heading={heading}
-      loadingText={loadingText}
-      readyText={readyText}
-      securityNote={securityNote}
-      stepLabel={stepLabel}
-      supportingText={supportingText}
       summary={{
         checkin: query.checkin,
         checkout: query.checkout,
@@ -117,7 +91,6 @@ export default function SecureBookingPageClient({
       }}
       summaryLabels={summaryLabels}
       widgetGlobalKey={widgetGlobalKey}
-      widgetHostLabel={widgetHostLabel}
       widgetScriptSrc={widgetScriptSrc}
     />
   );

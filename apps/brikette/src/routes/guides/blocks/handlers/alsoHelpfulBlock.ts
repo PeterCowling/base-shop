@@ -30,7 +30,7 @@ export function applyAlsoHelpfulBlock(acc: BlockAccumulator, options: AlsoHelpfu
       : undefined;
 
   if (!Array.isArray(options.tags) || options.tags.length === 0) {
-    acc.warn("alsoHelpful block requires at least one tag");
+    acc.warn("alsoHelpful block requires at least one tag"); // i18n-exempt -- TECH-000 [ttl=2026-12-31] dev-time validation warning, not user-facing copy
     return;
   }
 

@@ -48,13 +48,15 @@ function renderPanel(overrides: Partial<React.ComponentProps<typeof BookingCalen
     onPaxChange,
     minPax: 1,
     maxPax: 3,
-    stayHelperText: "2-8 nights",
-    clearDatesText: "Clear dates",
-    checkInLabelText: "Check in",
-    checkOutLabelText: "Check out",
-    guestsLabelText: "Guests",
-    decreaseGuestsAriaLabel: "Decrease guests",
-    increaseGuestsAriaLabel: "Increase guests",
+    labels: {
+      stayHelper: "2-8 nights",
+      clearDates: "Clear dates",
+      checkIn: "Check in",
+      checkOut: "Check out",
+      guests: "Guests",
+      decreaseGuests: "Decrease guests",
+      increaseGuests: "Increase guests",
+    },
   };
 
   render(<BookingCalendarPanel {...defaultProps} {...overrides} />);

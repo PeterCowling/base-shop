@@ -1,17 +1,4 @@
-function isI18nKeyToken(value: string): boolean {
-  if (!value.includes(".") || value.includes(" ")) return false;
-  return value
-    .split(".")
-    .every((segment) => segment.length > 0 && /^[a-z0-9_]+$/i.test(segment));
-}
-
-function resolveTranslatedCopy(value: unknown, fallback: string): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (isI18nKeyToken(trimmed)) return fallback;
-  return trimmed;
-}
+import { resolveTranslatedCopy } from "@/utils/i18nContent";
 
 type TranslationFn = (key: string, options?: Record<string, unknown>) => unknown;
 

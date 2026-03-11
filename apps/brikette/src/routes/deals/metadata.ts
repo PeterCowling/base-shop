@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Metadata fallback copy is non-UI and only used when locale bundles are incomplete. */
 import type { TFunction } from "i18next";
 
 import { formatMonthDay, formatPercent, isoDateToLocalStart, shouldIncludeYear } from "./dates";

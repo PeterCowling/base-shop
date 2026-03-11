@@ -9,8 +9,10 @@ export type GuideCardImage = {
   alt?: string;
 };
 
+const ABSOLUTE_URL_RE = /^https?:\/\//i;
+
 function isAbsoluteUrl(value: string): boolean {
-  return /^https?:\/\//i.test(value);
+  return ABSOLUTE_URL_RE.test(value);
 }
 
 function normaliseImageSrc(src: string): string {

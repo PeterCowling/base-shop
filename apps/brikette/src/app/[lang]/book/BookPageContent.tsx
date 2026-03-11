@@ -27,6 +27,7 @@ import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import { useRecoveryResumeFallback } from "@/hooks/useRecoveryResumeFallback";
 import type { AppLanguage } from "@/i18n.config";
+import type { RoomQueryState } from "@/types/booking";
 import {
   isValidPax,
   isValidStayRange,
@@ -72,7 +73,7 @@ function isValidSearch(checkIn: string, checkOut: string, pax: number): boolean 
   return checkIn.length > 0 && checkOut.length > 0 && isValidStayRange(checkIn, checkOut) && isValidPax(pax);
 }
 
-function deriveRoomQueryState(checkin: string, checkout: string, pax: number): "valid" | "invalid" | "absent" {
+function deriveRoomQueryState(checkin: string, checkout: string, pax: number): RoomQueryState {
   if (!checkin || !checkout) return "absent";
   return isValidSearch(checkin, checkout, pax) ? "valid" : "invalid";
 }
@@ -148,7 +149,7 @@ function renderDealBanner(deal: string | null, t: TranslateFn): JSX.Element | nu
 function renderRecoverySection(
   availabilityRoomCount: number,
   lang: AppLanguage,
-  roomQueryState: "valid" | "invalid" | "absent",
+  roomQueryState: RoomQueryState,
   checkin: string,
   checkout: string,
   pax: number,
@@ -255,7 +256,7 @@ function BookPageContent({
     setPax(storePax);
   }, [initialCheckin, initialCheckout]);
 
-  const roomQueryState = useMemo<"valid" | "invalid" | "absent">(
+  const roomQueryState = useMemo<RoomQueryState>(
     () => deriveRoomQueryState(checkin, checkout, pax),
     [checkin, checkout, pax],
   );

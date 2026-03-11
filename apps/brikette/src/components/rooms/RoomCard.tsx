@@ -25,6 +25,7 @@ import { type Room,toFlatImageArray } from "@/data/roomsData";
 import type { OctorateRoom } from "@/hooks/useAvailability";
 import { useRoomPricing } from "@/hooks/useRoomPricing";
 import { type AppLanguage, i18nConfig } from "@/i18n.config";
+import type { RoomQueryState } from "@/types/booking";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { buildRoomItem, fireEventAndNavigate, resolveItemListName } from "@/utils/ga4-events";
@@ -40,7 +41,7 @@ interface RoomCardProps {
   adults?: number;
   lang?: string;
   /** Controls CTA behavior. Defaults to "absent" (→ navigate to /book). */
-  queryState?: "valid" | "invalid" | "absent";
+  queryState?: RoomQueryState;
   /** Ref to date picker element for scroll-to on invalid state. */
   datePickerRef?: RefObject<HTMLElement | null>;
   /**

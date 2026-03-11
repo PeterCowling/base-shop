@@ -17,6 +17,7 @@ import { websiteVisibleRoomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
+import type { RoomQueryState } from "@/types/booking";
 import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import { isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
 import { buildBookingQueryString } from "@/utils/bookingQuery";
@@ -70,7 +71,7 @@ function deriveQueryState(
   checkinInput: string,
   checkoutInput: string,
   pax: number,
-): "valid" | "invalid" | "absent" {
+): RoomQueryState {
   if (!normalizedBookingQuery) return "absent";
   return isValidStayRange(checkinInput, checkoutInput) && isValidPax(pax) ? "valid" : "invalid";
 }
@@ -128,7 +129,7 @@ type RoomsBookingModel = {
   range: DateRange;
   pax: number;
   normalizedBookingQuery: RoomsSectionBookingQuery | undefined;
-  queryState: "valid" | "invalid" | "absent";
+  queryState: RoomQueryState;
   availabilityRooms: ReturnType<typeof useAvailability>["rooms"];
   setRange: (range: DateRange | undefined) => void;
   setPax: (pax: number) => void;

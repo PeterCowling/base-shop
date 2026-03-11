@@ -8,6 +8,7 @@ import { BOOKING_CODE } from "@/context/modal/constants";
 import { roomsData, websiteVisibleRoomsData } from "@/data/roomsData";
 import type { OctorateRoom } from "@/hooks/useAvailability";
 import type { AppLanguage } from "@/i18n.config";
+import type { RoomQueryState } from "@/types/booking";
 import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityByCategory";
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { readAttribution } from "@/utils/entryAttribution";
@@ -37,7 +38,7 @@ type RoomsSectionProps = {
    * - "invalid": actions are disabled (no navigation)
    * - "absent" (default): navigate to /{lang}/book
    */
-  queryState?: "valid" | "invalid" | "absent";
+  queryState?: RoomQueryState;
   /** Optional deal / coupon code to propagate into Octorate booking URL */
   deal?: string;
   /**
@@ -83,9 +84,19 @@ export function RoomsSection({
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
     if (!availabilityRooms || availabilityRooms.length === 0) return roomPricesOverride;
     const prices: Record<string, RoomCardPrice> = { ...(roomPricesOverride ?? {}) };
+    // Pre-aggregate once per unique category to avoid O(rooms × availabilityRooms) iterations.
+    const aggregatedByCategory = new Map<string, ReturnType<typeof aggregateAvailabilityByCategory>>();
+    for (const room of visibleRoomsData) {
+      if (room.octorateRoomCategory && !aggregatedByCategory.has(room.octorateRoomCategory)) {
+        aggregatedByCategory.set(
+          room.octorateRoomCategory,
+          aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory),
+        );
+      }
+    }
     for (const room of visibleRoomsData) {
       if (!room.octorateRoomCategory) continue;
-      const avRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
+      const avRoom = aggregatedByCategory.get(room.octorateRoomCategory);
       if (!avRoom) continue;
       if (!avRoom.available) {
         prices[room.id] = { soldOut: true };

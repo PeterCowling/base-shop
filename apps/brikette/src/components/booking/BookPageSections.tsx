@@ -9,6 +9,7 @@ import type { DateRange } from "@/components/booking/DateRangePicker";
 import ExpiredQuoteNotice from "@/components/booking/ExpiredQuoteNotice";
 import RecoveryQuoteCapture from "@/components/booking/RecoveryQuoteCapture";
 import type { AppLanguage } from "@/i18n.config";
+import type { RoomQueryState } from "@/types/booking";
 import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import { formatDate } from "@/utils/dateUtils";
 import { getBookPath } from "@/utils/localizedRoutes";
@@ -137,7 +138,7 @@ export function BookPageRecoverySection({
   pax,
 }: {
   lang: AppLanguage;
-  roomQueryState: "valid" | "invalid" | "absent";
+  roomQueryState: RoomQueryState;
   checkin: string;
   checkout: string;
   pax: number;

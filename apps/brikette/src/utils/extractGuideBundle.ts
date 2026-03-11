@@ -1,4 +1,4 @@
-import i18n from "i18next";
+import i18n from "@/i18n";
 
 /**
  * Extract a slim guide translation bundle containing only shared keys and

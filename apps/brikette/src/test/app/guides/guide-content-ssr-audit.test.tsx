@@ -181,8 +181,6 @@ describe("GuideContent SSR translation audit", () => {
     async ({ guideKey }) => {
       const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle("en", guideKey);
 
-      clearGuidesBundle("en");
-
       const html = renderToString(
         <GuideContent
           lang="en"

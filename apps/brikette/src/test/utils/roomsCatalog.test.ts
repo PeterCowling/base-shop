@@ -18,8 +18,8 @@ type LanguageData = {
 
 const roomsDataMock = [
   {
-    id: "room_1",
-    sku: "room_1",
+    id: "room_3",
+    sku: "room_3",
     widgetRoomCode: "1",
     widgetRateCodeNR: "nr",
     widgetRateCodeFlex: "flex",
@@ -34,7 +34,7 @@ const roomsDataMock = [
     availability: { totalBeds: 2, defaultRelease: 2 },
     images: { bed: "/img/test-bed.webp", bathroom: "/img/test-bathroom.webp" },
     landingImage: "/landing.jpg",
-    roomsHref: "/rooms#room_1",
+    roomsHref: "/rooms#room_3",
   },
   {
     id: "apartment",
@@ -60,7 +60,7 @@ const roomsDataMock = [
 const englishNamespace: RoomsNamespace = {
   meta: {},
   rooms: {
-    room_1: {
+    room_3: {
       title: "English title",
       bed_intro: "English intro",
       bed_description: "English description",
@@ -146,7 +146,7 @@ describe("roomsCatalog", () => {
     const italianNamespace: RoomsNamespace = {
       meta: {},
       rooms: {
-        room_1: {
+        room_3: {
           title: " Titolo italiano ",
           bed_intro: "   ",
           facilities: ["wifi", "balcony"],
@@ -170,9 +170,9 @@ describe("roomsCatalog", () => {
     const catalog = mod.getRoomsCatalog("it");
 
     expect(catalog).toHaveLength(2);
-    const room = catalog.find((candidate) => candidate.id === "room_1");
+    const room = catalog.find((candidate) => candidate.id === "room_3");
     if (!room) {
-      throw new Error("Expected room_1 in catalog");
+      throw new Error("Expected room_3 in catalog");
     }
     expect(room.title).toBe("Titolo italiano");
     expect(room.intro).toBe("English intro");
@@ -191,9 +191,9 @@ describe("roomsCatalog", () => {
 
     const mod = await import("@/utils/roomsCatalog");
     const catalog = mod.getRoomsCatalog("es");
-    const room = catalog.find((candidate) => candidate.id === "room_1");
+    const room = catalog.find((candidate) => candidate.id === "room_3");
     if (!room) {
-      throw new Error("Expected room_1 in catalog");
+      throw new Error("Expected room_3 in catalog");
     }
 
     expect(room).toMatchObject({
@@ -241,7 +241,7 @@ describe("roomsCatalog", () => {
     );
 
     const catalog = mod.getRoomsCatalog("es", { fallbackLang: "en" });
-    expect(catalog.find((candidate) => candidate.id === "room_1")?.title).toBe("English title");
+    expect(catalog.find((candidate) => candidate.id === "room_3")?.title).toBe("English title");
   });
 
   it("uses apartmentPage copy for apartment entries instead of the raw room id fallback", async () => {

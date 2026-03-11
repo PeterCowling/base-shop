@@ -149,33 +149,15 @@ const BookingWidget = memo(function BookingWidget({
             onPaxChange={(next) => setGuests(next)}
             minPax={1}
             maxPax={8}
-            stayHelperText={resolveTranslatedCopy(
-              tModals("date.stayHelper"),
-              "2–8 nights",
-              "date.stayHelper",
-            )}
-            clearDatesText={resolveTranslatedCopy(
-              tModals("date.clearDates"),
-              "Clear dates",
-              "date.clearDates",
-            )}
-            checkInLabelText={resolveTranslatedCopy(
-              tModals("booking.checkInLabel"),
-              "Check in",
-              "booking.checkInLabel",
-            )}
-            checkOutLabelText={resolveTranslatedCopy(
-              tModals("booking.checkOutLabel"),
-              "Check out",
-              "booking.checkOutLabel",
-            )}
-            guestsLabelText={resolveTranslatedCopy(
-              tModals("booking.guestsLabel"),
-              "Guests",
-              "booking.guestsLabel",
-            )}
-            decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
-            increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
+            labels={{
+              stayHelper: resolveTranslatedCopy(tModals("date.stayHelper"), "2–8 nights", "date.stayHelper"),
+              clearDates: resolveTranslatedCopy(tModals("date.clearDates"), "Clear dates", "date.clearDates"),
+              checkIn: resolveTranslatedCopy(tModals("booking.checkInLabel"), "Check in", "booking.checkInLabel"),
+              checkOut: resolveTranslatedCopy(tModals("booking.checkOutLabel"), "Check out", "booking.checkOutLabel"),
+              guests: resolveTranslatedCopy(tModals("booking.guestsLabel"), "Guests", "booking.guestsLabel"),
+              decreaseGuests: bookingControlLabels.decreaseGuestsAriaLabel,
+              increaseGuests: bookingControlLabels.increaseGuestsAriaLabel,
+            }}
             actionSlot={(
               <Button
                 type="button"

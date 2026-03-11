@@ -103,45 +103,20 @@ export default async function SecureBookingPage({ params }: Props) {
           <SecureBookingPageClient
             bookPath={getBookPath(validLang)}
             bookingCode={BOOKING_CODE}
-            continueLabel={continueLabel}
-            fallbackBody={resolveLabel(
-              tBook,
-              "secureBooking.fallbackBody",
-              "",
-            )}
-            fallbackTitle={resolveLabel(
-              tBook,
-              "secureBooking.fallbackTitle",
-              "",
-            )}
-            heading={resolveLabel(
-              tBook,
-              "secureBooking.heading",
-              "",
-            )}
-            loadingText={resolveLabel(
-              tBook,
-              "secureBooking.loadingText",
-              "",
-            )}
-            readyText={resolveLabel(
-              tBook,
-              "secureBooking.readyText",
-              "",
-            )}
+            labels={{
+              continue: continueLabel,
+              heading: resolveLabel(tBook, "secureBooking.heading", ""),
+              loading: resolveLabel(tBook, "secureBooking.loadingText", ""),
+              ready: resolveLabel(tBook, "secureBooking.readyText", ""),
+              fallbackTitle: resolveLabel(tBook, "secureBooking.fallbackTitle", ""),
+              fallbackBody: resolveLabel(tBook, "secureBooking.fallbackBody", ""),
+              security: resolveLabel(tBook, "secureBooking.securityNote", ""),
+              step: resolveLabel(tBook, "secureBooking.stepLabel", ""),
+              supporting: resolveLabel(tBook, "secureBooking.supportingText", ""),
+              widgetHost: resolveLabel(tBook, "secureBooking.widgetHostLabel", ""),
+            }}
             ratePlanLabels={ratePlanLabels}
             roomLabels={roomLabels}
-            securityNote={resolveLabel(
-              tBook,
-              "secureBooking.securityNote",
-              "",
-            )}
-            stepLabel={resolveLabel(tBook, "secureBooking.stepLabel", "")}
-            supportingText={resolveLabel(
-              tBook,
-              "secureBooking.supportingText",
-              "",
-            )}
             summaryLabels={{
               checkin: resolveLabel(tBook, "secureBooking.labels.checkIn", "Check-in"),
               checkout: resolveLabel(tBook, "secureBooking.labels.checkOut", "Check-out"),
@@ -150,11 +125,6 @@ export default async function SecureBookingPage({ params }: Props) {
               room: resolveLabel(tBook, "secureBooking.labels.room", "Room"),
             }}
             widgetGlobalKey={OCTORATE_CUSTOM_PAGE_GLOBAL_KEY}
-            widgetHostLabel={resolveLabel(
-              tBook,
-              "secureBooking.widgetHostLabel",
-              "",
-            )}
             widgetScriptSrc={OCTORATE_CUSTOM_PAGE_SCRIPT_SRC}
           />
         </Suspense>

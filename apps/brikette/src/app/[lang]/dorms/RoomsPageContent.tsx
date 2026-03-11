@@ -202,13 +202,15 @@ function RoomsSearchPanel({
           onPaxChange={setPax}
           minPax={1}
           maxPax={8}
-          stayHelperText={t("date.stayHelper", { defaultValue: "2–8 nights" }) as string}
-          clearDatesText={t("date.clearDates", { defaultValue: "Clear dates" }) as string}
-          checkInLabelText={t("booking.checkInLabel", { defaultValue: "Check in" }) as string}
-          checkOutLabelText={t("booking.checkOutLabel", { defaultValue: "Check out" }) as string}
-          guestsLabelText={t("date.guests", { defaultValue: "Guests" }) as string}
-          decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
-          increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
+          labels={{
+            stayHelper: t("date.stayHelper", { defaultValue: "2–8 nights" }) as string,
+            clearDates: t("date.clearDates", { defaultValue: "Clear dates" }) as string,
+            checkIn: t("booking.checkInLabel", { defaultValue: "Check in" }) as string,
+            checkOut: t("booking.checkOutLabel", { defaultValue: "Check out" }) as string,
+            guests: t("date.guests", { defaultValue: "Guests" }) as string,
+            decreaseGuests: bookingControlLabels.decreaseGuestsAriaLabel,
+            increaseGuests: bookingControlLabels.increaseGuestsAriaLabel,
+          }}
         />
         {queryState === "invalid" ? (
           <BookingNotice className="mt-4">

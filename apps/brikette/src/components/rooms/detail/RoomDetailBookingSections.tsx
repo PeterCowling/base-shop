@@ -49,13 +49,15 @@ export function BookingPickerSection({
           onPaxChange={onAdultsChange}
           minPax={HOSTEL_MIN_PAX}
           maxPax={maxPickerAdults}
-          stayHelperText={stayHelperText}
-          clearDatesText={clearDatesText}
-          checkInLabelText={checkInLabelText}
-          checkOutLabelText={checkOutLabelText}
-          guestsLabelText={adultsLabel}
-          decreaseGuestsAriaLabel={t("bookingControls.decreaseAdults") as string}
-          increaseGuestsAriaLabel={t("bookingControls.increaseAdults") as string}
+          labels={{
+            stayHelper: stayHelperText,
+            clearDates: clearDatesText,
+            checkIn: checkInLabelText,
+            checkOut: checkOutLabelText,
+            guests: adultsLabel,
+            decreaseGuests: t("bookingControls.decreaseAdults") as string,
+            increaseGuests: t("bookingControls.increaseAdults") as string,
+          }}
         />
       </div>
     </Section>

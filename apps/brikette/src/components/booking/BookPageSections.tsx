@@ -78,13 +78,15 @@ export function BookPageSearchPanel({
         }}
         minPax={1}
         maxPax={8}
-        stayHelperText={stayHelperText}
-        clearDatesText={clearDatesText}
-        checkInLabelText={checkInLabelText}
-        checkOutLabelText={checkOutLabelText}
-        guestsLabelText={guestsLabelText}
-        decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
-        increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
+        labels={{
+          stayHelper: stayHelperText,
+          clearDates: clearDatesText,
+          checkIn: checkInLabelText,
+          checkOut: checkOutLabelText,
+          guests: guestsLabelText,
+          decreaseGuests: bookingControlLabels.decreaseGuestsAriaLabel,
+          increaseGuests: bookingControlLabels.increaseGuestsAriaLabel,
+        }}
       />
 
       {/* Notices sit below the calendar row */}

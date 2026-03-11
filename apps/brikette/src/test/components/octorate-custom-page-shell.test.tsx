@@ -7,15 +7,18 @@ import OctorateCustomPageShell from "@/components/booking/OctorateCustomPageShel
 import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 
 const COPY = {
-  continueLabel: "Continue to secure booking",
-  fallbackBody: "If the embedded booking step is unavailable, use the direct Octorate link.",
-  fallbackTitle: "Direct booking link ready",
-  heading: "Secure your booking",
-  loadingText: "Loading secure booking step...",
-  readyText: "Secure booking step loaded.",
-  securityNote: "You remain on the Brikette domain until the secure booking tool finishes loading.",
-  stepLabel: "Step 3 of 3",
-  supportingText: "Review your stay, then continue into the secure booking engine.",
+  labels: {
+    continue: "Continue to secure booking",
+    fallbackBody: "If the embedded booking step is unavailable, use the direct Octorate link.",
+    fallbackTitle: "Direct booking link ready",
+    heading: "Secure your booking",
+    loading: "Loading secure booking step...",
+    ready: "Secure booking step loaded.",
+    security: "You remain on the Brikette domain until the secure booking tool finishes loading.",
+    step: "Step 3 of 3",
+    supporting: "Review your stay, then continue into the secure booking engine.",
+    widgetHost: "Secure booking widget host",
+  },
   summaryLabels: {
     checkin: "Check-in",
     checkout: "Check-out",
@@ -23,7 +26,6 @@ const COPY = {
     rate: "Rate",
     room: "Room",
   },
-  widgetHostLabel: "Secure booking widget host",
 } as const;
 
 type WindowGlobals = Record<string, unknown>;
@@ -104,8 +106,8 @@ describe("OctorateCustomPageShell", () => {
         }),
       }),
     );
-    expect(screen.getByLabelText(COPY.widgetHostLabel)).toBeInTheDocument();
-    expect(screen.getByText(COPY.readyText)).toBeInTheDocument();
+    expect(screen.getByLabelText(COPY.labels.widgetHost)).toBeInTheDocument();
+    expect(screen.getByText(COPY.labels.ready)).toBeInTheDocument();
     expect(window.location.pathname).toBe("/en/book/secure-booking");
   });
 
@@ -129,9 +131,9 @@ describe("OctorateCustomPageShell", () => {
     );
 
     const alert = await screen.findByRole("alert");
-    expect(alert).toHaveTextContent(COPY.fallbackTitle);
-    expect(alert).toHaveTextContent(COPY.fallbackBody);
-    expect(screen.getByRole("link", { name: COPY.continueLabel })).toHaveAttribute("href", directUrl);
+    expect(alert).toHaveTextContent(COPY.labels.fallbackTitle);
+    expect(alert).toHaveTextContent(COPY.labels.fallbackBody);
+    expect(screen.getByRole("link", { name: COPY.labels.continue })).toHaveAttribute("href", directUrl);
   });
 
   it("loads an external widget script and calls the global bootstrap when configured", async () => {
@@ -197,8 +199,8 @@ describe("OctorateCustomPageShell", () => {
     triggerScriptEvent(widgetScriptSrc, "load");
 
     const alert = await screen.findByRole("alert");
-    expect(alert).toHaveTextContent(COPY.fallbackTitle);
-    expect(screen.getByRole("link", { name: COPY.continueLabel })).toHaveAttribute("href", directUrl);
+    expect(alert).toHaveTextContent(COPY.labels.fallbackTitle);
+    expect(screen.getByRole("link", { name: COPY.labels.continue })).toHaveAttribute("href", directUrl);
   });
 
   it("cleans up the mocked widget when the host page unmounts", async () => {

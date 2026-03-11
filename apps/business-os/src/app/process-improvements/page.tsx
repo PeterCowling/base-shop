@@ -9,25 +9,41 @@ export default async function ProcessImprovementsPage() {
   const projection = await loadProcessImprovementsProjection();
 
   return (
-    <main className="min-h-dvh bg-bg">
-      {/* eslint-disable-next-line ds/container-widths-only-at -- BOS-PI-101 internal operator page, no DS container primitive available */}
-      <div className="mx-auto max-w-4xl px-4 py-8 md:px-6 space-y-8">
-        <header>
-          <p className="text-xs font-semibold uppercase tracking-widest text-muted">
-            Business OS
-          </p>
-          <h1 className="mt-2 text-3xl font-bold text-fg">
-            Process Improvements
-          </h1>
-          <p className="mt-1 text-sm text-secondary">
-            Proposed workflow improvements awaiting your decision.
-          </p>
+    <main className="min-h-dvh bg-bg p-4 md:p-6">
+      <div className="mx-auto w-full space-y-6">
+        <header className="rounded-xl border border-border bg-panel p-6">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-wide text-muted">
+                Business OS
+              </p>
+              <h1 className="mt-2 text-3xl font-semibold text-fg">
+                Process Improvements
+              </h1>
+              <p className="mt-3 text-sm leading-6 text-secondary">
+                Human-in-the-loop inbox for queue-backed improvement ideas. `Do`
+                hands the item into the regular route, `Defer` snoozes it for
+                seven days, and `Decline` closes it out as an operator rejection.
+              </p>
+            </div>
+            <dl className="rounded-lg border border-border-2 bg-surface-1 px-4 py-3 text-sm text-secondary">
+              <div>
+                <dt className="font-medium uppercase tracking-wide text-muted">
+                  Queue mode
+                </dt>
+                <dd className="mt-1 text-fg">{projection.queueMode}</dd>
+              </div>
+              <div className="mt-3">
+                <dt className="font-medium uppercase tracking-wide text-muted">
+                  Queue source
+                </dt>
+                <dd className="mt-1 break-all text-fg">{projection.sourcePath}</dd>
+              </div>
+            </dl>
+          </div>
         </header>
 
-        <ProcessImprovementsInbox
-          initialItems={projection.items}
-          initialActionedItems={projection.actionedItems}
-        />
+        <ProcessImprovementsInbox initialItems={projection.items} />
       </div>
     </main>
   );

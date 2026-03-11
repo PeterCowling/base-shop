@@ -15,6 +15,7 @@ import {
 } from "react";
 import Image from "next/image";
 
+import { deriveCatalogPublishState } from "@acme/lib/xa";
 import {
   type CatalogProductDraftInput,
   splitList,
@@ -887,6 +888,22 @@ export function useImageUploadController({
     (index: number) => {
       const entry = imageEntries[index];
       const removedPath = entry?.path ?? "";
+
+      let nextDraft = {
+        ...draft,
+        imageFiles: removePipeEntry(draft.imageFiles ?? "", index),
+        imageAltTexts: removePipeEntry(draft.imageAltTexts ?? "", index),
+      };
+
+      // If removing this image would unpublish a live product, confirm first.
+      // Pre-set publishState to "draft" on the draft so the autosave doesn't
+      // hit the server-side would_unpublish guard (which checks publishState === "live").
+      if (nextDraft.publishState === "live" && deriveCatalogPublishState(nextDraft) === "draft") {
+        const confirmed = window.confirm(t("removeImageConfirmUnpublish"));
+        if (!confirmed) return;
+        nextDraft = { ...nextDraft, publishState: "draft" };
+      }
+
       if (entry) {
         const blobUrl = previews.get(entry.path);
         if (blobUrl) {
@@ -899,18 +916,13 @@ export function useImageUploadController({
         }
       }
 
-      const nextDraft = {
-        ...draft,
-        imageFiles: removePipeEntry(draft.imageFiles ?? "", index),
-        imageAltTexts: removePipeEntry(draft.imageAltTexts ?? "", index),
-      };
       const queuedAt = Date.now();
       notifyImageDraftChange(nextDraft, onChange, onImageUploaded);
       if (removedPath) {
         void cleanupRemovedImage(removedPath, queuedAt);
       }
     },
-    [cleanupRemovedImage, draft, imageEntries, onChange, onImageUploaded, previews],
+    [cleanupRemovedImage, draft, imageEntries, onChange, onImageUploaded, previews, t],
   );
   const handleReorderImage = useCallback(
     (index: number, direction: "up" | "down") => {

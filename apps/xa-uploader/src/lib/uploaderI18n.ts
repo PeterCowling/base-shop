@@ -133,6 +133,8 @@ const messages = {
       "No products are publishable yet. Set publish-ready products to live or out of stock first, or continue with an empty catalog?",
     saveConfirmUnpublish:
       "This product is currently live. Saving with incomplete data will remove it from the storefront. Continue?",
+    removeImageConfirmUnpublish:
+      "Removing this image will leave the product with no images, which will unpublish it from the storefront. Continue?",
     syncDeployHookUnconfiguredActionable:
       "Auto deploy is required in this environment, but the deploy hook is not configured.",
     syncRecoveryConfigureDeployHook:
@@ -596,6 +598,7 @@ const messages = {
     syncConfirmEmptyCatalogSync: "目录 CSV 为空。继续将发布 0 个商品，是否继续同步？",
     syncConfirmNoPublishableProducts: "没有可发布的商品。请先把满足发布条件的商品设为 live 或 out_of_stock，或继续发布空目录？",
     saveConfirmUnpublish: "该商品目前为上架状态。保存不完整数据将把它从店面移除。确定继续吗？",
+    removeImageConfirmUnpublish: "删除此图片后，该商品将没有图片，会从店面下架。确定继续吗？",
     syncDeployHookUnconfiguredActionable:
       "当前环境要求自动部署，但尚未配置部署 Hook。",
     syncRecoveryConfigureDeployHook:

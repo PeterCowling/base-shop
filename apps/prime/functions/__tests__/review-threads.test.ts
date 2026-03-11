@@ -3341,39 +3341,46 @@ describe('/api/review-threads and /api/review-thread', () => {
       value: consoleErrorStub,
     });
 
-    const response = await replayProjectionJob(
-      createPagesContext({
-        url: 'https://prime.example.com/api/review-projection-replay?jobId=proj_message_msg-1',
-        method: 'POST',
-        headers: {
-          'x-prime-access-token': 'prime-access',
-        },
-        env: createMockEnv({
-          NODE_ENV: 'production',
-          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
-          PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
-          PRIME_MESSAGING_DB: db,
+    try {
+      const response = await replayProjectionJob(
+        createPagesContext({
+          url: 'https://prime.example.com/api/review-projection-replay?jobId=proj_message_msg-1',
+          method: 'POST',
+          headers: {
+            'x-prime-access-token': 'prime-access',
+          },
+          env: createMockEnv({
+            NODE_ENV: 'production',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
+            PRIME_MESSAGING_DB: db,
+          }),
         }),
-      }),
-    );
-    const payload = await response.json() as {
-      success: boolean;
-      data: {
-        job: { status: string; attempt_count: number; last_attempt_at: number | null };
+      );
+      const payload = await response.json() as {
+        success: boolean;
+        data: {
+          job: { status: string; attempt_count: number; last_attempt_at: number | null };
+        };
       };
-    };
 
-    expect(response.status).toBe(200);
-    expect(payload.success).toBe(true);
-    expect(payload.data.job.status).toBe('projected');
-    expect(payload.data.job.attempt_count).toBe(2);
-    expect(payload.data.job.last_attempt_at).toBe(1300);
-    expect(statements.some((statement) =>
-      statement.query.includes('UPDATE message_projection_jobs')
-      && statement.binds[0] === 'projected'
-      && statement.binds[1] === 2
-      && statement.binds[5] === 'proj_message_msg-1')).toBe(true);
-    expect(fetchMock).toHaveBeenCalledTimes(3);
+      expect(response.status).toBe(200);
+      expect(payload.success).toBe(true);
+      expect(payload.data.job.status).toBe('projected');
+      expect(payload.data.job.attempt_count).toBe(2);
+      expect(payload.data.job.last_attempt_at).toBe(1300);
+      expect(statements.some((statement) =>
+        statement.query.includes('UPDATE message_projection_jobs')
+        && statement.binds[0] === 'projected'
+        && statement.binds[1] === 2
+        && statement.binds[5] === 'proj_message_msg-1')).toBe(true);
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+    } finally {
+      Object.defineProperty(console, 'error', {
+        configurable: true,
+        value: originalConsoleError,
+      });
+    }
   });
 
   it('TC-08: replay route marks the projection job failed again when Firebase projection throws', async () => {
@@ -3485,6 +3492,13 @@ describe('/api/review-threads and /api/review-thread', () => {
       }
 
       throw new Error(`Unexpected fetch: ${url} ${init?.method ?? 'GET'}`);
+    });
+
+    const originalConsoleError = console.error;
+    const consoleErrorStub = jest.fn();
+    Object.defineProperty(console, 'error', {
+      configurable: true,
+      value: consoleErrorStub,
     });
 
     try {

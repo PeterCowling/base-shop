@@ -291,9 +291,9 @@ describe("/api/agent/stage-docs", () => {
     );
   });
 
-  it("TC-09: stage filter accepts legacy alias within window (normalized)", async () => {
+  it("TC-09: stage filter accepts a kebab-case legacy alias as-is", async () => {
     jest.useFakeTimers();
-    const { legacyStage, canonicalStage, withinCutoff } = getConfiguredStageAlias();
+    const { legacyStage, withinCutoff } = getConfiguredStageAlias();
     jest.setSystemTime(withinCutoff);
 
     (listStageDocsForCard as jest.Mock).mockResolvedValue([baseStageDoc]);
@@ -308,30 +308,23 @@ describe("/api/agent/stage-docs", () => {
 
     const response = await listStageDocs(request);
     expect(response.status).toBe(200);
-    expect(response.headers.get("x-bos-stage-normalized")).toBe(`${legacyStage}->${canonicalStage}`);
+    expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
 
     expect(listStageDocsForCard).toHaveBeenCalledWith(
       db,
       "BRIK-ENG-0001",
-      StageTypeSchema.parse(canonicalStage)
+      StageTypeSchema.parse(legacyStage)
     );
 
-    expect(infoSpy).toHaveBeenCalledWith(
-      "bos.stage_alias_used",
-      expect.objectContaining({
-        cardId: "BRIK-ENG-0001",
-        rawStage: legacyStage,
-        normalizedStage: canonicalStage,
-      })
-    );
+    expect(infoSpy).not.toHaveBeenCalled();
 
     infoSpy.mockRestore();
     jest.useRealTimers();
   });
 
-  it("TC-10: POST accepts legacy alias stage within window (normalized)", async () => {
+  it("TC-10: POST persists a kebab-case legacy alias stage as provided", async () => {
     jest.useFakeTimers();
-    const { legacyStage, canonicalStage, withinCutoff } = getConfiguredStageAlias();
+    const { legacyStage, withinCutoff } = getConfiguredStageAlias();
     jest.setSystemTime(withinCutoff);
 
     (getCardById as jest.Mock).mockResolvedValue(baseCard);
@@ -357,30 +350,23 @@ describe("/api/agent/stage-docs", () => {
 
     const response = await createStageDoc(request);
     expect(response.status).toBe(201);
-    expect(response.headers.get("x-bos-stage-normalized")).toBe(`${legacyStage}->${canonicalStage}`);
+    expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
 
     const [, createdStageDoc] = (upsertStageDoc as jest.Mock).mock.calls[0];
-    expect(createdStageDoc.Stage).toBe(canonicalStage);
+    expect(createdStageDoc.Stage).toBe(legacyStage);
     expect(createdStageDoc.filePath).toBe(
-      `docs/business-os/cards/BRIK-ENG-0001/${canonicalStage}.user.md`
+      `docs/business-os/cards/BRIK-ENG-0001/${legacyStage}.user.md`
     );
 
-    expect(infoSpy).toHaveBeenCalledWith(
-      "bos.stage_alias_used",
-      expect.objectContaining({
-        cardId: "BRIK-ENG-0001",
-        rawStage: legacyStage,
-        normalizedStage: canonicalStage,
-      })
-    );
+    expect(infoSpy).not.toHaveBeenCalled();
 
     infoSpy.mockRestore();
     jest.useRealTimers();
   });
 
-  it("TC-11: path stage accepts legacy alias within window (normalized)", async () => {
+  it("TC-11: path stage accepts a kebab-case legacy alias as-is", async () => {
     jest.useFakeTimers();
-    const { legacyStage, canonicalStage, withinCutoff } = getConfiguredStageAlias();
+    const { legacyStage, withinCutoff } = getConfiguredStageAlias();
     jest.setSystemTime(withinCutoff);
 
     (getLatestStageDoc as jest.Mock).mockResolvedValue(baseStageDoc);
@@ -396,26 +382,18 @@ describe("/api/agent/stage-docs", () => {
 
     const response = await getStageDoc(request, { params });
     expect(response.status).toBe(200);
-    expect(response.headers.get("x-bos-stage-normalized")).toBe(`${legacyStage}->${canonicalStage}`);
+    expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
 
-    expect(getLatestStageDoc).toHaveBeenCalledWith(db, "BRIK-ENG-0001", canonicalStage);
-
-    expect(infoSpy).toHaveBeenCalledWith(
-      "bos.stage_alias_used",
-      expect.objectContaining({
-        cardId: "BRIK-ENG-0001",
-        rawStage: legacyStage,
-        normalizedStage: canonicalStage,
-      })
-    );
+    expect(getLatestStageDoc).toHaveBeenCalledWith(db, "BRIK-ENG-0001", legacyStage);
+    expect(infoSpy).not.toHaveBeenCalled();
 
     infoSpy.mockRestore();
     jest.useRealTimers();
   });
 
-  it("TC-12: PATCH path stage accepts legacy alias within window (normalized)", async () => {
+  it("TC-12: PATCH path stage accepts a kebab-case legacy alias as-is", async () => {
     jest.useFakeTimers();
-    const { legacyStage, canonicalStage, withinCutoff } = getConfiguredStageAlias();
+    const { legacyStage, withinCutoff } = getConfiguredStageAlias();
     jest.setSystemTime(withinCutoff);
 
     (getLatestStageDoc as jest.Mock).mockResolvedValue(baseStageDoc);
@@ -443,22 +421,26 @@ describe("/api/agent/stage-docs", () => {
 
     const response = await patchStageDoc(request, { params });
     expect(response.status).toBe(200);
-    expect(response.headers.get("x-bos-stage-normalized")).toBe(`${legacyStage}->${canonicalStage}`);
+    expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
 
     const [, updatedStageDoc] = (upsertStageDoc as jest.Mock).mock.calls[0];
-    expect(updatedStageDoc.Stage).toBe(canonicalStage);
+    expect(updatedStageDoc.Stage).toBe(legacyStage);
     expect(updatedStageDoc.filePath).toBe(
-      `docs/business-os/cards/BRIK-ENG-0001/${canonicalStage}.user.md`
+      `docs/business-os/cards/BRIK-ENG-0001/${legacyStage}.user.md`
     );
+
+    expect(infoSpy).not.toHaveBeenCalled();
 
     infoSpy.mockRestore();
     jest.useRealTimers();
   });
 
-  it("TC-13: after cutoff, legacy alias is rejected (400)", async () => {
+  it("TC-13: after cutoff, kebab-case legacy alias is still accepted as a plain stage slug", async () => {
     jest.useFakeTimers();
     const { legacyStage, afterCutoff } = getConfiguredStageAlias();
     jest.setSystemTime(afterCutoff);
+
+    (getLatestStageDoc as jest.Mock).mockResolvedValue(baseStageDoc);
 
     const request = createRequest(
       `http://localhost/api/agent/stage-docs/BRIK-ENG-0001/${legacyStage}`,
@@ -468,10 +450,11 @@ describe("/api/agent/stage-docs", () => {
     const params = Promise.resolve({ cardId: "BRIK-ENG-0001", stage: legacyStage });
 
     const response = await getStageDoc(request, { params });
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(200);
 
-    const payload = await response.json();
-    expect(payload.error).toBe("Invalid stage");
+    expect(getLatestStageDoc).toHaveBeenCalledWith(db, "BRIK-ENG-0001", legacyStage);
     expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
+
+    jest.useRealTimers();
   });
 });

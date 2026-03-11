@@ -90,6 +90,7 @@ describe("process improvements decision ledger", () => {
       decidedAt: "2026-03-10T12:05:00.000Z",
       deferUntil: undefined,
       executionResult: "failed",
+      executionError: "handoff failed",
     });
   });
 
@@ -133,6 +134,7 @@ describe("process improvements decision ledger", () => {
         decidedAt: "2026-03-10T09:05:00.000Z",
         deferUntil: undefined,
         executionResult: "succeeded",
+        executionError: undefined,
       });
     } finally {
       await fs.rm(repoRoot, { recursive: true, force: true });

@@ -514,10 +514,8 @@ Plan content.
     it("returns all stage docs for a card", async () => {
       const stageDocs = await reader.getCardStageDocs("BRIK-OPP-0001");
 
-      expect(stageDocs.factFind).toBeDefined();
-      expect(stageDocs.plan).toBeDefined();
-      expect(stageDocs.build).toBeUndefined();
-      expect(stageDocs.reflect).toBeUndefined();
+      expect(stageDocs.docs).toHaveLength(2);
+      expect(stageDocs.docs.map((doc) => doc.Stage)).toEqual(["fact-find", "plan"]);
     });
   });
 

@@ -803,6 +803,16 @@
     {
       "type": "pending-review",
       "business": "BOS",
+      "title": "Pending results review: do-workflow-engineering-coverage-hardening",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/do-workflow-engineering-coverage-hardening/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-11T10:21:30.949Z",
+      "path": "docs/plans/do-workflow-engineering-coverage-hardening/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
       "title": "Pending results review: do-workflow-analysis-stage",
       "body": "Build is complete but no results review has been written yet.",
       "suggested_action": "Write docs/plans/do-workflow-analysis-stage/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",

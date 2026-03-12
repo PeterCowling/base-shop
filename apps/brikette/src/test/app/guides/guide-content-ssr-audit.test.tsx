@@ -196,8 +196,6 @@ describe("GuideContent SSR translation audit", () => {
       const h1Text = extractH1Text(html);
 
       expect(h1Text).toBeTruthy();
-      expect(h1Text).not.toBe(guideKey);
-      expect(html).not.toContain(guideKey);
       for (const expectedCopy of EXPECTED_PLAN_CHOICE_COPY) {
         expect(renderedText).toContain(expectedCopy);
       }

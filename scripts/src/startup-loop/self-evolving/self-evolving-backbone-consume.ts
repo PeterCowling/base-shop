@@ -1,6 +1,7 @@
 import { appendFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 
+import { validateDispatchContent } from "../ideas/lp-do-ideas-queue-admission.js";
 import {
   atomicWriteQueueState,
   buildCounts,
@@ -435,13 +436,33 @@ function persistFollowupDispatchesToTrialQueue(options: {
       .filter((clusterKey): clusterKey is string => typeof clusterKey === "string"),
   );
 
+  const existingAnchors = queue.dispatches
+    .map((d) => (typeof d.area_anchor === "string" ? d.area_anchor : ""))
+    .filter((a) => a.length > 0);
+  const seenAreaAnchors = new Set(existingAnchors.map((a) => a.trim().toLowerCase()));
+
   const appendedDispatches: TrialDispatchPacketV2[] = [];
   for (const dispatch of options.dispatches) {
     const clusterKey = `${dispatch.cluster_key}:${dispatch.cluster_fingerprint}`;
     if (seenDispatchIds.has(dispatch.dispatch_id) || seenClusters.has(clusterKey)) {
       continue;
     }
+
+    // Content guard check (TASK-02: protect direct-write path)
+    const guardResult = validateDispatchContent(
+      {
+        area_anchor: dispatch.area_anchor,
+        trigger: dispatch.trigger,
+        domain: (dispatch as unknown as Record<string, unknown>).domain as string | undefined,
+      },
+      Array.from(seenAreaAnchors),
+    );
+    if (!guardResult.accepted) {
+      continue;
+    }
+
     queue.dispatches.push(dispatch as unknown as QueueDispatch);
+    seenAreaAnchors.add(dispatch.area_anchor.trim().toLowerCase());
     seenDispatchIds.add(dispatch.dispatch_id);
     seenClusters.add(clusterKey);
     appendedDispatches.push(dispatch);

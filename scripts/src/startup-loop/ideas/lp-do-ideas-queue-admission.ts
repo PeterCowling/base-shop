@@ -207,7 +207,7 @@ export function enqueueQueueDispatches(
       {
         area_anchor: packet.area_anchor,
         trigger: packet.trigger,
-        domain: (packet as Record<string, unknown>).domain as string | undefined,
+        domain: (packet as unknown as Record<string, unknown>).domain as string | undefined,
       },
       existingAnchors,
     );

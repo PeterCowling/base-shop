@@ -14,23 +14,26 @@ import FitCheck from "@/components/apartment/FitCheck";
 import { BookingCalendarPanel } from "@/components/booking/BookingCalendarPanel";
 import type { DateRange } from "@/components/booking/DateRangePicker";
 import PolicyFeeClarityPanel from "@/components/booking/PolicyFeeClarityPanel";
+import { buildWhatsappMessageUrl } from "@/config/hotel";
+import { BOOKING_CODE } from "@/context/modal/constants";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
-import { formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
+import { countNights, formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
 import { createBrikClickId, fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
 import { getPrivateBookingPath } from "@/utils/localizedRoutes";
+import { buildOctorateCalendarUrl } from "@/utils/octorateLinks";
 
 type Props = {
   lang: AppLanguage;
 };
 
-const WHATSAPP_BASE = "https://wa.me/393287073695";
 const APARTMENT_BOOKING_RETURN_KEY = "apartment_booking_return";
 
 function buildWhatsappUrl(checkin: string, checkout: string): string {
-  const text = `Hi, I'm interested in staying at the Brikette apartment. Could you tell me about availability for ${checkin} to ${checkout}?`;
-  return `${WHATSAPP_BASE}?text=${encodeURIComponent(text)}`;
+  return buildWhatsappMessageUrl(
+    `Hi, I'm interested in staying at the Brikette apartment. Could you tell me about availability for ${checkin} to ${checkout}?`,
+  );
 }
 
 const APARTMENT_RATE_CODES = {
@@ -44,17 +47,16 @@ function buildOctorateLink(
   plan: "flex" | "nr",
   pax: 2 | 3
 ): string {
-  const base = "https://book.octorate.com/octobook/site/reservation/calendar.xhtml";
-  const params = new URLSearchParams();
-  params.set("codice", "45111");
-  params.set("checkin", checkin);
-  params.set("checkout", checkout);
-  params.set("pax", String(pax));
-  params.set("room", APARTMENT_RATE_CODES[plan][pax]);
-  params.set("utm_source", "site");
-  params.set("utm_medium", "cta");
-  params.set("utm_campaign", `apartment_${plan}_${pax}pax`);
-  return `${base}?${params.toString()}`;
+  return buildOctorateCalendarUrl({
+    codice: BOOKING_CODE,
+    checkin,
+    checkout,
+    pax,
+    room: APARTMENT_RATE_CODES[plan][pax],
+    utm_source: "site",
+    utm_medium: "cta",
+    utm_campaign: `apartment_${plan}_${pax}pax`,
+  });
 }
 
 function ApartmentBookContent({ lang }: Props) {
@@ -92,9 +94,7 @@ function ApartmentBookContent({ lang }: Props) {
   }, []);
 
   // Derive nights and long-stay flag reactively from date state (TZ-safe via Date objects)
-  const nights = range.from && range.to
-    ? Math.max(1, Math.round((range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24)))
-    : 1;
+  const nights = range.from && range.to ? countNights(range.from, range.to) : 1;
   const isLongStay = nights > 14;
   const isValidRange = Boolean(checkinIso && checkoutIso);
 
@@ -269,7 +269,7 @@ function ApartmentBookContent({ lang }: Props) {
             rel="noopener noreferrer"
             className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-lg border border-brand-outline bg-brand-surface px-6 py-3 text-base font-semibold text-brand-primary shadow-sm transition-colors hover:bg-brand-surface/80 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-brand-primary focus-visible:focus:ring-offset-2"
           >
-            {t("streetLevelArrival.whatsappCta")}
+            {t("book.whatsappCta")}
           </a>
         </div>
       </div>

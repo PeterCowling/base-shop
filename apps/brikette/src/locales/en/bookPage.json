@@ -43,7 +43,8 @@
       "Cancellation admin fee: typically 15% of booking price (excluding third‑party commissions).",
       "Reception closes 22:30; no‑show charge is the higher of first night or the non‑refundable deposit."
     ],
-    "footer": "Final availability and payment are completed on our official booking engine."
+    "footer": "Final availability and payment are completed on our official booking engine.",
+    "paymentsLabel": "Secure payments"
   },
   "backToRooms": "Back to rooms",
   "apartment": {

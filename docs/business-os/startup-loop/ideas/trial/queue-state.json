@@ -38,9 +38,9 @@
         "apps/caryina/src/app/[lang]/product/[slug]/page.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: stock values from inventory.json not reaching SKU object, add-to-cart permanently disabled",
         "data/shops/caryina/inventory.json shows quantity 5/7/4",
@@ -56,7 +56,12 @@
       },
       "created_at": "2026-03-12T14:04:28.559Z",
       "priority": "P1",
-      "confidence": 0.95
+      "confidence": 0.95,
+      "completed_by": {
+        "commit": "bd215f9036",
+        "completed_at": "2026-03-12T00:00:00Z",
+        "outcome": "Switched CARYINA_INVENTORY_BACKEND from prisma to json; inventory.json (silver:5, rose-splash:7, peach:4) now hydrates stock correctly into SKU objects, enabling add-to-cart on all in-stock PDPs"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -78,9 +83,9 @@
         "data/shops/caryina/products.json"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "superseded",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "superseded",
       "evidence_refs": [
         "operator-stated: price stored as 9900 minor units, correct value is 2900",
         "coverage-hint: data-contracts",
@@ -93,6 +98,8 @@
         "source": "operator"
       },
       "created_at": "2026-03-12T14:04:28.559Z",
+      "superseded_at": "2026-03-12T00:00:00Z",
+      "superseded_reason": "resolved: fix already shipped in commit 452d5a35af — all three prices corrected 9900→2900 in products.json",
       "priority": "P1",
       "confidence": 0.99
     },
@@ -116,9 +123,9 @@
         "apps/caryina/src/lib/shop.ts"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "complete",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "evidence_refs": [
         "operator-stated: formatMoney hardcodes en-US locale, Italian/German customers see dollar formatting",
         "apps/caryina/src/lib/shop.ts:65",
@@ -156,9 +163,9 @@
         "apps/caryina/src/components/ConsentBanner.client.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "complete",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "evidence_refs": [
         "operator-stated: banner persists across page navigations after Accept click, likely SSR hydration mismatch",
         "coverage-hint: UX",
@@ -195,9 +202,9 @@
         "data/shops/caryina/site-content.generated.json"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "complete",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "evidence_refs": [
         "operator-stated: stale app-local copy has Italian heading, root data copy has correct English",
         "coverage-hint: data-contracts"
@@ -943,7 +950,7 @@
         "Unify review-required tracking with other operator queue surfaces"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "superseded",
       "priority": "P2",
       "confidence": 0.87,
       "evidence_refs": [
@@ -953,7 +960,9 @@
         "docs/business-os/strategy/BRIK/marketing/signal-review-20260226-1641-W09.md"
       ],
       "created_at": "2026-03-09T18:13:00.000Z",
-      "queue_state": "processed",
+      "superseded_at": "2026-03-12T00:00:00Z",
+      "superseded_reason": "operator-closed: lp-signal-review skill retired; self-improving loop covers this function",
+      "queue_state": "superseded",
       "why": "A trial should keep human judgment in the loop, but it should not depend on manual transcription to remember repeated failures. Durable review-required closure is the minimum effective follow-through.",
       "intended_outcome": {
         "type": "operational",
@@ -12647,7 +12656,7 @@
       "current_truth": "The core triad regressed by +42 to +95 lines since last audit. lp-do-plan grew from 214 to 309 lines, lp-do-build from 222 to 308, lp-do-fact-find from 201 to 243.",
       "next_scope_now": "Define and implement enforceable size-budget checks and exception policy for the three core workflow skills.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "complete",
       "priority": "P1",
       "confidence": 0.85,
       "evidence_refs": [
@@ -12655,7 +12664,7 @@
         "docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md"
       ],
       "created_at": "2026-03-04T12:25:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "why": "The three tools that power every improvement cycle have already grown significantly bigger than they should be, and without firm limits they will keep drifting. Larger tools are slower, harder to maintain, and more likely to give inconsistent results. Setting size guardrails now prevents the same problem from recurring every few months.",
       "intended_outcome": {
         "type": "operational",
@@ -14371,7 +14380,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "complete",
       "priority": "P1",
       "confidence": 0.92,
       "evidence_refs": [
@@ -14385,7 +14394,7 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T09:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "domain": "SELL"
     },
     {
@@ -25250,7 +25259,7 @@
       "provisional_deliverable_family": "code-change",
       "status": "fact_find_ready",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P1",
       "confidence": 0.92,
       "evidence_refs": [
@@ -25270,6 +25279,12 @@
         "statement": "All bar/POS components use valid semantic design tokens with correct foreground/background pairing and no arbitrary opacity values.",
         "source": "operator"
       },
+      "processed_by": {
+        "target_slug": "reception-till-safe-theming-overhaul",
+        "target_route": "lp-do-build"
+      },
+      "completed_at": "2026-03-12T00:00:00.000Z",
+      "outcome": "Fixed 14 bar/POS theming issues with semantic design tokens",
       "created_at": "2026-03-12T10:00:00.000Z"
     },
     {
@@ -25299,7 +25314,7 @@
       "provisional_deliverable_family": "code-change",
       "status": "fact_find_ready",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.88,
       "evidence_refs": [
@@ -25318,6 +25333,12 @@
         "statement": "All till and safe components use the Button component and valid semantic tokens with consistent error/warning/success naming.",
         "source": "operator"
       },
+      "processed_by": {
+        "target_slug": "reception-till-safe-theming-overhaul",
+        "target_route": "lp-do-build"
+      },
+      "completed_at": "2026-03-12T00:00:00.000Z",
+      "outcome": "Fixed till/safe/common theming: correct foreground tokens and interaction states",
       "created_at": "2026-03-12T10:00:00.000Z"
     },
     {
@@ -25927,9 +25948,9 @@
       "adjacent_later": [
         "Component architecture refactor: error boundaries, splitting large components (1067/766/607 lines), reducing prop drilling"
       ],
-      "status": "micro_build_ready",
+      "status": "complete",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P2",
       "confidence": 0.95,
       "why": "When a staff member navigates around the admin tool, background requests that were started on a previous screen keep running and trying to update parts of the page that no longer exist. If the server is slow, loading screens can stay stuck forever with no timeout. Over a long session this leaks memory and can eventually make the browser tab unresponsive. These are all standard React cleanup patterns with clear fixes.",
@@ -25976,9 +25997,11 @@
       "provisional_deliverable_family": "code-change",
       "current_truth": "Auth errors masked as 404 via .catch(() => false), generic catch treats all errors as validation failures (400), inconsistent auth/rate-limit ordering across routes, inconsistent error response shapes, missing error logging in bulk and deploy-drain routes, misleading error message in catalogDraftToContract, no currency rate sanity check.",
       "next_scope_now": "Standardize error handling patterns across all API routes.",
-      "status": "micro_build_ready",
+      "status": "superseded",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "superseded",
+      "superseded_at": "2026-03-12T00:00:00Z",
+      "superseded_reason": "resolved: error conflation, silent swallowing, and structured logging all addressed in commits 581074e4d4 and e9132bd393 (C008-C011)",
       "priority": "P2",
       "confidence": 0.9,
       "why": "When something goes wrong in the admin tool, the error messages are often misleading or missing entirely. A temporary server glitch looks like the user is not logged in. A programming bug is reported as bad input. Some errors are silently swallowed with no log. This means staff cannot tell what went wrong, and the team cannot diagnose issues from logs. Standardizing error handling means every failure is properly reported, logged, and distinguishable.",
@@ -26125,9 +26148,9 @@
         "statement": "Deterministic admission guards prevent noise entering the queue, existing queue data is cleaned and domain-classified, and a fresh pattern analysis on clean data is produced.",
         "source": "operator"
       },
-      "status": "fact_find_ready",
+      "status": "complete",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "first_observed_at": "2026-03-12",
       "created_at": "2026-03-12T12:30:37.266Z"
     },

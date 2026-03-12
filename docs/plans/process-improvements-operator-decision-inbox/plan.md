@@ -30,7 +30,7 @@ This plan keeps the existing action semantics and queue authority intact. It foc
 ## Active tasks
 - [ ] TASK-08: Define and implement the decision-brief projection contract
 - [x] TASK-09: Extend decision capture for operator rationale and durable recent-history replay — Complete (2026-03-12)
-- [ ] TASK-10: Redesign the inbox UI for mixed and non-technical readers
+- [x] TASK-10: Redesign the inbox UI for mixed and non-technical readers — Complete (2026-03-12)
 - [ ] TASK-11: Checkpoint the end-to-end mixed-reader decision flow
 - [ ] TASK-12: Add deterministic coverage and targeted frontend QA for the new decision surface
 
@@ -125,7 +125,7 @@ This plan keeps the existing action semantics and queue authority intact. It foc
 |---|---|---|---:|---:|---|---|---|
 | TASK-08 | IMPLEMENT | Define and implement the decision-brief projection contract from queue and ledger state | 84% | M | Complete (2026-03-12) | - | TASK-09, TASK-10, TASK-11, TASK-12 |
 | TASK-09 | IMPLEMENT | Extend decision capture for operator rationale and durable recent-history replay | 82% | M | Pending | TASK-08 | TASK-10, TASK-11, TASK-12 |
-| TASK-10 | IMPLEMENT | Redesign the Business OS inbox UI around the decision brief and mixed-reader rules | 84% | M | Pending | TASK-08, TASK-09 | TASK-11, TASK-12 |
+| TASK-10 | IMPLEMENT | Redesign the Business OS inbox UI around the decision brief and mixed-reader rules | 84% | M | Complete (2026-03-12) | TASK-08, TASK-09 | TASK-11, TASK-12 |
 | TASK-11 | CHECKPOINT | Rehearse the mixed-reader end-to-end flow and lock any final wording/ordering adjustments | 83% | S | Pending | TASK-08, TASK-09, TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Add deterministic tests and targeted frontend QA for the decision-grade surface | 84% | M | Pending | TASK-09, TASK-10, TASK-11 | - |
 
@@ -221,7 +221,7 @@ This plan keeps the existing action semantics and queue authority intact. It foc
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `apps/business-os/src/app/process-improvements/page.tsx`, `apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx`, any nearby component tests or style helpers
 - **Depends on:** TASK-08, TASK-09
 - **Blocks:** TASK-11, TASK-12

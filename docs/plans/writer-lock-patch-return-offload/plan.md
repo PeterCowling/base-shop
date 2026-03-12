@@ -5,7 +5,7 @@ Domain: Platform
 Workstream: Engineering
 Created: 2026-03-09
 Last-reviewed: 2026-03-09
-Last-updated: 2026-03-09T13:16Z
+Last-updated: 2026-03-12
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: writer-lock-patch-return-offload
 Deliverable-Type: code-change
@@ -28,7 +28,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - [x] TASK-02: Horizon checkpoint - confirm the pilot contract from spike evidence
 - [x] TASK-08: Investigate an isolated Codex runner contract for patch-return offload
 - [x] TASK-09: Spike the isolated runner and require a prompt unified-diff artifact
-- [ ] TASK-10: Investigate reliable final-output and artifact-extraction channels under the isolated runner
+- [x] TASK-10: Investigate reliable final-output and artifact-extraction channels under the isolated runner
 - [ ] TASK-11: Spike one bounded artifact-emission path under the isolated runner
 - [ ] TASK-03: Implement the shared patch-return protocol and pilot-facing executor docs
 - [ ] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
@@ -88,8 +88,8 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 | TASK-02 | CHECKPOINT | Reassess downstream implementation from TASK-01 spike evidence | 95% | S | Complete (2026-03-09) | TASK-01 | TASK-08, TASK-09 |
 | TASK-08 | INVESTIGATE | Determine an isolated Codex runner contract that avoids default MCP and state-runtime interference | 75% | M | Complete (2026-03-09) | TASK-02 | TASK-09 |
 | TASK-09 | SPIKE | Validate the isolated runner in a temp repo and require prompt unified-diff emission | 80% | S | Complete (2026-03-09) | TASK-08 | TASK-10, TASK-11 |
-| TASK-10 | INVESTIGATE | Determine which final-output and artifact-extraction channel is reliable under the isolated runner | 75% | M | Pending | TASK-09 | TASK-11 |
-| TASK-11 | SPIKE | Validate one bounded artifact-emission path under the isolated runner and require prompt emitted output | 80% | S | Pending | TASK-10 | TASK-03 |
+| TASK-10 | INVESTIGATE | Determine which final-output and artifact-extraction channel is reliable under the isolated runner | 75% | M | Complete (2026-03-12) | TASK-09 | TASK-11 |
+| TASK-11 | SPIKE | Validate one bounded artifact-emission path under the isolated runner and require prompt emitted output | 82% | S | Pending | TASK-10 | TASK-03 |
 | TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 72% (-> 85% conditional on TASK-10, TASK-11) | M | Pending | TASK-11 | TASK-04 |
 | TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 68% (-> 82% conditional on TASK-03, TASK-11) | M | Pending | TASK-03 | TASK-05 |
 | TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 72% (-> 82% conditional on TASK-04, TASK-11) | S | Pending | TASK-04 | TASK-06 |
@@ -296,6 +296,14 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Documentation impact:** adds `artifact-emission-investigation.md` as the next canonical precursor artifact
 - **Notes / references:**
   - `docs/plans/writer-lock-patch-return-offload/replan-notes-2.md`
+  - `docs/plans/writer-lock-patch-return-offload/artifact-emission-investigation.md`
+  - Build evidence (2026-03-12):
+    - Confirmed available CLI output channels via `codex exec --help`: `-o`, `--json` (JSONL event stream), `--output-schema` (JSON Schema structured output).
+    - Root cause of TASK-09 failure isolated: the unified diff prompt caused the model to enter an agentic tool-call loop (read `sample.txt` before generating the diff). The loop never terminated cleanly, so `-o` was never written.
+    - Root cause is prompt design, not CLI flags or isolation. TASK-08 "Return ONLY the word OK" worked because it requires no tool calls. The unified diff prompt implies file inspection and uses tool-constraint language that signals tool use is in scope.
+    - Recommended fix: self-contained prompt (file content inline, not referenced via filesystem), remove tool-constraint language, frame as pure text transformation.
+    - Recommended candidate for TASK-11: Option A — `-o` flag with the self-contained prompt shape. Option B (`--output-schema`) as an inline fallback in the same spike.
+    - TASK-11 confidence actualized to 82% (was 80% conditional on TASK-10).
 
 ### TASK-11: Spike one bounded artifact-emission path under the isolated runner
 - **Type:** SPIKE

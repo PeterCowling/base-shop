@@ -24,6 +24,7 @@ export interface PerformProcessImprovementsDecisionInput {
   actor: User;
   now?: Date;
   deferDays?: number;
+  rationale?: string;
 }
 
 export type PerformProcessImprovementsDecisionResult =
@@ -87,6 +88,7 @@ export async function performProcessImprovementsDecision(
         deferUntil,
         sourcePath: item.sourcePath,
         queueMode: item.queueMode,
+        rationale: input.rationale,
       },
       repoRoot
     );
@@ -112,6 +114,7 @@ export async function performProcessImprovementsDecision(
       executionResult: "pending",
       sourcePath: item.sourcePath,
       queueMode: item.queueMode,
+      rationale: input.rationale,
     },
     repoRoot
   );

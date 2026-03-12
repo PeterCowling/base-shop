@@ -297,7 +297,8 @@ function applySnoozedOperatorActionDecision(
 function createRecentQueueAction(
   item: ProcessImprovementQueueInboxItem,
   decision: Exclude<QueueDecisionAction, "defer">,
-  targetPath?: string
+  targetPath?: string,
+  rationale?: string
 ): ProcessImprovementsRecentAction {
   return {
     itemKey: item.itemKey,
@@ -307,6 +308,7 @@ function createRecentQueueAction(
     targetPath,
     business: item.business,
     itemType: "process_improvement",
+    rationale,
   };
 }
 
@@ -396,7 +398,8 @@ function useNewIdeasInboxState(
   function handleQueueDecision(
     item: ProcessImprovementQueueInboxItem,
     decision: QueueDecisionAction,
-    deferDays?: number
+    deferDays?: number,
+    rationale?: string
   ) {
     setPendingState({ targetKey: item.itemKey, decision });
     setActionError(item.itemKey, null);
@@ -409,6 +412,7 @@ function useNewIdeasInboxState(
             ideaKey: item.ideaKey,
             dispatchId: item.dispatchId,
             ...(decision === "defer" && deferDays ? { deferDays } : {}),
+            ...(decision === "decline" && rationale ? { rationale } : {}),
           }),
         });
         const payload = (await response.json()) as {
@@ -437,7 +441,7 @@ function useNewIdeasInboxState(
         }
         setItems((current) => removeItemFromList(current, item.itemKey));
         setRecentActions((current) => [
-          createRecentQueueAction(item, decision, payload.targetPath),
+          createRecentQueueAction(item, decision, payload.targetPath, rationale),
           ...current,
         ]);
       } catch (error) {
@@ -515,10 +519,11 @@ function useNewIdeasInboxState(
   function handleItemDecision(
     item: ProcessImprovementsInboxItem,
     decision: PendingDecision,
-    postponeDays?: number
+    postponeDays?: number,
+    rationale?: string
   ) {
     if (isProcessImprovementQueueItem(item) && isQueueDecisionAction(decision)) {
-      handleQueueDecision(item, decision, decision === "defer" ? postponeDays : undefined);
+      handleQueueDecision(item, decision, decision === "defer" ? postponeDays : undefined, rationale);
       return;
     }
 
@@ -558,7 +563,7 @@ function useNewIdeasInboxState(
 
 function useBulkSelection(
   activeItems: ProcessImprovementsInboxItem[],
-  handleItemDecision: (item: ProcessImprovementsInboxItem, decision: PendingDecision, postponeDays?: number) => void
+  handleItemDecision: (item: ProcessImprovementsInboxItem, decision: PendingDecision, postponeDays?: number, rationale?: string) => void
 ) {
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
   const toggleSelected = useCallback((itemKey: string) => {
@@ -871,13 +876,15 @@ function WorkItemCard({
   pendingState: PendingState | null;
   errorMessage?: string;
   isPending: boolean;
-  onDecision: (item: ProcessImprovementsInboxItem, decision: PendingDecision, postponeDays?: number) => void;
+  onDecision: (item: ProcessImprovementsInboxItem, decision: PendingDecision, postponeDays?: number, rationale?: string) => void;
   isExpanded: boolean;
   onToggleExpanded: (itemKey: string) => void;
   isSelected?: boolean;
   onToggleSelected?: (itemKey: string) => void;
 }) {
   const [showDeferPicker, setShowDeferPicker] = useState(false);
+  const [showDeclineConfirm, setShowDeclineConfirm] = useState(false);
+  const [declineRationale, setDeclineRationale] = useState("");
   const notice = workItemStatusNotice(item, errorMessage);
   const accentBgClass = item.isOverdue
     ? "bg-danger"
@@ -964,6 +971,14 @@ function WorkItemCard({
                           setShowDeferPicker(false);
                         }}
                       />
+                    ) : action.decision === "decline" && isProcessImprovementQueueItem(item) ? (
+                      <ActionButton
+                        key={action.decision}
+                        label={workItemButtonLabel(pendingState, item.itemKey, action)}
+                        variant={action.variant}
+                        disabled={isPending}
+                        onClick={() => setShowDeclineConfirm(true)}
+                      />
                     ) : (
                       <ActionButton
                         key={action.decision}
@@ -975,6 +990,48 @@ function WorkItemCard({
                     )
                   )}
                 </Inline>
+                {showDeclineConfirm && isProcessImprovementQueueItem(item) ? (
+                  <div className="rounded-lg border border-danger-soft bg-danger-soft/30 p-3 space-y-2">
+                    <label className="block text-xs font-medium text-danger-fg">
+                      Note (optional) — why are you declining this?
+                    </label>
+                    <textarea
+                      value={declineRationale}
+                      onChange={(e) => setDeclineRationale(e.target.value)}
+                      placeholder="Optional reason..."
+                      maxLength={500}
+                      rows={2}
+                      className="w-full rounded-md border border-border bg-surface-1 px-3 py-2 text-sm text-fg resize-none focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-danger"
+                    />
+                    <Inline gap={2}>
+                      <Button
+                        size="sm"
+                        color="danger"
+                        tone="solid"
+                        disabled={isPending}
+                        onClick={() => {
+                          onDecision(item, "decline", undefined, declineRationale.trim() || undefined);
+                          setShowDeclineConfirm(false);
+                          setDeclineRationale("");
+                        }}
+                      >
+                        Confirm decline
+                      </Button>
+                      <Button
+                        size="sm"
+                        color="default"
+                        tone="outline"
+                        disabled={isPending}
+                        onClick={() => {
+                          setShowDeclineConfirm(false);
+                          setDeclineRationale("");
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </Inline>
+                  </div>
+                ) : null}
               </div>
             ) : null}
           </div>
@@ -1088,6 +1145,9 @@ function RecentlyActionedSection({
               </span>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-medium text-fg">{action.title}</p>
+                {action.rationale ? (
+                  <p className="mt-0.5 truncate text-xs italic text-muted">{action.rationale}</p>
+                ) : null}
                 {action.targetPath ? (
                   <code className="mt-0.5 block truncate font-mono text-xs text-muted">
                     {action.targetPath}

@@ -12,7 +12,10 @@ import {
 } from "../../../../../scripts/src/startup-loop/operator-actions-contract.js";
 
 import { type DecisionBrief, projectDecisionBrief } from "./decision-brief";
-import { loadProcessImprovementsDecisionStates } from "./decision-ledger";
+import {
+  loadProcessImprovementsDecisionStates,
+  readProcessImprovementsDecisionEvents,
+} from "./decision-ledger";
 import {
   loadProcessImprovementsOperatorActionDecisionStates,
   type ProcessImprovementsOperatorActionDecisionState,
@@ -61,6 +64,7 @@ export interface ProcessImprovementsDecisionState {
   deferUntil?: string;
   executionResult?: ProcessImprovementsExecutionResult;
   executionError?: string;
+  rationale?: string;
 }
 
 export interface ProcessImprovementsWorkItemAction {
@@ -137,6 +141,7 @@ export interface ProcessImprovementsRecentAction {
   actedAt: string;
   targetPath?: string;
   itemType: ProcessImprovementsItemType;
+  rationale?: string;
 }
 
 export interface LoadProcessImprovementsProjectionOptions {
@@ -659,10 +664,11 @@ export async function loadProcessImprovementsProjection(
         operatorActionDecisionStates,
         now
       ),
-      recentActions: await loadRecentOperatorActionCompletions(
+      recentActions: await loadCombinedRecentDecisions(
         repoRoot,
         absoluteOperatorActionsPath,
-        operatorActionDecisionStates
+        operatorActionDecisionStates,
+        new Map()
       ),
     };
   }
@@ -681,10 +687,11 @@ export async function loadProcessImprovementsProjection(
         operatorActionDecisionStates,
         now
       ),
-      recentActions: await loadRecentOperatorActionCompletions(
+      recentActions: await loadCombinedRecentDecisions(
         repoRoot,
         absoluteOperatorActionsPath,
-        operatorActionDecisionStates
+        operatorActionDecisionStates,
+        new Map()
       ),
     };
   }
@@ -700,10 +707,11 @@ export async function loadProcessImprovementsProjection(
         operatorActionDecisionStates,
         now
       ),
-      recentActions: await loadRecentOperatorActionCompletions(
+      recentActions: await loadCombinedRecentDecisions(
         repoRoot,
         absoluteOperatorActionsPath,
-        operatorActionDecisionStates
+        operatorActionDecisionStates,
+        new Map()
       ),
     };
   }
@@ -727,10 +735,11 @@ export async function loadProcessImprovementsProjection(
     queueSourcePath: queuePath.relativePath,
     operatorActionsSourcePath: OPERATOR_ACTIONS_RELATIVE_PATH,
     items: sortWorkItems([...queueItems, ...operatorActionItems]),
-    recentActions: await loadRecentOperatorActionCompletions(
+    recentActions: await loadCombinedRecentDecisions(
       repoRoot,
       absoluteOperatorActionsPath,
-      operatorActionDecisionStates
+      operatorActionDecisionStates,
+      buildAllDispatchTitleMap(parsed, queuePath.relativePath)
     ),
   };
 }
@@ -812,4 +821,79 @@ async function loadRecentOperatorActionCompletions(
         itemType: "operator_action" as const,
       };
     });
+}
+
+function buildAllDispatchTitleMap(
+  queueState: QueueStateRecord,
+  sourcePath: string
+): Map<string, string> {
+  const map = new Map<string, string>();
+  const dispatches = Array.isArray(queueState.dispatches) ? queueState.dispatches : [];
+
+  for (const dispatch of dispatches) {
+    const dispatchId = readString(dispatch.dispatch_id);
+    if (!dispatchId) continue;
+    const title =
+      readString(dispatch.area_anchor) ??
+      readString(dispatch.current_truth) ??
+      dispatchId;
+    const ideaKey = deriveProcessImprovementsIdeaKey(sourcePath, dispatchId);
+    map.set(ideaKey, title);
+  }
+
+  return map;
+}
+
+async function loadRecentQueueDecisions(
+  repoRoot: string,
+  allDispatchTitles: Map<string, string>
+): Promise<ProcessImprovementsRecentAction[]> {
+  const events = await readProcessImprovementsDecisionEvents(repoRoot);
+  const cutoff = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+  return events
+    .filter((event) => event.decision !== "defer")
+    .filter((event) => {
+      const decidedAtMs = Date.parse(event.decided_at);
+      return Number.isFinite(decidedAtMs) && decidedAtMs >= cutoff;
+    })
+    .sort((left, right) => {
+      return (
+        right.decided_at.localeCompare(left.decided_at) ||
+        right.event_id.localeCompare(left.event_id)
+      );
+    })
+    .slice(0, 20)
+    .map((event): ProcessImprovementsRecentAction => ({
+      itemKey: event.idea_key,
+      title: allDispatchTitles.get(event.idea_key) ?? event.dispatch_id,
+      business: event.business,
+      decision: event.decision as ProcessImprovementsRecentActionDecision,
+      actedAt: event.decided_at,
+      itemType: "process_improvement",
+      rationale: event.rationale,
+    }));
+}
+
+async function loadCombinedRecentDecisions(
+  repoRoot: string,
+  absoluteOperatorActionsPath: string,
+  decisionStates: ReadonlyMap<string, ProcessImprovementsOperatorActionDecisionState>,
+  allDispatchTitles: Map<string, string>
+): Promise<ProcessImprovementsRecentAction[]> {
+  const [queueDecisions, operatorCompletions] = await Promise.all([
+    loadRecentQueueDecisions(repoRoot, allDispatchTitles),
+    loadRecentOperatorActionCompletions(repoRoot, absoluteOperatorActionsPath, decisionStates),
+  ]);
+
+  const combined = [...queueDecisions, ...operatorCompletions];
+
+  return combined
+    .sort((left, right) => {
+      return (
+        right.actedAt.localeCompare(left.actedAt) ||
+        right.itemKey.localeCompare(left.itemKey)
+      );
+    })
+    .slice(0, 20);
 }

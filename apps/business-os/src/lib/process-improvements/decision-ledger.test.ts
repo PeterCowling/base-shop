@@ -141,6 +141,62 @@ describe("process improvements decision ledger", () => {
     }
   });
 
+  it("TC-05: stores rationale durably in the decision event", async () => {
+    const repoRoot = await fs.mkdtemp(
+      path.join(os.tmpdir(), "process-improvements-ledger-rationale-")
+    );
+
+    try {
+      const event = await appendProcessImprovementsDecisionEvent(
+        {
+          ideaKey: "idea-rationale-1",
+          dispatchId: "dispatch-rationale-1",
+          business: "BRIK",
+          decision: "decline",
+          actorId: "pete",
+          actorName: "Pete",
+          decidedAt: "2026-03-12T10:00:00.000Z",
+          executionResult: "pending",
+          rationale: "Not a priority for this quarter.",
+        },
+        repoRoot
+      );
+
+      expect(event.rationale).toBe("Not a priority for this quarter.");
+
+      const events = await readProcessImprovementsDecisionEvents(repoRoot);
+      expect(events).toHaveLength(1);
+      expect(events[0].rationale).toBe("Not a priority for this quarter.");
+    } finally {
+      await fs.rm(repoRoot, { recursive: true, force: true });
+    }
+  });
+
+  it("TC-06: rationale is included in the reduced decision state for replay", async () => {
+    const reduced = reduceProcessImprovementsDecisionEvents([
+      {
+        schema_version: "process-improvements.decision.v1",
+        event_id: "c",
+        idea_key: "idea-rationale-2",
+        dispatch_id: "dispatch-rationale-2",
+        business: "BRIK",
+        source_path: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+        queue_mode: "trial",
+        decision: "decline",
+        actor_id: "pete",
+        actor_name: "Pete",
+        decided_at: "2026-03-12T10:00:00.000Z",
+        execution_result: "pending",
+        rationale: "Out of scope for this sprint.",
+      },
+    ]);
+
+    expect(reduced.get("idea-rationale-2")).toMatchObject({
+      decision: "decline",
+      rationale: "Out of scope for this sprint.",
+    });
+  });
+
   it("TC-04: rejects malformed defer events before any file write", async () => {
     const repoRoot = await fs.mkdtemp(
       path.join(os.tmpdir(), "process-improvements-ledger-invalid-")

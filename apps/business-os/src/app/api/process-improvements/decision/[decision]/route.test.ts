@@ -102,6 +102,35 @@ describe("POST /api/process-improvements/decision/[decision]", () => {
     expect(performProcessImprovementsDecision).not.toHaveBeenCalled();
   });
 
+  it("TC-05: passes rationale to the decision service when provided", async () => {
+    (performProcessImprovementsDecision as jest.Mock).mockResolvedValue({
+      ok: true,
+      decision: "decline",
+      dispatchId: "dispatch-1",
+      ideaKey: "idea-1",
+    });
+
+    const response = await POST(
+      new Request("http://localhost/api/process-improvements/decision/decline", {
+        method: "POST",
+        body: JSON.stringify({
+          ideaKey: "idea-1",
+          dispatchId: "dispatch-1",
+          rationale: "Not aligned with current goals.",
+        }),
+        headers: { "content-type": "application/json" },
+      }),
+      { params: Promise.resolve({ decision: "decline" }) }
+    );
+
+    expect(response.status).toBe(200);
+    expect(performProcessImprovementsDecision).toHaveBeenCalledWith(
+      expect.objectContaining({
+        rationale: "Not aligned with current goals.",
+      })
+    );
+  });
+
   it("TC-04: maps service conflicts to 409 responses", async () => {
     (performProcessImprovementsDecision as jest.Mock).mockResolvedValue({
       ok: false,

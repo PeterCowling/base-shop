@@ -1,0 +1,155 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "caryina-storefront-customer-experience",
+  "source_artifact_path": "docs/plans/caryina-storefront-customer-experience/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "None — scope is bounded integration work with no option comparison needed"
+  },
+  "outcome_contract": {
+    "why": "The site supports three languages but customers have no way to switch. Product pages show images and price but no physical details — customers can't judge what they're buying. Both gaps reduce purchase confidence and block non-English conversion.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Language switcher visible in header on all pages; materials, dimensions, and weight displayed on all PDPs.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "LanguageSwitcher rendered in header; details section activates on PDP",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Visual fit verified: component is inline text, header has space",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Switcher links to homepage (not current path); PDP details hidden when data missing (graceful degradation)",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Path-preservation noted as follow-up",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No auth or sensitive data involved",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No logging changes needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "PDP test with materials data populated",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Existing PDP test suite extended",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "products.json fields conform to SKU Zod schema",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Schema already defines optional fields",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Static data, no perf concern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Simple deploy, instant rollback via revert",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Two customer-facing gaps on the Caryina storefront need closing: (1) no language switcher despite en/de/it support, and (2) product pages missing materials, dimensions, and weight despite the rendering code already being in place. Both tasks are small, independent, and use existing components and schema fields. TASK-01 imports `@acme/ui/LanguageSwitcher` into the Header. TASK-02 populates the three missing data fields in `products.json` for all 3 products.",
+    "goals": [
+      "Language switcher visible in header on all pages",
+      "Materials, dimensions, and weight displayed on every PDP"
+    ],
+    "non_goals": [
+      "Redesign header navigation",
+      "Add new locales beyond en/de/it",
+      "Make language switcher preserve current page path (follow-up)",
+      "Rewrite the product data pipeline"
+    ],
+    "constraints": [
+      "Must use existing `@acme/ui/LanguageSwitcher` component directly",
+      "Product data fields must conform to existing SKU Zod schema (`materials`, `dimensions`, `weight`)"
+    ],
+    "assumptions": [
+      "Reasonable placeholder specs can be used pending operator verification of actual physical measurements",
+      "Header has visual space for a language switcher (component is small inline text)"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "TASK-01: Import and render `@acme/ui/LanguageSwitcher` in `Header.tsx` with `current={lang}`",
+      "TASK-02: Add `materials`, `dimensions`, `weight` fields to all 3 products in `data/shops/caryina/products.json`",
+      "Why planning is not reopening option selection:",
+      "The fact-find confirmed both gaps are bounded integration work with no design ambiguity. Components exist, schema supports the fields, rendering code is conditional and ready."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add LanguageSwitcher to Caryina Header",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `apps/caryina/src/components/Header.tsx`",
+        "affects": "`apps/caryina/src/components/Header.tsx`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add product physical specs to products.json",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `data/shops/caryina/products.json`",
+        "affects": "`data/shops/caryina/products.json`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change.",
+      "areas": []
+    }
+  }
+}

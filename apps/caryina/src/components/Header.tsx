@@ -2,6 +2,9 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { type Locale } from "@acme/i18n/locales";
+import LanguageSwitcher from "@acme/ui/components/molecules/LanguageSwitcher";
+
 import { CartIcon } from "@/components/CartIcon.client";
 import { HeaderThemeToggle } from "@/components/HeaderThemeToggle.client";
 import { getChromeContent } from "@/lib/contentPacket";
@@ -58,6 +61,7 @@ export function Header({ lang }: { lang: string }) {
 
         {/* Icon cluster — pushed to the far right */}
         <div className="ms-auto flex items-center gap-2">
+          <LanguageSwitcher current={lang as Locale} />
           <HeaderThemeToggle />
           <CartIcon lang={lang} />
         </div>

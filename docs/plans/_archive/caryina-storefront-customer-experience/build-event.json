@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "caryina-storefront-customer-experience-2026-03-12",
+  "feature_slug": "caryina-storefront-customer-experience",
+  "emitted_at": "2026-03-12T14:43:00.000Z",
+  "why": "The site supports three languages but customers have no way to switch. Product pages show images and price but no physical details — customers can't judge what they're buying. Both gaps reduce purchase confidence and block non-English conversion.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Language switcher visible in header on all pages; materials, dimensions, and weight displayed on all PDPs.",
+    "source": "operator"
+  }
+}

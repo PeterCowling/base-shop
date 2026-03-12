@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BRIKETTE_PROD_BASE_URL: https://www.hostel-positano.com
+  BRIKETTE_PROD_BASE_URL: https://hostel-positano.com
   # Current debt baseline (2026-03-02 after locale-file backfill). Tighten toward zero as locale backlog is fixed.
   I18N_MAX_MISSING_FILES: "0"
   I18N_MAX_MISSING_KEYS: "304"

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 import {
   ALL_METRIC_GROUPS,
+  type AnalyticsSource,
   computeAnalytics,
   type MetricGroup,
 } from "@/lib/inbox/analytics.server";
@@ -53,7 +54,24 @@ export async function GET(request: Request) {
       }
     }
 
-    const data = await computeAnalytics({ days, metrics });
+    // Parse source param: "email" | "prime" | "all" (default: "email")
+    const sourceParam = url.searchParams.get("source");
+    let source: AnalyticsSource | undefined;
+    if (sourceParam !== null) {
+      if (sourceParam === "email" || sourceParam === "prime" || sourceParam === "all") {
+        source = sourceParam;
+      } else {
+        return NextResponse.json(
+          {
+            success: false,
+            error: "source must be one of: email, prime, all",
+          },
+          { status: 400 },
+        );
+      }
+    }
+
+    const data = await computeAnalytics({ days, metrics, source });
 
     return NextResponse.json({ success: true, data });
   } catch (error) {

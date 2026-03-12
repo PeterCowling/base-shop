@@ -346,7 +346,7 @@
 
   <div class="page-footer">
     <span>docs/business-os/process-improvements.user.html</span>
-    <span>Last cleared: 2026-03-11 — extracted from build records, reflection debt, and results reviews</span>
+    <span>Last cleared: 2026-03-12 — extracted from build records, reflection debt, and results reviews</span>
     <span id="footer-generated"></span>
   </div>
 
@@ -359,7 +359,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-11T17:52:25.030Z";
+  var GEN_TS = "2026-03-12T07:20:33.777Z";
 
   var IDEA_ITEMS = [
     {
@@ -503,6 +503,118 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette — Bar screen colours are broken or inconsistent, making it harder for staff to use",
+      "body": "The bar is the screen staff use most every day. Some button colours are silently broken because of invalid code, and status indicators (like 'order ready' or 'order cancelled') use the wrong text colour, making them hard to read. Fixing this means every button, status badge, and price tag looks correct and is easy to read in both light and dark mode.",
+      "source": "queue-state.json",
+      "date": "2026-03-12T10:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "2a735eb4e194a5f1fd461cc7164f93e16b92f82a",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette — Cash handling screens mix up colour names and bypass the design system buttons",
+      "body": "Staff use the till and safe screens for every cash handover and reconciliation. Some warning labels use the wrong text colour, making them hard to read. Buttons are styled inconsistently because they bypass the standard design system. Fixing this means cash handling screens look professional, consistent, and are readable in both light and dark mode.",
+      "source": "queue-state.json",
+      "date": "2026-03-12T10:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "c2838a993313ae7fb9ec334ee9b2dcfa602d5c0b",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette — Check-in view badges and loan button use undefined colour tokens",
+      "body": "Check-in is where staff manage arriving guests. The status badges that tell staff whether a guest is confirmed, pending, or has a problem use colour names that don't exist in the theme — so they may render incorrectly or not at all. The loan button has a similar issue. Fixing this ensures check-in status indicators are always visible and correct.",
+      "source": "queue-state.json",
+      "date": "2026-03-12T10:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "463607e4b54c0d760dbc660c303d1720dbc1bfac",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette — Prepayment and management screens use shorthand colours and opacity hacks",
+      "body": "These screens are used daily for managing bookings, payments, stock, and staff. Warning badges and error messages use informal colour shorthand that may not resolve correctly in the theme, creating visual inconsistency. Some opacity values create nearly-invisible backgrounds. Fixing this means all management screens feel polished and consistent with the rest of the app.",
+      "source": "queue-state.json",
+      "date": "2026-03-12T10:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "57b76fce9cefb7bbe5bff19f1288b240def638ac",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette — Reports and charts have colour issues that make data hard to read",
+      "body": "Managers use reports and charts to make daily decisions about cash variance, menu performance, and end-of-day reconciliation. Some charts use colours that have no fallback if the theme is missing them, and heatmap cells become unreadable in dark mode. Fixing this means reports always show data clearly, regardless of the display mode.",
+      "source": "queue-state.json",
+      "date": "2026-03-12T10:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "74157456124e92c68f96b56a3489ae461e7e8028",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette — Shared form and PIN components have hardcoded colours that break in dark mode",
+      "body": "These shared components are used across the entire app — till, check-in, safe, everywhere. The PIN entry screen shows a white ring that disappears in dark mode, making it impossible to see which digit is selected. The form container lets each caller pick its own colour, creating visual inconsistency. Fixing these shared components improves every screen that uses them.",
+      "source": "queue-state.json",
+      "date": "2026-03-12T10:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "c6f8069c68ed875aa954e3027861d3912e10b721",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette — Sidebar navigation uses see-through backgrounds that look unfinished",
+      "body": "The sidebar navigation appears on every screen. Its see-through background can make text hard to read depending on what's behind it. Defining proper overlay tokens means the sidebar always looks clean and readable regardless of the page content underneath.",
+      "source": "queue-state.json",
+      "date": "2026-03-12T10:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "96b53836ce06b63d51d56763fff2df26c69432cd",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",

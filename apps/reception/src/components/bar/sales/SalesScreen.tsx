@@ -113,14 +113,14 @@ const SalesScreen: FC = React.memo(() => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-surface via-surface-1 to-surface-1 font-body">
+    <div className="min-h-screen bg-gradient-to-b from-surface to-surface-2 font-body">
       {/* --- Top control bar --- */}
       <div className="sticky top-0 z-10 flex items-center justify-end gap-2 bg-primary-main/95 px-4 py-2 backdrop-blur-md shadow-lg">
         <Button
           onClick={handleRecallLastOrder}
           disabled={!lastRemovedOrder}
           compatibilityMode="passthrough"
-          className="min-h-11 rounded-lg px-3 py-2 text-sm font-medium transition-colors bg-surface-3/50 text-primary-fg hover:bg-surface-3/70 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="min-h-11 rounded-lg px-3 py-2 text-sm font-medium transition-colors bg-surface-3 text-primary-fg hover:bg-surface-elevated disabled:opacity-40 disabled:cursor-not-allowed"
         >
           Recall
         </Button>

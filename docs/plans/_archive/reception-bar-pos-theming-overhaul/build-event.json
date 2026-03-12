@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-12T07:18:03.272Z",
+  "why": "The bar is the screen staff use most every day. Some button colours use redundant opacity syntax that obscures intent, and status indicators use the wrong text colour, making them hard to read. Fixing this means every button, status badge, and price tag looks correct and is easy to read."
+}

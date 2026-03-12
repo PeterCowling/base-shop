@@ -1,0 +1,166 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "reception-bar-pos-theming-overhaul",
+  "source_artifact_path": "docs/plans/reception-bar-pos-theming-overhaul/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-bar-pos-theming-overhaul/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The bar is the screen staff use most every day. Some button colours use redundant opacity syntax that obscures intent, and status indicators (like 'order ready' or 'order cancelled') use the wrong text colour, making them hard to read against coloured backgrounds. Fixing this means every button, status badge, and price tag looks correct and is easy to read.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All bar/POS components use valid semantic design tokens with correct foreground/background pairing and no redundant opacity values.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "14 className issues across 8 files; 2 High (wrong fg on status bg), 5 Medium, 7 Low",
+      "gap_or_implication": "Incorrect contrast on CompScreen status rows is the primary visual defect",
+      "carry_forward_or_notes": "Fix all 14 issues; verify with contrast sweep"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Hover/active states on TicketItems identical; focus ring on HeaderControls uses hardcoded white",
+      "gap_or_implication": "Weak interaction feedback in ticket list; focus ring invisible on light backgrounds",
+      "carry_forward_or_notes": "Differentiate hover/active; replace hardcoded focus colours"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth, data, or input changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No logic changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "No existing visual tests for bar area",
+      "gap_or_implication": "No automated regression catch for theming",
+      "carry_forward_or_notes": "Visual verification via contrast sweep post-build"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "No schema or API changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "className changes have zero runtime cost",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Single commit, no migration needed",
+      "gap_or_implication": "Low risk — revert is a single commit",
+      "carry_forward_or_notes": "Standard deploy, no feature flag needed"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The bar/POS area of the reception app has 10 confirmed theming issues across 8 files. The issues fall into four categories: (1) redundant `/100` opacity modifiers, (2) incorrect foreground colour pairing on status backgrounds, (3) arbitrary opacity values where semantic tokens should be used, and (4) weak interaction feedback patterns. The bar is the most-used daily interface for reception staff.",
+    "goals": [
+      "Replace all incorrect foreground/background pairings with semantically correct tokens",
+      "Remove redundant `/100` opacity modifiers for code clarity",
+      "Replace arbitrary opacity values with semantic token alternatives where they exist",
+      "Ensure consistent interaction feedback (distinct hover vs active states)"
+    ],
+    "non_goals": [
+      "Adding dark mode toggle UI (dark mode is handled by CSS variable overrides)",
+      "Redesigning bar layout or component structure",
+      "Changing the shade colour system for product categories (those are correctly themed)",
+      "Adding new tokens to the design system (only using existing ones)"
+    ],
+    "constraints": [
+      "All changes must use existing semantic tokens from `packages/themes/reception/src/tokens.ts` and the base theme",
+      "No arbitrary hex/RGB values allowed (design system hard rule)",
+      "Changes are purely className adjustments — no component API or logic changes"
+    ],
+    "assumptions": [
+      "Opacity modifiers on semantic tokens (`/95`, `/80`) are acceptable per Tailwind v4 design system guidance when used intentionally for layering (e.g., backdrop blur)",
+      "`/100` opacity is redundant (Tailwind default is full opacity) and should be removed for clarity"
+    ],
+    "key_entry_points": [
+      "`apps/reception/src/components/bar/` — bar component root (8 files affected)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis reception-bar-pos-theming-overhaul`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Token resolution chain",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — all tokens verified against base + reception configs",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "CompScreen status colours",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "High: wrong fg on status backgrounds (2 instances)",
+        "Resolution Required": "No — clear fix identified"
+      },
+      {
+        "Scope Area": "OrderList/PayModal opacity",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Low: redundant `/100` modifiers (5 instances)",
+        "Resolution Required": "No — mechanical cleanup"
+      },
+      {
+        "Scope Area": "PaymentSection input styling",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Medium: surface/60 instead of input token; double focus prefix",
+        "Resolution Required": "No — clear fix"
+      },
+      {
+        "Scope Area": "SalesScreen surfaces",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Medium: arbitrary opacity on surface-3; gradient aliases identical",
+        "Resolution Required": "No — clear fix"
+      },
+      {
+        "Scope Area": "HeaderControls focus/bg",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Medium: hardcoded white in focus ring; low-opacity surface on primary bg",
+        "Resolution Required": "No — clear fix"
+      },
+      {
+        "Scope Area": "Ticket secondary text",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Low: opacity modifier instead of semantic token",
+        "Resolution Required": "No — clear fix"
+      },
+      {
+        "Scope Area": "TicketItems interaction",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Low: identical hover/active states",
+        "Resolution Required": "No — clear fix"
+      }
+    ]
+  }
+}

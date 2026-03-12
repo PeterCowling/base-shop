@@ -1,0 +1,180 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "reception-bar-pos-theming-overhaul",
+  "source_artifact_path": "docs/plans/reception-bar-pos-theming-overhaul/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-bar-pos-theming-overhaul/fact-find.md",
+    "plan": "docs/plans/reception-bar-pos-theming-overhaul/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The bar is the screen staff use most every day. Some button colours use redundant opacity syntax that obscures intent, and status indicators use the wrong text colour, making them hard to read. Fixing this means every button, status badge, and price tag looks correct and is easy to read.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All bar/POS components use valid semantic design tokens with correct foreground/background pairing and no redundant opacity values.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "All 14 fixes in one pass — complete visual consistency after one commit",
+      "current_or_option_state": "High fixes first, then incremental improvement",
+      "gap_or_implication": "Option A: immediate full consistency",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Hover/active and focus ring fixed atomically",
+      "current_or_option_state": "Focus ring fixed in Medium tier, hover/active in Low tier",
+      "gap_or_implication": "Option A: all interaction fixes land together",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "One contrast sweep verifies all fixes",
+      "current_or_option_state": "Three sweeps needed (one per tier)",
+      "gap_or_implication": "Option A: one verification pass",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single commit revert",
+      "current_or_option_state": "Granular revert per tier",
+      "gap_or_implication": "Option B slightly better, but low-risk className changes make this moot",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "14 theming issues across 8 bar/POS files need correction. The decision is the implementation strategy: batch all fixes in a single pass vs. split by severity tier. Both approaches use the same target tokens — only execution ordering differs.",
+    "goals": [
+      "Fix 2 High-severity contrast issues (CompScreen status foregrounds)",
+      "Clean 5 Medium-severity token/opacity issues (PaymentSection, SalesScreen, HeaderControls)",
+      "Clean 7 Low-severity redundant opacity and interaction issues (OrderList, PayModal, Ticket, TicketItems)"
+    ],
+    "non_goals": [
+      "Redesigning bar layout or component structure",
+      "Changing product category shade colours",
+      "Adding new tokens to the design system"
+    ],
+    "constraints": [
+      "All changes must use existing semantic tokens — no new token definitions",
+      "Purely className adjustments — no component API changes",
+      "Preserve intentional opacity on backdrop-blur elements (bg-primary-main/95)"
+    ],
+    "assumptions": [
+      "Single commit per approach is acceptable (no feature flag needed for className changes)"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Risk of visual regression",
+        "Why it matters": "Bar is used daily by staff — broken styles disrupt operations",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Review effort",
+        "Why it matters": "className-only changes are easy to review but many files = larger diff",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Completion speed",
+        "Why it matters": "Staff benefit from fixes sooner",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Rollback simplicity",
+        "Why it matters": "Must be easy to revert if unexpected",
+        "Weight/priority": "Low"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Single-pass batch",
+        "Description": "Fix all 14 issues in one commit across all 8 files",
+        "Upside": "Fastest delivery; single atomic commit; one review cycle",
+        "Downside": "Larger diff (8 files touched simultaneously)",
+        "Key risks": "If one fix is wrong, the whole commit needs revert or patch",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Severity-tiered",
+        "Description": "Three commits: High first (CompScreen), then Medium, then Low",
+        "Upside": "Incremental delivery; High fixes land first; smaller per-commit diffs",
+        "Downside": "Three review cycles; slightly more git overhead",
+        "Key risks": "Intermediate states have mixed old/new theming",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C: File-by-file",
+        "Description": "One commit per affected file",
+        "Upside": "Maximum granularity for revert",
+        "Downside": "8 separate commits; excessive overhead for className changes",
+        "Key risks": "Over-engineering for the scope",
+        "Viable?": "No — eliminated"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — single-pass batch",
+      "Why this wins": "All 14 issues are className string replacements with known target values. The risk of any individual fix being wrong is very low (tokens are verified). A single atomic commit delivers full visual consistency immediately and requires only one verification pass. The overhead of tiered commits is not justified for this scope.",
+      "What it depends on": "Each fix must be verified against the token resolution chain documented in the fact-find. Intentional opacity on backdrop-blur elements must be preserved.",
+      "Option B (severity-tiered)": "Unnecessary overhead. Three commits and three verification passes for changes that are all low-risk className replacements. The only benefit (granular revert) is not meaningful when every fix has a verified target token.",
+      "Option C (file-by-file)": "Over-engineering. 8 commits for className changes is excessive."
+    },
+    "rejected_approaches": [
+      "**Option B (severity-tiered):** Unnecessary overhead. Three commits and three verification passes for changes that are all low-risk className replacements. The only benefit (granular revert) is not meaningful when every fix has a verified target token.",
+      "**Option C (file-by-file):** Over-engineering. 8 commits for className changes is excessive."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Single IMPLEMENT task covering all 14 fixes across 8 files",
+        "Each fix has a specific old → new className mapping from the fact-find"
+      ],
+      "validation_implications": [
+        "Visual contrast sweep after commit (both light and dark mode)",
+        "Typecheck and lint must pass (className changes don't affect these, but verify)"
+      ],
+      "sequencing_constraints": [
+        "None — all fixes are independent; no ordering dependency between files"
+      ],
+      "risks_to_carry_forward": [
+        "HeaderControls `bg-surface/10` replacement needs visual confirmation on primary-main background"
+      ]
+    }
+  }
+}

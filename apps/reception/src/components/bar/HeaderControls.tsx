@@ -30,7 +30,7 @@ const BTN_BASE =
   "inline-flex items-center justify-center px-3 py-2 rounded-md " +
   "font-semibold uppercase tracking-wide select-none " +
   "transition-colors duration-150 focus-visible:outline-none " +
-  "focus-visible:ring-2 focus-visible:ring-white/70";
+  "focus-visible:ring-2 focus-visible:ring-primary-fg/70";
 
 const MENU_BTN =
   `${BTN_BASE} text-primary-fg/70 hover:text-primary-fg/90 ` +
@@ -40,7 +40,7 @@ const MENU_BTN =
   "after:transition-transform after:duration-200 " +
   "data-[active=true]:after:scale-x-100";
 
-const ACTION_BTN = `${BTN_BASE} bg-surface/10 text-primary-fg hover:bg-surface/20 disabled:opacity-50`;
+const ACTION_BTN = `${BTN_BASE} bg-primary-fg/10 text-primary-fg hover:bg-primary-fg/20 disabled:opacity-50`;
 
 /* -------------------------------------------------------------------------- *
  *                                COMPONENT                                   *

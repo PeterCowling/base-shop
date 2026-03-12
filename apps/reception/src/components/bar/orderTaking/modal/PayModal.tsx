@@ -36,7 +36,7 @@ function SelectCard({ selected, onClick, label, Icon }: SelectCardProps) {
       className={cn(
         "flex flex-1 flex-col items-center justify-center gap-2 rounded-lg border-2 p-5 min-h-24 transition-all duration-150 active:scale-95",
         selected
-          ? "border-primary-main/100 bg-primary-soft/100 text-primary-main/100"
+          ? "border-primary-main bg-primary-soft text-primary-main"
           : "border-border-2 bg-surface-2 text-muted-foreground hover:border-border-strong"
       )}
     >
@@ -120,7 +120,7 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
           <button
             type="button"
             onClick={handleConfirmClick}
-            className="flex-1 min-h-11 rounded-lg bg-primary-main/100 px-4 py-2 text-sm font-bold text-primary-fg/100 transition-all duration-150 hover:opacity-90 active:scale-95"
+            className="flex-1 min-h-11 rounded-lg bg-primary-main px-4 py-2 text-sm font-bold text-primary-fg transition-all duration-150 hover:opacity-90 active:scale-95"
           >
             Confirm Payment
           </button>

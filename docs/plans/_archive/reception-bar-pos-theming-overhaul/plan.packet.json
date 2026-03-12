@@ -1,0 +1,136 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "reception-bar-pos-theming-overhaul",
+  "source_artifact_path": "docs/plans/reception-bar-pos-theming-overhaul/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-bar-pos-theming-overhaul/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The bar is the screen staff use most every day. Some button colours use redundant opacity syntax that obscures intent, and status indicators use the wrong text colour, making them hard to read. Fixing this means every button, status badge, and price tag looks correct and is easy to read.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All bar/POS components use valid semantic design tokens with correct foreground/background pairing and no redundant opacity values.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required — fix all 14 className issues",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Primary focus of this plan",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required — fix hover/active and focus ring",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "TicketItems interaction, HeaderControls focus",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no auth, data, or input changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no logic changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — visual verification post-build",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Contrast sweep in both modes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A — no schema or API changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — className changes have zero runtime cost",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required — single commit, standard deploy",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Revert = single git revert",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Fix 14 theming issues across 8 bar/POS component files in a single atomic commit. All fixes are className string replacements using verified semantic tokens — no component API changes, no new token definitions. The approach (Option A: single-pass batch) was chosen in analysis for fastest delivery and simplest verification.",
+    "goals": [
+      "Fix 2 High-severity contrast issues (CompScreen status foregrounds)",
+      "Clean 5 Medium-severity token/opacity issues (PaymentSection, SalesScreen, HeaderControls)",
+      "Clean 7 Low-severity redundant opacity and interaction issues (OrderList, PayModal, Ticket, TicketItems)"
+    ],
+    "non_goals": [
+      "Redesigning bar layout or component structure",
+      "Changing product category shade colours",
+      "Adding new tokens to the design system"
+    ],
+    "constraints": [
+      "All changes use existing semantic tokens only",
+      "Purely className adjustments — no component API changes",
+      "Preserve intentional opacity on backdrop-blur elements (bg-primary-main/95)"
+    ],
+    "assumptions": [
+      "Single commit is acceptable for className-only changes"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Single atomic commit touching all 8 files with all 14 className fixes",
+      "Why planning is not reopening option selection:",
+      "Analysis conclusively eliminated tiered (B) and file-by-file (C) approaches; no new information changes that assessment"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Fix all bar/POS theming issues in single pass",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 92,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "className fixes across 8 files in `apps/reception/src/components/bar/`",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

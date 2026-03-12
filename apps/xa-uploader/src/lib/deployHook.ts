@@ -389,15 +389,11 @@ async function triggerDeployHookOnce(params: {
       storefrontId: params.storefrontId,
       responseBodyText: bodyText,
     });
-    if (!validation.ok) {
-      const failedValidation = validation as Extract<
-        ReturnType<typeof validateDeployHookSuccess>,
-        { ok: false }
-      >;
+    if (validation.ok === false) {
       return {
         ok: false,
         transient: false,
-        reason: details ? `${failedValidation.reason}:${details}` : failedValidation.reason,
+        reason: details ? `${validation.reason}:${details}` : validation.reason,
         httpStatus: response.status,
       };
     }
@@ -644,16 +640,16 @@ export async function maybeTriggerXaBDeploy(params: {
       };
     }
 
-    const failedAttempt = result as Extract<DeployHookAttemptResult, { ok: false }>;
-    if (!failedAttempt.transient || attempt >= maxAttempts) {
-      uploaderLog("error", "deploy_hook_failed", { storefront: params.storefrontId, reason: failedAttempt.reason, httpStatus: failedAttempt.httpStatus, attempt });
+    if (result.ok !== false) continue;
+    if (!result.transient || attempt >= maxAttempts) {
+      uploaderLog("error", "deploy_hook_failed", { storefront: params.storefrontId, reason: result.reason, httpStatus: result.httpStatus, attempt });
       return {
         status: "failed",
         reason:
           attempt > 1
-            ? `${failedAttempt.reason} (after ${attempt} attempts)`
-            : failedAttempt.reason,
-        httpStatus: failedAttempt.httpStatus,
+            ? `${result.reason} (after ${attempt} attempts)`
+            : result.reason,
+        httpStatus: result.httpStatus,
         attempts: attempt,
       };
     }

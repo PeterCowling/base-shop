@@ -100,8 +100,17 @@ function FilterSelect({
         setOpen(false);
       }
     }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setOpen(false);
+      }
+    }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
   }, [open]);
 
   const allOptions = [{ value: "", label: placeholder }, ...options];
@@ -112,6 +121,8 @@ function FilterSelect({
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
         className="flex min-h-11 min-w-11 w-full items-center justify-between rounded-md border border-gate-border bg-gate-input px-3 py-2 text-sm transition-colors focus:border-gate-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent focus-visible:ring-offset-1"
         data-testid={testId}
       >
@@ -120,9 +131,9 @@ function FilterSelect({
         <span className="text-xs text-gate-muted">{open ? "▴" : "▾"}</span>
       </button>
       {open ? (
-        <ul className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md border border-gate-border bg-gate-surface py-1 shadow-elevation-2">
+        <ul role="listbox" className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md border border-gate-border bg-gate-surface py-1 shadow-elevation-2">
           {allOptions.map((opt) => (
-            <li key={opt.value}>
+            <li key={opt.value} role="option" aria-selected={opt.value === value}>
               <button
                 type="button"
                 onClick={() => {

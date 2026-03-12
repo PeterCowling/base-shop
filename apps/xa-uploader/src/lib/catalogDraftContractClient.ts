@@ -7,7 +7,7 @@ import {
   withAutoCatalogDraftFields,
 } from "@acme/lib/xa";
 
-import { resolveContractRoot } from "./catalogContractUtils";
+import { buildCatalogContractUrl } from "./catalogContractUtils";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 import { type CurrencyRates,parseCurrencyRatesOrNull } from "./currencyRates";
 import { isRecord } from "./typeGuards";
@@ -57,10 +57,6 @@ export class CatalogDraftConflictError extends Error {
   override name = "CatalogDraftConflictError";
 }
 
-function getCatalogContractBaseUrl(): string {
-  return (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
-}
-
 function getCatalogContractWriteToken(): string {
   return (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
 }
@@ -71,17 +67,14 @@ function getCatalogContractReadToken(): string {
 
 
 function buildContractUrl(pathname: string): string {
-  const baseUrl = getCatalogContractBaseUrl();
-  if (!baseUrl) {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
-  }
-  let root: URL;
-  try {
-    root = resolveContractRoot(baseUrl);
-  } catch {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.");
-  }
-  return new URL(pathname, root).toString();
+  return buildCatalogContractUrl(pathname, (reason) =>
+    new CatalogDraftContractError(
+      "unconfigured",
+      reason === "missing"
+        ? "XA_CATALOG_CONTRACT_BASE_URL is not configured."
+        : "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.",
+    ),
+  );
 }
 
 function buildDraftUrl(storefront: XaCatalogStorefront, suffix = ""): string {
@@ -313,9 +306,8 @@ export async function writeCloudDraftSnapshot(params: {
     });
   }
 
-  const payload = (await response.json().catch(() => null)) as {
-    docRevision?: unknown;
-  } | null;
+  const raw: unknown = await response.json().catch(() => null);
+  const payload = isRecord(raw) ? raw : null;
 
   const docRevision =
     payload && typeof payload.docRevision === "string" && payload.docRevision.trim()
@@ -491,7 +483,7 @@ export function upsertProductInCloudSnapshot(params: {
   const parsed = catalogProductDraftSchema.parse(params.product);
   const normalizedSlug = getProductNormalizedSlug(parsed);
   if (!normalizedSlug) {
-    throw new Error("Product id \"\" is invalid.");
+    throw new Error("Could not derive a valid product slug from the provided title or slug field.");
   }
 
   const id = (parsed.id ?? "").trim() || crypto.randomUUID();

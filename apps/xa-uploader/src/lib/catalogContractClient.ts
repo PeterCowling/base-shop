@@ -4,7 +4,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 import { toPositiveInt } from "@acme/lib";
 
-import { resolveContractRoot } from "./catalogContractUtils";
+import { buildCatalogContractUrl } from "./catalogContractUtils";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 
 type CatalogContractResponse = {
@@ -71,23 +71,16 @@ export function getCatalogContractReadiness(): { configured: boolean; errors: st
 
 
 function buildCatalogContractPublishUrl(storefrontId: XaCatalogStorefront): string {
-  const baseUrl = getCatalogContractBaseUrl();
-  if (!baseUrl) {
-    throw new CatalogPublishError(
-      "unconfigured",
-      "XA_CATALOG_CONTRACT_BASE_URL is not configured.",
-    );
-  }
-
-  try {
-    const root = resolveContractRoot(baseUrl);
-    return new URL(`catalog/${encodeURIComponent(storefrontId)}`, root).toString();
-  } catch {
-    throw new CatalogPublishError(
-      "unconfigured",
-      "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.",
-    );
-  }
+  return buildCatalogContractUrl(
+    `catalog/${encodeURIComponent(storefrontId)}`,
+    (reason) =>
+      new CatalogPublishError(
+        "unconfigured",
+        reason === "missing"
+          ? "XA_CATALOG_CONTRACT_BASE_URL is not configured."
+          : "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.",
+      ),
+  );
 }
 
 function asServiceBindingRequestUrl(value: string): string {

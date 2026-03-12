@@ -359,6 +359,9 @@ const messages = {
     uploadImageMakeMain: "Make main image",
     uploadImageChange: "Change",
     uploadImageRemove: "Remove",
+    imageAltDefaultProduct: "Product",
+    imageAltDefaultMain: "{title} main image",
+    imageAltDefaultPhoto: "{title} photo {index}",
 
     editFilterTitle: "Find product",
     editFilterAllBrands: "All brands",
@@ -808,6 +811,9 @@ const messages = {
     uploadImageMakeMain: "设为主图",
     uploadImageChange: "更换",
     uploadImageRemove: "移除",
+    imageAltDefaultProduct: "产品",
+    imageAltDefaultMain: "{title} 主图",
+    imageAltDefaultPhoto: "{title} 图片 {index}",
 
     editFilterTitle: "查找商品",
     editFilterAllBrands: "所有品牌",

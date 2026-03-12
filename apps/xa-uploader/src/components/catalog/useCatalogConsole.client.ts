@@ -121,9 +121,11 @@ async function loadCatalogFromServer(params: {
   setDraft: React.Dispatch<React.SetStateAction<CatalogProductDraftInput>>;
   setDraftRevision: React.Dispatch<React.SetStateAction<string | null>>;
   draftImageBaselineRef: React.MutableRefObject<CatalogProductDraftInput | null>;
+  signal?: AbortSignal;
 }): Promise<CatalogListResponse> {
   const response = await fetch(
     `/api/catalog/products?storefront=${encodeURIComponent(params.storefront)}`,
+    params.signal ? { signal: params.signal } : undefined,
   );
   const data = (await response.json()) as CatalogListResponse;
   if (!response.ok || !data.ok) {
@@ -153,6 +155,13 @@ async function waitForBusyToClear(
     if (!busyLockRef.current) return;
     await sleep(50);
   }
+}
+
+function useStorefrontPersistence(storefront: XaCatalogStorefront) {
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("xa_uploader_storefront", storefront);
+  }, [storefront]);
 }
 
 function useCatalogConsoleState() {
@@ -201,13 +210,13 @@ function useCatalogConsoleState() {
   const [isCatalogHydrating, setIsCatalogHydrating] = React.useState(false);
   const catalogHydrationCounterRef = React.useRef(0);
 
-  const loadSession = React.useCallback(async () => {
-    const response = await fetch("/api/uploader/session");
+  const loadSession = React.useCallback(async (signal?: AbortSignal) => {
+    const response = await fetch("/api/uploader/session", signal ? { signal } : undefined);
     const data = (await response.json()) as SessionState & { ok?: boolean };
     setSession({ authenticated: Boolean(data.authenticated) });
   }, []);
 
-  const loadCatalog = React.useCallback(async () => {
+  const loadCatalog = React.useCallback(async (signal?: AbortSignal) => {
     await loadCatalogFromServer({
       storefront,
       t,
@@ -217,15 +226,17 @@ function useCatalogConsoleState() {
       setDraft,
       setDraftRevision,
       draftImageBaselineRef,
+      signal,
     });
   }, [selectedSlug, storefront, t]);
 
-  const loadSyncReadiness = React.useCallback(async () => {
+  const loadSyncReadiness = React.useCallback(async (signal?: AbortSignal) => {
     if (uploaderMode !== "internal") return;
     setSyncReadiness((prev) => ({ ...prev, checking: true, error: null }));
     try {
       const response = await fetch(
         `/api/catalog/sync?storefront=${encodeURIComponent(storefront)}`,
+        signal ? { signal } : undefined,
       );
       const data = (await response.json()) as SyncReadinessResponse;
       if (!response.ok || !data.ok) {
@@ -256,31 +267,33 @@ function useCatalogConsoleState() {
   }, [storefront, t, uploaderMode]);
 
   React.useEffect(() => {
-    loadSession().catch(() => setSession({ authenticated: false }));
+    const ac = new AbortController();
+    loadSession(ac.signal).catch(() => { if (!ac.signal.aborted) setSession({ authenticated: false }); });
+    return () => ac.abort();
   }, [loadSession]);
 
   React.useEffect(() => {
     if (!session?.authenticated) return;
+    const controller = new AbortController();
     const requestId = ++catalogHydrationCounterRef.current;
     setIsCatalogHydrating(true);
-    loadCatalog()
-      .catch((err) =>
+    loadCatalog(controller.signal)
+      .catch((err) => {
+        if (controller.signal.aborted) return;
         updateActionFeedback(setActionFeedback, "draft", {
           kind: "error",
           message: errorToMessage(err, t("loadFailed")),
-        }),
-      )
+        });
+      })
       .finally(() => {
         if (catalogHydrationCounterRef.current === requestId) {
           setIsCatalogHydrating(false);
         }
       });
+    return () => controller.abort();
   }, [loadCatalog, session, t, setActionFeedback]);
 
-  React.useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("xa_uploader_storefront", storefront);
-  }, [storefront]);
+  useStorefrontPersistence(storefront);
 
   React.useEffect(() => {
     if (uploaderMode !== "internal") return;
@@ -288,7 +301,9 @@ function useCatalogConsoleState() {
       setSyncReadiness(createInitialSyncReadinessState());
       return;
     }
-    loadSyncReadiness().catch(() => null);
+    const controller = new AbortController();
+    loadSyncReadiness(controller.signal).catch(() => null);
+    return () => controller.abort();
   }, [loadSyncReadiness, session?.authenticated, storefront, uploaderMode]);
 
   const resetAutosaveState = React.useCallback(() => {

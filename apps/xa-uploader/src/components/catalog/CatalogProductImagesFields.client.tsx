@@ -146,15 +146,20 @@ function resolveImageSrc(entryPath: string, previews: Map<string, string>): stri
   return `/${normalized}`;
 }
 
-function buildDefaultImageAltText(draft: CatalogProductDraftInput, imageIndex: number): string {
-  const baseTitle = (draft.title ?? "").trim() || "Product";
-  if (imageIndex === 0) return `${baseTitle} main image`;
-  return `${baseTitle} photo ${imageIndex + 1}`;
+function buildDefaultImageAltText(
+  draft: CatalogProductDraftInput,
+  imageIndex: number,
+  t: ReturnType<typeof useUploaderI18n>["t"],
+): string {
+  const baseTitle = (draft.title ?? "").trim() || t("imageAltDefaultProduct");
+  if (imageIndex === 0) return t("imageAltDefaultMain", { title: baseTitle });
+  return t("imageAltDefaultPhoto", { title: baseTitle, index: String(imageIndex + 1) });
 }
 
 function appendImageDraftEntry(
   draft: CatalogProductDraftInput,
   imageKey: string,
+  t: ReturnType<typeof useUploaderI18n>["t"],
 ): CatalogProductDraftInput {
   const currentFiles = splitList(draft.imageFiles ?? "");
   const currentAlts = splitList(draft.imageAltTexts ?? "");
@@ -163,7 +168,7 @@ function appendImageDraftEntry(
   return {
     ...draft,
     imageFiles: [...currentFiles, imageKey].join("|"),
-    imageAltTexts: [...currentAlts, buildDefaultImageAltText(draft, nextIndex)].join("|"),
+    imageAltTexts: [...currentAlts, buildDefaultImageAltText(draft, nextIndex, t)].join("|"),
   };
 }
 
@@ -211,10 +216,16 @@ function usePersistedImageCleanup(params: {
   storefront: XaCatalogStorefront;
 }) {
   const lastAutosaveSavedAtRef = useRef<number | null>(params.lastAutosaveSavedAt);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
     lastAutosaveSavedAtRef.current = params.lastAutosaveSavedAt;
   }, [params.lastAutosaveSavedAt]);
+
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
 
   return useCallback(async (pathValue: string, queuedAt: number) => {
     const key = pathValue.trim().replace(/^\/+/, "");
@@ -225,10 +236,11 @@ function usePersistedImageCleanup(params: {
     if (!persistedAlready) {
       const deadline = Date.now() + AUTOSAVE_PERSIST_TIMEOUT_MS;
       let persisted = false;
-      while (Date.now() < deadline) {
+      while (Date.now() < deadline && mountedRef.current) {
         await new Promise<void>((resolve) => {
           setTimeout(resolve, AUTOSAVE_PERSIST_POLL_MS);
         });
+        if (!mountedRef.current) return;
         persisted = typeof lastAutosaveSavedAtRef.current === "number" &&
           lastAutosaveSavedAtRef.current >= queuedAt;
         if (persisted) break;
@@ -236,6 +248,7 @@ function usePersistedImageCleanup(params: {
       if (!persisted) return;
     }
 
+    if (!mountedRef.current) return;
     const requestParams = new URLSearchParams({ storefront: params.storefront, key });
     try {
       const response = await fetch(`/api/catalog/images?${requestParams.toString()}`, {
@@ -814,7 +827,7 @@ export function useImageUploadController({
           return next;
         });
 
-        const nextDraft = appendImageDraftEntry(draft, json.key);
+        const nextDraft = appendImageDraftEntry(draft, json.key, t);
         notifyImageDraftChange(nextDraft, onChange, onImageUploaded);
         setPendingAutosaveStartedAt(Date.now());
         setUploadStatus("persisting");

@@ -1,0 +1,38 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/caryina-i18n-ui-chrome/plan.md",
+      "line": "40",
+      "message": "The plan intentionally adds more manual data to site-content.generated.json while leaving the generator untouched. That file already carries a _manualExtension warning, and the materializer rewrites the payload wholesale. As written, the new chrome block will be lost on the next regeneration, so this is not a durable source-of-truth design."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/caryina-i18n-ui-chrome/plan.md",
+      "line": "203",
+      "message": "TASK-02 says layout will pass strings to NotifyMeForm, but NotifyMeForm is actually rendered from product/[slug]/page.tsx, not from layout.tsx. The task's deliverable/affects lists omit the product page entirely."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/caryina-i18n-ui-chrome/plan.md",
+      "line": "140",
+      "message": "The proposed chrome schema misses existing hardcoded accessibility strings in scope, including aria-label='Primary' in Header.tsx and aria-label='Footer' in SiteFooter.tsx."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/caryina-i18n-ui-chrome/plan.md",
+      "line": "176",
+      "message": "NotifyMeForm will render localized error messages, but /api/notify-me returns English strings like 'Consent required' and 'Invalid email' from route.ts. Without localizing API responses or mapping server error codes to locale-specific client copy, non-EN users will still see English validation errors."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/caryina-i18n-ui-chrome/plan.md",
+      "line": "125",
+      "message": "The validation command is written as pnpm typecheck --filter caryina, but the repo runbook requires pnpm --filter <pkg> typecheck."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 6,
+  "round": 1
+}

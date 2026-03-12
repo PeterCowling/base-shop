@@ -1,0 +1,177 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "brikette-seo-audit-remediation",
+  "source_artifact_path": "docs/plans/brikette-seo-audit-remediation/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/brikette-seo-audit-remediation/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "SEO tech audit identified crawl waste (24 dead URLs in sitemap), content quality degradation (raw i18n keys visible to Google on transport guide pages), and sparse freshness signals (77% of sitemap without lastmod). These directly impact search indexing quality for a 1,246-URL multilingual travel site.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All sitemap URLs return 200, no i18n keys leak in SSR HTML for how-to-get-here pages, /assistance redirects correctly, lastmod coverage ≥60%",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — build-time/config changes only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No rendering changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — no interaction changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "SSR fix improves content quality for JS-off users",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no auth/input changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no runtime logging",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — extend sitemap and SSR audit tests",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-04",
+      "gap_or_implication": "Each task includes specific test assertions",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required — sitemap XML unchanged; guide content JSON `lastUpdated` field backfill",
+      "current_or_option_state": "TASK-04",
+      "gap_or_implication": "Existing field, no schema change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — build-time changes only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required — standard deploy, all independently reversible",
+      "current_or_option_state": "All",
+      "gap_or_implication": "Revert commit to rollback any individual fix",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Fix 4 open findings from the hostel-positano.com SEO technical audit (2026-03-08, fact-checked 2026-03-12). Remove 24 dead `/directions/*` URLs from sitemap, fix i18n SSR key leakage on how-to-get-here pages, add missing `/assistance` redirect, and improve lastmod coverage from 23% to ≥60%. All fixes are independent S-effort code/config changes in the brikette app.",
+    "goals": [
+      "All sitemap URLs return 200 (zero 404s)",
+      "No raw i18n keys in SSR HTML for how-to-get-here pages",
+      "`/assistance` (bare, no lang prefix) redirects to `/en/help`",
+      "`lastmod` coverage ≥60% of sitemap URLs"
+    ],
+    "non_goals": [
+      "Keyword research, content strategy, SERP analysis (lp-seo Phases 1-3)",
+      "Google Search Console integration",
+      "Core Web Vitals optimization"
+    ],
+    "constraints": [
+      "Tests run in CI only",
+      "Static export build — `_redirects` is the redirect mechanism (no middleware)",
+      "`assertNoBulkTodayLastmod()` guard rejects ≥95% same-day entries in batches of ≥50"
+    ],
+    "assumptions": [
+      "i18n leakage is a namespace preload ordering issue, not a missing translation",
+      "Git history is available locally for lastmod date extraction"
+    ],
+    "selected_approach": [
+      "What was chosen: Execute all 4 fixes as independent tasks. Tasks 1-3 are straightforward code/config changes. Task 4 involves scripted bulk content update using git dates.",
+      "Why planning is not reopening option selection: All options thoroughly evaluated in analysis. Chosen approaches are strictly superior to rejected alternatives."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Remove dead directions URLs from sitemap and add redirect",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `apps/brikette/scripts/generate-public-seo.ts` and `apps/brikette/public/_redirects`",
+        "affects": "`apps/brikette/scripts/generate-public-seo.ts`, `apps/brikette/public/_redirects`, `[readonly] apps/brikette/src/data/how-to-get-here/routes.json`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Fix i18n SSR key leakage on how-to-get-here pages",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in brikette i18n/guide rendering pipeline",
+        "affects": "`apps/brikette/src/app/[lang]/how-to-get-here/[slug]/page.tsx`, `apps/brikette/src/app/_lib/guide-i18n-bundle.ts`, `[readonly] apps/brikette/src/components/guides/PlanChoice.tsx`, `[readonly] apps/brikette/src/components/guides/TransportNotice.tsx`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add `/assistance` → `/en/help` redirect",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "config-change in `apps/brikette/public/_redirects`",
+        "affects": "`apps/brikette/public/_redirects`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Backfill `lastmod` in guide content JSON using git dates",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "script + content JSON updates across `apps/brikette/src/locales/*/guides/content/`",
+        "affects": "`apps/brikette/src/locales/*/guides/content/*.json`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-03",
+      "TASK-04"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-12T10:06:15.293Z",
+  "plan_slug": "caryina-i18n-ui-chrome",
+  "review_cycle_key": "caryina-i18n-ui-chrome",
+  "source_path": "scripts/docs/plans/caryina-i18n-ui-chrome/pattern-reflection.user.md",
+  "build_origin_status": "source_missing",
+  "failures": [
+    {
+      "code": "source_missing",
+      "message": "scripts/docs/plans/caryina-i18n-ui-chrome/pattern-reflection.user.md not found"
+    }
+  ],
+  "entries": []
+}

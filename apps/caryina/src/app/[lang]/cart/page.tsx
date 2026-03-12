@@ -5,8 +5,10 @@ import { useParams } from "next/navigation";
 
 import { useCart } from "@acme/platform-core/contexts/CartContext";
 
-function formatEur(cents: number) {
-  return new Intl.NumberFormat("de-DE", {
+const LOCALE_MAP: Record<string, string> = { en: "en-IE", de: "de-DE", it: "it-IT" };
+
+function formatEur(cents: number, lang: string) {
+  return new Intl.NumberFormat(LOCALE_MAP[lang] ?? "en-IE", {
     style: "currency",
     currency: "EUR",
   }).format(cents / 100);
@@ -57,7 +59,7 @@ export default function CartPage() {
           <li key={key} className="flex items-center gap-4 py-4">
             <div className="flex-1 space-y-0.5">
               <p className="font-medium">{String(line.sku.title)}</p>
-              <p className="text-sm text-muted-foreground">{formatEur(line.sku.price)}</p>
+              <p className="text-sm text-muted-foreground">{formatEur(line.sku.price, lang)}</p>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -81,7 +83,7 @@ export default function CartPage() {
               </button>
             </div>
             <p className="w-20 text-end text-sm font-medium">
-              {formatEur(line.sku.price * line.qty)}
+              {formatEur(line.sku.price * line.qty, lang)}
             </p>
             <button
               type="button"
@@ -97,7 +99,7 @@ export default function CartPage() {
       <div className="flex items-center justify-between border-t pt-4">
         <p className="font-medium">Total</p>
         <p className="text-xl font-medium" data-cy="cart-total">
-          {formatEur(total)}
+          {formatEur(total, lang)}
         </p>
       </div>
       <div className="flex flex-wrap gap-4">

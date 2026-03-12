@@ -191,7 +191,7 @@ export default async function ProductDetailPage({
                   </div>
                   <div className="flex gap-2">
                     <dt className="shrink-0 font-medium text-foreground">Origin</dt>
-                    <dd>Designed in Positano, Italy</dd>
+                    <dd>{trustStrip?.origin ?? "Designed in Positano, Italy"}</dd>
                   </div>
                 </dl>
               </section>

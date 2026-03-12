@@ -106,15 +106,46 @@ Expected artifact format: standard unified diff (suitable for `git apply`).
 
 ### 4. Apply window
 
-> **Status: pending TASK-05 spike validation.** The apply window contract is described here for reference. Do not rely on it for production use until TASK-05 confirms fingerprint and lock-window behavior.
+Validated by TASK-05 (2026-03-12). Evidence: `docs/plans/writer-lock-patch-return-offload/spike-05-apply-window.md`.
 
-Intended apply sequence (to be validated by TASK-05):
-1. Verify `$PATCH_FILE` is non-empty and parseable (`git apply --check "$PATCH_FILE"`).
-2. Acquire writer lock (if not already held).
-3. Capture repo fingerprint before apply.
-4. Apply: `git apply "$PATCH_FILE"`.
-5. Capture repo fingerprint after apply and verify only expected files changed.
-6. Commit task-scoped files via `scripts/agents/with-writer-lock.sh`.
+The writer lock is acquired **before** the Codex run (step 3) and held continuously through apply and commit. No release/reacquire is needed.
+
+Apply sequence (orchestrator-side, while writer lock is held):
+
+```bash
+# 1. Verify patch is non-empty
+if [[ ! -s "$PATCH_FILE" ]]; then
+  echo "ERROR: empty patch artifact — falling back to inline" >&2
+  # trigger fallback per § 5
+fi
+
+# 2. Verify patch is parseable (try standard format first, then --no-index fallback)
+#    Note: Codex may emit diff -u headers without the a/b/ prefix convention.
+#    git apply --check catches this before any mutation.
+git apply --check "$PATCH_FILE" \
+  || git apply --check --no-index "$PATCH_FILE" \
+  || { echo "ERROR: git apply --check failed — falling back to inline" >&2; }
+
+# 3. Capture fingerprint before apply
+FINGERPRINT_BEFORE=$(git rev-parse HEAD)
+
+# 4. Apply (same --no-index fallback)
+git apply "$PATCH_FILE" \
+  || git apply --no-index "$PATCH_FILE"
+
+# 5. Fingerprint after — verify containment
+CHANGED=$(git diff --name-only)
+# Cross-check $CHANGED against task Affects list.
+# If any file in $CHANGED is outside the Affects list: treat as allowlist violation.
+# Run `git restore <changed-files>` and fall back to inline.
+
+# 6. Commit task-scoped files (lock already held — no second acquire)
+git add <task-affects-files>
+git commit -m "..."
+# Then run git diff --check -- to confirm no whitespace errors in staged diff.
+```
+
+Fingerprint summary: `git rev-parse HEAD` (pre-apply) and `git diff --name-only` (post-apply) are the two sufficient signals. Pre-apply HEAD identifies the exact tree state; post-apply name-only diff is the containment check.
 
 ### 5. Fallback policy
 

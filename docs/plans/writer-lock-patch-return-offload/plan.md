@@ -34,7 +34,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - [x] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
 - [x] TASK-05: Spike the serialized apply window with fingerprint checks
 - [x] TASK-06: Horizon checkpoint - confirm apply-window behavior and actualize pilot confidence
-- [ ] TASK-07: Pilot `build-biz` on patch-return with explicit shared-checkout fallback
+- [x] TASK-07: Pilot `build-biz` on patch-return with explicit shared-checkout fallback
 
 ## Goals
 - Make at least one `lp-do-build` lane use patch-return instead of shared-checkout mutation by default.
@@ -94,7 +94,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 | TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 82% | M | Complete (2026-03-12) | TASK-03 | TASK-05 |
 | TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 82% | S | Complete (2026-03-12) | TASK-04 | TASK-06 |
 | TASK-06 | CHECKPOINT | Reassess pilot wiring from TASK-05 apply-window evidence | 95% | S | Complete (2026-03-12) | TASK-05 | TASK-07 |
-| TASK-07 | IMPLEMENT | Wire `build-biz` to the patch-return pilot with explicit shared-checkout fallback | 84% | M | Pending | TASK-06 | - |
+| TASK-07 | IMPLEMENT | Wire `build-biz` to the patch-return pilot with explicit shared-checkout fallback | 84% | M | Complete (2026-03-12) | TASK-06 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -563,7 +563,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `.claude/skills/lp-do-build/modules/build-biz.md`, `.claude/skills/_shared/build-offload-protocol.md`, `scripts/agents/build-offload-patch-return.sh`, `[readonly] scripts/git-hooks/writer-lock-window.sh`
 - **Depends on:** TASK-06
 - **Blocks:** -
@@ -595,6 +595,14 @@ This plan implements the next slice identified by `writer-lock-operational-harde
   - active executor docs and protocol stay in sync with the helper behavior
 - **Notes / references:**
   - `docs/plans/writer-lock-patch-return-offload/spike-05-apply-window.md`
+#### Build Evidence (2026-03-12)
+- Route: inline (build-code.md)
+- Deliverables modified: `build-offload-protocol.md` (§4 Apply window activated), `build-biz.md` (Offload Route updated, post-execution steps unconditional)
+- TC-01: build-biz Offload Route references Patch-Return Pilot Contract — PASS
+- TC-02: fallback documented ("`CODEX_OK=0`, or when pilot exits non-zero, or `$PATCH_FILE` is empty, or `git apply --check` fails") — PASS
+- TC-03: `git diff --check --` referenced in commit gate step — PASS
+- Stale "pending TASK-05" marker removed from §4 — confirmed absent
+- `--no-index` fallback documented in §4 apply sequence
 
 ## Risks & Mitigations
 - The current Codex CLI may not have a safe non-interactive equivalent to the old `-a never` pattern.

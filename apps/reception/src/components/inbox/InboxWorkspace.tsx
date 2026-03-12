@@ -271,7 +271,7 @@ export default function InboxWorkspace() {
       )}
     >
       {/*
-        Desktop (xl+): Three-column grid — Email | Prime | Detail (3-3-6)
+        Desktop (xl+): Three-column grid — Email | Detail | Prime (3-6-3)
         Mobile: Tab strip + single visible column list OR detail pane (never both)
       */}
 
@@ -347,7 +347,7 @@ export default function InboxWorkspace() {
 
       {/* ── Desktop layout (xl+) ──────────────────────────────────────── */}
       <div className="hidden xl:grid xl:grid-cols-12 xl:gap-4">
-        {/* Email column — 3/12 */}
+        {/* Email thread list — 3/12 */}
         <div className="xl:col-span-3">
           <EmailColumn
             threads={threads}
@@ -358,7 +358,12 @@ export default function InboxWorkspace() {
           />
         </div>
 
-        {/* Prime column — 3/12 */}
+        {/* Thread detail / reply pane — 6/12 */}
+        <div className="xl:col-span-6">
+          {detailPane}
+        </div>
+
+        {/* Prime messaging — 3/12 */}
         <div className="xl:col-span-3">
           <PrimeColumn
             threads={threads}
@@ -367,11 +372,6 @@ export default function InboxWorkspace() {
             error={listError}
             onSelect={handleSelectPrimeThread}
           />
-        </div>
-
-        {/* Thread detail pane — 6/12 */}
-        <div className="xl:col-span-6">
-          {detailPane}
         </div>
       </div>
     </PageShell>

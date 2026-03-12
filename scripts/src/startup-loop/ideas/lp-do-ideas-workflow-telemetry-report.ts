@@ -3,10 +3,13 @@ import { pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
 
 import { IDEAS_TRIAL_TELEMETRY_PATH } from "./lp-do-ideas-paths.js";
+import type {
+  CheckResultSummary,
+  WorkflowStepTelemetryRecord,
+} from "./lp-do-ideas-workflow-telemetry.js";
 import {
   readWorkflowStepTelemetry,
   summarizeWorkflowStepTelemetry,
-  type WorkflowStepTelemetryRecord,
 } from "./lp-do-ideas-workflow-telemetry.js";
 
 type ReportFormat = "json" | "markdown";
@@ -57,9 +60,66 @@ export function computePerModuleBreakdown(
   };
 }
 
+interface PerCheckAggregate {
+  pass_count: number;
+  fail_count: number;
+  total_errors: number;
+  total_warnings: number;
+}
+
+export function computeValidatorSummary(
+  records: readonly WorkflowStepTelemetryRecord[],
+  filters: { featureSlug?: string; business?: string } = {},
+): { per_check: Record<string, PerCheckAggregate>; validator_record_count: number; total_record_count: number } {
+  const filtered = records.filter((record) => {
+    if (filters.featureSlug && record.feature_slug !== filters.featureSlug) return false;
+    if (filters.business && record.business !== filters.business) return false;
+    return true;
+  });
+
+  const perCheck: Record<string, PerCheckAggregate> = {};
+  let validatorRecordCount = 0;
+
+  for (const record of filtered) {
+    const results = record.deterministic_check_results as
+      | Record<string, CheckResultSummary>
+      | undefined;
+    if (
+      results != null &&
+      typeof results === "object" &&
+      Object.keys(results).length > 0
+    ) {
+      validatorRecordCount++;
+      for (const [checkName, summary] of Object.entries(results)) {
+        const existing = perCheck[checkName] ?? {
+          pass_count: 0,
+          fail_count: 0,
+          total_errors: 0,
+          total_warnings: 0,
+        };
+        if (summary.valid) {
+          existing.pass_count++;
+        } else {
+          existing.fail_count++;
+        }
+        existing.total_errors += summary.error_count;
+        existing.total_warnings += summary.warning_count;
+        perCheck[checkName] = existing;
+      }
+    }
+  }
+
+  return {
+    per_check: perCheck,
+    validator_record_count: validatorRecordCount,
+    total_record_count: filtered.length,
+  };
+}
+
 function formatMarkdown(
   summary: ReturnType<typeof summarizeWorkflowStepTelemetry>,
   perModule?: { per_module_breakdown: Record<string, number>; per_module_record_count: number; total_record_count: number },
+  validatorSummary?: { per_check: Record<string, PerCheckAggregate>; validator_record_count: number; total_record_count: number },
 ): string {
   const lines: string[] = [];
   lines.push(`# Workflow Telemetry Summary`);
@@ -132,6 +192,26 @@ function formatMarkdown(
     }
   }
 
+  if (validatorSummary && Object.keys(validatorSummary.per_check).length > 0) {
+    lines.push("");
+    lines.push(`## Validator Results`);
+    lines.push("");
+    lines.push(
+      `Based on ${validatorSummary.validator_record_count} of ${validatorSummary.total_record_count} records with validator data.`,
+    );
+    lines.push("");
+    lines.push(`| Check | Pass | Fail | Errors | Warnings |`);
+    lines.push(`|---|---:|---:|---:|---:|`);
+    const sortedChecks = Object.entries(validatorSummary.per_check).sort(
+      ([a], [b]) => a.localeCompare(b),
+    );
+    for (const [checkName, agg] of sortedChecks) {
+      lines.push(
+        `| ${checkName} | ${agg.pass_count} | ${agg.fail_count} | ${agg.total_errors} | ${agg.total_warnings} |`,
+      );
+    }
+  }
+
   return `${lines.join("\n")}\n`;
 }
 
@@ -166,9 +246,10 @@ async function main(): Promise<void> {
   };
   const summary = summarizeWorkflowStepTelemetry(records, filters);
   const perModule = computePerModuleBreakdown(records, filters);
+  const validatorSummary = computeValidatorSummary(records, filters);
 
   if (format === "markdown") {
-    process.stdout.write(formatMarkdown(summary, perModule));
+    process.stdout.write(formatMarkdown(summary, perModule, validatorSummary));
     return;
   }
 
@@ -178,6 +259,8 @@ async function main(): Promise<void> {
         summary,
         per_module_breakdown: perModule.per_module_breakdown,
         per_module_record_count: perModule.per_module_record_count,
+        validator_summary: validatorSummary.per_check,
+        validator_record_count: validatorSummary.validator_record_count,
       },
       null,
       2,

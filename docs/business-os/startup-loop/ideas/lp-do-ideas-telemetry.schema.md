@@ -1,7 +1,7 @@
 ---
 Type: Schema
 Schema: lp-do-ideas-telemetry
-Version: 1.5.0
+Version: 1.6.0
 Status: Active
 Created: 2026-02-24
 Owner: startup-loop maintainers
@@ -147,6 +147,7 @@ These records do not affect queue-transition metrics or ideas-cycle rollups. Exi
 | `runtime_total_input_tokens` | number | Yes | Cumulative provider-side input-token total at record time. Used as the baseline for the next feature-stage delta. |
 | `runtime_total_output_tokens` | number | Yes | Cumulative provider-side output-token total at record time. Used as the baseline for the next feature-stage delta. |
 | `per_module_bytes` | `Record<string, number>` | Yes | Per-module context byte sizes keyed by resolved repo-relative module path. `undefined` on legacy records (pre-1.5.0); empty `{}` when zero modules loaded; populated with module path → byte size when modules are present. |
+| `deterministic_check_results` | `Record<string, CheckResultSummary>` | Yes | Per-check validator pass/fail summaries keyed by check name. Each value is `{ valid: boolean, error_count: number, warning_count: number }`. `undefined` on legacy records (pre-1.6.0); empty `{}` when no check results supplied; populated via `--check-result` CLI flag. |
 | `notes` | string | Yes | Short operator/agent note for unusual telemetry conditions. |
 
 ### Field invariants
@@ -270,8 +271,9 @@ Action records are deterministic and include:
 
 ## 10. Schema Versioning
 
-This schema is at version `1.5.0`.
+This schema is at version `1.6.0`.
 
+- `1.6.0` adds optional `deterministic_check_results` field to `workflow_step` records for per-check validator pass/fail summaries (`CheckResultSummary: { valid, error_count, warning_count }`). Report generator adds `## Validator Results` markdown section and `validator_summary` + `validator_record_count` to JSON envelope. CLI accepts `--check-result <name>:<pass|fail>:<errors>:<warnings>` repeatable flag. Check names from `--check-result` are auto-appended to `deterministic_checks` array.
 - `1.5.0` adds optional `per_module_bytes` field to `workflow_step` records for per-module context byte tracking. Report generator JSON output wrapped in `{ summary, per_module_breakdown, per_module_record_count }` envelope (breaking change to JSON CLI contract; no automated consumers).
 - `1.4.0` adds runtime token usage fields for automatic Codex/Claude session capture.
 - `1.2.0` adds `workflow_step` records for downstream DO workflow telemetry in the shared append-only telemetry stream.

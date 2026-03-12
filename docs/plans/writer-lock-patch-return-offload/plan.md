@@ -33,7 +33,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - [x] TASK-03: Implement the shared patch-return protocol and pilot-facing executor docs
 - [x] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
 - [x] TASK-05: Spike the serialized apply window with fingerprint checks
-- [ ] TASK-06: Horizon checkpoint - confirm apply-window behavior and actualize pilot confidence
+- [x] TASK-06: Horizon checkpoint - confirm apply-window behavior and actualize pilot confidence
 - [ ] TASK-07: Pilot `build-biz` on patch-return with explicit shared-checkout fallback
 
 ## Goals
@@ -93,8 +93,8 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 | TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 85% | M | Complete (2026-03-12) | TASK-11 | TASK-04 |
 | TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 82% | M | Complete (2026-03-12) | TASK-03 | TASK-05 |
 | TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 82% | S | Complete (2026-03-12) | TASK-04 | TASK-06 |
-| TASK-06 | CHECKPOINT | Reassess pilot wiring from TASK-05 apply-window evidence | 95% | S | Pending | TASK-05 | TASK-07 |
-| TASK-07 | IMPLEMENT | Wire `build-biz` to the patch-return pilot with explicit shared-checkout fallback | 74% (-> 84% conditional on TASK-06) | M | Pending | TASK-06 | - |
+| TASK-06 | CHECKPOINT | Reassess pilot wiring from TASK-05 apply-window evidence | 95% | S | Complete (2026-03-12) | TASK-05 | TASK-07 |
+| TASK-07 | IMPLEMENT | Wire `build-biz` to the patch-return pilot with explicit shared-checkout fallback | 84% | M | Pending | TASK-06 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -530,7 +530,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `docs/plans/writer-lock-patch-return-offload/plan.md`
 - **Depends on:** TASK-05
 - **Blocks:** TASK-07
@@ -549,6 +549,12 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Planning validation:** `docs/plans/writer-lock-patch-return-offload/spike-05-apply-window.md`
 - **Rollout / rollback:** `None: planning control task`
 - **Documentation impact:** plan update only
+#### Checkpoint Evidence (2026-03-12)
+- Horizon assumption 1: "helper output can be applied safely inside a narrow writer-lock window" — **CONFIRMED**. TASK-05 spike-05-apply-window.md shows `git apply --check` + `git apply` + commit all PASS under continuous lock hold.
+- Horizon assumption 2: "`writer-lock-window.sh` is sufficient for the first pilot, or concrete gaps are known" — **CONFIRMED SUFFICIENT**. No extension needed; with-writer-lock.sh covers the apply+commit window as a single acquire/release.
+- Go/no-go decision: **Go**. TASK-07 pilot wiring is unblocked.
+- TASK-07 confidence actualized from 74% → 84% (conditional on TASK-06 now resolved).
+- No replan invoked: TASK-05 produced no invalidating conditions.
 
 ### TASK-07: Wire `build-biz` to the patch-return pilot with explicit shared-checkout fallback
 - **Type:** IMPLEMENT
@@ -561,9 +567,9 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Affects:** `.claude/skills/lp-do-build/modules/build-biz.md`, `.claude/skills/_shared/build-offload-protocol.md`, `scripts/agents/build-offload-patch-return.sh`, `[readonly] scripts/git-hooks/writer-lock-window.sh`
 - **Depends on:** TASK-06
 - **Blocks:** -
-- **Confidence:** 74% (-> 84% conditional on TASK-06)
-  - Implementation: 72% - confidence is intentionally held below threshold until the apply-window spike succeeds.
-  - Approach: 74% - the pilot shape is right, but safe activation depends on TASK-06.
+- **Confidence:** 84% (actualized from 74%; TASK-06 checkpoint Go verdict)
+  - Implementation: 84% - apply-window proven; pilot shape confirmed; helper exists and is tested.
+  - Approach: 84% - safe activation confirmed by TASK-05/06 evidence.
   - Impact: 77% - moving one real executor lane off shared-checkout mutation is materially valuable.
 - **Acceptance:**
   - `build-biz` uses patch-return as the pilot default path when the helper and validated Codex contract are available.

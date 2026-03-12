@@ -12,6 +12,7 @@ import { parseStorefront } from "../../../../../lib/catalogStorefront.ts";
 import { catalogContractUnavailableResponse } from "../../../../../lib/localFsGuard";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../../lib/rateLimit";
 import { hasUploaderSession } from "../../../../../lib/uploaderAuth";
+import { uploaderLog } from "../../../../../lib/uploaderLogger";
 
 export const runtime = "nodejs";
 
@@ -64,6 +65,7 @@ export async function GET(request: Request, context: { params: Promise<{ slug: s
     if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
       return withRateHeaders(catalogContractUnavailableResponse(), limit);
     }
+    uploaderLog("error", "catalog_slug_get_error", { error: String(error) });
     return withRateHeaders(
       NextResponse.json(
         { ok: false, error: "internal_error", reason: "products_get_failed" },
@@ -125,6 +127,7 @@ export async function DELETE(
       return withRateHeaders(catalogContractUnavailableResponse(), limit);
     }
     if (error instanceof CatalogDraftContractError && error.code === "conflict") {
+      uploaderLog("warn", "catalog_slug_delete_conflict", { slug, error: String(error) });
       return withRateHeaders(
         NextResponse.json(
           { ok: false, error: "conflict", reason: "revision_conflict" },
@@ -133,6 +136,7 @@ export async function DELETE(
         limit,
       );
     }
+    uploaderLog("error", "catalog_slug_delete_error", { slug, error: String(error) });
     return withRateHeaders(
       NextResponse.json(
         { ok: false, error: "internal_error", reason: "products_delete_failed" },

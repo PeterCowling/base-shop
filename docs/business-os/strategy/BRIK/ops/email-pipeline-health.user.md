@@ -14,71 +14,94 @@ Standing intelligence artifact tracking the health of the Brikette guest email p
 
 ## Current Health Status
 
-**Overall: Baseline — first snapshot pending**
+**Overall: Needs attention — high template fallback rate, low recent activity**
 
-This artifact was created on 2026-03-12. The sections below define what will be tracked. Populate by running the MCP analytics tools and reviewing the audit log.
+First snapshot: 2026-03-12. Data from `email-audit-log.jsonl` (688 events, 2026-02-19 to 2026-03-11) and MCP `draft_signal_stats` / `gmail_telemetry_daily_rollup`.
 
 ## Volume & Throughput
 
-<!-- Update weekly. Source: reception D1 analytics (computeAnalytics) -->
+<!-- Update weekly. Source: reception D1 analytics (computeAnalytics) + email-audit-log.jsonl -->
 
 | Metric | Value | Trend | Notes |
 |---|---|---|---|
-| Threads admitted (7d) | — | — | First snapshot pending |
-| Drafts generated (7d) | — | — | |
-| Drafts sent (7d) | — | — | |
-| Threads resolved (7d) | — | — | |
-| Admission acceptance rate | — | — | % of emails passing initial filter |
+| Total audit log events | 688 | — | Since 2026-02-19 |
+| Drafts generated (all time) | 10 | — | `action: drafted` events |
+| Lock cycles (all time) | 39 acquired / 40 released | — | Normal processing cycles |
+| Outcomes recorded | 37 | — | Includes prepayment chases, agreements, deferrals |
+| Recent events (7d) | 4 | Low | 1 fallback + 3 lock-acquired (2026-03-09–11) |
+| Admission acceptance rate | — | — | Requires D1 query (RECEPTION_AUTH_TOKEN not set) |
 
 ## Draft Quality
 
-<!-- Update weekly. Source: reception D1 quality metrics -->
+<!-- Update weekly. Source: email-audit-log.jsonl + MCP draft_signal_stats -->
 
 | Metric | Value | Target | Notes |
 |---|---|---|---|
-| Quality pass rate | — | ≥95% | % of generated drafts passing QA checks |
-| Top failure reason #1 | — | — | |
-| Top failure reason #2 | — | — | |
-| Top failure reason #3 | — | — | |
-| Template fallback rate | — | <35% | Drafts using generic template (no match) |
+| Quality pass rate | Insufficient data | ≥95% | 0 deterministic refinement events recorded |
+| Template fallback rate | 77% (533/688) | <35% | **Critical: `template-selection-none` dominates the log** |
+| Deterministic refinement health | insufficient_data | healthy | Need ≥10 events for stable signal |
+| Draft signal selections | 0 | — | No selection/refinement signal events |
+
+**Finding:** 533 of 688 events (77%) are `template-selection-none` fallbacks. This means the draft template matching is not covering most email scenarios. This is the single biggest quality issue.
 
 ## Draft Acceptance
 
-<!-- Update weekly. Source: MCP draft_acceptance_rate tool -->
+<!-- Update weekly. Source: MCP draft_acceptance_rate tool (requires RECEPTION_AUTH_TOKEN) -->
 
 | Metric | Value | Notes |
 |---|---|---|
-| Sent as generated | — | Drafts sent without staff editing |
-| Sent after edit | — | Staff improved the draft before sending |
-| Regenerated | — | Staff discarded AI draft entirely |
-| Dismissed | — | Draft ignored |
+| Sent as generated | — | Requires RECEPTION_AUTH_TOKEN |
+| Sent after edit | — | Requires RECEPTION_AUTH_TOKEN |
+| Regenerated | — | Requires RECEPTION_AUTH_TOKEN |
+| Dismissed | — | Requires RECEPTION_AUTH_TOKEN |
+
+**Blocker:** `draft_acceptance_rate` MCP tool requires `RECEPTION_AUTH_TOKEN` (Firebase ID token). Set this in MCP server env to enable this section.
 
 ## Recovery Pipeline
 
-<!-- Update weekly. Source: reception recovery metrics -->
+<!-- Update weekly. Source: email-audit-log.jsonl -->
 
 | Metric | Value | Target | Notes |
 |---|---|---|---|
-| Stale threads pending | — | 0 | Threads stuck without a draft |
-| Recovery success rate | — | ≥90% | Recovered / total stale |
-| Manual flagging rate | — | <10% | Escalated to staff vs. auto-recovered |
-| Guest match rate | — | ≥80% | Sender matched to booking reference |
+| Recovery events (all time) | 8 | — | `result: startup-recovery` in audit log |
+| Requeued emails | 6 | — | Re-entered processing queue |
+| Deferred emails | 3 | — | Deferred for later processing |
+| Spam filtered | 1 | — | Correctly identified spam |
+
+## Outcome Distribution
+
+<!-- Source: email-audit-log.jsonl result field -->
+
+| Outcome | Count | Notes |
+|---|---|---|
+| drafted | 10 | Successful draft generation |
+| startup-recovery | 8 | Recovery process triggered |
+| requeued | 6 | Returned to processing queue |
+| agreement_received | 6 | Guest agreement confirmed (3 via outcome + 3 via action) |
+| prepayment_chase_1 | 3 | First prepayment follow-up |
+| prepayment_chase_2 | 3 | Second prepayment follow-up |
+| awaiting_agreement | 3 | Waiting for guest agreement |
+| deferred | 3 | Processing deferred |
+| acknowledged | 2 | Manual acknowledgement |
+| spam | 1 | Filtered as spam |
 
 ## Latency
 
-<!-- Update weekly. Source: reception D1 resolution metrics -->
+<!-- Update weekly. Source: reception D1 resolution metrics (requires RECEPTION_AUTH_TOKEN) -->
 
 | Metric | Value | Target | Notes |
 |---|---|---|---|
-| Avg admitted → drafted (hours) | — | <2h | Time to generate first draft |
-| Avg admitted → sent (hours) | — | <4h | Time to send reply |
-| Avg admitted → resolved (hours) | — | <24h | Full resolution time |
+| Avg admitted → drafted (hours) | — | <2h | Requires D1 query |
+| Avg admitted → sent (hours) | — | <4h | Requires D1 query |
+| Avg admitted → resolved (hours) | — | <24h | Requires D1 query |
 
 ## Recent Issues
 
 <!-- Log notable incidents. Clear resolved items monthly. -->
 
-- 2026-03-12: Artifact created. No baseline data yet.
+- 2026-03-12: First snapshot. **77% template fallback rate** — most emails get no template match. Needs template coverage expansion.
+- 2026-03-12: Draft acceptance metrics blocked by missing RECEPTION_AUTH_TOKEN env var.
+- 2026-03-12: Only 4 events in past 7 days — very low pipeline activity.
 
 ## Data Sources
 

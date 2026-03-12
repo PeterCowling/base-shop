@@ -1583,9 +1583,6 @@ importers:
       '@themes/base':
         specifier: workspace:*
         version: link:../../packages/themes/base
-      fast-csv:
-        specifier: ^5.0.5
-        version: 5.0.5
       minimatch:
         specifier: ^9.0.5
         version: 9.0.5

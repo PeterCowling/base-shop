@@ -18,7 +18,7 @@ const DrawerLimitWarning: FC<DrawerLimitWarningProps> = ({ show, onLift }) => {
       </p>
       <Button
         onClick={onLift}
-        className="shrink-0 px-4 py-1.5 rounded-lg bg-warning text-primary-fg text-sm font-semibold hover:bg-warning/80 transition-colors"
+        className="shrink-0 px-4 py-1.5 rounded-lg bg-warning text-warning-fg text-sm font-semibold hover:bg-warning/80 transition-colors"
       >
         Lift Cash
       </Button>

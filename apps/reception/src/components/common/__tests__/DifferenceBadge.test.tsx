@@ -9,14 +9,14 @@ describe("DifferenceBadge", () => {
     const { container } = render(<DifferenceBadge value={2.5} />);
     const badge = container.firstChild as HTMLElement;
     expect(badge).toHaveTextContent(/\+\s*2\.50/);
-    expect(badge).toHaveClass("bg-success-main", "text-primary-fg");
+    expect(badge).toHaveClass("bg-success-main", "text-success-fg");
   });
 
   it("renders negative values", () => {
     const { container } = render(<DifferenceBadge value={-3} />);
     const badge = container.firstChild as HTMLElement;
     expect(badge).toHaveTextContent(/-\s*3/);
-    expect(badge).toHaveClass("bg-error-main", "text-primary-fg");
+    expect(badge).toHaveClass("bg-error-main", "text-danger-fg");
   });
 
   it("applies token classes in dark mode", () => {

@@ -1,0 +1,125 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "reception-till-safe-theming-overhaul",
+  "source_artifact_path": "docs/plans/reception-till-safe-theming-overhaul/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-till-safe-theming-overhaul/fact-find.md",
+    "analysis": "docs/plans/reception-till-safe-theming-overhaul/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The till and safe screens are used by staff every day for cash management. Wrong text colours on warning and error buttons make them harder to read, and broken focus ring syntax means keyboard users can't see focus indicators on close buttons. Fixing this means every button and badge is legible and accessible.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All till, safe, and cash management components use correct semantic foreground tokens on status-coloured backgrounds, with valid focus ring syntax and distinct interaction states.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "TASK-01: all 9 className fixes",
+      "current_or_option_state": "—",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "TASK-01: focus ring fixes (#1-2) + hover fixes (#8-9)",
+      "current_or_option_state": "—",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "—",
+      "current_or_option_state": "N/A: no auth, data, or input changes",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "—",
+      "current_or_option_state": "N/A: no logic changes",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "TASK-01: typecheck + lint + DifferenceBadge test check + contrast sweep",
+      "current_or_option_state": "—",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "TASK-01: DifferenceBadge prop defaults change (optional props, no consumer overrides)",
+      "current_or_option_state": "—",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "—",
+      "current_or_option_state": "N/A: className changes have zero runtime cost",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "TASK-01: single commit, revert = `git revert <sha>`",
+      "current_or_option_state": "—",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Single-pass batch fix of 9 theming issues across 7 till/safe/common component files. All fixes are className string replacements with verified target tokens. One fix (CloseShiftForm) requires adding a property to an existing constant object. Follows the identical approach that succeeded for the bar/POS theming overhaul. ### Active Tasks | ID | Title | Status | |---|---|---| | TASK-01 | Fix all 9 theming issues across till, safe, and common components | Ready |",
+    "goals": [
+      "Fix 7 High-severity wrong-foreground issues (CountInputModal, FloatEntryModal, CloseShiftForm x2, DrawerLimitWarning, DifferenceBadge x2)",
+      "Fix 2 Low-severity no-op hover states (CopyBookingRefPill, CopyOccupantIdPill)"
+    ],
+    "non_goals": [
+      "Redesigning till/safe layout or component structure",
+      "Adding new tokens to the design system",
+      "Changing till/safe business logic"
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "selected_approach": [],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Fix all 9 theming issues across till, safe, and common components",
+        "type": "IMPLEMENT",
+        "status": "Ready",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

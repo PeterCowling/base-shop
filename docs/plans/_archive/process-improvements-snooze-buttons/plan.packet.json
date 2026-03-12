@@ -1,0 +1,177 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "process-improvements-snooze-buttons",
+  "source_artifact_path": "docs/plans/process-improvements-snooze-buttons/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/process-improvements-snooze-buttons/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The operator has active plans that are lower priority right now but not ignorable. Without a snooze, the in-progress board becomes noisy and the operator must either scroll past irrelevant items or make formal decisions they are not ready to make.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Operator can snooze any card on `/process-improvements/in-progress` for 3 or 7 days. The card hides immediately on click and reappears on the next auto-refresh cycle after the period elapses (up to 30 seconds after expiry), requiring no manual action. The new-ideas page already has equivalent defer/snooze capability for both item types — no new capability is needed there; any new-ideas UI changes are optional and pending operator input on labelling preference. The feature does not alter any existing formal decision semantics.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Add \"Snooze for 3 days\" / \"Snooze for 7 days\" buttons to `ActivePlanCard`. Buttons use `Button` component from `@acme/design-system/atoms` with `tone=\"outline\"` matching existing BOS card action style. Post-build contrast sweep and design QA required.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Snoozed cards are absent — no snoozed indicator.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Four states: pre-mount (null — no section rendered), shown (cards + buttons), snoozed (filtered from list — absent), reappeared (expiry passed, back on next refresh). `isMounted` guard renders `null` pre-hydration (not the empty-state copy) to prevent the misleading \"No plans currently in progress\" flash. Empty-list copy only shown when mounted AND filter result is empty.",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "SSR header count includes snoozed plans — accepted known limitation, noted in plan.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — BOS is admin-only (`getCurrentUserServer` auth). localStorage is client-only and not authoritative; no new security surface introduced.",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No action needed.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no audit trail by design. Snooze is lightweight \"remind me later\" semantics, not a formal decision event. Acceptable for single-operator internal tool.",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Explicit omission. Correct.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests extend `InProgressInbox.test.tsx`: button renders, click writes correct expiry, snoozed card filtered, expired snooze causes reappearance on next refresh render, stale entry pruning. localStorage mocked via `jest.spyOn(window, 'localStorage', 'get')` or `Object.defineProperty`. Post-build contrast/breakpoint/design-QA sweeps for UI.",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "CI is test authority; no local Jest runs.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A — `ActivePlanProgress` type unchanged. localStorage key `bos:plan-snooze:v1` is new but isolated to `InProgressInbox.tsx`. No downstream consumers affected.",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Zero contract changes.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — localStorage reads are synchronous and sub-millisecond. Filtering is O(n) on typically <20 items. 30s auto-refresh already in place; no new polling needed.",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Negligible impact.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Rollback is a single revert commit. No DB migration to reverse. Stale localStorage entries after rollback are harmless (key `bos:plan-snooze:v1` is read-only to the code; silently ignored after rollback).",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Cleanest rollback path of the three options considered.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Add \"Snooze for 3 days\" and \"Snooze for 7 days\" buttons to each active-plan card on `/process-improvements/in-progress`. When clicked, the card is hidden immediately and reappears automatically on the next 30-second auto-refresh after the period elapses. Snooze state is stored in `localStorage` under the key `bos:plan-snooze:v1` (keyed by plan slug). No new API routes, no DB migration, no new packages. All changes are isolated to `InProgressInbox.tsx` and its test file. The new-ideas Defer and operator-action Snooze mechanisms are untouched.",
+    "goals": [
+      "Operator can snooze any card on `/process-improvements/in-progress` for 3 or 7 days.",
+      "The snoozed card hides immediately on click and reappears automatically when the period elapses (up to 30s after expiry, on next auto-refresh).",
+      "No new DB migration, no new API routes, no new server-side infrastructure.",
+      "Existing formal Defer/Snooze semantics on new-ideas are not altered."
+    ],
+    "non_goals": [
+      "Adding snooze to pages other than `/process-improvements/in-progress`.",
+      "Replacing the formal Defer/Decline/Do queue semantics for new-ideas queue items.",
+      "Multi-device snooze synchronisation.",
+      "Persisting active-plan execution progress or status.",
+      "Adding active plans to the D1 database.",
+      "Changing the new-ideas Defer button label or adding quick-pick snooze buttons to new-ideas (pending operator input; TASK-03 is out of scope for this plan)."
+    ],
+    "constraints": [
+      "Active plans are filesystem-derived; `active-plans.ts` has no DB dependency and no snooze field. `ActivePlanProgress.slug` is the only stable identifier (plan directory name).",
+      "The existing operator-action snooze and queue Defer mechanisms on new-ideas must not be broken.",
+      "BOS is a single-operator tool. Per-device persistence is explicitly acceptable.",
+      "CI is the test authority; no local Jest runs."
+    ],
+    "assumptions": [
+      "The 30-second auto-refresh on `/process-improvements/in-progress` (via `/api/process-improvements/items`) returns the full `activePlans[]` list on each poll; the client-side snooze filter re-evaluates expiry without extra API changes."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "localStorage key `bos:plan-snooze:v1` holding `Record<string, string>` (slug → ISO expiry timestamp).",
+      "Inline snooze logic added directly to `InProgressInbox.tsx` (no separate hook file — the logic is small and self-contained).",
+      "`isMounted` state guard suppresses hydration flash: plan list not rendered until after first `useEffect` fires.",
+      "Stale entry pruning on every render: entries for slugs not in current `activePlans[]` are silently ignored.",
+      "Why planning is not reopening option selection:",
+      "Analysis decision is decisive; both Option B (JSONL ledger) and Option C (extend operator-actions ledger) were ruled out with code evidence."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add snooze state + UI to `InProgressInbox.tsx`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `apps/business-os/src/components/process-improvements/InProgressInbox.tsx` — snooze state logic, filter integration, and snooze buttons on `ActivePlanCard`.",
+        "affects": "`apps/business-os/src/components/process-improvements/InProgressInbox.tsx`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Tests for snooze behavior in `InProgressInbox.test.tsx`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Extended `apps/business-os/src/components/process-improvements/InProgressInbox.test.tsx` — new test cases covering snooze button rendering, localStorage write on click, filter behavior, expiry, and stale entry pruning.",
+        "affects": "`apps/business-os/src/components/process-improvements/InProgressInbox.test.tsx`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "In-progress snooze",
+          "trigger": "Operator clicks \"Snooze for 3 days\" or \"Snooze for 7 days\" on an `ActivePlanCard`",
+          "flow": "(1) Click handler computes expiry timestamp = `Date.now() + days * 86400000`; (2) Reads current `bos:plan-snooze:v1` from localStorage (defaults to `{}`); (3) Writes `{ ...existing, [slug]: expiryIsoString }` back to localStorage; (4) Component state triggers re-render; (5) `filteredActivePlans` re-evaluates — cards whose slug is in snooze map with a future expiry are excluded; (6) On each subsequent 30s auto-refresh, `setActivePlans` fires, `filteredActivePlans` re-evaluates — cards past expiry reappear on the next refresh cycle. Stale entries (slug not in current `activePlans[]`) are silentl",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": null,
+          "seams": "SSR header count includes snoozed plans (cosmetic). Reappearance up to 30s after expiry. Snooze lost on browser data clear (acceptable)."
+        }
+      ]
+    }
+  }
+}

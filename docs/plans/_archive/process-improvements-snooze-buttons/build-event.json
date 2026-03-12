@@ -1,0 +1,7 @@
+{
+  "slug": "process-improvements-snooze-buttons",
+  "business": "BOS",
+  "status": "complete",
+  "completed_at": "2026-03-12T19:55:58.000Z",
+  "outcome": "Snooze buttons added to InProgressInbox; 3-day and 7-day options; localStorage persistence"
+}

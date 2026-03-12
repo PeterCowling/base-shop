@@ -1,0 +1,26 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-inbox-metadata-normalization/plan.md",
+      "line": "135",
+      "message": "The parallelism guide says TASK-03 and TASK-04 can run in parallel, but both tasks explicitly modify repositories.server.ts and coordinate around the same thread-row contract."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-inbox-metadata-normalization/plan.md",
+      "line": "167",
+      "message": "Post-migration verification command is not a reliable backfill check. COUNT(*) WHERE guest_first_name IS NOT NULL under-reports for threads without guest names. Also omits D1 database name."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-inbox-metadata-normalization/plan.md",
+      "line": "438",
+      "message": "CI verification step underspecified. gh run watch without a run ID does not guarantee watching the correct push."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "review": "Round 2 critique of plan.md"
+}

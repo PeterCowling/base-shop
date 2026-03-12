@@ -1,15 +1,21 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 import { createGmailDraft, sendGmailDraft } from "@/lib/gmail-client";
 import {
   getCurrentDraft,
-  parseThreadMetadata,
+  parseJsonArray,
+  parseThreadMetadataFromRow,
   serializeDraft,
 } from "@/lib/inbox/api-models.server";
 import {
   badRequestResponse,
+  conflictResponse,
   inboxApiErrorResponse,
+  invalidJsonResponse,
+  invalidPayloadResponse,
   notFoundResponse,
+  readJsonPayload,
 } from "@/lib/inbox/api-route-helpers";
 import {
   isPrimeInboxThreadId,
@@ -24,6 +30,12 @@ import { recordInboxEvent } from "@/lib/inbox/telemetry.server";
 
 import { requireStaffAuth } from "../../../_shared/staff-auth";
 
+const sendDraftPayloadSchema = z
+  .object({
+    expectedUpdatedAt: z.string().datetime().optional(),
+  })
+  .strict();
+
 export async function POST(
   request: Request,
   context: { params: Promise<{ threadId: string }> | { threadId: string } },
@@ -31,6 +43,18 @@ export async function POST(
   const auth = await requireStaffAuth(request);
   if ("response" in auth) {
     return auth.response;
+  }
+
+  let rawPayload: unknown;
+  try {
+    rawPayload = await readJsonPayload(request);
+  } catch {
+    return invalidJsonResponse();
+  }
+
+  const parsedPayload = sendDraftPayloadSchema.safeParse(rawPayload);
+  if (!parsedPayload.success) {
+    return invalidPayloadResponse(parsedPayload.error, "Invalid send payload");
   }
 
   const params = await context.params;
@@ -56,9 +80,16 @@ export async function POST(
     return badRequestResponse("No draft exists for this thread");
   }
 
-  const recipientEmails = currentDraft.recipient_emails_json
-    ? (JSON.parse(currentDraft.recipient_emails_json) as string[])
-    : [];
+  // Optimistic lock: reject if the draft was modified since the caller last saw it
+  if (parsedPayload.data.expectedUpdatedAt) {
+    if (currentDraft.updated_at !== parsedPayload.data.expectedUpdatedAt) {
+      return conflictResponse(
+        "Draft was modified since you last viewed it. Reload the draft and try again.",
+      );
+    }
+  }
+
+  const recipientEmails = parseJsonArray(currentDraft.recipient_emails_json);
   if (recipientEmails.length === 0) {
     return badRequestResponse("Draft has no recipients");
   }
@@ -77,7 +108,7 @@ export async function POST(
     }
 
     const sent = await sendGmailDraft(created.id);
-    const metadata = parseThreadMetadata(record.thread.metadata_json);
+    const metadata = parseThreadMetadataFromRow(record.thread);
 
     const approvedDraft = await updateDraft({
       draftId: currentDraft.id,

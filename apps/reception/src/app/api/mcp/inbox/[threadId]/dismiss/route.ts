@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 
+import { markGmailThreadRead } from "@/lib/gmail-client";
 import { extractSenderDomain } from "@/lib/inbox/admission";
-import { parseThreadMetadata } from "@/lib/inbox/api-models.server";
+import { parseThreadMetadataFromRow } from "@/lib/inbox/api-models.server";
 import {
   conflictResponse,
   inboxApiErrorResponse,
@@ -41,6 +42,7 @@ export async function POST(
         success: true,
         data: {
           thread,
+          gmailMarkedRead: false,
         },
       });
     } catch (error) {
@@ -62,7 +64,7 @@ export async function POST(
   }
 
   try {
-    const metadata = parseThreadMetadata(record.thread.metadata_json);
+    const metadata = parseThreadMetadataFromRow(record.thread);
 
     // Extract sender context from the latest inbound message
     const inboundMessages = record.messages.filter(
@@ -72,8 +74,8 @@ export async function POST(
     const senderEmail = latestInbound?.sender_email ?? null;
     const senderDomain = senderEmail ? extractSenderDomain(senderEmail) : null;
 
-    // Record feedback data first — this is the primary value of the dismiss action.
-    // If this fails, the thread status is unchanged and the user can retry.
+    await markGmailThreadRead(params.threadId);
+
     await recordAdmission({
       threadId: params.threadId,
       decision: "auto-archive",
@@ -106,6 +108,7 @@ export async function POST(
       success: true,
       data: {
         thread,
+        gmailMarkedRead: true,
       },
     });
   } catch (error) {

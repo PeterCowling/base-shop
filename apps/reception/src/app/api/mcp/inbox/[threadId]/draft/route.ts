@@ -4,7 +4,8 @@ import { z } from "zod";
 import {
   getCurrentDraft,
   getLatestInboundStoredMessage,
-  parseThreadMetadata,
+  parseJsonArray,
+  parseThreadMetadataFromRow,
   serializeDraft,
 } from "@/lib/inbox/api-models.server";
 import {
@@ -80,7 +81,7 @@ export async function GET(
     data: {
       threadId: params.threadId,
       draft: currentDraft ? serializeDraft(currentDraft) : null,
-      needsManualDraft: Boolean(parseThreadMetadata(record.thread.metadata_json).needsManualDraft),
+      needsManualDraft: Boolean(parseThreadMetadataFromRow(record.thread).needsManualDraft),
     },
   });
 }
@@ -146,7 +147,7 @@ export async function PUT(
   try {
     const currentDraft = getCurrentDraft(record);
     const latestInbound = getLatestInboundStoredMessage(record);
-    const metadata = parseThreadMetadata(record.thread.metadata_json);
+    const metadata = parseThreadMetadataFromRow(record.thread);
     const subject = ensureReplySubject(
       parsedPayload.data.subject ?? currentDraft?.subject ?? record.thread.subject,
     );
@@ -154,7 +155,7 @@ export async function PUT(
       parsedPayload.data.recipientEmails
       ?? (
         currentDraft?.recipient_emails_json
-          ? (JSON.parse(currentDraft.recipient_emails_json) as string[])
+          ? parseJsonArray(currentDraft.recipient_emails_json)
           : latestInbound?.sender_email
             ? [latestInbound.sender_email]
             : []

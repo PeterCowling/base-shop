@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-12T10:10:38.850Z",
+  "plan_slug": "do-workflow-realtime-monitoring",
+  "review_cycle_key": "do-workflow-realtime-monitoring",
+  "source_path": "docs/plans/do-workflow-realtime-monitoring/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

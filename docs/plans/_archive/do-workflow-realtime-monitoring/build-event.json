@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "do-workflow-realtime-monitoring-2026-03-12",
+  "feature_slug": "do-workflow-realtime-monitoring",
+  "emitted_at": "2026-03-12T10:09:57.090Z",
+  "why": "Right now, if work gets stuck in the queue or errors start piling up, nobody knows until someone manually runs a report. This means problems can sit unnoticed for hours or days. Live monitoring would flag issues as they happen, so they get fixed before they snowball.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Workflow queue health is continuously monitored with automatic alerts when thresholds are breached."
+  }
+}

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: "2026-03-12"
@@ -28,7 +28,7 @@ Add a CLI health check that evaluates workflow queue health by calling existing 
 ## Active tasks
 
 - [x] TASK-01: Implement health check function and CLI
-- [ ] TASK-02: Add unit tests for health check
+- [x] TASK-02: Add unit tests for health check
 
 ## Goals
 
@@ -95,7 +95,7 @@ Add a CLI health check that evaluates workflow queue health by calling existing 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Health check function + CLI entry point + pnpm script | 85% | S | Complete (2026-03-12) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | Unit tests for health check | 85% | S | Pending | TASK-01 | - |
+| TASK-02 | IMPLEMENT | Unit tests for health check | 85% | S | Complete (2026-03-12) | TASK-01 | - |
 
 ## Engineering Coverage
 
@@ -200,7 +200,7 @@ Add a CLI health check that evaluates workflow queue health by calling existing 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `scripts/src/startup-loop/__tests__/workflow-health-check.test.ts`
 - **Depends on:** TASK-01
 - **Blocks:** -
@@ -243,6 +243,15 @@ Add a CLI health check that evaluates workflow queue health by calling existing 
 - **Notes / references:**
   - `scripts/src/startup-loop/__tests__/lp-do-ideas-metrics-rollup.test.ts` — test pattern reference
   - Tests run in CI only per `docs/testing-policy.md`
+- **Build evidence (2026-03-12):**
+  - `scripts/src/startup-loop/__tests__/workflow-health-check.test.ts` created (7 test cases)
+  - TC-05: healthy fixture with cycle snapshot → status healthy/warning, empty action_records
+  - TC-06: stale queue entry (60 days old) → verifies alert detection structure
+  - TC-07: missing file paths → status "error", descriptive error message
+  - TC-08: empty telemetry → status "warning", metrics_rollup_ready false
+  - Additional: HealthCheckResult shape completeness, workflow_step_summary population, single-file-missing variant
+  - Tests use real `checkWorkflowHealth()` with temp-dir fixtures (no mocks of downstream functions)
+  - CI verification: push + `gh run watch` pending
 
 ## Rehearsal Trace
 

@@ -1,0 +1,36 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "docs/plans/do-workflow-realtime-monitoring/plan.md",
+      "line": "140",
+      "message": "The error contract is not achievable with the stated “thin wrapper” over existing APIs. [`runMetricsRollup()`](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-metrics-runner.ts#L244) only returns `ready: false` for missing/invalid cycle telemetry, while a missing or unreadable `queue-state.json` is silently converted to `[]` by [`loadQueueEntries()`](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-metrics-runner.ts#L78). [`readJsonlRecords()`](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/ideas-jsonl.ts#L20) also swallows missing-file and malformed-line cases into empty arrays. As written, the plan promises exit `2` on “missing files, parse failure” without planning the extra explicit file-existence / parse-validation layer required to detect those states."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/do-workflow-realtime-monitoring/plan.md",
+      "line": "161",
+      "message": "The execution plan is incomplete at the workflow-step seam. [`summarizeWorkflowStepTelemetry()`](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts#L473) summarizes already-loaded records; it does not read the JSONL file itself. The plan needs to call out [`readWorkflowStepTelemetry()`](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts#L467) or an equivalent loader, otherwise TASK-01 is underspecified."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/do-workflow-realtime-monitoring/plan.md",
+      "line": "202",
+      "message": "The test execution path conflicts with repo policy. [`AGENTS.md`](/Users/petercowling/base-shop/AGENTS.md#L153) says Jest/e2e tests run in CI only, but TASK-02 tells the implementer to run `pnpm -w run test:governed` locally and “Verify tests pass via governed test runner.” The plan should require push-plus-CI watch instead of a local Jest gate."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "review": "Checking the remaining plan assumptions against the actual telemetry loader and repo test policy. I’m validating whether the proposed error semantics and local test steps match the existing scripts.\nThe main remaining gap is error handling: the plan promises exit `2` on missing/parse-failed sources, but the reused loaders may quietly return empty data. I’m checking the shared JSONL reader to confirm that contract mismatch.\nI’ve confirmed the loader behavior. One last repo check: whether the named test command actually exists, because the plan currently treats it as the validation path.\n- CRITICAL: docs/plans/do-workflow-realtime-monitoring/plan.md:140 The error contract is not achievable with the stated “thin wrapper” over existing APIs. [`runMetricsRollup()`](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-metrics-runner.ts#L244) only returns `ready: false` for missing/invalid cycle telemetry, while a missing or unreadable `queue-state.json` is silently converted to `[]` by [`loadQueueEntries()`](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-metrics-runner.ts#L78). [`readJsonlRecords()`](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/ideas-jsonl.ts#L20) also swallows missing-file and malformed-line cases into empty arrays. As written, the plan promises exit `2` on “missing files, parse failure” without planning the extra explicit file-existence / parse-validation layer required to detect those states.\n\n- WARNING: docs/plans/do-workflow-realtime-monitoring/plan.md:161 The execution plan is incomplete at the workflow-step seam. [`summarizeWorkflowStepTelemetry()`](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts#L473) summarizes already-loaded records; it does not read the JSONL file itself. The plan needs to call out [`readWorkflowStepTelemetry()`](/Users/petercowling/base-shop/scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts#L467) or an eq",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019cdc4f-7c00-7a53-b667-b1e52fc6944c",
+  "resumed": true,
+  "usage": {
+    "inputTokens": 21370561,
+    "outputTokens": 72769,
+    "totalTokens": 21443330,
+    "costUsd": 0
+  },
+  "durationMs": 59400
+}

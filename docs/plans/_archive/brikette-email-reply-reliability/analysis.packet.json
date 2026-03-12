@@ -1,0 +1,296 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "brikette-email-reply-reliability",
+  "source_artifact_path": "docs/plans/brikette-email-reply-reliability/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/brikette-email-reply-reliability/fact-find.md",
+    "plan": "docs/plans/brikette-email-reply-reliability/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Three confirmed failure modes in the guest email pipeline risk silent failures (no reply ever sent), duplicate guest replies, and confidently wrong AI responses reaching guests. These directly harm guest experience and hostel reputation, and are surfaced by operational observation with >85% confidence estimates.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Code fixes deployed for stuck emails, duplicate replies, and AI overconfidence; stuck admitted threads surface for manual action within 2 hours; duplicate sends prevented at the send route level; AI uncertainty routes to manual-review flag rather than confident-guess delivery.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "P1-A: badge computed on page load from existing cron event; P2-A: no UI change; P3-A: warning badge added to draft review card",
+      "current_or_option_state": "P1-B: same badge result (existing `InboxWorkspace.tsx` badge already renders `needs_manual_draft` count — no new UI needed for P1); P2-B: no UI change; P3-B: no badge — thread routes to manual queue silently",
+      "gap_or_implication": "Chosen: P1-B + P2-A + P3-A. **One** new UI change required: draft confidence badge (P3 only). Problem 1 UI already exists in `InboxWorkspace.tsx:18-22`. Problem 2 has no UI surface.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "P3-A: new `needs_follow_up` visual state on draft review; P1-B: existing `needs_manual_draft` state gains count badge in nav",
+      "current_or_option_state": "P3-B: no new state; uncertain drafts just become `needs_manual_draft = 1` without distinction",
+      "gap_or_implication": "Chosen adds a new visible draft state for low-confidence drafts. Existing `needs_manual_draft` state is unchanged; it gains a navigation-level count signal.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "All options: no new endpoints, no auth changes, no new data exposure. Staff auth (`requireStaffAuth`) continues to protect all routes.",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "N/A — no security surface change.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "P1-B: new `needs_manual_draft_alert` event in `thread_events`; P2-A: new `send_duplicate_blocked` event; P3-A: `deliveryStatus` added to `drafted` event metadata",
+      "current_or_option_state": "P1-A: event on cron pass (30-min lag); P2-B: same; P3-B: no new event",
+      "gap_or_implication": "Chosen approach adds three distinct new telemetry event types. All write to existing `thread_events` table. No new infrastructure.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "P2-A: idempotency guard is easy to test (mock `createGmailDraft`, verify not called when `gmail_draft_id` set); P3-A: `quality_json` write is easy to assert in unit test",
+      "current_or_option_state": "P2-B: conditional update requires more complex mock setup; P3-B: routing logic easier to test but badge test is moot",
+      "gap_or_implication": "Chosen options have clean test seams. All three fixes have existing mock injection points. No new test infrastructure required.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "P2-A: no migration; P3-A: `quality_json` blob extended (no migration); P1-B: new `thread_events` row type (no migration — `thread_events` is append-only with a string `event_type`)",
+      "current_or_option_state": "P3-B: no data change",
+      "gap_or_implication": "No D1 migration required for any chosen option. All data changes are additive (new event types, new JSON field within existing blob). `InboxDraftRow` type definition needs `deliveryStatus` added to serialization — TypeScript-only change.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "P2-A: adds one extra D1 write per send (gmailDraftId update before send); total send path goes from 2 to 3 D1 writes. P3-A: negligible — one extra JSON field in quality_json. P1-B: one extra D1 write at flag time.",
+      "current_or_option_state": "P2-B: one D1 write (conditional update) but more complex query",
+      "gap_or_implication": "Chosen adds at most one extra D1 write per operation path. Recovery cron limit of 20 threads is unchanged — acceptable for current volume; noted for planning to make configurable.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "No D1 migrations required for any chosen option. P3-A: rollback = UI stops reading `deliveryStatus` from `quality_json`; backend can continue writing it safely. P1-B: rollback = remove badge query and stop emitting `needs_manual_draft_alert` events. P2-A: rollback = revert `send/route.ts` ordering.",
+      "current_or_option_state": "P3-B: rollback = revert routing logic in draft-pipeline.",
+      "gap_or_implication": "Cleanest rollback profile of all options. Each fix is independently revertable with a single-file change.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Three P1 failures in the guest email reply pipeline need code fixes before the next guest volume spike. The decisions to make here are: (1) how to surface stuck threads proactively without adding external infrastructure; (2) how to make the send route safe on retry without a database transaction primitive; (3) how to propagate AI uncertainty without a breaking schema migration. All three are independent fixes in the same subsystem. This analysis makes a decisive per-problem recommendation so planning can decompose into tasks without revisiting option selection.",
+    "goals": [
+      "Ensure admitted threads that fail draft generation or require follow-up are surfaced to staff within 2 hours.",
+      "Prevent the same email being sent twice to a guest when a retry occurs during the send sequence.",
+      "Surface AI uncertainty at the draft review stage so operators can identify low-confidence drafts before sending."
+    ],
+    "non_goals": [
+      "Rebuilding the admission/classification pipeline.",
+      "Changing the AI model or prompt architecture.",
+      "Adding external alerting (SMS, PagerDuty) beyond the existing inbox UI."
+    ],
+    "constraints": [
+      "D1 (Cloudflare) has no `SELECT FOR UPDATE` or advisory locks; idempotency must use unique constraints or conditional updates.",
+      "Reception app deploys as a Cloudflare Worker — no persistent in-memory state.",
+      "Cron triggers are fixed at 1-minute (inbox-sync) and 30-minute (inbox-recovery) intervals.",
+      "Tests run in CI only."
+    ],
+    "assumptions": [],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Implementation complexity",
+        "Why it matters": "Simpler changes carry lower regression risk; Cloudflare Worker context limits options",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Migration surface",
+        "Why it matters": "D1 migrations must run before code deploy; nullable columns are safe to add additively",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Testability",
+        "Why it matters": "Unit tests must be feasible with existing Jest + mock injection pattern",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Rollback safety",
+        "Why it matters": "Each fix must be independently revertable without data loss",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Reliability under retry",
+        "Why it matters": "The primary goal is to prevent wrong outcomes on crash-retry",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Observability",
+        "Why it matters": "Staff must be able to detect stuck/low-confidence threads without polling logs",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Dead-letter monitor with cron",
+        "Description": "Add a new cron check (or extend inbox-recovery) that queries `needs_manual_draft = 1` threads updated more than N minutes ago and emits a `thread_events` entry with `outcome: \"needs_manual_draft_alert\"`. Add a visible count badge to the reception inbox navigation by querying this status on inbox page load.",
+        "Upside": "Matches existing cron pattern. No new infrastructure. Badge reuses existing `needs_manual_draft` D1 column.",
+        "Downside": "Badge is only visible when staff opens reception app — does not push. Recovery cron is every 30 min so badge update lags by up to 30 min.",
+        "Key risks": "Staff may not check inbox frequently. Cron cannot run faster than 30 min.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — In-process immediate alert at flag time",
+        "Description": "When `flagForManualDraft()` fires (in `recovery.server.ts` or `sync.server.ts`), synchronously emit a structured `thread_events` entry tagged as a staff-visible alert event. Inbox UI polls or renders this event on next page load.",
+        "Upside": "Alert fires at the exact moment the thread is flagged — no cron lag for the event itself.",
+        "Downside": "Requires `flagForManualDraft()` to write two D1 rows (existing flag + new event) in the same request. Thread still only becomes visible on next UI load (no push).",
+        "Key risks": "D1 write failure could lose the alert event (no transaction).",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "A — Pre-send idempotency check: write gmailDraftId before sendGmailDraft",
+        "Description": "Invert the current ordering in `send/route.ts`: (1) check `currentDraft.gmail_draft_id`; (2) if null, call `createGmailDraft()`, then immediately write `gmailDraftId` to D1 via `updateDraft()`; (3) then call `sendGmailDraft(gmailDraftId)`. If `gmail_draft_id` is already set on retry, skip creation and call `sendGmailDraft()` directly. Emit `send_duplicate_blocked` telemetry event when the guard short-circuits.",
+        "Upside": "Directly addresses the root cause. Code-only change — no migration. Retry path is deterministic. Uses existing `updateDraft()` helper.",
+        "Downside": "Two D1 writes per send (update gmailDraftId, then update status). If crash occurs between `createGmailDraft()` and the D1 write, the Gmail draft leaks (no matching D1 record). Retry will call `createGmailDraft()` again — net result is two Gmail drafts, but the second is the one that gets sent.",
+        "Key risks": "Leaked first Gmail draft is orphaned (not sent). This is safe — a draft that was never sent and never has its ID in D1 cannot be re-sent by the route.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — Optimistic lock upgrade / conditional D1 update",
+        "Description": "Use a conditional UPDATE (`WHERE gmail_draft_id IS NULL`) to set `gmail_draft_id`, check affected rows; if 0 rows updated, another request already set it and we should read and use that value. This is a stricter guard at the D1 layer.",
+        "Upside": "Stronger concurrency guarantee — at most one caller can set `gmail_draft_id`.",
+        "Downside": "More complex query plumbing. Does not eliminate the window between `createGmailDraft()` and the D1 write — two concurrent callers can both create a Gmail draft before either writes to D1.",
+        "Key risks": "Concurrent rapid double-click scenario not fully addressed.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "A — Store deliveryStatus in quality_json; add UI warning badge",
+        "Description": "Write `deliveryStatus` into the existing `drafts.quality_json` blob at draft creation time in `sync.server.ts`. Add a warning badge to the draft review UI that reads from `quality_json.deliveryStatus`. Emit a `draft_confidence` metadata field in the `drafted` thread event. No D1 schema migration needed.",
+        "Upside": "No migration. `quality_json` already exists as a free-form JSON blob. Change is confined to write path in `sync.server.ts` and read path in draft serialization + UI component. Rollback is safe — UI simply stops reading the new field.",
+        "Downside": "`quality_json` is not indexed; querying all low-confidence drafts requires reading every draft. No structural contract for the field — a future refactor could drop it.",
+        "Key risks": "If `quality_json` is null on legacy rows, must default gracefully.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — Post-generation scoring gate: block quality pass when deliveryStatus is needs_follow_up",
+        "Description": "In `draft-pipeline.server.ts`, after `runQualityChecks()`, check `deliveryStatus`; if `needs_follow_up`, override `qualityResult.passed` to false and route to `needs_manual_draft = 1`. No new storage needed.",
+        "Upside": "Simple logic change. Ensures low-confidence drafts never pass quality gate as confident.",
+        "Downside": "Changes routing for all drafts that have any unanswered question — may increase `needs_manual_draft` rate significantly. Operator loses the option to review and send a partially-answered draft. No UI signal; threads just go to manual queue.",
+        "Key risks": "Could block legitimate drafts where AI answered most questions but could not answer one peripheral one. Harder to tune.",
+        "Viable?": "Yes"
+      }
+    ],
+    "chosen_approach": {},
+    "rejected_approaches": [],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "All tests run in CI only; no local `jest` or `pnpm test` runs.",
+        "Send route mock injection (`createGmailDraft` import) is already available — no new test seam needed.",
+        "`quality_json` read path must handle null/absent `deliveryStatus` key without throwing."
+      ],
+      "sequencing_constraints": [
+        "TASK-02 (send idempotency) must deploy before TASK-01 (stuck-email alert) to avoid false alerts during deployment transitions where in-flight sends may be mid-sequence.",
+        "TASK-03 (AI confidence) is independent and can be sequenced in parallel with or after TASK-02.",
+        "No D1 migrations are required — all changes are code-only."
+      ],
+      "risks_to_carry_forward": [
+        "Badge query on `thread_events` for navigation count may be slow if the table is large; plan should specify whether to use a cached aggregate or a direct query with a LIMIT.",
+        "The `flagForManualDraft()` double-write (flag + event) is not transactional in D1. If the event write fails, the thread is still flagged correctly — this is acceptable but should be noted in the unit test."
+      ]
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Inbox sync (triage)",
+          "current": "Cron every minute → `syncInbox()` → Gmail → per-thread classify → admit/archive/review-later",
+          "trigger": "As now",
+          "future": "Unchanged — no modifications to admission or classification",
+          "steady": "Classification, admission, checkpoint management",
+          "seams": "None"
+        },
+        {
+          "id": null,
+          "label": "Draft generation",
+          "current": "`generateAgentDraft()` → `generateDraftCandidate()` → `runQualityChecks()` → if passed: create draft in D1; else: `needs_manual_draft = 1`. `deliveryStatus` computed but silently dropped.",
+          "trigger": "Draft pipeline runs per admitted thread",
+          "future": "`deliveryStatus` is now written into `drafts.quality_json` at draft creation. `drafted` thread event includes `followUpRequired` metadata. AI-uncertain drafts reach operator review with a visible badge.",
+          "steady": "Quality gate logic unchanged (`qualityResult.passed` still routes to `needs_manual_draft` on failure)",
+          "seams": "`quality_json` must default gracefully on legacy rows that lack `deliveryStatus` key"
+        },
+        {
+          "id": null,
+          "label": "Recovery cron",
+          "current": "Fires every 30 min → `recoverStaleThreads()` → retries up to 3 times → `flagForManualDraft()` on exhaustion; no event at flag time",
+          "trigger": "Exhausted recovery attempts",
+          "future": "`flagForManualDraft()` now emits `needs_manual_draft_alert` event to `thread_events` immediately after writing `needs_manual_draft = 1` to `threads`",
+          "steady": "Recovery query, stale threshold, retry count unchanged",
+          "seams": "D1 double-write: if event write fails, thread is still flagged; only telemetry is missing"
+        },
+        {
+          "id": null,
+          "label": "Send path",
+          "current": "Operator clicks Send → `createGmailDraft()` → `sendGmailDraft()` → status updates. `gmail_draft_id` written only after send completes. No idempotency guard.",
+          "trigger": "Operator send action",
+          "future": "Send path now: (1) check `currentDraft.gmail_draft_id`; (2) if set, skip to `sendGmailDraft(existingId)` and emit `send_duplicate_blocked`; (3) if null, `createGmailDraft()` → write `gmailDraftId` to D1 → `sendGmailDraft()` → status updates",
+          "steady": "Optimistic lock (`expectedUpdatedAt`) for edit conflicts unchanged",
+          "seams": "Window between `createGmailDraft()` and D1 write: crash here leaks an orphaned Gmail draft. Safe — it cannot be re-sent."
+        },
+        {
+          "id": null,
+          "label": "Reception inbox UI",
+          "current": "`InboxWorkspace.tsx:18-22` already renders `manualDraftCount` badge from D1 `needs_manual_draft` column. No confidence badge on draft review card.",
+          "trigger": "UI page load",
+          "future": "**Problem 1 (no new UI work required):** existing `manualDraftCount` badge already surfaces `needs_manual_draft = 1` threads. **Problem 3:** draft review card gains \"Needs follow-up\" badge when `deliveryStatus === \"needs_follow_up\"` (read from `quality_json` via draft API response).",
+          "steady": "Thread list, draft editor, send action, `manualDraftCount` badge",
+          "seams": "`quality_json.deliveryStatus` must be exposed in draft serialization API response for UI to read"
+        },
+        {
+          "id": null,
+          "label": "Telemetry / observability",
+          "current": "`thread_events` has: `admitted`, `drafted`, `sent`, `send_failed`, `inbox_recovery`, `thread_sync_error`. No event for flag-time alert or duplicate-send block or confidence signal.",
+          "trigger": "New events emitted by fixed code",
+          "future": "Three new event types: `needs_manual_draft_alert` (at flag time), `send_duplicate_blocked` (when idempotency guard fires), `draft_confidence` metadata on `drafted` events",
+          "steady": "Existing event types unchanged",
+          "seams": "`send_duplicate_blocked` should fire at zero rate in normal operation; non-zero rate confirms crashes are occurring"
+        }
+      ]
+    }
+  }
+}

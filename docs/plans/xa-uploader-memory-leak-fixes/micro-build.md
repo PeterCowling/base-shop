@@ -1,6 +1,6 @@
 ---
 Type: Micro-Build
-Status: Active
+Status: Complete
 Created: 2026-03-12
 Last-updated: 2026-03-12
 Feature-Slug: xa-uploader-memory-leak-fixes

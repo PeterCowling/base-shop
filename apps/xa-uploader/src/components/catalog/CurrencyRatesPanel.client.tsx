@@ -7,6 +7,8 @@ import { useUploaderI18n } from "../../lib/uploaderI18n.client";
 import type { ActionFeedback } from "./catalogConsoleFeedback";
 import { BTN_PRIMARY_CLASS, INPUT_CLASS, PANEL_CLASS } from "./catalogStyles";
 
+const FETCH_TIMEOUT_MS = 10_000;
+
 type CurrencyRatesResponse = {
   ok: boolean;
   rates?: {
@@ -99,6 +101,7 @@ export function CurrencyRatesPanel({
 
   React.useEffect(() => {
     const abortController = new AbortController();
+    const timeoutId = setTimeout(() => abortController.abort(), FETCH_TIMEOUT_MS);
     let active = true;
 
     const loadRates = async () => {
@@ -128,6 +131,8 @@ export function CurrencyRatesPanel({
           kind: "error",
           message: error instanceof Error ? error.message : t("currencyRatesLoadFailed"),
         });
+      } finally {
+        clearTimeout(timeoutId);
       }
     };
 
@@ -135,6 +140,7 @@ export function CurrencyRatesPanel({
 
     return () => {
       active = false;
+      clearTimeout(timeoutId);
       abortController.abort();
     };
   }, [t]);

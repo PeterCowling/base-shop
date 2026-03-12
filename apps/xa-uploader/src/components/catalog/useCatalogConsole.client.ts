@@ -50,6 +50,8 @@ import { buildEmptyDraft, withDraftDefaults } from "./catalogDraft";
 export type { ActionFeedback, ActionFeedbackState };
 export { createInitialActionFeedbackState, getSyncFailureMessage };
 
+const FETCH_TIMEOUT_MS = 10_000;
+
 type SyncReadinessState = {
   checking: boolean;
   ready: boolean;
@@ -123,11 +125,18 @@ async function loadCatalogFromServer(params: {
   draftImageBaselineRef: React.MutableRefObject<CatalogProductDraftInput | null>;
   signal?: AbortSignal;
 }): Promise<CatalogListResponse> {
-  const response = await fetch(
-    `/api/catalog/products?storefront=${encodeURIComponent(params.storefront)}`,
-    params.signal ? { signal: params.signal } : undefined,
-  );
-  const data = (await response.json()) as CatalogListResponse;
+  const timeout = createTimeoutSignal(params.signal);
+  let data: CatalogListResponse;
+  let response: Response;
+  try {
+    response = await fetch(
+      `/api/catalog/products?storefront=${encodeURIComponent(params.storefront)}`,
+      { signal: timeout.signal },
+    );
+    data = (await response.json()) as CatalogListResponse;
+  } finally {
+    timeout.clear();
+  }
   if (!response.ok || !data.ok) {
     throw new Error(getCatalogApiErrorMessage(data.error, "unableToLoadCatalog", params.t));
   }
@@ -155,6 +164,18 @@ async function waitForBusyToClear(
     if (!busyLockRef.current) return;
     await sleep(50);
   }
+}
+
+function createTimeoutSignal(parentSignal?: AbortSignal): {
+  signal: AbortSignal;
+  clear: () => void;
+} {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  if (parentSignal) {
+    parentSignal.addEventListener("abort", () => controller.abort(), { once: true });
+  }
+  return { signal: controller.signal, clear: () => clearTimeout(timeoutId) };
 }
 
 function useStorefrontPersistence(storefront: XaCatalogStorefront) {
@@ -195,12 +216,9 @@ function useCatalogConsoleState() {
     createInitialActionFeedbackState,
   );
   const [fieldErrors, setFieldErrors] = React.useState<Record<string, string>>({});
-  const [syncOptions, setSyncOptions] = React.useState({
-    strict: false,
-    dryRun: false,
-    replace: false,
-    recursive: true,
-  });
+  const [syncOptions, setSyncOptions] = React.useState(
+    { strict: false, dryRun: false, replace: false, recursive: true },
+  );
   const [syncOutput, setSyncOutput] = React.useState<string | null>(null);
   const [lastSyncData, setLastSyncData] = React.useState<SyncResponse | null>(null);
   const [syncReadiness, setSyncReadiness] = React.useState<SyncReadinessState>(
@@ -211,9 +229,14 @@ function useCatalogConsoleState() {
   const catalogHydrationCounterRef = React.useRef(0);
 
   const loadSession = React.useCallback(async (signal?: AbortSignal) => {
-    const response = await fetch("/api/uploader/session", signal ? { signal } : undefined);
-    const data = (await response.json()) as SessionState & { ok?: boolean };
-    setSession({ authenticated: Boolean(data.authenticated) });
+    const timeout = createTimeoutSignal(signal);
+    try {
+      const response = await fetch("/api/uploader/session", { signal: timeout.signal });
+      const data = (await response.json()) as SessionState & { ok?: boolean };
+      setSession({ authenticated: Boolean(data.authenticated) });
+    } finally {
+      timeout.clear();
+    }
   }, []);
 
   const loadCatalog = React.useCallback(async (signal?: AbortSignal) => {
@@ -321,61 +344,22 @@ function useCatalogConsoleState() {
       : "saved";
 
   return {
-    locale,
-    t,
-    uploaderMode,
-    r2Destination,
-    session,
-    setSession,
-    storefront,
-    setStorefront,
-    storefrontConfig,
-    token,
-    setToken,
-    products,
-    setProducts,
-    revisionsById,
-    setRevisionsById,
-    query,
-    setQuery,
-    selectedSlug,
-    setSelectedSlug,
-    draft,
-    setDraft,
-    draftRevision,
-    setDraftRevision,
-    draftImageBaselineRef,
-    busy,
-    busyLockRef,
-    pendingAutosaveDraftRef,
-    autosaveFlushInProgressRef,
-    isAutosaveDirty,
-    setIsAutosaveDirty,
-    isAutosaveSaving,
-    setIsAutosaveSaving,
-    lastAutosaveSavedAt,
-    setLastAutosaveSavedAt,
-    autosaveInlineMessage,
-    setAutosaveInlineMessage,
-    autosaveStatus,
-    resetAutosaveState,
-    setBusy,
-    actionFeedback,
-    setActionFeedback,
-    fieldErrors,
-    setFieldErrors,
-    syncOptions,
-    setSyncOptions,
-    syncOutput,
-    setSyncOutput,
-    lastSyncData,
-    setLastSyncData,
-    syncReadiness,
-    setSyncReadiness,
+    locale, t, uploaderMode, r2Destination,
+    session, setSession, storefront, setStorefront, storefrontConfig,
+    token, setToken, products, setProducts,
+    revisionsById, setRevisionsById, query, setQuery,
+    selectedSlug, setSelectedSlug, draft, setDraft,
+    draftRevision, setDraftRevision, draftImageBaselineRef,
+    busy, busyLockRef, pendingAutosaveDraftRef, autosaveFlushInProgressRef,
+    isAutosaveDirty, setIsAutosaveDirty, isAutosaveSaving, setIsAutosaveSaving,
+    lastAutosaveSavedAt, setLastAutosaveSavedAt,
+    autosaveInlineMessage, setAutosaveInlineMessage,
+    autosaveStatus, resetAutosaveState, setBusy,
+    actionFeedback, setActionFeedback, fieldErrors, setFieldErrors,
+    syncOptions, setSyncOptions, syncOutput, setSyncOutput,
+    lastSyncData, setLastSyncData, syncReadiness, setSyncReadiness,
     isCatalogLoading: isCatalogHydrating,
-    loadSession,
-    loadCatalog,
-    loadSyncReadiness,
+    loadSession, loadCatalog, loadSyncReadiness,
   };
 }
 

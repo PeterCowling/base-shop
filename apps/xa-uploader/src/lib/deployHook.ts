@@ -371,15 +371,15 @@ async function triggerDeployHookOnce(params: {
       signal: controller.signal,
     });
   } catch (error) {
-    clearTimeout(timeout);
     const message = getErrorMessage(error);
     return {
       ok: false,
       transient: true,
       reason: message,
     };
+  } finally {
+    clearTimeout(timeout);
   }
-  clearTimeout(timeout);
   const bodyText = await response.text().catch(() => "");
   const details = responseDetails(bodyText);
 

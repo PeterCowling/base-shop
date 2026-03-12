@@ -227,20 +227,37 @@ function usePersistedImageCleanup(params: {
     return () => { mountedRef.current = false; };
   }, []);
 
+  const cleanupAbortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => {
+      cleanupAbortRef.current?.abort();
+    };
+  }, []);
+
   return useCallback(async (pathValue: string, queuedAt: number) => {
     const key = pathValue.trim().replace(/^\/+/, "");
     if (!isDeletableCatalogPath(key)) return;
+
+    // Cancel any previous cleanup polling before starting a new one
+    cleanupAbortRef.current?.abort();
+    const controller = new AbortController();
+    cleanupAbortRef.current = controller;
 
     const persistedAlready = typeof lastAutosaveSavedAtRef.current === "number" &&
       lastAutosaveSavedAtRef.current >= queuedAt;
     if (!persistedAlready) {
       const deadline = Date.now() + AUTOSAVE_PERSIST_TIMEOUT_MS;
       let persisted = false;
-      while (Date.now() < deadline && mountedRef.current) {
+      while (Date.now() < deadline && mountedRef.current && !controller.signal.aborted) {
         await new Promise<void>((resolve) => {
-          setTimeout(resolve, AUTOSAVE_PERSIST_POLL_MS);
+          const timerId = setTimeout(resolve, AUTOSAVE_PERSIST_POLL_MS);
+          controller.signal.addEventListener("abort", () => {
+            clearTimeout(timerId);
+            resolve();
+          }, { once: true });
         });
-        if (!mountedRef.current) return;
+        if (!mountedRef.current || controller.signal.aborted) return;
         persisted = typeof lastAutosaveSavedAtRef.current === "number" &&
           lastAutosaveSavedAtRef.current >= queuedAt;
         if (persisted) break;
@@ -248,11 +265,12 @@ function usePersistedImageCleanup(params: {
       if (!persisted) return;
     }
 
-    if (!mountedRef.current) return;
+    if (!mountedRef.current || controller.signal.aborted) return;
     const requestParams = new URLSearchParams({ storefront: params.storefront, key });
     try {
       const response = await fetch(`/api/catalog/images?${requestParams.toString()}`, {
         method: "DELETE",
+        signal: controller.signal,
       });
       if (!response.ok) {
         console.warn({
@@ -261,7 +279,8 @@ function usePersistedImageCleanup(params: {
           key,
         });
       }
-    } catch {
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
       console.warn({
         scope: "catalog-image-delete",
         status: "network_error",

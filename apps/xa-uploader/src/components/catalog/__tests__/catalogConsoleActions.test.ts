@@ -211,3 +211,53 @@ describe("handleSaveImpl — suppressUiBusy keeps UI busy state unchanged", () =
     expect(setBusy).not.toHaveBeenCalled();
   });
 });
+
+// ---------------------------------------------------------------------------
+// B4 — Publish gate (image required for live products)
+// ---------------------------------------------------------------------------
+describe("handleSaveImpl — publish gate (image required)", () => {
+  beforeEach(() => {
+    fetchMock.mockReset();
+  });
+
+  // TC-03: client-side gate blocks imageless explicit save — Red before guard, Green after
+  it("TC-03: returns { status: 'error' } and sets imageFiles field error when publishState is live and imageFiles is empty (explicit save)", async () => {
+    const setFieldErrors = jest.fn();
+
+    const result = await handleSaveImpl(
+      makeHandleSaveParams({
+        draft: { ...VALID_DRAFT, publishState: "live" as const, imageFiles: "" },
+        setFieldErrors,
+      }),
+    );
+
+    expect(result.status).toBe("error");
+    expect(setFieldErrors).toHaveBeenCalledWith(
+      expect.objectContaining({ imageFiles: expect.any(String) }),
+    );
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  // TC-04: autosave (suppressUiBusy: true) skips the gate and proceeds to fetch
+  it("TC-04: proceeds to fetch when suppressUiBusy is true even with live publishState and no images (autosave path)", async () => {
+    const savedProduct = { ...VALID_DRAFT, publishState: "draft" as const };
+    fetchMock.mockResolvedValueOnce(
+      makeResponse({ ok: true, product: savedProduct, revision: "rev-2" }),
+    );
+
+    const setFieldErrors = jest.fn();
+
+    await handleSaveImpl(
+      makeHandleSaveParams({
+        draft: { ...VALID_DRAFT, publishState: "live" as const, imageFiles: "" },
+        setFieldErrors,
+        suppressUiBusy: true,
+      }),
+    );
+
+    expect(fetchMock).toHaveBeenCalled();
+    expect(setFieldErrors).not.toHaveBeenCalledWith(
+      expect.objectContaining({ imageFiles: expect.any(String) }),
+    );
+  });
+});

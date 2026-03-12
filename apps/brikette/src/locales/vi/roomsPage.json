@@ -206,7 +206,7 @@
       "bed_description": "Ký túc xá nữ hạng Superior có ba giường ký túc cộng một giường đơn (tổng 7), cho tối đa bảy khách. Nằm ở tầng ba, có phòng tắm trong phòng, sân thượng nhìn ra biển, điều hòa và cửa vào thẻ từ. Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
         "femaleDorm",
-        "Bản dịch đang được chuẩn bị.",
+        "threeDormBedsPlusSingleSevenGuests",
         "thirdFloor",
         "bathroomEnsuite",
         "seaViewTerrace",
@@ -225,7 +225,7 @@
       "bed_description": "Phòng hỗn hợp hạng Deluxe có ba giường đơn, cho tối đa ba khách. Ở tầng bốn, có phòng tắm trong phòng, hướng sân trong, điều hòa và cửa vào thẻ từ. Cung cấp ga giường và khăn tắm khi nhận phòng.",
       "facilities": [
         "mixedDorm",
-        "Bản dịch đang được chuẩn bị.",
+        "threeSingleBedsThreeGuests",
         "fourthFloor",
         "bathroomEnsuite",
         "courtyardView",
@@ -266,7 +266,7 @@
     "clickToEnlarge": "Nhấp để phóng to ảnh",
     "prevAria": "Ảnh trước",
     "nextAria": "Ảnh tiếp",
-    "pagination": "ZXQTOKEN0QZZZZTOKEN2QXZ",
+    "pagination": "{{current}} / {{total}}",
     "photoAlt": "Ảnh {{room}}",
     "noImage": "Không có hình ảnh"
   },
@@ -286,10 +286,10 @@
   "filtersAria": "Lọc theo loại phòng",
   "checkRatesNonRefundable": "Giá không hoàn tiền",
   "checkRatesFlexible": "Giá linh hoạt",
-  "checkRatesSingle": "Kiểm tra tỷ lệ",
+  "checkRatesSingle": "Xem giá",
   "ctaSuffix": {
-    "nonRefundable": "Không thể thay thế được",
-    "flexible": "Dễ uốn cong"
+    "nonRefundable": "Không hoàn tiền",
+    "flexible": "Linh hoạt"
   },
   "details": "Chi tiết",
   "ratesFrom": "Từ €{{price}}",
@@ -308,7 +308,7 @@
   "date": {
     "stayHelper": "2–8 đêm",
     "clearDates": "Xoá ngày tháng",
-    "nightsSummary": "{{from}}  thể hiện ZXQQOKEN1QXZ (ZXQTOKEN2QZ đêm)"
+    "nightsSummary": "{{from}} → {{to}} ({{nights}} đêm)"
   },
   "noscript": {
     "jsDisabledAssistance": "Tuyến đường ký túc xá này sử dụng tính năng đặt phòng được hỗ trợ khi JavaScript bị tắt.",

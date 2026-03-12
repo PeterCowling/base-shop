@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-12T07:41:51.683Z",
+  "why": "The till and safe screens are used by staff every day for cash management. Wrong text colours on warning and error buttons make them harder to read, and broken focus ring syntax means keyboard users can not see focus indicators on close buttons. Fixing this means every button and badge is legible and accessible."
+}

@@ -36,7 +36,7 @@ const Ticket: FC<Props> = memo(
           </span>
           <time
             dateTime={time}
-            className="text-xs font-semibold uppercase tracking-widest text-primary-fg/80"
+            className="text-xs font-semibold uppercase tracking-widest text-muted-foreground"
           >
             {time}
           </time>

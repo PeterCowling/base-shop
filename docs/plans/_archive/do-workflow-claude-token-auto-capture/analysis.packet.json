@@ -1,0 +1,206 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "do-workflow-claude-token-auto-capture",
+  "source_artifact_path": "docs/plans/do-workflow-claude-token-auto-capture/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-fact-find",
+    "lp-do-analysis",
+    "lp-do-plan"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/do-workflow-claude-token-auto-capture/fact-find.md",
+    "plan": "docs/plans/do-workflow-claude-token-auto-capture/plan.md"
+  },
+  "outcome_contract": {
+    "why": "When the system runs work using Claude, it can't automatically track how much that work costs. This means about half of all workflow runs have a blind spot in cost reporting. Fixing this gives complete visibility into what each piece of work actually costs, making budget decisions accurate instead of estimated.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All workflow runs — regardless of provider — automatically capture and report token costs without manual intervention.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Symlink escape risk without path validation",
+      "current_or_option_state": "Index within `~/.claude/projects/`. Lower escape risk.",
+      "gap_or_implication": "Both paths validated. Explicit ID bypasses discovery entirely.",
+      "carry_forward_or_notes": "Path boundary validation on all discovery paths"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Closes gap. Provider = `\"claude\"`.",
+      "current_or_option_state": "Same closure.",
+      "gap_or_implication": "Same closure. Discovery source logged for debugging.",
+      "carry_forward_or_notes": "Record which discovery method succeeded"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Fixture: symlink + JSONL.",
+      "current_or_option_state": "Fixture: index + JSONL.",
+      "gap_or_implication": "Fixture: all three paths tested independently. More test code but better coverage.",
+      "carry_forward_or_notes": "Test each cascade layer independently"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "New session JSONL parser (shared).",
+      "current_or_option_state": "Same parser + index parser.",
+      "gap_or_implication": "Same parser + index parser. Explicit ID path unchanged.",
+      "carry_forward_or_notes": "Session JSONL parser + lightweight index parser"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "One symlink read + one JSONL scan.",
+      "current_or_option_state": "One index read + one JSONL scan.",
+      "gap_or_implication": "Worst case: one index read fails, one symlink read fails, falls back to unknown. Bounded.",
+      "carry_forward_or_notes": "Cascade exits at first success — no wasted I/O"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive.",
+      "current_or_option_state": "Additive.",
+      "gap_or_implication": "Additive. Explicit ID always authoritative. No breaking change.",
+      "carry_forward_or_notes": "Fail-open at every layer"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Choose how the workflow telemetry system discovers the current Claude Code session and reads its token usage, closing the ~50% measurement gap left by the prior plan's Codex-only auto-capture.",
+    "goals": [
+      "Auto-discover the current Claude session without operator-supplied session IDs",
+      "Read per-message usage from session JSONL and produce cumulative snapshots",
+      "Maintain fail-open semantics — unknown fallback when discovery fails"
+    ],
+    "non_goals": [
+      "Changing the Codex auto-capture path",
+      "Prompt-path instrumentation",
+      "Separate subagent token tracking"
+    ],
+    "constraints": [
+      "Must fail-open (null snapshot → `unknown` token source)",
+      "Must validate resolved paths start within `~/.claude/` (symlink escape prevention)",
+      "Session JSONL has per-message usage, not cumulative totals — requires full-scan summation",
+      "Explicit `--claude-session-id` must remain authoritative — auto-discovery must never override a deliberately supplied session ID"
+    ],
+    "assumptions": [
+      "`~/.claude/debug/latest` symlink exists in Claude Code 2.1.49+ (verified)",
+      "Session JSONL `usage` format matches Anthropic API response shape (verified)"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Discovery reliability",
+        "Why it matters": "Correct session must be identified; wrong session = wrong attribution",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Fail-open safety",
+        "Why it matters": "Must never block workflow on discovery failure",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Concurrency correctness",
+        "Why it matters": "Multi-agent repo means concurrent sessions are realistic — wrong attribution is a real risk",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Backward compatibility",
+        "Why it matters": "Existing explicit session ID path must remain authoritative",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Code locality",
+        "Why it matters": "Minimize blast radius; keep changes in one module",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Performance",
+        "Why it matters": "Large sessions (hundreds of messages) must not cause latency",
+        "Weight": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A",
+        "Description": "**debug/latest symlink only** — resolve `~/.claude/debug/latest` to get session UUID, read session JSONL",
+        "Upside": "Simplest — one symlink read.",
+        "Downside": "Global scope — points to most-recent session across all projects. Under concurrent agents, may attribute tokens to wrong session.",
+        "Key risks": "Misattribution under multi-agent concurrency (which this repo uses).",
+        "Viable?": "Partially — insufficient alone"
+      },
+      {
+        "Option": "B",
+        "Description": "**sessions-index.json primary** — read project-scoped index, sort by `fileMtime`, take latest entry",
+        "Upside": "Project-scoped — avoids global concurrency issue. Index has structured fields (`sessionId`, `fileMtime`, `projectPath`).",
+        "Downside": "Index may lag behind real-time. Adds index format parsing.",
+        "Key risks": "Stale index → wrong session. But bounded — latest entry for this project is almost always correct.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "A+B",
+        "Description": "**Hybrid: explicit ID → sessions-index → debug/latest → unknown** — layered cascade with explicit always authoritative",
+        "Upside": "Best correctness: explicit ID wins when supplied; project-scoped index handles the common auto case; global symlink as last-resort heuristic.",
+        "Downside": "More code than either alone. Two discovery sources to maintain.",
+        "Key risks": "Either source alone could fail, but cascade makes failure unlikely.",
+        "Viable?": "Yes — recommended"
+      },
+      {
+        "Option": "C",
+        "Description": "**Keep explicit session ID only** — no auto-discovery",
+        "Upside": "Zero risk. Already working.",
+        "Downside": "Leaves ~50% gap unresolved.",
+        "Key risks": "Status quo.",
+        "Viable?": "No — defeats the goal"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A+B — Hybrid cascade: explicit ID → sessions-index → debug/latest → unknown",
+      "**Why this wins": "**",
+      "**What it depends on": "**",
+      "`sessions-index.json` format remaining stable (currently": "`{version, entries: [{sessionId, fullPath, fileMtime, ...}], originalPath}`)"
+    },
+    "rejected_approaches": [
+      "**Option A alone (debug/latest only)** — Global scope creates real misattribution risk under concurrent agents. Insufficient as the sole auto-discovery mechanism for a multi-agent repo.",
+      "**Option B alone (sessions-index only)** — Could work, but lacks the global fallback for edge cases where the index is stale. The hybrid is strictly better for reliability.",
+      "**Option C (explicit only)** — Defeats the goal. Perpetuates the ~50% coverage gap."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Add session JSONL usage parser to `workflow-runtime-token-usage.ts` (per-message → cumulative snapshot)",
+        "Add sessions-index.json reader (project-scoped discovery — find latest session for CWD)",
+        "Add debug/latest symlink reader (global fallback — resolve symlink, extract UUID)"
+      ],
+      "validation_implications": [
+        "`token_measurement_coverage` for Claude-backed runs should move from 0% toward 100%",
+        "Existing explicit-session tests must keep passing (backward compatibility)"
+      ],
+      "sequencing_constraints": [
+        "Session JSONL parser first (shared by all discovery methods)",
+        "Index reader and symlink reader can be parallel",
+        "Cascade wiring after both readers exist",
+        "Tests alongside each component"
+      ],
+      "risks_to_carry_forward": [
+        "Claude Code version changes to session storage format (fail-open mitigates)",
+        "Large session JSONL read performance (streaming sum mitigates — bounded by message count)"
+      ]
+    }
+  }
+}

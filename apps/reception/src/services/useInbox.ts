@@ -7,6 +7,7 @@ import type {
   InboxChannelCapabilities,
   InboxReviewMode,
 } from "@/lib/inbox/channels";
+import { useOnlineStatus } from "@/lib/offline/useOnlineStatus";
 
 import { buildMcpAuthHeaders } from "./mcpAuthHeaders";
 
@@ -91,6 +92,10 @@ export type InboxThreadDetail = {
   campaign: InboxCampaign | null;
   metadata: Record<string, unknown>;
   messages: InboxMessage[];
+  totalMessages: number;
+  messageOffset: number;
+  /** Server-authoritative flag: true when older messages exist beyond the current page. */
+  hasMore?: boolean;
   events: Array<{
     id: number;
     event_type: string;
@@ -166,11 +171,19 @@ type InboxEnvelope<T> = {
   data: T;
 };
 
+const INBOX_AUTO_REFRESH_INTERVAL_MS = 15_000;
+
+type LoadThreadsOptions = {
+  preferredThreadId?: string | null;
+  silent?: boolean;
+};
+
 export type InboxDraftUpdateInput = {
   subject?: string;
   recipientEmails?: string[];
   plainText: string;
   html?: string | null;
+  templateUsed?: string;
 };
 
 function sortThreads(threads: InboxThreadSummary[]): InboxThreadSummary[] {
@@ -213,6 +226,24 @@ export async function fetchInboxThread(threadId: string, signal?: AbortSignal): 
   });
 }
 
+export async function fetchThreadMessages(
+  threadId: string,
+  options: { beforeId?: string; beforeTimestamp?: string; limit: number },
+  signal?: AbortSignal,
+): Promise<{ messages: InboxMessage[]; totalMessages: number; messageOffset: number; hasMore: boolean }> {
+  const params = new URLSearchParams({ limit: String(options.limit) });
+  if (options.beforeId) {
+    params.set("before_id", options.beforeId);
+  }
+  if (options.beforeTimestamp) {
+    params.set("before_ts", options.beforeTimestamp);
+  }
+  return inboxRequest<{ messages: InboxMessage[]; totalMessages: number; messageOffset: number; hasMore: boolean }>(
+    `/api/mcp/inbox/${threadId}?${params.toString()}`,
+    { signal, errorCode: "Failed to load older messages" },
+  );
+}
+
 export async function updateInboxDraft(
   threadId: string,
   payload: InboxDraftUpdateInput,
@@ -237,9 +268,15 @@ export async function regenerateInboxDraft(
   return data.draft;
 }
 
-export async function sendInboxDraft(threadId: string): Promise<{ sentMessageId: string | null }> {
+export async function sendInboxDraft(
+  threadId: string,
+  expectedUpdatedAt?: string,
+): Promise<{ sentMessageId: string | null }> {
   return inboxRequest<{ sentMessageId: string | null }>(`/api/mcp/inbox/${threadId}/send`, {
     method: "POST",
+    body: JSON.stringify(
+      expectedUpdatedAt ? { expectedUpdatedAt } : {},
+    ),
     errorCode: "Failed to send inbox draft",
   });
 }
@@ -251,11 +288,16 @@ export async function resolveInboxThread(threadId: string): Promise<void> {
   });
 }
 
-export async function dismissInboxThread(threadId: string): Promise<void> {
-  await inboxRequest<{ thread: InboxThreadSummary }>(`/api/mcp/inbox/${threadId}/dismiss`, {
-    method: "POST",
-    errorCode: "Failed to dismiss inbox thread",
-  });
+export async function dismissInboxThread(
+  threadId: string,
+): Promise<{ thread: InboxThreadSummary; gmailMarkedRead: boolean }> {
+  return inboxRequest<{ thread: InboxThreadSummary; gmailMarkedRead: boolean }>(
+    `/api/mcp/inbox/${threadId}/dismiss`,
+    {
+      method: "POST",
+      errorCode: "Failed to dismiss inbox thread",
+    },
+  );
 }
 
 export async function runInboxSync(rescanWindowDays?: number): Promise<void> {
@@ -269,11 +311,15 @@ export async function runInboxSync(rescanWindowDays?: number): Promise<void> {
 }
 
 export default function useInbox() {
+  const online = useOnlineStatus();
   const [threads, setThreads] = useState<InboxThreadSummary[]>([]);
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
+  const [selectedEmailThreadId, setSelectedEmailThreadId] = useState<string | null>(null);
+  const [selectedPrimeThreadId, setSelectedPrimeThreadId] = useState<string | null>(null);
   const [selectedThread, setSelectedThread] = useState<InboxThreadDetail | null>(null);
   const [loadingList, setLoadingList] = useState(true);
   const [loadingThread, setLoadingThread] = useState(false);
+  const [loadingMoreMessages, setLoadingMoreMessages] = useState(false);
   const [savingDraft, setSavingDraft] = useState(false);
   const [regeneratingDraft, setRegeneratingDraft] = useState(false);
   const [sendingDraft, setSendingDraft] = useState(false);
@@ -282,11 +328,29 @@ export default function useInbox() {
   const [syncing, setSyncing] = useState(false);
   const [listError, setListError] = useState<string | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
+  const [tabVisible, setTabVisible] = useState<boolean>(() => (
+    typeof document === "undefined" ? true : !document.hidden
+  ));
 
   const detailCacheRef = useRef<Map<string, InboxThreadDetail>>(new Map());
   const abortControllerRef = useRef<AbortController | null>(null);
   const selectedThreadIdRef = useRef<string | null>(null);
   selectedThreadIdRef.current = selectedThreadId;
+
+  // Track busy state in a ref so the auto-refresh interval effect does not
+  // tear down and re-create on every loading-flag change.
+  const isBusyRef = useRef(false);
+  useEffect(() => {
+    isBusyRef.current =
+      loadingList
+      || loadingThread
+      || syncing
+      || savingDraft
+      || regeneratingDraft
+      || sendingDraft
+      || resolvingThread
+      || dismissingThread;
+  });
 
   const refreshThreadDetail = useCallback(async (threadId: string): Promise<InboxThreadDetail> => {
     detailCacheRef.current.delete(threadId);
@@ -301,6 +365,51 @@ export default function useInbox() {
     }
     return detail;
   }, []);
+
+  const loadMoreMessages = useCallback(async () => {
+    if (!selectedThread || !selectedThreadIdRef.current) {
+      return;
+    }
+
+    const threadId = selectedThreadIdRef.current;
+    // Use server-authoritative hasMore when available, fall back to count comparison
+    const canLoadMore = selectedThread.hasMore
+      ?? (selectedThread.messages.length < selectedThread.totalMessages);
+    if (!canLoadMore) {
+      return;
+    }
+
+    // Composite cursor: use the ID and timestamp of the oldest currently-displayed message.
+    // Combining both fields gives stable ordering even when IDs are not strictly monotonic.
+    const oldestMessage = selectedThread.messages[0];
+    const beforeId = oldestMessage?.id;
+    const beforeTimestamp = oldestMessage?.sentAt ?? undefined;
+
+    setLoadingMoreMessages(true);
+    try {
+      const page = await fetchThreadMessages(threadId, { beforeId, beforeTimestamp, limit: 20 });
+      if (threadId !== selectedThreadIdRef.current) {
+        return;
+      }
+      // page.messages are in chronological order; prepend them before existing messages
+      setSelectedThread((prev) => {
+        if (!prev || prev.thread.id !== threadId) {
+          return prev;
+        }
+        const merged = [...page.messages, ...prev.messages];
+        const updated = {
+          ...prev,
+          messages: merged,
+          totalMessages: page.totalMessages,
+          hasMore: page.hasMore,
+        };
+        detailCacheRef.current.set(threadId, updated);
+        return updated;
+      });
+    } finally {
+      setLoadingMoreMessages(false);
+    }
+  }, [selectedThread]);
 
   const selectThread = useCallback(async (threadId: string) => {
     abortControllerRef.current?.abort();
@@ -339,9 +448,30 @@ export default function useInbox() {
     }
   }, []);
 
+  const selectEmailThread = useCallback(
+    async (threadId: string) => {
+      setSelectedEmailThreadId(threadId);
+      return selectThread(threadId);
+    },
+    [selectThread],
+  );
+
+  const selectPrimeThread = useCallback(
+    async (threadId: string) => {
+      setSelectedPrimeThreadId(threadId);
+      return selectThread(threadId);
+    },
+    [selectThread],
+  );
+
   const loadThreads = useCallback(
-    async (preferredThreadId?: string | null) => {
-      setLoadingList(true);
+    async (options: LoadThreadsOptions = {}) => {
+      const { preferredThreadId, silent = false } = options;
+      const shouldShowListLoading = !silent || threads.length === 0;
+
+      if (shouldShowListLoading) {
+        setLoadingList(true);
+      }
       setListError(null);
 
       try {
@@ -349,13 +479,24 @@ export default function useInbox() {
         setThreads(nextThreads);
 
         const currentId = selectedThreadIdRef.current;
+        const currentStillPresent = currentId
+          ? nextThreads.some((thread) => thread.id === currentId)
+          : false;
         const targetThreadId = preferredThreadId
-          ?? (currentId && nextThreads.some((thread) => thread.id === currentId)
+          ?? (currentId && currentStillPresent
             ? currentId
             : nextThreads[0]?.id ?? null);
 
         if (targetThreadId) {
-          await selectThread(targetThreadId);
+          const shouldRefreshSelectedDetail =
+            !silent
+            || !currentStillPresent
+            || !selectedThread
+            || targetThreadId !== currentId;
+
+          if (shouldRefreshSelectedDetail) {
+            await selectThread(targetThreadId);
+          }
         } else {
           setSelectedThreadId(null);
           setSelectedThread(null);
@@ -365,19 +506,34 @@ export default function useInbox() {
         setListError(error instanceof Error ? error.message : "Failed to load inbox threads");
         throw error;
       } finally {
-        setLoadingList(false);
+        if (shouldShowListLoading) {
+          setLoadingList(false);
+        }
       }
     },
-    [selectThread],
+    [selectThread, selectedThread, threads.length],
   );
 
   useEffect(() => {
-    void loadThreads(null).catch(() => undefined);
+    void loadThreads({ preferredThreadId: null }).catch(() => undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- IDEA-DISPATCH-20260307130300-9040 mount-only effect uses ref for selectedThreadId
   }, []);
 
+  useEffect(() => {
+    if (typeof document === "undefined") {
+      return undefined;
+    }
+
+    const handleVisibilityChange = () => {
+      setTabVisible(!document.hidden);
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, []);
+
   const saveDraft = useCallback(
-    async (payload: InboxDraftUpdateInput) => {
+    async (payload: InboxDraftUpdateInput): Promise<{ saved: boolean; refreshed: boolean }> => {
       if (!selectedThreadId) {
         throw new Error("No inbox thread selected");
       }
@@ -387,10 +543,21 @@ export default function useInbox() {
 
       try {
         await updateInboxDraft(selectedThreadId, payload);
+      } catch (saveError) {
+        setSavingDraft(false);
+        throw saveError;
+      }
+
+      try {
         await refreshThreadDetail(selectedThreadId);
+      } catch {
+        setDetailError("Draft saved, but couldn\u2019t refresh \u2014 click refresh to see changes.");
+        return { saved: true, refreshed: false };
       } finally {
         setSavingDraft(false);
       }
+
+      return { saved: true, refreshed: true };
     },
     [refreshThreadDetail, selectedThreadId],
   );
@@ -423,7 +590,8 @@ export default function useInbox() {
     setDetailError(null);
 
     try {
-      const result = await sendInboxDraft(selectedThreadId);
+      const draftUpdatedAt = selectedThread?.currentDraft?.updatedAt;
+      const result = await sendInboxDraft(selectedThreadId, draftUpdatedAt ?? undefined);
       const threadId = selectedThreadId;
       try {
         await refreshThreadDetail(threadId);
@@ -434,7 +602,7 @@ export default function useInbox() {
     } finally {
       setSendingDraft(false);
     }
-  }, [refreshThreadDetail, selectedThreadId]);
+  }, [refreshThreadDetail, selectedThread?.currentDraft?.updatedAt, selectedThreadId]);
 
   const resolveThread = useCallback(async () => {
     if (!selectedThreadId) {
@@ -449,7 +617,15 @@ export default function useInbox() {
       detailCacheRef.current.delete(selectedThreadId);
       const removedId = selectedThreadId;
       setThreads((prev) => {
+        const removedThread = prev.find((t) => t.id === removedId);
+        const isEmailThread = removedThread?.channel === "email";
         const next = prev.filter((t) => t.id !== removedId);
+        // Clear the appropriate channel slot
+        if (isEmailThread) {
+          setSelectedEmailThreadId(null);
+        } else {
+          setSelectedPrimeThreadId(null);
+        }
         const nextSelected = next[0] ?? null;
         if (nextSelected) {
           void selectThread(nextSelected.id).catch(() => undefined);
@@ -474,11 +650,19 @@ export default function useInbox() {
     setDetailError(null);
 
     try {
-      await dismissInboxThread(selectedThreadId);
+      const result = await dismissInboxThread(selectedThreadId);
       detailCacheRef.current.delete(selectedThreadId);
       const removedId = selectedThreadId;
       setThreads((prev) => {
+        const removedThread = prev.find((t) => t.id === removedId);
+        const isEmailThread = removedThread?.channel === "email";
         const next = prev.filter((t) => t.id !== removedId);
+        // Clear the appropriate channel slot
+        if (isEmailThread) {
+          setSelectedEmailThreadId(null);
+        } else {
+          setSelectedPrimeThreadId(null);
+        }
         const nextSelected = next[0] ?? null;
         if (nextSelected) {
           void selectThread(nextSelected.id).catch(() => undefined);
@@ -489,6 +673,7 @@ export default function useInbox() {
         }
         return next;
       });
+      return result;
     } finally {
       setDismissingThread(false);
     }
@@ -501,18 +686,51 @@ export default function useInbox() {
 
     try {
       await runInboxSync();
-      await loadThreads(selectedThreadIdRef.current);
+      await loadThreads({ preferredThreadId: selectedThreadIdRef.current });
     } finally {
       setSyncing(false);
     }
   }, [loadThreads]);
 
+  const refreshInboxView = useCallback(async () => {
+    setListError(null);
+    await loadThreads({
+      preferredThreadId: selectedThreadIdRef.current,
+      silent: true,
+    });
+  }, [loadThreads]);
+
+  useEffect(() => {
+    if (!online || !tabVisible) {
+      return undefined;
+    }
+
+    const intervalId = window.setInterval(() => {
+      if (isBusyRef.current) {
+        return;
+      }
+
+      void refreshInboxView().catch(() => undefined);
+    }, INBOX_AUTO_REFRESH_INTERVAL_MS);
+
+    return () => window.clearInterval(intervalId);
+  }, [online, refreshInboxView, tabVisible]);
+
+  // Derived channel-filtered thread lists
+  const emailThreads = threads.filter((t) => t.channel === "email");
+  const primeThreads = threads.filter((t) => t.channel !== "email");
+
   return {
     threads,
+    emailThreads,
+    primeThreads,
     selectedThreadId,
+    selectedEmailThreadId,
+    selectedPrimeThreadId,
     selectedThread,
     loadingList,
     loadingThread,
+    loadingMoreMessages,
     savingDraft,
     regeneratingDraft,
     sendingDraft,
@@ -523,11 +741,15 @@ export default function useInbox() {
     detailError,
     loadThreads,
     selectThread,
+    selectEmailThread,
+    selectPrimeThread,
+    loadMoreMessages,
     saveDraft,
     regenerateDraft,
     sendDraft,
     resolveThread,
     dismissThread,
+    refreshInboxView,
     syncInbox,
   };
 }

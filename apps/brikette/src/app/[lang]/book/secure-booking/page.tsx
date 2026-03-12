@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
@@ -61,12 +60,10 @@ export default async function SecureBookingPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  if (!OCTORATE_CUSTOM_PAGE_ENABLED) {
-    notFound();
-  }
-
-  const tBook = await getTranslations(validLang, ["bookPage"], { optional: true });
-  const tRooms = await getTranslations(validLang, ["roomsPage"], { optional: true });
+  const [tBook, tRooms] = await Promise.all([
+    getTranslations(validLang, ["bookPage"], { optional: true }),
+    getTranslations(validLang, ["roomsPage"], { optional: true }),
+  ]);
   const roomLabels = Object.fromEntries(
     roomsData.map((room) => [
       room.id,
@@ -92,7 +89,32 @@ export default async function SecureBookingPage({ params }: Props) {
   const continueLabel = resolveLabel(
     tBook,
     "secureBooking.continueLabel",
-    "Continue to secure booking",
+    "",
+  );
+  const secureBookingHeading = resolveLabel(
+    tBook,
+    "secureBooking.heading",
+    "",
+  );
+  const secureBookingSupporting = resolveLabel(
+    tBook,
+    "secureBooking.supportingText",
+    "",
+  );
+  const secureBookingReady = resolveLabel(
+    tBook,
+    "secureBooking.readyText",
+    "",
+  );
+  const secureBookingFallbackTitle = resolveLabel(
+    tBook,
+    "secureBooking.fallbackTitle",
+    "",
+  );
+  const secureBookingFallbackBody = resolveLabel(
+    tBook,
+    "secureBooking.fallbackBody",
+    "",
   );
   /* eslint-enable ds/no-hardcoded-copy */
 
@@ -103,59 +125,41 @@ export default async function SecureBookingPage({ params }: Props) {
           <SecureBookingPageClient
             bookPath={getBookPath(validLang)}
             bookingCode={BOOKING_CODE}
-            continueLabel={continueLabel}
-            fallbackBody={resolveLabel(
-              tBook,
-              "secureBooking.fallbackBody",
-              "",
-            )}
-            fallbackTitle={resolveLabel(
-              tBook,
-              "secureBooking.fallbackTitle",
-              "",
-            )}
-            heading={resolveLabel(
-              tBook,
-              "secureBooking.heading",
-              "",
-            )}
-            loadingText={resolveLabel(
-              tBook,
-              "secureBooking.loadingText",
-              "",
-            )}
-            readyText={resolveLabel(
-              tBook,
-              "secureBooking.readyText",
-              "",
-            )}
+            labels={{
+              continue: continueLabel,
+              heading: secureBookingHeading,
+              loading: resolveLabel(
+                tBook,
+                "secureBooking.loadingText",
+                "",
+              ),
+              ready: secureBookingReady,
+              fallbackTitle: secureBookingFallbackTitle,
+              fallbackBody: secureBookingFallbackBody,
+              security: resolveLabel(
+                tBook,
+                "secureBooking.securityNote",
+                "",
+              ),
+              step: resolveLabel(tBook, "secureBooking.stepLabel", ""),
+              supporting: secureBookingSupporting,
+              widgetHost: resolveLabel(
+                tBook,
+                "secureBooking.widgetHostLabel",
+                "",
+              ),
+            }}
             ratePlanLabels={ratePlanLabels}
             roomLabels={roomLabels}
-            securityNote={resolveLabel(
-              tBook,
-              "secureBooking.securityNote",
-              "",
-            )}
-            stepLabel={resolveLabel(tBook, "secureBooking.stepLabel", "")}
-            supportingText={resolveLabel(
-              tBook,
-              "secureBooking.supportingText",
-              "",
-            )}
             summaryLabels={{
-              checkin: resolveLabel(tBook, "secureBooking.labels.checkIn", "Check-in"),
-              checkout: resolveLabel(tBook, "secureBooking.labels.checkOut", "Check-out"),
-              guests: resolveLabel(tBook, "secureBooking.labels.guests", "Guests"),
-              rate: resolveLabel(tBook, "secureBooking.labels.ratePlan", "Rate plan"),
-              room: resolveLabel(tBook, "secureBooking.labels.room", "Room"),
+              checkin: resolveLabel(tBook, "secureBooking.labels.checkIn", ""),
+              checkout: resolveLabel(tBook, "secureBooking.labels.checkOut", ""),
+              guests: resolveLabel(tBook, "secureBooking.labels.guests", ""),
+              rate: resolveLabel(tBook, "secureBooking.labels.ratePlan", ""),
+              room: resolveLabel(tBook, "secureBooking.labels.room", ""),
             }}
-            widgetGlobalKey={OCTORATE_CUSTOM_PAGE_GLOBAL_KEY}
-            widgetHostLabel={resolveLabel(
-              tBook,
-              "secureBooking.widgetHostLabel",
-              "",
-            )}
-            widgetScriptSrc={OCTORATE_CUSTOM_PAGE_SCRIPT_SRC}
+            widgetGlobalKey={OCTORATE_CUSTOM_PAGE_ENABLED ? OCTORATE_CUSTOM_PAGE_GLOBAL_KEY : undefined}
+            widgetScriptSrc={OCTORATE_CUSTOM_PAGE_ENABLED ? OCTORATE_CUSTOM_PAGE_SCRIPT_SRC : undefined}
           />
         </Suspense>
       </main>

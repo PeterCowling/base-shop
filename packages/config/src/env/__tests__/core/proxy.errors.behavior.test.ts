@@ -1,13 +1,20 @@
 /** @jest-environment node */
 import { afterEach, describe, expect, it, jest } from "@jest/globals";
 
+import { NEXT_SECRET, SESSION_SECRET } from "../authEnvTestUtils.ts";
+
 const baseEnv = {
   CMS_SPACE_URL: "https://example.com",
   CMS_ACCESS_TOKEN: "token",
   SANITY_API_VERSION: "v1",
+  SANITY_PROJECT_ID: "dummy-project-id",
+  SANITY_DATASET: "production",
+  SANITY_API_TOKEN: "dummy-api-token",
+  SANITY_PREVIEW_SECRET: "dummy-preview-secret",
   EMAIL_FROM: "from@example.com",
-  NEXTAUTH_SECRET: "test-nextauth-secret-32-chars-long!!",
-  SESSION_SECRET: "test-session-secret-32-chars-long!!",
+  EMAIL_PROVIDER: "smtp",
+  NEXTAUTH_SECRET: NEXT_SECRET,
+  SESSION_SECRET: SESSION_SECRET,
 };
 
 const ORIGINAL_ENV = { ...process.env };
@@ -76,10 +83,9 @@ describe("coreEnv error handling and logging", () => {
     delete process.env.CART_COOKIE_SECRET;
     const errorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     jest.resetModules();
-    expect(() => {
-      const { loadCoreEnv } = require("../../core/loader.parse.ts");
-      loadCoreEnv(process.env);
-    }).not.toThrow();
+    const { loadCoreEnv } = require("../../core/loader.parse.ts");
+    const parsed = loadCoreEnv(process.env);
+    expect(parsed.CART_COOKIE_SECRET).toBe("cart-disabled-secret");
     expect(errorSpy).not.toHaveBeenCalledWith(
       "❌ Invalid core environment variables:",
     );

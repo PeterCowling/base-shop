@@ -1,5 +1,7 @@
 import "server-only";
 
+import { z } from "zod";
+
 import type { D1Database } from "@acme/platform-core/d1";
 
 import { getInboxDb } from "./db.server";
@@ -36,10 +38,32 @@ export type InboxThreadRow = {
   snippet: string | null;
   assigned_uid: string | null;
   latest_message_at: string | null;
+  latest_message_direction?: InboxMessageDirection | null;
   last_synced_at: string | null;
   metadata_json: string | null;
   created_at: string;
   updated_at: string;
+  // Promoted metadata columns (0006 migration)
+  latest_inbound_message_id?: string | null;
+  latest_inbound_at?: string | null;
+  latest_inbound_sender?: string | null;
+  latest_admission_decision?: string | null;
+  latest_admission_reason?: string | null;
+  needs_manual_draft?: number | null;
+  draft_failure_code?: string | null;
+  draft_failure_message?: string | null;
+  last_processed_at?: string | null;
+  last_draft_id?: string | null;
+  last_draft_template_subject?: string | null;
+  last_draft_quality_passed?: number | null;
+  guest_booking_ref?: string | null;
+  guest_occupant_id?: string | null;
+  guest_first_name?: string | null;
+  guest_last_name?: string | null;
+  guest_check_in?: string | null;
+  guest_check_out?: string | null;
+  guest_room_numbers_json?: string | null;
+  recovery_attempts?: number | null;
 };
 
 export type InboxMessageRow = {
@@ -100,6 +124,29 @@ export type InboxThreadRecord = {
   drafts: InboxDraftRow[];
   events: ThreadEventRow[];
   admissionOutcomes: AdmissionOutcomeRow[];
+};
+
+export type GetThreadMessagesOptions = {
+  threadId: string;
+  limit?: number;
+  offset?: number;
+  /** Cursor-based pagination: fetch messages older than this message ID. */
+  beforeId?: string;
+  /**
+   * Composite cursor timestamp component (ISO-8601). When provided together
+   * with `beforeId`, uses a (timestamp, id) tuple for stable ordering even
+   * when IDs are not strictly monotonic with time.
+   */
+  beforeTimestamp?: string;
+};
+
+export type PaginatedMessages = {
+  messages: InboxMessageRow[];
+  totalMessages: number;
+  offset: number;
+  limit: number;
+  /** True when more messages exist beyond this page. */
+  hasMore: boolean;
 };
 
 export type ListThreadsOptions = {
@@ -199,10 +246,84 @@ export type RecordAdmissionInput = {
   sourceMetadata?: Record<string, unknown> | null;
 };
 
+/**
+ * Zod schema for thread metadata_json.
+ * Validates shape before writing to DB. Unknown keys are stripped (not rejected)
+ * so legacy or experimental fields don't block writes.
+ */
+export const threadMetadataSchema = z.object({
+  latestInboundMessageId: z.string().nullish(),
+  latestInboundAt: z.string().nullish(),
+  latestInboundSender: z.string().nullish(),
+  latestAdmissionDecision: z.string().nullish(),
+  latestAdmissionReason: z.string().nullish(),
+  needsManualDraft: z.boolean().nullish(),
+  draftFailureCode: z.string().nullish(),
+  draftFailureMessage: z.string().nullish(),
+  draftFailureChecks: z.array(z.string()).nullish(),
+  lastProcessedAt: z.string().nullish(),
+  lastDraftId: z.string().nullish(),
+  lastDraftTemplateSubject: z.string().nullish(),
+  lastDraftQualityPassed: z.boolean().nullish(),
+  guestBookingRef: z.string().nullish(),
+  guestOccupantId: z.string().nullish(),
+  guestFirstName: z.string().nullish(),
+  guestLastName: z.string().nullish(),
+  guestCheckIn: z.string().nullish(),
+  guestCheckOut: z.string().nullish(),
+  guestRoomNumbers: z.array(z.string()).nullish(),
+  recoveryAttempts: z.number().int().nullish(),
+  gmailHistoryId: z.string().nullish(),
+  lastSyncMode: z.string().nullish(),
+});
+
+export type ValidatedThreadMetadata = z.infer<typeof threadMetadataSchema>;
+
+/**
+ * Validate metadata before writing to DB. Unknown keys are silently stripped.
+ * If known fields have wrong types, logs a warning and keeps only valid fields.
+ */
+function validateMetadata(
+  metadata: Record<string, unknown> | null | undefined,
+): Record<string, unknown> | null {
+  if (!metadata) {
+    return null;
+  }
+
+  const result = threadMetadataSchema.safeParse(metadata);
+  if (result.success) {
+    return result.data as Record<string, unknown>;
+  }
+
+  console.warn(
+    "[inbox-metadata-validation] Invalid metadata fields stripped before write:",
+    result.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`),
+  );
+
+  // Fallback: strip individual fields that failed validation by making them all optional
+  const lenient = threadMetadataSchema.partial().safeParse(
+    Object.fromEntries(
+      Object.entries(metadata).filter(([key]) => {
+        // Keep only fields whose individual validation passes
+        const fieldSchema = threadMetadataSchema.shape[key as keyof typeof threadMetadataSchema.shape];
+        return !fieldSchema || fieldSchema.safeParse(metadata[key]).success;
+      }),
+    ),
+  );
+  return lenient.success ? (lenient.data as Record<string, unknown>) : null;
+}
+
 function nowIso(): string {
   return new Date().toISOString();
 }
 
+/**
+ * Clamp a caller-supplied limit to the range [1, 200].
+ *
+ * The hard upper bound of 200 prevents runaway queries from fetching unbounded
+ * result sets -- D1 row limits and Cloudflare Worker memory are the binding
+ * constraints. If a caller omits the limit, `fallback` is used instead.
+ */
 function clampLimit(limit: number | undefined, fallback: number): number {
   if (typeof limit !== "number" || Number.isNaN(limit)) {
     return fallback;
@@ -266,8 +387,34 @@ export async function listThreads(
         snippet,
         assigned_uid,
         latest_message_at,
+        (
+          SELECT m.direction FROM messages m
+          WHERE m.thread_id = threads.id
+          ORDER BY COALESCE(m.sent_at, m.created_at) DESC, m.created_at DESC
+          LIMIT 1
+        ) AS latest_message_direction,
         last_synced_at,
         metadata_json,
+        latest_inbound_message_id,
+        latest_inbound_at,
+        latest_inbound_sender,
+        latest_admission_decision,
+        latest_admission_reason,
+        needs_manual_draft,
+        draft_failure_code,
+        draft_failure_message,
+        last_processed_at,
+        last_draft_id,
+        last_draft_template_subject,
+        last_draft_quality_passed,
+        guest_booking_ref,
+        guest_occupant_id,
+        guest_first_name,
+        guest_last_name,
+        guest_check_in,
+        guest_check_out,
+        guest_room_numbers_json,
+        recovery_attempts,
         created_at,
         updated_at
       FROM threads
@@ -328,8 +475,34 @@ export async function listThreadsWithLatestDraft(
         t.snippet,
         t.assigned_uid,
         t.latest_message_at,
+        (
+          SELECT m.direction FROM messages m
+          WHERE m.thread_id = t.id
+          ORDER BY COALESCE(m.sent_at, m.created_at) DESC, m.created_at DESC
+          LIMIT 1
+        ) AS latest_message_direction,
         t.last_synced_at,
         t.metadata_json,
+        t.latest_inbound_message_id,
+        t.latest_inbound_at,
+        t.latest_inbound_sender,
+        t.latest_admission_decision,
+        t.latest_admission_reason,
+        t.needs_manual_draft,
+        t.draft_failure_code,
+        t.draft_failure_message,
+        t.last_processed_at,
+        t.last_draft_id,
+        t.last_draft_template_subject,
+        t.last_draft_quality_passed,
+        t.guest_booking_ref,
+        t.guest_occupant_id,
+        t.guest_first_name,
+        t.guest_last_name,
+        t.guest_check_in,
+        t.guest_check_out,
+        t.guest_room_numbers_json,
+        t.recovery_attempts,
         t.created_at,
         t.updated_at,
         d.id AS draft_id,
@@ -437,6 +610,26 @@ export async function getThread(
         latest_message_at,
         last_synced_at,
         metadata_json,
+        latest_inbound_message_id,
+        latest_inbound_at,
+        latest_inbound_sender,
+        latest_admission_decision,
+        latest_admission_reason,
+        needs_manual_draft,
+        draft_failure_code,
+        draft_failure_message,
+        last_processed_at,
+        last_draft_id,
+        last_draft_template_subject,
+        last_draft_quality_passed,
+        guest_booking_ref,
+        guest_occupant_id,
+        guest_first_name,
+        guest_last_name,
+        guest_check_in,
+        guest_check_out,
+        guest_room_numbers_json,
+        recovery_attempts,
         created_at,
         updated_at
       FROM threads
@@ -546,6 +739,132 @@ export async function getThread(
   };
 }
 
+/**
+ * Fetch a page of messages for a thread.
+ *
+ * The `limit` is clamped to a maximum of 200 via {@link clampLimit} to stay
+ * within D1 memory constraints. Callers that need more messages should
+ * paginate using the returned `offset` / `hasMore` fields.
+ */
+export async function getThreadMessages(
+  options: GetThreadMessagesOptions,
+  db?: D1Database,
+): Promise<PaginatedMessages> {
+  const activeDb = await inboxDb(db);
+  const limit = clampLimit(options.limit, 20);
+  const offset = clampOffset(options.offset);
+
+  // Cursor-based path: fetch messages older than the cursor position.
+  // When a composite cursor (beforeTimestamp + beforeId) is available we use a
+  // row-value comparison `(COALESCE(sent_at, created_at), id) < (ts, id)` so
+  // that ordering is stable even when IDs are not strictly monotonic with time.
+  // Fall back to ID-only comparison when only beforeId is supplied (backward compat).
+  if (options.beforeId) {
+    const useCompositeCursor = Boolean(options.beforeTimestamp);
+
+    const [countResult, messagesResult] = await Promise.all([
+      activeDb
+        .prepare(
+          `SELECT COUNT(*) AS cnt FROM messages WHERE thread_id = ?`,
+        )
+        .bind(options.threadId)
+        .first<{ cnt: number }>(),
+      useCompositeCursor
+        ? activeDb
+          .prepare(
+            `
+            SELECT
+              id,
+              thread_id,
+              direction,
+              sender_email,
+              recipient_emails_json,
+              subject,
+              snippet,
+              sent_at,
+              payload_json,
+              created_at
+            FROM messages
+            WHERE thread_id = ? AND (COALESCE(sent_at, created_at), id) < (?, ?)
+            ORDER BY COALESCE(sent_at, created_at) DESC, id DESC
+            LIMIT ?
+            `,
+          )
+          .bind(options.threadId, options.beforeTimestamp, options.beforeId, limit)
+          .all<InboxMessageRow>()
+        : activeDb
+          .prepare(
+            `
+            SELECT
+              id,
+              thread_id,
+              direction,
+              sender_email,
+              recipient_emails_json,
+              subject,
+              snippet,
+              sent_at,
+              payload_json,
+              created_at
+            FROM messages
+            WHERE thread_id = ? AND id < ?
+            ORDER BY COALESCE(sent_at, created_at) DESC, id DESC
+            LIMIT ?
+            `,
+          )
+          .bind(options.threadId, options.beforeId, limit)
+          .all<InboxMessageRow>(),
+    ]);
+
+    const totalMessages = countResult?.cnt ?? 0;
+    const rows = messagesResult.results ?? [];
+    // Reverse so messages are in chronological order (oldest first) for display
+    const messages = rows.reverse();
+    const hasMore = rows.length === limit;
+
+    return { messages, totalMessages, offset: 0, limit, hasMore };
+  }
+
+  // Offset-based fallback for initial load (no cursor yet)
+  const [countResult, messagesResult] = await Promise.all([
+    activeDb
+      .prepare(
+        `SELECT COUNT(*) AS cnt FROM messages WHERE thread_id = ?`,
+      )
+      .bind(options.threadId)
+      .first<{ cnt: number }>(),
+    activeDb
+      .prepare(
+        `
+        SELECT
+          id,
+          thread_id,
+          direction,
+          sender_email,
+          recipient_emails_json,
+          subject,
+          snippet,
+          sent_at,
+          payload_json,
+          created_at
+        FROM messages
+        WHERE thread_id = ?
+        ORDER BY COALESCE(sent_at, created_at) DESC, created_at DESC
+        LIMIT ? OFFSET ?
+        `,
+      )
+      .bind(options.threadId, limit, offset)
+      .all<InboxMessageRow>(),
+  ]);
+
+  const totalMessages = countResult?.cnt ?? 0;
+  // Reverse so messages are in chronological order (oldest first) for display
+  const messages = (messagesResult.results ?? []).reverse();
+  const hasMore = offset + messages.length < totalMessages;
+
+  return { messages, totalMessages, offset, limit, hasMore };
+}
+
 export async function createThread(
   input: CreateThreadInput,
   db?: D1Database,
@@ -553,23 +872,39 @@ export async function createThread(
   const activeDb = await inboxDb(db);
   const timestamp = nowIso();
 
+  // Validate and strip invalid metadata fields before writing
+  const validatedMeta = validateMetadata(input.metadata);
+
+  // Build column SET clauses for promoted metadata fields
+  const extraColumns: string[] = [];
+  const extraPlaceholders: string[] = [];
+  const extraBinds: unknown[] = [];
+
+  if (validatedMeta) {
+    for (const [column, metaKey] of Object.entries(METADATA_COLUMN_MAP)) {
+      if (Object.prototype.hasOwnProperty.call(validatedMeta, metaKey)) {
+        extraColumns.push(column);
+        extraPlaceholders.push("?");
+        extraBinds.push(metadataValueForColumn(column, validatedMeta[metaKey]));
+      }
+    }
+  }
+
+  const columnsList = [
+    "id", "status", "subject", "snippet", "assigned_uid",
+    "latest_message_at", "last_synced_at", "metadata_json",
+    ...extraColumns,
+    "created_at", "updated_at",
+  ].join(", ");
+
+  const placeholdersList = [
+    "?", "?", "?", "?", "?", "?", "?", "?",
+    ...extraPlaceholders,
+    "?", "?",
+  ].join(", ");
+
   await activeDb
-    .prepare(
-      `
-      INSERT INTO threads (
-        id,
-        status,
-        subject,
-        snippet,
-        assigned_uid,
-        latest_message_at,
-        last_synced_at,
-        metadata_json,
-        created_at,
-        updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `
-    )
+    .prepare(`INSERT INTO threads (${columnsList}) VALUES (${placeholdersList})`)
     .bind(
       input.id,
       input.status ?? "pending",
@@ -578,7 +913,8 @@ export async function createThread(
       input.assignedUid ?? null,
       input.latestMessageAt ?? null,
       input.lastSyncedAt ?? null,
-      stringifyJson(input.metadata),
+      stringifyJson(validatedMeta),
+      ...extraBinds,
       timestamp,
       timestamp,
     )
@@ -596,6 +932,26 @@ export async function createThread(
         latest_message_at,
         last_synced_at,
         metadata_json,
+        latest_inbound_message_id,
+        latest_inbound_at,
+        latest_inbound_sender,
+        latest_admission_decision,
+        latest_admission_reason,
+        needs_manual_draft,
+        draft_failure_code,
+        draft_failure_message,
+        last_processed_at,
+        last_draft_id,
+        last_draft_template_subject,
+        last_draft_quality_passed,
+        guest_booking_ref,
+        guest_occupant_id,
+        guest_first_name,
+        guest_last_name,
+        guest_check_in,
+        guest_check_out,
+        guest_room_numbers_json,
+        recovery_attempts,
         created_at,
         updated_at
       FROM threads
@@ -610,6 +966,40 @@ export async function createThread(
   }
 
   return thread;
+}
+
+/** Column name -> metadata field key mapping for dual-write. */
+const METADATA_COLUMN_MAP: Record<string, string> = {
+  latest_inbound_message_id: "latestInboundMessageId",
+  latest_inbound_at: "latestInboundAt",
+  latest_inbound_sender: "latestInboundSender",
+  latest_admission_decision: "latestAdmissionDecision",
+  latest_admission_reason: "latestAdmissionReason",
+  needs_manual_draft: "needsManualDraft",
+  draft_failure_code: "draftFailureCode",
+  draft_failure_message: "draftFailureMessage",
+  last_processed_at: "lastProcessedAt",
+  last_draft_id: "lastDraftId",
+  last_draft_template_subject: "lastDraftTemplateSubject",
+  last_draft_quality_passed: "lastDraftQualityPassed",
+  guest_booking_ref: "guestBookingRef",
+  guest_occupant_id: "guestOccupantId",
+  guest_first_name: "guestFirstName",
+  guest_last_name: "guestLastName",
+  guest_check_in: "guestCheckIn",
+  guest_check_out: "guestCheckOut",
+  guest_room_numbers_json: "guestRoomNumbers",
+  recovery_attempts: "recoveryAttempts",
+};
+
+const BOOLEAN_COLUMNS = new Set(["needs_manual_draft", "last_draft_quality_passed"]);
+const ARRAY_COLUMNS = new Set(["guest_room_numbers_json"]);
+
+function metadataValueForColumn(column: string, value: unknown): unknown {
+  if (value == null) return null;
+  if (BOOLEAN_COLUMNS.has(column)) return value ? 1 : 0;
+  if (ARRAY_COLUMNS.has(column)) return Array.isArray(value) ? JSON.stringify(value) : value;
+  return value;
 }
 
 export async function updateThreadStatus(
@@ -637,8 +1027,22 @@ export async function updateThreadStatus(
   }
 
   if (Object.prototype.hasOwnProperty.call(input, "metadata")) {
+    // Validate and strip invalid fields before writing
+    const validatedMeta = validateMetadata(input.metadata);
+
+    // Dual-write: metadata_json blob + individual columns
     updates.push("metadata_json = ?");
-    binds.push(stringifyJson(input.metadata));
+    binds.push(stringifyJson(validatedMeta));
+
+    // Write promoted columns from the validated metadata object
+    if (validatedMeta) {
+      for (const [column, metaKey] of Object.entries(METADATA_COLUMN_MAP)) {
+        if (Object.prototype.hasOwnProperty.call(validatedMeta, metaKey)) {
+          updates.push(`${column} = ?`);
+          binds.push(metadataValueForColumn(column, validatedMeta[metaKey]));
+        }
+      }
+    }
   }
 
   binds.push(input.threadId);
@@ -801,6 +1205,132 @@ export async function createDraft(
   }
 
   return draft;
+}
+
+/**
+ * Atomically creates a draft only if no pending draft (status = 'generated')
+ * already exists for the given thread. Returns the existing draft if one was
+ * found, or the newly created draft otherwise.
+ *
+ * Uses INSERT ... WHERE NOT EXISTS to avoid the TOCTOU race where two
+ * concurrent sync runs both see "no draft" and both insert.
+ */
+export type CreateDraftIfNotExistsResult = {
+  draft: InboxDraftRow;
+  /** True when a new row was inserted; false when an existing pending draft was returned. */
+  created: boolean;
+};
+
+export async function createDraftIfNotExists(
+  input: CreateDraftInput,
+  db?: D1Database,
+): Promise<CreateDraftIfNotExistsResult> {
+  const activeDb = await inboxDb(db);
+  const draftId = input.id ?? generateDraftId();
+  const timestamp = nowIso();
+
+  const insertResult = await activeDb
+    .prepare(
+      `
+      INSERT INTO drafts (
+        id,
+        thread_id,
+        gmail_draft_id,
+        status,
+        subject,
+        recipient_emails_json,
+        plain_text,
+        html,
+        original_plain_text,
+        original_html,
+        template_used,
+        quality_json,
+        interpret_json,
+        created_by_uid,
+        created_at,
+        updated_at
+      )
+      SELECT ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+      WHERE NOT EXISTS (
+        SELECT 1 FROM drafts
+        WHERE thread_id = ? AND status = 'generated'
+      )
+      `
+    )
+    .bind(
+      draftId,
+      input.threadId,
+      input.gmailDraftId ?? null,
+      input.status ?? "generated",
+      input.subject ?? null,
+      stringifyArray(input.recipientEmails),
+      input.plainText,
+      input.html ?? null,
+      input.originalPlainText ?? null,
+      input.originalHtml ?? null,
+      input.templateUsed ?? null,
+      stringifyJson(input.quality),
+      stringifyJson(input.interpret),
+      input.createdByUid ?? null,
+      timestamp,
+      timestamp,
+      // WHERE NOT EXISTS bind:
+      input.threadId,
+    )
+    .run();
+
+  const rowsWritten = insertResult.meta?.changes ?? 0;
+
+  if (rowsWritten > 0) {
+    // New draft was inserted
+    const draft = await activeDb
+      .prepare(
+        `
+        SELECT
+          id, thread_id, gmail_draft_id, status, subject,
+          recipient_emails_json, plain_text, html,
+          original_plain_text, original_html, template_used,
+          quality_json, interpret_json, created_by_uid,
+          created_at, updated_at
+        FROM drafts WHERE id = ?
+        `
+      )
+      .bind(draftId)
+      .first<InboxDraftRow>();
+
+    if (!draft) {
+      throw new Error(`Draft ${draftId} was not found after insert.`);
+    }
+    return { draft, created: true };
+  }
+
+  // Insert was skipped — a pending draft already exists
+  const existing = await activeDb
+    .prepare(
+      `
+      SELECT
+        id, thread_id, gmail_draft_id, status, subject,
+        recipient_emails_json, plain_text, html,
+        original_plain_text, original_html, template_used,
+        quality_json, interpret_json, created_by_uid,
+        created_at, updated_at
+      FROM drafts
+      WHERE thread_id = ? AND status = 'generated'
+      ORDER BY updated_at DESC, created_at DESC
+      LIMIT 1
+      `
+    )
+    .bind(input.threadId)
+    .first<InboxDraftRow>();
+
+  if (!existing) {
+    // Extremely unlikely race: the draft that blocked the insert was
+    // updated/deleted between our INSERT and this SELECT. Fall back to
+    // a normal insert.
+    return { draft: await createDraft(input, activeDb), created: true };
+  }
+
+  return { draft: existing, created: false };
 }
 
 export async function updateDraft(
@@ -986,6 +1516,26 @@ export async function findStaleAdmittedThreads(
         t.latest_message_at,
         t.last_synced_at,
         t.metadata_json,
+        t.latest_inbound_message_id,
+        t.latest_inbound_at,
+        t.latest_inbound_sender,
+        t.latest_admission_decision,
+        t.latest_admission_reason,
+        t.needs_manual_draft,
+        t.draft_failure_code,
+        t.draft_failure_message,
+        t.last_processed_at,
+        t.last_draft_id,
+        t.last_draft_template_subject,
+        t.last_draft_quality_passed,
+        t.guest_booking_ref,
+        t.guest_occupant_id,
+        t.guest_first_name,
+        t.guest_last_name,
+        t.guest_check_in,
+        t.guest_check_out,
+        t.guest_room_numbers_json,
+        t.recovery_attempts,
         t.created_at,
         t.updated_at
       FROM threads t
@@ -1005,11 +1555,7 @@ export async function findStaleAdmittedThreads(
         AND NOT EXISTS (
           SELECT 1 FROM drafts d WHERE d.thread_id = t.id
         )
-        AND (
-          t.metadata_json IS NULL
-          OR json_extract(t.metadata_json, '$.needsManualDraft') IS NULL
-          OR json_extract(t.metadata_json, '$.needsManualDraft') != 1
-        )
+        AND (t.needs_manual_draft IS NULL OR t.needs_manual_draft != 1)
       ORDER BY t.updated_at ASC
       LIMIT ?
       `
@@ -1025,6 +1571,11 @@ export async function recordAdmission(
   db?: D1Database,
 ): Promise<AdmissionOutcomeRow> {
   const activeDb = await inboxDb(db);
+  const classifierVersion = input.classifierVersion ?? null;
+  const timestamp = nowIso();
+
+  // Upsert keyed on (thread_id, classifier_version) to prevent duplicate
+  // admission rows accumulating on every sync run.
   const insertResult = await activeDb
     .prepare(
       `
@@ -1037,22 +1588,28 @@ export async function recordAdmission(
         source_metadata_json,
         created_at
       ) VALUES (?, ?, ?, ?, ?, ?, ?)
+      ON CONFLICT(thread_id, classifier_version) DO UPDATE SET
+        decision = excluded.decision,
+        source = excluded.source,
+        matched_rule = excluded.matched_rule,
+        source_metadata_json = excluded.source_metadata_json,
+        created_at = excluded.created_at
       `
     )
     .bind(
       input.threadId,
       input.decision,
       input.source,
-      input.classifierVersion ?? null,
+      classifierVersion,
       input.matchedRule ?? null,
       stringifyJson(input.sourceMetadata),
-      nowIso(),
+      timestamp,
     )
     .run();
 
   const lastRowId = insertResult.meta?.last_row_id;
   if (typeof lastRowId !== "number") {
-    throw new Error("Admission outcome insert did not return a last_row_id.");
+    throw new Error("Admission outcome upsert did not return a last_row_id.");
   }
 
   const admission = await activeDb

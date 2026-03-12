@@ -41,9 +41,8 @@ jobs:
           XA_CATALOG_CONTRACT_READ_TOKEN: ${{ secrets.XA_CATALOG_CONTRACT_READ_TOKEN }}
           XA_CATALOG_CONTRACT_READ_REQUIRED: "1"
           NEXT_PUBLIC_XA_IMAGES_BASE_URL: ${{ vars.XA_IMAGES_BASE_URL_PREVIEW || vars.XA_IMAGES_BASE_URL }}
-
-      - name: Remove __next.* metadata files (CF Pages 20k file limit)
-        run: find apps/xa-b/out -name '__next.*' -type f -delete
+          NEXT_PUBLIC_XA_CATALOG_PUBLIC_URL: ${{ vars.XA_CATALOG_PUBLIC_URL_PREVIEW }}
+          XA_STEALTH_MODE: "1"
 
       - name: Validate out/ directory
         run: |

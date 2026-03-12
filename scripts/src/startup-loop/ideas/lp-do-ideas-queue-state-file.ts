@@ -1,5 +1,5 @@
 import { randomBytes } from "node:crypto";
-import { existsSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { basename, dirname, join, resolve, sep } from "node:path";
 
 import type {
@@ -14,6 +14,7 @@ import type {
 export type QueueStateKey =
   | "enqueued"
   | "processed"
+  | "declined"
   | "skipped"
   | "error"
   | "suppressed"
@@ -74,6 +75,13 @@ export interface QueueCompletedBy {
   self_evolving?: QueueCompletedSelfEvolving;
 }
 
+export interface QueueDeclinedBy {
+  actor_id: string;
+  actor_name: string;
+  declined_at: string;
+  reason: string;
+}
+
 export interface QueueDispatch {
   dispatch_id?: string;
   business?: string;
@@ -86,6 +94,7 @@ export interface QueueDispatch {
   location_anchors?: string[];
   processed_by?: QueueProcessedBy;
   completed_by?: QueueCompletedBy;
+  declined_by?: QueueDeclinedBy;
   self_evolving?: DispatchSelfEvolvingLink;
   [key: string]: unknown;
 }
@@ -107,6 +116,7 @@ export type QueueFileReadResult =
 const COUNT_KEYS: readonly QueueStateKey[] = [
   "enqueued",
   "processed",
+  "declined",
   "skipped",
   "error",
   "suppressed",
@@ -182,6 +192,7 @@ export function buildCounts(dispatches: QueueDispatch[]): Record<string, number>
   const counts: Record<string, number> = {
     enqueued: 0,
     processed: 0,
+    declined: 0,
     skipped: 0,
     error: 0,
     suppressed: 0,
@@ -222,6 +233,7 @@ export function atomicWriteQueueState(
   const tmpPath = join(dir, `.${basename(resolvedPath)}.tmp.${suffix}`);
 
   try {
+    mkdirSync(dir, { recursive: true });
     writeFileSync(tmpPath, JSON.stringify(queue, null, 2) + "\n", "utf-8");
     renameSync(tmpPath, resolvedPath);
   } catch (err) {

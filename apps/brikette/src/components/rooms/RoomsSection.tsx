@@ -8,10 +8,11 @@ import { BOOKING_CODE } from "@/context/modal/constants";
 import { roomsData, websiteVisibleRoomsData } from "@/data/roomsData";
 import type { OctorateRoom } from "@/hooks/useAvailability";
 import type { AppLanguage } from "@/i18n.config";
+import type { RoomQueryState } from "@/types/booking";
 import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityByCategory";
-import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { readAttribution } from "@/utils/entryAttribution";
 import { createBrikClickId, fireSelectItem, type ItemListId, type RatePlan } from "@/utils/ga4-events";
+import { buildHostelBookingTarget } from "@/utils/octorateCustomPage";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
 import { translatePath } from "@/utils/translate-path";
 
@@ -37,7 +38,7 @@ type RoomsSectionProps = {
    * - "invalid": actions are disabled (no navigation)
    * - "absent" (default): navigate to /{lang}/book
    */
-  queryState?: "valid" | "invalid" | "absent";
+  queryState?: RoomQueryState;
   /** Optional deal / coupon code to propagate into Octorate booking URL */
   deal?: string;
   /**
@@ -83,9 +84,19 @@ export function RoomsSection({
   const roomPrices = useMemo<Record<string, RoomCardPrice> | undefined>(() => {
     if (!availabilityRooms || availabilityRooms.length === 0) return roomPricesOverride;
     const prices: Record<string, RoomCardPrice> = { ...(roomPricesOverride ?? {}) };
+    // Pre-aggregate once per unique category to avoid O(rooms × availabilityRooms) iterations.
+    const aggregatedByCategory = new Map<string, ReturnType<typeof aggregateAvailabilityByCategory>>();
+    for (const room of visibleRoomsData) {
+      if (room.octorateRoomCategory && !aggregatedByCategory.has(room.octorateRoomCategory)) {
+        aggregatedByCategory.set(
+          room.octorateRoomCategory,
+          aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory),
+        );
+      }
+    }
     for (const room of visibleRoomsData) {
       if (!room.octorateRoomCategory) continue;
-      const avRoom = aggregateAvailabilityByCategory(availabilityRooms, room.octorateRoomCategory);
+      const avRoom = aggregatedByCategory.get(room.octorateRoomCategory);
       if (!avRoom) continue;
       if (!avRoom.available) {
         prices[room.id] = { soldOut: true };
@@ -129,7 +140,8 @@ export function RoomsSection({
   const resolveValidBookingUrl = (ctx: { roomSku: string; plan: RatePlan }): string | null => {
     const room = visibleRoomsData.find((r) => r.id === ctx.roomSku);
     if (!room) return null;
-    const result = buildOctorateUrl({
+    const result = buildHostelBookingTarget({
+      lang: (props.lang ?? "en") as AppLanguage,
       checkin: props.bookingQuery?.checkIn ?? "",
       checkout: props.bookingQuery?.checkOut ?? "",
       pax: parseInt(props.bookingQuery?.pax ?? "1", 10) || 1,
@@ -211,7 +223,7 @@ export function RoomsSection({
     if (queryState === "valid") {
       const targetUrl = resolveValidBookingUrl(ctx);
       if (targetUrl) {
-        // Navigate directly to Octorate using the booking query dates.
+        // Navigate into the branded secure-booking handoff using the booking query dates.
         // TC-02/TC-03/TC-04: wrap in trackThenNavigate for reliable beacon dispatch.
         startTrackedCheckoutNavigation({ roomSku: ctx.roomSku, plan: ctx.plan, targetUrl });
         return;
@@ -233,7 +245,6 @@ export function RoomsSection({
     <RoomsSectionBase
       {...props}
       excludeRoomIds={effectiveExcludeRoomIds}
-      singleCtaMode
       itemListId={props.itemListId}
       onRoomSelect={onRoomSelect}
       {...(roomPrices ? { roomPrices } : {})}

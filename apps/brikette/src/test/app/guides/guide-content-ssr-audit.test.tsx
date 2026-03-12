@@ -10,6 +10,16 @@ import type { GuideKey } from "@/routes.guides-helpers";
 
 jest.mock("server-only", () => ({}));
 
+jest.mock("react-i18next", () => ({
+  useTranslation: (namespace: string, options?: { lng?: string }) => {
+    const lang = options?.lng ?? "en";
+    return {
+      t: i18n.getFixedT(lang, namespace),
+      i18n,
+    };
+  },
+}));
+
 jest.mock("@/components/cta/ContentStickyCta", () => ({
   ContentStickyCta: () => null,
 }));
@@ -94,10 +104,6 @@ jest.mock("next/link", () => ({
   ),
 }));
 
-jest.mock("@/utils/loadI18nNs", () => ({
-  preloadNamespacesWithFallback: jest.fn().mockResolvedValue(undefined),
-}));
-
 type GuideSection = "experiences" | "assistance" | "howToGetHere";
 
 type GuideSample = {
@@ -180,8 +186,6 @@ describe("GuideContent SSR translation audit", () => {
     "renders translated SSR HTML for $section guide $guideKey",
     async ({ guideKey }) => {
       const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle("en", guideKey);
-
-      clearGuidesBundle("en");
 
       const html = renderToString(
         <GuideContent

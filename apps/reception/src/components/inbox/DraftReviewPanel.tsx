@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { CheckCircle, RefreshCw, Save, Send, ShieldAlert, XCircle } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
@@ -13,6 +13,7 @@ import {
   findLatestInboundSender,
   inferReplySubject,
 } from "./presentation";
+import TemplatePicker from "./TemplatePicker";
 
 interface DraftReviewPanelProps {
   threadDetail: InboxThreadDetail;
@@ -26,11 +27,12 @@ interface DraftReviewPanelProps {
     recipientEmails?: string[];
     plainText: string;
     html?: string | null;
+    templateUsed?: string;
   }) => Promise<void>;
   onRegenerate: (force?: boolean) => Promise<void>;
   onSend: () => Promise<void>;
   onResolve: () => Promise<void>;
-  onDismiss: () => Promise<void>;
+  onDismiss: () => Promise<{ thread: InboxThreadDetail["thread"]; gmailMarkedRead: boolean }>;
 }
 
 type DraftConfirmDialog = "none" | "regenerate" | "send" | "resolve" | "dismiss";
@@ -43,7 +45,10 @@ function parseRecipientEmails(input: string): string[] {
 }
 
 function isValidEmail(value: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  // Requires: no consecutive dots, 2+ char domain extension, reasonable structure.
+  // eslint-disable-next-line security/detect-unsafe-regex -- IDEA-DISPATCH-20260312140000-0005 bounded input: short user-typed email strings
+  return /^[a-zA-Z0-9](?:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(value)
+    && !value.includes("..");
 }
 
 export default function DraftReviewPanel({
@@ -74,7 +79,31 @@ export default function DraftReviewPanel({
   const [recipientInput, setRecipientInput] = useState("");
   const [plainText, setPlainText] = useState("");
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [recipientBlurError, setRecipientBlurError] = useState<string | null>(null);
   const [confirmDialog, setConfirmDialog] = useState<DraftConfirmDialog>("none");
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
+
+  // Determine whether this is a Prime thread (show template picker)
+  const isPrimeThread = threadDetail.thread.channel === "prime_direct"
+    || threadDetail.thread.channel === "prime_broadcast";
+
+  // Extract the latest inbound message text for template auto-suggest
+  const latestInboundText = useMemo(() => {
+    if (!isPrimeThread) return null;
+    const inbound = [...threadDetail.messages]
+      .reverse()
+      .find((m) => m.direction === "inbound");
+    return inbound?.bodyPlain ?? inbound?.snippet ?? null;
+  }, [isPrimeThread, threadDetail.messages]);
+
+  // Template selection handler
+  const handleTemplateSelect = useCallback(
+    (formattedText: string, templateId: string) => {
+      setPlainText(formattedText);
+      setSelectedTemplateId(templateId);
+    },
+    [],
+  );
 
   useEffect(() => {
     setSubject(
@@ -91,6 +120,8 @@ export default function DraftReviewPanel({
     );
     setPlainText(currentDraft?.plainText ?? "");
     setValidationError(null);
+    setRecipientBlurError(null);
+    setSelectedTemplateId(currentDraft?.templateUsed ?? null);
   }, [
     channelCapabilities.supportsRecipients,
     channelCapabilities.supportsSubject,
@@ -132,6 +163,25 @@ export default function DraftReviewPanel({
     threadDetail.thread.subject,
   ]);
 
+  function handleRecipientBlur() {
+    const trimmed = recipientInput.trim();
+    if (!trimmed) {
+      setRecipientBlurError(null);
+      return;
+    }
+    const emails = parseRecipientEmails(trimmed);
+    const invalid = emails.filter((e) => !isValidEmail(e));
+    if (invalid.length > 0) {
+      setRecipientBlurError(
+        invalid.length === 1
+          ? `"${invalid[0]}" is not a valid email address.`
+          : `Invalid email addresses: ${invalid.map((e) => `"${e}"`).join(", ")}`,
+      );
+    } else {
+      setRecipientBlurError(null);
+    }
+  }
+
   const requiresManualDraft = threadDetail.thread.needsManualDraft && !currentDraft;
   const actionsDisabled = savingDraft || regeneratingDraft || sendingDraft || resolvingThread || dismissingThread;
 
@@ -162,6 +212,7 @@ export default function DraftReviewPanel({
       recipientEmails: channelCapabilities.supportsRecipients ? parsedRecipients : undefined,
       plainText,
       html: null,
+      templateUsed: selectedTemplateId ?? undefined,
     });
   }
 
@@ -214,7 +265,7 @@ export default function DraftReviewPanel({
           </h3>
           <div className="flex items-center gap-2">
             {currentDraft?.templateUsed && (
-              <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs text-muted-foreground">
+              <span className="rounded-full bg-surface-3 px-2 py-0.5 text-xs font-medium text-foreground/60">
                 {currentDraft.templateUsed}
               </span>
             )}
@@ -247,11 +298,19 @@ export default function DraftReviewPanel({
             </div>
           )}
 
+          {isPrimeThread && (
+            <TemplatePicker
+              latestInboundText={latestInboundText}
+              onSelect={handleTemplateSelect}
+              activeTemplateId={selectedTemplateId}
+            />
+          )}
+
           {(channelCapabilities.supportsSubject || channelCapabilities.supportsRecipients) && (
             <div className="grid gap-3 sm:grid-cols-2">
               {channelCapabilities.supportsSubject && (
                 <div>
-                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                  <label className="mb-1 block text-xs font-semibold text-foreground/70">
                     {channelCapabilities.subjectLabel}
                   </label>
                   <input
@@ -265,16 +324,27 @@ export default function DraftReviewPanel({
               )}
               {channelCapabilities.supportsRecipients && (
                 <div>
-                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                  <label className="mb-1 block text-xs font-semibold text-foreground/70">
                     {channelCapabilities.recipientLabel}
                   </label>
                   <input
                     value={recipientInput}
-                    onChange={(event) => setRecipientInput(event.target.value)}
+                    onChange={(event) => {
+                      setRecipientInput(event.target.value);
+                      setRecipientBlurError(null);
+                    }}
+                    onBlur={handleRecipientBlur}
                     disabled={!canSaveDraft}
-                    className="w-full rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
+                    className={`w-full rounded-lg border bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30 ${
+                      recipientBlurError
+                        ? "border-error-main"
+                        : "border-border-1"
+                    }`}
                     placeholder="guest@example.com"
                   />
+                  {recipientBlurError && (
+                    <p className="mt-1 text-xs text-error-main">{recipientBlurError}</p>
+                  )}
                 </div>
               )}
             </div>
@@ -282,7 +352,7 @@ export default function DraftReviewPanel({
 
           {/* Message body */}
           <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+            <label className="mb-1 block text-xs font-semibold text-foreground/70">
               {channelCapabilities.bodyLabel}
             </label>
             <textarea
@@ -312,7 +382,7 @@ export default function DraftReviewPanel({
                   type="button"
                   onClick={() => void handleSave()}
                   disabled={actionsDisabled || !hasUnsavedChanges}
-                  color="default"
+                  color="info"
                   tone="outline"
                   className="min-h-9 rounded-lg text-xs"
                 >
@@ -325,7 +395,7 @@ export default function DraftReviewPanel({
                     type="button"
                     onClick={() => setConfirmDialog("regenerate")}
                     disabled={actionsDisabled}
-                    color="default"
+                    color="accent"
                     tone="outline"
                     className="min-h-9 rounded-lg text-xs"
                   >
@@ -342,7 +412,7 @@ export default function DraftReviewPanel({
                   type="button"
                   onClick={() => setConfirmDialog("resolve")}
                   disabled={actionsDisabled}
-                  color="default"
+                  color="success"
                   tone="outline"
                   className="min-h-9 rounded-lg text-xs"
                 >

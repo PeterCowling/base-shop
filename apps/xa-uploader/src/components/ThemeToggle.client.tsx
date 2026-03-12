@@ -19,13 +19,12 @@ function getInitialTheme(): Theme {
 
 export function ThemeToggle({ variant = "dark" }: { variant?: "light" | "dark" }) {
   const { t } = useUploaderI18n();
-  const [theme, setTheme] = React.useState<Theme>("light");
+  const [theme, setTheme] = React.useState<Theme>(getInitialTheme);
 
   React.useEffect(() => {
-    const initial = getInitialTheme();
-    setTheme(initial);
-    document.documentElement.setAttribute("data-theme", initial);
-    document.documentElement.classList.toggle("theme-dark", initial === "dark");
+    document.documentElement.setAttribute("data-theme", theme);
+    document.documentElement.classList.toggle("theme-dark", theme === "dark");
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- XAUP-0001 apply DOM attribute on mount only; toggle callback handles subsequent updates
   }, []);
 
   const toggle = React.useCallback(() => {

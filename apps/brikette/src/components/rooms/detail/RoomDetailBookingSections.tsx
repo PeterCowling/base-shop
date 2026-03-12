@@ -7,6 +7,7 @@ import type { DateRange } from "@/components/booking/DateRangePicker";
 import ExpiredQuoteNotice from "@/components/booking/ExpiredQuoteNotice";
 import RecoveryQuoteCapture from "@/components/booking/RecoveryQuoteCapture";
 import type { AppLanguage } from "@/i18n.config";
+import type { RoomQueryState } from "@/types/booking";
 import { HOSTEL_MIN_PAX } from "@/utils/bookingDateRules";
 import { getBookPath } from "@/utils/localizedRoutes";
 
@@ -49,13 +50,15 @@ export function BookingPickerSection({
           onPaxChange={onAdultsChange}
           minPax={HOSTEL_MIN_PAX}
           maxPax={maxPickerAdults}
-          stayHelperText={stayHelperText}
-          clearDatesText={clearDatesText}
-          checkInLabelText={checkInLabelText}
-          checkOutLabelText={checkOutLabelText}
-          guestsLabelText={adultsLabel}
-          decreaseGuestsAriaLabel={t("bookingControls.decreaseAdults") as string}
-          increaseGuestsAriaLabel={t("bookingControls.increaseAdults") as string}
+          labels={{
+            stayHelper: stayHelperText,
+            clearDates: clearDatesText,
+            checkIn: checkInLabelText,
+            checkOut: checkOutLabelText,
+            guests: adultsLabel,
+            decreaseGuests: t("bookingControls.decreaseAdults") as string,
+            increaseGuests: t("bookingControls.increaseAdults") as string,
+          }}
         />
       </div>
     </Section>
@@ -67,7 +70,7 @@ export function RoomDetailBookingNotices({
   indicativeAnchor,
   showRebuildQuotePrompt,
 }: {
-  queryState: "valid" | "invalid" | "absent";
+  queryState: RoomQueryState;
   indicativeAnchor: string | null;
   showRebuildQuotePrompt: boolean;
 }) {
@@ -119,7 +122,7 @@ export function RoomDetailRecoverySection({
   lang: AppLanguage;
   roomId: string;
   roomSku: string;
-  queryState: "valid" | "invalid" | "absent";
+  queryState: RoomQueryState;
   checkin: string;
   checkout: string;
   pax: number;

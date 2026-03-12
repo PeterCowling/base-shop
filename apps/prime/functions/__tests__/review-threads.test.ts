@@ -541,12 +541,13 @@ describe('/api/review-threads and /api/review-thread', () => {
 
     expect(response.status).toBe(200);
     expect(payload.success).toBe(true);
-    expect(payload.data.currentDraft).toEqual({
+    expect(payload.data.currentDraft).toEqual(expect.objectContaining({
       id: 'draft-1',
       status: 'under_review',
       content: 'Manual reply draft',
+      audience: 'thread',
       createdByUid: 'staff-1',
-    });
+    }));
   });
 
   it('TC-03C: campaign detail returns canonical target and delivery summaries', async () => {
@@ -1029,7 +1030,7 @@ describe('/api/review-threads and /api/review-thread', () => {
     expect(payload.data.campaign).toEqual(expect.objectContaining({
       id: 'camp-booking-1',
       status: 'sent',
-      targetSummary: { total: 1 },
+      targetSummary: expect.objectContaining({ total: 1 }),
       deliverySummary: expect.objectContaining({
         projected: 1,
         failed: 0,
@@ -1435,99 +1436,105 @@ describe('/api/review-threads and /api/review-thread', () => {
       },
     });
 
+    jest.useFakeTimers().setSystemTime(new Date('2026-03-09T12:00:00.000Z'));
     jest.spyOn(Date, 'now').mockReturnValue(1500);
     jest.spyOn(global.crypto, 'randomUUID')
       .mockReturnValueOnce('abcdef123456abcdef123456abcdef12')
       .mockReturnValueOnce('bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb')
       .mockReturnValueOnce('cccccccccccccccccccccccccccccccc');
-    fetchMock.mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
-      const url = input instanceof URL ? input.toString() : String(input);
 
-      if (url.includes('/bookings.json') && (!init?.method || init.method === 'GET')) {
-        return new Response(JSON.stringify({
-          BOOK123: {
-            occ_aaa: {
-              checkInDate: '2026-03-08',
-              checkOutDate: '2026-03-10',
-              roomNumbers: ['101'],
+    try {
+      fetchMock.mockImplementation(async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = input instanceof URL ? input.toString() : String(input);
+
+        if (url.includes('/bookings.json') && (!init?.method || init.method === 'GET')) {
+          return new Response(JSON.stringify({
+            BOOK123: {
+              occ_aaa: {
+                checkInDate: '2026-03-08',
+                checkOutDate: '2026-03-10',
+                roomNumbers: ['101'],
+              },
             },
-          },
-          BOOK456: {
-            occ_bbb: {
-              checkInDate: '2026-03-08',
-              checkOutDate: '2026-03-10',
-              roomNumbers: ['101'],
+            BOOK456: {
+              occ_bbb: {
+                checkInDate: '2026-03-08',
+                checkOutDate: '2026-03-10',
+                roomNumbers: ['101'],
+              },
             },
+          }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+        if (url.includes('/guestByRoom.json') && (!init?.method || init.method === 'GET')) {
+          return new Response(JSON.stringify({
+            occ_aaa: { allocated: '101' },
+            occ_bbb: { allocated: '101' },
+          }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+        if (
+          (url.includes('/messaging/channels/broadcast_booking_BOOK123/meta.json')
+            || url.includes('/messaging/channels/broadcast_booking_BOOK456/meta.json'))
+          && (!init?.method || init.method === 'GET')
+        ) {
+          return new Response('null', { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+        if (
+          (url.includes('/messaging/channels/broadcast_booking_BOOK123/meta.json')
+            || url.includes('/messaging/channels/broadcast_booking_BOOK456/meta.json'))
+          && init?.method === 'PUT'
+        ) {
+          return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+        if (url.includes('/messaging/channels/broadcast_booking_BOOK123/messages/') && init?.method === 'PUT') {
+          return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+        }
+        if (url.includes('/messaging/channels/broadcast_booking_BOOK456/messages/') && init?.method === 'PUT') {
+          return new Response('boom', { status: 500, statusText: 'Internal Server Error' });
+        }
+
+        throw new Error(`Unexpected fetch: ${url} ${init?.method ?? 'GET'}`);
+      });
+
+      const response = await sendReviewCampaign(
+        createPagesContext({
+          url: 'https://prime.example.com/api/review-campaign-send?campaignId=camp-room-1',
+          method: 'POST',
+          headers: {
+            'x-prime-access-token': 'prime-access',
+            'x-prime-actor-uid': 'staff-1',
           },
-        }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-      }
-      if (url.includes('/guestByRoom.json') && (!init?.method || init.method === 'GET')) {
-        return new Response(JSON.stringify({
-          occ_aaa: { allocated: '101' },
-          occ_bbb: { allocated: '101' },
-        }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-      }
-      if (
-        (url.includes('/messaging/channels/broadcast_booking_BOOK123/meta.json')
-          || url.includes('/messaging/channels/broadcast_booking_BOOK456/meta.json'))
-        && (!init?.method || init.method === 'GET')
-      ) {
-        return new Response('null', { status: 200, headers: { 'Content-Type': 'application/json' } });
-      }
-      if (
-        (url.includes('/messaging/channels/broadcast_booking_BOOK123/meta.json')
-          || url.includes('/messaging/channels/broadcast_booking_BOOK456/meta.json'))
-        && init?.method === 'PUT'
-      ) {
-        return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-      }
-      if (url.includes('/messaging/channels/broadcast_booking_BOOK123/messages/') && init?.method === 'PUT') {
-        return new Response(JSON.stringify({ ok: true }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-      }
-      if (url.includes('/messaging/channels/broadcast_booking_BOOK456/messages/') && init?.method === 'PUT') {
-        return new Response('boom', { status: 500, statusText: 'Internal Server Error' });
-      }
-
-      throw new Error(`Unexpected fetch: ${url} ${init?.method ?? 'GET'}`);
-    });
-
-    const response = await sendReviewCampaign(
-      createPagesContext({
-        url: 'https://prime.example.com/api/review-campaign-send?campaignId=camp-room-1',
-        method: 'POST',
-        headers: {
-          'x-prime-access-token': 'prime-access',
-          'x-prime-actor-uid': 'staff-1',
-        },
-        env: createMockEnv({
-          NODE_ENV: 'production',
-          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
-          PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
-          PRIME_MESSAGING_DB: db,
+          env: createMockEnv({
+            NODE_ENV: 'production',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
+            PRIME_MESSAGING_DB: db,
+          }),
         }),
-      }),
-    );
-    const payload = await response.json() as {
-      success: boolean;
-      data: {
-        campaign: {
-          status: string;
-          targetSummary: { total: number };
-          deliverySummary: { projected: number; failed: number; replayableCount: number; lastError: string | null };
+      );
+      const payload = await response.json() as {
+        success: boolean;
+        data: {
+          campaign: {
+            status: string;
+            targetSummary: { total: number };
+            deliverySummary: { projected: number; failed: number; replayableCount: number; lastError: string | null };
+          };
         };
       };
-    };
 
-    expect(response.status).toBe(200);
-    expect(payload.success).toBe(true);
-    expect(payload.data.campaign.status).toBe('sent');
-    expect(payload.data.campaign.targetSummary.total).toBe(2);
-    expect(payload.data.campaign.deliverySummary).toEqual(expect.objectContaining({
-      projected: 1,
-      failed: 1,
-      replayableCount: 1,
-      lastError: 'Firebase SET failed: 500 Internal Server Error',
-    }));
+      expect(response.status).toBe(200);
+      expect(payload.success).toBe(true);
+      expect(payload.data.campaign.status).toBe('sent');
+      expect(payload.data.campaign.targetSummary.total).toBe(2);
+      expect(payload.data.campaign.deliverySummary).toEqual(expect.objectContaining({
+        projected: 1,
+        failed: 1,
+        replayableCount: 1,
+        lastError: 'Firebase SET failed: 500 Internal Server Error',
+      }));
+    } finally {
+      jest.useRealTimers();
+    }
   });
 
   it('TC-03F: campaign replay route reprojects a failed booking delivery and clears the campaign failure summary', async () => {
@@ -2227,10 +2234,17 @@ describe('/api/review-threads and /api/review-thread', () => {
       createdByUid: 'staff-1',
       reviewerUid: 'staff-1',
     }));
-    expect(payload.data.detail.currentCampaign).toEqual({
+    expect(payload.data.detail.currentCampaign).toEqual(expect.objectContaining({
       id: 'camp_1500_abcdef123456',
       status: 'under_review',
       latestDraftId: 'draft_1500_abcdef123456',
+      audience: 'whole_hostel',
+      threadId: 'broadcast_whole_hostel',
+      type: 'broadcast',
+      metadata: {
+        audience: 'whole_hostel',
+        deliveryModel: 'shared_whole_hostel_broadcast_thread',
+      },
       targetSummary: {
         total: 0,
         byKind: [],
@@ -2248,7 +2262,7 @@ describe('/api/review-threads and /api/review-thread', () => {
       },
       targets: [],
       deliveries: [],
-    });
+    }));
     expect(statements.some((statement) =>
       statement.query.includes('INSERT INTO message_campaigns')
       && statement.binds[0] === 'camp_1500_abcdef123456'
@@ -3172,7 +3186,7 @@ describe('/api/review-threads and /api/review-thread', () => {
       statement.query.includes('UPDATE message_campaigns')
       && statement.binds[0] === 'sent'
       && statement.binds[4] === 'msg_1300_abcdef123456'
-      && statement.binds[8] === 'camp-2')).toBe(true);
+      && statement.binds[13] === 'camp-2')).toBe(true);
     expect(statements.some((statement) =>
       statement.query.includes('INSERT INTO message_admissions')
       && statement.binds[3] === 'staff_broadcast_send')).toBe(true);
@@ -3320,39 +3334,53 @@ describe('/api/review-threads and /api/review-thread', () => {
       throw new Error(`Unexpected fetch: ${url} ${init?.method ?? 'GET'}`);
     });
 
-    const response = await replayProjectionJob(
-      createPagesContext({
-        url: 'https://prime.example.com/api/review-projection-replay?jobId=proj_message_msg-1',
-        method: 'POST',
-        headers: {
-          'x-prime-access-token': 'prime-access',
-        },
-        env: createMockEnv({
-          NODE_ENV: 'production',
-          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
-          PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
-          PRIME_MESSAGING_DB: db,
-        }),
-      }),
-    );
-    const payload = await response.json() as {
-      success: boolean;
-      data: {
-        job: { status: string; attempt_count: number; last_attempt_at: number | null };
-      };
-    };
+    const originalConsoleError = console.error;
+    const consoleErrorStub = jest.fn();
+    Object.defineProperty(console, 'error', {
+      configurable: true,
+      value: consoleErrorStub,
+    });
 
-    expect(response.status).toBe(200);
-    expect(payload.success).toBe(true);
-    expect(payload.data.job.status).toBe('projected');
-    expect(payload.data.job.attempt_count).toBe(2);
-    expect(payload.data.job.last_attempt_at).toBe(1300);
-    expect(statements.some((statement) =>
-      statement.query.includes('UPDATE message_projection_jobs')
-      && statement.binds[0] === 'projected'
-      && statement.binds[1] === 2
-      && statement.binds[5] === 'proj_message_msg-1')).toBe(true);
-    expect(fetchMock).toHaveBeenCalledTimes(3);
+    try {
+      const response = await replayProjectionJob(
+        createPagesContext({
+          url: 'https://prime.example.com/api/review-projection-replay?jobId=proj_message_msg-1',
+          method: 'POST',
+          headers: {
+            'x-prime-access-token': 'prime-access',
+          },
+          env: createMockEnv({
+            NODE_ENV: 'production',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
+            PRIME_MESSAGING_DB: db,
+          }),
+        }),
+      );
+      const payload = await response.json() as {
+        success: boolean;
+        data: {
+          job: { status: string; attempt_count: number; last_attempt_at: number | null };
+        };
+      };
+
+      expect(response.status).toBe(200);
+      expect(payload.success).toBe(true);
+      expect(payload.data.job.status).toBe('projected');
+      expect(payload.data.job.attempt_count).toBe(2);
+      expect(payload.data.job.last_attempt_at).toBe(1300);
+      expect(statements.some((statement) =>
+        statement.query.includes('UPDATE message_projection_jobs')
+        && statement.binds[0] === 'projected'
+        && statement.binds[1] === 2
+        && statement.binds[5] === 'proj_message_msg-1')).toBe(true);
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+    } finally {
+      Object.defineProperty(console, 'error', {
+        configurable: true,
+        value: originalConsoleError,
+      });
+    }
   });
 
   it('TC-08: replay route marks the projection job failed again when Firebase projection throws', async () => {
@@ -3466,31 +3494,45 @@ describe('/api/review-threads and /api/review-thread', () => {
       throw new Error(`Unexpected fetch: ${url} ${init?.method ?? 'GET'}`);
     });
 
-    const response = await replayProjectionJob(
-      createPagesContext({
-        url: 'https://prime.example.com/api/review-projection-replay?jobId=proj_message_msg-1',
-        method: 'POST',
-        headers: {
-          'x-prime-access-token': 'prime-access',
-        },
-        env: createMockEnv({
-          NODE_ENV: 'production',
-          PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
-          PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
-          PRIME_MESSAGING_DB: db,
-        }),
-      }),
-    );
-    const payload = await response.json() as { error: string };
+    const originalConsoleError = console.error;
+    const consoleErrorStub = jest.fn();
+    Object.defineProperty(console, 'error', {
+      configurable: true,
+      value: consoleErrorStub,
+    });
 
-    expect(response.status).toBe(500);
-    expect(payload.error).toBe('Failed to replay Prime projection job');
-    expect(statements.some((statement) =>
-      statement.query.includes('UPDATE message_projection_jobs')
-      && statement.binds[0] === 'failed'
-      && statement.binds[1] === 1
-      && statement.binds[3] === 'Firebase SET failed: 500 Internal Server Error'
-      && statement.binds[5] === 'proj_message_msg-1')).toBe(true);
-    expect(fetchMock).toHaveBeenCalledTimes(3);
+    try {
+      const response = await replayProjectionJob(
+        createPagesContext({
+          url: 'https://prime.example.com/api/review-projection-replay?jobId=proj_message_msg-1',
+          method: 'POST',
+          headers: {
+            'x-prime-access-token': 'prime-access',
+          },
+          env: createMockEnv({
+            NODE_ENV: 'production',
+            PRIME_ENABLE_STAFF_OWNER_ROUTES: 'false',
+            PRIME_STAFF_OWNER_GATE_TOKEN: 'prime-access',
+            PRIME_MESSAGING_DB: db,
+          }),
+        }),
+      );
+      const payload = await response.json() as { error: string };
+
+      expect(response.status).toBe(500);
+      expect(payload.error).toBe('Failed to replay Prime projection job');
+      expect(statements.some((statement) =>
+        statement.query.includes('UPDATE message_projection_jobs')
+        && statement.binds[0] === 'failed'
+        && statement.binds[1] === 1
+        && statement.binds[3] === 'Firebase SET failed: 500 Internal Server Error'
+        && statement.binds[5] === 'proj_message_msg-1')).toBe(true);
+      expect(fetchMock).toHaveBeenCalledTimes(3);
+    } finally {
+      Object.defineProperty(console, 'error', {
+        configurable: true,
+        value: originalConsoleError,
+      });
+    }
   });
 });

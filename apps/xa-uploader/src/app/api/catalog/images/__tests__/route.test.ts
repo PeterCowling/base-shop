@@ -6,6 +6,19 @@ const hasUploaderSessionMock = jest.fn();
 const getMediaBucketMock = jest.fn();
 const parseImageDimensionsFromBufferMock = jest.fn();
 const validateMinImageEdgeMock = jest.fn();
+const readCloudDraftSnapshotMock = jest.fn();
+const writeCloudDraftSnapshotMock = jest.fn();
+
+class MockCatalogDraftContractError extends Error {
+  readonly code: string;
+  readonly status?: number;
+  constructor(code: string, message: string, options?: { status?: number }) {
+    super(message);
+    this.name = "CatalogDraftContractError";
+    this.code = code;
+    this.status = options?.status;
+  }
+}
 
 jest.mock("../../../../../lib/uploaderAuth", () => ({
   hasUploaderSession: (...args: unknown[]) => hasUploaderSessionMock(...args),
@@ -13,6 +26,16 @@ jest.mock("../../../../../lib/uploaderAuth", () => ({
 
 jest.mock("../../../../../lib/r2Media", () => ({
   getMediaBucket: (...args: unknown[]) => getMediaBucketMock(...args),
+}));
+
+jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
+  writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
+  CatalogDraftContractError: MockCatalogDraftContractError,
+}));
+
+jest.mock("../../../../../lib/uploaderLogger", () => ({
+  uploaderLog: jest.fn(),
 }));
 
 jest.mock("@acme/lib/xa", () => ({
@@ -56,7 +79,8 @@ function makeValidFile(sizeBytes = 1024): File {
 }
 
 const mockBucketPut = jest.fn();
-const mockBucket = { put: mockBucketPut, get: jest.fn(), head: jest.fn() };
+const mockBucketDelete = jest.fn();
+const mockBucket = { put: mockBucketPut, get: jest.fn(), head: jest.fn(), delete: mockBucketDelete };
 
 describe("catalog images route", () => {
   beforeEach(() => {
@@ -67,6 +91,13 @@ describe("catalog images route", () => {
     parseImageDimensionsFromBufferMock.mockReturnValue({ format: "png", width: 2000, height: 1800 });
     validateMinImageEdgeMock.mockReturnValue(true);
     mockBucketPut.mockResolvedValue({ key: "test-key" });
+    mockBucketDelete.mockResolvedValue(undefined);
+    writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "rev-2" });
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [],
+      revisionsById: {},
+      docRevision: "rev-1",
+    });
   });
 
   it("TC-01: authenticated upload of valid image returns 200 with key", async () => {
@@ -265,5 +296,286 @@ describe("catalog images route", () => {
     } finally {
       nowSpy.mockRestore();
     }
+  });
+});
+
+function makeDeleteRequest(params: { storefront?: string; key?: string } = {}): Request {
+  const url = new URL("http://localhost/api/catalog/images");
+  if (params.storefront) url.searchParams.set("storefront", params.storefront);
+  if (params.key) url.searchParams.set("key", params.key);
+  return new Request(url.toString(), { method: "DELETE" });
+}
+
+describe("catalog images DELETE route", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    __clearRateLimitStoreForTests();
+    hasUploaderSessionMock.mockResolvedValue(true);
+    getMediaBucketMock.mockResolvedValue(mockBucket);
+    mockBucketDelete.mockResolvedValue(undefined);
+    writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "rev-2" });
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [],
+      revisionsById: {},
+      docRevision: "rev-1",
+    });
+  });
+
+  it("TC-D01: unreferenced image DELETE returns ok with deleted true", async () => {
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.ok).toBe(true);
+    expect(body.deleted).toBe(true);
+    expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith({
+      storefront: "xa-b",
+      products: [],
+      revisionsById: {},
+      ifMatchDocRevision: "rev-1",
+    });
+    expect(mockBucketDelete).toHaveBeenCalledWith("xa-b/hermes-birkin-25/1234567890-abc123456789.png");
+  });
+
+  it("TC-D02: referenced image DELETE returns ok with deleted false and skipped still_referenced", async () => {
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [
+        { imageFiles: "xa-b/hermes-birkin-25/1234567890-abc123456789.png", slug: "hermes-birkin-25" },
+      ],
+      revisionsById: {},
+      docRevision: "rev-1",
+    });
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(body.ok).toBe(true);
+    expect(body.deleted).toBe(false);
+    expect(body.skipped).toBe("still_referenced");
+    expect(writeCloudDraftSnapshotMock).not.toHaveBeenCalled();
+    expect(mockBucketDelete).not.toHaveBeenCalled();
+  });
+
+  it("TC-D03: R2 bucket.delete throws returns 500 image_delete_failed", async () => {
+    mockBucketDelete.mockRejectedValue(new Error("R2 delete error"));
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body.error).toBe("upload_failed");
+    expect(body.reason).toBe("image_delete_failed");
+  });
+
+  it("TC-D04: R2 bucket unavailable (media bucket unavailable) returns 503", async () => {
+    mockBucketDelete.mockRejectedValue(new Error("media bucket unavailable"));
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(503);
+    expect(body.error).toBe("r2_unavailable");
+  });
+
+  it("TC-D05: reference check throws returns 500 reference_check_failed", async () => {
+    readCloudDraftSnapshotMock.mockRejectedValue(new Error("contract service down"));
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body.error).toBe("upload_failed");
+    expect(body.reason).toBe("reference_check_failed");
+  });
+
+  it("TC-D06: unauthenticated DELETE returns 404", async () => {
+    hasUploaderSessionMock.mockResolvedValue(false);
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    expect(response.status).toBe(404);
+  });
+
+  it("TC-D07: missing query params returns 400 missing_params", async () => {
+    const { DELETE } = await import("../route");
+
+    // Missing key
+    const missingKeyRequest = makeDeleteRequest({ storefront: "xa-b" });
+    const missingKeyResponse = await DELETE(missingKeyRequest);
+    const missingKeyBody = await missingKeyResponse.json();
+    expect(missingKeyResponse.status).toBe(400);
+    expect(missingKeyBody.error).toBe("missing_params");
+
+    __clearRateLimitStoreForTests();
+
+    // Missing storefront
+    const missingStorefrontRequest = makeDeleteRequest({ key: "xa-b/test/img.png" });
+    const missingStorefrontResponse = await DELETE(missingStorefrontRequest);
+    const missingStorefrontBody = await missingStorefrontResponse.json();
+    expect(missingStorefrontResponse.status).toBe(400);
+    expect(missingStorefrontBody.error).toBe("missing_params");
+  });
+
+  it("TC-D08: invalid key format returns 400 missing_params", async () => {
+    const { DELETE } = await import("../route");
+
+    // Path traversal
+    const traversalRequest = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/../secret/file.png",
+    });
+    const traversalResponse = await DELETE(traversalRequest);
+    const traversalBody = await traversalResponse.json();
+    expect(traversalResponse.status).toBe(400);
+    expect(traversalBody.error).toBe("missing_params");
+
+    __clearRateLimitStoreForTests();
+
+    // Wrong prefix
+    const wrongPrefixRequest = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "other/test/file.png",
+    });
+    const wrongPrefixResponse = await DELETE(wrongPrefixRequest);
+    const wrongPrefixBody = await wrongPrefixResponse.json();
+    expect(wrongPrefixResponse.status).toBe(400);
+    expect(wrongPrefixBody.error).toBe("missing_params");
+
+    __clearRateLimitStoreForTests();
+
+    // Too few segments
+    const fewSegmentsRequest = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/test",
+    });
+    const fewSegmentsResponse = await DELETE(fewSegmentsRequest);
+    const fewSegmentsBody = await fewSegmentsResponse.json();
+    expect(fewSegmentsResponse.status).toBe(400);
+    expect(fewSegmentsBody.error).toBe("missing_params");
+  });
+
+  it("TC-D09: fence write 409 conflict returns concurrent_edit error without R2 delete", async () => {
+    writeCloudDraftSnapshotMock.mockRejectedValue(
+      new MockCatalogDraftContractError("conflict", "Draft snapshot revision conflict.", { status: 409 }),
+    );
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(409);
+    expect(body.ok).toBe(false);
+    expect(body.error).toBe("concurrent_edit");
+    expect(body.concurrentEdit).toBe(true);
+    expect(mockBucketDelete).not.toHaveBeenCalled();
+  });
+
+  it("TC-D10: fence write non-409 failure returns 500 without R2 delete", async () => {
+    writeCloudDraftSnapshotMock.mockRejectedValue(new Error("network error"));
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body.error).toBe("upload_failed");
+    expect(body.reason).toBe("fence_write_failed");
+    expect(mockBucketDelete).not.toHaveBeenCalled();
+  });
+
+  it("TC-D11: docRevision null aborts delete without fence write or R2 delete", async () => {
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [],
+      revisionsById: {},
+      docRevision: null,
+    });
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body.ok).toBe(false);
+    expect(body.reason).toBe("snapshot_revision_unavailable");
+    expect(writeCloudDraftSnapshotMock).not.toHaveBeenCalled();
+    expect(mockBucketDelete).not.toHaveBeenCalled();
+  });
+
+  it("TC-D12: fence write passes products and revisionsById from snapshot", async () => {
+    const snapshotProducts = [
+      { imageFiles: "xa-b/other-product/other-image.png", slug: "other-product" },
+    ];
+    const snapshotRevisions = { "other-product": "rev-abc" };
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: snapshotProducts,
+      revisionsById: snapshotRevisions,
+      docRevision: "rev-42",
+    });
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    await DELETE(request);
+
+    expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith({
+      storefront: "xa-b",
+      products: snapshotProducts,
+      revisionsById: snapshotRevisions,
+      ifMatchDocRevision: "rev-42",
+    });
   });
 });

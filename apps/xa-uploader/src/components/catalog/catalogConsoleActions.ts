@@ -10,6 +10,7 @@ import { normalizeCatalogPath } from "../../lib/catalogPath";
 import { getStorefrontConfig } from "../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { getUploaderConfirmDelete, type UploaderLocale } from "../../lib/uploaderI18n";
+import { uploaderLog } from "../../lib/uploaderLogger";
 
 import {
   type ActionFeedbackState,
@@ -404,6 +405,7 @@ export async function handleSaveImpl({
   handleSelect,
   confirmUnpublish,
   suppressSuccessFeedback = false,
+  suppressUiBusy = false,
 }: {
   draft: CatalogProductDraftInput;
   draftRevision: string | null;
@@ -418,6 +420,7 @@ export async function handleSaveImpl({
   handleSelect: (product: CatalogProductDraftInput) => void;
   confirmUnpublish: (message: string) => boolean;
   suppressSuccessFeedback?: boolean;
+  suppressUiBusy?: boolean;
 }): Promise<SaveResult> {
   const parsed = catalogProductDraftSchema.safeParse(draft);
   if (!parsed.success) {
@@ -429,11 +432,12 @@ export async function handleSaveImpl({
     return { status: "validation_error" };
   }
 
-  if (!tryBeginBusyAction(busyLockRef, setBusy)) return { status: "busy" };
+  if (!tryBeginBusyAction(busyLockRef, setBusy, { suppressUiBusy })) return { status: "busy" };
   clearActionFeedbackDomains(setActionFeedback, ["draft"]);
   setFieldErrors({});
 
   const doSave = async (confirm?: boolean): Promise<SaveResult> => {
+    uploaderLog("info", "save_start", { storefront, slug: draft.slug });
     const response = await fetch(`/api/catalog/products?storefront=${encodeURIComponent(storefront)}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -459,6 +463,7 @@ export async function handleSaveImpl({
     }
 
     if (response.status === 409 && data.error === "conflict" && data.reason === "revision_conflict") {
+      uploaderLog("warn", "save_conflict", { storefront, slug: draft.slug });
       return { status: "conflict" };
     }
 
@@ -468,6 +473,7 @@ export async function handleSaveImpl({
     await loadCatalog();
     handleSelect(data.product);
     setDraftRevision(data.revision ?? null);
+    uploaderLog("info", "save_success", { storefront, slug: draft.slug, revision: data.revision ?? null });
     if (!suppressSuccessFeedback) {
       updateActionFeedback(setActionFeedback, "draft", {
         kind: "success",
@@ -484,13 +490,14 @@ export async function handleSaveImpl({
   try {
     return await doSave();
   } catch (err) {
+    uploaderLog("error", "save_error", { storefront, slug: draft.slug });
     updateActionFeedback(setActionFeedback, "draft", {
       kind: "error",
       message: errorToMessage(err, t("saveFailed")),
     });
     return { status: "error" };
   } finally {
-    endBusyAction(busyLockRef, setBusy);
+    endBusyAction(busyLockRef, setBusy, { suppressUiBusy });
   }
 }
 

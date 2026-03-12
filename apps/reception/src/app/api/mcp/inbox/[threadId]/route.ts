@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import {
   buildThreadSummary,
   getCurrentDraft,
-  parseThreadMetadata,
+  parseThreadMetadataFromRow,
   serializeDraft,
   serializeMessage,
 } from "@/lib/inbox/api-models.server";
@@ -15,9 +15,19 @@ import {
   getPrimeInboxThreadDetail,
   isPrimeInboxThreadId,
 } from "@/lib/inbox/prime-review.server";
-import { getThread } from "@/lib/inbox/repositories.server";
+import { getThread, getThreadMessages } from "@/lib/inbox/repositories.server";
 
 import { requireStaffAuth } from "../../_shared/staff-auth";
+
+const DEFAULT_MESSAGE_LIMIT = 20;
+
+function parseIntParam(value: string | null, fallback: number): number {
+  if (value === null) {
+    return fallback;
+  }
+  const parsed = Number.parseInt(value, 10);
+  return Number.isNaN(parsed) ? fallback : parsed;
+}
 
 export async function GET(
   request: Request,
@@ -51,14 +61,27 @@ export async function GET(
   }
 
   try {
+    const url = new URL(request.url);
+    const limit = parseIntParam(url.searchParams.get("limit"), DEFAULT_MESSAGE_LIMIT);
+    const offset = parseIntParam(url.searchParams.get("offset"), 0);
+    const beforeId = url.searchParams.get("before_id") ?? undefined;
+    const beforeTimestamp = url.searchParams.get("before_ts") ?? undefined;
+
+    const paginated = await getThreadMessages(
+      { threadId: params.threadId, limit, offset, beforeId, beforeTimestamp },
+    );
+
     const currentDraft = getCurrentDraft(record);
     return NextResponse.json({
       success: true,
       data: {
         thread: buildThreadSummary(record),
         campaign: null,
-        metadata: parseThreadMetadata(record.thread.metadata_json),
-        messages: record.messages.map((message) => serializeMessage(message)),
+        metadata: parseThreadMetadataFromRow(record.thread),
+        messages: paginated.messages.map((message) => serializeMessage(message)),
+        totalMessages: paginated.totalMessages,
+        messageOffset: paginated.offset,
+        hasMore: paginated.hasMore,
         events: record.events,
         admissionOutcomes: record.admissionOutcomes,
         currentDraft: currentDraft ? serializeDraft(currentDraft) : null,

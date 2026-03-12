@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-metadata-normalization-20260312",
+  "feature_slug": "reception-inbox-metadata-normalization",
+  "emitted_at": "2026-03-12T08:54:44.719Z",
+  "why": "Important details about each email thread -- like the guest's name, their booking reference, and room number -- are all crammed into one text field. Every time the system needs any of these details, it has to unpack the entire blob. This is slow, error-prone, and makes it impossible to search or filter threads by guest name or booking reference directly. Moving the most-used fields into proper database columns would make the inbox faster and more reliable.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "A validated next action exists for metadata normalization, with target fields identified, migration strategy defined, and backward compatibility approach documented.",
+    "source": "auto"
+  }
+}

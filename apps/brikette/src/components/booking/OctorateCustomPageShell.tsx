@@ -30,19 +30,24 @@ export type OctorateCustomPageBootstrap = (
   payload: OctorateCustomPageBootstrapPayload
 ) => OctorateCustomPageBootstrapCleanup | Promise<OctorateCustomPageBootstrapCleanup>;
 
+export type OctorateCustomPageShellLabels = {
+  continue: string;
+  heading: string;
+  loading: string;
+  ready: string;
+  fallbackTitle: string;
+  fallbackBody: string;
+  security: string;
+  step: string;
+  supporting: string;
+  widgetHost: string;
+};
+
 type Props = {
-  continueLabel: string;
+  labels: OctorateCustomPageShellLabels;
   directUrl: string;
   embedTitle?: string;
   embedUrl?: string;
-  fallbackBody: string;
-  fallbackTitle: string;
-  heading: string;
-  loadingText: string;
-  readyText: string;
-  securityNote: string;
-  stepLabel: string;
-  supportingText: string;
   summary: OctorateCustomPageBookingSummary;
   summaryLabels: {
     checkin: string;
@@ -51,13 +56,12 @@ type Props = {
     rate: string;
     room: string;
   };
-  widgetHostLabel: string;
   widgetGlobalKey?: string;
   widgetScriptSrc?: string;
   widgetBootstrap?: OctorateCustomPageBootstrap;
 };
 
-type EmbedStatus = "loading" | "ready" | "failed";
+type EmbedStatus = "loading" | "ready" | "failed" | "direct_ready";
 
 function normalizeCleanup(
   result: OctorateCustomPageBootstrapCleanup
@@ -84,21 +88,12 @@ function renderSummaryLine(
 }
 
 export default function OctorateCustomPageShell({
-  continueLabel,
+  labels,
   directUrl,
   embedTitle,
   embedUrl,
-  fallbackBody,
-  fallbackTitle,
-  heading,
-  loadingText,
-  readyText,
-  securityNote,
-  stepLabel,
-  supportingText,
   summary,
   summaryLabels,
-  widgetHostLabel,
   widgetGlobalKey,
   widgetScriptSrc,
   widgetBootstrap,
@@ -107,15 +102,22 @@ export default function OctorateCustomPageShell({
   const [status, setStatus] = useState<EmbedStatus>("loading");
   const hasIframeEmbed = Boolean(embedUrl);
   const hasScriptRuntime = Boolean(widgetScriptSrc && widgetGlobalKey);
+  const hasBootstrapRuntime = Boolean(widgetBootstrap) || hasScriptRuntime;
+  const isDirectReady = !hasIframeEmbed && !hasBootstrapRuntime;
 
   useEffect(() => {
+    if (isDirectReady) {
+      setStatus("direct_ready");
+      return undefined;
+    }
+
     if (hasIframeEmbed) {
       setStatus("loading");
       return undefined;
     }
 
     const container = containerRef.current;
-    if (!container || (!widgetBootstrap && !hasScriptRuntime)) {
+    if (!container || !hasBootstrapRuntime) {
       setStatus("failed");
       return undefined;
     }
@@ -175,7 +177,8 @@ export default function OctorateCustomPageShell({
     summary.ratePlanLabel,
     summary.roomName,
     hasIframeEmbed,
-    hasScriptRuntime,
+    hasBootstrapRuntime,
+    isDirectReady,
     widgetGlobalKey,
     widgetBootstrap,
     widgetScriptSrc,
@@ -190,11 +193,11 @@ export default function OctorateCustomPageShell({
     >
       <div className="w-full space-y-5 lg:w-1/3">
         <p className="text-xs font-semibold uppercase tracking-wide text-brand-primary/80">
-          {stepLabel}
+          {labels.step}
         </p>
         <div className="space-y-3">
-          <h1 className="text-3xl font-semibold tracking-tight text-brand-heading">{heading}</h1>
-          <p className="text-base leading-7 text-brand-text/80">{supportingText}</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-brand-heading">{labels.heading}</h1>
+          <p className="text-base leading-7 text-brand-text/80">{labels.supporting}</p>
         </div>
 
         <dl className="rounded-3xl border border-brand-outline/15 bg-brand-primary/5 px-5 py-4">
@@ -205,26 +208,38 @@ export default function OctorateCustomPageShell({
           {renderSummaryLine(summaryLabels.rate, summary.ratePlanLabel, "ratePlanLabel")}
         </dl>
 
-        <p className="text-sm leading-6 text-brand-text/70">{securityNote}</p>
+        <p className="text-sm leading-6 text-brand-text/70">{labels.security}</p>
       </div>
 
       <div className="w-full rounded-3xl border border-brand-outline/15 bg-brand-surface p-4 shadow-sm">
-        {hasIframeEmbed ? (
+        {isDirectReady ? (
+          <div className="rounded-2xl border border-brand-outline/20 bg-brand-primary/5 p-6">
+            <h2 className="text-xl font-semibold text-brand-heading">{labels.fallbackTitle}</h2>
+            <p className="mt-3 text-sm leading-6 text-brand-text/75">{labels.fallbackBody}</p>
+            <a
+              className="mt-5 inline-flex min-h-11 min-w-11 items-center rounded-full bg-brand-primary px-5 py-2 text-sm font-semibold text-brand-surface"
+              href={directUrl}
+              rel="nofollow"
+            >
+              {labels.continue}
+            </a>
+          </div>
+        ) : hasIframeEmbed ? (
           <iframe
-            aria-label={widgetHostLabel}
+            aria-label={labels.widgetHost}
             className="aspect-video w-full rounded-2xl border border-brand-outline/20 bg-brand-surface"
             loading="eager"
             referrerPolicy={IFRAME_REFERRER_POLICY}
             src={embedUrl}
             style={{ minHeight: "780px" }}
-            title={embedTitle ?? heading}
+            title={embedTitle ?? labels.heading}
             onLoad={() => {
               setStatus("ready");
             }}
           />
         ) : (
           <div
-            aria-label={widgetHostLabel}
+            aria-label={labels.widgetHost}
             ref={containerRef}
             className="min-h-96 rounded-2xl border border-dashed border-brand-outline/20 bg-brand-surface"
           />
@@ -232,25 +247,27 @@ export default function OctorateCustomPageShell({
 
         <div className="mt-4" aria-live="polite">
           {status === "loading" ? (
-            <p className="text-sm text-brand-text/70">{loadingText}</p>
+            <p className="text-sm text-brand-text/70">{labels.loading}</p>
           ) : null}
           {status === "ready" ? (
-            <p className="text-sm text-brand-text/70">{readyText}</p>
+            <p className="text-sm text-brand-text/70">{labels.ready}</p>
+          ) : null}
+          {status === "direct_ready" ? (
+            <p className="text-sm text-brand-text/70">{labels.ready}</p>
           ) : null}
           {status === "failed" ? (
             <div
               role="alert"
               className="rounded-2xl border border-brand-outline/20 bg-brand-primary/5 p-4"
             >
-              <h2 className="text-base font-semibold text-brand-heading">{fallbackTitle}</h2>
-              <p className="mt-2 text-sm leading-6 text-brand-text/75">{fallbackBody}</p>
+              <h2 className="text-base font-semibold text-brand-heading">{labels.fallbackTitle}</h2>
+              <p className="mt-2 text-sm leading-6 text-brand-text/75">{labels.fallbackBody}</p>
               <a
                 className="mt-4 inline-flex min-h-11 min-w-11 items-center rounded-full bg-brand-primary px-5 py-2 text-sm font-semibold text-brand-surface"
                 href={directUrl}
-                rel="nofollow noopener noreferrer"
-                target="_blank"
+                rel="nofollow"
               >
-                {continueLabel}
+                {labels.continue}
               </a>
             </div>
           ) : null}

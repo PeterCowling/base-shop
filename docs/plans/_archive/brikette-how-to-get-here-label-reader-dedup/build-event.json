@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "plan_slug": "brikette-how-to-get-here-label-reader-dedup",
+  "business": "BRIK",
+  "build_date": "2026-03-11",
+  "dispatch_id": "IDEA-DISPATCH-20260311100001-3101",
+  "outcome_type": "code_quality",
+  "outcome_statement": "Single canonical implementation replaces 4 duplicates; future guide routes call the factory with their own GUIDE_KEY.",
+  "source": "IDEA-DISPATCH-20260311100001-3101 (micro_build_ready, from simplify session)",
+  "commit": "f1e7559e85"
+}

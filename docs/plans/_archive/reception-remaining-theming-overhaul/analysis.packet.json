@@ -1,0 +1,178 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "reception-remaining-theming-overhaul",
+  "source_artifact_path": "docs/plans/reception-remaining-theming-overhaul/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-remaining-theming-overhaul/fact-find.md",
+    "plan": "docs/plans/reception-remaining-theming-overhaul/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Staff-facing screens (bookings, management, auth, modals) use wrong foreground tokens on coloured backgrounds, redundant opacity syntax, and broken focus ring selectors. This makes buttons and badges harder to read and keyboard focus invisible on daily-use interfaces.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All remaining reception components use correct semantic foreground tokens on status-coloured backgrounds, with valid focus ring syntax and no redundant opacity modifiers.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "All 36 className fixes in one pass",
+      "current_or_option_state": "Same fixes split across 3-4 commits",
+      "gap_or_implication": "Option A: single verification pass",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Focus ring and hover fixes included in single pass",
+      "current_or_option_state": "Same fixes split",
+      "gap_or_implication": "Option A: all interaction fixes land together",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A: no auth, data, or input changes",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A: no logic changes",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Check 10+ test files for className assertions once",
+      "current_or_option_state": "Same checks split across tasks",
+      "gap_or_implication": "Option A: one test verification pass",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A: className strings only",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A: zero runtime cost",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single commit, revert = `git revert <sha>`",
+      "current_or_option_state": "Multiple commits, revert = multiple reverts",
+      "gap_or_implication": "Option A: simpler rollback",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Choose the execution approach for fixing ~36 verified theming issues across ~36 component files in the reception app's check-in, prepayment, reporting, search, checkout, EOD checklist, till, auth, inventory, preparation, email automation, and common areas. All fixes are className string replacements using existing semantic tokens. Two prior overhauls (bar/POS: 14 fixes, till/safe: 9 fixes) provide proven precedent.",
+    "goals": [
+      "Fix all wrong-foreground-on-coloured-background issues (High severity)",
+      "Fix all double focus prefix issues (`focus-visible:focus:` → `focus-visible:`)",
+      "Remove all redundant `/100` opacity modifiers",
+      "Fix wrong token base in BookingPaymentsLists (`bg-danger-fg/10` → `bg-error-main/10`)",
+      "Fix confusing hover state flip in CheckoutTable"
+    ],
+    "non_goals": [
+      "Redesigning component layouts or structures",
+      "Adding new tokens to the design system",
+      "Changing business logic in any component",
+      "Fixing issues in bar/POS (already done), till/safe (already done), or inbox (clean)"
+    ],
+    "constraints": [
+      "All changes must use existing semantic tokens from `apps/reception/tailwind.config.mjs`",
+      "Purely className adjustments — no component API changes",
+      "`error-fg` does NOT exist in reception config — must use `danger-fg`"
+    ],
+    "assumptions": [
+      "Token values are correct and stable",
+      "No downstream consumers override default className props in affected components"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Execution speed",
+        "Why it matters": "Staff use these screens daily; faster fix = faster improvement",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Atomic rollback",
+        "Why it matters": "Single revert should undo entire change",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Review burden",
+        "Why it matters": "More commits = more review overhead for predictable fixes",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Risk containment",
+        "Why it matters": "All fixes are independent className replacements — risk is uniform",
+        "Weight/priority": "Low"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Single-pass batch",
+        "Description": "Apply all 36 fixes in one task, one commit",
+        "Upside": "Fastest delivery, atomic rollback, minimal review overhead, proven by two prior overhauls",
+        "Downside": "Larger diff in one commit",
+        "Key risks": "Low — all fixes are independent className replacements",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Area-grouped batches",
+        "Description": "Split into 3-4 tasks by component area (checkins, search, auth/common, etc.)",
+        "Upside": "Smaller per-commit diffs",
+        "Downside": "Slower delivery, more review cycles, more commits to manage, no safety benefit since fixes are independent",
+        "Key risks": "Very low — adds overhead without reducing risk",
+        "Viable?": "Yes but inferior"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — single-pass batch. Apply all 36 fixes in one task and one commit.",
+      "Why this wins": "All fixes are independent className string replacements with verified target tokens. This is the same approach that succeeded for both prior overhauls (bar/POS: 14 fixes, till/safe: 9 fixes). A single commit provides atomic rollback and minimizes review overhead. Splitting into multiple tasks adds coordination cost without reducing risk, since every fix is a self-contained className replacement.",
+      "What it depends on": "All target tokens verified in reception tailwind.config.mjs (confirmed). No test files assert old className values that would break (to be verified during build — 10+ test files identified)."
+    },
+    "rejected_approaches": [
+      "Option B (area-grouped batches) — rejected because splitting independent className replacements into multiple tasks and commits adds overhead without safety benefit. Each fix is self-contained; grouping them doesn't reduce blast radius. Prior precedent confirms single-pass works at this scale."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Single IMPLEMENT task covering all 36 className fixes",
+        "Fix mapping table with exact file paths, line numbers, old → new className strings",
+        "VarianceHeatMap requires adding foreground tokens to `getVarianceClass()` return values (not just replacement — addition)",
+        "CleaningPriorityTable requires conditional fg token based on color prop (red → `text-danger-fg`, green → `text-success-fg`)",
+        "OfflineIndicator has 3 instances of the same `bg-warning text-primary-fg` pattern"
+      ],
+      "validation_implications": [
+        "Typecheck + lint must pass",
+        "10+ existing test files must be checked for className assertions that may need updating",
+        "No new tests required — changes are className-only"
+      ],
+      "sequencing_constraints": [
+        "No dependencies — single task, single wave"
+      ],
+      "risks_to_carry_forward": [
+        "Existing test files may assert old className values (Low likelihood, Low impact — update assertions if found)",
+        "VarianceHeatMap `getVarianceClass()` returns are used in a template literal — ensure fg token is appended correctly"
+      ]
+    }
+  }
+}

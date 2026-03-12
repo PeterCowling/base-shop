@@ -1,0 +1,211 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "reception-inbox-draft-quality-analytics",
+  "source_artifact_path": "docs/plans/reception-inbox-draft-quality-analytics/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-inbox-draft-quality-analytics/fact-find.md",
+    "plan": "docs/plans/reception-inbox-draft-quality-analytics/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Staff and operators have no way to tell whether the AI email drafts are getting better or worse over time. They cannot see how long it takes to resolve a guest enquiry, how many drafts pass quality checks, or whether email volume is trending up. Without this visibility, problems go unnoticed until a guest complains.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A validated next action exists for inbox analytics, with required metrics, computation approach, and UI surface identified.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Same UI regardless of backend",
+      "current_or_option_state": "Same UI regardless of backend",
+      "gap_or_implication": "UI approach is independent of backend option; inline summary in InboxWorkspace header is the recommendation for both",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Single endpoint means one loading state",
+      "current_or_option_state": "Selective metrics allow partial loading; empty/loading states per metric group",
+      "gap_or_implication": "Option B allows better UX with independent loading per metric",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Existing requireStaffAuth on draft-stats",
+      "current_or_option_state": "New route needs requireStaffAuth (trivial, established pattern)",
+      "gap_or_implication": "Trivial -- copy existing auth pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Single endpoint, single failure point",
+      "current_or_option_state": "Per-metric-group error isolation; finer-grained logging",
+      "gap_or_implication": "Option B isolates failures better",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Monolithic query is harder to test",
+      "current_or_option_state": "Extracted functions are independently testable",
+      "gap_or_implication": "Option B is significantly more testable",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Single response contract grows complex",
+      "current_or_option_state": "Separate metric group types; clear response contract per group",
+      "gap_or_implication": "Option B keeps contracts clean and extensible",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "All metrics computed on every call; single query could exceed D1 limits",
+      "current_or_option_state": "Selective computation; each metric stays within D1 budget",
+      "gap_or_implication": "Option B reduces per-request compute risk",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single endpoint change; rollback reverts everything",
+      "current_or_option_state": "New endpoint is additive; can be deployed independently",
+      "gap_or_implication": "Option B has safer rollout -- existing draft-stats is untouched",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "What time granularity matters most for trend views -- daily, weekly, or both?"
+  ],
+  "stage_payload": {
+    "decision_summary": "The reception inbox has 12 telemetry event types and per-draft quality check results stored in D1, but no aggregated analytics surface. A single draft-stats endpoint exists for acceptance rates only. The decision is how to expose comprehensive analytics (volume, quality, resolution time, admission rates) to staff via UI and to agents via MCP, choosing between extending the existing endpoint pattern versus building a new analytics module architecture.",
+    "goals": [
+      "Give staff visibility into draft quality trends, resolution times, and volume",
+      "Keep analytics queries within D1 per-request compute limits",
+      "Follow existing codebase patterns (SQL in route handlers, MCP tool wrapping API)",
+      "Provide both UI and MCP access paths"
+    ],
+    "non_goals": [
+      "Real-time alerting or threshold notifications (adjacent-later)",
+      "Weekly digest emails (adjacent-later)",
+      "Redesigning the telemetry recording system"
+    ],
+    "constraints": [
+      "D1 (SQLite) is the only database; no external analytics service",
+      "Cloudflare Worker per-request compute budget limits query complexity",
+      "No client-side charting library currently used in reception app"
+    ],
+    "assumptions": [
+      "Thread volume is low-to-moderate (hostel email traffic, estimated hundreds per month not thousands)",
+      "D1 read performance is adequate for aggregations at this scale",
+      "Staff will primarily use the web UI; MCP is a secondary access path for agents"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Pattern consistency",
+        "Why it matters": "Following existing route handler + SQL pattern reduces review burden and risk",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Query performance on D1",
+        "Why it matters": "Compute budget is limited per Worker request; queries must stay fast",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Development speed",
+        "Why it matters": "Low-complexity change on an established codebase; should not be over-engineered",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Extensibility",
+        "Why it matters": "Future metrics and alerting should be addable without rearchitecting",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "UI simplicity",
+        "Why it matters": "Staff need quick visibility, not a full analytics dashboard",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Testability",
+        "Why it matters": "Analytics logic must be testable independent of D1",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Extend draft-stats endpoint",
+        "Description": "Add new metric groups (volume, quality, resolution time, admission) as additional fields on the existing `/api/mcp/inbox/draft-stats` endpoint. Single API call returns everything.",
+        "Upside": "Simplest change; one endpoint; existing MCP tool needs minor update only",
+        "Downside": "Single endpoint grows complex; all metrics computed in every call even when not needed; the existing CTE query is already substantial",
+        "Key risks": "Query complexity could exceed D1 per-request limits as metrics accumulate",
+        "Viable?": "No -- rejected"
+      },
+      {
+        "Option": "B: New analytics endpoint with extracted computation module",
+        "Description": "Create `/api/mcp/inbox/analytics` with a separate analytics computation module (`analytics.server.ts`). Route handler delegates to extracted functions. Accepts `metric` query param to request specific metric groups.",
+        "Upside": "Clean separation; testable computation functions; selective metric loading; follows same route pattern as draft-stats",
+        "Downside": "Slightly more files than Option A; new route needs its own auth setup",
+        "Key risks": "Low -- follows established patterns",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C: Pre-computed analytics via scheduled Worker",
+        "Description": "Use a Cloudflare Cron Trigger to periodically compute and cache aggregated analytics in a new D1 table. API reads from cache.",
+        "Upside": "Eliminates per-request computation cost; handles scale",
+        "Downside": "Introduces new infrastructure (cron trigger); data is stale (not real-time); more complex deployment; overkill for current volume",
+        "Key risks": "Over-engineering for current scale; adds cron management",
+        "Viable?": "No -- rejected"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option B -- New analytics endpoint with extracted computation module",
+      "Why this wins": "It follows existing codebase patterns (route handler + SQL in D1), keeps each metric group's query complexity bounded within D1 limits, produces independently testable computation functions, and is safely additive (does not modify the existing draft-stats endpoint). The extracted module also provides a clean migration path to pre-computed analytics if volume grows.",
+      "What it depends on": "D1 SQLite supporting the required date arithmetic for resolution time (confirmed: `julianday()` is available). InboxWorkspace being extendable with a summary section (confirmed: header slot exists).",
+      "Endpoint": "`GET /api/mcp/inbox/analytics?metrics=volume,quality,resolution,admission&days=30`",
+      "Metrics parameter": "comma-separated list of metric groups to compute. Omit for all.",
+      "Days parameter": "lookback window (optional, defaults to all-time).",
+      "Response shape": "`{ success: true, data: { volume?: VolumeMetrics, quality?: QualityMetrics, resolution?: ResolutionMetrics, admission?: AdmissionMetrics, period: { days: number | null } } }`",
+      "Shows 4 key metrics": "draft pass rate %, avg resolution time, volume today, admission rate %",
+      "Q": "What time granularity matters most for trend views -- daily, weekly, or both?",
+      "Why operator input is required": "This is an operational preference that affects UI layout.",
+      "Planning impact": "Affects whether the summary shows daily sparklines or weekly roll-ups. Default assumption (daily with 7/30 day summaries) is safe to proceed with and can be adjusted post-delivery."
+    },
+    "rejected_approaches": [
+      "**Option A (Extend draft-stats)** -- rejected because the single-endpoint approach creates an unmanageable monolithic query that risks exceeding D1 compute limits as metrics accumulate. Testability and extensibility suffer.",
+      "**Option C (Pre-computed via cron)** -- rejected as over-engineering for current volume. The extracted computation module from Option B provides a clean migration path if this is ever needed."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "D1 migration for event_type index (0005)",
+        "Analytics computation module (`analytics.server.ts`) with functions per metric group",
+        "API route handler (`/api/mcp/inbox/analytics/route.ts`)",
+        "MCP tool wrapping the new endpoint",
+        "InboxWorkspace inline analytics summary component",
+        "Unit tests for computation functions"
+      ],
+      "validation_implications": [
+        "SQL query correctness must be tested with representative event data",
+        "API response contract must be validated",
+        "Empty state / insufficient data handling must be tested",
+        "Auth requirement must be verified"
+      ],
+      "sequencing_constraints": [
+        "D1 migration before computation module (index must exist for performant queries)",
+        "Computation module before route handler (route delegates to module)",
+        "Route handler before MCP tool (tool calls the endpoint)",
+        "Route handler before UI component (component fetches from endpoint)",
+        "Tests can be written alongside each layer"
+      ],
+      "risks_to_carry_forward": [
+        "Resolution time SQL has not been prototyped against real D1 data",
+        "No existing charting or sparkline library in reception app"
+      ]
+    }
+  }
+}

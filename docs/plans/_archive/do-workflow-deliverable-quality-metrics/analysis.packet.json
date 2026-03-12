@@ -1,0 +1,210 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "do-workflow-deliverable-quality-metrics",
+  "source_artifact_path": "docs/plans/do-workflow-deliverable-quality-metrics/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/do-workflow-deliverable-quality-metrics/fact-find.md",
+    "plan": "docs/plans/do-workflow-deliverable-quality-metrics/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Work can be marked complete even if it's missing key sections like engineering coverage evidence or outcome statements. Without checking completeness automatically, gaps only surface when someone manually reviews.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Validator pass/fail results are captured in workflow telemetry so completeness gaps are visible in reports without manual review",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Pass/fail + error/warning counts visible in reports; sufficient for trend analysis",
+      "current_or_option_state": "Full error messages visible; richer debugging but harder to aggregate",
+      "gap_or_implication": "Option A: aggregation wins; debugging detail is available via the artifact itself",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Simple test assertions on fixed shape",
+      "current_or_option_state": "Complex assertions on variable shapes per validator",
+      "gap_or_implication": "Option A: uniform shape simplifies test contracts",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "One typed interface addition; report generator consumes a single shape",
+      "current_or_option_state": "`Record<string, unknown>` requires per-validator type guards or ignoring detail",
+      "gap_or_implication": "Option A: clean contract boundary",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "~50-100 bytes per check entry",
+      "current_or_option_state": "~500-2000 bytes per check entry (full JSON)",
+      "gap_or_implication": "Option A: 10-20x smaller per record",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive optional field; backward compatible",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Same for both",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The fact-find confirmed that deterministic validators produce structured JSON results (pass/fail, error counts, blocking issues) but these results are discarded after the agent reads them. The telemetry record stores only script names. The decision is: what shape should the captured validator data take in the telemetry record, and how should it flow from validators to the record?",
+    "goals": [
+      "Capture validator pass/fail results in telemetry records",
+      "Enable the report generator to surface quality/completeness data"
+    ],
+    "non_goals": [
+      "Adding new validators (e.g. `validate-build-record.ts`)",
+      "Changing validator logic or pass/fail criteria",
+      "Real-time alerting or dashboards"
+    ],
+    "constraints": [
+      "Backward-compatible with existing records (new field must be optional)",
+      "Must not break existing consumers (`summarizeWorkflowStepTelemetry`, `computePerModuleBreakdown`, ideas rollup)",
+      "Schema bump 1.5.0 -> 1.6.0"
+    ],
+    "assumptions": [
+      "All three validators (`validate-fact-find`, `validate-engineering-coverage`, `validate-plan`) produce JSON to stdout",
+      "`parseArgs` in the telemetry CLI can handle the chosen input method"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Compact record size",
+        "Why it matters": "Telemetry JSONL is append-only and grows indefinitely; each record should stay small",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Sufficient detail for reports",
+        "Why it matters": "Report must show pass/fail and error counts to be useful",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Uniform shape across validators",
+        "Why it matters": "Different validators return different types; the captured field should normalize this",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "CLI ergonomics",
+        "Why it matters": "Agents pass data via shell flags; complex JSON is error-prone in shell",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Consumer simplicity",
+        "Why it matters": "Report generator should aggregate without knowing validator-specific schemas",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Summary field",
+        "Description": "Add `deterministic_check_results?: Record<string, { valid: boolean; error_count: number; warning_count: number }>` — compact summary keyed by check name",
+        "Upside": "Small record size; uniform shape; easy to aggregate in reports; simple CLI flag design (`--check-result name:valid:errors:warnings`)",
+        "Downside": "Loses detail (specific error messages, task IDs, critique score); can't reconstruct blocking issues from summary alone",
+        "Key risks": "Summary may prove insufficient for debugging; adding more fields later requires another schema bump",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Full results field",
+        "Description": "Add `deterministic_check_results?: Record<string, unknown>` — store entire validator JSON output per check",
+        "Upside": "Full detail preserved; no information loss; easy to pass (just pipe stdout)",
+        "Downside": "Large record size (validator results can be 10+ lines of JSON each); non-uniform shape makes aggregation harder; report generator must know each validator's schema or ignore detail",
+        "Key risks": "Record bloat; consumer complexity; schema evolution couples telemetry to validator internals",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C: Separate quality log",
+        "Description": "Write a separate `quality-metrics.jsonl` alongside `telemetry.jsonl` — full detail in a separate stream",
+        "Upside": "No record bloat in main telemetry; full detail preserved; independent evolution",
+        "Downside": "Two files to maintain; report generator must join across streams; breaks single-stream contract; more complex persistence",
+        "Key risks": "Maintenance overhead; join complexity; fragmented observability",
+        "Viable?": "Inferior — eliminated"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — compact summary field.",
+      "Why this wins": "Record size stays small (critical for append-only JSONL that grows indefinitely). Uniform shape (`{ valid, error_count, warning_count }`) means the report generator aggregates without knowing validator internals. CLI flag design is straightforward (`--check-result <name>:<pass|fail>:<errors>:<warnings>`). Tests are simple assertions on a fixed interface. Detail is not lost — it lives in the artifact itself and can be recovered by re-running the validator.",
+      "What it depends on": "The compact format must be sufficient for report consumers. If debugging needs arise that require error messages in telemetry, a future schema bump can add an optional `details` field."
+    },
+    "rejected_approaches": [
+      "**Option B (Full results)** — Rejected because it couples telemetry schema evolution to validator internal schemas, bloats records 10-20x, and makes report aggregation harder. The detail it preserves is already available by re-running validators on the artifact.",
+      "**Option C (Separate quality log)** — Rejected because it breaks the single-stream contract, adds join complexity, and fragments observability for no clear benefit."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Add `deterministic_check_results` field to `WorkflowStepTelemetryRecord`, builder, and dedupe key",
+        "Add `--check-result` CLI flag parsing and record population",
+        "Add validator results aggregation to report generator (summary + markdown + JSON)",
+        "Update schema doc to v1.6.0"
+      ],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "TASK-01 (interface + builder) must precede TASK-02 (CLI) and TASK-03 (report)",
+        "TASK-04 (schema doc) can run in parallel with TASK-03"
+      ],
+      "risks_to_carry_forward": [
+        "CLI flag parsing for colon-delimited structured data — test with edge cases (validator names containing colons)"
+      ]
+    },
+    "process_topology_change": true,
+    "process_topology_note": null,
+    "end_state_process_areas": [
+      {
+        "Area": "Validator execution",
+        "Current state": "Shell scripts run validators; JSON to stdout; agent reads result",
+        "Trigger": "Agent completes DO stage, validators pass",
+        "Delivered step-by-step end state": "Same — no change to validator execution",
+        "What remains unchanged": "Validator scripts, return types, exit codes",
+        "Risks / seams to carry into planning": "None"
+      },
+      {
+        "Area": "Telemetry recording",
+        "Current state": "CLI accepts `--deterministic-check` (names only)",
+        "Trigger": "Agent calls CLI after validators pass",
+        "Delivered step-by-step end state": "Agent calls CLI with `--check-result <name>:<pass",
+        "What remains unchanged": "fail>:<errors>:<warnings>` for each validator run. CLI parses these into `deterministic_check_results` field. Record appended with both names and results.",
+        "Risks / seams to carry into planning": "JSONL path, dedupe logic, all other record fields"
+      },
+      {
+        "Area": "Report generation",
+        "Current state": "Summary shows size/token/module metrics only",
+        "Trigger": "Operator runs report CLI",
+        "Delivered step-by-step end state": "Report includes new `## Validator Results` section showing per-check pass/fail rates and aggregate error counts across records. JSON output includes `validator_summary` in envelope.",
+        "What remains unchanged": "Existing summary dimensions unchanged",
+        "Risks / seams to carry into planning": "Report must handle mixed records (some with results, some without)"
+      }
+    ]
+  }
+}

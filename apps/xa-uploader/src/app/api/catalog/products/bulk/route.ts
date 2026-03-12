@@ -168,9 +168,11 @@ export async function POST(request: Request) {
     );
   } catch (error) {
     if (error instanceof CatalogDraftContractError && error.code === "unconfigured") {
+      console.error("[products/bulk] catalog contract unconfigured:", error.message);
       return withRateHeaders(catalogContractUnavailableResponse(), limit);
     }
-    if (error instanceof Error) {
+    if (error instanceof CatalogDraftContractError) {
+      console.error("[products/bulk] catalog contract error:", error.message);
       return withRateHeaders(
         NextResponse.json(
           { ok: false, error: "invalid", reason: "bulk_validation_failed" },
@@ -179,6 +181,7 @@ export async function POST(request: Request) {
         limit,
       );
     }
+    console.error("[products/bulk] unexpected error:", error);
     return withRateHeaders(
       NextResponse.json({ ok: false, error: "internal_error", reason: "bulk_upsert_failed" }, { status: 500 }),
       limit,

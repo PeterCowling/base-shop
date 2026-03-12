@@ -4,6 +4,8 @@
  * BOS-UX-04, BOS-UX-15
  */
 
+/* eslint-disable ds/no-hardcoded-copy -- BOS-NAV-101 internal navigation copy pending i18n extraction [ttl=2026-06-30] */
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -36,6 +38,7 @@ interface NavLink {
 const NAV_LINKS: NavLink[] = [
   { href: "/", label: "Home" },
   { href: "/ideas", label: "Ideas" },
+  { href: "/process-improvements", label: "Process Improvements" },
   { href: "/plans", label: "Plans" },
   { href: "/workflows", label: "Workflows" },
   { href: "/boards", label: "Legacy Board" },

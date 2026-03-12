@@ -3,15 +3,42 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Handbag Accessory — Brand Dossier</title>
+  <title>Caryina — Brand Language</title>
   <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
     :root {
       --bg: #ffffff;
+      --surface: #f5f8fb;
       --text: #101418;
-      --muted: #5a6570;
+      --text-muted: #5a6570;
       --border: #d9e0e7;
-      --header: #f5f8fb;
-      --link: #0b63ce;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
+
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
+
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
     }
     html, body {
       margin: 0;
@@ -23,62 +50,48 @@
     main {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 24px;
+      padding: 2rem 1.5rem 4rem;
     }
-    h1, h2, h3 {
-      line-height: 1.25;
-    }
-    p, li {
-      line-height: 1.5;
-    }
-    a {
-      color: var(--link);
-    }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    }
-    pre {
-      background: #f7f9fb;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 12px;
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 16px 0 24px;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 10px 12px;
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
       background: var(--header);
-      font-weight: 700;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
     }
-    tr:nth-child(even) td {
-      background: #fcfdff;
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
+    .audience-toggle {
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
     }
-    hr {
-      border: 0;
-      border-top: 1px solid var(--border);
-      margin: 24px 0;
-    }
-    blockquote {
-      border-left: 4px solid var(--border);
-      margin: 16px 0;
-      padding: 0 12px;
-      color: var(--muted);
-    }
-    .meta {
-      margin-top: 24px;
-      padding-top: 16px;
-      border-top: 1px solid var(--border);
-      font-size: 0.9rem;
-      color: var(--muted);
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
     }
   </style>
 
@@ -86,151 +99,692 @@
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../../startup-loop-workflow.user.html">Workflow</a><a href="../../startup-loop-files.user.html">Loop Files</a><a href="../../startup-loop-file-types.user.html">File Types</a><a href="../../startup-loop-output-registry.user.html">Output Registry</a><a href="../../ideas.user.html">Ideas</a><a href="../../process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-inner{position:relative;display:flex;align-items:center;justify-content:center;gap:0;min-width:max-content;width:100%;max-width:1200px}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><div class="sl-inner"><span class="sl-brand">Startup Loop</span><a href="../../../startup-loop-files.user.html">Loop Files</a><a href="../../../startup-loop-file-types.user.html">File Types</a><a href="../../../startup-loop-output-registry.user.html">Output Registry</a><a href="../../../process-improvements.user.html">Process</a><a href="../../../follow-up.user.html">Follow-up</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button></div><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
   <main>
-<h1>Handbag Accessory — Brand Dossier</h1>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+<h1>Caryina — Brand Language</h1>
 <blockquote>
-<p><strong>Draft status.</strong> This dossier was bootstrapped from the business plan.
-HBAG was recently separated from XA for independent planning and decision-making.
-No app or theme package exists. The offer hypothesis and target segment are not yet
-finalized (see plan §Strategy items 1-2). All <code>TBD</code> fields require operator input
-after Core Offer and Positioning is defined.</p>
+<p><strong>Active.</strong> ASSESSMENT-12 promotion completed 2026-02-23 after dossier completeness validation.</p>
 </blockquote>
 <h2>Audience</h2>
-<p><strong>Primary:</strong> TBD — women purchasing handbag accessories. The specific segment (price point, age, style preference, geography) is not yet defined. The plan notes that the offer hypothesis "exists but is not encoded in measurable commercial terms."</p>
-<p><strong>Secondary:</strong> TBD — gift purchasers; potential wholesale/boutique buyers if B2B applicable.</p>
-<p><strong>Device:</strong> TBD — assumed mobile-first for a fashion/lifestyle accessory product, but must be validated.</p>
-<p><strong>Context:</strong> TBD — handbag accessories are likely discovered via visual search (Instagram, Pinterest, Google Shopping) and purchased via high-intent fashion/lifestyle keywords. The purchase is aesthetic + practical (does it fit my bag? does it look good?). Brand perception and trust matter.</p>
-<p><strong>Key constraint:</strong> Brand identity is heavily dependent on price positioning and style aesthetic — which require the offer hypothesis to be locked first. A luxury handbag chain accessory needs a completely different visual identity than a functional mass-market insert.</p>
+<p><strong>Primary:</strong> Women ~27–42, fashion-aware, who own one or more bags at LV/Gucci entry tier (€600–€1,500+). They want personal expression through bag accessories — something that reads as genuinely crafted, not mass-produced. Quality that "reads real" in hand and in photos. They deliberate 3–7 days before purchasing at €80–€150; this is a considered purchase, not an impulse buy.</p>
+<p><strong>Secondary:</strong> Gift buyers purchasing for women who fit the primary profile — birthdays, Christmas, milestone self-treats. Packaging and brand story do significant work in this use case.</p>
+<p><strong>Device:</strong> Mobile-first — social discovery via TikTok/Instagram is the primary inbound path.</p>
+<p><strong>Context:</strong> TikTok/Instagram scroll → trend exposure → Etsy search or direct website visit. Mindset at discovery: actively looking for something distinctive for their bag; aesthetic + craft quality are the purchase triggers. At €80–€150, the buyer wants to feel the price is justified by visible craft — not just brand name.</p>
 <h2>Personality</h2>
-<blockquote>
-<p>TBD — Directional candidates pending offer lock:</p>
 <ul>
-<li>If premium/fashion positioning: <strong>Sophisticated + curated</strong>, clean, minimal, aspirational</li>
-<li>If functional/practical positioning: <strong>Organized + practical</strong>, reliable, quality-focused</li>
-<li>If accessible lifestyle positioning: <strong>Stylish + approachable</strong>, warm, relatable</li>
-</ul>
-<p>Validate personality direction after offer lock and ≥3 customer inputs.</p>
-</blockquote>
-<p>Common candidates regardless of positioning:</p>
-<ul>
+<li><strong>Sophisticated</strong>, not showy</li>
+<li><strong>Curated</strong>, not cluttered</li>
 <li><strong>Feminine</strong>, not generic</li>
-<li><strong>Confident</strong>, not apologetic</li>
-<li><strong>Tasteful</strong>, not trend-chasing</li>
+<li><strong>Confident</strong>, not apologetic — own the quality story; don't over-justify the price</li>
+<li><strong>Tasteful</strong>, not trend-chasing — the bag charm trend is an entry point, not the identity</li>
 </ul>
 <h2>Visual Identity</h2>
-<blockquote>
-<p>TBD — No design work has been done. All fields below are directional candidates only.
-Theme package creation is a prerequisite for Active status.</p>
-</blockquote>
-<h3>Color Palette</h3>
+<h3>Imagery Strategy</h3>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Imagery prominence</td>
+<td><code>high</code></td>
+</tr>
+<tr>
+<td>Typical imagery character</td>
+<td>Bright, colourful bag accessories (charms, holders) against editorial neutral backgrounds. Product colour range is wide and varied across the range.</td>
+</tr>
+<tr>
+<td>Palette implication</td>
+<td><code>recessive</code> — site chrome must not compete with product images</td>
+</tr>
+</tbody>
+</table>
+<h3>Colour Palette</h3>
 <table>
 <thead>
 <tr>
 <th>Role</th>
-<th>Token (proposed)</th>
+<th>Token</th>
+<th>HSL</th>
 <th>Rationale</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Primary</td>
-<td>TBD</td>
-<td>Depends strongly on price/style positioning. Luxury: black, deep navy, champagne. Accessible: warm neutrals, muted blush, sage. Functional: clean white or stone + 1 accent.</td>
+<td><code>--color-primary</code></td>
+<td><code>355 55% 75%</code></td>
+<td>Strawberry milk — warm soft pink; feminine and present without competing; light enough to stay pastel, saturated enough to have character</td>
+</tr>
+<tr>
+<td>Primary fg</td>
+<td><code>--color-primary-fg</code></td>
+<td><code>355 12% 20%</code></td>
+<td>Warm near-black with pink undertone — WCAG AA compliant on strawberry milk; softer than stark black</td>
 </tr>
 <tr>
 <td>Primary soft</td>
-<td>TBD</td>
-<td>Tinted card/highlight background</td>
+<td><code>--color-primary-soft</code></td>
+<td><code>355 40% 96%</code></td>
+<td>Barely-there strawberry tint for hover states and secondary surfaces</td>
+</tr>
+<tr>
+<td>Primary hover</td>
+<td><code>--color-primary-hover</code></td>
+<td><code>355 55% 68%</code></td>
+<td>Deeper strawberry milk for interactive hover</td>
+</tr>
+<tr>
+<td>Primary active</td>
+<td><code>--color-primary-active</code></td>
+<td><code>355 55% 61%</code></td>
+<td>Pressed strawberry state</td>
 </tr>
 <tr>
 <td>Accent</td>
-<td>TBD</td>
-<td>Should feel tasteful and intentional — not trendy-for-its-own-sake</td>
+<td><code>--color-accent</code></td>
+<td><code>130 18% 72%</code></td>
+<td>Light warm sage — pastel sage; lighter than a classic sage at 72% lightness; clearly green, warm enough to harmonise with strawberry milk; recessive behind product imagery</td>
+</tr>
+<tr>
+<td>Accent fg</td>
+<td><code>--color-accent-fg</code></td>
+<td><code>130 20% 18%</code></td>
+<td>Dark on warm sage — legible; warm earthy undertone</td>
+</tr>
+<tr>
+<td>Accent soft</td>
+<td><code>--color-accent-soft</code></td>
+<td><code>130 15% 95%</code></td>
+<td>Barely-there warm sage tint for tags, chips, and focus rings</td>
 </tr>
 <tr>
 <td>Background</td>
-<td>TBD</td>
-<td>Premium feel. Clean, light backgrounds typical for fashion/accessory e-commerce.</td>
+<td><code>--color-bg</code></td>
+<td><code>38 18% 98%</code></td>
+<td>Warm near-white — same 38° hue as accent; consistent warm ivory family</td>
+</tr>
+<tr>
+<td>Foreground</td>
+<td><code>--color-fg</code></td>
+<td><code>355 12% 20%</code></td>
+<td>Warm near-black with pink undertone — consistent with primary-fg; unified warm family</td>
+</tr>
+<tr>
+<td>Foreground muted</td>
+<td><code>--color-fg-muted</code></td>
+<td><code>355 8% 52%</code></td>
+<td>Warm blush grey for secondary text, labels, captions</td>
+</tr>
+<tr>
+<td>Border</td>
+<td><code>--color-border</code></td>
+<td><code>355 12% 90%</code></td>
+<td>Soft blush border with pink undertone — warm, not clinical</td>
+</tr>
+<tr>
+<td>Border muted</td>
+<td><code>--color-border-muted</code></td>
+<td><code>355 8% 95%</code></td>
+<td>Near-invisible warm blush divider</td>
+</tr>
+<tr>
+<td>Border strong</td>
+<td><code>--color-border-strong</code></td>
+<td><code>355 15% 78%</code></td>
+<td>Emphasis borders and focus rings — warm blush</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Palette mood:</strong> TBD — depends on price positioning. Directional: refined, not loud.</p>
+<p><strong>Palette mood:</strong> Strawberry milk and light warm sage — both sit at pastel lightness (75% and 72%); the pink-green pairing is feminine and Mediterranean; warm enough to feel cohesive, distinct enough to give the brand a clear two-colour identity that recedes behind product imagery.</p>
+<p><strong>Dark mode:</strong> Rose-espresso family — warm near-black with pink undertone throughout. Strawberry Milk (primary) is unchanged; it stands equally well on dark backgrounds.</p>
+<h3>Dark Mode Token Overrides</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Light Value</th>
+<th>Dark Value</th>
+<th>Dark Rationale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--color-bg</code></td>
+<td><code>38 18% 98%</code></td>
+<td><code>355 14% 10%</code></td>
+<td>Rose Espresso — warm near-black with rose undertone; editorial dark register</td>
+</tr>
+<tr>
+<td><code>--color-fg</code></td>
+<td><code>355 12% 20%</code></td>
+<td><code>355 8% 92%</code></td>
+<td>Warm Near-White — very light with slight pink warmth; avoids clinical cold-white</td>
+</tr>
+<tr>
+<td><code>--color-fg-muted</code></td>
+<td><code>355 8% 52%</code></td>
+<td><code>355 6% 55%</code></td>
+<td>Mid Rose-Grey — mid-tone in the rose-grey family</td>
+</tr>
+<tr>
+<td><code>--color-border</code></td>
+<td><code>355 12% 90%</code></td>
+<td><code>355 10% 22%</code></td>
+<td>Dark Rose Border — subtle, warm-toned dividers</td>
+</tr>
+<tr>
+<td><code>--color-border-muted</code></td>
+<td><code>355 8% 95%</code></td>
+<td><code>355 8% 18%</code></td>
+<td>Near-invisible warm border on dark</td>
+</tr>
+<tr>
+<td><code>--color-border-strong</code></td>
+<td><code>355 15% 78%</code></td>
+<td><code>355 12% 32%</code></td>
+<td>Emphasis borders on dark</td>
+</tr>
+<tr>
+<td><code>--color-primary</code></td>
+<td><code>355 55% 75%</code></td>
+<td><code>355 55% 75%</code></td>
+<td>Unchanged — Strawberry Milk stands equally well on dark</td>
+</tr>
+<tr>
+<td><code>--color-primary-fg</code></td>
+<td><code>355 12% 20%</code></td>
+<td><code>355 14% 10%</code></td>
+<td>Matches dark bg — Rose Espresso as foreground on Strawberry Milk</td>
+</tr>
+<tr>
+<td><code>--color-primary-soft</code></td>
+<td><code>355 40% 96%</code></td>
+<td><code>355 30% 22%</code></td>
+<td>Dark Strawberry Tint — chips, badges, table headers on dark</td>
+</tr>
+<tr>
+<td><code>--color-primary-hover</code></td>
+<td><code>355 55% 68%</code></td>
+<td><code>355 55% 82%</code></td>
+<td>Slightly lighter strawberry on hover in dark mode</td>
+</tr>
+<tr>
+<td><code>--color-primary-active</code></td>
+<td><code>355 55% 61%</code></td>
+<td><code>355 55% 85%</code></td>
+<td>Pressed state on dark</td>
+</tr>
+<tr>
+<td><code>--color-accent</code></td>
+<td><code>130 18% 72%</code></td>
+<td><code>130 18% 62%</code></td>
+<td>Sage — slightly richer on dark; still recessive behind product imagery</td>
+</tr>
+<tr>
+<td><code>--color-accent-fg</code></td>
+<td><code>130 20% 18%</code></td>
+<td><code>130 15% 88%</code></td>
+<td>Light sage text for legibility on dark sage backgrounds</td>
+</tr>
+<tr>
+<td><code>--color-accent-soft</code></td>
+<td><code>130 15% 95%</code></td>
+<td><code>130 14% 18%</code></td>
+<td>Dark Sage Tint — tags and focus rings in dark mode</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Surface token (not in base):</strong> <code>--color-surface</code> light = <code>0 0% 100%</code> / dark = <code>355 12% 16%</code> (Warm Dark Surface — card faces lifted slightly from bg).</p>
+</blockquote>
 <h3>Typography</h3>
+<blockquote>
+<p>All fonts are freely available via Google Fonts.</p>
+</blockquote>
 <table>
 <thead>
 <tr>
 <th>Role</th>
-<th>Token (proposed)</th>
+<th>Token</th>
+<th>Font Family</th>
+<th>Source</th>
 <th>Rationale</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Body + headings</td>
-<td>TBD</td>
-<td>Fashion/accessory category: consider a slightly more editorial feel than Brikette. Humanist sans or elegant serif hybrid. Validate legibility at small sizes on mobile.</td>
+<td>Headings</td>
+<td><code>--font-heading</code></td>
+<td>Cormorant Garamond</td>
+<td><a href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&#x26;display=swap">Google Fonts</a></td>
+<td>Elegant editorial serif; used across premium fashion and jewellery brands; the slight fragility of the letterform matches the "tasteful, not showy" personality; excellent at large display sizes on mobile</td>
+</tr>
+<tr>
+<td>Body</td>
+<td><code>--font-sans</code></td>
+<td>DM Sans</td>
+<td><a href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&#x26;display=swap">Google Fonts</a></td>
+<td>Clean humanist sans; highly legible at small sizes on mobile; optical-size axis available; pairs naturally with Cormorant without competing</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Combined Google Fonts URL:</strong></p>
+<pre><code>https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&#x26;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300;1,9..40,400&#x26;display=swap
+</code></pre>
+<p><strong>Type personality:</strong> Editorial serif headings paired with a humanist sans body — confident and refined at large sizes, clear and functional in product detail copy.</p>
 <h3>Shape &#x26; Elevation</h3>
-<blockquote>
-<p>TBD — accessories often use clean, minimal cards with subtle shadow. Validate after design direction is set.</p>
-</blockquote>
-<h3>Token Rationale</h3>
-<blockquote>
-<p>Token rationale will be populated when the theme package is created. No theme package exists yet.</p>
-</blockquote>
 <table>
 <thead>
 <tr>
+<th>Property</th>
 <th>Token</th>
-<th>Design rationale</th>
+<th>Value</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><em>(all TBD)</em></td>
-<td>No app or theme package exists. Populate when created via <code>/lp-design-spec</code>.</td>
+<td>Card radius</td>
+<td><code>--radius-md</code></td>
+<td><code>4px</code></td>
+<td>Restrained — slightly soft; not sharp-corporate, not bubbly-friendly; aligns with "curated, not cluttered"</td>
+</tr>
+<tr>
+<td>Small radius</td>
+<td><code>--radius-sm</code></td>
+<td><code>2px</code></td>
+<td>For chips, badges, inline elements</td>
+</tr>
+<tr>
+<td>Large radius</td>
+<td><code>--radius-lg</code></td>
+<td><code>8px</code></td>
+<td>For modal sheets and bottom drawers on mobile only</td>
+</tr>
+<tr>
+<td>Default shadow</td>
+<td><code>shadow-sm</code></td>
+<td>base value</td>
+<td>Elevation used sparingly — border-based separation preferred; shadows only for floating elements (modals, dropdowns)</td>
 </tr>
 </tbody>
 </table>
 <h3>Imagery Direction</h3>
-<blockquote>
-<p>TBD — Directional candidates:</p>
+<p>Carried forward from ASSESSMENT-10 aesthetic constraints — confirmed by Pete 2026-02-21.</p>
+<p><strong>Do:</strong></p>
 <ul>
-<li><strong>Do:</strong> Styled product photography in lifestyle context (bag + accessory in use). Clean, flattering lighting. Show the accessory solving a real problem (organization, protection, style).</li>
-<li><strong>Don't:</strong> Generic e-commerce product-on-white-background photography for primary hero images. Over-styled editorial that feels unrelatable.</li>
-<li>Validate after offer lock and competitor imagery audit.</li>
+<li>Soft directional daylight lighting; editorial feel without studio harshness</li>
+<li>Backgrounds: stone, matte plaster, dark wood, neutral textiles</li>
+<li>Include one clean scale reference per listing (hand, bag strap, AirPods) — editorial framing, not measurement photo</li>
+<li>One macro shot per listing showing stitching, edge finishing, or hardware detail</li>
+<li>Hands: manicured, neutral nails, minimal jewellery — taste, not haul</li>
 </ul>
-</blockquote>
+<p><strong>Don't:</strong></p>
+<ul>
+<li>High-saturation craft-fair lighting or harsh flash</li>
+<li>Patterned backdrops, glitter vinyl, flat-lay chaos</li>
+<li>Workbench-mess "authenticity theatre"</li>
+<li>Generic product-on-white-background as hero image</li>
+<li>Influencer-haul hand styling</li>
+</ul>
 <h2>Voice &#x26; Tone</h2>
 <h3>Writing Style</h3>
-<blockquote>
-<p>TBD — pending offer lock. Directional:</p>
-</blockquote>
 <ul>
-<li><strong>Formality:</strong> Conversational and confident. Not corporate; not overly casual.</li>
-<li><strong>Technical level:</strong> Functional details matter (dimensions, compatibility, materials) — state them clearly.</li>
-<li><strong>Emotional layer:</strong> Help customers visualize the product making their daily bag use better/easier/more beautiful.</li>
+<li><strong>Formality:</strong> Conversational — not corporate, not overly casual</li>
+<li><strong>Sentence length:</strong> Short to medium — punchy product copy; slightly longer for craft/story context</li>
+<li><strong>Humour:</strong> None to light and dry — premium positioning; warmth over wit</li>
+<li><strong>Technical level:</strong> Some detail expected — dimensions, material composition, and compatibility matter to this buyer; state them clearly without making copy feel like a spec sheet</li>
 </ul>
+<h3>Header Tagline</h3>
+<p><strong>Un solo dettaglio. Quello carino.</strong> <em>(One detail. The cute one.)</em></p>
+<p>Appears beneath the animated wordmark after the Caryina → Carina logo transformation. Decided 2026-02-23. Full rationale: <code>docs/business-os/strategy/HBAG/tagline-options.user.md</code>.</p>
+<p>The tagline completes the logo reveal: the animation shows the brand name contains "carina" (cute in Italian); the tagline turns that into a product promise — one considered accessory, and it's the cute one. Directly encodes the single-piece positioning ("un solo") and echoes "Considered detail" from the core phrases below.</p>
 <h3>Key Phrases</h3>
-<blockquote>
-<p>TBD — Validate after offer lock with ≥3 customer inputs.</p>
-</blockquote>
-<h3>Words to Avoid</h3>
-<blockquote>
-<p>TBD — Validate after offer lock. Generic initial candidates:</p>
+<p>Three core lines. Use one per asset; use all three for hero layouts.</p>
+<table>
+<thead>
+<tr>
+<th>Line</th>
+<th>Use when</th>
+<th>What it signals</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Made to be shown.</strong></td>
+<td>Visibility, display — accessory belongs on the bag</td>
+<td>Quality that reads at distance; designed to be seen, not hidden</td>
+</tr>
+<tr>
+<td><strong>Considered detail.</strong></td>
+<td>Positioning against charm pile-on</td>
+<td>Curated restraint; the single-piece purchase is right</td>
+</tr>
+<tr>
+<td><strong>Use every day.</strong></td>
+<td>Daily use, versatility, value</td>
+<td>Not a trend buy; justifies €80–€150 as a keeper piece</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Approved variants — Made to be shown:</strong></p>
 <ul>
-<li>Generic fashion filler ("luxurious," "premium," "exclusive" without substantiation)</li>
-<li>Compatibility claims that aren't verified ("fits all handbags")</li>
+<li>"Made to be noticed — quietly."</li>
+<li>"A visible detail, finished to be kept."</li>
+<li>"Made to be seen, finished to last."</li>
+<li>Pairing line: "Cut clean. Finished by hand."</li>
 </ul>
-</blockquote>
+<p><strong>Approved variants — One considered detail:</strong></p>
+<ul>
+<li>"One piece, chosen well."</li>
+<li>"Edited, not overdone."</li>
+<li>"One clean finishing touch."</li>
+<li>Pairing line: "Styled once. Worn often."</li>
+</ul>
+<p><strong>Approved variants — Use every day:</strong></p>
+<ul>
+<li>"Finished to last."</li>
+<li>"Works across your classics."</li>
+<li>Pairing line: "Easy on. Stays put."</li>
+</ul>
+<h3>Words to Avoid</h3>
+<ul>
+<li>"Luxury" / "premium" / "exclusive" — empty fashion filler without substantiation; show craft instead</li>
+<li>"Fits all handbags" — unverified compatibility claim; be specific about attachment hardware</li>
+<li>"Birkin" — IP/trade dress risk; do not use in any public-facing copy (2025 Paris Judicial Court ruling)</li>
+<li>"Statement piece" / "must-have" / "turn heads" — hype language incompatible with curated restraint positioning</li>
+<li>"Made in Italy" — manufacturing is China-based; this claim would be false advertising under Italian Law 166/2009</li>
+</ul>
+<h3>Brand Claims</h3>
+<table>
+<thead>
+<tr>
+<th>Claim</th>
+<th>Value</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Origin claim</td>
+<td><code>Designed in Italy</code></td>
+<td>Pete designs and curates from Positano, Italy. Manufacturing: China. "Made in Italy" cannot be claimed.</td>
+</tr>
+<tr>
+<td>Manufacturing country</td>
+<td>China</td>
+<td>China-based supplier confirmed 2026-02-20</td>
+</tr>
+<tr>
+<td>Operator's role</td>
+<td>Designer / Curator</td>
+<td>Brand designed and curated by Pete from Positano</td>
+</tr>
+</tbody>
+</table>
+<h2>Token Overrides</h2>
+<p>Theme package: <code>packages/themes/caryina/src/tokens.ts</code></p>
+<p><strong>Tokens that differ from base (light mode):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Base Value</th>
+<th>Override Value</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--color-primary</code></td>
+<td><code>220 90% 56%</code> (blue)</td>
+<td><code>355 55% 75%</code></td>
+<td>Strawberry milk — warm soft pink; pastel-light but present; feminine and confident</td>
+</tr>
+<tr>
+<td><code>--color-primary-fg</code></td>
+<td><code>0 0% 100%</code></td>
+<td><code>355 12% 20%</code></td>
+<td>Warm near-black with pink undertone; WCAG AA on strawberry milk</td>
+</tr>
+<tr>
+<td><code>--color-primary-soft</code></td>
+<td><code>220 90% 96%</code></td>
+<td><code>355 40% 96%</code></td>
+<td>Barely-there strawberry tint</td>
+</tr>
+<tr>
+<td><code>--color-primary-hover</code></td>
+<td><code>220 90% 50%</code></td>
+<td><code>355 55% 68%</code></td>
+<td>Deeper strawberry milk on hover</td>
+</tr>
+<tr>
+<td><code>--color-primary-active</code></td>
+<td><code>220 90% 45%</code></td>
+<td><code>355 55% 61%</code></td>
+<td>Pressed strawberry state</td>
+</tr>
+<tr>
+<td><code>--color-accent</code></td>
+<td><code>260 83% 70%</code></td>
+<td><code>130 18% 72%</code></td>
+<td>Light warm sage — pastel sage; clearly green; warm hue (130°) harmonises with strawberry milk; recessive at 72% lightness</td>
+</tr>
+<tr>
+<td><code>--color-accent-fg</code></td>
+<td><code>0 0% 10%</code></td>
+<td><code>130 20% 18%</code></td>
+<td>Dark on warm sage for legibility</td>
+</tr>
+<tr>
+<td><code>--color-accent-soft</code></td>
+<td><code>260 83% 97%</code></td>
+<td><code>130 15% 95%</code></td>
+<td>Barely-there warm sage tint</td>
+</tr>
+<tr>
+<td><code>--color-bg</code></td>
+<td><code>0 0% 100%</code></td>
+<td><code>38 18% 98%</code></td>
+<td>Warm ivory — same 38° hue family as accent; unified warmth</td>
+</tr>
+<tr>
+<td><code>--color-fg</code></td>
+<td><code>0 0% 10%</code></td>
+<td><code>355 12% 20%</code></td>
+<td>Warm near-black with pink undertone; consistent with primary-fg</td>
+</tr>
+<tr>
+<td><code>--color-fg-muted</code></td>
+<td><code>0 0% 40%</code></td>
+<td><code>355 8% 52%</code></td>
+<td>Warm blush grey</td>
+</tr>
+<tr>
+<td><code>--color-border</code></td>
+<td><code>0 0% 80%</code></td>
+<td><code>355 12% 90%</code></td>
+<td>Soft blush border</td>
+</tr>
+<tr>
+<td><code>--color-border-muted</code></td>
+<td><code>0 0% 88%</code></td>
+<td><code>355 8% 95%</code></td>
+<td>Near-invisible warm blush divider</td>
+</tr>
+<tr>
+<td><code>--color-border-strong</code></td>
+<td><code>0 0% 65%</code></td>
+<td><code>355 15% 78%</code></td>
+<td>Emphasis borders/focus rings in warm blush family</td>
+</tr>
+<tr>
+<td><code>--color-surface</code></td>
+<td><code>N/A (new token required)</code></td>
+<td><code>0 0% 100%</code></td>
+<td>Explicit card surface token for the discovery doc + card treatments</td>
+</tr>
+<tr>
+<td><code>--font-sans</code></td>
+<td><code>var(--font-geist-sans)</code></td>
+<td><code>var(--font-dm-sans)</code></td>
+<td>Humanist sans better suited to fashion/lifestyle register</td>
+</tr>
+<tr>
+<td><code>--font-heading</code></td>
+<td><code>N/A (new token required)</code></td>
+<td><code>var(--font-cormorant-garamond)</code></td>
+<td>Editorial heading family for premium fashion register</td>
+</tr>
+<tr>
+<td><code>--radius-sm</code></td>
+<td><code>4px</code></td>
+<td><code>2px</code></td>
+<td>Tighter chip/badge corners for curated look</td>
+</tr>
+<tr>
+<td><code>--radius-md</code></td>
+<td><code>8px</code></td>
+<td><code>4px</code></td>
+<td>Restrained radius aligns with "curated, not cluttered"</td>
+</tr>
+<tr>
+<td><code>--radius-lg</code></td>
+<td><code>12px</code></td>
+<td><code>8px</code></td>
+<td>Keeps larger surfaces soft without becoming bubbly</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Dark mode overrides (tokens that differ from base dark):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Base Dark Value</th>
+<th>Override Value</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--color-bg</code></td>
+<td><code>0 0% 4%</code></td>
+<td><code>355 14% 10%</code></td>
+<td>Warm rose-espresso base instead of neutral black</td>
+</tr>
+<tr>
+<td><code>--color-fg</code></td>
+<td><code>0 0% 93%</code></td>
+<td><code>355 8% 92%</code></td>
+<td>Keep foreground warm in the same hue family</td>
+</tr>
+<tr>
+<td><code>--color-fg-muted</code></td>
+<td><code>0 0% 75%</code></td>
+<td><code>355 6% 55%</code></td>
+<td>Mid rose-grey for muted text hierarchy</td>
+</tr>
+<tr>
+<td><code>--color-border</code></td>
+<td><code>0 0% 30%</code></td>
+<td><code>355 10% 22%</code></td>
+<td>Warm-toned dark dividers</td>
+</tr>
+<tr>
+<td><code>--color-border-muted</code></td>
+<td><code>0 0% 22%</code></td>
+<td><code>355 8% 18%</code></td>
+<td>Subtle dark border tint</td>
+</tr>
+<tr>
+<td><code>--color-border-strong</code></td>
+<td><code>0 0% 45%</code></td>
+<td><code>355 12% 32%</code></td>
+<td>Stronger border in the same warm family</td>
+</tr>
+<tr>
+<td><code>--color-primary</code></td>
+<td><code>220 90% 66%</code></td>
+<td><code>355 55% 75%</code></td>
+<td>Maintain Strawberry Milk as unchanged brand anchor</td>
+</tr>
+<tr>
+<td><code>--color-primary-fg</code></td>
+<td><code>0 0% 10%</code></td>
+<td><code>355 14% 10%</code></td>
+<td>Foreground on primary aligned with dark background tone</td>
+</tr>
+<tr>
+<td><code>--color-primary-soft</code></td>
+<td><code>220 90% 18%</code></td>
+<td><code>355 30% 22%</code></td>
+<td>Dark strawberry tint for chips/badges</td>
+</tr>
+<tr>
+<td><code>--color-primary-hover</code></td>
+<td><code>220 90% 72%</code></td>
+<td><code>355 55% 82%</code></td>
+<td>Lightened hover state with brand hue consistency</td>
+</tr>
+<tr>
+<td><code>--color-primary-active</code></td>
+<td><code>220 90% 78%</code></td>
+<td><code>355 55% 85%</code></td>
+<td>Pressed state tuned for dark context</td>
+</tr>
+<tr>
+<td><code>--color-accent</code></td>
+<td><code>260 83% 70%</code></td>
+<td><code>130 18% 62%</code></td>
+<td>Slightly richer sage for dark readability</td>
+</tr>
+<tr>
+<td><code>--color-accent-fg</code></td>
+<td><code>0 0% 10%</code></td>
+<td><code>130 15% 88%</code></td>
+<td>Legible foreground on dark sage accent surfaces</td>
+</tr>
+<tr>
+<td><code>--color-accent-soft</code></td>
+<td><code>260 83% 20%</code></td>
+<td><code>130 14% 18%</code></td>
+<td>Dark sage tint for low-emphasis accent surfaces</td>
+</tr>
+<tr>
+<td><code>--color-surface</code></td>
+<td><code>N/A (new token required)</code></td>
+<td><code>355 12% 16%</code></td>
+<td>Lifted warm card face above dark background</td>
+</tr>
+</tbody>
+</table>
+<h3>Theme Prerequisites</h3>
+<p>All prerequisites completed 2026-02-23:</p>
+<ol>
+<li><del>Create <code>packages/themes/caryina/src/tokens.ts</code> extending <code>@themes/base</code></del> — Done</li>
+<li><del>Apply all token overrides from the table above</del> — Done (light + dark mode)</li>
+<li><del>Add <code>Cormorant Garamond</code> + <code>DM Sans</code> to font loading in the app layout</del> — Done (<code>apps/caryina/src/app/layout.tsx</code>)</li>
+<li><del>Run <code>pnpm build:tokens</code></del> — Done (<code>packages/themes/caryina/tokens.css</code> generated)</li>
+<li><del>Register theme in <code>packages/themes/index.ts</code> if applicable</del> — Auto-discovered via workspace glob</li>
+</ol>
 <h2>Signature Patterns</h2>
-<blockquote>
-<p>TBD — No application has been built yet. Patterns will be added as <code>/lp-design-spec</code> identifies them.</p>
-</blockquote>
-<p><em>First pattern to define: product-in-context imagery component (showing the accessory installed/in-use in a real bag).</em></p>
+<h3>BrandMark Material Transformation</h3>
+<p><strong>When:</strong> Brand-defining reveal moments (initial header mount and curated hover replay) where the Caryina wordmark transitions into the tagline.</p>
+<p><strong>Implementation:</strong> Keep <code>Car</code> + <code>ina</code> merge as DOM text motion; render the dissolving <code>y</code> as a Canvas 2D particle overlay using brand tokens <code>--color-primary</code> and <code>--color-accent</code>, with reduced-motion fallback to immediate final state.</p>
+<p><strong>Example:</strong> <code>docs/plans/_archive/hbag-brandmark-particle-animation/design-spec.md</code></p>
+<h3>Product-in-context Hero Framing</h3>
+<p><strong>When:</strong> PDP hero and listing hero shots that need to validate premium craft at first glance.</p>
+<p><strong>Implementation:</strong> Editorial neutral backgrounds, one scale reference, one macro craft proof shot; no flat-lay clutter or high-saturation craft-fair lighting.</p>
+<p><strong>Example:</strong> <code>docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md</code> (Positioning Constraints / Product presentation)</p>
 <h2>App Coverage</h2>
 <table>
 <thead>
@@ -243,20 +797,26 @@ Theme package creation is a prerequisite for Active status.</p>
 </thead>
 <tbody>
 <tr>
+<td>caryina</td>
+<td><code>@themes/caryina</code></td>
+<td>Active</td>
+<td>Scaffold created 2026-02-23; BrandMark wordmark + tagline implemented; port 3018</td>
+</tr>
+<tr>
 <td>cover-me-pretty</td>
-<td>TBD</td>
-<td>Not created</td>
-<td>App exists in name only (<code>cover-me-pretty</code>); theme package TBD per design-spec mapping</td>
+<td><code>@themes/caryina</code></td>
+<td>Legacy</td>
+<td>Pre-rebrand app name; to be evaluated for migration or retirement</td>
 </tr>
 </tbody>
 </table>
-<blockquote>
-<p><strong>Prerequisite for Active:</strong> offer must be locked, cover-me-pretty app must be built, theme package must be created, and Token-Source must be a real file path.</p>
-</blockquote>
 <h2>References</h2>
 <ul>
-<li>Business strategy: <code>docs/business-os/strategy/HBAG/plan.user.md</code></li>
-<li>Strategy index (artifact status): <code>docs/business-os/strategy/HBAG/index.user.md</code></li>
+<li>Brand strategy (ASSESSMENT-10): <code>docs/business-os/strategy/HBAG/2026-02-21-brand-profile.user.md</code></li>
+<li>Strategy index: <code>docs/business-os/strategy/HBAG/index.user.md</code></li>
+<li>Distribution plan (ASSESSMENT-06): <code>docs/business-os/strategy/HBAG/2026-02-21-launch-distribution-plan.user.md</code></li>
+<li>Measurement plan (ASSESSMENT-07): <code>docs/business-os/strategy/HBAG/2026-02-21-measurement-profile.user.md</code></li>
+<li>Design system handbook: <code>docs/design-system-handbook.md</code></li>
 </ul>
 <h2>Proof Ledger</h2>
 <table>
@@ -270,52 +830,75 @@ Theme package creation is a prerequisite for Active status.</p>
 </thead>
 <tbody>
 <tr>
-<td>HBAG is a handbag accessory business</td>
-<td>Business plan title and strategy</td>
-<td><code>plan.user.md</code></td>
+<td>Business name: Caryina</td>
+<td>Pete selected 2026-02-21</td>
+<td><code>naming-shortlist-2026-02-21.user.md</code></td>
 <td>High</td>
 </tr>
 <tr>
-<td>Offer hypothesis exists but not yet finalized</td>
-<td>Business plan §Strategy item 2</td>
-<td><code>plan.user.md</code></td>
+<td>Premium positioning €80–€150</td>
+<td>Pete confirmed 2026-02-17</td>
+<td><code>plan.user.md</code>, intake packet</td>
 <td>High</td>
 </tr>
 <tr>
-<td>Recently separated from XA for independent planning</td>
-<td>Business plan §Strategy item 1</td>
-<td><code>plan.user.md</code></td>
+<td>Primary ICP: women 27–42, LV/Gucci-tier bags</td>
+<td>Market research + buyer failure state analysis</td>
+<td><code>problem-statement.user.md</code>, <code>s0a-research-appendix.user.md</code></td>
 <td>High</td>
+</tr>
+<tr>
+<td>Personality and voice confirmed</td>
+<td>Pete confirmed 2026-02-21</td>
+<td><code>brand-strategy.user.md</code></td>
+<td>High</td>
+</tr>
+<tr>
+<td>Colour palette and typography</td>
+<td>Synthesized from brand strategy + aesthetic constraints</td>
+<td><code>brand-strategy.user.md</code> §E</td>
+<td>Medium — Pete review required</td>
 </tr>
 <tr>
 <td>App name: cover-me-pretty</td>
-<td>lp-design-spec mapping table</td>
+<td>lp-design-spec mapping</td>
 <td><code>.claude/skills/lp-design-spec/SKILL.md</code></td>
 <td>Medium</td>
 </tr>
 </tbody>
 </table>
-<h2>Draft → Active Advancement Criteria</h2>
-<p>To advance this dossier from <code>Draft</code> to <code>Active</code>, the following must be complete:</p>
-<ul class="contains-task-list">
-<li class="task-list-item"><input type="checkbox" disabled> Core offer and target segment locked (resolves most TBD fields)</li>
-<li class="task-list-item"><input type="checkbox" disabled> Audience demographic defined with at least directional evidence</li>
-<li class="task-list-item"><input type="checkbox" disabled> Price/style positioning decided (luxury vs. accessible vs. functional)</li>
-<li class="task-list-item"><input type="checkbox" disabled> Personality direction validated with ≥3 customer inputs</li>
-<li class="task-list-item"><input type="checkbox" disabled> Color palette and typography decided; theme package created when app is built</li>
-<li class="task-list-item"><input type="checkbox" disabled> Token-Source updated from TBD to real file path (when app exists)</li>
-<li class="task-list-item"><input type="checkbox" disabled> Key Phrases: ≥3 non-TBD phrases with evidence</li>
-<li class="task-list-item"><input type="checkbox" disabled> Proof Ledger: ≥1 entry with Medium or High confidence on audience/positioning claims</li>
-<li class="task-list-item"><input type="checkbox" disabled> Reviewed by Pete</li>
-</ul>
     <div class="meta">
-      <div>Source: <code>docs/business-os/strategy/HBAG/2026-02-17-brand-identity-dossier.user.md</code></div>
-      <div>Generated: 2026-02-17T10:15:44.092Z</div>
+      <div>Source: <code>docs/business-os/strategy/HBAG/assessment/2026-02-21-brand-identity-dossier.user.md</code></div>
+      <div>Generated: 2026-03-10T19:44:46.434Z</div>
     </div>
   </main>
   <script type="module">
     import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-    mermaid.initialize({ startOnLoad: true, securityLevel: "strict", theme: "neutral" });
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
+
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
+    }
+
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
+        }
+      });
+    }
   </script>
 </body>
 </html>

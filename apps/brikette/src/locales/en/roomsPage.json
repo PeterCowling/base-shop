@@ -287,6 +287,10 @@
       "type": "Type",
       "beds": "Beds"
     },
+    "mobile": {
+      "more": "More filters",
+      "hide": "Hide filters"
+    },
     "views": {
       "all": "All views",
       "sea": "Sea view",
@@ -305,6 +309,10 @@
   "ctaSuffix": {
     "nonRefundable": "Non‑Refundable",
     "flexible": "Flexible"
+  },
+  "ratePlanDescriptions": {
+    "nonRefundable": "Pay in full today. No free cancellation.",
+    "flexible": "Pay later. Free cancellation up to 3 days before arrival."
   },
   "details": "Details",
   "ratesFrom": "From €{{price}}",

@@ -902,7 +902,8 @@ export function inlineBuildSummaryIntoHtml(repoRoot: string, rows: BuildSummaryR
   const json = JSON.stringify(rows).replace(/<\//g, "<\\/");
   // Escape $ so String.replace doesn't treat $1, $&, $' etc. as special patterns
   const safeJson = json.replace(/\$/g, "$$$$");
-  const updated = html.replace(INLINE_SCRIPT_PATTERN, `$1${safeJson}$3`);
+  const withData = html.replace(INLINE_SCRIPT_PATTERN, `$1${safeJson}$3`);
+  const updated = updateStartupLoopNav(withData);
 
   if (updated === html) {
     return false;
@@ -910,6 +911,18 @@ export function inlineBuildSummaryIntoHtml(repoRoot: string, rows: BuildSummaryR
 
   writeFileSync(absHtmlPath, updated, "utf8");
   return true;
+}
+
+function updateStartupLoopNav(html: string): string {
+  const pattern = /<nav id="sl-nav">[\s\S]*?<\/nav>/;
+  if (!pattern.test(html)) {
+    return html;
+  }
+
+  return html.replace(
+    pattern,
+    `<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-inner{position:relative;display:flex;align-items:center;justify-content:center;gap:0;min-width:max-content;width:100%;max-width:1200px}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><div class="sl-inner"><span class="sl-brand">Startup Loop</span><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button></div><script>(function(){var p=location.pathname.split("/").pop()||\"\";document.querySelectorAll(\"#sl-nav a\").forEach(function(a){if(a.getAttribute(\"href\").split(\"/\").pop()===p)a.classList.add(\"sl-on\")});var btn=document.getElementById(\"sl-theme-btn\");function upd(){btn.textContent=document.documentElement.getAttribute(\"data-theme\")===\"dark\"?\"🌙\":\"☀️\"}upd();btn.addEventListener(\"click\",function(){var t=document.documentElement.getAttribute(\"data-theme\")===\"dark\"?\"light\":\"dark\";document.documentElement.setAttribute(\"data-theme\",t);localStorage.setItem(\"sl-theme\",t);upd()});})()</script></nav>`,
+  );
 }
 
 export function run(repoRoot: string = path.resolve(__dirname, "../../..")): void {

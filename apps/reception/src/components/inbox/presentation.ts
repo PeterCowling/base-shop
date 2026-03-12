@@ -1,3 +1,4 @@
+import { stripBookingComRelayBoilerplate } from "@/lib/inbox/booking-com-relay";
 import type { InboxMessage, InboxThreadSummary } from "@/services/useInbox";
 
 export type InboxBadge = {
@@ -66,14 +67,14 @@ export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
   if (thread.status === "review_later") {
     return {
       label: "Review",
-      className: "bg-surface-3 text-muted-foreground",
-      edgeColor: "border-l-surface-3",
+      className: "bg-info-light text-info-main",
+      edgeColor: "border-l-info-main/50",
     };
   }
 
   return {
     label: "Pending",
-    className: "bg-surface-3 text-foreground",
+    className: "bg-surface-3 text-foreground/80",
     edgeColor: "border-l-surface-3",
   };
 }
@@ -120,7 +121,7 @@ export function stripQuotedContent(body: string): string {
   // Try signature separator first ("-- " or "-- Regards"), then quote delimiters.
   const inlineSigIdx = body.search(/ -- (?:Regards|Cordiali saluti|Mit freundlichen|Cordialement)/);
   if (inlineSigIdx !== -1) {
-    return body.slice(0, inlineSigIdx).trimEnd();
+    return stripBookingComRelayBoilerplate(body.slice(0, inlineSigIdx).trimEnd());
   }
 
   // Match quote delimiters with or without "> " prefix, embedded in a single line.
@@ -128,7 +129,7 @@ export function stripQuotedContent(body: string): string {
     / (?:> )?(?:Il giorno .{10,80} ha scritto:|On .{6,80} wrote:|Am .{10,80} schrieb |Le .{10,80} a \u00e9crit|El .{10,80} escribi\u00f3)/,
   );
   if (inlineQuoteIdx !== -1) {
-    return body.slice(0, inlineQuoteIdx).trimEnd();
+    return stripBookingComRelayBoilerplate(body.slice(0, inlineQuoteIdx).trimEnd());
   }
 
   const lines = body.split("\n");
@@ -165,7 +166,7 @@ export function stripQuotedContent(body: string): string {
     result.push(line);
   }
 
-  return result.join("\n").trimEnd();
+  return stripBookingComRelayBoilerplate(result.join("\n").trimEnd());
 }
 
 export function findLatestInboundSender(messages: InboxMessage[]): string | null {

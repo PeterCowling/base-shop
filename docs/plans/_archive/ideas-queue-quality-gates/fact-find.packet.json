@@ -1,0 +1,199 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "ideas-queue-quality-gates",
+  "source_artifact_path": "docs/plans/ideas-queue-quality-gates/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/ideas-queue-quality-gates/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Right now, nothing checks whether an idea entering the backlog is real or just internal processing noise. Over half the entries have missing categories, and about 80 are duplicated fragments of the AI talking to itself. The operator cannot trust the backlog for decision-making. Adding automatic quality checks and cleaning up the existing data would make the ideas list reliable for prioritising what to work on next.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Deterministic admission guards prevent noise entering the queue, existing queue data is cleaned and domain-classified, and a fresh pattern analysis on clean data is produced.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: no UI — this is backend validation logic",
+      "current_or_option_state": "—",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A: no user-facing states",
+      "current_or_option_state": "—",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A: no auth/sensitive data — validation of internal queue data",
+      "current_or_option_state": "—",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Telemetry records emitted on enqueue, skip, and validation rejection (trial-queue.ts lines 700–708). All validation failures use a single `kind: \"validation_rejected\"` with the specific cause in the `reason` field.",
+      "gap_or_implication": "New rejection reasons need new `ValidationFailureReason` values that flow into the existing `reason` field — no new telemetry `kind` values needed",
+      "carry_forward_or_notes": "Ensure new guards add `ValidationFailureReason` literals and the existing `\"validation_rejected\"` kind covers them"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "18+ routing adapter tests, 10+ queue tests",
+      "gap_or_implication": "Zero tests for content quality gates",
+      "carry_forward_or_notes": "Add unit tests for each new validation rule"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`ValidationFailureReason` type, dispatch.v2 schema, `TrialDispatchPacket` type",
+      "gap_or_implication": "New failure reasons need new enum values; domain not in schema",
+      "carry_forward_or_notes": "Add new `ValidationFailureReason` values; domain enforcement is queue-layer only"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Validation is synchronous pure functions; queue file is ~1.6MB",
+      "gap_or_implication": "Forbidden-pattern regex must be fast; area_anchor dedup needs Set lookup",
+      "carry_forward_or_notes": "Keep regex simple; use pre-compiled patterns"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A: internal tooling, no deployment — code change to validation functions",
+      "current_or_option_state": "—",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The lp-do-ideas pipeline has zero deterministic code-level guards on dispatch content quality. The routing adapter checks `area_anchor` is non-empty and the trial queue validates packet structure (dispatch_id, schema_version, mode, evidence_refs, status), but neither layer validates content quality, domain correctness, or content-similarity dedup. As a result, 29.3% of the queue (160 of 547 dispatches) is noise — duplicated agent-chatter fragments, malformed content, and slug-like path fragments. Additionally, 53.2% of dispatches (291) have missing domain classification, making the queue unrel",
+    "goals": [
+      "Add deterministic admission guards to the routing adapter and/or trial queue that reject noise before it enters the queue",
+      "Clean existing queue data: purge noise dispatches, classify domains on legitimate entries, fix non-canonical domain values",
+      "Produce a fresh pattern analysis on the cleaned data to identify which standing artifacts should be created"
+    ],
+    "non_goals": [
+      "Migrating the queue file format from hand-authored to TS persistence layer (stable divergence per Known Issues)",
+      "Adding LLM-based semantic validation (deterministic rules only)",
+      "Changing the dispatch.v2 schema itself (guards work within current schema)"
+    ],
+    "constraints": [
+      "Routing adapter is a pure function (no file I/O, no state mutation) — guards must be pure validation checks",
+      "`enqueueQueueDispatches()` in `lp-do-ideas-queue-admission.ts` is the canonical queue write entrypoint — all 4 bridges (agent-session, codebase-signals, build-origin, milestone) write through it; `TrialQueue.validatePacket()` is a separate validation path that bridges bypass. New guards must be in `enqueueQueueDispatches()` to protect all ingress paths.",
+      "Existing test suites (18+ routing adapter tests, 10+ queue tests) must not break",
+      "`domain` is NOT a field in the dispatch.v2 JSON schema or `TrialDispatchPacket` type — it exists upstream on `ArtifactDeltaEvent` and in the hand-authored queue entries; upstream `ArtifactDomain` enum includes 8 values (MARKET, SELL, PRODUCTS, LOGISTICS, STRATEGY, BOS, ASSESSMENT, LEGAL)"
+    ],
+    "assumptions": [],
+    "key_entry_points": [
+      "`scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts` — Pure validation function that checks packet structure and routes to downstream skills",
+      "`scripts/src/startup-loop/ideas/lp-do-ideas-queue-admission.ts` — Universal queue write entrypoint (`enqueueQueueDispatches()`) used by all 4 bridges; this is where content quality guards must live",
+      "`scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts` — `TrialQueue` class with `validatePacket()` and `enqueue()` — a separate path that bridges bypass",
+      "`docs/business-os/startup-loop/ideas/trial/queue-state.json` — Live queue file (547 dispatches, 25k lines)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Critique": "3 rounds, final raw score 3.0 (partially credible). All 3 Critical findings were architectural accuracy issues (wrong implementation seam) that were resolved in the artifact. Zero open questions, zero missing evidence, zero operator input needed. Proceeding to analysis as the evidence base is complete and all corrections applied.",
+      "Recommended next step": "`/lp-do-analysis ideas-queue-quality-gates`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Routing adapter validation path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Trial queue validatePacket + enqueue",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Noise taxonomy (all 160 dispatches)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Domain classification gap (291 entries)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Dispatch.v2 schema constraints",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Existing test coverage and extension patterns",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Queue file format divergence impact",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — guards work with hand-authored format",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Downstream consumer impact (fact-find, viewer, process-improvements)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — additive validation, no breaking changes",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology_change": true,
+    "process_topology_note": null,
+    "process_trigger": "A dispatch packet is emitted by lp-do-ideas (either from `artifact_delta` detection in `lp-do-ideas-trial.ts` or from `operator_idea` structured intake in the SKILL.md agent flow)",
+    "process_end_condition": "Packet is written to `queue-state.json` with `queue_state: \"enqueued\"` and telemetry is appended",
+    "current_process_areas": [
+      {
+        "Area": "Packet emission",
+        "Current step-by-step flow": "1. Delta detected or operator idea gathered 2. Agent builds dispatch packet with area_anchor, evidence_refs, etc. (Note: `domain` is NOT part of the dispatch.v2 schema or `TrialDispatchPacket` type — it exists only on `ArtifactDeltaEvent` upstream and in the persisted queue format) 3. Packet passed to routing adapter",
+        "Owners / systems / handoffs": "lp-do-ideas agent (LLM) → routing adapter (TS)",
+        "Evidence refs": "`scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-routing-adapter.ts`",
+        "Known issues": "Agent chatter can leak into area_anchor; no content quality check"
+      },
+      {
+        "Area": "Routing validation",
+        "Current step-by-step flow": "1. Check schema_version, mode, status, route consistency 2. Check area_anchor non-empty 3. Check evidence_refs non-empty array 4. Route-specific checks (location_anchors, deliverable_family)",
+        "Owners / systems / handoffs": "Routing adapter (pure function)",
+        "Evidence refs": "`lp-do-ideas-routing-adapter.ts` lines 331–680",
+        "Known issues": "No area_anchor content quality or forbidden patterns (domain is not in scope here — it's a queue-layer field)"
+      },
+      {
+        "Area": "Queue admission",
+        "Current step-by-step flow": "1. validatePacket() — dispatch_id, schema_version, mode, evidence_refs, status 2. Primary dedup by dispatch_id 3. Secondary dedup by cluster_key:cluster_fingerprint (v2) or artifact tuple (v1) 4. Create queue entry, register in indexes",
+        "Owners / systems / handoffs": "Trial queue (`lp-do-ideas-trial-queue.ts`)",
+        "Evidence refs": "`lp-do-ideas-trial-queue.ts` lines 545–711",
+        "Known issues": "Dedup is identity/hash-based only; identical area_anchors with different dispatch_ids pass through"
+      },
+      {
+        "Area": "Persistence",
+        "Current step-by-step flow": "1. Entry added to dispatches array 2. Counts updated 3. File written atomically",
+        "Owners / systems / handoffs": "Queue file (`queue-state.json`)",
+        "Evidence refs": "`docs/business-os/startup-loop/ideas/trial/queue-state.json`",
+        "Known issues": "domain field is hand-set by agent, no canonical enforcement"
+      }
+    ]
+  }
+}

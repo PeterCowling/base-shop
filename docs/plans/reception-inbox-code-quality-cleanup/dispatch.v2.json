@@ -1,0 +1,47 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260312140000-0010",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "artifact_id": null,
+  "before_sha": null,
+  "after_sha": "operator-idea-20260312-code-quality",
+  "root_event_id": "operator:BRIK:PRODUCTS:reception-inbox-code-quality-cleanup:20260312",
+  "anchor_key": "reception-inbox-code-quality-cleanup",
+  "cluster_key": "BRIK:PRODUCTS:reception-inbox-code-quality-cleanup:operator:20260312",
+  "cluster_fingerprint": "reception-inbox-code-quality-cleanup-20260312",
+  "lineage_depth": 0,
+  "area_anchor": "Brikette — Inbox code has hardcoded staff names, redundant type casts, and an unstable refresh timer",
+  "location_anchors": [
+    "apps/reception/src/lib/inbox/draft-core/interpret-thread.ts",
+    "apps/reception/src/app/api/mcp/inbox/analytics/route.ts",
+    "apps/reception/src/components/inbox/ThreadDetailPane.tsx",
+    "apps/reception/src/services/useInbox.ts",
+    "apps/reception/src/lib/inbox/draft-pipeline.server.ts",
+    "apps/reception/src/lib/inbox/repositories.server.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Staff sender detection hardcodes personal names. Analytics route has a redundant type cast. ThreadDetailPane casts guestRoomNumbers without element validation. Auto-refresh interval is torn down on every state change. Failed quality checks aren't tracked for analytics. Message fetch has no upper bound guard.",
+  "next_scope_now": "Move staff patterns to config, remove redundant casts, validate array elements, stabilize the refresh interval effect, track failed quality checks, and add message fetch bounds.",
+  "recommended_route": "lp-do-build",
+  "status": "micro_build_ready",
+  "priority": "P3",
+  "confidence": 0.85,
+  "evidence_refs": [
+    "operator-stated: hardcoded staff names; redundant type cast; unsafe array cast; stale closure; no quality check tracking; unbounded fetch",
+    "apps/reception/src/lib/inbox/draft-core/interpret-thread.ts",
+    "apps/reception/src/services/useInbox.ts",
+    "apps/reception/src/lib/inbox/draft-pipeline.server.ts",
+    "coverage-hint: observability",
+    "coverage-hint: performance-reliability"
+  ],
+  "created_at": "2026-03-12T14:00:00.000Z",
+  "queue_state": "enqueued",
+  "why": "The inbox code contains several small quality issues: staff email detection breaks if personnel change, some type safety checks are missing which could display garbled data, the auto-refresh timer restarts unnecessarily often, and there's no tracking of which quality checks fail most. Cleaning these up makes the codebase more maintainable and reliable.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Staff patterns are configurable, type safety is enforced, refresh timer is stable, quality check failures are tracked, and message fetch is bounded.",
+    "source": "auto"
+  }
+}

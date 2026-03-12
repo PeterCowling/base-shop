@@ -1,0 +1,141 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "do-workflow-context-bloat-tracking",
+  "source_artifact_path": "docs/plans/do-workflow-context-bloat-tracking/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-context-bloat-tracking/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Each workflow step loads skill modules that consume AI capacity. Without knowing which ones are the heaviest, it's impossible to spot waste or catch modules that are silently growing. Per-module tracking would reveal where to focus efficiency improvements and catch bloat before it drives up costs.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Per-module context consumption is tracked in telemetry records and surfaced in reports, enabling targeted efficiency improvements. (Note: \"trending\" means the per-module data is available in the JSONL time series for comparison across builds — not a dedicated time-bucketed trend dashboard. The existing reporter groups by stage; per-module grouping in the report is a concrete implementation requirement.)",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "CLI-only tooling, no visual component",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "CLI output format (Markdown/JSON reports) needs per-module columns",
+      "gap_or_implication": "Report format needs extension",
+      "carry_forward_or_notes": "Report module changes"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Reads local files only, no auth boundary",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "JSONL telemetry is the audit trail; per-module breakdown adds granularity",
+      "gap_or_implication": "Current telemetry lacks module-level granularity",
+      "carry_forward_or_notes": "Core improvement target"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "6 existing tests in `lp-do-ideas-workflow-telemetry.test.ts` covering record building, appending, and summarizing",
+      "gap_or_implication": "Tests need extension for new per-module fields",
+      "carry_forward_or_notes": "Test additions for new fields"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`WorkflowStepTelemetryRecord` type at line 26; `WorkflowTelemetrySummary` at line 105",
+      "gap_or_implication": "New field in record type; summary type extension",
+      "carry_forward_or_notes": "Schema extension"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`readPathMetrics()` already reads each file individually in the loop (line 344–362); no extra I/O needed",
+      "gap_or_implication": "Negligible — data already read, just needs to be preserved per-file instead of summed",
+      "carry_forward_or_notes": "No new I/O"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Additive field; old records lack new per-module field",
+      "gap_or_implication": "Summary/report code must explicitly default missing per-module data to `null`/empty rather than assuming it exists — this is a concrete implementation requirement, not an automatic guarantee",
+      "carry_forward_or_notes": "Explicit backwards-compat handling in summary + report"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Add per-module context size tracking to the workflow telemetry system. Specifically: 1. Extend `WorkflowStepTelemetryRecord` with a `per_module_bytes` field (keyed by resolved repo-relative path) 2. Update `computeTelemetryKey()` to include the new field 3. Update `summarizeWorkflowStepTelemetry()` to aggregate per-module data across records 4. Update the report generator to surface per-module breakdown in output 5. Add tests for new fields including dedupe regression **Out of scope:** Time-bucketed trend dashboards, UI visualizations, changes to how skills pass `--module` flags, migration of ",
+    "goals": [],
+    "non_goals": [],
+    "constraints": [],
+    "assumptions": [],
+    "key_entry_points": [],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready for analysis",
+      "Rationale": "All entry points, key modules, contracts, dependencies, and risks are identified. Implementation surface is well-understood including the dedupe key update requirement and module identity design decision. Confidence is at 80%+ on all dimensions.",
+      "Blocking items": "None",
+      "Recommended analysis focus": "Compare approach options for the `per_module_bytes` field shape (flat map vs nested array) and decide whether to extend the existing summary type or add a separate per-module summary."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Record builder (`buildWorkflowStepTelemetryRecord`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Dedupe key (`computeTelemetryKey`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Data / contracts] [Moderate]: New per-module field must be included in hash to prevent collisions — addressed in Risks #4",
+        "Resolution Required": "No — documented as implementation requirement"
+      },
+      {
+        "Scope Area": "Module identity (`modules_loaded` vs resolved paths)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Data / contracts] [Moderate]: Raw CLI strings vs resolved paths — addressed in Data & Contracts section",
+        "Resolution Required": "No — design decision documented"
+      },
+      {
+        "Scope Area": "Summary aggregator (`summarizeWorkflowStepTelemetry`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Report generator (`lp-do-ideas-workflow-telemetry-report.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "JSONL schema compatibility",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Rollout / rollback] [Moderate]: Old records lack new field — consumers must explicitly default, not assume field exists — addressed in Engineering Coverage Matrix",
+        "Resolution Required": "No — documented as implementation requirement"
+      },
+      {
+        "Scope Area": "Downstream consumers (health check, build-record)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — health check calls `summarizeWorkflowStepTelemetry()` which will pass through new data transparently",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

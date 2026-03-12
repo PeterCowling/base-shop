@@ -154,7 +154,7 @@ describe("lp-do-ideas agent session bridge", () => {
     expect(queueState.dispatches.length).toBeGreaterThan(0);
     expect(queueState.dispatches[0]?.artifact_id).toBe("BOS-BOS-AGENT_SESSION_FINDINGS");
     expect(queueState.dispatches[0]?.area_anchor).toContain("Upload button fails silently");
-    expect(queueState.dispatches[0]?.current_truth).toContain("Recent agent-session review surfaced");
+    expect(queueState.dispatches[0]?.current_truth).toContain("Recent agent-session reviews surfaced");
     expect(queueState.dispatches[0]?.why).toContain("walkthrough/testing activity");
   });
 

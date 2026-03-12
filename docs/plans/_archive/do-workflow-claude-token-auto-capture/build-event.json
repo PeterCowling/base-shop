@@ -1,0 +1,6 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "do-workflow-claude-token-auto-capture",
+  "emitted_at": "2026-03-12T08:32:29.296Z",
+  "why": "When the system runs work using Claude, it cannot automatically track how much that work costs. This means about half of all workflow runs have a blind spot in cost reporting."
+}

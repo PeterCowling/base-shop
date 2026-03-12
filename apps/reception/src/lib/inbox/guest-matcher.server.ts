@@ -6,7 +6,7 @@
  * per sync batch (buildGuestEmailMap) with per-thread lookups (matchSenderToGuest).
  */
 
-import { FIREBASE_BASE_URL } from "../../utils/emailConstants";
+import { buildFirebaseUrl, fetchFirebaseJson } from "./firebase-rtdb.server";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -62,18 +62,6 @@ type FirebaseOccupantDetails = {
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
-
-function buildFirebaseUrl(path: string): string {
-  const base = FIREBASE_BASE_URL;
-  if (!base) throw new Error("FIREBASE_BASE_URL is not configured");
-
-  const secret = typeof process !== "undefined"
-    ? process.env.FIREBASE_DB_SECRET
-    : undefined;
-
-  const url = `${base}${path}.json`;
-  return secret ? `${url}?auth=${secret}` : url;
-}
 
 /**
  * Returns true when the booking overlaps the active window:
@@ -139,30 +127,18 @@ export async function buildGuestEmailMap(
 
   try {
     const [bookingsResp, guestDetailsResp] = await Promise.all([
-      fetch(buildFirebaseUrl("/bookings")),
-      fetch(buildFirebaseUrl("/guestsDetails")),
+      fetchFirebaseJson("/bookings"),
+      fetchFirebaseJson("/guestsDetails"),
     ]);
-
-    if (!bookingsResp.ok || !guestDetailsResp.ok) {
-      const errorDetail = `bookings=${bookingsResp.status}, guestDetails=${guestDetailsResp.status}`;
-      console.error(`[guest-matcher] Firebase fetch failed: ${errorDetail}`);
-      return {
-        map,
-        status: "firebase_http_error",
-        error: errorDetail,
-        durationMs: performance.now() - startMs,
-        guestCount: 0,
-      };
-    }
-
-    bookingsData = await bookingsResp.json() as typeof bookingsData;
-    guestDetailsData = await guestDetailsResp.json() as typeof guestDetailsData;
+    bookingsData = bookingsResp as typeof bookingsData;
+    guestDetailsData = guestDetailsResp as typeof guestDetailsData;
   } catch (err) {
     const errorMessage = err instanceof Error ? err.message : String(err);
+    const status = /HTTP\s+\d+/.test(errorMessage) ? "firebase_http_error" : "firebase_network_error";
     console.error("[guest-matcher] Firebase REST error:", err);
     return {
       map,
-      status: "firebase_network_error",
+      status,
       error: errorMessage,
       durationMs: performance.now() - startMs,
       guestCount: 0,

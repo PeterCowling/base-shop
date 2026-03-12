@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useId, useMemo, useState } from "react";
 import clsx from "clsx";
 
 import RoomImage from "../atoms/RoomImage";
@@ -185,6 +185,7 @@ function ActionButtons({
   actions?: RoomCardAction[];
   className?: string;
 }): JSX.Element | null {
+  const descriptionIdBase = useId();
   if (!actions?.length) return null;
 
   return (
@@ -194,35 +195,53 @@ function ActionButtons({
         const normalisedLabel = trimmedLabel.replace(/\s+/g, " ");
         const lines = splitActionLabel(normalisedLabel || action.label);
         const accessibleLabel = normalisedLabel || action.label;
+        const descriptionId = action.description
+          ? `${descriptionIdBase}-${action.id}-description`
+          : undefined;
 
         return (
-          <button
-            key={action.id}
-            type="button"
-            onClick={action.onSelect}
-            disabled={action.disabled}
-            aria-disabled={action.disabled}
-            aria-label={accessibleLabel}
-            className={actionIndex === 0 ? ROOM_CARD_ACTION_BUTTON_CLASS_PRIMARY : ROOM_CARD_ACTION_BUTTON_CLASS}
-          >
-            {lines.length > 1 ? (
-              <>
-                <VisuallyHidden>{accessibleLabel}</VisuallyHidden>
-                <span
-                  aria-hidden="true"
-                  className="text-center leading-tight"
-                >
-                  {lines.map((line) => (
-                    <span key={`${action.id}-${line}`} className="block">
-                      {line}
-                    </span>
-                  ))}
-                </span>
-              </>
-            ) : (
-              action.label
-            )}
-          </button>
+          <div key={action.id} className="flex-1 space-y-2">
+            <button
+              type="button"
+              onClick={action.onSelect}
+              disabled={action.disabled}
+              aria-describedby={descriptionId}
+              aria-disabled={action.disabled}
+              aria-label={accessibleLabel}
+              className={clsx(
+                "w-full",
+                actionIndex === 0
+                  ? ROOM_CARD_ACTION_BUTTON_CLASS_PRIMARY
+                  : ROOM_CARD_ACTION_BUTTON_CLASS,
+              )}
+            >
+              {lines.length > 1 ? (
+                <>
+                  <VisuallyHidden>{accessibleLabel}</VisuallyHidden>
+                  <span
+                    aria-hidden="true"
+                    className="text-center leading-tight"
+                  >
+                    {lines.map((line) => (
+                      <span key={`${action.id}-${line}`} className="block">
+                        {line}
+                      </span>
+                    ))}
+                  </span>
+                </>
+              ) : (
+                action.label
+              )}
+            </button>
+            {action.description ? (
+              <p
+                id={descriptionId}
+                className="px-1 text-xs leading-5 text-brand-text/70"
+              >
+                {action.description}
+              </p>
+            ) : null}
+          </div>
         );
       })}
     </Stack>

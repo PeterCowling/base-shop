@@ -109,7 +109,7 @@ function ManagerAuthModalBase({
   );
 
   return (
-    <ModalContainer widthClasses="w-[26rem]">
+    <ModalContainer widthClasses="w-96">
       <h2 className="mb-2 text-center text-xl font-semibold">{title}</h2>
       <p className="mb-4 text-center text-sm text-foreground">{description}</p>
       <form onSubmit={handleSubmit} className="flex flex-col gap-3">

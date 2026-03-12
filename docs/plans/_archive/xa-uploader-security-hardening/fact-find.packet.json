@@ -1,0 +1,190 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "xa-uploader-security-hardening",
+  "source_artifact_path": "docs/plans/xa-uploader-security-hardening/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/xa-uploader-security-hardening/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Right now, if someone accidentally deletes the IP allowlist setting, the entire admin tool becomes publicly accessible with no warning. Session tokens also cannot be revoked before their 7-day expiry, meaning a stolen cookie remains valid for up to a week.",
+    "intended_outcome_type": "measurable",
+    "intended_outcome_statement": "IP allowlist rejects by default when unconfigured; session revocation mechanism exists via KV-backed minimum-issuedAt check; session verification is fully timing-safe.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "Admin tool; no UI changes in scope.",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "No user-facing state changes; error responses already return 404 (stealth).",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "IP allowlist defaults to allow-all (`accessControl.ts:21`); session tokens are HMAC-signed with 7-day TTL, no revocation; timing-safe comparison used for signature but version check is non-constant-time; strong CSP and cookie settings.",
+      "gap_or_implication": "P0: deny-all default missing. P1: no revocation mechanism. P3: timing leak on version check.",
+      "carry_forward_or_notes": "All three security gaps carry forward."
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Existing structured logger at `uploaderLogger.ts` (JSON-line via `uploaderLog()`). No security events currently logged — denied IP requests and failed logins are silent. Rate limiter exposes headers but no server-side logging.",
+      "gap_or_implication": "No audit trail for security events (failed logins, denied IPs, revocations).",
+      "carry_forward_or_notes": "Add security event logging via existing `uploaderLog()` seam."
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "46+ test files across the app; security-specific tests exist for access control, auth, rate limiting, IP parsing.",
+      "gap_or_implication": "Missing: deny-all default test, expired token test, revocation test, coherence validation test.",
+      "carry_forward_or_notes": "New tests needed for each security change."
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Session token format: `v1.<issuedAt>.<nonce>.<sig>`. KV namespace available.",
+      "gap_or_implication": "New KV key needed for revocation timestamp. Token format unchanged (issuedAt already present).",
+      "carry_forward_or_notes": "KV revocation key schema."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "KV reads are sub-ms in Cloudflare. In-memory rate limiter has LRU pruning.",
+      "gap_or_implication": "Adding KV read to every authenticated request. Negligible latency.",
+      "carry_forward_or_notes": "Confirm KV read caching strategy."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Deployed via Cloudflare Workers (`wrangler deploy`) through `.github/workflows/xa.yml`. Preflight script validates secrets before deploy.",
+      "gap_or_implication": "Deny-all default is a breaking change if env var is not set before deploy. Must coordinate env var configuration with deploy. KV namespace production ID is a placeholder.",
+      "carry_forward_or_notes": "Env var must be set before deploying deny-all default. Add allowlist coherence check to preflight. Rollback: redeploy prior commit."
+    }
+  ],
+  "open_operator_questions": [
+    "Should max session age be reduced from 7 days, and if so to what value?",
+    "What IP addresses should be in the production allowlist?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The XA uploader admin tool has security weaknesses in its access control layer. The most critical is the IP allowlist defaulting to allow-all when the `XA_UPLOADER_ALLOWED_IPS` environment variable is missing — meaning a misconfigured deployment silently exposes the full catalog admin API to the internet. A secondary gap is the absence of any session token revocation mechanism (7-day token lifetime, no early invalidation). Two additional findings (timing leak on version check, Content-Length bypass) were investigated and classified as LOW and NON-ISSUE respectively.",
+    "goals": [
+      "Change IP allowlist default from allow-all to deny-all when `XA_UPLOADER_ALLOWED_IPS` is unset or empty.",
+      "Add allowlist/proxy-trust coherence validation. Note: `XA_UPLOADER_ALLOWED_IPS` is currently treated as a secret (set via `wrangler secret put`), but `preflight-deploy.ts` can only list secret names, not read values. The coherence check must either: (a) check only for the secret's existence (not its value), or (b) move `XA_UPLOADER_ALLOWED_IPS` to non-secret `[vars]` in `wrangler.toml` so the preflight can read it, or (c) add a runtime coherence check in `accessControl.ts` at first invocation. The analysis stage should evaluate these options.",
+      "Implement KV-backed session revocation via a minimum-issuedAt timestamp mechanism.",
+      "Cosmetic fix for non-constant-time version check in session verification."
+    ],
+    "non_goals": [
+      "Replacing the in-memory rate limiter with a distributed (KV-backed) rate limiter. Accepted as P2 for now.",
+      "Modifying Content-Length handling — current dual-check implementation is correct.",
+      "Removing `unsafe-inline` from CSP — acceptable for an internal admin tool.",
+      "Adding brute-force alerting or monitoring — deferred."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "`XA_UPLOADER_ALLOWED_IPS` is not currently set as a Cloudflare secret in production (wrangler.toml has it commented out). If it is set, the allow-all default is not currently exposed, but remains a latent risk.",
+      "Reducing session max age from 7 days to a shorter window (e.g. 24h) is acceptable for an admin tool with infrequent use."
+    ],
+    "key_entry_points": [
+      "`apps/xa-uploader/src/middleware.ts` — Ingress gate: runs IP allowlist check on every request (matcher excludes only static assets). Applies security headers (CSP, HSTS, X-Frame-Options, etc.).",
+      "`apps/xa-uploader/src/app/api/uploader/login/route.ts` — Login endpoint: validates admin token, issues session cookie. Performs redundant IP allowlist check.",
+      "`apps/xa-uploader/src/app/api/uploader/session/route.ts` — Session check endpoint with redundant IP allowlist check."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "IP allowlist logic (`accessControl.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Session auth (`uploaderAuth.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Request body parsing (`requestJson.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — confirmed non-issue",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "IP extraction (`requestIp.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Rate limiting (`rateLimit.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Middleware integration (`middleware.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "KV namespace availability (`wrangler.toml`)",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Scope gap] [Minor]: Production KV namespace ID is a placeholder. Binding exists but ID must be replaced before revocation deploy.",
+        "Resolution Required": "No (documented in Constraints)"
+      },
+      {
+        "Scope Area": "Deploy preflight (`preflight-deploy.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — identified as correct seam for coherence validation",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "CI workflow (`.github/workflows/xa.yml`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — standalone workflow confirmed",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Structured logger (`uploaderLogger.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — existing seam for security event logging",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap] [Minor]: Verified gaps exist (deny-all default, expired token, revocation, coherence) — documented in Coverage Gaps section. No missing scope areas.",
+        "Resolution Required": "No (gaps documented)"
+      },
+      {
+        "Scope Area": "Env var coordination (allowlist + proxy trust)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — interaction documented in Finding 1",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

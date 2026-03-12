@@ -107,7 +107,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
   const sectionStyles = {
     neutral: { bg: "bg-surface-2", border: "border-border-strong", bar: "bg-primary-main", text: "text-foreground" },
     warning: { bg: "bg-warning/10", border: "border-warning", bar: "bg-warning", text: "text-foreground" },
-    danger: { bg: "bg-danger-fg/10", border: "border-danger-fg", bar: "bg-danger-fg", text: "text-foreground" },
+    danger: { bg: "bg-error-main/10", border: "border-danger-fg", bar: "bg-danger-fg", text: "text-foreground" },
   } as const;
 
   const renderListSection = (

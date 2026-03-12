@@ -1,0 +1,147 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "do-workflow-claude-token-auto-capture",
+  "source_artifact_path": "docs/plans/do-workflow-claude-token-auto-capture/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-fact-find",
+    "lp-do-analysis",
+    "lp-do-plan"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-claude-token-auto-capture/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "When the system runs work using Claude, it can't automatically track how much that work costs. This means about half of all workflow runs have a blind spot in cost reporting. Fixing this gives complete visibility into what each piece of work actually costs, making budget decisions accurate instead of estimated.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All workflow runs — regardless of provider — automatically capture and report token costs without manual intervention.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI component",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "CLI/telemetry only",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Reads session files from `~/.claude/` which contain conversation data",
+      "gap_or_implication": "Must only read `usage` fields, not message content; only access own session",
+      "carry_forward_or_notes": "Ensure content is never logged or stored"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Telemetry records already have provider/session fields",
+      "gap_or_implication": "Auto-capture will close the measurement gap",
+      "carry_forward_or_notes": "Verify telemetry coverage moves toward 100%"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Existing integration tests cover explicit-session path",
+      "gap_or_implication": "Need new tests for auto-discovery chain",
+      "carry_forward_or_notes": "Add fixture-based unit tests"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`WorkflowRuntimeTokenSnapshot` interface unchanged",
+      "gap_or_implication": "Session JSONL `usage` format differs from telemetry log format — need new parser",
+      "carry_forward_or_notes": "New parsing function required"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Codex uses tail-scanning for large files (cumulative totals per record). Claude session JSONL has per-message usage — no cumulative totals, so tail-scanning alone won't work.",
+      "gap_or_implication": "Session JSONL can grow large in long sessions (194 messages in current session). Must sum all assistant message usage fields.",
+      "carry_forward_or_notes": "Use line-by-line streaming sum; avoid full JSON parse into memory. Bounded by message count (hundreds, not millions)."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Fail-open design — null snapshot returns `unknown` token source",
+      "gap_or_implication": "Auto-discovery added as first-preference; explicit session ID remains available",
+      "carry_forward_or_notes": "No breaking changes; additive only"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Extend the workflow telemetry system to automatically capture token usage for Claude Code sessions, closing the ~50% coverage gap left when the prior plan (do-workflow-runtime-token-capture) shipped Codex auto-capture but deferred Claude as a non-goal.",
+    "goals": [
+      "Auto-discover the current Claude Code session without requiring an explicit session ID argument",
+      "Read token usage from the session JSONL (same data source Claude Code uses internally)",
+      "Produce cumulative token snapshots compatible with the existing delta-from-previous-feature-record mode"
+    ],
+    "non_goals": [
+      "Changing the Codex auto-capture path",
+      "Adding prompt-path instrumentation",
+      "Capturing subagent token usage separately from the parent session"
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "key_entry_points": [
+      "`scripts/src/startup-loop/ideas/workflow-runtime-token-usage.ts` — runtime token resolution module; `resolveWorkflowRuntimeTokenUsage()` is called by the telemetry recorder",
+      "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts:388-394` — builds runtime token env and calls the resolver"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis do-workflow-claude-token-auto-capture`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Claude session discovery chain",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Token data in session JSONL",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Existing Codex pattern (parallel)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "CWD-to-project-path encoding",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "No dedicated unit tests yet",
+        "Resolution Required": "No (test creation is part of implementation)"
+      },
+      {
+        "Scope Area": "Prior art / design constraints",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Prior non-goal based on wrong premise",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

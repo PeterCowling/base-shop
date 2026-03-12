@@ -1,0 +1,148 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "caryina-i18n-ui-chrome",
+  "source_artifact_path": "docs/plans/caryina-i18n-ui-chrome/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "None — direct fact-find to plan (small scope, single clear recommendation)"
+  },
+  "outcome_contract": {
+    "why": "German and Italian visitors see English-only navigation and legal text, undermining the multilingual promise of the site and eroding trust on non-EN routes.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All persistent UI chrome (header, footer, consent banner, trust strip, notify-me form) displays in the visitor's selected language.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Chrome components render locale-resolved text instead of hardcoded English",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "No layout/styling changes — text content only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "EN fallback when DE/IT keys missing; client components receive strings as props",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "`localizedText()` already handles missing locale keys",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A: no auth, input, or data exposure changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Consent text is informational; legal accuracy is a content concern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A: no logging changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Existing dev warnings for missing locales cover this",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Typecheck verifies type additions; manual verification of rendered strings",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Tests run in CI only per project policy",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`SiteContentPayload` type extended with `chrome` section; JSON updated",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Materializer type not updated (manual pattern, same as trustStrip)",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A: same single JSON read, same cache",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Adding a section to existing cached payload has zero cost",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Standard git revert",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No migration, no feature flag needed",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Extend `site-content.generated.json` with a `chrome` section containing all header, footer, consent banner, trust block, and notify-me form strings as `LocalizedText` objects. Add a `getChromeContent(locale)` getter to `contentPacket.ts`. Update all five chrome components to receive resolved strings instead of rendering hardcoded English. Client components (ConsentBanner, NotifyMeForm) receive strings as props from the server layout. Initial content is EN-only; DE/IT translations can be added to the JSON later without code changes, thanks to the existing `localizedText()` EN-fallback behavior.",
+    "goals": [
+      "All persistent UI chrome (header nav, footer links, consent banner, trust strip, notify-me form) renders in the visitor's selected language.",
+      "Consistent with Caryina's existing content-packet `LocalizedText` pattern — no new dependencies.",
+      "DE/IT translations addable later by editing JSON only (no code changes)."
+    ],
+    "non_goals": [
+      "Providing DE/IT translations now (EN-only initial pass; `localizedText()` falls back to EN).",
+      "Updating the materializer to generate the chrome section (manual JSON edit, same as `trustStrip`). The `getChromeContent()` getter must include hardcoded EN defaults as fallback when the JSON `chrome` key is absent — so a materializer regeneration will not break the app, just revert chrome text to EN defaults until the chrome section is re-added.",
+      "Translating admin UI or error pages.",
+      "Localizing server-side API error messages (e.g., `/api/notify-me` returns English error strings like \"Consent required\"). The client-side form will use its own locale-resolved validation messages for the common cases; server errors are a separate concern."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "The `site-content.generated.json` file is the primary source for all Caryina translatable content. The `getChromeContent()` getter includes hardcoded EN defaults as a resilience fallback only — the JSON chrome section is the authoritative source when present. This is the same dual-layer pattern used by `getTrustStripContent()` (optional section with graceful fallback).",
+      "Existing `localizedText(value, locale)` returns `value[locale] ?? value.en` — DE/IT keys can be absent."
+    ],
+    "selected_approach": [
+      "What was chosen: Extend `site-content.generated.json` with a `chrome` section and add a `getChromeContent()` getter. Components receive resolved strings as props.",
+      "Why planning is not reopening option selection: Fact-find evaluated 3 options; Option A is the clear winner — consistent with existing patterns, no new dependencies, smallest effort, supports incremental translation. Options B (i18next) and C (inline maps) were rejected for valid reasons."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add chrome content section to data layer",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `data/shops/caryina/site-content.generated.json`, `apps/caryina/src/lib/contentPacket.ts`",
+        "affects": "`data/shops/caryina/site-content.generated.json`, `apps/caryina/src/lib/contentPacket.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Wire chrome strings into all UI chrome components",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — Header.tsx, SiteFooter.tsx, ConsentBanner.client.tsx, ShippingReturnsTrustBlock.tsx, NotifyMeForm.client.tsx, layout.tsx, product/[slug]/page.tsx",
+        "affects": "`apps/caryina/src/components/Header.tsx`, `apps/caryina/src/components/SiteFooter.tsx`, `apps/caryina/src/components/ConsentBanner.client.tsx`, `apps/caryina/src/components/ShippingReturnsTrustBlock.tsx`, `apps/caryina/src/components/catalog/NotifyMeForm.client.tsx`, `apps/caryina/src/app/[lang]/layout.tsx`, `apps/caryina/src/app/[lang]/product/[slug]/page.tsx`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

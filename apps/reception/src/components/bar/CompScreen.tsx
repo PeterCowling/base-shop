@@ -55,7 +55,7 @@ interface TableSectionProps {
 const planColorMap: Record<string, string> = {
   NA: "bg-surface-3 text-foreground",
   continental: "bg-accent text-foreground",
-  cooked: "bg-success-main text-primary-fg",
+  cooked: "bg-success-main text-success-fg",
   // fallback style
   default: "bg-primary-main text-primary-fg",
 };
@@ -74,7 +74,7 @@ const TableRow: React.FC<{
       idx % 2 === 0
         ? "bg-muted/50"
         : "bg-surface"
-    } hover:bg-primary-light/30 transition-colors cursor-pointer`}
+    } hover:bg-primary-soft transition-colors cursor-pointer`}
     onDoubleClick={() => onDoubleClick(row)}
   >
     <TableCell className="px-4 py-3 whitespace-nowrap">{row.bookingRef}</TableCell>
@@ -109,7 +109,7 @@ const TableSection: React.FC<TableSectionProps> = ({
       <div className="max-h-60vh overflow-auto rounded-lg shadow focus-visible:ring-1 focus-visible:ring-primary-main">
         <Table className="min-w-40rem w-full table-auto text-start text-sm">
           <TableHeader
-            className={`sticky top-0 ${accent === "success" ? "bg-success-main" : "bg-error-main"} text-primary-fg uppercase`}
+            className={`sticky top-0 ${accent === "success" ? "bg-success-main" : "bg-error-main"} ${accent === "success" ? "text-success-fg" : "text-danger-fg"} uppercase`}
           >
             <DSTableRow>
               <TableHead className="px-4 py-3">Booking&nbsp;Ref</TableHead>

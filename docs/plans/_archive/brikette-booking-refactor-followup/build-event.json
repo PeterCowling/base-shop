@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "plan_slug": "brikette-booking-refactor-followup",
+  "business": "BRIK",
+  "build_date": "2026-03-12",
+  "outcome_type": "operational",
+  "outcome_statement": "Internal code consistency improved: shared availability fetch utility extracted, BookPageSearchPanel label props grouped into a bag, RoomQueryState type centralised in one location.",
+  "why": "Three bounded internal quality issues surfaced during a whole-site simplify review — duplicate debounce logic, inconsistent props pattern, and scattered inline type union.",
+  "source": "operator",
+  "tasks_completed": ["TASK-01", "TASK-02", "TASK-03"],
+  "commits": ["f0ffeedb45", "4205d94a94"],
+  "validation": "pnpm --filter @apps/brikette typecheck && pnpm --filter @apps/brikette lint — both pass"
+}

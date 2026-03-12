@@ -4,8 +4,9 @@ import { z } from "zod";
 import {
   getCurrentDraft,
   getLatestInboundStoredMessage,
+  parseJsonArray,
   parseMessagePayload,
-  parseThreadMetadata,
+  parseThreadMetadataFromRow,
   serializeDraft,
 } from "@/lib/inbox/api-models.server";
 import {
@@ -18,6 +19,7 @@ import {
   readJsonPayload,
 } from "@/lib/inbox/api-route-helpers";
 import { generateAgentDraft } from "@/lib/inbox/draft-pipeline.server";
+import { isPrimeInboxThreadId } from "@/lib/inbox/prime-review.server";
 import {
   createDraft,
   getThread,
@@ -35,6 +37,7 @@ const regeneratePayloadSchema = z
   })
   .strict();
 
+// eslint-disable-next-line complexity -- INBOX-0006 orchestration handler; splitting would add indirection without reducing real complexity
 export async function POST(
   request: Request,
   context: { params: Promise<{ threadId: string }> | { threadId: string } },
@@ -57,6 +60,17 @@ export async function POST(
   }
 
   const params = await context.params;
+
+  // Prime threads do not support server-side draft regeneration.
+  // The channel adapter sets supportsDraftRegenerate: false, so the UI
+  // should never reach here, but guard explicitly in case of direct API calls.
+  if (isPrimeInboxThreadId(params.threadId)) {
+    return NextResponse.json(
+      { success: false, error: "Draft regeneration is not supported for Prime threads." },
+      { status: 400 },
+    );
+  }
+
   const record = await getThread(params.threadId);
   if (!record) {
     return notFoundResponse(`Thread ${params.threadId} not found`);
@@ -65,6 +79,27 @@ export async function POST(
   const currentDraft = getCurrentDraft(record);
   if (currentDraft?.status === "edited" && !parsedPayload.data.force) {
     return conflictResponse("Draft has staff edits. Retry with force=true to overwrite it.");
+  }
+
+  // Idempotency guard: if a generated draft was created very recently
+  // (within 10 seconds), return it rather than creating a duplicate.
+  // Protects against double-click / rapid successive requests.
+  const RECENT_DRAFT_WINDOW_MS = 10_000;
+  if (
+    currentDraft
+    && currentDraft.status === "generated"
+    && !parsedPayload.data.force
+  ) {
+    const draftAge = Date.now() - new Date(currentDraft.created_at).getTime();
+    if (draftAge <= RECENT_DRAFT_WINDOW_MS) {
+      return NextResponse.json({
+        success: true,
+        data: {
+          draft: serializeDraft(currentDraft),
+          idempotent: true,
+        },
+      });
+    }
   }
 
   const latestInbound = getLatestInboundStoredMessage(record);
@@ -78,14 +113,18 @@ export async function POST(
     };
   });
 
-  const threadMetadata = parseThreadMetadata(record.thread.metadata_json);
+  const threadMetadata = parseThreadMetadataFromRow(record.thread);
 
   try {
     const regenerated = await generateAgentDraft({
       from: latestPayload.from ?? latestInbound?.sender_email ?? undefined,
       subject: latestInbound?.subject ?? record.thread.subject ?? undefined,
       body: latestPayload.body?.plain ?? latestInbound?.snippet ?? "",
-      threadContext: { messages: boundMessages(threadMessages) },
+      threadContext: {
+        messages: boundMessages(threadMessages),
+        ...(threadMetadata.guestBookingRef ? { bookingRef: threadMetadata.guestBookingRef } : {}),
+      },
+      bookingRef: threadMetadata.guestBookingRef || undefined,
       guestName: threadMetadata.guestFirstName || undefined,
       guestRoomNumbers: threadMetadata.guestRoomNumbers?.length ? threadMetadata.guestRoomNumbers : undefined,
     });
@@ -97,7 +136,7 @@ export async function POST(
     const subject = ensureReplySubject(currentDraft?.subject ?? record.thread.subject);
     const recipientEmails =
       currentDraft?.recipient_emails_json
-        ? (JSON.parse(currentDraft.recipient_emails_json) as string[])
+        ? parseJsonArray(currentDraft.recipient_emails_json)
         : latestInbound?.sender_email
           ? [latestInbound.sender_email]
           : [];

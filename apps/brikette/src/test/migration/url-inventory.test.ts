@@ -112,12 +112,24 @@ describe("URL inventory", () => {
   it("canonical help hubs bypass the legacy Pages redirect function", () => {
     const routeConfig = buildStaticRuntimeArtifacts(path.join(__dirname, "../../..")).routeConfig;
 
+    expect(routeConfig.include).toContain("/assistance*");
     expect(routeConfig.exclude).toContain("/en/help");
     expect(routeConfig.exclude).toContain("/en/help/");
     expect(routeConfig.exclude).toContain("/fr/aide");
     expect(routeConfig.exclude).toContain("/fr/aide/");
     expect(routeConfig.include).toContain("/*/help*");
     expect(routeConfig.include).toContain("/*/aide*");
+  });
+
+  it("bare assistance roots are handled by the legacy Pages redirect function", () => {
+    const exactLegacyRedirects = buildStaticRuntimeArtifacts(path.join(__dirname, "../../..")).exactLegacyRedirects;
+
+    expect(exactLegacyRedirects).toEqual(
+      expect.arrayContaining([
+        { from: "/assistance", to: "/en/help", status: 301 },
+        { from: "/assistance/", to: "/en/help/", status: 301 },
+      ]),
+    );
   });
 
   itWithFixture("App Router URLs are unique (no duplicates)", () => {

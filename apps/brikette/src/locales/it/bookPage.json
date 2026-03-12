@@ -98,6 +98,29 @@
   "dealBanner": {
     "applied": "Affare fatto: {{code}}"
   },
+  "secureBooking": {
+    "meta": {
+      "title": "Rivedi il soggiorno | Prenotazione sicura Brikette",
+      "description": "Controlla date, ospiti, camera e tariffa prima di continuare nel booking engine ufficiale di Hostel Brikette."
+    },
+    "continueLabel": "Continua alla prenotazione sicura",
+    "heading": "Rivedi il soggiorno prima della prenotazione sicura",
+    "supportingText": "Controlla date, ospiti, camera e tariffa prima di continuare nel nostro booking engine ufficiale.",
+    "loadingText": "Caricamento dei dettagli di prenotazione sicura…",
+    "readyText": "Dettagli confermati. Continua quando sei pronto.",
+    "fallbackTitle": "Continua alla prenotazione sicura",
+    "fallbackBody": "Stai per lasciare Brikette per completare disponibilità e pagamento nel nostro booking engine ufficiale.",
+    "securityNote": "Disponibilità e pagamento vengono completati sul nostro booking engine ufficiale.",
+    "stepLabel": "Passaggio di prenotazione ufficiale",
+    "widgetHostLabel": "Host prenotazione sicura",
+    "labels": {
+      "checkIn": "Check-in",
+      "checkOut": "Check-out",
+      "guests": "Ospiti",
+      "ratePlan": "Piano tariffario",
+      "room": "Camera"
+    }
+  },
   "apartment": {
     "heading": "Prenota l'appartamento privato",
     "subheading": "Selezionare le date e il numero di ospiti, quindi scegliere un tasso.",

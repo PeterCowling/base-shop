@@ -1,3 +1,5 @@
+import { stripBookingComRelayBoilerplate } from "../booking-com-relay";
+
 import {
   type LanguageCode,
   type ThreadContext,
@@ -36,7 +38,7 @@ export function normalizeThread(body: string): string {
     cleaned.push(line);
   }
 
-  return cleaned.join("\n").trim();
+  return stripBookingComRelayBoilerplate(cleaned.join("\n").trim());
 }
 
 export function detectLanguage(text: string): LanguageCode {
@@ -67,15 +69,18 @@ function parseDisplayName(from: string): string {
   return from.trim();
 }
 
+/**
+ * Domain/address patterns that identify messages sent by staff.
+ * Separated from personal names so personnel changes don't require code edits.
+ */
+const STAFF_SENDER_PATTERNS = ["brikette", "hostel", "info@", "hostel-positano.com"];
+const STAFF_SENDER_NAMES = ["pete", "cristiana"];
+
 function isStaffSender(from: string): boolean {
   const lower = from.toLowerCase();
   return (
-    lower.includes("brikette") ||
-    lower.includes("hostel") ||
-    lower.includes("info@") ||
-    lower.includes("pete") ||
-    lower.includes("cristiana") ||
-    lower.includes("hostel-positano.com")
+    STAFF_SENDER_PATTERNS.some((pattern) => lower.includes(pattern))
+    || STAFF_SENDER_NAMES.some((name) => lower.includes(name))
   );
 }
 

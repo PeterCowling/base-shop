@@ -50,6 +50,8 @@ import { buildEmptyDraft, withDraftDefaults } from "./catalogDraft";
 export type { ActionFeedback, ActionFeedbackState };
 export { createInitialActionFeedbackState, getSyncFailureMessage };
 
+const FETCH_TIMEOUT_MS = 10_000;
+
 type SyncReadinessState = {
   checking: boolean;
   ready: boolean;
@@ -121,11 +123,20 @@ async function loadCatalogFromServer(params: {
   setDraft: React.Dispatch<React.SetStateAction<CatalogProductDraftInput>>;
   setDraftRevision: React.Dispatch<React.SetStateAction<string | null>>;
   draftImageBaselineRef: React.MutableRefObject<CatalogProductDraftInput | null>;
+  signal?: AbortSignal;
 }): Promise<CatalogListResponse> {
-  const response = await fetch(
-    `/api/catalog/products?storefront=${encodeURIComponent(params.storefront)}`,
-  );
-  const data = (await response.json()) as CatalogListResponse;
+  const timeout = createTimeoutSignal(params.signal);
+  let data: CatalogListResponse;
+  let response: Response;
+  try {
+    response = await fetch(
+      `/api/catalog/products?storefront=${encodeURIComponent(params.storefront)}`,
+      { signal: timeout.signal },
+    );
+    data = (await response.json()) as CatalogListResponse;
+  } finally {
+    timeout.clear();
+  }
   if (!response.ok || !data.ok) {
     throw new Error(getCatalogApiErrorMessage(data.error, "unableToLoadCatalog", params.t));
   }
@@ -153,6 +164,25 @@ async function waitForBusyToClear(
     if (!busyLockRef.current) return;
     await sleep(50);
   }
+}
+
+function createTimeoutSignal(parentSignal?: AbortSignal): {
+  signal: AbortSignal;
+  clear: () => void;
+} {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
+  if (parentSignal) {
+    parentSignal.addEventListener("abort", () => controller.abort(), { once: true });
+  }
+  return { signal: controller.signal, clear: () => clearTimeout(timeoutId) };
+}
+
+function useStorefrontPersistence(storefront: XaCatalogStorefront) {
+  React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    window.localStorage.setItem("xa_uploader_storefront", storefront);
+  }, [storefront]);
 }
 
 function useCatalogConsoleState() {
@@ -186,12 +216,9 @@ function useCatalogConsoleState() {
     createInitialActionFeedbackState,
   );
   const [fieldErrors, setFieldErrors] = React.useState<Record<string, string>>({});
-  const [syncOptions, setSyncOptions] = React.useState({
-    strict: false,
-    dryRun: false,
-    replace: false,
-    recursive: true,
-  });
+  const [syncOptions, setSyncOptions] = React.useState(
+    { strict: false, dryRun: false, replace: false, recursive: true },
+  );
   const [syncOutput, setSyncOutput] = React.useState<string | null>(null);
   const [lastSyncData, setLastSyncData] = React.useState<SyncResponse | null>(null);
   const [syncReadiness, setSyncReadiness] = React.useState<SyncReadinessState>(
@@ -201,13 +228,18 @@ function useCatalogConsoleState() {
   const [isCatalogHydrating, setIsCatalogHydrating] = React.useState(false);
   const catalogHydrationCounterRef = React.useRef(0);
 
-  const loadSession = React.useCallback(async () => {
-    const response = await fetch("/api/uploader/session");
-    const data = (await response.json()) as SessionState & { ok?: boolean };
-    setSession({ authenticated: Boolean(data.authenticated) });
+  const loadSession = React.useCallback(async (signal?: AbortSignal) => {
+    const timeout = createTimeoutSignal(signal);
+    try {
+      const response = await fetch("/api/uploader/session", { signal: timeout.signal });
+      const data = (await response.json()) as SessionState & { ok?: boolean };
+      setSession({ authenticated: Boolean(data.authenticated) });
+    } finally {
+      timeout.clear();
+    }
   }, []);
 
-  const loadCatalog = React.useCallback(async () => {
+  const loadCatalog = React.useCallback(async (signal?: AbortSignal) => {
     await loadCatalogFromServer({
       storefront,
       t,
@@ -217,15 +249,17 @@ function useCatalogConsoleState() {
       setDraft,
       setDraftRevision,
       draftImageBaselineRef,
+      signal,
     });
   }, [selectedSlug, storefront, t]);
 
-  const loadSyncReadiness = React.useCallback(async () => {
+  const loadSyncReadiness = React.useCallback(async (signal?: AbortSignal) => {
     if (uploaderMode !== "internal") return;
     setSyncReadiness((prev) => ({ ...prev, checking: true, error: null }));
     try {
       const response = await fetch(
         `/api/catalog/sync?storefront=${encodeURIComponent(storefront)}`,
+        signal ? { signal } : undefined,
       );
       const data = (await response.json()) as SyncReadinessResponse;
       if (!response.ok || !data.ok) {
@@ -256,31 +290,33 @@ function useCatalogConsoleState() {
   }, [storefront, t, uploaderMode]);
 
   React.useEffect(() => {
-    loadSession().catch(() => setSession({ authenticated: false }));
+    const ac = new AbortController();
+    loadSession(ac.signal).catch(() => { if (!ac.signal.aborted) setSession({ authenticated: false }); });
+    return () => ac.abort();
   }, [loadSession]);
 
   React.useEffect(() => {
     if (!session?.authenticated) return;
+    const controller = new AbortController();
     const requestId = ++catalogHydrationCounterRef.current;
     setIsCatalogHydrating(true);
-    loadCatalog()
-      .catch((err) =>
+    loadCatalog(controller.signal)
+      .catch((err) => {
+        if (controller.signal.aborted) return;
         updateActionFeedback(setActionFeedback, "draft", {
           kind: "error",
           message: errorToMessage(err, t("loadFailed")),
-        }),
-      )
+        });
+      })
       .finally(() => {
         if (catalogHydrationCounterRef.current === requestId) {
           setIsCatalogHydrating(false);
         }
       });
+    return () => controller.abort();
   }, [loadCatalog, session, t, setActionFeedback]);
 
-  React.useEffect(() => {
-    if (typeof window === "undefined") return;
-    window.localStorage.setItem("xa_uploader_storefront", storefront);
-  }, [storefront]);
+  useStorefrontPersistence(storefront);
 
   React.useEffect(() => {
     if (uploaderMode !== "internal") return;
@@ -288,7 +324,9 @@ function useCatalogConsoleState() {
       setSyncReadiness(createInitialSyncReadinessState());
       return;
     }
-    loadSyncReadiness().catch(() => null);
+    const controller = new AbortController();
+    loadSyncReadiness(controller.signal).catch(() => null);
+    return () => controller.abort();
   }, [loadSyncReadiness, session?.authenticated, storefront, uploaderMode]);
 
   const resetAutosaveState = React.useCallback(() => {
@@ -306,61 +344,22 @@ function useCatalogConsoleState() {
       : "saved";
 
   return {
-    locale,
-    t,
-    uploaderMode,
-    r2Destination,
-    session,
-    setSession,
-    storefront,
-    setStorefront,
-    storefrontConfig,
-    token,
-    setToken,
-    products,
-    setProducts,
-    revisionsById,
-    setRevisionsById,
-    query,
-    setQuery,
-    selectedSlug,
-    setSelectedSlug,
-    draft,
-    setDraft,
-    draftRevision,
-    setDraftRevision,
-    draftImageBaselineRef,
-    busy,
-    busyLockRef,
-    pendingAutosaveDraftRef,
-    autosaveFlushInProgressRef,
-    isAutosaveDirty,
-    setIsAutosaveDirty,
-    isAutosaveSaving,
-    setIsAutosaveSaving,
-    lastAutosaveSavedAt,
-    setLastAutosaveSavedAt,
-    autosaveInlineMessage,
-    setAutosaveInlineMessage,
-    autosaveStatus,
-    resetAutosaveState,
-    setBusy,
-    actionFeedback,
-    setActionFeedback,
-    fieldErrors,
-    setFieldErrors,
-    syncOptions,
-    setSyncOptions,
-    syncOutput,
-    setSyncOutput,
-    lastSyncData,
-    setLastSyncData,
-    syncReadiness,
-    setSyncReadiness,
+    locale, t, uploaderMode, r2Destination,
+    session, setSession, storefront, setStorefront, storefrontConfig,
+    token, setToken, products, setProducts,
+    revisionsById, setRevisionsById, query, setQuery,
+    selectedSlug, setSelectedSlug, draft, setDraft,
+    draftRevision, setDraftRevision, draftImageBaselineRef,
+    busy, busyLockRef, pendingAutosaveDraftRef, autosaveFlushInProgressRef,
+    isAutosaveDirty, setIsAutosaveDirty, isAutosaveSaving, setIsAutosaveSaving,
+    lastAutosaveSavedAt, setLastAutosaveSavedAt,
+    autosaveInlineMessage, setAutosaveInlineMessage,
+    autosaveStatus, resetAutosaveState, setBusy,
+    actionFeedback, setActionFeedback, fieldErrors, setFieldErrors,
+    syncOptions, setSyncOptions, syncOutput, setSyncOutput,
+    lastSyncData, setLastSyncData, syncReadiness, setSyncReadiness,
     isCatalogLoading: isCatalogHydrating,
-    loadSession,
-    loadCatalog,
-    loadSyncReadiness,
+    loadSession, loadCatalog, loadSyncReadiness,
   };
 }
 
@@ -373,6 +372,7 @@ type SaveRunnerParams = {
   suppressSuccessFeedback: boolean;
   confirmUnpublish: (message: string) => boolean;
   handleSelect: (product: CatalogProductDraftInput) => void;
+  suppressUiBusy?: boolean;
 };
 
 async function runCatalogSave({
@@ -382,6 +382,7 @@ async function runCatalogSave({
   suppressSuccessFeedback,
   confirmUnpublish,
   handleSelect,
+  suppressUiBusy,
 }: SaveRunnerParams): Promise<SaveResult> {
   return await handleSaveImpl({
     draft,
@@ -397,6 +398,7 @@ async function runCatalogSave({
     handleSelect,
     confirmUnpublish,
     suppressSuccessFeedback,
+    suppressUiBusy,
   });
 }
 
@@ -547,6 +549,7 @@ async function retryAutosaveAfterConflict(params: {
     suppressSuccessFeedback: true,
     confirmUnpublish: () => false,
     handleSelect: params.handleSelect,
+    suppressUiBusy: true,
   });
 
   if (retryAttempt.status === "saved") {
@@ -728,6 +731,7 @@ function useCatalogDraftHandlers(
           suppressSuccessFeedback: true,
           confirmUnpublish: () => false,
           handleSelect: handleSelectAfterSave,
+          suppressUiBusy: true,
         });
 
         if (firstAttempt.status === "saved") {

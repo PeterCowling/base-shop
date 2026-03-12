@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-inbox-thread-message-pagination",
+  "business": "BRIK",
+  "completed_at": "2026-03-12",
+  "execution_track": "code",
+  "why": "When staff open a long email conversation, they wait for every message to load before seeing the latest reply. Paginating means staff see the latest conversation immediately.",
+  "why_source": "auto",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "Thread detail loads the most recent messages first with a 'load more' option for older messages, reducing initial load time for long threads.",
+  "dispatch_id": "IDEA-DISPATCH-20260312120000-0002"
+}

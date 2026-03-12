@@ -8,8 +8,10 @@ import { useCart } from "@acme/platform-core/contexts/CartContext";
 
 import CheckoutAnalytics from "./CheckoutAnalytics.client";
 
-function formatEur(cents: number) {
-  return new Intl.NumberFormat("de-DE", {
+const LOCALE_MAP: Record<string, string> = { en: "en-IE", de: "de-DE", it: "it-IT" };
+
+function formatEur(cents: number, lang: string) {
+  return new Intl.NumberFormat(LOCALE_MAP[lang] ?? "en-IE", {
     style: "currency",
     currency: "EUR",
   }).format(cents / 100);
@@ -35,6 +37,19 @@ const CARD_FIELD_NAMES = [
 
 type CardFieldName = (typeof CARD_FIELD_NAMES)[number];
 
+type CheckoutClientProps = {
+  provider: "axerve" | "stripe";
+};
+
+type CheckoutSessionResponse = {
+  success?: boolean;
+  error?: string;
+  mode?: "redirect";
+  provider?: "stripe";
+  sessionId?: string;
+  url?: string;
+};
+
 const EMPTY_CARD: CardState = {
   cardNumber: "",
   expiryMonth: "",
@@ -58,14 +73,26 @@ function validateCard(card: CardState): string | null {
   return null;
 }
 
-function buildCheckoutPayload(lang: string, card: CardState) {
-  const idempotencyKey =
-    typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
-      ? crypto.randomUUID()
-      : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+function createIdempotencyKey() {
+  return typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+    ? crypto.randomUUID()
+    : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+}
+
+function buildCheckoutPayload(
+  lang: string,
+  provider: "axerve" | "stripe",
+  card: CardState,
+) {
+  if (provider === "stripe") {
+    return {
+      idempotencyKey: createIdempotencyKey(),
+      lang,
+    };
+  }
 
   return {
-    idempotencyKey,
+    idempotencyKey: createIdempotencyKey(),
     lang,
     cardNumber: card.cardNumber,
     expiryMonth: card.expiryMonth,
@@ -188,10 +215,32 @@ function CardForm({
   );
 }
 
-export function CheckoutClient() {
+function StripeCheckoutNotice({ lang }: { lang: string }) {
+  return (
+    <div className="space-y-4 rounded-2xl border border-border/70 bg-muted/30 p-5">
+      <div className="space-y-2">
+        <h2 className="text-lg font-medium">Secure Stripe checkout</h2>
+        <p className="text-sm text-muted-foreground">
+          You will be redirected to Stripe to complete your payment securely.
+        </p>
+      </div>
+      <p className="text-sm text-muted-foreground">
+        If you cancel on the Stripe page, your Caryina cart stays available and you can try
+        again from{" "}
+        <Link href={`/${lang}/cart`} className="underline underline-offset-4">
+          your cart
+        </Link>
+        .
+      </p>
+    </div>
+  );
+}
+
+export function CheckoutClient({ provider }: CheckoutClientProps) {
   const [cart] = useCart();
   const params = useParams<{ lang?: string }>();
   const lang = params?.lang ?? "en";
+  const isAxerve = provider === "axerve";
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [card, setCard] = useState<CardState>(EMPTY_CARD);
@@ -225,10 +274,12 @@ export function CheckoutClient() {
   async function handlePayNow() {
     setError(null);
 
-    const validationError = validateCard(card);
-    if (validationError) {
-      setError(validationError);
-      return;
+    if (isAxerve) {
+      const validationError = validateCard(card);
+      if (validationError) {
+        setError(validationError);
+        return;
+      }
     }
 
     setLoading(true);
@@ -236,17 +287,28 @@ export function CheckoutClient() {
       const res = await fetch("/api/checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(buildCheckoutPayload(lang, card)),
+        body: JSON.stringify(buildCheckoutPayload(lang, provider, card)),
       });
-      const data = (await res.json()) as { success?: boolean; error?: string };
+      const data = (await res.json()) as CheckoutSessionResponse;
       if (!res.ok || !data.success) {
         setError(data.error ?? "Payment failed — please try again.");
         setLoading(false);
         return;
       }
+
+      if (!isAxerve) {
+        if (data.url) {
+          window.location.href = data.url;
+          return;
+        }
+        setError("No checkout URL returned — please try again.");
+        setLoading(false);
+        return;
+      }
+
       window.location.href = `/${lang}/success`;
     } catch {
-      setError("Something went wrong — please try again.");
+      setError(isAxerve ? "Something went wrong — please try again." : "Network error — please try again.");
       setLoading(false);
     }
   }
@@ -263,17 +325,21 @@ export function CheckoutClient() {
                 <p className="font-medium">{String(line.sku.title)}</p>
                 <p className="text-sm text-muted-foreground">Qty: {line.qty}</p>
               </div>
-              <p className="text-sm font-medium">{formatEur(line.sku.price * line.qty)}</p>
+              <p className="text-sm font-medium">{formatEur(line.sku.price * line.qty, lang)}</p>
             </li>
           ))}
         </ul>
         <div className="flex items-center justify-between border-t pt-4">
           <p className="font-medium">Total</p>
           <p className="text-xl font-medium" data-cy="checkout-total">
-            {formatEur(total)}
+            {formatEur(total, lang)}
           </p>
         </div>
-        <CardForm card={card} onChange={handleCardChange} disabled={loading} />
+        {isAxerve ? (
+          <CardForm card={card} onChange={handleCardChange} disabled={loading} />
+        ) : (
+          <StripeCheckoutNotice lang={lang} />
+        )}
         {error && (
           <p className="text-sm text-destructive" role="alert">
             {error}
@@ -288,7 +354,7 @@ export function CheckoutClient() {
             disabled={loading}
             className="btn-primary min-h-11 min-w-11 rounded-full px-6 text-sm disabled:opacity-50"
           >
-            {loading ? "Processing…" : "Pay now"}
+            {loading ? (isAxerve ? "Processing..." : "Redirecting...") : "Pay now"}
           </button>
           <Link
             href={`/${lang}/cart`}

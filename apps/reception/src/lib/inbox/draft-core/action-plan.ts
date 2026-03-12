@@ -64,6 +64,7 @@ export type ThreadMessage = {
 
 export type ThreadContext = {
   messages: ThreadMessage[];
+  bookingRef?: string;
 };
 
 export type ThreadSummary = {

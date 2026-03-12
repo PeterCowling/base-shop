@@ -54,6 +54,29 @@ describe("currency rates route", () => {
     });
   });
 
+  // B5 — Currency rates missing recovery
+  it("B5: GET returns rates: null when no rates have been saved yet", async () => {
+    readCloudCurrencyRatesMock.mockResolvedValueOnce(null);
+
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/currency-rates"));
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ ok: true, rates: null });
+  });
+
+  it("B5: GET returns service_unavailable when the contract endpoint is unconfigured", async () => {
+    readCloudCurrencyRatesMock.mockRejectedValueOnce(new CatalogDraftContractErrorMock("unconfigured"));
+
+    const { GET } = await import("../route");
+    const response = await GET(new Request("http://localhost/api/catalog/currency-rates"));
+
+    expect(response.status).toBe(503);
+    expect(await response.json()).toEqual(
+      expect.objectContaining({ ok: false, error: "service_unavailable" }),
+    );
+  });
+
   it("PUT writes hosted currency rates", async () => {
     const { PUT } = await import("../route");
     const response = await PUT(

@@ -47,6 +47,7 @@ import {
 } from "../../../../lib/syncMutex";
 import { getErrorMessage, isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
+import { uploaderLog } from "../../../../lib/uploaderLogger";
 
 export const runtime = "nodejs";
 
@@ -173,11 +174,12 @@ async function finalizeCloudPublishStateAndDeploy(params: {
   snapshot: Awaited<ReturnType<typeof readCloudDraftSnapshot>>;
   kv: UploaderKvNamespace | null;
   warnings: string[];
-}): Promise<{ deployResult: DeployTriggerResult; deployPending: DeployPendingState | null }> {
+}): Promise<{ deployResult: DeployTriggerResult; deployPending: DeployPendingState | null; promotionFailed: boolean }> {
   const promotedSnapshot = promoteDerivedPublishStatesInCloudSnapshot({
     snapshot: params.snapshot,
   });
 
+  let promotionFailed = false;
   try {
     await writeCloudDraftSnapshot({
       storefront: params.storefrontId,
@@ -187,6 +189,12 @@ async function finalizeCloudPublishStateAndDeploy(params: {
     });
   } catch {
     params.warnings.push("publish_state_promotion_failed");
+    uploaderLog("warn", "publish_state_promotion_failed", {
+      storefront: params.storefrontId,
+      productCount: promotedSnapshot.products.length,
+      docRevision: params.snapshot.docRevision,
+    });
+    promotionFailed = true;
   }
 
   const deployResult = await maybeTriggerXaBDeploy({
@@ -199,7 +207,7 @@ async function finalizeCloudPublishStateAndDeploy(params: {
     result: deployResult,
   }).catch(() => null);
 
-  return { deployResult, deployPending };
+  return { deployResult, deployPending, promotionFailed };
 }
 
 async function tryPublishCloudCatalogPayload(params: {
@@ -313,6 +321,7 @@ async function completeCloudPublishAndDeploy(params: {
       publishSkipped: boolean;
       deployResult: DeployTriggerResult | undefined;
       deployPending: DeployPendingState | null;
+      promotionFailed: boolean;
     }
   | { ok: false; errorResponse: NextResponse }
 > {
@@ -320,6 +329,7 @@ async function completeCloudPublishAndDeploy(params: {
   let publishSkipped = false;
   let deployResult: DeployTriggerResult | undefined;
   let deployPending: DeployPendingState | null = null;
+  let promotionFailed = false;
 
   if (!params.payload.options.dryRun) {
     const contractReadiness = getCatalogContractReadiness();
@@ -354,6 +364,7 @@ async function completeCloudPublishAndDeploy(params: {
       });
       deployResult = publishFinalize.deployResult;
       deployPending = publishFinalize.deployPending;
+      promotionFailed = publishFinalize.promotionFailed;
     }
   }
 
@@ -363,6 +374,7 @@ async function completeCloudPublishAndDeploy(params: {
     publishSkipped,
     deployResult,
     deployPending,
+    promotionFailed,
   };
 }
 
@@ -475,6 +487,7 @@ async function runCloudSyncPipeline(params: {
     publishedAt: publishState.publishResult?.publishedAt,
     deploy: publishState.deployResult,
     deployPending: publishState.deployPending ?? undefined,
+    promotionFailed: publishState.promotionFailed || undefined,
     warnings,
     counts: {
       products: catalog.products.length,

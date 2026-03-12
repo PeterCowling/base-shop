@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-import { parseThreadMetadata } from "@/lib/inbox/api-models.server";
+import { parseThreadMetadataFromRow } from "@/lib/inbox/api-models.server";
 import {
   inboxApiErrorResponse,
   notFoundResponse,
@@ -48,7 +48,7 @@ export async function POST(
   }
 
   try {
-    const metadata = parseThreadMetadata(record.thread.metadata_json);
+    const metadata = parseThreadMetadataFromRow(record.thread);
     const thread = await updateThreadStatus({
       threadId: params.threadId,
       status: "resolved",

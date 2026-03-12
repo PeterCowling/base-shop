@@ -4,14 +4,22 @@ import { useState } from "react";
 
 import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
 
-interface NotifyMeFormProps {
-  productSlug: string;
+export interface NotifyMeStrings {
+  consent: string;
+  genericError: string;
+  validation: string;
+  emailLabel: string;
+  submit: string;
+  submitting: string;
+  success: string;
 }
 
-const CONSENT_LABEL = "I agree to receive a one-time reminder email about this product"; // i18n-exempt -- CARYINA-notify-me [ttl=2026-12-31]
-const GENERIC_ERROR_MESSAGE = "Something went wrong — please try again.";
+interface NotifyMeFormProps {
+  productSlug: string;
+  strings: NotifyMeStrings;
+}
 
-export function NotifyMeForm({ productSlug }: NotifyMeFormProps) {
+export function NotifyMeForm({ productSlug, strings }: NotifyMeFormProps) {
   const [email, setEmail] = useState("");
   const [consent, setConsent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -27,7 +35,7 @@ export function NotifyMeForm({ productSlug }: NotifyMeFormProps) {
     const normalizedEmail = email.trim();
 
     if (!normalizedEmail || !consent) {
-      setError("Please enter your email and consent to receive the reminder.");
+      setError(strings.validation);
       return;
     }
 
@@ -57,9 +65,9 @@ export function NotifyMeForm({ productSlug }: NotifyMeFormProps) {
         return;
       }
 
-      setError(data.error ?? GENERIC_ERROR_MESSAGE);
+      setError(data.error ?? strings.genericError);
     } catch {
-      setError(GENERIC_ERROR_MESSAGE);
+      setError(strings.genericError);
     } finally {
       setLoading(false);
     }
@@ -68,7 +76,7 @@ export function NotifyMeForm({ productSlug }: NotifyMeFormProps) {
   if (done) {
     return (
       <p className="text-sm text-foreground" data-cy="notify-me-success">
-        Thank you. We&apos;ll email you when this product is available.
+        {strings.success}
       </p>
     );
   }
@@ -77,7 +85,7 @@ export function NotifyMeForm({ productSlug }: NotifyMeFormProps) {
     <form className="space-y-3" onSubmit={(event) => void handleSubmit(event)}>
       <div className="space-y-1">
         <label htmlFor="notify-me-email" className="text-sm font-medium">
-          Email
+          {strings.emailLabel}
         </label>
         <input
           id="notify-me-email"
@@ -103,7 +111,7 @@ export function NotifyMeForm({ productSlug }: NotifyMeFormProps) {
           className="mt-1 min-h-11 min-w-11 shrink-0"
         />
         <label htmlFor="notify-me-consent" className="text-sm text-muted-foreground">
-          {CONSENT_LABEL}
+          {strings.consent}
         </label>
       </div>
 
@@ -118,7 +126,7 @@ export function NotifyMeForm({ productSlug }: NotifyMeFormProps) {
         disabled={loading || !email.trim() || !consent}
         className="btn-primary min-h-11 min-w-11 rounded-full px-6 text-sm disabled:opacity-50"
       >
-        {loading ? "Submitting..." : "Notify me"}
+        {loading ? strings.submitting : strings.submit}
       </button>
     </form>
   );

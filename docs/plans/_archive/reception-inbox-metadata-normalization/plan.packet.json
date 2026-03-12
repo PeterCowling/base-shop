@@ -1,0 +1,205 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "reception-inbox-metadata-normalization",
+  "source_artifact_path": "docs/plans/reception-inbox-metadata-normalization/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-inbox-metadata-normalization/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Important details about each email thread -- like the guest's name, their booking reference, and room number -- are all crammed into one text field. Every time the system needs any of these details, it has to unpack the entire blob. This is slow, error-prone, and makes it impossible to search or filter threads by guest name or booking reference directly. Moving the most-used fields into proper database columns would make the inbox faster and more reliable.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A validated next action exists for metadata normalization, with target fields identified, migration strategy defined, and backward compatibility approach documented.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: no UI changes; UI reads already-serialized API fields",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Backend-only migration",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A: API response shape unchanged; no user-facing behavior change",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required: PII fields (guest name, booking ref) become named columns; same auth boundary",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "No new exposure; column names more discoverable in schema but not in API",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required: post-migration verification command to confirm backfill row count",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Existing telemetry events unaffected",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required: update 13+ test fixtures; add migration + mapper unit tests",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required: unified type; dual-write; API `metadata` response from columns",
+      "current_or_option_state": "TASK-02, TASK-03, TASK-04",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required: replace `json_extract` with column query; add index on `needs_manual_draft`",
+      "current_or_option_state": "TASK-01, TASK-04",
+      "gap_or_implication": "Marginal perf gain; main win is code clarity",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required: additive migration; dual-write; rollback = deploy old code",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "metadata_json remains populated",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Promote 20 metadata fields from the `metadata_json` TEXT blob on the `threads` table to dedicated columns via a single D1 migration (`0006_inbox_metadata_columns.sql`). Unify the three divergent metadata type definitions (`SyncThreadMetadata`, `InboxThreadMetadata`, `ThreadMetadata`) into one canonical type. Update all 5 mutating route handlers plus sync and recovery to dual-write (columns + metadata_json). Update all read paths to read from columns. Retain `metadata_json` as a continuously-populated dual-write backup for rollback safety.",
+    "goals": [
+      "Eliminate `JSON.parse` overhead on every metadata access",
+      "Enable SQL-level indexing and querying of promoted fields",
+      "Unify three divergent metadata type definitions into one canonical type",
+      "Maintain API contract stability (summary fields + full `metadata` response object)",
+      "Preserve backward compatibility via dual-write to metadata_json"
+    ],
+    "non_goals": [
+      "Normalizing other JSON columns (`payload_json`, `quality_json`, `interpret_json`)",
+      "Redesigning the inbox data model beyond metadata promotion",
+      "Dropping `metadata_json` column (separate future cleanup)",
+      "Adding new queryable features (e.g. search by guest name)"
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Row count is modest (hundreds to low thousands); backfill is trivial",
+      "Single-operator system; brief deployment pause acceptable"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Single migration adds 20 columns. Single code change updates all read/write paths. metadata_json retained via continuous dual-write for rollback safety.",
+      "Why planning is not reopening option selection:",
+      "Analysis compared phased vs. single-pass vs. generated columns with explicit engineering coverage comparison. Single-pass won on simplicity and equivalent blast radius. No new information invalidates this."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "D1 migration -- add 20 columns and backfill",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/reception/migrations/0006_inbox_metadata_columns.sql`",
+        "affects": "`apps/reception/migrations/0006_inbox_metadata_columns.sql` (new), `[readonly] apps/reception/migrations/0001_inbox_init.sql`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Unified ThreadMetadata type and column read mapper",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/reception/src/lib/inbox/api-models.server.ts` with unified type and column-aware mapper",
+        "affects": "`apps/reception/src/lib/inbox/api-models.server.ts`, `apps/reception/src/lib/inbox/repositories.server.ts`, `apps/reception/src/lib/inbox/sync.server.ts`, `apps/reception/src/lib/inbox/recovery.server.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Update all write paths to dual-write",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated write paths in sync, recovery, and 5 mutating route handlers",
+        "affects": "`apps/reception/src/lib/inbox/sync.server.ts`, `apps/reception/src/lib/inbox/recovery.server.ts`, `apps/reception/src/lib/inbox/repositories.server.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/dismiss/route.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/resolve/route.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/draft/route.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/draft/regenerate/route.ts`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Update all read paths and API serialization",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated read paths in api-models, repositories queries, and route handlers",
+        "affects": "`apps/reception/src/lib/inbox/api-models.server.ts`, `apps/reception/src/lib/inbox/repositories.server.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/route.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/draft/route.ts`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Update test fixtures and add migration tests",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-03",
+          "TASK-04"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated test fixtures across 13+ test files; new migration and mapper unit tests",
+        "affects": "`apps/reception/src/lib/inbox/__tests__/sync.server.test.ts`, `apps/reception/src/lib/inbox/__tests__/recovery.server.test.ts`, `apps/reception/src/lib/inbox/__tests__/telemetry.server.test.ts`, `apps/reception/src/app/api/mcp/__tests__/inbox.route.test.ts`, `apps/reception/src/app/api/mcp/__tests__/inbox-actions.route.test.ts`, `apps/reception/src/app/api/mcp/__tests__/inbox-draft.route.test.ts`, `apps/reception/src/components/inbox/__tests__/presentation.test.ts`, `apps/reception/src/components/inbox/__tests__/filters.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

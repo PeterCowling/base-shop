@@ -28,6 +28,44 @@ interface PolicyCopy {
   notice?: LocalizedText;
 }
 
+interface ChromeContent {
+  header: {
+    shop: LocalizedText;
+    support: LocalizedText;
+    navAriaLabel: LocalizedText;
+  };
+  footer: {
+    terms: LocalizedText;
+    privacy: LocalizedText;
+    returnsRefunds: LocalizedText;
+    shipping: LocalizedText;
+    support: LocalizedText;
+    copyright: LocalizedText;
+    sectionAriaLabel: LocalizedText;
+  };
+  consent: {
+    message: LocalizedText;
+    privacyLink: LocalizedText;
+    decline: LocalizedText;
+    accept: LocalizedText;
+    ariaLabel: LocalizedText;
+  };
+  trust: {
+    summary: LocalizedText;
+    shippingLink: LocalizedText;
+    returnsLink: LocalizedText;
+  };
+  notifyMe: {
+    consent: LocalizedText;
+    genericError: LocalizedText;
+    validation: LocalizedText;
+    emailLabel: LocalizedText;
+    submit: LocalizedText;
+    submitting: LocalizedText;
+    success: LocalizedText;
+  };
+}
+
 interface SiteContentPayload {
   sourcePaths: string[];
   seoKeywords: string[];
@@ -62,6 +100,7 @@ interface SiteContentPayload {
     responseSla: LocalizedText;
   };
   policies: Record<"privacy" | "shipping" | "returns" | "terms", PolicyCopy>;
+  chrome?: ChromeContent;
 }
 
 const PAYLOAD_RELATIVE_PATH = "data/shops/caryina/site-content.generated.json";
@@ -223,6 +262,85 @@ export function getPolicyContent(
     summary: localizedText(policy.summary, locale),
     bullets: localizedList(policy.bullets, locale),
     notice: policy.notice ? localizedText(policy.notice, locale) : null,
+  };
+}
+
+const CHROME_EN_DEFAULTS: ChromeContent = {
+  header: {
+    shop: { en: "Shop" },
+    support: { en: "Support" },
+    navAriaLabel: { en: "Primary" },
+  },
+  footer: {
+    terms: { en: "Terms" },
+    privacy: { en: "Privacy" },
+    returnsRefunds: { en: "Returns & Refunds" },
+    shipping: { en: "Shipping" },
+    support: { en: "Support" },
+    copyright: { en: "All rights reserved." },
+    sectionAriaLabel: { en: "Footer" },
+  },
+  consent: {
+    message: { en: "We use analytics cookies to understand how visitors interact with our site. See our" },
+    privacyLink: { en: "privacy policy" },
+    decline: { en: "Decline" },
+    accept: { en: "Accept" },
+    ariaLabel: { en: "Cookie consent" },
+  },
+  trust: {
+    summary: { en: "Free exchange within 30 days · Delivery estimated at checkout" },
+    shippingLink: { en: "Shipping policy" },
+    returnsLink: { en: "Returns & exchanges" },
+  },
+  notifyMe: {
+    consent: { en: "I agree to receive a one-time reminder email about this product" },
+    genericError: { en: "Something went wrong — please try again." },
+    validation: { en: "Please enter your email and consent to receive the reminder." },
+    emailLabel: { en: "Email" },
+    submit: { en: "Notify me" },
+    submitting: { en: "Submitting..." },
+    success: { en: "Thank you. We'll email you when this product is available." },
+  },
+};
+
+export function getChromeContent(locale: Locale) {
+  const chrome = readPayload().chrome ?? CHROME_EN_DEFAULTS;
+  return {
+    header: {
+      shop: localizedText(chrome.header.shop, locale),
+      support: localizedText(chrome.header.support, locale),
+      navAriaLabel: localizedText(chrome.header.navAriaLabel, locale),
+    },
+    footer: {
+      terms: localizedText(chrome.footer.terms, locale),
+      privacy: localizedText(chrome.footer.privacy, locale),
+      returnsRefunds: localizedText(chrome.footer.returnsRefunds, locale),
+      shipping: localizedText(chrome.footer.shipping, locale),
+      support: localizedText(chrome.footer.support, locale),
+      copyright: localizedText(chrome.footer.copyright, locale),
+      sectionAriaLabel: localizedText(chrome.footer.sectionAriaLabel, locale),
+    },
+    consent: {
+      message: localizedText(chrome.consent.message, locale),
+      privacyLink: localizedText(chrome.consent.privacyLink, locale),
+      decline: localizedText(chrome.consent.decline, locale),
+      accept: localizedText(chrome.consent.accept, locale),
+      ariaLabel: localizedText(chrome.consent.ariaLabel, locale),
+    },
+    trust: {
+      summary: localizedText(chrome.trust.summary, locale),
+      shippingLink: localizedText(chrome.trust.shippingLink, locale),
+      returnsLink: localizedText(chrome.trust.returnsLink, locale),
+    },
+    notifyMe: {
+      consent: localizedText(chrome.notifyMe.consent, locale),
+      genericError: localizedText(chrome.notifyMe.genericError, locale),
+      validation: localizedText(chrome.notifyMe.validation, locale),
+      emailLabel: localizedText(chrome.notifyMe.emailLabel, locale),
+      submit: localizedText(chrome.notifyMe.submit, locale),
+      submitting: localizedText(chrome.notifyMe.submitting, locale),
+      success: localizedText(chrome.notifyMe.success, locale),
+    },
   };
 }
 

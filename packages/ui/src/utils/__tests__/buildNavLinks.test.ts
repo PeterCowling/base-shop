@@ -1,4 +1,5 @@
 /* i18n-exempt file -- TEST-0001: unit test titles and literals are not user-facing */
+import { ROOM_DROPDOWN_NAMES } from "../../config/roomNames";
 import { buildNavLinks } from "../buildNavLinks";
 import { translatePath } from "../translate-path";
 
@@ -6,10 +7,10 @@ const stub = (key: string, defaultValue?: string): string => defaultValue ?? key
 
 describe("buildNavLinks", () => {
   describe("rooms children", () => {
-    it("TC-01: has 11 children (1 sentinel + 10 rooms)", () => {
+    it("TC-01: has 1 sentinel plus every visible room child", () => {
       const { navLinks } = buildNavLinks("en", stub);
       const rooms = navLinks.find((l) => l.key === "rooms")!;
-      expect(rooms.children).toHaveLength(11);
+      expect(rooms.children).toHaveLength(1 + Object.keys(ROOM_DROPDOWN_NAMES).length);
     });
 
     it("TC-02: all children have distinct label values", () => {

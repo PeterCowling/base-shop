@@ -146,6 +146,17 @@ function addBundleAndCache(params: {
   }
 }
 
+function clearStaleBundleCache(params: {
+  forceReload: boolean;
+  onceKey: string;
+  nodeKey?: string;
+}): void {
+  const { forceReload, onceKey, nodeKey } = params;
+  if (forceReload) return;
+  onceCache.delete(onceKey);
+  if (nodeKey) nodeCache.delete(nodeKey);
+}
+
 /**
  * Load one (lang, ns) bundle exactly once.
  */
@@ -160,11 +171,14 @@ export async function loadI18nNs(lang: string, ns: string): Promise<void> {
     return;
   }
 
-  if (onceCache.has(onceKey) && !forceReload) return;
+  // The cache only proves we loaded this bundle once. If a test or runtime path
+  // removes the bundle from i18n afterwards, cached markers must be invalidated
+  // so the namespace can be reloaded.
+  clearStaleBundleCache({ forceReload, onceKey });
 
   if (isServerRuntime()) {
     const nodeKey = `${lang}/${ns}`;
-    if (nodeCache.has(nodeKey) && !forceReload) return;
+    clearStaleBundleCache({ forceReload, onceKey, nodeKey });
 
     if (ns === "guides") {
       const guidesBundle = await loadGuidesNamespace(lang);

@@ -586,7 +586,7 @@ Review-date: 2026-02-25
     await fs.rm(tmpRoot, { recursive: true, force: true });
   });
 
-  it("collectProcessImprovements ingests bug-scan artifacts as idea candidates", async () => {
+  it("collectProcessImprovements ignores raw bug-scan artifacts without queue admission", async () => {
     await writeFile(
       tmpDir,
       "docs/plans/bug-scan-flow/bug-scan-findings.user.json",
@@ -616,12 +616,53 @@ Review-date: 2026-02-25
     );
 
     const data = collectProcessImprovements(tmpDir);
+    expect(data.ideaItems).toHaveLength(0);
+  });
+
+  it("collectProcessImprovements surfaces queue-backed bug-scan ideas instead of raw bug-scan artifacts", async () => {
+    await writeFile(
+      tmpDir,
+      "docs/plans/bug-scan-flow/bug-scan-findings.user.json",
+      `${JSON.stringify(
+        {
+          schema_version: "bug-scan-findings.v1",
+          generated_at: "2026-03-02T10:00:00.000Z",
+          business_scope: "BRIK",
+          findings: [
+            {
+              ruleId: "no-eval-call",
+              severity: "critical",
+              message: "`eval()` execution is unsafe and hard to audit.",
+              suggestion: "Replace with explicit parsing/dispatch logic.",
+              file: "apps/brikette/src/lib/risky.ts",
+              line: 14,
+              column: 7,
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+    );
+
+    await writeQueueState(tmpDir, [
+      makeQueueDispatch({
+        dispatch_id: "DISPATCH-BUG-SCAN-001",
+        artifact_id: "BOS-BOS-BUG_SCAN_FINDINGS",
+        business: "BRIK",
+        area_anchor: "Bug scan no-eval-call at apps/brikette/src/lib/risky.ts:14:7",
+        current_truth: "Bug scan no-eval-call at apps/brikette/src/lib/risky.ts:14:7",
+        why: "Replace with explicit parsing/dispatch logic.",
+        created_at: "2026-03-02T10:00:00.000Z",
+      }),
+    ]);
+
+    const data = collectProcessImprovements(tmpDir);
+
     expect(data.ideaItems).toHaveLength(1);
-    expect(data.ideaItems[0]?.business).toBe("BRIK");
-    expect(data.ideaItems[0]?.source).toBe("bug-scan-findings.user.json");
+    expect(data.ideaItems[0]?.source).toBe("queue-state.json");
     expect(data.ideaItems[0]?.title).toContain("no-eval-call");
-    expect(data.ideaItems[0]?.suggested_action).toContain("--only-rules=no-eval-call");
-    expect(data.ideaItems[0]?.path).toBe("docs/plans/bug-scan-flow/bug-scan-findings.user.json");
+    expect(data.ideaItems[0]?.path).toBe(QUEUE_STATE_RELATIVE_PATH);
   });
 
   // ---------------------------------------------------------------------------
@@ -836,6 +877,14 @@ Review-date: 2026-03-06
 
     const queueStatePath = path.join(tmpDir, QUEUE_STATE_RELATIVE_PATH);
     await expect(fs.stat(queueStatePath)).rejects.toThrow();
+  });
+
+  it("keeps the static report in read-only signpost mode for operator actions", async () => {
+    const html = await readCanonicalProcessImprovementsHtml();
+
+    expect(html).toContain("Operator Actions Live In The App");
+    expect(html).toContain("http://127.0.0.1:3020/process-improvements");
+    expect(html).toContain("pnpm --filter @apps/business-os dev");
   });
 
   it("TC-14-04: build-origin sync can still be run explicitly before artifact updates", async () => {
@@ -1064,32 +1113,7 @@ describe("dispatch queue collection", () => {
     expect(keys[0]).not.toBe(keys[1]);
   });
 
-  it("TC-05: dispatch items sort correctly alongside bug-scan items", async () => {
-    await writeFile(
-      tmpDir,
-      "docs/plans/mixed-test/bug-scan-findings.user.json",
-      `${JSON.stringify(
-        {
-          schema_version: "bug-scan-findings.v1",
-          generated_at: "2026-03-04T09:00:00.000Z",
-          business_scope: "BRIK",
-          findings: [
-            {
-              ruleId: "no-debug-logging",
-              severity: "warning",
-              message: "Debug logging leaked into production path.",
-              suggestion: "Remove the debug logging from the production path.",
-              file: "apps/brikette/src/lib/debug.ts",
-              line: 9,
-              column: 2,
-            },
-          ],
-        },
-        null,
-        2,
-      )}\n`,
-    );
-
+  it("TC-05: queue-backed idea items sort correctly after bug-scan cutover", async () => {
     await writeQueueState(
       tmpDir,
       [
@@ -1101,14 +1125,23 @@ describe("dispatch queue collection", () => {
           why: "Testing sort order",
           created_at: "2026-03-04T10:00:00.000Z",
         }),
+        makeQueueDispatch({
+          dispatch_id: "DISPATCH-SORT-002",
+          artifact_id: "BOS-BOS-BUG_SCAN_FINDINGS",
+          business: "BRIK",
+          area_anchor: "Bug scan no-debug-logging at apps/brikette/src/lib/debug.ts:9:2",
+          current_truth: "Bug scan no-debug-logging at apps/brikette/src/lib/debug.ts:9:2",
+          why: "Remove the debug logging from the production path.",
+          created_at: "2026-03-04T09:00:00.000Z",
+        }),
       ],
     );
 
     const data = collectProcessImprovements(tmpDir);
-    // Both sources should be present in the same sorted ideaItems array
+    // Queue-backed sources should be the only actionable idea items after cutover.
     const sources = new Set(data.ideaItems.map((i) => i.source));
-    expect(sources.has("bug-scan-findings.user.json")).toBe(true);
     expect(sources.has("queue-state.json")).toBe(true);
+    expect(sources.has("bug-scan-findings.user.json")).toBe(false);
     // All items should be sorted (own_priority_rank ascending)
     for (let i = 1; i < data.ideaItems.length; i++) {
       const prevRank = data.ideaItems[i - 1]!.own_priority_rank ?? 999;

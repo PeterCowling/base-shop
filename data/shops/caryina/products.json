@@ -12,7 +12,7 @@
       "de": "Strukturierter Mini-Taschenanhaenger in Metallic-Silber mit Turn-Lock-Verschluss und Schal-Akzent. In Positano entworfen fuer Day-to-Evening Styling.",
       "it": "Mini charm da borsa strutturato in argento metallizzato con chiusura turn-lock frontale e dettaglio foulard. Disegnato a Positano per look dal giorno alla sera."
     },
-    "price": 9900,
+    "price": 2900,
     "currency": "EUR",
     "media": [
       {
@@ -52,6 +52,13 @@
         "tags": ["slot:alternate", "family:top-handle"]
       }
     ],
+    "materials": {
+      "en": "Faux leather with polished metal hardware and satin scarf accent",
+      "de": "Kunstleder mit polierter Metallbeschlag und Satin-Schal-Akzent",
+      "it": "Ecopelle con ferramenta metallica lucida e dettaglio foulard in raso"
+    },
+    "dimensions": { "h": 80, "w": 60, "d": 30, "unit": "mm" },
+    "weight": { "value": 45, "unit": "g" },
     "shop": "caryina",
     "status": "active",
     "row_version": 1,
@@ -74,7 +81,7 @@
       "de": "Weiss-rosafarbener Mini-Taschenanhaenger mit strukturierter Oberflaeche und kompaktem Profil. Eine spielerische Farbvariante als einzelnes Detail an deiner Tasche.",
       "it": "Mini charm da borsa bianco e rosa con finitura testurizzata e profilo compatto. Una colorazione vivace per un unico dettaglio sulla borsa."
     },
-    "price": 9900,
+    "price": 2900,
     "currency": "EUR",
     "media": [
       {
@@ -114,6 +121,13 @@
         "tags": ["slot:alternate", "family:shoulder"]
       }
     ],
+    "materials": {
+      "en": "Textured faux leather with polished metal turn-lock closure",
+      "de": "Strukturiertes Kunstleder mit poliertem Metall-Drehverschluss",
+      "it": "Ecopelle testurizzata con chiusura turn-lock in metallo lucido"
+    },
+    "dimensions": { "h": 75, "w": 55, "d": 28, "unit": "mm" },
+    "weight": { "value": 40, "unit": "g" },
     "shop": "caryina",
     "status": "active",
     "row_version": 1,
@@ -136,7 +150,7 @@
       "de": "Pfirsichfarbener Mini-Taschenanhaenger mit Fassaden-Applikation, strukturierten Seitenfalten und polierten Hardware-Akzenten fuer den Alltag.",
       "it": "Mini charm da borsa in tonalita pesca con applique facciata, soffietti laterali strutturati e dettagli hardware per uso quotidiano."
     },
-    "price": 9900,
+    "price": 2900,
     "currency": "EUR",
     "media": [
       {
@@ -176,6 +190,13 @@
         "tags": ["slot:alternate", "family:mini"]
       }
     ],
+    "materials": {
+      "en": "Faux leather with facade applique and polished hardware accents",
+      "de": "Kunstleder mit Fassaden-Applikation und polierten Hardware-Akzenten",
+      "it": "Ecopelle con applique facciata e dettagli hardware lucidi"
+    },
+    "dimensions": { "h": 78, "w": 58, "d": 30, "unit": "mm" },
+    "weight": { "value": 42, "unit": "g" },
     "shop": "caryina",
     "status": "active",
     "row_version": 1,

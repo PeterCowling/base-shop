@@ -24,7 +24,7 @@ function SpinnerBase({ size = "sm", className, label = "Loading" }: SpinnerProps
       role="status"
       aria-label={label}
       className={cn(
-        "inline-block animate-spin rounded-full border-border-2 border-t-primary-main/100 motion-reduce:animate-none",
+        "inline-block animate-spin rounded-full border-border-2 border-t-primary-main motion-reduce:animate-none",
         sizeClasses[size],
         className
       )}

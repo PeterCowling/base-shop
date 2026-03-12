@@ -64,7 +64,7 @@ function EodOverrideModalBase({ onConfirm, onCancel }: EodOverrideModalProps) {
   );
 
   return (
-    <ModalContainer widthClasses="w-[26rem]">
+    <ModalContainer widthClasses="w-96">
       <h2 className="mb-2 text-center text-xl font-semibold">
         Manager Authorisation Required
       </h2>

@@ -91,14 +91,14 @@ const OrderList: FC<OrderListProps> = React.memo(
               type="button"
               disabled={!orders.length}
               onClick={() => setShowPayModal(true)}
-              className="w-full min-h-14 rounded-lg bg-primary-main/100 px-4 py-3 text-lg font-bold text-primary-fg/100 transition-all duration-150 hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
+              className="w-full min-h-14 rounded-lg bg-primary-main px-4 py-3 text-lg font-bold text-primary-fg transition-all duration-150 hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Pay
             </button>
             <button
               type="button"
               onClick={onClearAll}
-              className="w-full min-h-10 rounded-lg border-2 border-danger/100 px-4 py-2 text-sm font-semibold text-danger/100 transition-all duration-150 hover:bg-danger/10 active:scale-95"
+              className="w-full min-h-10 rounded-lg border-2 border-danger px-4 py-2 text-sm font-semibold text-danger transition-all duration-150 hover:bg-danger/10 active:scale-95"
             >
               Clear All
             </button>

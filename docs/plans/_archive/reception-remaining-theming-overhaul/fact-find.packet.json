@@ -1,0 +1,190 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "reception-remaining-theming-overhaul",
+  "source_artifact_path": "docs/plans/reception-remaining-theming-overhaul/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-remaining-theming-overhaul/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff-facing screens (bookings, management, auth, modals) use wrong foreground tokens on coloured backgrounds, redundant opacity syntax, and broken focus ring selectors. This makes buttons and badges harder to read and keyboard focus invisible on daily-use interfaces.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All remaining reception components use correct semantic foreground tokens on status-coloured backgrounds, with valid focus ring syntax and no redundant opacity modifiers.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "All 23+ issues are wrong/missing className tokens causing poor contrast or invisible states",
+      "gap_or_implication": "All issues verified against actual file contents and reception tailwind.config.mjs",
+      "carry_forward_or_notes": "All className fixes must be verified against token definitions"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Double focus prefix makes focus rings invisible; confusing hover flip on CheckoutTable",
+      "gap_or_implication": "8+ focus ring instances, 1 hover state",
+      "carry_forward_or_notes": "Focus ring syntax must be `focus-visible:ring-*` not `focus-visible:focus:ring-*`"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth, data, or input changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No logic changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Multiple affected components have existing test files (VarianceHeatMap, StatusButton, OpeningFloatModal, ChipComponents, CheckoutTable, BookingRow, DocInsertButton) — check for className assertions that may need updating",
+      "gap_or_implication": "Tests may assert old className values",
+      "carry_forward_or_notes": "Typecheck + lint + check existing tests for old className assertions"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "No type/schema/API changes — className strings only",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "className changes have zero runtime cost",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Prior overhauls used single commit, revert = `git revert <sha>`",
+      "gap_or_implication": "Same approach applies",
+      "carry_forward_or_notes": "Single commit, standard deploy"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Batch fix of ~25 theming issues across ~19 component files in the reception app's bookings, management, auth, and till-modal areas. All fixes are className string replacements using existing semantic tokens. This continues the systematic theming overhaul that already fixed the bar/POS area (14 fixes, commit `b955bf38c4`) and till/safe area (9 fixes, commit `aea95ee6b0`). The inbox area was audited and found clean.",
+    "goals": [
+      "Fix all wrong-foreground-on-coloured-background issues (High severity)",
+      "Fix all double focus prefix issues (`focus-visible:focus:` → `focus-visible:`)",
+      "Remove all redundant `/100` opacity modifiers",
+      "Fix wrong token base in BookingPaymentsLists",
+      "Fix confusing hover state flip in CheckoutTable"
+    ],
+    "non_goals": [
+      "Redesigning component layouts or structures",
+      "Adding new tokens to the design system",
+      "Changing business logic in any component",
+      "Fixing issues in bar/POS (already done) or till/safe (already done) or inbox (clean)"
+    ],
+    "constraints": [
+      "All changes must use existing semantic tokens from `apps/reception/tailwind.config.mjs` — no new token definitions",
+      "Purely className adjustments — no component API changes",
+      "`error-fg` does NOT exist in reception config — must use `danger-fg` for error/danger foregrounds"
+    ],
+    "assumptions": [],
+    "key_entry_points": [
+      "`apps/reception/src/components/checkins/` — check-in UI (StatusButton, EmailBookingButton, BookingRow, DocInsertButton, CityTaxPaymentButton)",
+      "`apps/reception/src/components/prepayments/` — prepayment UI (CheckInDateChip, HoursChip, BookingPaymentsLists)",
+      "`apps/reception/src/components/reports/` — reporting (VarianceHeatMap)",
+      "`apps/reception/src/components/search/` — search screens (FinancialTransactionSearch, FinancialTransactionAuditSearch, BookingSearchTable)",
+      "`apps/reception/src/components/checkout/` — checkout flow (CheckoutTable)",
+      "`apps/reception/src/components/eodChecklist/` — end-of-day checklist (OpeningFloatModal)",
+      "`apps/reception/src/components/till/` — till modals (TenderRemovalModal)",
+      "`apps/reception/src/components/Login.tsx` — authentication",
+      "`apps/reception/src/components/common/` — shared components (Spinner, DateSelector)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis reception-remaining-theming-overhaul`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Check-in components (5 files: StatusButton, EmailBookingButton, BookingRow, DocInsertButton, CityTaxPaymentButton)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — all issues verified at correct paths under `components/checkins/`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Prepayment components (3 files: CheckInDateChip, HoursChip, BookingPaymentsLists)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — verified under `components/prepayments/`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Reports (1 file: VarianceHeatMap)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — verified under `components/reports/`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Search components (3 files: FinancialTransactionSearch, FinancialTransactionAuditSearch, BookingSearchTable)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — verified under `components/search/`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Checkout (1 file: CheckoutTable)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — verified under `components/checkout/`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "EOD Checklist (1 file: OpeningFloatModal)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — verified under `components/eodChecklist/`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Till (1 file: TenderRemovalModal)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — verified under `components/till/`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Auth (1 file: Login)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — 5 double-focus instances verified at L294, L363, L410, L466, L497",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Common (2 files: Spinner, DateSelector)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — Spinner /100 and DateSelector wrong-fg + /100 verified",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Token availability",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — all target tokens confirmed in reception tailwind.config.mjs",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Existing test files",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "7 test files found for affected components — check for className assertions during build",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

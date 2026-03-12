@@ -90,3 +90,15 @@ export function ensureStringArrayPreserveWhitespace(value: unknown): string[] {
 export function ensureArray<T>(value: unknown): T[] {
   return Array.isArray(value) ? (value as T[]) : [];
 }
+
+/**
+ * Coerce an i18n translation result into a plain string, returning `fallback`
+ * when the value is not a string, is empty, or looks like an unresolved i18n key.
+ */
+export function resolveTranslatedCopy(value: unknown, fallback: string): string {
+  if (typeof value !== "string") return fallback;
+  const trimmed = value.trim();
+  if (!trimmed) return fallback;
+  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
+  return trimmed;
+}

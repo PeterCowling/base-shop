@@ -107,4 +107,33 @@ describe("catalog products/[slug] route", () => {
       }),
     );
   });
+
+  // B3 — Session expiry during editing
+  it("B3: GET returns 404 when the session is expired or missing", async () => {
+    hasUploaderSessionMock.mockResolvedValueOnce(false);
+
+    const { GET } = await import("../route");
+    const response = await GET(
+      new Request("http://localhost/api/catalog/products/studio-jacket?storefront=xa-b"),
+      { params },
+    );
+
+    expect(response.status).toBe(404);
+    expect(await response.json()).toEqual({ ok: false });
+    expect(readCloudDraftSnapshotMock).not.toHaveBeenCalled();
+  });
+
+  it("B3: DELETE returns 404 when the session is expired or missing", async () => {
+    hasUploaderSessionMock.mockResolvedValueOnce(false);
+
+    const { DELETE } = await import("../route");
+    const response = await DELETE(
+      new Request("http://localhost/api/catalog/products/studio-jacket?storefront=xa-b", { method: "DELETE" }),
+      { params },
+    );
+
+    expect(response.status).toBe(404);
+    expect(await response.json()).toEqual({ ok: false });
+    expect(readCloudDraftSnapshotMock).not.toHaveBeenCalled();
+  });
 });

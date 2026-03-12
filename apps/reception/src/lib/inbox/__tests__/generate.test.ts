@@ -80,6 +80,45 @@ describe("generateDraftCandidate", () => {
     expect(result.templateUsed.selection).toBe("auto");
   });
 
+  it("infers the Hostelworld provider from bookingRef when the caller does not supply one", () => {
+    const result = generateDraftCandidate({
+      subject: "Payment failed",
+      bookingRef: "7763-123456789",
+      actionPlan: {
+        normalized_text: "My payment failed. What should I do?",
+        language: "EN",
+        intents: {
+          questions: [{ text: "What should I do?", evidence: "What should I do" }],
+          requests: [],
+          confirmations: [],
+        },
+        agreement: {
+          status: "none",
+          confidence: 0,
+          evidence_spans: [],
+          requires_human_confirmation: false,
+          detected_language: "EN",
+          additional_content: false,
+        },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: true,
+          prepayment: true,
+          terms_and_conditions: false,
+        },
+        scenario: { category: "prepayment", confidence: 0.95 },
+        scenarios: [{ category: "prepayment", confidence: 0.95 }],
+        actionPlanVersion: "1.1.0",
+        escalation: { tier: "NONE", triggers: [], confidence: 0 },
+        escalation_required: false,
+      },
+      prepaymentStep: "first",
+    });
+
+    expect(result.templateUsed.subject).toBe("Prepayment - 1st Attempt Failed (Hostelworld)");
+    expect(result.templateUsed.selection).toBe("auto");
+  });
+
   it("returns a best-effort draft for ambiguous input without throwing", () => {
     const result = generateDraftCandidate({
       subject: "Question",

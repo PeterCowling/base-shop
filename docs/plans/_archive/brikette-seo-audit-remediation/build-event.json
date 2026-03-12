@@ -1,0 +1,15 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "brikette-seo-audit-remediation",
+  "completed_at": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "why": "SEO tech audit identified crawl waste (24 dead URLs in sitemap), content quality degradation (raw i18n keys visible to Google on transport guide pages), and sparse freshness signals (77% of sitemap without lastmod). These directly impact search indexing quality for a 1,246-URL multilingual travel site.",
+  "why_source": "auto",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "All sitemap URLs return 200, no i18n keys leak in SSR HTML for how-to-get-here pages, /assistance redirects correctly, lastmod coverage ≥60%",
+  "plan_path": "docs/plans/brikette-seo-audit-remediation/plan.md",
+  "build_record_path": "docs/plans/brikette-seo-audit-remediation/build-record.user.md",
+  "task_count": 4,
+  "tasks_completed": 4
+}

@@ -7,10 +7,11 @@ import {
   withAutoCatalogDraftFields,
 } from "@acme/lib/xa";
 
-import { resolveContractRoot } from "./catalogContractUtils";
+import { buildCatalogContractUrl } from "./catalogContractUtils";
 import type { XaCatalogStorefront } from "./catalogStorefront.types";
 import { type CurrencyRates,parseCurrencyRatesOrNull } from "./currencyRates";
 import { isRecord } from "./typeGuards";
+import { uploaderLog } from "./uploaderLogger";
 
 export interface CatalogContractServiceBinding {
   fetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response>;
@@ -56,23 +57,24 @@ export class CatalogDraftConflictError extends Error {
   override name = "CatalogDraftConflictError";
 }
 
-const CATALOG_CONTRACT_BASE_URL = (process.env.XA_CATALOG_CONTRACT_BASE_URL ?? "").trim();
-const CATALOG_CONTRACT_WRITE_TOKEN = (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
-const CATALOG_CONTRACT_READ_TOKEN = (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
+function getCatalogContractWriteToken(): string {
+  return (process.env.XA_CATALOG_CONTRACT_WRITE_TOKEN ?? "").trim();
+}
+
+function getCatalogContractReadToken(): string {
+  return (process.env.XA_CATALOG_CONTRACT_READ_TOKEN ?? "").trim();
+}
 
 
 function buildContractUrl(pathname: string): string {
-  const baseUrl = CATALOG_CONTRACT_BASE_URL;
-  if (!baseUrl) {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not configured.");
-  }
-  let root: URL;
-  try {
-    root = resolveContractRoot(baseUrl);
-  } catch {
-    throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.");
-  }
-  return new URL(pathname, root).toString();
+  return buildCatalogContractUrl(pathname, (reason) =>
+    new CatalogDraftContractError(
+      "unconfigured",
+      reason === "missing"
+        ? "XA_CATALOG_CONTRACT_BASE_URL is not configured."
+        : "XA_CATALOG_CONTRACT_BASE_URL is not a valid URL.",
+    ),
+  );
 }
 
 function buildDraftUrl(storefront: XaCatalogStorefront, suffix = ""): string {
@@ -92,7 +94,7 @@ function resolveCurrencyRatesUrl(storefront: XaCatalogStorefront): string {
 }
 
 function getWriteTokenHeader(): Record<string, string> {
-  const writeToken = CATALOG_CONTRACT_WRITE_TOKEN;
+  const writeToken = getCatalogContractWriteToken();
   if (!writeToken) {
     throw new CatalogDraftContractError("unconfigured", "XA_CATALOG_CONTRACT_WRITE_TOKEN is not configured.");
   }
@@ -100,12 +102,12 @@ function getWriteTokenHeader(): Record<string, string> {
 }
 
 function getReadTokenHeader(): Record<string, string> {
-  const readToken = CATALOG_CONTRACT_READ_TOKEN;
+  const readToken = getCatalogContractReadToken();
   if (readToken) {
     return { "X-XA-Catalog-Token": readToken };
   }
 
-  const writeToken = CATALOG_CONTRACT_WRITE_TOKEN;
+  const writeToken = getCatalogContractWriteToken();
   if (writeToken) {
     return { "X-XA-Catalog-Token": writeToken };
   }
@@ -258,6 +260,7 @@ export async function readCloudDraftSnapshot(
   });
 
   if (!response.ok) {
+    uploaderLog("error", "read_snapshot_error", { storefront, code: "request_failed", httpStatus: response.status });
     throw new CatalogDraftContractError("request_failed", "Failed to read draft contract snapshot.", {
       status: response.status,
       endpoint: sanitizeContractEndpoint(url),
@@ -296,15 +299,15 @@ export async function writeCloudDraftSnapshot(params: {
     });
   }
   if (!response.ok) {
+    uploaderLog("error", "write_snapshot_error", { storefront: params.storefront, httpStatus: response.status });
     throw new CatalogDraftContractError("request_failed", "Failed to write draft contract snapshot.", {
       status: response.status,
       endpoint: sanitizeContractEndpoint(url),
     });
   }
 
-  const payload = (await response.json().catch(() => null)) as {
-    docRevision?: unknown;
-  } | null;
+  const raw: unknown = await response.json().catch(() => null);
+  const payload = isRecord(raw) ? raw : null;
 
   const docRevision =
     payload && typeof payload.docRevision === "string" && payload.docRevision.trim()
@@ -336,6 +339,7 @@ export async function acquireCloudSyncLock(
     | null;
 
   if (response.status === 409) {
+    uploaderLog("warn", "sync_lock_failed", { storefront, code: "busy" });
     return {
       status: "busy",
       expiresAt: parseOptionalString(payload?.expiresAt),
@@ -479,7 +483,7 @@ export function upsertProductInCloudSnapshot(params: {
   const parsed = catalogProductDraftSchema.parse(params.product);
   const normalizedSlug = getProductNormalizedSlug(parsed);
   if (!normalizedSlug) {
-    throw new Error("Product id \"\" is invalid.");
+    throw new Error("Could not derive a valid product slug from the provided title or slug field.");
   }
 
   const id = (parsed.id ?? "").trim() || crypto.randomUUID();

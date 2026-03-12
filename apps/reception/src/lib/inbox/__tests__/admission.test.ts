@@ -24,6 +24,83 @@ describe("classifyForAdmission", () => {
     expect(result.organizeDecision).toBe("promotional");
   });
 
+  it("auto-archives obvious vendor promotional subjects even without a known OTA domain", () => {
+    const result = classifyForAdmission({
+      fromRaw: "Pest Control Napoli <info@servizi-example.it>",
+      subject: "🌡️ Il caldo arriva, gli infestanti anche. Proteggiti ora",
+      snippet: "Soluzioni professionali di disinfestazione per la tua struttura.",
+    });
+
+    expect(result.outcome).toBe("auto-archive");
+    expect(result.organizeDecision).toBe("promotional");
+  });
+
+  it("auto-archives Google review notifications", () => {
+    const result = classifyForAdmission({
+      fromRaw: "Google Business Profile <maps-noreply@google.com>",
+      subject: "Ann left a review for Brikette Hostel",
+      snippet: "See what Ann wrote about your property.",
+    });
+
+    expect(result.outcome).toBe("auto-archive");
+    expect(result.organizeDecision).toBe("promotional");
+  });
+
+  it("auto-archives Amalfi district infopoint mail", () => {
+    const result = classifyForAdmission({
+      fromRaw: "Distretto Costa d'Amalfi <infopoint@distrettocostadamalfi.it>",
+      subject: "Local tourism update",
+      snippet: "Please find the latest district information.",
+    });
+
+    expect(result.outcome).toBe("auto-archive");
+    expect(result.organizeDecision).toBe("promotional");
+  });
+
+  it("auto-archives IKEA sender mail", () => {
+    const result = classifyForAdmission({
+      fromRaw: "IKEA <ikea@news.email.ikea.it>",
+      subject: "Le ultime novita IKEA",
+      snippet: "Scopri le nuove offerte e idee per la casa.",
+    });
+
+    expect(result.outcome).toBe("auto-archive");
+    expect(result.organizeDecision).toBe("promotional");
+  });
+
+  it("auto-archives 'A customer saved their research' subject lines", () => {
+    const result = classifyForAdmission({
+      fromRaw: "Platform Notification <updates@example.com>",
+      subject: "A customer saved their research",
+      snippet: "A customer saved their research for later.",
+    });
+
+    expect(result.outcome).toBe("auto-archive");
+    expect(result.organizeDecision).toBe("promotional");
+  });
+
+  it("auto-archives SEO outreach from personal senders", () => {
+    const result = classifyForAdmission({
+      fromRaw: "Parker Sanchez <parkersanchez9dx@gmail.com>",
+      subject: "Quick question",
+      snippet: "Would you like to increase your website traffic? Our SEO strategies can help you rank higher and attract more customers.",
+    });
+
+    expect(result.outcome).toBe("auto-archive");
+    expect(result.organizeDecision).toBe("promotional");
+  });
+
+  it("auto-archives influencer stay-swap outreach", () => {
+    const result = classifyForAdmission({
+      fromRaw: "Travel Creator <creator@example.com>",
+      subject: "Collaboration idea",
+      snippet: "I am an influencer and would love a free stay in exchange for photos and a feature on my blog and YouTube channel.",
+    });
+
+    expect(result.outcome).toBe("auto-archive");
+    expect(result.organizeDecision).toBe("promotional");
+  });
+
   it("auto-archives spam-like mail", () => {
     const result = classifyForAdmission({
       fromRaw: "Scam <promo@example.net>",

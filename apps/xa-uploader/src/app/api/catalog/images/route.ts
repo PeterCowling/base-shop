@@ -6,13 +6,18 @@ import { NextResponse } from "next/server";
 
 import { slugify, splitList } from "@acme/lib/xa/catalogAdminSchema";
 
-import { readCloudDraftSnapshot } from "../../../../lib/catalogDraftContractClient";
+import {
+  CatalogDraftContractError,
+  readCloudDraftSnapshot,
+  writeCloudDraftSnapshot,
+} from "../../../../lib/catalogDraftContractClient";
 import { ABSOLUTE_HTTP_URL_RE } from "../../../../lib/catalogPath";
 import { parseStorefront } from "../../../../lib/catalogStorefront.ts";
 import type { XaCatalogStorefront } from "../../../../lib/catalogStorefront.types";
 import { getMediaBucket } from "../../../../lib/r2Media";
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
+import { uploaderLog } from "../../../../lib/uploaderLogger";
 
 export const runtime = "nodejs";
 
@@ -160,13 +165,13 @@ function buildKeyAliases(params: {
   return aliases;
 }
 
-async function keyIsStillReferenced(params: {
+function keyIsStillReferenced(params: {
   storefront: XaCatalogStorefront;
   key: string;
-}): Promise<boolean> {
-  const drafts = (await readCloudDraftSnapshot(params.storefront)).products;
+  products: { imageFiles?: string }[];
+}): boolean {
   const aliases = buildKeyAliases(params);
-  for (const product of drafts) {
+  for (const product of params.products) {
     const imageFiles = splitList(product.imageFiles ?? "")
       .map((value) => normalizeCatalogPath(value))
       .filter(Boolean);
@@ -226,6 +231,7 @@ export async function POST(request: Request) {
   if (!isUploadFileLike(file)) {
     return withRateHeaders(buildErrorResponse("no_file", 400, "no file field in form data"), limit);
   }
+  uploaderLog("info", "upload_start", { storefront, slug, contentType: file.type ?? "unknown", bytes: file.size });
 
   // File size check
   if (file.size > MAX_IMAGE_BYTES) {
@@ -262,8 +268,10 @@ export async function POST(request: Request) {
     await bucket.put(r2Key, arrayBuffer, {
       httpMetadata: { contentType },
     });
+    uploaderLog("info", "upload_success", { storefront, key: r2Key, bytes: buf.length });
     return withRateHeaders(NextResponse.json({ ok: true, key: r2Key }), limit);
   } catch {
+    uploaderLog("error", "upload_failed", { storefront, errorCode: "upload_failed" });
     return withRateHeaders(buildErrorResponse("upload_failed", 500, "R2 upload failed"), limit);
   }
 }
@@ -293,25 +301,72 @@ export async function DELETE(request: Request) {
   }
 
   const { storefront, key } = deleteParams;
+
+  // 1. Read snapshot once — used for both reference check and fence write
+  let snapshot: Awaited<ReturnType<typeof readCloudDraftSnapshot>>;
   try {
-    const stillReferenced = await keyIsStillReferenced({ storefront, key });
-    if (stillReferenced) {
-      return withRateHeaders(
-        NextResponse.json({ ok: true, deleted: false, skipped: "still_referenced" }),
-        limit,
-      );
-    }
+    snapshot = await readCloudDraftSnapshot(storefront);
   } catch {
+    uploaderLog("error", "image_delete_reference_check_failed", { storefront, key });
     return withRateHeaders(buildErrorResponse("upload_failed", 500, "reference_check_failed"), limit);
   }
 
+  // 2. Check if image is still referenced by any product
+  const stillReferenced = keyIsStillReferenced({ storefront, key, products: snapshot.products });
+  if (stillReferenced) {
+    uploaderLog("info", "image_delete_skipped_referenced", { storefront, key });
+    return withRateHeaders(
+      NextResponse.json({ ok: true, deleted: false, skipped: "still_referenced" }),
+      limit,
+    );
+  }
+
+  // 3. Abort if docRevision is null — fencing is impossible without a stable revision
+  if (snapshot.docRevision === null) {
+    uploaderLog("warn", "image_delete_snapshot_revision_unavailable", { storefront, key });
+    return withRateHeaders(
+      NextResponse.json(
+        { ok: false, error: "upload_failed", reason: "snapshot_revision_unavailable" },
+        { status: 500 },
+      ),
+      limit,
+    );
+  }
+
+  // 4. Write no-op fence update to detect concurrent mutations
+  try {
+    await writeCloudDraftSnapshot({
+      storefront,
+      products: snapshot.products,
+      revisionsById: snapshot.revisionsById,
+      ifMatchDocRevision: snapshot.docRevision,
+    });
+  } catch (error) {
+    if (error instanceof CatalogDraftContractError && error.code === "conflict") {
+      uploaderLog("warn", "image_delete_fence_conflict", { storefront, key });
+      return withRateHeaders(
+        NextResponse.json(
+          { ok: false, error: "concurrent_edit", reason: "snapshot_changed_during_delete", concurrentEdit: true },
+          { status: 409 },
+        ),
+        limit,
+      );
+    }
+    uploaderLog("error", "image_delete_fence_write_failed", { storefront, key });
+    return withRateHeaders(buildErrorResponse("upload_failed", 500, "fence_write_failed"), limit);
+  }
+
+  // 5. Fence passed — proceed to R2 delete (narrow residual window accepted per analysis)
   try {
     await deletePersistedImageKey(key);
+    uploaderLog("info", "image_delete_success", { storefront, key });
     return withRateHeaders(NextResponse.json({ ok: true, deleted: true }), limit);
   } catch (error) {
     if (error instanceof Error && error.message === "media bucket unavailable") {
+      uploaderLog("error", "image_delete_r2_unavailable", { storefront, key });
       return withRateHeaders(buildErrorResponse("r2_unavailable", 503, "media_bucket_unavailable"), limit);
     }
+    uploaderLog("error", "image_delete_r2_failure", { storefront, key });
     return withRateHeaders(buildErrorResponse("upload_failed", 500, "image_delete_failed"), limit);
   }
 }

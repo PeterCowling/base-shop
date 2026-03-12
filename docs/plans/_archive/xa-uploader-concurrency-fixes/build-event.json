@@ -1,0 +1,16 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "xa-uploader-concurrency-fixes",
+  "completed_at": "2026-03-12",
+  "execution_track": "code",
+  "outcome_contract": {
+    "why": "If two people edit the catalog at the same time, product images can be deleted while still in use, and publish status changes can silently fail without anyone knowing.",
+    "intended_outcome_type": "measurable",
+    "intended_outcome_statement": "Image delete TOCTOU window narrowed from unbounded to milliseconds via optimistic concurrency fence; promotion failures surfaced via server-side logging with additive promotionFailed boolean; dead KV mutex code removed.",
+    "source": "operator",
+    "why_source": "operator"
+  },
+  "verdict": "met",
+  "tasks_completed": 5,
+  "tasks_total": 5
+}

@@ -48,9 +48,15 @@ const Chip: FC<ChipProps> = memo(function Chip({ label, color }) {
       : color === "green"
       ? "bg-success-main"
       : "";
+  const foregroundClass =
+    color === "red"
+      ? "text-danger-fg"
+      : color === "green"
+      ? "text-success-fg"
+      : "text-primary-fg";
   return (
     <span
-      className={`${backgroundClass} text-primary-fg px-2 py-1 rounded-lg text-sm`}
+      className={`${backgroundClass} ${foregroundClass} px-2 py-1 rounded-lg text-sm`}
     >
       {label}
     </span>

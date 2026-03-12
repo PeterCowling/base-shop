@@ -42,7 +42,7 @@ function CountInputModalBase({
         <Button
           onClick={onCancel}
           aria-label="Close"
-          className="absolute right-0 top-0 h-7 w-7 rounded-full bg-error-main text-primary-fg transition-opacity hover:opacity-90 focus:outline-none focus-visible:focus:ring-2 focus-visible:focus:ring-error-main"
+          className="absolute right-0 top-0 h-7 w-7 rounded-full bg-error-main text-danger-fg transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-error-main"
         >
           &times;
         </Button>

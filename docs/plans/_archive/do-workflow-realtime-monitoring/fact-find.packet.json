@@ -1,0 +1,162 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "do-workflow-realtime-monitoring",
+  "source_artifact_path": "docs/plans/do-workflow-realtime-monitoring/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-realtime-monitoring/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Right now, if work gets stuck in the queue or errors start piling up, nobody knows until someone manually runs a report. This means problems can sit unnoticed for hours or days. Live monitoring would flag issues as they happen, so they get fixed before they snowball.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Workflow queue health is continuously monitored with automatic alerts when thresholds are breached.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI component — CLI-only health check",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Health check needs clear pass/warning/alert output states",
+      "gap_or_implication": "No output format exists yet",
+      "carry_forward_or_notes": "Define output format in analysis"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Reads local files only, no auth boundary",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "This IS the observability layer — must log its own health check runs",
+      "gap_or_implication": "No health check audit trail exists",
+      "carry_forward_or_notes": "Define where health check results are persisted"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Existing metrics rollup and telemetry tests cover computation; health check wrapper needs new tests",
+      "gap_or_implication": "No tests for the monitoring entry point",
+      "carry_forward_or_notes": "Plan unit tests for health check function"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Consumes existing `MetricsActionRecord` and queue-state schemas",
+      "gap_or_implication": "Health check output schema not defined",
+      "carry_forward_or_notes": "Define health check output contract"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Must handle large queue-state.json (540+ entries) and telemetry.jsonl efficiently; `lp-do-ideas-metrics-runner.ts` already handles missing files gracefully",
+      "gap_or_implication": "Telemetry JSONL will grow unbounded; need to consider read performance",
+      "carry_forward_or_notes": "Assess whether tail-scanning or time-windowed reads are needed"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A",
+      "current_or_option_state": "Additive CLI module, no migration or deploy dependency",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "N/A"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The startup-loop workflow queue has batch-computed metrics, defined alert thresholds, and consecutive-breach detection logic — but all of it runs offline on manual invocation. There is no mechanism to evaluate queue health continuously or notify the operator when thresholds breach. This fact-find investigates what infrastructure exists, what's missing, and what a minimal real-time monitoring layer would need.",
+    "goals": [
+      "Map the existing telemetry, metrics, and alert infrastructure",
+      "Identify the minimum viable monitoring surface (what to check, how often, how to alert)",
+      "Determine whether the existing threshold/alert logic can be reused or needs extension",
+      "Assess feasibility of a lightweight CLI-based health check that can run on a cron"
+    ],
+    "non_goals": [
+      "Building a live dashboard or UI",
+      "Real-time WebSocket/SSE event streaming",
+      "Auto-remediation or auto-scaling of WIP caps",
+      "Monitoring of external services (only internal queue and telemetry)"
+    ],
+    "constraints": [
+      "Platform runs locally / in CI — no persistent server process available for continuous monitoring",
+      "Alert delivery must be lightweight (console output, file-based, or existing MCP tool integration)",
+      "Must not mutate queue state or telemetry as a side effect of monitoring. Health check results may be written to a separate, dedicated output file (not the source data files)."
+    ],
+    "assumptions": [
+      "A cron-scheduled CLI check (e.g. every 10-30 minutes) is sufficient for \"real-time\" monitoring at the current workflow volume",
+      "Existing `lp-do-ideas-metrics-rollup.ts` threshold logic is correct and reusable"
+    ],
+    "key_entry_points": [
+      "`scripts/src/startup-loop/ideas/lp-do-ideas-metrics-rollup.ts` — batch metrics computation with 3 alert thresholds (fan_out, loop_incidence, queue_age_p95)",
+      "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts` — append-only telemetry recording and summarization (718 lines)",
+      "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry-report.ts` — CLI report generator supporting markdown/JSON output (126 lines)",
+      "`scripts/src/startup-loop/ideas/workflow-runtime-token-usage.ts` — runtime token capture with hybrid cascade (745 lines)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis do-workflow-realtime-monitoring`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Metrics rollup functions",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Alert threshold constants",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Consecutive breach detection",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Queue-state.json structure",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Telemetry JSONL format",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Health check output contract",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Scope gap] [Minor]: Output schema not yet defined — deferred to analysis",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Cron scheduling mechanism",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Missing domain] [Minor]: No investigation of cron infrastructure in repo — likely handled outside repo",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

@@ -182,7 +182,6 @@ describe('ChatProvider direct-message guards', () => {
       expect.objectContaining({
         method: 'GET',
         headers: {
-          'X-Prime-Guest-Token': 'token_123',
           'X-Prime-Guest-Booking-Id': 'booking123',
         },
         cache: 'no-store',
@@ -374,7 +373,6 @@ describe('ChatProvider direct-message guards', () => {
         expect.objectContaining({
           method: 'GET',
           headers: {
-            'X-Prime-Guest-Token': 'token_123',
             'X-Prime-Guest-Booking-Id': 'booking123',
           },
           cache: 'no-store',
@@ -485,7 +483,6 @@ describe('ChatProvider direct-message guards', () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-Prime-Guest-Token': 'token_123',
           'X-Prime-Guest-Booking-Id': 'booking123',
         },
         body: JSON.stringify({

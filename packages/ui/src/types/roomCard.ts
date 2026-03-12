@@ -20,6 +20,7 @@ export interface RoomCardPrice {
 export interface RoomCardAction {
   id: string;
   label: string;
+  description?: string;
   onSelect: () => void;
   disabled?: boolean;
 }

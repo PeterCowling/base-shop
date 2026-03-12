@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-inbox-draft-quality-analytics-2026-03-12",
+  "feature_slug": "reception-inbox-draft-quality-analytics",
+  "emitted_at": "2026-03-12T00:00:00.000Z",
+  "why": "Staff and operators have no way to tell whether the AI email drafts are getting better or worse over time. They cannot see how long it takes to resolve a guest enquiry, how many drafts pass quality checks, or whether email volume is trending up. Without this visibility, problems go unnoticed until a guest complains.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "A validated next action exists for inbox analytics, with required metrics, computation approach, and UI surface identified.",
+    "source": "auto"
+  }
+}

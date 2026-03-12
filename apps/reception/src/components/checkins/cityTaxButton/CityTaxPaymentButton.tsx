@@ -257,9 +257,9 @@ function CityTaxPaymentButton({ booking }: CityTaxPaymentButtonProps) {
     return amount > 0 ? formatEuro(amount) : "Paid";
   };
   // Style classes
-  const activeClass = "bg-primary-main/100 hover:opacity-90 text-primary-fg/100";
+  const activeClass = "bg-primary-main hover:opacity-90 text-primary-fg";
   const disabledClass =
-    "bg-success-main/100 text-foreground cursor-not-allowed opacity-70";
+    "bg-success-main text-success-fg cursor-not-allowed opacity-70";
   const baseButtonClass =
     "h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors text-xs font-medium";
 

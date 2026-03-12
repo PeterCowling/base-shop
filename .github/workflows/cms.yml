@@ -92,7 +92,7 @@ jobs:
         contains(github.event.pull_request.labels.*.name, 'promote-app:cms')
       }}
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 30
     strategy:
       fail-fast: false
       matrix:

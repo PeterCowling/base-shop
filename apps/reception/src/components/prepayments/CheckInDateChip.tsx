@@ -20,7 +20,7 @@ const CheckInDateChip: React.FC<CheckInDateChipProps> = ({ checkInDate }) => {
   }
 
   const chipStyle = isUpcoming
-    ? "bg-warning text-primary-fg"
+    ? "bg-warning text-warning-fg"
     : "bg-primary text-primary-fg";
 
   return (

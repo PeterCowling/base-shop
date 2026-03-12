@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "5ece48c1b9",
+  "feature_slug": "reception-remaining-theming-overhaul",
+  "emitted_at": "2026-03-12T08:20:00.000Z",
+  "why": "Staff-facing screens use wrong foreground tokens on coloured backgrounds, redundant opacity syntax, and broken focus ring selectors. This makes buttons and badges harder to read and keyboard focus invisible on daily-use interfaces.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All remaining reception components use correct semantic foreground tokens on status-coloured backgrounds, with valid focus ring syntax and no redundant opacity modifiers.",
+    "source": "operator"
+  }
+}

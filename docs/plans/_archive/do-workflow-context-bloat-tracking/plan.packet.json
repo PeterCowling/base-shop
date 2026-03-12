@@ -1,0 +1,160 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "do-workflow-context-bloat-tracking",
+  "source_artifact_path": "docs/plans/do-workflow-context-bloat-tracking/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-context-bloat-tracking/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Each workflow step loads skill modules that consume AI capacity. Without knowing which ones are the heaviest, it's impossible to spot waste or catch modules that are silently growing. Per-module tracking would reveal where to focus efficiency improvements and catch bloat before it drives up costs.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Per-module context consumption is tracked in telemetry records and surfaced in reports, enabling targeted efficiency improvements.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: CLI-only tooling, no visual component",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required: report format extended with per-module columns",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Markdown + JSON output",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A: reads local files only, no auth boundary",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required: core improvement — per-module granularity in JSONL records",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "New field in telemetry records",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required: new tests for builder, dedupe regression, report rendering, backwards compat",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "TC contracts below",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required: `WorkflowStepTelemetryRecord` type extension, dedupe key update, JSON report envelope",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Schema doc update in TASK-02",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A: no extra I/O — data already read in existing loop",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Negligible overhead",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required: old records handled gracefully (`undefined` → skip in report)",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Additive field; no migration",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Add per-module context byte tracking to the workflow telemetry system. The existing recorder aggregates all context file sizes into a single `context_input_bytes` number, discarding per-file data. This plan extends the record type with `per_module_bytes?: Record<string, number>`, updates the dedupe key to include it, and adds a per-module breakdown section to the report generator. Two S-effort tasks in sequence: record layer first (type + builder + dedupe key + tests), then report layer (report extension + schema doc + tests).",
+    "goals": [
+      "Track per-module context consumption in each telemetry record",
+      "Surface per-module data in the Markdown/JSON report",
+      "Maintain backwards compatibility with old JSONL records"
+    ],
+    "non_goals": [
+      "Time-bucketed trend dashboards or UI visualizations",
+      "Changes to how skills pass `--module` flags",
+      "Migration of historical JSONL records",
+      "Per-file tracking for non-module context (skill SKILL.md, input paths, artifact)"
+    ],
+    "constraints": [
+      "Must not break existing JSONL consumers (health check, summary, report)",
+      "`computeTelemetryKey()` must include new field to prevent dedupe collisions",
+      "Old records without the new field must be handled gracefully",
+      "Module identity must be stable — keyed on resolved repo-relative paths at record time",
+      "Health-check output (`WorkflowTelemetrySummary`) must not be bloated with per-module aggregates"
+    ],
+    "assumptions": [
+      "Module file sizes are reasonable for in-memory processing (largest ~10KB)",
+      "The existing `readPathMetrics()` loop already reads each file — no extra I/O needed",
+      "Schema doc `lp-do-ideas-telemetry.schema.md` must be updated alongside schema changes"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Option B — `per_module_bytes?: Record<string, number>` keyed by resolved repo-relative module paths",
+      "Empty `{}` when zero modules; field absent/`undefined` on legacy records (semantically distinct)",
+      "Per-module breakdown added to report generator only; `WorkflowTelemetrySummary` unchanged",
+      "Reporter's JSON mode adds `per_module_breakdown` envelope key alongside existing summary",
+      "Why planning is not reopening option selection:",
+      "Analysis settled this decisively through 3 rounds of critique (final score 9/10). Option A rejected for module identity problem, Option C rejected for violating point-in-time measurement."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Extend record type, builder, and dedupe key with per_module_bytes",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts` and `scripts/src/startup-loop/__tests__/lp-do-ideas-workflow-telemetry.test.ts`",
+        "affects": "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-workflow-telemetry.test.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add per-module breakdown to report generator and update schema doc",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry-report.ts` and `docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md`",
+        "affects": "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry-report.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-workflow-telemetry-report.test.ts` (new file), `docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

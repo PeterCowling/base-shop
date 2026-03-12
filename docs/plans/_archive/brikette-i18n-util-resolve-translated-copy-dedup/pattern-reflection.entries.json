@@ -1,0 +1,10 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-11T08:22:04.866Z",
+  "plan_slug": "brikette-i18n-util-resolve-translated-copy-dedup",
+  "review_cycle_key": "brikette-i18n-util-resolve-translated-copy-dedup",
+  "source_path": "docs/plans/brikette-i18n-util-resolve-translated-copy-dedup/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": []
+}

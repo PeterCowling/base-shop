@@ -173,13 +173,15 @@ function ApartmentBookContent({ lang }: Props) {
             onPaxChange={(next) => setPax(next === 3 ? 3 : 2)}
             minPax={2}
             maxPax={3}
-            stayHelperText={tModals("date.stayHelper") as string}
-            clearDatesText={tModals("date.clearDates") as string}
-            checkInLabelText={tModals("booking.checkInLabel") as string}
-            checkOutLabelText={tModals("booking.checkOutLabel") as string}
-            guestsLabelText={tBook("apartment.guestLabel") as string}
-            decreaseGuestsAriaLabel={bookingControlLabels.decreaseGuestsAriaLabel}
-            increaseGuestsAriaLabel={bookingControlLabels.increaseGuestsAriaLabel}
+            labels={{
+              stayHelper: tModals("date.stayHelper") as string,
+              clearDates: tModals("date.clearDates") as string,
+              checkIn: tModals("booking.checkInLabel") as string,
+              checkOut: tModals("booking.checkOutLabel") as string,
+              guests: tBook("apartment.guestLabel") as string,
+              decreaseGuests: bookingControlLabels.decreaseGuestsAriaLabel,
+              increaseGuests: bookingControlLabels.increaseGuestsAriaLabel,
+            }}
           />
           <p className="mt-3 text-sm text-brand-text/60">
             {tBook("apartment.nightsSummary", { count: nights })}

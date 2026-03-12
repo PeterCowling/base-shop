@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "brikette-booking-component-prop-sprawl-20260311",
+  "feature_slug": "brikette-booking-component-prop-sprawl",
+  "emitted_at": "2026-03-11T00:00:00.000Z",
+  "why": "Flat 14-16 prop components force every call site to enumerate the same 7-10 string labels individually, creating repetition and misconfiguration risk. Grouping labels into typed objects reduces call-site noise and makes the component contract self-documenting.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "BookingCalendarPanel and OctorateCustomPageShell each accept a labels typed bag; call sites pass a single object rather than 7-10 individual strings. All call sites updated, typecheck passes.",
+    "source": "auto"
+  }
+}

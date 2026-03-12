@@ -25,7 +25,7 @@ const TimeElapsedChip: FC<TimeElapsedChipProps> = ({
   } else if (currentCode === 2 || currentCode === 3) {
     // Reminder stages: overdue ≥24h = warning, else ok
     if (hoursElapsed >= 24) {
-      chipColorClasses = "bg-warning text-primary-fg";
+      chipColorClasses = "bg-warning text-warning-fg";
     } else {
       chipColorClasses = "bg-primary-soft border border-primary-main/30 text-primary-main";
     }

@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
-import { getNamespaceBundles, getTranslations,toAppLanguage } from "@/app/_lib/i18n-server";
+import { getNamespaceBundles, getTranslations, toAppLanguage } from "@/app/_lib/i18n-server";
 import { buildAppMetadata } from "@/app/_lib/metadata";
 import { generateLangParams } from "@/app/_lib/static-params";
 import { OG_IMAGE } from "@/utils/headConstants";
@@ -54,6 +54,7 @@ export default async function HomePage({ params }: Props) {
     "ratingsBar",
     "modals",
     "_tokens",
+    "apartmentPage",
     "roomsPage",
     "guides",
   ]);

@@ -1,0 +1,153 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "do-workflow-realtime-monitoring",
+  "source_artifact_path": "docs/plans/do-workflow-realtime-monitoring/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-realtime-monitoring/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Right now, if work gets stuck in the queue or errors start piling up, nobody knows until someone manually runs a report. This means problems can sit unnoticed for hours or days. Live monitoring would flag issues as they happen, so they get fixed before they snowball.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Workflow queue health is continuously monitored with automatic alerts when thresholds are breached.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: CLI-only, no visual component",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required: 3 exit codes (0=healthy/warning, 1=alert, 2=error) + structured JSON per metric",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Define `HealthCheckResult` type",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A: reads local files only, no auth boundary",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required: stdout output serves as audit trail; optional `--output` flag for file persistence",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "gitignored output path",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required: unit tests for orchestration + exit code semantics",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Fixture-based tests",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required: `HealthCheckResult` output type consuming `MetricsRunnerResult` + `WorkflowStepTelemetrySummary`",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "New type definition",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required: explicit file-existence checks before calling metrics-runner (which silently returns `[]` on missing files); handle large queue-state.json + telemetry.jsonl",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Health check owns the error detection layer",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A: additive module, rollback = remove pnpm script",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Add a CLI health check that evaluates workflow queue health by calling existing `runMetricsRollup()` (queue/cycle metrics with alerts) and `summarizeWorkflowStepTelemetry()` (workflow-step metrics). The CLI outputs structured JSON to stdout, exits with code 0 (healthy), 1 (alerts present), or 2 (error), and includes a pnpm script entry for cron scheduling. This is a thin wrapper (~150-200 lines) over existing, tested infrastructure. Note: the health check is useful once cycle telemetry snapshots exist in the telemetry JSONL; when no cycle data is present, the metrics-runner returns `ready: fal",
+    "goals": [
+      "Surface queue health alerts automatically instead of manual report invocation",
+      "Reuse existing metrics-runner and telemetry-summary infrastructure",
+      "Provide cron-friendly exit codes for automated monitoring"
+    ],
+    "non_goals": [
+      "Dashboard or UI",
+      "MCP tool integration (follow-on enhancement)",
+      "Auto-remediation"
+    ],
+    "constraints": [
+      "Must not mutate source data files (queue-state.json, telemetry.jsonl)",
+      "Output to stdout primary; optional gitignored file for audit trail",
+      "No persistent server process"
+    ],
+    "assumptions": [
+      "Existing alert thresholds are correct and reusable",
+      "Current telemetry JSONL size is manageable for full reads"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "New `workflow-health-check.ts` CLI module calling two existing public functions, outputting structured JSON with exit code semantics",
+      "Why planning is not reopening option selection:",
+      "Analysis decisively chose Option A with clear rationale; no operator questions remain"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Implement health check function and CLI",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`scripts/src/startup-loop/ideas/workflow-health-check.ts` + pnpm script entry in `scripts/package.json`",
+        "affects": "`scripts/src/startup-loop/ideas/workflow-health-check.ts`, `scripts/package.json`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add unit tests for health check",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`scripts/src/startup-loop/__tests__/workflow-health-check.test.ts`",
+        "affects": "`scripts/src/startup-loop/__tests__/workflow-health-check.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

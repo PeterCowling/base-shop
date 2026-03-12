@@ -2,6 +2,8 @@
   "name": "scripts",
   "private": true,
   "scripts": {
+    "validate-dev-ports": "node --import tsx src/ci/dev-port-registry.ts",
+    "write-dev-ports": "node --import tsx src/ci/dev-port-registry.ts --write-doc",
     "classify-deploy-change": "node --import tsx src/ci/classify-deploy-change.ts",
     "classify-paths": "node ci/path-classifier.cjs",
     "collect-workflow-metrics": "node --import tsx src/ci/collect-workflow-metrics.ts",
@@ -33,6 +35,8 @@
     "startup-loop:lp-do-ideas-agent-session-bridge": "node --import tsx src/startup-loop/ideas/lp-do-ideas-agent-session-bridge.ts",
     "startup-loop:lp-do-ideas-build-origin-bridge": "node --import tsx src/startup-loop/ideas/lp-do-ideas-build-origin-bridge.ts",
     "startup-loop:lp-do-ideas-historical-carryover-bridge": "node --import tsx src/startup-loop/ideas/lp-do-ideas-historical-carryover-bridge.ts",
+    "startup-loop:lp-do-ideas-record-workflow-telemetry": "node --import tsx src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts",
+    "startup-loop:lp-do-ideas-report-workflow-telemetry": "node --import tsx src/startup-loop/ideas/lp-do-ideas-workflow-telemetry-report.ts",
     "startup-loop:lp-do-ideas-synthetic-dispatch-backfill": "node --import tsx src/startup-loop/ideas/lp-do-ideas-synthetic-dispatch-backfill.ts",
     "startup-loop:lp-do-ideas-completion-reconcile": "node --import tsx src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts",
     "startup-loop:ideas-work-package-candidates": "node --import tsx src/startup-loop/ideas/lp-do-ideas-work-packages.ts",
@@ -52,6 +56,7 @@
     "startup-loop:hbag-pdp-funnel-feed": "node --import tsx src/startup-loop/diagnostics/hbag-pdp-funnel-feed.ts",
     "startup-loop:results-review-extract": "node --import tsx src/startup-loop/build/lp-do-build-results-review-extract.ts",
     "startup-loop:pattern-reflection-extract": "node --import tsx src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts",
+    "startup-loop:health-check": "node --import tsx src/startup-loop/ideas/workflow-health-check.ts",
     "reception:blind-mode-variance-report": "node --import tsx src/reception/blind-mode-variance-report.ts",
     "prime:apply-zone-hardening": "node --import tsx src/ops/apply-prime-zone-hardening.ts"
   },

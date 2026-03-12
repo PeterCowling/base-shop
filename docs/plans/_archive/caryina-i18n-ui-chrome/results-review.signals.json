@@ -1,0 +1,15 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-12T10:05:41.157Z",
+  "plan_slug": "caryina-i18n-ui-chrome",
+  "review_cycle_key": "caryina-i18n-ui-chrome",
+  "source_path": "scripts/docs/plans/caryina-i18n-ui-chrome/results-review.user.md",
+  "build_origin_status": "source_missing",
+  "failures": [
+    {
+      "code": "source_missing",
+      "message": "scripts/docs/plans/caryina-i18n-ui-chrome/results-review.user.md not found"
+    }
+  ],
+  "items": []
+}

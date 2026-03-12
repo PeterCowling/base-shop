@@ -163,21 +163,18 @@ function buildNavLink(targetPath: string, outputDir: string): string {
 function buildNavHtml(outputPath: string, navMode: RenderNavMode): string {
   const outputDir = path.dirname(outputPath);
   const businessOsDir = path.resolve("docs/business-os");
-  const workflowHref = buildNavLink(path.join(businessOsDir, "startup-loop-workflow.user.html"), outputDir);
   const loopFilesHref = buildNavLink(path.join(businessOsDir, "startup-loop-files.user.html"), outputDir);
   const fileTypesHref = buildNavLink(path.join(businessOsDir, "startup-loop-file-types.user.html"), outputDir);
   const outputRegistryHref = buildNavLink(
     path.join(businessOsDir, "startup-loop-output-registry.user.html"),
     outputDir
   );
-  const ideasHref = buildNavLink(path.join(businessOsDir, "ideas.user.html"), outputDir);
   const processHref = buildNavLink(path.join(businessOsDir, "process-improvements.user.html"), outputDir);
   const followUpHref = buildNavLink(path.join(businessOsDir, "follow-up.user.html"), outputDir);
 
   const links =
     navMode === "self-improving"
       ? [
-          `<a href="${workflowHref}">Workflow</a>`,
           `<a href="${loopFilesHref}">Loop Files</a>`,
           `<a href="${fileTypesHref}">File Types</a>`,
           `<a href="${outputRegistryHref}">Output Registry</a>`,
@@ -185,11 +182,9 @@ function buildNavHtml(outputPath: string, navMode: RenderNavMode): string {
           `<a href="${processHref}">Process</a>`,
         ]
       : [
-          `<a href="${workflowHref}">Workflow</a>`,
           `<a href="${loopFilesHref}">Loop Files</a>`,
           `<a href="${fileTypesHref}">File Types</a>`,
           `<a href="${outputRegistryHref}">Output Registry</a>`,
-          `<a href="${ideasHref}">Ideas</a>`,
           `<a href="${processHref}">Process</a>`,
           `<a href="${followUpHref}">Follow-up</a>`,
         ];
@@ -199,7 +194,7 @@ function buildNavHtml(outputPath: string, navMode: RenderNavMode): string {
       ? `(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){var href=a.getAttribute("href")||"";if(href.charAt(0)==="#"&&location.hash===href)a.classList.add("sl-on");else if(href.charAt(0)!=="#"&&href.split("/").pop()===p&&location.hash==="")a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()`
       : `(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()`;
 
-  return `<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span>${links.join("")}<button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>${activeScript}</script></nav>`;
+  return `<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-inner{position:relative;display:flex;align-items:center;justify-content:center;gap:0;min-width:max-content;width:100%;max-width:1200px}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><div class="sl-inner"><span class="sl-brand">Startup Loop</span>${links.join("")}<button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button></div><script>${activeScript}</script></nav>`;
 }
 
 function applyNavAnchors(html: string, navMode: RenderNavMode): string {

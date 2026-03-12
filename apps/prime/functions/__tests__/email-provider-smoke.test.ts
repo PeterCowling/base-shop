@@ -71,7 +71,9 @@ function createArrival48HoursQueueRecord() {
 
 describe('email provider smoke spike', () => {
   const getSpy = jest.spyOn(FirebaseRest.prototype, 'get');
+  const getWithEtagSpy = jest.spyOn(FirebaseRest.prototype, 'getWithEtag');
   const setSpy = jest.spyOn(FirebaseRest.prototype, 'set');
+  const setIfMatchSpy = jest.spyOn(FirebaseRest.prototype, 'setIfMatch');
   const updateSpy = jest.spyOn(FirebaseRest.prototype, 'update');
 
   beforeEach(() => {
@@ -88,12 +90,26 @@ describe('email provider smoke spike', () => {
       return null;
     });
     setSpy.mockResolvedValue(undefined);
+    getWithEtagSpy.mockImplementation(async (path: string) => ({
+      data: await getSpy(path),
+      etag: 'test-etag',
+    }));
+    setIfMatchSpy.mockImplementation(async (_path: string, data: unknown) => {
+      await setSpy('messagingQueue/msg_smoke_123', data);
+      return {
+        applied: true,
+        data,
+        etag: 'test-etag-2',
+      };
+    });
     updateSpy.mockResolvedValue(undefined);
   });
 
   afterAll(() => {
     getSpy.mockRestore();
+    getWithEtagSpy.mockRestore();
     setSpy.mockRestore();
+    setIfMatchSpy.mockRestore();
     updateSpy.mockRestore();
   });
 

@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "xa-uploader-security-hardening-2026-03-12",
+  "feature_slug": "xa-uploader-security-hardening",
+  "emitted_at": "2026-03-12T12:00:00.000Z",
+  "why": "Right now, if someone accidentally deletes the IP allowlist setting, the entire admin tool becomes publicly accessible with no warning. Session tokens also cannot be revoked before their 7-day expiry, meaning a stolen cookie remains valid for up to a week.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "measurable",
+    "statement": "IP allowlist rejects by default when unconfigured; session revocation mechanism exists via KV-backed minimum-issuedAt check; session verification is fully timing-safe.",
+    "source": "operator"
+  }
+}

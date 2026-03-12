@@ -1,0 +1,40 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260312160000-0005",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "artifact_id": null,
+  "before_sha": null,
+  "after_sha": "operator-idea-20260312-send-telemetry",
+  "root_event_id": "operator:BRIK:PRODUCTS:reception-inbox-send-telemetry:20260312",
+  "anchor_key": "reception-inbox-send-telemetry",
+  "cluster_key": "BRIK:PRODUCTS:reception-inbox-send-telemetry:operator:20260312",
+  "cluster_fingerprint": "reception-inbox-send-telemetry-20260312",
+  "lineage_depth": 0,
+  "area_anchor": "Brikette — No visibility into how often draft sends fail or why",
+  "location_anchors": [
+    "apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts",
+    "apps/reception/src/lib/inbox/repositories.server.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "When a draft send fails (Gmail API error, optimistic lock conflict, etc.), the failure is returned to the client but not recorded anywhere for later analysis. There's no way to see patterns in send failures over time.",
+  "next_scope_now": "Record send failures as thread events with error category and detail, enabling failure pattern analysis via the analytics endpoint.",
+  "recommended_route": "lp-do-build",
+  "status": "micro_build_ready",
+  "priority": "P3",
+  "confidence": 0.9,
+  "evidence_refs": [
+    "operator-stated: no telemetry for failed draft sends",
+    "apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts",
+    "coverage-hint: observability"
+  ],
+  "created_at": "2026-03-12T16:00:00.000Z",
+  "queue_state": "enqueued",
+  "why": "When sending a draft reply fails, staff see the error but there's no record kept. Over time, patterns in failures (like a specific type of email always failing) can't be spotted because the data isn't tracked.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Send failures are recorded as thread events, enabling failure pattern visibility through the analytics dashboard.",
+    "source": "auto"
+  }
+}

@@ -16,19 +16,19 @@ jest.mock("../useCatalogConsole.client", () => ({
 }));
 
 jest.mock("../CatalogLoginForm.client", () => ({
-  CatalogLoginForm: () => <div data-testid="catalog-login-form" />,
+  CatalogLoginForm: () => <div data-cy="catalog-login-form" />,
 }));
 
 jest.mock("../CatalogProductForm.client", () => ({
-  CatalogProductForm: () => <div data-testid="catalog-product-form" />,
+  CatalogProductForm: () => <div data-cy="catalog-product-form" />,
 }));
 
 jest.mock("../EditProductFilterSelector.client", () => ({
-  EditProductFilterSelector: () => <div data-testid="edit-filter-selector" />,
+  EditProductFilterSelector: () => <div data-cy="edit-filter-selector" />,
 }));
 
 jest.mock("../CurrencyRatesPanel.client", () => ({
-  CurrencyRatesPanel: () => <div data-testid="currency-rates-panel" />,
+  CurrencyRatesPanel: () => <div data-cy="currency-rates-panel" />,
 }));
 
 function buildConsoleState(overrides?: Record<string, unknown>) {

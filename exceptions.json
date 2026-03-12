@@ -31,6 +31,27 @@
       "expires": "2026-12-31",
       "notes": "Automation status route filesystem and non-UI SQL probe exceptions."
     },
+    "BOS-NAV-101": {
+      "allow": [
+        "apps/business-os/src/components/navigation/NavigationHeader.tsx"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Business OS internal navigation copy pending i18n extraction."
+    },
+    "BOS-PI-101": {
+      "allow": [
+        "apps/business-os/src/app/process-improvements/page.tsx"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Business OS process improvements inbox page copy pending i18n extraction."
+    },
+    "BOS-PI-102": {
+      "allow": [
+        "apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Business OS process improvements inbox component copy pending i18n extraction."
+    },
     "BOS-IDEAS-101": {
       "allow": [
         "apps/business-os/src/app/ideas/page.tsx"
@@ -108,7 +129,7 @@
     },
     "BRIK-2161": {
       "allow": [
-        "apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx"
+        "apps/brikette/src/app/*/dorms/RoomsPageContent.tsx"
       ],
       "expires": "2026-12-31",
       "notes": "Dorm booking query synchronization intentionally runs from resolved query fields only; hook dependency follow-up tracked separately."

@@ -324,22 +324,40 @@ function RoomsSection({
               ROOM_DROPDOWN_NAMES[room.id] ?? "Room"
             );
             const nonRefundableLabel = resolveTranslatedCopy(
-              t("checkRatesNonRefundable", { defaultValue: "Non-Refundable Rates" }),
-              "Non-Refundable Rates"
+              t("ctaSuffix.nonRefundable", { defaultValue: "Non Refundable" }),
+              resolveTranslatedCopy(
+                t("checkRatesNonRefundable", { defaultValue: "Non Refundable" }),
+                "Non Refundable"
+              )
             );
             const flexibleLabel = resolveTranslatedCopy(
-              t("checkRatesFlexible", { defaultValue: "Flexible Rates" }),
-              "Flexible Rates"
+              t("ctaSuffix.flexible", { defaultValue: "Flexible" }),
+              resolveTranslatedCopy(
+                t("checkRatesFlexible", { defaultValue: "Flexible" }),
+                "Flexible"
+              )
             );
             const checkRatesSingleLabel = resolveTranslatedCopy(
               t("checkRatesSingle", { defaultValue: "Check Rates" }),
               "Check Rates"
             );
+            const nonRefundableDescription = resolveTranslatedCopy(
+              t("ratePlanDescriptions.nonRefundable", {
+                defaultValue: "Pay in full today. No free cancellation.",
+              }),
+              "Pay in full today. No free cancellation."
+            );
+            const flexibleDescription = resolveTranslatedCopy(
+              t("ratePlanDescriptions.flexible", {
+                defaultValue: "Pay later. Free cancellation up to 3 days before arrival.",
+              }),
+              "Pay later. Free cancellation up to 3 days before arrival."
+            );
             const openBooking = (rateType: "nonRefundable" | "refundable") => {
               const plan = rateType === "nonRefundable" ? "nr" : "flex";
               onRoomSelect?.({ roomSku: room.id, plan, index, itemListId });
               // Booking modal removed (TASK-24). Navigation is handled by the app layer
-              // via RoomCard props (brikette: TASK-27 direct Octorate link).
+              // via RoomCard props (brikette now routes through the secure-booking handoff).
             };
             return (
               <RoomCard
@@ -354,8 +372,18 @@ function RoomsSection({
                   singleCtaMode
                     ? [{ id: "nr", label: checkRatesSingleLabel, onSelect: () => openBooking("nonRefundable") }]
                     : [
-                        { id: "nr", label: nonRefundableLabel, onSelect: () => openBooking("nonRefundable") },
-                        { id: "flex", label: flexibleLabel, onSelect: () => openBooking("refundable") },
+                        {
+                          id: "nr",
+                          label: nonRefundableLabel,
+                          description: nonRefundableDescription,
+                          onSelect: () => openBooking("nonRefundable"),
+                        },
+                        {
+                          id: "flex",
+                          label: flexibleLabel,
+                          description: flexibleDescription,
+                          onSelect: () => openBooking("refundable"),
+                        },
                       ]
                 }
                 price={roomPrices?.[room.id]}

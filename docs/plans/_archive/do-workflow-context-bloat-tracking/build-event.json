@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "do-workflow-context-bloat-tracking-build-2026-03-12",
+  "feature_slug": "do-workflow-context-bloat-tracking",
+  "emitted_at": "2026-03-12T12:10:00.000Z",
+  "why": "Each workflow step loads skill modules that consume AI capacity. Without knowing which ones are the heaviest, it's impossible to spot waste or catch modules that are silently growing. Per-module tracking would reveal where to focus efficiency improvements and catch bloat before it drives up costs.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Per-module context consumption is tracked in telemetry records and surfaced in reports, enabling targeted efficiency improvements.",
+    "source": "operator"
+  }
+}

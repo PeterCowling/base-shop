@@ -1,782 +1,513 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HEAD — Naming Shortlist R4 (2026-02-21)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-<style>
-  :root {
-    --accent: #4e7a35;
-    --accent-light: #6a9e4a;
-    --accent-pale: #edf4e8;
-    --accent-mid: #c6ddb8;
-    --bg: #f8faf6;
-    --card: #ffffff;
-    --border: #d4e4c8;
-    --text: #1e2a18;
-    --text-soft: #4f6644;
-    --text-muted: #7a9168;
-    --score-25: #2d6a1e;
-    --score-24: #4e7a35;
-    --score-23: #7aaa5a;
-    --territory-mattina: #e8a22a;
-    --territory-cura: #c05080;
-    --territory-attiva: #2e86ab;
-    --territory-artigianato: #a0522d;
-    --territory-quieta: #7b5ea7;
-  }
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HEAD Naming Shortlist — Round 4 (2026-02-21)</title>
+  <style>
+    /* ── Defaults (overridden when palette CSS is injected) ── */
+    :root {
+      --bg: #ffffff;
+      --surface: #f5f8fb;
+      --text: #101418;
+      --text-muted: #5a6570;
+      --border: #d9e0e7;
+      --accent: #0b63ce;
+      --accent-soft: #e8f0fa;
+      --code-bg: #f5f8fb;
+      --code-border: #d9e0e7;
+      --radius: 6px;
+      --radius-lg: 10px;
+    }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* ── Palette (substituted by render pipeline — overrides defaults above) ── */
+    :root {
+  --bg:#f9f8f6;--surface:#ffffff;--border:#e4e2de;--border-soft:#eeece9;
+  --text:#1a1918;--text-muted:#6b6762;--accent:#2d6a4f;--accent-soft:#e8f4ee;
+  --warn:#92400e;--warn-soft:#fef3c7;--danger:#991b1b;--danger-soft:#fee2e2;
+  --code-bg:#f3f1ee;--code-border:#dbd9d4;--radius:6px;--radius-lg:10px;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1a1918;--surface:#242220;--border:#3d3a37;--border-soft:#2e2c2a;
+  --text:#f5f3f0;--text-muted:#a39e98;--accent:#52b788;--accent-soft:#1e3d30;
+  --warn:#fbbf24;--warn-soft:#27201a;--danger:#f87171;--danger-soft:#3b1515;
+  --code-bg:#2e2c2a;--code-border:#3d3a37;
+}}
 
-  body {
-    font-family: 'DM Sans', system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.55;
-    font-size: 15px;
-  }
-
-  /* ── Header ── */
-  .page-header {
-    background: var(--accent);
-    color: #fff;
-    padding: 28px 40px 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    flex-wrap: wrap;
-    gap: 12px;
-  }
-  .page-header h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.02em; }
-  .page-header .meta { font-size: 0.82rem; opacity: 0.8; line-height: 1.8; }
-  .page-header .badge-r4 {
-    background: rgba(255,255,255,0.2);
-    border-radius: 6px;
-    padding: 3px 10px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  /* ── Notice bar ── */
-  .notice-bar {
-    background: #fff8e1;
-    border-bottom: 1px solid #f0d060;
-    color: #5a4400;
-    font-size: 0.8rem;
-    padding: 8px 40px;
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
-
-  /* ── Layout ── */
-  .content { max-width: 1180px; margin: 0 auto; padding: 28px 32px 60px; }
-
-  /* ── Stats row ── */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 12px;
-    margin-bottom: 24px;
-  }
-  .stat-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    text-align: center;
-  }
-  .stat-card .num { font-size: 2rem; font-weight: 700; color: var(--accent); line-height: 1; }
-  .stat-card .lbl { font-size: 0.73rem; color: var(--text-soft); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
-
-  /* ── Charts ── */
-  .charts-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-  @media (max-width: 700px) { .charts-row { grid-template-columns: 1fr; } }
-  .chart-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 24px;
-  }
-  .chart-card h3 { font-size: 0.82rem; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 14px; }
-  .chart-wrap { position: relative; height: 180px; }
-
-  /* ── Score key ── */
-  .score-key {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 18px 24px;
-    margin-bottom: 20px;
-  }
-  .score-key h3 { font-size: 0.82rem; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
-  .key-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px 20px; }
-  .key-item { display: flex; align-items: center; gap: 8px; font-size: 0.84rem; }
-  .key-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
-
-  /* ── Territory legend ── */
-  .territory-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
-  .t-chip {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: var(--card); border: 1px solid var(--border);
-    border-radius: 20px; padding: 4px 12px; font-size: 0.78rem; font-weight: 500;
-    cursor: pointer; transition: all 0.15s;
-    user-select: none;
-  }
-  .t-chip:hover { box-shadow: 0 1px 4px rgba(0,0,0,0.12); }
-  .t-chip.active { color: #fff; border-color: transparent; }
-  .t-chip .t-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .t-chip[data-t="all"] .t-dot { background: var(--accent); }
-  .t-chip[data-t="all"].active { background: var(--accent); }
-  .t-chip[data-t="mattina"] .t-dot { background: var(--territory-mattina); }
-  .t-chip[data-t="mattina"].active { background: var(--territory-mattina); }
-  .t-chip[data-t="cura"] .t-dot { background: var(--territory-cura); }
-  .t-chip[data-t="cura"].active { background: var(--territory-cura); }
-  .t-chip[data-t="attiva"] .t-dot { background: var(--territory-attiva); }
-  .t-chip[data-t="attiva"].active { background: var(--territory-attiva); }
-  .t-chip[data-t="artigianato"] .t-dot { background: var(--territory-artigianato); }
-  .t-chip[data-t="artigianato"].active { background: var(--territory-artigianato); }
-  .t-chip[data-t="quieta"] .t-dot { background: var(--territory-quieta); }
-  .t-chip[data-t="quieta"].active { background: var(--territory-quieta); }
-
-  /* ── Main table ── */
-  .table-wrap {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    margin-bottom: 24px;
-  }
-  table { width: 100%; border-collapse: collapse; }
-  thead { background: var(--accent-pale); }
-  th {
-    text-align: left; padding: 11px 14px;
-    font-size: 0.73rem; font-weight: 600;
-    color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em;
-    border-bottom: 1px solid var(--border);
-  }
-  th.center { text-align: center; }
-  tbody tr { transition: background 0.1s; }
-  tbody tr:hover { background: var(--accent-pale); }
-  tbody tr + tr { border-top: 1px solid #f0f5ec; }
-  td { padding: 11px 14px; vertical-align: middle; }
-  td.center { text-align: center; }
-
-  .rank { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
-  .name-cell { display: flex; align-items: center; gap: 10px; }
-  .name-text { font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; }
-  .domain-link {
-    font-size: 0.73rem; color: var(--text-muted);
-    text-decoration: none; font-family: monospace;
-  }
-  .domain-link:hover { color: var(--accent); text-decoration: underline; }
-
-  .score-badge {
-    display: inline-block; border-radius: 6px; padding: 3px 10px;
-    font-size: 0.88rem; font-weight: 700; color: #fff; min-width: 38px; text-align: center;
-  }
-  .score-25 { background: var(--score-25); }
-  .score-24 { background: var(--score-24); }
-  .score-23 { background: var(--score-23); }
-
-  .dim { font-size: 0.82rem; color: var(--text); text-align: center; }
-
-  .pattern-tag {
-    display: inline-block; font-size: 0.7rem; font-weight: 600;
-    border-radius: 4px; padding: 2px 7px; letter-spacing: 0.04em;
-    background: var(--accent-pale); color: var(--accent); border: 1px solid var(--accent-mid);
-  }
-
-  .t-bar {
-    display: inline-block; border-radius: 4px; padding: 2px 9px;
-    font-size: 0.72rem; font-weight: 500; color: #fff; white-space: nowrap;
-  }
-  .t-mattina { background: var(--territory-mattina); }
-  .t-cura { background: var(--territory-cura); }
-  .t-attiva { background: var(--territory-attiva); }
-  .t-artigianato { background: var(--territory-artigianato); }
-  .t-quieta { background: var(--territory-quieta); }
-
-  .prov { font-size: 0.75rem; color: var(--text-muted); }
-
-  /* ── Hidden rows ── */
-  tr.hidden { display: none; }
-
-  /* ── Spec summary ── */
-  .spec-summary {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 24px;
-    margin-bottom: 20px;
-  }
-  .spec-summary h3 { font-size: 0.82rem; font-weight: 600; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
-  .spec-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px 24px; }
-  .spec-item { font-size: 0.83rem; }
-  .spec-item .spec-label { color: var(--text-muted); font-size: 0.73rem; text-transform: uppercase; letter-spacing: 0.05em; }
-
-  /* ── Next step ── */
-  .next-step {
-    background: var(--accent-pale);
-    border: 1px solid var(--accent-mid);
-    border-radius: 12px;
-    padding: 18px 24px;
-    font-size: 0.88rem;
-    color: var(--text);
-  }
-  .next-step strong { color: var(--accent); }
-</style>
+    /* ── Aliases for basic-template-specific variable names ── */
+    :root {
+      --muted: var(--text-muted);
+      --header: var(--surface);
+      --link: var(--accent);
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+    h1 { font-size: 1.8rem; font-weight: 700; margin: 0 0 1.5rem; }
+    h2 { font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.75rem; border-bottom: 1px solid var(--border); padding-bottom: 0.35rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 0.5rem; }
+    p { line-height: 1.7; margin: 0 0 0.8rem; }
+    ul, ol { padding-left: 1.4rem; margin-bottom: 0.8rem; }
+    li { margin-bottom: 0.35rem; line-height: 1.6; }
+    code {
+      font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+      font-size: 0.85em;
+      background: var(--header);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.15em 0.35em;
+    }
+    pre { background: var(--header); border: 1px solid var(--border); border-radius: 6px; padding: 1rem; overflow-x: auto; margin: 0.8rem 0; }
+    pre code { background: none; border: none; padding: 0; font-size: 0.82rem; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    blockquote { border-left: 3px solid var(--border); margin: 0.8rem 0; padding: 0.5rem 1rem; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin: 0.8rem 0; }
+    thead tr { background: var(--header); }
+    th { text-align: left; padding: 0.6rem 0.8rem; font-weight: 600; border-bottom: 2px solid var(--border); }
+    td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+    img { max-width: 100%; height: auto; }
+    hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+    .meta { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--muted); }
+    /* Engineering appendix — hidden by default */
+    [data-audience="engineering"] { display: none; }
+    body.show-engineering [data-audience="engineering"] { display: block; }
+    .audience-toggle {
+      position: fixed; bottom: 1rem; right: 1rem;
+      padding: 0.4rem 0.8rem; font-size: 0.75rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 4px;
+      background: var(--bg); color: var(--muted);
+      cursor: pointer; z-index: 100;
+    }
+    .audience-toggle:hover { background: var(--border); color: var(--text); }
+    @media print {
+      [data-audience="engineering"] { display: none !important; }
+      .audience-toggle { display: none !important; }
+    }
+  </style>
 
 <style id="sl-theme-css">html[data-theme="dark"]{--bg:#0e1016;--surface:#161921;--surface-2:#1e2230;--surface-raised:#1e2230;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--text-dim:#454d6a;--accent:#5b9cf6;--accent-soft:rgba(91,156,246,.15);--code-bg:#161921;--code-border:#2a2f45;--red-bg:rgba(240,92,92,.10);--amber-bg:rgba(245,166,35,.10);--green-bg:rgba(74,222,128,.08);--blue-bg:rgba(91,156,246,.10);--purple-bg:rgba(167,139,250,.10)}html[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}html[data-theme="light"]{--bg:#f5f6fa;--surface:#ffffff;--surface-2:#f0f1f7;--surface-raised:#f0f1f7;--border:#dde0ed;--text:#1a1d2e;--text-muted:#5a6080;--text-dim:#a0a8c0;--accent:#3362d0;--accent-soft:#e8eeff;--code-bg:#f0f1f7;--code-border:#dde0ed;--red-bg:rgba(200,50,50,.08);--amber-bg:rgba(180,120,0,.08);--green-bg:rgba(40,160,80,.06);--blue-bg:rgba(40,100,220,.08);--purple-bg:rgba(120,80,200,.08)}html[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}[data-theme="light"] #sl-nav{background:#eef0f7!important;border-bottom-color:#dde0ed!important}[data-theme="light"] #sl-nav .sl-brand,[data-theme="light"] #sl-nav a,[data-theme="light"] #sl-theme-btn{color:#5a6080!important}[data-theme="light"] #sl-nav a:hover,[data-theme="light"] #sl-nav a.sl-on{color:#1a1d2e!important}</style>
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{margin-left:auto;background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><span class="sl-brand">Startup Loop</span><a href="../../startup-loop-workflow.user.html">Workflow</a><a href="../../startup-loop-files.user.html">Loop Files</a><a href="../../startup-loop-file-types.user.html">File Types</a><a href="../../startup-loop-output-registry.user.html">Output Registry</a><a href="../../ideas.user.html">Ideas</a><a href="../../process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
-
-<div class="page-header">
-  <div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
-      <h1>HEAD — Naming Shortlist</h1>
-      <span class="badge-r4">Round 4</span>
-    </div>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-inner{position:relative;display:flex;align-items:center;justify-content:center;gap:0;min-width:max-content;width:100%;max-width:1200px}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><div class="sl-inner"><span class="sl-brand">Startup Loop</span><a href="../../../../startup-loop-files.user.html">Loop Files</a><a href="../../../../startup-loop-file-types.user.html">File Types</a><a href="../../../../startup-loop-output-registry.user.html">Output Registry</a><a href="../../../../process-improvements.user.html">Process</a><a href="../../../../follow-up.user.html">Follow-up</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button></div><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+  <main>
+    <button class="audience-toggle" id="audience-toggle" aria-pressed="false">
+      Show technical details
+    </button>
+<h1>HEAD Naming Shortlist — Round 4 (2026-02-21)</h1>
+<h2>Score key</h2>
+<table>
+<thead>
+<tr>
+<th>Column</th>
+<th>Meaning</th>
+<th>What a 5 looks like</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>D</strong></td>
+<td>Distinctiveness — TM ownability, not confusable with competitors</td>
+<td>Fully invented, no phonetic cousin in the category</td>
+</tr>
+<tr>
+<td><strong>W</strong></td>
+<td>Wordmark quality — works as a stamped logo, Instagram handle</td>
+<td>7–12 letters, strong visual rhythm, memorable in caps</td>
+</tr>
+<tr>
+<td><strong>P</strong></td>
+<td>Phonetics — smooth to say in both IT and EN</td>
+<td>Flows naturally in IT + EN, soft vowels</td>
+</tr>
+<tr>
+<td><strong>E</strong></td>
+<td>Expansion headroom — works beyond the initial product</td>
+<td>Non-product-specific; fits any CI lifestyle accessory</td>
+</tr>
+<tr>
+<td><strong>I</strong></td>
+<td>ICP resonance — Italian CI caregiver parent stops scrolling</td>
+<td>Immediately feels warm, practical, non-clinical</td>
+</tr>
+<tr>
+<td><strong>Score</strong></td>
+<td>Sum of D + W + P + E + I</td>
+<td>Max 25</td>
+</tr>
+</tbody>
+</table>
+<h2>Top 20 (domain-verified, ranked by score)</h2>
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Name</th>
+<th>Score</th>
+<th>D</th>
+<th>W</th>
+<th>P</th>
+<th>E</th>
+<th>I</th>
+<th>Pattern</th>
+<th>Territory</th>
+<th>Domain</th>
+<th>Provenance</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Calmaviva</td>
+<td>25</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>A</td>
+<td>La Mattina</td>
+<td>calmaviva.com</td>
+<td>morphemes calma+viva</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Nidonova</td>
+<td>25</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>A</td>
+<td>Mani di Cura</td>
+<td>nidonova.com</td>
+<td>morphemes nido+nova</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Setaluce</td>
+<td>25</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>A</td>
+<td>Mani di Cura</td>
+<td>setaluce.com</td>
+<td>morphemes seta+luce</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Brezzaluce</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>A</td>
+<td>Vita Attiva</td>
+<td>brezzaluce.com</td>
+<td>morphemes brezza+luce</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Calmarima</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>A</td>
+<td>La Mattina</td>
+<td>calmarima.com</td>
+<td>morphemes calma+rima</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Calorima</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>C</td>
+<td>Mani di Cura</td>
+<td>calorima.com</td>
+<td>blend fragments calo+rima</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Gentilina</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>B</td>
+<td>Mani di Cura</td>
+<td>gentilina.com</td>
+<td>respelled from gentle with -ina suffix</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Gentilova</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>B</td>
+<td>Mani di Cura</td>
+<td>gentilova.com</td>
+<td>respelled from gentle with -ova suffix</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Morninella</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>B</td>
+<td>La Mattina</td>
+<td>morninella.com</td>
+<td>respelled from morning with -ella suffix</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Nidovera</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>A</td>
+<td>Mani di Cura</td>
+<td>nidovera.com</td>
+<td>morphemes nido+vera</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Piumaviva</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>A</td>
+<td>Vita Attiva</td>
+<td>piumaviva.com</td>
+<td>morphemes piuma+viva</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Setalina</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>C</td>
+<td>Mani di Cura</td>
+<td>setalina.com</td>
+<td>blend fragments seta+lina</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Softalina</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>B</td>
+<td>Mani di Cura</td>
+<td>softalina.com</td>
+<td>respelled from soft with -alina suffix</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Teneraviva</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>A</td>
+<td>Mani di Cura</td>
+<td>teneraviva.com</td>
+<td>morphemes tenera+viva</td>
+</tr>
+<tr>
+<td>15</td>
+<td>Tramaluce</td>
+<td>24</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>A</td>
+<td>Artigianato Italiano</td>
+<td>tramaluce.com</td>
+<td>morphemes trama+luce</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Brezzola</td>
+<td>23</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>E</td>
+<td>Vita Attiva</td>
+<td>brezzola.com</td>
+<td>Italian: light breeze, gentle movement</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Caldoviva</td>
+<td>23</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>A</td>
+<td>Mani di Cura</td>
+<td>caldoviva.com</td>
+<td>morphemes caldo+viva</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Corsaviva</td>
+<td>23</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>A</td>
+<td>Vita Attiva</td>
+<td>corsaviva.com</td>
+<td>morphemes corsa+viva</td>
+</tr>
+<tr>
+<td>19</td>
+<td>Dailova</td>
+<td>23</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>B</td>
+<td>La Mattina</td>
+<td>dailova.com</td>
+<td>respelled from daily with -ova suffix</td>
+</tr>
+<tr>
+<td>20</td>
+<td>Filocura</td>
+<td>23</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>4</td>
+<td>5</td>
+<td>A</td>
+<td>Artigianato Italiano</td>
+<td>filocura.com</td>
+<td>morphemes filo+cura</td>
+</tr>
+</tbody>
+</table>
+<h2>Score distribution (available names only)</h2>
+<ul>
+<li>Score 25: 3 names</li>
+<li>Score 24: 12 names</li>
+<li>Score 23: 28 names</li>
+<li>Score 22: 64 names</li>
+<li>Score 21: 15 names</li>
+</ul>
+<h2>Pattern breakdown (available names only)</h2>
+<ul>
+<li>Pattern A: ~45</li>
+<li>Pattern B: ~35</li>
+<li>Pattern C: ~22</li>
+<li>Pattern E: ~20</li>
+<li>Pattern D: 0 (hard-blocked this round)</li>
+</ul>
+<h2>Territory breakdown (top 20)</h2>
+<ul>
+<li>La Mattina: Calmaviva, Calmarima, Morninella, Dailova (4)</li>
+<li>Mani di Cura: Nidonova, Setaluce, Calorima, Gentilina, Gentilova, Nidovera, Setalina, Softalina, Teneraviva, Caldoviva (10)</li>
+<li>Vita Attiva: Brezzaluce, Piumaviva, Brezzola, Corsaviva (4)</li>
+<li>Artigianato Italiano: Tramaluce, Filocura (2)</li>
+<li>Identità Quieta: 0 in top 20</li>
+</ul>
+<h2>Spec changes this round</h2>
+<p>Round 4 introduced: I hard gate (I ≤ 3 eliminated), Pattern D hard-blocked, all domains must equal <code>&#x3C;name>.com</code> exactly (no suffixes, no double-vowel variants), morpheme pools re-anchored to Italian emotional vocabulary, Pattern E boosted to 80 names (32%), five emotional territories introduced.</p>
+<h2>Next step</h2>
+<p>Operator reviews top 20. To select a name, say which one. To reject and try again, say "none of these work" — optionally tell me why and I'll encode it as a constraint for Round 5.</p>
     <div class="meta">
-      250 candidates generated · 122 .com available · RDAP via Verisign · 2026-02-21<br>
-      Presenting: top 20 by composite score · all domains verified clean
+      <div>Source: <code>docs/business-os/strategy/HEAD/assessment/naming-workbench/naming-shortlist-2026-02-21-r4.user.md</code></div>
+      <div>Generated: 2026-03-10T19:44:46.859Z</div>
     </div>
-  </div>
-  <div class="meta" style="text-align:right;">
-    ASSESSMENT-04 Part 5<br>
-    Business: HEAD<br>
-    Stage: ASSESSMENT
-  </div>
-</div>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({ startOnLoad: false, securityLevel: "antiscript", theme: "neutral" });
 
-<div class="notice-bar">
-  <span>⚠️</span>
-  <span><strong>Regulatory note:</strong> HEAD markets CI headbands as lifestyle accessories. No name in this list implies hearing improvement, device function, or medical efficacy. Review EU MDR Art. 22 before copy referencing the processor.</span>
-</div>
-
-<div class="content">
-
-  <!-- Stats -->
-  <div class="stats-row">
-    <div class="stat-card"><div class="num">250</div><div class="lbl">Candidates generated</div></div>
-    <div class="stat-card"><div class="num">122</div><div class="lbl">.com available</div></div>
-    <div class="stat-card"><div class="num">3</div><div class="lbl">Score 25 names</div></div>
-    <div class="stat-card"><div class="num">12</div><div class="lbl">Score 24 names</div></div>
-    <div class="stat-card"><div class="num">5</div><div class="lbl">Territories mapped</div></div>
-    <div class="stat-card"><div class="num">0</div><div class="lbl">Pattern D (blocked)</div></div>
-  </div>
-
-  <!-- Charts -->
-  <div class="charts-row">
-    <div class="chart-card">
-      <h3>Score distribution (available names, n=122)</h3>
-      <div class="chart-wrap">
-        <canvas id="scoreChart"></canvas>
-      </div>
-    </div>
-    <div class="chart-card">
-      <h3>Territory breakdown (top 20)</h3>
-      <div class="chart-wrap">
-        <canvas id="territoryChart"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <!-- Score key -->
-  <div class="score-key">
-    <h3>Score key — composite max 25 (D + W + P + E + I)</h3>
-    <div class="key-grid">
-      <div class="key-item"><div class="key-dot" style="background:var(--score-25)"></div><strong>D</strong> Distinctiveness</div>
-      <div class="key-item"><div class="key-dot" style="background:#5b9bd5"></div><strong>W</strong> Wordmark quality</div>
-      <div class="key-item"><div class="key-dot" style="background:#e8a22a"></div><strong>P</strong> Phonetic quality (IT + EN)</div>
-      <div class="key-item"><div class="key-dot" style="background:#c05080"></div><strong>E</strong> Expansion headroom</div>
-      <div class="key-item"><div class="key-dot" style="background:#7b5ea7"></div><strong>I</strong> ICP resonance ★ gate</div>
-      <div class="key-item"><div class="key-dot" style="background:transparent;border:1px solid #999"></div>I ≤ 3 hard-eliminated (not shown)</div>
-    </div>
-  </div>
-
-  <!-- Territory filter -->
-  <div class="territory-legend" id="filters">
-    <button class="t-chip active" data-t="all"><span class="t-dot"></span>All territories</button>
-    <button class="t-chip" data-t="mattina"><span class="t-dot"></span>La Mattina (4)</button>
-    <button class="t-chip" data-t="cura"><span class="t-dot"></span>Mani di Cura (10)</button>
-    <button class="t-chip" data-t="attiva"><span class="t-dot"></span>Vita Attiva (4)</button>
-    <button class="t-chip" data-t="artigianato"><span class="t-dot"></span>Artigianato Italiano (2)</button>
-    <button class="t-chip" data-t="quieta"><span class="t-dot"></span>Identità Quieta (0)</button>
-  </div>
-
-  <!-- Main table -->
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr>
-          <th style="width:40px">#</th>
-          <th>Name · Domain</th>
-          <th class="center" style="width:68px">Score</th>
-          <th class="center" style="width:30px">D</th>
-          <th class="center" style="width:30px">W</th>
-          <th class="center" style="width:30px">P</th>
-          <th class="center" style="width:30px">E</th>
-          <th class="center" style="width:30px">I</th>
-          <th style="width:55px">Pat.</th>
-          <th>Territory</th>
-          <th>Provenance</th>
-        </tr>
-      </thead>
-      <tbody id="nameTable">
-
-        <tr data-t="mattina">
-          <td class="rank">1</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Calmaviva</div>
-                <a class="domain-link" href="#">calmaviva.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-25">25</span></td>
-          <td class="dim">5</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-mattina">La Mattina</span></td>
-          <td class="prov">morphemes calma+viva</td>
-        </tr>
-
-        <tr data-t="cura">
-          <td class="rank">2</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Nidonova</div>
-                <a class="domain-link" href="#">nidonova.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-25">25</span></td>
-          <td class="dim">5</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-cura">Mani di Cura</span></td>
-          <td class="prov">morphemes nido+nova</td>
-        </tr>
-
-        <tr data-t="cura">
-          <td class="rank">3</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Setaluce</div>
-                <a class="domain-link" href="#">setaluce.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-25">25</span></td>
-          <td class="dim">5</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-cura">Mani di Cura</span></td>
-          <td class="prov">morphemes seta+luce</td>
-        </tr>
-
-        <tr data-t="attiva">
-          <td class="rank">4</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Brezzaluce</div>
-                <a class="domain-link" href="#">brezzaluce.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-attiva">Vita Attiva</span></td>
-          <td class="prov">morphemes brezza+luce</td>
-        </tr>
-
-        <tr data-t="mattina">
-          <td class="rank">5</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Calmarima</div>
-                <a class="domain-link" href="#">calmarima.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-mattina">La Mattina</span></td>
-          <td class="prov">morphemes calma+rima</td>
-        </tr>
-
-        <tr data-t="cura">
-          <td class="rank">6</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Calorima</div>
-                <a class="domain-link" href="#">calorima.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">C</span></td>
-          <td><span class="t-bar t-cura">Mani di Cura</span></td>
-          <td class="prov">blend fragments calo+rima</td>
-        </tr>
-
-        <tr data-t="cura">
-          <td class="rank">7</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Gentilina</div>
-                <a class="domain-link" href="#">gentilina.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">B</span></td>
-          <td><span class="t-bar t-cura">Mani di Cura</span></td>
-          <td class="prov">respelled from gentle with -ina suffix</td>
-        </tr>
-
-        <tr data-t="cura">
-          <td class="rank">8</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Gentilova</div>
-                <a class="domain-link" href="#">gentilova.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">B</span></td>
-          <td><span class="t-bar t-cura">Mani di Cura</span></td>
-          <td class="prov">respelled from gentle with -ova suffix</td>
-        </tr>
-
-        <tr data-t="mattina">
-          <td class="rank">9</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Morninella</div>
-                <a class="domain-link" href="#">morninella.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">B</span></td>
-          <td><span class="t-bar t-mattina">La Mattina</span></td>
-          <td class="prov">respelled from morning with -ella suffix</td>
-        </tr>
-
-        <tr data-t="cura">
-          <td class="rank">10</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Nidovera</div>
-                <a class="domain-link" href="#">nidovera.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-cura">Mani di Cura</span></td>
-          <td class="prov">morphemes nido+vera</td>
-        </tr>
-
-        <tr data-t="attiva">
-          <td class="rank">11</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Piumaviva</div>
-                <a class="domain-link" href="#">piumaviva.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-attiva">Vita Attiva</span></td>
-          <td class="prov">morphemes piuma+viva</td>
-        </tr>
-
-        <tr data-t="cura">
-          <td class="rank">12</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Setalina</div>
-                <a class="domain-link" href="#">setalina.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">C</span></td>
-          <td><span class="t-bar t-cura">Mani di Cura</span></td>
-          <td class="prov">blend fragments seta+lina</td>
-        </tr>
-
-        <tr data-t="cura">
-          <td class="rank">13</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Softalina</div>
-                <a class="domain-link" href="#">softalina.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">B</span></td>
-          <td><span class="t-bar t-cura">Mani di Cura</span></td>
-          <td class="prov">respelled from soft with -alina suffix</td>
-        </tr>
-
-        <tr data-t="cura">
-          <td class="rank">14</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Teneraviva</div>
-                <a class="domain-link" href="#">teneraviva.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-cura">Mani di Cura</span></td>
-          <td class="prov">morphemes tenera+viva</td>
-        </tr>
-
-        <tr data-t="artigianato">
-          <td class="rank">15</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Tramaluce</div>
-                <a class="domain-link" href="#">tramaluce.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-24">24</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">5</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-artigianato">Artigianato Italiano</span></td>
-          <td class="prov">morphemes trama+luce</td>
-        </tr>
-
-        <tr data-t="attiva">
-          <td class="rank">16</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Brezzola</div>
-                <a class="domain-link" href="#">brezzola.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-23">23</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">4</td><td class="dim">5</td>
-          <td><span class="pattern-tag">E</span></td>
-          <td><span class="t-bar t-attiva">Vita Attiva</span></td>
-          <td class="prov">Italian: light breeze, gentle movement</td>
-        </tr>
-
-        <tr data-t="cura">
-          <td class="rank">17</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Caldoviva</div>
-                <a class="domain-link" href="#">caldoviva.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-23">23</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">4</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-cura">Mani di Cura</span></td>
-          <td class="prov">morphemes caldo+viva</td>
-        </tr>
-
-        <tr data-t="attiva">
-          <td class="rank">18</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Corsaviva</div>
-                <a class="domain-link" href="#">corsaviva.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-23">23</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">4</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-attiva">Vita Attiva</span></td>
-          <td class="prov">morphemes corsa+viva</td>
-        </tr>
-
-        <tr data-t="mattina">
-          <td class="rank">19</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Dailova</div>
-                <a class="domain-link" href="#">dailova.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-23">23</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">4</td><td class="dim">5</td>
-          <td><span class="pattern-tag">B</span></td>
-          <td><span class="t-bar t-mattina">La Mattina</span></td>
-          <td class="prov">respelled from daily with -ova suffix</td>
-        </tr>
-
-        <tr data-t="artigianato">
-          <td class="rank">20</td>
-          <td>
-            <div class="name-cell">
-              <div>
-                <div class="name-text">Filocura</div>
-                <a class="domain-link" href="#">filocura.com</a>
-              </div>
-            </div>
-          </td>
-          <td class="center"><span class="score-badge score-23">23</span></td>
-          <td class="dim">5</td><td class="dim">4</td><td class="dim">5</td><td class="dim">4</td><td class="dim">5</td>
-          <td><span class="pattern-tag">A</span></td>
-          <td><span class="t-bar t-artigianato">Artigianato Italiano</span></td>
-          <td class="prov">morphemes filo+cura</td>
-        </tr>
-
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Spec summary -->
-  <div class="spec-summary">
-    <h3>Round 4 spec changes</h3>
-    <div class="spec-grid">
-      <div class="spec-item"><div class="spec-label">New this round</div>I hard gate (I ≤ 3 eliminated before ranking)</div>
-      <div class="spec-item"><div class="spec-label">Pattern D</div>Hard-blocked (no compound-suffix names)</div>
-      <div class="spec-item"><div class="spec-label">Domain rule</div>Exact &lt;name&gt;.com only — no suffix variants, no double-vowel forms</div>
-      <div class="spec-item"><div class="spec-label">Pattern E</div>Boosted 30 → 80 names (32% of pool)</div>
-      <div class="spec-item"><div class="spec-label">Morpheme pools</div>Re-anchored to Italian emotional vocabulary with semantic notes</div>
-      <div class="spec-item"><div class="spec-label">Territories</div>5 emotional territories required; every name tagged</div>
-      <div class="spec-item"><div class="spec-label">Prior rounds excluded</div>~130 names from R1–R3 added to elimination list</div>
-      <div class="spec-item"><div class="spec-label">Available / 250</div>122 clean domains (49%)</div>
-    </div>
-  </div>
-
-  <!-- Next step -->
-  <div class="next-step">
-    <strong>Next step:</strong> Review the top 20 above. To select a name, say which one. To reject and continue, say "none of these work" — optionally explain why and the constraint will be encoded for Round 5.
-  </div>
-
-</div>
-
-<script>
-// Score distribution chart
-const scoreCtx = document.getElementById('scoreChart').getContext('2d');
-new Chart(scoreCtx, {
-  type: 'bar',
-  data: {
-    labels: ['Score 25', 'Score 24', 'Score 23', 'Score 22', 'Score 21'],
-    datasets: [{
-      label: 'Available names',
-      data: [3, 12, 28, 64, 15],
-      backgroundColor: ['#2d6a1e', '#4e7a35', '#7aaa5a', '#a8cfa0', '#cce0c4'],
-      borderWidth: 0,
-      borderRadius: 4,
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: { grid: { display: false }, ticks: { font: { size: 11 }, color: '#4f6644' } },
-      y: { grid: { color: '#edf4e8' }, ticks: { font: { size: 11 }, color: '#4f6644', precision: 0 } }
+    const operatorDiagrams = Array.from(document.querySelectorAll(".mermaid")).filter(
+      (el) => !el.closest("[data-audience='engineering']")
+    );
+    if (operatorDiagrams.length > 0) {
+      mermaid.run({ nodes: operatorDiagrams });
     }
-  }
-});
 
-// Territory chart
-const terrCtx = document.getElementById('territoryChart').getContext('2d');
-new Chart(terrCtx, {
-  type: 'doughnut',
-  data: {
-    labels: ['Mani di Cura', 'La Mattina', 'Vita Attiva', 'Artigianato Italiano', 'Identità Quieta'],
-    datasets: [{
-      data: [10, 4, 4, 2, 0],
-      backgroundColor: ['#c05080', '#e8a22a', '#2e86ab', '#a0522d', '#7b5ea7'],
-      borderWidth: 2,
-      borderColor: '#fff',
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: {
-        position: 'right',
-        labels: { font: { size: 11 }, color: '#4f6644', boxWidth: 12, padding: 8 }
-      }
-    },
-    cutout: '55%',
-  }
-});
-
-// Territory filter
-const chips = document.querySelectorAll('.t-chip');
-const rows = document.querySelectorAll('#nameTable tr');
-
-chips.forEach(chip => {
-  chip.addEventListener('click', () => {
-    chips.forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    const filter = chip.dataset.t;
-    rows.forEach(row => {
-      if (filter === 'all') {
-        row.classList.remove('hidden');
-      } else {
-        if (row.dataset.t === filter) {
-          row.classList.remove('hidden');
-        } else {
-          row.classList.add('hidden');
+    let engineeringRendered = false;
+    const toggleBtn = document.getElementById("audience-toggle");
+    if (toggleBtn) {
+      toggleBtn.addEventListener("click", () => {
+        const isShowing = document.body.classList.toggle("show-engineering");
+        toggleBtn.textContent = isShowing ? "Hide technical details" : "Show technical details";
+        toggleBtn.setAttribute("aria-pressed", String(isShowing));
+        if (isShowing && !engineeringRendered) {
+          const nodes = Array.from(document.querySelectorAll("[data-audience='engineering'] .mermaid"));
+          if (nodes.length > 0) {
+            mermaid.run({ nodes });
+            engineeringRendered = true;
+          }
         }
-      }
-    });
-  });
-});
-</script>
+      });
+    }
+  </script>
 </body>
 </html>

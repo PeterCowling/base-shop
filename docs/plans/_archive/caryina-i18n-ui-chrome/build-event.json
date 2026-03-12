@@ -1,0 +1,15 @@
+{
+  "feature_slug": "caryina-i18n-ui-chrome",
+  "business": "HBAG",
+  "completed_date": "2026-03-12",
+  "execution_track": "code",
+  "domain": "UI",
+  "why": "German and Italian visitors see English-only navigation and legal text, undermining the multilingual promise of the site and eroding trust on non-EN routes.",
+  "why_source": "operator",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "All persistent UI chrome (header, footer, consent banner, trust strip, notify-me form) displays in the visitor's selected language.",
+  "tasks_completed": 2,
+  "tasks_total": 2,
+  "plan_path": "docs/plans/caryina-i18n-ui-chrome/plan.md",
+  "build_record_path": "docs/plans/caryina-i18n-ui-chrome/build-record.user.md"
+}

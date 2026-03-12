@@ -29,12 +29,6 @@ declare global {
   }
 }
 
-const MUTEX_TTL_SECONDS = 300; // 5 minutes — matches max sync route timeout
-
-function syncLockKey(storefrontId: string): string {
-  return `xa-sync-lock:${storefrontId}`;
-}
-
 /**
  * Get the KV namespace from the Cloudflare context.
  *
@@ -48,36 +42,4 @@ export async function getUploaderKv(): Promise<UploaderKvNamespace | null> {
   } catch {
     return null;
   }
-}
-
-/**
- * Attempt to acquire the sync mutex for the given storefront.
- *
- * Best-effort probabilistic guard — not a hard serialization guarantee.
- * Cloudflare KV does not provide atomic compare-and-set; a narrow race window
- * exists between the get and put steps.
- *
- * Returns true if the lock was acquired (caller may proceed).
- * Returns false if the lock key is already present (another sync is likely running).
- * Returns true (fail-open) if KV is unavailable — KV outage must not block all syncs.
- */
-export async function acquireSyncMutex(kv: UploaderKvNamespace, storefrontId: string): Promise<boolean> {
-  const key = syncLockKey(storefrontId);
-  const existing = await kv.get(key);
-  if (existing !== null) {
-    // Lock key is present — another sync is running (per current KV state).
-    return false;
-  }
-  // Non-atomic: set the lock key with TTL. A parallel request could also pass the
-  // get check above and both set the key — this is an acknowledged race window.
-  await kv.put(key, "1", { expirationTtl: MUTEX_TTL_SECONDS });
-  return true;
-}
-
-/**
- * Release the sync mutex for the given storefront.
- */
-export async function releaseSyncMutex(kv: UploaderKvNamespace, storefrontId: string): Promise<void> {
-  const key = syncLockKey(storefrontId);
-  await kv.delete(key);
 }

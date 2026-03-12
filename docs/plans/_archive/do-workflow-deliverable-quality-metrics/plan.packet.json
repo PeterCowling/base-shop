@@ -1,0 +1,169 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "do-workflow-deliverable-quality-metrics",
+  "source_artifact_path": "docs/plans/do-workflow-deliverable-quality-metrics/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-deliverable-quality-metrics/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Work can be marked complete even if it's missing key sections like engineering coverage evidence or outcome statements. Without checking completeness automatically, gaps only surface when someone manually reviews.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Validator pass/fail results are captured in workflow telemetry so completeness gaps are visible in reports without manual review",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — internal telemetry data pipeline, no UI",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — CLI and data records, no user-facing states",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — internal tooling reading local files",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required — this IS the observability improvement",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Validator outcomes become visible in telemetry reports",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — TC contracts for new field, report, dedupe",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Follow C003 test patterns",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required — interface addition, schema doc bump",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Additive optional field",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — append-only JSONL, no hot path",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A — additive optional field, old records unaffected",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Add a `deterministic_check_results` optional field to `WorkflowStepTelemetryRecord` that captures compact validator pass/fail summaries (`{ valid, error_count, warning_count }` per check). Extend the telemetry CLI with a `--check-result` flag to accept these results, and add a quality/completeness section to the report generator. Update the schema doc to v1.6.0. This follows the exact pattern established by C003 (`per_module_bytes`).",
+    "goals": [
+      "Capture validator pass/fail results in telemetry records",
+      "Enable the report generator to surface quality/completeness data alongside existing size and token metrics"
+    ],
+    "non_goals": [
+      "Adding new validators (e.g. `validate-build-record.ts`)",
+      "Changing validator logic or pass/fail criteria",
+      "Real-time alerting or dashboards"
+    ],
+    "constraints": [
+      "Backward-compatible with existing records (new field optional)",
+      "Must not break existing consumers (`summarizeWorkflowStepTelemetry`, `computePerModuleBreakdown`, ideas rollup)",
+      "Schema bump 1.5.0 -> 1.6.0"
+    ],
+    "assumptions": [
+      "All validators produce JSON to stdout with typed result interfaces"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Option A: Add an optional `deterministic_check_results` field with compact per-check summary objects to `WorkflowStepTelemetryRecord`. Add a `--check-result` CLI flag. Add quality section to report generator. Bump schema to 1.6.0.",
+      "Why planning is not reopening option selection:",
+      "Analysis compared 3 options against 5 explicit criteria; Option A won decisively on all high-priority criteria. No new evidence has emerged."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add deterministic_check_results to record type, builder, CLI, and dedupe key",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts` and test file",
+        "affects": "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-workflow-telemetry.test.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add validator results to report generator and update schema doc",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry-report.ts`, test file, and `docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md`",
+        "affects": "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry-report.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-workflow-telemetry-report.test.ts`, `docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology_change": true,
+    "process_topology_note": null,
+    "delivered_process_areas": [
+      {
+        "Area": "Telemetry recording",
+        "Trigger": "Agent completes DO stage, validators pass",
+        "Delivered step-by-step flow": "1. Agent runs validators → gets JSON stdout. 2. Agent extracts `valid`, error count, warning count from each result. 3. Agent calls telemetry CLI with `--deterministic-check <name>` AND `--check-result <name>:<pass\\",
+        "Tasks / dependencies": "fail>:<errors>:<warnings>` for each check. 4. CLI parses `--check-result` flags into `deterministic_check_results` field. 5. Record appended with both script names and results.",
+        "Unresolved issues / rollback seam": "TASK-01"
+      },
+      {
+        "Area": "Report generation",
+        "Trigger": "Operator runs report CLI",
+        "Delivered step-by-step flow": "1. Report reads JSONL records. 2. For records with `deterministic_check_results`, aggregates pass/fail counts and error/warning totals per check name. 3. Markdown output includes `## Validator Results` section. 4. JSON output includes `validator_summary` in envelope.",
+        "Tasks / dependencies": "TASK-02",
+        "Unresolved issues / rollback seam": "Must handle mixed records (some with results, some legacy without)"
+      }
+    ]
+  }
+}

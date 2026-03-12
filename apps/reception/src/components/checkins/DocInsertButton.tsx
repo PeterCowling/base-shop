@@ -62,16 +62,16 @@ const DocInsertButton: React.FC<DocInsertButtonProps> = ({
 
   /* ---------- styling --------------------------------------------------- */
   const baseClass =
-    "h-9 px-2.5 flex items-center gap-1.5 justify-center rounded-md text-primary-fg/100 text-xs font-medium transition-colors focus:outline-none";
+    "h-9 px-2.5 flex items-center gap-1.5 justify-center rounded-md text-primary-fg text-xs font-medium transition-colors focus:outline-none";
 
   const colorClass = (() => {
     switch (status) {
       case "complete":
-        return "bg-success-main/100 hover:opacity-90";
+        return "bg-success-main hover:opacity-90";
       case "partial":
-        return "bg-warning-main/100 hover:opacity-90";
+        return "bg-warning-main hover:opacity-90";
       default:
-        return "bg-primary-main/100 hover:opacity-90";
+        return "bg-primary-main hover:opacity-90";
     }
   })();
 

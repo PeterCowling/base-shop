@@ -1,13 +1,16 @@
 ---
 Type: Schema
 Schema: lp-do-ideas-telemetry
-Version: 1.1.0
+Version: 1.6.0
 Status: Active
 Created: 2026-02-24
 Owner: startup-loop maintainers
 Related-contract: lp-do-ideas-trial-contract.md
 Related-module: scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts
 Related-module-2: scripts/src/startup-loop/ideas/lp-do-ideas-metrics-rollup.ts
+Related-module-3: scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts
+Related-module-4: scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry-report.ts
+Related-module-5: scripts/src/startup-loop/ideas/workflow-runtime-token-usage.ts
 Related-artifacts:
   - docs/business-os/startup-loop/ideas/trial/telemetry.jsonl
   - docs/business-os/startup-loop/ideas/trial/queue-state.json
@@ -15,9 +18,11 @@ Related-artifacts:
 
 # lp-do-ideas Telemetry Schema
 
-This document defines the telemetry record format, required fields, quality checks, and schema invariants for the `lp-do-ideas` trial queue. All fields are enforced by `TrialQueue` in `lp-do-ideas-trial-queue.ts`.
+This document defines the telemetry record format, required fields, quality checks, and schema invariants for the `lp-do-ideas` trial queue and the downstream DO workflow telemetry stream. Queue-transition fields are enforced by `TrialQueue` in `lp-do-ideas-trial-queue.ts`. Downstream `workflow_step` fields are emitted by `lp-do-ideas-workflow-telemetry.ts`.
 
-## 1. Telemetry Record (`TelemetryRecord`)
+Codex runtime token usage is auto-captured when the recorder can resolve the current session via `CODEX_THREAD_ID`. Claude Code runtime usage can also be auto-captured when the recorder is given an explicit Claude session id (`CLAUDE_SESSION_ID` / `WORKFLOW_TELEMETRY_CLAUDE_SESSION_ID` or `--claude-session-id`). Without that explicit session seam, Claude remains on the existing manual/unknown fallback.
+
+## 1. Queue Transition Telemetry Record (`TelemetryRecord`)
 
 One record is appended to the telemetry log per state transition. The log is append-only and never mutated after writing.
 
@@ -95,6 +100,65 @@ route_accuracy = (correctly_routed_dispatches / route_accuracy_denominator) × 1
 ```
 
 The `route_accuracy_denominator` excludes error and skipped entries as they do not constitute routed dispatches.
+
+## 4A. Workflow Step Telemetry Record (`WorkflowStepTelemetryRecord`)
+
+The same append-only telemetry JSONL stream may also contain downstream DO workflow records with:
+
+```json
+{ "record_type": "workflow_step", ... }
+```
+
+These records do not affect queue-transition metrics or ideas-cycle rollups. Existing ideas rollup code ignores them because they do not carry the required cycle snapshot fields. They are consumed by `lp-do-ideas-workflow-telemetry-report.ts`.
+
+### Required fields
+
+| Field | Type | Nullable | Description |
+|---|---|---|---|
+| `record_type` | `"workflow_step"` | No | Discriminator for downstream DO workflow telemetry. |
+| `recorded_at` | ISO 8601 string | No | Timestamp when the telemetry line was written. |
+| `telemetry_key` | string | No | Deterministic dedupe key for idempotent append behavior. |
+| `mode` | `"trial"` \| `"live"` | No | Telemetry namespace mode. Defaults to `trial` for current DO flow usage. |
+| `business` | string | No | Business identifier, or `REPO` for repo/process work. |
+| `feature_slug` | string | No | Canonical `docs/plans/<feature-slug>/` slug. |
+| `stage` | `lp-do-ideas` \| `lp-do-fact-find` \| `lp-do-analysis` \| `lp-do-plan` \| `lp-do-build` | No | Workflow stage being measured. |
+| `artifact_path` | repo-relative path | Yes | Canonical artifact path when the stage persists one. |
+| `artifact_exists` | boolean | No | Whether `artifact_path` existed at record time. |
+| `artifact_bytes` | number | No | UTF-8 byte size of the persisted artifact, or `0` if absent. |
+| `artifact_lines` | number | No | Line count of the persisted artifact, or `0` if absent. |
+| `context_paths` | string[] | No | Repo-relative paths the recorder counted as stage context input (skill shell, modules, artifact, explicit input files). |
+| `missing_context_paths` | string[] | No | Subset of `context_paths` that did not exist at record time. |
+| `context_input_bytes` | number | No | Total UTF-8 byte size of existing `context_paths`. |
+| `context_input_lines` | number | No | Total line count of existing `context_paths`. |
+| `modules_loaded` | string[] | No | Stage-local modules intentionally loaded for this run. |
+| `module_count` | number | No | Count of `modules_loaded`. |
+| `deterministic_checks` | string[] | No | Deterministic commands/checks executed or required at this stage. |
+| `deterministic_check_count` | number | No | Count of `deterministic_checks`. |
+| `execution_track` | string | Yes | `code`, `business-artifact`, or `mixed` when known. |
+| `deliverable_type` | string | Yes | Canonical downstream deliverable type when known. |
+| `dispatch_ids` | string[] | No | Related ideas dispatch IDs when available. |
+| `model_input_tokens` | number | Yes | Prompt/input token count when available from runtime telemetry or operator-supplied usage data. |
+| `model_output_tokens` | number | Yes | Output token count when available from runtime telemetry or operator-supplied usage data. |
+| `token_source` | `"api_usage"` \| `"operator_provided"` \| `"unknown"` | No | Provenance of token counts. |
+| `runtime_usage_provider` | `"codex"` \| `"claude"` | Yes | Runtime provider used for automatic token capture when available. |
+| `runtime_session_id` | string | Yes | Provider session/thread identifier used to resolve the runtime token snapshot. |
+| `runtime_usage_mode` | `"delta_from_previous_feature_record"` \| `"last_response_fallback"` | Yes | How stage token counts were derived from runtime telemetry. |
+| `runtime_usage_snapshot_at` | ISO 8601 string | Yes | Timestamp of the provider-side usage snapshot used for this record. |
+| `runtime_total_input_tokens` | number | Yes | Cumulative provider-side input-token total at record time. Used as the baseline for the next feature-stage delta. |
+| `runtime_total_output_tokens` | number | Yes | Cumulative provider-side output-token total at record time. Used as the baseline for the next feature-stage delta. |
+| `per_module_bytes` | `Record<string, number>` | Yes | Per-module context byte sizes keyed by resolved repo-relative module path. `undefined` on legacy records (pre-1.5.0); empty `{}` when zero modules loaded; populated with module path → byte size when modules are present. |
+| `deterministic_check_results` | `Record<string, CheckResultSummary>` | Yes | Per-check validator pass/fail summaries keyed by check name. Each value is `{ valid: boolean, error_count: number, warning_count: number }`. `undefined` on legacy records (pre-1.6.0); empty `{}` when no check results supplied; populated via `--check-result` CLI flag. |
+| `notes` | string | Yes | Short operator/agent note for unusual telemetry conditions. |
+
+### Field invariants
+
+- `telemetry_key` is the dedupe authority for workflow-step lines.
+- `context_input_bytes` and `context_input_lines` count only paths that existed at record time.
+- `missing_context_paths.length` may be non-zero; this is a telemetry quality signal, not a hard error.
+- `model_input_tokens` and `model_output_tokens` may remain null until true runtime token usage is available. The current contract supports progressive backfill.
+- When `runtime_usage_mode = delta_from_previous_feature_record`, `model_input_tokens` and `model_output_tokens` are computed from the current cumulative runtime totals minus the prior workflow-step record for the same feature and runtime session.
+- When `runtime_usage_mode = last_response_fallback`, the recorder could not find a prior feature baseline and falls back to the provider's latest-response usage snapshot.
+- Claude automatic capture requires an explicit Claude session id. The recorder must not guess the active Claude session from ambient history or latest telemetry files.
 
 ## 5. Deduplication Key
 
@@ -207,8 +271,12 @@ Action records are deterministic and include:
 
 ## 10. Schema Versioning
 
-This schema is at version `1.1.0`.
+This schema is at version `1.6.0`.
 
+- `1.6.0` adds optional `deterministic_check_results` field to `workflow_step` records for per-check validator pass/fail summaries (`CheckResultSummary: { valid, error_count, warning_count }`). Report generator adds `## Validator Results` markdown section and `validator_summary` + `validator_record_count` to JSON envelope. CLI accepts `--check-result <name>:<pass|fail>:<errors>:<warnings>` repeatable flag. Check names from `--check-result` are auto-appended to `deterministic_checks` array.
+- `1.5.0` adds optional `per_module_bytes` field to `workflow_step` records for per-module context byte tracking. Report generator JSON output wrapped in `{ summary, per_module_breakdown, per_module_record_count }` envelope (breaking change to JSON CLI contract; no automated consumers).
+- `1.4.0` adds runtime token usage fields for automatic Codex/Claude session capture.
+- `1.2.0` adds `workflow_step` records for downstream DO workflow telemetry in the shared append-only telemetry stream.
 - `1.1.0` adds rollup/reconciliation formulas, invariant suppression grouping, and threshold action contract.
 - Breaking changes require a major version bump and migration note.
 - Non-breaking additions (new optional fields) require a minor version bump.

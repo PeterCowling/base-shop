@@ -1,6 +1,6 @@
 import type { ReadonlyURLSearchParams } from "next/navigation";
 
-import { isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
+import { ISO_DATE_PATTERN, isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
 
 export type BookingSearch = {
   checkin: string;
@@ -28,8 +28,6 @@ export const BOOKING_SEARCH_TTL_MS = 30 * 60 * 1000;
 type BookingSearchStorePayload = BookingSearch & {
   expires_at_ms: number;
 };
-
-const ISO_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/u;
 
 function parsePositiveInt(raw: string | null): number | null {
   if (!raw) return null;

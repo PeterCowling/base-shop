@@ -40,7 +40,7 @@ function buildCsp(nonce) {
     "worker-src 'self'",
     "manifest-src 'self'",
     "media-src 'self'",
-    "img-src 'self' data: https://images.unsplash.com https://imagedelivery.net https://*.r2.dev",
+    "img-src 'self' data: https://imagedelivery.net https://*.r2.dev",
     "font-src 'self' data:",
     `style-src 'self' 'nonce-${nonce}'`,
     "style-src-attr 'unsafe-inline'",

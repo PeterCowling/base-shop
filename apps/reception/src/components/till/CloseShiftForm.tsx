@@ -45,11 +45,13 @@ const closeShiftFormSchema = z
 const STEP_STYLES = {
   reconcile: {
     closeBtnBg: "bg-warning-main",
+    closeBtnFg: "text-warning-fg",
     border: "border-warning-main",
     text: "text-warning-main",
   },
   error: {
     closeBtnBg: "bg-error-main",
+    closeBtnFg: "text-danger-fg",
     border: "border-error-main",
     text: "text-error-main",
   },
@@ -261,7 +263,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
           <Button
             onClick={onCancel}
             aria-label="Close"
-            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full ${styles.closeBtnBg} text-primary-fg`}
+            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full ${styles.closeBtnBg} ${styles.closeBtnFg}`}
           >
             <span aria-hidden="true">&times;</span>
           </Button>
@@ -353,7 +355,7 @@ export const CloseShiftForm = memo(function CloseShiftForm({
           <Button
             onClick={onCancel}
             aria-label="Close"
-            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full ${styles.closeBtnBg} text-primary-fg`}
+            className={`absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full ${styles.closeBtnBg} ${styles.closeBtnFg}`}
           >
             <span aria-hidden="true">&times;</span>
           </Button>

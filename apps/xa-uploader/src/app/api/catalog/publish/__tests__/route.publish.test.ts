@@ -2,6 +2,8 @@ import { afterEach, beforeEach, describe, expect, it, jest } from "@jest/globals
 
 import { __clearRateLimitStoreForTests } from "../../../../../lib/rateLimit";
 
+class CatalogDraftConflictErrorMock extends Error {}
+
 const hasUploaderSessionMock = jest.fn();
 const publishCatalogPayloadToContractMock = jest.fn();
 const readCloudCurrencyRatesMock = jest.fn();
@@ -9,6 +11,7 @@ const readCloudDraftSnapshotMock = jest.fn();
 const writeCloudDraftSnapshotMock = jest.fn();
 const acquireCloudSyncLockMock = jest.fn();
 const releaseCloudSyncLockMock = jest.fn();
+const upsertProductInCloudSnapshotMock = jest.fn();
 const buildCatalogArtifactsFromDraftsMock = jest.fn();
 const getMediaBucketMock = jest.fn();
 const maybeTriggerXaBDeployMock = jest.fn();
@@ -56,11 +59,14 @@ jest.mock("../../../../../lib/catalogContractClient", () => ({
 }));
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
+  CatalogDraftConflictError: CatalogDraftConflictErrorMock,
+  CatalogDraftContractError: class CatalogDraftContractError extends Error {},
   readCloudCurrencyRates: (...args: unknown[]) => readCloudCurrencyRatesMock(...args),
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
   writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
   acquireCloudSyncLock: (...args: unknown[]) => acquireCloudSyncLockMock(...args),
   releaseCloudSyncLock: (...args: unknown[]) => releaseCloudSyncLockMock(...args),
+  upsertProductInCloudSnapshot: (...args: unknown[]) => upsertProductInCloudSnapshotMock(...args),
 }));
 
 jest.mock("../../../../../lib/catalogDraftToContract", () => ({
@@ -100,6 +106,26 @@ describe("catalog publish route", () => {
     acquireCloudSyncLockMock.mockResolvedValue({
       status: "acquired",
       lock: { storefront: "xa-b", ownerToken: "lock-owner-1", expiresAt: "2999-01-01T00:00:00.000Z" },
+    });
+    upsertProductInCloudSnapshotMock.mockImplementation((params: unknown) => {
+      const p = params as {
+        product: typeof VALID_CLOUD_PRODUCT;
+        ifMatch?: string;
+        snapshot: { products: (typeof VALID_CLOUD_PRODUCT)[]; revisionsById: Record<string, string> };
+      };
+      const id = (p.product.id ?? "").trim();
+      const currentRevision = p.snapshot.revisionsById[id];
+      if (p.ifMatch !== undefined && p.ifMatch !== currentRevision) {
+        throw new CatalogDraftConflictErrorMock("revision_conflict");
+      }
+      return {
+        product: p.product,
+        revision: "rev-new-1",
+        products: p.snapshot.products.map((prod) =>
+          (prod.id ?? "").trim() === id ? p.product : prod
+        ),
+        revisionsById: { ...p.snapshot.revisionsById, [id]: "rev-new-1" },
+      };
     });
     releaseCloudSyncLockMock.mockResolvedValue(undefined);
     buildCatalogArtifactsFromDraftsMock.mockReturnValue({
@@ -281,6 +307,45 @@ describe("catalog publish route", () => {
     expect(response.status).toBe(404);
     expect(await response.json()).toEqual({ ok: false });
     expect(acquireCloudSyncLockMock).not.toHaveBeenCalled();
+  });
+
+  // B4 — Publish state transitions
+  it("B4: normalises an unknown publishState value to 'live' and completes the publish", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        // "draft" is not a valid publishState; the route normalises anything != "out_of_stock" to "live"
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1", publishState: "draft" }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: true }));
+    expect(buildCatalogArtifactsFromDraftsMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        products: [expect.objectContaining({ id: "p1", publishState: "live" })],
+      }),
+    );
+  });
+
+  it("B4: accepts publishState 'out_of_stock' without normalisation", async () => {
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/publish", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", draftId: "p1", ifMatch: "rev-1", publishState: "out_of_stock" }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(buildCatalogArtifactsFromDraftsMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        products: [expect.objectContaining({ publishState: "out_of_stock" })],
+      }),
+    );
   });
 
   it("publishes with warnings when cloud images are missing in warn mode", async () => {

@@ -11,15 +11,7 @@ import hotel from "@/config/hotel";
 import { useOptionalModal } from "@/context/ModalContext";
 import type { AppLanguage } from "@/i18n.config";
 import { MapPin } from "@/icons";
-import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
-
-function resolveTranslatedCopy(value: unknown, fallback: string): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
-  return trimmed;
-}
+import { resolveTranslatedCopy } from "@/utils/i18nContent";
 
 const { streetAddress: _streetAddress, postalCode: _postalCode, addressLocality: _addressLocality } = hotel.address;
 const MAPS_URL = `https://www.google.com/maps/place/${encodeURIComponent(`${_streetAddress}, ${_postalCode} ${_addressLocality}`)}`;

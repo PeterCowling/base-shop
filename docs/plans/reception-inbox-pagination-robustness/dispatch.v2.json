@@ -1,0 +1,43 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260312140000-0005",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "artifact_id": null,
+  "before_sha": null,
+  "after_sha": "operator-idea-20260312-pagination",
+  "root_event_id": "operator:BRIK:PRODUCTS:reception-inbox-pagination-robustness:20260312",
+  "anchor_key": "reception-inbox-pagination-robustness",
+  "cluster_key": "BRIK:PRODUCTS:reception-inbox-pagination-robustness:operator:20260312",
+  "cluster_fingerprint": "reception-inbox-pagination-robustness-20260312",
+  "lineage_depth": 0,
+  "area_anchor": "Brikette — Loading more messages in a thread can show duplicates or skip messages if new emails arrive",
+  "location_anchors": [
+    "apps/reception/src/services/useInbox.ts",
+    "apps/reception/src/lib/inbox/repositories.server.ts",
+    "apps/reception/src/app/api/mcp/inbox/[threadId]/route.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Thread message pagination uses numeric offset which becomes stale if messages arrive between page loads. This can cause messages to appear twice or be skipped entirely when staff click 'load more'.",
+  "next_scope_now": "Switch to cursor-based pagination using message ID or timestamp as the cursor, so new messages don't shift the window.",
+  "recommended_route": "lp-do-build",
+  "status": "micro_build_ready",
+  "priority": "P2",
+  "confidence": 0.88,
+  "evidence_refs": [
+    "operator-stated: pagination offset race — messages duplicated or skipped when new emails arrive between page loads",
+    "apps/reception/src/services/useInbox.ts",
+    "apps/reception/src/lib/inbox/repositories.server.ts",
+    "coverage-hint: UX",
+    "coverage-hint: data-contracts"
+  ],
+  "created_at": "2026-03-12T14:00:00.000Z",
+  "queue_state": "enqueued",
+  "why": "When staff click 'load earlier messages' in a long email thread, new emails arriving in the background can shift the numbering and cause the same messages to appear twice or older messages to be skipped. Switching to a stable cursor means loading more always picks up exactly where it left off regardless of new arrivals.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Message pagination uses cursor-based navigation that is stable regardless of concurrent message arrivals.",
+    "source": "auto"
+  }
+}

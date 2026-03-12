@@ -1,4 +1,5 @@
-import { type CatalogProductDraftInput,deriveCatalogPublishState } from "@acme/lib/xa";
+import type { CatalogProductDraftInput } from "@acme/lib/xa/catalogAdminSchema";
+import { deriveCatalogPublishState } from "@acme/lib/xa/catalogWorkflow";
 
 import {
   type CloudDraftSnapshot,

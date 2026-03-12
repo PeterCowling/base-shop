@@ -1,0 +1,181 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "do-workflow-realtime-monitoring",
+  "source_artifact_path": "docs/plans/do-workflow-realtime-monitoring/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/do-workflow-realtime-monitoring/fact-find.md",
+    "plan": "docs/plans/do-workflow-realtime-monitoring/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Right now, if work gets stuck in the queue or errors start piling up, nobody knows until someone manually runs a report. This means problems can sit unnoticed for hours or days. Live monitoring would flag issues as they happen, so they get fixed before they snowball.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Workflow queue health is continuously monitored with automatic alerts when thresholds are breached.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — CLI output only",
+      "current_or_option_state": "N/A — MCP JSON response",
+      "gap_or_implication": "N/A for both",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Clear exit codes (0=healthy, 1=alert, 2=error); structured JSON output with pass/warning/alert per metric",
+      "current_or_option_state": "JSON response with same structure; interactive query",
+      "gap_or_implication": "Option A: define 3 exit states + JSON body",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Local file reads only",
+      "current_or_option_state": "Goes through MCP auth layer",
+      "gap_or_implication": "N/A for Option A; existing auth for B",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Results to stdout + optional gitignored file for audit trail",
+      "current_or_option_state": "No persistence — result is ephemeral in MCP response",
+      "gap_or_implication": "Option A: stdout primary, optional file for cron",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit test the orchestration function; integration test with fixture data",
+      "current_or_option_state": "Same unit tests plus MCP route test",
+      "gap_or_implication": "Option A: simpler test surface",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Consumes `MetricsRunnerResult` + `MetricsActionRecord`; outputs new `HealthCheckResult` schema",
+      "current_or_option_state": "Same contracts",
+      "gap_or_implication": "Define `HealthCheckResult` output schema",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Reads 2 files per invocation (~1.6MB queue-state + growing telemetry JSONL); metrics-runner handles missing files",
+      "current_or_option_state": "Same, but MCP adds request overhead",
+      "gap_or_implication": "Both acceptable; telemetry growth is the shared concern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Add pnpm script; rollback = remove script",
+      "current_or_option_state": "Add MCP tool; rollback = remove tool registration",
+      "gap_or_implication": "Option A: simpler rollout",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The workflow queue has all the computation and alert logic needed for health monitoring — but no automated way to run it and surface results. This analysis selects the best approach for adding a lightweight health check that evaluates queue health and surfaces alerts.",
+    "goals": [
+      "Select an approach that reuses existing metrics infrastructure (metrics-rollup, metrics-runner)",
+      "Define output contract and alert delivery mechanism",
+      "Keep the solution additive and minimal"
+    ],
+    "non_goals": [
+      "Dashboard or UI",
+      "Auto-remediation",
+      "External service integration"
+    ],
+    "constraints": [
+      "No persistent server process — must work as a CLI invocation",
+      "Must not mutate source data files (queue-state.json, telemetry.jsonl)",
+      "Health check results go to a separate output file"
+    ],
+    "assumptions": [
+      "Current workflow volume makes periodic CLI checks sufficient",
+      "Existing alert thresholds are correct"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Reuse of existing code",
+        "Why it matters": "Minimizes new code, reduces risk",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Output actionability",
+        "Why it matters": "Operator must be able to act on alerts quickly",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Implementation effort",
+        "Why it matters": "Small scope — should stay small",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Extensibility",
+        "Why it matters": "Future alerting channels (MCP, email) should plug in easily",
+        "Weight/priority": "Low"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Thin CLI wrapper around metrics-runner + telemetry summary",
+        "Description": "New `workflow-health-check.ts` CLI that calls `runMetricsRollup()` for queue/cycle health (alerts via `action_records`) and `summarizeWorkflowStepTelemetry()` for workflow-step health, writes structured JSON result to stdout and optionally to a gitignored output file, exits with non-zero on alerts",
+        "Upside": "Maximum reuse; ~150-200 new lines; follows existing CLI pattern; cron-friendly exit codes",
+        "Downside": "No push notification — operator must check output or cron exit",
+        "Key risks": "Operator may miss alerts if cron isn't monitored",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: MCP tool health check",
+        "Description": "Add `workflow_health_check` tool to brikette MCP server that wraps same logic, accessible from BOS",
+        "Upside": "Interactive — operator can query health on demand; integrates with existing BOS workflow",
+        "Downside": "More integration surface; MCP server must be running; not cron-friendly; adds to MCP server scope",
+        "Key risks": "MCP server availability dependency; harder to test",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C: Full monitoring service",
+        "Description": "Persistent process with polling loop, WebSocket updates, notification dispatch",
+        "Upside": "Real-time; push-based; most capable",
+        "Downside": "Way out of scope; requires server infrastructure; high implementation effort",
+        "Key risks": "Over-engineering for current volume",
+        "Viable?": "No — eliminated by scope constraint"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Thin CLI wrapper around metrics-runner",
+      "Why this wins": "Maximum code reuse (`runMetricsRollup()` provides queue/cycle metrics with alerts already evaluated as `action_records`; `summarizeWorkflowStepTelemetry()` provides workflow-step metrics), follows existing CLI patterns, cron-friendly with exit codes, simplest test surface.",
+      "What it depends on": "Two existing public functions: `runMetricsRollup()` from metrics-runner and `summarizeWorkflowStepTelemetry()` from workflow-telemetry. No private function exports needed — `action_records` on the rollup already contains evaluated alerts."
+    },
+    "rejected_approaches": [
+      "**Option B (MCP tool)** — viable but adds unnecessary integration complexity for the initial deliverable. The MCP server must be running, testing is harder, and it doesn't support cron scheduling. Better as a follow-on enhancement.",
+      "**Option C (Full monitoring service)** — eliminated. Over-engineering for current workflow volume (~540 queue entries). No persistent server infrastructure exists or is needed."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Define `HealthCheckResult` output schema (JSON)",
+        "Implement `checkWorkflowHealth()` wrapping metrics-runner + alert evaluation",
+        "Create CLI entry point with pnpm script and exit code semantics",
+        "Unit tests for orchestration function",
+        "Output results to stdout (primary); optionally write to a gitignored file (e.g. `data/health-check-latest.json`) for cron audit trail — not in `docs/` to avoid git churn"
+      ],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "Health check function depends on both `runMetricsRollup()` and `summarizeWorkflowStepTelemetry()` (both already public)",
+        "CLI entry point depends on health check function",
+        "Tests depend on both"
+      ],
+      "risks_to_carry_forward": [
+        "Telemetry JSONL growth — plan should consider time-windowed reads if performance degrades",
+        "Cycle telemetry and workflow-step telemetry are in the same JSONL file but parsed by different functions — health check must call both"
+      ]
+    }
+  }
+}

@@ -10,8 +10,8 @@ export interface DifferenceBadgeProps {
 export const DifferenceBadge = memo(function DifferenceBadge({
   value,
   className = "",
-  positiveClassName = "bg-success-main text-primary-fg",
-  negativeClassName = "bg-error-main text-primary-fg",
+  positiveClassName = "bg-success-main text-success-fg",
+  negativeClassName = "bg-error-main text-danger-fg",
 }: DifferenceBadgeProps) {
   const isPositive = value >= 0;
   const display = Number.isInteger(value)

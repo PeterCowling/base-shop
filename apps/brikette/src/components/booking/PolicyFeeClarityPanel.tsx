@@ -8,7 +8,9 @@
 import { memo } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
+import { ShieldCheck } from "lucide-react";
 
+import hotel from "@/config/hotel";
 import type { AppLanguage } from "@/i18n.config";
 import { getSlug } from "@/utils/slug";
 
@@ -52,7 +54,7 @@ export default memo(function PolicyFeeClarityPanel({
   return (
     <div
       className={[
-        "rounded-md border border-brand-outline/30 bg-brand-bg p-4 text-sm text-brand-text/80 dark:bg-brand-text",
+        "rounded-md border border-brand-outline/30 bg-brand-bg p-4 text-sm text-brand-text/80",
         className ?? "",
       ].join(" ")}
       data-testid={`policy-fee-clarity:${variant}`}
@@ -77,6 +79,23 @@ export default memo(function PolicyFeeClarityPanel({
       )}
 
       <p className="mt-2 text-xs">{tBook("policies.footer")}</p>
+
+      {hotel.acceptedPayments && hotel.acceptedPayments.length > 0 && (
+        <div className="mt-3 flex flex-wrap items-center gap-2 border-t border-brand-outline/20 pt-3">
+          <span className="flex items-center gap-1 text-xs font-medium text-brand-heading">
+            <ShieldCheck size={14} className="text-brand-primary" aria-hidden="true" />
+            {tBook("policies.paymentsLabel")}
+          </span>
+          {hotel.acceptedPayments.map((method) => (
+            <span
+              key={method}
+              className="rounded-sm border border-brand-outline/30 bg-brand-surface px-2 py-0.5 text-xs text-brand-text/70"
+            >
+              {method}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 });

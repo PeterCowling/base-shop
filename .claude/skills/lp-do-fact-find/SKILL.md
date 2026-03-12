@@ -1,6 +1,6 @@
 ---
 name: lp-do-fact-find
-description: Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits planning artifacts ready for /lp-do-plan. For understanding-only briefings, use /lp-do-briefing.
+description: Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits analysis-ready artifacts for /lp-do-analysis. For understanding-only briefings, use /lp-do-briefing.
 ---
 
 # Fact Find Orchestrator
@@ -32,7 +32,7 @@ Do not embed long templates, long checklists, or API payload blocks here.
 
 - Code changes, refactors, migrations, or production data writes.
 - Destructive shell/git commands.
-- Planning/build execution (this skill ends at fact-find output).
+- Analysis/planning/build execution (this skill ends at fact-find output).
 
 ### Evidence and quality rules
 
@@ -130,6 +130,11 @@ Load only the relevant module file(s):
 - `website-upgrade-backlog` alias: `modules/outcome-a-website-upgrade.md`
 - `startup-loop-gap-fill` alias: `modules/outcome-a-loop-gap.md` (output path determined by trigger type inside the module)
 
+For `Execution-Track: code | mixed`, also load:
+- `../_shared/engineering-coverage-matrix.md`
+
+Use it to fill `## Engineering Coverage Matrix` in the artifact with explicit `Required` / `N/A` treatment for every canonical row.
+
 ## Phase 5.5: Scope Rehearsal
 
 Load and follow: `../_shared/simulation-protocol.md`
@@ -142,7 +147,7 @@ Write a `## Rehearsal Trace` section into the fact-find draft (before persisting
 |---|---|---|---|
 | <evidence domain or entry point> | Yes / Partial / No | None — or: [Category] [Severity]: description | Yes / No |
 
-Critical findings block Phase 6 until resolved or waived (`Rehearsal-Critical-Waiver`). Major/Moderate/Minor findings are advisory and proceed to critique.
+Apply the blocking/advisory threshold exactly as defined in `../_shared/simulation-protocol.md`. Do not restate or weaken the threshold here.
 
 ## Phase 5.6: Scope Signal (Two-Way)
 
@@ -168,6 +173,7 @@ Do not emit `limited-thinking` without explicit evidence that dependencies, risk
   - single packet -> write `Dispatch-ID`
   - bundled work package -> write `Dispatch-IDs` and `Work-Package-Reason`
 - **Canonical artifact name:** `fact-find.md` is the formal loop output artifact for this skill. Required sections and frontmatter fields are defined in `docs/business-os/startup-loop/contracts/loop-output-contracts.md` (Artifact 1). The path above is authoritative; do not store this artifact at any other location.
+- Progressive-disclosure sidecar: after validators pass, generate `docs/plans/<feature-slug>/fact-find.packet.json` per `docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`.
 - Include `## Scope Signal` in the artifact body:
   - `Signal: <constrained | right-sized | limited-thinking>`
   - `Rationale: <evidence-based reason>`
@@ -216,7 +222,7 @@ Self-resolve any question answerable from available evidence and business constr
 
 ## Phase 7: Mandatory Evidence Gap Review (Outcome A)
 
-Before marking `Ready-for-planning`, run checklist:
+Before marking `Ready-for-analysis`, run checklist:
 
 - `docs/plans/_templates/evidence-gap-review-checklist.md`
 
@@ -245,14 +251,46 @@ After persisting the fact-find artifact and completing the evidence gap review, 
 
 Load and follow: `../_shared/critique-loop-protocol.md`
 
+## Phase 7b: Deterministic Validators
+
+After critique and before setting `Status: Ready-for-analysis`, run:
+
+```bash
+scripts/validate-fact-find.sh docs/plans/<feature-slug>/fact-find.md docs/plans/<feature-slug>/critique-history.md
+scripts/validate-engineering-coverage.sh docs/plans/<feature-slug>/fact-find.md
+```
+
+Rules:
+- `validate-fact-find.sh` is required for all fact-finds.
+- `validate-engineering-coverage.sh` is required for `Execution-Track: code | mixed`.
+- If either required validator fails, fix the artifact or keep status below `Ready-for-analysis`.
+
+After required validators pass, generate the stage handoff packet:
+
+```bash
+scripts/generate-stage-handoff-packet.sh docs/plans/<feature-slug>/fact-find.md
+```
+
+After required validators pass, append workflow-step telemetry:
+
+```bash
+pnpm --filter scripts startup-loop:lp-do-ideas-record-workflow-telemetry -- --stage lp-do-fact-find --feature-slug <feature-slug> --module <loaded-module-relative-to-stage-skill> [--module <additional-module>] [--input-path <repo-relative-extra-input>] --deterministic-check scripts/validate-fact-find.sh [--deterministic-check scripts/validate-engineering-coverage.sh]
+```
+
+Rules:
+- Record once per materially updated fact-find artifact.
+- Include the actual stage-local modules loaded in Phase 5 and any extra repo inputs that materially contributed context size.
+- Codex token usage is auto-captured when `CODEX_THREAD_ID` is available.
+- Claude token usage is auto-captured via project session logs (sessions-index.json → debug/latest fallback). Explicit `--claude-session-id` still takes priority when supplied.
+
 ## Completion Message
 
-> Fact-find complete. Brief saved to `docs/plans/<feature-slug>/fact-find.md`. Status: `<Ready-for-planning | Needs-input | Infeasible>`. Primary execution skill: `<skill>`. Evidence gap review complete. Critique: `<N>` round(s), final verdict `<credible | partially credible | not credible>`, score `<X.X>`/5.0.
+> Fact-find complete. Brief saved to `docs/plans/<feature-slug>/fact-find.md`. Status: `<Ready-for-analysis | Needs-input | Infeasible>`. Primary execution skill: `<skill>`. Evidence gap review complete. Critique: `<N>` round(s), final verdict `<credible | partially credible | not credible>`, score `<X.X>`/5.0.
 
 Status-dependent next action (execute immediately, do not wait for user):
 
-- `Ready-for-planning` → automatically invoke `/lp-do-plan <feature-slug> --auto` to continue the pipeline.
-- `Needs-input` → surface the specific blocking questions, then stop. Do not invoke `/lp-do-plan`.
+- `Ready-for-analysis` → automatically invoke `/lp-do-analysis <feature-slug>` to continue the pipeline.
+- `Needs-input` → surface the specific blocking questions, then stop. Do not invoke `/lp-do-analysis`.
 - `Infeasible` → surface the kill rationale, then stop. Pipeline ends here.
 
 ## Quick Validation Gate
@@ -264,7 +302,11 @@ Status-dependent next action (execute immediately, do not wait for user):
 - [ ] Only relevant module(s) loaded
 - [ ] Scope signal classified (`constrained`, `right-sized`, or `limited-thinking`) with evidence-backed rationale
 - [ ] `## Outcome Contract` present and populated (dispatch payload or trigger frontmatter; fallback `Why: TBD`, `Source: auto` when unavailable)
+- [ ] For code/mixed work, `## Engineering Coverage Matrix` present with all canonical rows
 - [ ] Outcome A evidence gap review completed and recorded
 - [ ] lp-do-factcheck run if fact-find contains codebase claims (file paths, function names, coverage assertions)
-- [ ] Status classified as `Ready-for-planning`, `Needs-input`, or `Infeasible` (not left ambiguous)
-- [ ] If `Ready-for-planning`: `/lp-do-plan <feature-slug> --auto` automatically invoked
+- [ ] Deterministic validators run (`validate-fact-find.sh`; and for code/mixed `validate-engineering-coverage.sh`)
+- [ ] `fact-find.packet.json` generated after validators pass
+- [ ] Workflow-step telemetry appended after validators pass
+- [ ] Status classified as `Ready-for-analysis`, `Needs-input`, or `Infeasible` (not left ambiguous)
+- [ ] If `Ready-for-analysis`: `/lp-do-analysis <feature-slug>` automatically invoked

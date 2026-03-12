@@ -269,7 +269,7 @@ describe('/api/direct-message', () => {
       }),
     );
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(401);
     expect(getSpy).not.toHaveBeenCalled();
     expect(setSpy).not.toHaveBeenCalled();
     expect(updateSpy).not.toHaveBeenCalled();

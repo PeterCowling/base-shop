@@ -24,6 +24,14 @@
 
     /* ───── workspace package resolution ───── */
     "paths": {
+      "@acme/lib": [
+        "packages/lib/src/index.ts",
+        "packages/lib/dist/index.d.ts"
+      ],
+      "@acme/lib/*": [
+        "packages/lib/src/*",
+        "packages/lib/dist/*"
+      ],
       "@acme/platform-core": ["packages/platform-core/src/index"],
       "@acme/platform-core/*": [
         "packages/platform-core/src/*",

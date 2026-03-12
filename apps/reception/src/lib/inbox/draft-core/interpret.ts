@@ -50,8 +50,16 @@ function coerceThreadContext(value: unknown): ThreadContext | undefined {
   const messages = messagesRaw
     .map((message) => coerceThreadMessage(message))
     .filter((message): message is ThreadMessage => Boolean(message));
+  const bookingRef = coerceString(candidate.bookingRef);
 
-  return messages.length > 0 ? { messages } : undefined;
+  if (messages.length === 0 && !bookingRef) {
+    return undefined;
+  }
+
+  return {
+    messages,
+    ...(bookingRef ? { bookingRef } : {}),
+  };
 }
 
 export function coerceDraftInterpretInput(input: LooseDraftInterpretInput): DraftInterpretInput {

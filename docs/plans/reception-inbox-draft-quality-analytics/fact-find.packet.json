@@ -1,0 +1,169 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "reception-inbox-draft-quality-analytics",
+  "source_artifact_path": "docs/plans/reception-inbox-draft-quality-analytics/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-inbox-draft-quality-analytics/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff and operators have no way to tell whether the AI email drafts are getting better or worse over time. They cannot see how long it takes to resolve a guest enquiry, how many drafts pass quality checks, or whether email volume is trending up. Without this visibility, problems go unnoticed until a guest complains.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A validated next action exists for inbox analytics, with required metrics, computation approach, and UI surface identified.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "InboxWorkspace shows basic counts (threads, manual draft, ready-to-send) but no analytics panel. No charts or summary views exist.",
+      "gap_or_implication": "No analytics UI exists. Need to decide tab vs. page vs. inline summary.",
+      "carry_forward_or_notes": "Yes -- UI approach is a primary decision"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Draft-stats endpoint returns `insufficient: true` when no events exist.",
+      "gap_or_implication": "Need empty states for all new metrics, loading states for analytics queries, error handling for D1 query failures.",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "All inbox API routes use `requireStaffAuth`. Draft-stats follows this pattern.",
+      "gap_or_implication": "New analytics endpoints must require staff auth. No PII in aggregated metrics.",
+      "carry_forward_or_notes": "Yes -- ensure auth requirement"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Thread events are the audit trail. telemetry.server.ts has critical vs best-effort distinction.",
+      "gap_or_implication": "Analytics computation errors should be logged. Consider adding an event for analytics access.",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Draft-stats endpoint has zero test coverage. Telemetry recording is well-tested.",
+      "gap_or_implication": "New analytics code needs unit tests for SQL queries and data transformations.",
+      "carry_forward_or_notes": "Yes -- testing approach needed"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "D1 schema has thread_events indexed on (thread_id, timestamp) and (timestamp). No event_type index. quality_json stored on draft rows.",
+      "gap_or_implication": "May need new index on event_type for efficient aggregation. API response contract needs definition.",
+      "carry_forward_or_notes": "Yes -- index and API design"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "D1 has per-request compute limits. Draft-stats endpoint runs complex CTEs.",
+      "gap_or_implication": "Analytics queries on growing event table could hit D1 limits. Consider query complexity budget.",
+      "carry_forward_or_notes": "Yes -- query performance critical"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Schema migrations are sequential (0001-0004). New indexes require a migration.",
+      "gap_or_implication": "New migration for index. API endpoints are additive (no breaking changes). UI behind existing InboxWorkspace.",
+      "carry_forward_or_notes": "Moderate -- standard migration"
+    }
+  ],
+  "open_operator_questions": [
+    "What time granularity matters most for trend views -- daily, weekly, or both?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The reception inbox records telemetry events for every step in the email draft lifecycle (admitted, drafted, sent, resolved, dismissed, recovery, etc.) in a D1 SQLite database, but provides no aggregated analytics or reporting surface. Staff and operators cannot see draft quality pass rates, average resolution time, volume trends, or admission rates. A draft-stats endpoint exists but is limited to acceptance rate only and is only exposed via MCP. This fact-find investigates what telemetry data already exists, what metrics are most valuable, how they can be computed, and where the analytics sur",
+    "goals": [
+      "Map the complete set of telemetry events recorded and the data available in each",
+      "Identify quality-check data stored alongside drafts",
+      "Determine which metrics provide the most operational value",
+      "Evaluate computation approaches (D1 SQL aggregations vs. API-computed vs. materialized)",
+      "Recommend where the analytics surface should live in the UI"
+    ],
+    "non_goals": [
+      "Alerting when quality rates drop below thresholds (adjacent-later)",
+      "Weekly digest emails summarizing performance (adjacent-later)",
+      "Redesigning the telemetry recording system itself"
+    ],
+    "constraints": [
+      "Reception uses Cloudflare D1 (SQLite) as its database; no PostgreSQL aggregation features available",
+      "D1 has read performance limits; analytics queries must not block the operational inbox",
+      "Reception is a Cloudflare Worker with limited compute budget per request"
+    ],
+    "assumptions": [
+      "Thread volume is low-to-moderate (hostel inbox, not high-volume SaaS)",
+      "D1 query performance is sufficient for simple aggregations over the event table at current scale"
+    ],
+    "key_entry_points": [
+      "`apps/reception/src/lib/inbox/telemetry.server.ts` -- telemetry recording layer; defines all event types and recording functions",
+      "`apps/reception/src/app/api/mcp/inbox/draft-stats/route.ts` -- existing draft acceptance rate endpoint (SQL-based)",
+      "`apps/reception/src/components/inbox/InboxWorkspace.tsx` -- inbox UI entry point; currently shows only thread count and manual-draft/ready-to-send counts"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Telemetry event types and metadata",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Quality check data on drafts",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "D1 schema and indexes",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No event_type index exists; analytics queries filtering by event_type may scan",
+        "Resolution Required": "No (advisory: index recommendation)"
+      },
+      {
+        "Scope Area": "Existing draft-stats endpoint",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None -- confirms feasible SQL aggregation pattern for D1",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "InboxWorkspace UI structure",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None -- clear extension point (tab or header summary)",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "MCP tool pattern",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None -- existing draft_acceptance_rate demonstrates the pattern",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Auth boundary",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None -- requireStaffAuth on all inbox routes",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Recovery and error telemetry",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None -- inbox_recovery events have structured outcome codes",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

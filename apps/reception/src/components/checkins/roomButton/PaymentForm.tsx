@@ -49,9 +49,9 @@ function PaymentForm() {
     return "Paid";
   }, [outstanding, splitPayments]);
 
-  const activeClass = "bg-primary-main/100 hover:opacity-90 text-primary-fg/100";
+  const activeClass = "bg-primary-main hover:opacity-90 text-primary-fg";
   const disabledClass =
-    "bg-success-main/100 text-foreground cursor-not-allowed opacity-70";
+    "bg-success-main text-success-fg cursor-not-allowed opacity-70";
   const leftButtonClass = isDisabled ? disabledClass : activeClass;
   const rightButtonClass = isDisabled ? disabledClass : activeClass;
 

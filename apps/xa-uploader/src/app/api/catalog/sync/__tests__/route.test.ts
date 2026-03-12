@@ -76,6 +76,12 @@ jest.mock("../../../../../lib/syncMutex", () => ({
   getUploaderKv: (...args: unknown[]) => getUploaderKvMock(...args),
 }));
 
+jest.mock("../../../../../lib/rateLimit", () => ({
+  rateLimit: () => ({ allowed: true, remaining: 99, resetAt: Date.now() + 60000, retryAfter: 0, limit: 99 }),
+  withRateHeaders: (_res: unknown, ..._rest: unknown[]) => _res,
+  getRequestIp: () => "127.0.0.1",
+}));
+
 describe("catalog sync route", () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -200,6 +206,28 @@ describe("catalog sync route", () => {
         recovery: "mark_products_ready",
       }),
     );
+  });
+
+  // C3 — Empty catalog sync confirmation required
+
+  it("C3: POST proceeds when confirmEmptyInput is true even with no publishable products", async () => {
+    readCloudDraftSnapshotMock.mockResolvedValueOnce({
+      products: [{ ...VALID_CLOUD_PRODUCT, publishState: "draft", imageFiles: "" }],
+      revisionsById: { p1: "rev-1" },
+      docRevision: "doc-1",
+    });
+
+    const { POST } = await import("../route");
+    const response = await POST(
+      new Request("http://localhost/api/catalog/sync", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ storefront: "xa-b", options: { confirmEmptyInput: true } }),
+      }),
+    );
+
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual(expect.objectContaining({ ok: true }));
   });
 
   it("POST completes the hosted publish path", async () => {

@@ -1,0 +1,174 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "reception-inbox-metadata-normalization",
+  "source_artifact_path": "docs/plans/reception-inbox-metadata-normalization/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-inbox-metadata-normalization/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Important details about each email thread -- like the guest's name, their booking reference, and room number -- are all crammed into one text field. Every time the system needs any of these details, it has to unpack the entire blob. This is slow, error-prone, and makes it impossible to search or filter threads by guest name or booking reference directly. Moving the most-used fields into proper database columns would make the inbox faster and more reliable.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A validated next action exists for metadata normalization, with target fields identified, migration strategy defined, and backward compatibility approach documented.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI changes -- metadata normalization is backend-only. UI consumes already-serialized API fields.",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "No user-facing behavior changes. API response shape remains identical.",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Guest PII (name, booking ref, room numbers) stored in metadata_json; no encryption. Auth via `requireStaffAuth`.",
+      "gap_or_implication": "Column promotion does not change security posture but makes PII fields more visible in schema. No new risk.",
+      "carry_forward_or_notes": "Confirm PII handling unchanged"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`thread_events` table provides audit trail. `recordInboxEvent` logs sync/recovery/draft events with metadata.",
+      "gap_or_implication": "No logging of schema migration itself. Should log migration completion.",
+      "carry_forward_or_notes": "Migration event logging"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "13+ test files cover sync, recovery, API routes. Tests use `metadata_json: null` and `metadata_json: JSON.stringify(...)` in fixtures.",
+      "gap_or_implication": "No test for `parseMetadata` in isolation. No test for `json_extract` SQL filter. Test fixtures will need updating for new columns.",
+      "carry_forward_or_notes": "Test fixture migration, parseMetadata consolidation"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Three parallel type definitions (`SyncThreadMetadata`, `InboxThreadMetadata`, `ThreadMetadata`). API contract (`InboxThreadSummaryApiModel`) extracts specific fields.",
+      "gap_or_implication": "Type fragmentation across three definitions. API contract must remain stable.",
+      "carry_forward_or_notes": "Type unification, API contract stability"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`json_extract` in `findStaleAdmittedThreads` is the only SQL-level metadata query. All other filtering happens in application code after `JSON.parse`. Row count is modest.",
+      "gap_or_implication": "Current `json_extract` is slower than a direct column index. After migration, `needsManualDraft` becomes a proper indexed column.",
+      "carry_forward_or_notes": "Index design for promoted columns"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "D1 migrations are forward-only numbered SQL files. No built-in rollback mechanism.",
+      "gap_or_implication": "Must use additive migration (add columns, keep `metadata_json`). Rollback = deploy old code that ignores new columns.",
+      "carry_forward_or_notes": "Additive migration strategy, dual-write period"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Thread metadata in the reception inbox is stored as a JSON string in a single `metadata_json TEXT` column on the `threads` table. This includes guest details (name, booking reference, room numbers, check-in/out dates), admission outcomes, draft generation stats, sync state, and failure tracking. Every consumer must call `JSON.parse` on access, and no metadata field can be indexed or queried at the SQL level -- except one `json_extract` call for `needsManualDraft` in the stale thread recovery query. The proposed change is to promote frequently-accessed and query-filtered metadata fields to dedi",
+    "goals": [
+      "Identify which metadata fields exist and how they are used (read vs. write, query vs. display)",
+      "Map the full consumption surface of `metadata_json` across the codebase",
+      "Assess the D1/Cloudflare migration approach for schema changes",
+      "Determine backward compatibility strategy for incremental rollout",
+      "Produce evidence sufficient for analysis of migration approaches"
+    ],
+    "non_goals": [
+      "Writing migration code or implementing any schema changes",
+      "Redesigning the inbox data model beyond metadata normalization",
+      "Addressing `payload_json`, `quality_json`, `interpret_json`, or other JSON columns on different tables"
+    ],
+    "constraints": [
+      "Reception uses Cloudflare D1 (SQLite) -- no Prisma, raw SQL migrations in `apps/reception/migrations/`",
+      "D1 migrations are sequential numbered SQL files applied via `wrangler d1 migrations apply`",
+      "Production data exists; migration must be non-destructive",
+      "No ORM layer -- all queries are hand-written D1 prepared statements"
+    ],
+    "assumptions": [
+      "Row count is modest (hundreds to low thousands of threads, based on hostel email volume)",
+      "Downtime during migration is acceptable if brief (single-operator system)"
+    ],
+    "key_entry_points": [
+      "`apps/reception/src/lib/inbox/sync.server.ts` -- `syncInbox()` and `processThread()`: primary metadata write path during Gmail sync",
+      "`apps/reception/src/lib/inbox/recovery.server.ts` -- `recoverStaleThreads()`: reads and writes metadata during draft recovery",
+      "`apps/reception/src/lib/inbox/api-models.server.ts` -- `buildThreadSummary()` and `buildThreadSummaryFromRow()`: primary metadata read path for API serialization",
+      "`apps/reception/src/app/api/mcp/inbox/[threadId]/route.ts` -- returns both `buildThreadSummary(record)` AND `parseThreadMetadata(record.thread.metadata_json)` as separate `thread` and `metadata` response fields (line 76-78); the raw parsed metadata object is part of the client API contract",
+      "`apps/reception/src/app/api/mcp/inbox/[threadId]/dismiss/route.ts` -- reads metadata, writes modified metadata on dismiss",
+      "`apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts` -- reads metadata, spread-merges with `needsManualDraft: false` and `lastDraftId` on send (line 80, 96-104)",
+      "`apps/reception/src/app/api/mcp/inbox/[threadId]/resolve/route.ts` -- reads metadata, spread-merges with `needsManualDraft: false` on resolve (line 51-58)",
+      "`apps/reception/src/app/api/mcp/inbox/[threadId]/draft/route.ts` -- reads metadata for `needsManualDraft` (GET, line 83) and spread-merges on draft save (PUT, line 149, 183-191)",
+      "`apps/reception/src/app/api/mcp/inbox/[threadId]/draft/regenerate/route.ts` -- reads metadata for guest context, writes updated draft tracking fields"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis` to compare migration approaches (big-bang vs. phased, which fields to promote in tier 1 vs. tier 2, array field handling strategy)"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "InboxThreadRow schema and metadata_json fields",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Metadata write paths (sync, recovery, dismiss, regenerate)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Metadata read paths (api-models, repositories, route handlers)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "SQL-level metadata queries (json_extract)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "D1 migration approach",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Backward compatibility",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape and fixture impact",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "UI consumption surface",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None -- UI receives pre-serialized fields via API",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

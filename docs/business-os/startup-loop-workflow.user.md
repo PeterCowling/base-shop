@@ -15,7 +15,7 @@ Render-Nav: self-improving
 
 This page explains the self-improving loop.
 
-It shows how the loop watches its own work, turns repeat friction into improvement candidates, sends that work into the normal queue, and learns from the result.
+It shows how the loop watches its own work, turns repeat friction and milestone changes into named problem cases, pairs those with the best current remedy, sends that work into the normal queue, and learns from the result.
 
 ## Big picture
 
@@ -27,23 +27,25 @@ It watches what the normal loop is doing, especially:
 - repeated build problems
 - repeated manual fixes
 - repeated failures or reversions
+- milestone changes that open new kinds of follow-through work
 
 When those patterns show up often enough, the loop treats them as a signal that the process itself may need to improve.
 
 ```mermaid
 flowchart LR
-    A["1. Notice repeat work\nIdeas, build output,\nand build failure create signals"]
-    B["2. Build candidates\nSimilar signals are grouped\ninto one improvement candidate"]
-    C["3. Score and choose\nBeliefs, evidence, risk,\nand likely value are updated"]
-    D["4. Apply safety rules\nGovernance, hold windows,\nand route limits cut risky moves"]
-    E["5. Hand work into the queue\nSelected items go to\nfact-find, plan, or build"]
-    F["6. Record what happened\nThe loop stores outcomes,\nmissing outcomes, and shadow handoffs"]
-    G["7. Learn from results\nAudit calibration, regret,\nand policy quality before the next round"]
+    A["1. Notice signals\nIdeas, build output,\nbuild failures, and milestones"]
+    B["2. Build gap cases\nSimilar signals become\none named recurring problem"]
+    C["3. Attach prescriptions\nThe loop carries the best\ncurrent remedy and its maturity"]
+    D["4. Score and choose\nBeliefs, posture, risk,\nand portfolio fit are updated"]
+    E["5. Apply safety rules\nGovernance, hold windows,\nand authority limits cut risky moves"]
+    F["6. Hand work into the queue\nSelected items go to\nfact-find, plan, or build"]
+    G["7. Record what happened\nThe loop stores outcomes,\nmissing outcomes, shadow handoffs,\nand promotion nominations"]
+    H["8. Learn from results\nAudit calibration, regret,\nand prescription quality before the next round"]
 
-    A --> B --> C --> D --> E --> F --> G --> A
+    A --> B --> C --> D --> E --> F --> G --> H --> A
 ```
 
-The point is not to automate everything. The point is to make better choices over time, with evidence.
+The point is not to automate everything. The point is to make better choices over time, with evidence, and to make the loop's own judgement less naive from one round to the next.
 
 ## Three linked cycles
 
@@ -86,6 +88,19 @@ Those signals come from:
 - the ideas pipeline
 - build output
 - build failures
+- milestone events
+
+Milestone events matter because some useful follow-through only becomes relevant after the business changes shape.
+
+The live system already knows about milestone roots such as:
+
+- qualified lead or enquiry flow is now present
+- transaction data is now available
+- repeat signal is now present
+
+One milestone does not have to create one blunt task.
+
+It can open a small bundle of related follow-up work, and the loop can then decide which parts are relatively required now and which parts can wait.
 
 Each signal is saved as an observation. An observation is a small record of what happened, where it happened, what kind of problem it was, and any evidence that came with it.
 
@@ -99,17 +114,17 @@ If they are too narrow, the loop misses recurrence because the same pain is desc
 
 So the observation layer is doing an important job. It is turning messy workflow events into signals the loop can compare.
 
-### 2. It turns repeat signals into candidates
+### 2. It turns signals into gap cases
 
 When the loop sees similar observations coming back again and again, it groups them together.
 
-That group becomes an improvement candidate.
+That grouped problem becomes a gap case.
 
-A candidate is the loop's way of saying:
+A gap case is the loop's way of saying:
 
 "This looks like the same problem returning in different runs. It may be worth fixing in a more permanent way."
 
-Each candidate has its own identity. That matters, because the loop needs to keep talking about the same problem over time instead of losing it and recreating it from scratch.
+Each gap case has its own identity. That matters, because the loop needs to keep talking about the same problem over time instead of losing it and recreating it from scratch.
 
 This grouping step is where the loop stops being a list of complaints and starts becoming a system.
 
@@ -121,7 +136,28 @@ With grouping, the loop can say:
 - it is happening in the same part of the flow
 - it may now be worth fixing in a durable way
 
-### 3. It keeps memory for each candidate
+### 3. It pairs the problem with a prescription
+
+The loop now keeps two linked ideas together:
+
+- the named recurring problem
+- the current best idea of what to do next
+
+That second part is the prescription.
+
+A prescription is not just a slogan like "improve measurement" or "fix market research."
+
+It is the loop's current best structured remedy. It says, in effect:
+
+"For this kind of problem, the next step probably belongs on this route, needs these inputs, should produce these artifacts, and should change this signal."
+
+Some prescriptions are already fairly well formed.
+
+Others start weaker and need more shaping.
+
+The runtime still scores a candidate, but that candidate now carries the linked gap case and prescription instead of floating as a free-standing suggestion.
+
+### 4. It keeps memory for the problem and the remedy
 
 The loop keeps more than a title and a score. It keeps memory.
 
@@ -129,12 +165,15 @@ That memory includes:
 
 - the problem statement
 - the observations that triggered it
-- the likely route for follow-up work
+- the gap case identity
+- the current prescription
 - the evidence posture
+- the requirement posture
+- the prescription maturity
 - the current belief state
 - the latest known result, if one exists
 
-This means the loop can remember whether a candidate is new, recurring, blocked, reverted, monitored, or already partly understood.
+This means the loop can remember whether a candidate is new, recurring, blocked, reverted, monitored, or already partly understood, and whether the remedy itself is still vague or already proven.
 
 Without that memory, the loop would only be a recurrence detector. With memory, it becomes capable of learning.
 
@@ -144,7 +183,43 @@ If a candidate was already tried and failed, or was reviewed and deliberately he
 
 That is why candidate history is not an optional extra. It is what lets the loop build judgement instead of just spotting repetition.
 
-### 4. It scores the candidates
+### 5. It decides how necessary the work really is
+
+The loop does not treat every possible improvement as equally urgent.
+
+It now carries a requirement posture for the work:
+
+- `absolute_required` means the issue should not be skipped because it blocks safe or valid progress
+- `relative_required` means it matters, but still competes with other work for a slot now
+- `optional_improvement` means it may help, but can wait without breaking the loop
+
+This matters because almost everything can be improved.
+
+The harder question is whether it should be improved now.
+
+Without this posture, the loop would keep confusing "worth noticing" with "must do next."
+
+### 6. It decides how well formed the remedy is
+
+The loop also carries a maturity view for the prescription itself.
+
+That maturity can move through states like:
+
+- `unknown`
+- `hypothesized`
+- `structured`
+- `proven`
+- `retired`
+
+This is important because the first time a new kind of gap appears, the loop may not yet know the right fix.
+
+In that case, the correct action is not fake certainty. It is discovery.
+
+If the prescription is still `unknown` or only `hypothesized`, the system forces the work back to `lp-do-fact-find` with a discovery contract.
+
+That fact-find is meant to turn a vague remedy into a more structured one by naming candidate prescriptions, the inputs they need, the artifacts they should create, and the first prescription worth trying.
+
+### 7. It scores the candidates
 
 The policy layer reads the candidate memory and decides how promising each candidate looks.
 
@@ -175,7 +250,7 @@ For example:
 
 So the policy layer is not just counting. It is judging under uncertainty.
 
-### 5. It builds a portfolio, not just a ranking
+### 8. It builds a portfolio, not just a ranking
 
 The loop does not simply pick the single highest score and ignore the rest.
 
@@ -207,7 +282,7 @@ If it chases uncertainty too often, it may waste time and damage trust.
 
 So the portfolio is doing more than ranking. It is balancing exploitation and learning.
 
-### 6. It applies control before anything moves
+### 9. It applies control before anything moves
 
 Before the selected candidates are handed off, the governance layer checks whether the choices are stable.
 
@@ -235,7 +310,7 @@ Was it just noise?
 
 Governance helps protect the loop from learning the wrong lesson from unstable choices.
 
-### 7. It hands work into the normal queue
+### 10. It hands work into the normal queue
 
 Once a candidate survives scoring and control, it is handed back into the same queue as other work.
 
@@ -255,7 +330,7 @@ It means the self-improving loop is not allowed to grade its own homework in pri
 
 Its candidates have to survive contact with the same fact-finding, planning, and build discipline as any other work item.
 
-### 8. It records what happened after handoff
+### 11. It records what happened after handoff
 
 After the queued work moves forward, the loop records what happened.
 
@@ -288,7 +363,7 @@ If the loop cannot connect a decision to what happened later, then it cannot tel
 
 Outcome closure is what turns action into learning.
 
-### 9. It learns from the results
+### 12. It learns from the results and nominates proven remedies
 
 The audit layer reads the stored decisions and compares them with later results.
 
@@ -307,13 +382,24 @@ So the next time the loop scores candidates, it can use more than recurrence alo
 
 That feedback is what makes the loop self-improving.
 
+This is also where the loop can nominate a prescription for promotion.
+
+That does not mean every successful idea rewrites the system.
+
+The promotion path separates:
+
+- proof that the prescription worked often enough
+- safety about where it could be reused
+
+Most nominations stay advisory. Today only a very narrow low-risk autofix surface is allowed to act directly in guarded trial.
+
 The loop is not self-improving because it generates ideas about itself.
 
 It is self-improving because each round can change the quality of the next round's judgement.
 
-## One candidate through the loop
+## One case through the loop
 
-It helps to see one candidate move through the system.
+It helps to see one case move through the system.
 
 Imagine the same build pain appears several times:
 
@@ -326,7 +412,7 @@ The loop would handle that pattern like this:
 ```mermaid
 sequenceDiagram
     participant S as Signal sources
-    participant C as Candidate memory
+    participant C as Gap case and prescription memory
     participant P as Policy engine
     participant G as Governance
     participant Q as Normal queue
@@ -334,16 +420,16 @@ sequenceDiagram
     participant A as Audit layer
 
     S->>C: repeated observations arrive
-    C->>C: group into one candidate
-    C->>P: candidate with memory and evidence
-    P->>G: ranked candidate and route suggestion
+    C->>C: build one gap case and current prescription
+    C->>P: candidate with posture, maturity, and evidence
+    P->>G: ranked candidate, route, and portfolio selection
     G->>Q: safe handoff to fact-find, plan, or build
     Q->>O: work happens and result is recorded
-    O->>A: outcome is compared with prior decision
+    O->>A: outcome is compared with prior prescription choice
     A->>C: beliefs and judgement are updated
 ```
 
-The important point is that the candidate does not disappear when the work leaves the queue.
+The important point is that the case does not disappear when the work leaves the queue.
 
 The loop keeps watching it before, during, and after the handoff.
 
@@ -413,6 +499,20 @@ Others deserve direct planning or build attention because the pattern is clearer
 
 The loop learns that difference over time.
 
+### It changes what counts as urgent
+
+Some issues start as relative improvements and only later become close to mandatory.
+
+Others stay useful but deferrable.
+
+The loop now keeps a separate view of whether work is absolutely required, relatively required, or only an optional improvement, so it can become better at choosing what matters now instead of merely noticing what could be better.
+
+### It changes how formed a remedy has to be
+
+The loop also updates whether a remedy is still unknown, only hypothesized, already structured enough to plan, or proven enough to reuse.
+
+That stops the system from pretending every repeated pain already has a ready-made answer.
+
 ### It changes how much it explores
 
 If the loop is already well calibrated in one area, it may not need much exploration there.
@@ -439,9 +539,17 @@ The self-improving loop works because it keeps several kinds of records at once.
 
 These are the raw signals. They describe repeated work, failures, build pain, and other process friction.
 
+### Gap cases
+
+These are the named recurring problems the loop is tracking. A gap case is more stable than a raw observation.
+
+### Prescriptions
+
+These are the current best remedies for a gap case. A prescription says what route the work likely needs, what inputs it needs, what artifacts it should produce, and what signal it hopes to change.
+
 ### Candidates
 
-These are grouped problems that the loop may want to improve. A candidate is more stable than a raw observation.
+These are the runtime scoring objects the policy engine acts on. They now carry the linked gap case and prescription instead of floating as isolated suggestions.
 
 ### Policy state
 
@@ -449,7 +557,7 @@ This is the loop's working memory about belief, confidence, authority level, and
 
 ### Policy decisions
 
-These are the decisions the loop made: route choices, portfolio choices, exploration order, and promotion-gate judgements.
+These are the decisions the loop made: route choices, prescription choices, portfolio choices, exploration order, promotion-gate judgements, and promotion nominations.
 
 ### Lifecycle events
 
@@ -458,6 +566,10 @@ These show what happened to a candidate over time: when it was generated, when i
 ### Shadow handoffs
 
 These show what the loop would have sent forward in shadow mode, without actually changing the queue. They are useful because they let the loop compare hypothetical decisions with later reality.
+
+### Milestone provenance
+
+These records show when a business change, not just a failure, opened a new area of improvement work. They keep the source and timing of milestone-driven follow-up clear.
 
 Together, these records let the loop compare:
 
@@ -526,6 +638,12 @@ If the advice is consistently strong, the loop can earn more trust.
 In `Guarded trial`, the loop can influence a small, fenced part of the workflow.
 
 This is the narrowest form of real control. The loop is now affecting what happens next, but only inside a bounded, monitored area.
+
+That influence is still selective.
+
+Most prescription promotions remain nominations for a human or later review.
+
+Only a very narrow low-risk autofix surface is allowed to apply directly.
 
 Guarded trial exists because full control is not the first goal.
 

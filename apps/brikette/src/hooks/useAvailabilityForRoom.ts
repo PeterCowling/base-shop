@@ -2,14 +2,14 @@
 // Debounced hook that fetches availability for a single room from /api/availability.
 // Calls /api/availability (returns all rooms), then aggregates sections by room.octorateRoomCategory.
 // Feature-flagged: returns undefined immediately when OCTORATE_LIVE_AVAILABILITY is false.
-// Supports AbortController cleanup to prevent setState-after-unmount.
-
-import { useEffect, useRef, useState } from "react";
+// Delegates debounce+fetch+cleanup to useAvailabilityQuery.
 
 import { OCTORATE_LIVE_AVAILABILITY } from "@/config/env";
 import type { Room } from "@/data/roomsData";
 import type { OctorateRoom } from "@/types/octorate-availability";
 import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityByCategory";
+
+import { useAvailabilityQuery } from "./useAvailabilityQuery";
 
 export type { OctorateRoom };
 
@@ -19,20 +19,12 @@ export interface UseAvailabilityForRoomState {
   error: Error | null;
 }
 
-const DEBOUNCE_MS = 300;
-
 interface UseAvailabilityForRoomArgs {
   room: Room;
   checkIn: string;
   checkOut: string;
   adults: number;
 }
-
-const EMPTY_STATE: UseAvailabilityForRoomState = {
-  availabilityRoom: undefined,
-  loading: false,
-  error: null,
-};
 
 /**
  * Fetch live availability for a specific room for given dates and guest count.
@@ -52,81 +44,24 @@ export function useAvailabilityForRoom({
   checkOut,
   adults,
 }: UseAvailabilityForRoomArgs): UseAvailabilityForRoomState {
-  const [state, setState] = useState<UseAvailabilityForRoomState>(EMPTY_STATE);
-  const abortRef = useRef<AbortController | null>(null);
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const enabled = OCTORATE_LIVE_AVAILABILITY && !!checkIn && !!checkOut;
 
-  useEffect(() => {
-    // Fast path: feature flag off
-    if (!OCTORATE_LIVE_AVAILABILITY) {
-      setState(EMPTY_STATE);
-      return;
-    }
+  const { rooms, loading, error } = useAvailabilityQuery({
+    checkin: checkIn,
+    checkout: checkOut,
+    pax: adults,
+    enabled,
+  });
 
-    // Skip fetch when dates are not set
-    if (!checkIn || !checkOut) {
-      setState(EMPTY_STATE);
-      return;
-    }
-
-    // Start loading immediately on input change (pre-debounce)
-    setState((prev) => ({ ...prev, loading: true, error: null }));
-
-    // Clear previous debounce timer
-    if (timerRef.current !== null) {
-      clearTimeout(timerRef.current);
-    }
-
-    timerRef.current = setTimeout(() => {
-      // Cancel any in-flight request
-      if (abortRef.current) {
-        abortRef.current.abort();
-      }
-      abortRef.current = new AbortController();
-      const { signal } = abortRef.current;
-
-      const params = new URLSearchParams({
-        checkin: checkIn,
-        checkout: checkOut,
-        pax: String(adults),
-      });
-
-      fetch(`/api/availability?${params.toString()}`, { signal })
-        .then((res) => {
-          if (!res.ok) {
-            throw new Error(`availability fetch failed: ${res.status}`); // i18n-exempt -- BRIK-1 [ttl=2027-02-27] internal error message, server-side only
-          }
-          return res.json() as Promise<{ rooms: OctorateRoom[]; error?: string }>;
-        })
-        .then((data) => {
-          if (signal.aborted) return;
-          const rooms: OctorateRoom[] = data.rooms ?? [];
-          // Aggregate by octorateRoomCategory (name-based matching)
-          const matched = aggregateAvailabilityByCategory(rooms, room.octorateRoomCategory ?? "");
-          setState({ availabilityRoom: matched, loading: false, error: null });
-        })
-        .catch((err: unknown) => {
-          if (signal.aborted) return;
-          setState({
-            availabilityRoom: undefined,
-            loading: false,
-            error: err instanceof Error ? err : new Error(String(err)),
-          });
-        });
-    }, DEBOUNCE_MS);
-
-    return () => {
-      // Cleanup on unmount or before next effect run
-      if (timerRef.current !== null) {
-        clearTimeout(timerRef.current);
-        timerRef.current = null;
-      }
-      if (abortRef.current) {
-        abortRef.current.abort();
-        abortRef.current = null;
-      }
-    };
-  }, [checkIn, checkOut, adults, room.octorateRoomCategory]);
-
-  return state;
+  if (!enabled) {
+    return { availabilityRoom: undefined, loading: false, error: null };
+  }
+  if (loading) {
+    return { availabilityRoom: undefined, loading: true, error: null };
+  }
+  if (error) {
+    return { availabilityRoom: undefined, loading: false, error };
+  }
+  const matched = aggregateAvailabilityByCategory(rooms, room.octorateRoomCategory ?? "");
+  return { availabilityRoom: matched, loading: false, error: null };
 }

@@ -3,7 +3,7 @@ import { extractGuideBundle, extractGuidesBundle } from "@/utils/extractGuideBun
 
 const store: Record<string, Record<string, unknown>> = {};
 
-jest.mock("i18next", () => ({
+jest.mock("@/i18n", () => ({
   __esModule: true,
   default: {
     getResourceBundle: (lang: string, ns: string) => store[`${lang}/${ns}`],

@@ -10,6 +10,7 @@ import {
   IDEAS_TRIAL_TELEMETRY_PATH,
 } from "./lp-do-ideas-paths.js";
 import { appendTelemetry, type PersistedTelemetryRecord } from "./lp-do-ideas-persistence.js";
+import { validateDispatchContent } from "./lp-do-ideas-queue-admission.js";
 import {
   atomicWriteQueueState,
   buildCounts,
@@ -426,6 +427,48 @@ export function runHistoricalCarryoverBridge(
           reason: duplicate,
         });
         warnings.push(`Suppressed duplicate historical carry-over item ${item.historical_candidate_id}: ${duplicate}`);
+        continue;
+      }
+
+      // Content guard check (TASK-02: protect direct-write path)
+      const existingAnchors = queue.dispatches
+        .map((d) => (typeof d.area_anchor === "string" ? d.area_anchor : ""))
+        .filter((a) => a.length > 0);
+      const guardResult = validateDispatchContent(
+        {
+          area_anchor: packet.area_anchor,
+          trigger: packet.trigger,
+          domain: (packet as unknown as Record<string, unknown>).domain as string | undefined,
+        },
+        existingAnchors,
+      );
+      if (!guardResult.accepted) {
+        suppressed += 1;
+        item.admission_result = {
+          dispatch_id: null,
+          queue_state: "suppressed",
+          telemetry_reason: TELEMETRY_REASON,
+          admitted_at: nowIso,
+          suppression_reason: `content_guard: ${guardResult.reason}`,
+        };
+        items.push({
+          historical_candidate_id: item.historical_candidate_id,
+          title: item.title,
+          action: "suppressed",
+          dispatch_id: null,
+          queue_state: "suppressed",
+          reason: `content_guard: ${guardResult.reason}`,
+        });
+        telemetryRecords.push({
+          recorded_at: nowIso,
+          dispatch_id: packet.dispatch_id,
+          mode: "trial",
+          business: packet.business,
+          queue_state: "error",
+          kind: "validation_rejected",
+          reason: guardResult.reason ?? "content_guard",
+        });
+        warnings.push(`Content guard rejected historical carry-over item ${item.historical_candidate_id}: ${guardResult.reason}`);
         continue;
       }
 

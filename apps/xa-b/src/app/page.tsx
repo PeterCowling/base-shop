@@ -6,14 +6,50 @@ import { Button } from "@acme/design-system/atoms";
 import { Grid } from "@acme/design-system/atoms/Grid";
 import { Section } from "@acme/design-system/atoms/Section";
 
-import { XaFadeImage } from "../components/XaFadeImage";
 import { XaHomeCatalogSections } from "../components/XaHomeCatalogSections.client";
 import { XA_CATALOG_RUNTIME_FRESHNESS } from "../lib/catalogRuntimeMeta";
 import { siteConfig } from "../lib/siteConfig";
 import { xaI18n } from "../lib/xaI18n";
 
-const heroImage =
-  "https://images.unsplash.com/photo-1501348291533-cb233b7d4cc0?auto=format&fit=crop&w=1400&q=80";
+function HeroIllustration(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      viewBox="0 0 400 500"
+      fill="none"
+      aria-hidden="true"
+      {...props}
+    >
+      {/* draped fabric — rear layer */}
+      <rect x="80" y="60" width="180" height="340" rx="2" fill="currentColor" opacity="0.07" />
+      {/* mid layer — slightly rotated panel */}
+      <polygon
+        points="120,80 320,100 300,440 100,420"
+        fill="currentColor"
+        opacity="0.11"
+      />
+      {/* front layer — structured silhouette */}
+      <polygon
+        points="150,70 270,70 290,430 130,430"
+        fill="currentColor"
+        opacity="0.08"
+      />
+      {/* shoulder line */}
+      <line x1="140" y1="120" x2="260" y2="120" stroke="currentColor" strokeWidth="1.2" opacity="0.3" />
+      {/* vertical seam */}
+      <line x1="200" y1="120" x2="200" y2="420" stroke="currentColor" strokeWidth="0.8" opacity="0.18" strokeDasharray="4 6" />
+      {/* hem line */}
+      <line x1="132" y1="400" x2="268" y2="400" stroke="currentColor" strokeWidth="1.2" opacity="0.3" />
+      {/* collar notch */}
+      <path
+        d="M180 70 L200 110 L220 70"
+        stroke="currentColor"
+        strokeWidth="1.2"
+        opacity="0.35"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 function HangerIcon(props: SVGProps<SVGSVGElement>) {
   return (
@@ -67,14 +103,7 @@ export default function HomePage() {
           <div className="xa-hero-media w-full md:justify-self-end xa-hero-media-max">
             <div className="p-6 md:p-10">
               <div className="relative xa-aspect-4-5 w-full">
-                <XaFadeImage
-                  src={heroImage}
-                  alt="Two models in seasonal looks"
-                  fill
-                  sizes={xaI18n.t("xaB.src.app.page.l69c25")}
-                  className="object-contain"
-                  priority
-                />
+                <HeroIllustration className="h-full w-full text-foreground" />
               </div>
             </div>
           </div>

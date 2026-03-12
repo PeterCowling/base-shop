@@ -1,0 +1,47 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-12T14:10:52.963Z",
+  "plan_slug": "ideas-queue-quality-gates",
+  "review_cycle_key": "ideas-queue-quality-gates",
+  "source_path": "docs/plans/ideas-queue-quality-gates/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": [
+    {
+      "canonical_title": "The pattern analysis (TASK-04) identified 4 priority-1 standing artifacts that would auto-detect ~32% of queue volume: BRIK-BOS-EMAIL-PIPELINE-HEALTH (from Gmail telemetry), HBAG-SELL-STOREFRONT-HEALTH (from SEO/i18n checks), XA-PRODUCTS-CATALOG-QUALITY (from catalog sync), BRIK-SELL-BOOKING-FUNNEL-HEALTH (from GA4 funnel data). Trigger observation: 96% of dispatches are manual operator_idea — only BOS has any auto-detection (21%).",
+      "pattern_summary": "The pattern analysis (TASK-04) identified 4 priority-1 standing artifacts that would auto-detect ...",
+      "category": "new-standing-data-source",
+      "routing_target": "defer",
+      "occurrence_count": 1,
+      "evidence_refs": [],
+      "review_cycle_key": "ideas-queue-quality-gates",
+      "build_signal_id": "5cc297a1a006217e34fa63842b06b02819cdcaaf",
+      "recurrence_key": "27253ca0bdcd04d76c29e60a3521cdba6c687f9c",
+      "build_origin_status": "ready"
+    },
+    {
+      "canonical_title": "The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.",
+      "pattern_summary": "The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This...",
+      "category": "new-loop-process",
+      "routing_target": "defer",
+      "occurrence_count": 1,
+      "evidence_refs": [],
+      "review_cycle_key": "ideas-queue-quality-gates",
+      "build_signal_id": "6ee5b14c0cda7d14c2d645d51535bf9447e7b08a",
+      "recurrence_key": "3b49c3cadc6891e683aed3d2d0529dc9a42e96a1",
+      "build_origin_status": "ready"
+    },
+    {
+      "canonical_title": "The domain classification in the cleanup script (inferDomain()) uses deterministic keyword heuristics to classify domains from area_anchor text. This replaces what was previously an implicit LLM judgment during dispatch creation. Trigger observation: 291 dispatches classified with 0 remaining gaps using a ~80-line function.",
+      "pattern_summary": "The domain classification in the cleanup script (inferDomain()) uses deterministic keyword heuris...",
+      "category": "ai-to-mechanistic",
+      "routing_target": "defer",
+      "occurrence_count": 1,
+      "evidence_refs": [],
+      "review_cycle_key": "ideas-queue-quality-gates",
+      "build_signal_id": "dd6d2ebd2ded800787cd9ab47cf86a4546f97270",
+      "recurrence_key": "e75542e5ca11f3979f7593abaa78ba028a12acc5",
+      "build_origin_status": "ready"
+    }
+  ]
+}

@@ -84,5 +84,19 @@ describe("generate-public-seo lastmod contracts", () => {
     expect(locs).toContain(`${baseUrl}/en/private-rooms/sea-view-apartment`);
     expect(locs).toContain(`${baseUrl}/it/camere-private/appartamento-vista-mare`);
     expect(locs).toContain(`${baseUrl}/it/camere-private/camera-doppia`);
+    expect(locs).not.toContain(`${baseUrl}/en/private-rooms`);
+    expect(locs).not.toContain(`${baseUrl}/it/camere-private`);
+    expect(locs).not.toContain(`${baseUrl}/en/private-rooms/book`);
+    expect(locs).not.toContain(`${baseUrl}/it/camere-private/book`);
+  });
+
+  test("TC-15: sitemap excludes legacy /directions/* redirect-only URLs", () => {
+    const sitemapXml = buildSitemapXml(listCanonicalSitemapPaths());
+    const entries = parseSitemapEntries(sitemapXml);
+    const directionsEntries = entries.filter((entry) =>
+      entry.loc.includes("/directions/"),
+    );
+
+    expect(directionsEntries).toHaveLength(0);
   });
 });

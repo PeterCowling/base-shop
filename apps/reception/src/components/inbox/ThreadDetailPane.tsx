@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Calendar, MapPin, User } from "lucide-react";
+import { AlertTriangle, Calendar, ChevronUp, Loader2, MapPin, User } from "lucide-react";
 
 import type { InboxMessage, InboxThreadDetail } from "@/services/useInbox";
 
@@ -11,11 +11,13 @@ interface ThreadDetailPaneProps {
   threadDetail: InboxThreadDetail | null;
   loading: boolean;
   error: string | null;
+  loadingMoreMessages: boolean;
   savingDraft: boolean;
   regeneratingDraft: boolean;
   sendingDraft: boolean;
   resolvingThread: boolean;
   dismissingThread: boolean;
+  onLoadMoreMessages: () => Promise<void>;
   onSaveDraft: (input: {
     subject?: string;
     recipientEmails?: string[];
@@ -25,7 +27,7 @@ interface ThreadDetailPaneProps {
   onRegenerateDraft: (force?: boolean) => Promise<void>;
   onSendDraft: () => Promise<void>;
   onResolveThread: () => Promise<void>;
-  onDismissThread: () => Promise<void>;
+  onDismissThread: () => Promise<{ thread: InboxThreadDetail["thread"]; gmailMarkedRead: boolean }>;
 }
 
 function senderDisplayName(message: InboxMessage, threadDetail: InboxThreadDetail): string {
@@ -59,7 +61,7 @@ function MessageBubble({
         className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-semibold ${
           isOutbound
             ? "bg-primary-soft text-primary-main"
-            : "bg-surface-3 text-muted-foreground"
+            : "bg-surface-3 text-foreground/70"
         }`}
       >
         {initial}
@@ -77,7 +79,7 @@ function MessageBubble({
           <span className={`text-xs font-medium ${isOutbound ? "text-primary-main" : "text-foreground"}`}>
             {displayName}
           </span>
-          <span className="shrink-0 text-xs tabular-nums text-muted-foreground">
+          <span className="shrink-0 text-xs font-medium tabular-nums text-foreground/50">
             {formatInboxTimestamp(message.sentAt)}
           </span>
         </div>
@@ -97,11 +99,13 @@ export default function ThreadDetailPane({
   threadDetail,
   loading,
   error,
+  loadingMoreMessages,
   savingDraft,
   regeneratingDraft,
   sendingDraft,
   resolvingThread,
   dismissingThread,
+  onLoadMoreMessages,
   onSaveDraft,
   onRegenerateDraft,
   onSendDraft,
@@ -163,7 +167,7 @@ export default function ThreadDetailPane({
             {threadDetail.thread.subject ?? "Untitled inquiry"}
           </h2>
           <div className="mt-1 flex flex-wrap items-center gap-2">
-            <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            <span className="rounded-full bg-surface-3 px-2 py-0.5 text-xs font-semibold uppercase tracking-wide text-foreground/60">
               {threadDetail.thread.channelLabel}
             </span>
             {threadDetail.campaign && (
@@ -171,14 +175,17 @@ export default function ThreadDetailPane({
                 {formatCampaignStatus(threadDetail.campaign.status)}
               </span>
             )}
-            <p className="text-xs text-muted-foreground">
-              {threadDetail.messages.length} message{threadDetail.messages.length !== 1 ? "s" : ""}
+            <p className="text-xs font-medium text-foreground/60">
+              {threadDetail.totalMessages ?? threadDetail.messages.length} message{(threadDetail.totalMessages ?? threadDetail.messages.length) !== 1 ? "s" : ""}
+              {(threadDetail.hasMore ?? (typeof threadDetail.totalMessages === "number"
+                && threadDetail.messages.length < threadDetail.totalMessages))
+                && ` (showing ${threadDetail.messages.length})`}
             </p>
           </div>
 
           {threadDetail.campaign && (
             <div className="mt-3 rounded-xl border border-border-1 bg-surface-2 px-3 py-2">
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-foreground/60">
                 <span className="font-medium text-foreground">
                   {threadDetail.campaign.title ?? "Prime campaign"}
                 </span>
@@ -210,25 +217,31 @@ export default function ThreadDetailPane({
                   .join(" ") || "Guest"}
               </span>
               {threadDetail.thread.guestBookingRef && (
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs font-medium text-foreground/60">
                   #{threadDetail.thread.guestBookingRef}
                 </span>
               )}
               {typeof threadDetail.metadata?.guestCheckIn === "string"
                 && typeof threadDetail.metadata?.guestCheckOut === "string" && (
-                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                <span className="inline-flex items-center gap-1 text-xs text-foreground/60">
                   <Calendar className="h-3 w-3" />
                   {threadDetail.metadata.guestCheckIn} &rarr; {threadDetail.metadata.guestCheckOut}
                 </span>
               )}
-              {Array.isArray(threadDetail.metadata?.guestRoomNumbers)
-                && threadDetail.metadata.guestRoomNumbers.length > 0 && (
-                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                  <MapPin className="h-3 w-3" />
-                  Room{threadDetail.metadata.guestRoomNumbers.length > 1 ? "s" : ""}{" "}
-                  {(threadDetail.metadata.guestRoomNumbers as string[]).join(", ")}
-                </span>
-              )}
+              {(() => {
+                const rooms = Array.isArray(threadDetail.metadata?.guestRoomNumbers)
+                  ? (threadDetail.metadata.guestRoomNumbers as unknown[]).filter(
+                      (n): n is string => typeof n === "string",
+                    )
+                  : [];
+                return rooms.length > 0 && (
+                  <span className="inline-flex items-center gap-1 text-xs text-foreground/60">
+                    <MapPin className="h-3 w-3" />
+                    Room{rooms.length > 1 ? "s" : ""}{" "}
+                    {rooms.join(", ")}
+                  </span>
+                );
+              })()}
             </div>
           )}
         </div>
@@ -245,6 +258,29 @@ export default function ThreadDetailPane({
         <div className="border-t border-border-1">
           {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- IDEA-DISPATCH-20260307130300-9040 viewport-relative scroll containment */}
           <div className="max-h-[50vh] space-y-4 overflow-y-auto px-5 py-4">
+            {(threadDetail.hasMore ?? (typeof threadDetail.totalMessages === "number"
+              && threadDetail.messages.length < threadDetail.totalMessages)) && (
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  disabled={loadingMoreMessages}
+                  onClick={() => void onLoadMoreMessages()}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-surface-3 px-3 py-1.5 text-xs font-semibold text-foreground/70 transition-colors hover:bg-surface-elevated hover:text-foreground disabled:opacity-50"
+                >
+                  {loadingMoreMessages ? (
+                    <>
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    <>
+                      <ChevronUp className="h-3 w-3" />
+                      Load earlier messages
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
             {threadDetail.messages.map((message) => (
               <MessageBubble
                 key={message.id}

@@ -1,0 +1,10 @@
+{
+  "event_type": "build_complete",
+  "feature_slug": "do-workflow-deliverable-quality-metrics",
+  "business": "PLAT",
+  "completed_at": "2026-03-12",
+  "outcome_type": "code-change",
+  "outcome_statement": "Telemetry records capture compact validator summaries and the report generator surfaces quality data alongside existing size and token metrics",
+  "task_count": 2,
+  "tasks_completed": 2
+}

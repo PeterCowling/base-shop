@@ -35,7 +35,7 @@ describe("contract-migration", () => {
     expect(isAliasAcceptanceEnabled(config, next)).toBe(false);
   });
 
-  test("TC-03: stage key normalization maps legacy alias when enabled", () => {
+  test("TC-03: kebab-case stage keys pass through without alias normalization", () => {
     const { config } = getContractMigrationConfig();
     const firstAlias = Object.entries(config.stage_aliases)[0];
     if (!firstAlias) {
@@ -46,22 +46,16 @@ describe("contract-migration", () => {
 
     const [legacyAlias, canonicalStage] = firstAlias;
 
-    // Use the configured inclusive cutoff instant to stay aligned with generated config.
+    // The stage schema now accepts any kebab-case slug, so legacy keys remain valid
+    // without consuming the alias normalization layer.
     const enabledNow = new Date(config.timebox.alias_accept_until_utc.getTime());
     const result = normalizeStageKey(config, legacyAlias, enabledNow);
 
-    if (!result) {
-      // Config is already expired (or alias removed). That is allowed.
-      expect(isAliasAcceptanceEnabled(config, enabledNow)).toBe(false);
-      return;
-    }
-
-    expect(result.normalized).toBe(true);
-    if (result.normalized) {
-      expect(result.rawStage).toBe(legacyAlias);
-      expect(result.normalizedStage).toBe(canonicalStage);
-      expect(result.stage).toBe(canonicalStage);
-    }
+    expect(result).toEqual({
+      normalized: false,
+      stage: legacyAlias,
+    });
+    expect(canonicalStage).toBe("fact-find");
   });
 
   test("TC-04: dual-read enablement is separately controlled", () => {

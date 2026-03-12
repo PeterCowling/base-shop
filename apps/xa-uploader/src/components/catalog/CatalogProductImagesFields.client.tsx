@@ -19,6 +19,7 @@ import {
   type CatalogProductDraftInput,
   splitList,
 } from "@acme/lib/xa/catalogAdminSchema";
+import { deriveCatalogPublishState } from "@acme/lib/xa/catalogWorkflow";
 
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";
@@ -145,15 +146,20 @@ function resolveImageSrc(entryPath: string, previews: Map<string, string>): stri
   return `/${normalized}`;
 }
 
-function buildDefaultImageAltText(draft: CatalogProductDraftInput, imageIndex: number): string {
-  const baseTitle = (draft.title ?? "").trim() || "Product";
-  if (imageIndex === 0) return `${baseTitle} main image`;
-  return `${baseTitle} photo ${imageIndex + 1}`;
+function buildDefaultImageAltText(
+  draft: CatalogProductDraftInput,
+  imageIndex: number,
+  t: ReturnType<typeof useUploaderI18n>["t"],
+): string {
+  const baseTitle = (draft.title ?? "").trim() || t("imageAltDefaultProduct");
+  if (imageIndex === 0) return t("imageAltDefaultMain", { title: baseTitle });
+  return t("imageAltDefaultPhoto", { title: baseTitle, index: String(imageIndex + 1) });
 }
 
 function appendImageDraftEntry(
   draft: CatalogProductDraftInput,
   imageKey: string,
+  t: ReturnType<typeof useUploaderI18n>["t"],
 ): CatalogProductDraftInput {
   const currentFiles = splitList(draft.imageFiles ?? "");
   const currentAlts = splitList(draft.imageAltTexts ?? "");
@@ -162,7 +168,7 @@ function appendImageDraftEntry(
   return {
     ...draft,
     imageFiles: [...currentFiles, imageKey].join("|"),
-    imageAltTexts: [...currentAlts, buildDefaultImageAltText(draft, nextIndex)].join("|"),
+    imageAltTexts: [...currentAlts, buildDefaultImageAltText(draft, nextIndex, t)].join("|"),
   };
 }
 
@@ -210,24 +216,48 @@ function usePersistedImageCleanup(params: {
   storefront: XaCatalogStorefront;
 }) {
   const lastAutosaveSavedAtRef = useRef<number | null>(params.lastAutosaveSavedAt);
+  const mountedRef = useRef(true);
 
   useEffect(() => {
     lastAutosaveSavedAtRef.current = params.lastAutosaveSavedAt;
   }, [params.lastAutosaveSavedAt]);
 
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => { mountedRef.current = false; };
+  }, []);
+
+  const cleanupAbortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => {
+    return () => {
+      cleanupAbortRef.current?.abort();
+    };
+  }, []);
+
   return useCallback(async (pathValue: string, queuedAt: number) => {
     const key = pathValue.trim().replace(/^\/+/, "");
     if (!isDeletableCatalogPath(key)) return;
+
+    // Cancel any previous cleanup polling before starting a new one
+    cleanupAbortRef.current?.abort();
+    const controller = new AbortController();
+    cleanupAbortRef.current = controller;
 
     const persistedAlready = typeof lastAutosaveSavedAtRef.current === "number" &&
       lastAutosaveSavedAtRef.current >= queuedAt;
     if (!persistedAlready) {
       const deadline = Date.now() + AUTOSAVE_PERSIST_TIMEOUT_MS;
       let persisted = false;
-      while (Date.now() < deadline) {
+      while (Date.now() < deadline && mountedRef.current && !controller.signal.aborted) {
         await new Promise<void>((resolve) => {
-          setTimeout(resolve, AUTOSAVE_PERSIST_POLL_MS);
+          const timerId = setTimeout(resolve, AUTOSAVE_PERSIST_POLL_MS);
+          controller.signal.addEventListener("abort", () => {
+            clearTimeout(timerId);
+            resolve();
+          }, { once: true });
         });
+        if (!mountedRef.current || controller.signal.aborted) return;
         persisted = typeof lastAutosaveSavedAtRef.current === "number" &&
           lastAutosaveSavedAtRef.current >= queuedAt;
         if (persisted) break;
@@ -235,10 +265,12 @@ function usePersistedImageCleanup(params: {
       if (!persisted) return;
     }
 
+    if (!mountedRef.current || controller.signal.aborted) return;
     const requestParams = new URLSearchParams({ storefront: params.storefront, key });
     try {
       const response = await fetch(`/api/catalog/images?${requestParams.toString()}`, {
         method: "DELETE",
+        signal: controller.signal,
       });
       if (!response.ok) {
         console.warn({
@@ -247,7 +279,8 @@ function usePersistedImageCleanup(params: {
           key,
         });
       }
-    } catch {
+    } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") return;
       console.warn({
         scope: "catalog-image-delete",
         status: "network_error",
@@ -813,7 +846,7 @@ export function useImageUploadController({
           return next;
         });
 
-        const nextDraft = appendImageDraftEntry(draft, json.key);
+        const nextDraft = appendImageDraftEntry(draft, json.key, t);
         notifyImageDraftChange(nextDraft, onChange, onImageUploaded);
         setPendingAutosaveStartedAt(Date.now());
         setUploadStatus("persisting");
@@ -887,6 +920,22 @@ export function useImageUploadController({
     (index: number) => {
       const entry = imageEntries[index];
       const removedPath = entry?.path ?? "";
+
+      let nextDraft = {
+        ...draft,
+        imageFiles: removePipeEntry(draft.imageFiles ?? "", index),
+        imageAltTexts: removePipeEntry(draft.imageAltTexts ?? "", index),
+      };
+
+      // If removing this image would unpublish a live product, confirm first.
+      // Pre-set publishState to "draft" on the draft so the autosave doesn't
+      // hit the server-side would_unpublish guard (which checks publishState === "live").
+      if (nextDraft.publishState === "live" && deriveCatalogPublishState(nextDraft) === "draft") {
+        const confirmed = window.confirm(t("removeImageConfirmUnpublish"));
+        if (!confirmed) return;
+        nextDraft = { ...nextDraft, publishState: "draft" };
+      }
+
       if (entry) {
         const blobUrl = previews.get(entry.path);
         if (blobUrl) {
@@ -899,18 +948,13 @@ export function useImageUploadController({
         }
       }
 
-      const nextDraft = {
-        ...draft,
-        imageFiles: removePipeEntry(draft.imageFiles ?? "", index),
-        imageAltTexts: removePipeEntry(draft.imageAltTexts ?? "", index),
-      };
       const queuedAt = Date.now();
       notifyImageDraftChange(nextDraft, onChange, onImageUploaded);
       if (removedPath) {
         void cleanupRemovedImage(removedPath, queuedAt);
       }
     },
-    [cleanupRemovedImage, draft, imageEntries, onChange, onImageUploaded, previews],
+    [cleanupRemovedImage, draft, imageEntries, onChange, onImageUploaded, previews, t],
   );
   const handleReorderImage = useCallback(
     (index: number, direction: "up" | "down") => {

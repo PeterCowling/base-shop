@@ -49,6 +49,13 @@ jest.mock(require.resolve("../src/molecules/ThemeToggle"), () => ({
   default: () => <div data-testid="theme-toggle" />,
 }));
 
+jest.mock(require.resolve("../src/components/atoms/primitives/dropdown-menu"), () => ({
+  DropdownMenu: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DropdownMenuTrigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DropdownMenuContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  DropdownMenuItem: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+}));
+
 const createI18n = async (): Promise<I18nInstance> => {
   const instance = i18next.createInstance();
   await instance.use(initReactI18next).init({
@@ -145,7 +152,7 @@ describe("Brikette header CTA translation", () => {
     );
 
     const localizedRoomsLink = screen.getByRole("link", { name: "Rooms" });
-    expect(localizedRoomsLink).toHaveAttribute("href", "/fr/chambres");
+    expect(localizedRoomsLink).toHaveAttribute("href", "/fr/reserver");
   });
 
   it("does not block desktop CTA link navigation when callback does not handle routing", async () => {

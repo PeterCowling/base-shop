@@ -1,0 +1,175 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "do-workflow-claude-token-auto-capture",
+  "source_artifact_path": "docs/plans/do-workflow-claude-token-auto-capture/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-fact-find",
+    "lp-do-analysis",
+    "lp-do-plan"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-claude-token-auto-capture/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "When the system runs work using Claude, it can't automatically track how much that work costs. This means about half of all workflow runs have a blind spot in cost reporting. Fixing this gives complete visibility into what each piece of work actually costs, making budget decisions accurate instead of estimated.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All workflow runs — regardless of provider — automatically capture and report token costs without manual intervention.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: no UI component",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A: CLI/telemetry only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Path boundary validation on all resolved paths",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Validate resolved path starts with `~/.claude/`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Discovery source recorded in telemetry `note` field",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "Which cascade layer succeeded",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Fixture-based tests for each cascade layer independently",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Index, symlink, JSONL parser each tested",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "New session JSONL parser; sessions-index reader; `WorkflowRuntimeTokenSnapshot` unchanged",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No schema changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Line-by-line streaming sum; cascade exits at first success",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Bounded by message count",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive; explicit ID authoritative; fail-open at every layer",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "No breaking changes",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Extend the workflow telemetry token capture module with automatic Claude Code session discovery via a layered cascade: explicit session ID (authoritative) → sessions-index.json (project-scoped) → debug/latest symlink (global fallback) → unknown. Add a session JSONL usage parser that sums per-message token data into cumulative snapshots compatible with the existing delta-from-previous-feature-record mode. All discovery paths validate resolved file paths stay within `~/.claude/`. Changes are additive and fail-open — existing explicit-session and Codex paths are untouched.",
+    "goals": [
+      "Auto-discover the current Claude session without operator-supplied session IDs",
+      "Read per-message usage from session JSONL and produce cumulative snapshots",
+      "Maintain fail-open semantics — unknown fallback when discovery fails"
+    ],
+    "non_goals": [
+      "Changing the Codex auto-capture path",
+      "Prompt-path instrumentation",
+      "Separate subagent token tracking"
+    ],
+    "constraints": [
+      "Explicit `--claude-session-id` must remain authoritative (never overridden by auto-discovery)",
+      "Must fail-open at every cascade layer",
+      "Resolved paths must be validated to start with `~/.claude/`",
+      "Session JSONL has per-message usage requiring full-scan summation"
+    ],
+    "assumptions": [
+      "`sessions-index.json` and `debug/latest` conventions stable in Claude Code 2.1.x",
+      "Session JSONL `usage` format matches Anthropic API response shape"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Hybrid cascade discovery with project-scoped primary and global fallback",
+      "Session JSONL parser that streams and sums per-message usage",
+      "Path boundary validation on all discovery paths",
+      "Why planning is not reopening option selection:",
+      "Analysis settled hybrid as strictly better than either source alone, with critique validation"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add session JSONL usage parser, sessions-index reader, and debug/latest reader",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `scripts/src/startup-loop/ideas/workflow-runtime-token-usage.ts`",
+        "affects": "`scripts/src/startup-loop/ideas/workflow-runtime-token-usage.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Wire hybrid cascade into resolveClaudeSnapshot and add tests",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `scripts/src/startup-loop/ideas/workflow-runtime-token-usage.ts` + test file",
+        "affects": "`scripts/src/startup-loop/ideas/workflow-runtime-token-usage.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-workflow-telemetry.test.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Update skill docs and record telemetry for this slug",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 92,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "doc updates + telemetry record",
+        "affects": "`.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-analysis/SKILL.md`, `.claude/skills/lp-do-plan/SKILL.md`, `.claude/skills/lp-do-build/SKILL.md`, `.claude/skills/lp-do-ideas/SKILL.md`, `docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md`, `docs/business-os/startup-loop/ideas/trial/telemetry.jsonl`, `docs/plans/do-workflow-claude-token-auto-capture/build-record.md`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

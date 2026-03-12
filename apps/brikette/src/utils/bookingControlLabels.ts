@@ -1,12 +1,4 @@
-import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
-
-function resolveTranslatedCopy(value: unknown, fallback: string): string {
-  if (typeof value !== "string") return fallback;
-  const trimmed = value.trim();
-  if (!trimmed) return fallback;
-  if (I18N_KEY_TOKEN_PATTERN.test(trimmed)) return fallback;
-  return trimmed;
-}
+import { resolveTranslatedCopy } from "@/utils/i18nContent";
 
 type TranslationFn = (key: string, options?: Record<string, unknown>) => unknown;
 

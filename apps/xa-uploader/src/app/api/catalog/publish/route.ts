@@ -24,6 +24,7 @@ import { InvalidJsonError, PayloadTooLargeError, readJsonBodyWithLimit } from ".
 import { getUploaderKv } from "../../../../lib/syncMutex";
 import { getErrorMessage, isRecord } from "../../../../lib/typeGuards";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
+import { uploaderLog } from "../../../../lib/uploaderLogger";
 
 export const runtime = "nodejs";
 
@@ -83,6 +84,8 @@ async function executeCloudPublish(params: {
   ifMatch: string;
   publishState: "live" | "out_of_stock";
 }): Promise<NextResponse> {
+  const publishStartMs = Date.now();
+  uploaderLog("info", "publish_start", { storefront: params.storefront });
   const [snapshot, currencyRates] = await Promise.all([
     readCloudDraftSnapshot(params.storefront),
     readCloudCurrencyRates(params.storefront),
@@ -145,7 +148,14 @@ async function executeCloudPublish(params: {
     });
   } catch {
     warnings.push("publish_state_promotion_failed");
+    uploaderLog("warn", "publish_state_promotion_failed", {
+      storefront: params.storefront,
+      productCount: updatedSnapshot.products.length,
+      docRevision: snapshot.docRevision,
+    });
   }
+
+  const promotionFailed = warnings.includes("publish_state_promotion_failed");
 
   const kv = await getUploaderKv();
   const deployResult =
@@ -159,11 +169,13 @@ async function executeCloudPublish(params: {
     result: deployResult,
   }).catch(() => null);
 
+  uploaderLog("info", "publish_complete", { storefront: params.storefront, durationMs: Date.now() - publishStartMs, publishState: params.publishState });
   return NextResponse.json({
     ok: true,
     deployStatus: deployResult.status,
     deployReason: deployResult.reason,
     deployNextEligibleAt: deployResult.nextEligibleAt,
+    promotionFailed: promotionFailed || undefined,
     warnings,
   });
 }
@@ -219,6 +231,7 @@ export async function POST(request: Request) {
       return buildPublishContractErrorResponse(internalError);
     }
     const message = getErrorMessage(internalError);
+    uploaderLog("error", "publish_error", { storefront, reason: message });
     return NextResponse.json({ ok: false, error: "internal_error", reason: message }, { status: 500 });
   } finally {
     if (cloudSyncLock) {

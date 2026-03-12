@@ -43,14 +43,16 @@ interactive_shell_name_from_token() {
 detect_long_lived_agent_cli_in_shell_command() {
   local script="${1:-}"
   local shell_command_regex='(^|[;&|][;&|]?)[[:space:]]*(((env[[:space:]]+([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]+[[:space:]]+)*)|(nvm[[:space:]]+exec([[:space:]]+[^[:space:]]+)?[[:space:]]+)|((pnpm|npm|yarn|bun)[[:space:]]+(exec|dlx|x)[[:space:]]+)|((npx|pnpx|bunx)[[:space:]]+)|(node[[:space:]]+))?([^[:space:];|&()]*\/)?(codex|claude))([[:space:]]|$))'
+  local match=""
 
   if [[ -z "$script" ]]; then
     return 1
   fi
 
   if [[ "$script" =~ $shell_command_regex ]]; then
-    if [[ "${BASH_REMATCH[0]}" =~ (codex|claude) ]]; then
-      printf '%s\n' "${BASH_REMATCH[1]}"
+    match="${BASH_REMATCH[0]}"
+    if [[ "$match" =~ (^|[^[:alnum:]_-])(codex|claude)([^[:alnum:]_-]|$) ]]; then
+      printf '%s\n' "${BASH_REMATCH[2]}"
       return 0
     fi
   fi

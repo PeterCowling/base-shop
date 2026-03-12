@@ -1,0 +1,160 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "reception-till-safe-theming-overhaul",
+  "source_artifact_path": "docs/plans/reception-till-safe-theming-overhaul/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-till-safe-theming-overhaul/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The till and safe screens are used by staff every day for cash management. Wrong text colours on warning and error buttons make them harder to read, and broken focus ring syntax means keyboard users can't see focus indicators on close buttons. Fixing this means every button and badge is legible and accessible.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All till, safe, and cash management components use correct semantic foreground tokens on status-coloured backgrounds, with valid focus ring syntax and distinct interaction states.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "All 9 issues are className fixes",
+      "gap_or_implication": "Primary focus",
+      "carry_forward_or_notes": "All fixes use verified tokens"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Hover states on copy pills are no-ops",
+      "gap_or_implication": "Fix #8-9 differentiate hover",
+      "carry_forward_or_notes": "Distinct interaction feedback"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth, data, or input changes",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No logic changes",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "DifferenceBadge has unit test; visual verification needed",
+      "gap_or_implication": "DifferenceBadge test may assert old defaults",
+      "carry_forward_or_notes": "Verify test after fix; contrast sweep"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "No schema or API changes",
+      "gap_or_implication": "DifferenceBadge prop defaults change but are optional",
+      "carry_forward_or_notes": "Consumer compatibility verified"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "className changes have zero runtime cost",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Single commit, standard deploy",
+      "gap_or_implication": "Revert = single git revert",
+      "carry_forward_or_notes": "-"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Fix theming issues across till, safe, and cash management components in the reception app. The primary issues are wrong foreground colours on status-coloured backgrounds (error/warning buttons using `text-primary-fg` instead of `text-danger-fg`/`text-warning-fg`), double focus prefixes on close buttons, and minor token cleanup. A shared utility component (`DifferenceBadge`) also has incorrect foreground defaults affecting reports.",
+    "goals": [
+      "Fix wrong foreground tokens on status-coloured backgrounds in till and safe components",
+      "Fix double focus prefix syntax on modal close buttons",
+      "Fix duplicate hover state on copy pill buttons",
+      "Fix DifferenceBadge shared component default foreground tokens"
+    ],
+    "non_goals": [
+      "Redesigning till/safe layout or component structure",
+      "Adding new tokens to the design system",
+      "Changing till/safe business logic"
+    ],
+    "constraints": [
+      "All changes use existing semantic tokens only",
+      "Purely className adjustments — no component API changes",
+      "Preserve intentional opacity on backdrop-blur/frosted elements (ShiftSummary `bg-surface/80`)"
+    ],
+    "assumptions": [
+      "Single commit is acceptable for className-only changes"
+    ],
+    "key_entry_points": [
+      "`apps/reception/src/components/till/Till.tsx` — thin wrapper routing to till sub-components",
+      "`apps/reception/src/components/safe/SafeManagement.tsx` — safe management screen entry",
+      "`apps/reception/src/components/reports/EndOfDayPacket.tsx` — end-of-day report (consumes DifferenceBadge)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis reception-till-safe-theming-overhaul`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Token resolution chain",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Till modal close buttons (CountInput, FloatEntry)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "CloseShiftForm dynamic styling",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — STEP_STYLES extension is contained",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "DrawerLimitWarning",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "DifferenceBadge defaults",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — no consumers override defaults",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Copy pill hover states",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "ShiftSummary frosted glass",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — confirmed intentional, excluded from scope",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

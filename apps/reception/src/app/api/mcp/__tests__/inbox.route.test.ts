@@ -6,9 +6,10 @@ import {
 } from "@/lib/inbox/prime-review.server";
 import {
   getThread,
+  getThreadMessages,
   type InboxThreadRecord,
   type InboxThreadRow,
-  listThreads,
+  listThreadsWithLatestDraft,
 } from "@/lib/inbox/repositories.server";
 
 import { requireStaffAuth } from "../_shared/staff-auth";
@@ -21,7 +22,8 @@ jest.mock("@/lib/gmail-client", () => ({
 
 jest.mock("@/lib/inbox/repositories.server", () => ({
   getThread: jest.fn(),
-  listThreads: jest.fn(),
+  getThreadMessages: jest.fn(),
+  listThreadsWithLatestDraft: jest.fn(),
 }));
 
 jest.mock("@/lib/inbox/prime-review.server", () => ({
@@ -44,6 +46,7 @@ function buildThreadRow(overrides: Partial<InboxThreadRow> = {}): InboxThreadRow
     snippet: "What time is check-in?",
     assigned_uid: null,
     latest_message_at: "2026-03-06T10:00:00.000Z",
+    latest_message_direction: "inbound",
     last_synced_at: "2026-03-06T10:05:00.000Z",
     metadata_json: JSON.stringify({
       latestAdmissionDecision: "admit",
@@ -102,17 +105,30 @@ function buildThreadRecord(overrides: Partial<InboxThreadRecord> = {}): InboxThr
 
 describe("inbox list/detail routes", () => {
   const requireStaffAuthMock = jest.mocked(requireStaffAuth);
-  const listThreadsMock = jest.mocked(listThreads);
+  const listThreadsWithLatestDraftMock = jest.mocked(listThreadsWithLatestDraft);
   const getThreadMock = jest.mocked(getThread);
+  const getThreadMessagesMock = jest.mocked(getThreadMessages);
   const getGmailThreadMock = jest.mocked(getGmailThread);
   const listPrimeInboxThreadSummariesMock = jest.mocked(listPrimeInboxThreadSummaries);
   const isPrimeInboxThreadIdMock = jest.mocked(isPrimeInboxThreadId);
   const getPrimeInboxThreadDetailMock = jest.mocked(getPrimeInboxThreadDetail);
 
+  function defaultPaginatedMessages() {
+    const record = buildThreadRecord();
+    return {
+      messages: record.messages,
+      totalMessages: record.messages.length,
+      offset: 0,
+      limit: 20,
+      hasMore: false,
+    };
+  }
+
   beforeEach(() => {
     jest.resetAllMocks();
     listPrimeInboxThreadSummariesMock.mockResolvedValue([]);
     isPrimeInboxThreadIdMock.mockReturnValue(false);
+    getThreadMessagesMock.mockResolvedValue(defaultPaginatedMessages());
   });
 
   it("returns auth failures unchanged for the inbox list", async () => {
@@ -127,28 +143,22 @@ describe("inbox list/detail routes", () => {
     const response = await getInboxList(new Request("http://localhost/api/mcp/inbox"));
 
     expect(response.status).toBe(401);
-    expect(listThreadsMock).not.toHaveBeenCalled();
+    expect(listThreadsWithLatestDraftMock).not.toHaveBeenCalled();
   });
 
-  it("filters auto-archived and resolved threads from the default inbox list", async () => {
+  it("filters sent, auto-archived, resolved, and outbound-last threads from the default inbox list", async () => {
     requireStaffAuthMock.mockResolvedValue({
       ok: true,
       uid: "uid-1",
       roles: ["staff"],
     });
-    listThreadsMock.mockResolvedValue([
+    listThreadsWithLatestDraftMock.mockResolvedValue([
       buildThreadRow({ id: "thread-1", status: "drafted" }),
+      buildThreadRow({ id: "thread-1b", status: "drafted", latest_message_direction: "outbound" }),
       buildThreadRow({ id: "thread-2", status: "auto_archived" }),
       buildThreadRow({ id: "thread-3", status: "resolved" }),
+      buildThreadRow({ id: "thread-4", status: "sent" }),
     ]);
-    getThreadMock.mockImplementation(async (threadId) =>
-      buildThreadRecord({
-        thread: buildThreadRow({
-          id: threadId,
-          status: threadId === "thread-1" ? "drafted" : "resolved",
-        }),
-      }),
-    );
 
     const response = await getInboxList(
       new Request("http://localhost/api/mcp/inbox?limit=20&offset=10"),
@@ -156,12 +166,11 @@ describe("inbox list/detail routes", () => {
     const payload = await response.json();
 
     expect(response.status).toBe(200);
-    expect(listThreadsMock).toHaveBeenCalledWith({
+    expect(listThreadsWithLatestDraftMock).toHaveBeenCalledWith({
       status: undefined,
       limit: 20,
       offset: 10,
     });
-    expect(getThreadMock).toHaveBeenCalledTimes(1);
     expect(payload.data).toHaveLength(1);
     expect(payload.data[0]).toMatchObject({
       id: "thread-1",
@@ -190,8 +199,7 @@ describe("inbox list/detail routes", () => {
       uid: "uid-1",
       roles: ["staff"],
     });
-    listThreadsMock.mockResolvedValue([buildThreadRow({ id: "thread-1", status: "drafted" })]);
-    getThreadMock.mockResolvedValue(buildThreadRecord());
+    listThreadsWithLatestDraftMock.mockResolvedValue([buildThreadRow({ id: "thread-1", status: "drafted" })]);
     listPrimeInboxThreadSummariesMock.mockResolvedValue([
       {
         id: "prime:dm_occ_aaa_occ_bbb",
@@ -315,7 +323,7 @@ describe("inbox list/detail routes", () => {
       uid: "uid-1",
       roles: ["staff"],
     });
-    listThreadsMock.mockResolvedValue([]);
+    listThreadsWithLatestDraftMock.mockResolvedValue([]);
     listPrimeInboxThreadSummariesMock.mockResolvedValue([
       {
         id: "prime:dm_pending",
@@ -488,6 +496,161 @@ describe("inbox list/detail routes", () => {
     expect(payload.data.thread.channel).toBe("prime_direct");
     expect(payload.data.campaign).toBeNull();
     expect(payload.data.messages[0].bodyPlain).toBe("Hello from Prime");
+  });
+
+  // ---------------------------------------------------------------------------
+  // Cursor pagination tests
+  // ---------------------------------------------------------------------------
+
+  it("passes before_id to getThreadMessages for backward-compat cursor pagination", async () => {
+    requireStaffAuthMock.mockResolvedValue({ ok: true, uid: "uid-1", roles: ["staff"] });
+    getThreadMock.mockResolvedValue(buildThreadRecord());
+    getThreadMessagesMock.mockResolvedValue({
+      messages: [],
+      totalMessages: 5,
+      offset: 0,
+      limit: 20,
+      hasMore: false,
+    });
+
+    await getInboxThread(
+      new Request("http://localhost/api/mcp/inbox/thread-1?before_id=msg-3"),
+      { params: { threadId: "thread-1" } },
+    );
+
+    expect(getThreadMessagesMock).toHaveBeenCalledWith(
+      expect.objectContaining({ beforeId: "msg-3", beforeTimestamp: undefined }),
+    );
+  });
+
+  it("passes before_id + before_ts composite cursor to getThreadMessages", async () => {
+    requireStaffAuthMock.mockResolvedValue({ ok: true, uid: "uid-1", roles: ["staff"] });
+    getThreadMock.mockResolvedValue(buildThreadRecord());
+    getThreadMessagesMock.mockResolvedValue({
+      messages: [],
+      totalMessages: 10,
+      offset: 0,
+      limit: 20,
+      hasMore: false,
+    });
+
+    await getInboxThread(
+      new Request(
+        "http://localhost/api/mcp/inbox/thread-1?before_id=msg-5&before_ts=2026-03-06T10:00:00.000Z",
+      ),
+      { params: { threadId: "thread-1" } },
+    );
+
+    expect(getThreadMessagesMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        beforeId: "msg-5",
+        beforeTimestamp: "2026-03-06T10:00:00.000Z",
+      }),
+    );
+  });
+
+  it("returns hasMore: true when more messages exist beyond the page", async () => {
+    requireStaffAuthMock.mockResolvedValue({ ok: true, uid: "uid-1", roles: ["staff"] });
+    getThreadMock.mockResolvedValue(buildThreadRecord());
+    getThreadMessagesMock.mockResolvedValue({
+      messages: buildThreadRecord().messages,
+      totalMessages: 50,
+      offset: 0,
+      limit: 20,
+      hasMore: true,
+    });
+
+    const response = await getInboxThread(
+      new Request("http://localhost/api/mcp/inbox/thread-1"),
+      { params: { threadId: "thread-1" } },
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(payload.data.hasMore).toBe(true);
+    expect(payload.data.totalMessages).toBe(50);
+  });
+
+  it("returns hasMore: false and empty messages when cursor is past all messages", async () => {
+    requireStaffAuthMock.mockResolvedValue({ ok: true, uid: "uid-1", roles: ["staff"] });
+    getThreadMock.mockResolvedValue(buildThreadRecord());
+    getThreadMessagesMock.mockResolvedValue({
+      messages: [],
+      totalMessages: 5,
+      offset: 0,
+      limit: 20,
+      hasMore: false,
+    });
+
+    const response = await getInboxThread(
+      new Request(
+        "http://localhost/api/mcp/inbox/thread-1?before_id=msg-0&before_ts=2020-01-01T00:00:00.000Z",
+      ),
+      { params: { threadId: "thread-1" } },
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(payload.data.messages).toHaveLength(0);
+    expect(payload.data.hasMore).toBe(false);
+  });
+
+  // ---------------------------------------------------------------------------
+  // Prime thread source field in inbox list
+  // ---------------------------------------------------------------------------
+
+  it("includes source: 'prime' in Prime thread summaries merged into the inbox list", async () => {
+    requireStaffAuthMock.mockResolvedValue({ ok: true, uid: "uid-1", roles: ["staff"] });
+    listThreadsWithLatestDraftMock.mockResolvedValue([]);
+    listPrimeInboxThreadSummariesMock.mockResolvedValue([
+      {
+        id: "prime:dm_src_test",
+        status: "pending",
+        channel: "prime_direct",
+        channelLabel: "Prime chat",
+        lane: "support",
+        reviewMode: "message_draft",
+        capabilities: {
+          supportsSubject: false,
+          supportsRecipients: false,
+          supportsHtml: false,
+          supportsDraftMutations: true,
+          supportsDraftSave: true,
+          supportsDraftRegenerate: false,
+          supportsDraftSend: true,
+          supportsThreadMutations: true,
+          subjectLabel: "Subject",
+          recipientLabel: "Recipients",
+          bodyLabel: "Message",
+          bodyPlaceholder: "",
+          sendLabel: "Send message",
+          readOnlyNotice: "",
+        },
+        subject: "Prime source field test",
+        snippet: "Test message",
+        latestMessageAt: "2026-03-08T10:00:00.000Z",
+        lastSyncedAt: null,
+        updatedAt: "2026-03-08T10:00:00.000Z",
+        needsManualDraft: false,
+        draftFailureCode: null,
+        draftFailureMessage: null,
+        latestAdmissionDecision: null,
+        latestAdmissionReason: null,
+        currentDraft: null,
+        guestBookingRef: "BOOK-SRC",
+        guestFirstName: null,
+        guestLastName: null,
+      },
+    ]);
+
+    const response = await getInboxList(new Request("http://localhost/api/mcp/inbox"));
+    const payload = await response.json();
+
+    expect(response.status).toBe(200);
+    expect(payload.data).toHaveLength(1);
+    // Prime summaries are passed through directly; the id prefix is the source discriminant
+    expect(payload.data[0].id).toBe("prime:dm_src_test");
+    expect(payload.data[0].channel).toBe("prime_direct");
   });
 
   it("includes rich Prime message fields (links, primeAttachments, cards, audience, campaignId) in thread detail response", async () => {

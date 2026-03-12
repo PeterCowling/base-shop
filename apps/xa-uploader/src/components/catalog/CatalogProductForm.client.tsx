@@ -56,11 +56,12 @@ function StatusDot({
 
 function useSaveButtonTransition(params: {
   busy: boolean;
+  peerBusyRef: React.RefObject<boolean>;
   onSavedFeedback?: () => void;
   onSave: () => Promise<SaveResult>;
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
-  const { busy, onSavedFeedback, onSave, t } = params;
+  const { busy, peerBusyRef, onSavedFeedback, onSave, t } = params;
   const [saveButtonState, setSaveButtonState] = React.useState<SaveButtonState>("idle");
   const saveAdvanceTimerRef = React.useRef<number | null>(null);
   const clearSaveAdvanceTimer = React.useCallback(() => {
@@ -77,7 +78,7 @@ function useSaveButtonTransition(params: {
   }, [clearSaveAdvanceTimer]);
 
   const handleSaveClick = React.useCallback(async () => {
-    if (saveButtonState === "saving" || saveButtonState === "saved" || busy) return;
+    if (saveButtonState === "saving" || saveButtonState === "saved" || busy || peerBusyRef.current) return;
     setSaveButtonState("saving");
     const result = await onSave();
     if (result.status !== "saved") {
@@ -92,7 +93,7 @@ function useSaveButtonTransition(params: {
       setSaveButtonState("idle");
       onSavedFeedback?.();
     }, 2000);
-  }, [busy, clearSaveAdvanceTimer, onSave, onSavedFeedback, saveButtonState]);
+  }, [busy, peerBusyRef, clearSaveAdvanceTimer, onSave, onSavedFeedback, saveButtonState]);
 
   const cancelPendingSaveAdvance = React.useCallback(() => {
     clearSaveAdvanceTimer();
@@ -247,9 +248,10 @@ function DraftActionRow({
 
 function usePublishActionTransition(params: {
   busy: boolean;
+  peerBusyRef: React.RefObject<boolean>;
   onPublish?: (publishState: PublishActionKind) => Promise<{ status?: string } | unknown>;
 }) {
-  const { busy, onPublish } = params;
+  const { busy, peerBusyRef, onPublish } = params;
   const [actionState, setActionState] = React.useState<PublishActionState>("idle");
   const [actionKind, setActionKind] = React.useState<PublishActionKind | null>(null);
   const resetTimerRef = React.useRef<number | null>(null);
@@ -269,7 +271,7 @@ function usePublishActionTransition(params: {
 
   const triggerAction = React.useCallback(
     async (nextActionKind: PublishActionKind) => {
-      if (!onPublish || busy || actionState !== "idle") return;
+      if (!onPublish || busy || peerBusyRef.current || actionState !== "idle") return;
       clearResetTimer();
       setActionKind(nextActionKind);
       setActionState("running");
@@ -286,7 +288,7 @@ function usePublishActionTransition(params: {
         setActionKind(null);
       }, 1600);
     },
-    [actionState, busy, clearResetTimer, onPublish],
+    [actionState, busy, peerBusyRef, clearResetTimer, onPublish],
   );
 
   return { actionState, actionKind, triggerAction };
@@ -348,7 +350,7 @@ function getAutosaveCopy(params: {
   return params.t("autosaveStatusSaved");
 }
 
-// eslint-disable-next-line max-lines-per-function -- XAUP-0001 product form orchestrator; splitting would fragment tightly coupled draft + image state
+// eslint-disable-next-line max-lines-per-function, complexity -- XAUP-0001 product form orchestrator; splitting would fragment tightly coupled draft + image state
 export function CatalogProductForm({
   selectedSlug,
   draft,
@@ -390,9 +392,12 @@ export function CatalogProductForm({
   const hasSlug = (draft.slug ?? "").trim().length > 0;
   const imageEntries = React.useMemo(() => parseImageEntries(draft.imageFiles ?? ""), [draft.imageFiles]);
   const autosaveCopy = getAutosaveCopy({ autosaveStatus, t });
+  const saveBusyRef = React.useRef(false);
+  const publishBusyRef = React.useRef(false);
   const { handleSaveClick, saveButtonClass, saveButtonLabel, saveButtonDisabled, cancelPendingSaveAdvance } =
     useSaveButtonTransition({
       busy,
+      peerBusyRef: publishBusyRef,
       onSave,
       onSavedFeedback,
       t,
@@ -400,9 +405,15 @@ export function CatalogProductForm({
   const { actionState: publishActionState, actionKind: publishActionKind, triggerAction } =
     usePublishActionTransition({
       busy,
+      peerBusyRef: saveBusyRef,
       onPublish,
     });
   const publishActionActive = publishActionState !== "idle";
+  // Keep refs in sync so each hook's click guard sees the other's live state
+  saveBusyRef.current = saveButtonDisabled;
+  publishBusyRef.current = publishActionActive;
+  // Combine disabled states so UI reflects cross-action coordination
+  const combinedSaveDisabled = saveButtonDisabled || publishActionActive;
   const showOutOfStockAction =
     draft.publishState === "live" ||
     (publishActionKind === "out_of_stock" && publishActionActive);
@@ -595,7 +606,7 @@ export function CatalogProductForm({
             publishActionState={publishActionState}
             triggerAction={triggerAction}
             handleSaveClick={handleSaveClick}
-            saveButtonDisabled={saveButtonDisabled}
+            saveButtonDisabled={combinedSaveDisabled}
             saveButtonClass={saveButtonClass}
             saveButtonLabel={saveButtonLabel}
             t={t}

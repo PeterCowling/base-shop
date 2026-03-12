@@ -62,7 +62,7 @@ function IngredientStock() {
               inventory ledger to enable audit trails.
             </p>
             <Button
-              className="mt-2 px-3 py-1 rounded-lg bg-warning-main text-primary-fg hover:bg-warning-dark"
+              className="mt-2 px-3 py-1 rounded-lg bg-warning-main text-warning-fg hover:bg-warning-dark"
               onClick={() => {
                 if (
                   window.confirm(

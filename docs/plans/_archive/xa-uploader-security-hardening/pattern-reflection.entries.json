@@ -1,0 +1,10 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-12T12:03:07.083Z",
+  "plan_slug": "xa-uploader-security-hardening",
+  "review_cycle_key": "xa-uploader-security-hardening",
+  "source_path": "docs/plans/xa-uploader-security-hardening/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": []
+}

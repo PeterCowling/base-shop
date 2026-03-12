@@ -1,0 +1,58 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260311182000-9601",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "domain": "BOS",
+  "root_event_id": "operator:BRIK:BOS:reception-inbox-non-guest-suppression:20260311",
+  "anchor_key": "reception-inbox-non-guest-suppression",
+  "cluster_key": "BRIK:BOS:reception-inbox-non-guest-suppression:operator:20260311",
+  "cluster_fingerprint": "reception-inbox-non-guest-suppression-20260311",
+  "lineage_depth": 0,
+  "area_anchor": "Reception inbox should suppress obvious non-guest promotional emails before they surface to staff",
+  "location_anchors": [
+    "apps/reception/src/lib/inbox/admission.ts",
+    "apps/reception/src/lib/inbox/sync.server.ts",
+    "packages/mcp-server/src/tools/gmail-classify.ts",
+    "packages/mcp-server/src/tools/gmail-organize.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Gmail organize and Reception sync each classify inbound email separately using similar heuristics, but Reception still rescans raw Gmail threads and can surface low-confidence non-guest promotional mail in the inbox. A recent example was the Italian promotional subject 'Il caldo arriva, gli infestanti anche. Proteggiti ora', which is clearly not guest mail.",
+  "next_scope_now": "Implement a bounded classifier hardening pass so obvious vendor/newsletter/promotional subjects are treated as non-customer mail in both Gmail organize and Reception admission, with regression tests for the concrete Italian example.",
+  "adjacent_later": [
+    "Unify Gmail organize and Reception admission onto one shared classifier module to remove rule drift.",
+    "Consider a quarantine lane for ambiguous unknown mail instead of surfacing review-later items in the main inbox."
+  ],
+  "recommended_route": "lp-do-build",
+  "status": "micro_build_ready",
+  "priority": "P1",
+  "confidence": 0.9,
+  "evidence_refs": [
+    "operator-stated: non-guest and OTA mail should not surface in the Reception inbox",
+    "operator-stated: the subject 'Il caldo arriva, gli infestanti anche. Proteggiti ora' is clearly not from a hostel guest",
+    "code-ref: apps/reception/src/lib/inbox/admission.ts",
+    "code-ref: apps/reception/src/lib/inbox/sync.server.ts",
+    "code-ref: packages/mcp-server/src/tools/gmail-classify.ts",
+    "code-ref: packages/mcp-server/src/tools/gmail-organize.ts",
+    "coverage-hint: testing",
+    "coverage-hint: rollout-rollback"
+  ],
+  "created_at": "2026-03-11T18:20:00.000Z",
+  "queue_state": "processed",
+  "why": "Staff time in the Reception inbox should be reserved for real guest and operational threads. When obvious promotional/vendor emails leak into the inbox, they dilute trust in the queue and create avoidable manual triage.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Reception suppresses obvious non-guest promotional/vendor emails consistently across Gmail organize and Reception admission, so staff no longer see them in the main inbox.",
+    "source": "operator"
+  },
+  "processed_by": {
+    "route": "dispatch-routed",
+    "target_route": "lp-do-build",
+    "target_kind": "build",
+    "target_slug": "reception-inbox-non-guest-suppression",
+    "target_path": "docs/plans/reception-inbox-non-guest-suppression/micro-build.md",
+    "processed_at": "2026-03-11T18:21:00.000Z",
+    "micro_build_path": "docs/plans/reception-inbox-non-guest-suppression/micro-build.md"
+  }
+}

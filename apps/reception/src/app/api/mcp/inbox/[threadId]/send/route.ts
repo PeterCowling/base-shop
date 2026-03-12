@@ -1,20 +1,28 @@
 import { NextResponse } from "next/server";
+import { z } from "zod";
 
 import { createGmailDraft, sendGmailDraft } from "@/lib/gmail-client";
 import {
   getCurrentDraft,
-  parseThreadMetadata,
+  parseJsonArray,
+  parseThreadMetadataFromRow,
   serializeDraft,
 } from "@/lib/inbox/api-models.server";
 import {
   badRequestResponse,
+  conflictResponse,
   inboxApiErrorResponse,
+  invalidJsonResponse,
+  invalidPayloadResponse,
   notFoundResponse,
+  readJsonPayload,
 } from "@/lib/inbox/api-route-helpers";
 import {
+  getPrimeInboxThreadDetail,
   isPrimeInboxThreadId,
   sendPrimeInboxThread,
 } from "@/lib/inbox/prime-review.server";
+import { matchTemplates } from "@/lib/inbox/prime-templates";
 import {
   getThread,
   updateDraft,
@@ -23,6 +31,12 @@ import {
 import { recordInboxEvent } from "@/lib/inbox/telemetry.server";
 
 import { requireStaffAuth } from "../../../_shared/staff-auth";
+
+const sendDraftPayloadSchema = z
+  .object({
+    expectedUpdatedAt: z.string().datetime().optional(),
+  })
+  .strict();
 
 export async function POST(
   request: Request,
@@ -33,10 +47,50 @@ export async function POST(
     return auth.response;
   }
 
+  let rawPayload: unknown;
+  try {
+    rawPayload = await readJsonPayload(request);
+  } catch {
+    return invalidJsonResponse();
+  }
+
+  const parsedPayload = sendDraftPayloadSchema.safeParse(rawPayload);
+  if (!parsedPayload.success) {
+    return invalidPayloadResponse(parsedPayload.error, "Invalid send payload");
+  }
+
   const params = await context.params;
   if (isPrimeInboxThreadId(params.threadId)) {
     try {
+      // Capture draft state before send for telemetry
+      const detailBeforeSend = await getPrimeInboxThreadDetail(params.threadId);
+      const draftBeforeSend = detailBeforeSend?.currentDraft ?? null;
+
       const result = await sendPrimeInboxThread(params.threadId, auth.uid);
+
+      // Log prime_manual_reply when a Prime draft is sent without a template
+      if (!draftBeforeSend?.templateUsed) {
+        const latestInbound = detailBeforeSend?.messages
+          ?.filter((m) => m.direction === "inbound")
+          .pop();
+        const guestSnippet = (
+          latestInbound?.bodyPlain
+          ?? latestInbound?.snippet
+          ?? ""
+        ).slice(0, 200);
+        const detected = matchTemplates(guestSnippet);
+
+        void recordInboxEvent({
+          threadId: params.threadId,
+          eventType: "prime_manual_reply",
+          actorUid: auth.uid,
+          metadata: {
+            guestQuestionSnippet: guestSnippet,
+            detectedCategory: detected[0]?.category ?? null,
+          },
+        });
+      }
+
       return NextResponse.json({
         success: true,
         data: result,
@@ -56,9 +110,22 @@ export async function POST(
     return badRequestResponse("No draft exists for this thread");
   }
 
-  const recipientEmails = currentDraft.recipient_emails_json
-    ? (JSON.parse(currentDraft.recipient_emails_json) as string[])
-    : [];
+  // Optimistic lock: reject if the draft was modified since the caller last saw it
+  if (parsedPayload.data.expectedUpdatedAt) {
+    if (currentDraft.updated_at !== parsedPayload.data.expectedUpdatedAt) {
+      void recordInboxEvent({
+        threadId: params.threadId,
+        eventType: "send_failed",
+        actorUid: auth.uid,
+        metadata: { errorCategory: "optimistic_lock_conflict" },
+      });
+      return conflictResponse(
+        "Draft was modified since you last viewed it. Reload the draft and try again.",
+      );
+    }
+  }
+
+  const recipientEmails = parseJsonArray(currentDraft.recipient_emails_json);
   if (recipientEmails.length === 0) {
     return badRequestResponse("Draft has no recipients");
   }
@@ -77,7 +144,7 @@ export async function POST(
     }
 
     const sent = await sendGmailDraft(created.id);
-    const metadata = parseThreadMetadata(record.thread.metadata_json);
+    const metadata = parseThreadMetadataFromRow(record.thread);
 
     const approvedDraft = await updateDraft({
       draftId: currentDraft.id,
@@ -131,6 +198,12 @@ export async function POST(
       },
     });
   } catch (error) {
+    void recordInboxEvent({
+      threadId: params.threadId,
+      eventType: "send_failed",
+      actorUid: auth.uid,
+      metadata: { errorCategory: "gmail_error" },
+    });
     return inboxApiErrorResponse(error);
   }
 }

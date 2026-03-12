@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { memo, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export type RoomFilterView = "all" | "sea" | "courtyard" | "garden" | "none";
@@ -45,6 +45,11 @@ const CATEGORY_FALLBACK_LABELS: Record<string, string> = {
   type: "Type",
   beds: "Beds",
 };
+
+const MOBILE_FILTER_COPY = {
+  more: "More filters",
+  hide: "Hide filters",
+} as const;
 
 function looksLikeI18nKeyToken(value: string): boolean {
   if (!value.includes(".")) return false;
@@ -99,6 +104,7 @@ const disabledClass =
 function RoomFilters({ selected, onChange, availableBedCounts, availability, lang }: RoomFiltersProps): JSX.Element {
   const { t } = useTranslation("roomsPage", { lng: lang });
   const viewFilters: RoomFilterView[] = ["all", "sea", "courtyard", "garden", "none"];
+  const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
 
   function pillClass(isActive: boolean, isDisabled: boolean): string {
     if (isDisabled) return `min-h-11 rounded-full px-4 py-2 text-sm border transition-colors duration-200 ${disabledClass}`;
@@ -144,6 +150,17 @@ function RoomFilters({ selected, onChange, availableBedCounts, availability, lan
     ],
     "Bed count",
   );
+  const toggleFiltersLabel = resolveTranslatedChain(
+    [t(showAdvancedFilters ? "filters.mobile.hide" : "filters.mobile.more")],
+    showAdvancedFilters ? MOBILE_FILTER_COPY.hide : MOBILE_FILTER_COPY.more,
+  );
+  const activeAdvancedFilters = useMemo(
+    () =>
+      Number(selected.femaleOnly) +
+      Number(selected.ensuiteBathroom) +
+      selected.bedCounts.length,
+    [selected.bedCounts.length, selected.ensuiteBathroom, selected.femaleOnly],
+  );
 
   return (
     <div className="mb-6 space-y-2">
@@ -179,85 +196,104 @@ function RoomFilters({ selected, onChange, availableBedCounts, availability, lan
         </div>
       </div>
 
-      {/* Type row */}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="w-12 shrink-0 text-xs font-medium uppercase tracking-wider text-brand-primary/60 dark:text-brand-text/50">
-          {typeLabel}
-        </span>
-        <div role="group" aria-label={roomAttributesAriaLabel} className="flex flex-wrap gap-2">
-          <button
-            type="button"
-            aria-pressed={selected.femaleOnly}
-            aria-disabled={!availability.femaleOnly || undefined}
-            className={pillClass(selected.femaleOnly, !availability.femaleOnly)}
-            onClick={!availability.femaleOnly ? undefined : () => onChange({ ...selected, femaleOnly: !selected.femaleOnly })}
-          >
-            {resolveTranslatedChain(
-              [
-                t("filters.femaleOnly"),
-                t("facts.type.femaleDorm"),
-                t("facts.type.femaleRoom"),
-              ],
-              "Female only",
-            )}
-          </button>
-          <button
-            type="button"
-            aria-pressed={selected.ensuiteBathroom}
-            aria-disabled={!availability.ensuiteBathroom || undefined}
-            className={pillClass(selected.ensuiteBathroom, !availability.ensuiteBathroom)}
-            onClick={!availability.ensuiteBathroom ? undefined : () => onChange({ ...selected, ensuiteBathroom: !selected.ensuiteBathroom })}
-          >
-            {resolveTranslatedChain(
-              [
-                t("filters.ensuiteBathroom"),
-                t("facts.bathroom.bathroomEnsuite"),
-                t("facts.bathroom.bathroomPrivate"),
-              ],
-              "Ensuite / private bathroom",
-            )}
-          </button>
-        </div>
+      <div className="sm:hidden">
+        <button
+          type="button"
+          aria-expanded={showAdvancedFilters}
+          aria-controls="room-filters-advanced"
+          className={pillClass(showAdvancedFilters, false)}
+          onClick={() => setShowAdvancedFilters((current) => !current)}
+        >
+          {activeAdvancedFilters > 0
+            ? `${toggleFiltersLabel} (${activeAdvancedFilters})`
+            : toggleFiltersLabel}
+        </button>
       </div>
 
-      {/* Beds row */}
-      <div className="flex flex-wrap items-center gap-2">
-        <span className="w-12 shrink-0 text-xs font-medium uppercase tracking-wider text-brand-primary/60 dark:text-brand-text/50">
-          {bedsLabel}
-        </span>
-        <div role="group" aria-label={bedCountAriaLabel} className="flex flex-wrap gap-2">
-          {availableBedCounts.map((count) => {
-            const isActive = selected.bedCounts.includes(count);
-            const isDisabled = availability.bedCounts[count] === false;
-            return (
-              <button
-                key={count}
-                type="button"
-                aria-pressed={isActive}
-                aria-disabled={isDisabled || undefined}
-                className={pillClass(isActive, isDisabled)}
-                onClick={
-                  isDisabled
-                    ? undefined
-                    : () =>
-                        onChange({
-                          ...selected,
-                          bedCounts: isActive
-                            ? selected.bedCounts.filter((value) => value !== count)
-                            : [...selected.bedCounts, count].sort((a, b) => a - b),
-                        })
-                }
-              >
-                {resolveTranslatedChain(
-                  [
-                    t("filters.bedCount", { count }),
-                    t("feature.beds", { defaultValue: "Beds" }).replace(/^/u, `${count} `),
-                  ],
-                  `${count} beds`,
-                )}
-              </button>
-            );
-          })}
+      <div
+        id="room-filters-advanced"
+        className={showAdvancedFilters ? "space-y-2" : "hidden space-y-2 sm:block"}
+      >
+        {/* Type row */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="w-12 shrink-0 text-xs font-medium uppercase tracking-wider text-brand-primary/60 dark:text-brand-text/50">
+            {typeLabel}
+          </span>
+          <div role="group" aria-label={roomAttributesAriaLabel} className="flex flex-wrap gap-2">
+            <button
+              type="button"
+              aria-pressed={selected.femaleOnly}
+              aria-disabled={!availability.femaleOnly || undefined}
+              className={pillClass(selected.femaleOnly, !availability.femaleOnly)}
+              onClick={!availability.femaleOnly ? undefined : () => onChange({ ...selected, femaleOnly: !selected.femaleOnly })}
+            >
+              {resolveTranslatedChain(
+                [
+                  t("filters.femaleOnly"),
+                  t("facts.type.femaleDorm"),
+                  t("facts.type.femaleRoom"),
+                ],
+                "Female only",
+              )}
+            </button>
+            <button
+              type="button"
+              aria-pressed={selected.ensuiteBathroom}
+              aria-disabled={!availability.ensuiteBathroom || undefined}
+              className={pillClass(selected.ensuiteBathroom, !availability.ensuiteBathroom)}
+              onClick={!availability.ensuiteBathroom ? undefined : () => onChange({ ...selected, ensuiteBathroom: !selected.ensuiteBathroom })}
+            >
+              {resolveTranslatedChain(
+                [
+                  t("filters.ensuiteBathroom"),
+                  t("facts.bathroom.bathroomEnsuite"),
+                  t("facts.bathroom.bathroomPrivate"),
+                ],
+                "Ensuite / private bathroom",
+              )}
+            </button>
+          </div>
+        </div>
+
+        {/* Beds row */}
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="w-12 shrink-0 text-xs font-medium uppercase tracking-wider text-brand-primary/60 dark:text-brand-text/50">
+            {bedsLabel}
+          </span>
+          <div role="group" aria-label={bedCountAriaLabel} className="flex flex-wrap gap-2">
+            {availableBedCounts.map((count) => {
+              const isActive = selected.bedCounts.includes(count);
+              const isDisabled = availability.bedCounts[count] === false;
+              return (
+                <button
+                  key={count}
+                  type="button"
+                  aria-pressed={isActive}
+                  aria-disabled={isDisabled || undefined}
+                  className={pillClass(isActive, isDisabled)}
+                  onClick={
+                    isDisabled
+                      ? undefined
+                      : () =>
+                          onChange({
+                            ...selected,
+                            bedCounts: isActive
+                              ? selected.bedCounts.filter((value) => value !== count)
+                              : [...selected.bedCounts, count].sort((a, b) => a - b),
+                          })
+                  }
+                >
+                  {resolveTranslatedChain(
+                    [
+                      t("filters.bedCount", { count }),
+                      t("feature.beds", { defaultValue: "Beds" }).replace(/^/u, `${count} `),
+                    ],
+                    `${count} beds`,
+                  )}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </div>

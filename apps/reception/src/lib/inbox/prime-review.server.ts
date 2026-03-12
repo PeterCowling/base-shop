@@ -141,6 +141,19 @@ export type PrimeReviewCampaignDetail = {
   }>;
 };
 
+/**
+ * Strip per-recipient PII from campaign detail before it leaves the server layer.
+ * The `targets` and `deliveries` arrays contain recipient emails, phone numbers,
+ * guest UUIDs, and external contact keys. Aggregate summaries are safe to expose.
+ */
+function sanitizeCampaignDetail(campaign: PrimeReviewCampaignDetail): PrimeReviewCampaignDetail {
+  return {
+    ...campaign,
+    targets: [],
+    deliveries: [],
+  };
+}
+
 export type PrimeReviewThreadDetailApiModel = {
   thread: InboxThreadSummaryApiModel;
   campaign: PrimeReviewCampaignDetail | null;
@@ -214,18 +227,29 @@ type PrimeEnvelope<T> = {
 };
 
 async function primeRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
-  const response = await fetch(buildPrimeUrl(path), {
-    ...init,
-    headers: {
-      ...buildPrimeHeaders(),
-      ...(init.headers ?? {}),
-    },
-    cache: "no-store",
-  });
+  let response: Response;
+  try {
+    response = await fetch(buildPrimeUrl(path), {
+      ...init,
+      headers: {
+        ...buildPrimeHeaders(),
+        ...(init.headers ?? {}),
+      },
+      cache: "no-store",
+    });
+  } catch {
+    throw new Error("Failed to reach Prime messaging service");
+  }
 
-  const payload = (await response.json()) as PrimeEnvelope<T>;
+  let payload: PrimeEnvelope<T>;
+  try {
+    payload = (await response.json()) as PrimeEnvelope<T>;
+  } catch {
+    throw new Error("Failed to load Prime threads");
+  }
+
   if (!response.ok || !payload.success) {
-    throw new Error(payload.error ?? "Prime review request failed");
+    throw new Error("Failed to load Prime threads");
   }
 
   return payload.data;
@@ -235,10 +259,31 @@ function buildPrimeActorHeaders(actorUid?: string): Record<string, string> | und
   return actorUid ? { "x-prime-actor-uid": actorUid } : undefined;
 }
 
+/**
+ * Map Prime reviewStatus values to the shared inbox status string.
+ *
+ * Prime uses its own status vocabulary. All Prime status values are valid
+ * inbox status strings so no transformation is needed for the current set,
+ * but the explicit switch makes the mapping auditable and catches any future
+ * Prime-side additions at the type level.
+ */
 function mapPrimeStatus(
   reviewStatus: PrimeReviewThreadSummary["reviewStatus"],
 ): InboxThreadSummaryApiModel["status"] {
-  return reviewStatus;
+  switch (reviewStatus) {
+    case "pending":
+      return "pending";
+    case "review_later":
+      return "review_later";
+    case "auto_archived":
+      return "auto_archived";
+    case "resolved":
+      return "resolved";
+    case "sent":
+      return "sent";
+    default:
+      return reviewStatus;
+  }
 }
 
 function mapPrimeSummaryToInboxThread(
@@ -247,6 +292,7 @@ function mapPrimeSummaryToInboxThread(
   const adapter = resolveInboxChannelAdapter(summary.channel);
   return {
     id: buildPrimeInboxThreadId(summary.id),
+    source: "prime",
     status: mapPrimeStatus(summary.reviewStatus),
     channel: adapter.channel,
     channelLabel: adapter.channelLabel,
@@ -330,8 +376,14 @@ export async function listPrimeInboxThreadSummaries(status?: string): Promise<In
   const url = status
     ? `/api/review-threads?limit=50&status=${encodeURIComponent(status)}`
     : "/api/review-threads?limit=50";
-  const summaries = await primeRequest<PrimeReviewThreadSummary[]>(url);
-  return summaries.map(mapPrimeSummaryToInboxThread);
+  try {
+    const summaries = await primeRequest<PrimeReviewThreadSummary[]>(url);
+    return summaries.map(mapPrimeSummaryToInboxThread);
+  } catch {
+    // Re-throw with a safe message so callers can surface the failure.
+    // The original error (which may contain infrastructure details) is not forwarded.
+    throw new Error("Failed to load Prime threads");
+  }
 }
 
 export async function getPrimeInboxThreadDetail(
@@ -350,7 +402,7 @@ export async function getPrimeInboxThreadDetail(
     thread: {
       ...mapPrimeSummaryToInboxThread(detail.thread),
     },
-    campaign: detail.currentCampaign,
+    campaign: detail.currentCampaign ? sanitizeCampaignDetail(detail.currentCampaign) : null,
     metadata: {
       ...detail.metadata,
       bookingId: detail.thread.bookingId,
@@ -402,14 +454,15 @@ export async function getPrimeInboxCampaign(
     return null;
   }
 
-  return primeRequest<PrimeReviewCampaignDetail>(
+  const campaign = await primeRequest<PrimeReviewCampaignDetail>(
     `/api/review-campaign?campaignId=${encodeURIComponent(campaignId)}`,
   );
+  return sanitizeCampaignDetail(campaign);
 }
 
 export async function savePrimeInboxDraft(
   prefixedThreadId: string,
-  payload: { plainText: string },
+  payload: { plainText: string; templateUsed?: string },
   actorUid?: string,
 ): Promise<InboxDraftApiModel | null> {
   const threadId = parsePrimeInboxThreadId(prefixedThreadId);
@@ -422,11 +475,15 @@ export async function savePrimeInboxDraft(
     {
       method: "PUT",
       headers: buildPrimeActorHeaders(actorUid),
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ plainText: payload.plainText }),
     },
   );
 
-  return mapPrimeCurrentDraft(buildPrimeInboxThreadId(threadId), response.detail.currentDraft);
+  const draft = mapPrimeCurrentDraft(buildPrimeInboxThreadId(threadId), response.detail.currentDraft);
+  if (draft && payload.templateUsed) {
+    draft.templateUsed = payload.templateUsed;
+  }
+  return draft;
 }
 
 export async function resolvePrimeInboxThread(
@@ -537,5 +594,5 @@ export async function replayPrimeInboxCampaignDelivery(
     },
   );
 
-  return payload.campaign;
+  return sanitizeCampaignDetail(payload.campaign);
 }

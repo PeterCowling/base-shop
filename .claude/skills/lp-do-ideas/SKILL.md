@@ -69,6 +69,7 @@ If unclear, ask one question: "Has this already been written into a doc, or is t
   - `next_scope_now`
   - `why`
   - `intended_outcome`
+- For likely code-bearing work (`code-change`, `multi`, `infra`, `design`), also load `../_shared/engineering-coverage-matrix.md` and capture obvious coverage hints using the module's `coverage-hint:` evidence-ref convention. Do not turn this into a full planning interview at ideas stage.
 - Routing remains a Step 4 judgment call. Do not ask the operator to decide the final route
   unless Step 4 is still genuinely ambiguous after the structured intake.
 
@@ -140,6 +141,32 @@ Safety rules:
 - Unknown artifacts never auto-admit.
 - Projection/read-model artifacts (`projection_summary`) do not auto-admit.
 - `trigger_policy: never` cannot be bypassed by manual override.
+
+## Shared Workflow Telemetry
+
+`lp-do-ideas` already owns queue admission and cycle telemetry in `docs/business-os/startup-loop/ideas/trial/telemetry.jsonl`.
+
+DO stages (`lp-do-ideas`, `lp-do-fact-find`, `lp-do-analysis`, `lp-do-plan`, `lp-do-build`) append `record_type: "workflow_step"` lines to the same stream using:
+
+```bash
+pnpm --filter scripts startup-loop:lp-do-ideas-record-workflow-telemetry -- --stage <stage> --feature-slug <slug> ...
+```
+
+Use `lp-do-ideas` stage recording when a feature is first handed off into the DO chain to establish the feature baseline for later token-delta measurement.
+
+Codex token usage is auto-captured from session metadata when `CODEX_THREAD_ID` is available. Claude token usage is auto-captured via project session logs (sessions-index.json → debug/latest fallback). Explicit `--claude-session-id` still takes priority when supplied.
+
+This keeps ideas-stage telemetry and downstream hot-path telemetry in one append-only stream while allowing the existing queue rollups to ignore downstream records safely.
+
+## Progressive Handoff Packets
+
+Once a dispatch enters the DO chain, downstream stages should use the canonical bounded handoff sidecars defined in `docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`.
+
+Rule:
+- `lp-do-fact-find` emits `fact-find.packet.json`,
+- `lp-do-analysis` consumes `fact-find.packet.json` first and emits `analysis.packet.json`,
+- `lp-do-plan` consumes `analysis.packet.json` first and emits `plan.packet.json`,
+- `lp-do-build` consumes `plan.packet.json` first before escalating to the full upstream markdown artifact.
 
 ## Routing Intelligence
 
@@ -235,6 +262,39 @@ reference and whether there is a deadline for resolution. Those two data points
 
 If none of these signals are present in the operator's description, omit the evidence
 fields entirely and route based on the description alone.
+
+## Plain Language Writing Standard
+
+**All operator-facing fields (`area_anchor`, `why`) MUST be written for a business decision-maker, not a developer.**
+
+The operator reading these ideas may have no technical knowledge. They are making a business decision: approve, defer, or decline. The writing must help them make that decision confidently.
+
+### Non-negotiable rules
+
+1. **No technical jargon.** No function names, file paths, schema names, API names, or internal tool names in `area_anchor` or `why`. If a technical concept must be referenced, describe what it does for users.
+
+2. **14-year-old reader test.** Before writing `area_anchor` or `why`, ask: "Could a smart 14-year-old read this and understand why the business should care?" If not, rewrite it.
+
+3. **Business consequence first.** Every `why` must state what goes wrong for staff, customers, or the business — not which component is responsible.
+
+4. **Benefits, not mechanics.** Describe what gets better when this is fixed. "Fixing this means every guest gets exactly one reply" is good. "Eliminates dedup gap at tool boundary" is not.
+
+### Self-check before writing
+
+Ask yourself:
+- Does `area_anchor` describe the business impact, or just the technical location of the problem?
+- Does `why` explain what a real person experiences when this is broken?
+- Could someone approve or decline this without knowing anything about the codebase?
+
+If the answer to any of these is no, rewrite before emitting.
+
+### Worked contrast
+
+| Field | Technical (bad) | Plain language (good) |
+|---|---|---|
+| `area_anchor` | `BRIK gmail pipeline — In-Progress recovery not auto-scheduled` | `Brikette — Guest emails can get stuck and never replied to` |
+| `area_anchor` | `XA xa-b product cards — missing New In badge` | `XA — New arrivals look the same as everything else in mixed listings` |
+| `why` | `The recovery function is in TERMINAL_LABELS so gmail_organize_inbox will never re-queue it` | `If the AI is interrupted while handling a guest email, that email gets stuck and silently forgotten. Staff have no way to know it's sitting there unanswered. Making recovery automatic means no guest message falls through the cracks.` |
 
 ## Outputs
 

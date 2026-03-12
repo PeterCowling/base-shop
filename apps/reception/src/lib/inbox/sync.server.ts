@@ -15,7 +15,7 @@ import {
   type AdmissionDecision,
   classifyForAdmission,
 } from "./admission";
-import { getCurrentDraft, getPendingDraft } from "./api-models.server";
+import { getCurrentDraft, getPendingDraft, type ThreadMetadata } from "./api-models.server";
 import { getInboxDb } from "./db.server";
 import { deriveDraftFailureReason, generateAgentDraft } from "./draft-pipeline.server";
 import {
@@ -25,7 +25,7 @@ import {
   matchSenderToGuest,
 } from "./guest-matcher.server";
 import {
-  createDraft,
+  createDraftIfNotExists,
   getThread,
   type InboxThreadStatus,
   recordAdmission,
@@ -46,29 +46,8 @@ const THREAD_PAGE_SIZE = 100;
 const STALE_HISTORY_ERROR = "Requested entity was not found.";
 type SyncMode = "incremental" | "initial_rescan" | "bounded_rescan";
 
-type SyncThreadMetadata = {
-  gmailHistoryId?: string | null;
-  latestInboundMessageId?: string | null;
-  latestInboundAt?: string | null;
-  latestInboundSender?: string | null;
-  latestAdmissionDecision?: AdmissionDecision["outcome"] | null;
-  latestAdmissionReason?: string | null;
-  needsManualDraft?: boolean;
-  draftFailureCode?: string | null;
-  draftFailureMessage?: string | null;
-  lastProcessedAt?: string | null;
-  lastSyncMode?: SyncMode | null;
-  lastDraftId?: string | null;
-  lastDraftTemplateSubject?: string | null;
-  lastDraftQualityPassed?: boolean;
-  guestBookingRef?: string | null;
-  guestOccupantId?: string | null;
-  guestFirstName?: string | null;
-  guestLastName?: string | null;
-  guestCheckIn?: string | null;
-  guestCheckOut?: string | null;
-  guestRoomNumbers?: string[] | null;
-};
+/** Sync uses the canonical ThreadMetadata type from api-models.server.ts */
+type SyncThreadMetadata = ThreadMetadata;
 
 export type SyncInboxInput = {
   actorUid?: string | null;
@@ -111,7 +90,11 @@ function parseMetadata(raw: string | null | undefined): SyncThreadMetadata {
   try {
     const parsed = JSON.parse(raw) as unknown;
     return parsed && typeof parsed === "object" ? (parsed as SyncThreadMetadata) : {};
-  } catch {
+  } catch (parseError) {
+    console.warn("[sync] metadata parse failed", {
+      raw: raw.length > 200 ? `${raw.slice(0, 200)}…` : raw,
+      error: parseError instanceof Error ? parseError.message : String(parseError),
+    });
     return {};
   }
 }
@@ -185,6 +168,17 @@ export function inferPrepaymentProvider(
     return "octorate";
   }
   return undefined;
+}
+
+function inferProviderFromBookingRef(
+  bookingRef: string | null | undefined,
+): "octorate" | "hostelworld" | undefined {
+  const normalized = bookingRef?.trim();
+  if (!normalized) {
+    return undefined;
+  }
+
+  return normalized.startsWith("7763-") ? "hostelworld" : "octorate";
 }
 
 export function inferPrepaymentStep(
@@ -326,8 +320,9 @@ async function upsertSyncDraft(
     };
   }
 
-  // No relevant draft exists (or only sent drafts) — create a new one
-  const createdDraft = await createDraft(
+  // No relevant draft exists (or only sent drafts) — atomically create a new
+  // one, guarded against concurrent sync runs that both reach this point.
+  const atomicResult = await createDraftIfNotExists(
     {
       threadId,
       status: "generated",
@@ -343,8 +338,8 @@ async function upsertSyncDraft(
     db,
   );
   return {
-    draftId: createdDraft.id,
-    draftIsNew: true,
+    draftId: atomicResult.draft.id,
+    draftIsNew: atomicResult.created,
     draftTemplateSubject: draftPayload.templateUsed,
     draftQualityPassed: true,
   };
@@ -377,9 +372,11 @@ function buildThreadUpsertStatement(
     latestMessageAt: string | null;
     lastSyncedAt: string;
     metadataJson: string | null;
+    metadata: SyncThreadMetadata;
   },
 ): D1PreparedStatement {
   const timestamp = nowIso();
+  const m = input.metadata;
   return db
     .prepare(
       `
@@ -392,9 +389,29 @@ function buildThreadUpsertStatement(
         latest_message_at,
         last_synced_at,
         metadata_json,
+        latest_inbound_message_id,
+        latest_inbound_at,
+        latest_inbound_sender,
+        latest_admission_decision,
+        latest_admission_reason,
+        needs_manual_draft,
+        draft_failure_code,
+        draft_failure_message,
+        last_processed_at,
+        last_draft_id,
+        last_draft_template_subject,
+        last_draft_quality_passed,
+        guest_booking_ref,
+        guest_occupant_id,
+        guest_first_name,
+        guest_last_name,
+        guest_check_in,
+        guest_check_out,
+        guest_room_numbers_json,
+        recovery_attempts,
         created_at,
         updated_at
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       ON CONFLICT(id) DO UPDATE SET
         status = excluded.status,
         subject = excluded.subject,
@@ -402,6 +419,26 @@ function buildThreadUpsertStatement(
         latest_message_at = excluded.latest_message_at,
         last_synced_at = excluded.last_synced_at,
         metadata_json = excluded.metadata_json,
+        latest_inbound_message_id = excluded.latest_inbound_message_id,
+        latest_inbound_at = excluded.latest_inbound_at,
+        latest_inbound_sender = excluded.latest_inbound_sender,
+        latest_admission_decision = excluded.latest_admission_decision,
+        latest_admission_reason = excluded.latest_admission_reason,
+        needs_manual_draft = excluded.needs_manual_draft,
+        draft_failure_code = excluded.draft_failure_code,
+        draft_failure_message = excluded.draft_failure_message,
+        last_processed_at = excluded.last_processed_at,
+        last_draft_id = excluded.last_draft_id,
+        last_draft_template_subject = excluded.last_draft_template_subject,
+        last_draft_quality_passed = excluded.last_draft_quality_passed,
+        guest_booking_ref = excluded.guest_booking_ref,
+        guest_occupant_id = excluded.guest_occupant_id,
+        guest_first_name = excluded.guest_first_name,
+        guest_last_name = excluded.guest_last_name,
+        guest_check_in = excluded.guest_check_in,
+        guest_check_out = excluded.guest_check_out,
+        guest_room_numbers_json = excluded.guest_room_numbers_json,
+        recovery_attempts = excluded.recovery_attempts,
         updated_at = excluded.updated_at
       `,
     )
@@ -414,6 +451,26 @@ function buildThreadUpsertStatement(
       input.latestMessageAt,
       input.lastSyncedAt,
       input.metadataJson,
+      m.latestInboundMessageId ?? null,
+      m.latestInboundAt ?? null,
+      m.latestInboundSender ?? null,
+      m.latestAdmissionDecision ?? null,
+      m.latestAdmissionReason ?? null,
+      m.needsManualDraft == null ? null : m.needsManualDraft ? 1 : 0,
+      m.draftFailureCode ?? null,
+      m.draftFailureMessage ?? null,
+      m.lastProcessedAt ?? null,
+      m.lastDraftId ?? null,
+      m.lastDraftTemplateSubject ?? null,
+      m.lastDraftQualityPassed == null ? null : m.lastDraftQualityPassed ? 1 : 0,
+      m.guestBookingRef ?? null,
+      m.guestOccupantId ?? null,
+      m.guestFirstName ?? null,
+      m.guestLastName ?? null,
+      m.guestCheckIn ?? null,
+      m.guestCheckOut ?? null,
+      m.guestRoomNumbers ? JSON.stringify(m.guestRoomNumbers) : null,
+      m.recoveryAttempts ?? null,
       timestamp,
       timestamp,
     );
@@ -493,6 +550,7 @@ async function upsertThreadAndMessages(
       latestMessageAt: latestMessage?.receivedAt ?? null,
       lastSyncedAt: nowIso(),
       metadataJson: JSON.stringify(metadata),
+      metadata,
     }),
     ...buildMessageUpsertStatements(db, thread.id, thread.messages, mailboxEmail),
   ];
@@ -533,6 +591,19 @@ function isStaleHistoryError(error: unknown): boolean {
 }
 
 
+type SyncStep = "gmail_fetch" | "admission_classify" | "guest_match" | "draft_generate" | "db_write";
+
+class SyncStepError extends Error {
+  readonly step: SyncStep;
+  constructor(step: SyncStep, cause: unknown) {
+    const message = cause instanceof Error ? cause.message : String(cause);
+    super(message);
+    this.name = "SyncStepError";
+    this.step = step;
+    this.cause = cause;
+  }
+}
+
 type ProcessThreadContext = {
   db: D1Database;
   mailboxEmail: string;
@@ -554,6 +625,8 @@ async function processThread(
 ): Promise<void> {
   const { db, mailboxEmail, mode, guestEmailMap, guestMapResult, actorUid, counts } = ctx;
 
+  let step: SyncStep = "gmail_fetch";
+  try {
   const gmailThread = await getGmailThread(threadId);
   counts.threadsFetched += 1;
 
@@ -562,6 +635,7 @@ async function processThread(
     return;
   }
 
+  step = "admission_classify";
   const existingRecord = await getThread(threadId, db);
   const existingMetadata = parseMetadata(existingRecord?.thread.metadata_json);
   const latestInboundUnchanged =
@@ -590,6 +664,7 @@ async function processThread(
     snippet: latestInbound.snippet || latestInbound.body.plain,
   });
 
+  step = "guest_match";
   // Match sender email to guest booking
   const senderEmail = extractEmailAddress(latestInbound.from);
   const guestMatch = senderEmail ? matchSenderToGuest(guestEmailMap, senderEmail) : null;
@@ -626,6 +701,7 @@ async function processThread(
   let draftQualityPassed = false;
   let draftFailureCode: string | null = null;
   let draftFailureMessage: string | null = null;
+  let draftFailureChecks: string[] | null = null;
   let draftPayload:
     | {
         plainText: string;
@@ -637,12 +713,17 @@ async function processThread(
     | null = null;
 
   if (admission.outcome === "admit") {
+    step = "draft_generate";
     const draftResult = await generateAgentDraft({
       from: latestInbound.from ?? undefined,
       subject: latestInbound.subject ?? undefined,
       body: latestInbound.body.plain,
-      threadContext: buildThreadContext(gmailThread),
-      prepaymentProvider: inferPrepaymentProvider(latestInbound),
+      threadContext: {
+        ...buildThreadContext(gmailThread),
+        ...(guestMatch?.bookingRef ? { bookingRef: guestMatch.bookingRef } : {}),
+      },
+      bookingRef: guestMatch?.bookingRef,
+      prepaymentProvider: inferProviderFromBookingRef(guestMatch?.bookingRef) ?? inferPrepaymentProvider(latestInbound),
       prepaymentStep: inferPrepaymentStep(latestInbound),
       guestName: guestMatch?.firstName || undefined,
       guestRoomNumbers: guestMatch?.roomNumbers?.length ? guestMatch.roomNumbers : undefined,
@@ -664,15 +745,18 @@ async function processThread(
       const failureReason = deriveDraftFailureReason(draftResult);
       draftFailureCode = failureReason.code;
       draftFailureMessage = failureReason.message;
+      draftFailureChecks = failureReason.failed_checks ?? null;
       counts.manualDraftFlags += 1;
     }
   }
 
+  step = "db_write";
   const nextStatus = determineThreadStatus(admission, draftCreated, needsManualDraft);
   const metadata = buildThreadMetadata(existingMetadata, gmailThread, latestInbound, mode, admission, {
     needsManualDraft,
     draftFailureCode,
     draftFailureMessage,
+    draftFailureChecks,
     lastDraftTemplateSubject: draftTemplateSubject,
     lastDraftQualityPassed: draftQualityPassed,
     ...(guestMatch ? {
@@ -774,6 +858,9 @@ async function processThread(
   } else {
     counts.reviewLater += 1;
   }
+  } catch (error) {
+    throw new SyncStepError(step, error);
+  }
 }
 
 export async function syncInbox(
@@ -857,8 +944,10 @@ export async function syncInbox(
     } catch (threadError) {
       hasErrors = true;
       counts.threadErrors += 1;
+      const failedStep = threadError instanceof SyncStepError ? threadError.step : "unknown";
       console.error("Sync error for thread", {
         threadId,
+        step: failedStep,
         error: threadError instanceof Error ? threadError.message : String(threadError),
       });
 
@@ -868,6 +957,7 @@ export async function syncInbox(
           threadId,
           eventType: "thread_sync_error",
           metadata: {
+            step: failedStep,
             error: threadError instanceof Error ? threadError.message : String(threadError),
             syncMode: mode,
           },

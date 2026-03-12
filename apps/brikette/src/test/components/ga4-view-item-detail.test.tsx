@@ -66,6 +66,85 @@ const { ModalContext } = require("@acme/ui/context/ModalContext");
 const RoomDetailContent = require("@/app/[lang]/dorms/[id]/RoomDetailContent").default as typeof import("@/app/[lang]/dorms/[id]/RoomDetailContent").default;
 const ApartmentPageContent = require("@/app/[lang]/private-rooms/ApartmentPageContent").default as typeof import("@/app/[lang]/private-rooms/ApartmentPageContent").default;
 
+const APARTMENT_PAGE_PROPS: React.ComponentProps<typeof ApartmentPageContent> = {
+  amenities: {
+    heading: "Amenities",
+    imageAlt: "Amenities image",
+    items: ["Wi-Fi", "Kitchen"],
+  },
+  body: "Apartment body copy",
+  details: {
+    ctaLabel: "Book apartment",
+    heading: "Details",
+    items: ["Sleeps 4", "Private bathroom"],
+  },
+  directSavings: {
+    eyebrow: "Direct savings",
+    flex: {
+      detail: "Flexible detail",
+      label: "Flexible",
+      saving: "Save 5%",
+    },
+    heading: "Save when you book direct",
+    nr: {
+      detail: "Non-refundable detail",
+      label: "Non-refundable",
+      saving: "Save 10%",
+    },
+  },
+  fitCheck: {
+    heading: "Fit check",
+    topics: [
+      { label: "Arrival", text: "Easy arrival" },
+      { label: "Inside", text: "Spacious layout" },
+      { label: "Sleeping", text: "Comfortable beds" },
+      { label: "Sound", text: "Quiet at night" },
+      { label: "Best fit", text: "Great for groups" },
+    ],
+  },
+  gallery: {
+    altFallback: "Apartment gallery image",
+    alts: ["Gallery image 1", "Gallery image 2", "Gallery image 3"],
+    captions: ["Caption 1", "Caption 2", "Caption 3"],
+    heading: "Gallery",
+  },
+  hero: {
+    ctaLabel: "Reserve now",
+    imageAlt: "Apartment hero image",
+    intro: "Apartment intro",
+    tagline: "Private apartment",
+    title: "Sea-view apartment",
+  },
+  highlights: {
+    sectionTitle: "Highlights",
+    slides: [
+      { alt: "Highlight 1", text: "Highlight text 1", title: "Highlight 1" },
+      { alt: "Highlight 2", text: "Highlight text 2", title: "Highlight 2" },
+      { alt: "Highlight 3", text: "Highlight text 3", title: "Highlight 3" },
+    ],
+  },
+  hubCards: {
+    privateStay: {
+      cta: "Explore private stay",
+      href: "/en/private-rooms/private-stay/",
+      subtitle: "Private stay subtitle",
+      title: "Private stay",
+    },
+    streetLevel: {
+      cta: "Explore street level arrival",
+      href: "/en/private-rooms/street-level-arrival/",
+      subtitle: "Street level subtitle",
+      title: "Street level arrival",
+    },
+  },
+  lang: "en",
+  primaryCtas: {
+    checkAvailabilityLabel: "Check availability",
+    whatsappLabel: "WhatsApp us",
+  },
+  privateBookingPath: "/en/book-private-accommodations",
+};
+
 describe("GA4 view_item on detail pages (GA4-VIEW-ITEM)", () => {
   let originalGtag: typeof window.gtag;
 
@@ -127,7 +206,7 @@ describe("GA4 view_item on detail pages (GA4-VIEW-ITEM)", () => {
           closeModal: jest.fn(),
         }}
       >
-        <ApartmentPageContent lang="en" />
+        <ApartmentPageContent {...APARTMENT_PAGE_PROPS} />
       </ModalContext.Provider>,
     );
 

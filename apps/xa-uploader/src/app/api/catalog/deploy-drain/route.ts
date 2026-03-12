@@ -55,7 +55,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: false }, { status: 404 });
   }
 
-  const authenticated = await hasUploaderSession(request).catch(() => false);
+  const authenticated = await hasUploaderSession(request).catch((err) => {
+    console.error("[deploy-drain] session check failed:", err);
+    return false;
+  });
   if (!authenticated && !hasDeployDrainToken(request)) {
     // Consume unauthenticated probe budget without leaking endpoint shape via rate-limit headers.
     rateLimit({
@@ -84,13 +87,14 @@ export async function POST(request: Request) {
   const storefront = new URL(request.url).searchParams.get("storefront");
   const storefrontId = parseStorefront(storefront);
   const kv = await getUploaderKv();
-  const statePaths = undefined;
-
   const pendingBefore = await readDeployPendingState({
     storefrontId,
     kv,
-    statePath: statePaths?.pendingStatePath,
-  }).catch(() => null);
+    statePath: undefined,
+  }).catch((err) => {
+    console.error("[deploy-drain] failed to read pending state:", err);
+    return null;
+  });
 
   if (!pendingBefore) {
     return withRateHeaders(
@@ -110,13 +114,13 @@ export async function POST(request: Request) {
   const deploy = await maybeTriggerXaBDeploy({
     storefrontId,
     kv,
-    statePaths,
+    statePaths: undefined,
   });
   const pending = await reconcileDeployPendingState({
     storefrontId,
     kv,
     result: deploy,
-    statePaths,
+    statePaths: undefined,
   }).catch(() => pendingBefore);
 
   return withRateHeaders(

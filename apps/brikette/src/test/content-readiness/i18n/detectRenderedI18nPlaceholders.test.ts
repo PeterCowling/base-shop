@@ -194,6 +194,35 @@ describe("detectRenderedI18nPlaceholders", () => {
     });
   });
 
+  describe("rich-text tag detection", () => {
+    it("detects raw Trans link tags in rendered text", () => {
+      const text = "Reserve a seat via their <Link>official shuttle page</Link>.";
+      const findings = detectRenderedI18nPlaceholders(text);
+
+      expect(findings.filter((finding) => finding.kind === "richTextTag")).toEqual([
+        expect.objectContaining({ value: "<Link>", kind: "richTextTag" }),
+        expect.objectContaining({ value: "</Link>", kind: "richTextTag" }),
+      ]);
+    });
+
+    it("detects raw Trans emphasis tags in rendered text", () => {
+      const text = "Taxi support available via <Strong>+39 379 125 6222</Strong>.";
+      const findings = detectRenderedI18nPlaceholders(text);
+
+      expect(findings.filter((finding) => finding.kind === "richTextTag")).toEqual([
+        expect.objectContaining({ value: "<Strong>", kind: "richTextTag" }),
+        expect.objectContaining({ value: "</Strong>", kind: "richTextTag" }),
+      ]);
+    });
+
+    it("allows raw Trans tags to be ignored for source-namespace audits", () => {
+      const text = "Prefer a shuttle? <Link>Official shuttle page</Link>.";
+      const findings = detectRenderedI18nPlaceholders(text, { detectRichTextTags: false });
+
+      expect(findings).toEqual([]);
+    });
+  });
+
   describe("mixed detection", () => {
     it("detects both raw keys and placeholder phrases", () => {
       const text = `
@@ -294,11 +323,13 @@ describe("formatI18nPlaceholderReport", () => {
     const findings: PlaceholderFinding[] = [
       { value: "content.foo.bar", kind: "rawKey", snippet: "..." },
       { value: "Traduzione in arrivo.", kind: "placeholderPhrase", snippet: "..." },
+      { value: "<Link>", kind: "richTextTag", snippet: "..." },
     ];
     const report = formatI18nPlaceholderReport(findings, { groupByKind: true });
 
     expect(report).toContain("Raw keys (1):");
     expect(report).toContain("Placeholder phrases (1):");
+    expect(report).toContain("Rich-text tags (1):");
   });
 
   it("truncates output when maxFindings is exceeded", () => {

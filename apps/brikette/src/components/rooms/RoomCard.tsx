@@ -20,16 +20,18 @@ import type {
 import FacilityIcon from "@/components/rooms/FacilityIcon";
 import FullscreenImage from "@/components/rooms/FullscreenImage";
 import { IS_TEST } from "@/config/env";
+import { WHATSAPP_URL } from "@/config/hotel";
 import { BOOKING_CODE } from "@/context/modal/constants";
 import { type Room,toFlatImageArray } from "@/data/roomsData";
 import type { OctorateRoom } from "@/hooks/useAvailability";
 import { useRoomPricing } from "@/hooks/useRoomPricing";
 import { type AppLanguage, i18nConfig } from "@/i18n.config";
-import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
+import type { RoomQueryState } from "@/types/booking";
 import { getDatePlusTwoDays, getTodayIso } from "@/utils/dateUtils";
 import { buildRoomItem, fireEventAndNavigate, resolveItemListName } from "@/utils/ga4-events";
 import { I18N_KEY_TOKEN_PATTERN } from "@/utils/i18nContent";
 import { getBookPath } from "@/utils/localizedRoutes";
+import { buildHostelBookingTarget } from "@/utils/octorateCustomPage";
 
 const PRICE_LOADING_TEST_ID = "price-loading" as const; // legacy test id consumed by app unit tests
 
@@ -40,7 +42,7 @@ interface RoomCardProps {
   adults?: number;
   lang?: string;
   /** Controls CTA behavior. Defaults to "absent" (→ navigate to /book). */
-  queryState?: "valid" | "invalid" | "absent";
+  queryState?: RoomQueryState;
   /** Ref to date picker element for scroll-to on invalid state. */
   datePickerRef?: RefObject<HTMLElement | null>;
   /**
@@ -217,22 +219,31 @@ export default memo(function RoomCard({
       ...(formatted !== undefined ? { formatted } : {}),
       ...(soldOut ? { soldOutLabel: t("rooms.soldOut") as string } : {}),
       ...(isDorm ? { info: t("priceNotes.dorm") as string } : {}),
-      ...(badgeText ? { badge: { text: badgeText, claimUrl: "https://wa.me/393287073695" } } : {}),
+      ...(badgeText ? { badge: { text: badgeText, claimUrl: WHATSAPP_URL } } : {}),
     };
   })();
 
-  // Precompute Octorate URLs when queryState === "valid"
-  const { nrOctorateUrl, flexOctorateUrl } = useMemo(() => {
-    if (queryState !== "valid") return { nrOctorateUrl: null, flexOctorateUrl: null };
-    const buildUrl = (plan: "nr" | "flex", octorateRateCode: string | undefined) => {
-      const result = buildOctorateUrl({ checkin: checkIn, checkout: checkOut, pax: adults, plan, roomSku: room.sku, octorateRateCode, bookingCode: BOOKING_CODE });
+  // Precompute branded booking handoff targets when queryState === "valid".
+  const { nrBookingTargetUrl, flexBookingTargetUrl } = useMemo(() => {
+    if (queryState !== "valid") return { nrBookingTargetUrl: null, flexBookingTargetUrl: null };
+    const buildUrl = (plan: "nr" | "flex", octorateRateCode: string | undefined): string | null => {
+      const result = buildHostelBookingTarget({
+        lang: resolvedLang,
+        checkin: checkIn,
+        checkout: checkOut,
+        pax: adults,
+        plan,
+        roomSku: room.sku,
+        octorateRateCode,
+        bookingCode: BOOKING_CODE,
+      });
       return result.ok ? result.url : null;
     };
     return {
-      nrOctorateUrl: buildUrl("nr", room.rateCodes.direct.nr),
-      flexOctorateUrl: buildUrl("flex", room.rateCodes.direct.flex),
+      nrBookingTargetUrl: buildUrl("nr", room.rateCodes.direct.nr),
+      flexBookingTargetUrl: buildUrl("flex", room.rateCodes.direct.flex),
     };
-  }, [queryState, checkIn, checkOut, adults, room]);
+  }, [queryState, checkIn, checkOut, adults, resolvedLang, room]);
 
   // title is declared here (before openNonRefundable/openFlexible) to avoid a TDZ in
   // the useCallback closures that capture it as a dep.
@@ -242,7 +253,7 @@ export default memo(function RoomCard({
     room.id.replace(/_/gu, " ")
   );
 
-  const handleSelectPlan = useCallback((plan: "nr" | "flex", octorateUrl: string | null) => {
+  const handleSelectPlan = useCallback((plan: "nr" | "flex", bookingTargetUrl: string | null) => {
     if (queryState === "invalid") {
       // Button is disabled; scroll to date picker if ref provided
       if (datePickerRef?.current) {
@@ -258,8 +269,8 @@ export default memo(function RoomCard({
         items: [buildRoomItem({ roomSku: room.sku, itemName: title, plan })],
       },
       onNavigate: () => {
-        if (octorateUrl) {
-          window.location.href = octorateUrl;
+        if (bookingTargetUrl) {
+          window.location.href = bookingTargetUrl;
           return;
         }
         // absent or valid-but-url-failed → navigate to /book
@@ -269,12 +280,12 @@ export default memo(function RoomCard({
   }, [datePickerRef, queryState, resolvedLang, room.sku, router, title]);
 
   const openNonRefundable = useCallback(() => {
-    handleSelectPlan("nr", nrOctorateUrl);
-  }, [handleSelectPlan, nrOctorateUrl]);
+    handleSelectPlan("nr", nrBookingTargetUrl);
+  }, [handleSelectPlan, nrBookingTargetUrl]);
 
   const openFlexible = useCallback(() => {
-    handleSelectPlan("flex", flexOctorateUrl);
-  }, [handleSelectPlan, flexOctorateUrl]);
+    handleSelectPlan("flex", flexBookingTargetUrl);
+  }, [handleSelectPlan, flexBookingTargetUrl]);
 
   const resolveToken = useCallback(
     (key: "reserveNow" | "bookNow", lngOverride?: string) => {
@@ -348,19 +359,35 @@ export default memo(function RoomCard({
     const rawNonRef = coerceString(t("checkRatesNonRefundable")).trim();
     const rawFlexible = coerceString(t("checkRatesFlexible")).trim();
     const isInvalid = queryState === "invalid";
+    const nonRefundableDescription = resolveTranslatedCopy(
+      t("ratePlanDescriptions.nonRefundable", {
+        defaultValue: "Pay in full today. No free cancellation.",
+      }),
+      "ratePlanDescriptions.nonRefundable",
+      "Pay in full today. No free cancellation."
+    );
+    const flexibleDescription = resolveTranslatedCopy(
+      t("ratePlanDescriptions.flexible", {
+        defaultValue: "Pay later. Free cancellation up to 3 days before arrival.",
+      }),
+      "ratePlanDescriptions.flexible",
+      "Pay later. Free cancellation up to 3 days before arrival."
+    );
 
     return [
       {
         id: "nonRefundable",
         label: buildLabel(rawNonRef, "checkRatesNonRefundable", "nonRefundable"),
+        description: nonRefundableDescription,
         onSelect: openNonRefundable,
-        disabled: soldOut || isInvalid || (queryState === "valid" && nrOctorateUrl === null),
+        disabled: soldOut || isInvalid || (queryState === "valid" && nrBookingTargetUrl === null),
       },
       {
         id: "flexible",
         label: buildLabel(rawFlexible, "checkRatesFlexible", "flexible"),
+        description: flexibleDescription,
         onSelect: openFlexible,
-        disabled: soldOut || isInvalid || (queryState === "valid" && flexOctorateUrl === null),
+        disabled: soldOut || isInvalid || (queryState === "valid" && flexBookingTargetUrl === null),
       },
     ];
   })();

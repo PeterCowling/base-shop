@@ -1,0 +1,42 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260312140000-0006",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "artifact_id": null,
+  "before_sha": null,
+  "after_sha": "operator-idea-20260312-error-boundary",
+  "root_event_id": "operator:BRIK:PRODUCTS:reception-inbox-error-boundary:20260312",
+  "anchor_key": "reception-inbox-error-boundary",
+  "cluster_key": "BRIK:PRODUCTS:reception-inbox-error-boundary:operator:20260312",
+  "cluster_fingerprint": "reception-inbox-error-boundary-20260312",
+  "lineage_depth": 0,
+  "area_anchor": "Brikette — A single broken email can crash the entire inbox screen",
+  "location_anchors": [
+    "apps/reception/src/components/inbox/InboxWorkspace.tsx",
+    "apps/reception/src/components/inbox/ThreadDetailPane.tsx",
+    "apps/reception/src/components/inbox/DraftReviewPanel.tsx"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "InboxWorkspace has no React error boundary. If a child component (ThreadDetailPane, DraftReviewPanel, AnalyticsSummary) throws during render due to malformed data, the entire inbox workspace crashes with no recovery UI.",
+  "next_scope_now": "Add React error boundaries around the thread detail and draft review sections, with a recovery UI that lets staff refresh the view without losing the thread list.",
+  "recommended_route": "lp-do-build",
+  "status": "micro_build_ready",
+  "priority": "P2",
+  "confidence": 0.95,
+  "evidence_refs": [
+    "operator-stated: no error boundary — child render crash takes down entire inbox",
+    "apps/reception/src/components/inbox/InboxWorkspace.tsx",
+    "coverage-hint: UX",
+    "coverage-hint: performance-reliability"
+  ],
+  "created_at": "2026-03-12T14:00:00.000Z",
+  "queue_state": "enqueued",
+  "why": "If one email has unexpected data that causes a display error, the entire inbox screen goes blank. Staff lose access to all their emails until they reload the page. Adding an error boundary means only the broken email's detail panel shows an error — the thread list stays working and staff can switch to other emails.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Render errors in thread detail or draft review are caught by error boundaries and show a recovery UI without crashing the inbox list.",
+    "source": "auto"
+  }
+}

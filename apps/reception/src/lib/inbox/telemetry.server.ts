@@ -16,12 +16,14 @@ export const inboxEventTypes = [
   "draft_edited",
   "approved",
   "sent",
+  "send_failed",
   "resolved",
   "dismissed",
   "inbox_recovery",
   "guest_matched",
   "guest_match_not_found",
   "thread_sync_error",
+  "prime_manual_reply",
 ] as const;
 
 export type InboxEventType = (typeof inboxEventTypes)[number];

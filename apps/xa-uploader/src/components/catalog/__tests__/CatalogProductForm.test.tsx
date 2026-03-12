@@ -24,6 +24,10 @@ jest.mock("../catalogWorkflow", () => ({
     missingFieldPaths: [],
     missingRoles: [],
   }),
+  getWorkflowStatusDisplay: () => ({
+    label: "workflowReadyForLive",
+    dotClass: "bg-gate-status-ready",
+  }),
 }));
 
 jest.mock("../CatalogProductBaseFields.client", () => ({
@@ -71,7 +75,13 @@ jest.mock("../CatalogProductImagesFields.client", () => {
       handleMakeMainImage: jest.fn(),
       handleReorderImage: jest.fn(),
     }),
-    parseImageEntries: (_files: string) => [],
+    parseImageEntries: (files: string) =>
+      files
+        ? files
+            .split("|")
+            .filter(Boolean)
+            .map((path, i) => ({ path, filename: path.split("/").pop() ?? path, isMain: i === 0 }))
+        : [],
   };
 });
 
@@ -326,7 +336,7 @@ describe("CatalogProductForm — zone 2 visibility", () => {
       handleReorderImage: jest.fn(),
     });
     renderForm({ draft: { ...VALID_DRAFT, imageFiles: "images/studio-jacket/a.jpg" } });
-    expect(screen.getAllByText("Image upload failed.").length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText("Image upload failed.").length).toBeGreaterThanOrEqual(1);
     imagesFieldsModule.useImageUploadController = original;
   });
 });

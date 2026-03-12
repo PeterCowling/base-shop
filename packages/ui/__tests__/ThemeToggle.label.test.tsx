@@ -45,7 +45,7 @@ describe("ThemeToggle localized labels", () => {
     localizedResources.clear();
   });
 
-  it("prefers the active locale translation resource when present", () => {
+  it("prefers shared translations before falling back to active locale resources", () => {
     activeLanguage = "ar";
     localizedResources.set("themeToggle.enableDark", "فعّل الوضع الداكن");
     localizedResources.set("themeToggle.switchToDark", "التبديل إلى الوضع الداكن");
@@ -54,7 +54,7 @@ describe("ThemeToggle localized labels", () => {
 
     render(<ThemeToggle />);
 
-    expect(screen.getByRole("button")).toHaveAttribute("aria-label", "فعّل الوضع الداكن");
+    expect(screen.getByRole("button")).toHaveAttribute("aria-label", "Enable dark mode");
     expect(screen.getByRole("button")).toHaveAttribute("title", "التبديل إلى الوضع الداكن");
   });
 

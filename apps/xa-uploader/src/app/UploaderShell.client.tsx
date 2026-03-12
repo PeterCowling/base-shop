@@ -52,6 +52,16 @@ function UploaderShellInner({
           <span className="hidden text-2xs text-gate-header-muted sm:inline">{t("headerExpansionHint")}</span>
           <div className="ms-auto flex items-center gap-3">
             {headerExtra}
+            <button
+              type="button"
+              className="min-h-10 min-w-10 rounded-md border border-gate-border px-3 py-2 text-xs uppercase tracking-label text-gate-muted transition hover:border-gate-accent hover:text-gate-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent focus-visible:ring-offset-2"
+              onClick={async () => {
+                await fetch("/api/uploader/logout", { method: "POST" });
+                window.location.assign("/login");
+              }}
+            >
+              {t("logout")}
+            </button>
             <ThemeToggle variant="dark" />
             <LanguageToggle monoClassName={monoClassName} variant="dark" />
           </div>

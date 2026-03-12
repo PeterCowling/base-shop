@@ -28,10 +28,10 @@ The current inbox card is still too system-shaped for the real audience. It expo
 This plan keeps the existing action semantics and queue authority intact. It focuses on app-side projection, copy contract, audit capture, and UI redesign so that the operator can make a fast decision in business terms rather than needing to interpret technical metadata.
 
 ## Active tasks
-- [ ] TASK-08: Define and implement the decision-brief projection contract
+- [x] TASK-08: Define and implement the decision-brief projection contract — Complete (2026-03-12)
 - [x] TASK-09: Extend decision capture for operator rationale and durable recent-history replay — Complete (2026-03-12)
 - [x] TASK-10: Redesign the inbox UI for mixed and non-technical readers — Complete (2026-03-12)
-- [ ] TASK-11: Checkpoint the end-to-end mixed-reader decision flow
+- [x] TASK-11: Checkpoint the end-to-end mixed-reader decision flow — Complete (2026-03-12)
 - [ ] TASK-12: Add deterministic coverage and targeted frontend QA for the new decision surface
 
 ## Goals
@@ -124,9 +124,9 @@ This plan keeps the existing action semantics and queue authority intact. It foc
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-08 | IMPLEMENT | Define and implement the decision-brief projection contract from queue and ledger state | 84% | M | Complete (2026-03-12) | - | TASK-09, TASK-10, TASK-11, TASK-12 |
-| TASK-09 | IMPLEMENT | Extend decision capture for operator rationale and durable recent-history replay | 82% | M | Pending | TASK-08 | TASK-10, TASK-11, TASK-12 |
+| TASK-09 | IMPLEMENT | Extend decision capture for operator rationale and durable recent-history replay | 82% | M | Complete (2026-03-12) | TASK-08 | TASK-10, TASK-11, TASK-12 |
 | TASK-10 | IMPLEMENT | Redesign the Business OS inbox UI around the decision brief and mixed-reader rules | 84% | M | Complete (2026-03-12) | TASK-08, TASK-09 | TASK-11, TASK-12 |
-| TASK-11 | CHECKPOINT | Rehearse the mixed-reader end-to-end flow and lock any final wording/ordering adjustments | 83% | S | Pending | TASK-08, TASK-09, TASK-10 | TASK-12 |
+| TASK-11 | CHECKPOINT | Rehearse the mixed-reader end-to-end flow and lock any final wording/ordering adjustments | 83% | S | Complete (2026-03-12) | TASK-08, TASK-09, TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Add deterministic tests and targeted frontend QA for the decision-grade surface | 84% | M | Pending | TASK-09, TASK-10, TASK-11 | - |
 
 ## Parallelism Guide
@@ -263,7 +263,7 @@ This plan keeps the existing action semantics and queue authority intact. It foc
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `docs/plans/process-improvements-operator-decision-inbox/plan.md`, `docs/plans/process-improvements-operator-decision-inbox/fact-find.md`, nearby UI copy only if the checkpoint requires a wording correction
 - **Depends on:** TASK-08, TASK-09, TASK-10
 - **Blocks:** TASK-12

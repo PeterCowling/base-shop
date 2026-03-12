@@ -45,7 +45,7 @@ export const DAY_PICKER_CLASS_NAMES_WARNING = {
   day_button:
     "flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium text-foreground hover:bg-surface-2 transition-colors cursor-pointer",
   today: "font-bold text-warning",
-  selected: "bg-warning text-primary-fg hover:bg-warning",
+  selected: "bg-warning text-warning-fg hover:bg-warning",
   outside: "opacity-30",
   disabled: "opacity-25 cursor-not-allowed",
 } as const;
@@ -71,8 +71,8 @@ export const DAY_PICKER_CLASS_NAMES_PRIMARY = {
   day: "p-0",
   day_button:
     "flex h-9 w-9 items-center justify-center rounded-lg text-sm font-medium text-foreground hover:bg-surface-2 transition-colors cursor-pointer",
-  today: "font-bold text-primary-main/100",
-  selected: "bg-primary-main/100 text-primary-fg/100 hover:bg-primary-main/100",
+  today: "font-bold text-primary-main",
+  selected: "bg-primary-main text-primary-fg hover:bg-primary-main",
   outside: "opacity-30",
   disabled: "opacity-25 cursor-not-allowed",
 } as const;

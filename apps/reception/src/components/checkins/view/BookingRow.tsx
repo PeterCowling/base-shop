@@ -74,7 +74,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
             onDoubleClick={onNameDoubleClick}
           />
           {isCancelled && (
-            <span className="px-2 py-0.5 text-xs font-bold text-primary-fg/100 bg-error-main/100 rounded-md">
+            <span className="px-2 py-0.5 text-xs font-bold text-danger-fg bg-error-main rounded-md">
               CANCELLED
             </span>
           )}

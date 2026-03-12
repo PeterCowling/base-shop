@@ -100,7 +100,7 @@ function FinancialTransactionAuditSearch(): JSX.Element {
             type="text"
             value={filters.createdBy}
             onChange={(e) => handleChange("createdBy", e.target.value)}
-            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
         </div>
 
@@ -113,7 +113,7 @@ function FinancialTransactionAuditSearch(): JSX.Element {
             type="text"
             value={filters.bookingRef}
             onChange={(e) => handleChange("bookingRef", e.target.value)}
-            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
         </div>
 
@@ -126,7 +126,7 @@ function FinancialTransactionAuditSearch(): JSX.Element {
             type="text"
             value={filters.shiftId}
             onChange={(e) => handleChange("shiftId", e.target.value)}
-            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
         </div>
 
@@ -139,7 +139,7 @@ function FinancialTransactionAuditSearch(): JSX.Element {
             type="text"
             value={filters.sourceTxnId}
             onChange={(e) => handleChange("sourceTxnId", e.target.value)}
-            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
         </div>
 
@@ -152,7 +152,7 @@ function FinancialTransactionAuditSearch(): JSX.Element {
             type="text"
             value={filters.reason}
             onChange={(e) => handleChange("reason", e.target.value)}
-            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:focus:ring-1 focus-visible:focus:ring-ring"
+            className="border border-border-2 rounded-lg px-2 py-1 focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
         </div>
 

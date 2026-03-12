@@ -99,7 +99,7 @@ function BulkActionsToolbar({
               type="button"
               onClick={handleCancelClick}
               disabled={loading}
-              className="inline-flex min-h-9 items-center gap-2 rounded-md bg-error-main px-3 py-1.5 text-sm font-medium text-primary-fg shadow-sm hover:bg-error-dark disabled:opacity-50"
+              className="inline-flex min-h-9 items-center gap-2 rounded-md bg-error-main px-3 py-1.5 text-sm font-medium text-danger-fg shadow-sm hover:bg-error-dark disabled:opacity-50"
             >
               <Trash2 className="h-4 w-4" />
               {loading ? "Cancelling..." : "Cancel Selected"}

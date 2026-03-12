@@ -102,7 +102,7 @@ function EmailBookingButton({
         type="button"
         onClick={handleClick}
         disabled={loading}
-        className="h-9 w-9 bg-primary-main/100 text-primary-fg/100 rounded-md hover:opacity-90 transition-colors"
+        className="h-9 w-9 bg-primary-main text-primary-fg rounded-md hover:opacity-90 transition-colors"
         title="Create booking email draft"
       >
         {loading ? "..." : <LayoutGrid size={20} />}
@@ -116,7 +116,7 @@ function EmailBookingButton({
         <Inline
           gap={0}
           wrap={false}
-          className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-warning-main/100 text-primary-fg/100 text-10px cursor-default select-none justify-center"
+          className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-warning-main text-warning-fg text-10px cursor-default select-none justify-center"
         >
           <span>i</span>
         </Inline>

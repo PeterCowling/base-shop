@@ -703,7 +703,7 @@ function StockManagement() {
               </p>
               <Button
                 type="button"
-                className="px-3 py-1 rounded-lg bg-warning-main text-primary-fg hover:bg-warning-dark"
+                className="px-3 py-1 rounded-lg bg-warning-main text-warning-fg hover:bg-warning-dark"
                 onClick={handleMigrateLegacyRecipes}
               >
                 Migrate Legacy Recipes

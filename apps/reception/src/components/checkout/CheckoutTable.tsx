@@ -237,7 +237,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                       }
                       className={`px-4 py-2 rounded-lg text-primary-fg transition-colors duration-200 ${
                         guest.isCompleted
-                          ? "bg-success-main hover:bg-error-main"
+                          ? "bg-success-main hover:bg-success-dark"
                           : "bg-primary-main hover:bg-primary-dark"
                       }`}
                       title={

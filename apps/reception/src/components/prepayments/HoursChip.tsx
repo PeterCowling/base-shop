@@ -18,7 +18,7 @@ const HoursChip: React.FC<HoursChipProps> = ({
 
   if (hoursElapsed !== null && thresholdHours !== null) {
     if (Math.floor(hoursElapsed) >= thresholdHours) {
-      chipStyle = "bg-warning text-primary-fg";
+      chipStyle = "bg-warning text-warning-fg";
     } else {
       chipStyle = "bg-primary-soft border border-primary-main/30 text-primary-main";
     }

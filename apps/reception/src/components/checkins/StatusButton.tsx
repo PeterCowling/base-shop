@@ -136,11 +136,11 @@ function StatusButton({ booking }: StatusButtonProps) {
   const getButtonStyle = useCallback((code: number): string => {
     if (code === 12) {
       // "Check-in complete" — success green; light text for contrast on dark bg
-      return "bg-success-main/100 text-foreground cursor-pointer hover:opacity-80";
+      return "bg-success-main text-success-fg cursor-pointer hover:opacity-80";
     }
     if (code === 23) {
       // "Bags dropped" — warning amber; light text for contrast on dark bg
-      return "bg-warning-main/100 text-foreground hover:opacity-80";
+      return "bg-warning-main text-warning-fg hover:opacity-80";
     }
     // code=0 => not yet arrived — muted inactive state
     return "bg-surface-3 text-foreground hover:opacity-90";

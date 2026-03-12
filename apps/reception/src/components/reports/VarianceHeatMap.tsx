@@ -23,9 +23,9 @@ interface UserShiftMap {
 function getVarianceClass(diff: number | undefined): string {
   if (diff === undefined) return "";
   const abs = Math.abs(diff);
-  if (abs < 1) return "bg-success-light";
-  if (abs < 5) return "bg-warning-light";
-  return "bg-error-light";
+  if (abs < 1) return "bg-success-light text-success-fg";
+  if (abs < 5) return "bg-warning-light text-warning-fg";
+  return "bg-error-light text-danger-fg";
 }
 
 export default function VarianceHeatMap() {

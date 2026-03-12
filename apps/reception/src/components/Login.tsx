@@ -291,7 +291,7 @@ function Login({ onLoginSuccess }: LoginProps) {
                 value={resetEmail}
                 onChange={(e) => setResetEmail(e.target.value)}
                 placeholder="name@company.com"
-                className="mt-1.5 w-full rounded-lg border border-border-strong px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+                className="mt-1.5 w-full rounded-lg border border-border-strong px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:ring-2 focus:ring-ring"
               />
             </div>
 
@@ -360,7 +360,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             value={pinInput}
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter 6-digit PIN"
-            className="w-full rounded-lg border border-border-strong px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+            className="w-full rounded-lg border border-border-strong px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:ring-2 focus:ring-ring"
           />
         </div>
 
@@ -407,7 +407,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => handlePinInputChange(e.target.value)}
             placeholder="Enter PIN"
             aria-describedby={pinError ? pinErrorId : undefined}
-            className="w-full rounded-lg border border-border-strong px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+            className="w-full rounded-lg border border-border-strong px-4 py-3 text-center text-2xl tracking-widest text-foreground placeholder:text-base placeholder:tracking-normal focus:border-ring focus:outline-none focus-visible:ring-2 focus:ring-ring"
           />
         </div>
 
@@ -463,7 +463,7 @@ function Login({ onLoginSuccess }: LoginProps) {
             onChange={(e) => setEmail(e.target.value)}
             placeholder="name@company.com"
             aria-describedby={error ? loginErrorId : undefined}
-            className="mt-1.5 w-full rounded-lg border border-border-strong px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+            className="mt-1.5 w-full rounded-lg border border-border-strong px-4 py-2.5 text-foreground placeholder:text-muted-foreground focus:border-ring focus:outline-none focus-visible:ring-2 focus:ring-ring"
           />
         </div>
 
@@ -494,7 +494,7 @@ function Login({ onLoginSuccess }: LoginProps) {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               aria-describedby={error ? loginErrorId : undefined}
-              className="w-full rounded-lg border border-border-strong px-4 py-2.5 pr-10 text-foreground focus:border-ring focus:outline-none focus-visible:focus:ring-2 focus:ring-ring"
+              className="w-full rounded-lg border border-border-strong px-4 py-2.5 pr-10 text-foreground focus:border-ring focus:outline-none focus-visible:ring-2 focus:ring-ring"
             />
             <Button
               type="button"

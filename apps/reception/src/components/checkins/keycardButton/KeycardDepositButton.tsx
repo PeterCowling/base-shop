@@ -153,9 +153,9 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
     "h-9 px-2.5 flex items-center justify-center transition-colors focus:outline-none text-xs font-medium";
 
   const activeClass =
-    "bg-primary-main/100 hover:opacity-90 text-primary-fg/100";
+    "bg-primary-main hover:opacity-90 text-primary-fg";
   const successDisabledClass =
-    "bg-success-main/100 text-foreground cursor-not-allowed opacity-70";
+    "bg-success-main text-success-fg cursor-not-allowed opacity-70";
   const greyDisabledClass =
     "bg-surface-3 text-foreground cursor-not-allowed opacity-50";
 

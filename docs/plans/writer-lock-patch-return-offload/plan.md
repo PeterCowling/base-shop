@@ -32,7 +32,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - [x] TASK-11: Spike one bounded artifact-emission path under the isolated runner
 - [x] TASK-03: Implement the shared patch-return protocol and pilot-facing executor docs
 - [x] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
-- [ ] TASK-05: Spike the serialized apply window with fingerprint checks
+- [x] TASK-05: Spike the serialized apply window with fingerprint checks
 - [ ] TASK-06: Horizon checkpoint - confirm apply-window behavior and actualize pilot confidence
 - [ ] TASK-07: Pilot `build-biz` on patch-return with explicit shared-checkout fallback
 
@@ -92,7 +92,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 | TASK-11 | SPIKE | Validate one bounded artifact-emission path under the isolated runner and require prompt emitted output | 82% | S | Complete (2026-03-12) | TASK-10 | TASK-03 |
 | TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 85% | M | Complete (2026-03-12) | TASK-11 | TASK-04 |
 | TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 82% | M | Complete (2026-03-12) | TASK-03 | TASK-05 |
-| TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 82% | S | Pending | TASK-04 | TASK-06 |
+| TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 82% | S | Complete (2026-03-12) | TASK-04 | TASK-06 |
 | TASK-06 | CHECKPOINT | Reassess pilot wiring from TASK-05 apply-window evidence | 95% | S | Pending | TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Wire `build-biz` to the patch-return pilot with explicit shared-checkout fallback | 74% (-> 84% conditional on TASK-06) | M | Pending | TASK-06 | - |
 
@@ -475,7 +475,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `docs/plans/writer-lock-patch-return-offload/spike-05-apply-window.md`, `[readonly] scripts/agents/build-offload-patch-return.sh`, `[readonly] scripts/git-hooks/writer-lock-window.sh`
 - **Depends on:** TASK-04
 - **Blocks:** TASK-06
@@ -515,6 +515,14 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - Dependencies: unchanged
 - Validation contract: unchanged
 - Notes: `docs/plans/writer-lock-patch-return-offload/replan-notes-2.md`
+#### Build Evidence (2026-03-12)
+- Route: inline (build-spike.md)
+- Deliverable: `docs/plans/writer-lock-patch-return-offload/spike-05-apply-window.md` (created)
+- TC-01: fingerprint before (git rev-parse HEAD) and after (git status --porcelain) captured and verified — PASS
+- TC-02: lock held continuously through apply+commit; no release/reacquire needed — PASS
+- TC-03: no helper or window gaps discovered; build-offload-patch-return.sh complete; with-writer-lock.sh sufficient — PASS
+- Verdict: Go — apply window works as specified. TASK-06 checkpoint unblocked.
+- Note for TASK-07: add --no-index fallback if Codex produces diff -u headers without a/b/ prefix.
 
 ### TASK-06: Horizon checkpoint - confirm apply-window behavior and actualize pilot confidence
 - **Type:** CHECKPOINT

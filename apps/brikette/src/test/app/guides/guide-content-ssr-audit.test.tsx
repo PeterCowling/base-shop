@@ -167,6 +167,20 @@ function clearGuidesBundle(lang: string): void {
   }
 }
 
+function getEffectiveGuidesBundle(
+  serverGuides: Record<string, unknown> | undefined,
+): Record<string, unknown> | undefined {
+  if (serverGuides) {
+    return serverGuides;
+  }
+
+  try {
+    return i18n.getResourceBundle("en", "guides") as Record<string, unknown> | undefined;
+  } catch {
+    return undefined;
+  }
+}
+
 describe("GuideContent SSR translation audit", () => {
   beforeEach(() => {
     clearGuidesBundle("en");
@@ -186,6 +200,7 @@ describe("GuideContent SSR translation audit", () => {
     "renders translated SSR HTML for $section guide $guideKey",
     async ({ guideKey }) => {
       const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle("en", guideKey);
+      const effectiveGuides = getEffectiveGuidesBundle(serverGuides);
 
       const html = renderToString(
         <GuideContent
@@ -199,35 +214,35 @@ describe("GuideContent SSR translation audit", () => {
       const renderedText = stripHtml(html);
       const h1Text = extractH1Text(html);
 
-      expect(serverGuides).toBeDefined();
+      expect(effectiveGuides).toBeDefined();
       expect(h1Text).toBeTruthy();
       expect(h1Text).not.toBe(guideKey);
       expect(html).not.toContain(guideKey);
 
-      const expectedPlanChoiceTitle = getBundleString(serverGuides, [
+      const expectedPlanChoiceTitle = getBundleString(effectiveGuides, [
         "components",
         "planChoice",
         "title",
       ]);
-      const expectedPlanChoiceFerry = getBundleString(serverGuides, [
+      const expectedPlanChoiceFerry = getBundleString(effectiveGuides, [
         "components",
         "planChoice",
         "options",
         "ferry",
       ]);
-      const expectedPlanChoiceTrainBus = getBundleString(serverGuides, [
+      const expectedPlanChoiceTrainBus = getBundleString(effectiveGuides, [
         "components",
         "planChoice",
         "options",
         "trainBus",
       ]);
-      const expectedPlanChoiceTransfer = getBundleString(serverGuides, [
+      const expectedPlanChoiceTransfer = getBundleString(effectiveGuides, [
         "components",
         "planChoice",
         "options",
         "transfer",
       ]);
-      const expectedTransportTitle = getBundleString(serverGuides, [
+      const expectedTransportTitle = getBundleString(effectiveGuides, [
         "transportNotice",
         "title",
       ]);

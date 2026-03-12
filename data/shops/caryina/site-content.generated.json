@@ -1,6 +1,6 @@
 {
   "generatedAt": "2026-02-28",
-  "_manualExtension": "trustStrip added manually 2026-02-28; chrome section added manually 2026-03-12 — materializer update pending. Do not run materializer without porting productPage.trustStrip and chrome blocks first.",
+  "_manualExtension": "trustStrip added manually 2026-02-28; chrome translations moved to contentPacket.ts CHROME_DEFAULTS 2026-03-12 — do NOT add chrome key back to this file. Materializer update still pending for productPage.trustStrip. Do not run materializer without porting productPage.trustStrip first.",
   "sourcePacketPath": "docs/business-os/startup-baselines/HBAG-content-packet.md",
   "sourceHash": "05fbd6c15750221375db8edb71215911c9d3386808a7f35a3c2ab33d764f0fb1",
   "sourcePaths": [
@@ -241,43 +241,6 @@
           "en": "Product photos and descriptions represent the items currently available."
         }
       ]
-    }
-  },
-  "chrome": {
-    "header": {
-      "shop": { "en": "Shop" },
-      "support": { "en": "Support" },
-      "navAriaLabel": { "en": "Primary" }
-    },
-    "footer": {
-      "terms": { "en": "Terms" },
-      "privacy": { "en": "Privacy" },
-      "returnsRefunds": { "en": "Returns & Refunds" },
-      "shipping": { "en": "Shipping" },
-      "support": { "en": "Support" },
-      "copyright": { "en": "All rights reserved." },
-      "sectionAriaLabel": { "en": "Footer" }
-    },
-    "consent": {
-      "message": { "en": "We use analytics cookies to understand how visitors interact with our site. See our" },
-      "privacyLink": { "en": "privacy policy" },
-      "decline": { "en": "Decline" },
-      "accept": { "en": "Accept" },
-      "ariaLabel": { "en": "Cookie consent" }
-    },
-    "trust": {
-      "summary": { "en": "Free exchange within 30 days · Delivery estimated at checkout" },
-      "shippingLink": { "en": "Shipping policy" },
-      "returnsLink": { "en": "Returns & exchanges" }
-    },
-    "notifyMe": {
-      "consent": { "en": "I agree to receive a one-time reminder email about this product" },
-      "genericError": { "en": "Something went wrong — please try again." },
-      "validation": { "en": "Please enter your email and consent to receive the reminder." },
-      "emailLabel": { "en": "Email" },
-      "submit": { "en": "Notify me" },
-      "submitting": { "en": "Submitting..." },
-      "success": { "en": "Thank you. We'll email you when this product is available." }
     }
   }
 }

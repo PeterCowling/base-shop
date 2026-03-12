@@ -265,46 +265,74 @@ export function getPolicyContent(
   };
 }
 
-const CHROME_EN_DEFAULTS: ChromeContent = {
+/**
+ * Authoritative source of truth for all chrome UI micro-copy across all supported locales.
+ * Edit here to update chrome translations — do NOT add a `chrome` key to site-content.generated.json.
+ */
+const CHROME_DEFAULTS: ChromeContent = {
   header: {
-    shop: { en: "Shop" },
-    support: { en: "Support" },
-    navAriaLabel: { en: "Primary" },
+    shop: { en: "Shop", de: "Shop", it: "Shop" },
+    support: { en: "Support", de: "Support", it: "Supporto" },
+    navAriaLabel: { en: "Primary", de: "Hauptnavigation", it: "Navigazione principale" },
   },
   footer: {
-    terms: { en: "Terms" },
-    privacy: { en: "Privacy" },
-    returnsRefunds: { en: "Returns & Refunds" },
-    shipping: { en: "Shipping" },
-    support: { en: "Support" },
-    copyright: { en: "All rights reserved." },
-    sectionAriaLabel: { en: "Footer" },
+    terms: { en: "Terms", de: "AGB", it: "Termini" },
+    privacy: { en: "Privacy", de: "Datenschutz", it: "Privacy" },
+    returnsRefunds: { en: "Returns & Refunds", de: "Rücksendungen & Erstattungen", it: "Resi e Rimborsi" },
+    shipping: { en: "Shipping", de: "Versand", it: "Spedizione" },
+    support: { en: "Support", de: "Support", it: "Supporto" },
+    copyright: { en: "All rights reserved.", de: "Alle Rechte vorbehalten.", it: "Tutti i diritti riservati." },
+    sectionAriaLabel: { en: "Footer", de: "Fußzeile", it: "Piè di pagina" },
   },
   consent: {
-    message: { en: "We use analytics cookies to understand how visitors interact with our site. See our" },
-    privacyLink: { en: "privacy policy" },
-    decline: { en: "Decline" },
-    accept: { en: "Accept" },
-    ariaLabel: { en: "Cookie consent" },
+    message: {
+      en: "We use analytics cookies to understand how visitors interact with our site. See our",
+      de: "Wir verwenden Analyse-Cookies, um zu verstehen, wie Besucher unsere Website nutzen. Weitere Informationen finden Sie in unserer",
+      it: "Utilizziamo cookie analitici per capire come i visitatori interagiscono con il nostro sito. Consulta la nostra",
+    },
+    privacyLink: { en: "privacy policy", de: "Datenschutzerklärung", it: "informativa sulla privacy" },
+    decline: { en: "Decline", de: "Ablehnen", it: "Rifiuta" },
+    accept: { en: "Accept", de: "Akzeptieren", it: "Accetta" },
+    ariaLabel: { en: "Cookie consent", de: "Cookie-Einwilligung", it: "Consenso ai cookie" },
   },
   trust: {
-    summary: { en: "Free exchange within 30 days · Delivery estimated at checkout" },
-    shippingLink: { en: "Shipping policy" },
-    returnsLink: { en: "Returns & exchanges" },
+    summary: {
+      en: "Free exchange within 30 days · Delivery estimated at checkout",
+      de: "Kostenloser Umtausch innerhalb von 30 Tagen · Lieferzeit wird beim Checkout angezeigt",
+      it: "Cambio gratuito entro 30 giorni · Consegna stimata al checkout",
+    },
+    shippingLink: { en: "Shipping policy", de: "Versandrichtlinie", it: "Politica di spedizione" },
+    returnsLink: { en: "Returns & exchanges", de: "Rücksendungen & Umtausch", it: "Resi e cambi" },
   },
   notifyMe: {
-    consent: { en: "I agree to receive a one-time reminder email about this product" },
-    genericError: { en: "Something went wrong — please try again." },
-    validation: { en: "Please enter your email and consent to receive the reminder." },
-    emailLabel: { en: "Email" },
-    submit: { en: "Notify me" },
-    submitting: { en: "Submitting..." },
-    success: { en: "Thank you. We'll email you when this product is available." },
+    consent: {
+      en: "I agree to receive a one-time reminder email about this product",
+      de: "Ich stimme zu, eine einmalige Erinnerungs-E-Mail zu diesem Produkt zu erhalten",
+      it: "Acconsento a ricevere un'unica email di promemoria per questo prodotto",
+    },
+    genericError: {
+      en: "Something went wrong — please try again.",
+      de: "Etwas ist schiefgelaufen – bitte versuche es erneut.",
+      it: "Qualcosa è andato storto – riprova.",
+    },
+    validation: {
+      en: "Please enter your email and consent to receive the reminder.",
+      de: "Bitte gib deine E-Mail-Adresse ein und stimme dem Empfang der Erinnerung zu.",
+      it: "Inserisci la tua email e acconsenti a ricevere il promemoria.",
+    },
+    emailLabel: { en: "Email", de: "E-Mail", it: "Email" },
+    submit: { en: "Notify me", de: "Benachrichtige mich", it: "Avvisami" },
+    submitting: { en: "Submitting...", de: "Wird gesendet…", it: "Invio in corso…" },
+    success: {
+      en: "Thank you. We'll email you when this product is available.",
+      de: "Danke. Wir senden dir eine E-Mail, wenn dieses Produkt verfügbar ist.",
+      it: "Grazie. Ti invieremo un'email quando questo prodotto sarà disponibile.",
+    },
   },
 };
 
 export function getChromeContent(locale: Locale) {
-  const chrome = readPayload().chrome ?? CHROME_EN_DEFAULTS;
+  const chrome = readPayload().chrome ?? CHROME_DEFAULTS;
   return {
     header: {
       shop: localizedText(chrome.header.shop, locale),

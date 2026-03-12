@@ -352,9 +352,9 @@
         "apps/caryina/src/app/layout.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "complete",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "why": "Right now, search engines visiting the Caryina site have no guidance on what to crawl and no structured product information to display in results. There's no robots.txt telling crawlers to skip admin and checkout pages, no sitemap listing all products and locales, and no embedded product data that Google can use for rich search results. This means the site is invisible to anyone searching for Italian bag charms — and admin/checkout URLs could appear in search results. Adding this machine-readable layer is how Brikette already handles this, and the pattern can be reused directly.",
       "intended_outcome": {
         "type": "measurable",
@@ -388,9 +388,9 @@
         "apps/caryina/src/app/[lang]/error.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "complete",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "why": "If someone visits a page that doesn't exist or the site hits an error, they see a plain white Next.js default page with no branding, no navigation, and no way to get back to shopping. This looks unprofessional and loses customers who could otherwise be redirected to the shop. Two small pages — a branded 404 and a branded error page with a retry button — fix this entirely.",
       "intended_outcome": {
         "type": "operational",
@@ -422,9 +422,9 @@
         "data/shops/caryina/site-content.generated.json"
       ],
       "provisional_deliverable_family": "business-artifact",
-      "status": "micro_build_ready",
+      "status": "complete",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "why": "The FAQ section answers 'What is this store?' with 'Caryina launch storefront generated from website content packet artifacts.' The SEO description says 'Copy and metadata are generated from startup-loop artifacts and remain source-traceable.' A customer reading this has no idea what the store sells or why they should buy. Every word of public-facing copy should describe the products, the brand story, and what makes Caryina special — not the internal systems that built the site.",
       "intended_outcome": {
         "type": "operational",
@@ -458,9 +458,9 @@
         "apps/caryina/src/app/[lang]/cancelled/page.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "complete",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "why": "The checkout, success, and cancelled pages include the raw language code in their titles — 'Checkout (en) | Caryina'. This appears in browser tabs and search engine results. It looks like a bug to customers and signals an unfinished site. Titles should be clean and locale-appropriate.",
       "intended_outcome": {
         "type": "operational",
@@ -531,9 +531,9 @@
         "apps/caryina/src/lib/payments/notifications.server.ts"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "complete",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "why": "When a customer places an order, the merchant gets an email listing what was bought. The product titles in that email aren't sanitized — if a product title contained HTML code, it would render in the merchant's email client. The customer-facing emails already sanitize properly using escHtml(). The merchant emails just need the same treatment applied consistently.",
       "intended_outcome": {
         "type": "operational",
@@ -17391,13 +17391,13 @@
         "apps/reception/src/lib/inbox/api-models.server.ts",
         "apps/reception/src/services/useInbox.ts"
       ],
-      "status": "fact_find_ready",
+      "status": "complete",
       "recommended_route": "lp-do-fact-find",
       "evidence_refs": [
         "operator-stated: When staff edits a draft before sending, the diff between original and sent version is lost. Persisting edit deltas would let the generator learn staff style corrections over time."
       ],
       "created_at": "2026-03-07T13:19:22.493Z",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "why": "Every time a staff member corrects or rewrites an AI-generated reply, those changes disappear the moment the email is sent. The AI has no way to learn from them and will make the same mistakes next time. Saving these edits gives the AI a direct feed of what good looks like from our own team, making future replies progressively better.",
       "intended_outcome": {
         "type": "capability",

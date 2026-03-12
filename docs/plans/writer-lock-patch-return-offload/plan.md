@@ -30,7 +30,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - [x] TASK-09: Spike the isolated runner and require a prompt unified-diff artifact
 - [x] TASK-10: Investigate reliable final-output and artifact-extraction channels under the isolated runner
 - [x] TASK-11: Spike one bounded artifact-emission path under the isolated runner
-- [ ] TASK-03: Implement the shared patch-return protocol and pilot-facing executor docs
+- [x] TASK-03: Implement the shared patch-return protocol and pilot-facing executor docs
 - [ ] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
 - [ ] TASK-05: Spike the serialized apply window with fingerprint checks
 - [ ] TASK-06: Horizon checkpoint - confirm apply-window behavior and actualize pilot confidence
@@ -90,7 +90,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 | TASK-09 | SPIKE | Validate the isolated runner in a temp repo and require prompt unified-diff emission | 80% | S | Complete (2026-03-09) | TASK-08 | TASK-10, TASK-11 |
 | TASK-10 | INVESTIGATE | Determine which final-output and artifact-extraction channel is reliable under the isolated runner | 75% | M | Complete (2026-03-12) | TASK-09 | TASK-11 |
 | TASK-11 | SPIKE | Validate one bounded artifact-emission path under the isolated runner and require prompt emitted output | 82% | S | Complete (2026-03-12) | TASK-10 | TASK-03 |
-| TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 85% | M | Pending | TASK-11 | TASK-04 |
+| TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 85% | M | Complete (2026-03-12) | TASK-11 | TASK-04 |
 | TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 82% | M | Pending | TASK-03 | TASK-05 |
 | TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 72% (-> 82% conditional on TASK-04, TASK-11) | S | Pending | TASK-04 | TASK-06 |
 | TASK-06 | CHECKPOINT | Reassess pilot wiring from TASK-05 apply-window evidence | 95% | S | Pending | TASK-05 | TASK-07 |
@@ -388,6 +388,13 @@ This plan implements the next slice identified by `writer-lock-operational-harde
   - Active build-offload docs change.
 - **Notes / references:**
   - `docs/plans/writer-lock-patch-return-offload/spike-01-codex-patch-return.md`
+  - Build evidence (2026-03-12):
+    - Updated `build-offload-protocol.md`: added Patch-Return Pilot Contract section (runner setup, task packet, patch artifact, apply window, fallback policy); relabelled legacy shared-checkout as "Legacy (disabled — migration context only)"; updated Current Status and When-to-Use to reflect pilot is active for build-biz.
+    - Updated `lp-do-build/SKILL.md`: CODEX_OK policy now routes build-biz tasks to the pilot contract when CODEX_OK=1; all other tracks remain inline.
+    - Updated `build-biz.md`: Offload Route section no longer says "validated lane does not exist"; now references the pilot contract with inline as explicit fallback.
+    - TC-01 pass: protocol doc contains packet, patch artifact, apply window, fallback sections.
+    - TC-02 pass: build-biz.md references pilot without stale `-a never` guidance.
+    - TC-03 pass: `git diff --check` exit 0.
 #### Re-plan Update (2026-03-09)
 - Confidence: 83% -> 75% (-> 85% conditional on TASK-08, TASK-09) (Evidence: E2)
 - Key change: protocol/docs are blocked until an isolated runner contract is investigated and spike-proven

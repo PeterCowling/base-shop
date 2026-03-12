@@ -2,7 +2,11 @@
 
 ## Offload Route
 
-Current active policy: execute this task inline. A validated patch-return Codex lane does not exist yet, so shared-checkout mutable offload is disabled as a normal default. If a future task explicitly enables a validated pilot, load and follow `../../_shared/build-offload-protocol.md`.
+When `CODEX_OK=1`: load `../../_shared/build-offload-protocol.md` and follow the **Patch-Return Pilot Contract** section. The pilot is validated for business-artifact tasks in this lane (evidence: `docs/plans/writer-lock-patch-return-offload/spike-11-artifact-emission.md`).
+
+When `CODEX_OK=0`, or when the pilot exits non-zero, or when `$PATCH_FILE` is empty: execute this task inline using the workflow below. Inline execution is the fallback, not the default. Record the fallback reason in the plan build evidence block.
+
+Shared-checkout mutable offload (`workspace-write`) remains disabled regardless of `CODEX_OK`.
 
 **Track-specific prompt additions for business-artifact tasks:**
 

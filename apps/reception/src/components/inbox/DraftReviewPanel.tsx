@@ -269,6 +269,11 @@ export default function DraftReviewPanel({
                 {currentDraft.templateUsed}
               </span>
             )}
+            {currentDraft?.quality?.deliveryStatus === "needs_follow_up" && (
+              <span className="rounded-full bg-warning-light px-2 py-0.5 text-xs font-medium text-warning-main">
+                Needs follow-up
+              </span>
+            )}
             {qualityBadge && (
               <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${qualityBadge.className}`}>
                 {qualityBadge.label}

@@ -32,7 +32,7 @@ This plan keeps the existing action semantics and queue authority intact. It foc
 - [x] TASK-09: Extend decision capture for operator rationale and durable recent-history replay — Complete (2026-03-12)
 - [x] TASK-10: Redesign the inbox UI for mixed and non-technical readers — Complete (2026-03-12)
 - [x] TASK-11: Checkpoint the end-to-end mixed-reader decision flow — Complete (2026-03-12)
-- [ ] TASK-12: Add deterministic coverage and targeted frontend QA for the new decision surface
+- [x] TASK-12: Add deterministic coverage and targeted frontend QA for the new decision surface — Complete (2026-03-12)
 
 ## Goals
 - Make each inbox card understandable on first read by non-technical stakeholders.
@@ -127,7 +127,7 @@ This plan keeps the existing action semantics and queue authority intact. It foc
 | TASK-09 | IMPLEMENT | Extend decision capture for operator rationale and durable recent-history replay | 82% | M | Complete (2026-03-12) | TASK-08 | TASK-10, TASK-11, TASK-12 |
 | TASK-10 | IMPLEMENT | Redesign the Business OS inbox UI around the decision brief and mixed-reader rules | 84% | M | Complete (2026-03-12) | TASK-08, TASK-09 | TASK-11, TASK-12 |
 | TASK-11 | CHECKPOINT | Rehearse the mixed-reader end-to-end flow and lock any final wording/ordering adjustments | 83% | S | Complete (2026-03-12) | TASK-08, TASK-09, TASK-10 | TASK-12 |
-| TASK-12 | IMPLEMENT | Add deterministic tests and targeted frontend QA for the decision-grade surface | 84% | M | Pending | TASK-09, TASK-10, TASK-11 | - |
+| TASK-12 | IMPLEMENT | Add deterministic tests and targeted frontend QA for the decision-grade surface | 84% | M | Complete (2026-03-12) | TASK-09, TASK-10, TASK-11 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -291,7 +291,7 @@ This plan keeps the existing action semantics and queue authority intact. It foc
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `apps/business-os/src/lib/process-improvements/**`, `apps/business-os/src/components/process-improvements/**`, `apps/business-os/src/app/api/process-improvements/**`, related tests
 - **Depends on:** TASK-09, TASK-10, TASK-11
 - **Blocks:** -

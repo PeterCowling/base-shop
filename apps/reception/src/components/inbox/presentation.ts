@@ -67,14 +67,14 @@ export function buildInboxThreadBadge(thread: InboxThreadSummary): InboxBadge {
   if (thread.status === "review_later") {
     return {
       label: "Review",
-      className: "bg-surface-3 text-muted-foreground",
-      edgeColor: "border-l-surface-3",
+      className: "bg-info-light text-info-main",
+      edgeColor: "border-l-info-main/50",
     };
   }
 
   return {
     label: "Pending",
-    className: "bg-surface-3 text-foreground",
+    className: "bg-surface-3 text-foreground/80",
     edgeColor: "border-l-surface-3",
   };
 }

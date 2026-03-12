@@ -109,11 +109,11 @@ export default function ThreadList({
     <section className="rounded-2xl border border-border-1 bg-surface-2 shadow-sm">
       <div className="border-b border-border-1 px-4 py-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-foreground">
             Threads
           </h2>
           {threads.length > 0 && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-2 px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-3 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-foreground/70">
               {hasActiveFilters && (
                 <>
                   <Filter className="h-3 w-3" />
@@ -221,7 +221,7 @@ export default function ThreadList({
                     >
                       {badge.label}
                     </span>
-                    <span className="rounded-lg bg-surface-2 px-1.5 py-px text-xs font-medium leading-tight text-muted-foreground">
+                    <span className="rounded-lg bg-surface-3 px-1.5 py-px text-xs font-semibold leading-tight text-foreground/60">
                       {thread.channelLabel}
                     </span>
                     {thread.guestFirstName && (
@@ -229,7 +229,7 @@ export default function ThreadList({
                         {thread.guestFirstName}{thread.guestLastName ? ` ${thread.guestLastName}` : ""}
                       </span>
                     )}
-                    <span className="ml-auto shrink-0 text-xs tabular-nums text-muted-foreground">
+                    <span className="ml-auto shrink-0 text-xs font-medium tabular-nums text-foreground/60">
                       {time}
                     </span>
                   </div>
@@ -240,7 +240,7 @@ export default function ThreadList({
                   </p>
 
                   {/* Row 3: snippet */}
-                  <p className="mt-0.5 truncate text-xs text-muted-foreground">
+                  <p className="mt-0.5 truncate text-xs text-foreground/50">
                     {thread.snippet ?? "No preview available."}
                   </p>
                 </button>

@@ -28,12 +28,12 @@ export default function PrimeColumn({
     <div className="flex flex-col gap-2">
       {/* Column header */}
       <div className="flex items-center gap-2 px-1">
-        <MessageSquare className="h-4 w-4 shrink-0 text-muted-foreground" />
-        <span className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+        <MessageSquare className="h-4 w-4 shrink-0 text-foreground/70" />
+        <span className="text-sm font-semibold uppercase tracking-wide text-foreground">
           Prime
         </span>
         {primeThreads.length > 0 && (
-          <span className="ml-auto inline-flex items-center rounded-full bg-surface-2 px-2 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
+          <span className="ml-auto inline-flex items-center rounded-full bg-primary-soft px-2 py-0.5 text-xs font-semibold tabular-nums text-primary-main">
             {primeThreads.length}
           </span>
         )}

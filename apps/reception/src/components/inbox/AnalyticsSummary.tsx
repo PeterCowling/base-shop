@@ -114,10 +114,10 @@ function MetricCard({
 }) {
   return (
     <div className="min-w-0">
-      <p className="truncate text-xs font-medium uppercase tracking-wide text-muted-foreground">
+      <p className="truncate text-xs font-semibold uppercase tracking-wide text-foreground/60">
         {label}
       </p>
-      <p className="text-sm font-semibold text-foreground">
+      <p className="text-sm font-bold text-foreground">
         {value !== null && value !== undefined ? `${value}${suffix}` : "-"}
       </p>
     </div>
@@ -232,7 +232,7 @@ export default function AnalyticsSummary({ refreshKey }: AnalyticsSummaryProps) 
   }
 
   return (
-    <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2 rounded-lg border border-border/50 bg-surface-1 px-4 py-2.5">
+    <div className="mt-3 flex flex-wrap gap-x-6 gap-y-2 rounded-lg border border-border-1 bg-surface-1 px-4 py-2.5">
       <MetricCard
         label="Quality pass"
         value={data.quality?.passRate ?? null}

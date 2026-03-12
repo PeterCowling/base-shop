@@ -238,7 +238,7 @@ export default function DraftReviewPanel({
           </h3>
           <div className="flex items-center gap-2">
             {currentDraft?.templateUsed && (
-              <span className="rounded-full bg-surface-2 px-2 py-0.5 text-xs text-muted-foreground">
+              <span className="rounded-full bg-surface-3 px-2 py-0.5 text-xs font-medium text-foreground/60">
                 {currentDraft.templateUsed}
               </span>
             )}
@@ -275,7 +275,7 @@ export default function DraftReviewPanel({
             <div className="grid gap-3 sm:grid-cols-2">
               {channelCapabilities.supportsSubject && (
                 <div>
-                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                  <label className="mb-1 block text-xs font-semibold text-foreground/70">
                     {channelCapabilities.subjectLabel}
                   </label>
                   <input
@@ -289,7 +289,7 @@ export default function DraftReviewPanel({
               )}
               {channelCapabilities.supportsRecipients && (
                 <div>
-                  <label className="mb-1 block text-xs font-medium text-muted-foreground">
+                  <label className="mb-1 block text-xs font-semibold text-foreground/70">
                     {channelCapabilities.recipientLabel}
                   </label>
                   <input
@@ -317,7 +317,7 @@ export default function DraftReviewPanel({
 
           {/* Message body */}
           <div>
-            <label className="mb-1 block text-xs font-medium text-muted-foreground">
+            <label className="mb-1 block text-xs font-semibold text-foreground/70">
               {channelCapabilities.bodyLabel}
             </label>
             <textarea
@@ -347,7 +347,7 @@ export default function DraftReviewPanel({
                   type="button"
                   onClick={() => void handleSave()}
                   disabled={actionsDisabled || !hasUnsavedChanges}
-                  color="default"
+                  color="info"
                   tone="outline"
                   className="min-h-9 rounded-lg text-xs"
                 >
@@ -360,7 +360,7 @@ export default function DraftReviewPanel({
                     type="button"
                     onClick={() => setConfirmDialog("regenerate")}
                     disabled={actionsDisabled}
-                    color="default"
+                    color="accent"
                     tone="outline"
                     className="min-h-9 rounded-lg text-xs"
                   >
@@ -377,7 +377,7 @@ export default function DraftReviewPanel({
                   type="button"
                   onClick={() => setConfirmDialog("resolve")}
                   disabled={actionsDisabled}
-                  color="default"
+                  color="success"
                   tone="outline"
                   className="min-h-9 rounded-lg text-xs"
                 >

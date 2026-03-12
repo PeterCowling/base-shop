@@ -30,7 +30,7 @@ export default function FilterBar({
             className={`rounded-lg px-2.5 py-1 text-xs font-medium transition ${
               isActive
                 ? "bg-primary-soft text-primary-main ring-1 ring-primary-main/30"
-                : "bg-surface-2 text-muted-foreground hover:bg-surface-3 hover:text-foreground"
+                : "bg-surface-3 text-foreground/70 hover:bg-surface-elevated hover:text-foreground"
             }`}
           >
             {option.label}

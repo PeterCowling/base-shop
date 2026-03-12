@@ -1,0 +1,194 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "do-workflow-deliverable-quality-metrics",
+  "source_artifact_path": "docs/plans/do-workflow-deliverable-quality-metrics/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Work can be marked complete even if it's missing key sections like engineering coverage evidence or outcome statements. Without checking completeness automatically, gaps only surface when someone manually reviews.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Validator pass/fail results are captured in workflow telemetry so completeness gaps are visible in reports without manual review",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI component — internal telemetry data pipeline",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "No user-facing states — CLI and data records",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Internal tooling reading local files; no auth, no user data",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Telemetry system is itself the observability layer. Currently tracks script names but not outcomes.",
+      "gap_or_implication": "Gap: validator outcomes not captured — this is the core deliverable",
+      "carry_forward_or_notes": "Must capture pass/fail, error counts, and optionally blocking-issue details"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Existing tests cover record building, report generation, dedupe. Test patterns are well-established.",
+      "gap_or_implication": "Gap: no tests for quality-metrics fields yet (they don't exist yet)",
+      "carry_forward_or_notes": "Add TC contracts for new field construction, report rendering, dedupe inclusion"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`WorkflowStepTelemetryRecord` interface, telemetry schema doc v1.5.0, report generator output format",
+      "gap_or_implication": "Gap: no quality/completeness fields in the interface or schema",
+      "carry_forward_or_notes": "Add optional field(s) to interface, bump schema to 1.6.0, update report envelope"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Append-only JSONL, no hot path — telemetry recording happens once per stage completion",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A",
+      "current_or_option_state": "Additive optional field — old records without the field are handled by existing null-check pattern",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The DO workflow pipeline (fact-find -> analysis -> plan -> build) has deterministic validators that check whether output artifacts contain required sections and fields. However, validator pass/fail results are not persisted to telemetry. The `WorkflowStepTelemetryRecord` tracks script names in `deterministic_checks: string[]` but has no field for check outcomes. This means there is no way to measure artifact quality over time without manually reviewing each artifact.",
+    "goals": [
+      "Capture validator pass/fail results in telemetry records so completeness gaps are visible in reports",
+      "Enable the workflow telemetry report to surface quality/completeness data alongside existing size and token metrics"
+    ],
+    "non_goals": [
+      "Adding new validators beyond what already exists (e.g. no new `validate-build-record.ts`)",
+      "Changing what validators check or their pass/fail criteria",
+      "Real-time alerting or dashboards",
+      "Changing the validator invocation flow in skills"
+    ],
+    "constraints": [
+      "Must be backward-compatible with existing telemetry records (new fields optional)",
+      "Must not break existing telemetry consumers (`summarizeWorkflowStepTelemetry`, `computePerModuleBreakdown`, ideas rollup code)"
+    ],
+    "assumptions": [
+      "Validators already produce structured output (JSON) that can be parsed",
+      "The telemetry recording CLI can run validators inline or accept pre-computed results"
+    ],
+    "key_entry_points": [
+      "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts` — telemetry record builder and CLI",
+      "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry-report.ts` — report generator",
+      "`packages/skill-runner/src/validate-fact-find.ts` — fact-find validator (returns `FactFindValidationResult`)",
+      "`packages/skill-runner/src/validate-engineering-coverage.ts` — engineering coverage validator (returns `EngineeringCoverageValidationResult`)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis do-workflow-deliverable-quality-metrics`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Telemetry record interface",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Record builder function",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Dedupe key computation",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "CLI flag parsing",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Report generator summary",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Report generator markdown/JSON output",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Schema doc update",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Backward compatibility",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology_change": true,
+    "process_topology_note": null,
+    "process_trigger": "Agent completes a DO stage (fact-find, analysis, plan, or build) and validators pass",
+    "process_end_condition": "Telemetry record persisted, report available on demand",
+    "current_process_areas": [
+      {
+        "Area": "Validator execution",
+        "Current step-by-step flow": "Shell scripts run TS validators via `pnpm --filter skill-runner validate-*`; exit 0 = pass, non-zero = fail; JSON to stdout",
+        "Owners / systems / handoffs": "Agent (caller) -> shell script -> skill-runner",
+        "Evidence refs": "`scripts/validate-fact-find.sh`, `packages/skill-runner/src/validate-fact-find.ts`",
+        "Known issues": "Exit code and JSON output are consumed by agent but NOT passed to telemetry recorder"
+      },
+      {
+        "Area": "Telemetry recording",
+        "Current step-by-step flow": "CLI accepts `--deterministic-check` flags (names only); builds record; appends to JSONL",
+        "Owners / systems / handoffs": "Agent -> `lp-do-ideas-workflow-telemetry.ts` CLI",
+        "Evidence refs": "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry.ts:80-90` (options interface)",
+        "Known issues": "`deterministic_checks` stores script names but no outcomes; no `--deterministic-check-result` flag exists"
+      },
+      {
+        "Area": "Report generation",
+        "Current step-by-step flow": "Reads JSONL, filters by feature/business, aggregates size/token/module metrics",
+        "Owners / systems / handoffs": "`lp-do-ideas-workflow-telemetry-report.ts`",
+        "Evidence refs": "`scripts/src/startup-loop/ideas/lp-do-ideas-workflow-telemetry-report.ts`",
+        "Known issues": "No quality/completeness dimension in summary output"
+      }
+    ]
+  }
+}

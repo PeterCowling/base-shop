@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-12T12:48:05.318Z",
+  "plan_slug": "do-workflow-deliverable-quality-metrics",
+  "review_cycle_key": "do-workflow-deliverable-quality-metrics",
+  "source_path": "docs/plans/do-workflow-deliverable-quality-metrics/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

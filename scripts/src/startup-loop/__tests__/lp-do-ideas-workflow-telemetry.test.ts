@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
+import type { CheckResultSummary } from "../ideas/lp-do-ideas-workflow-telemetry.js";
 import {
   appendWorkflowStepTelemetry,
   buildWorkflowStepTelemetryRecord,
@@ -492,5 +493,92 @@ Deliverable-Type: multi-deliverable
     expect(planRecord.runtime_usage_mode).toBe("delta_from_previous_feature_record");
     expect(planRecord.runtime_total_input_tokens).toBe(238);
     expect(planRecord.runtime_total_output_tokens).toBe(38);
+  });
+
+  it("TC-01: populates deterministic_check_results from --check-result flag format", () => {
+    const rootDir = makeTmpDir();
+    writeFile(rootDir, ".claude/skills/lp-do-fact-find/SKILL.md", "# FF\n");
+    writeFile(
+      rootDir,
+      "docs/plans/test-check-result/fact-find.md",
+      "---\nType: Fact-Find\n---\n# Test\n",
+    );
+
+    const record = buildWorkflowStepTelemetryRecord({
+      stage: "lp-do-fact-find",
+      featureSlug: "test-check-result",
+      rootDir,
+      deterministicChecks: ["scripts/validate-fact-find.sh"],
+      checkResults: ["validate-fact-find.sh:pass:0:2"],
+      now: () => new Date("2026-03-12T10:00:00.000Z"),
+    });
+
+    expect(record.deterministic_check_results).toBeDefined();
+    expect(record.deterministic_check_results).toEqual({
+      "validate-fact-find.sh": {
+        valid: true,
+        error_count: 0,
+        warning_count: 2,
+      } satisfies CheckResultSummary,
+    });
+  });
+
+  it("TC-02: populates deterministic_check_results from multiple --check-result flags", () => {
+    const rootDir = makeTmpDir();
+    writeFile(rootDir, ".claude/skills/lp-do-plan/SKILL.md", "# Plan\n");
+
+    const record = buildWorkflowStepTelemetryRecord({
+      stage: "lp-do-plan",
+      featureSlug: "test-multi-check",
+      rootDir,
+      checkResults: [
+        "validate-plan.sh:pass:0:0",
+        "validate-engineering-coverage.sh:fail:3:1",
+      ],
+      now: () => new Date("2026-03-12T10:00:00.000Z"),
+    });
+
+    expect(record.deterministic_check_results).toEqual({
+      "validate-plan.sh": { valid: true, error_count: 0, warning_count: 0 },
+      "validate-engineering-coverage.sh": { valid: false, error_count: 3, warning_count: 1 },
+    });
+  });
+
+  it("TC-03: deterministic_check_results is undefined when no --check-result flags provided", () => {
+    const rootDir = makeTmpDir();
+    writeFile(rootDir, ".claude/skills/lp-do-plan/SKILL.md", "# Plan\n");
+
+    const record = buildWorkflowStepTelemetryRecord({
+      stage: "lp-do-plan",
+      featureSlug: "test-no-check-result",
+      rootDir,
+      now: () => new Date("2026-03-12T10:00:00.000Z"),
+    });
+
+    expect(record.deterministic_check_results).toBeUndefined();
+  });
+
+  it("TC-04: different deterministic_check_results produce different telemetry keys", () => {
+    const rootDir = makeTmpDir();
+    writeFile(rootDir, ".claude/skills/lp-do-plan/SKILL.md", "# Plan\n");
+
+    const recordA = buildWorkflowStepTelemetryRecord({
+      stage: "lp-do-plan",
+      featureSlug: "test-dedupe-results",
+      rootDir,
+      deterministicChecks: ["validate-plan.sh"],
+      checkResults: ["validate-plan.sh:pass:0:0"],
+      now: () => new Date("2026-03-12T10:00:00.000Z"),
+    });
+    const recordB = buildWorkflowStepTelemetryRecord({
+      stage: "lp-do-plan",
+      featureSlug: "test-dedupe-results",
+      rootDir,
+      deterministicChecks: ["validate-plan.sh"],
+      checkResults: ["validate-plan.sh:fail:2:1"],
+      now: () => new Date("2026-03-12T10:00:00.000Z"),
+    });
+
+    expect(recordA.telemetry_key).not.toBe(recordB.telemetry_key);
   });
 });

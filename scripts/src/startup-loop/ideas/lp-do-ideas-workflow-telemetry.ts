@@ -23,6 +23,12 @@ export type WorkflowTelemetryStage =
 
 export type WorkflowTokenSource = "api_usage" | "operator_provided" | "unknown";
 
+export interface CheckResultSummary {
+  valid: boolean;
+  error_count: number;
+  warning_count: number;
+}
+
 export interface WorkflowStepTelemetryRecord {
   record_type: "workflow_step";
   recorded_at: string;
@@ -56,6 +62,7 @@ export interface WorkflowStepTelemetryRecord {
   runtime_total_input_tokens: number | null;
   runtime_total_output_tokens: number | null;
   per_module_bytes?: Record<string, number>;
+  deterministic_check_results?: Record<string, CheckResultSummary>;
   notes: string | null;
 }
 
@@ -69,6 +76,7 @@ export interface WorkflowStepTelemetryOptions {
   inputPaths?: string[];
   modules?: string[];
   deterministicChecks?: string[];
+  checkResults?: string[];
   dispatchIds?: string[];
   executionTrack?: string;
   deliverableType?: string;
@@ -278,6 +286,44 @@ function normalizeTokenSource(
   return "unknown";
 }
 
+function parseCheckResults(
+  raw: readonly string[],
+): Record<string, CheckResultSummary> | undefined {
+  if (raw.length === 0) {
+    return undefined;
+  }
+  const results: Record<string, CheckResultSummary> = {};
+  for (const entry of raw) {
+    const lastColon = entry.lastIndexOf(":");
+    if (lastColon === -1) continue;
+    const beforeLast = entry.slice(0, lastColon);
+    const warningStr = entry.slice(lastColon + 1);
+
+    const secondLastColon = beforeLast.lastIndexOf(":");
+    if (secondLastColon === -1) continue;
+    const beforeSecond = beforeLast.slice(0, secondLastColon);
+    const errorStr = beforeLast.slice(secondLastColon + 1);
+
+    const thirdLastColon = beforeSecond.lastIndexOf(":");
+    if (thirdLastColon === -1) continue;
+    const name = beforeSecond.slice(0, thirdLastColon);
+    const validStr = beforeSecond.slice(thirdLastColon + 1);
+
+    if (!name || (validStr !== "pass" && validStr !== "fail")) continue;
+
+    const errorCount = Number.parseInt(errorStr, 10);
+    const warningCount = Number.parseInt(warningStr, 10);
+    if (!Number.isFinite(errorCount) || !Number.isFinite(warningCount)) continue;
+
+    results[name] = {
+      valid: validStr === "pass",
+      error_count: errorCount,
+      warning_count: warningCount,
+    };
+  }
+  return Object.keys(results).length > 0 ? results : undefined;
+}
+
 function computeTelemetryKey(
   record: Omit<WorkflowStepTelemetryRecord, "telemetry_key">,
 ): string {
@@ -296,6 +342,7 @@ function computeTelemetryKey(
     deliverable_type: record.deliverable_type,
     dispatch_ids: record.dispatch_ids,
     per_module_bytes: record.per_module_bytes,
+    deterministic_check_results: record.deterministic_check_results,
   });
   return createHash("sha256").update(payload).digest("hex");
 }
@@ -381,7 +428,11 @@ export function buildWorkflowStepTelemetryRecord(
     "REPO";
 
   const dispatchIds = normalizeStringList(options.dispatchIds);
-  const deterministicChecks = normalizeStringList(options.deterministicChecks);
+  const checkResultsParsed = parseCheckResults(options.checkResults ?? []);
+  const deterministicChecks = normalizeStringList([
+    ...(options.deterministicChecks ?? []),
+    ...(checkResultsParsed ? Object.keys(checkResultsParsed) : []),
+  ]);
   const modulesLoaded = normalizeStringList(options.modules);
   const existingRecords = resolvedTelemetryPath
     ? readWorkflowStepTelemetry(resolvedTelemetryPath)
@@ -452,6 +503,7 @@ export function buildWorkflowStepTelemetryRecord(
     runtime_total_input_tokens: runtimeUsage.runtimeTotalInputTokens,
     runtime_total_output_tokens: runtimeUsage.runtimeTotalOutputTokens,
     per_module_bytes: perModuleBytes,
+    deterministic_check_results: checkResultsParsed,
     notes: notes.length > 0 ? notes : null,
   };
 
@@ -655,6 +707,7 @@ async function main(): Promise<void> {
       "input-path": { type: "string", multiple: true },
       module: { type: "string", multiple: true },
       "deterministic-check": { type: "string", multiple: true },
+      "check-result": { type: "string", multiple: true },
       "dispatch-id": { type: "string", multiple: true },
       "execution-track": { type: "string" },
       "deliverable-type": { type: "string" },
@@ -694,6 +747,7 @@ async function main(): Promise<void> {
     inputPaths: values["input-path"] ?? [],
     modules: values["module"] ?? [],
     deterministicChecks: values["deterministic-check"] ?? [],
+    checkResults: values["check-result"] ?? [],
     dispatchIds: values["dispatch-id"] ?? [],
     executionTrack: values["execution-track"],
     deliverableType: values["deliverable-type"],

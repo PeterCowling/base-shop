@@ -1,0 +1,207 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "xa-b-draft-product-storefront-visibility",
+  "source_artifact_path": "docs/plans/xa-b-draft-product-storefront-visibility/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/xa-b-draft-product-storefront-visibility/fact-find.md",
+    "plan": "docs/plans/xa-b-draft-product-storefront-visibility/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Products can go live on the XA store without photos, breaking the shopping experience. P1 priority — store not ready for real customers until resolved.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The xa-b storefront only displays products that are publishable (live or out_of_stock with complete images); draft products with missing images never appear in any listing.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Draft products removed from all listing pages",
+      "current_or_option_state": "Draft products removed from all listing pages",
+      "gap_or_implication": "Draft products removed from all listing pages",
+      "carry_forward_or_notes": "xa-b listing pages clean; no broken-image cards possible"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Add-to-cart path for draft products eliminated at both layers",
+      "current_or_option_state": "Add-to-cart path unchanged in xa-b (drafts still in model)",
+      "gap_or_implication": "Add-to-cart path for draft products eliminated in xa-b",
+      "carry_forward_or_notes": "`getAvailableStock` never sees a draft product — no cart flow risk"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "No auth/data exposure change",
+      "current_or_option_state": "No auth/data exposure change",
+      "gap_or_implication": "No auth/data exposure change",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "No log paths affected",
+      "current_or_option_state": "No log paths affected",
+      "gap_or_implication": "No log paths affected",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Tests needed for publish route (mixed-state snapshot) + xa-b normalizeProductStatus",
+      "current_or_option_state": "Tests needed for publish route only",
+      "gap_or_implication": "Tests needed for xa-b only",
+      "carry_forward_or_notes": "Both test gaps must be closed; unit tests in xa-uploader publish route test suite + xa-b catalog model tests"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Published catalog contract will no longer include `status:\"draft\"` entries; xa-b model never contains drafts",
+      "current_or_option_state": "Published catalog contract will no longer include drafts",
+      "gap_or_implication": "Publish contract still includes drafts; xa-b silently drops them",
+      "carry_forward_or_notes": "Contract behavior change for publish route; xa-b silently drops drafts as safety net"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Both fixes are simple filter additions; no hot-path impact",
+      "current_or_option_state": "Simple filter addition only",
+      "gap_or_implication": "Simple null return only",
+      "carry_forward_or_notes": "No performance impact either way"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Safe: git revert on either fix is clean; no data migration",
+      "current_or_option_state": "Safe",
+      "gap_or_implication": "Safe",
+      "carry_forward_or_notes": "Per-fix rollback possible; no migration risk"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The per-product publish API route (`POST /api/catalog/publish`) passes all snapshot products — including `\"draft\"`-state products with no images — to `buildCatalogArtifactsFromDrafts`. This results in draft products appearing in the published catalog contract. The xa-b storefront makes this worse by accepting `\"draft\"` as a valid `normalizeProductStatus` return value and not filtering by status in `filterAndSortProducts`. The decision is: how to close this leak with minimum blast radius and maximum defense-in-depth.",
+    "goals": [
+      "Ensure the per-product publish route only includes publishable products in the catalog contract",
+      "Ensure xa-b storefront never displays draft products in any listing, regardless of contract content",
+      "Eliminate any path where a product with no images can appear on the live storefront"
+    ],
+    "non_goals": [
+      "Changing the UI gate (`showMakeLiveAction`) — already correct",
+      "Changing the sync route — already filters correctly; reference implementation only",
+      "Adding server-side `isPublishReady` check to the publish API beyond the existing filter",
+      "Changes to caryina — already safe via `includeDraft: false` in `listShopSkus`",
+      "Investigating product detail page (PDP) separately — xa-b fix covers this by exclusion (no draft product can be navigated to if none enter the catalog model)",
+      "Changing the published contract format for live/out_of_stock products"
+    ],
+    "constraints": [
+      "Must not change the published contract format for `\"live\"` or `\"out_of_stock\"` products",
+      "Must not break the sync route behavior",
+      "Fix must be confined to xa-uploader publish route + xa-b catalog model; no caryina changes",
+      "Import of `isCatalogPublishableState` and `deriveCatalogPublishState` required in publish route (already exported from `packages/lib/src/xa/catalogWorkflow.ts`)"
+    ],
+    "assumptions": [
+      "`isCatalogPublishableState(\"live\") === true`, `isCatalogPublishableState(\"out_of_stock\") === true`, `isCatalogPublishableState(\"draft\") === false`",
+      "After the xa-b fix, `normalizeProductStatus(\"draft\")` returns `null` — products never enter the catalog model"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Completeness of fix",
+        "Why it matters": "Draft products must not reach the storefront via any path",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Defense-in-depth",
+        "Why it matters": "Server side is root cause; client side is defense layer against future contract drift",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Blast radius / regression risk",
+        "Why it matters": "Fix must not alter live/out_of_stock contract outputs",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Test coverage",
+        "Why it matters": "Regression test gap must be closed for both surfaces",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Implementation simplicity",
+        "Why it matters": "Small team — minimal code surface change preferred",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A",
+        "Description": "Server-side filter in publish route + xa-b `normalizeProductStatus` returns null for \"draft\"",
+        "Upside": "Complete fix at both layers; defense-in-depth; mirrors sync route exactly; xa-b cannot display drafts even if contract ever regresses",
+        "Downside": "Two touch points (publish route + xa-b); slightly more code",
+        "Key risks": "Negligible — both changes are additive filters, no existing behavior for live/out_of_stock is altered",
+        "Viable?": "Yes — **Chosen**"
+      },
+      {
+        "Option": "B",
+        "Description": "Server-side filter in publish route only (single fix)",
+        "Upside": "Addresses root cause; minimal change",
+        "Downside": "xa-b would display drafts if contract ever includes them again (e.g., via a future publish route variation or direct API call); no defense-in-depth",
+        "Key risks": "If another publish path is added later, the leak could reopen silently",
+        "Viable?": "Viable but suboptimal"
+      },
+      {
+        "Option": "C",
+        "Description": "xa-b `normalizeProductStatus` returns null for \"draft\" only (client-side only)",
+        "Upside": "xa-b is protected regardless of contract content",
+        "Downside": "Root cause unresolved — publish contract still writes draft products; operator-facing APIs still return draft products to any other consumer",
+        "Key risks": "Publish contract correctness violated; other potential consumers of the contract also see drafts",
+        "Viable?": "Not viable as sole fix"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — fix both the publish route (server-side root cause) and xa-b's `normalizeProductStatus` (client-side defense layer).",
+      "Why this wins": "The publish route fix is the root cause fix — it mirrors the already-correct sync route behavior (`isCatalogPublishableState(deriveCatalogPublishState(product))`). The xa-b fix adds defense-in-depth: if any publish path ever regresses or a draft appears in the contract from any source, xa-b can never display it. The combined fix is the only option that closes the gap completely. Both changes are additive; no existing behavior for live/out_of_stock products is altered.",
+      "**What it depends on": "**",
+      "**Option C (client-side only)** — Not viable as a sole fix. The publish contract correctness violation is real": "any other contract consumer (future tools, analytics, admin views) would see draft products. Root cause must be addressed server-side."
+    },
+    "rejected_approaches": [
+      "**Option B (server-side only)** — Viable but leaves xa-b with no defense layer. If a future publish path or direct API call ever produces draft entries in the contract, xa-b would display them silently. Defense-in-depth is worth one additional null return in `normalizeProductStatus`.",
+      "**Option C (client-side only)** — Not viable as a sole fix. The publish contract correctness violation is real: any other contract consumer (future tools, analytics, admin views) would see draft products. Root cause must be addressed server-side."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "TASK-01 and TASK-02 are independent — can execute in parallel or either order",
+        "TASK-03 depends on TASK-01; TASK-04 depends on TASK-02"
+      ],
+      "risks_to_carry_forward": [
+        "Import path for `isCatalogPublishableState`/`deriveCatalogPublishState` must be verified in publish route context"
+      ]
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Per-product publish",
+          "current": "`executeCloudPublish` passes ALL snapshot products to `buildCatalogArtifactsFromDrafts`; draft-state products (no images) enter the live catalog contract",
+          "trigger": "Operator clicks \"Make Live\" → `POST /api/catalog/publish`",
+          "future": "1. Operator clicks Make Live (UI gate: isPublishReady required). 2. `executeCloudPublish` reads full snapshot. 3. `updateProductPublishStateInCloudSnapshot` sets target product publishState=live in snapshot. 4. Snapshot products are pre-filtered: `isCatalogPublishableState(deriveCatalogPublishState(product))` — only live/out_of_stock pass. 5. Filtered products only passed to `buildCatalogArtifactsFromDrafts`. 6. Contract written with publishable products only.",
+          "steady": "Sync route already correct; caryina already correct; published contract format for live/out_of_stock products unchanged",
+          "seams": "Empty-catalog edge case: if all products are draft at publish time, contract is written with zero products — acceptable; no guard needed"
+        },
+        {
+          "id": null,
+          "label": "xa-b storefront catalog parsing",
+          "current": "`normalizeProductStatus(\"draft\")` returns `\"draft\"`; draft products enter catalog model and appear in all listing pages",
+          "trigger": "xa-b fetches catalog JSON from `NEXT_PUBLIC_XA_CATALOG_PUBLIC_URL`",
+          "future": "1. Fetch catalog JSON. 2. `parseXaCatalogModel` normalizes products. 3. `normalizeProductStatus(\"draft\")` now returns `null`. 4. Products with status=null are filtered out at parse time. 5. Draft products never enter `XaCatalogSnapshot.products`. 6. `filterAndSortProducts` and `getAvailableStock` only ever see live/out_of_stock products.",
+          "steady": "normalizeProductStatus behavior for live/out_of_stock unchanged; all filtering logic unchanged",
+          "seams": "If contract still contains drafts (e.g., before server-side fix is deployed), xa-b fix silently drops them — correct behavior"
+        }
+      ]
+    }
+  }
+}

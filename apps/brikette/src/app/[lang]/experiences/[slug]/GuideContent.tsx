@@ -3,7 +3,7 @@
 
 // src/app/[lang]/experiences/[slug]/GuideContent.tsx
 // Client component for guide pages (App Router version)
-import { memo, Suspense, useEffect, useState } from "react";
+import { memo, Suspense, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
@@ -27,11 +27,24 @@ type Props = {
 };
 
 function GuideContent({ lang, guideKey, serverGuides, serverGuidesEn }: Props) {
+  // Seed the i18n store synchronously before the first render so that
+  // useTranslation("guides") finds the namespace data during SSR.
+  // useEffect does not run on the server, so without this the SSR HTML
+  // would show raw i18n keys (e.g. "components.planChoice.title") until
+  // client hydration re-populates the store.
+  const seededRef = useRef(false);
+  if (!seededRef.current && serverGuides) {
+    i18n.addResourceBundle(lang, "guides", serverGuides, true, true);
+    if (serverGuidesEn) {
+      i18n.addResourceBundle("en", "guides", serverGuidesEn, true, true);
+    }
+    seededRef.current = true;
+  }
+
   const { t } = useTranslation("guides", { lng: lang });
   const [loadError, setLoadError] = useState(false);
 
-  // Seed i18n store from server data on mount/update.
-  // This must not run during render because i18n emits updates.
+  // Re-seed on client when props change (useEffect covers HMR / navigation).
   useEffect(() => {
     if (!serverGuides) return;
 

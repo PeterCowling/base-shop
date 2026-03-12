@@ -35,19 +35,17 @@ function PlanChoice({ onSelect, className = "", title, lang: explicitLang }: Pro
     t?: unknown;
     ready?: boolean;
   };
-  const ready = Boolean(translationHook?.ready);
   const translatorCandidate = translationHook?.t;
-  // Unit tests sometimes render without wiring the i18next provider; default to
-  // an identity translator so the component continues rendering fallback copy.
+  // Use the hook translator when available even if ready is false — during SSR
+  // the i18n store is pre-populated by the server component but react-i18next
+  // may not report ready:true until after hydration. Falling back to the
+  // identity translator when !ready caused raw i18n keys in SSR HTML.
   const t = useMemo<Translator>(() => {
-    if (!ready) {
-      return identityTranslator;
-    }
     if (typeof translatorCandidate === "function") {
       return translatorCandidate as Translator;
     }
     return identityTranslator;
-  }, [translatorCandidate, ready]);
+  }, [translatorCandidate]);
   const [choice, setChoice] = useState<Option | null>(null);
 
   const optionLabels = useMemo<Record<Option, string>>(

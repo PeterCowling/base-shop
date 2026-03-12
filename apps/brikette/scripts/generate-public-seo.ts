@@ -247,7 +247,6 @@ export const listDirectionPaths = (): string[] =>
 
 export const listCanonicalSitemapPaths = (): string[] => [
   "/",
-  ...listDirectionPaths(),
   ...listLocalizedPublicUrls(),
 ];
 

@@ -18,6 +18,9 @@
 /privacy-policy  /en/privacy-policy  301
 /privacy-policy/  /en/privacy-policy/  301
 /directions/:slug  /en/how-to-get-here/:slug  301
+/en/directions/:slug  /en/how-to-get-here/:slug  301
+/assistance  /en/help  301
+/assistance/  /en/help  301
 https://stepfreepositano.com  /en/book-private-accommodations/  301
 https://stepfreepositano.com/  /en/book-private-accommodations/  301
 https://stepfreepositano.com/*  /en/private-rooms/:splat  301

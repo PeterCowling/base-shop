@@ -89,4 +89,14 @@ describe("generate-public-seo lastmod contracts", () => {
     expect(locs).not.toContain(`${baseUrl}/en/private-rooms/book`);
     expect(locs).not.toContain(`${baseUrl}/it/camere-private/book`);
   });
+
+  test("TC-15: sitemap excludes legacy /directions/* redirect-only URLs", () => {
+    const sitemapXml = buildSitemapXml(listCanonicalSitemapPaths());
+    const entries = parseSitemapEntries(sitemapXml);
+    const directionsEntries = entries.filter((entry) =>
+      entry.loc.includes("/directions/"),
+    );
+
+    expect(directionsEntries).toHaveLength(0);
+  });
 });

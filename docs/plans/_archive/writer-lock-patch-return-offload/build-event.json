@@ -1,0 +1,15 @@
+{
+  "schema": "build-event.v1",
+  "plan_slug": "writer-lock-patch-return-offload",
+  "business": "BRIK",
+  "completed_at": "2026-03-12",
+  "why": "The shared-checkout mutable Codex offload held the writer lock for the full Codex session, blocking unrelated repo work. Patch-return narrows the lock window to only apply-and-commit.",
+  "why_source": "heuristic",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "The lp-do-build business-artifact lane uses patch-return offload by default when Codex is available, reducing writer-lock hold time and eliminating shared-checkout mutation during the Codex run.",
+    "source": "auto"
+  },
+  "deliverable_type": "code-change",
+  "execution_track": "code"
+}

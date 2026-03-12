@@ -1,0 +1,189 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "do-workflow-context-bloat-tracking",
+  "source_artifact_path": "docs/plans/do-workflow-context-bloat-tracking/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/do-workflow-context-bloat-tracking/fact-find.md",
+    "plan": "docs/plans/do-workflow-context-bloat-tracking/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Each workflow step loads skill modules that consume AI capacity. Without knowing which ones are the heaviest, it's impossible to spot waste or catch modules that are silently growing. Per-module tracking would reveal where to focus efficiency improvements and catch bloat before it drives up costs.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Per-module context consumption is tracked in telemetry records and surfaced in reports, enabling targeted efficiency improvements.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Report shows all context files",
+      "current_or_option_state": "Report shows module files only — the stated goal",
+      "gap_or_implication": "Option B: focused on the stated need",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Full per-file breakdown",
+      "current_or_option_state": "Module-only breakdown — sufficient for the stated goal",
+      "gap_or_implication": "Option B: right-sized",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Same test burden",
+      "current_or_option_state": "Same test burden",
+      "gap_or_implication": "Equal",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Keys are all context paths — no explicit module identity",
+      "current_or_option_state": "Keys are resolved module paths persisted at record time — stable identity",
+      "gap_or_implication": "Option B: solves the module identity problem",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "No extra I/O",
+      "current_or_option_state": "No extra I/O",
+      "gap_or_implication": "Equal",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Old records: field `undefined` — consumers must default",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Equal",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The workflow telemetry system aggregates context bytes across all loaded files into a single `context_input_bytes` number. This prevents identifying which modules are the heaviest consumers or detecting growth over time. The decision is what field shape to use for per-module byte tracking and how to extend the report layer without bloating the health-check consumer.",
+    "goals": [
+      "Track per-module context consumption in each telemetry record",
+      "Surface per-module data in the Markdown/JSON report",
+      "Maintain backwards compatibility with old JSONL records"
+    ],
+    "non_goals": [
+      "Time-bucketed trend dashboards or UI visualizations",
+      "Changes to how skills pass `--module` flags",
+      "Migration of historical JSONL records",
+      "Per-file tracking for non-module context (skill SKILL.md, input paths, artifact)"
+    ],
+    "constraints": [
+      "Must not break existing JSONL consumers (health check, summary, report)",
+      "`computeTelemetryKey()` must include new field to prevent dedupe collisions",
+      "Old records without the new field must be handled gracefully",
+      "Module identity must be stable across time — cannot depend on filesystem state at query time",
+      "Health-check output (`WorkflowTelemetrySummary`) must not be bloated with per-module aggregates"
+    ],
+    "assumptions": [
+      "Module file sizes are reasonable for in-memory processing (largest module ~10KB)",
+      "The existing `readPathMetrics()` loop already reads each file — no extra I/O",
+      "`docs/business-os/startup-loop/ideas/lp-do-ideas-telemetry.schema.md` documents the persisted JSONL fields and must be updated alongside any schema change"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Module identity stability",
+        "Why it matters": "Module keys must be reliably identifiable without replaying resolution at query time",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Query simplicity",
+        "Why it matters": "Per-module data should be easy to extract with `jq` or simple TS code",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Schema consistency",
+        "Why it matters": "Field should match existing record patterns and the `per_module_bytes` name from the fact-find",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Consumer isolation",
+        "Why it matters": "Health check should not receive per-module aggregation overhead",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Backwards compatibility",
+        "Why it matters": "Old records without the field must not break consumers",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Storage overhead",
+        "Why it matters": "Additional JSONL bytes per record",
+        "Weight/priority": "Low"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: All-context-paths map",
+        "Description": "`context_path_bytes: Record<string, number>` for every context file (skill + modules + inputs + artifact)",
+        "Upside": "Full per-file breakdown",
+        "Downside": "Cannot reliably distinguish modules from non-modules at query time without replaying `resolveModulePath()` against current filesystem — unstable over refactors; broader scope than needed; fact-find contract drift (`per_module_bytes` → `context_path_bytes`)",
+        "Key risks": "Module identity depends on filesystem state at query time",
+        "Viable?": "No — rejected"
+      },
+      {
+        "Option": "B: Module-only resolved-path map",
+        "Description": "`per_module_bytes?: Record<string, number>` keyed by resolved repo-relative module paths (same paths already in `context_paths` and computed as `resolvedModules`). Empty `{}` for zero-module records; field absent (`undefined`) on legacy records — semantically distinct",
+        "Upside": "Stable module identity (resolved at record time, persisted); simple flat map query; matches fact-find contract name; focused on modules only; clean legacy/empty distinction",
+        "Downside": "Does not include non-module file sizes (not recoverable from existing records — only flat path list + aggregate total persisted)",
+        "Key risks": "Does not capture skill SKILL.md or input-path sizes — acceptable, those are less variable",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C: Summary-time re-read",
+        "Description": "Keep record unchanged; aggregate per-module only in summary by re-reading files",
+        "Upside": "No schema change",
+        "Downside": "Violates point-in-time measurement principle; files may have changed; not queryable from JSONL",
+        "Key risks": "Trend analysis unreliable",
+        "Viable?": "No — rejected"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option B — module-only resolved-path map `per_module_bytes: Record<string, number>` (empty `{}` when zero modules; field absent/`undefined` on legacy records)",
+      "**Why this wins": "**",
+      "What it depends on": "The `readPathMetrics()` loop already has per-file metrics and the resolved module paths. The builder needs to accumulate a `Record<string, number>` during the existing loop.",
+      "Option A (all-context-paths map)": "Rejected because it does not solve the module identity problem. At query time, distinguishing module entries from skill/input/artifact entries in the map would require replaying `resolveModulePath()` against the current filesystem, which can resolve differently after refactors. Also introduces contract drift from the fact-find's `per_module_bytes` name.",
+      "Option C (summary-time re-read)": "Rejected because it violates the telemetry principle of point-in-time measurement. Re-reading files at summary time would reflect current sizes, not historical."
+    },
+    "rejected_approaches": [
+      "**Option A (all-context-paths map):** Rejected because it does not solve the module identity problem. At query time, distinguishing module entries from skill/input/artifact entries in the map would require replaying `resolveModulePath()` against the current filesystem, which can resolve differently after refactors. Also introduces contract drift from the fact-find's `per_module_bytes` name.",
+      "**Option C (summary-time re-read):** Rejected because it violates the telemetry principle of point-in-time measurement. Re-reading files at summary time would reflect current sizes, not historical."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "Record type + builder + dedupe key first, then report (report depends on the record field)"
+      ],
+      "risks_to_carry_forward": [
+        "Dedupe key collision if `per_module_bytes` is not included in `computeTelemetryKey()` — must be part of the first task",
+        "Backwards compat — explicit handling in report code, not assumed"
+      ]
+    }
+  }
+}

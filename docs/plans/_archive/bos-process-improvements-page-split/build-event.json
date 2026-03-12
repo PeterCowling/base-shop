@@ -1,0 +1,11 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-12T16:44:50.094Z",
+  "feature_slug": "bos-process-improvements-page-split",
+  "why": "The #new-ideas and #in-progress sections need to be separate pages so each can be focused, navigated to directly, and not compete for vertical space.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "#new-ideas and #in-progress each live at their own URL; navigation links point to each; root /process-improvements redirects.",
+  "source": "operator",
+  "build_date": "2026-03-12",
+  "status": "complete"
+}

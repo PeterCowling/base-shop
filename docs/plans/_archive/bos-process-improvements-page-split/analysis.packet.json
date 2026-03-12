@@ -1,0 +1,259 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "bos-process-improvements-page-split",
+  "source_artifact_path": "docs/plans/bos-process-improvements-page-split/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/bos-process-improvements-page-split/fact-find.md",
+    "plan": "docs/plans/bos-process-improvements-page-split/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The #new-ideas and #in-progress sections need to be separate pages so each can be focused, navigated to directly, and not compete for vertical space.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "#new-ideas and #in-progress each live at their own URL; navigation links point to each; root /process-improvements redirects or shows a landing.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Hero anchor links become `<Link>` to new routes; sub-nav added via `layout.tsx`",
+      "current_or_option_state": "Same link changes needed",
+      "gap_or_implication": "Sub-nav rendered by `layout.tsx`; hero tiles become `<Link href=\"/process-improvements/...\">`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Each page has independent filter state, pendingState, bulkSelection",
+      "current_or_option_state": "Shared state still initialised; conditionals guard unused state",
+      "gap_or_implication": "Independent state — no cross-section mutation risk",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "No change — API routes unchanged",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "No action needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "No change",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "No action needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Tests follow component — `InProgressInbox.test.tsx` and `NewIdeasInbox.test.tsx` split from monolith tests",
+      "current_or_option_state": "Test must deal with mode prop; existing fixture patterns still work",
+      "gap_or_implication": "Portable — RTL render pattern is identical; same `initialXxx` props, different component import",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Each `page.tsx` calls only the data functions relevant to its section; auto-refresh continues unchanged",
+      "current_or_option_state": "Monolithic data fetch unchanged",
+      "gap_or_implication": "`in-progress/page.tsx` calls `loadActivePlans()` only; `new-ideas/page.tsx` calls `loadProcessImprovementsProjection()` + `collectInProgressDispatchIds()`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Marginally faster page loads (each page fetches less)",
+      "current_or_option_state": "No improvement",
+      "gap_or_implication": "Negligible; single operator user",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Revert PR restores full monolith",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Clean PR revert",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "Should the business filter dropdown appear on the In Progress page?"
+  ],
+  "stage_payload": {
+    "decision_summary": "The `/process-improvements` page must be split so that In Progress and New Ideas each have their own URL. The core decision is how to decompose the monolithic `ProcessImprovementsInbox` client component (~1,750 lines) that currently owns all state and renders for both sections. The data layer needs no changes — the question is purely about component structure and routing.",
+    "goals": [
+      "`/process-improvements/in-progress` — focused page for active plan monitoring",
+      "`/process-improvements/new-ideas` — focused page for queue triage (WorkItems + Deferred + Recently Actioned)",
+      "Root `/process-improvements` redirects to `/process-improvements/new-ideas`",
+      "Navigation updated to link to both sub-pages"
+    ],
+    "non_goals": [
+      "Changing API routes or data model",
+      "Adding new features during the split",
+      "Redesigning visual style"
+    ],
+    "constraints": [
+      "No new API routes — existing `/api/process-improvements/items` and decision routes sufficient",
+      "English-only, no i18n",
+      "Existing `ProcessImprovementsInbox.test.tsx` tests must pass after split"
+    ],
+    "assumptions": [
+      "Deferred and Recently Actioned sections stay with New Ideas",
+      "BulkActionBar stays with New Ideas (queue items only)",
+      "Business filter retained on both pages (default; operator can remove from In Progress later)"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Match existing patterns",
+        "Why it matters": "`page.tsx` (server) + `ClientInbox.tsx` (client) is the established BOS convention",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Test portability",
+        "Why it matters": "Existing test suite must pass without wholesale rewrite",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "State isolation",
+        "Why it matters": "Each page must own its own state independently",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Decomposition effort",
+        "Why it matters": "Monolith is large but sections are already logically scoped",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Rollback simplicity",
+        "Why it matters": "Internal tool; revert PR must fully restore current behaviour",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Full extraction",
+        "Description": "Extract `InProgressInbox` and `NewIdeasInbox` as two independent client components, each with their own `page.tsx`. Root route redirects. Nav gets two links or a sub-nav via `layout.tsx`.",
+        "Upside": "Matches existing pattern exactly; clean state isolation; data fetching per page; test suites independent",
+        "Downside": "More files to create; ~1,750-line monolith must be read carefully during decomposition",
+        "Key risks": "Missing a shared utility that both components need (unlikely given fact-find; both sections use only section-specific sub-components)",
+        "Viable?": "Yes — **chosen**"
+      },
+      {
+        "Option": "B — Parameterised monolith",
+        "Description": "Add `mode: \"in-progress\" \\",
+        "Upside": "\"new-ideas\"` prop to `ProcessImprovementsInbox`; render only the relevant section; two new `page.tsx` files pass the prop",
+        "Downside": "Fewer new files; monolith stays in one place",
+        "Key risks": "All state still initialised regardless of mode; conditional rendering adds coupling; test isolation is superficial; root data fetch remains monolithic; doesn't actually achieve clean page-level separation",
+        "Viable?": "State for unused section is initialised and polled; harder to prune later; only looks cheaper on the surface"
+      },
+      {
+        "Option": "C — Shared layout with tabs (no URL split)",
+        "Description": "Add a `layout.tsx` with tabs, keep URL as `/process-improvements?tab=...`",
+        "Upside": "Zero component decomposition required",
+        "Downside": "Does not meet the goal — operator explicitly wants separate URLs",
+        "Key risks": "Fails goal",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Full extraction into two independent client components, each with their own `page.tsx` sub-route. Root `/process-improvements` redirects to `/process-improvements/new-ideas`. Sub-nav rendered by a shared `layout.tsx` inside the `process-improvements/` directory.",
+      "Why this wins": "It matches the existing `page.tsx` + client-component pattern used throughout BOS. State isolation is real, not cosmetic. Data fetching per page is more precise. Tests follow the component and remain fully independent. The decomposition is mechanical — all private sub-components in the monolith are already logically scoped to one section.",
+      "What it depends on": "The monolith's private sub-components (`InProgressSection`, `ActivePlanCard`, `InboxSection`, `WorkItemCard`, `BulkActionBar`, `RecentlyActionedSection`, `ProcessImprovementsSummary`) being extractable without coupling; the fact-find confirms this (no cross-section sub-component usage found).",
+      "Q": "Should the business filter dropdown appear on the In Progress page?",
+      "Why operator input is required": "UX preference; the filter is trivial to include or exclude technically.",
+      "Planning impact": "affects which filter UI elements are included in `InProgressInbox`; default assumption is to include it (mirrors current behaviour)."
+    },
+    "rejected_approaches": [
+      "Option B (parameterised monolith) — superficially cheaper but keeps all state initialised for both sections, adds conditional logic, and doesn't achieve clean URL-level separation. Deferred cost, not saved cost.",
+      "Option C (tabs, no URL split) — fails the stated goal of separate URLs."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "Existing `ProcessImprovementsInbox.test.tsx` must be split across `InProgressInbox.test.tsx` and `NewIdeasInbox.test.tsx` covering the same TCs",
+        "Hero tile link update in `page.tsx` must use Next.js `<Link>` (not `<a>`)",
+        "Root `page.tsx` redirect must use `import { redirect } from 'next/navigation'`"
+      ],
+      "sequencing_constraints": [
+        "TASK-01 (layout + redirect) can be done first or last — it is independent of component decomposition",
+        "TASK-02 and TASK-03 can be done in either order but must not be parallelised (both touch the monolith file)"
+      ],
+      "risks_to_carry_forward": [
+        "`InProgressSection` renders `null` when `activePlans.length === 0` — needs an empty state on its own page",
+        "Hero tiles on each sub-page should cross-link to the sibling page (not self-link); planner must confirm which tiles appear on which page"
+      ]
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Page routing",
+          "current": "`/process-improvements` — single page, all sections",
+          "trigger": "Operator visits URL or clicks nav",
+          "future": null,
+          "steady": "All API routes unchanged",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "Navigation",
+          "current": "`NavigationHeader.tsx` single link to `/process-improvements`",
+          "trigger": "—",
+          "future": null,
+          "steady": "Global layout unchanged",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "In Progress section",
+          "current": "Part of `ProcessImprovementsInbox`, shares state with New Ideas",
+          "trigger": "Monolith mounts",
+          "future": null,
+          "steady": "`ActivePlanCard` render logic; decision API routes",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "New Ideas section",
+          "current": "Part of `ProcessImprovementsInbox`, shares state with In Progress",
+          "trigger": "Monolith mounts",
+          "future": null,
+          "steady": "All triage/defer/decline logic; `WorkItemCard`; `BulkActionBar`; `RecentlyActionedSection`",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "Hero stat tiles",
+          "current": "`<a href=\"#in-progress\">` and `<a href=\"#new-ideas\">` in `page.tsx` hero",
+          "trigger": "—",
+          "future": null,
+          "steady": "All other stat tiles (Deferred, Done)",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "Auto-refresh",
+          "current": "Single `useAutoRefresh` in monolith polls `/api/process-improvements/items` every 30s",
+          "trigger": "—",
+          "future": null,
+          "steady": "Endpoint unchanged; 30s interval unchanged",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "Tests",
+          "current": "`ProcessImprovementsInbox.test.tsx` covers full monolith",
+          "trigger": "—",
+          "future": null,
+          "steady": "Data-layer tests (`projection.test.ts`, `active-plans.test.ts`, route tests) unchanged",
+          "seams": null
+        }
+      ]
+    }
+  }
+}

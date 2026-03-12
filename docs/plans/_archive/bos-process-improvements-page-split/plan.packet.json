@@ -1,0 +1,234 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "bos-process-improvements-page-split",
+  "source_artifact_path": "docs/plans/bos-process-improvements-page-split/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/bos-process-improvements-page-split/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The #new-ideas and #in-progress sections need to be separate pages so each can be focused, navigated to directly, and not compete for vertical space.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "#new-ideas and #in-progress each live at their own URL; navigation links point to each; root /process-improvements redirects or shows a landing.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Hero stat tiles become `<Link>` on each page; sub-nav rendered by `layout.tsx`",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "Each page keeps its own hero with cross-link tiles",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Each page owns independent state; no shared state between sub-routes",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Filter, pending, bulk selection all scoped per page",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "API routes unchanged; auth checks unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No analytics on this page",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Test file split: `InProgressInbox.test.tsx` + `NewIdeasInbox.test.tsx` covering same TCs as monolith test",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Data-layer tests unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Each page.tsx calls only its needed data functions; auto-refresh reuses same endpoint",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "`in-progress/page.tsx` calls `loadActivePlans()` only; `new-ideas/page.tsx` calls projection + activePlans",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Single operator user; marginal improvement from scoped fetches",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Revert PR restores full monolith",
+      "current_or_option_state": "All",
+      "gap_or_implication": "Clean PR revert",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Split the single `/process-improvements` page into two focused sub-routes: `/process-improvements/in-progress` for active plan monitoring and `/process-improvements/new-ideas` for queue triage. The approach is full extraction: the monolithic `ProcessImprovementsInbox` client component (~1,750 lines) is decomposed into two independent client components (`InProgressInbox` and `NewIdeasInbox`), each with their own `page.tsx` server component and test file. A shared `layout.tsx` adds a sub-nav tab strip. The root route becomes a redirect. No API changes are required.",
+    "goals": [
+      "`/process-improvements/in-progress` — dedicated page for active plan monitoring",
+      "`/process-improvements/new-ideas` — dedicated page for queue triage (WorkItems + Deferred + Recently Actioned)",
+      "Root `/process-improvements` redirects to `/process-improvements/new-ideas`",
+      "Sub-nav tabs allow switching between the two pages",
+      "Navigation header unchanged — root `/process-improvements` redirects to `/new-ideas`; `isActive` highlighting works automatically"
+    ],
+    "non_goals": [
+      "Changing API routes or data model",
+      "Adding new features during the split",
+      "Redesigning visual style",
+      "Adding a dedicated page for Deferred or Recently Actioned"
+    ],
+    "constraints": [
+      "No new API routes — existing `/api/process-improvements/items` and decision routes are sufficient",
+      "English-only, no i18n",
+      "Existing `ProcessImprovementsInbox.test.tsx` tests must be ported (not lost) — same TCs, new component imports"
+    ],
+    "assumptions": [
+      "Deferred and Recently Actioned sections stay with New Ideas page",
+      "BulkActionBar stays with New Ideas page (queue items only)",
+      "Business filter retained on both pages (mirrors current behaviour; operator can remove from In Progress later)",
+      "`InProgressSection` null-render replaced with an empty state message on its own page"
+    ],
+    "selected_approach": [
+      "What was chosen: Full extraction — two new client components (`InProgressInbox`, `NewIdeasInbox`), two new sub-route `page.tsx` files, shared `layout.tsx` for sub-nav, root `page.tsx` becomes redirect.",
+      "Why planning is not reopening option selection: Analysis confirmed Option A is decisive. The private sub-components in the monolith are already logically scoped to one section; decomposition is mechanical."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Extract InProgressInbox component + create in-progress sub-route",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New `InProgressInbox.tsx` client component + `in-progress/page.tsx` server component + `InProgressInbox.test.tsx`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Extract NewIdeasInbox component + create new-ideas sub-route + delete monolith",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New `NewIdeasInbox.tsx` client component + `new-ideas/page.tsx` server component + `NewIdeasInbox.test.tsx`; delete `ProcessImprovementsInbox.tsx` and `ProcessImprovementsInbox.test.tsx`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add layout.tsx sub-nav + root redirect + update nav link",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 92,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New `layout.tsx` inside `process-improvements/`; root `page.tsx` converted to redirect; `NavigationHeader.tsx` nav link updated",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Page routing",
+          "trigger": "Operator visits `/process-improvements` or clicks nav",
+          "flow": "Root `page.tsx` calls `redirect('/process-improvements/new-ideas')`; `layout.tsx` wraps sub-route content with tab strip",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Rollback: revert PR restores old page.tsx"
+        },
+        {
+          "id": null,
+          "label": "In Progress page",
+          "trigger": "Operator navigates to `/process-improvements/in-progress`",
+          "flow": "`in-progress/page.tsx` calls `loadActivePlans()` → passes `initialActivePlans` to `InProgressInbox` → renders `ActivePlanCard` list; auto-refresh polls same endpoint every 30s using `activePlans` subset",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": null,
+          "seams": "If no plans, empty state shown (not null-render)"
+        },
+        {
+          "id": null,
+          "label": "New Ideas page",
+          "trigger": "Operator navigates to `/process-improvements/new-ideas`",
+          "flow": "`new-ideas/page.tsx` calls `loadProcessImprovementsProjection()` + `loadActivePlans()` + `collectInProgressDispatchIds()` → passes all to `NewIdeasInbox` → renders WorkItemCard queue + Deferred + RecentlyActioned; auto-refresh polls same endpoint; bulk actions, defer, do, decline all function as before",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "Deferred + RecentlyActioned sections stay here"
+        },
+        {
+          "id": null,
+          "label": "Navigation",
+          "trigger": "Operator clicks \"Process Improvements\" in nav",
+          "flow": "Nav link href stays at `/process-improvements`; root redirects to `/new-ideas`; `isActive` (`startsWith`) highlights for both sub-routes — no nav change needed",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Nav unchanged"
+        },
+        {
+          "id": null,
+          "label": "Sub-nav tabs",
+          "trigger": "On any `/process-improvements/*` page",
+          "flow": "`layout.tsx` renders tab strip with \"New Ideas\" → `/process-improvements/new-ideas` and \"In Progress\" → `/process-improvements/in-progress`; active tab highlighted via `pathname.startsWith`",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "—"
+        }
+      ]
+    }
+  }
+}

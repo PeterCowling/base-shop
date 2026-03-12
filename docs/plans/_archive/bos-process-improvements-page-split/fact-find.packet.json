@@ -1,0 +1,212 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "bos-process-improvements-page-split",
+  "source_artifact_path": "docs/plans/bos-process-improvements-page-split/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "The #new-ideas and #in-progress sections need to be separate pages so each can be focused, navigated to directly, and not compete for vertical space.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "#new-ideas and #in-progress each live at their own URL; navigation links point to each; root /process-improvements redirects or shows a landing.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "Single page with two major sections separated by scroll; anchor links in hero",
+      "gap_or_implication": "Hero anchor links break after split; sub-nav or updated links needed",
+      "carry_forward_or_notes": "Yes — nav update required"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Shared filter state, shared pendingState, shared bulkSelection across both sections",
+      "gap_or_implication": "Split breaks shared filter UX; each page needs independent filter state",
+      "carry_forward_or_notes": "Yes — state scope changes"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Admin-only page, auth check on API routes",
+      "gap_or_implication": "No change — routes unchanged",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No analytics on this page",
+      "gap_or_implication": "No change",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "`ProcessImprovementsInbox.test.tsx` covers full component",
+      "gap_or_implication": "Tests must follow component decomposition",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Auto-refresh endpoint returns all data in one payload",
+      "gap_or_implication": "Each sub-page will fetch only relevant subset; endpoint usable as-is (pages ignore unused fields)",
+      "carry_forward_or_notes": "Yes — confirm no wasted over-fetch"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Single internal operator user; no perf budget",
+      "gap_or_implication": "No concern",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "PR-based; internal tool",
+      "gap_or_implication": "Rollback: revert PR; forward: redirect root route or keep as landing",
+      "carry_forward_or_notes": "Yes"
+    }
+  ],
+  "open_operator_questions": [
+    "Should the In Progress page retain the business filter dropdown, or is it not needed when the page is dedicated to that section only?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The `/process-improvements` page currently renders all sections on a single page: In Progress, New Ideas, Deferred, and Recently Actioned. The operator wants `#in-progress` and `#new-ideas` split into separate pages — each with its own URL, independent data load, and focused chrome. The monolithic `ProcessImprovementsInbox` client component (~1,750 lines) holds all state and all section renders in one unit; it must be decomposed.",
+    "goals": [
+      "`/process-improvements/in-progress` — dedicated page for active plan monitoring",
+      "`/process-improvements/new-ideas` — dedicated page for queue triage (WorkItems + Deferred + Recently Actioned)",
+      "Navigation links in `NavigationHeader` (or a sub-nav) point to the new routes",
+      "Root `/process-improvements` becomes a redirect or a minimal landing page"
+    ],
+    "non_goals": [
+      "Changing the API routes or data model",
+      "Adding new sections or features during the split",
+      "Changing the Deferred or Recently Actioned sections (they stay with New Ideas or can follow later)",
+      "Redesigning the visual style of either page"
+    ],
+    "constraints": [
+      "No new API routes required — existing `/api/process-improvements/items` and decision routes are sufficient",
+      "No i18n — English-only internal tool (confirmed in memory)",
+      "`ProcessImprovementsInbox.test.tsx` tests must continue to pass after the split"
+    ],
+    "assumptions": [
+      "Deferred and Recently Actioned sections stay with the New Ideas page (they are downstream of triage)",
+      "The `ProcessImprovementsSummary` pill row either becomes page-scoped or is dropped per page",
+      "Auto-refresh can stay on both pages independently (30s poll, same endpoint)",
+      "`BulkActionBar` stays on the New Ideas page (bulk select only applies to queue items)"
+    ],
+    "key_entry_points": [
+      "`apps/business-os/src/app/process-improvements/page.tsx` — server component, data fetching entry point",
+      "`apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx` — monolithic client component (~1,750 lines)",
+      "`apps/business-os/src/app/api/process-improvements/items/route.ts` — auto-refresh endpoint",
+      "`apps/business-os/src/components/layout/NavigationHeader.tsx:41` — nav link definition"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis bos-process-improvements-page-split`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Routing / sub-routes",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — no sub-routes today; new `page.tsx` files needed",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Monolithic component decomposition",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — all private sub-components identified and role-mapped",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Shared state coupling",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — 5 shared state items documented; all break cleanly at page boundary",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Data fetching per sub-page",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — server fns can be called independently; auto-refresh endpoint reusable",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Navigation update",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `NavigationHeader.tsx:41` is the sole nav entry; anchor links in hero also need update",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test portability",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Advisory: `ProcessImprovementsInbox.test.tsx` renders the full monolith; will need to follow decomposed components",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Operator visits `/process-improvements` or clicks the nav link",
+      "end_condition": "Operator sees both In Progress section and New Ideas section on the same scrollable page",
+      "areas": [
+        {
+          "id": null,
+          "label": "Page load",
+          "flow": "Server component fetches 3 data sources → passes all as `initialXxx` props to `ProcessImprovementsInbox`",
+          "owners": null,
+          "evidence": "`page.tsx`",
+          "issues": "No sub-routes"
+        },
+        {
+          "id": null,
+          "label": "In Progress rendering",
+          "flow": "`ProcessImprovementsInbox` computes `filteredActivePlans` → renders `<InProgressSection id=\"in-progress\">`",
+          "owners": null,
+          "evidence": "—",
+          "issues": "Renders `null` when no plans — no empty state"
+        },
+        {
+          "id": null,
+          "label": "New Ideas rendering",
+          "flow": "Computes `newIdeasItems` (items not in `inProgressDispatchIds`) → renders `<InboxSection id=\"new-ideas\">`",
+          "owners": null,
+          "evidence": "—",
+          "issues": "—"
+        },
+        {
+          "id": null,
+          "label": "Anchor navigation",
+          "flow": "Hero header stat tiles are `<a href=\"#in-progress\">` and `<a href=\"#new-ideas\">` — fragment-only, same page",
+          "owners": null,
+          "evidence": "—",
+          "issues": "Will break when sections are on separate pages"
+        },
+        {
+          "id": null,
+          "label": "Global nav",
+          "flow": "`NavigationHeader.tsx:41` links to `/process-improvements` only",
+          "owners": null,
+          "evidence": "—",
+          "issues": "No sub-nav today"
+        },
+        {
+          "id": null,
+          "label": "Auto-refresh",
+          "flow": "`useAutoRefresh` polls `/api/process-improvements/items` every 30s, blocked while `pendingState != null`",
+          "owners": null,
+          "evidence": "—",
+          "issues": "Returns all 4 data types regardless of which section is displayed"
+        }
+      ]
+    }
+  }
+}

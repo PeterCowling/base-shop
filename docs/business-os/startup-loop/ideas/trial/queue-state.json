@@ -5703,7 +5703,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "domain": "BOS",
-      "status": "auto_executed",
+      "status": "superseded",
       "recommended_route": "lp-do-fact-find",
       "priority": "P3",
       "confidence": 0.95,
@@ -5716,7 +5716,9 @@
         "Apply same pattern to ideas.user.html and other BOS dashboard HTML files"
       ],
       "created_at": "2026-02-26T16:35:00Z",
-      "queue_state": "completed"
+      "superseded_at": "2026-03-12T00:00:00Z",
+      "superseded_reason": "operator-closed: idea superseded, no longer needed",
+      "queue_state": "superseded"
     },
     {
       "schema_version": "dispatch.v1",

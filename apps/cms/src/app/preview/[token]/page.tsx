@@ -140,7 +140,6 @@ export default function PreviewViewer(props: { params: Promise<{ token: string }
                 <span className="font-medium">{data.label}</span>
               </div>
               <div className="text-sm">
-                {/* eslint-disable-next-line ds/no-raw-font -- CMS-202 false positive on 'timestamp' [ttl=2026-03-31] */}
                 {t("cms.preview.meta.timestamp")}:{" "}
                 {new Date(data.timestamp).toLocaleString()}
               </div>

@@ -170,6 +170,8 @@ export const LEGACY_REDIRECT_ENTRIES = [
   ["/ar/private-rooms/sea-view-apartment", "/ar/ghuraf-khassa/shaqqa-itlala-bahriya"],
   ["/ar/private-rooms/street-level-arrival", "/ar/ghuraf-khassa/wusul-bila-daraj"],
   ["/ar/terms", "/ar/shorout"],
+  ["/assistance", "/en/help"],
+  ["/assistance/", "/en/help/"],
   ["/da/about", "/da/om-os"],
   ["/da/assistance", "/da/hjaelp"],
   ["/da/assistance/age-accessibility", "/da/hjaelp"],

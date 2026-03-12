@@ -138,20 +138,6 @@ const GUIDE_SAMPLES = [
   ...getRepresentativeSamples("howToGetHere"),
 ];
 
-function getBundleString(
-  bundle: Record<string, unknown> | undefined,
-  path: readonly string[],
-): string | undefined {
-  let current: unknown = bundle;
-  for (const segment of path) {
-    if (!current || typeof current !== "object" || Array.isArray(current)) {
-      return undefined;
-    }
-    current = (current as Record<string, unknown>)[segment];
-  }
-  return typeof current === "string" && current.trim().length > 0 ? current : undefined;
-}
-
 function extractH1Text(html: string): string | undefined {
   const match = html.match(/<h1[^>]*>([^<]+)<\/h1>/i);
   return match?.[1]?.trim();
@@ -167,19 +153,15 @@ function clearGuidesBundle(lang: string): void {
   }
 }
 
-function getEffectiveGuidesBundle(
-  serverGuides: Record<string, unknown> | undefined,
-): Record<string, unknown> | undefined {
-  if (serverGuides) {
-    return serverGuides;
-  }
+const EXPECTED_PLAN_CHOICE_COPY = [
+  "Choose your plan",
+  "Ferry (seasonal)",
+  "Train + Bus (year-round)",
+  "Private transfer",
+] as const;
 
-  try {
-    return i18n.getResourceBundle("en", "guides") as Record<string, unknown> | undefined;
-  } catch {
-    return undefined;
-  }
-}
+const EXPECTED_TRANSPORT_NOTICE_TITLE =
+  "All transportation details are provided in good faith.";
 
 describe("GuideContent SSR translation audit", () => {
   beforeEach(() => {
@@ -200,7 +182,6 @@ describe("GuideContent SSR translation audit", () => {
     "renders translated SSR HTML for $section guide $guideKey",
     async ({ guideKey }) => {
       const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle("en", guideKey);
-      const effectiveGuides = getEffectiveGuidesBundle(serverGuides);
 
       const html = renderToString(
         <GuideContent
@@ -214,50 +195,13 @@ describe("GuideContent SSR translation audit", () => {
       const renderedText = stripHtml(html);
       const h1Text = extractH1Text(html);
 
-      expect(effectiveGuides).toBeDefined();
       expect(h1Text).toBeTruthy();
       expect(h1Text).not.toBe(guideKey);
       expect(html).not.toContain(guideKey);
-
-      const expectedPlanChoiceTitle = getBundleString(effectiveGuides, [
-        "components",
-        "planChoice",
-        "title",
-      ]);
-      const expectedPlanChoiceFerry = getBundleString(effectiveGuides, [
-        "components",
-        "planChoice",
-        "options",
-        "ferry",
-      ]);
-      const expectedPlanChoiceTrainBus = getBundleString(effectiveGuides, [
-        "components",
-        "planChoice",
-        "options",
-        "trainBus",
-      ]);
-      const expectedPlanChoiceTransfer = getBundleString(effectiveGuides, [
-        "components",
-        "planChoice",
-        "options",
-        "transfer",
-      ]);
-      const expectedTransportTitle = getBundleString(effectiveGuides, [
-        "transportNotice",
-        "title",
-      ]);
-
-      expect(expectedPlanChoiceTitle).toBeTruthy();
-      expect(expectedPlanChoiceFerry).toBeTruthy();
-      expect(expectedPlanChoiceTrainBus).toBeTruthy();
-      expect(expectedPlanChoiceTransfer).toBeTruthy();
-      expect(expectedTransportTitle).toBeTruthy();
-
-      expect(renderedText).toContain(expectedPlanChoiceTitle as string);
-      expect(renderedText).toContain(expectedPlanChoiceFerry as string);
-      expect(renderedText).toContain(expectedPlanChoiceTrainBus as string);
-      expect(renderedText).toContain(expectedPlanChoiceTransfer as string);
-      expect(renderedText).toContain(expectedTransportTitle as string);
+      for (const expectedCopy of EXPECTED_PLAN_CHOICE_COPY) {
+        expect(renderedText).toContain(expectedCopy);
+      }
+      expect(renderedText).toContain(EXPECTED_TRANSPORT_NOTICE_TITLE);
 
       for (const rawToken of RAW_HTML_TOKENS) {
         expect(html).not.toContain(rawToken);

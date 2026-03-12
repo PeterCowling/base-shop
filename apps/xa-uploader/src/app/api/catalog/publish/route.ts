@@ -148,7 +148,14 @@ async function executeCloudPublish(params: {
     });
   } catch {
     warnings.push("publish_state_promotion_failed");
+    uploaderLog("warn", "publish_state_promotion_failed", {
+      storefront: params.storefront,
+      productCount: updatedSnapshot.products.length,
+      docRevision: snapshot.docRevision,
+    });
   }
+
+  const promotionFailed = warnings.includes("publish_state_promotion_failed");
 
   const kv = await getUploaderKv();
   const deployResult =
@@ -168,6 +175,7 @@ async function executeCloudPublish(params: {
     deployStatus: deployResult.status,
     deployReason: deployResult.reason,
     deployNextEligibleAt: deployResult.nextEligibleAt,
+    promotionFailed: promotionFailed || undefined,
     warnings,
   });
 }

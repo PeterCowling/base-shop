@@ -1,0 +1,204 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "xa-uploader-concurrency-fixes",
+  "source_artifact_path": "docs/plans/xa-uploader-concurrency-fixes/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/xa-uploader-concurrency-fixes/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "If two people edit the catalog at the same time, product images can be deleted while still in use, and publish status changes can silently fail without anyone knowing. The dead KV mutex code could also mislead future developers into thinking it provides mutual exclusion when it does not. This means catalog data — the source of truth for what customers see — can end up in an inconsistent state that is hard to diagnose and fix.",
+    "intended_outcome_type": "measurable",
+    "intended_outcome_statement": "Image delete TOCTOU window is narrowed from unbounded to milliseconds via optimistic concurrency fence (true atomicity is impossible given R2's unconditional delete API); publish-state promotion failures are surfaced via server-side structured logging in both sync and publish routes with additive `promotionFailed` boolean for future client enhancement; dead KV mutex code is removed.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no UI changes in this plan",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Backend-only changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "No new UI states. On fence conflict, DELETE returns structured error; client logs to console.warn (existing behavior) — image preserved (safe outcome).",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Graceful degradation, no client changes needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no new auth surfaces. Fence write uses existing write token.",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Same auth path as product saves",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required — add `uploaderLog` for DELETE operations and promotion failure server-side logging",
+      "current_or_option_state": "TASK-03, TASK-05",
+      "gap_or_implication": "Uses existing `uploaderLog` pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — baseline DELETE tests (TASK-01), fence mechanism tests (TASK-02), promotion failure tests (TASK-03)",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "DELETE handler currently has zero test coverage",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required — no schema changes. Fence write uses existing `writeCloudDraftSnapshot` with `ifMatchDocRevision`. Additive `promotionFailed` boolean in response.",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "`promotionFailed` is additive — does not break existing client parsing",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required — fence write adds one extra `writeCloudDraftSnapshot` round-trip per delete. Acceptable for admin UI action.",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Low-frequency operation",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "No schema changes — rollback is a simple commit revert.",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Clean rollback path",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "This plan addresses three issues in the xa-uploader catalog pipeline: (1) an image DELETE TOCTOU race condition where `keyIsStillReferenced()` and `deletePersistedImageKey()` execute without atomicity, allowing a concurrent product save to assign an image between the reference check and the R2 delete; (2) insufficient severity for publish-state promotion failures in both `sync/route.ts` and `publish/route.ts`, where failures are pushed as warning strings with no server-side logging; (3) dead KV mutex functions (`acquireSyncMutex`/`releaseSyncMutex`) that are exported but never imported. The ch",
+    "goals": [
+      "Narrow the image DELETE TOCTOU window from unbounded to milliseconds via an optimistic concurrency fence, significantly reducing the risk of deleting an image while it is concurrently being assigned to a product.",
+      "Elevate promotion failure severity in both sync and publish routes so the operator receives a clear signal via server logs and an additive response field.",
+      "Remove dead KV mutex functions to prevent future misuse."
+    ],
+    "non_goals": [
+      "Rewriting the sync pipeline's existing cloud sync lock mechanism.",
+      "Supporting real-time multi-user concurrent editing.",
+      "Changing the image upload (POST) path.",
+      "Adding `acquireCloudSyncLock` to product save routes.",
+      "Client-side UI changes for image delete failure visibility (acceptable degradation via existing `console.warn`)."
+    ],
+    "constraints": [
+      "R2 `delete()` is unconditional — no etag-based or conditional-delete API.",
+      "KV does not support compare-and-set.",
+      "`acquireCloudSyncLock` is only used by sync and publish routes. Product save routes use `writeCloudDraftSnapshot` with `ifMatchDocRevision` but do NOT acquire the sync lock.",
+      "Client-side image delete UI (`CatalogProductImagesFields.client.tsx`, line 253) logs non-OK DELETE responses to `console.warn` only."
+    ],
+    "assumptions": [
+      "Single-operator or very small team editing pattern. Concurrent sessions are rare but possible during batch cleanup.",
+      "The catalog contract service (`writeCloudDraftSnapshot` with `ifMatchDocRevision`) provides reliable optimistic concurrency.",
+      "The contract service accepts a \"no-op\" fence write (same products, same revisions, with `ifMatchDocRevision` set) without error. If it rejects no-content-diff writes, the DELETE handler should abort and return an error (image preserved). Mutating `revisionsById` is not safe — those are per-product optimistic concurrency values used by product save routes."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Snapshot-fenced delete with fence-before-delete ordering. Read snapshot, check references, write a no-op fence update with `ifMatchDocRevision`. If the fence write succeeds (no concurrent mutation detected up to this point), proceed to R2 delete. If the fence write 409-conflicts, abort the delete — image is preserved. Note: a narrow residual window exists between fence write completion and R2 delete completion where a concurrent product save could still assign the image. This is a significant narrowing from the current unbounded TOCTOU but not true atomicity, which is impossible given R2's unc",
+      "Promotion failure: add `uploaderLog(\"warn\", ...)` in both sync and publish routes, plus additive `promotionFailed: true` boolean in response. Keep `warnings` array shape unchanged.",
+      "Dead code removal: remove `acquireSyncMutex` and `releaseSyncMutex` from `syncMutex.ts`, preserve `UploaderKvNamespace`, `UploaderR2Bucket`, and `getUploaderKv()`.",
+      "Why planning is not reopening option selection:",
+      "Analysis compared 4 options with clear elimination rationale. The chosen approach was evaluated against all concurrent mutation vectors (not just sync/publish). No new evidence contradicts the analysis."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add DELETE handler baseline tests",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New test cases in `apps/xa-uploader/src/app/api/catalog/images/__tests__/route.test.ts`",
+        "affects": "`apps/xa-uploader/src/app/api/catalog/images/__tests__/route.test.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Implement snapshot-fenced delete (fence-before-delete)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified DELETE handler in `apps/xa-uploader/src/app/api/catalog/images/route.ts` + new fence tests",
+        "affects": "`apps/xa-uploader/src/app/api/catalog/images/route.ts`, `apps/xa-uploader/src/app/api/catalog/images/__tests__/route.test.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Elevate promotion failure visibility in sync + publish routes",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `sync/route.ts` and `publish/route.ts` + tests",
+        "affects": "`apps/xa-uploader/src/app/api/catalog/sync/route.ts`, `apps/xa-uploader/src/app/api/catalog/publish/route.ts`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Remove dead KV mutex functions",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `apps/xa-uploader/src/lib/syncMutex.ts`",
+        "affects": "`apps/xa-uploader/src/lib/syncMutex.ts`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Add DELETE handler logging",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified DELETE handler in `apps/xa-uploader/src/app/api/catalog/images/route.ts`",
+        "affects": "`apps/xa-uploader/src/app/api/catalog/images/route.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-03",
+      "TASK-04"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

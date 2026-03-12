@@ -861,6 +861,107 @@ function ActionButton({
   );
 }
 
+function DecisionBriefPanel({
+  item,
+  showEvidence,
+  onToggleEvidence,
+}: {
+  item: ProcessImprovementQueueInboxItem;
+  showEvidence: boolean;
+  onToggleEvidence: () => void;
+}) {
+  const brief = item.decisionBrief;
+  if (!brief) return null;
+
+  return (
+    <div className="space-y-3">
+      <div className="rounded-lg border-s-2 border-s-warning bg-surface-2 px-3 py-2">
+        <p className="text-xs font-medium text-muted">Why this matters now</p>
+        <p className="mt-0.5 text-sm leading-relaxed text-secondary">{brief.whyNow}</p>
+      </div>
+
+      <div className="rounded-lg bg-success-soft px-3 py-2">
+        <p className="text-xs font-medium text-success-fg">Business benefit</p>
+        <p className="mt-0.5 text-sm leading-relaxed text-fg">{brief.businessBenefit}</p>
+      </div>
+
+      <div className="rounded-lg bg-info-soft px-3 py-2">
+        <p className="text-xs font-medium text-info-fg">If you press Do</p>
+        <p className="mt-0.5 text-sm leading-relaxed text-fg">{brief.expectedNextStep}</p>
+      </div>
+
+      {brief.confidenceExplainer ? (
+        <p className="text-xs italic text-muted">{brief.confidenceExplainer}</p>
+      ) : null}
+
+      <button
+        type="button"
+        onClick={onToggleEvidence}
+        className="flex items-center gap-1.5 text-xs font-medium text-muted hover:text-secondary"
+      >
+        <svg
+          className={cn(
+            "h-3 w-3 shrink-0 transition-transform duration-150",
+            showEvidence && "rotate-180"
+          )}
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M4 6l4 4 4-4" />
+        </svg>
+        Evidence & details
+      </button>
+
+      <div
+        className={cn(
+          "grid transition-[grid-template-rows] duration-200 ease-in-out",
+          showEvidence ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        )}
+      >
+        <div className="overflow-hidden">
+          <div className="space-y-2 pt-1">
+            {brief.evidenceLabels.map((label, index) => (
+              <div
+                key={`${label.raw}-${index}`}
+                className="flex items-start gap-2 text-xs"
+              >
+                <span className="shrink-0 font-medium text-muted">{label.label}:</span>
+                <code className="break-all font-mono text-muted/80">{label.raw}</code>
+              </div>
+            ))}
+
+            {item.body && item.body !== brief.problem && item.body !== brief.whyNow ? (
+              <p className="text-xs leading-relaxed text-muted">
+                <span className="font-medium">Detail: </span>
+                {item.body}
+              </p>
+            ) : null}
+
+            <p className="text-xs text-muted">
+              <span className="font-medium">Dispatch ID: </span>
+              <code className="font-mono">{item.dispatchId}</code>
+            </p>
+
+            {item.locationAnchors.length > 0 ? (
+              <div className="space-y-1">
+                {item.locationAnchors.map((anchor, index) => (
+                  <p key={`${anchor}-${index}`} className="text-xs">
+                    <code className="break-all font-mono text-muted/80">{anchor}</code>
+                  </p>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function WorkItemCard({
   item,
   pendingState,
@@ -885,6 +986,7 @@ function WorkItemCard({
   const [showDeferPicker, setShowDeferPicker] = useState(false);
   const [showDeclineConfirm, setShowDeclineConfirm] = useState(false);
   const [declineRationale, setDeclineRationale] = useState("");
+  const [showEvidence, setShowEvidence] = useState(false);
   const notice = workItemStatusNotice(item, errorMessage);
   const accentBgClass = item.isOverdue
     ? "bg-danger"
@@ -950,9 +1052,18 @@ function WorkItemCard({
       >
         <div className="overflow-hidden">
           <div className="space-y-3 px-4 pb-4 ps-5 md:px-5 md:pb-5 md:ps-6">
-            <p className="text-sm leading-relaxed text-secondary">{item.body}</p>
-
-            <WorkItemPriorityPanel item={item} />
+            {isProcessImprovementQueueItem(item) && item.decisionBrief ? (
+              <DecisionBriefPanel
+                item={item}
+                showEvidence={showEvidence}
+                onToggleEvidence={() => setShowEvidence((prev) => !prev)}
+              />
+            ) : (
+              <>
+                <p className="text-sm leading-relaxed text-secondary">{item.body}</p>
+                <WorkItemPriorityPanel item={item} />
+              </>
+            )}
             <WorkItemNotice notice={notice} />
 
             {item.availableActions.length > 0 ? (

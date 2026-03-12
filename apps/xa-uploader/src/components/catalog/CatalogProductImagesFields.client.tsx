@@ -15,11 +15,11 @@ import {
 } from "react";
 import Image from "next/image";
 
-import { deriveCatalogPublishState } from "@acme/lib/xa";
 import {
   type CatalogProductDraftInput,
   splitList,
 } from "@acme/lib/xa/catalogAdminSchema";
+import { deriveCatalogPublishState } from "@acme/lib/xa/catalogWorkflow";
 
 import type { XaCatalogStorefront } from "../../lib/catalogStorefront.types";
 import { useUploaderI18n } from "../../lib/uploaderI18n.client";

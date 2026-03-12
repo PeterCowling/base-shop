@@ -20,7 +20,7 @@ binding = "ASSETS"
 
 [[kv_namespaces]]
 binding = "XA_UPLOADER_KV"
-id = "REPLACE_WITH_PROD_NS_ID"
+id = "0bbc2a464a48486191380ffe363a0adc"
 
 # ============================================================================
 # R2 BUCKET SETUP (required for image upload)
@@ -54,6 +54,9 @@ service = "xa-drop-worker"
 #   wrangler secret put SESSION_SECRET
 #   wrangler secret put CART_COOKIE_SECRET
 #
+# IP allowlist (admin ingress gate — deny-all default when missing):
+#   wrangler secret put XA_UPLOADER_ALLOWED_IPS
+#
 # Runtime required (catalog sync returns 503 "unconfigured" if missing):
 #   wrangler secret put XA_CATALOG_CONTRACT_BASE_URL
 #   wrangler secret put XA_CATALOG_CONTRACT_READ_TOKEN
@@ -85,8 +88,9 @@ XA_UPLOADER_MODE = ""
 XA_UPLOADER_LOCAL_FS_DISABLED = "1"
 # Trusted on Cloudflare Workers to use CF-Connecting-IP for rate limiting.
 XA_TRUST_PROXY_IP_HEADERS = "1"
-# Optional uploader ingress allowlist (comma-separated IPs).
-# XA_UPLOADER_ALLOWED_IPS = "203.0.113.10,198.51.100.15"
+# XA_UPLOADER_ALLOWED_IPS is now a required Cloudflare secret (not a [vars] entry).
+# Set via: wrangler secret put XA_UPLOADER_ALLOWED_IPS
+# The preflight script enforces its existence before deploy.
 # Optional tuning vars — uncomment to override defaults.
 # XA_CATALOG_CONTRACT_TIMEOUT_MS = "20000"
 # XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS = "45000"
@@ -136,7 +140,7 @@ XA_TRUST_PROXY_IP_HEADERS = "1"
 # Preview deploy trigger endpoint for xa-b rebuilds after catalog publish.
 # Token remains secret via XA_B_DEPLOY_HOOK_TOKEN.
 # Configure XA_B_DEPLOY_HOOK_URL as a per-environment secret in Cloudflare.
-# XA_UPLOADER_ALLOWED_IPS = "203.0.113.10,198.51.100.15"
+# XA_UPLOADER_ALLOWED_IPS — see required secrets section above.
 # XA_CATALOG_CONTRACT_TIMEOUT_MS = "20000"
 # XA_UPLOADER_SYNC_VALIDATE_TIMEOUT_MS = "45000"
 # XA_UPLOADER_SYNC_TIMEOUT_MS = "300000"

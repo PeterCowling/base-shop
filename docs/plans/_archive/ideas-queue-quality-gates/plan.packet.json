@@ -1,0 +1,245 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "ideas-queue-quality-gates",
+  "source_artifact_path": "docs/plans/ideas-queue-quality-gates/plan.md",
+  "source_artifact_status": "Draft",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/ideas-queue-quality-gates/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Right now, nothing checks whether an idea entering the backlog is real or just internal processing noise. Over half the entries have missing categories, and about 80 are duplicated fragments of the AI talking to itself. The operator cannot trust the backlog for decision-making. Adding automatic quality checks and cleaning up the existing data would make the ideas list reliable for prioritising what to work on next.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Deterministic admission guards prevent noise entering the queue, existing queue data is cleaned and domain-classified, and a fresh pattern analysis on clean data is produced.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: no UI — backend validation logic",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A: no user-facing states",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A: no auth/sensitive data — internal queue validation",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required: new content-rejection telemetry via existing `kind: \"validation_rejected\"` path",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "New rejection reasons flow into existing telemetry",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required: dedicated unit tests for guard function and bridge alignment",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "First dedicated test file for queue-admission.ts",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required: new ContentGuardResult type, new rejection reason literals",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Domain enforcement on persisted entries only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required: regex + Set lookups must be fast on 547-entry queue",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Pre-compiled patterns, Set-based dedup",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A: internal tooling, no deployment",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Code change to validation functions",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Add deterministic content quality guards to the ideas queue admission path. The guards reject noise (agent chatter, duplicates, malformed content) before it enters the queue. A pure `validateDispatchContent()` function is called from `enqueueQueueDispatches()` (protecting 4 bridges) and also called directly by the 2 direct writers (historical-carryover bridge and self-evolving-backbone-consume) in their existing write loops. After guards are in place, a cleanup script purges existing noise and classifies missing domains. Finally, a fresh operator idea pattern analysis runs on the cleaned data.",
+    "goals": [
+      "Add deterministic admission guards that reject noise before it enters the queue",
+      "Ensure all 6 queue writers route through the content guard (4 via enqueueQueueDispatches, 2 via direct guard call)",
+      "Clean existing queue data: purge noise, classify domains, fix non-canonical values",
+      "Produce a fresh pattern analysis on cleaned data"
+    ],
+    "non_goals": [
+      "Migrating queue file format from hand-authored to TS persistence layer",
+      "Adding LLM-based semantic validation",
+      "Changing the dispatch.v2 schema"
+    ],
+    "constraints": [
+      "`enqueueQueueDispatches()` in `lp-do-ideas-queue-admission.ts` is the write entrypoint for 4 of 6 queue writers. The historical-carryover bridge and self-evolving-backbone-consume both write directly via `queue.dispatches.push()` and must call the guard function directly.",
+      "`domain` is NOT in `TrialDispatchPacketV2` — exists only on persisted queue entries by convention. Domain enforcement operates on persisted entries only.",
+      "`enqueueQueueDispatches()` currently performs only dispatch_id + cluster dedup. No structural or content checks.",
+      "`ValidationFailureReason` type has 7 literals in `lp-do-ideas-trial-queue.ts`. New content guard reasons are separate — defined in queue-admission.ts.",
+      "No dedicated test file exists for `enqueueQueueDispatches()` — currently tested only indirectly through bridge tests."
+    ],
+    "assumptions": [
+      "All 154 duplicate noise dispatches have identical area_anchor text (area_anchor exact-match dedup is sufficient)",
+      "Historical-carryover bridge can be refactored to use `enqueueQueueDispatches()` without changing its external interface"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Content quality guards as a pure function called from `enqueueQueueDispatches()` before append. Guards include: forbidden-pattern check on area_anchor, minimum word count (≥5 words for artifact_delta), area_anchor exact-match dedup against existing queue entries, and domain canonical check when present on persisted entry.",
+      "Historical-carryover bridge refactored to use `enqueueQueueDispatches()` instead of direct `queue.dispatches.push()`.",
+      "One-time cleanup script for existing queue data.",
+      "Fresh pattern analysis on cleaned data.",
+      "Why planning is not reopening option selection:",
+      "Analysis evaluated 3 options and eliminated B and C on \"all ingress paths protected\" criterion. No new evidence changes the calculus."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Extract content guard function and integrate into enqueueQueueDispatches()",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `scripts/src/startup-loop/ideas/lp-do-ideas-queue-admission.ts` + new test file",
+        "affects": "`scripts/src/startup-loop/ideas/lp-do-ideas-queue-admission.ts`, `[readonly] scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-file.ts`, `[readonly] scripts/src/startup-loop/ideas/lp-do-ideas-trial-queue.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add content guard call to direct-write paths (historical-carryover + self-evolving-backbone)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `scripts/src/startup-loop/ideas/lp-do-ideas-historical-carryover-bridge.ts` + `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts` + test updates",
+        "affects": "`scripts/src/startup-loop/ideas/lp-do-ideas-historical-carryover-bridge.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/__tests__/lp-do-ideas-historical-carryover-bridge.test.ts`, `[readonly] scripts/src/startup-loop/ideas/lp-do-ideas-queue-admission.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Queue data cleanup script",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "cleanup script + cleaned queue-state.json",
+        "affects": "`docs/business-os/startup-loop/ideas/trial/queue-state.json`, `scripts/src/startup-loop/ideas/`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Re-run operator idea pattern analysis on clean data",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated pattern analysis artifact",
+        "affects": "`docs/business-os/startup-loop/ideas/trial/queue-state.json`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Queue admission (4 bridges via enqueueQueueDispatches)",
+          "trigger": "Dispatch packet arrives at `enqueueQueueDispatches()`",
+          "flow": "1. Existing dispatch_id dedup 2. Existing cluster dedup 3. **NEW: Content guard check** via `validateDispatchContent()` — forbidden patterns, min word count, area_anchor dedup, domain canonical check 4. Append to queue 5. Update counts and write atomically 6. Append telemetry (including rejection telemetry for guarded packets)",
+          "task_ids": [
+            "TASK-01"
+          ],
+          "dependency_note": "creates guards",
+          "seams": "Forbidden patterns derived from current noise — may need updates for future patterns"
+        },
+        {
+          "id": null,
+          "label": "Queue admission (historical-carryover bridge)",
+          "trigger": "Historical manifest item processed",
+          "flow": "1. Existing inline dispatch_id + cluster dedup 2. **NEW: Content guard check** via same `validateDispatchContent()` called before `queue.dispatches.push()` 3. If rejected, stamp admission_result as suppressed 4. If accepted, push to queue + stamp admission_result as enqueued 5. Write queue + manifest atomically",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": "adds guard call",
+          "seams": "Bridge keeps its own write loop for per-item manifest stamping and dry-run support"
+        },
+        {
+          "id": null,
+          "label": "Queue admission (self-evolving-backbone-consume)",
+          "trigger": "Self-evolving backbone processes follow-up dispatches",
+          "flow": "1. Existing inline dispatch_id + cluster dedup 2. **NEW: Content guard check** via same `validateDispatchContent()` called before `queue.dispatches.push()` 3. If rejected, skip push 4. If accepted, push to queue 5. Write queue + telemetry",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": "adds guard call",
+          "seams": "Writer keeps its own write loop for follow-up dispatch management"
+        },
+        {
+          "id": null,
+          "label": "Queue data quality",
+          "trigger": "One-time cleanup script invocation",
+          "flow": "1. Load queue-state.json 2. Apply content guards to identify noise 3. Remove noise dispatches 4. Classify missing domains 5. Fix non-canonical domain values 6. Recalculate counts 7. Write atomically 8. Output reviewable diff",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Domain classification requires per-dispatch judgment; script produces reviewable diff"
+        }
+      ]
+    }
+  }
+}

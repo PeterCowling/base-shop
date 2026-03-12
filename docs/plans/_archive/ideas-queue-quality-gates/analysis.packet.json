@@ -1,0 +1,216 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "ideas-queue-quality-gates",
+  "source_artifact_path": "docs/plans/ideas-queue-quality-gates/analysis.md",
+  "source_artifact_status": "Draft",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/ideas-queue-quality-gates/fact-find.md",
+    "plan": "docs/plans/ideas-queue-quality-gates/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Right now, nothing checks whether an idea entering the backlog is real or just internal processing noise. Over half the entries have missing categories, and about 80 are duplicated fragments of the AI talking to itself. The operator cannot trust the backlog for decision-making. Adding automatic quality checks and cleaning up the existing data would make the ideas list reliable for prioritising what to work on next.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Deterministic admission guards prevent noise entering the queue, existing queue data is cleaned and domain-classified, and a fresh pattern analysis on clean data is produced.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "New `ValidationFailureReason` literals flow into existing `kind: \"validation_rejected\"` telemetry",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Same for both — extend existing telemetry path",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Tests for guard function + `enqueueQueueDispatches()` + historical-carryover bridge alignment",
+      "current_or_option_state": "Tests for `validateDispatchContent()` and callers; historical-carryover still unguarded",
+      "gap_or_implication": "Option A: complete coverage of all 5 bridges",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Add `ValidationFailureReason` literals; domain canonical check on persisted entries only (domain not in packet type)",
+      "current_or_option_state": "Same contract changes; historical-carryover still bypasses",
+      "gap_or_implication": "Option A closes the gap",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Regex runs once per enqueue; Set lookup for dedup",
+      "current_or_option_state": "Same runtime cost",
+      "gap_or_implication": "Negligible difference",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "`enqueueQueueDispatches()` change + small historical-carryover bridge refactor",
+      "current_or_option_state": "Two-file change but incomplete coverage",
+      "gap_or_implication": "Option A slightly larger blast radius but complete",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The ideas queue has no content quality gates. 29.3% of dispatches are noise (agent chatter, duplicates, malformed content) and 53.2% lack domain classification. The queue is unreliable for operator decision-making. We need to decide where to place deterministic guards, how to handle the domain field (which isn't part of the dispatch packet contract), and how to clean existing data.",
+    "goals": [
+      "Add deterministic admission guards that reject noise before it enters the queue",
+      "Clean existing queue data: purge noise, classify domains, fix non-canonical values",
+      "Produce a fresh pattern analysis on cleaned data"
+    ],
+    "non_goals": [
+      "Migrating queue file format from hand-authored to TS persistence layer",
+      "Adding LLM-based semantic validation",
+      "Changing the dispatch.v2 schema"
+    ],
+    "constraints": [
+      "`enqueueQueueDispatches()` in `lp-do-ideas-queue-admission.ts` is the write entrypoint for 4 of 5 bridges (agent-session, codebase-signals, build-origin, milestone). The 5th bridge (`lp-do-ideas-historical-carryover-bridge.ts`) writes directly via `queue.dispatches.push()` + `atomicWriteQueueState()`, bypassing `enqueueQueueDispatches()` entirely. `TrialQueue.validatePacket()` is a separate path also bypassed by bridges.",
+      "Routing adapter is a pure function (no file I/O, no state) — cannot do dedup or domain lookups",
+      "`domain` is NOT in `TrialDispatchPacket` or `TrialDispatchPacketV2` or dispatch.v2 schema — exists only on `ArtifactDeltaEvent` upstream and in hand-authored persisted queue entries. No current packet constructor attaches `domain` as an extra property on the packet object.",
+      "`enqueueQueueDispatches()` currently performs only dispatch_id dedup + cluster dedup + append + telemetry. It has no structural checks (schema_version, mode, etc.) — those exist only in `TrialQueue.validatePacket()` which bridges bypass.",
+      "Upstream `ArtifactDomain` enum has 8 values (MARKET, SELL, PRODUCTS, LOGISTICS, STRATEGY, BOS, ASSESSMENT, LEGAL)"
+    ],
+    "assumptions": [],
+    "evaluation_criteria": [
+      {
+        "Criterion": "All ingress paths protected",
+        "Why it matters": "5 bridges + skill path must all be gated",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "No existing test breakage",
+        "Why it matters": "18+ routing adapter + 10+ queue tests",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Noise catch rate",
+        "Why it matters": "Must eliminate the 160 known noise dispatches",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Domain enforcement feasibility",
+        "Why it matters": "domain isn't in packet type — approach must be implementable",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Implementation simplicity",
+        "Why it matters": "Fewer moving parts = less risk",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Future extensibility",
+        "Why it matters": "Easy to add new patterns",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Centralized in queue admission + historical-carryover alignment",
+        "Description": "Content guards extracted as a shared pure function called by `enqueueQueueDispatches()`, plus historical-carryover bridge refactored to use `enqueueQueueDispatches()` (or call the same guard function directly before its `queue.dispatches.push()`). Forbidden patterns, area_anchor dedup, domain check on persisted entry.",
+        "Upside": "Single enforcement point; all 5 bridges protected; domain accessible at write time",
+        "Downside": "`enqueueQueueDispatches()` grows; historical-carryover bridge needs a targeted change",
+        "Key risks": "Historical-carryover alignment is a small refactor (bridge already does its own dispatch_id + cluster dedup inline)",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: New shared validation function without bridge alignment",
+        "Description": "Extract `validateDispatchContent()` called by `enqueueQueueDispatches()` and routing adapter, but leave historical-carryover bridge unchanged",
+        "Upside": "Clean separation; reusable; unit-testable pure function",
+        "Downside": "Historical-carryover bridge still bypasses all guards; routing adapter still can't do dedup (no state); two call sites to maintain",
+        "Key risks": "Fails \"all ingress paths\" criterion unless historical-carryover is also changed",
+        "Viable?": "No — incomplete without bridge alignment"
+      },
+      {
+        "Option": "C: Guards in routing adapter only",
+        "Description": "Add forbidden patterns and min-length to the routing adapter",
+        "Upside": "Early rejection; pure function; easy to test",
+        "Downside": "Only protects skill path — all 5 bridges bypass routing adapter entirely; can't do dedup or domain (no state)",
+        "Key risks": "80% of noise is from bridges (artifact_delta) — this misses the primary source",
+        "Viable?": "No — fails \"all ingress paths\" criterion"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Centralized guards in `enqueueQueueDispatches()` with historical-carryover bridge alignment",
+      "Why this wins": "It's the simplest approach that protects all ingress paths. 4 of 5 bridges already converge at `enqueueQueueDispatches()`. The 5th (historical-carryover) must be aligned — either by refactoring it to use `enqueueQueueDispatches()`, or by calling the same guard function from its write path. The guard logic itself is extracted as a pure function for testability, called from `enqueueQueueDispatches()` before append. Option C is eliminated because it misses all bridge paths.",
+      "**What it depends on": "**",
+      "Historical-carryover alignment": "The bridge currently does its own dispatch_id + cluster dedup inline (lines 289–301) then pushes directly. It must either route through `enqueueQueueDispatches()` or call the same content guard function before `queue.dispatches.push()`. The simplest approach is to refactor the bridge to use `enqueueQueueDispatches()` since it already builds valid packets.",
+      "Domain enforcement": "Since `domain` is NOT in `TrialDispatchPacketV2` and no current packet constructor attaches it as an extra property, domain enforcement cannot work by reading packet properties at admission time. Instead, domain enforcement operates at the cleanup/persistence layer only — the cleanup script classifies domains on existing persisted entries, and future domain presence is an LLM-instruction concern (agent-authored entries in queue-state.json include domain by convention, not by type contract). The admission guard validates domain canonicality only when the field is already present on the persiste"
+    },
+    "rejected_approaches": [
+      "**Option B (shared function without bridge alignment)** — Still fails \"all ingress paths\" unless the historical-carryover bridge is also changed. If the bridge must be changed regardless, then Option A (centralize + align) is simpler than extracting a shared function and hoping all writers call it.",
+      "**Option C (routing adapter only)** — Fundamentally insufficient. All 5 bridges bypass the routing adapter, and 80% of noise comes from bridge-emitted `artifact_delta` dispatches. This option would miss the primary noise source."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Implement content validation guards in `enqueueQueueDispatches()` with forbidden patterns, min word count, area_anchor dedup, and domain canonical check (when present on persisted entry)",
+        "Align historical-carryover bridge to route through `enqueueQueueDispatches()` or call the same guard function",
+        "Write cleanup script for existing queue data (noise removal + domain classification)",
+        "Re-run pattern analysis on cleaned data"
+      ],
+      "validation_implications": [
+        "Unit tests for each validation rule in queue-admission.ts"
+      ],
+      "sequencing_constraints": [
+        "Guards must be implemented and tested BEFORE cleanup (cleanup script can use the same validation functions)",
+        "Cleanup must complete BEFORE pattern analysis (analysis needs clean data)"
+      ],
+      "risks_to_carry_forward": [
+        "Forbidden-pattern false positives on legitimate dispatches — mitigate by testing against full queue",
+        "Domain classification accuracy for 291 unclassified entries — mitigate by producing reviewable diff"
+      ]
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Queue admission",
+          "current": "No content quality checks; any non-empty area_anchor accepted; no domain enforcement; dispatch_id + cluster dedup only; no structural checks in `enqueueQueueDispatches()` (those exist only in `TrialQueue.validatePacket()` which bridges bypass); historical-carryover bridge writes directly bypassing `enqueueQueueDispatches()`",
+          "trigger": "Dispatch packet arrives at queue write path",
+          "future": "1. Existing dispatch_id + cluster dedup 2. **NEW: Forbidden-pattern check** on area_anchor (reject agent reasoning, malformed content) 3. **NEW: Minimum word count** (≥5 words for artifact_delta) 4. **NEW: Area_anchor dedup** (reject if identical anchor already in queue) 5. **NEW: Domain canonical check** (validate domain is in ArtifactDomain enum if present on persisted entry; warn-with-default if missing) 6. Persist to queue file 7. **NEW: Historical-carryover bridge aligned** to use `enqueueQueueDispatches()` or call the same guard function",
+          "steady": "Packet emission, routing adapter validation, telemetry format",
+          "seams": "Forbidden patterns derived from current noise; may need updates for future noise patterns; historical-carryover bridge refactor is small but must be tested"
+        },
+        {
+          "id": null,
+          "label": "Queue data quality",
+          "current": "29.3% noise, 53.2% missing domain, 1.8% non-canonical domain",
+          "trigger": "One-time cleanup script",
+          "future": "1. Load queue-state.json 2. Remove noise dispatches (area_anchor dedup + forbidden patterns) 3. Classify missing domains using audit analysis 4. Fix non-canonical values (BUILD→PRODUCTS, Platform→BOS) 5. Update counts 6. Write atomically",
+          "steady": "Dispatch content, evidence_refs, location_anchors — only queue_state metadata and noise removal",
+          "seams": "Domain classification requires judgment per dispatch; script must produce reviewable diff"
+        }
+      ]
+    }
+  }
+}

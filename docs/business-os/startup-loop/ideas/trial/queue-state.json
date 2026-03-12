@@ -1,7 +1,7 @@
 {
-  "last_updated": "2026-03-12T14:00:03.443Z",
+  "last_updated": "2026-03-12T14:11:07.097Z",
   "counts": {
-    "enqueued": 61,
+    "enqueued": 70,
     "processed": 10,
     "declined": 0,
     "skipped": 0,
@@ -9,13 +9,290 @@
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 277,
-    "fact_find_ready": 43,
+    "fact_find_ready": 47,
     "plan_ready": 0,
-    "micro_build_ready": 14,
+    "micro_build_ready": 19,
     "briefing_ready": 0,
-    "total": 547
+    "total": 556
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260312140500-0001",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "SELL",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260312-caryina-ux-audit-stock",
+      "root_event_id": "operator:HBAG:SELL:caryina-ux-audit-stock:20260312",
+      "anchor_key": "caryina-add-to-cart-blocked",
+      "cluster_key": "HBAG:SELL:caryina-stock-hydration",
+      "cluster_fingerprint": "stock-hydration-sku-inventory-disabled-button",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — Customers cannot add anything to cart despite stock being available",
+      "location_anchors": [
+        "apps/caryina/src/lib/shop.ts",
+        "data/shops/caryina/inventory.json",
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: stock values from inventory.json not reaching SKU object, add-to-cart permanently disabled",
+        "data/shops/caryina/inventory.json shows quantity 5/7/4",
+        "coverage-hint: UX",
+        "coverage-hint: data-contracts",
+        "coverage-hint: testing"
+      ],
+      "why": "Every product on the Caryina website has a greyed-out Add to Cart button even though stock exists in the warehouse. No customer can buy anything. The inventory data is stored correctly but is not reaching the product pages. Fixing this unblocks all purchases.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "Add-to-cart button is enabled on all in-stock PDPs; stock count from inventory.json is correctly hydrated into SKU objects",
+        "source": "operator"
+      },
+      "created_at": "2026-03-12T14:04:28.559Z",
+      "priority": "P1",
+      "confidence": 0.95
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260312140500-0002",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "SELL",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260312-caryina-ux-audit-price",
+      "root_event_id": "operator:HBAG:SELL:caryina-ux-audit-price:20260312",
+      "anchor_key": "caryina-wrong-price",
+      "cluster_key": "HBAG:SELL:caryina-price-data",
+      "cluster_fingerprint": "products-json-9900-should-be-2900",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — All products show wrong price (EUR 99 instead of EUR 29)",
+      "location_anchors": [
+        "data/shops/caryina/products.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: price stored as 9900 minor units, correct value is 2900",
+        "coverage-hint: data-contracts",
+        "coverage-hint: testing"
+      ],
+      "why": "Every product shows EUR 99.00 but the correct retail price is EUR 29.00. Customers see a price more than three times higher than intended, which would kill conversion even if Add to Cart worked. This is a data entry error in the product catalog.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "All three Caryina products display EUR 29.00; products.json stores 2900 in minor units",
+        "source": "operator"
+      },
+      "created_at": "2026-03-12T14:04:28.559Z",
+      "priority": "P1",
+      "confidence": 0.99
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260312140500-0003",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "SELL",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260312-caryina-ux-audit-locale-format",
+      "root_event_id": "operator:HBAG:SELL:caryina-ux-audit-locale-format:20260312",
+      "anchor_key": "caryina-price-locale-format",
+      "cluster_key": "HBAG:SELL:caryina-formatMoney-locale",
+      "cluster_fingerprint": "formatMoney-hardcoded-en-US",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — Prices display in US dollar format for European customers",
+      "location_anchors": [
+        "apps/caryina/src/lib/shop.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: formatMoney hardcodes en-US locale, Italian/German customers see dollar formatting",
+        "apps/caryina/src/lib/shop.ts:65",
+        "coverage-hint: UI",
+        "coverage-hint: UX",
+        "coverage-hint: testing"
+      ],
+      "why": "Italian and German customers see prices formatted like $29.00 instead of 29,00 EUR. This makes the brand look unprofessional and confuses buyers about which currency they are paying in. The fix is to use the customer locale when formatting prices.",
+      "intended_outcome": {
+        "type": "measurable",
+        "statement": "Price formatting respects customer locale: en shows EUR 29.00, de shows 29,00 EUR, it shows 29,00 EUR",
+        "source": "operator"
+      },
+      "created_at": "2026-03-12T14:04:28.559Z",
+      "priority": "P2",
+      "confidence": 0.95
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260312140500-0004",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "SELL",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260312-caryina-ux-audit-cookie",
+      "root_event_id": "operator:HBAG:SELL:caryina-ux-audit-cookie:20260312",
+      "anchor_key": "caryina-cookie-banner-stuck",
+      "cluster_key": "HBAG:SELL:caryina-consent-banner",
+      "cluster_fingerprint": "consent-banner-no-dismiss-hydration",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — Cookie consent banner stays on screen after clicking Accept",
+      "location_anchors": [
+        "apps/caryina/src/components/ConsentBanner.client.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: banner persists across page navigations after Accept click, likely SSR hydration mismatch",
+        "coverage-hint: UX",
+        "coverage-hint: testing"
+      ],
+      "why": "The cookie consent banner covers part of the page and never goes away, even after clicking Accept. It reappears on every page navigation. This makes the site feel broken from the very first interaction and blocks content below it.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Cookie consent banner dismisses on Accept/Decline and stays dismissed across page navigations",
+        "source": "operator"
+      },
+      "created_at": "2026-03-12T14:04:28.559Z",
+      "priority": "P2",
+      "confidence": 0.85
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260312140500-0005",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "SELL",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260312-caryina-ux-audit-italian-title",
+      "root_event_id": "operator:HBAG:SELL:caryina-ux-audit-italian-title:20260312",
+      "anchor_key": "caryina-stale-italian-content",
+      "cluster_key": "HBAG:SELL:caryina-site-content-stale",
+      "cluster_fingerprint": "app-local-site-content-italian-heading",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — English pages show Italian tagline in browser tab",
+      "location_anchors": [
+        "apps/caryina/data/shops/caryina/site-content.generated.json",
+        "data/shops/caryina/site-content.generated.json"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: stale app-local copy has Italian heading, root data copy has correct English",
+        "coverage-hint: data-contracts"
+      ],
+      "why": "English-speaking customers see an Italian tagline in their browser tab and homepage. This confuses the brand message and looks like an unfinished site. The root data file has the correct English text but a stale local copy is overriding it.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Homepage title and heading show correct English text on /en, Italian on /it, German on /de; stale local copy is synced or removed",
+        "source": "operator"
+      },
+      "created_at": "2026-03-12T14:04:28.559Z",
+      "priority": "P2",
+      "confidence": 0.95
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260312140500-0006",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "SELL",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260312-caryina-ux-audit-lang-switcher",
+      "root_event_id": "operator:HBAG:SELL:caryina-ux-audit-lang-switcher:20260312",
+      "anchor_key": "caryina-language-switcher",
+      "cluster_key": "HBAG:SELL:caryina-locale-navigation",
+      "cluster_fingerprint": "no-language-switcher-3-locales",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — No way for customers to switch language",
+      "location_anchors": [
+        "apps/caryina/src/components/Header.tsx",
+        "/en",
+        "/it",
+        "/de"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: three languages exist (en/de/it) but no switcher in the UI",
+        "coverage-hint: UI",
+        "coverage-hint: UX"
+      ],
+      "why": "The site supports three languages but customers have no way to discover or switch between them. Italian and German customers landing on /en cannot find their language. This blocks conversion for non-English speakers visiting via search or links.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A language switcher is visible in the site header allowing customers to switch between en, de, and it",
+        "source": "operator"
+      },
+      "created_at": "2026-03-12T14:04:28.559Z",
+      "priority": "P2",
+      "confidence": 0.8
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260312140500-0007",
+      "mode": "trial",
+      "business": "HBAG",
+      "trigger": "operator_idea",
+      "domain": "SELL",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260312-caryina-ux-audit-pdp-content",
+      "root_event_id": "operator:HBAG:SELL:caryina-ux-audit-pdp-content:20260312",
+      "anchor_key": "caryina-pdp-descriptions",
+      "cluster_key": "HBAG:SELL:caryina-product-descriptions",
+      "cluster_fingerprint": "pdp-no-description-materials-dimensions",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina — Product pages have no description, materials, or dimensions",
+      "location_anchors": [
+        "apps/caryina/src/app/[lang]/product/[slug]/page.tsx",
+        "data/shops/caryina/products.json"
+      ],
+      "provisional_deliverable_family": "multi",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: PDP shows only images and price, no text about product",
+        "coverage-hint: UI",
+        "coverage-hint: UX",
+        "coverage-hint: data-contracts"
+      ],
+      "why": "Product pages show only images and a price with no explanation of what the product is, what it is made of, or how big it is. For a EUR 29 accessory, customers need to understand the product before buying. Without descriptions, the page cannot convince anyone to purchase.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Each PDP displays product description, materials, dimensions, and care instructions sourced from product data",
+        "source": "operator"
+      },
+      "created_at": "2026-03-12T14:04:28.559Z",
+      "priority": "P2",
+      "confidence": 0.8
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260312143000-9554",
@@ -25821,6 +26098,272 @@
       "queue_state": "enqueued",
       "first_observed_at": "2026-03-12",
       "created_at": "2026-03-12T12:30:37.266Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260312141107-0002",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "6ee5b14c0cda7d14c2d645d51535bf9447e7b08a",
+      "root_event_id": "build-origin:ideas-queue-quality-gates:6ee5b14c0cda7d14c2d645d51535bf9447e7b08a",
+      "anchor_key": "the-admission-guard-validatedispatchcontent-is-a-new-quality-gate-in-the-ideas-p",
+      "cluster_key": "build-origin:bos:ideas-queue-quality-gates:the-admission-guard-validatedispatchcontent-is-a-new-quality-gate-in-the-ideas-p",
+      "cluster_fingerprint": "e6ba522d9f4c6137417e90eb0431b4989dcd4d448e9309a3cb95f95a27500f07",
+      "lineage_depth": 0,
+      "area_anchor": "The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.",
+      "location_anchors": [
+        "docs/plans/ideas-queue-quality-gates/results-review.user.md",
+        "docs/plans/ideas-queue-quality-gates/results-review.signals.json",
+        "docs/plans/ideas-queue-quality-gates/pattern-reflection.user.md",
+        "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "New loop process — The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.",
+      "next_scope_now": "Fact-find the build-origin improvement candidate \"The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.\" and validate the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.6200000000000001,
+      "evidence_refs": [
+        "docs/plans/ideas-queue-quality-gates/results-review.user.md",
+        "docs/plans/ideas-queue-quality-gates/results-review.signals.json",
+        "docs/plans/ideas-queue-quality-gates/pattern-reflection.user.md",
+        "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-12T14:11:07.075Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced \"The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.\" with supporting narrative: New loop process — The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible..",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "6ee5b14c0cda7d14c2d645d51535bf9447e7b08a",
+        "recurrence_key": "3b49c3cadc6891e683aed3d2d0529dc9a42e96a1",
+        "review_cycle_key": "ideas-queue-quality-gates",
+        "plan_slug": "ideas-queue-quality-gates",
+        "canonical_title": "The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.",
+        "primary_source": "pattern-reflection.entries.json",
+        "merge_state": "merged_cross_sidecar",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": true
+        },
+        "results_review_path": "docs/plans/ideas-queue-quality-gates/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/ideas-queue-quality-gates/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/ideas-queue-quality-gates/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json",
+        "reflection_fields": {
+          "category": "new-loop-process",
+          "routing_target": "defer",
+          "occurrence_count": 1
+        },
+        "gap_case": {
+          "schema_version": "gap-case.v1",
+          "gap_case_id": "gap-3f447b6160c186f0",
+          "source_kind": "build_origin",
+          "business_id": "BOS",
+          "stage_id": null,
+          "capability_id": null,
+          "gap_type": "build_origin_new_loop_process",
+          "reason_code": "rule_p4_process_quality",
+          "severity": 0.65,
+          "evidence_refs": [
+            "docs/plans/ideas-queue-quality-gates/results-review.user.md",
+            "docs/plans/ideas-queue-quality-gates/results-review.signals.json",
+            "docs/plans/ideas-queue-quality-gates/pattern-reflection.user.md",
+            "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json"
+          ],
+          "recurrence_key": "3b49c3cadc6891e683aed3d2d0529dc9a42e96a1",
+          "requirement_posture": "optional_improvement",
+          "blocking_scope": "degrades_quality",
+          "structural_context": {
+            "plan_slug": "ideas-queue-quality-gates",
+            "review_cycle_key": "ideas-queue-quality-gates",
+            "primary_source": "pattern-reflection.entries.json",
+            "merge_state": "merged_cross_sidecar",
+            "source_presence": {
+              "results_review_signal": true,
+              "pattern_reflection_entry": true
+            },
+            "results_review_fields": {
+              "priority_tier": "P4",
+              "urgency": "U2",
+              "effort": "M",
+              "reason_code": "RULE_P4_PROCESS_QUALITY"
+            },
+            "reflection_fields": {
+              "category": "new-loop-process",
+              "routing_target": "defer",
+              "occurrence_count": 1,
+              "evidence_refs": []
+            }
+          },
+          "runtime_binding": {
+            "binding_mode": "compiled_to_candidate",
+            "candidate_id": "cand-6611a224ab9bd20f"
+          }
+        },
+        "prescription": {
+          "schema_version": "prescription.v1",
+          "prescription_id": "rx-1d29ed85a4a6e68e",
+          "prescription_family": "build_origin_fact_find_candidate",
+          "source": "build_origin",
+          "gap_types_supported": [
+            "build_origin_new_loop_process"
+          ],
+          "required_route": "lp-do-fact-find",
+          "required_inputs": [
+            "docs/plans/ideas-queue-quality-gates/results-review.signals.json",
+            "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json"
+          ],
+          "expected_artifacts": [
+            "fact-find.md"
+          ],
+          "expected_signal_change": "Address build-origin signal \"The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.\" through the canonical lp-do-fact-find queue path.",
+          "risk_class": "low",
+          "maturity": "unknown"
+        }
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260312141107-0003",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "dd6d2ebd2ded800787cd9ab47cf86a4546f97270",
+      "root_event_id": "build-origin:ideas-queue-quality-gates:dd6d2ebd2ded800787cd9ab47cf86a4546f97270",
+      "anchor_key": "the-domain-classification-in-the-cleanup-script-inferdomain-uses-deterministic-k",
+      "cluster_key": "build-origin:bos:ideas-queue-quality-gates:the-domain-classification-in-the-cleanup-script-inferdomain-uses-deterministic-k",
+      "cluster_fingerprint": "e3ea05e2f502ecffba455944c28f9e0983e711796bf25f6955771d8542a93c61",
+      "lineage_depth": 0,
+      "area_anchor": "The domain classification in the cleanup script (inferDomain()) uses deterministic keyword heuristics to classify domains from area_anchor text. This replaces what was previously an implicit LLM judgment during dispatch creation. Trigger observation: 291 dispatches classified with 0 remaining gaps using a ~80-line function.",
+      "location_anchors": [
+        "docs/plans/ideas-queue-quality-gates/results-review.user.md",
+        "docs/plans/ideas-queue-quality-gates/results-review.signals.json",
+        "docs/plans/ideas-queue-quality-gates/pattern-reflection.user.md",
+        "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "AI-to-mechanistic — The domain classification in the cleanup script (inferDomain()) uses deterministic keyword heuristics to classify domains from area_anchor text. This replaces what was previously an implicit LLM judgment during dispatch creation. Trigger observation: 291 dispatches classified with 0 remaining gaps using a ~80-line function.",
+      "next_scope_now": "Fact-find the build-origin improvement candidate \"The domain classification in the cleanup script (inferDomain()) uses deterministic keyword heuristics to classify domains from area_anchor text. This replaces what was previously an implicit LLM judgment during dispatch creation. Trigger observation: 291 dispatches classified with 0 remaining gaps using a ~80-line function.\" and validate the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.6200000000000001,
+      "evidence_refs": [
+        "docs/plans/ideas-queue-quality-gates/results-review.user.md",
+        "docs/plans/ideas-queue-quality-gates/results-review.signals.json",
+        "docs/plans/ideas-queue-quality-gates/pattern-reflection.user.md",
+        "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-12T14:11:07.075Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced \"The domain classification in the cleanup script (inferDomain()) uses deterministic keyword heuristics to classify domains from area_anchor text. This replaces what was previously an implicit LLM judgment during dispatch creation. Trigger observation: 291 dispatches classified with 0 remaining gaps using a ~80-line function.\" with supporting narrative: AI-to-mechanistic — The domain classification in the cleanup script (inferDomain()) uses deterministic keyword heuristics to classify domains from area_anchor text. This replaces what was previously an implicit LLM judgment during dispatch creation. Trigger observation: 291 dispatches classified with 0 remaining gaps using a ~80-line function.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for The domain classification in the cleanup script (inferDomain()) uses deterministic keyword heuristics to classify domains from area_anchor text. This replaces what was previously an implicit LLM judgment during dispatch creation. Trigger observation: 291 dispatches classified with 0 remaining gaps using a ~80-line function..",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "dd6d2ebd2ded800787cd9ab47cf86a4546f97270",
+        "recurrence_key": "e75542e5ca11f3979f7593abaa78ba028a12acc5",
+        "review_cycle_key": "ideas-queue-quality-gates",
+        "plan_slug": "ideas-queue-quality-gates",
+        "canonical_title": "The domain classification in the cleanup script (inferDomain()) uses deterministic keyword heuristics to classify domains from area_anchor text. This replaces what was previously an implicit LLM judgment during dispatch creation. Trigger observation: 291 dispatches classified with 0 remaining gaps using a ~80-line function.",
+        "primary_source": "pattern-reflection.entries.json",
+        "merge_state": "merged_cross_sidecar",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": true
+        },
+        "results_review_path": "docs/plans/ideas-queue-quality-gates/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/ideas-queue-quality-gates/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/ideas-queue-quality-gates/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json",
+        "reflection_fields": {
+          "category": "ai-to-mechanistic",
+          "routing_target": "defer",
+          "occurrence_count": 1
+        },
+        "gap_case": {
+          "schema_version": "gap-case.v1",
+          "gap_case_id": "gap-c3f3132c955ef34d",
+          "source_kind": "build_origin",
+          "business_id": "BOS",
+          "stage_id": null,
+          "capability_id": null,
+          "gap_type": "build_origin_ai_to_mechanistic",
+          "reason_code": "rule_p5_default",
+          "severity": 0.65,
+          "evidence_refs": [
+            "docs/plans/ideas-queue-quality-gates/results-review.user.md",
+            "docs/plans/ideas-queue-quality-gates/results-review.signals.json",
+            "docs/plans/ideas-queue-quality-gates/pattern-reflection.user.md",
+            "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json"
+          ],
+          "recurrence_key": "e75542e5ca11f3979f7593abaa78ba028a12acc5",
+          "requirement_posture": "optional_improvement",
+          "blocking_scope": "degrades_quality",
+          "structural_context": {
+            "plan_slug": "ideas-queue-quality-gates",
+            "review_cycle_key": "ideas-queue-quality-gates",
+            "primary_source": "pattern-reflection.entries.json",
+            "merge_state": "merged_cross_sidecar",
+            "source_presence": {
+              "results_review_signal": true,
+              "pattern_reflection_entry": true
+            },
+            "results_review_fields": {
+              "priority_tier": "P5",
+              "urgency": "U2",
+              "effort": "M",
+              "reason_code": "RULE_P5_DEFAULT"
+            },
+            "reflection_fields": {
+              "category": "ai-to-mechanistic",
+              "routing_target": "defer",
+              "occurrence_count": 1,
+              "evidence_refs": []
+            }
+          },
+          "runtime_binding": {
+            "binding_mode": "compiled_to_candidate",
+            "candidate_id": "cand-0e8222a701a3c30a"
+          }
+        },
+        "prescription": {
+          "schema_version": "prescription.v1",
+          "prescription_id": "rx-fa91003f7b4ba5c4",
+          "prescription_family": "build_origin_fact_find_candidate",
+          "source": "build_origin",
+          "gap_types_supported": [
+            "build_origin_ai_to_mechanistic"
+          ],
+          "required_route": "lp-do-fact-find",
+          "required_inputs": [
+            "docs/plans/ideas-queue-quality-gates/results-review.signals.json",
+            "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json"
+          ],
+          "expected_artifacts": [
+            "fact-find.md"
+          ],
+          "expected_signal_change": "Address build-origin signal \"The domain classification in the cleanup script (inferDomain()) uses deterministic keyword heuristics to classify domains from area_anchor text. This replaces what was previously an implicit LLM judgment during dispatch creation. Trigger observation: 291 dispatches classified with 0 remaining gaps using a ~80-line function.\" through the canonical lp-do-fact-find queue path.",
+          "risk_class": "low",
+          "maturity": "unknown"
+        }
+      }
     }
   ]
 }

@@ -8,6 +8,7 @@ import hotel, { CONTACT_EMAIL, RATINGS_SNAPSHOT_DATE } from "@/config/hotel";
 import { BASE_URL } from "@/config/site";
 import IMAGE_MANIFEST, { type ImageMeta } from "@/data/imageManifest";
 import { toFlatImageArray } from "@/data/roomsData";
+import { i18nConfig } from "@/i18n.config";
 import type { HotelGraph, HotelRoom, Offer, OfferInput } from "@/types/schema";
 import { getRoomsCatalog, type LocalizedRoom } from "@/utils/roomsCatalog";
 
@@ -105,7 +106,7 @@ export function buildHotelNode(opts?: {
     ],
     // Include Google Maps CID URL as hasMap per contact policy (no telephone)
     hasMap: "https://maps.google.com/maps?cid=17733313080460471781",
-    availableLanguage: ["en", "de", "es", "fr", "it", "ja", "ko", "pt", "ru", "zh"],
+    availableLanguage: [...i18nConfig.supportedLngs],
     image: [
       makeImageNode("/images/7/landing.webp"),
       makeImageNode("/images/10/landing.webp"),

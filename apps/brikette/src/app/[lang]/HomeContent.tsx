@@ -21,9 +21,7 @@ import IntroTextBox from "@/components/landing/IntroTextBox";
 import LocationMiniBlock from "@/components/landing/LocationMiniBlock";
 import SocialProofSection from "@/components/landing/SocialProofSection";
 import WhyStaySection from "@/components/landing/WhyStaySection";
-import AboutStructuredData from "@/components/seo/AboutStructuredData";
 import HomeStructuredData from "@/components/seo/HomeStructuredData";
-import SiteSearchStructuredData from "@/components/seo/SiteSearchStructuredData";
 import { type Room, websiteVisibleRoomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
@@ -50,7 +48,7 @@ function HomeContent({ lang, preloadedNamespaceBundles }: Props) {
   });
   usePagePreload({
     lang,
-    namespaces: ["landingPage", "guides", "testimonials", "faq"],
+    namespaces: ["landingPage", "guides", "testimonials", "faq", "apartmentPage"],
     optionalNamespaces: ["_tokens", "roomsPage", "ratingsBar", "modals"],
   });
 
@@ -154,8 +152,6 @@ function HomeContent({ lang, preloadedNamespaceBundles }: Props) {
   return (
     <Fragment>
       <HomeStructuredData />
-      <AboutStructuredData />
-      <SiteSearchStructuredData lang={lang} />
 
       {/* Hero Section */}
       <HeroSection

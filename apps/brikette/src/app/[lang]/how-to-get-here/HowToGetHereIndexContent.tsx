@@ -265,6 +265,7 @@ function HowToGetHereIndexContent({ lang, initialFilters, basePath }: Props) {
       {/* Intro Highlights */}
       <Section id={INTRO_SECTION_ID} padding="default">
         <IntroHighlights
+          lang={lang}
           t={t}
           introKey={content.introKey}
           taxiEyebrow={content.taxiEyebrow}

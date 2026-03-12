@@ -57,10 +57,21 @@ const legacyGuidesSlugByLang = new Set(
   (i18nConfig.supportedLngs ?? []).map((lang) => getSlug("guides" as SlugKey, lang as AppLanguage)),
 );
 
+const privateRootAliasesByLang = new Map(
+  (i18nConfig.supportedLngs ?? []).map((lang) => [
+    lang,
+    `/${lang}/${getSlug("apartment" as SlugKey, lang as AppLanguage)}`,
+  ]),
+);
+
 const shouldExcludeFromSitemap = (pathname: string): boolean => {
   if (/^\/[a-z]{2}\/draft(\/|$)/i.test(pathname)) return true;
   if (/\/__guides-manifest__(\/|$)/i.test(pathname)) return true;
   if (/\/404(?:\/|$)/i.test(pathname)) return true;
+
+  for (const privateRoot of privateRootAliasesByLang.values()) {
+    if (pathname === privateRoot || pathname === `${privateRoot}/book`) return true;
+  }
 
   const parts = pathname.replace(/^\/+/, "").split("/").filter(Boolean);
   const section = parts[1];

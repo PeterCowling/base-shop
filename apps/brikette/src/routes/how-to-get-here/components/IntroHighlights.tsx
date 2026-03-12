@@ -1,7 +1,9 @@
+import { Trans } from "react-i18next";
 import clsx from "clsx";
 import type { TFunction } from "i18next";
 
 import { CONTACT_EMAIL } from "@/config/hotel";
+import type { AppLanguage } from "@/i18n.config";
 import { AlertTriangle } from "@/icons";
 
 import { IntroHighlightCard } from "../IntroHighlightCard";
@@ -9,6 +11,8 @@ import { SEA_HORSE_SHUTTLE_URL } from "../styles";
 import { Cluster, Inline } from "../ui";
 
 const LATE_NIGHT_EMPHASIS_CLASS = "ring-2 ring-brand-primary ring-offset-2 ring-offset-brand-secondary dark:ring-brand-secondary";
+// i18n-exempt -- BRIK-2164 [ttl=2026-12-31] Technical <Trans> fallback only used when the howToGetHere namespace fails to load; guest-facing copy normally comes from locale JSON.
+const SHUTTLE_FALLBACK_COPY = "Shared shuttle options are available for arrivals from major transport hubs.";
 
 const ACTION_BUTTON_CLASS = [
   "inline-flex",
@@ -63,6 +67,7 @@ const PRIMARY_BUTTON_CLASS = [
 ].join(" ");
 
 export type IntroHighlightsProps = {
+  lang: AppLanguage;
   t: TFunction<"howToGetHere">;
   introKey: string;
   taxiEyebrow: string;
@@ -72,12 +77,15 @@ export type IntroHighlightsProps = {
   isLateNight?: boolean;
 };
 
-export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttleEyebrow, isLateNight = false }: IntroHighlightsProps) {
-  const resolveCopy = (key: string, fallback: string, options?: Record<string, unknown>): string => {
-    const value = t(key, { defaultValue: fallback, ...(options ?? {}) }) as string;
-    const trimmed = value.trim();
-    return trimmed && trimmed !== key ? trimmed : fallback;
-  };
+export function IntroHighlights({
+  lang,
+  t,
+  introKey,
+  taxiEyebrow,
+  taxiContact,
+  shuttleEyebrow,
+  isLateNight = false,
+}: IntroHighlightsProps) {
   const normalizePhone = (value: string) => value.replace(/[^\d+]/g, "").trim();
   const phone = normalizePhone(taxiContact);
   const whatsappNumber = phone.replace(/^\+/, "");
@@ -105,7 +113,17 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
           eyebrow={taxiEyebrow}
           className={clsx(isLateNight && LATE_NIGHT_EMPHASIS_CLASS)}
         >
-          <p>{resolveCopy(`${introKey}.taxi`, `Taxi support available via ${taxiContact}.`, { contact: taxiContact })}</p>
+          <p>
+            <Trans
+              i18nKey={`${introKey}.taxi`}
+              ns="howToGetHere"
+              t={t}
+              lng={lang}
+              defaults={`Taxi support available via <Strong>${taxiContact}</Strong>.`}
+              values={{ contact: taxiContact }}
+              components={{ Strong: <strong /> }}
+            />
+          </p>
           <Cluster as="div" className="mt-4">
             {whatsappHref ? (
               <a className={PRIMARY_BUTTON_CLASS} href={whatsappHref} rel="noopener noreferrer" target="_blank">
@@ -118,7 +136,7 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
               </a>
             ) : null}
           </Cluster>
-            <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text">
+          <p className="mt-3 text-sm text-brand-heading/80 dark:text-brand-text">
             {t(`${introKey}.taxiBestFor`, {
               defaultValue: "Best for: late arrivals · heavy luggage · fastest option",
             })}
@@ -127,10 +145,23 @@ export function IntroHighlights({ t, introKey, taxiEyebrow, taxiContact, shuttle
 
         <IntroHighlightCard eyebrow={shuttleEyebrow}>
           <p>
-            {resolveCopy(
-              `${introKey}.shuttle`,
-              "Shared shuttle options are available for arrivals from major transport hubs."
-            )}
+            <Trans
+              i18nKey={`${introKey}.shuttle`}
+              ns="howToGetHere"
+              t={t}
+              lng={lang}
+              defaults={SHUTTLE_FALLBACK_COPY}
+              components={{
+                Link: (
+                  <a
+                    href={SEA_HORSE_SHUTTLE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-semibold text-brand-primary underline underline-offset-4 transition-colors hover:no-underline dark:text-brand-secondary"
+                  />
+                ),
+              }}
+            />
           </p>
           <Cluster as="div" className="mt-4">
             <a className={PRIMARY_BUTTON_CLASS} href={SEA_HORSE_SHUTTLE_URL} rel="noopener noreferrer" target="_blank">

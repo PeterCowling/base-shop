@@ -1,38 +1,68 @@
 // src/components/seo/PrivateAccomStructuredDataRsc.tsx
-// Server-rendered JSON-LD for the private accommodation booking page.
-// Emits Apartment + BreadcrumbList schemas in the initial HTML response.
+// Server-rendered JSON-LD for the private accommodation chooser page.
+// Emits CollectionPage + ItemList + BreadcrumbList so the page describes the
+// chooser itself instead of incorrectly masquerading as one apartment listing.
 import "server-only";
 
 import { BASE_URL } from "@/config/site";
 import type { AppLanguage } from "@/i18n.config";
-import apartment from "@/schema/apartment";
+import { WEBSITE_ID } from "@/utils/schema/types";
 import { buildBreadcrumbList, serializeJsonLdValue } from "@/utils/seo/jsonld";
-import { getSlug } from "@/utils/slug";
+
+interface PrivateAccommodationOption {
+  name: string;
+  url: string;
+}
 
 interface Props {
   lang: AppLanguage;
-  slug: string;
+  pageTitle: string;
+  pageUrl: string;
+  options: readonly PrivateAccommodationOption[];
 }
 
-export default function PrivateAccomStructuredDataRsc({ lang, slug }: Props): JSX.Element {
-  const pageUrl = `${BASE_URL}/${lang}/${slug}`;
-
+export default function PrivateAccomStructuredDataRsc({
+  lang,
+  pageTitle,
+  pageUrl,
+  options,
+}: Props): JSX.Element | null {
   const breadcrumb = buildBreadcrumbList({
     lang,
     items: [
       { name: "Hostel Brikette", item: `${BASE_URL}/${lang}` },
-      { name: "Private Rooms", item: `${BASE_URL}/${lang}/${getSlug("apartment", lang)}` },
-      { name: "Book", item: pageUrl },
+      { name: pageTitle, item: pageUrl },
     ],
   });
 
-  const graph = [apartment, ...(breadcrumb ? [breadcrumb] : [])];
+  const itemList = {
+    "@type": "ItemList",
+    "@id": `${pageUrl}#options`,
+    inLanguage: lang,
+    itemListElement: options.map((option, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: option.name,
+      url: option.url,
+    })),
+  };
 
+  const page = {
+    "@type": "CollectionPage",
+    "@id": pageUrl,
+    url: pageUrl,
+    name: pageTitle,
+    inLanguage: lang,
+    isPartOf: { "@id": WEBSITE_ID },
+    mainEntity: { "@id": `${pageUrl}#options` },
+  };
+
+  const graph = [page, itemList, ...(breadcrumb ? [breadcrumb] : [])];
   const json = serializeJsonLdValue({
     "@context": "https://schema.org",
     "@graph": graph,
   });
 
-  if (!json) return <></>;
+  if (!json) return null;
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: json }} />;
 }

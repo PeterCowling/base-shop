@@ -5,7 +5,10 @@
 
 import { type RoomId, websiteVisibleRoomsData } from "@/data/roomsData";
 import i18n from "@/i18n";
-import { type AppLanguage,i18nConfig } from "@/i18n.config";
+import { type AppLanguage, i18nConfig } from "@/i18n.config";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment -- LINT-1007 [ttl=2026-12-31] JSON import uses build-time resolveJsonModule
+// @ts-ignore - resolveJsonModule provides types for the fallback bundle
+import EN_APARTMENT_PAGE from "@/locales/en/apartmentPage.json";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- LINT-1007 [ttl=2026-12-31] JSON import uses build-time resolveJsonModule
 // @ts-ignore - resolveJsonModule provides types for the fallback bundle
 import EN_ROOMS_PAGE from "@/locales/en/roomsPage.json";
@@ -18,8 +21,20 @@ export type { LocalizedRoom, RoomCopy } from "@/rooms/types";
 type RoomsPageNamespace = typeof EN_ROOMS_PAGE;
 type RoomsDictionary = RoomsPageNamespace["rooms"];
 type FacilitiesDictionary = RoomsPageNamespace["facilities"];
+type ApartmentPageNamespace = typeof EN_APARTMENT_PAGE;
+
+// i18n-exempt -- BRIK-2164 [ttl=2026-12-31] Technical English structured-data fallback for missing apartmentPage bundles during tests or preload failure.
+const FALLBACK_APARTMENT_TITLE = "Private Apartment";
+// i18n-exempt -- BRIK-2164 [ttl=2026-12-31] Technical English structured-data fallback for missing apartmentPage bundles during tests or preload failure.
+const FALLBACK_APARTMENT_DESCRIPTION = "Stay in our private apartment in Positano.";
 
 const EN_RESOURCE: RoomsPageNamespace = EN_ROOMS_PAGE ?? { rooms: {}, facilities: {} };
+const EN_APARTMENT_RESOURCE: ApartmentPageNamespace = EN_APARTMENT_PAGE ?? {
+  title: FALLBACK_APARTMENT_TITLE,
+  body: FALLBACK_APARTMENT_DESCRIPTION,
+  amenitiesList: [],
+  detailsList: [],
+};
 
 const normalise = (value: unknown): string => {
   if (typeof value === "string") return value.trim();
@@ -66,6 +81,21 @@ const isRoomsPageNamespace = (value: unknown): value is RoomsPageNamespace => {
   );
 };
 
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((entry) => typeof entry === "string");
+
+const isApartmentPageNamespace = (value: unknown): value is ApartmentPageNamespace => {
+  if (!isObjectRecord(value)) return false;
+
+  const record = value as Record<string, unknown>;
+  return (
+    (record["title"] === undefined || typeof record["title"] === "string") &&
+    (record["body"] === undefined || typeof record["body"] === "string") &&
+    (record["amenitiesList"] === undefined || isStringArray(record["amenitiesList"])) &&
+    (record["detailsList"] === undefined || isStringArray(record["detailsList"]))
+  );
+};
+
 interface RoomCopySource {
   title?: string;
   bed_intro?: string;
@@ -109,6 +139,22 @@ const getRoomsPageResource = (lang: string): RoomsPageNamespace | undefined => {
   return undefined;
 };
 
+const getApartmentPageResource = (lang: string): ApartmentPageNamespace | undefined => {
+  const data = i18n.getDataByLanguage?.(lang);
+  if (!data) return undefined;
+
+  if (isApartmentPageNamespace(data)) {
+    return data;
+  }
+
+  if (isObjectRecord(data)) {
+    const namespace = (data as Record<string, unknown>)["apartmentPage"];
+    if (isApartmentPageNamespace(namespace)) return namespace;
+  }
+
+  return undefined;
+};
+
 const resolveFallbackLanguage = (): string => {
   const option = i18n.options?.fallbackLng;
   if (Array.isArray(option) && option.length > 0) return option[0];
@@ -119,7 +165,41 @@ const resolveFallbackLanguage = (): string => {
   return "en";
 };
 
-const buildRoomCopy = (roomId: RoomId, resources: RoomsPageNamespace[]): RoomCopy => {
+const buildApartmentCopy = (resources: ApartmentPageNamespace[]): RoomCopy => {
+  const title =
+    pickFirstString(resources.map((resource) => resource.title)) ||
+    EN_APARTMENT_RESOURCE.title ||
+    FALLBACK_APARTMENT_TITLE;
+  const description =
+    pickFirstString(resources.map((resource) => resource.body)) ||
+    EN_APARTMENT_RESOURCE.body ||
+    title;
+  const amenityLabels =
+    pickFirstStringArray(resources.map((resource) => resource.amenitiesList)) ||
+    pickFirstStringArray(resources.map((resource) => resource.detailsList)) ||
+    pickFirstStringArray([EN_APARTMENT_RESOURCE.amenitiesList]) ||
+    pickFirstStringArray([EN_APARTMENT_RESOURCE.detailsList]) ||
+    [];
+
+  return {
+    id: "apartment",
+    title: normalise(title) || FALLBACK_APARTMENT_TITLE,
+    intro: "",
+    description: normalise(description) || normalise(title) || FALLBACK_APARTMENT_TITLE,
+    facilityKeys: [],
+    amenities: amenityLabels.map((name) => ({ name: normalise(name) || name })),
+  };
+};
+
+const buildRoomCopy = (
+  roomId: RoomId,
+  resources: RoomsPageNamespace[],
+  apartmentResources: ApartmentPageNamespace[],
+): RoomCopy => {
+  if (roomId === "apartment") {
+    return buildApartmentCopy(apartmentResources);
+  }
+
   const entries = resources.reduce<RoomCopySource[]>((acc, resource) => {
     const candidate = resource?.rooms?.[roomId as keyof RoomsDictionary];
     if (isRoomCopySource(candidate)) acc.push(candidate);
@@ -176,19 +256,25 @@ export const getRoomsCatalog = (
 ): LocalizedRoom[] => {
   const fallbackLang = options.fallbackLang ?? resolveFallbackLanguage();
   const resources: RoomsPageNamespace[] = [];
+  const apartmentResources: ApartmentPageNamespace[] = [];
 
   const primary = getRoomsPageResource(lang);
   if (primary) resources.push(primary);
+  const primaryApartment = getApartmentPageResource(lang);
+  if (primaryApartment) apartmentResources.push(primaryApartment);
 
   if (fallbackLang && fallbackLang !== lang) {
     const fallbackRes = getRoomsPageResource(fallbackLang);
     if (fallbackRes) resources.push(fallbackRes);
+    const fallbackApartmentRes = getApartmentPageResource(fallbackLang);
+    if (fallbackApartmentRes) apartmentResources.push(fallbackApartmentRes);
   }
 
   resources.push(EN_RESOURCE);
+  apartmentResources.push(EN_APARTMENT_RESOURCE);
 
   return websiteVisibleRoomsData.map((room) => {
-    const copy = buildRoomCopy(room.id, resources);
+    const copy = buildRoomCopy(room.id, resources, apartmentResources);
     return {
       ...room,
       title: copy.title,
@@ -214,8 +300,10 @@ export const loadRoomsCatalog = async (
 
   try {
     await loadI18nNs(typedLang, "roomsPage");
+    await loadI18nNs(typedLang, "apartmentPage");
     if (typedFallback && typedFallback !== typedLang) {
       await loadI18nNs(typedFallback, "roomsPage");
+      await loadI18nNs(typedFallback, "apartmentPage");
     }
   } catch {
     // Optional preloading for tests: swallow missing bundle errors here; the

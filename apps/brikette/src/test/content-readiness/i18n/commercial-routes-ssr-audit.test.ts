@@ -131,6 +131,7 @@ describe("TC-01: commercial route namespace i18n placeholder audit (TASK-10A, re
             // Phrase-only detection — raw key detection is handled by i18n-parity tests.
             keyPrefixes: [],
             minDotSegments: 999,
+            detectRichTextTags: false,
           });
           for (const finding of detected.filter(
             (f) => f.kind === "placeholderPhrase"

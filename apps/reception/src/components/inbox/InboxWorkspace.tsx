@@ -41,6 +41,7 @@ export default function InboxWorkspace() {
     selectedThread,
     loadingList,
     loadingThread,
+    loadingMoreMessages,
     savingDraft,
     regeneratingDraft,
     sendingDraft,
@@ -50,11 +51,13 @@ export default function InboxWorkspace() {
     listError,
     detailError,
     selectThread,
+    loadMoreMessages,
     saveDraft,
     regenerateDraft,
     sendDraft,
     resolveThread,
     dismissThread,
+    refreshInboxView,
     syncInbox,
   } = useInbox();
 
@@ -120,18 +123,36 @@ export default function InboxWorkspace() {
 
   async function handleDismissThread() {
     try {
-      await dismissThread();
+      const result = await dismissThread();
       showToast("Thread dismissed", "success");
       setMobileShowDetail(false);
+      return result;
     } catch {
       showToast("Failed to dismiss thread", "error");
       throw new Error("dismiss-failed");
     }
   }
 
+  async function handleLoadMoreMessages() {
+    try {
+      await loadMoreMessages();
+    } catch {
+      showToast("Failed to load earlier messages", "error");
+    }
+  }
+
   async function handleSyncInbox() {
     try {
       await syncInbox();
+      showToast("Inbox synced", "success");
+    } catch {
+      showToast("Failed to sync inbox", "error");
+    }
+  }
+
+  async function handleRefreshInbox() {
+    try {
+      await refreshInboxView();
       showToast("Inbox refreshed", "success");
     } catch {
       showToast("Failed to refresh inbox", "error");
@@ -171,19 +192,37 @@ export default function InboxWorkspace() {
               </div>
             </div>
 
-            <Button
-              type="button"
-              onClick={() => void handleSyncInbox()}
-              disabled={syncing}
-              color="info"
-              tone="outline"
-              className="min-h-10 min-w-10 rounded-xl"
-            >
-              <RefreshCw className={`h-4 w-4 ${syncing ? "animate-spin" : ""}`} />
-              <span className="ml-2 hidden sm:inline">
-                {syncing ? "Syncing..." : "Refresh"}
-              </span>
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                type="button"
+                onClick={() => void handleRefreshInbox()}
+                disabled={loadingList}
+                color="info"
+                tone="outline"
+                className="min-h-10 min-w-10 rounded-xl"
+              >
+                <RefreshCw className={`h-4 w-4 ${loadingList ? "animate-spin" : ""}`} />
+                <span className="ml-2 hidden sm:inline">
+                  {loadingList ? "Refreshing..." : "Refresh"}
+                </span>
+              </Button>
+
+              <Button
+                type="button"
+                onClick={() => void handleSyncInbox()}
+                disabled={syncing}
+                color="accent"
+                tone="outline"
+                className="min-h-10 rounded-xl"
+              >
+                <span className="hidden sm:inline">
+                  {syncing ? "Syncing..." : "Sync"}
+                </span>
+                <span className="sm:hidden">
+                  {syncing ? "..." : "Sync"}
+                </span>
+              </Button>
+            </div>
           </div>
         </div>
       )}
@@ -221,11 +260,13 @@ export default function InboxWorkspace() {
             threadDetail={selectedThread}
             loading={loadingThread}
             error={detailError}
+            loadingMoreMessages={loadingMoreMessages}
             savingDraft={savingDraft}
             regeneratingDraft={regeneratingDraft}
             sendingDraft={sendingDraft}
             resolvingThread={resolvingThread}
             dismissingThread={dismissingThread}
+            onLoadMoreMessages={handleLoadMoreMessages}
             onSaveDraft={handleSaveDraft}
             onRegenerateDraft={handleRegenerateDraft}
             onSendDraft={handleSendDraft}

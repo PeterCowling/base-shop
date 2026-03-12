@@ -7,6 +7,7 @@ import type {
   InboxChannelCapabilities,
   InboxReviewMode,
 } from "@/lib/inbox/channels";
+import { useOnlineStatus } from "@/lib/offline/useOnlineStatus";
 
 import { buildMcpAuthHeaders } from "./mcpAuthHeaders";
 
@@ -91,6 +92,8 @@ export type InboxThreadDetail = {
   campaign: InboxCampaign | null;
   metadata: Record<string, unknown>;
   messages: InboxMessage[];
+  totalMessages: number;
+  messageOffset: number;
   events: Array<{
     id: number;
     event_type: string;
@@ -166,6 +169,13 @@ type InboxEnvelope<T> = {
   data: T;
 };
 
+const INBOX_AUTO_REFRESH_INTERVAL_MS = 15_000;
+
+type LoadThreadsOptions = {
+  preferredThreadId?: string | null;
+  silent?: boolean;
+};
+
 export type InboxDraftUpdateInput = {
   subject?: string;
   recipientEmails?: string[];
@@ -213,6 +223,18 @@ export async function fetchInboxThread(threadId: string, signal?: AbortSignal): 
   });
 }
 
+export async function fetchThreadMessages(
+  threadId: string,
+  offset: number,
+  limit: number,
+  signal?: AbortSignal,
+): Promise<{ messages: InboxMessage[]; totalMessages: number; messageOffset: number }> {
+  return inboxRequest<{ messages: InboxMessage[]; totalMessages: number; messageOffset: number }>(
+    `/api/mcp/inbox/${threadId}?offset=${offset}&limit=${limit}`,
+    { signal, errorCode: "Failed to load older messages" },
+  );
+}
+
 export async function updateInboxDraft(
   threadId: string,
   payload: InboxDraftUpdateInput,
@@ -251,11 +273,16 @@ export async function resolveInboxThread(threadId: string): Promise<void> {
   });
 }
 
-export async function dismissInboxThread(threadId: string): Promise<void> {
-  await inboxRequest<{ thread: InboxThreadSummary }>(`/api/mcp/inbox/${threadId}/dismiss`, {
-    method: "POST",
-    errorCode: "Failed to dismiss inbox thread",
-  });
+export async function dismissInboxThread(
+  threadId: string,
+): Promise<{ thread: InboxThreadSummary; gmailMarkedRead: boolean }> {
+  return inboxRequest<{ thread: InboxThreadSummary; gmailMarkedRead: boolean }>(
+    `/api/mcp/inbox/${threadId}/dismiss`,
+    {
+      method: "POST",
+      errorCode: "Failed to dismiss inbox thread",
+    },
+  );
 }
 
 export async function runInboxSync(rescanWindowDays?: number): Promise<void> {
@@ -269,11 +296,13 @@ export async function runInboxSync(rescanWindowDays?: number): Promise<void> {
 }
 
 export default function useInbox() {
+  const online = useOnlineStatus();
   const [threads, setThreads] = useState<InboxThreadSummary[]>([]);
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
   const [selectedThread, setSelectedThread] = useState<InboxThreadDetail | null>(null);
   const [loadingList, setLoadingList] = useState(true);
   const [loadingThread, setLoadingThread] = useState(false);
+  const [loadingMoreMessages, setLoadingMoreMessages] = useState(false);
   const [savingDraft, setSavingDraft] = useState(false);
   const [regeneratingDraft, setRegeneratingDraft] = useState(false);
   const [sendingDraft, setSendingDraft] = useState(false);
@@ -282,6 +311,9 @@ export default function useInbox() {
   const [syncing, setSyncing] = useState(false);
   const [listError, setListError] = useState<string | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
+  const [tabVisible, setTabVisible] = useState<boolean>(() => (
+    typeof document === "undefined" ? true : !document.hidden
+  ));
 
   const detailCacheRef = useRef<Map<string, InboxThreadDetail>>(new Map());
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -301,6 +333,43 @@ export default function useInbox() {
     }
     return detail;
   }, []);
+
+  const loadMoreMessages = useCallback(async () => {
+    if (!selectedThread || !selectedThreadIdRef.current) {
+      return;
+    }
+
+    const threadId = selectedThreadIdRef.current;
+    const currentCount = selectedThread.messages.length;
+    const total = selectedThread.totalMessages;
+    if (currentCount >= total) {
+      return;
+    }
+
+    // offset is from newest; we already have `currentCount` newest messages,
+    // so fetch the next page starting at that offset
+    const nextOffset = currentCount;
+
+    setLoadingMoreMessages(true);
+    try {
+      const page = await fetchThreadMessages(threadId, nextOffset, 20);
+      if (threadId !== selectedThreadIdRef.current) {
+        return;
+      }
+      // page.messages are in chronological order; prepend them before existing messages
+      setSelectedThread((prev) => {
+        if (!prev || prev.thread.id !== threadId) {
+          return prev;
+        }
+        const merged = [...page.messages, ...prev.messages];
+        const updated = { ...prev, messages: merged, totalMessages: page.totalMessages };
+        detailCacheRef.current.set(threadId, updated);
+        return updated;
+      });
+    } finally {
+      setLoadingMoreMessages(false);
+    }
+  }, [selectedThread]);
 
   const selectThread = useCallback(async (threadId: string) => {
     abortControllerRef.current?.abort();
@@ -340,8 +409,13 @@ export default function useInbox() {
   }, []);
 
   const loadThreads = useCallback(
-    async (preferredThreadId?: string | null) => {
-      setLoadingList(true);
+    async (options: LoadThreadsOptions = {}) => {
+      const { preferredThreadId, silent = false } = options;
+      const shouldShowListLoading = !silent || threads.length === 0;
+
+      if (shouldShowListLoading) {
+        setLoadingList(true);
+      }
       setListError(null);
 
       try {
@@ -349,13 +423,24 @@ export default function useInbox() {
         setThreads(nextThreads);
 
         const currentId = selectedThreadIdRef.current;
+        const currentStillPresent = currentId
+          ? nextThreads.some((thread) => thread.id === currentId)
+          : false;
         const targetThreadId = preferredThreadId
-          ?? (currentId && nextThreads.some((thread) => thread.id === currentId)
+          ?? (currentId && currentStillPresent
             ? currentId
             : nextThreads[0]?.id ?? null);
 
         if (targetThreadId) {
-          await selectThread(targetThreadId);
+          const shouldRefreshSelectedDetail =
+            !silent
+            || !currentStillPresent
+            || !selectedThread
+            || targetThreadId !== currentId;
+
+          if (shouldRefreshSelectedDetail) {
+            await selectThread(targetThreadId);
+          }
         } else {
           setSelectedThreadId(null);
           setSelectedThread(null);
@@ -365,15 +450,30 @@ export default function useInbox() {
         setListError(error instanceof Error ? error.message : "Failed to load inbox threads");
         throw error;
       } finally {
-        setLoadingList(false);
+        if (shouldShowListLoading) {
+          setLoadingList(false);
+        }
       }
     },
-    [selectThread],
+    [selectThread, selectedThread, threads.length],
   );
 
   useEffect(() => {
-    void loadThreads(null).catch(() => undefined);
+    void loadThreads({ preferredThreadId: null }).catch(() => undefined);
     // eslint-disable-next-line react-hooks/exhaustive-deps -- IDEA-DISPATCH-20260307130300-9040 mount-only effect uses ref for selectedThreadId
+  }, []);
+
+  useEffect(() => {
+    if (typeof document === "undefined") {
+      return undefined;
+    }
+
+    const handleVisibilityChange = () => {
+      setTabVisible(!document.hidden);
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, []);
 
   const saveDraft = useCallback(
@@ -474,7 +574,7 @@ export default function useInbox() {
     setDetailError(null);
 
     try {
-      await dismissInboxThread(selectedThreadId);
+      const result = await dismissInboxThread(selectedThreadId);
       detailCacheRef.current.delete(selectedThreadId);
       const removedId = selectedThreadId;
       setThreads((prev) => {
@@ -489,6 +589,7 @@ export default function useInbox() {
         }
         return next;
       });
+      return result;
     } finally {
       setDismissingThread(false);
     }
@@ -501,11 +602,56 @@ export default function useInbox() {
 
     try {
       await runInboxSync();
-      await loadThreads(selectedThreadIdRef.current);
+      await loadThreads({ preferredThreadId: selectedThreadIdRef.current });
     } finally {
       setSyncing(false);
     }
   }, [loadThreads]);
+
+  const refreshInboxView = useCallback(async () => {
+    setListError(null);
+    await loadThreads({
+      preferredThreadId: selectedThreadIdRef.current,
+      silent: true,
+    });
+  }, [loadThreads]);
+
+  useEffect(() => {
+    if (!online || !tabVisible) {
+      return undefined;
+    }
+
+    const intervalId = window.setInterval(() => {
+      if (
+        loadingList
+        || loadingThread
+        || syncing
+        || savingDraft
+        || regeneratingDraft
+        || sendingDraft
+        || resolvingThread
+        || dismissingThread
+      ) {
+        return;
+      }
+
+      void refreshInboxView().catch(() => undefined);
+    }, INBOX_AUTO_REFRESH_INTERVAL_MS);
+
+    return () => window.clearInterval(intervalId);
+  }, [
+    dismissingThread,
+    loadingList,
+    loadingThread,
+    online,
+    refreshInboxView,
+    regeneratingDraft,
+    resolvingThread,
+    savingDraft,
+    sendingDraft,
+    syncing,
+    tabVisible,
+  ]);
 
   return {
     threads,
@@ -513,6 +659,7 @@ export default function useInbox() {
     selectedThread,
     loadingList,
     loadingThread,
+    loadingMoreMessages,
     savingDraft,
     regeneratingDraft,
     sendingDraft,
@@ -523,11 +670,13 @@ export default function useInbox() {
     detailError,
     loadThreads,
     selectThread,
+    loadMoreMessages,
     saveDraft,
     regenerateDraft,
     sendDraft,
     resolveThread,
     dismissThread,
+    refreshInboxView,
     syncInbox,
   };
 }

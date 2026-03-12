@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, Calendar, MapPin, User } from "lucide-react";
+import { AlertTriangle, Calendar, ChevronUp, Loader2, MapPin, User } from "lucide-react";
 
 import type { InboxMessage, InboxThreadDetail } from "@/services/useInbox";
 
@@ -11,11 +11,13 @@ interface ThreadDetailPaneProps {
   threadDetail: InboxThreadDetail | null;
   loading: boolean;
   error: string | null;
+  loadingMoreMessages: boolean;
   savingDraft: boolean;
   regeneratingDraft: boolean;
   sendingDraft: boolean;
   resolvingThread: boolean;
   dismissingThread: boolean;
+  onLoadMoreMessages: () => Promise<void>;
   onSaveDraft: (input: {
     subject?: string;
     recipientEmails?: string[];
@@ -25,7 +27,7 @@ interface ThreadDetailPaneProps {
   onRegenerateDraft: (force?: boolean) => Promise<void>;
   onSendDraft: () => Promise<void>;
   onResolveThread: () => Promise<void>;
-  onDismissThread: () => Promise<void>;
+  onDismissThread: () => Promise<{ thread: InboxThreadDetail["thread"]; gmailMarkedRead: boolean }>;
 }
 
 function senderDisplayName(message: InboxMessage, threadDetail: InboxThreadDetail): string {
@@ -97,11 +99,13 @@ export default function ThreadDetailPane({
   threadDetail,
   loading,
   error,
+  loadingMoreMessages,
   savingDraft,
   regeneratingDraft,
   sendingDraft,
   resolvingThread,
   dismissingThread,
+  onLoadMoreMessages,
   onSaveDraft,
   onRegenerateDraft,
   onSendDraft,
@@ -172,7 +176,10 @@ export default function ThreadDetailPane({
               </span>
             )}
             <p className="text-xs text-muted-foreground">
-              {threadDetail.messages.length} message{threadDetail.messages.length !== 1 ? "s" : ""}
+              {threadDetail.totalMessages ?? threadDetail.messages.length} message{(threadDetail.totalMessages ?? threadDetail.messages.length) !== 1 ? "s" : ""}
+              {typeof threadDetail.totalMessages === "number"
+                && threadDetail.messages.length < threadDetail.totalMessages
+                && ` (showing ${threadDetail.messages.length})`}
             </p>
           </div>
 
@@ -245,6 +252,29 @@ export default function ThreadDetailPane({
         <div className="border-t border-border-1">
           {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- IDEA-DISPATCH-20260307130300-9040 viewport-relative scroll containment */}
           <div className="max-h-[50vh] space-y-4 overflow-y-auto px-5 py-4">
+            {typeof threadDetail.totalMessages === "number"
+              && threadDetail.messages.length < threadDetail.totalMessages && (
+              <div className="flex justify-center">
+                <button
+                  type="button"
+                  disabled={loadingMoreMessages}
+                  onClick={() => void onLoadMoreMessages()}
+                  className="inline-flex items-center gap-1.5 rounded-full bg-surface-3 px-3 py-1.5 text-xs font-medium text-muted-foreground transition-colors hover:bg-surface-3/80 hover:text-foreground disabled:opacity-50"
+                >
+                  {loadingMoreMessages ? (
+                    <>
+                      <Loader2 className="h-3 w-3 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    <>
+                      <ChevronUp className="h-3 w-3" />
+                      Load earlier messages ({threadDetail.totalMessages - threadDetail.messages.length} more)
+                    </>
+                  )}
+                </button>
+              </div>
+            )}
             {threadDetail.messages.map((message) => (
               <MessageBubble
                 key={message.id}

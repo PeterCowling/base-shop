@@ -36,6 +36,7 @@ export type InboxThreadRow = {
   snippet: string | null;
   assigned_uid: string | null;
   latest_message_at: string | null;
+  latest_message_direction?: InboxMessageDirection | null;
   last_synced_at: string | null;
   metadata_json: string | null;
   created_at: string;
@@ -100,6 +101,19 @@ export type InboxThreadRecord = {
   drafts: InboxDraftRow[];
   events: ThreadEventRow[];
   admissionOutcomes: AdmissionOutcomeRow[];
+};
+
+export type GetThreadMessagesOptions = {
+  threadId: string;
+  limit?: number;
+  offset?: number;
+};
+
+export type PaginatedMessages = {
+  messages: InboxMessageRow[];
+  totalMessages: number;
+  offset: number;
+  limit: number;
 };
 
 export type ListThreadsOptions = {
@@ -266,6 +280,12 @@ export async function listThreads(
         snippet,
         assigned_uid,
         latest_message_at,
+        (
+          SELECT m.direction FROM messages m
+          WHERE m.thread_id = threads.id
+          ORDER BY COALESCE(m.sent_at, m.created_at) DESC, m.created_at DESC
+          LIMIT 1
+        ) AS latest_message_direction,
         last_synced_at,
         metadata_json,
         created_at,
@@ -328,6 +348,12 @@ export async function listThreadsWithLatestDraft(
         t.snippet,
         t.assigned_uid,
         t.latest_message_at,
+        (
+          SELECT m.direction FROM messages m
+          WHERE m.thread_id = t.id
+          ORDER BY COALESCE(m.sent_at, m.created_at) DESC, m.created_at DESC
+          LIMIT 1
+        ) AS latest_message_direction,
         t.last_synced_at,
         t.metadata_json,
         t.created_at,
@@ -544,6 +570,52 @@ export async function getThread(
     events: eventsResult.results ?? [],
     admissionOutcomes: admissionsResult.results ?? [],
   };
+}
+
+export async function getThreadMessages(
+  options: GetThreadMessagesOptions,
+  db?: D1Database,
+): Promise<PaginatedMessages> {
+  const activeDb = await inboxDb(db);
+  const limit = clampLimit(options.limit, 20);
+  const offset = clampOffset(options.offset);
+
+  const [countResult, messagesResult] = await Promise.all([
+    activeDb
+      .prepare(
+        `SELECT COUNT(*) AS cnt FROM messages WHERE thread_id = ?`,
+      )
+      .bind(options.threadId)
+      .first<{ cnt: number }>(),
+    activeDb
+      .prepare(
+        `
+        SELECT
+          id,
+          thread_id,
+          direction,
+          sender_email,
+          recipient_emails_json,
+          subject,
+          snippet,
+          sent_at,
+          payload_json,
+          created_at
+        FROM messages
+        WHERE thread_id = ?
+        ORDER BY COALESCE(sent_at, created_at) DESC, created_at DESC
+        LIMIT ? OFFSET ?
+        `,
+      )
+      .bind(options.threadId, limit, offset)
+      .all<InboxMessageRow>(),
+  ]);
+
+  const totalMessages = countResult?.cnt ?? 0;
+  // Reverse so messages are in chronological order (oldest first) for display
+  const messages = (messagesResult.results ?? []).reverse();
+
+  return { messages, totalMessages, offset, limit };
 }
 
 export async function createThread(

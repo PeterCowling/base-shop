@@ -1,0 +1,15 @@
+{
+  "schema": "build-event.v1",
+  "plan_slug": "gmail-guard-hardening",
+  "business": "BRIK",
+  "completed_at": "2026-03-06",
+  "why": "Session crashes left guest emails silently stuck; duplicate drafts could be sent on crash recovery; orphaned Gmail labels accumulated with no visibility.",
+  "why_source": "heuristic",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Guest emails cannot get stuck silently; duplicate draft creation is prevented at thread level; orphaned Brikette labels are surfaced in each ops-inbox session summary.",
+    "source": "auto"
+  },
+  "deliverable_type": "code-change",
+  "execution_track": "code"
+}

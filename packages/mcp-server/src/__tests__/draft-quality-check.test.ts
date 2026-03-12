@@ -825,3 +825,90 @@ describe("draft_quality_check TASK-05", () => {
     );
   });
 });
+
+describe("draft_quality_check TC-02 — booking-issues strict reference removal", () => {
+  it("TC-02-01: FAQ draft with booking-issues scenario and no booking action passes reference check", async () => {
+    // Before fix: booking-issues in STRICT_REFERENCE_CATEGORIES → missing_required_reference fires.
+    // After fix: booking-issues removed from set → reference check skipped when bookingActionRequired=false.
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "What is your cancellation policy?" }],
+          requests: [],
+        },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
+        scenario: { category: "booking-issues" },
+        thread_summary: { prior_commitments: [] },
+      },
+      draft: {
+        bodyPlain:
+          "Our cancellation policy allows free cancellation up to 48 hours before arrival. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>Our cancellation policy allows free cancellation up to 48 hours before arrival.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).not.toContain("missing_required_reference");
+    expect(payload.failed_checks).not.toContain("reference_not_applicable");
+  });
+
+  it("TC-02-02: booking_action_required=true with booking-issues still enforces both missing_required_link and missing_required_reference", async () => {
+    // booking_action_required=true: the !bookingActionRequired condition at line 347 is false,
+    // so the continue is NOT taken → policy IS checked → missing_required_reference fires.
+    // Also missing_required_link fires independently at line 517.
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Can you modify my booking?" }],
+          requests: [{ text: "Please update my booking" }],
+        },
+        workflow_triggers: {
+          booking_action_required: true,
+          booking_context: true,
+        },
+        scenario: { category: "booking-issues" },
+        thread_summary: { prior_commitments: [] },
+      },
+      draft: {
+        bodyPlain:
+          "We can help modify your booking. Please contact us directly. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>We can help modify your booking. Please contact us directly.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("missing_required_link");
+    expect(payload.failed_checks).toContain("missing_required_reference");
+  });
+
+  it("TC-02-03: cancellation scenario still enforces missing_required_reference (other strict categories unchanged)", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Can I cancel my booking?" }],
+          requests: [],
+        },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
+        scenario: { category: "cancellation" },
+        thread_summary: { prior_commitments: [] },
+      },
+      draft: {
+        bodyPlain:
+          "Yes you can cancel your booking by contacting us. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>Yes you can cancel your booking by contacting us.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    expect(payload.failed_checks).toContain("missing_required_reference");
+  });
+});

@@ -9,6 +9,7 @@ import { PageShell } from "@/components/common/PageShell";
 import useInbox from "@/services/useInbox";
 import { showToast } from "@/utils/toastUtils";
 
+import AnalyticsSummary from "./AnalyticsSummary";
 import ThreadDetailPane from "./ThreadDetailPane";
 import ThreadList from "./ThreadList";
 
@@ -63,6 +64,7 @@ export default function InboxWorkspace() {
 
   // Mobile view control: show detail pane when a thread is actively opened
   const [mobileShowDetail, setMobileShowDetail] = useState(false);
+  const [analyticsRefreshKey, setAnalyticsRefreshKey] = useState(0);
 
   async function handleSelectThread(threadId: string) {
     try {
@@ -144,6 +146,7 @@ export default function InboxWorkspace() {
   async function handleSyncInbox() {
     try {
       await syncInbox();
+      setAnalyticsRefreshKey((k) => k + 1);
       showToast("Inbox synced", "success");
     } catch {
       showToast("Failed to sync inbox", "error");
@@ -153,6 +156,7 @@ export default function InboxWorkspace() {
   async function handleRefreshInbox() {
     try {
       await refreshInboxView();
+      setAnalyticsRefreshKey((k) => k + 1);
       showToast("Inbox refreshed", "success");
     } catch {
       showToast("Failed to refresh inbox", "error");
@@ -224,6 +228,7 @@ export default function InboxWorkspace() {
               </Button>
             </div>
           </div>
+          <AnalyticsSummary refreshKey={analyticsRefreshKey} />
         </div>
       )}
     >

@@ -27,9 +27,12 @@ Even in fully autonomous / `-a never` mode, **stop and ask the user explicitly**
 
 ## Inputs
 
+- Plan handoff packet: `docs/plans/<feature-slug>/plan.packet.json` when present
 - Plan doc: `docs/plans/<feature-slug>/plan.md` (legacy fallback allowed), or `docs/plans/<feature-slug>/micro-build.md` for direct-dispatch micro-builds
 - Optional task IDs
 - Optional fact-find brief for context
+
+Use the packet-first load order from `docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`. Load the full `plan.md` only after the packet identifies the runnable task or when the task block must be read in full.
 
 ## Discovery and Selection
 
@@ -79,6 +82,9 @@ All execution must pass these gates.
 - Track-specific requirements:
   - code/mixed -> TC contracts
   - business/mixed -> VC contracts + fail-first evidence progression
+- For `Execution-Track: code | mixed`, the plan artifact must pass `scripts/validate-engineering-coverage.sh` before task completion and `build-record.user.md` must carry `## Engineering Coverage Evidence`.
+- Canonical command for code/mixed plans:
+  - `scripts/validate-engineering-coverage.sh docs/plans/<feature-slug>/plan.md`
 - Frontend/UI IMPLEMENT tasks -> scoped QA loop must run as part of post-build validation: `/lp-design-qa`, `/tools-ui-contrast-sweep`, `/tools-ui-breakpoint-sweep` limited to changed routes/components, with mandatory auto-fix + re-run for all Critical/Major findings in the same task cycle.
 - Post-build validation (IMPLEMENT tasks only): after TC/VC contracts pass, run `modules/build-validate.md`. Mode is selected by deliverable type. Fix+retry loop (max 3 attempts) required before a task can be marked complete. SPIKE, INVESTIGATE, and CHECKPOINT tasks are exempt.
 
@@ -188,6 +194,15 @@ Post-build artifacts are reflective only — they must not contain unexecuted wo
 
 1. Produce `build-record.user.md` per `docs/business-os/startup-loop/contracts/loop-output-contracts.md`.
    - Enforce `## Outcome Contract` presence and populated fields (`Why`, `Intended Outcome Type`, `Intended Outcome Statement`, `Source`) before proceeding. Use explicit `TBD/auto` fallback only when canonical values are unavailable.
+1.4 Record workflow-step telemetry for the build stage and add the summary to `build-record.user.md`.
+   - Run:
+   ```
+   pnpm --filter scripts startup-loop:lp-do-ideas-record-workflow-telemetry -- --stage lp-do-build --feature-slug <slug> --module modules/build-code.md [--module modules/build-validate.md] [--input-path docs/plans/<slug>/plan.packet.json] [--input-path docs/plans/<slug>/analysis.packet.json] [--input-path docs/plans/<slug>/plan.md] [--input-path docs/plans/<slug>/analysis.md] --deterministic-check scripts/validate-engineering-coverage.sh
+   pnpm --filter scripts startup-loop:lp-do-ideas-report-workflow-telemetry -- --feature-slug <slug> --format markdown
+   ```
+   - Add the report output under `## Workflow Telemetry Summary` in `build-record.user.md`.
+   - Codex token usage is auto-captured when `CODEX_THREAD_ID` is available.
+   - Claude token usage is auto-captured via project session logs (sessions-index.json → debug/latest fallback). Explicit `--claude-session-id` still takes priority when supplied.
 1.5 Emit canonical `build-event.json` in `docs/plans/<slug>/` using `scripts/src/startup-loop/build/lp-do-build-event-emitter.ts` (`emitBuildEvent()` + `writeBuildEvent()`) with values sourced from `build-record.user.md` `## Outcome Contract`.
    - Verify file exists and is non-empty before continuing.
 1.6 **Run bounded assessment post-build refresh when the build touched later assessment decisions.** This path is separate from `results-review.user.md` and exists only for explicitly mapped revision-mode assessment targets.
@@ -260,7 +275,7 @@ Post-build artifacts are reflective only — they must not contain unexecuted wo
    `pnpm --filter scripts startup-loop:self-evolving-from-build-output -- --business <BUSINESS> --plan-slug <slug>`
 
    - This step is advisory/fail-open. It must not block completion if startup-state or artifacts are missing; record warnings in build evidence.
-   - When validated repeat-work candidates are detected, the bridge now enqueues them in the self-evolving backbone queue and emits canonical follow-up `dispatch.v2` packets back into the startup-loop ideas trial queue for normal `lp-do-ideas -> lp-do-fact-find -> lp-do-plan -> lp-do-build` handling.
+   - When validated repeat-work candidates are detected, the bridge now enqueues them in the self-evolving backbone queue and emits canonical follow-up `dispatch.v2` packets back into the startup-loop ideas trial queue for normal `lp-do-ideas -> lp-do-fact-find -> lp-do-analysis -> lp-do-plan -> lp-do-build` handling.
 
 3. Run reflection debt emitter; if debt emitted, produce `reflection-debt.user.html` from `docs/templates/visual/loop-output-report-template.html` (operator-readable plain language — see `MEMORY.md` Operator-Facing Content).
 4. Run bug scan and persist findings as a plan artifact: `pnpm bug-scan -- --changed --format=json --fail-on=none --business-scope=<BUSINESS> --idea-artifact=docs/plans/<slug>/bug-scan-findings.user.json`.
@@ -324,6 +339,7 @@ This is a single invocation per gate-block event. If the build is retried after 
 - [ ] One runnable unit executed this cycle (single task or full wave)
 - [ ] Scope respected (or controlled expansion documented)
 - [ ] Validation evidence captured
+- [ ] For code/mixed work, `validate-engineering-coverage.sh` passed on the plan artifact
 - [ ] Plan updated after task
 
 ## Plan Completion Checklist
@@ -332,6 +348,8 @@ Run through this before emitting the "Build complete" message:
 
 - [ ] `build-record.user.md` produced
 - [ ] `build-record.user.md` includes `## Outcome Contract` with populated fields (or explicit `TBD/auto` fallback)
+- [ ] `build-record.user.md` includes `## Workflow Telemetry Summary` when workflow-step telemetry was recorded
+- [ ] For code/mixed work, `build-record.user.md` includes `## Engineering Coverage Evidence`
 - [ ] `build-event.json` emitted and non-empty at `docs/plans/<slug>/build-event.json`
 - [ ] `results-review.user.md` produced (all sections filled, including New Idea Candidates)
 - [ ] `pattern-reflection.user.md` produced (empty-state with `None identified` is valid; artifact must always be present at `docs/plans/<slug>/pattern-reflection.user.md`)

@@ -1,6 +1,6 @@
 ---
 name: lp-do-plan
-description: Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and hands off to /lp-do-build by default unless --notauto is passed.
+description: Thin orchestrator for confidence-gated planning. Consumes analysis artifacts, decomposes the chosen approach into executable tasks, persists plan artifacts from templates, and hands off to /lp-do-build by default unless --notauto is passed.
 ---
 
 # Plan Orchestrator
@@ -46,10 +46,15 @@ If a pipeline treats pending/todo tests as failing, do not commit stubs; record 
 
 ## Inputs Priority
 
-1. Fact-find brief (`docs/plans/<slug>/fact-find.md`)
-2. Existing plan (`docs/plans/<slug>/plan.md`)
-3. User request/topic/card ID
-4. Current repository evidence
+1. Analysis handoff packet (`docs/plans/<slug>/analysis.packet.json`) when present
+2. Analysis brief (`docs/plans/<slug>/analysis.md`)
+3. Existing plan (`docs/plans/<slug>/plan.md`)
+4. Fact-find handoff packet (`docs/plans/<slug>/fact-find.packet.json`) when present
+5. Fact-find brief (`docs/plans/<slug>/fact-find.md`)
+6. User request/topic/card ID
+7. Current repository evidence
+
+Use the packet-first load order from `docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`. Read the full upstream markdown artifacts only when a packet is insufficient or a quoted/path-specific claim needs verification.
 
 ## Phase 1: Intake and Mode Selection
 
@@ -64,7 +69,7 @@ Determine planning mode early:
 
 ### Fast path (argument provided)
 
-- Slug or fact-find path -> open matching plan/fact-find paths directly.
+- Slug or analysis/fact-find path -> open matching plan/analysis/fact-find paths directly.
 
 ### Optional CASS Retrieval (Pilot, recommended)
 
@@ -84,7 +89,7 @@ Rules:
 
 ### Discovery path (no argument)
 
-- Scan `docs/plans/*/fact-find.md` files for entries with `Status: Ready-for-planning`.
+- Scan `docs/plans/*/analysis.md` files for entries with `Status: Ready-for-planning`.
 - Present results as a short table (slug | title | track | effort).
 - Ask user to select a slug or topic.
 
@@ -105,15 +110,18 @@ Populate and evaluate these gates in the plan doc:
 
 ### Foundation Gate
 
-If fact-find exists, require:
+If analysis exists, require:
 - `Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`
 - `Startup-Deliverable-Alias` (`none` unless startup)
 - Delivery-readiness confidence input
+- chosen approach
+- planning handoff notes
+- for `Execution-Track: code | mixed`, engineering-coverage implications from analysis/fact-find
 - Track-specific validation foundation
   - code/mixed: test landscape + testability
   - business/mixed: channel landscape + hypothesis/validation landscape
 
-If missing, stop planning and return to `/lp-do-fact-find` or add explicit INVESTIGATE tasks with confidence penalty.
+If missing, stop planning and return to `/lp-do-analysis` or add explicit INVESTIGATE tasks with confidence penalty.
 
 ### Build Gate (for auto-continue readiness)
 
@@ -144,9 +152,9 @@ Route to one module only (or mixed pair):
 
 ## Phase 4.1: Outcome Contract Inheritance Gate
 
-Before task decomposition, carry forward outcome context from fact-find to plan:
+Before task decomposition, carry forward outcome context from analysis to plan:
 
-- Ensure plan section `## Inherited Outcome Contract` is present and populated from fact-find `## Outcome Contract`.
+- Ensure plan section `## Inherited Outcome Contract` is present and populated from analysis `## Inherited Outcome Contract`.
 - Preserve source attribution (`operator` vs `auto`) exactly as provided.
 - If upstream values are unavailable, use explicit fallback:
   - `Why: TBD`
@@ -155,20 +163,28 @@ Before task decomposition, carry forward outcome context from fact-find to plan:
   - `Source: auto`
 - Do not fabricate operator-authored rationale.
 
-## Phase 4.5: DECISION Task Self-Resolve Gate
+## Phase 4.2: Analysis Inheritance Gate
+
+Before task decomposition, carry forward the chosen direction from analysis:
+
+- Ensure plan section `## Analysis Reference` is present and points to `docs/plans/<feature-slug>/analysis.md`.
+- Ensure plan section `## Selected Approach Summary` is populated from analysis `## Chosen Approach`.
+- Do not reopen broad option comparison inside the plan unless the analysis explicitly left an operator-only fork unresolved.
+
+## Phase 4.5: Execution Decision Self-Resolve Gate
 
 Before creating any DECISION task, apply this test:
 
-> Can I make this decision by reasoning about available evidence, effectiveness, efficiency, and the documented business requirements?
+> Can I make this execution decision by reasoning about available evidence, effectiveness, efficiency, the documented business requirements, and the chosen approach already settled by analysis?
 
 If yes: make the decision. Fold it into the relevant IMPLEMENT task as the chosen approach. Do not create a DECISION task.
 
-A DECISION task is only warranted when the decision requires input the operator holds that is not documented anywhere — undocumented budget, personal preference, strategic intent not yet written down, or a genuine binary fork where both options are valid and the operator's choice is the deciding factor.
+A DECISION task is only warranted when the decision requires input the operator holds that is not documented anywhere — undocumented budget, personal preference, strategic intent not yet written down, or a genuine fork that analysis explicitly could not settle.
 
 **Signs a DECISION task should not exist:**
 - The `**Recommendation:**` field can be filled with genuine conviction (not "either would work")
 - The `**Decision input needed:**` questions are answerable by reasoning about the codebase, business docs, or standard best practice
-- The only uncertainty is approach, and approach questions are the agent's job to resolve
+- The only uncertainty is task execution detail, and the agent can resolve it from the chosen approach and repo evidence
 
 If a DECISION task survives this gate, its `**Recommendation:**` must be a decisive position — not a hedge. If the agent has a recommendation, the decision is effectively made and the task may not need to be a DECISION task at all. Reserve DECISION tasks for genuine operator forks where the recommendation depends on a preference the operator has not yet expressed.
 
@@ -187,6 +203,7 @@ Rules:
 - One logical unit per task.
 - Use CHECKPOINT tasks for long dependency chains.
 - If a field is not applicable: write `None: <reason>` (no placeholder `TBD`).
+- For every code/mixed IMPLEMENT task, include an `Engineering Coverage` block using the canonical rows from `../_shared/engineering-coverage-matrix.md`.
 - For any user-facing/UI-impacting IMPLEMENT task, include an `Expected user-observable behavior` checklist in Acceptance (what a user should see/do when complete).
 - For frontend IMPLEMENT tasks, include a scoped post-build QA loop requirement in the task contract: run targeted `lp-design-qa`, `tools-ui-contrast-sweep`, and `tools-ui-breakpoint-sweep`; log findings; auto-fix and re-verify until no Critical/Major issues remain (Minor findings may be deferred only with explicit rationale and follow-up).
 
@@ -248,21 +265,20 @@ Write a `## Rehearsal Trace` section into the plan draft (before persisting in P
 |---|---|---|---|
 | TASK-XX: title | Yes / Partial / No | None — or: [Category] [Severity]: description | Yes / No |
 
-**Hard gate (Critical findings):** If any Critical rehearsal issue is found, do not set `Status: Active` or proceed to Phase 8 until the issue is resolved or a valid `Rehearsal-Critical-Waiver` block is written (see shared protocol for waiver format and requirements).
-
-**Advisory (Major / Moderate / Minor findings):** Write into the Rehearsal Trace table and proceed. These are visible to the Phase 9 critique loop and do not block plan persistence.
+Apply the blocking/advisory threshold exactly as defined in `../_shared/simulation-protocol.md`. Do not restate or weaken the threshold here.
 
 ## Phase 8: Persist Plan
 
 Write/update:
 - `docs/plans/<feature-slug>/plan.md`
+- canonical sidecar after validators pass: `docs/plans/<feature-slug>/plan.packet.json`
 
 Status policy:
 - Default `Status: Draft`.
 - Set `Status: Active` only when:
   - mode is `plan+auto` (default) or user explicitly wants build handoff now, and
   - plan gates pass, and
-  - no unresolved Critical rehearsal findings remain (from Phase 7.5).
+  - no unresolved blocking rehearsal findings remain (from Phase 7.5).
 
 ## Phase 9: Critique Loop (1–3 rounds, mandatory)
 
@@ -272,17 +288,15 @@ Load and follow: `../_shared/critique-loop-protocol.md`
 
 ## Phase 9.5: Delivery Rehearsal
 
-After the plan has passed the critique loop (Phase 9), run a delivery rehearsal before build handoff. This phase checks whether the plan is ready for successful delivery — four lenses that the Phase 7.5 structural rehearsal trace does not cover.
+After the plan has passed the critique loop (Phase 9), run a delivery rehearsal before build handoff. This phase checks whether the plan is ready for successful delivery — for code/mixed work via the shared engineering coverage matrix, and for business-artifact work via the applicable delivery lenses that Phase 7.5 does not cover.
 
-**Four lenses:**
+For `Execution-Track: code | mixed`, load `../_shared/engineering-coverage-matrix.md` and review every applicable canonical row in the plan:
 
-1. **Data** — For each IMPLEMENT task that reads or depends on data (database records, fixtures, seed data, uploaded files), confirm that the data exists or that a prior task creates it. If required data does not exist and no task creates it, record a finding.
+1. confirm the plan identifies which task covers that row,
+2. confirm each `Required` row has explicit validation or build evidence expectations,
+3. confirm each `N/A` row has a short reason.
 
-2. **Process/UX** — For each task that changes a user-visible flow, confirm the flow is specified: entry point, happy path, and error/empty state. If a flow has undefined states, record a finding.
-
-3. **Security** — For each task that introduces or modifies an auth boundary, permission check, or data access rule, confirm the boundary is explicitly stated in the task's acceptance criteria. If auth requirements are implicit or absent, record a finding.
-
-4. **UI** — For each task that modifies or introduces UI, confirm the rendering path is specified (component name, route, page, or section). If the rendering context is unspecified, record a finding.
+For `business-artifact` work, keep delivery rehearsal focused on the applicable delivery lenses without forcing the full engineering matrix.
 
 **Same-outcome-only rule:** A delivery rehearsal finding is in scope if addressing it produces the same outcome already targeted by an existing IMPLEMENT task in this plan. If a finding would require adding a new task, it is adjacent scope — route it to post-build reflection or a future fact-find, not this plan. Record one sentence justifying each finding as same-outcome before including it. Tiebreaker: if a new task would directly unblock an existing IMPLEMENT task in the current plan, it may be treated as same-outcome; otherwise it is adjacent scope.
 
@@ -290,12 +304,42 @@ After the plan has passed the critique loop (Phase 9), run a delivery rehearsal 
 
 **Adjacent-idea routing:** Delivery rehearsal findings that are adjacent scope must not be added to the plan. Record them in the plan's `## Decision Log` with tag `[Adjacent: delivery-rehearsal]` for routing to post-build reflection or a future fact-find.
 
-**Critical finding policy:** A Critical delivery rehearsal finding (e.g., no task creates required data that a downstream task depends on; an auth boundary is entirely unspecified) triggers a targeted `/lp-do-replan` before Phase 10 handoff. A Critical finding is not waivable — resolve it or add a same-outcome task.
+**Blocking finding policy:** Apply the blocking/advisory threshold from `../_shared/simulation-protocol.md` to delivery rehearsal findings as well. A blocking delivery rehearsal finding must be resolved before Phase 10 handoff. If resolving it requires new plan structure outside same-outcome scope, trigger a targeted `/lp-do-replan` instead of handoff.
 
 ## Phase 10: Optional Handoff to Build
 
 Evaluate shared auto-continue policy:
 - `../_shared/auto-continue-policy.md`
+
+Before handoff, run deterministic validators:
+
+```bash
+scripts/validate-plan.sh docs/plans/<feature-slug>/plan.md
+scripts/validate-engineering-coverage.sh docs/plans/<feature-slug>/plan.md
+```
+
+Rules:
+- `validate-plan.sh` is required for all plans.
+- `validate-engineering-coverage.sh` is required for `Execution-Track: code | mixed`.
+- If either required validator fails, keep the plan below build handoff.
+
+After required validators pass, generate the stage handoff packet:
+
+```bash
+scripts/generate-stage-handoff-packet.sh docs/plans/<feature-slug>/plan.md
+```
+
+After required validators pass, append workflow-step telemetry:
+
+```bash
+pnpm --filter scripts startup-loop:lp-do-ideas-record-workflow-telemetry -- --stage lp-do-plan --feature-slug <feature-slug> --module <loaded-module-relative-to-stage-skill> [--module <additional-module>] [--input-path docs/plans/<feature-slug>/analysis.packet.json] [--input-path docs/plans/<feature-slug>/fact-find.packet.json] [--input-path docs/plans/<feature-slug>/analysis.md] [--input-path docs/plans/<feature-slug>/fact-find.md] --deterministic-check scripts/validate-plan.sh [--deterministic-check scripts/validate-engineering-coverage.sh]
+```
+
+Rules:
+- Record once per materially updated plan artifact before build handoff.
+- Include the planning module(s) actually loaded plus the upstream packets and any full upstream artifacts that were materially loaded as context.
+- Codex token usage is auto-captured when `CODEX_THREAD_ID` is available.
+- Claude token usage is auto-captured via project session logs (sessions-index.json → debug/latest fallback). Explicit `--claude-session-id` still takes priority when supplied.
 
 If eligible and mode is `plan+auto`, invoke `/lp-do-build <feature-slug>`.
 
@@ -320,13 +364,18 @@ Plan+auto:
 - [ ] Confidence rules applied from shared scoring doc
 - [ ] VC checks reference shared business VC checklist when relevant
 - [ ] `/lp-do-sequence` completed after structural edits
-- [ ] `## Inherited Outcome Contract` populated from fact-find `## Outcome Contract` (or explicit fallback `TBD/auto`)
+- [ ] `## Inherited Outcome Contract` populated from analysis `## Inherited Outcome Contract` (or explicit fallback `TBD/auto`)
+- [ ] `## Analysis Reference` and `## Selected Approach Summary` populated from `analysis.md`
+- [ ] Code/mixed IMPLEMENT tasks include full `Engineering Coverage` blocks
 - [ ] UI-impacting IMPLEMENT tasks define `Expected user-observable behavior` in Acceptance
 - [ ] Frontend IMPLEMENT tasks include scoped post-build QA loop requirements (design QA + contrast + breakpoint sweeps)
 - [ ] Consumer tracing complete for all new outputs and modified behaviors in M/L code/mixed tasks
-- [ ] Phase 7.5 Rehearsal Trace run — trace table present in plan draft; Critical findings resolved or waived before Phase 8 persist
+- [ ] Phase 7.5 Rehearsal Trace run — trace table present in plan draft; all blocking findings resolved or validly waived before Phase 8 persist
 - [ ] lp-do-factcheck run if plan contains codebase claims (file paths, function signatures, coverage assertions)
 - [ ] Phase 9 critique loop run (1–3 rounds, mandatory): round count and final verdict recorded
-- [ ] Phase 9.5 Delivery Rehearsal run — four lenses checked (data, process/UX, security, UI); same-outcome findings folded into plan; adjacent ideas logged with `[Adjacent: delivery-rehearsal]` tag; Critical findings resolved or replanned before Phase 10
+- [ ] Phase 9.5 Delivery Rehearsal run — engineering coverage rows (for code/mixed) or applicable delivery lenses (for business-artifact) checked; same-outcome findings folded into plan; adjacent ideas logged with `[Adjacent: delivery-rehearsal]` tag; all blocking findings resolved or replanned before Phase 10
+- [ ] Deterministic validators run (`validate-plan.sh`; and for code/mixed `validate-engineering-coverage.sh`)
+- [ ] `plan.packet.json` generated after validators pass
+- [ ] Workflow-step telemetry appended after validators pass
 - [ ] Auto-build blocked if critique score ≤ 3.5 (`partially credible` or worse)
 - [ ] Auto-build allowed only when mode is `plan+auto` and critique verdict is `credible`

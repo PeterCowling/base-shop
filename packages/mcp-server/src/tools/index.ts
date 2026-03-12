@@ -25,6 +25,10 @@ import {
 } from "./draft-template-review.js";
 import { gmailTools, handleGmailTool } from "./gmail.js";
 import { handleHealthTool, healthTools } from "./health.js";
+import {
+  handleInboxAnalyticsTool,
+  inboxAnalyticsTools,
+} from "./inbox-analytics.js";
 import { handleInventoryTool, inventoryTools } from "./inventory.js";
 import { handleLoopTool, loopToolPoliciesRaw, loopTools } from "./loop.js";
 import { handleOctorateTool, octorateTools } from "./octorate.js";
@@ -64,6 +68,7 @@ export const toolDefinitions = [
   ...draftRankerCalibrateTools,
   ...draftRefineTools,
   ...draftAcceptanceRateTools,
+  ...inboxAnalyticsTools,
   ...draftSignalStatsTools,
   ...draftTemplateReviewTools,
   ...outboundDraftTools,
@@ -102,6 +107,7 @@ const draftQualityToolNames = new Set(draftQualityTools.map((t) => t.name));
 const draftRankerCalibrateToolNames = new Set(draftRankerCalibrateTools.map((t) => t.name));
 const draftRefineToolNames = new Set(draftRefineTools.map((t) => t.name));
 const draftAcceptanceRateToolNames = new Set(draftAcceptanceRateTools.map((t) => t.name));
+const inboxAnalyticsToolNames = new Set(inboxAnalyticsTools.map((t) => t.name));
 const draftSignalStatsToolNames = new Set(draftSignalStatsTools.map((t) => t.name));
 const draftTemplateReviewToolNames = new Set(draftTemplateReviewTools.map((t) => t.name));
 const outboundDraftToolNames = new Set(outboundDraftTools.map((t) => t.name));
@@ -194,6 +200,9 @@ export async function handleToolCall(name: string, args: unknown) {
   }
   if (draftAcceptanceRateToolNames.has(name as never)) {
     return handleDraftAcceptanceRateTool(name, args);
+  }
+  if (inboxAnalyticsToolNames.has(name as never)) {
+    return handleInboxAnalyticsTool(name, args);
   }
   if (draftSignalStatsToolNames.has(name as never)) {
     return handleDraftSignalStatsTool(name, args);

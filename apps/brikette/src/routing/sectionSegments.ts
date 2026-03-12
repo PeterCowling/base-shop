@@ -75,8 +75,8 @@ export const STATIC_EXPORT_SECTION_KEYS: readonly SlugKey[] = [
 
 /**
  * Public canonical sections that should appear in sitemap / hreflang inventories.
- * Booking entry routes are intentionally excluded when they are treated as
- * transactional / noindex surfaces rather than indexable content pages.
+ * Booking landing routes stay indexable when they carry published metadata and
+ * user-facing selection content, even if the eventual handoff is transactional.
  */
 export const PUBLIC_INDEXABLE_SECTION_KEYS: readonly SlugKey[] = [
   "about",
@@ -92,6 +92,7 @@ export const PUBLIC_INDEXABLE_SECTION_KEYS: readonly SlugKey[] = [
   "assistance",
   "experiences",
   "howToGetHere",
+  "book",
   "privateBooking",
   "apartment",
   "doubleRoomBooking",

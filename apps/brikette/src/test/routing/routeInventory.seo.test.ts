@@ -3,11 +3,12 @@ import { describe, expect, it } from "@jest/globals";
 import { listLocalizedCanonicalAppUrls, listLocalizedPublicUrls } from "@/routing/routeInventory";
 
 describe("listLocalizedPublicUrls SEO contract", () => {
-  it("excludes hostel booking pages that are intentionally noindex", () => {
+  it("keeps localized hostel booking landing pages indexable", () => {
     const urls = listLocalizedPublicUrls();
 
+    expect(urls).toContain("/en/book");
+    expect(urls).toContain("/it/prenota");
     expect(urls).not.toContain("/en/book-dorm-bed");
-    expect(urls).not.toContain("/it/prenota");
   });
 
   it("excludes private-room booking helper routes that redirect to the top-level private booking page", () => {

@@ -200,7 +200,9 @@ export async function computeQualityMetrics(
     GROUP BY quality_outcome
   `;
 
-  // Top failure reasons from draft quality_json
+  // Top failure reasons from draft quality_json.
+  // Guard: only CROSS JOIN json_each when failed_checks is a valid JSON array
+  // to prevent D1 errors on rows with missing or non-array failed_checks.
   const failureQuery = `
     SELECT
       je.value AS reason,
@@ -210,6 +212,7 @@ export async function computeQualityMetrics(
     CROSS JOIN json_each(d.quality_json, '$.failed_checks') AS je
     WHERE d.quality_json IS NOT NULL
       AND json_extract(d.quality_json, '$.passed') = 0
+      AND json_type(d.quality_json, '$.failed_checks') = 'array'
     ${draftTimeFilter}
     ${eventTimeFilter}
     GROUP BY je.value
@@ -385,6 +388,11 @@ export async function computeAdmissionMetrics(
 // Combined Analytics
 // ---------------------------------------------------------------------------
 
+const EMPTY_VOLUME: VolumeMetrics = { totalThreads: 0, admitted: 0, drafted: 0, sent: 0, resolved: 0 };
+const EMPTY_QUALITY: QualityMetrics = { totalDrafted: 0, qualityPassed: 0, qualityFailed: 0, passRate: null, topFailureReasons: [] };
+const EMPTY_RESOLUTION: ResolutionMetrics = { resolvedCount: 0, avgAdmittedToSentHours: null, avgAdmittedToResolvedHours: null };
+const EMPTY_ADMISSION: AdmissionMetrics = { totalProcessed: 0, admitted: 0, admittedRate: null, autoArchived: 0, autoArchivedRate: null, reviewLater: 0, reviewLaterRate: null };
+
 export async function computeAnalytics(
   options: {
     db?: D1Database;
@@ -406,10 +414,10 @@ export async function computeAnalytics(
       ? new Set(options.metrics)
       : new Set(ALL_METRIC_GROUPS);
     return {
-      volume: groups.has("volume") ? { totalThreads: 0, admitted: 0, drafted: 0, sent: 0, resolved: 0 } : undefined,
-      quality: groups.has("quality") ? { totalDrafted: 0, qualityPassed: 0, qualityFailed: 0, passRate: null, topFailureReasons: [] } : undefined,
-      resolution: groups.has("resolution") ? { resolvedCount: 0, avgAdmittedToSentHours: null, avgAdmittedToResolvedHours: null } : undefined,
-      admission: groups.has("admission") ? { totalProcessed: 0, admitted: 0, admittedRate: null, autoArchived: 0, autoArchivedRate: null, reviewLater: 0, reviewLaterRate: null } : undefined,
+      volume: groups.has("volume") ? { ...EMPTY_VOLUME } : undefined,
+      quality: groups.has("quality") ? { ...EMPTY_QUALITY } : undefined,
+      resolution: groups.has("resolution") ? { ...EMPTY_RESOLUTION } : undefined,
+      admission: groups.has("admission") ? { ...EMPTY_ADMISSION } : undefined,
       period: { days: options.days ?? null },
     };
   }
@@ -422,11 +430,22 @@ export async function computeAnalytics(
   const groupSet = new Set(groups);
   const opts = { db, days: options.days };
 
+  // Each metric group is individually wrapped so a single SQL failure
+  // doesn't crash the entire analytics response.
+  async function safeCompute<T>(fn: () => Promise<T>, fallback: T): Promise<T> {
+    try {
+      return await fn();
+    } catch (err) {
+      console.warn("[analytics] metric query failed:", err);
+      return fallback;
+    }
+  }
+
   const [volume, quality, resolution, admission] = await Promise.all([
-    groupSet.has("volume") ? computeVolumeMetrics(opts) : undefined,
-    groupSet.has("quality") ? computeQualityMetrics(opts) : undefined,
-    groupSet.has("resolution") ? computeResolutionMetrics(opts) : undefined,
-    groupSet.has("admission") ? computeAdmissionMetrics(opts) : undefined,
+    groupSet.has("volume") ? safeCompute(() => computeVolumeMetrics(opts), EMPTY_VOLUME) : undefined,
+    groupSet.has("quality") ? safeCompute(() => computeQualityMetrics(opts), EMPTY_QUALITY) : undefined,
+    groupSet.has("resolution") ? safeCompute(() => computeResolutionMetrics(opts), EMPTY_RESOLUTION) : undefined,
+    groupSet.has("admission") ? safeCompute(() => computeAdmissionMetrics(opts), EMPTY_ADMISSION) : undefined,
   ]);
 
   return {

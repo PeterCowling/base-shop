@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-12T16:55:14.480Z",
+  "plan_slug": "reception-theme-inline-cascade",
+  "review_cycle_key": "reception-theme-inline-cascade",
+  "source_path": "docs/plans/reception-theme-inline-cascade/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";
 
+import { deriveCatalogPublishState, isCatalogPublishableState } from "@acme/lib/xa";
+
 import { applyCloudMediaExistenceValidation } from "../../../../lib/catalogCloudPublish";
 import { publishCatalogPayloadToContract } from "../../../../lib/catalogContractClient";
 import {
@@ -110,9 +112,13 @@ async function executeCloudPublish(params: {
     );
   }
 
+  const publishableProducts = updatedSnapshot.products.filter((product) =>
+    isCatalogPublishableState(deriveCatalogPublishState(product))
+  );
+
   const artifacts = await buildCatalogArtifactsFromDrafts({
     storefront: params.storefront,
-    products: updatedSnapshot.products,
+    products: publishableProducts,
     currencyRates,
     strict: false,
     mediaValidationPolicy: "warn",

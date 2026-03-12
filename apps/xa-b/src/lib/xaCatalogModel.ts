@@ -183,7 +183,7 @@ function normalizeProductDetails(
 }
 
 function normalizeProductStatus(value: unknown): CatalogPublishState | null {
-  if (value === "draft" || value === "live" || value === "out_of_stock") {
+  if (value === "live" || value === "out_of_stock") {
     return value;
   }
   return null;

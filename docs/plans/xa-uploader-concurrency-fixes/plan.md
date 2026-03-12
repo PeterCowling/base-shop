@@ -27,10 +27,10 @@ This plan addresses three issues in the xa-uploader catalog pipeline: (1) an ima
 
 ## Active tasks
 - [x] TASK-01: Add DELETE handler baseline tests (Complete 2026-03-12)
-- [ ] TASK-02: Implement snapshot-fenced delete
+- [x] TASK-02: Implement snapshot-fenced delete (Complete 2026-03-12)
 - [x] TASK-03: Elevate promotion failure visibility (Complete 2026-03-12)
 - [x] TASK-04: Remove dead KV mutex functions (Complete 2026-03-12)
-- [ ] TASK-05: Add DELETE handler logging
+- [x] TASK-05: Add DELETE handler logging (Complete 2026-03-12)
 
 ## Goals
 - Narrow the image DELETE TOCTOU window from unbounded to milliseconds via an optimistic concurrency fence, significantly reducing the risk of deleting an image while it is concurrently being assigned to a product.
@@ -199,7 +199,7 @@ This plan addresses three issues in the xa-uploader catalog pipeline: (1) an ima
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `apps/xa-uploader/src/app/api/catalog/images/route.ts`, `apps/xa-uploader/src/app/api/catalog/images/__tests__/route.test.ts`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-05
@@ -256,6 +256,12 @@ This plan addresses three issues in the xa-uploader catalog pipeline: (1) an ima
 - **Notes / references:**
   - The `keyIsStillReferenced` function reads the snapshot internally. The fenced implementation should read the snapshot once, extract products for reference checking, and use the same `docRevision` for the fence write. This may mean inlining the reference check or passing the snapshot to a refactored `keyIsStillReferenced`.
   - Consumer: `keyIsStillReferenced` is called only from the DELETE handler (line 301). No other consumers.
+- **Build evidence (2026-03-12):**
+  - Refactored `keyIsStillReferenced` from async (reads snapshot internally) to sync (accepts `products` parameter). Only consumer was the DELETE handler — safe change.
+  - DELETE handler now: (1) reads snapshot once via `readCloudDraftSnapshot`, (2) checks references using snapshot products, (3) aborts if `docRevision` is null, (4) writes no-op fence via `writeCloudDraftSnapshot` with `ifMatchDocRevision`, (5) if fence 409 returns `{ concurrentEdit: true }` with status 409, (6) if fence fails otherwise returns 500, (7) if fence passes proceeds to R2 delete.
+  - Added 4 fence-specific tests: TC-D09 (fence 409 conflict), TC-D10 (fence non-409 failure), TC-D11 (docRevision null abort), TC-D12 (fence passes correct products/revisions from snapshot).
+  - All 8 baseline tests from TASK-01 updated to work with fenced handler (added `writeCloudDraftSnapshotMock` setup and assertions).
+  - Typecheck passes cleanly.
 
 ### TASK-03: Elevate promotion failure visibility in sync + publish routes
 - **Type:** IMPLEMENT
@@ -372,7 +378,7 @@ This plan addresses three issues in the xa-uploader catalog pipeline: (1) an ima
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `apps/xa-uploader/src/app/api/catalog/images/route.ts`
 - **Depends on:** TASK-02
 - **Blocks:** -
@@ -413,6 +419,11 @@ This plan addresses three issues in the xa-uploader catalog pipeline: (1) an ima
   - Rollback: Revert commit.
 - **Documentation impact:**
   - None.
+- **Build evidence (2026-03-12):**
+  - Added `uploaderLog` calls to all 7 DELETE handler exit paths: success, skipped_referenced, snapshot_revision_unavailable, fence_conflict, fence_write_failed, r2_unavailable, r2_failure.
+  - Event names follow existing `uploaderLog` pattern: `image_delete_success`, `image_delete_skipped_referenced`, `image_delete_snapshot_revision_unavailable`, `image_delete_fence_conflict`, `image_delete_fence_write_failed`, `image_delete_r2_unavailable`, `image_delete_r2_failure`.
+  - Added `uploaderLogger` mock to test file.
+  - Typecheck passes cleanly.
 
 ## Delivered Processes
 

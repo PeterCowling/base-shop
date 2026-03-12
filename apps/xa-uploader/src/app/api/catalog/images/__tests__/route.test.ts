@@ -7,6 +7,18 @@ const getMediaBucketMock = jest.fn();
 const parseImageDimensionsFromBufferMock = jest.fn();
 const validateMinImageEdgeMock = jest.fn();
 const readCloudDraftSnapshotMock = jest.fn();
+const writeCloudDraftSnapshotMock = jest.fn();
+
+class MockCatalogDraftContractError extends Error {
+  readonly code: string;
+  readonly status?: number;
+  constructor(code: string, message: string, options?: { status?: number }) {
+    super(message);
+    this.name = "CatalogDraftContractError";
+    this.code = code;
+    this.status = options?.status;
+  }
+}
 
 jest.mock("../../../../../lib/uploaderAuth", () => ({
   hasUploaderSession: (...args: unknown[]) => hasUploaderSessionMock(...args),
@@ -18,6 +30,12 @@ jest.mock("../../../../../lib/r2Media", () => ({
 
 jest.mock("../../../../../lib/catalogDraftContractClient", () => ({
   readCloudDraftSnapshot: (...args: unknown[]) => readCloudDraftSnapshotMock(...args),
+  writeCloudDraftSnapshot: (...args: unknown[]) => writeCloudDraftSnapshotMock(...args),
+  CatalogDraftContractError: MockCatalogDraftContractError,
+}));
+
+jest.mock("../../../../../lib/uploaderLogger", () => ({
+  uploaderLog: jest.fn(),
 }));
 
 jest.mock("@acme/lib/xa", () => ({
@@ -74,6 +92,7 @@ describe("catalog images route", () => {
     validateMinImageEdgeMock.mockReturnValue(true);
     mockBucketPut.mockResolvedValue({ key: "test-key" });
     mockBucketDelete.mockResolvedValue(undefined);
+    writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "rev-2" });
     readCloudDraftSnapshotMock.mockResolvedValue({
       products: [],
       revisionsById: {},
@@ -294,6 +313,7 @@ describe("catalog images DELETE route", () => {
     hasUploaderSessionMock.mockResolvedValue(true);
     getMediaBucketMock.mockResolvedValue(mockBucket);
     mockBucketDelete.mockResolvedValue(undefined);
+    writeCloudDraftSnapshotMock.mockResolvedValue({ docRevision: "rev-2" });
     readCloudDraftSnapshotMock.mockResolvedValue({
       products: [],
       revisionsById: {},
@@ -314,6 +334,12 @@ describe("catalog images DELETE route", () => {
     expect(response.status).toBe(200);
     expect(body.ok).toBe(true);
     expect(body.deleted).toBe(true);
+    expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith({
+      storefront: "xa-b",
+      products: [],
+      revisionsById: {},
+      ifMatchDocRevision: "rev-1",
+    });
     expect(mockBucketDelete).toHaveBeenCalledWith("xa-b/hermes-birkin-25/1234567890-abc123456789.png");
   });
 
@@ -339,6 +365,7 @@ describe("catalog images DELETE route", () => {
     expect(body.ok).toBe(true);
     expect(body.deleted).toBe(false);
     expect(body.skipped).toBe("still_referenced");
+    expect(writeCloudDraftSnapshotMock).not.toHaveBeenCalled();
     expect(mockBucketDelete).not.toHaveBeenCalled();
   });
 
@@ -461,5 +488,94 @@ describe("catalog images DELETE route", () => {
     const fewSegmentsBody = await fewSegmentsResponse.json();
     expect(fewSegmentsResponse.status).toBe(400);
     expect(fewSegmentsBody.error).toBe("missing_params");
+  });
+
+  it("TC-D09: fence write 409 conflict returns concurrent_edit error without R2 delete", async () => {
+    writeCloudDraftSnapshotMock.mockRejectedValue(
+      new MockCatalogDraftContractError("conflict", "Draft snapshot revision conflict.", { status: 409 }),
+    );
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(409);
+    expect(body.ok).toBe(false);
+    expect(body.error).toBe("concurrent_edit");
+    expect(body.concurrentEdit).toBe(true);
+    expect(mockBucketDelete).not.toHaveBeenCalled();
+  });
+
+  it("TC-D10: fence write non-409 failure returns 500 without R2 delete", async () => {
+    writeCloudDraftSnapshotMock.mockRejectedValue(new Error("network error"));
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body.error).toBe("upload_failed");
+    expect(body.reason).toBe("fence_write_failed");
+    expect(mockBucketDelete).not.toHaveBeenCalled();
+  });
+
+  it("TC-D11: docRevision null aborts delete without fence write or R2 delete", async () => {
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: [],
+      revisionsById: {},
+      docRevision: null,
+    });
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    const response = await DELETE(request);
+    const body = await response.json();
+
+    expect(response.status).toBe(500);
+    expect(body.ok).toBe(false);
+    expect(body.reason).toBe("snapshot_revision_unavailable");
+    expect(writeCloudDraftSnapshotMock).not.toHaveBeenCalled();
+    expect(mockBucketDelete).not.toHaveBeenCalled();
+  });
+
+  it("TC-D12: fence write passes products and revisionsById from snapshot", async () => {
+    const snapshotProducts = [
+      { imageFiles: "xa-b/other-product/other-image.png", slug: "other-product" },
+    ];
+    const snapshotRevisions = { "other-product": "rev-abc" };
+    readCloudDraftSnapshotMock.mockResolvedValue({
+      products: snapshotProducts,
+      revisionsById: snapshotRevisions,
+      docRevision: "rev-42",
+    });
+
+    const { DELETE } = await import("../route");
+    const request = makeDeleteRequest({
+      storefront: "xa-b",
+      key: "xa-b/hermes-birkin-25/1234567890-abc123456789.png",
+    });
+
+    await DELETE(request);
+
+    expect(writeCloudDraftSnapshotMock).toHaveBeenCalledWith({
+      storefront: "xa-b",
+      products: snapshotProducts,
+      revisionsById: snapshotRevisions,
+      ifMatchDocRevision: "rev-42",
+    });
   });
 });

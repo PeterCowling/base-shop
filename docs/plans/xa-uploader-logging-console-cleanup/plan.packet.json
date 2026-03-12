@@ -1,0 +1,202 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "xa-uploader-logging-console-cleanup",
+  "source_artifact_path": "docs/plans/xa-uploader-logging-console-cleanup/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "none"
+  },
+  "outcome_contract": {
+    "why": "Operator-stated: when the upload tool breaks in production there is nothing to investigate — no record of what happened or why.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All xa-uploader server-side error paths emit structured log events observable via `wrangler tail`, leaving a clear trail for any production failure.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — server-side only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No rendering changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — logging only; no response changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "HTTP responses unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required — no secrets in log context",
+      "current_or_option_state": "All tasks",
+      "gap_or_implication": "storefront IDs and error codes only; no tokens, passwords, hookUrl verbatim",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required — this IS the change",
+      "current_or_option_state": "All tasks",
+      "gap_or_implication": "All raw console calls replaced with structured events",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "N/A — additive changes; no behavior change",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Existing tests unaffected; uploaderLog skips in test env",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A — no schema changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — console.log is synchronous; no hot-path concern",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A — additive import + call edits",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Safe to revert",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The xa-uploader already has a structured `uploaderLog()` utility (shipped in the prior plan), but five routes and helpers still call raw `console.warn` / `console.error` directly. This plan converts every remaining raw console call to `uploaderLog()` and adds logging to three previously zero-coverage paths: sync lock contention, currency-rates errors, and bulk validation summaries. All changes are additive import-and-call edits with no behaviour modifications. The plan arose from an operator audit of the logged idea \"when the upload tool breaks in production, there is nothing to investigate\".",
+    "goals": [
+      "Every server-side `console.warn` / `console.error` in xa-uploader routes emits a structured JSON event via `uploaderLog()`",
+      "Lock contention, currency-rate failures, and bulk validation errors leave a retrievable log record in production",
+      "No NODE_ENV test guards needed — `uploaderLog()` skips in `NODE_ENV === \"test\"` already"
+    ],
+    "non_goals": [
+      "No Sentry or external log transport (left for a separate decision)",
+      "No changes to `wrangler tail` or log retention setup",
+      "No test changes — logging additions are additive and don't affect any existing assertions"
+    ],
+    "constraints": [
+      "Tests run in CI only (testing-policy.md) — no local test execution",
+      "`uploaderLog()` already skips in `NODE_ENV === \"test\"` — remove any existing `process.env.NODE_ENV !== \"test\"` guards around the replaced console calls",
+      "No external logging deps — console-only"
+    ],
+    "assumptions": [
+      "`uploaderLog` is already importable from `../../../../lib/uploaderLogger` (confirmed — file exists and exports `uploaderLog`)",
+      "`deployer-drain/route.ts` does not yet import `uploaderLog` (confirmed from source read)",
+      "`products/bulk/route.ts` does not yet import `uploaderLog` (confirmed)",
+      "`currency-rates/route.ts` does not yet import `uploaderLog` (confirmed)",
+      "`sync/route.ts` already imports `uploaderLog` at line 50 (confirmed)",
+      "`products/route.ts` does not yet import `uploaderLog` (confirmed)"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Per-file: add `uploaderLog` import if missing, replace each raw console call with an equivalent `uploaderLog()` call, remove any surrounding `NODE_ENV !== \"test\"` guards.",
+      "For zero-coverage paths: add `uploaderLog()` at the point the failure is detected (before returning the error response).",
+      "Why planning is not reopening option selection:",
+      "Scope is fully specified from confirmed source line numbers. No architectural decision needed."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "products/route.ts — migrate logContractFailure to uploaderLog",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/xa-uploader/src/app/api/catalog/products/route.ts`",
+        "affects": "`apps/xa-uploader/src/app/api/catalog/products/route.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "sync/route.ts — replace console.error + add lock/loadInputs logging",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/xa-uploader/src/app/api/catalog/sync/route.ts`",
+        "affects": "`apps/xa-uploader/src/app/api/catalog/sync/route.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "deploy-drain/route.ts — console.error → uploaderLog",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/xa-uploader/src/app/api/catalog/deploy-drain/route.ts`",
+        "affects": "`apps/xa-uploader/src/app/api/catalog/deploy-drain/route.ts`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "products/bulk/route.ts — console.error + validation summary log",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/xa-uploader/src/app/api/catalog/products/bulk/route.ts`",
+        "affects": "`apps/xa-uploader/src/app/api/catalog/products/bulk/route.ts`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "currency-rates/route.ts — add uploaderLog for error paths",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts`",
+        "affects": "`apps/xa-uploader/src/app/api/catalog/currency-rates/route.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-03",
+      "TASK-04",
+      "TASK-05"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. These are additive log call additions; no workflow, lifecycle state, CI lane, or runbook is altered.",
+      "areas": []
+    }
+  }
+}

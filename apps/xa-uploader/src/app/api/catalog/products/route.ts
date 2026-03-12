@@ -21,6 +21,7 @@ import { catalogContractUnavailableResponse } from "../../../../lib/localFsGuard
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { PayloadTooLargeError, readJsonBodyWithLimit } from "../../../../lib/requestJson";
 import { hasUploaderSession } from "../../../../lib/uploaderAuth";
+import { uploaderLog } from "../../../../lib/uploaderLogger";
 
 export const runtime = "nodejs";
 
@@ -95,8 +96,7 @@ function wouldUnpublish(product: CatalogProductDraftInput): boolean {
 
 function logContractFailure(operation: "list" | "upsert", error: CatalogDraftContractError): void {
   if (error.code !== "request_failed" && error.code !== "invalid_response") return;
-  if (process.env.NODE_ENV === "test") return;
-  console.warn("[xa-uploader] catalog contract request failed", {
+  uploaderLog("warn", "catalog_contract_request_failed", {
     operation,
     code: error.code,
     status: error.status ?? null,

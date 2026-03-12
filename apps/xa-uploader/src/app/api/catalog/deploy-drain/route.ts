@@ -12,6 +12,7 @@ import {
 import { getRequestIp, rateLimit, withRateHeaders } from "../../../../lib/rateLimit";
 import { getUploaderKv } from "../../../../lib/syncMutex";
 import { hasUploaderSession, timingSafeEqual } from "../../../../lib/uploaderAuth";
+import { uploaderLog } from "../../../../lib/uploaderLogger";
 import { XA_UPLOADER_DEPLOY_DRAIN_TOKEN_ENV } from "../../../../lib/uploaderRuntimeConfig";
 
 export const runtime = "nodejs";
@@ -56,7 +57,7 @@ export async function POST(request: Request) {
   }
 
   const authenticated = await hasUploaderSession(request).catch((err) => {
-    console.error("[deploy-drain] session check failed:", err);
+    uploaderLog("error", "deploy_drain_session_check_failed", { error: String(err) });
     return false;
   });
   if (!authenticated && !hasDeployDrainToken(request)) {
@@ -92,7 +93,7 @@ export async function POST(request: Request) {
     kv,
     statePath: undefined,
   }).catch((err) => {
-    console.error("[deploy-drain] failed to read pending state:", err);
+    uploaderLog("error", "deploy_drain_pending_state_read_failed", { storefront: storefrontId, error: String(err) });
     return null;
   });
 

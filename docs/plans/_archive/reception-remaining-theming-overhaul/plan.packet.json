@@ -1,0 +1,132 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "reception-remaining-theming-overhaul",
+  "source_artifact_path": "docs/plans/reception-remaining-theming-overhaul/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-remaining-theming-overhaul/fact-find.md",
+    "analysis": "docs/plans/reception-remaining-theming-overhaul/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff-facing screens (bookings, management, auth, modals) use wrong foreground tokens on coloured backgrounds, redundant opacity syntax, and broken focus ring selectors. This makes buttons and badges harder to read and keyboard focus invisible on daily-use interfaces.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All remaining reception components use correct semantic foreground tokens on status-coloured backgrounds, with valid focus ring syntax and no redundant opacity modifiers.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "TASK-01: all ~36 className fixes",
+      "current_or_option_state": "—",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "TASK-01: focus ring fixes + hover state fix",
+      "current_or_option_state": "—",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "—",
+      "current_or_option_state": "N/A: no auth, data, or input changes",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "—",
+      "current_or_option_state": "N/A: no logic changes",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "TASK-01: typecheck + lint + check existing tests for old className assertions",
+      "current_or_option_state": "—",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "—",
+      "current_or_option_state": "N/A: no type/schema/API changes — className strings only",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "—",
+      "current_or_option_state": "N/A: className changes have zero runtime cost",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "TASK-01: single commit, revert = `git revert <sha>`",
+      "current_or_option_state": "—",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Single-pass batch fix of ~36 theming issues across ~24 component files in the reception app. All fixes are className string replacements with verified target tokens. Two special cases require slightly more than simple replacement: VarianceHeatMap needs foreground tokens added to `getVarianceClass()` returns, and CleaningPriorityTable needs a conditional foreground token based on its `color` prop. Follows the identical approach that succeeded for the bar/POS overhaul (14 fixes, commit `b955bf38c4`) and till/safe overhaul (9 fixes, commit `aea95ee6b0`). ### Active Tasks | ID | Title | Status | |",
+    "goals": [
+      "Fix all wrong-foreground-on-coloured-background issues (High severity)",
+      "Fix all double focus prefix issues (`focus-visible:focus:` → `focus-visible:`)",
+      "Remove all redundant `/100` opacity modifiers",
+      "Fix wrong token base in BookingPaymentsLists (`bg-danger-fg/10` → `bg-error-main/10`)",
+      "Fix confusing hover state flip in CheckoutTable"
+    ],
+    "non_goals": [
+      "Redesigning component layouts or structures",
+      "Adding new tokens to the design system",
+      "Changing business logic in any component",
+      "Fixing issues in bar/POS (already done), till/safe (already done), or inbox (clean)"
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "selected_approach": [
+      "What was chosen: Option A — apply all ~36 fixes in one task, one commit",
+      "Why planning is not reopening option selection: Analysis compared single-pass (A) vs area-grouped batches (B). Option A won on all criteria (speed, rollback simplicity, review burden). All fixes are independent — grouping adds no safety benefit."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Fix all ~36 theming issues across remaining reception components",
+        "type": "IMPLEMENT",
+        "status": "Ready",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

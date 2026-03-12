@@ -1,0 +1,27 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "docs/plans/reception-remaining-theming-overhaul/plan.md",
+      "line": "222",
+      "message": "The double-focus fix mapping is incomplete. BookingSearchTable.tsx L278 and L355 still contain the broken focus-visible:focus: pattern, but TASK-01 fix list only covers OpeningFloatModal, TenderRemovalModal, FinancialTransactionSearch, FinancialTransactionAuditSearch, and Login."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-remaining-theming-overhaul/plan.md",
+      "line": "156",
+      "message": "Validation commands are unscoped (pnpm typecheck/lint) instead of scoped (pnpm --filter reception typecheck/lint)."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-remaining-theming-overhaul/plan.md",
+      "line": "158",
+      "message": "Test gate is underspecified — repo policy requires tests run in CI only, but plan says 'Existing tests still pass' without specifying push+CI-watch step."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 6,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019cdc4f-7c00-7a53-b667-b1e52fc6944c"
+}

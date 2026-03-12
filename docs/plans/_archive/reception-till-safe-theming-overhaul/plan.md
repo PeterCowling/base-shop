@@ -1,6 +1,7 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
+Build-Date: "2026-03-12"
 Domain: UI
 Workstream: Engineering
 Created: "2026-03-12"
@@ -75,7 +76,7 @@ Option A — single-pass batch. All 9 issues are className string replacements w
 
 | ID | Title | Type | Effort | Confidence | Status | Dependencies |
 |---|---|---|---|---|---|---|
-| TASK-01 | Fix all 9 theming issues across till, safe, and common components | IMPLEMENT | S | 90 | Ready | None |
+| TASK-01 | Fix all 9 theming issues across till, safe, and common components | IMPLEMENT | S | 90 | Complete (2026-03-12) | None |
 
 ## Engineering Coverage
 
@@ -106,7 +107,7 @@ Option A — single-pass batch. All 9 issues are className string replacements w
 - **Execution-Track:** code
 - **Effort:** S
 - **Confidence:** 85
-- **Status:** Ready
+- **Status:** Complete (2026-03-12)
 - **Dependencies:** None
 - **Affects:**
   - `apps/reception/src/components/till/CountInputModal.tsx`
@@ -250,6 +251,16 @@ const STEP_STYLES = {
 ## Decision Log
 
 None — all decisions resolved by analysis (Option A chosen).
+
+## Build Evidence — TASK-01
+
+- **Date:** 2026-03-12
+- **Commit:** aea95ee6b0
+- **All 9 className fixes applied** across 7 files + DifferenceBadge test updated
+- **Typecheck:** passed (59/59 tasks, 58 cached)
+- **Lint:** passed (0 errors, 13 pre-existing warnings — none from changed files)
+- **DifferenceBadge test:** updated to assert `text-success-fg` and `text-danger-fg` instead of `text-primary-fg`
+- **Scope expansion:** DifferenceBadge.test.tsx added to Affects (controlled — test asserted old default values)
 
 ## Overall-confidence Calculation
 

@@ -1,0 +1,182 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "reception-till-safe-theming-overhaul",
+  "source_artifact_path": "docs/plans/reception-till-safe-theming-overhaul/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system",
+    "lp-design-qa"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-till-safe-theming-overhaul/fact-find.md",
+    "plan": "docs/plans/reception-till-safe-theming-overhaul/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The till and safe screens are used by staff every day for cash management. Wrong text colours on warning and error buttons make them harder to read, and broken focus ring syntax means keyboard users can't see focus indicators on close buttons. Fixing this means every button and badge is legible and accessible.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All till, safe, and cash management components use correct semantic foreground tokens on status-coloured backgrounds, with valid focus ring syntax and distinct interaction states.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "All 9 fixes in one pass — complete visual consistency after one commit",
+      "current_or_option_state": "Three incremental passes",
+      "gap_or_implication": "Option A: immediate full consistency",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Focus ring and hover fixes land atomically",
+      "current_or_option_state": "Focus ring fixes in commit 1, hover in commit 3",
+      "gap_or_implication": "Option A: all interaction fixes land together",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "One contrast sweep verifies all fixes",
+      "current_or_option_state": "Three sweeps needed",
+      "gap_or_implication": "Option A: one verification pass",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single commit revert",
+      "current_or_option_state": "Granular revert per area",
+      "gap_or_implication": "Option B slightly better, but low-risk className changes make this moot",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "9 theming issues across 7 till/safe/common component files need correction. The decision is the implementation strategy: batch all fixes in a single pass vs. split by component area. Both approaches use the same target tokens — only execution ordering differs. This is structurally identical to the bar/POS theming overhaul which was successfully completed using Option A (single-pass batch).",
+    "goals": [
+      "Fix 7 High-severity wrong-foreground issues (CountInputModal, FloatEntryModal, CloseShiftForm x2, DrawerLimitWarning, DifferenceBadge x2)",
+      "Fix 2 Low-severity no-op hover states (CopyBookingRefPill, CopyOccupantIdPill)"
+    ],
+    "non_goals": [
+      "Redesigning till/safe layout or component structure",
+      "Adding new tokens to the design system",
+      "Changing till/safe business logic"
+    ],
+    "constraints": [
+      "All changes must use existing semantic tokens — no new token definitions",
+      "Purely className adjustments — no component API changes",
+      "Preserve intentional opacity on frosted elements (ShiftSummary `bg-surface/80`)",
+      "Use `danger-fg` (not `error-fg`) — reception config has no `error-fg` token"
+    ],
+    "assumptions": [
+      "Single commit is acceptable for className-only changes"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Risk of visual regression",
+        "Why it matters": "Till/safe are used daily by staff — broken styles disrupt cash operations",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Review effort",
+        "Why it matters": "className-only changes are easy to review",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Completion speed",
+        "Why it matters": "Staff benefit from fixes sooner",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Rollback simplicity",
+        "Why it matters": "Must be easy to revert if unexpected",
+        "Weight/priority": "Low"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Single-pass batch",
+        "Description": "Fix all 9 issues in one commit across all 7 files",
+        "Upside": "Fastest delivery; single atomic commit; one review cycle; proven pattern from bar/POS",
+        "Downside": "Larger diff (7 files)",
+        "Key risks": "If one fix is wrong, whole commit needs revert or patch",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Component-area split",
+        "Description": "Three commits: till modals, CloseShiftForm+DrawerLimitWarning, DifferenceBadge+CopyPills",
+        "Upside": "Smaller per-commit diffs",
+        "Downside": "Three review cycles; more git overhead",
+        "Key risks": "Intermediate states have mixed old/new theming",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C: File-by-file",
+        "Description": "One commit per affected file",
+        "Upside": "Maximum granularity for revert",
+        "Downside": "7 separate commits; excessive overhead",
+        "Key risks": "Over-engineering for the scope",
+        "Viable?": "No — eliminated"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — single-pass batch",
+      "Why this wins": "All 9 issues are className string replacements with known target values (one requires adding a property to an existing constant). The risk of any individual fix being wrong is very low (tokens are verified). A single atomic commit delivers full visual consistency immediately and requires only one verification pass. This is the same approach that succeeded for the bar/POS overhaul.",
+      "What it depends on": "Each fix must be verified against the token resolution chain. Intentional opacity on frosted elements must be preserved. DifferenceBadge test may need updating if it asserts on default className values.",
+      "Option B (component-area split)": "Unnecessary overhead. Three commits and three verification passes for changes that are all low-risk className replacements. The only benefit (granular revert) is not meaningful when every fix has a verified target token.",
+      "Option C (file-by-file)": "Over-engineering. 7 commits for className changes is excessive."
+    },
+    "rejected_approaches": [
+      "**Option B (component-area split):** Unnecessary overhead. Three commits and three verification passes for changes that are all low-risk className replacements. The only benefit (granular revert) is not meaningful when every fix has a verified target token.",
+      "**Option C (file-by-file):** Over-engineering. 7 commits for className changes is excessive."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Single IMPLEMENT task covering all 9 fixes across 7 files",
+        "Each fix has a specific old → new className mapping from the fact-find",
+        "CloseShiftForm requires adding `closeBtnFg` property to existing `STEP_STYLES` constant"
+      ],
+      "validation_implications": [
+        "Visual contrast sweep after commit (both light and dark mode)",
+        "Typecheck and lint must pass",
+        "DifferenceBadge unit test should be checked for default className assertions"
+      ],
+      "sequencing_constraints": [
+        "None — all fixes are independent; no ordering dependency between files"
+      ],
+      "risks_to_carry_forward": [
+        "DifferenceBadge test may assert old default classNames — check during build"
+      ]
+    }
+  }
+}

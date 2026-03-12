@@ -1,6 +1,6 @@
 ---
 Type: Micro-Build
-Status: Complete
+Status: Archived
 Created: 2026-03-12
 Last-updated: 2026-03-12
 Feature-Slug: reception-inbox-thread-message-pagination

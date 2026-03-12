@@ -1,0 +1,188 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "xa-uploader-security-hardening",
+  "source_artifact_path": "docs/plans/xa-uploader-security-hardening/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/xa-uploader-security-hardening/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Right now, if someone accidentally deletes the IP allowlist setting, the entire admin tool becomes publicly accessible with no warning. Session tokens also cannot be revoked before their 7-day expiry, meaning a stolen cookie remains valid for up to a week.",
+    "intended_outcome_type": "measurable",
+    "intended_outcome_statement": "IP allowlist rejects by default when unconfigured; session revocation mechanism exists via KV-backed minimum-issuedAt check; session verification is fully timing-safe.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: no UI changes — admin tool middleware/library layer only",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A: no UX changes — admin requests are denied/allowed at middleware level",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required: deny-all default, preflight enforcement, session revocation, coherence warning, timing-safe comparison",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-04",
+      "gap_or_implication": "Primary purpose of this plan",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required: structured security event logging via `uploaderLog()`",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "Uses existing logger seam",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required: updated deny-all tests, new revocation tests, new coherence warning tests, new preflight tests",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03, TASK-04",
+      "gap_or_implication": "Preflight tests are net-new harness",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required: new KV key `xa:revocation:min_issued_at` for session revocation",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Shared KV namespace with deploy flows",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required: one KV read per authenticated request for revocation check",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Sub-ms per Cloudflare KV SLA",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required: operator must provision `XA_UPLOADER_ALLOWED_IPS` as Cloudflare secret before deploy",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Preflight blocks deploy if missing",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "This plan closes two substantive security gaps in the xa-uploader admin tool: (1) the IP allowlist silently defaults to allow-all when `XA_UPLOADER_ALLOWED_IPS` is unset, and (2) session tokens cannot be revoked before their 7-day expiry. The chosen approach (Option B from analysis) promotes the IP allowlist from an optional Worker var to a required Cloudflare secret enforced by the existing preflight script, flips the runtime default to deny-all, adds a once-per-process runtime coherence warning for proxy-trust misconfiguration, and introduces KV-backed session revocation. Security event logg",
+    "goals": [
+      "Change IP allowlist default from allow-all to deny-all when `XA_UPLOADER_ALLOWED_IPS` is unset or empty.",
+      "Add `XA_UPLOADER_ALLOWED_IPS` to `XA_UPLOADER_REQUIRED_CF_SECRET_NAMES` so preflight blocks deploy when the secret is missing.",
+      "Add once-per-process runtime coherence warning when allowlist is non-empty but `XA_TRUST_PROXY_IP_HEADERS` is disabled.",
+      "Implement KV-backed session revocation via minimum-issuedAt check.",
+      "Add structured security event logging via existing `uploaderLog()`.",
+      "Fix non-constant-time version check in `verifySessionToken`."
+    ],
+    "non_goals": [
+      "Distributed rate limiting (P2 — deferred).",
+      "Content-Length handling changes (non-issue).",
+      "CSP tightening (acceptable for internal admin tool).",
+      "Full monitoring/alerting infrastructure.",
+      "Session TTL reduction (deferred to operator decision — no refresh mechanism exists)."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "KV reads are sub-ms in Cloudflare (well-documented platform characteristic).",
+      "Operator accesses the admin tool infrequently (admin-only workflow)."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Option B — Preflight existence check with single-pass implementation, supplemented by once-per-process runtime coherence warning.",
+      "Why planning is not reopening option selection:",
+      "Analysis decisively settled on Option B with explicit rejection of Options A and C. No new evidence has emerged since analysis."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "IP allowlist deny-all default + preflight enforcement + coherence warning",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `apps/xa-uploader/src/lib/accessControl.ts`, `apps/xa-uploader/src/lib/uploaderRuntimeConfig.ts`, `apps/xa-uploader/src/lib/__tests__/accessControl.test.ts`",
+        "affects": "`apps/xa-uploader/src/lib/accessControl.ts`, `apps/xa-uploader/src/lib/uploaderRuntimeConfig.ts`, `apps/xa-uploader/src/lib/__tests__/accessControl.test.ts`, `apps/xa-uploader/wrangler.toml`, `[readonly] apps/xa-uploader/scripts/preflight-deploy.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "KV-backed session revocation",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `apps/xa-uploader/src/lib/uploaderAuth.ts`, `apps/xa-uploader/src/lib/__tests__/uploaderAuth.test.ts`",
+        "affects": "`apps/xa-uploader/src/lib/uploaderAuth.ts`, `apps/xa-uploader/src/lib/syncMutex.ts`, `apps/xa-uploader/src/lib/__tests__/uploaderAuth.test.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Security event logging",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `apps/xa-uploader/src/middleware.ts`, `apps/xa-uploader/src/app/api/uploader/login/route.ts`, `apps/xa-uploader/src/lib/uploaderAuth.ts`",
+        "affects": "`apps/xa-uploader/src/middleware.ts`, `apps/xa-uploader/src/app/api/uploader/login/route.ts`, `apps/xa-uploader/src/lib/uploaderAuth.ts`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Timing-safe version check fix",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `apps/xa-uploader/src/lib/uploaderAuth.ts`, `apps/xa-uploader/src/lib/__tests__/uploaderAuth.test.ts`",
+        "affects": "`apps/xa-uploader/src/lib/uploaderAuth.ts`, `apps/xa-uploader/src/lib/__tests__/uploaderAuth.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

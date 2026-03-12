@@ -1,0 +1,193 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "xa-uploader-security-hardening",
+  "source_artifact_path": "docs/plans/xa-uploader-security-hardening/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/xa-uploader-security-hardening/fact-find.md",
+    "plan": "docs/plans/xa-uploader-security-hardening/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Right now, if someone accidentally deletes the IP allowlist setting, the entire admin tool becomes publicly accessible with no warning. Session tokens also cannot be revoked before their 7-day expiry, meaning a stolen cookie remains valid for up to a week.",
+    "intended_outcome_type": "measurable",
+    "intended_outcome_statement": "IP allowlist rejects by default when unconfigured; session revocation mechanism exists via KV-backed minimum-issuedAt check; session verification is fully timing-safe.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A — no UI changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A — no UX changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Runtime warning on coherence mismatch. Deny-all default covers the primary gap.",
+      "current_or_option_state": "Deploy-time block on missing secret + runtime deny-all default. Stronger pre-deploy safety.",
+      "gap_or_implication": "Option B provides earlier detection of the most common failure mode (missing secret).",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Same: `uploaderLog()` for security events. Runtime coherence warning is also a log event.",
+      "current_or_option_state": "Same: `uploaderLog()` for security events. Preflight outputs structured pass/fail.",
+      "gap_or_implication": "Both options use the same logging seam.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit test for runtime coherence check in `accessControl.test.ts`.",
+      "current_or_option_state": "Unit test for deny-all; integration test for preflight (preflight already has test patterns).",
+      "gap_or_implication": "Option B has a slightly broader test surface but follows existing patterns.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Same: KV key `xa:revocation:min_issued_at` for revocation timestamp. Token format unchanged.",
+      "current_or_option_state": "Same.",
+      "gap_or_implication": "No difference.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Same: one KV read per authenticated request for revocation. Runtime coherence check is negligible (two env var reads per request).",
+      "current_or_option_state": "Same: one KV read per authenticated request for revocation. Runtime coherence check fires once per process via deduplication (negligible cost). Preflight check adds zero per-request cost.",
+      "gap_or_implication": "Both options include a runtime coherence check. Option B deduplicates it to once-per-process, making the per-request overhead effectively zero for both. No meaningful performance difference.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Must set `XA_UPLOADER_ALLOWED_IPS` secret before deploy. Coherence mismatch detected only after deploy.",
+      "current_or_option_state": "Must set `XA_UPLOADER_ALLOWED_IPS` secret before deploy. Preflight blocks deploy if secret is missing.",
+      "gap_or_implication": "Option B is safer for rollout — catches the missing-secret case before deploy.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "Should max session age be reduced from 7 days, and if so to what value?",
+    "What IP addresses should be in the production allowlist?"
+  ],
+  "stage_payload": {
+    "decision_summary": "The fact-find identified two substantive security gaps in the xa-uploader admin tool: (1) the IP allowlist defaults to allow-all when `XA_UPLOADER_ALLOWED_IPS` is unset, silently exposing the catalog admin API to the internet, and (2) session tokens have a 7-day lifetime with no revocation mechanism. Two additional items (timing leak on version check, security event logging) are lower-priority improvements to ship in the same pass. The analysis must decide between implementation approaches and resolve how to implement allowlist/proxy-trust coherence validation. A key constraint: `XA_UPLOADER_A",
+    "goals": [
+      "Change IP allowlist default from allow-all to deny-all.",
+      "Implement session revocation via KV-backed minimum-issuedAt check.",
+      "Add allowlist/proxy-trust coherence validation.",
+      "Fix timing leak in version check (cosmetic).",
+      "Add security event logging via existing `uploaderLog()`."
+    ],
+    "non_goals": [
+      "Distributed rate limiting (accepted as P2).",
+      "Content-Length handling changes (non-issue).",
+      "CSP tightening (acceptable for internal admin tool).",
+      "Full monitoring/alerting infrastructure."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "KV reads are sub-ms in Cloudflare (well-documented platform characteristic).",
+      "Operator accesses the admin tool infrequently (admin-only workflow)."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Security posture improvement",
+        "Why it matters": "Primary objective — close the two substantive gaps",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Rollout safety",
+        "Why it matters": "Deny-all default is a breaking change; must not lock operator out",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Implementation simplicity",
+        "Why it matters": "Fewer moving parts = fewer defects in security-critical code",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Backward compatibility",
+        "Why it matters": "Existing sessions must not break during transition",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Observability",
+        "Why it matters": "Security events need an audit trail",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Test coverage",
+        "Why it matters": "Security changes require strong test evidence",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Runtime coherence + single-pass",
+        "Description": "All changes in one pass. Coherence check at runtime in `accessControl.ts` (log warning when allowlist is non-empty but proxy trust is disabled).",
+        "Upside": "Simple to implement; all security work ships together; runtime check catches misconfiguration regardless of deploy path.",
+        "Downside": "Runtime check only fires after traffic hits the Worker; no deploy-time safety net for coherence specifically.",
+        "Key risks": "Coherence misconfiguration discovered only at request time, not deploy time.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Preflight existence check + single-pass",
+        "Description": "All changes in one pass. Promote `XA_UPLOADER_ALLOWED_IPS` from optional `[vars]` to a required Cloudflare secret; add to `XA_UPLOADER_REQUIRED_CF_SECRET_NAMES` so preflight enforces its existence. Runtime code treats missing var as deny-all. Runtime once-per-process coherence warning when allowlist is non-empty but proxy trust is disabled.",
+        "Upside": "Deploy-time safety: preflight fails if the secret is missing, catching the most common misconfiguration before deploy. Aligns with existing preflight pattern.",
+        "Downside": "Config model change: var -> secret. Must provision in all environments including preview, or preview preflight fails. Cannot validate the secret's value (only existence).",
+        "Key risks": "CI/environment setup burden; empty-but-present secret edge case; proxy trust still needs a runtime check.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C: Keep allowlist in `[vars]` + preflight value check",
+        "Description": "Keep `XA_UPLOADER_ALLOWED_IPS` as a non-secret `wrangler.toml [vars]` entry (its current form). Preflight reads and validates both the value and proxy-trust coherence at deploy time.",
+        "Upside": "Full deploy-time validation of both existence, value, and coherence — preflight can read `[vars]` values unlike secrets.",
+        "Downside": "`[vars]` values are checked into source control, which means allowlist IPs are visible in the repo. Less secure than promoting to a secret. Does not align with Option B's direction of treating the allowlist as mandatory secret-grade config.",
+        "Key risks": "Repo-visible IPs (minor privacy concern); weaker config posture than secret promotion.",
+        "Viable?": "Yes, but over-engineered"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option B — Preflight existence check with single-pass implementation, supplemented by a once-per-process runtime coherence log warning.",
+      "**Why this wins": "**",
+      "**What it depends on": "**",
+      "KV namespace production ID placeholder (`wrangler.toml": "23`) must be resolved before revocation features deploy. The preflight already validates KV namespace configuration.",
+      "Q": "What IP addresses should be in the production allowlist?",
+      "Why operator input is required": "Only the operator knows which IPs they access the admin tool from.",
+      "Planning impact": "Must be set as a Cloudflare secret before deploying the deny-all default. The build itself does not depend on the specific values."
+    },
+    "rejected_approaches": [
+      "**Option A (runtime coherence only)** — Rejected because it discovers the most common failure mode (missing allowlist) only after traffic hits the Worker. The deny-all default prevents actual exposure, but operator discovers the lockout after deploy rather than before. Since the preflight seam already exists, the trade-off (promoting to required secret + provisioning in all environments) is worth the deploy-time safety net.",
+      "**Option C (keep in `[vars]` with value check)** — Rejected because it keeps the allowlist as a non-secret var visible in source control, which is a weaker config posture than promoting to a secret. While Option C offers full deploy-time value validation (preflight can read vars, unlike secrets), the combination of preflight existence check + runtime deny-all default + runtime coherence warning in Option B achieves equivalent safety with a stronger config model."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "Task 1 (deny-all + preflight + coherence warning) can ship independently — no KV dependency. Delivers the full chosen approach for IP allowlist hardening.",
+        "Task 2 (revocation) depends on KV namespace production ID being resolved.",
+        "Task 3 (logging) and Task 4 (timing) have no dependencies and can be parallelized with Task 2.",
+        "Operator must provision `XA_UPLOADER_ALLOWED_IPS` as a Cloudflare secret in production and preview environments (with actual IPs — no wildcard) before deploying Task 1. `XA_TRUST_PROXY_IP_HEADERS=1` is already set in `wrangler.toml` for both production and preview environments."
+      ],
+      "risks_to_carry_forward": [
+        "KV namespace placeholder ID must be resolved before Task 2 ships.",
+        "Deny-all default is a breaking change — operator must configure secrets before deploy.",
+        "Runtime coherence warning fires after deploy; preflight catches only secret existence."
+      ]
+    }
+  }
+}

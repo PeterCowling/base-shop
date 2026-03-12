@@ -157,7 +157,7 @@ export function IntroHighlights({
                     href={SEA_HORSE_SHUTTLE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex min-h-11 items-center font-semibold text-brand-primary underline underline-offset-4 transition-colors hover:no-underline dark:text-brand-secondary"
+                    className="font-semibold text-brand-primary underline underline-offset-4 transition-colors hover:no-underline dark:text-brand-secondary"
                   />
                 ),
               }}

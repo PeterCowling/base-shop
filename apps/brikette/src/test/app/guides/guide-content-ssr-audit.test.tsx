@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import { detectRenderedI18nPlaceholders } from "@tests/utils/detectRenderedI18nPlaceholders";
+import type { TFunction } from "i18next";
 
 import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import GuideContent from "@/app/[lang]/experiences/[slug]/GuideContent";
@@ -11,11 +12,46 @@ import type { GuideKey } from "@/routes.guides-helpers";
 
 jest.mock("server-only", () => ({}));
 
+function getNestedValue(source: unknown, key: string): unknown {
+  if (!source || typeof source !== "object") {
+    return undefined;
+  }
+
+  return key.split(".").reduce<unknown>((current, segment) => {
+    if (!current || typeof current !== "object") {
+      return undefined;
+    }
+    return (current as Record<string, unknown>)[segment];
+  }, source);
+}
+
+function getGuidesBundleForTest(lang: "en"): Record<string, unknown> {
+  const existing = i18n.getResourceBundle?.(lang, "guides") as Record<string, unknown> | undefined;
+  if (existing && Object.keys(existing).length > 0) {
+    return existing;
+  }
+
+  return (loadGuidesNamespaceFromFs(lang) ?? {}) as Record<string, unknown>;
+}
+
+function createGuidesTranslator(lang: "en"): TFunction {
+  return ((key: string, options?: Record<string, unknown>) => {
+    const value = getNestedValue(getGuidesBundleForTest(lang), key);
+    if (typeof value === "undefined") {
+      return (options?.defaultValue as string | undefined) ?? key;
+    }
+    if (options?.returnObjects) {
+      return value;
+    }
+    return typeof value === "string" ? value : key;
+  }) as TFunction;
+}
+
 jest.mock("react-i18next", () => ({
   useTranslation: (namespace: string, options?: { lng?: string }) => {
-    const lang = options?.lng ?? "en";
+    const lang = (options?.lng ?? "en") as "en";
     return {
-      t: i18n.getFixedT(lang, namespace),
+      t: namespace === "guides" ? createGuidesTranslator(lang) : i18n.getFixedT(lang, namespace),
       i18n,
     };
   },
@@ -53,7 +89,7 @@ jest.mock("@/routes/guides/_GuideSeoTemplate", () => {
       lng: "en",
       useSuspense: false,
     });
-    const translateGuides = runtimeI18n.getFixedT("en", "guides");
+    const translateGuides = createGuidesTranslator("en");
     const displayTitle = useDisplayH1TitleHook({
       metaKey,
       effectiveTitle: undefined,

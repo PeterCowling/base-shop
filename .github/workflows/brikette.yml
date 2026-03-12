@@ -233,8 +233,8 @@ jobs:
       test-shard-count: 3
       project-name: ${{ vars.BRIKETTE_PAGES_PROJECT || 'brikette-website' }}
       environment-name: "production"
-      environment-url: "https://www.hostel-positano.com"
-      healthcheck-base-url: "https://www.hostel-positano.com"
+      environment-url: "https://hostel-positano.com"
+      healthcheck-base-url: "https://hostel-positano.com"
       # CI gets the full post-deploy route contract checks.
       # Keep direct `wrangler pages deploy` fast for operator hotfixes; do not
       # copy these stricter checks into the manual deploy path.

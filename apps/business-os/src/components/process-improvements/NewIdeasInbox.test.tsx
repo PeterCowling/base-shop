@@ -302,4 +302,145 @@ describe("NewIdeasInbox", () => {
     expect(screen.getByText(/Deferred until/i)).toBeInTheDocument();
     expect(screen.getByText(/Snoozed until/i)).toBeInTheDocument();
   });
+
+  const itemWithDecisionBrief: ProcessImprovementQueueInboxItem = {
+    ...baseItem,
+    itemKey: "idea-brief-1",
+    ideaKey: "idea-brief-1",
+    dispatchId: "dispatch-brief-1",
+    title: "Improve operator decision surface",
+    decisionBrief: {
+      problem: "The operator inbox is passive.",
+      whyNow: "Operators miss critical items without active prompting.",
+      businessBenefit:
+        "Acting on this reduces the risk of broken behaviour, data errors, or customer-facing failures.",
+      benefitCategory: "risk_reduction",
+      expectedNextStep: "Work starts immediately once you approve.",
+      confidenceExplainer:
+        "High confidence — the analysis is solid and the outcome is likely.",
+      evidenceLabels: [
+        {
+          label: "Operator observation",
+          raw: "operator-stated: customer reported bug",
+        },
+      ],
+    },
+  };
+
+  it("TC-NEW-01: DecisionBriefPanel renders when item has a decisionBrief", () => {
+    render(
+      <NewIdeasInbox
+        initialItems={[itemWithDecisionBrief]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    expect(screen.getByText("Why this matters now")).toBeInTheDocument();
+    expect(screen.getByText("Business benefit")).toBeInTheDocument();
+    expect(screen.getByText("If you press Do")).toBeInTheDocument();
+  });
+
+  it("TC-NEW-02: Evidence & details toggle shows evidence labels", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <NewIdeasInbox
+        initialItems={[itemWithDecisionBrief]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    // Click "Evidence & details" toggle button to reveal evidence
+    await user.click(screen.getByRole("button", { name: /Evidence & details/i }));
+
+    await waitFor(() => {
+      expect(screen.getByText("operator-stated: customer reported bug")).toBeInTheDocument();
+    });
+  });
+
+  it("TC-NEW-03: Decline button shows rationale input before firing the API", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <NewIdeasInbox
+        initialItems={[baseItem]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    await user.click(screen.getByRole("button", { name: "Decline" }));
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/Note \(optional\)/i)
+      ).toBeInTheDocument();
+    });
+    expect(screen.getByRole("button", { name: "Confirm decline" })).toBeInTheDocument();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it("TC-NEW-04: Decline confirm fires the API with rationale in the request body", async () => {
+    const user = userEvent.setup();
+    fetchMock.mockResolvedValueOnce({
+      ok: true,
+      json: async () => ({
+        ok: true,
+        decision: "decline",
+        dispatchId: "dispatch-1",
+        ideaKey: "idea-1",
+      }),
+    });
+
+    render(
+      <NewIdeasInbox
+        initialItems={[baseItem]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    await user.click(screen.getByRole("button", { name: "Decline" }));
+
+    const textarea = await screen.findByPlaceholderText(/Optional reason/i);
+    await user.type(textarea, "Not relevant this quarter");
+
+    await user.click(screen.getByRole("button", { name: "Confirm decline" }));
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledTimes(1);
+    });
+
+    const [, fetchInit] = fetchMock.mock.calls[0] as [string, RequestInit];
+    const body = JSON.parse(fetchInit.body as string) as Record<string, unknown>;
+    expect(body.rationale).toBe("Not relevant this quarter");
+  });
+
+  it("TC-NEW-05: recent queue actions with decision do appear in the recently-actioned section", () => {
+    const recentQueueAction: ProcessImprovementsRecentAction = {
+      itemKey: "idea-recent-1",
+      title: "Improve dispatch routing accuracy",
+      business: "BRIK",
+      decision: "do",
+      actedAt: "2026-03-12T09:00:00.000Z",
+      itemType: "process_improvement",
+      rationale: undefined,
+    };
+
+    render(
+      <NewIdeasInbox
+        initialItems={[baseItem]}
+        initialRecentActions={[recentQueueAction]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    expect(screen.getByText("Recently actioned")).toBeInTheDocument();
+    expect(
+      screen.getByText("Improve dispatch routing accuracy")
+    ).toBeInTheDocument();
+    expect(screen.getByText(/BRIK · do at/i)).toBeInTheDocument();
+  });
 });

@@ -1,7 +1,7 @@
 {
-  "last_updated": "2026-03-12T14:45:08.319Z",
+  "last_updated": "2026-03-12T15:30:00.000Z",
   "counts": {
-    "enqueued": 68,
+    "enqueued": 69,
     "processed": 10,
     "declined": 0,
     "skipped": 0,
@@ -9,11 +9,11 @@
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 279,
-    "fact_find_ready": 45,
+    "fact_find_ready": 46,
     "plan_ready": 0,
     "micro_build_ready": 19,
     "briefing_ready": 0,
-    "total": 556
+    "total": 557
   },
   "dispatches": [
     {
@@ -24443,16 +24443,17 @@
       "next_scope_now": "Validate the historical carry-over candidate \"Add a post-deploy recovery telemetry review checkpoint\" against current repo state and decide the next action.",
       "adjacent_later": [],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "skipped",
       "priority": "P2",
       "confidence": 0.62,
+      "skip_reason": "Superseded by post-deploy-health-check.sh which covers HTTP liveness, canonical tags, sitemap, and strict route checks across all deployed apps. The deeper background-process recovery review checkpoint is no longer justified — recovery telemetry exists but recovery issues have not recurred.",
       "evidence_refs": [
         "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
         "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
         "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
       ],
       "created_at": "2026-03-10T12:25:35.035Z",
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "why": "When we release an update, some background processes need to restart or catch up. Currently nobody checks whether they all completed successfully unless a problem is reported. Adding an automatic review step after each deployment means recovery issues are spotted and fixed before they affect staff or guests.",
       "intended_outcome": {
         "type": "operational",
@@ -26419,6 +26420,49 @@
           "maturity": "unknown"
         }
       }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260312153000-0001",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "domain": "STRATEGY",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260312-bos-process-improvements-snooze",
+      "root_event_id": "operator:BOS:STRATEGY:process-improvements-snooze:20260312",
+      "anchor_key": "bos-process-improvements-snooze-buttons",
+      "cluster_key": "BOS:STRATEGY:process-improvements-card-controls",
+      "cluster_fingerprint": "snooze-remind-3day-7day-card-defer-temporary-hide",
+      "lineage_depth": 0,
+      "area_anchor": "BOS — No way to temporarily defer lower-priority items on process improvement boards",
+      "location_anchors": [
+        "apps/business-os/src/components/process-improvements/InProgressInbox.tsx",
+        "apps/business-os/src/components/process-improvements/NewIdeasInbox.tsx",
+        "/process-improvements/in-progress",
+        "/process-improvements/new-ideas"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: add Remind me in 3 days and Remind me in 7 days buttons to cards; clicked card disappears until elapsed then reappears; lightweight temporary organisation for lower priority items",
+        "apps/business-os/src/components/process-improvements/InProgressInbox.tsx",
+        "apps/business-os/src/components/process-improvements/NewIdeasInbox.tsx",
+        "overlap-note: process-improvements-operator-decision-inbox plan has Defer=7-day snooze for new-ideas queue cards only; this request spans both pages and adds a 3-day option",
+        "coverage-hint: UI",
+        "coverage-hint: UX",
+        "coverage-hint: data-contracts"
+      ],
+      "why": "When reviewing in-progress work and new ideas, there is no way to temporarily push less urgent items out of view. Everything stays visible at once, making it harder to focus on what matters right now. Adding snooze buttons means the operator can clear lower-priority cards from view for 3 or 7 days, knowing they will automatically come back when they are relevant again.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Cards on the in-progress and new-ideas boards have Remind me in 3 days and Remind me in 7 days controls; clicking a button hides the card until the chosen period elapses, at which point it reappears automatically.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-12T15:30:00.000Z"
     }
   ]
 }

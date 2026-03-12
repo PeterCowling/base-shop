@@ -1,0 +1,18 @@
+{
+  "schema": "build-event.v1",
+  "feature_slug": "brikette-whatsapp-cta-key-bugs",
+  "business": "BRIK",
+  "completed_at": "2026-03-12",
+  "why": "Two booking pages display wrong WhatsApp CTA labels. Bug B is visually broken today. Bug A is fragile and would silently break if section translations diverge.",
+  "why_source": "operator",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "Both WhatsApp CTA buttons on the apartment booking and double-room booking pages use semantically correct translation keys, eliminating label drift risk.",
+  "outcome_source": "operator",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "effort_total": 1,
+  "tasks_completed": 1,
+  "tasks_total": 1,
+  "plan_path": "docs/plans/brikette-whatsapp-cta-key-bugs/plan.md",
+  "build_record_path": "docs/plans/brikette-whatsapp-cta-key-bugs/build-record.user.md"
+}

@@ -359,7 +359,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-12T19:02:48.720Z";
+  var GEN_TS = "2026-03-12T19:48:46.712Z";
 
   var IDEA_ITEMS = [
     {
@@ -391,6 +391,22 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "BOS — No way to temporarily defer lower-priority items on process improvement boards",
+      "body": "When reviewing in-progress work and new ideas, there is no way to temporarily push less urgent items out of view. Everything stays visible at once, making it harder to focus on what matters right now. Adding snooze buttons means the operator can clear lower-priority cards from view for 3 or 7 days, knowing they will automatically come back when they are relevant again.",
+      "source": "queue-state.json",
+      "date": "2026-03-12T15:30:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "f10fd2e7eb3afafac528906e221ee0ab89e34ea6",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",
@@ -456,36 +472,6 @@
       "date": "2026-03-11T15:30:00.000Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "ee2b6ff333442cbc37a5ea68f1f71242346a36b1",
-      "priority_tier": "P4",
-      "own_priority_rank": 9,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P4_PROCESS_QUALITY"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
-      "title": "Brikette — After a deployment, nobody automatically checks that background systems recovered properly",
-      "body": "When we release an update, some background processes need to restart or catch up. Currently nobody checks whether they all completed successfully unless a problem is reported. Adding an automatic review step after each deployment means recovery issues are spotted and fixed before they affect staff or guests.",
-      "source": "queue-state.json",
-      "date": "2026-03-10T12:25:35.035Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "18c6443d9e8c51eea9e1a81eda6ca8c9deba19b8",
-      "historical_carryover": {
-        "schema_version": "dispatch-historical-carryover.v1",
-        "manifest_path": "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
-        "historical_candidate_id": "hc_137150cc51c2",
-        "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
-        "source_plan_slugs": [
-          "reception-inbox-inprogress-recovery"
-        ],
-        "source_paths": [
-          "docs/plans/_archive/reception-inbox-inprogress-recovery/results-review.signals.json",
-          "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
-        ],
-        "backfilled_at": "2026-03-10T12:25:35.035Z"
-      },
       "priority_tier": "P4",
       "own_priority_rank": 9,
       "urgency": "U2",
@@ -565,7 +551,7 @@
       "title": "Caryina — German and Italian visitors see English-only navigation and legal text",
       "body": "The site supports three languages in the URL, but the footer links ('Terms', 'Privacy', 'Returns & Refunds'), the header navigation ('Shop', 'Support'), the cookie consent banner, and the shipping trust strip are all hardcoded in English. A German or Italian visitor gets a mixed-language experience — translated product pages but English navigation. This undermines trust, especially for legal pages like privacy and terms where language matters. Fixing this requires deciding whether to pull these strings from the content packet or a separate i18n file.",
       "source": "queue-state.json",
-      "date": "2026-03-12T19:02:48.751Z",
+      "date": "2026-03-12T19:48:46.743Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "35843e5566eb1044cda5d77e1019961387f0ce29",
       "priority_tier": "P5",
@@ -1402,6 +1388,16 @@
   var RISK_ITEMS = [];
 
   var PENDING_REVIEW_ITEMS = [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: brikette-email-reply-reliability",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/brikette-email-reply-reliability/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-12T19:48:25.156Z",
+      "path": "docs/plans/brikette-email-reply-reliability/build-record.user.md"
+    },
     {
       "type": "pending-review",
       "business": "BOS",

@@ -36,8 +36,17 @@ function buildApartmentRouteAudits(): RouteAudit[] {
   }));
 }
 
+function buildHowToGetHereRouteAudits(): RouteAudit[] {
+  return (i18nConfig.supportedLngs as AppLanguage[]).map((lang) => ({
+    route: `/${lang}/${getSlug("howToGetHere", lang)}`,
+    expectedHtmlLang: lang,
+    expectedHtmlDir: lang === "ar" ? "rtl" : "ltr",
+    forbiddenText: ["<Link>", "</Link>", "<Strong>", "</Strong>"],
+  }));
+}
+
 // Scope note:
-// - This guard owns rendered static HTML leaks on high-value commercial routes.
+// - This guard owns rendered static HTML leaks on high-value commercial/support routes.
 // - Source-level locale coverage stays with test/content-readiness/i18n/commercial-routes-ssr-audit.test.ts.
 const ROUTE_AUDITS: RouteAudit[] = [
   {
@@ -145,6 +154,7 @@ const ROUTE_AUDITS: RouteAudit[] = [
       "Book direct with Octorate",
     ],
   },
+  ...buildHowToGetHereRouteAudits(),
   ...buildApartmentRouteAudits(),
 ];
 
@@ -205,6 +215,11 @@ function stripNonVisibleContent(html: string): string {
     .replace(/<style\b[\s\S]*?<\/style>/gi, " ")
     .replace(/<!--[\s\S]*?-->/g, " ")
     .replace(/<[^>]+>/g, " ")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&")
+    .replace(/&quot;/g, "\"")
+    .replace(/&#39;/g, "'")
     .replace(/&nbsp;/g, " ")
     .replace(/\s+/g, " ")
     .trim();

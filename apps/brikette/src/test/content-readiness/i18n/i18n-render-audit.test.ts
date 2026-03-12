@@ -131,6 +131,7 @@ function auditGuideContent(locale: string): LocaleAuditResult[] {
         const detected = detectRenderedI18nPlaceholders(value, {
           keyPrefixes: [],
           minDotSegments: 999,
+          detectRichTextTags: false,
         });
         const phraseFindings = detected.filter((f) => f.kind === "placeholderPhrase");
         findings.push(...phraseFindings);

@@ -1,4 +1,5 @@
 import hotel from "@/config/hotel";
+import { i18nConfig } from "@/i18n.config";
 import { buildHotelNode } from "@/utils/schema/builders";
 
 describe("social proof snapshot contract", () => {
@@ -21,5 +22,11 @@ describe("social proof snapshot contract", () => {
         }),
       ]),
     );
+  });
+
+  it("emits the full supported language set in hotel JSON-LD", () => {
+    const hotelNode = buildHotelNode();
+
+    expect(hotelNode.availableLanguage).toEqual(i18nConfig.supportedLngs);
   });
 });

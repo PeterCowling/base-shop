@@ -183,6 +183,7 @@ export type InboxDraftUpdateInput = {
   recipientEmails?: string[];
   plainText: string;
   html?: string | null;
+  templateUsed?: string;
 };
 
 function sortThreads(threads: InboxThreadSummary[]): InboxThreadSummary[] {

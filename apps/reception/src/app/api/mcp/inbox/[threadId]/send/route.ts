@@ -18,9 +18,11 @@ import {
   readJsonPayload,
 } from "@/lib/inbox/api-route-helpers";
 import {
+  getPrimeInboxThreadDetail,
   isPrimeInboxThreadId,
   sendPrimeInboxThread,
 } from "@/lib/inbox/prime-review.server";
+import { matchTemplates } from "@/lib/inbox/prime-templates";
 import {
   getThread,
   updateDraft,
@@ -60,7 +62,35 @@ export async function POST(
   const params = await context.params;
   if (isPrimeInboxThreadId(params.threadId)) {
     try {
+      // Capture draft state before send for telemetry
+      const detailBeforeSend = await getPrimeInboxThreadDetail(params.threadId);
+      const draftBeforeSend = detailBeforeSend?.currentDraft ?? null;
+
       const result = await sendPrimeInboxThread(params.threadId, auth.uid);
+
+      // Log prime_manual_reply when a Prime draft is sent without a template
+      if (!draftBeforeSend?.templateUsed) {
+        const latestInbound = detailBeforeSend?.messages
+          ?.filter((m) => m.direction === "inbound")
+          .pop();
+        const guestSnippet = (
+          latestInbound?.bodyPlain
+          ?? latestInbound?.snippet
+          ?? ""
+        ).slice(0, 200);
+        const detected = matchTemplates(guestSnippet);
+
+        void recordInboxEvent({
+          threadId: params.threadId,
+          eventType: "prime_manual_reply",
+          actorUid: auth.uid,
+          metadata: {
+            guestQuestionSnippet: guestSnippet,
+            detectedCategory: detected[0]?.category ?? null,
+          },
+        });
+      }
+
       return NextResponse.json({
         success: true,
         data: result,

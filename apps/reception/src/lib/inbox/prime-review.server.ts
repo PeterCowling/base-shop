@@ -462,7 +462,7 @@ export async function getPrimeInboxCampaign(
 
 export async function savePrimeInboxDraft(
   prefixedThreadId: string,
-  payload: { plainText: string },
+  payload: { plainText: string; templateUsed?: string },
   actorUid?: string,
 ): Promise<InboxDraftApiModel | null> {
   const threadId = parsePrimeInboxThreadId(prefixedThreadId);
@@ -475,11 +475,15 @@ export async function savePrimeInboxDraft(
     {
       method: "PUT",
       headers: buildPrimeActorHeaders(actorUid),
-      body: JSON.stringify(payload),
+      body: JSON.stringify({ plainText: payload.plainText }),
     },
   );
 
-  return mapPrimeCurrentDraft(buildPrimeInboxThreadId(threadId), response.detail.currentDraft);
+  const draft = mapPrimeCurrentDraft(buildPrimeInboxThreadId(threadId), response.detail.currentDraft);
+  if (draft && payload.templateUsed) {
+    draft.templateUsed = payload.templateUsed;
+  }
+  return draft;
 }
 
 export async function resolvePrimeInboxThread(

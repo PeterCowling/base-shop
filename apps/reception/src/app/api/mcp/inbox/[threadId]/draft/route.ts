@@ -37,6 +37,7 @@ const updateDraftPayloadSchema = z
     recipientEmails: z.array(z.string().email()).min(1).optional(),
     plainText: z.string().min(1),
     html: z.string().min(1).nullable().optional(),
+    templateUsed: z.string().min(1).optional(),
   })
   .strict();
 
@@ -112,7 +113,10 @@ export async function PUT(
     try {
       const draft = await savePrimeInboxDraft(
         params.threadId,
-        { plainText: parsedPrimePayload.data.plainText },
+        {
+          plainText: parsedPrimePayload.data.plainText,
+          templateUsed: parsedPrimePayload.data.templateUsed,
+        },
         auth.uid,
       );
 

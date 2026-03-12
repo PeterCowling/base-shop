@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { CheckCircle, RefreshCw, Save, Send, ShieldAlert, XCircle } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
@@ -13,6 +13,7 @@ import {
   findLatestInboundSender,
   inferReplySubject,
 } from "./presentation";
+import TemplatePicker from "./TemplatePicker";
 
 interface DraftReviewPanelProps {
   threadDetail: InboxThreadDetail;
@@ -26,6 +27,7 @@ interface DraftReviewPanelProps {
     recipientEmails?: string[];
     plainText: string;
     html?: string | null;
+    templateUsed?: string;
   }) => Promise<void>;
   onRegenerate: (force?: boolean) => Promise<void>;
   onSend: () => Promise<void>;
@@ -79,6 +81,29 @@ export default function DraftReviewPanel({
   const [validationError, setValidationError] = useState<string | null>(null);
   const [recipientBlurError, setRecipientBlurError] = useState<string | null>(null);
   const [confirmDialog, setConfirmDialog] = useState<DraftConfirmDialog>("none");
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
+
+  // Determine whether this is a Prime thread (show template picker)
+  const isPrimeThread = threadDetail.thread.channel === "prime_direct"
+    || threadDetail.thread.channel === "prime_broadcast";
+
+  // Extract the latest inbound message text for template auto-suggest
+  const latestInboundText = useMemo(() => {
+    if (!isPrimeThread) return null;
+    const inbound = [...threadDetail.messages]
+      .reverse()
+      .find((m) => m.direction === "inbound");
+    return inbound?.bodyPlain ?? inbound?.snippet ?? null;
+  }, [isPrimeThread, threadDetail.messages]);
+
+  // Template selection handler
+  const handleTemplateSelect = useCallback(
+    (formattedText: string, templateId: string) => {
+      setPlainText(formattedText);
+      setSelectedTemplateId(templateId);
+    },
+    [],
+  );
 
   useEffect(() => {
     setSubject(
@@ -96,6 +121,7 @@ export default function DraftReviewPanel({
     setPlainText(currentDraft?.plainText ?? "");
     setValidationError(null);
     setRecipientBlurError(null);
+    setSelectedTemplateId(currentDraft?.templateUsed ?? null);
   }, [
     channelCapabilities.supportsRecipients,
     channelCapabilities.supportsSubject,
@@ -186,6 +212,7 @@ export default function DraftReviewPanel({
       recipientEmails: channelCapabilities.supportsRecipients ? parsedRecipients : undefined,
       plainText,
       html: null,
+      templateUsed: selectedTemplateId ?? undefined,
     });
   }
 
@@ -269,6 +296,14 @@ export default function DraftReviewPanel({
             <div className="rounded-xl border border-error-main/20 bg-error-light px-3 py-2.5 text-sm text-error-main">
               {validationError}
             </div>
+          )}
+
+          {isPrimeThread && (
+            <TemplatePicker
+              latestInboundText={latestInboundText}
+              onSelect={handleTemplateSelect}
+              activeTemplateId={selectedTemplateId}
+            />
           )}
 
           {(channelCapabilities.supportsSubject || channelCapabilities.supportsRecipients) && (

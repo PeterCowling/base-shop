@@ -64,6 +64,7 @@ describe("GET /api/mcp/inbox/analytics", () => {
     expect(computeAnalyticsMock).toHaveBeenCalledWith({
       days: undefined,
       metrics: undefined,
+      source: undefined,
     });
   });
 
@@ -85,6 +86,7 @@ describe("GET /api/mcp/inbox/analytics", () => {
     expect(computeAnalyticsMock).toHaveBeenCalledWith({
       days: undefined,
       metrics: ["volume", "quality"],
+      source: undefined,
     });
   });
 
@@ -108,7 +110,7 @@ describe("GET /api/mcp/inbox/analytics", () => {
   });
 
   // TC-04: Invalid days returns 400
-  it("returns 400 for invalid days parameter", async () => {
+  it("returns 400 for invalid days parameter (days=-1)", async () => {
     const response = await GET(
       buildGetRequest("http://localhost/api/mcp/inbox/analytics?days=-1"),
     );
@@ -116,8 +118,60 @@ describe("GET /api/mcp/inbox/analytics", () => {
 
     expect(response.status).toBe(400);
     expect(payload.success).toBe(false);
-    expect(payload.error).toContain("days must be a positive integer");
+    expect(payload.error).toContain("days must be an integer between 1 and 365");
     expect(computeAnalyticsMock).not.toHaveBeenCalled();
+  });
+
+  it("returns 400 for days=0", async () => {
+    const response = await GET(
+      buildGetRequest("http://localhost/api/mcp/inbox/analytics?days=0"),
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(payload.success).toBe(false);
+    expect(computeAnalyticsMock).not.toHaveBeenCalled();
+  });
+
+  it("returns 400 for days=366 (above max)", async () => {
+    const response = await GET(
+      buildGetRequest("http://localhost/api/mcp/inbox/analytics?days=366"),
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(payload.success).toBe(false);
+    expect(computeAnalyticsMock).not.toHaveBeenCalled();
+  });
+
+  it("accepts days=365 (max valid boundary)", async () => {
+    computeAnalyticsMock.mockResolvedValue({
+      period: { days: 365 },
+    });
+
+    const response = await GET(
+      buildGetRequest("http://localhost/api/mcp/inbox/analytics?days=365"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(computeAnalyticsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ days: 365 }),
+    );
+  });
+
+  it("accepts days=1 (min valid boundary)", async () => {
+    computeAnalyticsMock.mockResolvedValue({
+      period: { days: 1 },
+    });
+
+    const response = await GET(
+      buildGetRequest("http://localhost/api/mcp/inbox/analytics?days=1"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(computeAnalyticsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ days: 1 }),
+    );
   });
 
   // TC-05: Unauthenticated request returns 401
@@ -166,6 +220,7 @@ describe("GET /api/mcp/inbox/analytics", () => {
     expect(computeAnalyticsMock).toHaveBeenCalledWith({
       days: undefined,
       metrics: ["volume"],
+      source: undefined,
     });
   });
 
@@ -176,5 +231,75 @@ describe("GET /api/mcp/inbox/analytics", () => {
 
     expect(response.status).toBe(400);
     expect(computeAnalyticsMock).not.toHaveBeenCalled();
+  });
+
+  // ---------------------------------------------------------------------------
+  // source parameter filtering tests
+  // ---------------------------------------------------------------------------
+
+  it("passes source=email to computeAnalytics", async () => {
+    computeAnalyticsMock.mockResolvedValue({ period: { days: null } });
+
+    const response = await GET(
+      buildGetRequest("http://localhost/api/mcp/inbox/analytics?source=email"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(computeAnalyticsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ source: "email" }),
+    );
+  });
+
+  it("passes source=prime to computeAnalytics", async () => {
+    computeAnalyticsMock.mockResolvedValue({
+      volume: { totalThreads: 0, admitted: 0, drafted: 0, sent: 0, resolved: 0 },
+      period: { days: null },
+    });
+
+    const response = await GET(
+      buildGetRequest("http://localhost/api/mcp/inbox/analytics?source=prime"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(computeAnalyticsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ source: "prime" }),
+    );
+  });
+
+  it("passes source=all to computeAnalytics", async () => {
+    computeAnalyticsMock.mockResolvedValue({ period: { days: null } });
+
+    const response = await GET(
+      buildGetRequest("http://localhost/api/mcp/inbox/analytics?source=all"),
+    );
+
+    expect(response.status).toBe(200);
+    expect(computeAnalyticsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ source: "all" }),
+    );
+  });
+
+  it("returns 400 when source is an invalid value", async () => {
+    const response = await GET(
+      buildGetRequest("http://localhost/api/mcp/inbox/analytics?source=gmail"),
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(payload.success).toBe(false);
+    expect(payload.error).toContain("source must be one of");
+    expect(computeAnalyticsMock).not.toHaveBeenCalled();
+  });
+
+  it("passes source=undefined to computeAnalytics when source param is absent", async () => {
+    computeAnalyticsMock.mockResolvedValue({ period: { days: null } });
+
+    await GET(
+      buildGetRequest("http://localhost/api/mcp/inbox/analytics"),
+    );
+
+    expect(computeAnalyticsMock).toHaveBeenCalledWith(
+      expect.objectContaining({ source: undefined }),
+    );
   });
 });

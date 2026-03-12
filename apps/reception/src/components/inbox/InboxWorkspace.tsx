@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowLeft, Inbox, RefreshCw } from "lucide-react";
+import { ArrowLeft, Inbox, Mail, MessageSquare, RefreshCw } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
 
@@ -10,8 +10,10 @@ import useInbox from "@/services/useInbox";
 import { showToast } from "@/utils/toastUtils";
 
 import AnalyticsSummary from "./AnalyticsSummary";
+import EmailColumn from "./EmailColumn";
+import InboxErrorBoundary from "./InboxErrorBoundary";
+import PrimeColumn from "./PrimeColumn";
 import ThreadDetailPane from "./ThreadDetailPane";
-import ThreadList from "./ThreadList";
 
 function countThreadsNeedingManualDraft(
   threads: ReturnType<typeof useInbox>["threads"],
@@ -35,10 +37,13 @@ function countThreadsReadyToSend(
   ).length;
 }
 
+type MobileTab = "email" | "prime";
+
 export default function InboxWorkspace() {
   const {
     threads,
-    selectedThreadId,
+    selectedEmailThreadId,
+    selectedPrimeThreadId,
     selectedThread,
     loadingList,
     loadingThread,
@@ -51,7 +56,8 @@ export default function InboxWorkspace() {
     syncing,
     listError,
     detailError,
-    selectThread,
+    selectEmailThread,
+    selectPrimeThread,
     loadMoreMessages,
     saveDraft,
     regenerateDraft,
@@ -64,11 +70,21 @@ export default function InboxWorkspace() {
 
   // Mobile view control: show detail pane when a thread is actively opened
   const [mobileShowDetail, setMobileShowDetail] = useState(false);
+  const [mobileActiveTab, setMobileActiveTab] = useState<MobileTab>("email");
   const [analyticsRefreshKey, setAnalyticsRefreshKey] = useState(0);
 
-  async function handleSelectThread(threadId: string) {
+  async function handleSelectEmailThread(threadId: string) {
     try {
-      await selectThread(threadId);
+      await selectEmailThread(threadId);
+      setMobileShowDetail(true);
+    } catch {
+      showToast("Failed to load thread details", "error");
+    }
+  }
+
+  async function handleSelectPrimeThread(threadId: string) {
+    try {
+      await selectPrimeThread(threadId);
       setMobileShowDetail(true);
     } catch {
       showToast("Failed to load thread details", "error");
@@ -166,6 +182,28 @@ export default function InboxWorkspace() {
   const manualDraftCount = countThreadsNeedingManualDraft(threads);
   const readyToSendCount = countThreadsReadyToSend(threads);
 
+  const detailPane = (
+    <InboxErrorBoundary>
+      <ThreadDetailPane
+        threadDetail={selectedThread}
+        loading={loadingThread}
+        error={detailError}
+        loadingMoreMessages={loadingMoreMessages}
+        savingDraft={savingDraft}
+        regeneratingDraft={regeneratingDraft}
+        sendingDraft={sendingDraft}
+        resolvingThread={resolvingThread}
+        dismissingThread={dismissingThread}
+        onLoadMoreMessages={handleLoadMoreMessages}
+        onSaveDraft={handleSaveDraft}
+        onRegenerateDraft={handleRegenerateDraft}
+        onSendDraft={handleSendDraft}
+        onResolveThread={handleResolveThread}
+        onDismissThread={handleDismissThread}
+      />
+    </InboxErrorBoundary>
+  );
+
   return (
     <PageShell
       title="Inbox"
@@ -232,52 +270,108 @@ export default function InboxWorkspace() {
         </div>
       )}
     >
-      {/* Desktop: side-by-side. Mobile: list OR detail, never both stacked. */}
-      <div className="grid gap-4 xl:grid-cols-12">
-        {/* Thread list — hidden on mobile when viewing detail */}
-        <div className={`space-y-3 xl:col-span-4 ${mobileShowDetail ? "hidden xl:block" : ""}`}>
-          <ThreadList
-            threads={threads}
-            selectedThreadId={selectedThreadId}
-            loading={loadingList}
-            error={listError}
-            onSelect={handleSelectThread}
-          />
-        </div>
+      {/*
+        Desktop (xl+): Three-column grid — Email | Prime | Detail (3-3-6)
+        Mobile: Tab strip + single visible column list OR detail pane (never both)
+      */}
 
-        {/* Thread detail — hidden on mobile when no thread opened */}
-        <div className={`xl:col-span-8 ${mobileShowDetail ? "" : "hidden xl:block"}`}>
-          {/* Mobile back button */}
-          {mobileShowDetail && (
-            <div className="mb-3 xl:hidden">
+      {/* ── Mobile layout ─────────────────────────────────────────────── */}
+      <div className="xl:hidden">
+        {mobileShowDetail ? (
+          /* Mobile detail view */
+          <div>
+            <div className="mb-3">
               <button
                 type="button"
                 onClick={() => setMobileShowDetail(false)}
                 className="inline-flex items-center gap-2 rounded-xl px-3 py-2 text-sm font-medium text-muted-foreground transition hover:bg-surface-2 hover:text-foreground"
               >
                 <ArrowLeft className="h-4 w-4" />
-                Back to inbox
+                Back to {mobileActiveTab === "email" ? "Email" : "Prime"}
               </button>
             </div>
-          )}
+            {detailPane}
+          </div>
+        ) : (
+          /* Mobile list view with tab strip */
+          <div className="space-y-3">
+            {/* Tab strip */}
+            <div className="flex gap-1 rounded-xl border border-border-1 bg-surface-2 p-1">
+              <button
+                type="button"
+                onClick={() => setMobileActiveTab("email")}
+                className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  mobileActiveTab === "email"
+                    ? "bg-surface-elevated text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <Mail className="h-4 w-4" />
+                Email
+              </button>
+              <button
+                type="button"
+                onClick={() => setMobileActiveTab("prime")}
+                className={`flex flex-1 items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  mobileActiveTab === "prime"
+                    ? "bg-surface-elevated text-foreground shadow-sm"
+                    : "text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                <MessageSquare className="h-4 w-4" />
+                Prime
+              </button>
+            </div>
 
-          <ThreadDetailPane
-            threadDetail={selectedThread}
-            loading={loadingThread}
-            error={detailError}
-            loadingMoreMessages={loadingMoreMessages}
-            savingDraft={savingDraft}
-            regeneratingDraft={regeneratingDraft}
-            sendingDraft={sendingDraft}
-            resolvingThread={resolvingThread}
-            dismissingThread={dismissingThread}
-            onLoadMoreMessages={handleLoadMoreMessages}
-            onSaveDraft={handleSaveDraft}
-            onRegenerateDraft={handleRegenerateDraft}
-            onSendDraft={handleSendDraft}
-            onResolveThread={handleResolveThread}
-            onDismissThread={handleDismissThread}
+            {/* Active channel list */}
+            {mobileActiveTab === "email" ? (
+              <EmailColumn
+                threads={threads}
+                selectedThreadId={selectedEmailThreadId}
+                loading={loadingList}
+                error={listError}
+                onSelect={handleSelectEmailThread}
+              />
+            ) : (
+              <PrimeColumn
+                threads={threads}
+                selectedThreadId={selectedPrimeThreadId}
+                loading={loadingList}
+                error={listError}
+                onSelect={handleSelectPrimeThread}
+              />
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* ── Desktop layout (xl+) ──────────────────────────────────────── */}
+      <div className="hidden xl:grid xl:grid-cols-12 xl:gap-4">
+        {/* Email column — 3/12 */}
+        <div className="xl:col-span-3">
+          <EmailColumn
+            threads={threads}
+            selectedThreadId={selectedEmailThreadId}
+            loading={loadingList}
+            error={listError}
+            onSelect={handleSelectEmailThread}
           />
+        </div>
+
+        {/* Prime column — 3/12 */}
+        <div className="xl:col-span-3">
+          <PrimeColumn
+            threads={threads}
+            selectedThreadId={selectedPrimeThreadId}
+            loading={loadingList}
+            error={listError}
+            onSelect={handleSelectPrimeThread}
+          />
+        </div>
+
+        {/* Thread detail pane — 6/12 */}
+        <div className="xl:col-span-6">
+          {detailPane}
         </div>
       </div>
     </PageShell>

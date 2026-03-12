@@ -34,6 +34,7 @@ export type DraftGenerationInput = {
   actionPlan: LooseEmailActionPlan;
   subject?: string;
   recipientName?: string;
+  bookingRef?: string;
   prepaymentStep?: PrepaymentStep;
   prepaymentProvider?: PrepaymentProvider;
   guestRoomNumbers?: string[];
@@ -98,6 +99,15 @@ const DEFAULT_COMPOSITE_LIMIT = 3;
 const UNHINTED_TEMPLATE_CONFIDENCE_FLOOR = 70;
 const ESCALATION_FALLBACK_SENTENCE =
   "For this specific question we want to give you the most accurate answer - Pete or Cristiana will follow up with you directly.";
+
+function inferProviderFromBookingRef(bookingRef: string | undefined): PrepaymentProvider | undefined {
+  const normalized = bookingRef?.trim();
+  if (!normalized) {
+    return undefined;
+  }
+
+  return normalized.startsWith("7763-") ? "hostelworld" : "octorate";
+}
 
 function coerceActionPlan(input: LooseEmailActionPlan): EmailActionPlan {
   const candidate = input && typeof input === "object" ? (input as Record<string, unknown>) : {};
@@ -308,12 +318,14 @@ export function generateDraftCandidate(input: DraftGenerationInput): DraftGenera
   const templates = getEmailTemplates();
   const allIntents = [...actionPlan.intents.questions, ...actionPlan.intents.requests];
   const knowledge = loadKnowledgeData({ category: primaryCategory, normalizedText: actionPlan.normalized_text, intents: allIntents });
+  const resolvedPrepaymentProvider =
+    input.prepaymentProvider ?? inferProviderFromBookingRef(input.bookingRef);
   const rankResult = rankTemplates(templates, {
     subject: input.subject ?? "",
     body: actionPlan.normalized_text,
     categoryHint: primaryCategory,
     prepaymentStep: input.prepaymentStep,
-    prepaymentProvider: input.prepaymentProvider,
+    prepaymentProvider: resolvedPrepaymentProvider,
   });
   const policyDecision = evaluatePolicy(actionPlan);
   const policyCandidates = (policyDecision.templateConstraints.allowedCategories?.length

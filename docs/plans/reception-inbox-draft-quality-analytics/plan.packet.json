@@ -1,0 +1,227 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "reception-inbox-draft-quality-analytics",
+  "source_artifact_path": "docs/plans/reception-inbox-draft-quality-analytics/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-inbox-draft-quality-analytics/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff and operators have no way to tell whether the AI email drafts are getting better or worse over time. They cannot see how long it takes to resolve a guest enquiry, how many drafts pass quality checks, or whether email volume is trending up. Without this visibility, problems go unnoticed until a guest complains.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A validated next action exists for inbox analytics, with required metrics, computation approach, and UI surface identified.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Inline summary section in InboxWorkspace header",
+      "current_or_option_state": "TASK-06",
+      "gap_or_implication": "Text-only metrics, no charts in v1",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Loading skeleton, empty state, error fallback",
+      "current_or_option_state": "TASK-06",
+      "gap_or_implication": "Follows existing InboxWorkspace patterns",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "requireStaffAuth on new route",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "Same pattern as all inbox API routes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "console.error for query failures; per-metric error isolation",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "Follows existing error logging pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests for computation functions and API route",
+      "current_or_option_state": "TASK-04",
+      "gap_or_implication": "Tests run in CI only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "New D1 index; typed response contract; metric group types",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "API response types defined in analytics module",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Selective metric computation; event_type index for query performance",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Metrics parameter allows partial fetch",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive migration and endpoints; no breaking changes",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "Rollback: revert migration + remove route",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Add a comprehensive analytics surface to the reception inbox so that staff can see draft quality pass rates, average resolution time, email volume, and admission rates. The implementation follows the chosen approach from analysis: a new `/api/mcp/inbox/analytics` endpoint backed by an extracted computation module (`analytics.server.ts`), a new MCP tool wrapping the endpoint, an inline summary in the InboxWorkspace header, and a D1 migration for a performance index. All work is additive and does not modify the existing draft-stats endpoint.",
+    "goals": [
+      "Give staff visibility into draft quality trends, resolution times, and volume",
+      "Keep analytics queries within D1 per-request compute limits",
+      "Follow existing codebase patterns (SQL in route handlers, MCP tool wrapping API)",
+      "Provide both UI and MCP access paths"
+    ],
+    "non_goals": [
+      "Real-time alerting or threshold notifications (adjacent-later)",
+      "Weekly digest emails (adjacent-later)",
+      "Redesigning the telemetry recording system",
+      "Charts or sparklines (v1 is text-only metrics)"
+    ],
+    "constraints": [
+      "D1 (SQLite) is the only database; no external analytics service",
+      "Cloudflare Worker per-request compute budget limits query complexity",
+      "Tests run in CI only per testing policy"
+    ],
+    "assumptions": [
+      "Thread volume is low-to-moderate (hostel email traffic)",
+      "D1 read performance is adequate for aggregations at this scale"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "New `/api/mcp/inbox/analytics` endpoint with selective metric groups (volume, quality, resolution, admission)",
+      "Extracted `analytics.server.ts` computation module with one function per metric group",
+      "New MCP tool `inbox_analytics` wrapping the endpoint",
+      "Inline summary section in InboxWorkspace header showing 4 key metrics",
+      "D1 migration 0005 for event_type index",
+      "Why planning is not reopening option selection:",
+      "Analysis compared three options (extend draft-stats, new module, cron-based) and decisively chose Option B with clear elimination rationale for the others"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "D1 migration for event_type index",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change at `apps/reception/migrations/0005_thread_events_event_type_index.sql`",
+        "affects": "`apps/reception/migrations/0005_thread_events_event_type_index.sql` (new)"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Analytics computation module",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change at `apps/reception/src/lib/inbox/analytics.server.ts`",
+        "affects": "`apps/reception/src/lib/inbox/analytics.server.ts` (new)"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Analytics API route",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-04",
+          "TASK-05",
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change at `apps/reception/src/app/api/mcp/inbox/analytics/route.ts`",
+        "affects": "`apps/reception/src/app/api/mcp/inbox/analytics/route.ts` (new)"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Unit tests for analytics module and route",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change at `apps/reception/src/lib/inbox/__tests__/analytics.server.test.ts` and `apps/reception/src/app/api/mcp/__tests__/inbox-analytics.route.test.ts`",
+        "affects": "`apps/reception/src/lib/inbox/__tests__/analytics.server.test.ts` (new), `apps/reception/src/app/api/mcp/__tests__/inbox-analytics.route.test.ts` (new)"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "MCP tool for inbox analytics",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change at `packages/mcp-server/src/tools/inbox-analytics.ts` and registration in `packages/mcp-server/src/tools/index.ts`",
+        "affects": "`packages/mcp-server/src/tools/inbox-analytics.ts` (new), `packages/mcp-server/src/tools/index.ts`"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "InboxWorkspace analytics summary UI",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change at `apps/reception/src/components/inbox/AnalyticsSummary.tsx` and update to `apps/reception/src/components/inbox/InboxWorkspace.tsx`",
+        "affects": "`apps/reception/src/components/inbox/AnalyticsSummary.tsx` (new), `apps/reception/src/components/inbox/InboxWorkspace.tsx`, `apps/reception/src/services/useInbox.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

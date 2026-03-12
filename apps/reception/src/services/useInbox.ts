@@ -227,12 +227,15 @@ export async function fetchInboxThread(threadId: string, signal?: AbortSignal): 
 
 export async function fetchThreadMessages(
   threadId: string,
-  options: { beforeId?: string; limit: number },
+  options: { beforeId?: string; beforeTimestamp?: string; limit: number },
   signal?: AbortSignal,
 ): Promise<{ messages: InboxMessage[]; totalMessages: number; messageOffset: number; hasMore: boolean }> {
   const params = new URLSearchParams({ limit: String(options.limit) });
   if (options.beforeId) {
     params.set("before_id", options.beforeId);
+  }
+  if (options.beforeTimestamp) {
+    params.set("before_ts", options.beforeTimestamp);
   }
   return inboxRequest<{ messages: InboxMessage[]; totalMessages: number; messageOffset: number; hasMore: boolean }>(
     `/api/mcp/inbox/${threadId}?${params.toString()}`,
@@ -310,6 +313,8 @@ export default function useInbox() {
   const online = useOnlineStatus();
   const [threads, setThreads] = useState<InboxThreadSummary[]>([]);
   const [selectedThreadId, setSelectedThreadId] = useState<string | null>(null);
+  const [selectedEmailThreadId, setSelectedEmailThreadId] = useState<string | null>(null);
+  const [selectedPrimeThreadId, setSelectedPrimeThreadId] = useState<string | null>(null);
   const [selectedThread, setSelectedThread] = useState<InboxThreadDetail | null>(null);
   const [loadingList, setLoadingList] = useState(true);
   const [loadingThread, setLoadingThread] = useState(false);
@@ -373,13 +378,15 @@ export default function useInbox() {
       return;
     }
 
-    // Cursor-based: use the ID of the oldest currently-displayed message
+    // Composite cursor: use the ID and timestamp of the oldest currently-displayed message.
+    // Combining both fields gives stable ordering even when IDs are not strictly monotonic.
     const oldestMessage = selectedThread.messages[0];
     const beforeId = oldestMessage?.id;
+    const beforeTimestamp = oldestMessage?.sentAt ?? undefined;
 
     setLoadingMoreMessages(true);
     try {
-      const page = await fetchThreadMessages(threadId, { beforeId, limit: 20 });
+      const page = await fetchThreadMessages(threadId, { beforeId, beforeTimestamp, limit: 20 });
       if (threadId !== selectedThreadIdRef.current) {
         return;
       }
@@ -439,6 +446,22 @@ export default function useInbox() {
       }
     }
   }, []);
+
+  const selectEmailThread = useCallback(
+    async (threadId: string) => {
+      setSelectedEmailThreadId(threadId);
+      return selectThread(threadId);
+    },
+    [selectThread],
+  );
+
+  const selectPrimeThread = useCallback(
+    async (threadId: string) => {
+      setSelectedPrimeThreadId(threadId);
+      return selectThread(threadId);
+    },
+    [selectThread],
+  );
 
   const loadThreads = useCallback(
     async (options: LoadThreadsOptions = {}) => {
@@ -593,7 +616,15 @@ export default function useInbox() {
       detailCacheRef.current.delete(selectedThreadId);
       const removedId = selectedThreadId;
       setThreads((prev) => {
+        const removedThread = prev.find((t) => t.id === removedId);
+        const isEmailThread = removedThread?.channel === "email";
         const next = prev.filter((t) => t.id !== removedId);
+        // Clear the appropriate channel slot
+        if (isEmailThread) {
+          setSelectedEmailThreadId(null);
+        } else {
+          setSelectedPrimeThreadId(null);
+        }
         const nextSelected = next[0] ?? null;
         if (nextSelected) {
           void selectThread(nextSelected.id).catch(() => undefined);
@@ -622,7 +653,15 @@ export default function useInbox() {
       detailCacheRef.current.delete(selectedThreadId);
       const removedId = selectedThreadId;
       setThreads((prev) => {
+        const removedThread = prev.find((t) => t.id === removedId);
+        const isEmailThread = removedThread?.channel === "email";
         const next = prev.filter((t) => t.id !== removedId);
+        // Clear the appropriate channel slot
+        if (isEmailThread) {
+          setSelectedEmailThreadId(null);
+        } else {
+          setSelectedPrimeThreadId(null);
+        }
         const nextSelected = next[0] ?? null;
         if (nextSelected) {
           void selectThread(nextSelected.id).catch(() => undefined);
@@ -676,9 +715,17 @@ export default function useInbox() {
     return () => window.clearInterval(intervalId);
   }, [online, refreshInboxView, tabVisible]);
 
+  // Derived channel-filtered thread lists
+  const emailThreads = threads.filter((t) => t.channel === "email");
+  const primeThreads = threads.filter((t) => t.channel !== "email");
+
   return {
     threads,
+    emailThreads,
+    primeThreads,
     selectedThreadId,
+    selectedEmailThreadId,
+    selectedPrimeThreadId,
     selectedThread,
     loadingList,
     loadingThread,
@@ -693,6 +740,8 @@ export default function useInbox() {
     detailError,
     loadThreads,
     selectThread,
+    selectEmailThread,
+    selectPrimeThread,
     loadMoreMessages,
     saveDraft,
     regenerateDraft,

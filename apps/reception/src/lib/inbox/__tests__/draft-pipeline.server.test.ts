@@ -12,6 +12,11 @@ import {
   toParitySnapshot,
 } from "../draft-pipeline.server";
 
+jest.mock("@/lib/gmail-client", () => ({
+  listGmailThreads: jest.fn().mockResolvedValue({ threads: [] }),
+  getGmailThread: jest.fn(),
+}));
+
 type DraftPipelineFixture = {
   id: string;
   class: string;
@@ -48,6 +53,13 @@ function buildInput(fixture: DraftPipelineFixture): ThreadContext {
 }
 
 describe("generateAgentDraft", () => {
+  const originalFetch = global.fetch;
+
+  afterEach(() => {
+    global.fetch = originalFetch;
+    jest.clearAllMocks();
+  });
+
   it("returns an error result for malformed input instead of throwing", async () => {
     await expect(generateAgentDraft({ body: "" })).resolves.toMatchObject({
       status: "error",
@@ -118,6 +130,172 @@ describe("generateAgentDraft", () => {
     expect(snapshot.interpreted_language).toBe("IT");
     expect(snapshot.answered_question_set.some((question) => /colazione|breakfast/i.test(question))).toBe(true);
     expect(snapshot.branded_html_present).toBe(true);
+  });
+
+  it("builds a deterministic Hostelworld pricing breakdown when a pricing query has a booking reference", async () => {
+    const { getGmailThread, listGmailThreads } = jest.requireMock("@/lib/gmail-client") as {
+      listGmailThreads: jest.Mock;
+      getGmailThread: jest.Mock;
+    };
+
+    listGmailThreads.mockResolvedValue({
+      threads: [{ id: "thread-booking-source" }],
+    });
+    getGmailThread.mockResolvedValue({
+      id: "thread-booking-source",
+      historyId: "h-1",
+      snippet: "",
+      messages: [
+        {
+          id: "msg-1",
+          threadId: "thread-booking-source",
+          labelIds: [],
+          historyId: "h-1",
+          snippet: "",
+          internalDate: "0",
+          receivedAt: "2026-03-11T00:00:00.000Z",
+          from: "Hostelworld <bookings@hostelworld.com>",
+          to: [],
+          subject: "Booking 7763-575812314",
+          inReplyTo: null,
+          references: null,
+          body: {
+            plain:
+              "Reservation Code 7763-575812314 Total Price EUR 605.88 Deposit Paid EUR 90.88 Balance Due - Available Now EUR 590.59",
+          },
+          attachments: [],
+        },
+      ],
+    });
+
+    global.fetch = jest.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.includes("/financialsRoom/7763-575812314.json")) {
+        return new Response(JSON.stringify({
+          balance: 575.58,
+          totalDue: 575.58,
+          totalPaid: 0,
+          totalAdjust: 0,
+          transactions: {},
+        }), { status: 200 });
+      }
+      if (url.includes("/cityTax/7763-575812314.json")) {
+        return new Response(JSON.stringify({
+          occ_1: { balance: 7.5, totalDue: 7.5, totalPaid: 0 },
+          occ_2: { balance: 7.5, totalDue: 7.5, totalPaid: 0 },
+        }), { status: 200 });
+      }
+      throw new Error(`Unexpected fetch ${url}`);
+    }) as typeof fetch;
+
+    const result = await generateAgentDraft({
+      from: "Anna-Marie Leach <annamarie.leach4@gmail.com>",
+      subject: "Re: Your Hostel Brikette Reservation",
+      body:
+        "Hello, I would still like to keep the booking. Can you please explain how the total reached $690.07? I see the total was €605.88.",
+      bookingRef: "7763-575812314",
+      guestName: "Anna-Marie",
+    });
+
+    expect(result.status).toBe("ready");
+    expect(result.templateUsed?.subject).toBe("Hostelworld Pricing Breakdown");
+    expect(result.templateUsed?.category).toBe("payment");
+    expect(result.plainText).toContain("Room price before tax: €605.88");
+    expect(result.plainText).toContain("Hostelworld deposit already paid: €90.88");
+    expect(result.plainText).toContain("Room amount due: €575.58");
+    expect(result.plainText).toContain("City tax due: €15.00");
+    expect(result.plainText).toContain("All prices are in euros.");
+    expect(result.plainText).toContain("contact Hostelworld directly");
+    expect(result.qualityResult?.passed).toBe(true);
+  });
+
+  it("builds an affirmative deterministic room-allocation reply when all guests are in the same room", async () => {
+    global.fetch = jest.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.includes("/bookings/ROOM-SAME-1.json")) {
+        return new Response(JSON.stringify({
+          occ_1: { roomNumbers: ["4"], leadGuest: true },
+          occ_2: { roomNumbers: ["4"], leadGuest: false },
+        }), { status: 200 });
+      }
+      throw new Error(`Unexpected fetch ${url}`);
+    }) as typeof fetch;
+
+    const result = await generateAgentDraft({
+      from: "Isabella Jane Grano <isabella@example.com>",
+      subject: "Re: Your Hostel Brikette Reservation",
+      body: "Hello, I believe we booked the same room. Can you confirm that we are together?",
+      bookingRef: "ROOM-SAME-1",
+      guestName: "Isabella",
+    });
+
+    expect(result.status).toBe("ready");
+    expect(result.templateUsed?.subject).toBe("Booking Room Allocation Clarification");
+    expect(result.templateUsed?.category).toBe("booking-issues");
+    expect(result.plainText).toContain("Your booking currently shows 2 guests on this reservation.");
+    expect(result.plainText).toContain("all guests are booked together in room 4");
+    expect(result.qualityResult?.passed).toBe(true);
+  });
+
+  it("builds an alternative deterministic room-allocation reply when guests are not all in the same room", async () => {
+    global.fetch = jest.fn(async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url.includes("/bookings/ROOM-SPLIT-1.json")) {
+        return new Response(JSON.stringify({
+          occ_1: { roomNumbers: ["4"], leadGuest: true },
+          occ_2: { roomNumbers: ["5"], leadGuest: false },
+          occ_3: { roomNumbers: ["5"], leadGuest: false },
+        }), { status: 200 });
+      }
+      throw new Error(`Unexpected fetch ${url}`);
+    }) as typeof fetch;
+
+    const result = await generateAgentDraft({
+      from: "Isabella Jane Grano <isabella@example.com>",
+      subject: "Re: Your Hostel Brikette Reservation",
+      body: "Hello, I think we may be split up rather than in the same room. Can you check?",
+      bookingRef: "ROOM-SPLIT-1",
+      guestName: "Isabella",
+    });
+
+    expect(result.status).toBe("ready");
+    expect(result.templateUsed?.subject).toBe("Booking Room Allocation Clarification");
+    expect(result.plainText).toContain("Your booking currently shows 3 guests on this reservation.");
+    expect(result.plainText).toContain("The current room allocation shown in our system is:");
+    expect(result.plainText).toContain("- 1 guest: room 4");
+    expect(result.plainText).toContain("- 2 guests: room 5");
+    expect(result.plainText).toContain("does not show all guests in the same room");
+    expect(result.qualityResult?.passed).toBe(true);
+  });
+
+  it("builds a deterministic gratitude reply for a thank-you-only guest message", async () => {
+    const result = await generateAgentDraft({
+      from: "Matilda Urcuyo <matilda@example.com>",
+      subject: "Re: We received this message from Matilda Urcuyo",
+      body:
+        "##- Please type your reply above this line -## Confirmation number: 6078502124 You have a new message from a guest Matilda Urcuyo said: Re: We received this message from Matilda Urcuyo Thank you!!! Reply --> https://admin.booking.com/hotel/hoteladmin/extranet_ng/manage/messaging /inbox.html?product_id=6078502124 Reservation details Guest name: Matilda Urcuyo This e-mail was sent by Booking.com",
+      guestName: "Matilda",
+    });
+
+    expect(result.status).toBe("ready");
+    expect(result.templateUsed?.subject).toBe("Guest Thank You Acknowledgement");
+    expect(result.templateUsed?.category).toBe("faq");
+    expect(result.plainText).toContain("You are most welcome :)");
+    expect(result.plainText).toContain("We look forward to seeing you at the hostel.");
+    expect(result.qualityResult?.passed).toBe(true);
+  });
+
+  it("does not use the gratitude reply when the guest still has a request", async () => {
+    const result = await generateAgentDraft({
+      from: "Matilda Urcuyo <matilda@example.com>",
+      subject: "Re: We received this message from Matilda Urcuyo",
+      body: "Thank you. Can you also confirm the room number?",
+      guestName: "Matilda",
+    });
+
+    expect(result.status).not.toBe("error");
+    expect(result.templateUsed?.subject).not.toBe("Guest Thank You Acknowledgement");
+    expect(result.plainText).not.toContain("You are most welcome :)");
   });
 });
 

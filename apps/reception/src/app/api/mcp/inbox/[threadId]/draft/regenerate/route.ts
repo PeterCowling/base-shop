@@ -19,6 +19,7 @@ import {
   readJsonPayload,
 } from "@/lib/inbox/api-route-helpers";
 import { generateAgentDraft } from "@/lib/inbox/draft-pipeline.server";
+import { isPrimeInboxThreadId } from "@/lib/inbox/prime-review.server";
 import {
   createDraft,
   getThread,
@@ -59,6 +60,17 @@ export async function POST(
   }
 
   const params = await context.params;
+
+  // Prime threads do not support server-side draft regeneration.
+  // The channel adapter sets supportsDraftRegenerate: false, so the UI
+  // should never reach here, but guard explicitly in case of direct API calls.
+  if (isPrimeInboxThreadId(params.threadId)) {
+    return NextResponse.json(
+      { success: false, error: "Draft regeneration is not supported for Prime threads." },
+      { status: 400 },
+    );
+  }
+
   const record = await getThread(params.threadId);
   if (!record) {
     return notFoundResponse(`Thread ${params.threadId} not found`);
@@ -79,7 +91,7 @@ export async function POST(
     && !parsedPayload.data.force
   ) {
     const draftAge = Date.now() - new Date(currentDraft.created_at).getTime();
-    if (draftAge < RECENT_DRAFT_WINDOW_MS) {
+    if (draftAge <= RECENT_DRAFT_WINDOW_MS) {
       return NextResponse.json({
         success: true,
         data: {

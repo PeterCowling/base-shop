@@ -49,6 +49,17 @@ type AnalyticsData = {
 };
 
 // ---------------------------------------------------------------------------
+// Cache (5-minute TTL)
+// ---------------------------------------------------------------------------
+
+const CACHE_TTL_MS = 5 * 60 * 1000;
+
+type CacheEntry = {
+  data: AnalyticsData;
+  fetchedAt: number;
+};
+
+// ---------------------------------------------------------------------------
 // Fetch helper
 // ---------------------------------------------------------------------------
 
@@ -127,14 +138,27 @@ export default function AnalyticsSummary({ refreshKey }: AnalyticsSummaryProps) 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
   const mountedRef = useRef(true);
+  const cacheRef = useRef<CacheEntry | null>(null);
 
-  const load = useCallback(async (signal?: AbortSignal) => {
+  const load = useCallback(async (signal?: AbortSignal, bypassCache?: boolean) => {
+    // Serve from cache if fresh enough and not forced
+    if (!bypassCache && cacheRef.current) {
+      const age = Date.now() - cacheRef.current.fetchedAt;
+      if (age < CACHE_TTL_MS) {
+        setData(cacheRef.current.data);
+        setError(false);
+        setLoading(false);
+        return;
+      }
+    }
+
     setLoading(true);
     setError(false);
     const result = await fetchAnalytics(signal);
     if (signal?.aborted) return;
     if (!mountedRef.current) return;
     if (result) {
+      cacheRef.current = { data: result, fetchedAt: Date.now() };
       setData(result);
     } else {
       setError(true);
@@ -152,9 +176,27 @@ export default function AnalyticsSummary({ refreshKey }: AnalyticsSummaryProps) 
     };
   }, [load, refreshKey]);
 
-  // Hide entirely on error (graceful degradation)
+  function handleRetry() {
+    const controller = new AbortController();
+    void load(controller.signal, true);
+  }
+
+  // Show error banner instead of hiding entirely
   if (error && !data) {
-    return null;
+    return (
+      <div className="mt-3 flex items-center justify-between rounded-lg border border-warning-main/30 bg-warning-soft px-4 py-2.5">
+        <p className="text-xs text-warning-main">
+          Analytics unavailable
+        </p>
+        <button
+          type="button"
+          onClick={handleRetry}
+          className="rounded-md px-2.5 py-1 text-xs font-medium text-warning-main transition hover:bg-warning-main/10"
+        >
+          Tap to retry
+        </button>
+      </div>
+    );
   }
 
   // Loading skeleton

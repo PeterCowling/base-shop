@@ -1,0 +1,40 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260312160000-0004",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "artifact_id": null,
+  "before_sha": null,
+  "after_sha": "operator-idea-20260312-prime-error-security",
+  "root_event_id": "operator:BRIK:PRODUCTS:reception-inbox-prime-error-security:20260312",
+  "anchor_key": "reception-inbox-prime-error-security",
+  "cluster_key": "BRIK:PRODUCTS:reception-inbox-prime-error-security:operator:20260312",
+  "cluster_fingerprint": "reception-inbox-prime-error-security-20260312",
+  "lineage_depth": 0,
+  "area_anchor": "Brikette — Prime API errors expose internal infrastructure details and campaign data may leak customer information",
+  "location_anchors": [
+    "apps/reception/src/lib/inbox/prime-review.server.ts",
+    "apps/reception/src/components/inbox/ThreadDetailPane.tsx"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Prime API error responses include raw infrastructure error messages that could reveal internal system details. Campaign delivery metadata contains customer contact details that could leak through the thread detail UI. Errors silently return empty arrays instead of surfacing failures.",
+  "next_scope_now": "Sanitize Prime error responses to generic messages, filter PII from campaign metadata before display, and surface errors instead of silent empty arrays.",
+  "recommended_route": "lp-do-build",
+  "status": "micro_build_ready",
+  "priority": "P1",
+  "confidence": 0.9,
+  "evidence_refs": [
+    "operator-stated: error messages leak infrastructure; campaign metadata PII risk; silent error swallowing",
+    "apps/reception/src/lib/inbox/prime-review.server.ts",
+    "coverage-hint: performance-reliability"
+  ],
+  "created_at": "2026-03-12T16:00:00.000Z",
+  "queue_state": "enqueued",
+  "why": "When Prime messaging has an error, the raw technical details are sent back to the browser, potentially revealing how internal systems work. Campaign data includes customer contact info that staff shouldn't see in the thread view. And when things fail, the screen just shows empty data with no explanation — staff don't know anything went wrong.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Error messages are sanitized before reaching the browser, campaign metadata is filtered for PII, and failures surface visible error states instead of empty data.",
+    "source": "auto"
+  }
+}

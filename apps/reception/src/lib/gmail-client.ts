@@ -146,6 +146,11 @@ type GmailDraftSendResponse = {
   labelIds?: string[];
 };
 
+type GmailLabelModifyInput = {
+  addLabelIds?: string[];
+  removeLabelIds?: string[];
+};
+
 type CreateDraftInput = {
   to: string[];
   subject: string;
@@ -599,5 +604,34 @@ export async function sendGmailDraft(draftId: string): Promise<GmailDraftSendRes
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ id: draftId }),
+  });
+}
+
+export async function modifyGmailThreadLabels(
+  threadId: string,
+  input: GmailLabelModifyInput,
+): Promise<GmailThreadDetailResponse> {
+  if (!threadId.trim()) {
+    throw new Error("threadId is required to modify a Gmail thread.");
+  }
+
+  return gmailApiRequest<GmailThreadDetailResponse>(
+    `/threads/${encodeURIComponent(threadId)}/modify`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        addLabelIds: input.addLabelIds ?? [],
+        removeLabelIds: input.removeLabelIds ?? [],
+      }),
+    },
+  );
+}
+
+export async function markGmailThreadRead(threadId: string): Promise<void> {
+  await modifyGmailThreadLabels(threadId, {
+    removeLabelIds: ["UNREAD"],
   });
 }

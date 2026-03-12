@@ -1,0 +1,70 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260311195000-9553",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "domain": "SELL",
+  "artifact_id": null,
+  "before_sha": null,
+  "after_sha": "operator-idea-20260311",
+  "root_event_id": "operator:BRIK:SELL:reception-inbox-live-auto-refresh:20260311",
+  "anchor_key": "reception-inbox-live-auto-refresh",
+  "cluster_key": "BRIK:SELL:reception-inbox-live-auto-refresh:operator:20260311",
+  "cluster_fingerprint": "reception-inbox-live-auto-refresh-20260311",
+  "lineage_depth": 0,
+  "area_anchor": "Reception inbox should maintain a live view without staff pressing refresh or sync buttons",
+  "location_anchors": [
+    "apps/reception/src/services/useInbox.ts",
+    "apps/reception/src/components/inbox/InboxWorkspace.tsx",
+    "apps/reception/src/app/api/internal/inbox-sync/route.ts",
+    "apps/reception/worker-entry.ts",
+    "apps/reception/wrangler.toml"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "The Reception inbox used to require explicit operator actions to feel current. The UI refresh path was recently separated from Gmail sync, but new mail still depended on a manual sync action, and the screen still depended on staff clicking buttons to reload visible data.",
+  "next_scope_now": "Implement a bounded live-inbox first wave: scheduled inbox sync on the worker, visible-tab auto-refresh against the D1-backed inbox list, and draft-safe refresh behavior that avoids clobbering in-progress edits.",
+  "adjacent_later": [
+    "Denormalize inbox list fields on threads to remove per-row subqueries from the list query",
+    "Add selective detail refresh only when the selected thread summary changes",
+    "Evaluate push invalidation after the polling path proves stable in production"
+  ],
+  "recommended_route": "lp-do-build",
+  "status": "completed",
+  "priority": "P1",
+  "confidence": 0.93,
+  "evidence_refs": [
+    "operator-stated: the inbox should maintain a live view without staff pressing buttons",
+    "apps/reception/src/services/useInbox.ts",
+    "apps/reception/src/components/inbox/InboxWorkspace.tsx",
+    "apps/reception/src/lib/inbox/sync.server.ts",
+    "apps/reception/worker-entry.ts",
+    "apps/reception/wrangler.toml",
+    "coverage-hint: inbox",
+    "coverage-hint: cloudflare-worker",
+    "coverage-hint: polling",
+    "coverage-hint: rollout-rollback"
+  ],
+  "created_at": "2026-03-11T19:50:00.000Z",
+  "queue_state": "completed",
+  "why": "Reception staff should not need to remember which button to press to keep the inbox current. A hostel inbox should surface new work automatically and refresh the visible queue in the background without disrupting draft editing.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Reception automatically syncs Gmail into D1 on a schedule and refreshes the visible inbox list in the browser while the tab is active, reducing manual refresh work without overwriting in-progress draft edits.",
+    "source": "operator"
+  },
+  "processed_by": {
+    "route": "dispatch-routed",
+    "target_route": "lp-do-build",
+    "target_kind": "micro-build",
+    "target_slug": "reception-inbox-live-auto-refresh",
+    "target_path": "docs/plans/reception-inbox-live-auto-refresh/micro-build.md",
+    "processed_at": "2026-03-11T19:50:00.000Z",
+    "micro_build_path": "docs/plans/reception-inbox-live-auto-refresh/micro-build.md"
+  },
+  "completed_by": {
+    "plan_path": "docs/plans/reception-inbox-live-auto-refresh/micro-build.md",
+    "outcome": "Reception now auto-refreshes the inbox list every 15 seconds while the tab is visible and online, and the worker can auto-sync Gmail into D1 every minute via an authenticated internal cron route without requiring staff to press Sync.",
+    "completed_at": "2026-03-11T19:50:00.000Z"
+  }
+}

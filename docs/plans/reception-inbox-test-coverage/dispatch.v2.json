@@ -1,0 +1,41 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260312160000-0007",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "artifact_id": null,
+  "before_sha": null,
+  "after_sha": "operator-idea-20260312-test-coverage",
+  "root_event_id": "operator:BRIK:PRODUCTS:reception-inbox-test-coverage:20260312",
+  "anchor_key": "reception-inbox-test-coverage",
+  "cluster_key": "BRIK:PRODUCTS:reception-inbox-test-coverage:operator:20260312",
+  "cluster_fingerprint": "reception-inbox-test-coverage-20260312",
+  "lineage_depth": 0,
+  "area_anchor": "Brikette — New cursor pagination and Prime messaging routes have no automated tests",
+  "location_anchors": [
+    "apps/reception/src/app/api/mcp/__tests__/inbox.route.test.ts",
+    "apps/reception/src/app/api/mcp/__tests__/inbox-actions.route.test.ts",
+    "apps/reception/src/lib/inbox/__tests__/sync.server.test.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "The cursor-based pagination endpoint, Prime action routes, and the analytics endpoint were added without corresponding test coverage. Edge cases like boundary cursors, Prime-specific status transitions, and analytics date range validation are untested.",
+  "next_scope_now": "Add tests for cursor pagination (boundary, concurrent insert), Prime action routes (status transitions, error cases), and analytics endpoint (date validation, metric filtering).",
+  "recommended_route": "lp-do-build",
+  "status": "micro_build_ready",
+  "priority": "P3",
+  "confidence": 0.85,
+  "evidence_refs": [
+    "operator-stated: missing tests for cursor pagination and Prime routes",
+    "apps/reception/src/app/api/mcp/__tests__/inbox.route.test.ts",
+    "coverage-hint: testing"
+  ],
+  "created_at": "2026-03-12T16:00:00.000Z",
+  "queue_state": "enqueued",
+  "why": "Several new features — paginated message loading, Prime messaging actions, and the analytics dashboard — were shipped without tests. Without tests, future changes could break these features and nobody would know until staff hit the problem.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Cursor pagination, Prime action routes, and analytics endpoint have test coverage for core paths and edge cases.",
+    "source": "auto"
+  }
+}

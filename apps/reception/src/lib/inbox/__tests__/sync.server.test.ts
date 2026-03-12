@@ -6,7 +6,7 @@ import {
 } from "../../gmail-client";
 import { getInboxDb } from "../db.server";
 import { generateAgentDraft } from "../draft-pipeline.server";
-import { buildGuestEmailMap } from "../guest-matcher.server";
+import { buildGuestEmailMap, matchSenderToGuest } from "../guest-matcher.server";
 import {
   createDraft,
   getThread,
@@ -91,6 +91,7 @@ describe("syncInbox", () => {
   const upsertInboxSyncCheckpointMock = jest.mocked(upsertInboxSyncCheckpoint);
   const recordInboxEventMock = jest.mocked(recordInboxEvent);
   const buildGuestEmailMapMock = jest.mocked(buildGuestEmailMap);
+  const matchSenderToGuestMock = jest.mocked(matchSenderToGuest);
 
   beforeEach(() => {
     jest.resetAllMocks();
@@ -114,6 +115,7 @@ describe("syncInbox", () => {
       durationMs: 0,
       guestCount: 0,
     });
+    matchSenderToGuestMock.mockReturnValue(null);
     getThreadMock.mockResolvedValue(null);
     createDraftMock.mockResolvedValue({
       id: "draft-1",
@@ -231,6 +233,78 @@ describe("syncInbox", () => {
         lastHistoryId: "124",
       }),
       expect.anything(),
+    );
+  });
+
+  it("passes the matched booking reference into draft generation", async () => {
+    getInboxSyncCheckpointMock.mockResolvedValue(null);
+    listGmailThreadsMock.mockResolvedValue({
+      threads: [{ id: "thread-1" }],
+    });
+    getGmailThreadMock.mockResolvedValue({
+      id: "thread-1",
+      historyId: "history-1",
+      snippet: "My payment failed",
+      messages: [
+        {
+          id: "msg-1",
+          threadId: "thread-1",
+          labelIds: [],
+          historyId: "history-1",
+          snippet: "My payment failed",
+          internalDate: "1709719200000",
+          receivedAt: "2026-03-06T10:00:00.000Z",
+          from: "Alice <alice@example.com>",
+          to: ["hostelpositano@gmail.com"],
+          subject: "Payment failed",
+          inReplyTo: null,
+          references: null,
+          body: { plain: "My payment failed. What should I do?" },
+          attachments: [],
+        },
+      ],
+    });
+    matchSenderToGuestMock.mockReturnValue({
+      bookingRef: "7763-575812314",
+      occupantId: "occ_1",
+      firstName: "Alice",
+      lastName: "Guest",
+      email: "alice@example.com",
+      checkInDate: "2026-05-27",
+      checkOutDate: "2026-05-30",
+      roomNumbers: ["4"],
+      leadGuest: true,
+    });
+    generateAgentDraftMock.mockResolvedValue({
+      status: "ready",
+      plainText: "Reply text",
+      html: "<p>Reply text</p>",
+      draftId: "generated-1",
+      templateUsed: { subject: "Template", category: "general", confidence: 0.9, selection: "auto" as const },
+      qualityResult: { passed: true, failed_checks: [], warnings: [], confidence: 1, question_coverage: [] },
+      interpretResult: {
+        language: "EN",
+        intents: { questions: [], requests: [], confirmations: [] },
+        scenario: { category: "general", confidence: 0.9 },
+        scenarios: [{ category: "general", confidence: 0.9 }],
+        escalation: { tier: "NONE" as const, triggers: [], confidence: 0 },
+        thread_summary: undefined,
+      },
+      questionBlocks: [],
+      knowledgeSources: [],
+    });
+
+    const response = await syncInbox({ actorUid: "uid-1" });
+
+    expect(response.counts.draftsCreated).toBe(1);
+    expect(generateAgentDraftMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        bookingRef: "7763-575812314",
+        prepaymentProvider: "hostelworld",
+        threadContext: expect.objectContaining({
+          bookingRef: "7763-575812314",
+        }),
+      }),
     );
   });
 

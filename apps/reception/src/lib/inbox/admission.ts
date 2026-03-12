@@ -43,7 +43,11 @@ export const nonCustomerFromPatterns = [
   "noreply@smtp.octorate.com",
   "noreply-apps-scripts-notifications@google.com",
   "cloudplatform-noreply@google.com",
+  "maps-noreply@google.com",
+  "noreply-local@google.com",
   "italoimpresa@mailing.italotreno.it",
+  "infopoint@distrettocostadamalfi.it",
+  "ikea@news.email.ikea.it",
   "cmcowling@me.com",
   "hostelpositano@gmail.com",
 ] as const;
@@ -70,6 +74,47 @@ export const nonCustomerSubjectPatterns = [
   /\bprivacy policy\b/i,
   /\bannual report\b/i,
   /\bfattura\b/i,
+  /\bcashback\b/i,
+  /\bofferta\b/i,
+  /\bsconto\b/i,
+  /\bpromozione\b/i,
+  /\brisparmia\b/i,
+  /\bprotect yourself now\b/i,
+  /\bproteggiti ora\b/i,
+  /\bproteggiti\b/i,
+  /\binfestanti\b/i,
+  /\bdisinfestazione\b/i,
+  /\bleft a review\b/i,
+  /\bnew review\b/i,
+  /\bseo\b/i,
+  /\bwebsite traffic\b/i,
+  /\brank higher\b/i,
+  /\battract more customers\b/i,
+  /\binfluencer\b/i,
+  /\bcontent creator\b/i,
+  /\btravel guide\b/i,
+  /\byoutube channel\b/i,
+  /^a customer saved their research$/i,
+];
+
+export const nonCustomerSnippetPatterns = [
+  /\bincrease your website traffic\b/i,
+  /\bour seo strateg(?:y|ies)\b/i,
+  /\brank higher\b/i,
+  /\battract more customers\b/i,
+  /\bfree stay\b/i,
+  /\bcomplimentary stay\b/i,
+  /\bin exchange for\b/i,
+  /\bfeature (?:you|your hostel|your property)\b/i,
+  /\bfeature us on\b/i,
+  /\btravel guide\b/i,
+  /\byoutube channel\b/i,
+  /\bblog\/website\b/i,
+  /\binfluencer\b/i,
+  /\bcontent creator\b/i,
+  /\bcollaborat(?:e|ion)\b/i,
+  /\bseo strateg(?:y|ies)\b/i,
+  /\bwebsite traffic\b/i,
 ];
 
 export const customerSubjectPatterns = [
@@ -270,6 +315,9 @@ export function classifyOrganizeDecision(email: EmailMetadata): {
   const hasNonCustomerSubjectPattern = nonCustomerSubjectPatterns.some((pattern) =>
     pattern.test(subject)
   );
+  const hasNonCustomerSnippetPattern = nonCustomerSnippetPatterns.some((pattern) =>
+    pattern.test(snippetLower)
+  );
   const hasNonCustomerDomain =
     Boolean(senderDomain) &&
     !customerDomainExceptions.has(senderDomain) &&
@@ -298,12 +346,14 @@ export function classifyOrganizeDecision(email: EmailMetadata): {
     hasNoReplySender ||
     hasNonCustomerFromPattern ||
     hasNonCustomerSubjectPattern ||
+    hasNonCustomerSnippetPattern ||
     hasNonCustomerDomain ||
     hasListSignals;
 
   const hasStrongNonCustomerSignals =
     hasNoReplySender ||
     hasNonCustomerFromPattern ||
+    hasNonCustomerSnippetPattern ||
     hasNonCustomerDomain ||
     hasListSignals;
 

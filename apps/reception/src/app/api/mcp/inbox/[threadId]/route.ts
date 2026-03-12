@@ -65,9 +65,10 @@ export async function GET(
     const limit = parseIntParam(url.searchParams.get("limit"), DEFAULT_MESSAGE_LIMIT);
     const offset = parseIntParam(url.searchParams.get("offset"), 0);
     const beforeId = url.searchParams.get("before_id") ?? undefined;
+    const beforeTimestamp = url.searchParams.get("before_ts") ?? undefined;
 
     const paginated = await getThreadMessages(
-      { threadId: params.threadId, limit, offset, beforeId },
+      { threadId: params.threadId, limit, offset, beforeId, beforeTimestamp },
     );
 
     const currentDraft = getCurrentDraft(record);

@@ -132,6 +132,12 @@ export type GetThreadMessagesOptions = {
   offset?: number;
   /** Cursor-based pagination: fetch messages older than this message ID. */
   beforeId?: string;
+  /**
+   * Composite cursor timestamp component (ISO-8601). When provided together
+   * with `beforeId`, uses a (timestamp, id) tuple for stable ordering even
+   * when IDs are not strictly monotonic with time.
+   */
+  beforeTimestamp?: string;
 };
 
 export type PaginatedMessages = {
@@ -748,8 +754,14 @@ export async function getThreadMessages(
   const limit = clampLimit(options.limit, 20);
   const offset = clampOffset(options.offset);
 
-  // Cursor-based path: fetch messages older than `beforeId` (stable under concurrent inserts)
+  // Cursor-based path: fetch messages older than the cursor position.
+  // When a composite cursor (beforeTimestamp + beforeId) is available we use a
+  // row-value comparison `(COALESCE(sent_at, created_at), id) < (ts, id)` so
+  // that ordering is stable even when IDs are not strictly monotonic with time.
+  // Fall back to ID-only comparison when only beforeId is supplied (backward compat).
   if (options.beforeId) {
+    const useCompositeCursor = Boolean(options.beforeTimestamp);
+
     const [countResult, messagesResult] = await Promise.all([
       activeDb
         .prepare(
@@ -757,28 +769,51 @@ export async function getThreadMessages(
         )
         .bind(options.threadId)
         .first<{ cnt: number }>(),
-      activeDb
-        .prepare(
-          `
-          SELECT
-            id,
-            thread_id,
-            direction,
-            sender_email,
-            recipient_emails_json,
-            subject,
-            snippet,
-            sent_at,
-            payload_json,
-            created_at
-          FROM messages
-          WHERE thread_id = ? AND id < ?
-          ORDER BY COALESCE(sent_at, created_at) DESC, created_at DESC
-          LIMIT ?
-          `,
-        )
-        .bind(options.threadId, options.beforeId, limit)
-        .all<InboxMessageRow>(),
+      useCompositeCursor
+        ? activeDb
+          .prepare(
+            `
+            SELECT
+              id,
+              thread_id,
+              direction,
+              sender_email,
+              recipient_emails_json,
+              subject,
+              snippet,
+              sent_at,
+              payload_json,
+              created_at
+            FROM messages
+            WHERE thread_id = ? AND (COALESCE(sent_at, created_at), id) < (?, ?)
+            ORDER BY COALESCE(sent_at, created_at) DESC, id DESC
+            LIMIT ?
+            `,
+          )
+          .bind(options.threadId, options.beforeTimestamp, options.beforeId, limit)
+          .all<InboxMessageRow>()
+        : activeDb
+          .prepare(
+            `
+            SELECT
+              id,
+              thread_id,
+              direction,
+              sender_email,
+              recipient_emails_json,
+              subject,
+              snippet,
+              sent_at,
+              payload_json,
+              created_at
+            FROM messages
+            WHERE thread_id = ? AND id < ?
+            ORDER BY COALESCE(sent_at, created_at) DESC, id DESC
+            LIMIT ?
+            `,
+          )
+          .bind(options.threadId, options.beforeId, limit)
+          .all<InboxMessageRow>(),
     ]);
 
     const totalMessages = countResult?.cnt ?? 0;

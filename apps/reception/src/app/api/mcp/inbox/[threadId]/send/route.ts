@@ -83,6 +83,12 @@ export async function POST(
   // Optimistic lock: reject if the draft was modified since the caller last saw it
   if (parsedPayload.data.expectedUpdatedAt) {
     if (currentDraft.updated_at !== parsedPayload.data.expectedUpdatedAt) {
+      void recordInboxEvent({
+        threadId: params.threadId,
+        eventType: "send_failed",
+        actorUid: auth.uid,
+        metadata: { errorCategory: "optimistic_lock_conflict" },
+      });
       return conflictResponse(
         "Draft was modified since you last viewed it. Reload the draft and try again.",
       );
@@ -162,6 +168,12 @@ export async function POST(
       },
     });
   } catch (error) {
+    void recordInboxEvent({
+      threadId: params.threadId,
+      eventType: "send_failed",
+      actorUid: auth.uid,
+      metadata: { errorCategory: "gmail_error" },
+    });
     return inboxApiErrorResponse(error);
   }
 }

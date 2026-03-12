@@ -1,5 +1,6 @@
 import {
   createGmailDraft,
+  markGmailThreadRead,
   sendGmailDraft,
 } from "@/lib/gmail-client";
 import { generateAgentDraft } from "@/lib/inbox/draft-pipeline.server";
@@ -27,6 +28,7 @@ import { POST as sendDraft } from "../inbox/[threadId]/send/route";
 
 jest.mock("@/lib/gmail-client", () => ({
   createGmailDraft: jest.fn(),
+  markGmailThreadRead: jest.fn(),
   sendGmailDraft: jest.fn(),
 }));
 
@@ -70,6 +72,7 @@ function buildThreadRecord(overrides: Partial<InboxThreadRecord> = {}): InboxThr
       metadata_json: JSON.stringify({
         needsManualDraft: true,
         lastDraftId: "draft-1",
+        guestBookingRef: "7763-575812314",
       }),
       created_at: "2026-03-06T10:00:00.000Z",
       updated_at: "2026-03-06T10:05:00.000Z",
@@ -155,6 +158,7 @@ describe("inbox regenerate/send/resolve routes", () => {
   const recordInboxEventMock = jest.mocked(recordInboxEvent);
   const generateAgentDraftMock = jest.mocked(generateAgentDraft);
   const createGmailDraftMock = jest.mocked(createGmailDraft);
+  const markGmailThreadReadMock = jest.mocked(markGmailThreadRead);
   const sendGmailDraftMock = jest.mocked(sendGmailDraft);
 
   beforeEach(() => {
@@ -165,6 +169,23 @@ describe("inbox regenerate/send/resolve routes", () => {
       uid: "staff-1",
       roles: ["staff"],
     });
+    markGmailThreadReadMock.mockResolvedValue();
+  });
+
+  it("returns 400 when regenerate is attempted on a Prime thread ID", async () => {
+    isPrimeInboxThreadIdMock.mockReturnValue(true);
+
+    const response = await regenerateDraft(
+      buildPostRequest("http://localhost/api/mcp/inbox/prime%3Adm_occ_aaa_occ_bbb/draft/regenerate", {}),
+      { params: { threadId: "prime:dm_occ_aaa_occ_bbb" } },
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(400);
+    expect(payload.success).toBe(false);
+    expect(payload.error).toMatch(/not supported for Prime/);
+    expect(getThreadMock).not.toHaveBeenCalled();
+    expect(generateAgentDraftMock).not.toHaveBeenCalled();
   });
 
   it("blocks regenerate when a staff-edited draft would be overwritten without force", async () => {
@@ -296,7 +317,9 @@ describe("inbox regenerate/send/resolve routes", () => {
     expect(response.status).toBe(200);
     expect(generateAgentDraftMock).toHaveBeenCalledWith(
       expect.objectContaining({
+        bookingRef: "7763-575812314",
         threadContext: {
+          bookingRef: "7763-575812314",
           messages: expect.arrayContaining([
             expect.objectContaining({ snippet: "Question body 10" }),
             expect.objectContaining({ snippet: "Question body 29" }),
@@ -596,6 +619,8 @@ describe("inbox regenerate/send/resolve routes", () => {
       expect(response.status).toBe(200);
       expect(payload.success).toBe(true);
       expect(payload.data.thread.status).toBe("auto_archived");
+      expect(payload.data.gmailMarkedRead).toBe(true);
+      expect(markGmailThreadReadMock).toHaveBeenCalledWith("thread-1");
 
       expect(updateThreadStatusMock).toHaveBeenCalledWith({
         threadId: "thread-1",
@@ -681,6 +706,7 @@ describe("inbox regenerate/send/resolve routes", () => {
       expect(updateThreadStatusMock).not.toHaveBeenCalled();
       expect(recordInboxEventMock).not.toHaveBeenCalled();
       expect(payload.data.thread.status).toBe("auto_archived");
+      expect(payload.data.gmailMarkedRead).toBe(false);
     });
 
     // TC-10: Unauthenticated dismiss returns 401

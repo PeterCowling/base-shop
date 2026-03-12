@@ -16,6 +16,7 @@ export const inboxEventTypes = [
   "draft_edited",
   "approved",
   "sent",
+  "send_failed",
   "resolved",
   "dismissed",
   "inbox_recovery",

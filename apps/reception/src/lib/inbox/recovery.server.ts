@@ -87,6 +87,14 @@ export async function recoverStaleThreads(
 
   // Build guest email map once for all recovery threads
   const guestMapResult: GuestEmailMapResult = await buildGuestEmailMap();
+  if (guestMapResult.status !== "ok") {
+    console.warn("[recovery] guest email map build failed — aborting recovery cycle so it will be retried", {
+      status: guestMapResult.status,
+      error: guestMapResult.error ?? null,
+      durationMs: guestMapResult.durationMs,
+    });
+    throw new Error(`Guest email map build failed: ${guestMapResult.status}${guestMapResult.error ? ` — ${guestMapResult.error}` : ""}`);
+  }
   const guestEmailMap = guestMapResult.map;
   let isFirstGuestMatchEvent = true;
 

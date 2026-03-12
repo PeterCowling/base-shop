@@ -1,0 +1,43 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260312140000-0002",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "artifact_id": null,
+  "before_sha": null,
+  "after_sha": "operator-idea-20260312-draft-idempotency",
+  "root_event_id": "operator:BRIK:PRODUCTS:reception-inbox-draft-idempotency:20260312",
+  "anchor_key": "reception-inbox-draft-idempotency",
+  "cluster_key": "BRIK:PRODUCTS:reception-inbox-draft-idempotency:operator:20260312",
+  "cluster_fingerprint": "reception-inbox-draft-idempotency-20260312",
+  "lineage_depth": 0,
+  "area_anchor": "Brikette — Double-clicking regenerate or syncing twice can create duplicate email drafts",
+  "location_anchors": [
+    "apps/reception/src/app/api/mcp/inbox/[threadId]/draft/regenerate/route.ts",
+    "apps/reception/src/lib/inbox/sync.server.ts",
+    "apps/reception/src/lib/inbox/repositories.server.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "The regenerate endpoint and sync pipeline can both create drafts without checking if one is already being created. Rapid double-clicks on regenerate or concurrent sync runs can produce duplicate draft rows, and the second may overwrite staff edits.",
+  "next_scope_now": "Add a unique constraint on active drafts per thread, use upsert logic in draft creation, and add client-side debounce on the regenerate button.",
+  "recommended_route": "lp-do-build",
+  "status": "micro_build_ready",
+  "priority": "P1",
+  "confidence": 0.88,
+  "evidence_refs": [
+    "operator-stated: no idempotency on regenerate — duplicate drafts; concurrent sync draft creation overwrites edits",
+    "apps/reception/src/app/api/mcp/inbox/[threadId]/draft/regenerate/route.ts",
+    "apps/reception/src/lib/inbox/sync.server.ts",
+    "coverage-hint: data-contracts",
+    "coverage-hint: performance-reliability"
+  ],
+  "created_at": "2026-03-12T14:00:00.000Z",
+  "queue_state": "enqueued",
+  "why": "If staff quickly click 'regenerate' twice, or if the email sync runs at the same time as a staff action, duplicate draft replies can be created. The second one can overwrite edits the staff member already made. This means staff work gets lost and guests might receive the wrong response.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Only one active draft exists per thread at any time, enforced by database constraints and upsert logic.",
+    "source": "auto"
+  }
+}

@@ -50,6 +50,16 @@ export type AnalyticsResult = {
 
 export type MetricGroup = "volume" | "quality" | "resolution" | "admission";
 
+/**
+ * Filter analytics by thread data source.
+ * - "email": only email threads stored in D1 (default behaviour).
+ * - "all": same as "email" — Prime thread events are not stored in D1
+ *   and therefore cannot be included in these queries.
+ * - "prime": always returns zero-value metrics; Prime analytics are not
+ *   available through the D1-backed query path.
+ */
+export type AnalyticsSource = "email" | "prime" | "all";
+
 export const ALL_METRIC_GROUPS: readonly MetricGroup[] = [
   "volume",
   "quality",
@@ -61,10 +71,17 @@ export const ALL_METRIC_GROUPS: readonly MetricGroup[] = [
 // Helpers
 // ---------------------------------------------------------------------------
 
+function assertSafeDays(days: number): void {
+  if (!Number.isInteger(days) || days < 1 || days > 365) {
+    throw new Error(`days must be an integer between 1 and 365, got ${days}`);
+  }
+}
+
 function timeFilter(days: number | undefined, tableAlias?: string): string {
   if (!days) {
     return "";
   }
+  assertSafeDays(days);
   const col = tableAlias ? `${tableAlias}.timestamp` : "timestamp";
   return `AND ${col} >= datetime('now', '-${days} days')`;
 }
@@ -73,6 +90,7 @@ function admissionTimeFilter(days: number | undefined): string {
   if (!days) {
     return "";
   }
+  assertSafeDays(days);
   return `AND created_at >= datetime('now', '-${days} days')`;
 }
 
@@ -97,13 +115,25 @@ export async function computeVolumeMetrics(
   const db = await resolveDb(options.db);
   const filter = timeFilter(options.days);
 
+  // Use a subquery to pick only the latest event per (thread_id, event_type)
+  // pair. This prevents retries/recovery from inflating counts — each thread
+  // is counted at most once per event type.
   const query = `
     SELECT
       event_type,
-      COUNT(DISTINCT thread_id) AS thread_count
-    FROM thread_events
-    WHERE event_type IN ('admitted', 'drafted', 'sent', 'resolved')
-    ${filter}
+      COUNT(*) AS thread_count
+    FROM (
+      SELECT
+        thread_id,
+        event_type,
+        ROW_NUMBER() OVER (
+          PARTITION BY thread_id, event_type ORDER BY timestamp DESC
+        ) AS rn
+      FROM thread_events
+      WHERE event_type IN ('admitted', 'drafted', 'sent', 'resolved')
+      ${filter}
+    )
+    WHERE rn = 1
     GROUP BY event_type
   `;
 
@@ -148,8 +178,13 @@ export async function computeQualityMetrics(
     ${filter}
   `;
 
-  // Count quality pass/fail from draft rows that have quality_json
-  // A draft passed quality if quality_json contains "passed":true
+  // Count quality pass/fail from draft rows that have quality_json.
+  // Time-filter both sides: drafts by created_at AND events by timestamp
+  // to prevent stale drafts outside the window from inflating results.
+  const draftTimeFilter = timeFilter(options.days, "d")
+    .replace("d.timestamp", "d.created_at");
+  const eventTimeFilter = timeFilter(options.days, "te");
+
   const qualityQuery = `
     SELECT
       CASE
@@ -160,7 +195,8 @@ export async function computeQualityMetrics(
     FROM drafts d
     INNER JOIN thread_events te ON te.thread_id = d.thread_id AND te.event_type = 'drafted'
     WHERE d.quality_json IS NOT NULL
-    ${filter.replace("timestamp", "te.timestamp")}
+    ${draftTimeFilter}
+    ${eventTimeFilter}
     GROUP BY quality_outcome
   `;
 
@@ -169,12 +205,13 @@ export async function computeQualityMetrics(
     SELECT
       je.value AS reason,
       COUNT(*) AS count
-    FROM drafts d,
-      json_each(d.quality_json, '$.failed_checks') AS je
+    FROM drafts d
     INNER JOIN thread_events te ON te.thread_id = d.thread_id AND te.event_type = 'drafted'
+    CROSS JOIN json_each(d.quality_json, '$.failed_checks') AS je
     WHERE d.quality_json IS NOT NULL
       AND json_extract(d.quality_json, '$.passed') = 0
-    ${filter.replace("timestamp", "te.timestamp")}
+    ${draftTimeFilter}
+    ${eventTimeFilter}
     GROUP BY je.value
     ORDER BY count DESC
     LIMIT 3
@@ -353,8 +390,30 @@ export async function computeAnalytics(
     db?: D1Database;
     days?: number;
     metrics?: MetricGroup[];
+    /**
+     * Filter by data source. Defaults to "email".
+     * "prime" returns zero-value metrics — Prime thread events are not stored
+     * in D1 and are therefore not queryable through this path.
+     * "all" behaves identically to "email" for the same reason.
+     */
+    source?: AnalyticsSource;
   } = {},
 ): Promise<AnalyticsResult> {
+  // Prime analytics are not backed by D1: return zero-value placeholders so
+  // callers can distinguish "no data" from "wrong source".
+  if (options.source === "prime") {
+    const groups = options.metrics && options.metrics.length > 0
+      ? new Set(options.metrics)
+      : new Set(ALL_METRIC_GROUPS);
+    return {
+      volume: groups.has("volume") ? { totalThreads: 0, admitted: 0, drafted: 0, sent: 0, resolved: 0 } : undefined,
+      quality: groups.has("quality") ? { totalDrafted: 0, qualityPassed: 0, qualityFailed: 0, passRate: null, topFailureReasons: [] } : undefined,
+      resolution: groups.has("resolution") ? { resolvedCount: 0, avgAdmittedToSentHours: null, avgAdmittedToResolvedHours: null } : undefined,
+      admission: groups.has("admission") ? { totalProcessed: 0, admitted: 0, admittedRate: null, autoArchived: 0, autoArchivedRate: null, reviewLater: 0, reviewLaterRate: null } : undefined,
+      period: { days: options.days ?? null },
+    };
+  }
+
   const db = await resolveDb(options.db);
   const groups = options.metrics && options.metrics.length > 0
     ? options.metrics

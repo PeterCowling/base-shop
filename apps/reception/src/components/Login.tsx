@@ -441,7 +441,7 @@ function Login({ onLoginSuccess }: LoginProps) {
   return (
     <LoginContainer>
       <ProductLogo />
-      <p className="mt-6 text-sm text-foreground/70">
+      <p className="mt-6 text-sm text-muted-foreground">
         Enter your credentials to continue.
       </p>
 

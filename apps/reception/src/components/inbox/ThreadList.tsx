@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Filter, MailSearch } from "lucide-react";
 
 import type { InboxThreadSummary } from "@/services/useInbox";
@@ -30,6 +30,8 @@ export default function ThreadList({
   const [activeFilters, setActiveFilters] = useState<Set<ThreadFilterKey>>(
     () => new Set(),
   );
+  const [newThreadIds, setNewThreadIds] = useState<Set<string>>(() => new Set());
+  const previousThreadsRef = useRef<Array<{ id: string; latestMessageAt: string | null; updatedAt: string }>>([]);
 
   const handleToggleFilter = useCallback((key: ThreadFilterKey) => {
     setActiveFilters((prev) => {
@@ -53,6 +55,55 @@ export default function ThreadList({
   );
 
   const hasActiveFilters = activeFilters.size > 0;
+  const showInitialSkeleton = loading && threads.length === 0;
+
+  useEffect(() => {
+    const previousThreads = previousThreadsRef.current;
+    previousThreadsRef.current = threads.map((thread) => ({
+      id: thread.id,
+      latestMessageAt: thread.latestMessageAt,
+      updatedAt: thread.updatedAt,
+    }));
+
+    if (previousThreads.length === 0) {
+      return;
+    }
+
+    const previousById = new Map(previousThreads.map((thread) => [thread.id, thread]));
+    const arrivals = threads
+      .filter((thread) => {
+        const previous = previousById.get(thread.id);
+        if (!previous) {
+          return true;
+        }
+
+        return (
+          previous.latestMessageAt !== thread.latestMessageAt
+          || previous.updatedAt !== thread.updatedAt
+        );
+      })
+      .map((thread) => thread.id);
+
+    if (arrivals.length === 0) {
+      return;
+    }
+
+    setNewThreadIds((prev) => {
+      const next = new Set(prev);
+      arrivals.forEach((id) => next.add(id));
+      return next;
+    });
+
+    const timeoutId = window.setTimeout(() => {
+      setNewThreadIds((prev) => {
+        const next = new Set(prev);
+        arrivals.forEach((id) => next.delete(id));
+        return next;
+      });
+    }, 4_000);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [threads]);
 
   return (
     <section className="rounded-2xl border border-border-1 bg-surface-2 shadow-sm">
@@ -61,7 +112,7 @@ export default function ThreadList({
           <h2 className="text-sm font-semibold uppercase tracking-wide text-muted-foreground">
             Threads
           </h2>
-          {!loading && threads.length > 0 && (
+          {threads.length > 0 && (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-2 px-2.5 py-0.5 text-xs font-medium tabular-nums text-muted-foreground">
               {hasActiveFilters && (
                 <>
@@ -76,7 +127,7 @@ export default function ThreadList({
       </div>
 
       {/* Filter bar */}
-      {!loading && !error && threads.length > 0 && (
+      {!error && threads.length > 0 && (
         <div className="border-b border-border-1 px-4 py-2">
           <FilterBar
             activeFilters={activeFilters}
@@ -87,7 +138,7 @@ export default function ThreadList({
       )}
 
       {/* Loading skeleton */}
-      {loading && (
+      {showInitialSkeleton && (
         <div className="divide-y divide-border-1">
           {Array.from({ length: 8 }).map((_, index) => (
             <div key={index} className="animate-pulse px-4 py-2.5">
@@ -102,7 +153,7 @@ export default function ThreadList({
       )}
 
       {/* Error state */}
-      {!loading && error && (
+      {!showInitialSkeleton && error && (
         <div className="p-3">
           <p className="rounded-xl border border-error-main/20 bg-error-light px-3 py-2 text-sm text-error-main">
             {error}
@@ -111,7 +162,7 @@ export default function ThreadList({
       )}
 
       {/* Empty state */}
-      {!loading && !error && threads.length === 0 && (
+      {!showInitialSkeleton && !error && threads.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
           <div className="rounded-full bg-surface-2 p-3 text-muted-foreground">
             <MailSearch className="h-6 w-6" />
@@ -126,7 +177,7 @@ export default function ThreadList({
       )}
 
       {/* Filtered empty state */}
-      {!loading && !error && threads.length > 0 && hasActiveFilters && filteredThreads.length === 0 && (
+      {!showInitialSkeleton && !error && threads.length > 0 && hasActiveFilters && filteredThreads.length === 0 && (
         <div className="flex flex-col items-center justify-center gap-3 px-6 py-12 text-center">
           <div className="rounded-full bg-surface-2 p-3 text-muted-foreground">
             <Filter className="h-5 w-5" />
@@ -141,13 +192,14 @@ export default function ThreadList({
       )}
 
       {/* Thread list */}
-      {!loading && !error && filteredThreads.length > 0 && (
+      {!error && filteredThreads.length > 0 && (
         // eslint-disable-next-line ds/no-arbitrary-tailwind -- IDEA-DISPATCH-20260307130300-9043 viewport-relative scroll containment
         <div className="max-h-[calc(100vh-12rem)] overflow-y-auto">
           <div className="divide-y divide-border-1">
             {filteredThreads.map((thread) => {
               const badge = buildInboxThreadBadge(thread);
               const isSelected = thread.id === selectedThreadId;
+              const isNewThread = newThreadIds.has(thread.id);
               const time = formatInboxTimestamp(thread.latestMessageAt ?? thread.updatedAt);
 
               return (
@@ -155,11 +207,11 @@ export default function ThreadList({
                   key={thread.id}
                   type="button"
                   onClick={() => void onSelect(thread.id)}
-                  className={`group w-full border-l-2 px-4 py-2.5 text-left transition-colors ${badge.edgeColor} ${
+                  className={`group w-full border-l-2 px-4 py-2.5 text-left transition-colors duration-700 ${badge.edgeColor} ${
                     isSelected
                       ? "bg-surface-elevated"
                       : "hover:bg-table-row-hover"
-                  }`}
+                  } ${isNewThread ? "bg-primary-soft/20" : ""}`}
                 >
                   {/* Row 1: badge + time */}
                   <div className="flex items-center gap-2">

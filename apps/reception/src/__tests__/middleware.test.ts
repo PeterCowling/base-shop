@@ -69,7 +69,7 @@ describe("reception middleware security headers", () => {
   });
 
   it("omits HSTS on localhost", () => {
-    const request = new NextRequest("http://localhost:3020/bar");
+    const request = new NextRequest("http://localhost:3023/bar");
     const response = middleware(request);
 
     expect(response.headers.get("Strict-Transport-Security")).toBeNull();

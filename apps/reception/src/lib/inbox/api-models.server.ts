@@ -120,6 +120,13 @@ export type InboxMessageApiModel = {
 
 export type InboxThreadSummaryApiModel = {
   id: string;
+  /**
+   * Discriminator for the thread data source.
+   * - "email": thread is stored in D1 and was fetched via Gmail sync.
+   * - "prime": thread is fetched live from the Prime review API.
+   * Defaults to "email" for threads created before this field was added.
+   */
+  source?: "email" | "prime";
   status: string;
   channel: InboxChannel;
   channelLabel: string;

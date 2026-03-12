@@ -31,7 +31,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - [x] TASK-10: Investigate reliable final-output and artifact-extraction channels under the isolated runner
 - [x] TASK-11: Spike one bounded artifact-emission path under the isolated runner
 - [x] TASK-03: Implement the shared patch-return protocol and pilot-facing executor docs
-- [ ] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
+- [x] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
 - [ ] TASK-05: Spike the serialized apply window with fingerprint checks
 - [ ] TASK-06: Horizon checkpoint - confirm apply-window behavior and actualize pilot confidence
 - [ ] TASK-07: Pilot `build-biz` on patch-return with explicit shared-checkout fallback
@@ -91,8 +91,8 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 | TASK-10 | INVESTIGATE | Determine which final-output and artifact-extraction channel is reliable under the isolated runner | 75% | M | Complete (2026-03-12) | TASK-09 | TASK-11 |
 | TASK-11 | SPIKE | Validate one bounded artifact-emission path under the isolated runner and require prompt emitted output | 82% | S | Complete (2026-03-12) | TASK-10 | TASK-03 |
 | TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 85% | M | Complete (2026-03-12) | TASK-11 | TASK-04 |
-| TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 82% | M | Pending | TASK-03 | TASK-05 |
-| TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 72% (-> 82% conditional on TASK-04, TASK-11) | S | Pending | TASK-04 | TASK-06 |
+| TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 82% | M | Complete (2026-03-12) | TASK-03 | TASK-05 |
+| TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 82% | S | Pending | TASK-04 | TASK-06 |
 | TASK-06 | CHECKPOINT | Reassess pilot wiring from TASK-05 apply-window evidence | 95% | S | Pending | TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Wire `build-biz` to the patch-return pilot with explicit shared-checkout fallback | 74% (-> 84% conditional on TASK-06) | M | Pending | TASK-06 | - |
 
@@ -415,11 +415,11 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `scripts/agents/build-offload-patch-return.sh`, `[readonly] .claude/skills/_shared/build-offload-protocol.md`
 - **Depends on:** TASK-03
 - **Blocks:** TASK-05
-- **Confidence:** 68% (-> 82% conditional on TASK-03, TASK-11)
+- **Confidence:** 82% (actualized)
   - Implementation: 68% - helper scope is narrow, but the artifact transport path is still unproven.
   - Approach: 68% - the design is still correct, but the helper should not encode a speculative extraction contract.
   - Impact: 78% - helper value remains high once upstream runtime evidence exists.
@@ -459,6 +459,14 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - Dependencies: unchanged task chain, but protocol now depends on TASK-11
 - Validation contract: unchanged
 - Notes: `docs/plans/writer-lock-patch-return-offload/replan-notes-2.md`
+#### Build Evidence (2026-03-12)
+- Route: inline (build-code.md)
+- Deliverable: `scripts/agents/build-offload-patch-return.sh` (created, 128 lines)
+- TC-01: `bash -n` — PASS
+- TC-02: dry-run temp artifacts (ISOHOME, PACKET_REPO, config.toml, auth.json, no forbidden state items) — PASS
+- TC-03: shared checkout unchanged during offload phase (new file shows `??`, no tracked-file mutations) — PASS
+- Acceptance: helper assembles packet outside shared checkout ✓; runs codex with isolated home ✓; `--sandbox read-only` prevents checkout mutation ✓
+- TASK-05 confidence actualized from 72% → 82% (conditional on TASK-04 now resolved).
 
 ### TASK-05: Validate serialized apply-window behavior with fingerprints and a controlled patch artifact
 - **Type:** SPIKE
@@ -471,9 +479,9 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Affects:** `docs/plans/writer-lock-patch-return-offload/spike-05-apply-window.md`, `[readonly] scripts/agents/build-offload-patch-return.sh`, `[readonly] scripts/git-hooks/writer-lock-window.sh`
 - **Depends on:** TASK-04
 - **Blocks:** TASK-06
-- **Confidence:** 72% (-> 82% conditional on TASK-04, TASK-11)
-  - Implementation: 75% - the spike itself is bounded, but it cannot run until the helper exists.
-  - Approach: 72% - the apply-window questions are valid only after patch artifact transport is real.
+- **Confidence:** 82% (actualized from 72%; TASK-04 and TASK-11 now complete)
+  - Implementation: 82% - the spike is bounded; helper exists and contract is validated.
+  - Approach: 80% - apply-window questions are now valid; patch artifact transport proven.
   - Impact: 80% - invalidating evidence here still remains the right gate for pilot wiring.
 - **Acceptance:**
   - Exercises repo and staged-tree fingerprints around the apply window.

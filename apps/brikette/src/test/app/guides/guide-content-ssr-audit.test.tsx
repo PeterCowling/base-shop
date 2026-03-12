@@ -6,6 +6,7 @@ import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import GuideContent from "@/app/[lang]/experiences/[slug]/GuideContent";
 import { GUIDES_INDEX } from "@/data/guides.index";
 import i18n from "@/i18n";
+import { loadGuidesNamespaceFromFs } from "@/locales/_guides/node-loader";
 import type { GuideKey } from "@/routes.guides-helpers";
 
 jest.mock("server-only", () => ({}));
@@ -153,6 +154,12 @@ function clearGuidesBundle(lang: string): void {
   }
 }
 
+function seedGuidesNamespace(lang: "en"): void {
+  const bundle = loadGuidesNamespaceFromFs(lang);
+  expect(bundle).toBeDefined();
+  i18n.addResourceBundle(lang, "guides", bundle, true, true);
+}
+
 const EXPECTED_PLAN_CHOICE_COPY = [
   "Choose your plan",
   "Ferry (seasonal)",
@@ -182,6 +189,7 @@ describe("GuideContent SSR translation audit", () => {
     "renders translated SSR HTML for $section guide $guideKey",
     async ({ guideKey }) => {
       const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle("en", guideKey);
+      seedGuidesNamespace("en");
 
       const html = renderToString(
         <GuideContent

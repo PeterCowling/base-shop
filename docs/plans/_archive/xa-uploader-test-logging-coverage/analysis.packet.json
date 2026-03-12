@@ -1,0 +1,209 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "xa-uploader-test-logging-coverage",
+  "source_artifact_path": "docs/plans/xa-uploader-test-logging-coverage/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/xa-uploader-test-logging-coverage/fact-find.md",
+    "plan": "docs/plans/xa-uploader-test-logging-coverage/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The upload pipeline is the sole path for product data entering the XA storefront. Regressions silently affecting save, publish, or image upload create data loss risk. Absent logging means failures are invisible in production until a user reports them.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All critical upload pipeline routes and the `handleSaveImpl` action have automated test coverage; 7 of 8 server routes already emit structured `uploaderLog` JSON events on material failure paths (contract errors, R2 failures, sync failures, auth anomalies); the remaining gap (`products/[slug]/route.ts` GET/DELETE failure paths) and the missing `uploaderLogger.ts` unit test are addressed. Note: auth-denied and rate-limited branches across all routes intentionally return fast responses without logging — this is the established pattern and is not a gap.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no visual changes",
+      "current_or_option_state": "N/A — no visual changes",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — no user-facing flow changes",
+      "current_or_option_state": "N/A — no user-facing flow changes",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "No change to log field set; no new PII risk",
+      "current_or_option_state": "Adds `storefront`, `slug`, `error` (String(err)), `status` fields — same set used in all other routes; no new PII risk. `String(err)` is the accepted pattern; review confirms error types in this route carry no sensitive text",
+      "gap_or_implication": "`String(err)` accepted; no new exposure introduced",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "No change to production log output; adds test coverage for logger internals (JSON serialization, suppression, fallback)",
+      "current_or_option_state": "Closes the one remaining route gap: GET/DELETE material errors now emit structured events; all 8 server routes fully instrumented",
+      "gap_or_implication": "Full structured logging coverage across all 8 server routes after both tasks land",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Directly tests logger JSON serialization, suppression gate, and fallback path — all currently untested",
+      "current_or_option_state": "Existing route test files can add mock assertions on `uploaderLog` calls at error branches — same test pattern already used in `accessControl.test.ts` and `uploaderAuth.test.ts`",
+      "gap_or_implication": "Two new or extended test files; both follow established patterns",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`uploaderLog` signature unchanged; no schema changes",
+      "current_or_option_state": "`uploaderLog` signature unchanged; no schema changes",
+      "gap_or_implication": "No contract change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "No runtime path change",
+      "current_or_option_state": "Logging is synchronous JSON serialization — negligible cost on Cloudflare Workers; no hot path affected",
+      "gap_or_implication": "No performance implication",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive test only; rollback = revert",
+      "current_or_option_state": "Additive logging only; rollback = revert; no migration, no flag",
+      "gap_or_implication": "Rollback is trivial for both",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The fact-find confirmed that both P1 observability items (test coverage gaps and absent production logging) were substantially resolved by a series of commits between 2026-03-05 and 2026-03-12. Two residual gaps remain: - **Gap A:** `uploaderLogger.ts` has no dedicated unit test. JSON serialization, the `NODE_ENV=test` suppression gate, and the fallback path for non-serializable context (lines 41–49) are untested. - **Gap B:** `apps/xa-uploader/src/app/api/catalog/products/[slug]/route.ts` — GET and DELETE material error paths (contract errors, network/storage failures) have no `uploaderLog` c",
+    "goals": [
+      "Close Gap A: establish a direct, isolated test for `uploaderLogger.ts` covering all branch paths.",
+      "Close Gap B: add structured logging to the one holdout route (`products/[slug]/route.ts`) so that all 8 server-side catalog routes emit `uploaderLog` events on material failures.",
+      "Maintain consistency with the test patterns and logging conventions established across the rest of the codebase."
+    ],
+    "non_goals": [
+      "Replacing `console.warn` in `CatalogProductImagesFields.client.tsx` — browser-side developer diagnostics; server-side route already logs authoritatively.",
+      "End-to-end or integration test coverage (policy: unit tests only, per `docs/testing-policy.md`).",
+      "Coverage for `apps/xa-b` storefront routes (separate app)."
+    ],
+    "constraints": [
+      "Tests run in CI only — no local `jest` execution.",
+      "`uploaderLogger.ts` uses `console.info/warn/error` as transport — this is the correct pattern for `wrangler tail --format json` and is not a defect.",
+      "Auth-denied and rate-limited branches across all routes intentionally return fast without logging; this is the established pattern and must not change."
+    ],
+    "assumptions": [
+      "The `wrangler tail` JSON-line approach is the agreed production observability mechanism for Cloudflare Workers.",
+      "Test coverage is measured at the route-handler and library level; React component hooks are out of scope."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Pattern alignment",
+        "Why it matters": "Changes must fit existing conventions so future developers can predict where logging and tests live",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Test isolation quality",
+        "Why it matters": "Logger unit tests should catch bugs in the logger itself, not just in its consumers",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Risk surface",
+        "Why it matters": "Changes should not introduce new failure modes, contract changes, or migration risk",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Execution speed",
+        "Why it matters": "Both gaps are small; faster is better given additive-only scope",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Validation seam quality",
+        "Why it matters": "Tests must be assertable without running the full Cloudflare Worker stack",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A1: Direct unit test of `uploaderLogger.ts`",
+        "Description": "Create `apps/xa-uploader/src/lib/__tests__/uploaderLogger.test.ts` with assertions on JSON output, suppression gate, and fallback",
+        "Upside": "Directly validates logger contract; catches event-string typos at source; pure (no external deps); fast to write",
+        "Downside": "None material",
+        "Key risks": "None: the logger has no external dependencies",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "A2: Integration tests via existing route tests",
+        "Description": "Add assertions in existing route test files that verify `uploaderLog` mock call shapes",
+        "Upside": "Reuses existing test context",
+        "Downside": "Indirect — does not test logger internals; suppression gate and fallback path remain untested; scattered across multiple files",
+        "Key risks": "Low coverage of actual logger branches; fallback gap persists",
+        "Viable?": "No — insufficient alone"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "B1: Add `uploaderLog` calls to GET/DELETE error branches (per-branch pattern)",
+        "Description": "Follow the established pattern from `products/route.ts` and `images/route.ts`: import `uploaderLog`, add a call at each material error branch with a structured context object",
+        "Upside": "Identical to pattern in all 7 other routes; no new dependencies; directly closes the observability gap; easy to test via mock assertions in existing test files",
+        "Downside": "None material",
+        "Key risks": "None: the pattern is already proven across 7 routes",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B2: Centralized middleware try/catch wrapper",
+        "Description": "Wrap route handlers in a higher-order error logger that catches all unhandled exceptions and logs them",
+        "Upside": "One location for logging logic",
+        "Downside": "Does not capture recoverable error paths (e.g., `CatalogDraftContractError`) that are caught and returned as 5xx/4xx — those branches would remain unlogged; diverges from all other routes; harder to add to test assertions",
+        "Key risks": "Incomplete coverage of material error paths; inconsistent with established pattern",
+        "Viable?": "No — pattern mismatch and coverage gap"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Implement both Gap A (A1) and Gap B (B1) as two independent, parallel tasks.",
+      "Task 1": "Create `apps/xa-uploader/src/lib/__tests__/uploaderLogger.test.ts` — unit tests for JSON serialization output, `NODE_ENV=test` suppression gate, fallback path for non-serializable context, and level routing (`info`/`warn`/`error`).",
+      "Task 2": "Add `uploaderLog` calls to `products/[slug]/route.ts` GET and DELETE material error branches (contract errors, network/storage failures, revision conflict) — following the established per-branch pattern from other routes. Auth-denied and rate-limited branches do not need logging.",
+      "Why this wins": "Both tasks follow patterns already proven across the codebase. A1 is the only approach that directly tests logger internals (suppression gate and fallback remain unverifiable via integration tests alone). B1 is the only approach that correctly captures recoverable error branches — middleware wrapping (B2) would miss caught errors. Two independent tasks allow parallel execution with no ordering dependency.",
+      "What it depends on": "No external dependencies, no schema changes, no migrations. Both tasks are additive code only."
+    },
+    "rejected_approaches": [
+      "**A2 (integration via route tests)** — does not cover logger internals. Suppression gate and fallback path remain untested. Inferior to a direct unit test.",
+      "**B2 (middleware try/catch wrapper)** — does not capture recoverable error paths that are caught and returned as structured HTTP error responses. Diverges from all 7 other routes. Would leave the most important error branches (contract errors, revision conflicts) still unlogged."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Two IMPLEMENT tasks, independent of each other, can run in parallel."
+      ],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "Tasks are independent — can run in parallel.",
+        "No dependency on any other in-flight plan."
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change — additive test and logging additions only. No multi-step operator workflow, CI lane, deployment approval path, or operator runbook is altered. Both tasks add tests and logging instrumentation to an existing pipeline.",
+      "areas": []
+    }
+  }
+}

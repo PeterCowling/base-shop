@@ -1,12 +1,11 @@
 ---
 Type: Plan
 Status: Archived
-Domain: Platform
+Domain: XA
 Workstream: Engineering
-Created: "2026-03-11"
-Last-reviewed: "2026-03-11"
-Last-updated: "2026-03-11"
-Build-completed: "2026-03-11"
+Created: 2026-03-12
+Last-reviewed: 2026-03-12
+Last-updated: 2026-03-12
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-uploader-test-logging-coverage
 Deliverable-Type: code-change
@@ -14,510 +13,279 @@ Startup-Deliverable-Alias: none
 Execution-Track: code
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
-Overall-confidence: 81%
+Overall-confidence: 91%
 Confidence-Method: min(Implementation,Approach,Impact); overall weighted by effort
 Auto-Build-Intent: plan+auto
-Related-Analysis: none
+Related-Analysis: docs/plans/xa-uploader-test-logging-coverage/analysis.md
 ---
 
-# XA Uploader Test and Logging Coverage Plan
+# XA Uploader Test and Logging Coverage — Residual Gaps Plan
 
 ## Summary
 
-xa-uploader's golden path upload pipeline (edit → save → image upload → publish → sync → deploy) has gaps in both structured logging and test coverage. This plan adds a minimal structured logger utility, instruments server-side golden-path operations, and fills 14 test scenarios covering autosave conflict retry, image cycle, session expiry, unpublish state, currency rates missing, concurrent sync lock, rate limit headers, media validation strict mode, empty sync confirmation, middleware cookie handling, and image reorder/promote operations. All tasks are additive (no behavior changes), CI-only for tests, and safe to revert.
+Two residual gaps remain after the initial wave of xa-uploader observability and test coverage work (completed 2026-03-11). Gap A: `uploaderLogger.ts` has no dedicated unit test — JSON serialization, the `NODE_ENV=test` suppression gate, and the fallback path for non-serializable context are untested. Gap B: `apps/xa-uploader/src/app/api/catalog/products/[slug]/route.ts` has no `uploaderLog` calls on its GET and DELETE material error branches, leaving it as the only one of 8 server routes without structured logging on failure paths.
+
+Both tasks are additive code only (no schema changes, no migrations, no external dependencies), follow patterns already proven across the rest of the codebase, and are fully independent — they run in parallel in Wave 1.
 
 ## Active tasks
-- [x] TASK-01: Add structured logger utility — Complete (2026-03-11)
-- [x] TASK-02: Instrument server-side routes and libs — Complete (2026-03-11)
-- [x] TASK-03: Structured logging for client-side console actions — Complete (2026-03-11)
-- [x] TASK-04: Golden path tests — autosave, image cycle, session, unpublish, currency — Complete (2026-03-11)
-- [x] TASK-05: Sync lock and rate limit branch coverage tests — Complete (2026-03-11)
-- [x] TASK-06: Media validation, empty sync, middleware cookie, image reorder tests — Complete (2026-03-11)
+- [x] TASK-01: Add `uploaderLogger.ts` unit tests — Complete (2026-03-12)
+- [x] TASK-02: Add `uploaderLog` calls to `[slug]/route.ts` error branches + extend route tests — Complete (2026-03-12)
 
 ## Goals
-- Add structured logging across the xa-uploader golden path for production diagnostics
-- Lock down key edit/publish/sync paths against regression with deterministic tests
-- Cover branching failure modes (lock conflict, rate limit, strict validation, empty input) with tests
+
+- Close Gap A: establish a direct, isolated test for `uploaderLogger.ts` covering all branch paths (JSON output shape, suppression gate, fallback, level routing).
+- Close Gap B: add structured logging to the one holdout route (`products/[slug]/route.ts`) so that all 8 server-side catalog routes emit `uploaderLog` events on material failures.
+- Maintain consistency with the test patterns and logging conventions established across the rest of the codebase.
 
 ## Non-goals
-- No behavior changes to existing routes or components
-- No new live Playwright/browser-matrix tests
-- No changes to xa-b or xa-drop-worker
+
+- Replacing `console.warn` in `CatalogProductImagesFields.client.tsx` — browser-side developer diagnostics; server-side route already logs authoritatively.
+- End-to-end or integration test coverage (policy: unit tests only, per `docs/testing-policy.md`).
+- Coverage for `apps/xa-b` storefront routes (separate app).
 
 ## Constraints & Assumptions
+
 - Constraints:
-  - Tests run in CI only (testing-policy.md) — no local test execution
-  - Logger must be Cloudflare Workers compatible (no Node-only APIs in server logger)
-  - Client-side code (catalogConsoleActions.ts) runs in browser — use structured console.log pattern, not Node logger
-  - No external logging dependencies (wrangler tail is the target output for structured logs)
+  - Tests run in CI only — no local `jest` execution.
+  - `uploaderLogger.ts` uses `console.info/warn/error` as transport — this is the correct pattern for `wrangler tail --format json` and is not a defect.
+  - Auth-denied and rate-limited branches across all routes intentionally return fast without logging; this is the established pattern and must not change.
 - Assumptions:
-  - Existing Jest mock patterns in xa-uploader test suite are correct and representative
-  - `acquireCloudSyncLock` returning `{ status: "busy" }` is the correct mock for lock-held scenario (confirmed in sync route source)
-  - `withRateHeaders` sets X-RateLimit-Limit/Remaining/Reset headers (confirmed in rateLimit.ts)
-  - `applyCloudMediaExistenceValidation` strict mode with too-many-keys returns 400 (confirmed in catalogCloudPublish.ts)
+  - The `wrangler tail` JSON-line approach is the agreed production observability mechanism for Cloudflare Workers.
+  - Test coverage is measured at the route-handler and library level; React component hooks are out of scope.
 
 ## Inherited Outcome Contract
 
-- **Why:** Operator-stated: the XA upload golden path has no structured logging and key paths are untested, making production failures invisible and regressions undetectable.
+- **Why:** The upload pipeline is the sole path for product data entering the XA storefront. Regressions silently affecting save, publish, or image upload create data loss risk. Absent logging means failures are invisible in production until a user reports them.
 - **Intended Outcome Type:** operational
-- **Intended Outcome Statement:** xa-uploader golden path emits structured log events for production diagnosis, and 14 deterministic test scenarios prevent silent regression across the core upload pipeline.
-- **Source:** operator
+- **Intended Outcome Statement:** All critical upload pipeline routes and the `handleSaveImpl` action have automated test coverage; 7 of 8 server routes already emit structured `uploaderLog` JSON events on material failure paths (contract errors, R2 failures, sync failures, auth anomalies); the remaining gap (`products/[slug]/route.ts` GET/DELETE failure paths) and the missing `uploaderLogger.ts` unit test are addressed. Note: auth-denied and rate-limited branches across all routes intentionally return fast responses without logging — this is the established pattern and is not a gap.
+- **Source:** auto
 
 ## Analysis Reference
-- Related analysis: none — micro_build_ready dispatch packets (IDEA-DISPATCH-20260311153000-0001/0002/0003); scope fully defined from direct code exploration
+
+- Related analysis: `docs/plans/xa-uploader-test-logging-coverage/analysis.md`
 - Selected approach inherited:
-  - Add minimal `uploaderLogger` utility (structured JSON-line console.log wrapper)
-  - Instrument server-side routes and libs at start/success/error call sites
-  - Add tests using established mock patterns from existing xa-uploader test suite
+  - Gap A: A1 — direct unit test of `uploaderLogger.ts` in `apps/xa-uploader/src/lib/__tests__/uploaderLogger.test.ts`
+  - Gap B: B1 — per-branch `uploaderLog` calls in `products/[slug]/route.ts` following the established pattern from all 7 other routes
 - Key reasoning used:
-  - No external logging deps keeps Cloudflare Workers compatibility and zero bundle impact
-  - All tests use jest.fn() mock patterns confirmed in existing sync/publish/products test files
+  - A1 is the only approach that directly tests logger internals (suppression gate and fallback remain unverifiable via integration tests alone)
+  - B1 correctly captures recoverable error branches — middleware wrapping (B2) would miss caught errors (e.g., `CatalogDraftContractError`) returned as structured HTTP error responses
+  - Both tasks are additive and follow patterns already proven across the codebase
 
 ## Selected Approach Summary
-- What was chosen:
-  - Structured logging: `uploaderLogger.ts` wrapping `console.log(JSON.stringify({level, event, ts, ...context}))` — workers-compatible, no deps
-  - Tests: extend existing test files where tests exist; create new test files where none exists
-- Why planning is not reopening option selection:
-  - Scope is fully defined from direct code exploration
-  - No architectural decision needed; all tasks are additive code additions
+
+- What was chosen: Two parallel IMPLEMENT tasks — logger unit tests (TASK-01) and slug route logging + test extension (TASK-02).
+- Why planning is not reopening option selection: Analysis fully resolved the option set (A1/B1 vs A2/B2). No new information from source inspection changes the recommendation. The slug route source confirms 3 material error branches needing `uploaderLog` calls (GET general catch, DELETE conflict catch, DELETE general catch). The existing `route.test.ts` and `route.branches.test.ts` confirm the mock pattern to follow for extending with `uploaderLog` assertions.
 
 ## Fact-Find Support
-- Supporting brief: None — operator-provided spec from direct exploration session
+
+- Supporting brief: `docs/plans/xa-uploader-test-logging-coverage/fact-find.md`
 - Evidence carried forward:
-  - Sync route: `acquireCloudSyncLock` returns `{ status: "busy" }` → route returns HTTP 409 `{error: "conflict", reason: "sync_already_running"}`
-  - Sync route: empty publishable products + no confirmEmptyInput → HTTP 409 `{error: "no_publishable_products", requiresConfirmation: true}`
-  - rateLimit.ts: `withRateHeaders` sets X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset; adds Retry-After when not allowed
-  - catalogCloudPublish.ts: strict mode + keys > CLOUD_MEDIA_HEAD_MAX_KEYS → HTTP 400; strict mode + bucket null → HTTP 400
-  - middleware.ts + uploaderAuth.ts: invalid/missing session cookie → redirect to login
+  - `uploaderLogger.ts` suppression gate at line 30: `if (process.env.NODE_ENV === "test") return;`
+  - Fallback path at lines 41–49: outer `try/catch` on `JSON.stringify(record)`, inner fallback emits minimal `{level, event, ts}` record
+  - `consoleFn` map at lines 3–7 routes `info/warn/error` levels to the correct `console.*` method
+  - `[slug]/route.ts` import path to `uploaderLogger` (from route file): `"../../../../../lib/uploaderLogger"`
+  - `[slug]/__tests__/` import path to `uploaderLogger` (for jest.mock): `"../../../../../../lib/uploaderLogger"`
+  - Both existing test files (`route.test.ts`, `route.branches.test.ts`) use `jest.mock(...)` + `await import("../route")` dynamic import pattern
+  - Scout finding: `slug` variable is inside the `try` block in the GET handler (line 47) and not in scope at the catch site — GET error log will use minimal context `{ error: String(error) }`; `slug` IS in scope at DELETE catch (declared at line 102 outside try)
 
 ## Plan Gates
-- Foundation Gate: Pass
-- Sequenced: Yes
-- Edge-case review complete: Yes
+
+- Foundation Gate: Pass — no design spec required (backend-only change); all dependencies are internal; no architecture decisions open; outcome contract inherited and accurate
+- Sequenced: Yes — Wave 1 parallelism confirmed; no ordering dependency between tasks
+- Edge-case review complete: Yes — fallback path test seam confirmed; `String(err)` PII review noted as code-review gate; `unconfigured` contract error branches intentionally not logged
 - Auto-build eligible: Yes
 
 ## Task Summary
+
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Add structured logger utility | 85% | S | Complete (2026-03-11) | - | TASK-02, TASK-03 |
-| TASK-02 | IMPLEMENT | Instrument server-side routes and libs | 80% | S | Complete (2026-03-11) | TASK-01 | - |
-| TASK-03 | IMPLEMENT | Structured logging for client console actions | 80% | S | Complete (2026-03-11) | TASK-01 | - |
-| TASK-04 | IMPLEMENT | Golden path tests — autosave, image, session, unpublish, currency | 80% | S | Complete (2026-03-11) | - | - |
-| TASK-05 | IMPLEMENT | Sync lock and rate limit branch coverage tests | 80% | S | Complete (2026-03-11) | - | - |
-| TASK-06 | IMPLEMENT | Media validation, empty sync, middleware, image reorder tests | 80% | S | Complete (2026-03-11) | - | - |
+| TASK-01 | IMPLEMENT | Create `uploaderLogger.test.ts` — unit tests for JSON shape, suppression gate, fallback, level routing | 92% | S | Complete (2026-03-12) | - | - |
+| TASK-02 | IMPLEMENT | Add `uploaderLog` to `[slug]/route.ts` error branches + extend route tests with mock assertions | 90% | S | Complete (2026-03-12) | - | - |
 
 ## Engineering Coverage
+
 | Coverage Area | Planned handling | Tasks covering it | Notes |
 |---|---|---|---|
-| UI / visual | N/A — no visual changes | - | All changes are server-side code and test files |
-| UX / states | Required — tests cover conflict, lock, session expiry, unpublish, empty sync | TASK-04, TASK-05, TASK-06 | Deterministic test assertions; no UI component changes |
-| Security / privacy | N/A — logger masks hookUrl; no new auth surface | - | deployhook URL is not logged verbatim; only masked form |
-| Logging / observability / audit | Required — structured logger added to golden path | TASK-01, TASK-02, TASK-03 | wrangler tail is the target output |
-| Testing / validation | Required — 14 new test scenarios | TASK-04, TASK-05, TASK-06 | CI-only per testing-policy.md |
-| Data / contracts | N/A — no schema or API contract changes | - | Logging is additive; tests assert existing contracts |
-| Performance / reliability | Required — tests cover concurrency (sync lock), rate limiting | TASK-05 | No performance-sensitive changes |
-| Rollout / rollback | N/A — additive changes only | - | Logging additions and tests can be reverted safely |
+| UI / visual | N/A — no visual changes | - | Logger and route error paths have no UI surface |
+| UX / states | N/A — no user-facing flow changes | - | No change to HTTP response shapes or client behaviour |
+| Security / privacy | Code-review gate: `String(err)` values in log context must be safe primitives; current error types carry no user PII — confirmed by source review | TASK-02 | Residual risk documented; not a blocker |
+| Logging / observability / audit | TASK-01 tests logger internals; TASK-02 closes the last route gap so all 8 server routes emit structured events on material failures | TASK-01, TASK-02 | After both tasks land: full structured logging coverage across all 8 server routes |
+| Testing / validation | TASK-01 creates dedicated logger unit test; TASK-02 extends existing slug route tests with `uploaderLog` mock assertions | TASK-01, TASK-02 | Follows established Jest dynamic-import mock pattern throughout |
+| Data / contracts | `uploaderLog` signature `(level, event, context?)` unchanged; no schema changes | - | No contract change; additive only |
+| Performance / reliability | No runtime path change for tests; logging is synchronous JSON serialization — negligible cost on Cloudflare Workers | - | No performance implication |
+| Rollout / rollback | Additive code only; rollback = revert; no migration, no flag, no deploy ordering dependency | - | Rollback is trivial for both tasks |
 
 ## Parallelism Guide
+
 | Wave | Tasks | Prerequisites | Notes |
 |---|---|---|---|
-| 1 | TASK-01 | - | Logger utility must exist before instrumentation tasks |
-| 2 | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 | TASK-01 (only for TASK-02/03) | TASK-04/05/06 can run in parallel with TASK-02/03 |
+| 1 | TASK-01, TASK-02 | - | Fully independent; run in parallel |
+
+## Delivered Processes
+
+None: no material process topology change — additive test and logging additions only. No multi-step operator workflow, CI lane, deployment approval path, or operator runbook is altered. Both tasks add tests and logging instrumentation to an existing pipeline.
 
 ## Tasks
 
 ---
 
-### TASK-01: Add structured logger utility
+### TASK-01: Create `uploaderLogger.ts` unit tests
+
 - **Type:** IMPLEMENT
-- **Deliverable:** New file `apps/xa-uploader/src/lib/uploaderLogger.ts`
+- **Deliverable:** New test file `apps/xa-uploader/src/lib/__tests__/uploaderLogger.test.ts`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Complete (2026-03-11)
-- **Affects:** `apps/xa-uploader/src/lib/uploaderLogger.ts` (new)
+- **Status:** Pending
+- **Affects:** `apps/xa-uploader/src/lib/__tests__/uploaderLogger.test.ts` (new), `[readonly] apps/xa-uploader/src/lib/uploaderLogger.ts`
 - **Depends on:** -
-- **Blocks:** TASK-02, TASK-03
-- **Confidence:** 85%
-  - Implementation: 90% — trivial utility, confirmed no external deps needed, workers-compatible
-  - Approach: 90% — structured JSON console.log is the established pattern for Cloudflare Workers logging
-  - Impact: 85% — enables all downstream instrumentation; additive only
-- **Acceptance:**
-  - `uploaderLogger.ts` exports `log(level: "info" | "warn" | "error", event: string, context?: Record<string, unknown>): void`
-  - Output format: `console.log(JSON.stringify({ level, event, ts: new Date().toISOString(), ...context }))`
-  - Works in both Node.js (server routes) and browser (no runtime check needed — console.log is universal)
-  - No external dependencies imported
-  - Passes typecheck: `pnpm --filter @apps/xa-uploader typecheck`
-- **Engineering Coverage:**
-  - UI / visual: N/A — new utility file, no UI surface
-  - UX / states: N/A — no user-facing behavior
-  - Security / privacy: N/A — no sensitive data in utility itself; callers responsible for not logging secrets
-  - Logging / observability / audit: Required — this IS the logging utility
-  - Testing / validation: N/A — S-effort utility; typecheck + lint sufficient; no behavioral branches to test
-  - Data / contracts: N/A — no data schema
-  - Performance / reliability: N/A — `console.log` is synchronous and zero-allocation aside from JSON.stringify
-  - Rollout / rollback: N/A — additive file; safe to delete
-- **Validation contract (TC-01):**
-  - TC-01: `log("info", "upload_start", { storefront: "xa" })` → emits valid JSON string with `level`, `event`, `ts`, `storefront` fields to console.log
-  - TC-02: `log("error", "upload_failed")` (no context) → emits valid JSON with `level`, `event`, `ts` only
-- **Execution plan:** Create `uploaderLogger.ts` with the three-field `log` function → verify typecheck passes
-- **Planning validation (required for M/L):** None — S effort
-- **Scouts:** None — utility is trivial, no external API calls
-- **Edge Cases & Hardening:** log() must not throw even if context is not JSON-serializable; add `try { ... } catch { console.log(JSON.stringify({level, event, ts})) }` fallback
-- **What would make this >=90%:** Already at 85-90 on implementation/approach; impact capped at 85 because we don't verify wrangler tail display until a live test.
-- **Rollout / rollback:**
-  - Rollout: Deploy with any xa-uploader release; no feature flag needed
-  - Rollback: Delete the file; remove import sites in TASK-02/03
-- **Documentation impact:** None — internal utility
-- **Notes / references:**
-  - Cloudflare Workers: `console.log` output is captured by `wrangler tail --format json`; structured JSON is parseable
-  - Dispatch: IDEA-DISPATCH-20260311153000-0001
-
----
-
-### TASK-02: Instrument server-side routes and libs
-- **Type:** IMPLEMENT
-- **Deliverable:** Updated files: `apps/xa-uploader/src/app/api/catalog/images/route.ts`, `apps/xa-uploader/src/app/api/catalog/publish/route.ts`, `apps/xa-uploader/src/lib/deployHook.ts`, `apps/xa-uploader/src/lib/catalogDraftContractClient.ts`
-- **Execution-Skill:** lp-do-build
-- **Execution-Track:** code
-- **Startup-Deliverable-Alias:** none
-- **Effort:** S
-- **Status:** Complete (2026-03-11)
-- **Affects:**
-  - `apps/xa-uploader/src/app/api/catalog/images/route.ts`
-  - `apps/xa-uploader/src/app/api/catalog/publish/route.ts`
-  - `apps/xa-uploader/src/lib/deployHook.ts`
-  - `apps/xa-uploader/src/lib/catalogDraftContractClient.ts`
-  - `[readonly] apps/xa-uploader/src/lib/uploaderLogger.ts`
-- **Depends on:** TASK-01
 - **Blocks:** -
-- **Confidence:** 80%
-  - Implementation: 85% — call-site additions confirmed from source reading; straightforward import + call pattern
-  - Approach: 85% — established pattern; uploaderLogger already defined in TASK-01
-  - Impact: 80% — adds production diagnostics for 4 key modules
-  - Held-back test for impact=80: No single unresolved unknown would drop impact below 80 because logs are additive and don't change any existing behavior.
+- **Confidence:** 92%
+  - Implementation: 92% — `uploaderLogger.ts` is pure (no external deps); all branch paths are visible from source; suppression gate is a simple `process.env.NODE_ENV === "test"` check; fallback is triggered by `JSON.stringify` throwing on a circular reference
+  - Approach: 95% — direct unit test is the only approach that validates logger internals; no ambiguity in test seam selection
+  - Impact: 90% — closes the gap where the fallback path (lines 41–49) and suppression gate are untested; any future logger regression is caught at source
 - **Acceptance:**
-  - images/route.ts: logs `upload_start` (storefront, slug, contentType, bytes), `upload_success` (storefront, key, bytes), `upload_failed` (storefront, errorCode)
-  - publish/route.ts: logs `publish_start` (storefront), `publish_complete` (storefront, durationMs, publishState), `publish_error` (storefront, reason)
-  - deployHook.ts: logs `deploy_hook_triggered` (storefront), `deploy_hook_failed` (storefront, reason, httpStatus, attempt), `deploy_hook_retry` (attempt, delayMs), `deploy_hook_exhausted` (storefront, attempts)
-  - catalogDraftContractClient.ts: logs `sync_lock_failed` (storefront, code), `read_snapshot_error` (storefront, code), `write_snapshot_error` (storefront)
-  - All log calls use `uploaderLogger.log(...)` — no raw `console.log` replaced in these files (additive only)
-  - hookUrl is NOT logged verbatim in deployHook.ts (omit or log only the hostname)
-  - Passes typecheck and lint
+  - TC-LOG-01 passes: `uploaderLog("info", ...)` in a non-test environment writes a JSON-parseable line to stdout with the shape `{ level: "info", event, ts, ...context }`
+  - TC-LOG-02 passes: when `NODE_ENV=test`, `uploaderLog(...)` emits nothing (no console call)
+  - TC-LOG-03 passes: a circular-reference context object triggers the fallback — the function does not throw; a minimal `{level, event, ts}` record is emitted
+  - TC-LOG-04 passes: `uploaderLog("warn", ...)` and `uploaderLog("error", ...)` call `console.warn` and `console.error` respectively, not `console.info`
+  - `pnpm typecheck && pnpm lint` pass (CI gate)
 - **Engineering Coverage:**
-  - UI / visual: N/A — server-side files only
-  - UX / states: N/A — logging calls don't affect response behavior
-  - Security / privacy: Required — hookUrl must not be logged verbatim (omit or log masked form)
-  - Logging / observability / audit: Required — this IS the instrumentation
-  - Testing / validation: N/A — logging calls are additive; existing route tests continue passing (no behavior change)
-  - Data / contracts: N/A — no schema changes
-  - Performance / reliability: N/A — console.log is synchronous; no hot-path concern for infrequent ops
-  - Rollout / rollback: N/A — additive import + log calls
-- **Validation contract (TC-02):**
-  - TC-01: After change, `pnpm --filter @apps/xa-uploader typecheck` passes
-  - TC-02: After change, `pnpm --filter @apps/xa-uploader lint` passes
-  - TC-03: No existing test assertions broken (tests mock these modules; log calls don't affect mock return values)
-- **Execution plan:** Import `uploaderLogger` in each file → add log calls at documented call sites → typecheck + lint
-- **Planning validation (required for M/L):** None — S effort
-- **Scouts:**
-  - deployHook.ts: `maybeTriggerXaBDeploy` function — confirmed log sites: line ~624 (triggered), ~642 (failed), ~653 (exhausted), retry inside loop
-  - images/route.ts: confirmed session check + r2 upload path — log sites: after rate limit pass, before/after `bucket.put()`, in error branches
-  - catalogDraftContractClient.ts: `acquireCloudSyncLock` and `readCloudDraftSnapshot` are the key functions
-- **Edge Cases & Hardening:**
-  - Do not log inside test environment (existing pattern: `if (process.env.NODE_ENV !== "test") { console.error(...) }` already present in sync route) — follow same pattern for structured logs to avoid polluting test output
-- **What would make this >=90%:** Test assertions on log output (would require spy on console.log); deferred to post-build if needed.
+  - UI / visual: N/A — no visual component
+  - UX / states: N/A — no user-facing state
+  - Security / privacy: N/A — test file only; no log context fields added
+  - Logging / observability / audit: Required — directly validates the logger's own output contract (JSON shape, suppression, fallback, level routing)
+  - Testing / validation: Required — four test cases covering all branch paths in `uploaderLogger.ts`
+  - Data / contracts: N/A — `uploaderLog` signature unchanged; test file does not alter the module
+  - Performance / reliability: N/A — no runtime path change
+  - Rollout / rollback: N/A — test file only; rollback = revert
+- **Validation contract:**
+  - TC-LOG-01: Set `NODE_ENV` to non-`"test"` value; spy on `console.info`; call `uploaderLog("info", "test_event", { key: "value" })`; assert spy called once with a string that `JSON.parse`s to `{ level: "info", event: "test_event", key: "value" }` plus `ts` field matching ISO 8601
+  - TC-LOG-02: Set `NODE_ENV = "test"`; spy on `console.info/warn/error`; call `uploaderLog("info", "test_event")`; assert no spy was called
+  - TC-LOG-03: Set `NODE_ENV` to non-`"test"`; spy on `console.info`; build a circular object (`const obj: Record<string, unknown> = {}; obj.self = obj`); call `uploaderLog("info", "fallback_test", obj)`; assert spy called once; assert the emitted string is valid JSON containing `{ level: "info", event: "fallback_test" }` but NOT the circular key
+  - TC-LOG-04: Spy on `console.warn` and `console.error`; call `uploaderLog("warn", "warn_event")`; assert `console.warn` called; call `uploaderLog("error", "error_event")`; assert `console.error` called; assert `console.info` not called for either
+- **Execution plan:** Red → Green → Refactor — create test file with four TC blocks, fill each assertion in order
+- **Planning validation (required for M/L):** N/A — S effort
+- **Scouts:** The suppression gate check (`process.env.NODE_ENV === "test"`) means the test must temporarily override `NODE_ENV` for non-suppression test cases. Pattern: save `originalNodeEnv = process.env.NODE_ENV`, set to `"production"` in `beforeEach`, restore in `afterEach`.
+- **Edge Cases & Hardening:** Circular-reference test (TC-LOG-03) uses `const obj: Record<string, unknown> = {}; obj.self = obj` — standard circular reference pattern that reliably causes `JSON.stringify` to throw. The inner double-fallback (no-op) is not independently tested as it cannot be reached with the minimal `{level, event, ts}` record structure.
+- **What would make this >=95%:** CI run confirming all 4 tests green.
 - **Rollout / rollback:**
-  - Rollout: Deploy with normal xa-uploader release
-  - Rollback: Remove log import lines; no state change
-- **Documentation impact:** None
+  - Rollout: Additive new test file; merged alongside TASK-02 (order irrelevant).
+  - Rollback: `git revert` of the commit adding the test file; no production impact.
+- **Documentation impact:** None — no public API change.
 - **Notes / references:**
-  - Existing pattern in sync route (line 222): `if (process.env.NODE_ENV !== "test") { console.error(...) }` — follow this for structured logs
-  - Dispatch: IDEA-DISPATCH-20260311153000-0001
+  - Logger source: `apps/xa-uploader/src/lib/uploaderLogger.ts`
+  - Suppression gate: line 30; Fallback path: lines 41–49
+  - Mock pattern reference: `apps/xa-uploader/src/lib/__tests__/accessControl.test.ts`
 
 ---
 
-### TASK-03: Structured logging for client-side console actions
+### TASK-02: Add `uploaderLog` to `[slug]/route.ts` error branches + extend route tests
+
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated file `apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts`
+- **Deliverable:** Modified `apps/xa-uploader/src/app/api/catalog/products/[slug]/route.ts`; extended `apps/xa-uploader/src/app/api/catalog/products/[slug]/__tests__/route.test.ts`
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Complete (2026-03-11)
+- **Status:** Pending
 - **Affects:**
-  - `apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts`
-  - `[readonly] apps/xa-uploader/src/lib/uploaderLogger.ts`
-- **Depends on:** TASK-01
-- **Blocks:** -
-- **Confidence:** 80%
-  - Implementation: 85% — confirmed call sites in saveDraft/saveProduct functions; browser-safe pattern
-  - Approach: 85% — console.log with structured args is browser-compatible
-  - Impact: 80% — adds edit/save diagnostics visible in browser devtools and (if SSR) server logs
-  - Held-back test: No single unknown drops below 80; this is an additive console.log call.
-- **Acceptance:**
-  - saveDraft / saveProduct: logs `product_save_start` (slug), `product_save_conflict` (slug), `product_save_success` (slug, revision), `product_save_error` (slug, error reason)
-  - Uses `uploaderLogger.log(...)` (same utility — console.log works in browser context)
-  - No behavioral change; `SaveResult` return values unchanged
-  - Passes typecheck and lint
-- **Engineering Coverage:**
-  - UI / visual: N/A — no rendering change
-  - UX / states: N/A — logging only; save result types unchanged
-  - Security / privacy: N/A — slug is not sensitive; no session tokens or user data logged
-  - Logging / observability / audit: Required — adds save-path diagnostics
-  - Testing / validation: N/A — additive; existing tests not affected
-  - Data / contracts: N/A — no contract change
-  - Performance / reliability: N/A — console.log in browser is negligible
-  - Rollout / rollback: N/A — additive import + log calls
-- **Validation contract (TC-03):**
-  - TC-01: `pnpm --filter @apps/xa-uploader typecheck` passes
-  - TC-02: `pnpm --filter @apps/xa-uploader lint` passes
-- **Execution plan:** Add log calls at `product_save_start`, conflict branch, success branch, error branch → typecheck + lint
-- **Planning validation (required for M/L):** None — S effort
-- **Scouts:**
-  - `saveDraft` function in catalogConsoleActions.ts uses `useCatalogConsole.client.ts` — confirmed this is a client component
-  - SaveResult type confirmed: `"saved" | "busy" | "validation_error" | "conflict" | "cancelled" | "error"`
-- **Edge Cases & Hardening:** Only log in non-test environment (`NODE_ENV !== "test"`) to avoid test output pollution
-- **What would make this >=90%:** Same as TASK-02 — spy on console.log in tests.
-- **Rollout / rollback:**
-  - Rollout: Normal release
-  - Rollback: Remove log calls
-- **Documentation impact:** None
-- **Notes / references:**
-  - Dispatch: IDEA-DISPATCH-20260311153000-0001
-
----
-
-### TASK-04: Golden path tests — autosave conflict, image cycle, session expiry, unpublish, currency rates
-- **Type:** IMPLEMENT
-- **Deliverable:** New/extended test files in `apps/xa-uploader/src/`
-- **Execution-Skill:** lp-do-build
-- **Execution-Track:** code
-- **Startup-Deliverable-Alias:** none
-- **Effort:** S
-- **Status:** Complete (2026-03-11)
-- **Affects:**
-  - `apps/xa-uploader/src/components/catalog/__tests__/catalogConsoleActions.test.ts` (new)
+  - `apps/xa-uploader/src/app/api/catalog/products/[slug]/route.ts`
   - `apps/xa-uploader/src/app/api/catalog/products/[slug]/__tests__/route.test.ts`
-  - `apps/xa-uploader/src/app/api/catalog/publish/__tests__/route.publish.test.ts`
-  - `apps/xa-uploader/src/app/api/catalog/currency-rates/__tests__/route.test.ts`
+  - `[readonly] apps/xa-uploader/src/lib/uploaderLogger.ts`
+  - `[readonly] apps/xa-uploader/src/lib/catalogDraftContractClient.ts`
 - **Depends on:** -
 - **Blocks:** -
-- **Confidence:** 80%
-  - Implementation: 85% — mock patterns confirmed in existing sync/publish tests; route behavior confirmed from source
-  - Approach: 85% — Jest mock pattern with jest.fn() mocks is established throughout the codebase
-  - Impact: 80% — prevents silent regression on autosave conflict, image cycle, session, unpublish, currency paths
-  - Held-back test for impact=80: No single unknown drops below 80 because mock patterns are directly confirmed and route behavior is deterministic.
+- **Confidence:** 90%
+  - Implementation: 90% — the import path, error branch locations, and logging pattern are all confirmed from source. Three branches needing logging identified: (1) GET general catch (lines 63–74), (2) DELETE `conflict` catch (lines 127–135), (3) DELETE general catch (lines 136–143). Scout finding: `slug` is declared inside the GET `try` block (line 47) — not in scope at catch; use minimal context `{ error: String(error) }` for GET error log.
+  - Approach: 95% — per-branch pattern is identical to all 7 other routes; no ambiguity
+  - Impact: 88% — closes the last route observability gap; DELETE failure events are now visible in `wrangler tail` output
 - **Acceptance:**
-  - **B1 (autosave conflict):** `mergeAutosaveImageTuples` test in `catalogConsoleActions.test.ts` covers: local image added + server baseline has older image → merged result contains both; deleted image removed from merged result
-  - **B2 (image cycle):** `mergeAutosaveImageTuples` covers: upload → imageFiles includes new path; remove → imageFiles excludes removed path
-  - **B3 (session expiry):** `[slug]/route.test.ts` has a test: missing session cookie → PUT /products/[slug] → HTTP 401/404 (per route behavior: returns 404 when unauthenticated)
-  - **B4 (unpublish):** `route.publish.test.ts` has a test: POST /publish with publishState absent or `"draft"` → appropriate route response (either accepted or rejected based on actual route behavior)
-  - **B5 (currency rates missing):** `currency-rates/route.test.ts` has a test: currency rates source returns null/empty → route returns appropriate response
-  - All tests follow existing file mock patterns
-  - `pnpm --filter @apps/xa-uploader typecheck` and lint pass
+  - `uploaderLog` is imported in `[slug]/route.ts` from `"../../../../../lib/uploaderLogger"`
+  - GET catch block emits `uploaderLog("error", "catalog_slug_get_error", { error: String(error) })`
+  - DELETE `conflict` catch block emits `uploaderLog("warn", "catalog_slug_delete_conflict", { slug })`
+  - DELETE general catch block emits `uploaderLog("error", "catalog_slug_delete_error", { slug, error: String(error) })`
+  - `unconfigured` contract error branches (GET and DELETE) do NOT add logging — fast-fail paths per the established pattern
+  - Rate-limited and auth-denied branches do NOT add logging — established pattern, must not change
+  - TC-SLUG-01 passes: GET with general error → `uploaderLog("error", "catalog_slug_get_error")` called
+  - TC-SLUG-02 passes: DELETE with general error → `uploaderLog("error", "catalog_slug_delete_error")` called with `slug`
+  - TC-SLUG-03 passes: DELETE with revision conflict → `uploaderLog("warn", "catalog_slug_delete_conflict")` called with `slug`
+  - TC-SLUG-NONE passes: `unconfigured` contract error in GET → `uploaderLog` NOT called
+  - `pnpm typecheck && pnpm lint` pass (CI gate)
 - **Engineering Coverage:**
-  - UI / visual: N/A — test files only
-  - UX / states: Required — tests assert behavior for conflict, expiry, unpublish, missing rates states
-  - Security / privacy: N/A — tests mock session; no live auth
-  - Logging / observability / audit: N/A — tests don't assert log output
-  - Testing / validation: Required — 5 new test scenarios
-  - Data / contracts: N/A — tests use existing mock data shapes
-  - Performance / reliability: N/A — unit tests; no performance concern
-  - Rollout / rollback: N/A — test additions are safe to revert
-- **Validation contract (TC-04):**
-  - TC-01: `mergeAutosaveImageTuples` — local adds image → merged includes it
-  - TC-02: `mergeAutosaveImageTuples` — local removes image vs baseline → merged excludes it
-  - TC-03: PUT /products/[slug] without session → HTTP 404
-  - TC-04: Currency rates route with null source → response handled without 500
-  - TC-05: Publish route — test verifies expected behavior for draft→live or live→draft transition
-- **Execution plan:** Create `catalogConsoleActions.test.ts` with `mergeAutosaveImageTuples` tests; extend `[slug]/route.test.ts` with missing-session test; extend `route.publish.test.ts` with state transition test; extend `currency-rates/route.test.ts` with null-rates test → typecheck + lint
-- **Planning validation (required for M/L):** None — S effort
+  - UI / visual: N/A — no visual component
+  - UX / states: N/A — no change to HTTP response shapes; error responses unchanged
+  - Security / privacy: Required — `String(error)` in log context: `CatalogDraftContractError` and generic network error messages in this route carry no user PII or credentials (confirmed by source review). Code-review gate: ensure context values are safe primitives.
+  - Logging / observability / audit: Required — closes the last route observability gap; GET/DELETE material errors now emit structured `uploaderLog` JSON events; all 8 server routes fully instrumented
+  - Testing / validation: Required — three new TC assertions added to `route.test.ts` verifying `uploaderLog` mock is called with correct level and event at each material error branch; one negative assertion for `unconfigured` fast-fail
+  - Data / contracts: N/A — `uploaderLog` signature unchanged; HTTP response shapes unchanged
+  - Performance / reliability: N/A — synchronous JSON serialization; negligible cost; no hot path affected
+  - Rollout / rollback: N/A — additive logging; rollback = revert; no migration, no flag
+- **Validation contract:**
+  - TC-SLUG-01: Add `mockUploaderLog` jest.fn() + `jest.mock("../../../../../../lib/uploaderLogger", ...)` to `route.test.ts`; mock `readCloudDraftSnapshot` to throw a generic `Error("network_failure")`; call GET; assert `mockUploaderLog` called with `("error", "catalog_slug_get_error", expect.objectContaining({ error: expect.any(String) }))`; assert response status 500
+  - TC-SLUG-02: Mock `writeCloudDraftSnapshot` to throw a generic `Error("network_failure")`; call DELETE; assert `mockUploaderLog` called with `("error", "catalog_slug_delete_error", expect.objectContaining({ slug: "studio-jacket" }))`; assert response status 500
+  - TC-SLUG-03: Mock `writeCloudDraftSnapshot` to throw `CatalogDraftContractErrorMock("conflict")`; call DELETE; assert `mockUploaderLog` called with `("warn", "catalog_slug_delete_conflict", expect.objectContaining({ slug: "studio-jacket" }))`; assert response status 409
+  - TC-SLUG-NONE: Mock `readCloudDraftSnapshot` to throw `CatalogDraftContractErrorMock("unconfigured")`; call GET; assert `mockUploaderLog` NOT called
+- **Execution plan:** Red → Green → Refactor — add `uploaderLog` import + 3 calls to route file; extend `route.test.ts` with `uploaderLogger` mock and 3 TC assertions + 1 negative assert
+- **Planning validation (required for M/L):** N/A — S effort
 - **Scouts:**
-  - Confirmed: `[slug]/route.test.ts` already has mock structure for `hasUploaderSession` → can add unauthenticated case
-  - Confirmed: `route.publish.test.ts` has `hasUploaderSessionMock` and `publishCatalogPayloadToContractMock` → can extend
-  - Confirmed: `currency-rates/route.test.ts` exists for extension
-  - Note: B4 (unpublish) requires reading the publish route more carefully to understand what publishState values are accepted — execution agent should read `publish/route.ts` before writing the test
-- **Edge Cases & Hardening:**
-  - `mergeAutosaveImageTuples` is a pure function with no mocks needed — straightforward unit test
-  - Publish route may not currently accept publishState transitions (may be handled elsewhere) — execution agent must read the route before asserting behavior
-- **What would make this >=90%:** Adding integration-style tests that exercise the full route handler (rather than pure function tests). Deferred — pure function + route mock tests are appropriate for S effort.
+  - `slug` variable scope in GET handler — declared inside `try` block at line 47; not in scope at catch. Use minimal context `{ error: String(error) }` for GET error log.
+  - `slug` variable scope in DELETE handler — declared outside try block at line 102; IS in scope at catch. Use `{ slug, error: String(error) }` for DELETE error log.
+  - `unconfigured` branches: both GET and DELETE already return `catalogContractUnavailableResponse()` fast-fail — these do not add logging (established pattern).
+- **Edge Cases & Hardening:** `conflict` branch in DELETE receives a `CatalogDraftContractError` with `code === "conflict"` — this is a `warn` (not `error`) consistent with optimistic-lock failure semantics used in other routes.
+- **What would make this >=95%:** CI run confirming all 3 TC assertions and 1 negative assert green.
 - **Rollout / rollback:**
-  - Rollout: Tests are CI-only; no deploy impact
-  - Rollback: Delete new test file; revert extended test files
-- **Documentation impact:** None
+  - Rollout: Additive changes to route and test files; no deploy ordering dependency.
+  - Rollback: `git revert`; no production impact beyond loss of structured log events.
+- **Documentation impact:** None — no public API change. New event strings (`catalog_slug_get_error`, `catalog_slug_delete_error`, `catalog_slug_delete_conflict`) are self-documenting.
 - **Notes / references:**
-  - Dispatch: IDEA-DISPATCH-20260311153000-0002
-  - `mergeAutosaveImageTuples` is in `catalogConsoleActions.ts` lines 72-113 — exported and pure, easy to unit test without mocks
+  - Route source: `apps/xa-uploader/src/app/api/catalog/products/[slug]/route.ts`
+  - GET catch at lines 63–74; DELETE catch at lines 123–143
+  - Existing test: `apps/xa-uploader/src/app/api/catalog/products/[slug]/__tests__/route.test.ts`
+  - Import path from route to logger: `"../../../../../lib/uploaderLogger"`
+  - Import path from `__tests__/` to logger (for jest.mock): `"../../../../../../lib/uploaderLogger"`
 
 ---
-
-### TASK-05: Sync lock and rate limit branch coverage tests
-- **Type:** IMPLEMENT
-- **Deliverable:** Extended test files for sync route and rateLimit
-- **Execution-Skill:** lp-do-build
-- **Execution-Track:** code
-- **Startup-Deliverable-Alias:** none
-- **Effort:** S
-- **Status:** Complete (2026-03-11)
-- **Affects:**
-  - `apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.test.ts`
-  - `apps/xa-uploader/src/lib/__tests__/rateLimit.test.ts`
-- **Depends on:** -
-- **Blocks:** -
-- **Confidence:** 80%
-  - Implementation: 85% — mock patterns confirmed; response codes confirmed from source (`acquireCloudSyncLock` busy → 409; rate limit exceeded → 429 with X-RateLimit-* headers)
-  - Approach: 85% — extend existing test files with new `it()` blocks using confirmed mock patterns
-  - Impact: 80% — covers two critical reliability paths: concurrent sync prevention and rate limit enforcement
-  - Held-back test for impact=80: No single unknown drops below 80 — route behavior is deterministic and confirmed in source.
-- **Acceptance:**
-  - **B6 (concurrent sync lock):** sync route test: `acquireCloudSyncLockMock.mockResolvedValueOnce({ status: "busy" })` → POST /catalog/sync → HTTP 409 with `{ error: "conflict", reason: "sync_already_running" }`
-  - **C1 (rate limit headers):** rateLimit.test.ts: `withRateHeaders` / `applyRateLimitHeaders` — allowed request → response has X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset headers; denied request (nextCount > max) → also has Retry-After header
-  - All tests pass typecheck and lint
-- **Engineering Coverage:**
-  - UI / visual: N/A — test files only
-  - UX / states: Required — tests assert lock conflict (409) and rate limit (429) behavior
-  - Security / privacy: N/A — no auth change
-  - Logging / observability / audit: N/A — no logging assertions
-  - Testing / validation: Required — 2 new test scenarios
-  - Data / contracts: N/A — tests use existing mock shapes
-  - Performance / reliability: Required — concurrency lock test directly covers reliability path
-  - Rollout / rollback: N/A — test additions
-- **Validation contract (TC-05):**
-  - TC-01: sync route, lock busy → HTTP 409 `{error: "conflict", reason: "sync_already_running"}`
-  - TC-02: `withRateHeaders` on allowed result → response headers include X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset; no Retry-After
-  - TC-03: `withRateHeaders` on denied result → response headers include Retry-After
-- **Execution plan:** Add `it("returns 409 when sync lock is already acquired", ...)` to sync route test; add `it("sets rate limit headers on responses", ...)` and `it("sets Retry-After header when rate limited", ...)` to rateLimit.test.ts → typecheck + lint
-- **Planning validation (required for M/L):** None — S effort
-- **Scouts:**
-  - Confirmed in route.ts lines 524-533: `acquired.status === "busy"` → returns 409 with `{ ok: false, error: "conflict", reason: "sync_already_running" }`
-  - Confirmed in rateLimit.ts lines 96-108: `withRateHeaders` calls `applyRateLimitHeaders` which sets all 3 headers; Retry-After only set when `!result.allowed`
-  - Note: `withRateHeaders` is not directly importable in the rateLimit test since it takes a `NextResponse`. The test can test `applyRateLimitHeaders` directly with a `new Headers()` instance.
-- **Edge Cases & Hardening:**
-  - `withRateHeaders` returns the NextResponse — test should verify the returned response has the expected headers
-  - For the sync lock test, also verify `releaseCloudSyncLockMock` is NOT called (lock was never acquired)
-- **What would make this >=90%:** Testing more rate limit store edge cases (store overflow, pruning). Deferred — scope is branch coverage of known paths.
-- **Rollout / rollback:**
-  - Rollout: CI-only
-  - Rollback: Revert test additions
-- **Documentation impact:** None
-- **Notes / references:**
-  - Dispatch: IDEA-DISPATCH-20260311153000-0002 (B6) and IDEA-DISPATCH-20260311153000-0003 (C1)
-  - `applyRateLimitHeaders` is exported from rateLimit.ts — use this for the header test to avoid NextResponse dependency
-
----
-
-### TASK-06: Media validation, empty sync confirmation, middleware cookie, image reorder tests
-- **Type:** IMPLEMENT
-- **Deliverable:** Extended test files covering remaining branch coverage gaps
-- **Execution-Skill:** lp-do-build
-- **Execution-Track:** code
-- **Startup-Deliverable-Alias:** none
-- **Effort:** S
-- **Status:** Complete (2026-03-11)
-- **Affects:**
-  - `apps/xa-uploader/src/app/api/catalog/sync/__tests__/route.test.ts`
-  - `apps/xa-uploader/src/lib/__tests__/catalogSyncInput.test.ts`
-  - `apps/xa-uploader/src/__tests__/middleware.test.ts`
-  - `apps/xa-uploader/src/components/catalog/__tests__/CatalogProductImagesFields.test.ts`
-  - (Optional) `apps/xa-uploader/src/lib/__tests__/catalogCloudPublish.test.ts` (new if needed for C2)
-- **Depends on:** -
-- **Blocks:** -
-- **Confidence:** 80%
-  - Implementation: 85% — mock patterns confirmed; route behavior confirmed; middleware test file already exists
-  - Approach: 85% — extend existing test files; catalogCloudPublish tests may need a new file
-  - Impact: 80% — closes 5 branch-coverage gaps that could silently regress
-  - Held-back test for impact=80: No single unknown drops below 80 — all confirmed from source reading.
-- **Acceptance:**
-  - **C2 (media validation strict mode):** `applyCloudMediaExistenceValidation` with `policy: "strict"` and `keysToCheck.length` exceeding `CLOUD_MEDIA_HEAD_MAX_KEYS` → returns `{ ok: false }` with status 400. Also: strict + bucket null → returns `{ ok: false }` with status 400. Tested via unit test on `catalogCloudPublish.ts` (or via sync route with `applyCloudMediaExistenceValidationMock`).
-  - **C3 (empty sync confirmation):** sync route test: snapshot with 0 publishable products + `confirmEmptyInput: false` → HTTP 409 `{error: "no_publishable_products", requiresConfirmation: true}`; with `confirmEmptyInput: true` → sync proceeds past the gate (no 409 from this check)
-  - **C4 (middleware malformed cookie):** middleware test: request with malformed/truncated session cookie value → middleware does not throw; response is a redirect or 401/404 (per existing middleware behavior)
-  - **C5 (image reorder/promote):** `mergeAutosaveImageTuples` tests — already covered by TASK-04 for add/remove; add: local tuple array in different order than server → merged result follows local order; promote (first element) → merged result has promoted image first
-  - All tests pass typecheck and lint
-- **Engineering Coverage:**
-  - UI / visual: N/A — test files only
-  - UX / states: Required — tests assert empty sync (requiresConfirmation), malformed auth, image ordering
-  - Security / privacy: Required — middleware malformed cookie test exercises auth boundary
-  - Logging / observability / audit: N/A — no logging assertions
-  - Testing / validation: Required — 5 new test scenarios
-  - Data / contracts: N/A — tests use existing mock shapes
-  - Performance / reliability: N/A — unit tests
-  - Rollout / rollback: N/A — test additions
-- **Validation contract (TC-06):**
-  - TC-01: `applyCloudMediaExistenceValidation` strict + too many keys → `{ ok: false }` with 400 response body
-  - TC-02: `applyCloudMediaExistenceValidation` strict + bucket null → `{ ok: false }` with 400 response body
-  - TC-03: sync route, 0 publishable products + no confirmEmptyInput → HTTP 409 `requiresConfirmation: true`
-  - TC-04: sync route, 0 publishable products + `confirmEmptyInput: true` → proceeds past empty-check gate
-  - TC-05: middleware with malformed cookie → does not throw; returns redirect or 401/404
-  - TC-06: `mergeAutosaveImageTuples` — local reorders images → result order follows local
-  - TC-07: `mergeAutosaveImageTuples` — promote image to position 0 → merged result starts with promoted image
-- **Execution plan:**
-  - Test `applyCloudMediaExistenceValidation` directly (unit test on pure function with mocked R2 bucket) or extend sync route test with `applyCloudMediaExistenceValidationMock.mockResolvedValueOnce({ ok: false, errorResponse: ... })`
-  - Extend sync route test with empty-products scenarios
-  - Extend middleware test with malformed cookie header
-  - Extend `catalogConsoleActions.test.ts` with reorder/promote assertions on `mergeAutosaveImageTuples`
-- **Planning validation (required for M/L):** None — S effort
-- **Scouts:**
-  - Confirmed: sync route line 390: `if (publishableProducts.length === 0 && !payload.options.confirmEmptyInput)` → 409
-  - Confirmed: `applyCloudMediaExistenceValidation` is a pure async function in `catalogCloudPublish.ts` — can be unit tested directly
-  - Note: `applyCloudMediaExistenceValidation` depends on `getMediaBucket()` — this is mockable
-  - Confirmed: middleware test file exists at `src/__tests__/middleware.test.ts`; has existing patterns
-  - Note: C2 may need a dedicated test file `catalogCloudPublish.test.ts` — execution agent to check if `applyCloudMediaExistenceValidation` can be tested via sync route mock or needs direct import
-- **Edge Cases & Hardening:**
-  - C4: malformed cookie — test with `Cookie: session=not-json`, `Cookie: session=`, and `Cookie: session={invalid}` — middleware must handle all gracefully
-  - C3: For `confirmEmptyInput: true` path, also verify no HTTP 409 is returned from the empty-check; the sync may still fail downstream for other reasons (e.g., unconfigured contract) — mock those downstream calls to succeed
-- **What would make this >=90%:** Direct unit tests for `applyCloudMediaExistenceValidation` rather than via sync route mock. Execution agent should implement direct tests if feasible.
-- **Rollout / rollback:**
-  - Rollout: CI-only
-  - Rollback: Revert test additions; delete new test files
-- **Documentation impact:** None
-- **Notes / references:**
-  - Dispatch: IDEA-DISPATCH-20260311153000-0003
-  - C5 (image reorder/promote) can reuse `mergeAutosaveImageTuples` test from TASK-04; add reorder/promote assertions there
 
 ## Risks & Mitigations
-- Logging in test environment: Existing pattern `if (process.env.NODE_ENV !== "test") { console.error(...) }` must be followed to prevent test output pollution. Mitigated by explicit note in TASK-02/03.
-- Publish route test for unpublish (B4): The publish route may not support downgrading publishState from "live" to "draft" — this may simply be a test of what the route currently rejects. Execution agent must read `publish/route.ts` before writing the assertion.
-- Image reorder overlaps with TASK-04/06: Both tasks test `mergeAutosaveImageTuples`; execution agent should consolidate into one test file to avoid duplication.
+
+| Risk | Likelihood | Impact | Mitigation |
+|---|---|---|---|
+| Logger fallback path test requires a non-serializable value that works in Jest's V8 environment | Low | Low — circular references reliably cause `JSON.stringify` to throw | Use `const obj: Record<string, unknown> = {}; obj.self = obj` — standard circular reference pattern |
+| `String(err)` convention could expose sensitive error text in future callers | Low | High | Code review gate in TASK-02: confirm `CatalogDraftContractError` and generic network error types carry no user PII |
+| CI remains unverified locally | Low | Low | Testing-policy.md constraint; flag CI as the validation gate |
+| `slug` variable not in scope at GET catch site | Confirmed (scout) | Low | Use `{ error: String(error) }` minimal context for GET error log; `slug` is in scope at DELETE catch site |
 
 ## Observability
-- Logging: TASK-01-03 add structured JSON logging to golden path operations
-- Metrics: None — no metrics collection added
-- Alerts/Dashboards: None — wrangler tail is the operator's diagnostic channel
+
+- Logging: After both tasks land, all 8 server-side catalog routes emit structured `uploaderLog` JSON events on material failures. New event strings: `catalog_slug_get_error`, `catalog_slug_delete_error`, `catalog_slug_delete_conflict`.
+- Metrics: None — observability via `wrangler tail --format json` only.
+- Alerts/Dashboards: None new — no change to monitoring infrastructure.
 
 ## Acceptance Criteria (overall)
-- [ ] `apps/xa-uploader/src/lib/uploaderLogger.ts` exists and exports `log(level, event, context?)`
-- [ ] Golden path routes (images, publish) and libs (deployHook, catalogDraftContractClient) import and call uploaderLogger
-- [ ] `pnpm --filter @apps/xa-uploader typecheck` passes
-- [ ] `pnpm --filter @apps/xa-uploader lint` passes
-- [ ] 14 new test scenarios added across TASK-04, TASK-05, TASK-06 test files
-- [ ] No existing tests broken
+
+- [ ] `apps/xa-uploader/src/lib/__tests__/uploaderLogger.test.ts` exists and all 4 TC assertions pass in CI
+- [ ] `uploaderLog` is imported and called at 3 material error branches in `apps/xa-uploader/src/app/api/catalog/products/[slug]/route.ts`
+- [ ] `route.test.ts` for slug route contains `uploaderLog` mock + 3 TC assertions (TC-SLUG-01, TC-SLUG-02, TC-SLUG-03) + 1 negative assert (TC-SLUG-NONE)
+- [ ] `pnpm typecheck && pnpm lint` pass
+- [ ] CI green on all tests in `apps/xa-uploader`
 
 ## Decision Log
-- 2026-03-11: Chose structured JSON console.log wrapper over an external logging library (pino, etc.) — Cloudflare Workers compatibility and zero bundle impact; wrangler tail captures console.log in JSON format natively.
-- 2026-03-11: Confirmed tests run in CI only per testing-policy.md — no local test execution in validation commands.
-- 2026-03-11: Image reorder/promote tests (C5) added to TASK-04's catalogConsoleActions.test.ts rather than CatalogProductImagesFields.test.ts — `mergeAutosaveImageTuples` is the logic function to test, not the UI component.
-- [Adjacent: delivery-rehearsal] Add console.log spy in tests to assert structured log output — adjacent scope; would require test behavior changes and is low value for S-effort tasks. Route to post-build reflection.
 
-## Overall-confidence Calculation
-- TASK-01: 85% × S(1) = 85
-- TASK-02: 80% × S(1) = 80
-- TASK-03: 80% × S(1) = 80
-- TASK-04: 80% × S(1) = 80
-- TASK-05: 80% × S(1) = 80
-- TASK-06: 80% × S(1) = 80
-- Sum weights: 6; Sum (confidence × weight): 485
-- Overall-confidence: 485/6 = ~81%
+- 2026-03-12: Chose A1 (direct logger unit test) over A2 (integration-only) — A2 cannot cover logger internals (suppression gate, fallback). Chose B1 (per-branch pattern) over B2 (middleware wrapper) — B2 cannot capture recoverable error branches returned as structured HTTP responses.
+- 2026-03-12: Scout finding: `slug` variable is inside the `try` block in the GET handler and not in scope at the catch site — GET error log will use minimal context `{ error: String(error) }`.
 
 ## Rehearsal Trace
 
 | Step | Preconditions Met | Issues Found | Resolution Required |
 |---|---|---|---|
-| TASK-01: Add uploaderLogger | Yes — new file, no deps | None | No |
-| TASK-02: Instrument server routes/libs | Yes — TASK-01 must complete first (import dependency) | None — all call sites confirmed from source reading | No |
-| TASK-03: Instrument client console actions | Yes — TASK-01 must complete first | None — browser-compatible pattern | No |
-| TASK-04: Golden path tests | Yes — no code dep; mock patterns confirmed | Minor: publish route behavior for state transitions needs source read before asserting | No — noted in Scouts |
-| TASK-05: Sync lock + rate limit tests | Yes — no code dep; route behavior confirmed | Minor: `withRateHeaders` returns NextResponse — test must call it via the route or test `applyRateLimitHeaders` directly | No — noted in Scouts |
-| TASK-06: Media validation + misc tests | Yes — no code dep; route behaviors confirmed | Minor: C2 may need new test file; C4 malformed cookie edge cases noted | No — noted in Scouts |
+| TASK-01: Create `uploaderLogger.test.ts` | Yes — logger source confirmed at `apps/xa-uploader/src/lib/uploaderLogger.ts`; all branch paths visible; Jest config confirmed (`testEnvironment: "node"`); mock pattern confirmed from `accessControl.test.ts` | None — logger has no external dependencies; all test seams are in place | No |
+| TASK-02: Add `uploaderLog` to `[slug]/route.ts` + extend tests | Yes — route source confirmed; import path confirmed; 3 error branches identified; existing `__tests__/` directory and test files confirmed | Scout finding: `slug` declared inside GET `try` block — not in scope at catch site; use minimal context for GET error log | No — accommodated in scout note; no blocker |
 
-No blocking rehearsal findings. All notes are advisory and addressed in Scout/Edge Cases sections.
+## Overall-confidence Calculation
+
+- S=1, M=2, L=3
+- TASK-01: confidence 92%, effort weight S=1
+- TASK-02: confidence 90%, effort weight S=1
+- Overall-confidence = (92% × 1 + 90% × 1) / (1 + 1) = **91%**

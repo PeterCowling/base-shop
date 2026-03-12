@@ -169,22 +169,6 @@
     },
     {
       "type": "idea",
-      "business": "HBAG",
-      "title": "Caryina — German and Italian visitors see English-only navigation and legal text",
-      "body": "The site supports three languages in the URL, but the footer links ('Terms', 'Privacy', 'Returns & Refunds'), the header navigation ('Shop', 'Support'), the cookie consent banner, and the shipping trust strip are all hardcoded in English. A German or Italian visitor gets a mixed-language experience — translated product pages but English navigation. This undermines trust, especially for legal pages like privacy and terms where language matters. Fixing this requires deciding whether to pull these strings from the content packet or a separate i18n file.",
-      "source": "queue-state.json",
-      "date": "2026-03-12T20:47:00.543Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "35843e5566eb1044cda5d77e1019961387f0ce29",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
       "business": "XA",
       "title": "XA — Admin tool has accessibility barriers and missing translations",
       "body": "Staff using screen readers or keyboard navigation cannot properly use the product filter dropdown — it lacks the standard cues that assistive technology needs. Image descriptions are stuck in English regardless of the user language setting. The save and publish buttons can be clicked at the same time, which could cause confusing results. And the theme flashes light then dark on every page load. These are all small fixes that make the tool more reliable and inclusive for every staff member.",

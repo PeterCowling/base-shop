@@ -1,0 +1,182 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "caryina-i18n-hardcoded-english",
+  "source_artifact_path": "docs/plans/caryina-i18n-hardcoded-english/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/caryina-i18n-hardcoded-english/fact-find.md",
+    "plan": "docs/plans/caryina-i18n-hardcoded-english/plan.md"
+  },
+  "outcome_contract": {
+    "why": "German and Italian visitors get a mixed-language experience — translated product pages but English navigation, consent banner, footer links, and trust strip. This undermines trust, especially on legal pages where language matters.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All persistent UI chrome (header, footer, consent banner, trust strip) displays in the visitor's selected language",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Add DE/IT to code constant; JSON chrome removed → defaults active",
+      "current_or_option_state": "Add DE/IT to JSON; extend materializer",
+      "gap_or_implication": "Add DE/IT to defaults; add merge to getChromeContent",
+      "carry_forward_or_notes": "No component changes; translations live in `contentPacket.ts`"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Full DE/IT locale page experience delivered",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Same",
+      "carry_forward_or_notes": "All 4 chrome surfaces correct for DE/IT after deploy"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no auth/session changes",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — static strings, no audit needed",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit test `getChromeContent(\"de\")` / `(\"it\")` — pure function, easy",
+      "current_or_option_state": "Same test, but also need materializer regen test",
+      "gap_or_implication": "Same test + merge logic test",
+      "carry_forward_or_notes": "One focused test file: `contentPacket.test.ts` covering all 5 groups × 3 locales"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Remove `chrome` from JSON (or let materializer overwrite); defaults become canonical",
+      "current_or_option_state": "Extend materializer `SiteContentPayload` type with `chrome`",
+      "gap_or_implication": "Keep JSON chrome as override surface; defaults as base",
+      "carry_forward_or_notes": "`CHROME_EN_DEFAULTS` → `CHROME_DEFAULTS` with `de`/`it` keys; JSON chrome removed"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "No change — cached read, additive object keys",
+      "current_or_option_state": "No change",
+      "gap_or_implication": "Adds merge overhead (negligible)",
+      "carry_forward_or_notes": "Zero performance impact"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive constant change + JSON key removal; revert = delete `de`/`it` keys from constant",
+      "current_or_option_state": "Materializer regeneration required to rollback",
+      "gap_or_implication": "Additive merge + constant changes",
+      "carry_forward_or_notes": "Safest rollback of all options"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "All four Caryina chrome components (Header, SiteFooter, ConsentBanner, ShippingReturnsTrustBlock) are already locale-wired — they all call `getChromeContent(lang)`. The display bug is caused entirely by missing DE/IT translation values in the chrome data layer. The decision here is: **where should DE/IT chrome translations live and how should they be loaded?**",
+    "goals": [
+      "Choose an approach that delivers DE/IT translations for all 27 chrome strings across 5 groups",
+      "Ensure the fix is durable across future materializer re-runs",
+      "Add test coverage confirming locale-correct output from `getChromeContent`"
+    ],
+    "non_goals": [
+      "Translating product copy, policy body text, or SEO content",
+      "Adding new chrome components or changing chrome structure",
+      "Internationalising admin routes"
+    ],
+    "constraints": [
+      "Materializer (`materialize-site-content-payload.ts`) must continue to work without changes (or with minimal additive changes only)",
+      "Any fix must survive future materializer re-runs without silently wiping translations",
+      "Translations must be natural (not machine-literal) German and Italian"
+    ],
+    "assumptions": [
+      "Chrome strings are UI micro-copy that belongs in code constants, not in a CMS or content packet"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Durability: survives materializer re-run",
+        "Why it matters": "The materializer could silently wipe DE/IT if chrome remains in JSON",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Complexity",
+        "Why it matters": "Team velocity and future maintainability",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Translation maintainability",
+        "Why it matters": "How easy it is to update or extend translations in future",
+        "Weight": "Medium"
+      },
+      {
+        "Criterion": "Test coverage feasibility",
+        "Why it matters": "Deterministic verification of locale output",
+        "Weight": "Medium"
+      },
+      {
+        "Criterion": "Rollback safety",
+        "Why it matters": "Can changes be reverted safely in production",
+        "Weight": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Code-owned defaults",
+        "Description": "Add DE/IT to `CHROME_EN_DEFAULTS` in `contentPacket.ts`; remove `chrome` from `site-content.generated.json` so defaults are always used",
+        "Upside": "Zero materializer risk; chrome translations are code-owned, versioned with code; simple rollback; no merge logic",
+        "Downside": "All future chrome changes require code deploy (not data update)",
+        "Key risks": "None significant",
+        "Viable?": "**Yes — Recommended**"
+      },
+      {
+        "Option": "B — JSON + materializer guard",
+        "Description": "Add DE/IT entries to JSON chrome; extend materializer's `SiteContentPayload` type and `buildPayload()` to preserve/regenerate chrome with translations",
+        "Upside": "Chrome stays close to product content data; materializer-driven regeneration",
+        "Downside": "Materializer must now carry translations (requires source of truth for DE/IT strings); significant materializer changes; risk of mistranslation on regeneration",
+        "Key risks": "Materializer becomes translation-aware — adds scope and fragility",
+        "Viable?": "Yes — viable but overcomplicated"
+      },
+      {
+        "Option": "C — Per-string merge fallback",
+        "Description": "Add DE/IT to `CHROME_EN_DEFAULTS`; change `getChromeContent` to deep-merge JSON chrome over defaults (so JSON can override per-string)",
+        "Upside": "Most flexible; both code and JSON can contribute locale values",
+        "Downside": "Adds merge function complexity; two sources of truth for chrome; harder to reason about locale resolution",
+        "Key risks": "Dual-source confusion for future maintainers",
+        "Viable?": "Viable but unnecessary complexity for current scope"
+      }
+    ],
+    "chosen_approach": {},
+    "rejected_approaches": [
+      "**Option B (JSON + materializer guard)** — Materializer responsibility mismatch; requires chrome translation source in content packet; over-scoped for UI micro-copy",
+      "**Option C (per-string merge)** — Unnecessary complexity; no use case for per-string JSON overrides on UI chrome labels"
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "`getChromeContent(\"de\")` must return German strings for all 27 fields",
+        "`getChromeContent(\"it\")` must return Italian strings for all 27 fields",
+        "`getChromeContent(\"en\")` must continue returning English strings unchanged",
+        "Existing component tests that mock `getChromeContent` must still pass (no interface change)"
+      ],
+      "sequencing_constraints": [
+        "TASK-01 (author translations) must precede TASK-02 (add to constant)",
+        "TASK-02 and TASK-03 must be in the same commit — atomically swap source of truth from JSON to code; do not leave chrome in JSON while code also has DE/IT (this would cause the JSON chrome to still win, hiding the new translations until TASK-03 is done)",
+        "TASK-04 (tests) can be written after TASK-02/03"
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change The runtime locale-read path is unchanged: `[lang]/layout.tsx` calls `getChromeContent(lang)`, components receive strings, locale resolution happens inside `contentPacket.ts`. After this fix, `CHROME_DEFAULTS` replaces `CHROME_EN_DEFAULTS` as the active chrome source (because the JSON `chrome` key is removed), and `localizedText(value, locale)` returns the correct locale string instead of falling back to `en`. **Important source-of-truth change**: Chrome translations permanently move from JSON to code (`contentPacket.ts`). Future contributors updating ",
+      "areas": []
+    }
+  }
+}

@@ -1,13 +1,15 @@
 {
   "schema_version": "build-event.v1",
   "feature_slug": "xa-uploader-test-logging-coverage",
-  "emitted_at": "2026-03-11T11:50:00.000Z",
-  "why": "The XA upload golden path had no structured logging and key paths were untested, making production failures invisible and regressions undetectable.",
+  "emitted_at": "2026-03-12T21:08:00.000Z",
+  "why": "The upload pipeline is the sole path for product data entering the XA storefront. Absent logging means failures are invisible in production; the uploaderLogger unit test and slug route error branches were the two remaining gaps.",
   "intended_outcome_type": "operational",
-  "intended_outcome_statement": "xa-uploader golden path emits structured log events for production diagnosis, and deterministic test scenarios prevent silent regression across the core upload pipeline.",
-  "source": "operator",
-  "tasks_total": 6,
-  "tasks_complete": 6,
+  "intended_outcome_statement": "All 8 server routes now emit structured uploaderLog events on material failures; uploaderLogger has direct unit test coverage for JSON shape, suppression gate, circular-reference fallback, and level routing.",
+  "source": "auto",
+  "tasks_total": 2,
+  "tasks_complete": 2,
+  "test_cases_added": 8,
+  "commit": "bf4744f2ff",
   "deliverable_type": "code-change",
   "execution_track": "code"
 }

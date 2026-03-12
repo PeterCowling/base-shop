@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-03-12T12:30:37.267Z",
+  "last_updated": "2026-03-12T14:00:03.443Z",
   "counts": {
     "enqueued": 61,
     "processed": 10,
@@ -440,7 +440,8 @@
         "processed_at": "2026-03-11T11:59:39.878Z",
         "fact_find_slug": "process-improvements-operator-actions-integration",
         "fact_find_path": "docs/plans/process-improvements-operator-actions-integration/fact-find.md"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -495,7 +496,8 @@
         "processed_at": "2026-03-09T18:10:30.000Z",
         "fact_find_slug": "startup-loop-self-evolving-evidence-admission",
         "fact_find_path": "docs/plans/startup-loop-self-evolving-evidence-admission/fact-find.md"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -550,7 +552,8 @@
         "processed_at": "2026-03-09T18:11:30.000Z",
         "fact_find_slug": "startup-loop-self-evolving-followup-dispatch-closure",
         "fact_find_path": "docs/plans/startup-loop-self-evolving-followup-dispatch-closure/fact-find.md"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -605,7 +608,8 @@
         "processed_at": "2026-03-09T18:12:30.000Z",
         "fact_find_slug": "startup-loop-self-evolving-lifecycle-ledger",
         "fact_find_path": "docs/plans/startup-loop-self-evolving-lifecycle-ledger/fact-find.md"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -658,7 +662,8 @@
         "processed_at": "2026-03-09T18:13:30.000Z",
         "fact_find_slug": "startup-loop-signal-review-review-required-closure",
         "fact_find_path": "docs/plans/startup-loop-signal-review-review-required-closure/fact-find.md"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -713,7 +718,8 @@
         "processed_at": "2026-03-09T18:15:30.000Z",
         "fact_find_slug": "startup-loop-self-evolving-candidate-lifecycle-integrity",
         "fact_find_path": "docs/plans/startup-loop-self-evolving-candidate-lifecycle-integrity/fact-find.md"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -2771,7 +2777,8 @@
         "plan_path": "docs/plans/_archive/bos-loop-assessment-registry/plan.md",
         "completed_at": "2026-03-02T21:20:41.426Z",
         "outcome": "Assessment artifact classes registered in the standing registry; T1 keywords extended; live hook wired."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -2825,7 +2832,8 @@
         "plan_path": "docs/plans/_archive/cass-assessment-retrieval/plan.md",
         "completed_at": "2026-03-02T22:01:45.492Z",
         "outcome": "CASS retrieval extended to index docs/business-os/strategy/ so fact-finds and plans automatically receive assessment-layer context."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -2881,7 +2889,8 @@
         "plan_path": "docs/plans/startup-loop-assessment-post-build-refresh/plan.md",
         "completed_at": "2026-03-09T18:20:00Z",
         "outcome": "Delivered a bounded post-build assessment refresh path: added deterministic name-decision -> intake refresh tooling, updated startup-loop contracts, and refreshed the live HEAD intake packet from Nidilo to Facilella without re-seeding protected seed-once docs."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v1",
@@ -4433,7 +4442,8 @@
       ],
       "suppression_reason": "Work already planned and executed. IDEA-DISPATCH-20260226-0014 (rsc-structured-data-conversion) is completed — TASK-01 through TASK-06 done (commits c6d9cee400, 04c4f9fc8b). Only TASK-07 staging smoke-test remains. Active plan: docs/plans/brikette-rsc-structured-data-conversion/plan.md.",
       "created_at": "2026-02-26T21:00:00Z",
-      "queue_state": "logged_no_action"
+      "queue_state": "logged_no_action",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v1",
@@ -5064,7 +5074,8 @@
         "plan_path": "docs/plans/_archive/brikette-deeper-route-funnel-cro/plan.md",
         "completed_at": "2026-02-25T21:16:31.244Z",
         "outcome": "**Wave 1 — Core fixes (commit `30e18fb806`):** Fixed the `ContentStickyCta` sessionStorage shared-key bug (TASK-05): the dismiss key is now per-surface (`\"content-sticky-cta-dismissed:${ctaLocation}\"`) so dismissing on one page does not sup"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v1",
@@ -5116,7 +5127,8 @@
         "plan_path": "docs/plans/_archive/brikette-seo-api-optimization-loop/plan.md",
         "completed_at": "2026-02-25T12:34:07.784Z",
         "outcome": "### TASK-01: gsc-auth.ts + gsc-url-inspection-batch.ts **Files created:** `scripts/src/brikette/gsc-auth.ts` — shared JWT auth module (ServiceAccountKey type, getAccessToken, loadServiceAccount, scope constants) `scripts/src/brikette/gsc-ur"
-      }
+      },
+      "domain": "STRATEGY"
     },
     {
       "schema_version": "dispatch.v1",
@@ -6481,7 +6493,7 @@
         "packages/mcp-server/src/tools/gmail.ts",
         "apps/reception/src/hooks/mutations/useActivitiesMutations.ts"
       ],
-      "domain": "Platform",
+      "domain": "BOS",
       "status": "briefing_ready",
       "recommended_route": "lp-do-briefing",
       "queue_state": "completed",
@@ -6512,7 +6524,7 @@
       "location_anchors": [
         "packages/mcp-server/src/tools/process-cancellation-email.ts"
       ],
-      "domain": "Platform",
+      "domain": "BOS",
       "status": "briefing_ready",
       "recommended_route": "lp-do-briefing",
       "queue_state": "completed",
@@ -6544,7 +6556,7 @@
         "apps/reception/src/hooks/mutations/useActivitiesMutations.ts",
         "packages/mcp-server/src/tools/guest-email-activity.ts"
       ],
-      "domain": "Platform",
+      "domain": "BOS",
       "status": "briefing_ready",
       "recommended_route": "lp-do-briefing",
       "queue_state": "completed",
@@ -6576,7 +6588,7 @@
         "packages/mcp-server/src/tools/process-cancellation-email.ts",
         "apps/reception/src/hooks/mutations/useActivitiesMutations.ts"
       ],
-      "domain": "Platform",
+      "domain": "BOS",
       "status": "briefing_ready",
       "recommended_route": "lp-do-briefing",
       "queue_state": "completed",
@@ -8180,7 +8192,8 @@
         "plan_path": "docs/business-os/strategy/",
         "completed_at": "2026-03-09T00:00:00.000Z",
         "outcome": "strategy/ reorganised into per-business subdirectories (BRIK, HBAG, HEAD, PET, XA, PWRB, etc.) plus _templates and shared docs. No longer a flat 200-file dump."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8227,7 +8240,8 @@
         "plan_path": "docs/business-os/startup-loop/",
         "completed_at": "2026-03-09T00:00:00.000Z",
         "outcome": "startup-loop/ root reorganised into contracts/, schemas/, operations/, specifications/, _deprecated/, _generated/ subdirectories. Navigation no longer grep-dependent."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8285,7 +8299,8 @@
         "plan_path": "docs/plans/_archive/self-evolving-per-business-reorg/plan.md",
         "completed_at": "2026-03-03T09:57:43.675Z",
         "outcome": "Restructured `docs/business-os/startup-loop/self-evolving/` from type-based subdirectories to per-business directories. The old structure organised files by data type (candidates/, events/, observations/, startup-state/, backbone-queue/, re"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8340,7 +8355,8 @@
         "target_slug": "assessment-naming-workbench",
         "fact_find_slug": "assessment-naming-workbench",
         "target_path": "docs/plans/_archive/assessment-naming-workbench/plan.md"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8393,7 +8409,8 @@
         "plan_path": "docs/plans/_archive/startup-loop-scripts-domain-dirs/plan.md",
         "completed_at": "2026-03-03T12:15:35.967Z",
         "outcome": "Completed via startup-loop-scripts-domain-dirs."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8450,7 +8467,8 @@
         "plan_path": "docs/plans/_archive/ideas-schema-lifecycle-cleanup/plan.md",
         "outcome": "v1 schema deprecated to _deprecated/. Active schemas moved to schemas/. IDEAS-LIFECYCLE.md documents dispatch lifecycle.",
         "completed_at": "2026-03-03T11:04:43.528Z"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8509,7 +8527,8 @@
         "plan_path": "docs/plans/_archive/plans-archive-consolidation/plan.md",
         "outcome": "Single clear archive system. archive/ consolidated into _archive/, _tmp/ removed, all code references updated.",
         "completed_at": "2026-03-03T11:27:13.006Z"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8567,7 +8586,8 @@
         "target_slug": "startup-loop-deprecation-sweep",
         "fact_find_slug": "startup-loop-deprecation-sweep",
         "target_path": "docs/plans/startup-loop-deprecation-sweep/fact-find.md"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8626,7 +8646,8 @@
         "plan_path": "docs/plans/_archive/startup-baselines-per-business-consolidation/plan.md",
         "completed_at": "2026-03-03T15:47:31.788Z",
         "outcome": "**TASK-01 (commit 69f80ee497):** Moved 20 flat files from `docs/business-os/startup-baselines/` root into per-business subdirectories (BRIK/, HBAG/, HEAD/, PET/). Created PET/ subdirectory. Dropped BIZ prefix from all filenames. Fixed missi"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8684,7 +8705,8 @@
         "plan_path": "docs/plans/_archive/standing-data-freshness-enforcement/plan.md",
         "completed_at": "2026-03-03T16:44:16.171Z",
         "outcome": "Standing-baselines .md files now have age-based freshness enforcement via mcp-preflight and CLI"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8726,7 +8748,8 @@
         "type": "operational",
         "statement": "Product images uploaded through xa-uploader are stored in a Cloudflare-free-tier-compatible location and reliably served on xa-b product pages after sync.",
         "source": "operator"
-      }
+      },
+      "domain": "PRODUCTS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8765,7 +8788,8 @@
         "type": "operational",
         "statement": "CatalogConsole has a storefront selector and logout button, enabling secure session management and multi-storefront operation.",
         "source": "operator"
-      }
+      },
+      "domain": "MARKET"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8805,7 +8829,8 @@
         "type": "operational",
         "statement": "All sync API confirmation codes have matching client-side handlers with clear user-facing messages explaining the situation and recovery steps.",
         "source": "operator"
-      }
+      },
+      "domain": "STRATEGY"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8845,7 +8870,8 @@
         "type": "operational",
         "statement": "All ZIP/submission-related code is removed from the codebase, leaving only the cloud sync workflow as the single canonical publish path.",
         "source": "operator"
-      }
+      },
+      "domain": "STRATEGY"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8905,7 +8931,8 @@
         "plan_path": "docs/plans/_archive/assessment-completion-registry/plan.md",
         "completed_at": "2026-03-03T17:43:35.995Z",
         "outcome": "Deterministic scanner covers all 14 ASSESSMENT stages across 9 businesses with CLI output"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -8966,7 +8993,8 @@
         "plan_path": "docs/plans/_archive/xa-uploader-r2-image-upload/plan.md",
         "completed_at": "2026-03-03T18:14:26.781Z",
         "outcome": "Vendors can upload product images directly to R2 via xa-uploader console. Upload route with validation, role-based upload UI, and xa-b R2 URL config all complete."
-      }
+      },
+      "domain": "STRATEGY"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9022,7 +9050,8 @@
         "plan_path": "docs/plans/_archive/reception-staff-accounts-modal-entry/plan.md",
         "completed_at": "2026-03-09T13:00:03.175Z",
         "outcome": "Staff Accounts MAN entry already implemented in active navigation and tests."
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9077,7 +9106,8 @@
         "plan_path": "docs/plans/_archive/reception-staff-accounts-pete-only-access/fact-find.md",
         "completed_at": "2026-03-09T12:54:35.631Z",
         "outcome": "Pete-only Staff Accounts policy already implemented in UI, nav, and API layers via shared identity gating."
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9132,7 +9162,8 @@
         "plan_path": "docs/plans/_archive/reception-staff-accounts-lifecycle-permissions/plan.md",
         "completed_at": "2026-03-09T13:00:03.185Z",
         "outcome": "Staff Accounts lifecycle and permission-management flows already implemented in UI and API."
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9191,7 +9222,8 @@
         "plan_path": "docs/plans/_archive/reception-statistics-yoy-data-contract/plan.md",
         "completed_at": "2026-03-09T13:08:01.147Z",
         "outcome": "Shared YoY data contract, schema, provenance metadata, and deterministic helper rules now underpin the existing statistics API and UI."
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9249,7 +9281,8 @@
         "plan_path": "docs/plans/_archive/reception-statistics-yoy-aggregation-api/plan.md",
         "completed_at": "2026-03-09T13:00:03.194Z",
         "outcome": "Protected YoY aggregation API already implemented with route tests."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9306,7 +9339,8 @@
         "plan_path": "docs/plans/_archive/reception-statistics-yoy-switchable-ui/plan.md",
         "completed_at": "2026-03-09T13:00:03.202Z",
         "outcome": "Switchable YoY statistics dashboard already implemented with UI coverage."
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9362,7 +9396,8 @@
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
         "completed_at": "2026-03-03T18:47:46.412Z",
         "outcome": "Standing registry expanded to 34 entries across 6 domains; post-commit hook, self-evolving bridge, and queue-state canonicalization utilities shipped"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9419,7 +9454,8 @@
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
         "completed_at": "2026-03-03T18:47:46.413Z",
         "outcome": "Standing registry expanded to 34 entries across 6 domains; post-commit hook, self-evolving bridge, and queue-state canonicalization utilities shipped"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9476,7 +9512,8 @@
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
         "completed_at": "2026-03-03T18:47:46.413Z",
         "outcome": "Standing registry expanded to 34 entries across 6 domains; post-commit hook, self-evolving bridge, and queue-state canonicalization utilities shipped"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9533,7 +9570,8 @@
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-followthrough/plan.md",
         "completed_at": "2026-03-03T18:47:46.413Z",
         "outcome": "Standing registry expanded to 34 entries across 6 domains; post-commit hook, self-evolving bridge, and queue-state canonicalization utilities shipped"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9588,7 +9626,8 @@
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-code-signals/plan.md",
         "completed_at": "2026-03-03T19:04:49.391Z",
         "outcome": "Codebase-signals bridge wired into process-improvements; bug-scan and structural-diff signals now emit dispatch candidates"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9645,7 +9684,8 @@
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-code-signals/plan.md",
         "completed_at": "2026-03-03T19:04:49.392Z",
         "outcome": "Codebase-signals bridge wired into process-improvements; bug-scan and structural-diff signals now emit dispatch candidates"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9704,7 +9744,8 @@
         "plan_path": "docs/plans/_archive/bos-ideas-dispatch-20260303-agent-session-signals/plan.md",
         "completed_at": "2026-03-03T19:04:49.397Z",
         "outcome": "Agent-session bridge extracts findings from transcripts and emits dispatch candidates; wired into process-improvements"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9748,7 +9789,8 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9802,7 +9844,8 @@
         "plan_path": "docs/plans/_archive/xa-uploader-auto-save-after-image/plan.md",
         "completed_at": "2026-03-03T20:24:42.130Z",
         "outcome": "**TASK-01: Aligned UI image roles with schema.** The `IMAGE_ROLES` array in `CatalogProductImagesFields.client.tsx` was updated from `[\"front\", \"side\", \"top\", \"detail\", \"lifestyle\", \"packaging\"]` to `[\"front\", \"side\", \"top\", \"back\", \"detail"
-      }
+      },
+      "domain": "STRATEGY"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9846,7 +9889,8 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "operator-decision: Image roles beyond 'main' are not wanted. Only the 'main' role will be used going forward. No role field will be added to CatalogMediaEntry or the published catalog. Will not be brought back."
-      }
+      },
+      "domain": "PRODUCTS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9891,7 +9935,8 @@
         "plan_path": "apps/xa-uploader/src/app/api/catalog/images/route.ts",
         "completed_at": "2026-03-09T00:00:00.000Z",
         "outcome": "DELETE handler implemented with keyIsStillReferenced() reference check and deletePersistedImageKey() R2 deletion. Rate-limited at 30 req/min. Orphaned object cleanup is available via explicit DELETE calls."
-      }
+      },
+      "domain": "STRATEGY"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9932,7 +9977,8 @@
         "source": "operator"
       },
       "created_at": "2026-03-04T00:15:00.000Z",
-      "queue_state": "completed"
+      "queue_state": "completed",
+      "domain": "STRATEGY"
     },
     {
       "schema_version": "dispatch.v2",
@@ -9983,7 +10029,8 @@
         "plan_path": "docs/plans/_archive/xa-r2-deployment-config/plan.md",
         "completed_at": "2026-03-03T19:00:51.259Z",
         "outcome": "### TASK-01: Add R2 image URL env var to xa-b CI build step Added `NEXT_PUBLIC_XA_IMAGES_BASE_URL: ${{ vars.XA_IMAGES_BASE_URL }}` to the xa-b build step in `.github/workflows/xa.yml` (line 129), alongside the existing `XA_CATALOG_CONTRACT_"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -10027,7 +10074,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10071,7 +10120,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10115,7 +10166,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10159,7 +10212,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10203,7 +10258,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10258,7 +10315,8 @@
         "plan_path": "docs/plans/_archive/build-completion-deterministic-lifts/plan.md",
         "completed_at": "2026-03-03T20:49:28.606Z",
         "outcome": "Deterministic pre-fill scripts generate 60%+ of results-review and pattern-reflection content from build artifacts, reducing per-build token consumption by ~55%."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -10300,7 +10358,8 @@
         "plan_path": ".claude/skills/lp-do-ideas/modules/operator-idea-structured-intake.md",
         "completed_at": "2026-03-09T00:00:00.000Z",
         "outcome": "Fully implemented: 5 structured core questions plus 6 conditional evidence prompts (incident, deadline, recurrence, leakage, risk, metric). Deterministic assembly rules replace free-text LLM signal detection."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -10345,7 +10404,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10389,7 +10450,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10433,7 +10496,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10479,7 +10544,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10523,7 +10590,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10567,7 +10636,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10621,7 +10692,8 @@
         "plan_path": "docs/plans/standing-artifact-write-back-proposal-bridge/plan.md",
         "completed_at": "2026-03-09T17:27:32Z",
         "outcome": "Original deterministic write-back idea reconciled to completed status after the follow-on proposal bridge closed the remaining KPI observation-to-ProposedUpdate seam."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -10666,7 +10738,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10710,7 +10784,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10754,7 +10830,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -10809,7 +10887,8 @@
         "plan_path": "docs/plans/_archive/pattern-reflection-routing-promotion/plan.md",
         "completed_at": "2026-03-04T09:26:31.284Z",
         "outcome": "Delivered two deterministic scripts that read pattern-reflection routing outputs and produce actionable drafts, closing the reflection-to-action gap."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -10864,7 +10943,8 @@
         "plan_path": "docs/plans/_archive/pattern-reflection-routing-promotion/plan.md",
         "completed_at": "2026-03-04T09:26:31.284Z",
         "outcome": "Delivered two deterministic scripts that read pattern-reflection routing outputs and produce actionable drafts, closing the reflection-to-action gap."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -10913,7 +10993,8 @@
         "plan_path": "docs/plans/_archive/xa-b-design-polish/plan.md",
         "completed_at": "2026-03-04T13:13:40.164Z",
         "outcome": "All 4 empty state locations in the xa-b storefront (product listing, cart, wishlist, designers) now use the design-system `EmptyState` component with consistent xa-b achromatic styling: `rounded-sm` border, `border-border-1`, uppercase head"
-      }
+      },
+      "domain": "PRODUCTS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -10950,7 +11031,8 @@
         "source": "operator"
       },
       "created_at": "2026-03-04T12:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "enqueued",
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -10985,7 +11067,8 @@
         "source": "operator"
       },
       "created_at": "2026-03-04T12:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "enqueued",
+      "domain": "PRODUCTS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -11022,7 +11105,8 @@
         "source": "operator"
       },
       "created_at": "2026-03-04T12:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "enqueued",
+      "domain": "MARKET"
     },
     {
       "schema_version": "dispatch.v2",
@@ -11065,7 +11149,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11107,7 +11193,8 @@
         "type": "operational",
         "statement": "Produce a concrete remediation path for the missing repo-maturity controls and any current strictness cap reasons.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -11151,7 +11238,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11195,7 +11284,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11239,7 +11330,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11283,7 +11376,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11324,7 +11419,8 @@
         "type": "operational",
         "statement": "Produce a concrete remediation path for the missing repo-maturity controls and any current strictness cap reasons.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -11368,7 +11464,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11412,7 +11510,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11507,7 +11607,9 @@
         "type": "operational",
         "statement": "Produce a concrete remediation path for the missing repo-maturity controls and any current strictness cap reasons.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11557,7 +11659,8 @@
         "plan_path": "docs/plans/_archive/brik-private-accom-seo-content-regression/plan.md",
         "completed_at": "2026-03-04T11:32:42.450Z",
         "outcome": "**Meta tags and indexing (TASK-01):** Removed `{ optional: true }` from `getTranslations()` in `generateMetadata` so namespace load failures throw instead of silently returning raw i18n keys. Changed `isPublished: false` to `true` to remove"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -11610,7 +11713,8 @@
         "plan_path": "docs/plans/_archive/brik-private-accom-seo-content-regression/plan.md",
         "completed_at": "2026-03-04T11:32:42.450Z",
         "outcome": "**Meta tags and indexing (TASK-01):** Removed `{ optional: true }` from `getTranslations()` in `generateMetadata` so namespace load failures throw instead of silently returning raw i18n keys. Changed `isPublished: false` to `true` to remove"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -11661,7 +11765,8 @@
         "plan_path": "docs/plans/_archive/brik-private-accom-seo-content-regression/plan.md",
         "completed_at": "2026-03-04T11:32:42.450Z",
         "outcome": "**Meta tags and indexing (TASK-01):** Removed `{ optional: true }` from `getTranslations()` in `generateMetadata` so namespace load failures throw instead of silently returning raw i18n keys. Changed `isPublished: false` to `true` to remove"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -11702,7 +11807,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11746,7 +11853,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11790,7 +11899,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11834,7 +11945,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11878,7 +11991,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11922,7 +12037,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -11966,7 +12083,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12010,7 +12129,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12054,7 +12175,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12098,7 +12221,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12142,7 +12267,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12186,7 +12313,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12223,7 +12352,8 @@
         "type": "operational",
         "statement": "Define and implement enforceable size-budget checks and exception policy for lp-do-fact-find, lp-do-plan, and lp-do-build.",
         "source": "operator"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -12263,7 +12393,8 @@
         "plan_path": ".claude/skills/startup-loop/modules/cmd-advance/",
         "completed_at": "2026-03-09T00:00:00.000Z",
         "outcome": "cmd-advance.md split into 6 focused modules: advance-contract.md, assessment-gates.md, gap-fill-gates.md, market-product-website-gates.md, sell-gates.md, signals-gates.md. Was 532 lines monolith."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -12304,7 +12435,8 @@
       "completed_by": {
         "completed_at": "2026-03-09T18:23:00.000Z",
         "outcome": "H4/H5 deterministic-extraction and shrink-without-simplification heuristics are defined in .claude/skills/meta-loop-efficiency/SKILL.md, implemented in scripts/src/startup-loop/diagnostics/meta-loop-efficiency-audit.ts, covered by tests in scripts/src/startup-loop/__tests__/meta-loop-efficiency-audit.test.ts, and exercised successfully by the 2026-03-09 dry-run audit."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -12348,7 +12480,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12392,7 +12526,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12436,7 +12572,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12503,7 +12641,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12547,7 +12687,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12595,7 +12737,8 @@
         "plan_path": "docs/plans/_archive/xa-uploader-edit-add-parity/plan.md",
         "completed_at": "2026-03-04T15:46:06.054Z",
         "outcome": "Fixed three confirmed data-field bugs in the xa-uploader catalog editor so that Edit mode (Revise Existing tab) faithfully round-trips product data. **TASK-01 — Stale selectors + SizeSelector guard (Issues 1 & 2):** Added a React `key` prop"
-      }
+      },
+      "domain": "STRATEGY"
     },
     {
       "schema_version": "dispatch.v2",
@@ -12639,7 +12782,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12683,7 +12828,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12727,7 +12874,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12789,7 +12938,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12835,7 +12986,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12879,7 +13032,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -12925,7 +13080,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -13711,7 +13868,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -13757,7 +13916,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -13915,7 +14076,8 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T09:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "enqueued",
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -13951,7 +14113,8 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T09:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "enqueued",
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -13987,7 +14150,8 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T09:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "enqueued",
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -14031,7 +14195,8 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -14075,7 +14240,8 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -14119,7 +14285,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14163,7 +14331,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14207,7 +14377,8 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -14251,7 +14422,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14295,7 +14468,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14334,7 +14509,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14378,7 +14555,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14422,7 +14601,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14466,7 +14647,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14510,7 +14693,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14554,7 +14739,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14598,7 +14785,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14642,7 +14831,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14686,7 +14877,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14730,7 +14923,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14774,7 +14969,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14818,7 +15015,8 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -14862,7 +15060,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14915,7 +15115,9 @@
         "type": "operational",
         "statement": "Produce concrete follow-up work for the affected codebase surfaces, or explicitly close the structural signal as a no-op.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -14959,7 +15161,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15003,7 +15207,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15047,7 +15253,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15091,7 +15299,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15135,7 +15345,8 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -15179,7 +15390,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15223,7 +15436,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15267,7 +15482,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15311,7 +15528,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15355,7 +15574,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15399,7 +15620,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15443,7 +15666,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15487,7 +15712,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15544,7 +15771,8 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -15604,7 +15832,8 @@
         "plan_path": "docs/plans/_archive/reception-inbox-dismiss-feedback/plan.md",
         "completed_at": "2026-03-07T10:24:40.371Z",
         "outcome": "Staff can dismiss irrelevant inbox threads via Not relevant button with admission feedback trail"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -15648,7 +15877,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15692,7 +15923,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15736,7 +15969,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15780,7 +16015,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15824,7 +16061,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15868,7 +16107,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -15982,7 +16223,8 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -16026,7 +16268,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -16070,7 +16314,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "dispatch_id": "IDEA-DISPATCH-20260307112000-9030",
@@ -16216,7 +16462,9 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -16260,7 +16508,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -16304,7 +16554,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -16348,7 +16600,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -16392,7 +16646,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -16703,7 +16959,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -16747,7 +17005,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -16791,7 +17051,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -16914,7 +17176,9 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -16958,7 +17222,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17002,7 +17268,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17046,7 +17314,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17090,7 +17360,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17134,7 +17406,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17182,7 +17456,8 @@
         "plan_path": "docs/plans/_archive/reception-inbox-inprogress-recovery/plan.md",
         "completed_at": "2026-03-07T15:50:15.048Z",
         "outcome": "**TASK-01 (telemetry + query foundation):** Added `inbox_recovery` to the telemetry event type registry in `telemetry.server.ts`, enabling recovery actions to be logged in the D1 `thread_events` table. Added `findStaleAdmittedThreads` query"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -17231,7 +17506,8 @@
         "plan_path": "docs/plans/reception-inbox-draft-dedup/plan.md",
         "completed_at": "2026-03-07T14:59:42.841Z",
         "outcome": "**TASK-01 — `getPendingDraft` helper:** Added a new exported function `getPendingDraft(record)` to `api-models.server.ts` that filters the thread's drafts array by `status === \"generated\"` and returns the most recent match (or null). This i"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -17282,7 +17558,8 @@
         "plan_path": "docs/plans/_archive/reception-inbox-orphaned-labels/plan.md",
         "completed_at": "2026-03-07T14:52:45.927Z",
         "outcome": "New gmail_cleanup_labels MCP tool for on-demand orphaned label deletion with safety checks"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -17326,7 +17603,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17370,7 +17649,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17416,7 +17697,8 @@
         "plan_path": "docs/plans/_archive/reception-inbox-thread-filters/plan.md",
         "completed_at": "2026-03-07T15:51:43.642Z",
         "outcome": "Added client-side filter controls to the reception inbox ThreadList. A new `filters.ts` module defines five filter predicates (needs-draft, ready-to-send, sent, review-later, stale-sync) operating on the existing `InboxThreadSummary` type w"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -17466,7 +17748,8 @@
         "plan_path": "docs/plans/_archive/reception-inbox-guest-match-observability/plan.md",
         "completed_at": "2026-03-07T16:58:58.166Z",
         "outcome": "Guest matching failures are recorded as telemetry events with match success rate visible to operators."
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -17516,7 +17799,8 @@
         "plan_path": "docs/plans/_archive/reception-inbox-quality-check-debug/plan.md",
         "completed_at": "2026-03-09T12:32:02.045Z",
         "outcome": "Quality check failures now carry actionable failed-check detail across reception and MCP surfaces."
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -17565,7 +17849,8 @@
         "plan_path": "docs/plans/_archive/reception-inbox-context-history-bound/plan.md",
         "completed_at": "2026-03-09T10:54:25.982Z",
         "outcome": "The inbox thread-context bounding logic is now centralized in `apps/reception/src/lib/inbox/thread-context.ts`, with `MAX_THREAD_CONTEXT_MESSAGES` fixed at 20 and shared `boundMessages()` / `buildThreadContext()` helpers for consistent beha"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -17611,7 +17896,8 @@
         "micro_build_path": "docs/plans/_archive/reception-inbox-room-numbers-in-draft/micro-build.md",
         "completed_at": "2026-03-07T15:52:26.338Z",
         "outcome": "Threaded guest room numbers from thread metadata through the entire draft generation pipeline. Added `guestRoomNumbers` to `ThreadContext` (draft-pipeline.server.ts), `DraftGenerationInput` (draft-core/generate.ts), and all three call sites"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -17659,7 +17945,8 @@
         "plan_path": "docs/plans/_archive/reception-inbox-draft-failure-reasons/plan.md",
         "completed_at": "2026-03-07T17:01:50.312Z",
         "outcome": "TASK-01 added `deriveDraftFailureReason()` and `draftFailureReasonFromCode()` to `draft-pipeline.server.ts`. These functions extract staff-facing failure reason codes and messages from `AgentDraftResult`. The sync pipeline (`sync.server.ts`"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -17705,7 +17992,8 @@
         "plan_path": "docs/plans/_archive/reception-inbox-partial-sync-recovery/plan.md",
         "completed_at": "2026-03-07T16:52:32.360Z",
         "outcome": "**TASK-01: Per-thread error isolation and all-or-nothing checkpoint hold-back.** Extracted the entire per-thread processing body from `syncInbox()` into a new `processThread()` async helper function with a `ProcessThreadContext` parameter o"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -17756,7 +18044,9 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17800,7 +18090,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17844,7 +18136,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17888,7 +18182,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -17945,7 +18241,9 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea. XA-related content misclassified as BOS."
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18002,7 +18300,9 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18046,7 +18346,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18151,7 +18453,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18208,7 +18512,9 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea. XA-related content misclassified as BOS."
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18252,7 +18558,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18309,7 +18617,9 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18354,7 +18664,8 @@
         "micro_build_path": "docs/plans/_archive/xa-b-hermes-nav-taxonomy/micro-build.md",
         "completed_at": "2026-03-08T10:10:07.094Z",
         "outcome": "Completed via xa-b-hermes-nav-taxonomy."
-      }
+      },
+      "domain": "STRATEGY"
     },
     {
       "schema_version": "dispatch.v2",
@@ -18487,7 +18798,8 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -18531,7 +18843,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18575,7 +18889,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18619,7 +18935,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18663,7 +18981,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18707,7 +19027,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18802,7 +19124,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18846,7 +19170,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18890,7 +19216,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -18934,7 +19262,8 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -18978,7 +19307,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19022,7 +19353,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19066,7 +19399,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19110,7 +19445,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19154,7 +19491,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19198,7 +19537,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19242,7 +19583,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19286,7 +19629,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19330,7 +19675,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19374,7 +19721,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19418,7 +19767,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19462,7 +19813,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19728,7 +20081,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19772,7 +20127,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19816,7 +20173,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19860,7 +20219,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19904,7 +20265,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19948,7 +20311,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -19992,7 +20357,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -20411,7 +20778,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -20468,7 +20837,9 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -20512,7 +20883,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -20556,7 +20929,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -20817,7 +21192,8 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -20861,7 +21237,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -20905,7 +21283,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -20949,7 +21329,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -20993,7 +21375,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21037,7 +21421,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21081,7 +21467,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21125,7 +21513,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21182,7 +21572,9 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea. XA-related content misclassified as BOS."
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21226,7 +21618,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21270,7 +21664,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21314,7 +21710,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21358,7 +21756,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21402,7 +21802,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21446,7 +21848,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21490,7 +21894,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21534,7 +21940,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21761,7 +22169,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21805,7 +22215,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21849,7 +22261,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21893,7 +22307,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -21937,7 +22353,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22129,7 +22547,9 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22173,7 +22593,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22217,7 +22639,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22274,7 +22698,8 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea. XA-related content misclassified as BOS."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -22318,7 +22743,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22362,7 +22789,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22415,7 +22844,8 @@
       "suppressed_by": {
         "suppressed_at": "2026-03-09T00:00:00.000Z",
         "reason": "noise-stub: codebase-signals bridge auto-generated from file change diffs, not a real actionable idea."
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -22459,7 +22889,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22503,7 +22935,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22547,7 +22981,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22591,7 +23027,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22635,7 +23073,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22775,7 +23215,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22819,7 +23261,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22863,7 +23307,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22907,7 +23353,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22951,7 +23399,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -22995,7 +23445,9 @@
         "type": "operational",
         "statement": "Produce validated next actions for the surfaced agent-session findings and preserve their concrete evidence in downstream idea intake.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS",
+      "noise_flagged": true
     },
     {
       "schema_version": "dispatch.v2",
@@ -23156,7 +23608,8 @@
         "processed_at": "2026-03-09T21:10:30.000Z",
         "fact_find_slug": "startup-loop-centralized-math-foundations",
         "fact_find_path": "docs/plans/startup-loop-centralized-math-foundations/fact-find.md"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23223,7 +23676,8 @@
           "routing_target": "defer",
           "occurrence_count": 1
         }
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23288,7 +23742,8 @@
           "routing_target": "defer",
           "occurrence_count": 1
         }
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23348,7 +23803,8 @@
         "results_review_sidecar_path": "docs/plans/reception-mutation-return-type-standardisation/results-review.signals.json",
         "pattern_reflection_path": "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.user.md",
         "pattern_reflection_sidecar_path": null
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23408,7 +23864,8 @@
         "results_review_sidecar_path": "docs/plans/reception-theme-dark-mode-base-tokens/results-review.signals.json",
         "pattern_reflection_path": "docs/plans/reception-theme-dark-mode-base-tokens/pattern-reflection.user.md",
         "pattern_reflection_sidecar_path": null
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23465,7 +23922,8 @@
           "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
         ],
         "backfilled_at": "2026-03-10T12:25:35.035Z"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23522,7 +23980,8 @@
           "docs/plans/_archive/brikette-staging-upload-speed/pattern-reflection.entries.json"
         ],
         "backfilled_at": "2026-03-10T12:25:35.035Z"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23579,7 +24038,8 @@
           "docs/plans/_archive/reception-component-token-compliance/pattern-reflection.entries.json"
         ],
         "backfilled_at": "2026-03-10T12:25:35.035Z"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23636,7 +24096,8 @@
           "docs/plans/_archive/reception-date-selector-unification/pattern-reflection.entries.json"
         ],
         "backfilled_at": "2026-03-10T12:25:35.035Z"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23693,7 +24154,8 @@
           "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
         ],
         "backfilled_at": "2026-03-10T12:25:35.035Z"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23750,7 +24212,8 @@
           "docs/plans/_archive/reception-inbox-inprogress-recovery/pattern-reflection.entries.json"
         ],
         "backfilled_at": "2026-03-10T12:25:35.035Z"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23819,7 +24282,8 @@
           "routing_target": "loop_update",
           "occurrence_count": 1
         }
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23931,7 +24395,8 @@
         "type": "operational",
         "statement": "Produce a planning-ready fact-find for new standing data source add a standing ops feed for inbox recovery outcomes with preserved executor path lp-do-build:container:analytics-v1.",
         "source": "auto"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -23989,7 +24454,8 @@
         "type": "operational",
         "statement": "Produce a planning-ready fact-find for new loop process add a post deploy recovery telemetry review checkpoint with preserved executor path lp-do-build:container:feedback-intel-v1.",
         "source": "auto"
-      }
+      },
+      "domain": "BOS"
     },
     {
       "schema_version": "dispatch.v2",
@@ -24047,7 +24513,8 @@
         "type": "operational",
         "statement": "Produce a planning-ready fact-find for ai to mechanistic schedule gmail in progress reconciliation outside the agent loop with preserved executor path lp-do-build:container:analytics-v1.",
         "source": "auto"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -24105,7 +24572,8 @@
         "type": "operational",
         "statement": "Produce a planning-ready fact-find for ai to mechanistic extract shared pin digit colour array into a single constant with preserved executor path lp-do-build:container:analytics-v1.",
         "source": "auto"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -24146,7 +24614,8 @@
         "type": "operational",
         "statement": "resolveTranslatedCopy is defined once in apps/brikette/src/utils/i18nContent.ts and imported by all 4 former duplicates. TypeScript confirms no remaining inline copies.",
         "source": "operator"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -24187,7 +24656,8 @@
         "type": "operational",
         "statement": "createGuideLabelReader and buildBreadcrumb logic exists once in a shared module; each route module calls the factory. All 4 routes continue to pass their existing tests.",
         "source": "operator"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -24226,7 +24696,8 @@
         "type": "operational",
         "statement": "All 3 booking components expose typed label sub-objects; existing callers are updated and tests pass. No regression in booking flow behaviour.",
         "source": "operator"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -24261,7 +24732,8 @@
         "type": "operational",
         "statement": "buildIndex translation overhead is either confirmed negligible (i18next cache hit path documented) or replaced with a per-language cached index that avoids redundant lookups on language switch.",
         "source": "operator"
-      }
+      },
+      "domain": "SELL"
     },
     {
       "schema_version": "dispatch.v2",
@@ -25003,7 +25475,7 @@
       "mode": "trial",
       "business": "XA",
       "trigger": "operator_idea",
-      "domain": "BUILD",
+      "domain": "PRODUCTS",
       "artifact_id": null,
       "before_sha": null,
       "after_sha": "operator-idea-20260312-xa-security",
@@ -25062,7 +25534,7 @@
       "mode": "trial",
       "business": "XA",
       "trigger": "operator_idea",
-      "domain": "BUILD",
+      "domain": "PRODUCTS",
       "artifact_id": null,
       "before_sha": null,
       "after_sha": "operator-idea-20260312-xa-concurrency",
@@ -25123,7 +25595,7 @@
       "mode": "trial",
       "business": "XA",
       "trigger": "operator_idea",
-      "domain": "BUILD",
+      "domain": "PRODUCTS",
       "artifact_id": null,
       "before_sha": null,
       "after_sha": "operator-idea-20260312-xa-stability",
@@ -25174,7 +25646,7 @@
       "mode": "trial",
       "business": "XA",
       "trigger": "operator_idea",
-      "domain": "BUILD",
+      "domain": "PRODUCTS",
       "artifact_id": null,
       "before_sha": null,
       "after_sha": "operator-idea-20260312-xa-error-handling",
@@ -25222,7 +25694,7 @@
       "mode": "trial",
       "business": "XA",
       "trigger": "operator_idea",
-      "domain": "BUILD",
+      "domain": "PRODUCTS",
       "artifact_id": null,
       "before_sha": null,
       "after_sha": "operator-idea-20260312-xa-a11y",
@@ -25268,7 +25740,7 @@
       "mode": "trial",
       "business": "XA",
       "trigger": "operator_idea",
-      "domain": "BUILD",
+      "domain": "PRODUCTS",
       "artifact_id": null,
       "before_sha": null,
       "after_sha": "operator-idea-20260312-xa-cleanup",

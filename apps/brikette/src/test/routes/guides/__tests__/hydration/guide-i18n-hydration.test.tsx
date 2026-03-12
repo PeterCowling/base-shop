@@ -11,7 +11,7 @@ const addResourceBundleSpy = jest.fn();
 const changeLanguageSpy = jest.fn().mockResolvedValue(undefined);
 (i18n as unknown as Record<string, unknown>).changeLanguage = changeLanguageSpy;
 
-let assertNoRenderPhaseHydrationOnFirstUseTranslation = false;
+let assertRenderPhaseHydrationOnFirstUseTranslation = false;
 let firstUseTranslationCall = true;
 
 // Mock react-i18next with a controllable translator
@@ -19,8 +19,8 @@ const translationStore: Record<string, Record<string, string>> = {};
 
 jest.mock("react-i18next", () => ({
   useTranslation: (ns: string, opts?: { lng?: string }) => {
-    if (assertNoRenderPhaseHydrationOnFirstUseTranslation && firstUseTranslationCall) {
-      expect(addResourceBundleSpy).not.toHaveBeenCalled();
+    if (assertRenderPhaseHydrationOnFirstUseTranslation && firstUseTranslationCall) {
+      expect(addResourceBundleSpy).toHaveBeenCalled();
       firstUseTranslationCall = false;
     }
 
@@ -75,7 +75,7 @@ beforeEach(() => {
   addResourceBundleSpy.mockClear();
   changeLanguageSpy.mockClear();
   for (const key of Object.keys(translationStore)) delete translationStore[key];
-  assertNoRenderPhaseHydrationOnFirstUseTranslation = false;
+  assertRenderPhaseHydrationOnFirstUseTranslation = false;
   firstUseTranslationCall = true;
 });
 
@@ -153,8 +153,8 @@ describe("GuideContent i18n hydration", () => {
     expect(addResourceBundleSpy).not.toHaveBeenCalled();
   });
 
-  it("does not hydrate i18n in render before first translation hook executes", async () => {
-    assertNoRenderPhaseHydrationOnFirstUseTranslation = true;
+  it("hydrates i18n in render before first translation hook executes", async () => {
+    assertRenderPhaseHydrationOnFirstUseTranslation = true;
 
     const serverGuides = {
       content: { positanoMainBeach: { intro: ["Beach intro"] } },
@@ -169,7 +169,7 @@ describe("GuideContent i18n hydration", () => {
     );
 
     await waitFor(() => {
-      expect(addResourceBundleSpy).toHaveBeenCalledTimes(1);
+      expect(addResourceBundleSpy).toHaveBeenCalledTimes(2);
     });
   });
 
@@ -187,7 +187,7 @@ describe("GuideContent i18n hydration", () => {
     );
 
     await waitFor(() => {
-      expect(addResourceBundleSpy).toHaveBeenCalledTimes(1);
+      expect(addResourceBundleSpy).toHaveBeenCalledTimes(2);
     });
 
     // Re-render with same props
@@ -199,7 +199,8 @@ describe("GuideContent i18n hydration", () => {
       />,
     );
 
-    // Should still be 1 — effect dependencies should not re-run for identical props
-    expect(addResourceBundleSpy).toHaveBeenCalledTimes(1);
+    // Render-phase seeding plus the initial effect are expected once each.
+    // Re-rendering with identical props should not add any more writes.
+    expect(addResourceBundleSpy).toHaveBeenCalledTimes(2);
   });
 });

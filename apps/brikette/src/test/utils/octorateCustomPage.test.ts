@@ -6,7 +6,7 @@ describe("octorateCustomPage helpers", () => {
     jest.unmock("@/config/env");
   });
 
-  it("buildHostelBookingTarget returns the direct Octorate URL when the custom-page flag is off", () => {
+  it("buildHostelBookingTarget returns the branded secure-booking route when the widget flag is off", () => {
     jest.isolateModules(() => {
       const { buildHostelBookingTarget } =
         require("@/utils/octorateCustomPage") as typeof import("@/utils/octorateCustomPage");
@@ -27,9 +27,11 @@ describe("octorateCustomPage helpers", () => {
         throw new Error(`Expected ok result, got ${result.error}`);
       }
 
-      expect(result.mode).toBe("direct");
-      expect(result.url).toContain("book.octorate.com/octobook/site/reservation/result.xhtml");
-      expect(result.url).toBe(result.directUrl);
+      expect(result.mode).toBe("summary_page");
+      expect(result.url).toBe(
+        "/en/book/secure-booking?checkin=2026-06-16&checkout=2026-06-18&pax=2&plan=nr&room=room_10",
+      );
+      expect(result.directUrl).toContain("book.octorate.com/octobook/site/reservation/result.xhtml");
     });
   });
 

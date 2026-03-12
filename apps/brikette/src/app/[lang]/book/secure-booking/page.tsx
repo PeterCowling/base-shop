@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
 
 import buildCfImageUrl from "@acme/ui/lib/buildCfImageUrl";
 
@@ -61,10 +60,6 @@ export default async function SecureBookingPage({ params }: Props) {
   const { lang } = await params;
   const validLang = toAppLanguage(lang);
 
-  if (!OCTORATE_CUSTOM_PAGE_ENABLED) {
-    notFound();
-  }
-
   const [tBook, tRooms] = await Promise.all([
     getTranslations(validLang, ["bookPage"], { optional: true }),
     getTranslations(validLang, ["roomsPage"], { optional: true }),
@@ -94,7 +89,32 @@ export default async function SecureBookingPage({ params }: Props) {
   const continueLabel = resolveLabel(
     tBook,
     "secureBooking.continueLabel",
-    "Continue to secure booking",
+    "",
+  );
+  const secureBookingHeading = resolveLabel(
+    tBook,
+    "secureBooking.heading",
+    "",
+  );
+  const secureBookingSupporting = resolveLabel(
+    tBook,
+    "secureBooking.supportingText",
+    "",
+  );
+  const secureBookingReady = resolveLabel(
+    tBook,
+    "secureBooking.readyText",
+    "",
+  );
+  const secureBookingFallbackTitle = resolveLabel(
+    tBook,
+    "secureBooking.fallbackTitle",
+    "",
+  );
+  const secureBookingFallbackBody = resolveLabel(
+    tBook,
+    "secureBooking.fallbackBody",
+    "",
   );
   /* eslint-enable ds/no-hardcoded-copy */
 
@@ -107,27 +127,39 @@ export default async function SecureBookingPage({ params }: Props) {
             bookingCode={BOOKING_CODE}
             labels={{
               continue: continueLabel,
-              heading: resolveLabel(tBook, "secureBooking.heading", ""),
-              loading: resolveLabel(tBook, "secureBooking.loadingText", ""),
-              ready: resolveLabel(tBook, "secureBooking.readyText", ""),
-              fallbackTitle: resolveLabel(tBook, "secureBooking.fallbackTitle", ""),
-              fallbackBody: resolveLabel(tBook, "secureBooking.fallbackBody", ""),
-              security: resolveLabel(tBook, "secureBooking.securityNote", ""),
+              heading: secureBookingHeading,
+              loading: resolveLabel(
+                tBook,
+                "secureBooking.loadingText",
+                "",
+              ),
+              ready: secureBookingReady,
+              fallbackTitle: secureBookingFallbackTitle,
+              fallbackBody: secureBookingFallbackBody,
+              security: resolveLabel(
+                tBook,
+                "secureBooking.securityNote",
+                "",
+              ),
               step: resolveLabel(tBook, "secureBooking.stepLabel", ""),
-              supporting: resolveLabel(tBook, "secureBooking.supportingText", ""),
-              widgetHost: resolveLabel(tBook, "secureBooking.widgetHostLabel", ""),
+              supporting: secureBookingSupporting,
+              widgetHost: resolveLabel(
+                tBook,
+                "secureBooking.widgetHostLabel",
+                "",
+              ),
             }}
             ratePlanLabels={ratePlanLabels}
             roomLabels={roomLabels}
             summaryLabels={{
-              checkin: resolveLabel(tBook, "secureBooking.labels.checkIn", "Check-in"),
-              checkout: resolveLabel(tBook, "secureBooking.labels.checkOut", "Check-out"),
-              guests: resolveLabel(tBook, "secureBooking.labels.guests", "Guests"),
-              rate: resolveLabel(tBook, "secureBooking.labels.ratePlan", "Rate plan"),
-              room: resolveLabel(tBook, "secureBooking.labels.room", "Room"),
+              checkin: resolveLabel(tBook, "secureBooking.labels.checkIn", ""),
+              checkout: resolveLabel(tBook, "secureBooking.labels.checkOut", ""),
+              guests: resolveLabel(tBook, "secureBooking.labels.guests", ""),
+              rate: resolveLabel(tBook, "secureBooking.labels.ratePlan", ""),
+              room: resolveLabel(tBook, "secureBooking.labels.room", ""),
             }}
-            widgetGlobalKey={OCTORATE_CUSTOM_PAGE_GLOBAL_KEY}
-            widgetScriptSrc={OCTORATE_CUSTOM_PAGE_SCRIPT_SRC}
+            widgetGlobalKey={OCTORATE_CUSTOM_PAGE_ENABLED ? OCTORATE_CUSTOM_PAGE_GLOBAL_KEY : undefined}
+            widgetScriptSrc={OCTORATE_CUSTOM_PAGE_ENABLED ? OCTORATE_CUSTOM_PAGE_SCRIPT_SRC : undefined}
           />
         </Suspense>
       </main>

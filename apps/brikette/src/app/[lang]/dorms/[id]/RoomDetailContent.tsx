@@ -36,8 +36,8 @@ import { usePagePreload } from "@/hooks/usePagePreload";
 import { useRoomDetailBookingState } from "@/hooks/useRoomDetailBookingState";
 import i18n from "@/i18n";
 import type { AppLanguage } from "@/i18n.config";
-import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { buildRoomItem, createBrikClickId, fireViewItem } from "@/utils/ga4-events";
+import { buildHostelBookingTarget } from "@/utils/octorateCustomPage";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
 
 type Props = {
@@ -122,7 +122,8 @@ export default function RoomDetailContent({ lang, id }: Props) {
   );
   const stickyOctorateUrlResult = useMemo(
     () =>
-      buildOctorateUrl({
+      buildHostelBookingTarget({
+        lang,
         checkin: pickerCheckIn,
         checkout: pickerCheckOut,
         pax: pickerAdults,
@@ -131,7 +132,7 @@ export default function RoomDetailContent({ lang, id }: Props) {
         octorateRateCode: room.rateCodes.direct.nr,
         bookingCode: BOOKING_CODE,
       }),
-    [pickerCheckIn, pickerCheckOut, pickerAdults, room.sku, room.rateCodes.direct.nr],
+    [lang, pickerCheckIn, pickerCheckOut, pickerAdults, room.sku, room.rateCodes.direct.nr],
   );
   const stickyOctorateUrl = stickyOctorateUrlResult.ok ? stickyOctorateUrlResult.url : undefined;
 

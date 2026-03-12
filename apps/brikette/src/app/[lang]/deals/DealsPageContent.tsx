@@ -91,6 +91,15 @@ type DealsPrimaryCtaModel = {
   }>;
 };
 
+function appendDealParam(href: string, dealId?: string | null): string {
+  if (!dealId) return href;
+  const [pathname, query = ""] = href.split("?");
+  const params = new URLSearchParams(query);
+  params.set("deal", dealId);
+  const nextQuery = params.toString();
+  return nextQuery ? `${pathname}?${nextQuery}` : pathname;
+}
+
 function DealGridSection({
   heading,
   lang,
@@ -377,6 +386,7 @@ function DealsPageContent({ lang }: Props) {
 
   const headlineDeal = activeDeals[0]?.deal ?? upcomingDeals[0]?.deal ?? PRIMARY_DEAL;
   const headlineStatus = resolveHeadlineStatus(activeDeals, upcomingDeals);
+  const activeDealId = headlineStatus === "active" ? headlineDeal.id : null;
 
   const percentValue = headlineDeal.discountPct;
   const percentLabel = formatPercent(lang, percentValue);
@@ -415,8 +425,8 @@ function DealsPageContent({ lang }: Props) {
     defaultSubtitle,
   });
   const bookingSurface = useMemo(
-    () => resolveIntentAwareBookingSurface(lang, currentAttribution),
-    [currentAttribution, lang],
+    () => resolveIntentAwareBookingSurface(lang, currentAttribution, { dealId: activeDealId }),
+    [activeDealId, currentAttribution, lang],
   );
   const dormsLabel = (tHeader("rooms", { defaultValue: "Dorms" }) as string) || "Dorms";
   const privateBookingLabel =
@@ -428,6 +438,11 @@ function DealsPageContent({ lang }: Props) {
     [dormsLabel, privateBookingLabel],
   );
   const routeDealsSelection = useCallback((input: RoutedDealOption) => {
+    const nextHref =
+      input.resolvedIntent === "hostel"
+        ? appendDealParam(input.href, activeDealId)
+        : input.href;
+
     writeAttribution({
       source_surface: "deals_page",
       source_cta: "deals_primary_cta",
@@ -437,11 +452,11 @@ function DealsPageContent({ lang }: Props) {
       destination_funnel: input.destinationFunnel,
       locale: lang,
       fallback_triggered: false,
-      next_page: input.href,
+      next_page: nextHref,
     });
 
-    router.push(input.href);
-  }, [lang, router]);
+    router.push(nextHref);
+  }, [activeDealId, lang, router]);
   const dealsPrimaryCta = useMemo(
     () => buildDealsPrimaryCta({ bookingCopy, bookingSurface, lang, routeDealsSelection }),
     [bookingCopy, bookingSurface, lang, routeDealsSelection],

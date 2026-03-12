@@ -26,12 +26,9 @@ import { type RoomId, websiteVisibleRoomsData } from "@/data/roomsData";
 import { useAvailability } from "@/hooks/useAvailability";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import { useRecoveryResumeFallback } from "@/hooks/useRecoveryResumeFallback";
+import { isRoomBookingSearchValid } from "@/hooks/useRoomDetailBookingState";
 import type { AppLanguage } from "@/i18n.config";
 import type { RoomQueryState } from "@/types/booking";
-import {
-  isValidPax,
-  isValidStayRange,
-} from "@/utils/bookingDateRules";
 import { buildBookingQueryString } from "@/utils/bookingQuery";
 import {
   type BookingSearchSource,
@@ -69,13 +66,9 @@ function writeCanonicalBookingQuery(next: { checkin: string; checkout: string; p
   window.history.replaceState(null, "", url.toString());
 }
 
-function isValidSearch(checkIn: string, checkOut: string, pax: number): boolean {
-  return checkIn.length > 0 && checkOut.length > 0 && isValidStayRange(checkIn, checkOut) && isValidPax(pax);
-}
-
 function deriveRoomQueryState(checkin: string, checkout: string, pax: number): RoomQueryState {
   if (!checkin || !checkout) return "absent";
-  return isValidSearch(checkin, checkout, pax) ? "valid" : "invalid";
+  return isRoomBookingSearchValid(checkin, checkout, pax) ? "valid" : "invalid";
 }
 
 function deriveMountedSearchPayload(
@@ -84,7 +77,7 @@ function deriveMountedSearchPayload(
   initialCheckout: string,
   initialPax: number,
 ): SearchAvailabilityPayload | null {
-  if (source !== "url" || !isValidSearch(initialCheckin, initialCheckout, initialPax)) return null;
+  if (source !== "url" || !isRoomBookingSearchValid(initialCheckin, initialCheckout, initialPax)) return null;
   return { checkin: initialCheckin, checkout: initialCheckout, pax: initialPax };
 }
 
@@ -126,7 +119,7 @@ function scheduleSearchAvailabilityFire(
   pax: number,
   lastSearchKeyRef: MutableRefObject<string | null>,
 ): (() => void) | undefined {
-  if (!isValidSearch(checkin, checkout, pax)) return undefined;
+  if (!isRoomBookingSearchValid(checkin, checkout, pax)) return undefined;
   const key = `${checkin}|${checkout}|${pax}`;
   if (lastSearchKeyRef.current === key) return undefined;
   const timer = window.setTimeout(() => {
@@ -140,7 +133,7 @@ function scheduleSearchAvailabilityFire(
 function renderDealBanner(deal: string | null, t: TranslateFn): JSX.Element | null {
   if (!deal) return null;
   return (
-    <div className="sticky top-0 bg-brand-secondary px-4 py-2 text-center text-sm font-semibold text-brand-on-accent">
+    <div className="mx-4 mt-4 rounded-2xl bg-brand-secondary/12 px-4 py-3 text-center text-sm font-semibold text-brand-heading">
       {t("dealBanner.applied", { defaultValue: `Deal applied: ${deal}`, replace: { code: deal } }) as string}
     </div>
   );
@@ -247,7 +240,7 @@ function BookPageContent({
     if (!fromStore) return;
 
     const { checkin: storeCheckin, checkout: storeCheckout, pax: storePax } = fromStore.search;
-    if (!isValidSearch(storeCheckin, storeCheckout, storePax)) return;
+    if (!isRoomBookingSearchValid(storeCheckin, storeCheckout, storePax)) return;
 
     setRange({
       from: safeParseIso(storeCheckin),

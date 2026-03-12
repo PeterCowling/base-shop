@@ -252,6 +252,10 @@
       "type": "Tipo",
       "beds": "Letti"
     },
+    "mobile": {
+      "more": "Altri filtri",
+      "hide": "Nascondi filtri"
+    },
     "views": {
       "all": "Tutte le viste",
       "sea": "Vista mare",
@@ -270,6 +274,10 @@
   "ctaSuffix": {
     "nonRefundable": "Non rimborsabile",
     "flexible": "Flessibile"
+  },
+  "ratePlanDescriptions": {
+    "nonRefundable": "Pagamento completo oggi. Nessuna cancellazione gratuita.",
+    "flexible": "Paga dopo. Cancellazione gratuita fino a 3 giorni prima dell'arrivo."
   },
   "details": "Dettagli",
   "ratesFrom": "Da €{{price}}",

@@ -24,7 +24,7 @@ export type BuildHostelBookingTargetResult =
   | {
       ok: true;
       directUrl: string;
-      mode: "custom_page" | "direct";
+      mode: "custom_page" | "summary_page";
       url: string;
     }
   | Extract<BuildOctorateUrlResult, { ok: false }>;
@@ -94,23 +94,20 @@ export function buildHostelBookingTarget(
   const directResult = buildOctorateUrl(params);
   if (!directResult.ok) return directResult;
 
-  const mode = OCTORATE_CUSTOM_PAGE_ENABLED ? "custom_page" : "direct";
+  const mode = OCTORATE_CUSTOM_PAGE_ENABLED ? "custom_page" : "summary_page";
   return {
     ok: true,
     directUrl: directResult.url,
     mode,
-    url:
-      mode === "custom_page"
-        ? buildSecureBookingRouteUrl({
-            lang: params.lang,
-            checkin: params.checkin,
-            checkout: params.checkout,
-            pax: params.pax,
-            plan: params.plan,
-            roomSku: params.roomSku,
-            ...(params.deal ? { deal: params.deal } : {}),
-          })
-        : directResult.url,
+    url: buildSecureBookingRouteUrl({
+      lang: params.lang,
+      checkin: params.checkin,
+      checkout: params.checkout,
+      pax: params.pax,
+      plan: params.plan,
+      roomSku: params.roomSku,
+      ...(params.deal ? { deal: params.deal } : {}),
+    }),
   };
 }
 

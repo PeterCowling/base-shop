@@ -136,6 +136,29 @@ describe("OctorateCustomPageShell", () => {
     expect(screen.getByRole("link", { name: COPY.labels.continue })).toHaveAttribute("href", directUrl);
   });
 
+  it("shows a branded continue card when no embed runtime is configured", async () => {
+    const directUrl = getDirectUrl();
+
+    render(
+      <OctorateCustomPageShell
+        {...COPY}
+        directUrl={directUrl}
+        summary={{
+          checkin: "2026-06-16",
+          checkout: "2026-06-18",
+          pax: 2,
+          ratePlanLabel: "Non-refundable",
+          roomName: "10 Bed Mixed Dorm",
+        }}
+      />,
+    );
+
+    expect(screen.getByText(COPY.labels.fallbackTitle)).toBeInTheDocument();
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: COPY.labels.continue })).toHaveAttribute("href", directUrl);
+    expect(await screen.findByText(COPY.labels.ready)).toBeInTheDocument();
+  });
+
   it("loads an external widget script and calls the global bootstrap when configured", async () => {
     const directUrl = getDirectUrl();
     const widgetScriptSrc = "https://cdn.example.test/octorate-widget.js";

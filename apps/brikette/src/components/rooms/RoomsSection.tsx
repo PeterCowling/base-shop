@@ -10,9 +10,9 @@ import type { OctorateRoom } from "@/hooks/useAvailability";
 import type { AppLanguage } from "@/i18n.config";
 import type { RoomQueryState } from "@/types/booking";
 import { aggregateAvailabilityByCategory } from "@/utils/aggregateAvailabilityByCategory";
-import { buildOctorateUrl } from "@/utils/buildOctorateUrl";
 import { readAttribution } from "@/utils/entryAttribution";
 import { createBrikClickId, fireSelectItem, type ItemListId, type RatePlan } from "@/utils/ga4-events";
+import { buildHostelBookingTarget } from "@/utils/octorateCustomPage";
 import { trackThenNavigate } from "@/utils/trackThenNavigate";
 import { translatePath } from "@/utils/translate-path";
 
@@ -140,7 +140,8 @@ export function RoomsSection({
   const resolveValidBookingUrl = (ctx: { roomSku: string; plan: RatePlan }): string | null => {
     const room = visibleRoomsData.find((r) => r.id === ctx.roomSku);
     if (!room) return null;
-    const result = buildOctorateUrl({
+    const result = buildHostelBookingTarget({
+      lang: (props.lang ?? "en") as AppLanguage,
       checkin: props.bookingQuery?.checkIn ?? "",
       checkout: props.bookingQuery?.checkOut ?? "",
       pax: parseInt(props.bookingQuery?.pax ?? "1", 10) || 1,
@@ -222,7 +223,7 @@ export function RoomsSection({
     if (queryState === "valid") {
       const targetUrl = resolveValidBookingUrl(ctx);
       if (targetUrl) {
-        // Navigate directly to Octorate using the booking query dates.
+        // Navigate into the branded secure-booking handoff using the booking query dates.
         // TC-02/TC-03/TC-04: wrap in trackThenNavigate for reliable beacon dispatch.
         startTrackedCheckoutNavigation({ roomSku: ctx.roomSku, plan: ctx.plan, targetUrl });
         return;

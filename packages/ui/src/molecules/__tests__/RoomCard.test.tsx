@@ -162,4 +162,28 @@ describe("RoomCard (design system)", () => {
 
     expect(screen.getByText("Nessuna immagine")).toBeInTheDocument();
   });
+
+  it("renders rate-plan descriptions under action buttons when provided", () => {
+    renderRoomCard({
+      actions: [
+        {
+          id: "nr",
+          label: "Non-Refundable",
+          description: "Pay in full today. No free cancellation.",
+          onSelect: jest.fn(),
+        },
+        {
+          id: "flex",
+          label: "Flexible",
+          description: "Pay later. Free cancellation up to 3 days before arrival.",
+          onSelect: jest.fn(),
+        },
+      ],
+    });
+
+    expect(screen.getByText("Pay in full today. No free cancellation.")).toBeInTheDocument();
+    expect(
+      screen.getByText("Pay later. Free cancellation up to 3 days before arrival."),
+    ).toBeInTheDocument();
+  });
 });

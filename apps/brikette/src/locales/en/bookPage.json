@@ -8,6 +8,29 @@
   "dealBanner": {
     "applied": "Deal applied: {{code}}"
   },
+  "secureBooking": {
+    "meta": {
+      "title": "Review Your Stay | Hostel Brikette Secure Booking",
+      "description": "Review your dates, guests, room, and rate before continuing to Hostel Brikette's official booking engine."
+    },
+    "continueLabel": "Continue to secure booking",
+    "heading": "Review your stay before secure booking",
+    "supportingText": "Check your dates, guests, room, and rate before you continue to our official booking engine.",
+    "loadingText": "Loading secure booking details…",
+    "readyText": "Booking details confirmed. Continue when you are ready.",
+    "fallbackTitle": "Continue to secure booking",
+    "fallbackBody": "You are about to leave Brikette for our official booking engine to confirm availability and payment.",
+    "securityNote": "Availability and payment are completed on our official booking engine.",
+    "stepLabel": "Official booking step",
+    "widgetHostLabel": "Secure booking host",
+    "labels": {
+      "checkIn": "Check-in",
+      "checkOut": "Check-out",
+      "guests": "Guests",
+      "ratePlan": "Rate plan",
+      "room": "Room"
+    }
+  },
   "roomLabel": "Room",
   "cta": {
     "flex": "Flexible – Go to checkout",

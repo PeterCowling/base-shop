@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import {
+  Button,
   Tag,
 } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives/Inline";
@@ -15,6 +16,42 @@ import type { ActivePlanProgress } from "@/lib/process-improvements/active-plans
 
 const ALL_BUSINESSES_FILTER = "all-businesses";
 const AUTO_REFRESH_INTERVAL_MS = 30_000;
+const SNOOZE_STORAGE_KEY = "bos:plan-snooze:v1";
+
+// --- Snooze helpers ---
+
+function readSnoozeMap(): Record<string, string> {
+  try {
+    const raw = window.localStorage.getItem(SNOOZE_STORAGE_KEY);
+    if (raw === null) return {};
+    const parsed: unknown = JSON.parse(raw);
+    if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
+      return {};
+    }
+    return parsed as Record<string, string>;
+  } catch {
+    return {};
+  }
+}
+
+function snoozePlan(slug: string, days: number): void {
+  try {
+    const existing = readSnoozeMap();
+    const expiryMs = Date.now() + days * 24 * 60 * 60 * 1000;
+    const updated = { ...existing, [slug]: new Date(expiryMs).toISOString() };
+    window.localStorage.setItem(SNOOZE_STORAGE_KEY, JSON.stringify(updated));
+  } catch {
+    // localStorage unavailable — silently degrade
+  }
+}
+
+function isSnoozed(slug: string, snoozeMap: Record<string, string>): boolean {
+  const expiry = snoozeMap[slug];
+  if (!expiry) return false;
+  const expiryMs = Date.parse(expiry);
+  if (!Number.isFinite(expiryMs)) return false;
+  return Date.now() < expiryMs;
+}
 
 interface InProgressInboxProps {
   initialActivePlans: ActivePlanProgress[];
@@ -149,7 +186,13 @@ function ActivePlanActivitySummary({
   );
 }
 
-export function ActivePlanCard({ plan }: { plan: ActivePlanProgress }) {
+export function ActivePlanCard({
+  plan,
+  onSnooze,
+}: {
+  plan: ActivePlanProgress;
+  onSnooze?: (slug: string, days: number) => void;
+}) {
   const progress = plan.tasksTotal > 0 ? plan.tasksComplete / plan.tasksTotal : 0;
   const progressPercent = Math.round(progress * 100);
   const hasBlocked = plan.tasksBlocked > 0;
@@ -302,13 +345,41 @@ export function ActivePlanCard({ plan }: { plan: ActivePlanProgress }) {
               ))}
             </Inline>
           ) : null}
+
+          {/* Snooze actions */}
+          {onSnooze ? (
+            <Inline gap={2}>
+              <Button
+                size="sm"
+                color="default"
+                tone="outline"
+                onClick={() => onSnooze(plan.slug, 3)}
+              >
+                Snooze for 3 days
+              </Button>
+              <Button
+                size="sm"
+                color="default"
+                tone="outline"
+                onClick={() => onSnooze(plan.slug, 7)}
+              >
+                Snooze for 7 days
+              </Button>
+            </Inline>
+          ) : null}
         </div>
       </div>
     </div>
   );
 }
 
-function InProgressSection({ activePlans }: { activePlans: ActivePlanProgress[] }) {
+function InProgressSection({
+  activePlans,
+  onSnooze,
+}: {
+  activePlans: ActivePlanProgress[];
+  onSnooze: (slug: string, days: number) => void;
+}) {
   if (activePlans.length === 0) {
     return (
       <section id="in-progress" className="scroll-mt-4 space-y-3">
@@ -351,7 +422,7 @@ function InProgressSection({ activePlans }: { activePlans: ActivePlanProgress[] 
 
       <div className="space-y-2">
         {activePlans.map((plan) => (
-          <ActivePlanCard key={plan.slug} plan={plan} />
+          <ActivePlanCard key={plan.slug} plan={plan} onSnooze={onSnooze} />
         ))}
       </div>
     </section>
@@ -401,22 +472,41 @@ function useInProgressAutoRefresh(
 export function InProgressInbox({ initialActivePlans }: InProgressInboxProps) {
   const [activePlans, setActivePlans] = useState(initialActivePlans);
   const [selectedBusiness, setSelectedBusiness] = useState(ALL_BUSINESSES_FILTER);
+  const [snoozeMap, setSnoozeMap] = useState<Record<string, string>>({});
+  const [isMounted, setIsMounted] = useState(false);
 
   void setSelectedBusiness;
 
+  useEffect(() => {
+    setSnoozeMap(readSnoozeMap());
+    setIsMounted(true);
+  }, []);
+
+  const handleSnooze = (slug: string, days: number) => {
+    snoozePlan(slug, days);
+    setSnoozeMap(readSnoozeMap());
+  };
+
   const filteredActivePlans = useMemo(
     () =>
-      selectedBusiness === ALL_BUSINESSES_FILTER
+      (selectedBusiness === ALL_BUSINESSES_FILTER
         ? activePlans
-        : activePlans.filter((p) => p.business === selectedBusiness),
-    [activePlans, selectedBusiness]
+        : activePlans.filter((p) => p.business === selectedBusiness)
+      )
+        .filter((p) => p.tasksTotal === 0 || p.tasksComplete < p.tasksTotal)
+        .filter((p) => !isSnoozed(p.slug, snoozeMap)),
+    [activePlans, selectedBusiness, snoozeMap]
   );
 
   useInProgressAutoRefresh(setActivePlans, false);
 
+  if (!isMounted) {
+    return null;
+  }
+
   return (
     <div className="space-y-5">
-      <InProgressSection activePlans={filteredActivePlans} />
+      <InProgressSection activePlans={filteredActivePlans} onSnooze={handleSnooze} />
     </div>
   );
 }

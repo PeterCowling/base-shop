@@ -29,7 +29,7 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - [x] TASK-08: Investigate an isolated Codex runner contract for patch-return offload
 - [x] TASK-09: Spike the isolated runner and require a prompt unified-diff artifact
 - [x] TASK-10: Investigate reliable final-output and artifact-extraction channels under the isolated runner
-- [ ] TASK-11: Spike one bounded artifact-emission path under the isolated runner
+- [x] TASK-11: Spike one bounded artifact-emission path under the isolated runner
 - [ ] TASK-03: Implement the shared patch-return protocol and pilot-facing executor docs
 - [ ] TASK-04: Implement the patch-return helper that assembles packets and captures returned patch artifacts
 - [ ] TASK-05: Spike the serialized apply window with fingerprint checks
@@ -89,9 +89,9 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 | TASK-08 | INVESTIGATE | Determine an isolated Codex runner contract that avoids default MCP and state-runtime interference | 75% | M | Complete (2026-03-09) | TASK-02 | TASK-09 |
 | TASK-09 | SPIKE | Validate the isolated runner in a temp repo and require prompt unified-diff emission | 80% | S | Complete (2026-03-09) | TASK-08 | TASK-10, TASK-11 |
 | TASK-10 | INVESTIGATE | Determine which final-output and artifact-extraction channel is reliable under the isolated runner | 75% | M | Complete (2026-03-12) | TASK-09 | TASK-11 |
-| TASK-11 | SPIKE | Validate one bounded artifact-emission path under the isolated runner and require prompt emitted output | 82% | S | Pending | TASK-10 | TASK-03 |
-| TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 72% (-> 85% conditional on TASK-10, TASK-11) | M | Pending | TASK-11 | TASK-04 |
-| TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 68% (-> 82% conditional on TASK-03, TASK-11) | M | Pending | TASK-03 | TASK-05 |
+| TASK-11 | SPIKE | Validate one bounded artifact-emission path under the isolated runner and require prompt emitted output | 82% | S | Complete (2026-03-12) | TASK-10 | TASK-03 |
+| TASK-03 | IMPLEMENT | Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot | 85% | M | Pending | TASK-11 | TASK-04 |
+| TASK-04 | IMPLEMENT | Add the patch-return offload helper that materializes task packets and captures returned patch artifacts | 82% | M | Pending | TASK-03 | TASK-05 |
 | TASK-05 | SPIKE | Validate serialized apply-window behavior with fingerprints and a controlled patch artifact | 72% (-> 82% conditional on TASK-04, TASK-11) | S | Pending | TASK-04 | TASK-06 |
 | TASK-06 | CHECKPOINT | Reassess pilot wiring from TASK-05 apply-window evidence | 95% | S | Pending | TASK-05 | TASK-07 |
 | TASK-07 | IMPLEMENT | Wire `build-biz` to the patch-return pilot with explicit shared-checkout fallback | 74% (-> 84% conditional on TASK-06) | M | Pending | TASK-06 | - |
@@ -339,6 +339,15 @@ This plan implements the next slice identified by `writer-lock-operational-harde
 - **Documentation impact:** adds the next artifact-emission spike result for this plan
 - **Notes / references:**
   - `docs/plans/writer-lock-patch-return-offload/artifact-emission-investigation.md`
+  - `docs/plans/writer-lock-patch-return-offload/spike-11-artifact-emission.md`
+  - Build evidence (2026-03-12):
+    - Used TASK-10 recommended contract: `-o` flag with self-contained pure-text-transformation prompt, isolated CODEX_HOME (gpt-5.4, no MCP servers).
+    - Exit code 0. `last-message.txt` contained a clean unified diff (`-alpha / +beta`). Run completed promptly without manual kill.
+    - TC-01, TC-02, TC-03 all pass.
+    - Shared checkout unchanged. Temp repo file unchanged.
+    - TASK-03 confidence actualized to 85% (was 72%, conditional on TASK-10/11 now resolved).
+    - TASK-04 confidence actualized to 82% (was 68%, conditional on TASK-03/11 now resolved).
+    - Both TASK-03 and TASK-04 are now above their IMPLEMENT threshold (>=80%).
 
 ### TASK-03: Update the shared build-offload protocol and business-artifact executor docs for the patch-return pilot
 - **Type:** IMPLEMENT

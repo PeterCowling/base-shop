@@ -222,6 +222,8 @@ model_reasoning_effort = "high"
 personality = "pragmatic"
 ```
 
+> **Model note**: `gpt-5.4` is the verified working model for ChatGPT-account-backed Codex runs on this machine. Other model names (e.g. `gpt-4.1`) produce `"model is not supported when using Codex with a ChatGPT account"` and exit non-zero. Always copy the model value from this contract rather than guessing a model name.
+
 ### Recommended invocation candidate
 
 ```bash

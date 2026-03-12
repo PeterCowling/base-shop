@@ -1,0 +1,154 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "xa-uploader-concurrency-fixes",
+  "source_artifact_path": "docs/plans/xa-uploader-concurrency-fixes/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/xa-uploader-concurrency-fixes/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "If two people edit the catalog at the same time, product images can be deleted while still in use, and publish status changes can silently fail without anyone knowing. The dead KV mutex code could also mislead future developers into thinking it provides mutual exclusion when it does not. This means catalog data — the source of truth for what customers see — can end up in an inconsistent state that is hard to diagnose and fix.",
+    "intended_outcome_type": "measurable",
+    "intended_outcome_statement": "Image delete is atomic (delete-if-unreferenced); publish-state promotion failures are surfaced with appropriate severity (not just a warning string) in both sync and publish routes; dead KV mutex code is removed.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI changes needed — fixes are server-side API logic.",
+      "gap_or_implication": "None.",
+      "carry_forward_or_notes": "None."
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "DELETE handler returns `{ ok: true, deleted: false, skipped: \"still_referenced\" }` for referenced images. Promotion failure is pushed as a warning string in both sync and publish responses. Client-side localization exists in `catalogConsoleActions.ts` (line 142) and rendering is tested in `action-feedback.test.tsx`.",
+      "gap_or_implication": "Promotion failure is surfaced but only as a warning-level string. The issue is severity/prominence, not absence. DELETE error states are well-structured but untested. Same warning pattern exists in `publish/route.ts` (line 150).",
+      "carry_forward_or_notes": "Decide on appropriate severity level for promotion failure. Ensure fix covers both sync and publish routes."
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Auth (`hasUploaderSession`) and rate limiting are already applied to both image and sync routes. No new auth surfaces.",
+      "gap_or_implication": "None.",
+      "carry_forward_or_notes": "None."
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`uploaderLog` used for upload success/failure. No logging for DELETE operations or promotion failure.",
+      "gap_or_implication": "Image delete operations are unlogged. Promotion failure is silently swallowed.",
+      "carry_forward_or_notes": "Add `uploaderLog` calls for DELETE success/failure/skip. Add logging for promotion failure with snapshot revision context."
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "POST handler has 10+ tests. DELETE handler has zero tests. Promotion failure warning path IS tested in `route.cloud-publish.test.ts` (line 312) and client-side in `action-feedback.test.tsx` (line 323).",
+      "gap_or_implication": "Critical gap: DELETE handler is completely untested. No gap in promotion failure coverage — tests exist.",
+      "carry_forward_or_notes": "Add DELETE handler tests. If promotion failure severity is changed, update existing tests accordingly."
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`writeCloudDraftSnapshot` supports `ifMatchDocRevision` optimistic concurrency. R2 delete is unconditional.",
+      "gap_or_implication": "Image delete has no concurrency guard. Reference check and delete are separate unguarded operations.",
+      "carry_forward_or_notes": "Evaluate: cloud sync lock wrapping, soft-delete, or snapshot-lock for image delete."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`keyIsStillReferenced` does a full snapshot read and product scan on every delete call. Promotion failure is caught but only pushed as a warning.",
+      "gap_or_implication": "Full snapshot read per delete is wasteful for batch deletes. Promotion failure warning may not reach the operator.",
+      "carry_forward_or_notes": "Batch delete should read snapshot once. Promotion failure needs prominent surfacing."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A",
+      "current_or_option_state": "Server-side logic changes only. No database migrations, no config keys, no feature flags needed. Rollback = revert the commit.",
+      "gap_or_implication": "None.",
+      "carry_forward_or_notes": "None."
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Three issues exist in the xa-uploader catalog pipeline. One is an active runtime race condition: the image DELETE handler performs a non-atomic check-then-act sequence that can cause data loss under concurrent requests. The second is a code quality issue: a KV-based mutex in `syncMutex.ts` is dead code (exported but never called) with an acknowledged race window — it is a maintenance hazard, not a live runtime problem. The third is a UX severity issue: both the sync and publish routes catch publish-state promotion failures and surface them as warning-level strings, but the prominence is insuff",
+    "goals": [
+      "Make image delete safe against concurrent product edits (close the TOCTOU window between reference check and R2 delete).",
+      "Surface publish-state promotion failures clearly to the operator instead of swallowing them as a warning string.",
+      "Clean up the dead KV mutex code or mark it as deprecated to prevent future misuse."
+    ],
+    "non_goals": [
+      "Rewriting the sync pipeline's existing cloud sync lock mechanism (it works correctly).",
+      "Supporting multi-user concurrent editing with real-time conflict resolution (out of scope for this change).",
+      "Changing the image upload path (no concurrency issue there)."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "The xa-uploader is operated by a single person or very small team. Concurrent catalog sessions are rare but possible during batch cleanup operations.",
+      "The `acquireCloudSyncLock` mechanism provides proper server-side locking with 409 conflict semantics and is the canonical lock for catalog mutations."
+    ],
+    "key_entry_points": [
+      "`apps/xa-uploader/src/app/api/catalog/images/route.ts` — Image upload (POST) and delete (DELETE) API. The DELETE handler (lines 275-321) is the primary concurrency hazard entry point.",
+      "`apps/xa-uploader/src/app/api/catalog/sync/route.ts` — Sync pipeline entry point. POST handler (lines 487-554) acquires the cloud sync lock, runs the sync pipeline, and calls `finalizeCloudPublishStateAndDeploy` (lines 171-203)."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis` to compare image delete approaches (lock-wrap vs. soft-delete) and finalize promotion failure handling strategy."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Image delete TOCTOU (route.ts DELETE handler)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — entry point identified, mechanism traced, R2 API constraint verified.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Sync mutex dead code (syncMutex.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — confirmed zero imports of `acquireSyncMutex`/`releaseSyncMutex` outside definition file.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Publish-state promotion failure (sync/route.ts finalizeCloudPublishStateAndDeploy)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — warning path traced, `ifMatchDocRevision` constraint verified.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Cloud sync lock (catalogDraftContractClient.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — existing lock mechanism works correctly, not in scope for changes.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "R2 storage API constraints",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — confirmed R2 delete is unconditional via interface definition.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — client-side warning rendering verified in `catalogConsoleActions.ts` (line 142) and `action-feedback.test.tsx` (line 323). Publish route lacks a route-level test for the warning path (client-side mock only).",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "catalogPublishState.ts pure function",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — function is pure, no concurrency logic needed.",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

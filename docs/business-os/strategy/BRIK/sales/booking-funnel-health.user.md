@@ -14,9 +14,9 @@ Standing intelligence artifact tracking the health of the Brikette hostel bookin
 
 ## Current Health Status
 
-**Overall: Baseline — first snapshot pending**
+**Overall: Measurement limited — MCP analytics tool blocked by import error, baseline from KPCs only**
 
-This artifact was created on 2026-03-12. Populate by querying GA4 analytics and running the rendered funnel audit.
+First snapshot: 2026-03-12. MCP `analytics_summary` returned `server-only` import error. Baseline from BRIK-SELL-WEEKLY-KPCS (7 days ending 2026-02-13).
 
 ## Funnel Metrics (Pre-Handoff)
 
@@ -24,28 +24,29 @@ This artifact was created on 2026-03-12. Populate by querying GA4 analytics and 
 
 ### Layer 1: Discovery
 
-| Metric | Value (7d) | Trend | Notes |
+| Metric | Value (7d baseline) | Trend | Notes |
 |---|---|---|---|
-| Homepage views | — | — | page_view events |
-| Room card impressions | — | — | view_item_list events |
-| Unique visitors | — | — | GA4 active users |
+| Homepage views | ~258 page views | — | From KPCs baseline (2026-02-13) |
+| Room card impressions | — | — | view_item_list events — MCP blocked |
+| Unique visitors | 53 | — | From KPCs baseline |
+| Sessions | 73 | — | From KPCs baseline |
 
 ### Layer 2: Intent
 
-| Metric | Value (7d) | Trend | Notes |
+| Metric | Value (7d baseline) | Trend | Notes |
 |---|---|---|---|
-| Search availability clicks | — | — | search_availability events |
-| Room selections | — | — | select_item events |
-| Booking modal opens | — | — | modal_open events (type: booking) |
-| Deal code usage | — | — | Deal parameter propagation |
+| Search availability clicks | — | — | MCP analytics blocked |
+| Room selections | — | — | MCP analytics blocked |
+| Booking modal opens | — | — | MCP analytics blocked |
+| Deal code usage | — | — | MCP analytics blocked |
 
 ### Layer 3: Handoff
 
-| Metric | Value (7d) | Target | Notes |
+| Metric | Value (7d baseline) | Target | Notes |
 |---|---|---|---|
-| Handoff to Octorate | — | — | handoff_to_engine events |
-| Begin checkout | — | — | begin_checkout events |
-| CTA location distribution | — | — | Entry attribution: surface, intent |
+| Handoff to Octorate | — | — | MCP analytics blocked |
+| Begin checkout | **0** | >0 | Zero in KPCs reporting window |
+| CTA location distribution | — | — | MCP analytics blocked |
 
 ### Layer 4: External (Opaque)
 
@@ -54,6 +55,8 @@ This artifact was created on 2026-03-12. Populate by querying GA4 analytics and 
 | Octorate confirmation | Unknown | External system, no webhook |
 | Payment success | Unknown | Not integrated with brikette |
 | Booking completion | Unknown | No purchase/booking_confirmed event |
+
+**Blocker:** MCP `analytics_summary` tool returns `Cannot find package 'server-only'` import error. Analytics data requires the platform-core package to be rebuilt or the `server-only` dependency installed in the MCP server context.
 
 ## Octorate Calendar Health
 

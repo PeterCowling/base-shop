@@ -14,40 +14,42 @@ Standing intelligence artifact tracking the quality of the XA luxury fashion pro
 
 ## Current Health Status
 
-**Overall: Baseline — first snapshot pending**
+**Overall: Early stage — 1 live product, catalog nearly empty, media index at zero**
 
-This artifact was created on 2026-03-12. Populate by running catalog validation against the admin schema and checking R2 media state.
+First snapshot: 2026-03-12. Data from `apps/xa-b/src/data/catalog.runtime.json`, `catalog.media.json`, and `catalog.runtime.meta.json`.
 
 ## Catalog Completeness
 
-<!-- Update weekly. Source: catalogDraftToContract.ts mediaIndex.totals -->
+<!-- Update weekly. Source: catalog.runtime.json + catalog.media.json -->
 
 | Metric | Value | Target | Notes |
 |---|---|---|---|
-| Total products (live) | — | — | publishState = "live" |
-| Total products (draft) | — | — | publishState = "draft" |
-| Total products (out of stock) | — | — | publishState = "out_of_stock" |
-| Products with images | — | 100% | At least 1 image per product |
-| Avg images per product | — | ≥3 | Quality threshold for luxury brand |
-| Products with alt text | — | 100% | imageAltTexts matching imageFiles count |
-| Media index warnings | — | 0 | From build artifact validation |
+| Total products (live) | **1** | — | Hermès Birkin 25 Noir Togo |
+| Total products (draft) | 0 | — | No drafts in catalog seed |
+| Total products (out of stock) | 0 | — | |
+| Products with images | 1/1 (100%) | 100% | 1 media item on the live product |
+| Avg images per product | **1.0** | ≥3 | **Below luxury brand quality threshold** |
+| Media index products | **0** | — | Media index shows 0 products indexed |
+| Media index warnings | 0 | 0 | No warnings (but index is empty) |
+
+**Finding:** The media index (`catalog.media.json`) reports 0 products and 0 media — it appears disconnected from the runtime catalog which has 1 product with 1 media item.
 
 ## Schema Validation
 
-<!-- Update weekly. Source: catalogAdminSchema.ts validation -->
+<!-- Update weekly. Source: catalog.runtime.json fields present -->
 
-| Required field | Coverage | Notes |
+| Required field | Product 1 | Notes |
 |---|---|---|
-| title | — | Required |
-| description | — | Required |
-| brandHandle | — | Required |
-| department | — | Required |
-| category | — | Required |
-| subcategory | — | Required |
-| color (≥1) | — | Required |
-| material (≥1) | — | Required |
-| price | — | Required |
-| sizes (if clothing) | — | Required for category=clothing |
+| title | ✓ | "Hermès Birkin 25 Noir Togo" |
+| description | ✓ | Present |
+| brandHandle | ✓ (via brand) | Brand data present |
+| department | ✓ | Via taxonomy |
+| category | ✓ | Via taxonomy |
+| subcategory | ✓ | Via taxonomy |
+| color (≥1) | ✓ | Via taxonomy |
+| material (≥1) | ✓ | Via taxonomy |
+| price | ✓ | USD/EUR/GBP/AUD 400 (minor units) |
+| sizes (if clothing) | ✓ | 1 size |
 
 ## Upload & Sync Health
 
@@ -55,36 +57,43 @@ This artifact was created on 2026-03-12. Populate by running catalog validation 
 
 | Metric | Value | Target | Notes |
 |---|---|---|---|
-| Image upload success rate | — | ≥99% | upload_success / upload_start |
-| Sync conflict rate | — | <1% | fence_conflict events |
-| Cloud media missing (pruned) | — | 0 | R2 keys not found during publish |
-| Sync payload warnings | — | 0 | From catalogDraftToContract build |
+| Image upload success rate | No data | ≥99% | No upload events in logs |
+| Sync conflict rate | No data | <1% | No sync events |
+| Cloud media missing (pruned) | No data | 0 | |
+| Sync payload warnings | 0 | 0 | Per media index |
 
 ## Catalog Freshness
 
-<!-- Update weekly. Source: catalogRuntimeMeta.ts -->
+<!-- Update weekly. Source: catalog.runtime.meta.json -->
 
 | Metric | Value | Target | Notes |
 |---|---|---|---|
-| Last sync timestamp | — | <48h ago | From catalog.runtime.meta.json |
-| Catalog stale? | — | No | isStale flag (>48h threshold) |
-| Catalog version | — | — | Contract version ID |
-| Published at | — | — | Last publish timestamp |
+| Last sync timestamp | 2026-03-07 14:21 UTC | <48h ago | **5 days old — stale** |
+| Catalog stale? | **Yes** | No | >48h since last sync |
+| Catalog version | 1772890822165-5a393b00 | — | |
+| Published at | 2026-03-07 13:40 UTC | — | |
+
+**Finding:** Catalog has not been synced for 5 days. The 48-hour freshness threshold is exceeded.
 
 ## Multi-Currency Pricing
 
-<!-- Update on price changes. Source: products.json -->
+<!-- Update on price changes. Source: catalog.runtime.json -->
 
-| Currency | Products priced | Notes |
+| Currency | Products priced | Price (Product 1) |
 |---|---|---|
-| USD | — | Primary |
-| EUR | — | European market |
-| GBP | — | UK market |
-| AUD | — | Australian market |
+| USD | 1/1 | 400 |
+| EUR | 1/1 | 400 |
+| GBP | 1/1 | 400 |
+| AUD | 1/1 | 400 |
+
+**Note:** All 4 currencies show identical price (400 minor units = 4.00). This may be placeholder pricing — luxury handbags typically cost orders of magnitude more.
 
 ## Recent Issues
 
-- 2026-03-12: Artifact created. Known issues from queue: products going live without photos, no offline testing capability, unfiltered product lists, publish safety concerns.
+- 2026-03-12: First snapshot. Catalog has only **1 live product** — effectively a demo/staging state.
+- 2026-03-12: Catalog **stale** (5 days since last sync, 48h threshold exceeded).
+- 2026-03-12: Media index reports 0 products despite runtime catalog having 1 — possible index desync.
+- 2026-03-12: Pricing appears to be placeholder (USD/EUR/GBP/AUD all 400 = 4.00).
 
 ## Data Sources
 

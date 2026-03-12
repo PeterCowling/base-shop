@@ -378,6 +378,21 @@ function buildSupportedPrivateRoomChildAliasRedirects(): ExactLegacyRedirect[] {
   return redirects;
 }
 
+function buildRootLegacyRedirects(): ExactLegacyRedirect[] {
+  return [
+    {
+      from: "/assistance",
+      to: "/en/help",
+      status: 301,
+    },
+    {
+      from: "/assistance/",
+      to: "/en/help/",
+      status: 301,
+    },
+  ];
+}
+
 export function buildLegacyFunctionRouteConfig(
   redirects: readonly ExactLegacyRedirect[],
 ): PagesFunctionRouteConfig {
@@ -424,6 +439,7 @@ export function buildStaticRuntimeArtifacts(rootDir: string = process.cwd()): {
   const canonicalUrls = listLocalizedPublicUrls();
   const structuralRules = buildStructuralRedirectRules();
   const exactLegacyRedirects = [
+    ...buildRootLegacyRedirects(),
     ...resolveLegacyRedirectEntries(legacyUrls, canonicalUrls),
     ...buildSupportedPrivateRoomChildAliasRedirects(),
   ].sort((a, b) => a.from.localeCompare(b.from));

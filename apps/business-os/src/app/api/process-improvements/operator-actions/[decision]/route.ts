@@ -2,15 +2,14 @@ import { NextResponse } from "next/server";
 import { z } from "zod";
 
 import { getCurrentUserServer } from "@/lib/current-user.server-only";
-import { performProcessImprovementsDecision } from "@/lib/process-improvements/decision-service";
+import { performProcessImprovementsOperatorActionDecision } from "@/lib/process-improvements/operator-action-service";
 
 const DecisionRequestSchema = z.object({
-  ideaKey: z.string().min(1),
-  dispatchId: z.string().min(1),
-  deferDays: z.number().int().min(1).max(90).optional(),
+  actionId: z.string().min(1),
+  snoozeDays: z.number().int().min(1).max(90).optional(),
 });
 
-const DecisionParamSchema = z.enum(["do", "defer", "decline"]);
+const DecisionParamSchema = z.enum(["done", "snooze"]);
 
 export async function POST(
   request: Request,
@@ -43,12 +42,11 @@ export async function POST(
       );
     }
 
-    const result = await performProcessImprovementsDecision({
+    const result = await performProcessImprovementsOperatorActionDecision({
       decision: parsedDecision.data,
-      dispatchId: parsedBody.data.dispatchId,
-      ideaKey: parsedBody.data.ideaKey,
+      actionId: parsedBody.data.actionId,
       actor: currentUser,
-      deferDays: parsedBody.data.deferDays,
+      snoozeDays: parsedBody.data.snoozeDays,
     });
 
     if (!result.ok) {
@@ -58,7 +56,7 @@ export async function POST(
           status:
             result.reason === "write_error"
               ? 500
-              : result.reason === "invalid_dispatch"
+              : result.reason === "no_match"
                 ? 422
                 : 409,
         }

@@ -10,7 +10,11 @@ import {
   appendProcessImprovementsDecisionEvent,
   type ProcessImprovementsDecisionType,
 } from "./decision-ledger";
-import { loadProcessImprovementsProjection } from "./projection";
+import {
+  isProcessImprovementQueueItem,
+  loadProcessImprovementsProjection,
+  type ProcessImprovementQueueInboxItem,
+} from "./projection";
 import { resolveProcessImprovementsQueuePath } from "./queue-path";
 
 export interface PerformProcessImprovementsDecisionInput {
@@ -19,6 +23,7 @@ export interface PerformProcessImprovementsDecisionInput {
   ideaKey: string;
   actor: User;
   now?: Date;
+  deferDays?: number;
 }
 
 export type PerformProcessImprovementsDecisionResult =
@@ -48,8 +53,12 @@ export async function performProcessImprovementsDecision(
   const queuePath = resolveProcessImprovementsQueuePath();
   const projection = await loadProcessImprovementsProjection({ repoRoot });
   const item = projection.items.find(
-    (candidate) =>
-      candidate.dispatchId === input.dispatchId && candidate.ideaKey === input.ideaKey
+    (
+      candidate
+    ): candidate is ProcessImprovementQueueInboxItem =>
+      isProcessImprovementQueueItem(candidate) &&
+      candidate.dispatchId === input.dispatchId &&
+      candidate.ideaKey === input.ideaKey
   );
 
   if (!item) {
@@ -65,7 +74,7 @@ export async function performProcessImprovementsDecision(
   const decidedAt = now.toISOString();
 
   if (input.decision === "defer") {
-    const deferUntil = addDays(now, 7).toISOString();
+    const deferUntil = addDays(now, input.deferDays ?? 7).toISOString();
     await appendProcessImprovementsDecisionEvent(
       {
         ideaKey: item.ideaKey,

@@ -1,11 +1,12 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: "2026-03-12"
 Last-reviewed: "2026-03-12"
 Last-updated: "2026-03-12"
+Build-completed: "2026-03-12"
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: xa-uploader-concurrency-fixes
 Deliverable-Type: code-change

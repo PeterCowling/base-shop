@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-12T10:11:25.187Z",
+  "last_updated": "2026-03-12T11:57:42.791Z",
   "counts": {
-    "enqueued": 63,
-    "processed": 10,
+    "enqueued": 60,
+    "processed": 12,
     "declined": 0,
     "skipped": 0,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 274,
-    "fact_find_ready": 45,
+    "completed": 275,
+    "fact_find_ready": 42,
     "plan_ready": 0,
     "micro_build_ready": 14,
     "briefing_ready": 0,
@@ -24876,7 +24876,7 @@
       "provisional_deliverable_family": "code-change",
       "status": "fact_find_ready",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P3",
       "confidence": 0.75,
       "evidence_refs": [
@@ -24893,7 +24893,17 @@
         "statement": "Per-module context consumption is tracked and trended, enabling targeted efficiency improvements.",
         "source": "operator"
       },
-      "created_at": "2026-03-12T07:58:40.000Z"
+      "created_at": "2026-03-12T07:58:40.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "do-workflow-context-bloat-tracking",
+        "target_path": "docs/plans/do-workflow-context-bloat-tracking/fact-find.md",
+        "processed_at": "2026-03-12T11:11:31.210Z",
+        "fact_find_slug": "do-workflow-context-bloat-tracking",
+        "fact_find_path": "docs/plans/do-workflow-context-bloat-tracking/fact-find.md"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -25008,7 +25018,7 @@
       "next_scope_now": "Investigate the right approach for each security fix and determine implementation order.",
       "status": "fact_find_ready",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P1",
       "confidence": 0.95,
       "why": "Right now, if someone accidentally deletes the IP allowlist setting, the entire admin tool becomes publicly accessible with no warning. The login system also has a subtle timing flaw that could help an attacker guess valid session details. On top of that, large requests can bypass size limits, and there is no way to immediately lock out a compromised session. These gaps mean the product catalog — pricing, images, inventory — is less protected than it should be.",
@@ -25024,7 +25034,17 @@
         "apps/xa-uploader/src/lib/requestJson.ts:10-16",
         "coverage-hint: security"
       ],
-      "created_at": "2026-03-12T15:00:00.000Z"
+      "created_at": "2026-03-12T15:00:00.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-security-hardening",
+        "target_path": "docs/plans/xa-uploader-security-hardening/fact-find.md",
+        "processed_at": "2026-03-12T10:18:25.054Z",
+        "fact_find_slug": "xa-uploader-security-hardening",
+        "fact_find_path": "docs/plans/xa-uploader-security-hardening/fact-find.md"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -25051,9 +25071,9 @@
       "provisional_deliverable_family": "code-change",
       "current_truth": "Three concurrency gaps exist: image deletion checks references then deletes non-atomically, the sync lock uses non-atomic KV get/put allowing double-acquisition, and publish-state promotion failures are silently swallowed leaving ghost states.",
       "next_scope_now": "Investigate atomic alternatives for image delete and sync lock, and determine correct error handling for promotion failures.",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P1",
       "confidence": 0.9,
       "why": "If two people edit the catalog at the same time, product images can be deleted while still in use, two sync operations can run simultaneously and overwrite each other, and publish status changes can silently fail without anyone knowing. This means catalog data — the source of truth for what customers see — can end up in an inconsistent state that is hard to diagnose and fix.",
@@ -25070,7 +25090,22 @@
         "apps/xa-uploader/src/lib/catalogPublishState.ts:38-77",
         "coverage-hint: data-contracts, performance-reliability"
       ],
-      "created_at": "2026-03-12T15:00:00.000Z"
+      "created_at": "2026-03-12T15:00:00.000Z",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-concurrency-fixes",
+        "target_path": "docs/plans/xa-uploader-concurrency-fixes/fact-find.md",
+        "processed_at": "2026-03-12T10:17:35.830Z",
+        "fact_find_slug": "xa-uploader-concurrency-fixes",
+        "fact_find_path": "docs/plans/xa-uploader-concurrency-fixes/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-concurrency-fixes/plan.md",
+        "completed_at": "2026-03-12T11:57:42.790Z",
+        "outcome": "Narrowed image DELETE TOCTOU window via snapshot-fenced delete, elevated promotion failure logging in sync+publish routes, removed dead KV mutex code"
+      }
     },
     {
       "schema_version": "dispatch.v2",

@@ -15,17 +15,28 @@ import type {
   InboxThreadRow,
 } from "./repositories.server";
 
-export type InboxThreadMetadata = {
-  channel?: InboxChannel | null;
+/**
+ * Canonical metadata type for inbox threads.
+ * Replaces the former `InboxThreadMetadata`, `SyncThreadMetadata`, and recovery `ThreadMetadata`.
+ * Fields map 1:1 to promoted columns on the `threads` table (0006 migration),
+ * except `channel` (read-side computed), `gmailHistoryId`, and `lastSyncMode` (sync-internal, metadata_json only).
+ */
+export type ThreadMetadata = {
+  // Promoted to columns
+  latestInboundMessageId?: string | null;
+  latestInboundAt?: string | null;
+  latestInboundSender?: string | null;
+  latestAdmissionDecision?: string | null;
+  latestAdmissionReason?: string | null;
   needsManualDraft?: boolean;
   draftFailureCode?: string | null;
   draftFailureMessage?: string | null;
+  /** Structured list of which quality checks failed, for analytics aggregation. */
+  draftFailureChecks?: string[] | null;
+  lastProcessedAt?: string | null;
   lastDraftId?: string | null;
   lastDraftTemplateSubject?: string | null;
   lastDraftQualityPassed?: boolean;
-  latestInboundMessageId?: string | null;
-  latestAdmissionDecision?: string | null;
-  latestAdmissionReason?: string | null;
   guestBookingRef?: string | null;
   guestOccupantId?: string | null;
   guestFirstName?: string | null;
@@ -33,7 +44,16 @@ export type InboxThreadMetadata = {
   guestCheckIn?: string | null;
   guestCheckOut?: string | null;
   guestRoomNumbers?: string[] | null;
+  recoveryAttempts?: number | null;
+  // Retained in metadata_json only
+  gmailHistoryId?: string | null;
+  lastSyncMode?: string | null;
+  // Read-side computed (not stored)
+  channel?: InboxChannel | null;
 };
+
+/** @deprecated Use `ThreadMetadata` instead. Alias kept for migration period. */
+export type InboxThreadMetadata = ThreadMetadata;
 
 export type InboxMessagePayload = {
   labelIds?: string[];
@@ -137,7 +157,7 @@ function parseJsonObject(raw: string | null | undefined): Record<string, unknown
   }
 }
 
-function parseJsonArray(raw: string | null | undefined): string[] {
+export function parseJsonArray(raw: string | null | undefined): string[] {
   if (!raw) {
     return [];
   }
@@ -152,9 +172,59 @@ function parseJsonArray(raw: string | null | undefined): string[] {
   }
 }
 
-export function parseThreadMetadata(raw: string | null | undefined): InboxThreadMetadata {
+export function parseThreadMetadata(raw: string | null | undefined): ThreadMetadata {
   const parsed = parseJsonObject(raw);
-  return parsed ? (parsed as InboxThreadMetadata) : {};
+  return parsed ? (parsed as ThreadMetadata) : {};
+}
+
+function parseJsonStringArray(raw: string | null | undefined): string[] | null {
+  if (!raw) {
+    return null;
+  }
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    return Array.isArray(parsed)
+      ? parsed.filter((v): v is string => typeof v === "string")
+      : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Read thread metadata from promoted columns with metadata_json fallback.
+ * Column values take precedence; metadata_json fills gaps for rows written before the migration.
+ */
+export function parseThreadMetadataFromRow(row: InboxThreadRow): ThreadMetadata {
+  const fallback = parseThreadMetadata(row.metadata_json);
+
+  return {
+    latestInboundMessageId: row.latest_inbound_message_id ?? fallback.latestInboundMessageId ?? null,
+    latestInboundAt: row.latest_inbound_at ?? fallback.latestInboundAt ?? null,
+    latestInboundSender: row.latest_inbound_sender ?? fallback.latestInboundSender ?? null,
+    latestAdmissionDecision: row.latest_admission_decision ?? fallback.latestAdmissionDecision ?? null,
+    latestAdmissionReason: row.latest_admission_reason ?? fallback.latestAdmissionReason ?? null,
+    needsManualDraft: row.needs_manual_draft != null ? Boolean(row.needs_manual_draft) : fallback.needsManualDraft,
+    draftFailureCode: row.draft_failure_code ?? fallback.draftFailureCode ?? null,
+    draftFailureMessage: row.draft_failure_message ?? fallback.draftFailureMessage ?? null,
+    lastProcessedAt: row.last_processed_at ?? fallback.lastProcessedAt ?? null,
+    lastDraftId: row.last_draft_id ?? fallback.lastDraftId ?? null,
+    lastDraftTemplateSubject: row.last_draft_template_subject ?? fallback.lastDraftTemplateSubject ?? null,
+    lastDraftQualityPassed: row.last_draft_quality_passed != null ? Boolean(row.last_draft_quality_passed) : fallback.lastDraftQualityPassed,
+    guestBookingRef: row.guest_booking_ref ?? fallback.guestBookingRef ?? null,
+    guestOccupantId: row.guest_occupant_id ?? fallback.guestOccupantId ?? null,
+    guestFirstName: row.guest_first_name ?? fallback.guestFirstName ?? null,
+    guestLastName: row.guest_last_name ?? fallback.guestLastName ?? null,
+    guestCheckIn: row.guest_check_in ?? fallback.guestCheckIn ?? null,
+    guestCheckOut: row.guest_check_out ?? fallback.guestCheckOut ?? null,
+    guestRoomNumbers: parseJsonStringArray(row.guest_room_numbers_json) ?? fallback.guestRoomNumbers ?? null,
+    recoveryAttempts: row.recovery_attempts ?? fallback.recoveryAttempts ?? null,
+    // Retained in metadata_json only
+    gmailHistoryId: fallback.gmailHistoryId ?? null,
+    lastSyncMode: fallback.lastSyncMode ?? null,
+    // Read-side computed (not from column or metadata_json)
+    channel: fallback.channel ?? null,
+  };
 }
 
 export function parseMessagePayload(raw: string | null | undefined): InboxMessagePayload {
@@ -248,7 +318,7 @@ export function getLatestInboundStoredMessage(record: InboxThreadRecord): InboxM
 }
 
 export function buildThreadSummary(record: InboxThreadRecord): InboxThreadSummaryApiModel {
-  const metadata = parseThreadMetadata(record.thread.metadata_json);
+  const metadata = parseThreadMetadataFromRow(record.thread);
   const currentDraft = getCurrentDraft(record);
   const channelAdapter = resolveInboxChannelAdapter(metadata.channel);
 
@@ -278,13 +348,21 @@ export function buildThreadSummary(record: InboxThreadRecord): InboxThreadSummar
 }
 
 export function isThreadVisibleInInbox(thread: InboxThreadRow): boolean {
-  return thread.status !== "auto_archived" && thread.status !== "resolved";
+  if (
+    thread.status === "auto_archived"
+    || thread.status === "resolved"
+    || thread.status === "sent"
+  ) {
+    return false;
+  }
+
+  return thread.latest_message_direction !== "outbound";
 }
 
 export function buildThreadSummaryFromRow(
   row: import("./repositories.server").ThreadWithLatestDraftRow,
 ): InboxThreadSummaryApiModel {
-  const metadata = parseThreadMetadata(row.metadata_json);
+  const metadata = parseThreadMetadataFromRow(row);
   const channelAdapter = resolveInboxChannelAdapter(metadata.channel);
 
   let currentDraft: InboxDraftApiModel | null = null;

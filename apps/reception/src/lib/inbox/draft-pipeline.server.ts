@@ -7,6 +7,7 @@ import {
   generateDraftCandidate,
 } from "./draft-core/generate";
 import { interpretDraftMessage } from "./draft-core/interpret";
+import { evaluatePolicy } from "./draft-core/policy-decision";
 import {
   type QualityCheckResult,
   runQualityChecks,
@@ -15,12 +16,16 @@ import type {
   PrepaymentProvider,
   PrepaymentStep,
 } from "./draft-core/template-ranker";
+import { buildGratitudeReplyDraft } from "./gratitude-replies.server";
+import { buildPricingQueryDraft } from "./pricing-queries.server";
+import { buildRoomAllocationQueryDraft } from "./room-allocation-queries.server";
 
 export type ThreadContext = {
   from?: string;
   subject?: string;
   body?: string;
   threadContext?: MessageThreadContext;
+  bookingRef?: string;
   prepaymentStep?: PrepaymentStep;
   prepaymentProvider?: PrepaymentProvider;
   guestName?: string;
@@ -63,6 +68,8 @@ export type AgentDraftParitySnapshot = {
 export type DraftFailureReason = {
   code: string;
   message: string;
+  /** Structured list of which quality checks failed, for analytics aggregation. */
+  failed_checks?: string[];
 };
 
 const FAILED_CHECK_LABELS: Record<string, string> = {
@@ -117,6 +124,7 @@ export function deriveDraftFailureReason(draftResult: AgentDraftResult): DraftFa
       message: checks
         ? `Draft did not pass quality checks: ${checks}.`
         : "Draft did not pass quality checks.",
+      failed_checks: draftResult.qualityResult.failed_checks,
     };
   }
 
@@ -223,15 +231,64 @@ export async function generateAgentDraft(threadContext: ThreadContext): Promise<
     subject: threadContext.subject,
     threadContext: threadContext.threadContext,
   });
+  const overridePolicyDecision = evaluatePolicy(interpretResult);
 
-  const generationResult = generateDraftCandidate({
-    actionPlan: interpretResult,
+  const roomAllocationOverride = await buildRoomAllocationQueryDraft({
+    bookingRef: threadContext.bookingRef,
     subject: threadContext.subject,
-    recipientName: threadContext.guestName ?? (threadContext.from ? extractRecipientName(threadContext.from) : undefined),
-    prepaymentStep: threadContext.prepaymentStep,
-    prepaymentProvider: threadContext.prepaymentProvider,
-    guestRoomNumbers: threadContext.guestRoomNumbers,
+    body,
+    recipientName:
+      threadContext.guestName ?? (threadContext.from ? extractRecipientName(threadContext.from) : undefined),
   });
+  const pricingOverride = roomAllocationOverride
+    ? null
+    : await buildPricingQueryDraft({
+        bookingRef: threadContext.bookingRef,
+        subject: threadContext.subject,
+        body,
+        recipientName:
+          threadContext.guestName ?? (threadContext.from ? extractRecipientName(threadContext.from) : undefined),
+      });
+  const gratitudeOverride = roomAllocationOverride || pricingOverride
+    ? null
+    : await buildGratitudeReplyDraft({
+        subject: threadContext.subject,
+        body: interpretResult.normalized_text,
+        recipientName:
+          threadContext.guestName ?? (threadContext.from ? extractRecipientName(threadContext.from) : undefined),
+        hasQuestionsOrRequests:
+          interpretResult.intents.questions.length > 0 || interpretResult.intents.requests.length > 0,
+      });
+  const deterministicOverride = roomAllocationOverride ?? pricingOverride ?? gratitudeOverride;
+
+  const generationResult = deterministicOverride
+    ? ({
+        draftId: crypto.randomUUID(),
+        draft: {
+          bodyPlain: deterministicOverride.plainText,
+          bodyHtml: deterministicOverride.html,
+        },
+        templateUsed: deterministicOverride.templateUsed,
+        questionBlocks: [],
+        knowledgeSources: [],
+        knowledgeSummaries: [],
+        sourcesUsed: [],
+        slotResolution: {
+          selected: "deterministic" as const,
+          unresolvedSlots: [],
+        },
+        policy: overridePolicyDecision,
+        deliveryStatus: "ready" as const,
+      } satisfies DraftGenerationResult)
+    : generateDraftCandidate({
+        actionPlan: interpretResult,
+        subject: threadContext.subject,
+        recipientName: threadContext.guestName ?? (threadContext.from ? extractRecipientName(threadContext.from) : undefined),
+        bookingRef: threadContext.bookingRef,
+        prepaymentStep: threadContext.prepaymentStep,
+        prepaymentProvider: threadContext.prepaymentProvider,
+        guestRoomNumbers: threadContext.guestRoomNumbers,
+      });
 
   const qualityResult = runQualityChecks({
     actionPlan: interpretResult,

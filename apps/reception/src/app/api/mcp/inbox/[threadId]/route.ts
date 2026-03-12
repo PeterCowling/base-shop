@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import {
   buildThreadSummary,
   getCurrentDraft,
-  parseThreadMetadata,
+  parseThreadMetadataFromRow,
   serializeDraft,
   serializeMessage,
 } from "@/lib/inbox/api-models.server";
@@ -64,9 +64,10 @@ export async function GET(
     const url = new URL(request.url);
     const limit = parseIntParam(url.searchParams.get("limit"), DEFAULT_MESSAGE_LIMIT);
     const offset = parseIntParam(url.searchParams.get("offset"), 0);
+    const beforeId = url.searchParams.get("before_id") ?? undefined;
 
     const paginated = await getThreadMessages(
-      { threadId: params.threadId, limit, offset },
+      { threadId: params.threadId, limit, offset, beforeId },
     );
 
     const currentDraft = getCurrentDraft(record);
@@ -75,10 +76,11 @@ export async function GET(
       data: {
         thread: buildThreadSummary(record),
         campaign: null,
-        metadata: parseThreadMetadata(record.thread.metadata_json),
+        metadata: parseThreadMetadataFromRow(record.thread),
         messages: paginated.messages.map((message) => serializeMessage(message)),
         totalMessages: paginated.totalMessages,
         messageOffset: paginated.offset,
+        hasMore: paginated.hasMore,
         events: record.events,
         admissionOutcomes: record.admissionOutcomes,
         currentDraft: currentDraft ? serializeDraft(currentDraft) : null,

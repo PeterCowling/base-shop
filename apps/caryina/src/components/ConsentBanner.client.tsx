@@ -28,7 +28,21 @@ function writeConsentCookie(value: "true" | "false"): void {
 const bannerClass =
   "fixed inset-x-0 bottom-0 z-50 border-t border-border bg-surface p-4 shadow-lg";
 
-export function ConsentBanner({ lang }: { lang: string }) {
+export interface ConsentBannerStrings {
+  message: string;
+  privacyLink: string;
+  decline: string;
+  accept: string;
+  ariaLabel: string;
+}
+
+export function ConsentBanner({
+  lang,
+  strings,
+}: {
+  lang: string;
+  strings: ConsentBannerStrings;
+}) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -50,16 +64,15 @@ export function ConsentBanner({ lang }: { lang: string }) {
   };
 
   return (
-    <div role="dialog" aria-label="Cookie consent" className={bannerClass}>
+    <div role="dialog" aria-label={strings.ariaLabel} className={bannerClass}>
       <div className="mx-auto flex max-w-5xl flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-foreground">
-          We use analytics cookies to understand how visitors interact with our
-          site. See our{" "}
+          {strings.message}{" "}
           <a
             href={`/${lang}/privacy`}
             className="inline-flex min-h-11 min-w-11 items-center underline hover:text-primary"
           >
-            privacy policy
+            {strings.privacyLink}
           </a>
           .
         </p>
@@ -69,14 +82,14 @@ export function ConsentBanner({ lang }: { lang: string }) {
             onClick={handleDecline}
             className="inline-flex min-h-11 min-w-11 items-center justify-center rounded border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-surface-2"
           >
-            Decline
+            {strings.decline}
           </button>
           <button
             type="button"
             onClick={handleAccept}
             className="inline-flex min-h-11 min-w-11 items-center justify-center rounded bg-primary px-4 py-2 text-sm font-medium text-primary-fg hover:bg-primary-hover"
           >
-            Accept
+            {strings.accept}
           </button>
         </div>
       </div>

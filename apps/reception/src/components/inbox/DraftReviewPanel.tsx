@@ -30,7 +30,7 @@ interface DraftReviewPanelProps {
   onRegenerate: (force?: boolean) => Promise<void>;
   onSend: () => Promise<void>;
   onResolve: () => Promise<void>;
-  onDismiss: () => Promise<void>;
+  onDismiss: () => Promise<{ thread: InboxThreadDetail["thread"]; gmailMarkedRead: boolean }>;
 }
 
 type DraftConfirmDialog = "none" | "regenerate" | "send" | "resolve" | "dismiss";
@@ -43,7 +43,10 @@ function parseRecipientEmails(input: string): string[] {
 }
 
 function isValidEmail(value: string): boolean {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  // Requires: no consecutive dots, 2+ char domain extension, reasonable structure.
+  // eslint-disable-next-line security/detect-unsafe-regex -- IDEA-DISPATCH-20260312140000-0005 bounded input: short user-typed email strings
+  return /^[a-zA-Z0-9](?:[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?)*\.[a-zA-Z]{2,}$/.test(value)
+    && !value.includes("..");
 }
 
 export default function DraftReviewPanel({
@@ -74,6 +77,7 @@ export default function DraftReviewPanel({
   const [recipientInput, setRecipientInput] = useState("");
   const [plainText, setPlainText] = useState("");
   const [validationError, setValidationError] = useState<string | null>(null);
+  const [recipientBlurError, setRecipientBlurError] = useState<string | null>(null);
   const [confirmDialog, setConfirmDialog] = useState<DraftConfirmDialog>("none");
 
   useEffect(() => {
@@ -91,6 +95,7 @@ export default function DraftReviewPanel({
     );
     setPlainText(currentDraft?.plainText ?? "");
     setValidationError(null);
+    setRecipientBlurError(null);
   }, [
     channelCapabilities.supportsRecipients,
     channelCapabilities.supportsSubject,
@@ -131,6 +136,25 @@ export default function DraftReviewPanel({
     suggestedRecipient,
     threadDetail.thread.subject,
   ]);
+
+  function handleRecipientBlur() {
+    const trimmed = recipientInput.trim();
+    if (!trimmed) {
+      setRecipientBlurError(null);
+      return;
+    }
+    const emails = parseRecipientEmails(trimmed);
+    const invalid = emails.filter((e) => !isValidEmail(e));
+    if (invalid.length > 0) {
+      setRecipientBlurError(
+        invalid.length === 1
+          ? `"${invalid[0]}" is not a valid email address.`
+          : `Invalid email addresses: ${invalid.map((e) => `"${e}"`).join(", ")}`,
+      );
+    } else {
+      setRecipientBlurError(null);
+    }
+  }
 
   const requiresManualDraft = threadDetail.thread.needsManualDraft && !currentDraft;
   const actionsDisabled = savingDraft || regeneratingDraft || sendingDraft || resolvingThread || dismissingThread;
@@ -270,11 +294,22 @@ export default function DraftReviewPanel({
                   </label>
                   <input
                     value={recipientInput}
-                    onChange={(event) => setRecipientInput(event.target.value)}
+                    onChange={(event) => {
+                      setRecipientInput(event.target.value);
+                      setRecipientBlurError(null);
+                    }}
+                    onBlur={handleRecipientBlur}
                     disabled={!canSaveDraft}
-                    className="w-full rounded-lg border border-border-1 bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30"
+                    className={`w-full rounded-lg border bg-surface-2 px-3 py-2 text-sm text-foreground outline-none transition focus:border-primary-main focus:ring-1 focus:ring-primary-main/30 ${
+                      recipientBlurError
+                        ? "border-error-main"
+                        : "border-border-1"
+                    }`}
                     placeholder="guest@example.com"
                   />
+                  {recipientBlurError && (
+                    <p className="mt-1 text-xs text-error-main">{recipientBlurError}</p>
+                  )}
                 </div>
               )}
             </div>

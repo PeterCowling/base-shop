@@ -11,6 +11,7 @@ import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
 import { StockBadge } from "@/components/catalog/StockBadge";
 import ShippingReturnsTrustBlock from "@/components/ShippingReturnsTrustBlock";
 import {
+  getChromeContent,
   getLaunchFamilyCopy,
   getPolicyContent,
   getProductPageContent,
@@ -71,6 +72,7 @@ export default async function ProductDetailPage({
   const shippingContent = getPolicyContent(lang, "shipping");
   const returnsContent = getPolicyContent(lang, "returns");
   const trustStrip = getTrustStripContent(lang);
+  const chrome = getChromeContent(lang);
   const inventoryItem = inventoryItems.find((item) => item.productId === product.id);
   const lowStockThreshold = inventoryItem?.lowStockThreshold ?? 2;
   const allProducts = await readShopSkus(lang);
@@ -83,8 +85,22 @@ export default async function ProductDetailPage({
     .filter((sku) => sku.id !== product.id)
     .slice(0, 8);
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://caryina.com";
+  const productJsonLd = buildProductJsonLd(product, lang, currency, siteUrl);
+  const breadcrumbJsonLd = buildBreadcrumbJsonLd(product, lang, siteUrl);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <ProductAnalytics locale={lang} productId={product.id} />
       <article className="space-y-16">
         <Link
@@ -126,7 +142,7 @@ export default async function ProductDetailPage({
 
             <PdpTrustStrip lang={lang} />
 
-            <NotifyMeForm productSlug={product.slug} />
+            <NotifyMeForm productSlug={product.slug} strings={chrome.notifyMe} />
 
             <section
               className="space-y-3 border-t pt-5"
@@ -217,4 +233,50 @@ export default async function ProductDetailPage({
       </article>
     </>
   );
+}
+
+function buildProductJsonLd(
+  product: { title: string; description: string; price: number; stock: number; slug: string; media?: { url: string }[] },
+  lang: Locale,
+  currency: string,
+  siteUrl: string,
+) {
+  const heroImage = product.media?.[0]?.url
+    ? `${siteUrl}${product.media[0].url}`
+    : undefined;
+  return {
+    "@context": "https://schema.org" as const,
+    "@type": "Product" as const,
+    name: product.title,
+    description: product.description,
+    ...(heroImage ? { image: heroImage } : {}),
+    brand: { "@type": "Brand" as const, name: "Caryina" },
+    url: `${siteUrl}/${lang}/product/${product.slug}`,
+    offers: {
+      "@type": "Offer" as const,
+      price: (product.price / 100).toFixed(2),
+      priceCurrency: currency.toUpperCase(),
+      availability:
+        product.stock > 0
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      url: `${siteUrl}/${lang}/product/${product.slug}`,
+    },
+  };
+}
+
+function buildBreadcrumbJsonLd(
+  product: { title: string; slug: string },
+  lang: Locale,
+  siteUrl: string,
+) {
+  return {
+    "@context": "https://schema.org" as const,
+    "@type": "BreadcrumbList" as const,
+    itemListElement: [
+      { "@type": "ListItem" as const, position: 1, name: "Home", item: `${siteUrl}/${lang}` },
+      { "@type": "ListItem" as const, position: 2, name: "Shop", item: `${siteUrl}/${lang}/shop` },
+      { "@type": "ListItem" as const, position: 3, name: product.title, item: `${siteUrl}/${lang}/product/${product.slug}` },
+    ],
+  };
 }

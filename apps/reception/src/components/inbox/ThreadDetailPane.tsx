@@ -177,8 +177,8 @@ export default function ThreadDetailPane({
             )}
             <p className="text-xs text-muted-foreground">
               {threadDetail.totalMessages ?? threadDetail.messages.length} message{(threadDetail.totalMessages ?? threadDetail.messages.length) !== 1 ? "s" : ""}
-              {typeof threadDetail.totalMessages === "number"
-                && threadDetail.messages.length < threadDetail.totalMessages
+              {(threadDetail.hasMore ?? (typeof threadDetail.totalMessages === "number"
+                && threadDetail.messages.length < threadDetail.totalMessages))
                 && ` (showing ${threadDetail.messages.length})`}
             </p>
           </div>
@@ -228,14 +228,20 @@ export default function ThreadDetailPane({
                   {threadDetail.metadata.guestCheckIn} &rarr; {threadDetail.metadata.guestCheckOut}
                 </span>
               )}
-              {Array.isArray(threadDetail.metadata?.guestRoomNumbers)
-                && threadDetail.metadata.guestRoomNumbers.length > 0 && (
-                <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                  <MapPin className="h-3 w-3" />
-                  Room{threadDetail.metadata.guestRoomNumbers.length > 1 ? "s" : ""}{" "}
-                  {(threadDetail.metadata.guestRoomNumbers as string[]).join(", ")}
-                </span>
-              )}
+              {(() => {
+                const rooms = Array.isArray(threadDetail.metadata?.guestRoomNumbers)
+                  ? (threadDetail.metadata.guestRoomNumbers as unknown[]).filter(
+                      (n): n is string => typeof n === "string",
+                    )
+                  : [];
+                return rooms.length > 0 && (
+                  <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
+                    <MapPin className="h-3 w-3" />
+                    Room{rooms.length > 1 ? "s" : ""}{" "}
+                    {rooms.join(", ")}
+                  </span>
+                );
+              })()}
             </div>
           )}
         </div>
@@ -252,8 +258,8 @@ export default function ThreadDetailPane({
         <div className="border-t border-border-1">
           {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- IDEA-DISPATCH-20260307130300-9040 viewport-relative scroll containment */}
           <div className="max-h-[50vh] space-y-4 overflow-y-auto px-5 py-4">
-            {typeof threadDetail.totalMessages === "number"
-              && threadDetail.messages.length < threadDetail.totalMessages && (
+            {(threadDetail.hasMore ?? (typeof threadDetail.totalMessages === "number"
+              && threadDetail.messages.length < threadDetail.totalMessages)) && (
               <div className="flex justify-center">
                 <button
                   type="button"
@@ -269,7 +275,7 @@ export default function ThreadDetailPane({
                   ) : (
                     <>
                       <ChevronUp className="h-3 w-3" />
-                      Load earlier messages ({threadDetail.totalMessages - threadDetail.messages.length} more)
+                      Load earlier messages
                     </>
                   )}
                 </button>

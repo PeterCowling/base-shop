@@ -4,6 +4,7 @@ import type { D1Database } from "@acme/platform-core/d1";
 
 import { getGmailProfile, getGmailThread } from "../gmail-client";
 
+import { type ThreadMetadata } from "./api-models.server";
 import { deriveDraftFailureReason, draftFailureReasonFromCode, generateAgentDraft } from "./draft-pipeline.server";
 import {
   buildGuestEmailMap,
@@ -27,6 +28,17 @@ import { recordInboxEvent } from "./telemetry.server";
 
 const DEFAULT_MAX_RETRIES = 3;
 
+function inferProviderFromBookingRef(
+  bookingRef: string | null | undefined,
+): "octorate" | "hostelworld" | undefined {
+  const normalized = bookingRef?.trim();
+  if (!normalized) {
+    return undefined;
+  }
+
+  return normalized.startsWith("7763-") ? "hostelworld" : "octorate";
+}
+
 export type RecoverStaleThreadsInput = {
   db: D1Database;
   staleThresholdMs: number;
@@ -41,19 +53,18 @@ export type RecoverStaleThreadsResult = {
   skipped: number;
 };
 
-type ThreadMetadata = Record<string, unknown> & {
-  needsManualDraft?: boolean;
-  recoveryAttempts?: number;
-};
-
-function parseMetadata(raw: string | null | undefined): ThreadMetadata {
+function parseMetadata(raw: string | null | undefined): ThreadMetadata & Record<string, unknown> {
   if (!raw) {
     return {};
   }
   try {
     const parsed = JSON.parse(raw) as unknown;
-    return parsed && typeof parsed === "object" ? (parsed as ThreadMetadata) : {};
-  } catch {
+    return parsed && typeof parsed === "object" ? (parsed as ThreadMetadata & Record<string, unknown>) : {};
+  } catch (parseError) {
+    console.warn("[recovery] metadata parse failed", {
+      raw: raw.length > 200 ? `${raw.slice(0, 200)}…` : raw,
+      error: parseError instanceof Error ? parseError.message : String(parseError),
+    });
     return {};
   }
 }
@@ -105,8 +116,12 @@ export async function recoverStaleThreads(
           eventType: "inbox_recovery",
           metadata: { outcome: "error", error: error instanceof Error ? error.message : String(error) },
         });
-      } catch {
-        // Best-effort telemetry
+      } catch (telemetryError) {
+        console.warn("[recovery] telemetry write failed", {
+          threadId: thread.id,
+          eventType: "inbox_recovery",
+          error: telemetryError instanceof Error ? telemetryError.message : String(telemetryError),
+        });
       }
     }
   }
@@ -210,11 +225,19 @@ async function recoverSingleThread(
       }
     }
 
-    await recordInboxEvent({
-      threadId: thread.id,
-      eventType: guestMatch ? "guest_matched" : "guest_match_not_found",
-      metadata: matchMetadata,
-    });
+    try {
+      await recordInboxEvent({
+        threadId: thread.id,
+        eventType: guestMatch ? "guest_matched" : "guest_match_not_found",
+        metadata: matchMetadata,
+      });
+    } catch (telemetryError) {
+      console.warn("[recovery] telemetry write failed", {
+        threadId: thread.id,
+        eventType: guestMatch ? "guest_matched" : "guest_match_not_found",
+        error: telemetryError instanceof Error ? telemetryError.message : String(telemetryError),
+      });
+    }
     matchEventEmitted = true;
   }
 
@@ -223,8 +246,12 @@ async function recoverSingleThread(
     from: latestInbound.from ?? undefined,
     subject: latestInbound.subject ?? undefined,
     body: latestInbound.body.plain,
-    threadContext: buildThreadContext(gmailThread),
-    prepaymentProvider: inferPrepaymentProvider(latestInbound),
+    threadContext: {
+      ...buildThreadContext(gmailThread),
+      ...(guestMatch?.bookingRef ? { bookingRef: guestMatch.bookingRef } : {}),
+    },
+    bookingRef: guestMatch?.bookingRef,
+    prepaymentProvider: inferProviderFromBookingRef(guestMatch?.bookingRef) ?? inferPrepaymentProvider(latestInbound),
     prepaymentStep: inferPrepaymentStep(latestInbound),
     guestName: guestMatch?.firstName || undefined,
     guestRoomNumbers: guestMatch?.roomNumbers?.length ? guestMatch.roomNumbers : undefined,
@@ -285,7 +312,7 @@ async function recoverSingleThread(
     await flagForManualDraft(thread, db, {
       ...existingMetadata,
       recoveryAttempts: updatedAttempts,
-    }, "manual_flagged", failureReason.code, failureReason.message);
+    }, "manual_flagged", failureReason.code, failureReason.message, failureReason.failed_checks);
     result.manualFlagged += 1;
   }
 
@@ -299,6 +326,7 @@ async function flagForManualDraft(
   outcome: string,
   failureCode?: string,
   failureMessage?: string,
+  failureChecks?: string[],
 ): Promise<void> {
   await updateThreadStatus(
     {
@@ -309,6 +337,7 @@ async function flagForManualDraft(
         needsManualDraft: true,
         draftFailureCode: failureCode ?? null,
         draftFailureMessage: failureMessage ?? null,
+        draftFailureChecks: failureChecks ?? null,
       },
     },
     db,

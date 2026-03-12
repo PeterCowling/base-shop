@@ -23,9 +23,16 @@ export async function GET(request: Request) {
     let days: number | undefined;
     if (daysParam !== null) {
       const parsed = Number.parseInt(daysParam, 10);
-      if (!Number.isFinite(parsed) || parsed <= 0) {
+      if (
+        !Number.isInteger(parsed) ||
+        parsed < 1 ||
+        parsed > 365
+      ) {
         return NextResponse.json(
-          { success: false, error: "days must be a positive integer" },
+          {
+            success: false,
+            error: "days must be an integer between 1 and 365",
+          },
           { status: 400 },
         );
       }
@@ -36,11 +43,11 @@ export async function GET(request: Request) {
     const metricsParam = url.searchParams.get("metrics");
     let metrics: MetricGroup[] | undefined;
     if (metricsParam) {
-      const validNames = new Set<string>(ALL_METRIC_GROUPS);
+      const validNames: ReadonlySet<string> = new Set<string>(ALL_METRIC_GROUPS);
       const requested = metricsParam
         .split(",")
         .map((s) => s.trim())
-        .filter((s) => validNames.has(s)) as MetricGroup[];
+        .filter((s): s is MetricGroup => validNames.has(s));
       if (requested.length > 0) {
         metrics = requested;
       }

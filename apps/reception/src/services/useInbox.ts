@@ -94,6 +94,8 @@ export type InboxThreadDetail = {
   messages: InboxMessage[];
   totalMessages: number;
   messageOffset: number;
+  /** Server-authoritative flag: true when older messages exist beyond the current page. */
+  hasMore?: boolean;
   events: Array<{
     id: number;
     event_type: string;
@@ -225,12 +227,15 @@ export async function fetchInboxThread(threadId: string, signal?: AbortSignal): 
 
 export async function fetchThreadMessages(
   threadId: string,
-  offset: number,
-  limit: number,
+  options: { beforeId?: string; limit: number },
   signal?: AbortSignal,
-): Promise<{ messages: InboxMessage[]; totalMessages: number; messageOffset: number }> {
-  return inboxRequest<{ messages: InboxMessage[]; totalMessages: number; messageOffset: number }>(
-    `/api/mcp/inbox/${threadId}?offset=${offset}&limit=${limit}`,
+): Promise<{ messages: InboxMessage[]; totalMessages: number; messageOffset: number; hasMore: boolean }> {
+  const params = new URLSearchParams({ limit: String(options.limit) });
+  if (options.beforeId) {
+    params.set("before_id", options.beforeId);
+  }
+  return inboxRequest<{ messages: InboxMessage[]; totalMessages: number; messageOffset: number; hasMore: boolean }>(
+    `/api/mcp/inbox/${threadId}?${params.toString()}`,
     { signal, errorCode: "Failed to load older messages" },
   );
 }
@@ -259,9 +264,15 @@ export async function regenerateInboxDraft(
   return data.draft;
 }
 
-export async function sendInboxDraft(threadId: string): Promise<{ sentMessageId: string | null }> {
+export async function sendInboxDraft(
+  threadId: string,
+  expectedUpdatedAt?: string,
+): Promise<{ sentMessageId: string | null }> {
   return inboxRequest<{ sentMessageId: string | null }>(`/api/mcp/inbox/${threadId}/send`, {
     method: "POST",
+    body: JSON.stringify(
+      expectedUpdatedAt ? { expectedUpdatedAt } : {},
+    ),
     errorCode: "Failed to send inbox draft",
   });
 }
@@ -320,6 +331,21 @@ export default function useInbox() {
   const selectedThreadIdRef = useRef<string | null>(null);
   selectedThreadIdRef.current = selectedThreadId;
 
+  // Track busy state in a ref so the auto-refresh interval effect does not
+  // tear down and re-create on every loading-flag change.
+  const isBusyRef = useRef(false);
+  useEffect(() => {
+    isBusyRef.current =
+      loadingList
+      || loadingThread
+      || syncing
+      || savingDraft
+      || regeneratingDraft
+      || sendingDraft
+      || resolvingThread
+      || dismissingThread;
+  });
+
   const refreshThreadDetail = useCallback(async (threadId: string): Promise<InboxThreadDetail> => {
     detailCacheRef.current.delete(threadId);
     const detail = await fetchInboxThread(threadId);
@@ -340,19 +366,20 @@ export default function useInbox() {
     }
 
     const threadId = selectedThreadIdRef.current;
-    const currentCount = selectedThread.messages.length;
-    const total = selectedThread.totalMessages;
-    if (currentCount >= total) {
+    // Use server-authoritative hasMore when available, fall back to count comparison
+    const canLoadMore = selectedThread.hasMore
+      ?? (selectedThread.messages.length < selectedThread.totalMessages);
+    if (!canLoadMore) {
       return;
     }
 
-    // offset is from newest; we already have `currentCount` newest messages,
-    // so fetch the next page starting at that offset
-    const nextOffset = currentCount;
+    // Cursor-based: use the ID of the oldest currently-displayed message
+    const oldestMessage = selectedThread.messages[0];
+    const beforeId = oldestMessage?.id;
 
     setLoadingMoreMessages(true);
     try {
-      const page = await fetchThreadMessages(threadId, nextOffset, 20);
+      const page = await fetchThreadMessages(threadId, { beforeId, limit: 20 });
       if (threadId !== selectedThreadIdRef.current) {
         return;
       }
@@ -362,7 +389,12 @@ export default function useInbox() {
           return prev;
         }
         const merged = [...page.messages, ...prev.messages];
-        const updated = { ...prev, messages: merged, totalMessages: page.totalMessages };
+        const updated = {
+          ...prev,
+          messages: merged,
+          totalMessages: page.totalMessages,
+          hasMore: page.hasMore,
+        };
         detailCacheRef.current.set(threadId, updated);
         return updated;
       });
@@ -477,7 +509,7 @@ export default function useInbox() {
   }, []);
 
   const saveDraft = useCallback(
-    async (payload: InboxDraftUpdateInput) => {
+    async (payload: InboxDraftUpdateInput): Promise<{ saved: boolean; refreshed: boolean }> => {
       if (!selectedThreadId) {
         throw new Error("No inbox thread selected");
       }
@@ -487,10 +519,21 @@ export default function useInbox() {
 
       try {
         await updateInboxDraft(selectedThreadId, payload);
+      } catch (saveError) {
+        setSavingDraft(false);
+        throw saveError;
+      }
+
+      try {
         await refreshThreadDetail(selectedThreadId);
+      } catch {
+        setDetailError("Draft saved, but couldn\u2019t refresh \u2014 click refresh to see changes.");
+        return { saved: true, refreshed: false };
       } finally {
         setSavingDraft(false);
       }
+
+      return { saved: true, refreshed: true };
     },
     [refreshThreadDetail, selectedThreadId],
   );
@@ -523,7 +566,8 @@ export default function useInbox() {
     setDetailError(null);
 
     try {
-      const result = await sendInboxDraft(selectedThreadId);
+      const draftUpdatedAt = selectedThread?.currentDraft?.updatedAt;
+      const result = await sendInboxDraft(selectedThreadId, draftUpdatedAt ?? undefined);
       const threadId = selectedThreadId;
       try {
         await refreshThreadDetail(threadId);
@@ -534,7 +578,7 @@ export default function useInbox() {
     } finally {
       setSendingDraft(false);
     }
-  }, [refreshThreadDetail, selectedThreadId]);
+  }, [refreshThreadDetail, selectedThread?.currentDraft?.updatedAt, selectedThreadId]);
 
   const resolveThread = useCallback(async () => {
     if (!selectedThreadId) {
@@ -622,16 +666,7 @@ export default function useInbox() {
     }
 
     const intervalId = window.setInterval(() => {
-      if (
-        loadingList
-        || loadingThread
-        || syncing
-        || savingDraft
-        || regeneratingDraft
-        || sendingDraft
-        || resolvingThread
-        || dismissingThread
-      ) {
+      if (isBusyRef.current) {
         return;
       }
 
@@ -639,19 +674,7 @@ export default function useInbox() {
     }, INBOX_AUTO_REFRESH_INTERVAL_MS);
 
     return () => window.clearInterval(intervalId);
-  }, [
-    dismissingThread,
-    loadingList,
-    loadingThread,
-    online,
-    refreshInboxView,
-    regeneratingDraft,
-    resolvingThread,
-    savingDraft,
-    sendingDraft,
-    syncing,
-    tabVisible,
-  ]);
+  }, [online, refreshInboxView, tabVisible]);
 
   return {
     threads,

@@ -6,6 +6,7 @@ import { CartProvider } from "@acme/platform-core/contexts/CartContext";
 import { ConsentBanner } from "@/components/ConsentBanner.client";
 import { Header } from "@/components/Header";
 import { SiteFooter } from "@/components/SiteFooter";
+import { getChromeContent } from "@/lib/contentPacket";
 
 export default async function LocaleLayout({
   children,
@@ -16,6 +17,7 @@ export default async function LocaleLayout({
 }) {
   const { lang: rawLang } = await params;
   const lang = resolveLocale(rawLang);
+  const chrome = getChromeContent(lang);
 
   return (
     <CartProvider>
@@ -24,7 +26,7 @@ export default async function LocaleLayout({
         {children}
       </main>
       <SiteFooter lang={lang} />
-      <ConsentBanner lang={lang} />
+      <ConsentBanner lang={lang} strings={chrome.consent} />
     </CartProvider>
   );
 }

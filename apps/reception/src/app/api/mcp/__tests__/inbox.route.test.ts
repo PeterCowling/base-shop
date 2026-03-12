@@ -120,6 +120,7 @@ describe("inbox list/detail routes", () => {
       totalMessages: record.messages.length,
       offset: 0,
       limit: 20,
+      hasMore: false,
     };
   }
 

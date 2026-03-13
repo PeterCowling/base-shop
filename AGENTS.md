@@ -32,23 +32,7 @@ When you identify that the "right" solution requires significantly more work, ex
 
 ## Persistent Context
 
-Operational facts that all agents must know — credentials patterns, deployment details, app procedures, and established decisions — are stored in:
-
-```
-docs/agents/memory/INDEX.md
-```
-
-Read `docs/agents/memory/INDEX.md` at the start of any session, then read the specific file(s) relevant to your task. Topics covered:
-
-- Cloudflare API auth pattern (account-scoped token + `CLOUDFLARE_ACCOUNT_ID` required)
-- Inventory Uploader deployed Worker URL, Neon database details, Prisma/CF adapter architecture
-- Firebase RTDB paths, staff UIDs, BOS Agent API auth
-- Reception app login procedure (React fiber trick — Playwright `fill` doesn't work)
-- Reception app navigation (keyboard-modal system, all routes)
-- Codex isolated runner contract (verified model, invocation, prompt rules)
-- Established decisions (e.g. BOS process improvements is English-only)
-
-**Update policy:** When you establish a new operational fact (deployed URL, credential pattern, architectural decision, app-specific procedure), add or update the relevant file in `docs/agents/memory/` and update the index. These files are committed to the repo so all agents see them.
+Operational facts (credentials, deployment details, app procedures, established decisions) live in `docs/agents/memory/INDEX.md`. Read the index at session start, then read specific file(s) relevant to your task. When you establish a new operational fact, add/update the relevant file and update the index.
 
 ## Commands
 
@@ -200,13 +184,6 @@ Full policy: [docs/testing-policy.md](docs/testing-policy.md)
 Skills live in `.claude/skills/<name>/SKILL.md`. Claude Code auto-discovers them; Codex reads them directly.
 For diagnostic and utility tool skills, see the index at `.claude/skills/tools-index.md`.
 For a short entrypoint into the workflow (progressive disclosure), see `docs/agents/feature-workflow-guide.md`.
-
-## Skills
-
-Skills live in `.claude/skills/<name>/SKILL.md` (Claude Code auto-discovers; Codex discovers via `.agents/skills/` mirror).
-Discover all skills: `scripts/agents/list-skills` or Codex `/skills`.
-For tool/utility skill index: `.claude/skills/tools-index.md`.
-For workflow entrypoint: `docs/agents/feature-workflow-guide.md`.
 
 ## Plan Confidence Policy
 

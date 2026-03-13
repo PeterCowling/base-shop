@@ -1,7 +1,7 @@
 /* eslint-disable ds/min-tap-size -- INV-0001 operator-tool: compact buttons intentional in dense console UI */
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { getApiErrorMessage } from "../../lib/api-helpers";
 import {
@@ -15,7 +15,22 @@ import {
   itemKey,
   itemLabel,
   parseIntQuantity,
+  variantLabel,
 } from "../../lib/inventory-utils";
+
+type BatchInflowRow = {
+  key: string;
+  selectedKey: string;
+  quantity: string;
+};
+
+type InflowResultItem = {
+  sku: string;
+  previousQuantity: number;
+  nextQuantity: number;
+  delta: number;
+  variantAttributes: Record<string, string>;
+};
 
 type InflowResult =
   | {
@@ -25,14 +40,26 @@ type InflowResult =
         dryRun: boolean;
         created: number;
         updated: number;
-        items: Array<{ sku: string; previousQuantity: number; nextQuantity: number; delta: number }>;
+        items: InflowResultItem[];
       };
     }
   | { ok: false; code: string; message: string };
 
+type PreviewItem = {
+  sku: string;
+  variantAttributes: Record<string, string>;
+  previousQuantity: number;
+  addedQty: number;
+  newQty: number;
+};
+
 type PreviewState = {
-  items: Array<{ sku: string; previousQuantity: number; addedQty: number; newQty: number }>;
+  items: PreviewItem[];
 } | null;
+
+function makeBlankRow(): BatchInflowRow {
+  return { key: createKey(), selectedKey: "", quantity: "" };
+}
 
 export type StockInflowsProps = {
   shop: string;
@@ -43,8 +70,7 @@ export type StockInflowsProps = {
 export function StockInflows({ shop, onSaved }: StockInflowsProps) {
   const [inventory, setInventory] = useState<InventoryItem[]>([]);
   const [history, setHistory] = useState<AuditEntry[]>([]);
-  const [selectedKey, setSelectedKey] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [rows, setRows] = useState<BatchInflowRow[]>([makeBlankRow()]);
   const [note, setNote] = useState("");
   const [idempotencyKey, setIdempotencyKey] = useState(() => createKey());
   const [result, setResult] = useState<InflowResult | null>(null);
@@ -78,135 +104,135 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
     return () => controller.abort();
   }, [shop]);
 
-  const selectedItem = useMemo(
-    () => inventory.find((item) => itemKey(item) === selectedKey),
-    [inventory, selectedKey],
-  );
-
-  function buildBody(dryRun: boolean) {
-    if (!selectedItem) return null;
-    const parsed = parseIntQuantity(quantity, "positive");
-    if (parsed.ok === false) return null;
-    const qty = parsed.qty;
-    return JSON.stringify({
-      idempotencyKey,
-      dryRun,
-      ...(note.trim() ? { note: note.trim() } : {}),
-      items: [
-        {
-          sku: selectedItem.sku,
-          productId: selectedItem.productId,
-          quantity: qty,
-          ...(Object.keys(selectedItem.variantAttributes).length
-            ? { variantAttributes: selectedItem.variantAttributes }
-            : {}),
-        },
-      ],
-    });
+  function updateRow(rowKey: string, patch: Partial<BatchInflowRow>) {
+    setRows((prev) => prev.map((r) => (r.key === rowKey ? { ...r, ...patch } : r)));
+    setPreview(null);
+    setError(null);
   }
 
-  const handlePreview = useCallback(
-    async () => {
-      setError(null);
-      setBusy(true);
-      try {
-        if (!selectedItem) {
-          setError("Select an inventory row.");
-          return;
-        }
-        const parsed = parseIntQuantity(quantity, "positive");
-        if (parsed.ok === false) {
-          setError(parsed.error);
-          return;
-        }
-        const body = buildBody(true);
-        if (!body) {
-          setError("Unable to build request.");
-          return;
-        }
-        const resp = await fetch(`${inventoryApiUrl(shop, "inflows")}?dryRun=true`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body,
-        });
-        const json = (await resp.json().catch(() => null)) as InflowResult | null;
-        if (!resp.ok || !json) {
-          setError("Preview request failed.");
-          return;
-        }
-        if (!json.ok) {
-          setError(getApiErrorMessage(json));
-          return;
-        }
-        setPreview({
-          items: json.report.items.map((item) => ({
-            sku: item.sku,
-            previousQuantity: item.previousQuantity,
-            addedQty: item.delta,
-            newQty: item.nextQuantity,
-          })),
-        });
-      } finally {
-        setBusy(false);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- INV-0002 buildBody is inline; selectedItem/quantity/note/shop cover deps
-    [selectedItem, quantity, note, idempotencyKey, shop],
-  );
+  function addRow() {
+    setRows((prev) => [...prev, makeBlankRow()]);
+    setPreview(null);
+  }
 
-  const submit = useCallback(
-    async () => {
-      setError(null);
-      setBusy(true);
-      try {
-        if (!selectedItem) {
-          setError("Select an inventory row.");
-          return;
-        }
-        const parsed = parseIntQuantity(quantity, "positive");
-        if (parsed.ok === false) {
-          setError(parsed.error);
-          return;
-        }
-        const qty = parsed.qty;
-        const resp = await fetch(inventoryApiUrl(shop, "inflows"), {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            idempotencyKey,
-            ...(note.trim() ? { note: note.trim() } : {}),
-            items: [
-              {
-                sku: selectedItem.sku,
-                productId: selectedItem.productId,
-                quantity: qty,
-                ...(Object.keys(selectedItem.variantAttributes).length
-                  ? { variantAttributes: selectedItem.variantAttributes }
-                  : {}),
-              },
-            ],
-          }),
-        });
-        const json = (await resp.json().catch(() => null)) as InflowResult | null;
-        if (!resp.ok || !json) {
-          setError("Request failed.");
-          return;
-        }
-        if (!json.ok) {
-          setError(getApiErrorMessage(json));
-          return;
-        }
-        setResult(json);
-        setPreview(null);
-        setIdempotencyKey(createKey());
-        onSaved?.();
-        refreshHistory();
-      } finally {
-        setBusy(false);
+  function removeRow(rowKey: string) {
+    setRows((prev) => (prev.length > 1 ? prev.filter((r) => r.key !== rowKey) : prev));
+    setPreview(null);
+  }
+
+  function buildItems(): Array<{
+    sku: string;
+    productId: string;
+    quantity: number;
+    variantAttributes?: Record<string, string>;
+  }> | { error: string } {
+    const filledRows = rows.filter((r) => r.selectedKey !== "");
+    if (filledRows.length === 0) return { error: "Add at least one item." };
+    const items: Array<{
+      sku: string;
+      productId: string;
+      quantity: number;
+      variantAttributes?: Record<string, string>;
+    }> = [];
+    for (const row of filledRows) {
+      const parsed = parseIntQuantity(row.quantity, "positive");
+      if (parsed.ok === false) {
+        return { error: `Row "${row.selectedKey}": ${parsed.error}` };
       }
-    },
-    [selectedItem, quantity, note, idempotencyKey, shop, onSaved, refreshHistory],
-  );
+      const invItem = inventory.find((i) => itemKey(i) === row.selectedKey);
+      if (!invItem) return { error: "Inventory item not found for row." };
+      items.push({
+        sku: invItem.sku,
+        productId: invItem.productId,
+        quantity: parsed.qty,
+        ...(Object.keys(invItem.variantAttributes).length
+          ? { variantAttributes: invItem.variantAttributes }
+          : {}),
+      });
+    }
+    return items;
+  }
+
+  const handlePreview = useCallback(async () => {
+    setError(null);
+    setBusy(true);
+    try {
+      const itemsOrError = buildItems();
+      if ("error" in itemsOrError) {
+        setError(itemsOrError.error);
+        return;
+      }
+      const resp = await fetch(`${inventoryApiUrl(shop, "inflows")}?dryRun=true`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          idempotencyKey,
+          dryRun: true,
+          ...(note.trim() ? { note: note.trim() } : {}),
+          items: itemsOrError,
+        }),
+      });
+      const json = (await resp.json().catch(() => null)) as InflowResult | null;
+      if (!resp.ok || !json) {
+        setError("Preview request failed.");
+        return;
+      }
+      if (!json.ok) {
+        setError(getApiErrorMessage(json));
+        return;
+      }
+      setPreview({
+        items: json.report.items.map((item) => ({
+          sku: item.sku,
+          variantAttributes: item.variantAttributes ?? {},
+          previousQuantity: item.previousQuantity,
+          addedQty: item.delta,
+          newQty: item.nextQuantity,
+        })),
+      });
+    } finally {
+      setBusy(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- INV-0002 buildItems uses rows/inventory/note inline; row/inventory/note/shop/idempotencyKey cover deps
+  }, [rows, inventory, note, idempotencyKey, shop]);
+
+  const submit = useCallback(async () => {
+    setError(null);
+    setBusy(true);
+    try {
+      const itemsOrError = buildItems();
+      if ("error" in itemsOrError) {
+        setError(itemsOrError.error);
+        return;
+      }
+      const resp = await fetch(inventoryApiUrl(shop, "inflows"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          idempotencyKey,
+          ...(note.trim() ? { note: note.trim() } : {}),
+          items: itemsOrError,
+        }),
+      });
+      const json = (await resp.json().catch(() => null)) as InflowResult | null;
+      if (!resp.ok || !json) {
+        setError("Request failed.");
+        return;
+      }
+      if (!json.ok) {
+        setError(getApiErrorMessage(json));
+        return;
+      }
+      setResult(json);
+      setPreview(null);
+      setIdempotencyKey(createKey());
+      onSaved?.();
+      refreshHistory();
+    } finally {
+      setBusy(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- INV-0002 buildItems uses rows/inventory/note inline; row/inventory/note/shop/idempotencyKey/onSaved/refreshHistory cover deps
+  }, [rows, inventory, note, idempotencyKey, shop, onSaved, refreshHistory]);
 
   function cancelPreview() {
     setPreview(null);
@@ -214,20 +240,12 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
   }
 
   function startNew() {
-    setSelectedKey("");
-    setQuantity("");
+    setRows([makeBlankRow()]);
     setNote("");
     setIdempotencyKey(createKey());
     setResult(null);
     setPreview(null);
     setError(null);
-  }
-
-  function handleFieldChange<T>(setter: (v: T) => void) {
-    return (v: T) => {
-      setter(v);
-      setPreview(null);
-    };
   }
 
   if (!shop) {
@@ -239,53 +257,69 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
       <h3 className="text-sm font-semibold text-gate-ink">Receive stock</h3>
 
       <div className="space-y-2">
-        <label className="block space-y-0.5">
-          <span className="text-2xs text-gate-muted">Inventory row</span>
-          <select
-            value={selectedKey}
-            onChange={(e) => handleFieldChange(setSelectedKey)(e.target.value)}
-
-            className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
-          >
-            <option value="">— select SKU —</option>
-            {inventory.map((item) => (
-              <option key={itemKey(item)} value={itemKey(item)}>
-                {itemLabel(item)} (current: {item.quantity})
-              </option>
+        {/* Rows */}
+        <div className="space-y-1.5">
+          {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- INV-0001 operator-tool: fixed-column grid for dense console table */}
+          <div className="grid grid-cols-[1fr_100px_24px] gap-1 text-2xs text-gate-muted">
+            <span>Inventory row</span>
+            <span>Qty received</span>
+            <span />
+          </div>
+          <div className="max-h-64 overflow-y-auto space-y-1">
+            {rows.map((row) => (
+              // eslint-disable-next-line ds/no-arbitrary-tailwind -- INV-0001 operator-tool: fixed-column grid for dense console table
+              <div key={row.key} className="grid grid-cols-[1fr_100px_24px] gap-1 items-center">
+                <select
+                  value={row.selectedKey}
+                  onChange={(e) => updateRow(row.key, { selectedKey: e.target.value })}
+                  className="rounded border border-gate-border bg-gate-input-bg px-1.5 py-0.5 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
+                >
+                  <option value="">— select SKU —</option>
+                  {inventory.map((item) => (
+                    <option key={itemKey(item)} value={itemKey(item)}>
+                      {itemLabel(item)} (current: {item.quantity})
+                    </option>
+                  ))}
+                </select>
+                <input
+                  type="number"
+                  min={1}
+                  value={row.quantity}
+                  onChange={(e) => updateRow(row.key, { quantity: e.target.value })}
+                  placeholder="10"
+                  className="rounded border border-gate-border bg-gate-input-bg px-1.5 py-0.5 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
+                />
+                {/* eslint-disable ds/enforce-layout-primitives -- INV-0001 operator-tool: compact icon button in dense console table row */}
+                <button
+                  type="button"
+                  onClick={() => removeRow(row.key)}
+                  disabled={rows.length === 1}
+                  className="flex items-center justify-center rounded text-gate-muted hover:text-gate-status-incomplete disabled:opacity-30 focus-visible:ring-1 focus-visible:ring-gate-border"
+                  aria-label="Remove row"
+                >
+                  ×
+                </button>
+                {/* eslint-enable ds/enforce-layout-primitives */}
+              </div>
             ))}
-          </select>
-        </label>
+          </div>
+          <button
+            type="button"
+            onClick={addRow}
+            className="rounded px-2 py-0.5 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink"
+          >
+            + Add row
+          </button>
+        </div>
 
-        {selectedItem && (
-          <p className="text-2xs text-gate-muted">
-            Current stock: <span className="font-medium text-gate-ink">{selectedItem.quantity}</span>
-            {quantity && Number.isInteger(Number(quantity)) && Number(quantity) > 0
-              ? ` → ${selectedItem.quantity + Number(quantity)}`
-              : null}
-          </p>
-        )}
-
-        <label className="block space-y-0.5">
-          <span className="text-2xs text-gate-muted">Quantity received</span>
-          <input
-            type="number"
-            min={1}
-            value={quantity}
-            onChange={(e) => handleFieldChange(setQuantity)(e.target.value)}
-            placeholder="10"
-
-            className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
-          />
-        </label>
-
+        {/* Note */}
         <label className="block space-y-0.5">
           <span className="text-2xs text-gate-muted">Reference / note (optional)</span>
           <input
             type="text"
             value={note}
-            onChange={(e) => handleFieldChange(setNote)(e.target.value)}
+            onChange={(e) => { setNote(e.target.value); setPreview(null); }}
             placeholder="PO-1234 or supplier name…"
-
             className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
           />
         </label>
@@ -297,16 +331,20 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
             <p className="text-2xs font-medium uppercase tracking-wide text-gate-muted">
               Preview — stock levels after receiving
             </p>
-            {preview.items.map((item) => (
-              <p key={item.sku} className="text-xs text-gate-muted">
-                {item.sku}:{" "}
-                <span className="font-medium text-gate-ink">{item.previousQuantity}</span>
-                {" → "}
-                <span className="font-semibold text-gate-ink">{item.newQty}</span>
-                {" "}
-                <span className="text-gate-status-ready">(+{item.addedQty})</span>
-              </p>
-            ))}
+            {preview.items.map((item) => {
+              const label = variantLabel(item.variantAttributes);
+              const rowKey = `${item.sku}:${JSON.stringify(item.variantAttributes)}`;
+              return (
+                <p key={rowKey} className="text-xs text-gate-muted">
+                  {item.sku}{label ? ` (${label})` : ""}:{" "}
+                  <span className="font-medium text-gate-ink">{item.previousQuantity}</span>
+                  {" → "}
+                  <span className="font-semibold text-gate-ink">{item.newQty}</span>
+                  {" "}
+                  <span className="text-gate-status-ready">(+{item.addedQty})</span>
+                </p>
+              );
+            })}
             <p className="text-2xs text-gate-muted pt-0.5">Nothing has been saved yet. Confirm to apply.</p>
           </div>
         )}
@@ -319,7 +357,6 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
                 type="button"
                 onClick={() => void submit()}
                 disabled={busy}
-
                 className="rounded bg-gate-accent px-3 py-1 text-xs font-medium text-gate-on-accent hover:opacity-90 disabled:opacity-40"
               >
                 {busy ? "Saving…" : "Confirm"}
@@ -327,7 +364,6 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
               <button
                 type="button"
                 onClick={cancelPreview}
-
                 className="rounded px-2 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink"
               >
                 Cancel
@@ -339,7 +375,6 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
                 type="button"
                 onClick={() => void handlePreview()}
                 disabled={busy}
-
                 className="rounded bg-gate-accent px-3 py-1 text-xs font-medium text-gate-on-accent hover:opacity-90 disabled:opacity-40"
               >
                 {busy ? "Loading…" : "Preview"}
@@ -347,7 +382,6 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
               <button
                 type="button"
                 onClick={startNew}
-
                 className="rounded px-2 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink"
               >
                 Reset
@@ -362,14 +396,19 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
           <p className="text-xs font-medium text-gate-ink">
             {result.duplicate ? "Already received (duplicate ref)" : "Received"}
           </p>
-          {result.report.items.map((item) => (
-            <p key={item.sku} className="text-xs text-gate-muted">
-              {item.sku}: {item.previousQuantity} →{" "}
-              <span className="font-medium text-gate-ink">{item.nextQuantity}</span>
-              {" "}
-              <span className="text-gate-status-ready">(+{item.delta})</span>
-            </p>
-          ))}
+          {result.report.items.map((item) => {
+            const attrs = item.variantAttributes ?? {};
+            const label = variantLabel(attrs);
+            const rowKey = `${item.sku}:${JSON.stringify(attrs)}`;
+            return (
+              <p key={rowKey} className="text-xs text-gate-muted">
+                {item.sku}{label ? ` (${label})` : ""}: {item.previousQuantity} →{" "}
+                <span className="font-medium text-gate-ink">{item.nextQuantity}</span>
+                {" "}
+                <span className="text-gate-status-ready">(+{item.delta})</span>
+              </p>
+            );
+          })}
         </div>
       )}
 

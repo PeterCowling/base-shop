@@ -57,7 +57,7 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
             pattern="[0-9]*"
             value={displayNumber}
             onChange={handleChange}
-            placeholder='Leave blank for "go"'
+            placeholder="No bleepers available"
             className="w-full min-h-11 rounded-md border border-border-2 bg-input py-2 px-3 text-sm shadow-inner focus:border-primary-main focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-main/40"
           />
         </div>

@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-03-13T12:35:36.199Z",
+  "last_updated": "2026-03-13T12:37:21.750Z",
   "counts": {
     "enqueued": 40,
     "processed": 16,
@@ -8,8 +8,8 @@
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 302,
-    "fact_find_ready": 35,
+    "completed": 303,
+    "fact_find_ready": 34,
     "plan_ready": 0,
     "micro_build_ready": 2,
     "briefing_ready": 0,
@@ -11689,8 +11689,15 @@
         "source": "operator"
       },
       "created_at": "2026-03-04T12:00:00.000Z",
-      "queue_state": "enqueued",
-      "domain": "PRODUCTS"
+      "queue_state": "completed",
+      "domain": "PRODUCTS",
+      "processed_by": {
+        "target_route": "superseded",
+        "target_kind": "already-implemented",
+        "target_slug": "xa-b-product-card-badges",
+        "completed_at": "2026-03-13T00:00:00.000Z",
+        "outcome": "New In badge live on XaProductCard via isNewIn(product) + ProductBadge — shipped in 37e47fcc12"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -19426,14 +19433,16 @@
       "current_truth": "Bar uses min-h-screen gradient + nested card wrapper, inbox uses rounded-2xl bordered sections in a grid, login uses different patterns. No shared shell, navigation chrome, or standard page structure.",
       "next_scope_now": "Investigate what shared layout structure makes sense for a staff-facing hostel operations app (navigation, page chrome, consistent screen structure) and plan the implementation.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "superseded",
       "priority": "P3",
       "confidence": 0.8,
       "evidence_refs": [
         "operator-stated: theme audit found each screen defines its own full-page layout independently with no shared structure"
       ],
       "created_at": "2026-03-08T10:45:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "superseded",
+      "superseded_at": "2026-03-13T00:00:00Z",
+      "superseded_reason": "operator-closed: reception app now has a three-layer shared shell (root layout → AuthenticatedApp chrome → OperationalTableScreen/PageShell); all ~25 screens route through it; reception-theme-dark-mode-base-tokens plan completed token unification; independent full-page layouts are gone",
       "why": "Staff moving between the bar screen, the email inbox, and other parts of the app see a different layout and visual style on each one. The extra mental effort to reorient every time is real, especially when things are busy. A consistent look and feel across the whole app means staff can move faster and make fewer mistakes.",
       "intended_outcome": {
         "type": "operational",
@@ -26707,7 +26716,7 @@
       "next_scope_now": "Fact-find the build-origin improvement candidate \"The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.\" and validate the next action.",
       "adjacent_later": [],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "dismissed",
       "priority": "P3",
       "confidence": 0.6200000000000001,
       "evidence_refs": [
@@ -26717,7 +26726,9 @@
         "docs/plans/ideas-queue-quality-gates/pattern-reflection.entries.json"
       ],
       "created_at": "2026-03-12T14:11:07.075Z",
-      "queue_state": "enqueued",
+      "queue_state": "dismissed",
+      "dismissed_at": "2026-03-13T00:00:00.000Z",
+      "dismissed_reason": "Premature optimisation. Current hardcoded guards are working and no rejection-telemetry evidence shows miscalibration for any bridge. Registry-driven policy adds config complexity without a concrete problem to solve. Revisit if telemetry shows a specific guard over/under-rejecting for a specific ingress path.",
       "why": "Build review surfaced \"The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.\" with supporting narrative: New loop process — The admission guard (validateDispatchContent()) is a new quality gate in the ideas pipeline. This could expand into a formal admission-policy contract that other queue consumers reference. Trigger observation: guard now protects all 6 ingress paths but the rules are hardcoded — a registry-driven policy would be more extensible.",
       "intended_outcome": {
         "type": "operational",

@@ -66,7 +66,7 @@ const OrderTakingContainer: FC<OrderTakingContainerProps> = memo(
       useAddItemToOrder({
         mapToLineType: (c) => (c?.toLowerCase() === "kitchen" ? "kds" : "bds"),
       });
-    const { bleepers, firstAvailableBleeper, findNextAvailableBleeper } =
+    const { bleepers, findNextAvailableBleeper } =
       useBleepersData();
     const { setBleeperAvailability } = useBleeperMutations();
     const { getProductsByCategory, getProductCategory2: getSubCat } =
@@ -123,7 +123,7 @@ const OrderTakingContainer: FC<OrderTakingContainerProps> = memo(
     const displayedProducts: Product[] = useMemo(() => {
       const rows = getProductsByCategory(categoryToId[selectedCategory]);
       return rows.map((r) => ({ name: r[0], price: r[2], bgColor: r[3] }));
-    }, [selectedCategory, categoryToId, getProductsByCategory]);
+    }, [selectedCategory, getProductsByCategory]);
 
     /* ---------------- Utility: isCaffeinated --------------------------- */
     const isCaffeinated = useCallback(
@@ -248,13 +248,6 @@ const OrderTakingContainer: FC<OrderTakingContainerProps> = memo(
       [unconfirmedOrder, lastCaffClick, milkName, milkPrice, updateItemInOrder]
     );
 
-    /* -------------------- BLEEPER auto‑fill ------------------------------ */
-    useEffect(() => {
-      if (!bleepNumber.trim() && firstAvailableBleeper) {
-        setBleepNumber(firstAvailableBleeper.toString());
-      }
-    }, [bleepNumber, firstAvailableBleeper]);
-
     /* ----------------------- Confirm payment ----------------------------- */
     const doConfirmPayment = useCallback(
       async (method: "cash" | "card", usage: "bleep" | "go"): Promise<void> => {
@@ -267,9 +260,7 @@ const OrderTakingContainer: FC<OrderTakingContainerProps> = memo(
           if (next !== null) finalBleep = next.toString();
         };
 
-        if (usage === "go") {
-          chooseNext();
-        } else {
+        if (usage !== "go") {
           const typed = bleepNumber.trim().toLowerCase();
           if (!typed || typed === "go") chooseNext();
           else {
@@ -287,7 +278,13 @@ const OrderTakingContainer: FC<OrderTakingContainerProps> = memo(
 
         if (finalBleep !== "go") {
           const n = Number(finalBleep);
-          if (!Number.isNaN(n)) await setBleeperAvailability(n, false);
+          if (!Number.isNaN(n)) {
+            const result = await setBleeperAvailability(n, false);
+            if (!result.success) {
+              showToast("Failed to reserve bleeper. Please try again.", "error");
+              return;
+            }
+          }
         }
 
         confirmOrder(finalBleep, userName, time, method);

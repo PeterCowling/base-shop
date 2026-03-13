@@ -177,7 +177,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
             <span
               className={
                 c.keycardDifference !== 0
-                  ? "text-error-main font-semibold"
+                  ? "bg-error-light text-error-main font-semibold rounded px-0.5"
                   : undefined
               }
             >{`${c.keycardDifference >= 0 ? "+" : ""}${c.keycardDifference}`}</span>
@@ -208,7 +208,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
             <span
               className={
                 c.keycardDifference !== 0
-                  ? "text-error-main font-semibold"
+                  ? "bg-error-light text-error-main font-semibold rounded px-0.5"
                   : undefined
               }
             >{`${c.keycardDifference >= 0 ? "+" : ""}${c.keycardDifference}`}</span>
@@ -255,7 +255,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
             <span
               className={
                 c.keycardDifference !== 0
-                  ? "text-error-main font-semibold"
+                  ? "bg-error-light text-error-main font-semibold rounded px-0.5"
                   : undefined
               }
             >{`${c.keycardDifference >= 0 ? "+" : ""}${c.keycardDifference}`}</span>
@@ -434,7 +434,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
             Bank withdrawals are excluded from the comparison below. */}
         <p
           className={`text-sm ${
-            safeInflowsMismatch ? "text-error-main font-semibold" : ""
+            safeInflowsMismatch ? "bg-error-light text-error-main font-semibold rounded px-1" : ""
           }`}
         >
           Safe Inflows (excl. Bank Withdrawals) vs Tender Removals: {formatEuro(
@@ -526,7 +526,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
                 <TableCell className="p-2">Variance</TableCell>
                 <TableCell
                   className={`p-2 ${
-                    keycardVarianceMismatch ? "text-error-main font-semibold" : ""
+                    keycardVarianceMismatch ? "bg-error-light text-error-main font-semibold" : ""
                   }`}
                 >{`${keycardVariance >= 0 ? "+" : ""}${keycardVariance}`}</TableCell>
               </TableRow>
@@ -572,7 +572,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
         <section>
           <h3 className="text-xl font-semibold mb-2">Discrepancies</h3>
           {keycardVarianceMismatch && (
-            <p className="text-error-main font-semibold text-sm">
+            <p className="bg-error-light text-error-main font-semibold text-sm rounded-lg p-1">
               Keycard variance: expected {expectedKeycards} vs actual {closingKeycards} (Δ
               {keycardVariance >= 0 ? "+" : ""}
               {keycardVariance})
@@ -632,7 +632,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
                         <TableCell
                           className={`p-2 ${
                             Math.abs(amt) >= DISCREPANCY_LIMIT
-                              ? "text-error-main font-semibold"
+                              ? "bg-error-light text-error-main font-semibold"
                               : ""
                           }`}
                         >
@@ -658,7 +658,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
             </p>
           )}
           {shiftsError && (
-            <p className="text-error-main text-sm">
+            <p className="bg-error-light text-error-main text-sm rounded-lg p-2">
               Error loading variance sign-offs.
             </p>
           )}
@@ -690,7 +690,7 @@ export const EndOfDayPacketContent: React.FC<EndOfDayPacketContentProps> = React
                         : "-"}
                     </TableCell>
                     <TableCell className="p-2">{shift.closedBy ?? "-"}</TableCell>
-                    <TableCell className="p-2 text-error-main font-semibold">
+                    <TableCell className="p-2 bg-error-light text-error-main font-semibold">
                       {shift.closeDifference ?? 0}
                     </TableCell>
                   </TableRow>

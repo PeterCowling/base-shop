@@ -16,6 +16,7 @@ import useBookingsData from "../../hooks/data/useBookingsData";
 import useGuestDetails from "../../hooks/data/useGuestDetails";
 import useGuestsByBooking from "../../hooks/data/useGuestsByBooking";
 import usePreorder from "../../hooks/data/usePreorder";
+import { parseLocalDate } from "../../utils/dateUtils";
 import { Spinner } from "../common/Spinner";
 
 import ModalPreorderDetails from "./ModalPreorderDetails";
@@ -27,6 +28,36 @@ interface NightData {
 }
 
 type PreorderData = Record<string, NightData>;
+
+function getTonightNightKey(checkInDate: string): string | null {
+  if (!checkInDate) return null;
+  const checkIn = parseLocalDate(checkInDate);
+  if (!checkIn) return null;
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const checkInStart = new Date(checkIn);
+  checkInStart.setHours(0, 0, 0, 0);
+  const daysSince = Math.floor(
+    (todayStart.getTime() - checkInStart.getTime()) / (1000 * 60 * 60 * 24)
+  );
+  return `night${Math.max(1, daysSince + 1)}`;
+}
+
+export function isEligibleForPreorderTonight(
+  preorderData: PreorderData | undefined,
+  checkInDate: string
+): boolean {
+  if (!preorderData || !checkInDate) return false;
+  const nightKey = getTonightNightKey(checkInDate);
+  if (!nightKey) return false;
+  const tonight = preorderData[nightKey];
+  if (!tonight) return false;
+  return (
+    tonight.breakfast !== "NA" ||
+    tonight.drink1 !== "NA" ||
+    tonight.drink2 !== "NA"
+  );
+}
 
 interface SelectedOccState {
   occId: string;
@@ -182,22 +213,25 @@ const CompScreen: React.FC = React.memo(() => {
       (id) => !occIds13.has(id) && !occIds14.has(id)
     );
 
-    const isEligibleForPreorder = (id: string) => {
-      const occPre = preorder?.[id] as PreorderData | undefined;
-      if (!occPre) return false;
-      return Object.values(occPre).some(
-        (night) =>
-          night.breakfast !== "NA" ||
-          night.drink1 !== "NA" ||
-          night.drink2 !== "NA"
-      );
-    };
-
     const eligibleIds: string[] = [];
     const notEligibleIds: string[] = [];
-    checkedInOccIds.forEach((id) =>
-      (isEligibleForPreorder(id) ? eligibleIds : notEligibleIds).push(id)
-    );
+    checkedInOccIds.forEach((id) => {
+      const bookingRefForElig = guestsByBooking?.[id]?.reservationCode ?? "N/A";
+      const occBookingForElig = bookings?.[bookingRefForElig]?.[id];
+      const checkInDateForElig =
+        occBookingForElig &&
+        "checkInDate" in occBookingForElig &&
+        typeof occBookingForElig.checkInDate === "string"
+          ? occBookingForElig.checkInDate
+          : "";
+      (isEligibleForPreorderTonight(
+        preorder?.[id] as PreorderData | undefined,
+        checkInDateForElig
+      )
+        ? eligibleIds
+        : notEligibleIds
+      ).push(id);
+    });
 
     const buildRow = (id: string): RowData => {
       const bookingRef = guestsByBooking?.[id]?.reservationCode ?? "N/A";
@@ -217,11 +251,11 @@ const CompScreen: React.FC = React.memo(() => {
           ? occupantBooking.checkInDate
           : "";
       const occPre = (preorder?.[id] as PreorderData) ?? null;
-      const firstNightKey = occPre ? Object.keys(occPre)[0] : undefined;
+      const tonightKey = occupantCheckIn
+        ? getTonightNightKey(occupantCheckIn)
+        : null;
       const plan =
-        firstNightKey && occPre
-          ? occPre[firstNightKey].breakfast ?? "NA"
-          : "NA";
+        tonightKey && occPre ? occPre[tonightKey]?.breakfast ?? "NA" : "NA";
 
       return {
         bookingRef,

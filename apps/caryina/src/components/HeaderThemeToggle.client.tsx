@@ -76,9 +76,9 @@ const SKY_DAY =
 const SKY_NIGHT =
   "linear-gradient(180deg, hsl(var(--color-bg)) 0%, hsl(var(--color-surface)) 100%)";
 const SUN_COLOR  = "hsl(var(--color-primary))";
-const SUN_GLOW   = "0 0 8px 3px rgba(195,120,128,0.45)";
+const SUN_GLOW   = "var(--shadow-glow-sun)";
 const MOON_COLOR = "hsl(var(--color-fg-muted))";
-const MOON_GLOW  = "0 0 6px 2px rgba(200,204,208,0.15)";
+const MOON_GLOW  = "var(--shadow-glow-moon)";
 // Crescent "bite" — uses the current bg so it adapts between light and dark
 const CRESCENT   = "hsl(var(--color-bg))";
 
@@ -165,8 +165,8 @@ export const HeaderThemeToggle = memo(function HeaderThemeToggle() {
           transition: `background ${MS} ${EASE}`,
           overflow: "hidden",
           boxShadow: isDark
-            ? "inset 0 1px 3px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.06)"
-            : "inset 0 1px 3px rgba(0,0,0,0.12), 0 0 0 1px rgba(0,0,0,0.06)",
+            ? "var(--shadow-toggle-inset-dark)"
+            : "var(--shadow-toggle-inset)",
         }}
       >
         {/* Stars — fade + scale in when dark, twinkle after settling */}

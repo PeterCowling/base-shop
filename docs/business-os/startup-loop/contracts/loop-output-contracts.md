@@ -1,11 +1,11 @@
 ---
 Type: Schema-Contract
 Status: Active
-Version: 1.2.0
+Version: 1.3.0
 Domain: Venture-Studio
 Workstream: Feature-Development
 Created: 2026-02-22
-Last-updated: 2026-02-25
+Last-updated: 2026-03-11
 Owner: startup-loop maintainers
 Related-plan: docs/plans/startup-loop-standing-info-gap-analysis/plan.md
 ---
@@ -14,7 +14,7 @@ Related-plan: docs/plans/startup-loop-standing-info-gap-analysis/plan.md
 
 ## Purpose
 
-Formal artifact contracts for the four core documents produced by the feature development loop (`/lp-do-fact-find` → `/lp-do-plan` → `/lp-do-build` → operator review), plus the soft-gate reflection debt artifact. Each contract defines the canonical path, producer skill, required sections, frontmatter fields, lifecycle, and consumer list.
+Formal artifact contracts for the core documents produced by the feature development loop (`/lp-do-fact-find` → `/lp-do-analysis` → `/lp-do-plan` → `/lp-do-build` → operator review), plus the soft-gate reflection debt artifact. Each contract defines the canonical path, producer skill, required sections, frontmatter fields, lifecycle, and consumer list.
 
 These contracts close two feedback paths:
 - **Layer B → Layer A feedback**: the `results-review.user.md` artifact carries observed outcomes back into standing-information layer (Layer A), completing the loop as specified in `docs/business-os/startup-loop/specifications/two-layer-model.md`.
@@ -23,6 +23,22 @@ These contracts close two feedback paths:
 
 Skills MUST NOT store outputs at ad-hoc paths. All loop output artifacts in this contract use the path namespace `docs/plans/<feature-slug>/`.
 
+## Progressive Disclosure Sidecars
+
+`fact-find.md`, `analysis.md`, and `plan.md` each have a canonical bounded handoff sidecar:
+
+- `docs/plans/<feature-slug>/fact-find.packet.json`
+- `docs/plans/<feature-slug>/analysis.packet.json`
+- `docs/plans/<feature-slug>/plan.packet.json`
+
+These sidecars are governed by `docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`.
+
+Rules:
+- downstream DO stages read the packet first by default,
+- full upstream markdown is loaded only when the packet is insufficient,
+- packets are generated after the stage validators pass,
+- packets do not replace the markdown artifacts as the canonical source of truth.
+
 ---
 
 ## Artifact 1: `fact-find.md`
@@ -30,7 +46,8 @@ Skills MUST NOT store outputs at ad-hoc paths. All loop output artifacts in this
 **Artifact ID:** `fact-find`
 **Produced by:** `/lp-do-fact-find`
 **Stored at:** `docs/plans/<feature-slug>/fact-find.md`
-**Consumers:** `/lp-do-plan`
+**Consumers:** `/lp-do-analysis`
+**Handoff sidecar:** `docs/plans/<feature-slug>/fact-find.packet.json`
 
 ### Required Sections
 
@@ -38,8 +55,9 @@ Skills MUST NOT store outputs at ad-hoc paths. All loop output artifacts in this
 |---|---|
 | `## Scope` | Precise statement of what was investigated: feature area, location anchors, and what is explicitly out of scope. |
 | `## Evidence Audit` | Key files, modules, routes, or data artefacts examined. Max 10 primary entries. Stale evidence flagged with `[stale]`. |
+| `## Engineering Coverage Matrix` | Required for `Execution-Track: code | mixed`. Captures current-state evidence, gaps, and carry-forward burden for the canonical engineering coverage rows. |
 | `## Confidence Inputs` | Scored confidence dimensions feeding the planning phase (complexity, risk, unknowns). Each entry includes rationale and a verification path for unknowns. |
-| `## Planning Readiness` | Go / No-go call. If `No-go`: list unresolved blockers with minimal verification paths. If `Go`: summarise the recommended deliverable type and execution skill. |
+| `## Analysis Readiness` | Go / No-go call. If `No-go`: list unresolved blockers with minimal verification paths. If `Go`: summarise the recommended deliverable type and execution skill. |
 
 Additional sections produced by the fact-find template (`## Evidence Gap Review`, `## Open Questions`, `## Risk Inventory`) are permitted but the four above are mandatory minimums.
 
@@ -48,12 +66,13 @@ When the queued work item carries a self-evolving unknown-prescription discovery
 ### Required Frontmatter Fields
 
 ```yaml
-Status: <Ready-for-planning | Needs-input>
+Status: <Ready-for-analysis | Needs-input>
 Outcome: <planning | briefing>
 Execution-Track: <code | business-artifact | mixed>
 Deliverable-Type: <canonical type>
 Feature-Slug: <slug>
 artifact: fact-find
+Related-Analysis: docs/plans/<feature-slug>/analysis.md
 # Optional — present when opened via a queued dispatch packet:
 Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN | omit if direct inject>
 # Optional — use when one fact-find promotes multiple queued dispatches as a single work package:
@@ -73,6 +92,46 @@ Rules:
 - Created fresh by `/lp-do-fact-find` on first run.
 - May be updated in-place if scope restart is approved by operator.
 - Archived alongside `plan.md` when plan completes; see `_shared/plan-archiving.md`.
+- Stale status (`Status: Needs-input`) blocks `/lp-do-analysis` from starting.
+
+---
+
+## Artifact 1A: `analysis.md`
+
+**Artifact ID:** `analysis`
+**Produced by:** `/lp-do-analysis`
+**Stored at:** `docs/plans/<feature-slug>/analysis.md`
+**Consumers:** `/lp-do-plan`
+**Handoff sidecar:** `docs/plans/<feature-slug>/analysis.packet.json`
+
+### Required Sections
+
+| Section | Purpose |
+|---|---|
+| `## Decision Frame` | Precise statement of the decision being made, goals, non-goals, and constraints. |
+| `## Inherited Outcome Contract` | Carries forward why/outcome/source from fact-find without reinterpretation. |
+| `## Evaluation Criteria` | Explicit criteria used to compare approaches. |
+| `## Options Considered` | Comparison table covering viable options and their tradeoffs. |
+| `## Engineering Coverage Comparison` | Required for `Execution-Track: code | mixed`. Compares viable approaches across the canonical engineering coverage rows. |
+| `## Chosen Approach` | Decisive recommendation plus rejected alternatives and any operator-only questions. |
+| `## Planning Handoff` | Concrete implications for planning: validation burden, sequencing constraints, and risks to carry forward. |
+
+### Required Frontmatter Fields
+
+```yaml
+Status: <Ready-for-planning | Needs-input | Infeasible>
+Execution-Track: <code | business-artifact | mixed>
+Deliverable-Type: <canonical type>
+Feature-Slug: <slug>
+artifact: analysis
+Related-Fact-Find: docs/plans/<feature-slug>/fact-find.md
+Related-Plan: docs/plans/<feature-slug>/plan.md
+```
+
+### Lifecycle
+
+- Created by `/lp-do-analysis` after `fact-find.md` reaches `Status: Ready-for-analysis`.
+- May be updated in-place if analysis is revised after critique.
 - Stale status (`Status: Needs-input`) blocks `/lp-do-plan` from starting.
 
 ---
@@ -83,12 +142,14 @@ Rules:
 **Produced by:** `/lp-do-plan`
 **Stored at:** `docs/plans/<feature-slug>/plan.md`
 **Consumers:** `/lp-do-build`
+**Handoff sidecar:** `docs/plans/<feature-slug>/plan.packet.json`
 
 ### Required Sections
 
 | Section | Purpose |
 |---|---|
 | `## Summary` | One-paragraph restatement of the goal and approach. |
+| `## Engineering Coverage` | Required for `Execution-Track: code | mixed`. Maps the canonical engineering coverage rows to planned handling and task ownership. |
 | `## Tasks` | Ordered task list. Each task entry must carry: `ID`, `Type`, `Status`, `Confidence`, `Execution-Skill`, `Affects`, and `Depends-on`. |
 | `## Parallelism Guide` | Wave-groupings for parallel dispatch (may be `Single wave: all tasks` if sequential). Required even when there is only one wave. |
 | `## Validation Contracts` | Named VC-## or TC-## entries with pass criteria. Must include at least one entry per `IMPLEMENT` task. |
@@ -102,11 +163,12 @@ Feature-Slug: <slug>
 Execution-Track: <code | business-artifact | mixed>
 Last-updated: <YYYY-MM-DD>
 artifact: plan
+Related-Analysis: docs/plans/<feature-slug>/analysis.md
 ```
 
 ### Lifecycle
 
-- Drafted by `/lp-do-plan` after `fact-find.md` reaches `Status: Ready-for-planning`.
+- Drafted by `/lp-do-plan` after `analysis.md` reaches `Status: Ready-for-planning`.
 - Updated in-place by `/lp-do-build` after each task completion (status, evidence, `Last-updated`).
 - Set to `Status: Archived` when all executable tasks are complete.
 - Archived to `docs/plans/_archive/<feature-slug>/plan.md`; see `_shared/plan-archiving.md`.
@@ -164,7 +226,9 @@ Deliverable-Type: <canonical type>
 |---|---|
 | `## What Was Built` | Concise narrative of every task completed: what changed, where, and why. One paragraph per task group is sufficient. |
 | `## Tests Run` | List of test commands executed, pass/fail outcomes, and any skips with justification. |
+| `## Workflow Telemetry Summary` | Required when DO workflow telemetry was recorded. Summarises stage coverage, context bytes, module counts, deterministic checks, and token-measurement coverage from the shared ideas telemetry stream. |
 | `## Validation Evidence` | Per-task VC/TC pass evidence. Copy from plan or summarise. Must show each contract was met. |
+| `## Engineering Coverage Evidence` | Required for `Execution-Track: code | mixed`. Records evidence for each canonical engineering coverage row or explicit `N/A`. |
 | `## Scope Deviations` | Any controlled scope expansions made during build, with rationale. `None` if no deviations. |
 | `## Outcome Contract` | Canonical outcome fields carried from plan `## Inherited Outcome Contract`. Required for `build-event.json` emitter to produce operator-attributed `why_source`. See sub-fields below. |
 
@@ -192,6 +256,7 @@ Field notes:
 ```yaml
 Status: Complete
 Feature-Slug: <slug>
+Execution-Track: <code | business-artifact | mixed>
 Completed-date: <YYYY-MM-DD>
 artifact: build-record
 # Optional — set when a strategy artifact references this build:
@@ -341,6 +406,7 @@ All artifacts in this contract share the `docs/plans/<feature-slug>/` namespace:
 | Artifact | Canonical path | Produced by |
 |---|---|---|
 | `fact-find.md` | `docs/plans/<feature-slug>/fact-find.md` | `/lp-do-fact-find` |
+| `analysis.md` | `docs/plans/<feature-slug>/analysis.md` | `/lp-do-analysis` |
 | `plan.md` | `docs/plans/<feature-slug>/plan.md` | `/lp-do-plan` |
 | `build-record.user.md` | `docs/plans/<feature-slug>/build-record.user.md` | `/lp-do-build` |
 | `build-event.json` | `docs/plans/<feature-slug>/build-event.json` | `/lp-do-build` emitter (`lp-do-build-event-emitter.ts`) |
@@ -361,19 +427,21 @@ The `.json` sidecar artifacts are machine-readable companions that let downstrea
 
 ```
 /lp-do-fact-find
-    └── produces: fact-find.md (Status: Ready-for-planning)
-            └── /lp-do-plan reads fact-find.md
-                    └── produces: plan.md (Status: Active)
-                            └── /lp-do-build reads plan.md
-                                    ├── produces: build-record.user.md (Status: Complete)
-                                    ├── emits: build-event.json (canonical outcome event, from Outcome Contract in build-record)
-                                    ├── reads results-review idea candidates
-                                    │     └── produces: pattern-reflection.user.md (step 2.5; empty-state valid)
-                                    ├── evaluates results-review minimum payload
-                                    │     └── if missing: upserts reflection-debt.user.md (soft gate)
-                                    └── plan archived (Status: Archived)
-                                            └── Operator completes results-review.user.md
-                                                    └── debt resolves + Layer A standing-information refresh (§ Standing Updates)
+    └── produces: fact-find.md (Status: Ready-for-analysis)
+            └── /lp-do-analysis reads fact-find.md
+                    └── produces: analysis.md (Status: Ready-for-planning)
+                            └── /lp-do-plan reads analysis.md
+                                    └── produces: plan.md (Status: Active)
+                                            └── /lp-do-build reads plan.md
+                                                    ├── produces: build-record.user.md (Status: Complete)
+                                                    ├── emits: build-event.json (canonical outcome event, from Outcome Contract in build-record)
+                                                    ├── reads results-review idea candidates
+                                                    │     └── produces: pattern-reflection.user.md (step 2.5; empty-state valid)
+                                                    ├── evaluates results-review minimum payload
+                                                    │     └── if missing: upserts reflection-debt.user.md (soft gate)
+                                                    └── plan archived (Status: Archived)
+                                                            └── Operator completes results-review.user.md
+                                                                    └── debt resolves + Layer A standing-information refresh (§ Standing Updates)
 ```
 
 ---
@@ -495,4 +563,4 @@ Repeated Signal Review findings that still require a manual promote-or-close dec
 - Plan archiving procedure: `.claude/skills/_shared/plan-archiving.md`
 - Loop spec: `docs/business-os/startup-loop/specifications/loop-spec.yaml`
 - Reflection debt emitter: `scripts/src/startup-loop/build/lp-do-build-reflection-debt.ts`
-- Producer skills: `.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-plan/SKILL.md`, `.claude/skills/lp-do-build/SKILL.md`
+- Producer skills: `.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-analysis/SKILL.md`, `.claude/skills/lp-do-plan/SKILL.md`, `.claude/skills/lp-do-build/SKILL.md`

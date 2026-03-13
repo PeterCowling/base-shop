@@ -1,0 +1,227 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "inventory-uploader-product-management",
+  "source_artifact_path": "docs/plans/inventory-uploader-product-management/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/inventory-uploader-product-management/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Caryina product and stock data is saved in files that do not work on the Cloudflare Workers hosting platform — the shop is silently broken in production for any data write. No operator tool exists to add, edit, or remove products across any shop. Fixing this gives caryina reliable database storage and gives all shops a product management screen in the inventory tool.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Inventory-uploader has a working Products tab for all shops. Caryina products and inventory are stored in PostgreSQL. The caryina admin panel is removed. Product data is no longer stored in flat files for any shop.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "Inventory console has established Tailwind hand-built components; split-pane + tabs pattern documented in `InventoryConsole.client.tsx`",
+      "gap_or_implication": "No Products tab exists; new tab and list/form components needed",
+      "carry_forward_or_notes": "Design against existing tab/panel tokens (`gate-*`)"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Existing inventory editor shows `sku`-selected empty state, loading state, error state",
+      "gap_or_implication": "Product CRUD has create/edit/delete flows with no existing model; empty catalogue state needed",
+      "carry_forward_or_notes": "Define empty-catalogue state, delete-confirmation UX, success/error feedback"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Inventory-uploader middleware protects all routes except `/login` and `/api/inventory/login`; HMAC session verified at SSR",
+      "gap_or_implication": "New product routes automatically protected by existing middleware matcher — no additional auth needed. Refunds endpoint brings sensitive payment data; must validate all input via Zod before touching payment APIs",
+      "carry_forward_or_notes": "Confirm refunds route Zod validation matches current caryina implementation; check `amountCents` bounds"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`adjustments/route.ts` uses `applyStockAdjustment` which writes `InventoryAuditEvent` rows for full audit trail",
+      "gap_or_implication": "Product CRUD has no audit trail today (JSON file mutations are silent). Should log create/update/delete at `console.info` level at minimum; full audit model is out of scope for this delivery",
+      "carry_forward_or_notes": "Add `console.info` logging to product write routes; note full product audit trail as future work"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "No existing tests in inventory-uploader; caryina admin has tests that will be deleted",
+      "gap_or_implication": "New routes and new Prisma methods need test coverage; migration script needs dry-run assertion",
+      "carry_forward_or_notes": "Unit tests for prismaProductsRepository methods; unit tests for new API routes"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`ProductPublication` type drives schema shape; `InventoryItem` is reference model; `repoResolver` controls backend; env vars `PRODUCTS_BACKEND` / `DB_MODE`",
+      "gap_or_implication": "`Product` Prisma model absent; `@@unique([shopId, id])` constraint required by existing code; caryina wrangler.toml missing `DATABASE_URL` + `DB_MODE`",
+      "carry_forward_or_notes": "Schema migration is additive; data migration is 3 products + 4 inventory rows; env vars must be set before storefront reads switch"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Product catalogues are small (3–100 products); no hot-path concern. Prisma connection pooling handled by platform-core `prisma` singleton.",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Caryina storefront reads will switch from JSON (empty silently on Workers) to Prisma (real data) once `DB_MODE=prisma` is set",
+      "gap_or_implication": "If data migration is incomplete at the time of env var deployment, storefront returns empty products (regresses from current silent-failure state). Rollback: remove `DB_MODE` var → falls back to JSON (silent failure returns, which is the current state).",
+      "carry_forward_or_notes": "Migration script must run and be verified before `DB_MODE=prisma` is deployed; cutover ordering is critical"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Two interlinked gaps are addressed here as a single delivery: 1. **Platform gap (all shops):** The inventory-uploader has no product management — operators can adjust stock levels but cannot add, edit, or remove products. The `prismaProductsRepository` exists but is a stub: reads are Prisma-aware, but writes/updates/deletes/duplicates fall back to JSON unconditionally. There is no `Product` model in the Prisma schema. 2. **Caryina deployment gap:** Caryina's `wrangler.toml` has no `DATABASE_URL` and no `DB_MODE` setting. On Cloudflare Workers (where `fs.readFile` does not exist), the JSON prod",
+    "goals": [
+      "Add a `Product` model to `packages/platform-core/prisma/schema.prisma` with appropriate fields and constraints.",
+      "Complete `prismaProductsRepository` so that write/update/delete/duplicate use Prisma, not JSON fallbacks.",
+      "Add product CRUD API routes to `apps/inventory-uploader`: `GET/POST /api/inventory/[shop]/products` and `GET/PATCH/DELETE /api/inventory/[shop]/products/[id]`.",
+      "Add a Products tab to the `InventoryConsole` UI in inventory-uploader.",
+      "Promote caryina's product/inventory Zod schemas (`adminSchemas.ts`) to a shared location (inventory-uploader lib or platform-core) for reuse.",
+      "Wire `apps/caryina/wrangler.toml` to use `DATABASE_URL` + `DB_MODE=prisma`.",
+      "Migrate caryina's 3 products and 4 inventory rows from JSON files to PostgreSQL.",
+      "Delete the caryina admin panel and its supporting files once product management is covered by inventory-uploader.",
+      "Resolve the refunds endpoint: move to inventory-uploader (the appropriate operator tool)."
+    ],
+    "non_goals": [
+      "Multi-locale product editing in the UI (create/edit will default all locales to the same value, matching the existing caryina admin behaviour).",
+      "Product image upload (media URLs are provided as strings, not uploaded via the UI).",
+      "Role-based per-shop access control (inventory-uploader uses a single shared token).",
+      "Migrating other shops from JSON to Prisma (caryina only in this delivery)."
+    ],
+    "constraints": [
+      "Caryina runs on Cloudflare Workers with `nodejs_compat`; PostgreSQL must be reachable from Workers. The inventory-uploader already uses `DATABASE_URL` as a wrangler secret and `InventoryAuditEvent` writes to Prisma in prod — **this validates the PostgreSQL-from-Workers path**.",
+      "The Prisma schema uses PostgreSQL (`provider = \"postgresql\"`). No D1.",
+      "`INVENTORY_LOCAL_FS_DISABLED = \"1\"` is already set as a `[vars]` in inventory-uploader wrangler.toml — this signals filesystem is disabled in that deployment context.",
+      "`adminSchemas.ts` currently lives in `apps/caryina/src/lib/` — must be moved or the relevant parts promoted before the admin panel is deleted."
+    ],
+    "assumptions": [
+      "The same `DATABASE_URL` secret used by inventory-uploader covers the caryina shop's data (same PostgreSQL cluster, same database, different `shopId`). This is consistent with how all shops share the platform-core Prisma schema.",
+      "`DB_MODE=prisma` is safe to set for caryina because `InventoryItem` model exists and `InventoryAuditEvent` writes are already working in inventory-uploader.",
+      "The refunds endpoint is best homed in inventory-uploader (same auth model, same operator audience)."
+    ],
+    "key_entry_points": [
+      "`packages/platform-core/prisma/schema.prisma` — Prisma schema; `Product` model absent; `InventoryItem` model present (line 147) as implementation reference.",
+      "`packages/platform-core/src/repositories/products.prisma.server.ts` — stub Prisma repo; `write/update/delete/duplicate` delegate to `jsonProductsRepository`.",
+      "`packages/platform-core/src/repositories/products.json.server.ts` — full JSON CRUD reference implementation; all five methods complete.",
+      "`packages/platform-core/src/repositories/products.server.ts` — public repo surface; uses `resolveRepo()` with `backendEnvVar: \"PRODUCTS_BACKEND\"`.",
+      "`packages/platform-core/src/repositories/repoResolver.ts` — backend resolution logic; checks `PRODUCTS_BACKEND` then `DB_MODE`; falls back to JSON when `DATABASE_URL` absent or model delegate missing.",
+      "`apps/inventory-uploader/src/components/console/InventoryConsole.client.tsx` — root console; split-pane with left `InventoryMatrix`/`InventoryImport`, right tabs (editor, ledger, adjustments, inflows). **Products section absent entirely.**",
+      "`apps/inventory-uploader/src/app/api/inventory/[shop]/adjustments/route.ts` — canonical API route pattern (`runtime = \"nodejs\"`, `apiError`, Zod validation, `{ params: Promise<{ shop: string }> }`).",
+      "`apps/caryina/src/lib/adminSchemas.ts` — Zod schemas for product CRUD (`createProductSchema`, `updateProductSchema`, `updateInventorySchema`, `refundRequestSchema`). Must be promoted before admin panel is deleted.",
+      "`apps/caryina/wrangler.toml` — bare config; 9 lines; no `DATABASE_URL` secret, no `DB_MODE` var.",
+      "`apps/inventory-uploader/wrangler.toml` — has `DATABASE_URL` as documented wrangler secret; `INVENTORY_LOCAL_FS_DISABLED = \"1\"` in `[vars]`."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis inventory-uploader-product-management`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Prisma Product model design",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "prismaProductsRepository write/update/delete/duplicate",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Missing precondition, Minor]: `prisma generate` must be run after model is added before Prisma client recognizes the model — not a build blocker, but deployment runbook must include it",
+        "Resolution Required": "No (noted in planning constraints)"
+      },
+      {
+        "Scope Area": "Inventory-uploader API routes",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — route pattern fully established",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Inventory-uploader Products UI",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — tab pattern directly portable",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Zod schema promotion (adminSchemas.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — schemas are self-contained, no caryina-specific imports",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "caryina wrangler.toml env vars",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Ordering inversion, Moderate]: if `DB_MODE=prisma` is deployed before data migration runs, storefront returns empty products. Explicit ordering in plan mitigates.",
+        "Resolution Required": "No (explicitly sequenced in task seeds)"
+      },
+      {
+        "Scope Area": "Data migration (3 products + 4 inventory rows)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — InventoryItem model already supports caryina rows; Product model addition covers products",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Refunds endpoint relocation",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Missing precondition, Moderate]: Axerve AND Stripe credentials must be available in inventory-uploader before caryina admin is deleted. Both providers are used by the refunds endpoint. Open question raised.",
+        "Resolution Required": "No (operator to confirm delivery scoping — noted as Open)"
+      },
+      {
+        "Scope Area": "Admin panel deletion",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — full file list established; tests identified for deletion",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Operator wants to add/edit/remove a caryina product, or update caryina stock.",
+      "end_condition": "Product data updated and visible to storefront.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Product CRUD (caryina)",
+          "flow": "Operator opens `/admin/products` in the caryina app → authenticates with `CARYINA_ADMIN_KEY` cookie → creates/edits product via form → form POSTs to `/admin/api/products` → `writeRepo()` writes to `data/shops/caryina/products.json`",
+          "owners": "caryina app, JSON file",
+          "evidence": "`apps/caryina/src/app/admin/products/`, `packages/platform-core/src/repositories/products.json.server.ts`",
+          "issues": "Auth guard (`proxy.ts`) is never invoked — no `middleware.ts` exists. Route is fully unprotected. Also: `fs.readFile` fails in Cloudflare Workers."
+        },
+        {
+          "id": null,
+          "label": "Inventory update (caryina)",
+          "flow": "Operator POSTs to `/admin/api/inventory/[sku]` → `updateInventoryItem()` → `inventory.json` via `.lock` file",
+          "owners": "caryina app, JSON file",
+          "evidence": "`apps/caryina/src/app/admin/api/inventory/[sku]/route.ts`, `packages/platform-core/src/repositories/inventory.json.server.ts`",
+          "issues": "No middleware.ts → unprotected. Also: `fs` unavailable in Workers."
+        },
+        {
+          "id": null,
+          "label": "Storefront product reads",
+          "flow": "`readRepo(\"caryina\")` → `repoResolver` → with `DATABASE_URL` absent → JSON fallback → `fs.readFile` on Workers → **silent empty array**",
+          "owners": "caryina Workers deployment",
+          "evidence": "`packages/platform-core/src/repositories/repoResolver.ts:86-92`, `packages/platform-core/src/repositories/products.json.server.ts:26-34`",
+          "issues": "`readFile` throws on Workers; catch block silently returns `[]`. Storefront shows zero products."
+        },
+        {
+          "id": null,
+          "label": "Refunds",
+          "flow": "Operator POSTs to `/admin/api/refunds` with `shopTransactionId`/`amountCents` → resolves provider (Axerve or Stripe) → calls payment provider API",
+          "owners": "caryina app",
+          "evidence": "`apps/caryina/src/app/admin/api/refunds/route.ts`",
+          "issues": "Also unprotected (same missing-middleware issue). Must be preserved and given a new home."
+        }
+      ]
+    }
+  }
+}

@@ -89,6 +89,7 @@
       font-size:0.62rem; font-weight:700; letter-spacing:0.06em;
       padding:0.18rem 0.45rem; border-radius:999px; white-space:nowrap;
     }
+    @media(prefers-color-scheme:dark){ .gate-badge { background:var(--operator-bg); color:var(--operator-text); } }
 
     /* ── Grid of file cards ── */
     .card-grid {
@@ -115,6 +116,12 @@
     .file-card.operator .card-tag { background:var(--operator-border);  color:#fff; }
     .file-card.standing .card-tag { background:var(--standing-border);  color:#fff; }
     .file-card.dated    .card-tag { background:var(--dated-border);     color:#fff; }
+    @media(prefers-color-scheme:dark){
+      .file-card.agent    .card-tag { background:var(--agent-bg);    color:var(--agent-text); }
+      .file-card.operator .card-tag { background:var(--operator-bg); color:var(--operator-text); }
+      .file-card.standing .card-tag { background:var(--standing-bg); color:var(--standing-text); }
+      .file-card.dated    .card-tag { background:var(--dated-bg);    color:var(--dated-text); }
+    }
 
     .card-filename {
       font-family: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
@@ -131,6 +138,7 @@
       background:var(--operator-border); color:#fff; border-radius:3px;
       display:inline-block; width:fit-content;
     }
+    @media(prefers-color-scheme:dark){ .card-gate { background:var(--operator-bg); color:var(--operator-text); } }
     .card-detail { font-size:0.8rem; color:var(--text-muted); }
     ul.card-list { margin:0; padding-left:1.1rem; }
     ul.card-list li { font-size:0.82rem; line-height:1.5; margin-bottom:0.2rem; }
@@ -215,13 +223,57 @@
       margin-top: -0.8rem; margin-bottom: 1rem; font-style: italic;
     }
     @media (prefers-reduced-motion: reduce) { .mermaid-wrap .mermaid { transition: none; } }
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   </style>
 
 <style id="sl-theme-css">html[data-theme="dark"]{--bg:#0e1016;--surface:#161921;--surface-2:#1e2230;--surface-raised:#1e2230;--border:#2a2f45;--text:#e4e7f2;--text-muted:#6b728f;--text-dim:#454d6a;--accent:#5b9cf6;--accent-soft:rgba(91,156,246,.15);--code-bg:#161921;--code-border:#2a2f45;--red-bg:rgba(240,92,92,.10);--amber-bg:rgba(245,166,35,.10);--green-bg:rgba(74,222,128,.08);--blue-bg:rgba(91,156,246,.10);--purple-bg:rgba(167,139,250,.10)}html[data-theme="dark"] body{background:var(--bg)!important;color:var(--text)!important}html[data-theme="light"]{--bg:#f5f6fa;--surface:#ffffff;--surface-2:#f0f1f7;--surface-raised:#f0f1f7;--border:#dde0ed;--text:#1a1d2e;--text-muted:#5a6080;--text-dim:#a0a8c0;--accent:#3362d0;--accent-soft:#e8eeff;--code-bg:#f0f1f7;--code-border:#dde0ed;--red-bg:rgba(200,50,50,.08);--amber-bg:rgba(180,120,0,.08);--green-bg:rgba(40,160,80,.06);--blue-bg:rgba(40,100,220,.08);--purple-bg:rgba(120,80,200,.08)}html[data-theme="light"] body{background:var(--bg)!important;color:var(--text)!important}[data-theme="light"] #sl-nav{background:#eef0f7!important;border-bottom-color:#dde0ed!important}[data-theme="light"] #sl-nav .sl-brand,[data-theme="light"] #sl-nav a,[data-theme="light"] #sl-theme-btn{color:#5a6080!important}[data-theme="light"] #sl-nav a:hover,[data-theme="light"] #sl-nav a.sl-on{color:#1a1d2e!important}</style>
 <script id="sl-theme-init">(function(){try{var t=localStorage.getItem("sl-theme");if(!t)t=window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.setAttribute("data-theme",t)}catch(e){}})()</script>
+<style id="sl-role-theme">
+/* Role-colour vars keyed to data-theme so JS toggle and prefers-color-scheme stay in sync.
+   html[data-theme] has attribute-selector specificity (0,1,1) which beats :root (0,0,1)
+   inside @media, ensuring these always win when a theme is explicitly set. */
+html[data-theme="dark"] {
+  --bg:#1a1918; --surface:#242220; --border:#3d3a37; --border-soft:#2e2c2a;
+  --text:#f5f3f0; --text-muted:#a39e98;
+  --accent:#52b788; --accent-soft:#1e3d30;
+  --warn:#fbbf24; --warn-soft:#27201a;
+  --danger:#f87171; --danger-soft:#3b1515;
+  --code-bg:#2e2c2a; --code-border:#3d3a37;
+  --agent-bg:#1e3d30;   --agent-border:#52b788;  --agent-text:#a7f3d0;
+  --operator-bg:#27201a; --operator-border:#fbbf24; --operator-text:#fde68a;
+  --standing-bg:#2d1f5c; --standing-border:#a78bfa; --standing-text:#ddd6fe;
+  --dated-bg:#0c2a3e;   --dated-border:#38bdf8;  --dated-text:#bae6fd;
+  --infra-bg:#1e2530;   --infra-border:#94a3b8;  --infra-text:#e2e8f0;
+}
+html[data-theme="light"] {
+  --bg:#f9f8f6; --surface:#ffffff; --border:#e4e2de; --border-soft:#eeece9;
+  --text:#1a1918; --text-muted:#6b6762;
+  --accent:#2d6a4f; --accent-soft:#e8f4ee;
+  --warn:#92400e; --warn-soft:#fef3c7;
+  --danger:#991b1b; --danger-soft:#fee2e2;
+  --code-bg:#f3f1ee; --code-border:#dbd9d4;
+  --agent-bg:#e8f4ee;   --agent-border:#2d6a4f;  --agent-text:#1a3d2b;
+  --operator-bg:#fef3c7; --operator-border:#92400e; --operator-text:#4a1f05;
+  --standing-bg:#ede9fe; --standing-border:#5b21b6; --standing-text:#2e1065;
+  --dated-bg:#e0f2fe;   --dated-border:#0369a1;  --dated-text:#0c4a6e;
+  --infra-bg:#f1f5f9;   --infra-border:#64748b;  --infra-text:#1e293b;
+}
+/* Card tag: dark mode — use role-bg/role-text (passes 9–13:1) */
+[data-theme="dark"] .file-card.agent    .card-tag { background:var(--agent-bg);    color:var(--agent-text); }
+[data-theme="dark"] .file-card.operator .card-tag { background:var(--operator-bg); color:var(--operator-text); }
+[data-theme="dark"] .file-card.standing .card-tag { background:var(--standing-bg); color:var(--standing-text); }
+[data-theme="dark"] .file-card.dated    .card-tag { background:var(--dated-bg);    color:var(--dated-text); }
+/* Gate badges: dark mode */
+[data-theme="dark"] .gate-badge { background:var(--operator-bg); color:var(--operator-text); }
+[data-theme="dark"] .card-gate  { background:var(--operator-bg); color:var(--operator-text); }
+/* Card filename chip: dark mode */
+[data-theme="dark"] .card-filename { background:rgba(255,255,255,0.08); }
+/* Nav body bg: dark mode (match page bg, not the BOS surface colour) */
+[data-theme="dark"] body { background:var(--bg)!important; }
+</style>
 </head>
 <body>
-<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-inner{position:relative;display:flex;align-items:center;justify-content:center;gap:0;min-width:max-content;width:100%;max-width:1200px}#sl-nav .sl-brand{color:#4b5270;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#f05c5c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><div class="sl-inner"><span class="sl-brand">Startup Loop</span><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button></div><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
+<nav id="sl-nav"><style>#sl-nav{position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#111318;border-bottom:1px solid #2a2d3e;padding:0 16px;height:42px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;overflow-x:auto;white-space:nowrap}#sl-nav .sl-inner{position:relative;display:flex;align-items:center;justify-content:center;gap:0;min-width:max-content;width:100%;max-width:1200px}#sl-nav .sl-brand{color:#7b82a0;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-right:16px;flex-shrink:0}#sl-nav a{color:#7b82a0;text-decoration:none;padding:0 11px;height:42px;display:inline-flex;align-items:center;gap:5px;font-weight:500;border-bottom:2px solid transparent;transition:color .12s;flex-shrink:0}#sl-nav a:hover{color:#e4e7f2}#sl-nav a.sl-on{color:#e4e7f2;border-bottom-color:#5b9cf6}#sl-theme-btn{position:absolute;right:0;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:15px;padding:0 12px;height:42px;flex-shrink:0;color:#7b82a0;line-height:1}.sl-dot{display:inline-flex;align-items:center;justify-content:center;background:#b91c1c;color:#fff;font-size:10px;font-weight:700;min-width:17px;height:17px;border-radius:9px;padding:0 4px;line-height:1}</style><div class="sl-inner"><span class="sl-brand">Startup Loop</span><a href="startup-loop-files.user.html">Loop Files</a><a href="startup-loop-file-types.user.html">File Types</a><a href="startup-loop-output-registry.user.html">Output Registry</a><a href="process-improvements.user.html">Process</a><button id="sl-theme-btn" title="Toggle light/dark mode">🌙</button></div><script>(function(){var p=location.pathname.split("/").pop()||"";document.querySelectorAll("#sl-nav a").forEach(function(a){if(a.getAttribute("href").split("/").pop()===p)a.classList.add("sl-on")});var btn=document.getElementById("sl-theme-btn");function upd(){btn.textContent=document.documentElement.getAttribute("data-theme")==="dark"?"🌙":"☀️"}upd();btn.addEventListener("click",function(){var t=document.documentElement.getAttribute("data-theme")==="dark"?"light":"dark";document.documentElement.setAttribute("data-theme",t);localStorage.setItem("sl-theme",t);upd()});})()</script></nav>
 <main>
 
   <h1>Your Startup Loop File Guide</h1>

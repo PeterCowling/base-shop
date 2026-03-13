@@ -69,7 +69,7 @@ Last-reviewed: 2026-02-21
 | 15 | `SELL-05` | Paid channel standing | Standing paid channel performance: spend by channel, ROAS, and creative fatigue signals. | `paid-channel-standing`, `sell-05` | — |
 | 15 | `SELL-06` | Partnership and referral | Standing record of partnership pipeline, referral programmes, and affiliate activity with performance notes. | `partnership-and-referral-standing`, `partnership-standing`, `sell-06` | — |
 | 15 | `SELL-07` | Sell aggregate pack | Aggregate sell pack combining channel performance, outreach/content, SEO, paid channel, and partnership standing into one artifact. | `sell-aggregate-pack`, `sell-07` | — |
-| 15 | `SELL-08` | Activation readiness | Paid-spend authorization state documented from measurement/risk/conversion checks. | `activation-readiness`, `spend-authorization`, `sell-08` | paid_spend_requested |
+| 15 | `SELL-08` | Activation readiness | Paid-spend authorization state documented from measurement, risk, conversion, and rendered funnel audit checks. | `activation-readiness`, `spend-authorization`, `sell-08` | paid_spend_requested |
 | 16 | `S4` | Baseline merge | Merged baseline snapshot and manifest commit combining offer, forecast, and channel artifacts. | `baseline-merge`, `s4` | — |
 | 17 | `WEBSITE` | Website | Website workstream complete via one named process: WEBSITE-01 (L1 first build) or WEBSITE-02 (site-upgrade synthesis). | `website`, `website-workstream`, `website-container` | — |
 | 17 | `WEBSITE-01` | L1 first build | Framework-first assembly contract for the first website build, mapping canonical assets, boundaries, and implementation order. | `website-01`, `l1-first-build`, `first-build-framework`, `site-v1-builder` | launch-surface = pre-website |
@@ -93,4 +93,4 @@ Last-reviewed: 2026-02-21
 
 | Gate ID | Label | Type | Description |
 |---|---|---|---|
-| `GATE-SELL-ACT-01` | Spend authorization | Hard | Spend activation gate. Requires decision-grade measurement signal verified (GATE-MEAS-01 pass). Blocks any live spend or channel activation until measurement thresholds are met. |
+| `GATE-SELL-ACT-01` | Spend authorization | Hard | Spend activation gate. Requires decision-grade measurement signal verified plus a recent rendered sales-funnel audit pass on mobile and fullscreen. Blocks any live spend or channel activation until both thresholds are met. |

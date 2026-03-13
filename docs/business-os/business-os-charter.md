@@ -139,7 +139,8 @@ docs/business-os/
 - **Path authorization:** Agent API auth required for card/idea/stage-doc writes; direct markdown edits are blocked by CI guard
 
 ### Quality Gates
-- `pnpm docs:lint` validates exported Business OS document headers
+- `pnpm docs:lint` refreshes `docs/registry.json` and validates changed exported Business OS document headers
+- `pnpm docs:lint:full` is reserved for explicit repo-wide docs debt sweeps
 - TypeScript type checking enforced (`pnpm typecheck`)
 - Targeted tests required before commits (`pnpm test -- <specific-test>`)
 - No direct commits to `staging` or `main` (ship via pipeline PRs)

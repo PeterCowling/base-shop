@@ -1,0 +1,354 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "inventory-uploader-product-management",
+  "source_artifact_path": "docs/plans/inventory-uploader-product-management/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/inventory-uploader-product-management/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Caryina product and stock data is saved in files that do not work on the Cloudflare Workers hosting platform — the shop is silently broken in production for any data write. No operator tool exists to add, edit, or remove products across any shop. Fixing this gives caryina reliable database storage and gives all shops a product management screen in the inventory tool.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Inventory-uploader has a working Products tab for all shops. Caryina products and inventory are stored in PostgreSQL. The caryina admin panel is removed. Product data is no longer stored in flat files for any shop.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Products view added to inventory-uploader console using existing `gate-*` tokens and established component patterns",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "View-level switch (not a right-panel tab); list + create/edit form",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Empty-catalogue state, create/edit form, delete confirmation, success/error feedback",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Non-goal: multi-locale editing; single-value field writes same value to all locales",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "New product routes auto-protected by existing inventory-uploader middleware; refunds route carries over `refundRequestSchema` Zod validation; payment credentials in wrangler secrets",
+      "current_or_option_state": "TASK-04, TASK-06",
+      "gap_or_implication": "No new auth code needed for product routes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`console.info` on product write/update/delete routes (`shopId`, `productId`, action); full AuditEvent trail deferred as future work",
+      "current_or_option_state": "TASK-04",
+      "gap_or_implication": "Consistent with inventory routes' existing pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests for 4 new prismaProductsRepository methods; unit tests for 5 product routes + 1 refunds route; dry-run assertion for migration script; caryina admin test files deleted",
+      "current_or_option_state": "TASK-02, TASK-04, TASK-06, TASK-07",
+      "gap_or_implication": "Per docs/testing-policy.md — CI only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Additive `Product` model covering full `ProductPublication` type; `@@unique([shopId, sku])` + `@@unique([shopId, id])`; `@@index([shopId])`; 3 products + 4 inventory rows migrated",
+      "current_or_option_state": "TASK-01, TASK-07",
+      "gap_or_implication": "No existing models changed; migration is additive only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — catalogue max ~100 products; Prisma singleton connection pooling handles Workers concurrency",
+      "current_or_option_state": "—",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Migration (TASK-07) must be verified before env var deployment (TASK-08); CHECKPOINT-01 enforces this gate; rollback: remove `DB_MODE` var → JSON fallback restores",
+      "current_or_option_state": "TASK-07, CHECKPOINT-01, TASK-08",
+      "gap_or_implication": "Staging migration runs before production",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Caryina's product and inventory data lives in JSON files that don't work on Cloudflare Workers — the shop silently returns zero products in production. This plan adds a full `Product` Prisma model, completes the stub Prisma product repository, adds product CRUD routes and a Products view to inventory-uploader (benefiting all shops), migrates caryina's 3 products and 4 inventory rows to PostgreSQL, wires caryina to use Prisma via env vars, moves the refunds endpoint from the unprotected caryina admin panel to inventory-uploader, and deletes the caryina admin panel. Deployment ordering is critic",
+    "goals": [
+      "Add `Product` Prisma model covering the full `ProductPublication` type.",
+      "Complete `prismaProductsRepository` write/update/delete/duplicate using Prisma, not JSON fallbacks.",
+      "Add product CRUD API routes to inventory-uploader for all shops.",
+      "Add a Products view to the inventory-uploader console.",
+      "Move the refunds endpoint from caryina admin to inventory-uploader.",
+      "Migrate caryina's 3 products and 4 inventory rows to PostgreSQL.",
+      "Wire caryina's wrangler.toml to use `DATABASE_URL` + `DB_MODE=prisma`.",
+      "Delete the caryina admin panel entirely."
+    ],
+    "non_goals": [
+      "Multi-locale product editing UI (all locales default to the same value at create/edit time).",
+      "Product image upload (media URLs provided as plain strings).",
+      "Per-shop role-based access control in inventory-uploader.",
+      "Migrating other shops from JSON to Prisma in this delivery.",
+      "Full `InventoryAuditEvent`-style product audit trail (console.info logging only for this delivery)."
+    ],
+    "constraints": [
+      "Cloudflare Workers with `nodejs_compat` — no filesystem access. PostgreSQL connectivity validated via inventory-uploader prod usage.",
+      "`adminSchemas.ts` must be promoted (TASK-03) before admin panel is deleted (TASK-09)."
+    ],
+    "assumptions": [
+      "Same `DATABASE_URL` secret covers caryina (same PostgreSQL cluster, different `shopId`).",
+      "`prisma generate` runs in caryina's CI/deployment pipeline; plan includes a verification step.",
+      "Products tab in inventory-uploader UI is a separate top-level view switch, not a right-panel tab (the existing right panel is inventory-scoped; products management is a distinct concern)."
+    ],
+    "selected_approach": [
+      "What was chosen: Full Prisma path — add `Product` model, complete prismaProductsRepository, add inventory-uploader product CRUD routes and UI, migrate data, wire caryina env vars, move refunds, delete admin panel.",
+      "Why planning is not reopening option selection: Operator chose Option A at ideas stage; analysis confirms it is the only viable approach; all implementation patterns are established."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add Product model to schema.prisma + migration",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New `Product` model in `packages/platform-core/prisma/schema.prisma` + Prisma migration file",
+        "affects": "`packages/platform-core/prisma/schema.prisma`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Complete prismaProductsRepository (write/update/delete/duplicate)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `packages/platform-core/src/repositories/products.prisma.server.ts` — all 4 stub methods replaced with Prisma implementations",
+        "affects": "`packages/platform-core/src/repositories/products.prisma.server.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Promote product/refund Zod schemas to inventory-uploader",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-04",
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New file `apps/inventory-uploader/src/lib/productSchemas.ts` with `createProductSchema`, `updateProductSchema`, `refundRequestSchema` extracted from `apps/caryina/src/lib/adminSchemas.ts`",
+        "affects": "`apps/inventory-uploader/src/lib/productSchemas.ts` (new), `[readonly] apps/caryina/src/lib/adminSchemas.ts`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Add product CRUD API routes to inventory-uploader",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-05",
+          "TASK-09"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "5 new route files in `apps/inventory-uploader/src/app/api/inventory/[shop]/products/`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Add Products view to inventory-uploader UI",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-04"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Products view accessible from inventory-uploader console; list + create/edit form",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Move refunds endpoint to inventory-uploader",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-09"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New route `apps/inventory-uploader/src/app/api/inventory/[shop]/refunds/route.ts`",
+        "affects": "`apps/inventory-uploader/src/app/api/inventory/[shop]/refunds/route.ts` (new)"
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Write data migration script (3 products + 4 inventory rows)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "CHECKPOINT-01"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "One-time migration script that reads `data/shops/caryina/products.json` and `data/shops/caryina/inventory.json` and inserts rows into PostgreSQL via Prisma",
+        "affects": "`scripts/migrate-caryina-data.ts` (new one-time script)"
+      },
+      {
+        "task_id": "CHECKPOINT-01",
+        "title": "Staging migration + smoke test",
+        "type": "CHECKPOINT",
+        "status": "Pending",
+        "confidence": null,
+        "effort": null,
+        "depends_on": [
+          "TASK-07"
+        ],
+        "blocks": [
+          "TASK-08"
+        ],
+        "execution_skill": null,
+        "deliverable": null,
+        "affects": null
+      },
+      {
+        "task_id": "TASK-08",
+        "title": "Wire caryina wrangler.toml (DATABASE_URL + DB_MODE=prisma)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "CHECKPOINT-01"
+        ],
+        "blocks": [
+          "TASK-09"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/caryina/wrangler.toml` + verification that `prisma generate` runs in caryina's deployment pipeline",
+        "affects": "`apps/caryina/wrangler.toml`, possibly `.github/workflows/brikette.yml`"
+      },
+      {
+        "task_id": "TASK-09",
+        "title": "Delete caryina admin panel and supporting files",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-04",
+          "TASK-06",
+          "TASK-08"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Deleted files in `apps/caryina`; no admin routes or auth files remain",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Product CRUD (all shops)",
+          "trigger": "Operator logs into inventory-uploader → opens Products view",
+          "flow": "(1) Select shop in ShopSelector → (2) Products view loads product list via GET `/api/inventory/[shop]/products` → `prismaProductsRepository.read()` → PostgreSQL. (3) Operator creates product: fills form → POST → `prismaProductsRepository.write()`. (4) Operator edits: selects product → PATCH → `.update()`. (5) Operator deletes: confirm modal → DELETE → `.delete()`.",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03",
+            "TASK-04",
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "Empty-catalogue state for new shops required"
+        },
+        {
+          "id": null,
+          "label": "Storefront product reads (caryina)",
+          "trigger": "HTTP request to `/shop` or `/product/[slug]`",
+          "flow": "`readRepo(\"caryina\")` → `repoResolver` sees `DB_MODE=prisma` + `DATABASE_URL` → `prismaProductsRepository.read({ shopId: \"caryina\" })` → `prisma.product.findMany()` → 3 products returned → storefront renders correctly",
+          "task_ids": [
+            "TASK-01",
+            "TASK-07",
+            "TASK-08"
+          ],
+          "dependency_note": null,
+          "seams": "`DB_MODE=prisma` must not deploy before data migration is verified (CHECKPOINT-01 gates this)"
+        },
+        {
+          "id": null,
+          "label": "Refunds",
+          "trigger": "Operator POSTs to inventory-uploader refunds route",
+          "flow": "POST `/api/inventory/[shop]/refunds` → Zod validates `shopTransactionId`/`bankTransactionId`/`amountCents` → `resolveRefundProvider()` → Axerve (`callRefund`) or Stripe (`refundStripePayment`) → 200/402/502 response",
+          "task_ids": [
+            "TASK-03",
+            "TASK-06"
+          ],
+          "dependency_note": null,
+          "seams": "All 3 payment credentials (`AXERVE_SHOP_LOGIN`, `AXERVE_API_KEY`, `STRIPE_SECRET_KEY`) must be in inventory-uploader wrangler secrets before TASK-09"
+        },
+        {
+          "id": null,
+          "label": "Caryina admin panel (deletion)",
+          "trigger": "After TASK-04+06+08 confirmed working",
+          "flow": "All admin routes, UI pages, auth files, and proxy.ts deleted from `apps/caryina`. Related tests deleted. `inventoryBackend.ts` constant removed.",
+          "task_ids": [
+            "TASK-09"
+          ],
+          "dependency_note": null,
+          "seams": "Depends on: product routes live in inventory-uploader (TASK-04), refunds working in inventory-uploader (TASK-06), caryina DB_MODE switch confirmed (TASK-08)"
+        }
+      ]
+    }
+  }
+}

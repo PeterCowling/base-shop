@@ -31,6 +31,7 @@ Constraints:
 3) Do not invent business facts. Unknown values must be explicit TODOs with source-path references.
 4) Keep V1 bounded to route skeleton + core commerce journey + required legal/support baseline.
 5) Enforce design-system/token discipline and accessibility/reduced-motion constraints.
+6) Treat legal/compliance setup as mandatory website infrastructure, not optional polish.
 
 Required source audit inputs:
 - Strategy index: {{STRATEGY_INDEX_PATH}}
@@ -65,10 +66,12 @@ Write the artifact using this exact section structure:
    - data strategy
    - analytics scope
    - legal/support minimum pages
+   - consent and policy-management minimum surface
 9) V1 Framework Contract
    - site purpose
    - required route/flow surface
    - reuse policy
+   - compliance baseline
 10) Known Gaps to Resolve During Build
 11) Build Sequence (framework-first)
 12) Traceability Convention
@@ -77,10 +80,14 @@ Write the artifact using this exact section structure:
 
 Definition of Done must include at least:
 - Required routes render in dev: /, /shop, /product/[slug], /checkout, /success, /cancelled
+- Required legal/support routes render in dev when applicable: /terms, /privacy, /returns, /shipping, /cookie-policy, /support
 - Targeted typecheck/lint pass for changed packages
 - Required tests executed for changed surface
 - No hardcoded color/spacing values outside token system (exceptions documented)
 - reduced-motion behavior verified for animated UI elements
+- Business identity required for website operation is disclosed in the legal/support surface: legal entity name, contact email, registered/operating address, tax/VAT identifier if applicable
+- If analytics or non-essential tracking is enabled, consent controls exist, analytics stay off before consent, and users can later revisit/change the consent choice from the website UI
+- Product, shipping, returns, checkout, support, and transactional-email promise copy is aligned with the legal/policy pages; no stronger commercial promise appears in storefront chrome than the policies support
 - unresolved unknowns are explicitly tagged with TODO(source-path)
 
 Formatting rules:
@@ -97,3 +104,4 @@ Formatting rules:
 3. WEBSITE-01 scope boundaries are explicit; WEBSITE-02 concerns are excluded.
 4. Build commands and env expectations are concrete and executable.
 5. Definition of Done is testable and non-ambiguous.
+6. Legal/compliance baseline is explicit enough that an implementation agent must ship it during WEBSITE-01 rather than deferring it to ad hoc launch cleanup.

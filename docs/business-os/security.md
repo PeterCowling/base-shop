@@ -16,7 +16,7 @@ Last-updated: 2026-01-31
 
 - Single user: Pete only
 - No authentication required (local development only)
-- App runs on `localhost:3020`
+- App runs on `localhost:3022`
 - **SECURITY CRITICAL:** App MUST NOT be deployed to public URL in Phase 0
 
 **Authorization Model:**
@@ -224,7 +224,7 @@ If security issue discovered:
 
 ```bash
 # Stop server
-pkill -f "next dev.*3020"
+pkill -f "next dev.*3022"
 
 # Revert last commit on dev
 cd /path/to/base-shop

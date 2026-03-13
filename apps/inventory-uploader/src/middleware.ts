@@ -56,7 +56,9 @@ export function middleware(request: NextRequest) {
     const cookie = request.cookies.get("inventory_admin");
     if (!cookie?.value) {
       const loginUrl = new URL("/login", request.url);
-      return NextResponse.redirect(loginUrl);
+      const redirect = NextResponse.redirect(loginUrl);
+      applySecurityHeaders(redirect);
+      return redirect;
     }
   }
 

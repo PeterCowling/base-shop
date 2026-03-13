@@ -32,7 +32,7 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 - [x] TASK-02: Complete prismaProductsRepository (write/update/delete/duplicate)
 - [x] TASK-03: Promote product/refund Zod schemas to inventory-uploader
 - [x] TASK-04: Add product CRUD API routes to inventory-uploader
-- [ ] TASK-05: Add Products view to inventory-uploader UI
+- [x] TASK-05: Add Products view to inventory-uploader UI
 - [x] TASK-06: Move refunds endpoint to inventory-uploader
 - [x] TASK-07: Write data migration script (3 products + 4 inventory rows)
 - [ ] CHECKPOINT-01: Run staging migration + smoke test
@@ -118,7 +118,7 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 | TASK-02 | IMPLEMENT | Complete prismaProductsRepository writes | 85% | M | Complete (2026-03-13) | TASK-01 | TASK-04 |
 | TASK-03 | IMPLEMENT | Promote Zod schemas to inventory-uploader | 95% | S | Complete (2026-03-13) | - | TASK-04, TASK-06 |
 | TASK-04 | IMPLEMENT | Add product CRUD API routes | 85% | M | Complete (2026-03-13) | TASK-02, TASK-03 | TASK-05, TASK-09 |
-| TASK-05 | IMPLEMENT | Add Products view to inventory-uploader UI | 80% | M | Pending | TASK-04 | - |
+| TASK-05 | IMPLEMENT | Add Products view to inventory-uploader UI | 80% | M | Complete (2026-03-13) | TASK-04 | - |
 | TASK-06 | IMPLEMENT | Move refunds endpoint to inventory-uploader | 85% | S | Complete (2026-03-13) | TASK-03 | TASK-09 |
 | TASK-07 | IMPLEMENT | Write data migration script | 85% | S | Complete (2026-03-13) | TASK-01 | CHECKPOINT-01 |
 | CHECKPOINT-01 | CHECKPOINT | Staging migration + smoke test | — | — | Pending | TASK-07 | TASK-08 |
@@ -443,7 +443,7 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-13)
 - **Affects:**
   - `apps/inventory-uploader/src/components/console/InventoryConsole.client.tsx`
   - `apps/inventory-uploader/src/components/products/ProductsView.client.tsx` (new)
@@ -509,6 +509,12 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 - **Notes / references:**
   - `InventoryConsole.client.tsx` — existing split-pane layout and token usage reference.
   - `CONTENT_LOCALES` from `packages/types/src/constants` — use for locale-defaulting logic.
+- **Build completion evidence (2026-03-13):**
+  - `ProductsView.client.tsx` — list view with status badge, edit/delete per row, "+ New Product" button; fetches `GET /api/inventory/[shop]/products` via AbortController pattern.
+  - `ProductForm.client.tsx` — create/edit form with sku (create-only), title, description, price (decimal→minor units), currency, status select, forSale checkbox; calls POST (create) or PATCH (edit).
+  - `InventoryConsole.client.tsx` — top-level view switch ("Inventory" | "Products") added above existing split-pane; `activeView` state controls which view renders.
+  - `pnpm --filter @acme/inventory-uploader exec tsc --noEmit` passes. Lint passes (`--max-warnings=0`).
+  - Token: `text-gate-on-accent` used for accent-background buttons (consistent with `InventoryImport.client.tsx`).
 
 ---
 

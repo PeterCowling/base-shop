@@ -53,13 +53,13 @@ export function ProductsView({ shop }: Props) {
   }, [load, refreshKey]);
 
   async function handleDelete(id: string) {
-    if (!confirm("Delete this product? This cannot be undone.")) return; // eslint-disable-line no-alert -- INV-0001 operator-tool
+    if (!confirm("Delete this product? This cannot be undone.")) return;
     const res = await fetch(
       `/api/inventory/${encodeURIComponent(shop)}/products/${id}`,
       { method: "DELETE" },
     );
     if (!res.ok && res.status !== 204) {
-      alert(`Delete failed (HTTP ${res.status})`); // eslint-disable-line no-alert -- INV-0001 operator-tool
+      alert(`Delete failed (HTTP ${res.status})`);
       return;
     }
     setRefreshKey((k) => k + 1);

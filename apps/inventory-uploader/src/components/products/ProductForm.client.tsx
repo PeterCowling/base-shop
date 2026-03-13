@@ -190,7 +190,6 @@ export function ProductForm({ shop, product, onSaved, onCancel }: Props) {
           </div>
         </div>
 
-        {/* eslint-disable-next-line ds/no-arbitrary-tailwind -- INV-0001 operator-tool status+forSale two-column layout */}
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className={LABEL_CLS} htmlFor="pf-status">

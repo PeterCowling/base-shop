@@ -5,7 +5,7 @@ Domain: Platform
 Workstream: Engineering
 Created: 2026-03-13
 Last-reviewed: 2026-03-13
-Last-updated: 2026-03-13
+Last-updated: 2026-03-13 (TASK-04 replan: promoted to 80% on E2 evidence)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: payment-management-app
 Dispatch-ID: IDEA-DISPATCH-20260313190000-0001
@@ -30,7 +30,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 
 - [x] TASK-01: Prisma schema — 5 new payment models
 - [x] TASK-02: App scaffold — wrangler, KV, session auth (fail-closed), middleware
-- [ ] TASK-03: Credential encryption module (AES-256-GCM) + rotation endpoint
+- [x] TASK-03: Credential encryption module (AES-256-GCM) + rotation endpoint
 - [ ] TASK-04: Order list + detail UI + Caryina dual-write hook
 - [ ] TASK-05: Refund API (Stripe native + Axerve proxy via Caryina internal route)
 - [ ] TASK-06: Shop config UI + credential management
@@ -122,8 +122,8 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Prisma schema — 5 new payment models | 85% | S | Complete (2026-03-13) | - | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 |
 | TASK-02 | IMPLEMENT | App scaffold — wrangler, KV, session auth (fail-closed), middleware | 80% | M | Complete (2026-03-13) | TASK-01 | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
-| TASK-03 | IMPLEMENT | Credential encryption module (AES-256-GCM) + rotation endpoint | 80% | M | Pending | TASK-02 | TASK-05, TASK-06 |
-| TASK-04 | IMPLEMENT | Order list + detail UI + Caryina dual-write hook | 75% | M | Pending | TASK-02 | TASK-05, TASK-09, TASK-10, CHECKPOINT-01 |
+| TASK-03 | IMPLEMENT | Credential encryption module (AES-256-GCM) + rotation endpoint | 80% | M | Complete (2026-03-13) | TASK-02 | TASK-05, TASK-06 |
+| TASK-04 | IMPLEMENT | Order list + detail UI + Caryina dual-write hook | 80% | M | Pending | TASK-02 | TASK-05, TASK-09, TASK-10, CHECKPOINT-01 |
 | TASK-05 | IMPLEMENT | Refund API (Stripe native + Axerve proxy via Caryina internal route) | 80% | M | Pending | TASK-02, TASK-03, TASK-04 | TASK-06, CHECKPOINT-01 |
 | TASK-06 | IMPLEMENT | Shop config UI + credential management | 80% | M | Pending | TASK-02, TASK-03, TASK-05 | CHECKPOINT-01 |
 | TASK-07 | IMPLEMENT | Caryina webhook wire-up | 85% | S | Pending | TASK-02 | TASK-08 |
@@ -341,8 +341,8 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `apps/payment-manager/src/lib/crypto/credentials.ts` (new), `apps/payment-manager/src/app/api/admin/rotate-key/route.ts` (new), `apps/payment-manager/src/lib/crypto/credentials.test.ts` (new)
+- **Status:** Complete (2026-03-13)
+- **Affects:** `apps/payment-manager/src/lib/crypto/credentials.ts` (new), `apps/payment-manager/src/app/api/admin/rotate-key/route.ts` (new), `apps/payment-manager/src/lib/crypto/__tests__/credentials.test.ts` (new), `apps/payment-manager/src/app/api/admin/rotate-key/__tests__/route.test.ts` (new), `apps/payment-manager/jest.setup.ts` (new), `apps/payment-manager/jest.config.cjs` (modified)
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05, TASK-06
 - **Confidence:** 80%
@@ -398,6 +398,17 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
   - Rollback: Restore old `PAYMENT_MANAGER_ENCRYPTION_KEY` secret and re-run rotation endpoint in reverse
 - **Documentation impact:** Key rotation runbook in `apps/payment-manager/README.md` (wrangler secret put + rotation endpoint call)
 - **Notes / references:** Analysis constraints: AES-256-GCM; `PAYMENT_MANAGER_ENCRYPTION_KEY` as Worker secret; rotation procedure: `wrangler secret put PAYMENT_MANAGER_ENCRYPTION_KEY` + POST to `/api/admin/rotate-key`
+- **Build evidence (2026-03-13):**
+  - `credentials.ts`: `encrypt/decrypt/generateEncryptionKey` using `crypto.subtle` Web Crypto API; 12-byte random IV; base64(IV+ciphertext) format; `importKeyFromBase64` validates 32-byte key
+  - `rotate-key/route.ts`: POST `/api/admin/rotate-key`; admin bearer token auth; pre-computes all re-encryptions before opening `$transaction`; aborts atomically on any decrypt failure
+  - `jest.setup.ts` added: sets `PAYMENT_MANAGER_E2E_ADMIN_TOKEN` before module load for env.ts bypass in tests
+  - TC-03-01: round-trip passes ✓; TC-03-02: wrong-key throws ✓; TC-03-03: IV randomness confirmed ✓
+  - TC-03-04: 3 credential re-encryption + decryption with new key ✓; TC-03-05: 401 on wrong token ✓
+  - TC-03-06: `$transaction` not called on corrupt row (abort before transaction) ✓
+  - 30 tests total (23 session + 7 credentials + 10 rotate-key) → all pass
+  - `tsc --noEmit` → 0 errors ✓; `eslint` → 0 errors, 0 warnings ✓
+  - Controlled scope expansion: added `jest.setup.ts`, `jest.config.cjs` (modified), test files — all within task objective (enable tests to run)
+  - Commit: `5e7d269d96`
 
 ---
 
@@ -413,11 +424,11 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Affects:** `apps/payment-manager/src/app/(dashboard)/orders/page.tsx` (new), `apps/payment-manager/src/app/(dashboard)/orders/[orderId]/page.tsx` (new), `apps/payment-manager/src/app/api/orders/route.ts` (new), `apps/payment-manager/src/app/api/orders/[orderId]/route.ts` (new), `apps/caryina/src/lib/checkoutSession.server.ts` (modified)
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05, TASK-09, TASK-10, CHECKPOINT-01
-- **Confidence:** 75%
-  - Implementation: 75% — order list UI is standard CRUD with Prisma; Caryina dual-write is a fire-and-forget addition to existing checkout flow (moderate risk: must not block checkout)
+- **Confidence:** 80%
+  - Implementation: 80% — order list UI is standard CRUD with Prisma; Caryina dual-write is a fire-and-forget addition to existing checkout flow; `void reconcileStaleCheckoutAttempts(...).catch(...)` pattern confirmed at `checkoutSession.server.ts:673-675` — exact same `void promise.catch()` pattern already in use in the same function (E2 evidence, 2026-03-13)
   - Approach: 80% — Prisma cursor pagination is the correct approach for large order lists; fire-and-forget dual-write is the correct pattern to avoid checkout latency regression
-  - Impact: 75% — dual-write touches Caryina's revenue-critical checkout path; incorrect fire-and-forget pattern could silently block checkout
-  - Score: min(75,80,75) = 75
+  - Impact: 80% — dual-write touches Caryina's revenue-critical checkout path; confirmed safe: existing `void reconcileStaleCheckoutAttempts` fire-and-forget in same function shows the pattern is already established and non-blocking (E2 evidence, 2026-03-13)
+  - Score: min(80,80,80) = 80
 - **Acceptance:**
   - Order list page: `/orders` shows paginated list with columns (date, shop, customer, amount, provider, status, actions)
   - Order list filters: shop multi-select, provider filter, status filter, date range, text search
@@ -1183,6 +1194,6 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 ## Overall-confidence Calculation
 
 - S tasks (×1): TASK-01(85), TASK-07(85), TASK-08(85), TASK-09(85), TASK-10(80), TASK-14(85), TASK-15(85) = 7 × 1 = weight 7, sum = 590
-- M tasks (×2): TASK-02(80), TASK-03(75), TASK-04(75), TASK-05(80), TASK-06(80), TASK-11(80), TASK-12(75), TASK-13(70) = 8 × 2 = weight 16, sum = 1230
-- Overall = (590 + 1230) / (7 + 16) = 1820 / 23 ≈ 79.1% → rounded to nearest multiple of 5 = 80%; downward bias of -5% applied due to Moderate rehearsal findings in TASK-12 and TASK-13 that require CHECKPOINT replan → **75%**
+- M tasks (×2): TASK-02(80), TASK-03(80), TASK-04(80), TASK-05(80), TASK-06(80), TASK-11(80), TASK-12(75), TASK-13(70) = 8 × 2 = weight 16, sum = 1250
+- Overall = (590 + 1250) / (7 + 16) = 1840 / 23 ≈ 80.0% → rounded to nearest multiple of 5 = 80%; downward bias of -5% applied due to Moderate rehearsal findings in TASK-12 and TASK-13 that require CHECKPOINT replan → **75%**
 - Status: 75% — eligible for build (at least one IMPLEMENT task at ≥80%; overall meets minimum threshold)

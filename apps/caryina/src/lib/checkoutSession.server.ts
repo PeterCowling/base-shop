@@ -6,7 +6,6 @@ import { AxerveError, callPayment } from "@acme/axerve";
 import { type CartState, validateCart } from "@acme/platform-core/cart";
 import { CART_COOKIE, decodeCartCookie } from "@acme/platform-core/cartCookie";
 import { deleteCart, getCart } from "@acme/platform-core/cartStore";
-import { sendSystemEmail } from "@acme/platform-core/email";
 import { commitInventoryHold, releaseInventoryHold } from "@acme/platform-core/inventoryHolds";
 import { recordMetric } from "@acme/platform-core/utils";
 
@@ -18,33 +17,55 @@ import {
   markCheckoutAttemptResult,
 } from "./checkoutIdempotency.server";
 import { reconcileStaleCheckoutAttempts } from "./checkoutReconciliation.server";
+import {
+  dispatchCustomerConfirmationEmail,
+  dispatchMerchantOrderEmail,
+  sendCheckoutAlert,
+} from "./payments/notifications.server";
+import {
+  type CaryinaPaymentProvider,
+  isAxerveProvider,
+  resolveCaryinaPaymentProvider,
+} from "./payments/provider.server";
+import { createStripeCheckoutRedirect } from "./payments/stripeCheckout.server";
+import { pmOrderDualWrite } from "./pmOrderDualWrite.server";
 
 const SHOP = "caryina";
 const CURRENCY = "eur";
-const HOLD_TTL_SECONDS = 20 * 60;
+const AXERVE_HOLD_TTL_SECONDS = 20 * 60;
+const STRIPE_HOLD_TTL_SECONDS = 35 * 60;
 
-const REQUIRED_CHECKOUT_FIELDS = [
-  "idempotencyKey",
-  "cardNumber",
-  "expiryMonth",
-  "expiryYear",
-  "cvv",
-] as const;
+const REQUIRED_CHECKOUT_FIELDS = ["idempotencyKey", "lang"] as const;
+const REQUIRED_AXERVE_FIELDS = ["cardNumber", "expiryMonth", "expiryYear", "cvv"] as const;
 
-interface CheckoutFields {
+interface BaseCheckoutFields {
   idempotencyKey: string;
+  lang: string;
+  acceptedLegalTerms: true;
+  buyerName?: string;
+  buyerEmail?: string;
+}
+
+interface AxerveCheckoutFields extends BaseCheckoutFields {
+  provider: "axerve";
   cardNumber: string;
   expiryMonth: string;
   expiryYear: string;
   cvv: string;
-  buyerName?: string;
-  buyerEmail?: string;
 }
+
+interface StripeCheckoutFields extends BaseCheckoutFields {
+  provider: "stripe";
+}
+
+type CheckoutFields = AxerveCheckoutFields | StripeCheckoutFields;
 
 interface CheckoutContext {
   checkout: CheckoutFields;
   cart: CartState;
   cartId?: string;
+  provider: CaryinaPaymentProvider;
+  origin: string;
 }
 
 interface HoldContext extends CheckoutContext {
@@ -52,17 +73,17 @@ interface HoldContext extends CheckoutContext {
   totalCents: number;
   amountDecimal: string;
   shopTransactionId: string;
+  acceptedLegalTermsAt: string;
 }
 
-function escHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/\"/g, "&quot;");
+function isAxerveCheckout(checkout: CheckoutFields): checkout is AxerveCheckoutFields {
+  return checkout.provider === "axerve";
 }
 
-function parseCheckoutFields(body: Record<string, unknown>): CheckoutFields | null {
+function parseCheckoutFields(
+  body: Record<string, unknown>,
+  provider: CaryinaPaymentProvider,
+): CheckoutFields | null {
   for (const field of REQUIRED_CHECKOUT_FIELDS) {
     if (typeof body[field] !== "string" || !body[field]) {
       return null;
@@ -74,14 +95,39 @@ function parseCheckoutFields(body: Record<string, unknown>): CheckoutFields | nu
     return null;
   }
 
-  return {
+  const acceptedLegalTerms = body.acceptedLegalTerms === true;
+  if (!acceptedLegalTerms) {
+    return null;
+  }
+
+  const base: BaseCheckoutFields = {
     idempotencyKey,
+    lang: body.lang as string,
+    acceptedLegalTerms: true,
+    buyerName: typeof body.buyerName === "string" ? body.buyerName : undefined,
+    buyerEmail: typeof body.buyerEmail === "string" ? body.buyerEmail : undefined,
+  };
+
+  if (provider === "stripe") {
+    return {
+      ...base,
+      provider: "stripe",
+    };
+  }
+
+  for (const field of REQUIRED_AXERVE_FIELDS) {
+    if (typeof body[field] !== "string" || !body[field]) {
+      return null;
+    }
+  }
+
+  return {
+    ...base,
+    provider: "axerve",
     cardNumber: body.cardNumber as string,
     expiryMonth: body.expiryMonth as string,
     expiryYear: body.expiryYear as string,
     cvv: body.cvv as string,
-    buyerName: typeof body.buyerName === "string" ? body.buyerName : undefined,
-    buyerEmail: typeof body.buyerEmail === "string" ? body.buyerEmail : undefined,
   };
 }
 
@@ -104,15 +150,22 @@ function buildCartSnapshot(cart: CartState): Array<{
 function buildRequestHash(cart: CartState, checkout: CheckoutFields): string {
   return buildCheckoutRequestHash({
     version: 1,
+    provider: checkout.provider,
+    lang: checkout.lang,
+    acceptedLegalTerms: checkout.acceptedLegalTerms,
     cart: buildCartSnapshot(cart),
-    card: {
-      cardNumber: checkout.cardNumber,
-      expiryMonth: checkout.expiryMonth,
-      expiryYear: checkout.expiryYear,
-      cvv: checkout.cvv,
-      buyerName: checkout.buyerName ?? "",
-      buyerEmail: checkout.buyerEmail ?? "",
-    },
+    ...(isAxerveCheckout(checkout)
+      ? {
+          card: {
+            cardNumber: checkout.cardNumber,
+            expiryMonth: checkout.expiryMonth,
+            expiryYear: checkout.expiryYear,
+            cvv: checkout.cvv,
+            buyerName: checkout.buyerName ?? "",
+            buyerEmail: checkout.buyerEmail ?? "",
+          },
+        }
+      : {}),
   });
 }
 
@@ -121,94 +174,6 @@ function buildShopTransactionId(idempotencyKey: string, cartId?: string): string
   return `caryina-${digest}-${cartId ?? "no-cart"}`;
 }
 
-function merchantEmail(): string {
-  return process.env.MERCHANT_NOTIFY_EMAIL ?? "peter.cowling1976@gmail.com";
-}
-
-function dispatchMerchantOrderEmail(
-  cart: CartState,
-  totalCents: number,
-  shopTransactionId: string,
-  transactionId?: string,
-): void {
-  const itemLines = Object.values(cart)
-    .map(
-      (line) =>
-        `<tr><td>${line.sku.title}</td><td>${line.qty}</td><td>€${(line.sku.price / 100).toFixed(2)}</td><td>€${((line.sku.price * line.qty) / 100).toFixed(2)}</td></tr>`,
-    )
-    .join("");
-  const emailHtml = `
-      <h2>New order received</h2>
-      <table border="1" cellpadding="4" cellspacing="0">
-        <thead><tr><th>Item</th><th>Qty</th><th>Unit price</th><th>Line total</th></tr></thead>
-        <tbody>${itemLines}</tbody>
-      </table>
-      <p><strong>Total: €${(totalCents / 100).toFixed(2)}</strong></p>
-      <p>Transaction ID: ${shopTransactionId}</p>
-      <p>Axerve ref: ${transactionId ?? ""}</p>
-    `;
-  void sendSystemEmail({
-    to: merchantEmail(),
-    subject: `New order — ${shopTransactionId}`,
-    html: emailHtml,
-  }).catch((err: unknown) => {
-    console.error("Merchant notification email failed", err); // i18n-exempt -- developer log
-  });
-}
-
-function dispatchCustomerConfirmationEmail(
-  checkout: CheckoutFields,
-  cart: CartState,
-  totalCents: number,
-  shopTransactionId: string,
-  transactionId?: string,
-): void {
-  const recipientEmail = checkout.buyerEmail?.trim();
-  if (!recipientEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(recipientEmail)) {
-    return;
-  }
-
-  const customerItemLines = Object.values(cart)
-    .map(
-      (line) =>
-        `<tr><td>${escHtml(line.sku.title)}</td><td>${line.qty}</td><td>€${(line.sku.price / 100).toFixed(2)}</td><td>€${((line.sku.price * line.qty) / 100).toFixed(2)}</td></tr>`,
-    )
-    .join("");
-
-  const emailHtml = `
-      <h2>Order confirmed — thank you!</h2>
-      <p>Hi${checkout.buyerName ? ` ${escHtml(checkout.buyerName)}` : ""},</p>
-      <p>Your order has been received and payment processed successfully.</p>
-      <table border="1" cellpadding="4" cellspacing="0">
-        <thead><tr><th>Item</th><th>Qty</th><th>Unit price</th><th>Line total</th></tr></thead>
-        <tbody>${customerItemLines}</tbody>
-      </table>
-      <p><strong>Total: €${(totalCents / 100).toFixed(2)}</strong></p>
-      <p>Order reference: ${shopTransactionId}</p>
-      <p>Payment reference: ${transactionId ?? ""}</p>
-      <p>If you have any questions, reply to this email or contact our support.</p>
-    `;
-
-  void sendSystemEmail({
-    to: recipientEmail,
-    subject: `Order confirmed — ${shopTransactionId}`,
-    html: emailHtml,
-  }).catch((err: unknown) => {
-    console.error("Customer confirmation email failed", err); // i18n-exempt -- developer log
-  });
-}
-
-async function sendCheckoutAlert(subject: string, html: string): Promise<void> {
-  try {
-    await sendSystemEmail({
-      to: merchantEmail(),
-      subject,
-      html,
-    });
-  } catch (err) {
-    console.error("Checkout alert email failed", err); // i18n-exempt -- developer log
-  }
-}
 
 async function releaseHoldSafely(
   holdId: string,
@@ -285,8 +250,9 @@ async function parseCheckoutContext(req: NextRequest): Promise<
   | { ok: true; context: CheckoutContext }
   | { ok: false; response: NextResponse }
 > {
+  const provider = resolveCaryinaPaymentProvider();
   const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
-  const checkout = parseCheckoutFields(body);
+  const checkout = parseCheckoutFields(body, provider);
   if (!checkout) {
     return {
       ok: false,
@@ -315,6 +281,8 @@ async function parseCheckoutContext(req: NextRequest): Promise<
       checkout,
       cart,
       cartId,
+      provider,
+      origin: req.nextUrl.origin,
     },
   };
 }
@@ -400,7 +368,9 @@ async function createHoldContext(context: CheckoutContext): Promise<
     shopId: SHOP,
     cart: context.cart,
     createHold: true,
-    holdTtlSeconds: HOLD_TTL_SECONDS,
+    holdTtlSeconds: isAxerveProvider(context.provider)
+      ? AXERVE_HOLD_TTL_SECONDS
+      : STRIPE_HOLD_TTL_SECONDS,
     useCentralInventory: false,
   });
 
@@ -478,12 +448,20 @@ async function createHoldContext(context: CheckoutContext): Promise<
     context.checkout.idempotencyKey,
     context.cartId,
   );
+  const acceptedLegalTermsAt = new Date().toISOString();
 
   await markCheckoutAttemptReservation({
     shopId: SHOP,
     idempotencyKey: context.checkout.idempotencyKey,
     holdId,
     shopTransactionId,
+    acceptedLegalTerms: context.checkout.acceptedLegalTerms,
+    acceptedLegalTermsAt,
+    provider: context.provider,
+    cartId: context.cartId,
+    lang: context.checkout.lang,
+    buyerName: context.checkout.buyerName,
+    buyerEmail: context.checkout.buyerEmail,
   });
 
   return {
@@ -494,6 +472,7 @@ async function createHoldContext(context: CheckoutContext): Promise<
       totalCents,
       amountDecimal,
       shopTransactionId,
+      acceptedLegalTermsAt,
     },
   };
 }
@@ -540,13 +519,17 @@ async function handleSuccessfulPayment(
     holdContext.totalCents,
     holdContext.shopTransactionId,
     transactionId,
+    "Axerve ref",
   );
   dispatchCustomerConfirmationEmail(
-    holdContext.checkout,
-    holdContext.cart,
-    holdContext.totalCents,
-    holdContext.shopTransactionId,
-    transactionId,
+    {
+      buyerName: holdContext.checkout.buyerName,
+      buyerEmail: holdContext.checkout.buyerEmail,
+      cart: holdContext.cart,
+      totalCents: holdContext.totalCents,
+      shopTransactionId: holdContext.shopTransactionId,
+      paymentReference: transactionId,
+    },
   );
 
   const successBody = {
@@ -579,6 +562,47 @@ async function handleSuccessfulPayment(
 }
 
 async function handlePaymentFlow(holdContext: HoldContext): Promise<NextResponse> {
+  if (!isAxerveCheckout(holdContext.checkout)) {
+    try {
+      const stripeSession = await createStripeCheckoutRedirect(
+        {
+          cart: holdContext.cart,
+          cartId: holdContext.cartId,
+          totalCents: holdContext.totalCents,
+          holdId: holdContext.holdId,
+          shopTransactionId: holdContext.shopTransactionId,
+          idempotencyKey: holdContext.checkout.idempotencyKey,
+          lang: holdContext.checkout.lang,
+          acceptedLegalTermsAt: holdContext.acceptedLegalTermsAt,
+        },
+        holdContext.origin,
+      );
+
+      const successBody = {
+        success: true,
+        mode: "redirect",
+        provider: "stripe",
+        sessionId: stripeSession.sessionId,
+        url: stripeSession.url,
+      };
+
+      return NextResponse.json(successBody);
+    } catch {
+      await releaseHoldSafely(
+        holdContext.holdId,
+        holdContext.checkout.idempotencyKey,
+        holdContext.shopTransactionId,
+        "stripe_session_create_failed",
+      );
+      return failAttemptAndRespond(
+        holdContext.checkout.idempotencyKey,
+        502,
+        { error: "Checkout failed" },
+        "checkout_failed",
+      );
+    }
+  }
+
   try {
     await markCheckoutAttemptPaymentAttempted({
       shopId: SHOP,
@@ -660,6 +684,34 @@ export async function handleCheckoutSessionRequest(
   const idempotency = await handleIdempotencyGate(parsed.context);
   if (!idempotency.ok) {
     return idempotency.response;
+  }
+
+  // TC-04-02: Fire-and-forget dual-write to Payment Manager order table.
+  // Never blocks checkout — errors are logged at warn level and swallowed.
+  {
+    const { checkout, cart, provider } = parsed.context;
+    const totalCents = Object.values(cart).reduce(
+      (sum, line) => sum + (line.sku.price ?? 0) * line.qty,
+      0,
+    );
+    const lineItems = Object.values(cart).map((line) => ({
+      productId: line.sku.id ?? undefined,
+      sku: line.sku.title ?? undefined,
+      qty: line.qty,
+      unitCents: line.sku.price ?? undefined,
+    }));
+    void pmOrderDualWrite({
+      id: checkout.idempotencyKey,
+      shopId: SHOP,
+      provider: provider as string,
+      status: "pending",
+      amountCents: totalCents,
+      currency: CURRENCY.toUpperCase(),
+      customerEmail: checkout.buyerEmail,
+      lineItemsJson: lineItems,
+    }).catch((err: unknown) => {
+      console.warn("[pm_dual_write_failed]", err); // i18n-exempt -- developer log
+    });
   }
 
   const hold = await createHoldContext(parsed.context);

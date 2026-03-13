@@ -13548,15 +13548,19 @@
       "trigger": "operator_idea",
       "domain": "PRODUCTS",
       "area_anchor": "XA — Editing an existing product requires scrolling through an unfiltered list of everything",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "When staff want to update an existing product, they have to find it in a flat list of all products with no way to filter by brand or category. The Add Product screen already has a smart step-by-step filter that narrows the list quickly — Editing should work the same way. Applying this to the edit flow would make finding and updating products far faster.",
       "intended_outcome": "Replace CatalogProductsList in Edit mode with progressive filter-down selectors that match Add mode UX; auto-populate form when single product matches.",
       "evidence_refs": [
         "operator-stated: Edit mode should filter products using brand/collection/size cascade, auto-select on single match"
       ],
-      "created_at": "2026-03-04T16:02:53.928Z"
+      "created_at": "2026-03-04T16:02:53.928Z",
+      "completed_by": {
+        "completed_at": "2026-03-13T00:00:00.000Z",
+        "outcome": "EditProductFilterSelector (brand→collection→size→color cascade, show-all mode, auto-select on single match) is the active sidebar component in CatalogConsole. CatalogProductsList (old flat list) is unused. Work shipped as part of the EditProductFilterSelector build."
+      }
     },
     {
       "schema_version": "dispatch.v2",

@@ -20,9 +20,12 @@ import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { resolveBookingControlLabels } from "@/utils/bookingControlLabels";
 import { countNights, formatDate, getDatePlusTwoDays, getTodayIso, safeParseIso } from "@/utils/dateUtils";
-import { createBrikClickId, fireHandoffToEngine, fireWhatsappClick } from "@/utils/ga4-events";
+import type { EntryAttributionPayload } from "@/utils/entryAttribution";
+import { readAttribution } from "@/utils/entryAttribution";
+import { createBrikClickId, fireWhatsappClick } from "@/utils/ga4-events";
 import { getPrivateBookingPath } from "@/utils/localizedRoutes";
 import { buildOctorateCalendarUrl } from "@/utils/octorateLinks";
+import { trackThenNavigate } from "@/utils/trackThenNavigate";
 
 type Props = {
   lang: AppLanguage;
@@ -57,6 +60,20 @@ function buildOctorateLink(
     utm_medium: "cta",
     utm_campaign: `apartment_${plan}_${pax}pax`,
   });
+}
+
+function buildAttributionFields(attribution: EntryAttributionPayload | null): Record<string, unknown> {
+  if (!attribution) return {};
+  return {
+    entry_source_surface: attribution.source_surface,
+    entry_source_cta: attribution.source_cta,
+    entry_resolved_intent: attribution.resolved_intent,
+    ...(attribution.product_type !== null ? { entry_product_type: attribution.product_type } : {}),
+    entry_decision_mode: attribution.decision_mode,
+    entry_destination_funnel: attribution.destination_funnel,
+    entry_locale: attribution.locale,
+    entry_fallback_triggered: attribution.fallback_triggered,
+  };
 }
 
 function ApartmentBookContent({ lang }: Props) {
@@ -120,19 +137,8 @@ function ApartmentBookContent({ lang }: Props) {
       });
     }
 
-    // Canonical handoff event (TASK-05A). Beacon transport ensures delivery before same-tab navigation.
-    fireHandoffToEngine({
-      handoff_mode: "same_tab",
-      engine_endpoint: "calendar",
-      checkin: checkinIso,
-      checkout: checkoutIso,
-      pax,
-      rate_plan: plan,
-      room_id: "apartment",
-      source_route: getPrivateBookingPath(lang),
-      cta_location: `apartment_${plan}_cta`,
-      brik_click_id: createBrikClickId(),
-    });
+    // Read entry attribution carrier written at CTA click on private summary page.
+    const attributionFields = buildAttributionFields(readAttribution());
 
     // Store booking state before navigation so we can restore on return (Option A — TASK-09)
     sessionStorage.setItem(
@@ -140,8 +146,24 @@ function ApartmentBookContent({ lang }: Props) {
       JSON.stringify({ checkin: checkinIso, checkout: checkoutIso, plan }),
     );
 
-    // Navigate to Octorate
-    window.location.assign(octorateUrl);
+    // Canonical handoff event. Beacon transport ensures delivery before same-tab navigation.
+    trackThenNavigate(
+      "handoff_to_engine",
+      {
+        handoff_mode: "same_tab",
+        engine_endpoint: "calendar",
+        checkin: checkinIso,
+        checkout: checkoutIso,
+        pax,
+        rate_plan: plan,
+        room_id: "apartment",
+        source_route: getPrivateBookingPath(lang),
+        cta_location: `apartment_${plan}_cta`,
+        brik_click_id: createBrikClickId(),
+        ...attributionFields,
+      },
+      () => { window.location.assign(octorateUrl); },
+    );
   }, [checkinIso, checkoutIso, lang, nights, pax]);
 
   const handleWhatsappClick = useCallback(() => {

@@ -152,6 +152,47 @@ on:
         required: false
 
 jobs:
+  security-audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-repo
+        with:
+          turbo-token: ${{ secrets.TURBO_TOKEN }}
+          turbo-team: ${{ vars.TURBO_TEAM }}
+      - name: Run pnpm audit (high/critical)
+        shell: bash
+        run: |
+          set -euo pipefail
+          for i in 1 2 3; do
+            pnpm audit --audit-level=high --ignore GHSA-p6mc-m468-83gw && break
+            if [[ $i -lt 3 ]]; then
+              echo "pnpm audit attempt $i failed, retrying in $((i * 30))s..."
+              sleep $((i * 30))
+            else
+              exit 1
+            fi
+          done
+
+  secret-scanning:
+    name: Secret scanning
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: TruffleHog secret scan
+        uses: trufflesecurity/trufflehog@v3.93.1
+        with:
+          extra_args: --only-verified
+
   validate:
     name: Validate
     runs-on: ubuntu-latest
@@ -659,11 +700,13 @@ jobs:
 
   build:
     name: Build
-    needs: [validate, test, test-sharded, e2e-smoke]
+    needs: [validate, test, test-sharded, e2e-smoke, security-audit, secret-scanning]
     if: >-
       ${{
         always() &&
         needs.validate.result == 'success' &&
+        needs['security-audit'].result == 'success' &&
+        needs['secret-scanning'].result == 'success' &&
         !contains(fromJSON('["failure","cancelled"]'), needs.test.result) &&
         !contains(fromJSON('["failure","cancelled"]'), needs['test-sharded'].result) &&
         !contains(fromJSON('["failure","cancelled"]'), needs['e2e-smoke'].result)

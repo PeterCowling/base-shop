@@ -4,7 +4,14 @@
 # Version bumps require downstream alignment check (VC-02).
 # See also: docs/business-os/startup-loop/specifications/two-layer-model.md (Layer A standing intelligence / Layer B implementation loop contract)
 
-spec_version: "3.14.0"
+spec_version: "3.15.0"
+# v3.15.0: Added GATE-LAUNCH-SEC (Hard) to S9B stage.
+#          Security baseline check (8 OWASP runtime checks: HTTPS enforcement, HTTP security headers,
+#          CSP, cookie security flags, repo secrets exposure, auth hardening, CORS policy, dependency CVEs)
+#          is now a hard gate at S9B→SIGNALS advance. Enforced via cmd-advance/s9b-gates.md.
+#          CI: pnpm audit --audit-level=high and TruffleHog --only-verified added to brikette.yml
+#          and reusable-app.yml (covers brikette and caryina deploys that bypass ci.yml).
+#          Decision: 2026-03-13.
 # v3.14.0: Added ASSESSMENT-13 (Product naming, /lp-do-assessment-13-product-naming),
 #          ASSESSMENT-14 (Logo design brief, /lp-do-assessment-14-logo-brief), and
 #          ASSESSMENT-15 (Packaging brief, /lp-do-assessment-15-packaging-brief, conditional: physical-product).
@@ -1093,7 +1100,8 @@ stages:
     condition: "paid_spend_requested"
     bos_sync: "Record paid-spend activation readiness decision and evidence refs"
     # GATE-SELL-ACT-01 (Hard) — spend activation gate, evaluated before first paid channel commitment.
-    # Pass condition: decision-grade measurement signal verified (inherits GATE-MEAS-01 checks, v1.2.0).
+    # Pass condition: decision-grade measurement signal verified plus a recent rendered sales-funnel audit pass
+    # (mobile + fullscreen, no unresolved High/Critical blockers on the core booking path).
     # SELL-08 does not block S4 baseline merge; it only blocks paid activation.
 
   # ── Parallel fan-in (join barrier) ────────────────────
@@ -1211,6 +1219,12 @@ stages:
     prompt_required: false
     conditional: false
     bos_sync: "Record QA results in build stage doc"
+    # GATE-LAUNCH-SEC (Hard) — evaluated at S9B→SIGNALS advance.
+    # Pass condition: a launch-qa-report-YYYY-MM-DD.md exists under
+    # docs/business-os/site-upgrades/<BIZ>/ dated within 30 days, with
+    # security domain status: pass (or warn; fail blocks advance).
+    # Site unreachability at QA time counts as fail (unverified baseline = failure).
+    # Enforced by: .claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md
 
   - id: SIGNALS
     name: Weekly readout + experiments

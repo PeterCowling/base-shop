@@ -1,0 +1,144 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "caryina-button-strategy",
+  "source_artifact_path": "docs/plans/caryina-button-strategy/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/caryina-button-strategy/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Local `.btn-primary` is a styling island: brand-token changes must be manually kept in sync between `global.css` and any DS-native button styles. Centralising on DS Button means one source of truth.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All caryina-owned call sites (12) use DS `<Button>` or an explicitly documented exception; `.btn-primary` CSS utility is removed from `global.css` once call sites are migrated.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Inline className string constant replicates token-based hover/active/focus chain exactly; dev spot-check before commit",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No visual regression test possible in JSDOM; spot-check in dev is required validation",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Disabled (`disabled:opacity-50`), hover, active, focus-visible all carried via className; `<Button asChild>` for `<Link>` sites",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "DS Button exposes `disabled` prop; passthrough className carries `disabled:opacity-50`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no auth, no sensitive data",
+      "current_or_option_state": "-",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no analytics hooks",
+      "current_or_option_state": "-",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Existing render tests remain green; update/add assertions confirming DS Button role and disabled state",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Hover state not testable in JSDOM",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A — no schema or API change",
+      "current_or_option_state": "-",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — component swap has no runtime cost difference",
+      "current_or_option_state": "-",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single commit; rollback = `git revert`; no data migration",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No feature flag needed",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Replace the locally-defined `.btn-primary` CSS utility in `apps/caryina/src/styles/global.css` with the shared DS `<Button compatibilityMode=\"passthrough\">` component from `@acme/design-system/shadcn` across all 12 caryina-owned call sites. The passthrough migration preserves exact visual fidelity (token-based hover/active/focus-visible) while removing the local styling island. Verified element-type breakdown: **6 `<button>` sites** (direct replacement), **5 Next.js `<Link>` sites** (`<Button asChild>` required), and **1 plain `<a>` site** in `admin/products/page.tsx` (`<Button asChild>` requi",
+    "goals": [
+      "All 12 caryina-owned `<button>` and `<Link>` call sites use DS `<Button>` as the component primitive.",
+      "`.btn-primary` CSS block (and its `@layer components` wrapper) removed from `apps/caryina/src/styles/global.css` (lines 38–58).",
+      "Visual output preserved — hover, active, focus-visible states match current token-based behaviour.",
+      "`pnpm --filter @apps/caryina typecheck` passes; existing render tests pass."
+    ],
+    "non_goals": [
+      "Redesigning button visual style.",
+      "Migrating `AddToCartButton` in `@acme/platform-core`.",
+      "Adding new DS Button variants or props."
+    ],
+    "constraints": [
+      "Import from `@acme/design-system/shadcn` only — `@acme/ui/components/atoms/shadcn` is banned by ESLint.",
+      "`@acme/design-system` is already a declared dependency (no package.json change needed).",
+      "Do not use Tailwind `@apply` for the className constant — Tailwind v4 cannot freely reference `@layer components` utilities via `@apply`."
+    ],
+    "assumptions": [
+      "`compatibilityMode=\"passthrough\"` strips DS-internal classes; confirmed in `packages/design-system/src/primitives/button.tsx`.",
+      "`<Button asChild>` with Next.js `<Link>` works via Radix Slot ref forwarding — low risk, verified at dev time.",
+      "Existing render tests do not assert class names — migration will not break them."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Replace all 12 `.btn-primary` call sites with `<Button compatibilityMode=\"passthrough\" className=\"...\">` using an inline className string that reproduces the exact token-based hover/active/focus chain. For 6 non-button sites (5 Next.js `<Link>` + 1 `<a>`): `<Button asChild compatibilityMode=\"passthrough\" className=\"...\"><Link href={...}>label</Link></Button>` (use `<Link>` for all; `admin/products/page.tsx` migrates from `<a>` to `<Link>` inside asChild).",
+      "Delete `.btn-primary` block and its `@layer components` wrapper (lines 38–58) from `global.css` after all sites migrated.",
+      "Why planning is not reopening option selection:",
+      "Analysis resolved all forks. Passthrough mode is confirmed. Hover colour divergence is calculated and documented. No operator-only forks remain."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Migrate all .btn-primary call sites to DS Button + delete utility class",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change — 12 call sites migrated to `<Button compatibilityMode=\"passthrough\">`, `.btn-primary` block and `@layer components` wrapper removed from `global.css`",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. This plan alters component imports and removes a CSS utility class. No CI/deploy lane, approval path, or operator runbook is affected.",
+      "areas": []
+    }
+  }
+}

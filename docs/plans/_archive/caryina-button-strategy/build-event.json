@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "caryina-button-strategy-20260313",
+  "feature_slug": "caryina-button-strategy",
+  "emitted_at": "2026-03-13T16:33:00.000Z",
+  "why": "Local .btn-primary is a styling island: brand-token changes must be manually kept in sync between global.css and any DS-native button styles. Centralising on DS Button means one source of truth.",
+  "why_source": "auto",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All caryina-owned call sites (12) use DS Button or an explicitly documented exception; .btn-primary CSS utility is removed from global.css once call sites are migrated.",
+    "source": "auto"
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "caryina-button-strategy",
+  "source_artifact_path": "docs/plans/caryina-button-strategy/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Local `.btn-primary` is a styling island: brand-token changes to hover shade, primary colour, or focus ring must be manually kept in sync between global.css and any DS-native button styles. Centralising on the DS Button means one source of truth.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All caryina-owned call sites (12) use DS `<Button>` or an explicitly documented exception; `.btn-primary` CSS utility is removed from global.css once call sites are migrated.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`.btn-primary` in global.css with explicit hover/active token references; DS Button uses opacity-based hover",
+      "gap_or_implication": "Hover colour divergence if passthrough className not matched exactly",
+      "carry_forward_or_notes": "Yes — must define migration className that preserves token-based hover"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "12 call sites with disabled, hover, active, focus-visible states; all use `.btn-primary` conventions",
+      "gap_or_implication": "DS Button must expose all states via passthrough className; `disabled:opacity-50` is already standard",
+      "carry_forward_or_notes": "Yes — verify disabled/loading states survive migration"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth or sensitive data in button component",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No analytics hooks on button elements",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Render tests exist for all major pages with buttons",
+      "gap_or_implication": "No visual regression tests; hover state untestable in JSDOM",
+      "carry_forward_or_notes": "Yes — update render tests post-migration"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "No schema or API change",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Button component swap has no runtime cost difference",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "12 call sites in one app; no feature flag needed; rollback = git revert",
+      "gap_or_implication": "If visual regression is missed in code review, no automated catch",
+      "carry_forward_or_notes": "Yes — plan should include visual spot-check in dev before commit"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Caryina defines its own `.btn-primary` CSS utility in `apps/caryina/src/styles/global.css` rather than using the shared `<Button>` component from `@acme/design-system/shadcn`. This creates a styling island: any brand token change (primary colour, hover shade, radius) must be manually propagated both to the DS button definition and to the local class. This fact-find evaluates whether to adopt the DS Button across all 12 caryina call sites, what the visual delta would be, and what migration effort is required.",
+    "goals": [
+      "Determine the exact visual difference between `.btn-primary` and DS `<Button>` with caryina tokens.",
+      "Establish which call sites are caryina-owned vs shared platform code.",
+      "Produce a migration approach that preserves visual fidelity or accepts a documented intentional change.",
+      "Decide scope: caryina-owned buttons only, or include platform-core AddToCartButton."
+    ],
+    "non_goals": [
+      "Redesigning the button visual style beyond what is needed for faithful migration.",
+      "Migrating AddToCartButton in `@acme/platform-core` (shared across businesses — out of scope here).",
+      "Adding new DS Button variants or props not already present."
+    ],
+    "constraints": [
+      "`@acme/ui/components/atoms/shadcn` import path is banned by ESLint `no-restricted-imports`. All DS imports must use `@acme/design-system/shadcn`.",
+      "`@acme/design-system` is already a declared dependency after dispatch 0002 (Input migration)."
+    ],
+    "assumptions": [
+      "DS `<Button>` with `compatibilityMode=\"passthrough\"` renders the button element without adding its own bg/padding/radius classes, so caryina can provide explicit className overrides that fully control the visual output — matching the current `.btn-primary` appearance exactly.",
+      "`rounded-full` is universally applied alongside `.btn-primary` at every call site; this aligns with DS `shape=\"pill\"` or equivalent className override."
+    ],
+    "key_entry_points": [
+      "`apps/caryina/src/styles/global.css:39–57` — `.btn-primary` definition in `@layer components`",
+      "`packages/design-system/src/primitives/button.tsx` — DS Button primitive source",
+      "`packages/ui/src/components/atoms/shadcn/Button.tsx` — re-export from DS primitives (access restricted to `@acme/design-system/shadcn` import path)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis caryina-button-strategy`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "`.btn-primary` CSS definition and token chain",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "DS Button passthrough mode availability",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "All 12 call sites enumerated and ownership confirmed",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Hover colour divergence between local class and DS default",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Advisory] Opacity-based hover differs from token-based hover",
+        "Resolution Required": "No — resolved: use passthrough mode"
+      },
+      {
+        "Scope Area": "AddToCartButton (platform-core)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Out of scope",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape: existing render tests",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No hover-state automated test possible",
+        "Resolution Required": "No — known limitation, non-blocking"
+      },
+      {
+        "Scope Area": "Import path restriction (`@acme/design-system/shadcn`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only. This change alters component imports and a CSS utility class. No CI/deploy lane, approval path, or operator runbook is affected.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

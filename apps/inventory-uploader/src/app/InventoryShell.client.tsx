@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 
+import { LogoutButton } from "../components/console/LogoutButton.client";
 import { ThemeToggle } from "../components/ThemeToggle.client";
 
 import styles from "./inventory.module.css";
@@ -25,6 +26,7 @@ export default function InventoryShell({
           <h1 className="text-sm font-semibold text-gate-header-fg">Inventory</h1>
           <div className="ms-auto flex items-center gap-3">
             {headerExtra}
+            <LogoutButton />
             <ThemeToggle variant="dark" />
           </div>
         </div>

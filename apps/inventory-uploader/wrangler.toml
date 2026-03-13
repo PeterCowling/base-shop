@@ -14,7 +14,13 @@ binding = "ASSETS"
 #   wrangler secret put INVENTORY_SESSION_SECRET
 #   wrangler secret put INVENTORY_ADMIN_TOKEN
 #   wrangler secret put DATABASE_URL
+#   wrangler secret put INVENTORY_ALLOWED_IPS
 # ============================================================================
+
+[[kv_namespaces]]
+binding = "INVENTORY_KV"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"
+# Create with: wrangler kv:namespace create INVENTORY_KV
 
 [vars]
 INVENTORY_LOCAL_FS_DISABLED = "1"

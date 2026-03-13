@@ -30164,7 +30164,7 @@
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.83,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "evidence_refs": [
         "operator-stated: the adjustments route supports a dry_run=true query param that returns what would change without committing; the inflows route has no equivalent; adding parity would let staff preview a delivery before applying it",
         "apps/inventory-uploader/src/app/api/inventory/[shop]/inflows/route.ts",
@@ -30177,7 +30177,11 @@
       "why": "When a delivery arrives, staff need to count and enter the quantities. A preview step shows exactly what the stock levels will be after receiving the delivery, so a typo can be caught before it is committed to the system.",
       "intended_outcome": "The inflows form shows a preview of projected stock changes before the delivery is confirmed. Staff can review and correct before committing.",
       "created_at": "2026-03-13T19:00:00.000Z",
-      "processed_by": null
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_path": "docs/plans/inventory-uploader-inflow-dry-run/micro-build.md",
+        "target_slug": "inventory-uploader-inflow-dry-run"
+      }
     }
   ]
 }

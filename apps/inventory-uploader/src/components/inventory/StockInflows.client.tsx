@@ -30,6 +30,10 @@ type InflowResult =
     }
   | { ok: false; code: string; message: string };
 
+type PreviewState = {
+  items: Array<{ sku: string; previousQuantity: number; addedQty: number; newQty: number }>;
+} | null;
+
 export type StockInflowsProps = {
   shop: string;
   onSaved?: () => void;
@@ -46,6 +50,7 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
   const [result, setResult] = useState<InflowResult | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [preview, setPreview] = useState<PreviewState>(null);
 
   const refreshHistory = useCallback(() => {
     fetch(inventoryApiUrl(shop, "inflows"))
@@ -76,6 +81,77 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
   const selectedItem = useMemo(
     () => inventory.find((item) => itemKey(item) === selectedKey),
     [inventory, selectedKey],
+  );
+
+  function buildBody(dryRun: boolean) {
+    if (!selectedItem) return null;
+    const parsed = parseIntQuantity(quantity, "positive");
+    if (parsed.ok === false) return null;
+    const qty = parsed.qty;
+    return JSON.stringify({
+      idempotencyKey,
+      dryRun,
+      ...(note.trim() ? { note: note.trim() } : {}),
+      items: [
+        {
+          sku: selectedItem.sku,
+          productId: selectedItem.productId,
+          quantity: qty,
+          ...(Object.keys(selectedItem.variantAttributes).length
+            ? { variantAttributes: selectedItem.variantAttributes }
+            : {}),
+        },
+      ],
+    });
+  }
+
+  const handlePreview = useCallback(
+    async () => {
+      setError(null);
+      setBusy(true);
+      try {
+        if (!selectedItem) {
+          setError("Select an inventory row.");
+          return;
+        }
+        const parsed = parseIntQuantity(quantity, "positive");
+        if (parsed.ok === false) {
+          setError(parsed.error);
+          return;
+        }
+        const body = buildBody(true);
+        if (!body) {
+          setError("Unable to build request.");
+          return;
+        }
+        const resp = await fetch(`${inventoryApiUrl(shop, "inflows")}?dryRun=true`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body,
+        });
+        const json = (await resp.json().catch(() => null)) as InflowResult | null;
+        if (!resp.ok || !json) {
+          setError("Preview request failed.");
+          return;
+        }
+        if (!json.ok) {
+          setError(getApiErrorMessage(json));
+          return;
+        }
+        setPreview({
+          items: json.report.items.map((item) => ({
+            sku: item.sku,
+            previousQuantity: item.previousQuantity,
+            addedQty: item.delta,
+            newQty: item.nextQuantity,
+          })),
+        });
+      } finally {
+        setBusy(false);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- INV-0002 buildBody is inline; selectedItem/quantity/note/shop cover deps
+    [selectedItem, quantity, note, idempotencyKey, shop],
   );
 
   const submit = useCallback(
@@ -121,6 +197,7 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
           return;
         }
         setResult(json);
+        setPreview(null);
         setIdempotencyKey(createKey());
         onSaved?.();
         refreshHistory();
@@ -131,13 +208,26 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
     [selectedItem, quantity, note, idempotencyKey, shop, onSaved, refreshHistory],
   );
 
+  function cancelPreview() {
+    setPreview(null);
+    setError(null);
+  }
+
   function startNew() {
     setSelectedKey("");
     setQuantity("");
     setNote("");
     setIdempotencyKey(createKey());
     setResult(null);
+    setPreview(null);
     setError(null);
+  }
+
+  function handleFieldChange<T>(setter: (v: T) => void) {
+    return (v: T) => {
+      setter(v);
+      setPreview(null);
+    };
   }
 
   if (!shop) {
@@ -153,7 +243,7 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
           <span className="text-2xs text-gate-muted">Inventory row</span>
           <select
             value={selectedKey}
-            onChange={(e) => setSelectedKey(e.target.value)}
+            onChange={(e) => handleFieldChange(setSelectedKey)(e.target.value)}
 
             className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
           >
@@ -181,7 +271,7 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
             type="number"
             min={1}
             value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
+            onChange={(e) => handleFieldChange(setQuantity)(e.target.value)}
             placeholder="10"
 
             className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
@@ -193,7 +283,7 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
           <input
             type="text"
             value={note}
-            onChange={(e) => setNote(e.target.value)}
+            onChange={(e) => handleFieldChange(setNote)(e.target.value)}
             placeholder="PO-1234 or supplier name…"
 
             className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
@@ -202,24 +292,68 @@ export function StockInflows({ shop, onSaved }: StockInflowsProps) {
 
         {error && <p className="text-xs text-gate-status-incomplete">{error}</p>}
 
+        {preview && (
+          <div className="rounded border border-gate-border bg-gate-surface p-3 space-y-1.5">
+            <p className="text-2xs font-medium uppercase tracking-wide text-gate-muted">
+              Preview — stock levels after receiving
+            </p>
+            {preview.items.map((item) => (
+              <p key={item.sku} className="text-xs text-gate-muted">
+                {item.sku}:{" "}
+                <span className="font-medium text-gate-ink">{item.previousQuantity}</span>
+                {" → "}
+                <span className="font-semibold text-gate-ink">{item.newQty}</span>
+                {" "}
+                <span className="text-gate-status-ready">(+{item.addedQty})</span>
+              </p>
+            ))}
+            <p className="text-2xs text-gate-muted pt-0.5">Nothing has been saved yet. Confirm to apply.</p>
+          </div>
+        )}
+
+        {/* eslint-disable-next-line ds/enforce-layout-primitives -- INV-0001 operator-tool: inline button row, same pattern as pre-existing button row */}
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            onClick={() => void submit()}
-            disabled={busy}
+          {preview ? (
+            <>
+              <button
+                type="button"
+                onClick={() => void submit()}
+                disabled={busy}
 
-            className="rounded bg-gate-accent px-3 py-1 text-xs font-medium text-gate-on-accent hover:opacity-90 disabled:opacity-40"
-          >
-            {busy ? "Saving…" : "Receive"}
-          </button>
-          <button
-            type="button"
-            onClick={startNew}
+                className="rounded bg-gate-accent px-3 py-1 text-xs font-medium text-gate-on-accent hover:opacity-90 disabled:opacity-40"
+              >
+                {busy ? "Saving…" : "Confirm"}
+              </button>
+              <button
+                type="button"
+                onClick={cancelPreview}
 
-            className="rounded px-2 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink"
-          >
-            Reset
-          </button>
+                className="rounded px-2 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink"
+              >
+                Cancel
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                onClick={() => void handlePreview()}
+                disabled={busy}
+
+                className="rounded bg-gate-accent px-3 py-1 text-xs font-medium text-gate-on-accent hover:opacity-90 disabled:opacity-40"
+              >
+                {busy ? "Loading…" : "Preview"}
+              </button>
+              <button
+                type="button"
+                onClick={startNew}
+
+                className="rounded px-2 py-1 text-xs text-gate-muted focus-visible:ring-1 focus-visible:ring-gate-border hover:text-gate-ink"
+              >
+                Reset
+              </button>
+            </>
+          )}
         </div>
       </div>
 

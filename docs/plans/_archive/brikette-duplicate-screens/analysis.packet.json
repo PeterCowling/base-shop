@@ -1,0 +1,184 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "brikette-duplicate-screens",
+  "source_artifact_path": "docs/plans/brikette-duplicate-screens/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/brikette-duplicate-screens/fact-find.md",
+    "plan": "docs/plans/brikette-duplicate-screens/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Drift between near-duplicate screens is compounding silently; attribution data is already missing from apartment bookings, and visual inconsistencies are live. Fixing now prevents further compounding before the next feature layer touches these screens.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Both booking screens use the canonical analytics pattern (attribution present on all handoffs); visual tokens are consistent; double-room has component-level tests matching apartment coverage.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Fix 6 class tokens across 3 elements in apartment only",
+      "current_or_option_state": "Same fix applies via hook output",
+      "gap_or_implication": "Fix applied via base component render",
+      "carry_forward_or_notes": "Visual token fixes scoped to `ApartmentBookContent` only; dark mode borders on date card, rate card, WhatsApp CTA"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "No state changes; `isValidRange` and pax state unchanged",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Same — pax state would need prop-level configuration",
+      "carry_forward_or_notes": "No UX state changes"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Apartment migrated to `trackThenNavigate` + attribution fields; beacon transport preserved; null guard required",
+      "current_or_option_state": "Hook handles attribution; same transport",
+      "gap_or_implication": "Same via base",
+      "carry_forward_or_notes": "Attribution fields present on all apartment handoffs post-migration; field parity with double-room verified"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Apartment test updated; new double-room test suite added",
+      "current_or_option_state": "Hook unit tests required in addition to component tests",
+      "gap_or_implication": "Base component tests required in addition to room-specific tests",
+      "carry_forward_or_notes": "3 targeted test changes: update apartment analytics test, add double-room analytics + URL tests"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "GA4 event payload: must preserve all existing fields; new attribution fields added",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Same",
+      "carry_forward_or_notes": "Field parity acceptance criterion required in IMPLEMENT task"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Beacon transport preserved; `trackThenNavigate` confirmed transport-equivalent",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Same",
+      "carry_forward_or_notes": "No performance change"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Each of 3 tasks rollbackable independently",
+      "current_or_option_state": "Single commit; rollback affects both components simultaneously",
+      "gap_or_implication": "Larger rollback surface (new component + 2 rewrites)",
+      "carry_forward_or_notes": "Preferred: independent rollback per task type"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "`ApartmentBookContent.tsx` and `DoubleRoomBookContent.tsx` have accumulated silent drift on three independent fronts: (1) analytics — apartment sends no attribution data; (2) visual tokens — NR card, saving badge, and dark mode borders are inconsistent; (3) test coverage — double-room has zero tests. The decision is whether to fix these divergences in-place or first create shared infrastructure.",
+    "goals": [
+      "Migrate apartment analytics to the canonical `trackThenNavigate` + attribution pattern (highest impact).",
+      "Correct visual token drift (NR button, badge text, dark mode borders on 3 elements).",
+      "Add double-room component-level tests to close the coverage gap."
+    ],
+    "non_goals": [
+      "Full shared-base component extraction.",
+      "Unifying pax handling, rate codes, or room-specific copy.",
+      "Adding a CI-level duplicate screen detector."
+    ],
+    "constraints": [
+      "Existing GA4 event fields must be preserved — only the call pattern changes.",
+      "`fireHandoffToEngine` must remain in `ga4-events.ts` (it has no other runtime callers after migration, but its mock is referenced in `apartment-booking-url-matrix.test.tsx`; becomes dead code after migration — follow-up cleanup is out of scope for this plan).",
+      "No i18n changes."
+    ],
+    "assumptions": [
+      "`trackThenNavigate` + `readAttribution` is the canonical analytics pattern going forward.",
+      "Visual token drift is bugs, not intentional design differences (NR=accent vs NR=primary).",
+      "`isLongStay` is apartment-specific; correct to be absent from double-room."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Analytics attribution correctness",
+        "Why it matters": "Attribution data absent from apartment = all apartment bookings unattributable in GA4",
+        "Weight/priority": "P1"
+      },
+      {
+        "Criterion": "Rollback safety",
+        "Why it matters": "Change must be trivially revertible — no shared infrastructure change",
+        "Weight/priority": "P1"
+      },
+      {
+        "Criterion": "Build complexity",
+        "Why it matters": "Fewer tasks = less risk of build-time decision points",
+        "Weight/priority": "P2"
+      },
+      {
+        "Criterion": "Test coverage completeness",
+        "Why it matters": "Double-room gap leaves analytics and URL logic untested",
+        "Weight/priority": "P2"
+      },
+      {
+        "Criterion": "Visual consistency",
+        "Why it matters": "NR card token inconsistency is user-visible on two live pages",
+        "Weight/priority": "P3"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Fix in-place",
+        "Description": "Directly fix each confirmed drift divergence in the individual components. Three independent tasks: analytics migration, visual token correction, double-room tests. No shared abstraction.",
+        "Upside": "Minimal blast radius. Each change rollbackable individually. Pattern already proven in double-room.",
+        "Downside": "Both components remain structurally separate — future drift is still possible without a shared base.",
+        "Key risks": "Null guard omitted in analytics migration; NR token design intent ambiguity.",
+        "Viable?": "Yes (**chosen**)"
+      },
+      {
+        "Option": "B — Shared hook extraction, then fix",
+        "Description": "Extract shared booking state + analytics logic into a custom hook (`useBookingHandoff`), then migrate both components to use it, fixing drift as part of the extraction.",
+        "Upside": "Single source of truth for analytics logic going forward.",
+        "Downside": "Larger surface area — touching both components and adding a new hook in the same change. Increases risk of regression in apartment while fixing drift. Disproportionate effort for 3 isolated divergences.",
+        "Key risks": "Migration of two components simultaneously multiplies rollback risk. Shared hook adds an abstraction layer not yet proven necessary.",
+        "Viable?": "No"
+      },
+      {
+        "Option": "C — Full shared base component",
+        "Description": "Extract `PrivateRoomBookContent` base with room-specific props.",
+        "Upside": "Eliminates all future drift structurally.",
+        "Downside": "Intentional differences (pax range 2–3, rate code map, FitCheck, i18n namespaces, long-stay flag) require significant prop surface. Risk of new abstraction coupling two room types that may legitimately diverge further.",
+        "Key risks": "Over-engineering for current scope; risk of hiding intentional differences inside a combined prop API.",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — fix each confirmed drift divergence directly in `ApartmentBookContent.tsx` with no shared infrastructure changes.",
+      "**Why this wins": "**",
+      "Option B and C introduce shared abstractions that are not yet justified": "the intentional differences (pax range, rate codes, FitCheck, namespaces) are real and would require significant prop engineering to accommodate cleanly.",
+      "**What it depends on": "**",
+      "Null guard required (`attributionFields = attribution ? { ... }": "{}`) — this is the double-room pattern and must be replicated."
+    },
+    "rejected_approaches": [
+      "**Option B (shared hook extraction)** — disproportionate scope for 3 isolated divergences. Increases regression risk by touching both components in the same change. The shared abstraction would need to handle apartment-specific pax state and FitCheck rendering, making it a non-trivial hook. Deferred to a future fact-find if drift continues to compound.",
+      "**Option C (full shared base)** — over-engineering. Intentional differences (pax 2-3 vs fixed 2, rate code maps differ, FitCheck presence, i18n namespaces, long-stay flag) are substantial. A shared base component would need to accommodate all these via props or render slots, adding complexity without a clear benefit at current scale. Not warranted until a third private-room booking screen emerges."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "All three tasks are independently runnable. No cross-task dependency.",
+        "Analytics task should be first (highest business impact, most complex)."
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change",
+      "areas": []
+    }
+  }
+}

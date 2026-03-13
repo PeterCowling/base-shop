@@ -1,0 +1,170 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "brikette-duplicate-screens",
+  "source_artifact_path": "docs/plans/brikette-duplicate-screens/plan.md",
+  "source_artifact_status": "Draft",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/brikette-duplicate-screens/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Drift between near-duplicate screens is compounding silently; attribution data is already missing from apartment bookings, and visual inconsistencies are live. Fixing now prevents further compounding before the next feature layer touches these screens.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Both booking screens use the canonical analytics pattern (attribution present on all handoffs); visual tokens are consistent; double-room has component-level tests matching apartment coverage.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Fix 8 CSS class changes on NR card, 2 badge tokens, 3 dark mode borders",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Post-build QA loop required; design intent confirmed in acceptance",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — no state changes",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No pax/date/validity state changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No auth/PII changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Migrate apartment to `trackThenNavigate` + attribution; field parity verified; null guard required",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Attribution visible in GA4 after deploy",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Update 2 apartment test files; add double-room test suite",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "GA4 mock paths change: `@/utils/trackThenNavigate` and `@/utils/entryAttribution`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "GA4 event payload field parity check at build time",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Existing fields must be preserved; new attribution fields added",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Beacon transport confirmed equivalent; navigation callback pattern unchanged",
+      "current_or_option_state": "N/A for TASK-02, TASK-03",
+      "gap_or_implication": "No performance change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "All 3 tasks rollbackable independently via git revert",
+      "current_or_option_state": "All",
+      "gap_or_implication": "No feature flag needed",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Fix confirmed drift divergences between `ApartmentBookContent.tsx` and `DoubleRoomBookContent.tsx`. Three independent tasks: (1) migrate apartment analytics from `fireHandoffToEngine` to `trackThenNavigate` + `readAttribution` to restore attribution data on apartment handoff events; (2) correct visual token drift on NR card, saving badges, and dark mode borders; (3) add component-level tests for `DoubleRoomBookContent`. All tasks are independently rollbackable with no cross-task dependencies.",
+    "goals": [
+      "Restore attribution data on apartment booking handoff events (currently all absent).",
+      "Fix live visual inconsistencies: NR card hover tokens, saving badge text, dark mode borders.",
+      "Close double-room test coverage gap (currently zero component-level tests)."
+    ],
+    "non_goals": [
+      "Full shared-base component extraction.",
+      "Unifying pax handling, rate codes, or room-specific copy.",
+      "Adding a CI-level duplicate screen detector.",
+      "Removing `fireHandoffToEngine` from `ga4-events.ts` (dead code cleanup is out of scope)."
+    ],
+    "constraints": [
+      "Existing GA4 event fields must be preserved on migration — only the call pattern changes.",
+      "`fireHandoffToEngine` in `ga4-events.ts` must remain (becomes dead code after migration; cleanup deferred).",
+      "No i18n changes.",
+      "Tests run in CI only — do not run Jest locally; push and use `gh run watch`."
+    ],
+    "assumptions": [
+      "`trackThenNavigate` + `readAttribution` is the canonical analytics pattern going forward.",
+      "NR button using `brand-primary` (matching double-room) is the correct token — confirmed by double-room reference and internal flex/NR consistency.",
+      "`isLongStay` is apartment-specific; correct to be absent from double-room."
+    ],
+    "selected_approach": [
+      "What was chosen: Fix-in-place — three targeted IMPLEMENT tasks, each scoped to one divergence type.",
+      "Why planning is not reopening option selection: Analysis was decisive; all three options compared; B and C eliminated with concrete rationale. No operator-only fork remained."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Migrate apartment analytics to canonical `trackThenNavigate` + attribution pattern",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `ApartmentBookContent.tsx` with `trackThenNavigate` + `readAttribution` in `handleCheckout`; updated `ga4-07-apartment-checkout.test.tsx`; updated mock in `apartment-booking-url-matrix.test.tsx`",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Fix visual token drift in `ApartmentBookContent`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `ApartmentBookContent.tsx` with corrected CSS class tokens on NR card, saving badges, and 3 dark mode border additions",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add `DoubleRoomBookContent` component test suite",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New test file `apps/brikette/src/test/app/private-rooms/double-room-book-content.test.tsx` (or equivalent path matching brikette test conventions) with analytics, URL construction, and disabled-state tests",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change",
+      "areas": []
+    }
+  }
+}

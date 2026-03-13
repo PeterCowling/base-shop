@@ -1,0 +1,14 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "brikette-duplicate-screens",
+  "business": "BRIK",
+  "dispatch_id": "IDEA-DISPATCH-20260310122535-0004",
+  "completed_at": "2026-03-13",
+  "outcome_type": "operational",
+  "outcome_statement": "Both booking screens use the canonical analytics pattern (attribution present on all handoffs); visual tokens are consistent; double-room has component-level tests matching apartment coverage.",
+  "why": "Drift between near-duplicate screens was compounding silently; attribution data was absent from all apartment bookings, visual tokens were inconsistent, and the double-room screen had no tests.",
+  "source": "auto",
+  "tasks_completed": ["TASK-01", "TASK-02", "TASK-03"],
+  "commits": ["d5f58b82e0", "4b6fee18b4", "2012430fce"],
+  "plan_path": "docs/plans/brikette-duplicate-screens/plan.md"
+}

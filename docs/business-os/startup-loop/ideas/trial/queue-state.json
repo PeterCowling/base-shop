@@ -1,19 +1,19 @@
 {
-  "last_updated": "2026-03-13T12:37:21.750Z",
+  "last_updated": "2026-03-13T13:16:43.742Z",
   "counts": {
-    "enqueued": 40,
-    "processed": 16,
+    "enqueued": 36,
+    "processed": 18,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 303,
-    "fact_find_ready": 34,
+    "completed": 310,
+    "fact_find_ready": 29,
     "plan_ready": 0,
-    "micro_build_ready": 2,
+    "micro_build_ready": 5,
     "briefing_ready": 0,
-    "total": 564
+    "total": 574
   },
   "dispatches": [
     {
@@ -11653,7 +11653,12 @@
         "target_kind": "already-implemented",
         "target_slug": "xa-b-department-landing-visual-gap",
         "completed_at": "2026-03-13T00:00:00.000Z",
-        "outcome": "Department landing pages already upgraded: image cards, New In grid, trending designer chips — shipped in 37e47fcc12"
+        "outcome": "Department landing pages already upgraded: image cards, New In grid, trending designer chips — shipped in 37e47fcc12",
+        "fact_find_slug": "xa-b-department-landing-visual-gap"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T13:00:45.973Z",
+        "outcome": "Completed via xa-b-department-landing-visual-gap."
       }
     },
     {
@@ -11696,7 +11701,12 @@
         "target_kind": "already-implemented",
         "target_slug": "xa-b-product-card-badges",
         "completed_at": "2026-03-13T00:00:00.000Z",
-        "outcome": "New In badge live on XaProductCard via isNewIn(product) + ProductBadge — shipped in 37e47fcc12"
+        "outcome": "New In badge live on XaProductCard via isNewIn(product) + ProductBadge — shipped in 37e47fcc12",
+        "fact_find_slug": "xa-b-product-card-badges"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T13:00:45.973Z",
+        "outcome": "Completed via xa-b-product-card-badges."
       }
     },
     {
@@ -24812,7 +24822,12 @@
         ],
         "backfilled_at": "2026-03-10T12:25:35.035Z"
       },
-      "domain": "BOS"
+      "domain": "BOS",
+      "processed_by": {
+        "target_path": "docs/plans/brikette-duplicate-screens/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -27162,19 +27177,31 @@
       "current_truth": "The Pay modal shows a Bleep or Go toggle, but the selection is never used. The code always falls back to reading the bleepNumber input field regardless of which option the user chose.",
       "next_scope_now": "Fix OrderTakingContainer to honour the usage parameter from the Pay modal, routing correctly to go-mode when Go is selected.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.95,
       "evidence_refs": [
         "operator-stated: confirmed during live bar audit 2026-03-13 — Bleep/Go toggle in PayModal has no effect on order flow"
       ],
       "created_at": "2026-03-13T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Staff choose Go when a guest wants to take their order away without a bleeper, and Bleep when the guest waits at a table. Right now that choice does nothing — every order goes through the bleeper check regardless. Staff are confused when the system still asks for a bleeper number after they chose Go.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Choosing Go in the Pay modal bypasses bleeper validation entirely. Choosing Bleep proceeds to bleeper assignment as normal. Staff experience matches the UI label.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-bar-bleeper-bugs",
+        "fact_find_slug": "reception-bar-bleeper-bugs",
+        "target_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md",
+        "completed_at": "2026-03-13T12:41:55.100Z",
+        "outcome": "**Wave 1 — six targeted source fixes (TASK-01 through TASK-06), committed together:** Bug 3 (TASK-01): `doConfirmPayment` in `OrderTakingContainer.tsx` had its guard inverted — `if (usage === \"go\") { chooseNext(); }` was calling `chooseNext"
       }
     },
     {
@@ -27200,19 +27227,31 @@
       "current_truth": "COMP mode shows a guest as eligible for a preorder if they have one booked on any night of their stay — even if tonight is not one of those nights. A guest staying 3 nights with a preorder only on night 3 appears eligible on night 1.",
       "next_scope_now": "Update the preorder eligibility check to only consider tonight's date when deciding whether a guest qualifies.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.93,
       "evidence_refs": [
         "operator-stated: confirmed during live bar audit 2026-03-13 — eligibility check uses any-night logic, not tonight's date"
       ],
       "created_at": "2026-03-13T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Staff use the COMP screen to give guests their pre-booked free breakfast or drink. If a guest shows up on night 1 but their preorder is for night 3, staff currently see them as eligible and may give them something for free when they shouldn't. It could also go the other way — a guest eligible tonight might not be shown if the logic misfires.",
       "intended_outcome": {
         "type": "operational",
         "statement": "The COMP screen only shows a guest as eligible if they have a preorder for tonight specifically. Guests with preorders on other nights are not shown as eligible until their correct night.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-bar-bleeper-bugs",
+        "fact_find_slug": "reception-bar-bleeper-bugs",
+        "target_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md",
+        "completed_at": "2026-03-13T12:41:55.100Z",
+        "outcome": "**Wave 1 — six targeted source fixes (TASK-01 through TASK-06), committed together:** Bug 3 (TASK-01): `doConfirmPayment` in `OrderTakingContainer.tsx` had its guard inverted — `if (usage === \"go\") { chooseNext(); }` was calling `chooseNext"
       }
     },
     {
@@ -27239,19 +27278,31 @@
       "current_truth": "When an order is paid, the app marks the bleeper as taken in the database. If the database write fails, the order still completes locally and no error is shown. Two rapid orders can both be assigned the same bleeper number with neither staff member aware.",
       "next_scope_now": "Ensure the bleeper availability write either succeeds before completing the order, or surfaces a visible error to staff so they can reassign manually.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.88,
       "evidence_refs": [
         "operator-stated: confirmed during live bar audit 2026-03-13 — no error handling on bleeper Firebase write failure"
       ],
       "created_at": "2026-03-13T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "If two orders go out at almost the same time, both could get bleeper 5. Two tables of guests both think their food is coming when bleeper 5 buzzes — one table gets the order, the other doesn't, and staff have no record of what went wrong.",
       "intended_outcome": {
         "type": "operational",
         "statement": "If marking a bleeper as taken fails, the order is not silently completed. Staff see an error and can re-assign the bleeper before the order goes out.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-bar-bleeper-bugs",
+        "fact_find_slug": "reception-bar-bleeper-bugs",
+        "target_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md",
+        "completed_at": "2026-03-13T12:41:55.100Z",
+        "outcome": "**Wave 1 — six targeted source fixes (TASK-01 through TASK-06), committed together:** Bug 3 (TASK-01): `doConfirmPayment` in `OrderTakingContainer.tsx` had its guard inverted — `if (usage === \"go\") { chooseNext(); }` was calling `chooseNext"
       }
     },
     {
@@ -27278,19 +27329,31 @@
       "current_truth": "The Bleep # field retains its value across page reloads. A staff member who used bleeper 5 yesterday will see 5 pre-filled when they open the page today, even though bleeper 5 may be in use with another table.",
       "next_scope_now": "Clear the persisted bleeper value on session start, or default to the auto-suggested next available bleeper rather than the stored value.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.97,
       "evidence_refs": [
         "operator-stated: reproduced directly during audit — page loaded with value 5 pre-filled from a prior session"
       ],
       "created_at": "2026-03-13T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "If a staff member opens the page and immediately processes a payment without noticing the pre-filled bleeper number, they might assign bleeper 5 to a new table even though bleeper 5 is already out with a different guest. No conflict warning appears.",
       "intended_outcome": {
         "type": "operational",
         "statement": "The Bleep # field starts empty or auto-suggests the next available bleeper on every page load. No stale value from a previous session is carried over.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-bar-bleeper-bugs",
+        "fact_find_slug": "reception-bar-bleeper-bugs",
+        "target_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md",
+        "completed_at": "2026-03-13T12:41:55.100Z",
+        "outcome": "**Wave 1 — six targeted source fixes (TASK-01 through TASK-06), committed together:** Bug 3 (TASK-01): `doConfirmPayment` in `OrderTakingContainer.tsx` had its guard inverted — `if (usage === \"go\") { chooseNext(); }` was calling `chooseNext"
       }
     },
     {
@@ -27316,19 +27379,31 @@
       "current_truth": "Each ticket item is given a random ID on every render when no stable ID is available. React treats this as a brand-new element every time, unmounting and remounting it unnecessarily. Any animation or smooth transition on ticket items will never work correctly.",
       "next_scope_now": "Replace the randomUUID fallback with a stable index-based key so React can track items across renders.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.98,
       "evidence_refs": [
         "operator-stated: confirmed during code review 2026-03-13 — TicketItems.tsx uses crypto.randomUUID() as React key fallback"
       ],
       "created_at": "2026-03-13T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "The order ticket loses its render state on every update. While not visually broken today, it means any attempt to add animation or smooth transitions to the ticket will fail, and the unnecessary unmount/remount cycle adds small but avoidable overhead on every order interaction.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Ticket items use stable keys. React does not remount them on re-render. The ticket is ready to support smooth item transitions if needed in future.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-bar-bleeper-bugs",
+        "fact_find_slug": "reception-bar-bleeper-bugs",
+        "target_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md",
+        "completed_at": "2026-03-13T12:41:55.100Z",
+        "outcome": "**Wave 1 — six targeted source fixes (TASK-01 through TASK-06), committed together:** Bug 3 (TASK-01): `doConfirmPayment` in `OrderTakingContainer.tsx` had its guard inverted — `if (usage === \"go\") { chooseNext(); }` was calling `chooseNext"
       }
     },
     {
@@ -27354,19 +27429,452 @@
       "current_truth": "The Bleep # field shows the hint 'Leave blank for Go', but clearing the field auto-fills it with the next available bleeper number instead of selecting Go mode. Blank does not mean Go.",
       "next_scope_now": "Either make blank genuinely mean Go (consistent with the label), or update the placeholder to accurately describe what happens when the field is cleared.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.97,
       "evidence_refs": [
         "operator-stated: confirmed during code review 2026-03-13 — PaymentSection.tsx placeholder text does not match actual blank-field behaviour"
       ],
       "created_at": "2026-03-13T12:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Staff who try to clear the field to select Go mode will find it immediately refills with a bleeper number. The instruction printed on the field is wrong. This erodes trust in the interface and may cause staff to use the wrong payment mode.",
       "intended_outcome": {
         "type": "operational",
         "statement": "The Bleep # field label/placeholder matches what actually happens when it is cleared. Either blank truly means Go, or the hint text is corrected to say what will happen.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-bar-bleeper-bugs",
+        "fact_find_slug": "reception-bar-bleeper-bugs",
+        "target_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-bar-bleeper-bugs/plan.md",
+        "completed_at": "2026-03-13T12:41:55.100Z",
+        "outcome": "**Wave 1 — six targeted source fixes (TASK-01 through TASK-06), committed together:** Bug 3 (TASK-01): `doConfirmPayment` in `OrderTakingContainer.tsx` had its guard inverted — `if (usage === \"go\") { chooseNext(); }` was calling `chooseNext"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313130000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-till-edit-delete-no-button",
+      "root_event_id": "operator:BRIK:BOS:reception-till-reconciliation-bugs:20260313",
+      "anchor_key": "reception-till-edit-delete-no-button",
+      "cluster_key": "BRIK:BOS:reception-till-reconciliation-bugs",
+      "cluster_fingerprint": "till-edit-delete-mode-no-activation-button",
+      "lineage_depth": 0,
+      "area_anchor": "Reception till — staff cannot edit or delete transactions because no button exists to enter edit/delete mode",
+      "location_anchors": [
+        "apps/reception/src/components/till/TillReconciliation.tsx",
+        "apps/reception/src/components/till/ActionButtons.tsx",
+        "apps/reception/src/hooks/client/till/useTillReconciliationUI.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: audit 2026-03-13 confirmed setIsEditMode/setIsDeleteMode never called with true anywhere in the till component tree",
+        "coverage-hint: UX",
+        "coverage-hint: testing"
+      ],
+      "why": "The till screen has the ability to edit and delete transactions built into it, but there is no button for staff to activate that mode. The banners that prompt staff to click a row, and the row-click handlers, all exist — but with no way to turn them on, staff cannot correct mistakes in the transaction list. Any wrong entry is permanent until a manager manually fixes the database.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Staff can enter edit mode and delete mode from the till screen, click a transaction row to select it, and complete the edit or void via the existing modal infrastructure.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T13:00:00.000Z",
+      "work_package_slug": "reception-till-reconciliation-bugs"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313130000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-till-float-modal-stays-open",
+      "root_event_id": "operator:BRIK:BOS:reception-till-reconciliation-bugs:20260313",
+      "anchor_key": "reception-till-float-modal-stays-open",
+      "cluster_key": "BRIK:BOS:reception-till-reconciliation-bugs",
+      "cluster_fingerprint": "till-confirmFloat-no-modal-close",
+      "lineage_depth": 0,
+      "area_anchor": "Reception till — the opening float entry form stays open after staff confirm it",
+      "location_anchors": [
+        "apps/reception/src/hooks/useTillReconciliationLogic.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: audit 2026-03-13 confirmed confirmFloat does not call setCashForm(none) on success, unlike confirmExchange which does",
+        "coverage-hint: UX",
+        "coverage-hint: testing"
+      ],
+      "why": "When a staff member sets the opening float for the day, the form does not close after they confirm. They have to dismiss it manually, and if they do not realise it is still open, they may accidentally submit it a second time. The exchange form (a similar flow) closes correctly — the float form is missing the same step.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The opening float form closes automatically after a successful confirmation, matching the behaviour of the exchange form.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T13:00:00.000Z",
+      "work_package_slug": "reception-till-reconciliation-bugs"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313130000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-till-keycard-count-silent-fail",
+      "root_event_id": "operator:BRIK:BOS:reception-till-reconciliation-bugs:20260313",
+      "anchor_key": "reception-till-keycard-count-silent-fail",
+      "cluster_key": "BRIK:BOS:reception-till-reconciliation-bugs",
+      "cluster_fingerprint": "till-keycard-state-before-firebase-write",
+      "lineage_depth": 0,
+      "area_anchor": "Reception till — keycard count shows wrong total if a save fails, with no error shown to staff",
+      "location_anchors": [
+        "apps/reception/src/hooks/useTillReconciliationLogic.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: audit 2026-03-13 confirmed updateSafeKeycards() called before recordKeycardTransfer() with no error handling on the async write",
+        "coverage-hint: error-handling",
+        "coverage-hint: data-contracts",
+        "coverage-hint: testing"
+      ],
+      "why": "When staff add or return keycards through the till, the screen updates the keycard count immediately — but the actual save to the database happens a moment later with no error check. If the save fails silently, the screen shows a count that does not match the real record. Staff would not know the keycard transfer was never saved, and the count would be wrong until the next page reload.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Keycard count updates only after the save to the database confirms success; a clear error message is shown if the save fails and the count is not changed.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T13:00:00.000Z",
+      "work_package_slug": "reception-till-reconciliation-bugs"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313130000-0004",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-till-keycard-reconcile-zero",
+      "root_event_id": "operator:BRIK:BOS:reception-till-reconciliation-bugs:20260313",
+      "anchor_key": "reception-till-keycard-reconcile-zero",
+      "cluster_key": "BRIK:BOS:reception-till-reconciliation-bugs",
+      "cluster_fingerprint": "till-keycard-reconcile-count-zero",
+      "lineage_depth": 0,
+      "area_anchor": "Reception till — keycard count records are saved with wrong values, making the audit trail misleading",
+      "location_anchors": [
+        "apps/reception/src/hooks/client/till/useTillShifts.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: audit 2026-03-13 confirmed confirmKeycardReconcile calls addCashCount with count=0 and difference=0 regardless of actual keycards counted",
+        "coverage-hint: data-contracts",
+        "coverage-hint: testing"
+      ],
+      "why": "When staff do a keycard count at the end of a shift, the system saves a record with zero for the cash count and zero for the difference — even though the actual number counted was different. The keycard number itself is saved correctly, but the record looks like nothing was counted. This could mislead a manager reviewing the audit trail, who would see a zero where they expect a real figure.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Keycard reconcile records are saved with the correct counted value and difference so the audit trail accurately reflects what was counted.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T13:00:00.000Z",
+      "work_package_slug": "reception-till-reconciliation-bugs"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313130000-0005",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-till-pending-override-stale",
+      "root_event_id": "operator:BRIK:BOS:reception-till-reconciliation-bugs:20260313",
+      "anchor_key": "reception-till-pending-override-stale",
+      "cluster_key": "BRIK:BOS:reception-till-reconciliation-bugs",
+      "cluster_fingerprint": "till-pending-override-not-cleared-on-failed-close",
+      "lineage_depth": 0,
+      "area_anchor": "Reception till — a failed shift close leaves a stale authorisation that can affect the next attempt",
+      "location_anchors": [
+        "apps/reception/src/hooks/client/till/useTillShifts.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: audit 2026-03-13 confirmed pendingOverride not reset when confirmShiftClose returns early on no-open-shift or wrong-user guard",
+        "coverage-hint: UX",
+        "coverage-hint: testing"
+      ],
+      "why": "If closing the till fails — for example because it was already closed or because the wrong staff member tried to close it — the system leaves behind a stale manager override from the failed attempt. If that same member then tries again, the override from the failed attempt may still be active, bypassing the check that should require proper authorisation. The override should be cleared any time a close attempt fails.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "When a shift close attempt fails for any reason, any pending override is cleared so the next attempt starts from a clean state.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T13:00:00.000Z",
+      "work_package_slug": "reception-till-reconciliation-bugs"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313140000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-rooms-grid-dnd-crash",
+      "root_event_id": "operator:BRIK:BOS:reception-rooms-grid-bugs:20260313",
+      "anchor_key": "reception-rooms-grid-dnd-crash",
+      "cluster_key": "BRIK:BOS:reception-rooms-grid-bugs",
+      "cluster_fingerprint": "dnd-multiple-html5-backends-rooms-grid-crash",
+      "lineage_depth": 0,
+      "area_anchor": "Reception rooms grid — clicking any room cell crashes the page",
+      "location_anchors": [
+        "apps/reception/src/components/roomgrid/RoomsGrid.tsx",
+        "apps/reception/src/components/roomgrid/ReservationGrid.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: live browser audit 2026-03-13 confirmed crash on every cell click with error Cannot have two HTML5 backends at the same time",
+        "operator-stated: root cause is DndProvider rendered once per RoomGrid — 10 instances on page — hoist to parent RoomsGrid.tsx resolves it",
+        "coverage-hint: testing"
+      ],
+      "why": "Every click on any cell in the rooms grid crashes the page with an error about drag-and-drop. Staff cannot use the grid at all. The fix is to move the drag-and-drop wrapper from inside each individual room row up to the parent container so only one instance exists — a small, bounded change.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Clicking any cell in the rooms grid opens the booking modal without crashing. The drag-and-drop provider is mounted once at the page level.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T14:00:00.000Z",
+      "work_package_slug": "reception-rooms-grid-bugs"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313140000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-rooms-grid-single-click-modal",
+      "root_event_id": "operator:BRIK:BOS:reception-rooms-grid-bugs:20260313",
+      "anchor_key": "reception-rooms-grid-single-click-modal",
+      "cluster_key": "BRIK:BOS:reception-rooms-grid-bugs",
+      "cluster_fingerprint": "rooms-grid-double-click-guard-prevents-single-click",
+      "lineage_depth": 0,
+      "area_anchor": "Reception rooms grid — opening a booking detail requires two clicks instead of one",
+      "location_anchors": [
+        "apps/reception/src/components/roomgrid/RoomGrid.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: live browser audit 2026-03-13 confirmed first click is silently discarded by a 400ms guard; second click within 400ms opens the modal",
+        "operator-stated: no drag-and-drop gesture is possible on this grid since roomNumber is never passed — the double-click guard serves no purpose",
+        "coverage-hint: testing"
+      ],
+      "why": "Staff have to click a room cell twice in quick succession to open the booking detail. The first click is silently thrown away by an old guard that was there to prevent accidental clicks during drag-and-drop. Since drag-and-drop is not enabled on this screen, the guard is unnecessary and just makes the grid frustrating to use.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A single click on any room cell opens the booking detail modal immediately. The 400ms double-click guard is removed.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T14:00:00.000Z",
+      "work_package_slug": "reception-rooms-grid-bugs"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313140000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-rooms-grid-empty-state",
+      "root_event_id": "operator:BRIK:BOS:reception-rooms-grid-bugs:20260313",
+      "anchor_key": "reception-rooms-grid-empty-state",
+      "cluster_key": "BRIK:BOS:reception-rooms-grid-bugs",
+      "cluster_fingerprint": "rooms-grid-no-empty-state-for-unbooked-rooms",
+      "lineage_depth": 0,
+      "area_anchor": "Reception rooms grid — rooms with no bookings show as blank instead of a clear empty message",
+      "location_anchors": [
+        "apps/reception/src/components/roomgrid/components/Grid/Grid.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "evidence_refs": [
+        "operator-stated: live browser audit 2026-03-13 confirmed rooms with zero bookings in Firebase render an empty table body with no row or message",
+        "operator-stated: staff cannot tell whether a blank room means no bookings or a rendering problem",
+        "coverage-hint: testing"
+      ],
+      "why": "When a room has no bookings in the system, its row in the grid is completely blank — no text, no placeholder, nothing. Staff cannot tell whether the room is genuinely empty or whether something has failed to load. Adding a simple message like No bookings makes the state clear and prevents confusion.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Rooms with no bookings show a clear No bookings message in their grid row instead of a blank space.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T14:00:00.000Z",
+      "work_package_slug": "reception-rooms-grid-bugs"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313131601-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-brik-rtdb-current-contract-alignment",
+      "root_event_id": "operator:BRIK:BOS:hospitality-rtdb-contract-alignment:20260313",
+      "anchor_key": "brik-hospitality-rtdb-current-contract-alignment",
+      "cluster_key": "BRIK:BOS:hospitality-rtdb-contract-alignment",
+      "cluster_fingerprint": "launch-safe-current-shape-standardization",
+      "lineage_depth": 0,
+      "area_anchor": "Brik hospitality systems — standardize current Firebase RTDB contract handling across Prime, Reception, booking email, and inbox guest matching without changing the data shape",
+      "location_anchors": [
+        "apps/prime/src/hooks/dataOrchestrator/useUnifiedBookingData.ts",
+        "apps/prime/src/hooks/dataOrchestrator/useGuestBookingSnapshot.ts",
+        "apps/prime/functions/api/guest-booking.ts",
+        "apps/reception/src/hooks/mutations/useLoansMutations.ts",
+        "apps/reception/src/hooks/mutations/useDeleteGuestFromBooking.ts",
+        "apps/reception/src/services/useBookingEmail.ts",
+        "apps/reception/src/lib/inbox/guest-matcher.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Prime, Reception, booking email, and inbox guest matching all depend on the same live RTDB shape, but they do not handle it consistently. Known drifts include loans path assumptions, roomsByDate versus roomByDate usage, and Prime mixing server snapshot flows with older direct multi-read SDK flows.",
+      "next_scope_now": "Ship a launch-safe alignment wave that freezes the current RTDB shape, defines one canonical handling contract for it, fixes known live path drifts, and moves more Prime guest-critical reads onto server snapshot handling.",
+      "adjacent_later": [
+        "2026-10-31: start the larger post-season RTDB model redesign and migration planning once the hostel is closed for the year."
+      ],
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": "P1",
+      "confidence": 0.86,
+      "evidence_refs": [
+        "operator-stated: keep the current Firebase data shape through launch season and standardize handling instead",
+        "apps/prime/src/hooks/pureData/useFetchLoans.ts uses a different loans path assumption from apps/reception/src/hooks/mutations/useLoansMutations.ts",
+        "apps/reception/src/hooks/mutations/useDeleteGuestFromBooking.ts still references roomByDate while active writes use roomsByDate",
+        "apps/prime/src/lib/security/dataAccessModel.ts already marks most guest-critical flows as FUNCTION_ONLY",
+        "coverage-hint: data-contracts",
+        "coverage-hint: error-handling",
+        "coverage-hint: testing"
+      ],
+      "created_at": "2026-03-13T13:16:01.306Z",
+      "queue_state": "processed",
+      "why": "The hostel is close to opening, so a root-level data migration is too risky now. We still need Prime, Reception, booking email, and inbox guest matching to consume the live RTDB shape in the same way, so launch-season work should standardize handling, remove known contract drifts, and reduce operational risk without reshaping the database.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Prime, Reception, booking email, and inbox guest matching use one agreed current-shape RTDB contract; live path drifts are removed; and Prime guest-critical flows rely on the server snapshot pattern wherever that path already exists.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "brik-hospitality-rtdb-current-contract-alignment",
+        "target_path": "docs/plans/brik-hospitality-rtdb-current-contract-alignment/micro-build.md",
+        "processed_at": "2026-03-13T13:16:13.578Z",
+        "micro_build_path": "docs/plans/brik-hospitality-rtdb-current-contract-alignment/micro-build.md"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313131601-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-brik-rtdb-post-season-restructure",
+      "root_event_id": "operator:BRIK:BOS:hospitality-rtdb-post-season-restructure:20260313",
+      "anchor_key": "brik-hospitality-rtdb-post-season-restructure",
+      "cluster_key": "BRIK:BOS:hospitality-rtdb-post-season-restructure",
+      "cluster_fingerprint": "canonical-stay-model-post-season-migration-2026-10-31",
+      "lineage_depth": 0,
+      "area_anchor": "Brik hospitality systems — start the post-season Firebase RTDB redesign and migration on 2026-10-31 once the hostel closes for the year",
+      "location_anchors": [
+        "apps/prime/src/hooks/dataOrchestrator/useUnifiedBookingData.ts",
+        "apps/reception/src/hooks/mutations/useAddGuestToBookingMutation.ts",
+        "apps/reception/src/hooks/mutations/useDeleteGuestFromBooking.ts",
+        "apps/reception/src/lib/inbox/guest-matcher.server.ts",
+        "apps/prime/functions/api/guest-booking.ts",
+        "apps/prime/src/lib/owner/SCORECARD_LINEAGE.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "The live hospitality RTDB model is fragmented across booking, guest, room, finance, request, and email-adjacent trees. That larger redesign is intentionally deferred until after the 2026 operating season so it does not interfere with launch and live hostel operations.",
+      "next_scope_now": "On 2026-10-31, run the fact-find and planning cycle for a canonical post-season RTDB redesign, including migration sequencing, dual-write or backfill strategy, rollback planning, and cutover timing before the next season.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.9,
+      "evidence_refs": [
+        "operator-stated: the larger data-model project should kick off on 2026-10-31 after the hostel closes for the year",
+        "operator-stated: October 31 is the right window because schema migration and backfill are safer when guest volume is down and a full season of real usage evidence is available",
+        "apps/prime/src/lib/owner/SCORECARD_LINEAGE.md already points toward a more canonical nested booking model than the live code currently uses",
+        "coverage-hint: migration-planning",
+        "coverage-hint: rollback",
+        "coverage-hint: data-contracts"
+      ],
+      "created_at": "2026-03-13T13:16:01.306Z",
+      "queue_state": "processed",
+      "why": "October 31, 2026 is the first sensible kickoff point for the larger RTDB redesign because it follows the operating season. That timing avoids live migration risk while the hostel is busy, gives us a full season of real usage evidence to design from, and creates an off-season runway for backfill, dual-write, validation, and rollback planning before the next reopening.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Starting 2026-10-31, run a full fact-find and planning cycle for the hospitality RTDB redesign so the canonical target model, migration sequence, validation gates, and rollback plan are ready before the next season.",
+        "source": "operator"
+      },
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-hospitality-rtdb-post-season-restructure",
+        "target_path": "docs/plans/brik-hospitality-rtdb-post-season-restructure/fact-find.md",
+        "processed_at": "2026-03-13T13:16:43.741Z",
+        "fact_find_slug": "brik-hospitality-rtdb-post-season-restructure",
+        "fact_find_path": "docs/plans/brik-hospitality-rtdb-post-season-restructure/fact-find.md"
       }
     }
   ]

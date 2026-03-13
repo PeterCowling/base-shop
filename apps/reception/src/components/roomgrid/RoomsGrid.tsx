@@ -1,6 +1,8 @@
 // File: src/components/roomgrid/RoomsGrid.tsx
 import type { ChangeEvent, FC } from "react";
 import { memo, useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 import { Input } from "@acme/design-system";
 import { Stack } from "@acme/design-system/primitives";
@@ -85,30 +87,32 @@ const RoomsGrid: FC = () => {
         </div>
       }
     >
-      <Stack gap={5} className="bg-surface rounded-lg shadow-lg p-5">
-        {loading && (
-          <p className="p-4 italic text-muted-foreground">Loading rooms...</p>
-        )}
+      <DndProvider backend={HTML5Backend}>
+        <Stack gap={5} className="bg-surface rounded-lg shadow-lg p-5">
+          {loading && (
+            <p className="p-4 italic text-muted-foreground">Loading rooms...</p>
+          )}
 
-        {!loading && error != null && (
-          <p className="p-4 text-error-main">Error: {String(error)}</p>
-        )}
+          {!loading && error != null && (
+            <p className="p-4 text-error-main">Error: {String(error)}</p>
+          )}
 
-        {!loading &&
-          error == null &&
-          knownRooms.map((roomNumber) => {
-            const dataForRoom = getReservationDataForRoom(roomNumber);
-            return (
-              <RoomGrid
-                key={roomNumber}
-                roomNumber={roomNumber}
-                data={dataForRoom}
-                startDate={startDate}
-                endDate={endDate}
-              />
-            );
-          })}
-      </Stack>
+          {!loading &&
+            error == null &&
+            knownRooms.map((roomNumber) => {
+              const dataForRoom = getReservationDataForRoom(roomNumber);
+              return (
+                <RoomGrid
+                  key={roomNumber}
+                  roomNumber={roomNumber}
+                  data={dataForRoom}
+                  startDate={startDate}
+                  endDate={endDate}
+                />
+              );
+            })}
+        </Stack>
+      </DndProvider>
     </PageShell>
   );
 };

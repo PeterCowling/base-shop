@@ -1,0 +1,16 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-extension-nights-nan-guard",
+  "business": "BRIK",
+  "emitted_at": "2026-03-13T15:06:00.000Z",
+  "dispatch_id": "IDEA-DISPATCH-20260313150000-0003",
+  "outcome_contract": {
+    "why": "Clearing the nights field caused a silent 1-night fallback with no warning to staff.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The extend button is disabled when the nights field is empty.",
+    "source": "operator"
+  },
+  "build_status": "complete",
+  "tasks_complete": 1,
+  "tasks_total": 1
+}

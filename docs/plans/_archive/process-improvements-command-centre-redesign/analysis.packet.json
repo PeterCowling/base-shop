@@ -1,0 +1,332 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "process-improvements-command-centre-redesign",
+  "source_artifact_path": "docs/plans/process-improvements-command-centre-redesign/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "tools-design-system"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/process-improvements-command-centre-redesign/fact-find.md",
+    "plan": "docs/plans/process-improvements-command-centre-redesign/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Process-improvements pages are the operator's daily work surface. Currently passive report feel — stale counts, internal jargon, flat lists — undermines daily use. Pages need accurate live state and a command-centre look to be genuinely useful.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Redesigned `/process-improvements/*` pages with: (a) zero data-accuracy regressions on the 5 identified bugs, (b) scoped dark command-centre visual theme, (c) spatial dashboard layout with urgency-tiered sections, and (d) all internal-system copy replaced with operator-facing plain language.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Phase-by-phase: P1 minimal change; P2 new CSS utilities + class scoping; P3 full component restructure",
+      "current_or_option_state": "All changes land together — harder to isolate visual regressions",
+      "gap_or_implication": "Phase 2+3 own all visual work; DS token compliance verified per phase. New `@utility` blocks confined to `global.css`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "P1 fixes data bugs without touching markup; P2 re-skins all states; P3 adds new section states (collapsed deferred, swimlane empty states)",
+      "current_or_option_state": "Risk that dark-theme states are incomplete in a combined pass",
+      "gap_or_implication": "Each state (loading, empty, error, pending, bulk-select, snooze-picker) explicitly re-skinned in P2; new swimlane empty states added in P3",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A in all options — internal operator tool, no PII, no auth changes",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no changes to decision ledger or API",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "P1: regression assertions for B1–B5; P2: snapshot updates; P3: snapshot updates",
+      "current_or_option_state": "Single combined snapshot update masks which changes caused failures",
+      "gap_or_implication": "Per-phase test updates — P1 adds regression assertions, P2+P3 update snapshots. Existing TC-07/08/09 must pass throughout",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "P1: `initialInProgressCount` prop removed from `NewIdeasInboxProps`; `ProcessImprovementsSummary` prop signature updated; `InboxSection` gains explicit `count` prop",
+      "current_or_option_state": "Contract changes mixed with visual changes — harder to catch type regressions",
+      "gap_or_implication": "P1 owns all interface changes. `pnpm typecheck` must pass after P1 before P2 starts",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Scoped CSS vars: zero-cost. Sub-nav adds one `useEffect` + `fetch` on mount (30s poll). No new heavy dependencies",
+      "current_or_option_state": "Same net cost",
+      "gap_or_implication": "The sub-nav poll is the only new network request; it reuses the same endpoint already polled by both inbox components",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Three independently revertable commits. Each phase is CI-green before the next starts.",
+      "current_or_option_state": "Single revert but a much larger blast radius",
+      "gap_or_implication": "P1 → P2 → P3 commit sequence. Production Workers deployment — each commit must pass full CI before dev deployment",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The `/process-improvements/new-ideas` and `/process-improvements/in-progress` pages need two things: accurate data (5 confirmed bugs) and a visual identity shift from flat admin report to living command centre. The analysis resolves three strategic choices: (1) how to apply the dark theme without breaking the rest of BOS; (2) how to fix stale counts without touching the lib layer; (3) whether to do a full spatial layout restructure or just re-skin the existing flat list. All three choices interact — the sequencing recommendation is that the three choices form three coherent build phases with c",
+    "goals": [
+      "Fix 5 confirmed data-accuracy bugs (B1–B5): stale counts, hardcoded zero, React children count, SSR-locked badge, internal copy labels.",
+      "Resolve visual artefact V1 (hero-foreground tokens outside hero context) as a natural consequence of dark theme application.",
+      "Apply scoped dark command-centre theme — navy/indigo dark palette, gradient hero area, glow utilities — without touching rest of BOS.",
+      "Restructure page layout: hero summary strip with live stats; urgency-tiered swimlanes (overdue → operator actions → queue → deferred collapsed → done timeline); sub-nav with live counts and pulse.",
+      "All existing interactive behaviour (do/defer/decline/mark-done/snooze/bulk) preserved exactly."
+    ],
+    "non_goals": [
+      "Full BOS dark-mode switch.",
+      "Lib layer changes (`projection.ts`, `active-plans.ts`, `decision-ledger.ts`).",
+      "Keyboard shortcuts.",
+      "Mobile-first redesign."
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Data accuracy",
+        "Why it matters": "Wrong numbers break operator trust immediately",
+        "Weight": "Critical"
+      },
+      {
+        "Criterion": "Visual impact",
+        "Why it matters": "Primary goal — command-centre feel, not incremental improvement",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Behaviour preservation",
+        "Why it matters": "All triage actions must continue to work; regression here is blocking",
+        "Weight": "Critical"
+      },
+      {
+        "Criterion": "Build risk / reviewability",
+        "Why it matters": "Three-phase scope; each phase must be CI-green independently",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Token / DS compliance",
+        "Why it matters": "Mandatory constraint — no hardcoded values, DS atoms used for controls",
+        "Weight": "Required"
+      },
+      {
+        "Criterion": "Rollback safety",
+        "Why it matters": "Production BOS deployment; each commit must be individually revertable",
+        "Weight": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "**A: Three-phase sequential** — data fixes → theme/CSS → layout restructure",
+        "Description": "Each phase has a clean, independently reviewable diff. Data bugs fixed first establishes accuracy baseline before visual work.",
+        "Upside": "Lowest blast radius per commit; easiest CI debugging; each phase can ship independently",
+        "Downside": "Slightly more elapsed time than a single pass",
+        "Key risks": "Theme phase touches CSS and markup simultaneously — still complex but contained",
+        "Viable?": "**Yes — recommended**"
+      },
+      {
+        "Option": "**B: Single combined pass** — data + theme + layout in one PR",
+        "Description": "Fastest wallclock elapsed time",
+        "Upside": "Everything working together is visually cleanest",
+        "Downside": "Any CI failure blocks the entire redesign; mixed diffs are hard to review; regressions harder to bisect",
+        "Key risks": "**Reject**",
+        "Viable?": ""
+      },
+      {
+        "Option": "**C: Theme-only (no layout restructure)**",
+        "Description": "Lower scope; faster",
+        "Upside": "Dark colours applied",
+        "Downside": "Does not deliver the \"command centre\" feel — flat list with dark colours is still a boring dark list. Misses the goal.",
+        "Key risks": "Partial goal achievement only",
+        "Viable?": "**Reject**"
+      },
+      {
+        "Option": "**D: Layout restructure without dark theme**",
+        "Description": "Spatial layout only",
+        "Upside": "Better information architecture",
+        "Downside": "Light-surface spatial layout is just a reorganised admin report. The visual energy comes from the dark palette. The two are complementary; splitting them weakens both.",
+        "Key risks": "Partial goal achievement only",
+        "Viable?": "**Reject**"
+      },
+      {
+        "Option": "Sub-option",
+        "Description": "Description",
+        "Upside": "Verdict",
+        "Downside": "",
+        "Key risks": "",
+        "Viable?": ""
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "",
+        "Key risks": "",
+        "Viable?": ""
+      },
+      {
+        "Option": "**A1: `.cmd-centre` class on `<main>` (scoped CSS override)**",
+        "Description": "CSS custom property overrides scoped to a wrapper class in `global.css`. DS atoms pick up overrides automatically via `hsl(var(--color-*))`. Possible brief flash of light background on initial load before CSS resolves.",
+        "Upside": "**Recommended** — matches existing `bg-hero-contrast` utility pattern; zero runtime cost; reversible by removing one class",
+        "Downside": "",
+        "Key risks": "",
+        "Viable?": ""
+      },
+      {
+        "Option": "**A2: `data-theme=\"cmd\"` on `<html>` applied server-side in layout**",
+        "Description": "Prevents flash entirely; requires layout-level server component change and a dedicated CSS selector `[data-theme=\"cmd\"]`. More complex — affects the full HTML document scope.",
+        "Upside": "Over-engineered for one internal page section; flash risk is minimal in practice for an internal operator tool",
+        "Downside": "",
+        "Key risks": "",
+        "Viable?": ""
+      },
+      {
+        "Option": "**A3: Inline styles per element**",
+        "Description": "Highest specificity; no class scope needed",
+        "Upside": "Verbose, unreviewable, non-composable. Reject.",
+        "Downside": "",
+        "Key risks": "",
+        "Viable?": ""
+      },
+      {
+        "Option": "Sub-option",
+        "Description": "Description",
+        "Upside": "Verdict",
+        "Downside": "",
+        "Key risks": "",
+        "Viable?": ""
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "",
+        "Key risks": "",
+        "Viable?": ""
+      },
+      {
+        "Option": "**D1: Remove `initialInProgressCount` prop; derive all counts client-side**",
+        "Description": "All count badges (B1, B2, B3, B4) become client-derived from the data already in-flight (auto-refresh returns `activePlans` and `items`). No API changes. No SSR prop threading.",
+        "Upside": "**Recommended** — simplest, self-consistent, no new network requests",
+        "Downside": "",
+        "Key risks": "",
+        "Viable?": ""
+      },
+      {
+        "Option": "**D2: Extend API to return pre-computed counts**",
+        "Description": "API computes and returns counts server-side; clients use them",
+        "Upside": "Adds server surface; counts still stale until next poll; D1 is strictly simpler",
+        "Downside": "",
+        "Key risks": "",
+        "Viable?": ""
+      },
+      {
+        "Option": "**D3: Refresh-on-focus / SWR pattern**",
+        "Description": "Aggressive re-fetch on window focus",
+        "Upside": "More complex; brings in SWR or manual focus listener; no advantage over D1",
+        "Downside": "",
+        "Key risks": "",
+        "Viable?": ""
+      }
+    ],
+    "chosen_approach": {
+      "The `/api/process-improvements/items` endpoint continuing to return `{ items, recentActions, activePlans, inProgressDispatchIds }` (confirmed at `route.ts": "22–27`) — sub-nav, `InProgressInbox` B4 fix, and the new-ideas hero stats all depend on this payload shape. `InProgressInbox` must expand its type assertion from `{ activePlans }` to the full payload to enable the B4 fix."
+    },
+    "rejected_approaches": [
+      "**Option B (single pass)** — combines all changes into one diff; CI failures block the entire redesign; regressions impossible to bisect. Rejected for reviewability and rollback safety.",
+      "**Option C (theme-only)** — dark flat list is still a boring list. Misses the command-centre goal. Rejected.",
+      "**Option D (layout without theme)** — spatial layout on a light surface is still a report. The visual energy comes from the dark palette. The two are architecturally coupled. Rejected.",
+      "**Sub-option A2 (HTML-level `data-theme`)** — over-engineered for the use case; flash risk is negligible for an internal operator tool on a fast local network. Rejected.",
+      "**Sub-option D2 (API count extension)** — adds server surface with no advantage over client derivation when the data is already in the refresh response. Rejected."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "**Sub-navigation**",
+          "current": "Two static text links, no counts, no liveness",
+          "trigger": "Page mount",
+          "future": null,
+          "steady": "Route structure unchanged",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "**New Ideas page — header**",
+          "current": "Plain title + description; no stats in hero",
+          "trigger": "Page load (SSR + hydration)",
+          "future": null,
+          "steady": "SSR projection load unchanged; `NewIdeasInbox` receives same `initialItems`, `initialRecentActions`, `initialInProgressDispatchIds` props",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "**New Ideas page — list**",
+          "current": "Flat list: active → deferred → recently done (all visible, same weight)",
+          "trigger": "Data load",
+          "future": null,
+          "steady": "All card expand/collapse, triage actions, bulk-select, defer-picker, snooze-picker preserved exactly",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "**In Progress page — header**",
+          "current": "Static SSR counts; `inProgressCount` partially fixed (2026-03-13); `newIdeasCount` still SSR-locked",
+          "trigger": "Page load + hydration",
+          "future": null,
+          "steady": "`loadActivePlans()` SSR data flow unchanged",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "**In Progress page — list**",
+          "current": "Flat list by blocked/ratio sort; no urgency separation",
+          "trigger": "Data load",
+          "future": null,
+          "steady": "Snooze logic, auto-refresh, `InProgressCountBadge` unchanged",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "**Visual theme**",
+          "current": "Light surface throughout; `bg-hero-contrast` only in hero sections",
+          "trigger": "`.cmd-centre` class applied to `<main>` in layout",
+          "future": null,
+          "steady": "Rest of BOS unaffected; `ProcessImprovementsSubNav` and children all inherit the scope",
+          "seams": null
+        },
+        {
+          "id": null,
+          "label": "**Triage decisions**",
+          "current": "Expand card → action buttons → POST → optimistic UI update",
+          "trigger": "Card expansion",
+          "future": null,
+          "steady": "All API endpoints, ledger writes, optimistic update logic",
+          "seams": null
+        }
+      ]
+    }
+  }
+}

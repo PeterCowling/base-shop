@@ -1,0 +1,224 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "process-improvements-command-centre-redesign",
+  "source_artifact_path": "docs/plans/process-improvements-command-centre-redesign/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Process-improvements pages are the operator's daily work surface for managing ideas and active plans. Currently they feel like a passive report — stale counts, internal jargon, flat lists. For the system to be useful as a command centre the pages need to accurately reflect live state and look and feel like they're alive.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Redesigned `/process-improvements/*` pages with: (a) zero data-accuracy regressions on the 5 identified bugs, (b) a scoped dark command-centre visual theme applied to the process-improvements layout, (c) spatial dashboard layout with urgency-tiered sections, and (d) all internal-system copy replaced with operator-facing plain language.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`NewIdeasInbox.tsx`, `InProgressInbox.tsx`, `ProcessImprovementsSubNav.tsx`, `global.css` — light surface, flat layout",
+      "gap_or_implication": "Core redesign target. New dark palette vars, gradient utilities, glow effects, compact card variants needed.",
+      "carry_forward_or_notes": "Yes — primary scope"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Expand/collapse, pending, error, bulk-select, defer-picker, snooze — all implemented",
+      "gap_or_implication": "All states must be re-skinned without changing behaviour. Loading/empty states need dark-mode equivalents.",
+      "carry_forward_or_notes": "Yes — re-skin all states"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Internal operator tool; no user PII; no auth changes",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No changes to decision ledger or API routes",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "2 component test files; no visual tests",
+      "gap_or_implication": "B1–B7 fixes each need a test assertion. Snapshot updates required.",
+      "carry_forward_or_notes": "Yes — test updates per bug fix"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`projection.ts` types flow to `NewIdeasInboxProps` — no type changes. `inProgressCount` fix changes prop usage pattern.",
+      "gap_or_implication": "Props interface for `NewIdeasInbox` may need `inProgressCount` removed if count moves client-side. Verify `ProcessImprovementsSummary` prop type update.",
+      "carry_forward_or_notes": "Yes — minimal prop refactor"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`NewIdeasInbox.tsx` is 1,660 lines; `useMemo` used throughout. Adding new CSS utilities.",
+      "gap_or_implication": "Scoped CSS vars on a wrapper element are zero-cost. No new data fetches. Component split opportunity (not required).",
+      "carry_forward_or_notes": "No — note only"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Local dev only (`localhost:3022`); BOS is deployed to Workers but this is an internal tool",
+      "gap_or_implication": "Git revert is the rollback. No feature flags needed for an internal-only operator tool.",
+      "carry_forward_or_notes": "No"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The `/process-improvements/new-ideas` and `/process-improvements/in-progress` pages are the operator's daily operational interface for triaging ideas and tracking active work. Currently they present as a flat, light-surface admin report with multiple data-accuracy bugs and no sense of liveness. This fact-find covers a two-phase redesign: (1) fix data accuracy and copy issues, (2) apply a dark command-centre visual theme and spatial layout inspired by the reference design below. **Reference design:** `/Users/petercowling/Downloads/Top-5-Best-UX-UI-Design-Companies-2020-3.jpg` — a crypto wallet ",
+    "goals": [
+      "Fix 5 confirmed data-accuracy bugs (stale counts, hardcoded zero, internal copy in operator-facing labels) plus 1 visual artefact (hero-foreground tokens applied outside hero context).",
+      "Apply a scoped dark command-centre theme to the process-improvements section without forcing a global dark-mode switch in BOS.",
+      "Redesign the page layout from flat vertical list → spatial dashboard: hero summary strip with live large-number stats, urgency swimlanes (overdue/active/deferred), and a compact list mode.",
+      "Replace all internal-system copy in operator-facing elements with plain-language labels.",
+      "Upgrade the sub-nav to show live counts and active-state pulse.",
+      "Add genuine liveness signals: animated ring for active-now plans, pulsing dot for the auto-refresh, visible \"last synced\" that feels like a heartbeat.",
+      "Keep all existing interactive behaviour (defer, decline, do, snooze, bulk actions) fully functional."
+    ],
+    "non_goals": [
+      "Full BOS app dark-mode switch (scoped to `/process-improvements` route only).",
+      "Adding new data sources or changing the projection/ledger business logic.",
+      "Mobile-first redesign (desktop operator tool; responsive improvements in scope but not primary focus).",
+      "Keyboard shortcut system (noted as future opportunity; out of scope for this plan)."
+    ],
+    "constraints": [
+      "Must use BOS design-system tokens (`@acme/design-system`, `@acme/ui`) and Tailwind v4 `@theme inline` pattern — no arbitrary hardcoded hex values outside of CSS custom property definitions.",
+      "New CSS custom properties for the command-centre dark palette must be defined inside `apps/business-os/src/styles/global.css` as scoped `@utility` or class-override blocks — not in `packages/themes/`.",
+      "The `@acme/design-system` component API (Button, Tag, etc.) must be used for interactive controls; unstyled HTML buttons only where no DS equivalent exists.",
+      "All TypeScript must pass `pnpm typecheck`; all lint rules enforced (including `ds/no-hardcoded-copy` with BOS exemption comment, `ds/no-nonlayered-zindex` with BOS exemption where needed).",
+      "No changes to lib layer (`projection.ts`, `active-plans.ts`, `decision-ledger.ts`) — all data accuracy fixes are in page/component layer only."
+    ],
+    "assumptions": [
+      "The BOS app already imports `packages/themes/base/tokens.css` as the active token file; the dark override variables are available in `packages/themes/dark/tokens.css` as reference for value selection but will be inlined rather than imported.",
+      "The operator uses this on a desktop browser in a controlled internal environment — no contrast-AA failures will be tolerated but no legacy browser support needed.",
+      "`isActiveNow` (5-minute file-mtime window) and `isObservedNow` (5-minute observation window) are correct enough for liveness indication purposes."
+    ],
+    "key_entry_points": [
+      "`apps/business-os/src/app/process-improvements/layout.tsx` — layout wrapper; mounts `ProcessImprovementsSubNav`",
+      "`apps/business-os/src/app/process-improvements/new-ideas/page.tsx` — SSR page; loads projection + active plans",
+      "`apps/business-os/src/app/process-improvements/in-progress/page.tsx` — SSR page; loads active plans",
+      "`apps/business-os/src/app/process-improvements/page.tsx` — redirect to `/new-ideas`"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None. Open question on body-class flash has a viable default assumption.",
+      "Recommended next step": "`/lp-do-analysis process-improvements-command-centre-redesign`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Data accuracy bugs B1–B8",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — all traced to root cause with file+line",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Theme architecture (CSS var scope)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `global.css` pattern confirmed viable",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Design reference extraction",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — palette values extracted from image",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "DS component token resolution",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "Advisory [Assumption] Medium: DS atoms must resolve correctly inside `.cmd-centre` — not runtime-verified",
+        "Resolution Required": "No (low risk; verify during build)"
+      },
+      {
+        "Scope Area": "Test landscape",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — InProgressInbox.test.tsx coverage confirmed broader than initial assessment (TC-07, TC-08, TC-09 verified)",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Open question (body flash)",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "Advisory [Preference] Low: Default assumption viable; operator preference not confirmed",
+        "Resolution Required": "No — default assumption taken"
+      },
+      {
+        "Scope Area": "Git history / in-flight conflicts",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — no conflicting branches active on these files",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Reference image palette vs. repo dark tokens",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — distinction now explicitly documented; new CSS vars are net-new values, not copies of existing dark theme",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "BOS production deployment",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — rollout/rollback section updated to reflect live Workers deployment",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Operator navigates to `http://localhost:3022/process-improvements/` (redirects to `/new-ideas`) or directly to `/in-progress`.",
+      "end_condition": "Operator has reviewed active items and taken triage decisions (do / defer / decline / mark-done / snooze), or reviewed active plan progress.",
+      "areas": [
+        {
+          "id": null,
+          "label": "New Ideas page load",
+          "flow": "SSR: `loadProcessImprovementsProjection()` reads queue JSON + operator-actions + decision ledgers → projects items → passes to `NewIdeasInbox` client component → renders",
+          "owners": null,
+          "evidence": "`apps/business-os/src/app/process-improvements/new-ideas/page.tsx:9-52`",
+          "issues": "`initialInProgressCount` is SSR-only, never refreshes"
+        },
+        {
+          "id": null,
+          "label": "In Progress page load",
+          "flow": "SSR: `loadActivePlans()` reads `docs/plans/*/plan.md` for Status:Active plans, file-mtime activity, JSONL observations → passes to `InProgressInbox`",
+          "owners": null,
+          "evidence": "`apps/business-os/src/app/process-improvements/in-progress/page.tsx`",
+          "issues": "Header count was SSR-only (partially fixed 2026-03-13); `newIdeasCount` badge still SSR-locked"
+        },
+        {
+          "id": null,
+          "label": "Auto-refresh (30s)",
+          "flow": "Client-side `setInterval` polls `/api/process-improvements/items` → updates items + recentActions + inProgressDispatchIds",
+          "owners": null,
+          "evidence": "`NewIdeasInbox.tsx:603-654`, `InProgressInbox.tsx:432-470`",
+          "issues": "Refresh indicator is easy to miss; `lastRefreshed` not wired to header stat badges"
+        },
+        {
+          "id": null,
+          "label": "Triage decision",
+          "flow": "Operator expands card → clicks Do/Defer/Decline/Mark-done/Snooze → POST to `/api/process-improvements/decision/[decision]` or `/api/process-improvements/operator-actions/[decision]` → ledger write → optimistic UI update",
+          "owners": null,
+          "evidence": "`new-ideas/page.tsx`, `operator-actions/[decision]/route.ts`",
+          "issues": "Working correctly; UX is functional but buried in expanded cards"
+        },
+        {
+          "id": null,
+          "label": "Sub-navigation",
+          "flow": "Thin `ProcessImprovementsSubNav` renders two text tab links; no counts, no active indicators",
+          "owners": null,
+          "evidence": "`apps/business-os/src/components/process-improvements/ProcessImprovementsSubNav.tsx`",
+          "issues": "No live counts; no visual distinction from rest of BOS nav"
+        }
+      ]
+    }
+  }
+}

@@ -114,12 +114,20 @@ export function useCheckInCode(options: UseCheckInCodeOptions): UseCheckInCodeRe
         body: JSON.stringify({ uuid, checkOutDate }),
       });
 
+      const responseData = await response.json() as { code?: string; error?: string };
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to generate code'); // i18n-exempt -- PRIME-101 programmatic hook error [ttl=2026-12-31]
+        throw new Error(responseData.error || 'Failed to generate code'); // i18n-exempt -- PRIME-101 programmatic hook error [ttl=2026-12-31]
       }
 
-      // Refetch to get the new code
+      // Cache the generated code directly from the API response as a resilience
+      // measure: if the subsequent refetch fails, the code remains accessible
+      // via the offline cache rather than being silently lost.
+      if (responseData.code && uuid) {
+        cacheCheckInCode(responseData.code, uuid);
+      }
+
+      // Refetch to get the confirmed code from the database
       await refetch();
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Unknown error'; // i18n-exempt -- PRIME-101 programmatic hook error [ttl=2026-12-31]

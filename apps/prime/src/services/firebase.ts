@@ -61,6 +61,28 @@ const firebaseConfig = {
 };
 
 /* -------------------------------------------------------------------------- */
+/*                      Startup config validation                             */
+/* -------------------------------------------------------------------------- */
+
+// Warn early when required env vars are absent so failures are diagnosable
+// at startup rather than manifesting as cryptic real-time data errors later.
+if (typeof window !== 'undefined') {
+  const requiredVars = [
+    'NEXT_PUBLIC_FIREBASE_API_KEY',
+    'NEXT_PUBLIC_FIREBASE_DATABASE_URL',
+    'NEXT_PUBLIC_FIREBASE_PROJECT_ID',
+  ] as const;
+  const missing = requiredVars.filter((k) => !process.env[k]);
+  if (missing.length > 0) {
+    console.error(
+      '[prime/firebase] Missing required environment variables:',
+      missing.join(', '),
+      '— all real-time data calls will fail.',
+    );
+  }
+}
+
+/* -------------------------------------------------------------------------- */
 /*                           SDK singletons (v9+)                             */
 /* -------------------------------------------------------------------------- */
 

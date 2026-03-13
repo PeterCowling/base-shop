@@ -91,6 +91,8 @@ export function useOccupantDataSources(): OccupantDataSources {
     isError: tasksError,
   } = useFetchCompletedTasks();
 
+  const bookingRef = bookingsData?.reservationCode ?? '';
+
   // ── Phase 2: Secondary data (deferred until bookings resolves) ─────────
   const secondaryEnabled = !!bookingsData;
 
@@ -100,7 +102,7 @@ export function useOccupantDataSources(): OccupantDataSources {
     isLoading: isLoansLoading,
     error: loansError,
     refetch: refetchLoansData,
-  } = useFetchLoans({ enabled: secondaryEnabled });
+  } = useFetchLoans({ bookingRef, enabled: secondaryEnabled });
 
   // 4) Guest room allocation
   const {
@@ -127,8 +129,6 @@ export function useOccupantDataSources(): OccupantDataSources {
   } = useFetchBagStorageData({ enabled: secondaryEnabled });
 
   // ── Dependent: Requires bookingRef from bookings ───────────────────────
-  const bookingRef = bookingsData?.reservationCode || '';
-
   // 3) Guest details
   const {
     data: guestDetailsData,
@@ -155,16 +155,21 @@ export function useOccupantDataSources(): OccupantDataSources {
 
   // ── Aggregate refetch (except tasks which is real-time) ────────────────
   const refetch = useCallback(async () => {
-    await Promise.all([
-      refetchBookingsData?.(),
-      refetchLoansData?.(),
-      refetchGuestDetails?.(),
-      refetchGuestByRoom?.(),
-      refetchFinancialsRoom?.(),
-      refetchPreordersData?.(),
-      refetchCityTax?.(),
-      refetchBagStorageData?.(),
-    ]);
+    try {
+      await Promise.all([
+        refetchBookingsData?.(),
+        refetchLoansData?.(),
+        refetchGuestDetails?.(),
+        refetchGuestByRoom?.(),
+        refetchFinancialsRoom?.(),
+        refetchPreordersData?.(),
+        refetchCityTax?.(),
+        refetchBagStorageData?.(),
+      ]);
+    } catch (err) {
+      console.error('[useOccupantDataSources] background data refresh failed:', err);
+      throw err;
+    }
   }, [
     refetchBookingsData,
     refetchLoansData,

@@ -2,12 +2,13 @@
   "name": "@acme/inventory-uploader",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack -p 3021",
+    "dev": "bash ../../scripts/dev/run-next-app.sh --port 3021 -- --webpack",
     "build": "next build --webpack",
     "build:worker": "opennextjs-cloudflare build",
     "start": "next start -p 3021",
     "lint": "eslint --cache --cache-location .eslintcache src",
-    "typecheck": "tsc -p tsconfig.json --noEmit --incremental --tsBuildInfoFile .typecheck.tsbuildinfo"
+    "typecheck": "bash ../../scripts/dev/run-next-app.sh --mode typecheck --port 3021 -- pnpm exec tsc -p tsconfig.json --noEmit --incremental --tsBuildInfoFile .typecheck.tsbuildinfo",
+    "test": "bash ../../scripts/tests/run-governed-test.sh -- jest -- --config ./jest.config.cjs"
   },
   "dependencies": {
     "@acme/next-config": "workspace:*",

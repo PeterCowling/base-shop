@@ -38,7 +38,6 @@ interface NewIdeasInboxProps {
   initialItems: ProcessImprovementsInboxItem[];
   initialRecentActions: ProcessImprovementsRecentAction[];
   initialInProgressDispatchIds: string[];
-  initialInProgressCount: number;
 }
 
 interface PendingState {
@@ -1438,15 +1437,18 @@ function InboxSection({
   title,
   description,
   emptyCopy,
+  count,
   children,
 }: {
   id?: string;
   title: string;
   description: string;
   emptyCopy: string;
+  count?: number;
   children: ReactNode;
 }) {
   const childCount = Array.isArray(children) ? children.length : children ? 1 : 0;
+  const displayCount = count ?? childCount;
 
   return (
     <section id={id} className="scroll-mt-4 space-y-3">
@@ -1456,13 +1458,13 @@ function InboxSection({
             {title}
           </h2>
           <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-soft px-1.5 text-xs font-semibold tabular-nums text-fg">
-            {childCount}
+            {displayCount}
           </span>
         </div>
         <p className="text-xs text-muted">{description}</p>
       </div>
 
-      {childCount === 0 ? (
+      {displayCount === 0 ? (
         <div className="rounded-xl border border-dashed border-border bg-surface-2 px-5 py-8 text-center text-sm text-muted">
           {emptyCopy}
         </div>
@@ -1477,7 +1479,6 @@ export function NewIdeasInbox({
   initialItems,
   initialRecentActions,
   initialInProgressDispatchIds,
-  initialInProgressCount,
 }: NewIdeasInboxProps) {
   const {
     activeItems,
@@ -1585,7 +1586,7 @@ export function NewIdeasInbox({
           href="/process-improvements/in-progress"
           className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3 transition-colors hover:bg-hero-foreground/16"
         >
-          <p className="text-2xl font-semibold tabular-nums">{initialInProgressCount}</p>
+          <p className="text-2xl font-semibold tabular-nums">{inProgressDispatchIds.size}</p>
           <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">In progress</p>
         </a>
         <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
@@ -1608,7 +1609,7 @@ export function NewIdeasInbox({
       <div className="flex items-center justify-between">
         <ProcessImprovementsSummary
           newIdeasCount={newIdeasItems.length}
-          inProgressCount={0}
+          inProgressCount={inProgressDispatchIds.size}
           activeQueueCount={filteredActiveQueueCount}
           activeOperatorActionCount={filteredActiveOperatorActionCount}
           deferredCount={filteredDeferredItems.length}
@@ -1636,7 +1637,7 @@ export function NewIdeasInbox({
         id="new-ideas"
         title="New ideas"
         description="Items awaiting an initial decision — not yet being worked on."
-        emptyCopy={activeEmptyCopy}
+        emptyCopy={activeEmptyCopy} count={newIdeasItems.length}
       >
         {newIdeasItems.map((item) => (
           <WorkItemCard
@@ -1658,6 +1659,7 @@ export function NewIdeasInbox({
         title="Deferred"
         description="Items temporarily moved out of the active queue."
         emptyCopy={deferredEmptyCopy}
+        count={filteredDeferredItems.length}
       >
         {filteredDeferredItems.map((item) => (
           <WorkItemCard

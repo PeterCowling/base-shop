@@ -535,3 +535,84 @@ describe("formatPriorityLabel", () => {
     });
   });
 });
+
+describe("B1/B2/B3 data accuracy", () => {
+  const fetchMock = jest.fn();
+
+  beforeEach(() => {
+    fetchMock.mockReset();
+    (global as typeof globalThis & { fetch: typeof fetch }).fetch =
+      fetchMock as unknown as typeof fetch;
+  });
+
+  it("TC-B1-01: in-progress hero stat badge reflects initialInProgressDispatchIds count on mount", () => {
+    const inProgressItem: ProcessImprovementQueueInboxItem = {
+      ...baseItem,
+      itemKey: "idea-ip-1",
+      ideaKey: "idea-ip-1",
+      dispatchId: "dispatch-ip-1",
+      title: "In-progress idea",
+    };
+
+    render(
+      <NewIdeasInbox
+        initialItems={[inProgressItem, baseItem]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={["dispatch-ip-1", "dispatch-ip-2"]}
+      />
+    );
+
+    // Hero stat badge for "In progress" should show 2 (size of initialInProgressDispatchIds)
+    const inProgressLink = screen.getByRole("link", { name: /in progress/i });
+    expect(inProgressLink).toHaveTextContent("2");
+  });
+
+  it("TC-B2-01: ProcessImprovementsSummary inProgressCount pill reflects derived count, not hardcoded 0", () => {
+    render(
+      <NewIdeasInbox
+        initialItems={[baseItem]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={["dispatch-ip-1"]}
+      />
+    );
+
+    // The summary pill for "In progress" should show 1, not 0
+    const summarySection = screen.getAllByText("In progress");
+    // Find the pill value: a sibling span with tabular-nums class showing "1"
+    // The pill renders: <span class="...tabular-nums">1</span> <span>In progress</span>
+    // Check that "0" is NOT in the "In progress" pill context
+    const inProgressPills = summarySection.filter((el) =>
+      el.closest("div")?.querySelector("span.tabular-nums")?.textContent === "1"
+    );
+    expect(inProgressPills.length).toBeGreaterThan(0);
+  });
+
+  it("TC-B3-01: InboxSection count badge shows explicit count prop (newIdeasItems.length)", () => {
+    render(
+      <NewIdeasInbox
+        initialItems={[baseItem, operatorActionItem]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    // "New ideas" section header should show badge with "2" (both items are active, neither in-progress)
+    const heading = screen.getByRole("heading", { name: "New ideas" });
+    const badge = heading.closest("div")?.querySelector("span.tabular-nums");
+    expect(badge?.textContent).toBe("2");
+  });
+
+  it("TC-B3-02: InboxSection count badge shows 0 when items array is empty", () => {
+    render(
+      <NewIdeasInbox
+        initialItems={[]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    const heading = screen.getByRole("heading", { name: "New ideas" });
+    const badge = heading.closest("div")?.querySelector("span.tabular-nums");
+    expect(badge?.textContent).toBe("0");
+  });
+});

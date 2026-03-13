@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-13T12:08:51.927Z",
+  "why": "When a guest asks about something the AI has not seen before, it picks its best guess and sends it as correct. This risks giving guests wrong information. A quality warning that staff can skip is not a guarantee — a real code-level block ensures the quality bar cannot be bypassed."
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-13T12:09:43.616Z",
+  "plan_slug": "mcp-server-reply",
+  "review_cycle_key": "mcp-server-reply",
+  "source_path": "docs/plans/mcp-server-reply/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": []
+}

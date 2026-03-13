@@ -1,14 +1,14 @@
 {
-  "last_updated": "2026-03-13T11:57:26.228Z",
+  "last_updated": "2026-03-13T12:10:29.228Z",
   "counts": {
     "enqueued": 41,
-    "processed": 17,
+    "processed": 16,
     "declined": 1,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 300,
+    "completed": 301,
     "fact_find_ready": 37,
     "plan_ready": 0,
     "micro_build_ready": 2,
@@ -14798,7 +14798,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.88,
       "evidence_refs": [
@@ -14813,7 +14813,7 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T09:00:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "domain": "BOS",
       "processed_by": {
         "route": "dispatch-routed",
@@ -14824,6 +14824,11 @@
         "processed_at": "2026-03-13T11:31:16.072Z",
         "fact_find_slug": "mcp-server-reply",
         "fact_find_path": "docs/plans/mcp-server-reply/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/mcp-server-reply/plan.md",
+        "completed_at": "2026-03-13T12:10:29.227Z",
+        "outcome": "Gmail draft gate enforced at tool boundary; pool coverage synonyms tightened to remove false positives"
       }
     },
     {

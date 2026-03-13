@@ -1,0 +1,28 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/mcp-server-reply/fact-find.md",
+      "line": "222",
+      "message": "The brief overstates the false-match evidence for `\"Hostel Facilities and Services\"`. It answers "Yes" to whether the template can score `>=70%` "in production," but the supporting explanation is only a plausibility argument (`can reach ≥70 if stem overlap is sufficient`), not a verified repository result. That should be framed as an inferred risk unless backed by an actual ranker test or captured score."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/mcp-server-reply/fact-find.md",
+      "line": "238",
+      "message": "The "fix needs to be applied to both" conclusion for `TOPIC_SYNONYMS` and `SYNONYMS` is too strong for the evidence presented. The documented quality-check false-positive is directly caused by coverage.ts, but changing template-ranker.ts is a broader ranking-behavior change and not necessary to satisfy the stated Gmail quality-gate outcome. That may still be a good idea, but it should be justified as an additional decision, not presented as already proven required."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/mcp-server-reply/fact-find.md",
+      "line": "206",
+      "message": "The telemetry note is slightly stale. Composite-path fallback is already wired through `usedTemplateFallback` in draft-generate.ts:1502 and the existing `email_fallback_detected` emission in draft-generate.ts:1695, so this is more a regression check than an open observability gap."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "review": "VERDICT: NEEDS_REVISION\nSCORE: 8/10",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ce23b-5fa8-7a40-9076-a49734c4292d"
+}

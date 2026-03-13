@@ -1,0 +1,263 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "mcp-server-reply",
+  "source_artifact_path": "docs/plans/mcp-server-reply/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/mcp-server-reply/fact-find.md",
+    "plan": "docs/plans/mcp-server-reply/plan.md"
+  },
+  "outcome_contract": {
+    "why": "When a guest asks about something the AI has not seen before, it picks its best guess and sends it as correct. This risks giving guests wrong information. Separately, a quality warning that staff can skip is not a guarantee — building a real block ensures the quality bar cannot be bypassed.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "(1) Composite-path template selection applies hinted-first logic — unknown-topic questions routed to `follow_up_required` instead of a fluent wrong template (behavior already implemented; regression coverage added). (2) `gmail_create_draft` rejects calls with `deliveryStatus: \"blocked\"` at the tool boundary. (3) Coverage scoring false-positives reduced by tightening `TOPIC_SYNONYMS[\"pool\"]`.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — MCP tool layer only",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No UI change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "TASK-01: composite follow_up path already correct; regression test ensures it stays correct",
+      "current_or_option_state": "Option C (TASK-01) leaves behavior undocumented and unguarded",
+      "gap_or_implication": "Composite-path UX aligned with single-question path; guarded by test",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "TASK-02: caller-supplied deliveryStatus is trust-on-caller; acceptable belt-and-suspenders",
+      "current_or_option_state": "Option B (server lookup) avoids caller trust but adds fragility",
+      "gap_or_implication": "No security regression",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`email_fallback_detected` already fires via `usedTemplateFallback`; TASK-01 regression test verifies it continues to fire",
+      "current_or_option_state": "—",
+      "gap_or_implication": "No new telemetry required",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "2 new test cases: TC-gmail-blocked (TASK-02), TC-synonyms-regression (TASK-03); TASK-01 composite path already covered by TC-06-05 + integration test",
+      "current_or_option_state": "—",
+      "gap_or_implication": "All independently unit-testable; SIM-02 integration regression baseline intact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "TASK-02: additive optional `deliveryStatus` field in `createDraftSchema`; no breaking change",
+      "current_or_option_state": "Option B would touch signal-events schema",
+      "gap_or_implication": "Single optional field addition; callers unaffected",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Pure logic/data changes; no I/O path changes",
+      "current_or_option_state": "Option B (server lookup) would add file I/O",
+      "gap_or_implication": "No performance impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Three independent commits; each instantly revertable",
+      "current_or_option_state": "—",
+      "gap_or_implication": "TASK-03 may increase \"partial\" frequency — monitor ops-inbox quality stats after deploy",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "Should the `errorResult` message for a blocked `gmail_create_draft` be surfaced verbatim to staff"
+  ],
+  "stage_payload": {
+    "decision_summary": "Two gaps remain in the Brikette AI email-reply pipeline after recent fixes (5eae09457f and subsequent work). A third gap identified in the fact-find — the composite-path hinted/unhinted distinction in `selectQuestionTemplateCandidate` — has since been fully addressed: both the implementation (`draft-generate.ts:1307–1329`) and test coverage (`draft-generate.test.ts:1184`, TC-06-05; `draft-pipeline.integration.test.ts:460`) are in place. The two remaining open gaps are: 1. **Gmail gate (TASK-02):** `gmail_create_draft` has no code enforcement of `delivery_status: \"blocked\"`. The gate lives only",
+    "goals": [
+      "Enforce `delivery_status: \"blocked\"` at the `gmail_create_draft` tool boundary",
+      "Tighten `TOPIC_SYNONYMS[\"pool\"]` in `coverage.ts` to remove false-positive covered marks"
+    ],
+    "non_goals": [
+      "Any new work on composite template selector hinted-first logic (already correct at `draft-generate.ts:1307–1329`, covered by TC-06-05 and integration test)",
+      "Rewriting BM25 index or core ranking logic",
+      "Semantic/LLM-based question understanding",
+      "Changing `PER_QUESTION_FLOOR = 25`",
+      "Changing `SYNONYMS[\"pool\"]` in template-ranker.ts (optional follow-up, not required for quality-gate outcome)"
+    ],
+    "constraints": [
+      "All changes within `packages/mcp-server` only",
+      "`gmail_create_draft` schema change must be additive (optional field, backward-compatible)",
+      "Tests run in CI only"
+    ],
+    "assumptions": [
+      "`UNHINTED_TEMPLATE_CONFIDENCE_FLOOR = 70` is the correct shared constant — no new constant needed",
+      "`deliveryStatus` in `gmail_create_draft` is caller-supplied; enforcement is belt-and-suspenders, not cryptographic"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Pattern consistency",
+        "Why it matters": "Changes should mirror existing code conventions (reduce cognitive overhead for future maintainers)",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Backward compatibility",
+        "Why it matters": "Callers that don't pass new fields must not break",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Minimal blast radius",
+        "Why it matters": "Narrow the change surface to the specific gap; don't refactor surroundings",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Test seam quality",
+        "Why it matters": "Each change must be independently verifiable by unit test",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Rollback ease",
+        "Why it matters": "Each change should be independently revertable",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "**A — Optional `deliveryStatus` field in `createDraftSchema`**",
+        "Description": "Add `deliveryStatus: z.enum([\"ready\", \"needs_patch\", \"blocked\"]).optional()` to schema; `handleCreateDraft` returns `errorResult()` when value is `\"blocked\"`",
+        "Upside": "Backward-compatible; consistent with existing `errorResult` pattern; caller controls; simple",
+        "Downside": "Caller could omit field or lie about status (belt-and-suspenders limitation)",
+        "Key risks": "Acceptable risk per fact-find",
+        "Viable?": "**Yes**"
+      },
+      {
+        "Option": "**B — Server-side lookup of delivery_status from signal events**",
+        "Description": "`handleCreateDraft` looks up delivery status from `draft-signal-events.jsonl` by draft body hash before creating Gmail draft",
+        "Upside": "No caller trust required",
+        "Downside": "Adds file I/O to every create-draft call; fragile (hash mismatch, race condition, stale events); significant complexity",
+        "Key risks": "High fragility risk",
+        "Viable?": "No"
+      },
+      {
+        "Option": "**C — No code change; SKILL.md only**",
+        "Description": "Current state",
+        "Upside": "No code change",
+        "Downside": "Gate is bypassable; doesn't meet outcome contract",
+        "Key risks": "Outcome not satisfied",
+        "Viable?": "No"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "**A — Remove \"amenity\" and \"facility\" from `TOPIC_SYNONYMS[\"pool\"]` in `coverage.ts` only**",
+        "Description": "Scoped to quality-check false-positive; template-ranker.ts unchanged",
+        "Upside": "Minimal blast radius; directly fixes quality-check false-positive; optional ranker change deferred",
+        "Downside": "BM25 candidate noise for pool queries remains (acceptable: existing confidence floors filter it)",
+        "Key risks": "Possible increase in \"partial\" rate for genuine facility-mentions in pool replies; mitigated by regression tests",
+        "Viable?": "**Yes**"
+      },
+      {
+        "Option": "**B — Remove from both `TOPIC_SYNONYMS` (coverage.ts) and `SYNONYMS` (template-ranker.ts)**",
+        "Description": "Also tightens BM25 candidate selection for pool queries",
+        "Upside": "More thorough",
+        "Downside": "Ranking-behavior change with wider surface; not required for stated outcome",
+        "Key risks": "Risk of regressing legitimate pool-related query matches (e.g., activity templates)",
+        "Viable?": "Optional follow-up"
+      },
+      {
+        "Option": "**C — Category-tagged synonym system**",
+        "Description": "Synonyms only apply when template matches a given category",
+        "Upside": "Most precise",
+        "Downside": "Significant refactor of both coverage.ts and template-ranker.ts; beyond scope",
+        "Key risks": "Over-engineering for current problem size",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Two implementation tasks (TASK-02 and TASK-03); TASK-01 is fully resolved:",
+      "Why this wins": "TASK-01 requires no implementation change — only test coverage to guard existing behavior. TASK-02 and TASK-03 each apply the minimal delta that closes the stated gap, match existing codebase patterns (`errorResult` already the error contract; small data tuning already precedented), and are independently revertable. No alternative offers better outcomes at comparable complexity.",
+      "What it depends on": "Correct existing tests (TC-01–TC-06, SIM-02) not regressing. Regression risk is low — TASK-01 adds tests only; TASK-02 adds an optional schema field with a top-of-function guard; TASK-03 removes two overly broad synonyms.",
+      "Q": "Should the `errorResult` message for a blocked `gmail_create_draft` be surfaced verbatim to staff",
+      "Why operator input is required": "determines whether the message should be human-readable or",
+      "Planning impact": "wording of the error message only; does not affect the implementation approach",
+      "Default assumption": "agent-readable (technical, names `quality.failed_checks`); no planning blocker"
+    },
+    "rejected_approaches": [
+      "**Reimplementing composite selector hinted-first logic (TASK-01 Option B)** — the behavior is already correct; re-implementing would be duplication and could introduce regression",
+      "**No regression test for composite path (TASK-01 Option C)** — leaves correct behavior undocumented and vulnerable to silent regression",
+      "**Server-side delivery_status lookup (TASK-02 Option B)** — fragile, adds I/O, complex; problem is well-solved by belt-and-suspenders caller-supplied field",
+      "**SKILL.md-only gate (TASK-02 Option C)** — already the status quo; doesn't satisfy the outcome contract",
+      "**Category-tagged synonym system (TASK-03 Option C)** — over-engineering; the specific false-positive terms are known and can be removed directly"
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "SIM-02 integration test is the primary regression guard for the composite path (already passing; no change expected)",
+        "`draft_quality_check` tests are the regression guard for TASK-03; partial coverage frequency may increase — expected and acceptable",
+        "New unit tests for each task are part of the task acceptance criteria"
+      ],
+      "sequencing_constraints": [
+        "TASK-01, TASK-02, TASK-03 are fully independent — can be planned and executed in any order or in parallel",
+        "No migration, no deploy coordination required"
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Composite template selection",
+          "current": "Already resolved — hinted-first logic live at `draft-generate.ts:1307–1329`; existing tests (TC-06-05, integration test) cover the path",
+          "trigger": "N/A",
+          "future": null,
+          "steady": "BM25 ranking, `PER_QUESTION_FLOOR`, single-question path unchanged",
+          "seams": "None"
+        },
+        {
+          "id": null,
+          "label": "Gmail creation gate",
+          "current": "`gmail_create_draft` accepts any call; SKILL.md gate only",
+          "trigger": "Agent calls `gmail_create_draft` after `draft_generate` returns `delivery_status: \"blocked\"`",
+          "future": null,
+          "steady": "All other `gmail_create_draft` callers unaffected (field absent → proceed)",
+          "seams": "Verify TypeScript accepts `errorResult` return from `Promise<ReturnType<typeof jsonResult>>` at implementation time; widen return type annotation if needed"
+        },
+        {
+          "id": null,
+          "label": "Coverage scoring (pool synonyms)",
+          "current": "`TOPIC_SYNONYMS[\"pool\"]` includes \"amenity\", \"facility\" → false \"covered\" for unknown topics",
+          "trigger": "Quality check on any draft answering a pool-related question",
+          "future": null,
+          "steady": "All other TOPIC_SYNONYMS unchanged; template-ranker.ts SYNONYMS unchanged",
+          "seams": "Monitor ops-inbox quality stats for frequency change in `partial_question_coverage` warnings after deploy"
+        }
+      ]
+    }
+  }
+}

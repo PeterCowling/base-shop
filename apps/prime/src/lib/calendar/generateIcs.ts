@@ -30,8 +30,8 @@ export interface CheckInEventData {
  */
 const HOSTEL_INFO = {
   name: 'Hostel Brikette',
-  address: 'Via Cristoforo Colombo 13, 84017 Positano SA, Italy',
-  phone: '+39 089 123 4567', // TODO: Update with real phone
+  address: 'Via Guglielmo Marconi 358, 84017 Positano SA, Italy',
+  phone: '+39 328 707 3695',
   email: SUPPORT_CONTACT.email,
   timezone: 'Europe/Rome',
 };

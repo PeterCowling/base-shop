@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-13T12:10:29.228Z",
+  "last_updated": "2026-03-13T12:35:36.199Z",
   "counts": {
-    "enqueued": 41,
+    "enqueued": 40,
     "processed": 16,
-    "declined": 1,
+    "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 301,
-    "fact_find_ready": 37,
+    "completed": 302,
+    "fact_find_ready": 35,
     "plan_ready": 0,
     "micro_build_ready": 2,
     "briefing_ready": 0,
@@ -11646,8 +11646,15 @@
         "source": "operator"
       },
       "created_at": "2026-03-04T12:00:00.000Z",
-      "queue_state": "enqueued",
-      "domain": "SELL"
+      "queue_state": "completed",
+      "domain": "SELL",
+      "processed_by": {
+        "target_route": "superseded",
+        "target_kind": "already-implemented",
+        "target_slug": "xa-b-department-landing-visual-gap",
+        "completed_at": "2026-03-13T00:00:00.000Z",
+        "outcome": "Department landing pages already upgraded: image cards, New In grid, trending designer chips — shipped in 37e47fcc12"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -24397,7 +24404,7 @@
       "next_scope_now": "Fact-find the build-origin improvement candidate \"Possible: a \"mutation hook migration\" skill could automate the pattern of reading hoo...\" and validate the next action.",
       "adjacent_later": [],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "superseded",
       "priority": "P3",
       "confidence": 0.5700000000000001,
       "evidence_refs": [
@@ -24406,7 +24413,9 @@
         "docs/plans/reception-mutation-return-type-standardisation/pattern-reflection.entries.json"
       ],
       "created_at": "2026-03-10T11:40:27.945Z",
-      "queue_state": "enqueued",
+      "queue_state": "superseded",
+      "superseded_at": "2026-03-13T00:00:00Z",
+      "superseded_reason": "operator-closed: speculative automation for a pattern that is already complete; no recurrence observed and signal confidence too low (57%) to warrant a skill build",
       "why": "A specific type of code update has been carried out manually several times in a row using exactly the same steps. It is low priority right now because the work is mostly complete, but if the same pattern comes up again it could be automated entirely. Worth keeping in view for when it next recurs.",
       "intended_outcome": {
         "type": "operational",
@@ -25882,9 +25891,9 @@
       ],
       "domain": "PRODUCTS",
       "provisional_deliverable_family": "code-change",
-      "status": "fact_find_ready",
+      "status": "declined",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "declined",
       "priority": "P2",
       "confidence": 0.88,
       "evidence_refs": [
@@ -25902,7 +25911,13 @@
         "statement": "All shared common components use semantic tokens, FormContainer uses a variant enum instead of arbitrary strings, and PinInput focus ring works in both light and dark mode.",
         "source": "operator"
       },
-      "created_at": "2026-03-12T10:00:00.000Z"
+      "created_at": "2026-03-12T10:00:00.000Z",
+      "declined_by": {
+        "actor_id": "pete",
+        "actor_name": "Pete",
+        "declined_at": "2026-03-13T12:30:12.480Z",
+        "reason": "Declined by operator"
+      }
     },
     {
       "schema_version": "dispatch.v2",

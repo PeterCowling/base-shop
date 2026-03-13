@@ -181,6 +181,42 @@ describe("Extension", () => {
     expect(screen.queryByTestId("pay-modal")).toBeNull();
   });
 
+  it("shows Booking (extend-all) button only on first visible row for multi-occupant booking", () => {
+    // Two occupants in the same booking — Booking button should appear on first row only
+    bookingsMock.mockReturnValue({
+      bookings: {
+        b1: {
+          o1: { checkInDate: "2024-05-01", checkOutDate: "2024-05-03", roomNumbers: ["101"] },
+          o2: { checkInDate: "2024-05-01", checkOutDate: "2024-05-03", roomNumbers: ["101"] },
+        },
+      },
+      loading: false,
+      error: null,
+    });
+    guestDetailsMock.mockReturnValue({
+      guestsDetails: {
+        b1: {
+          o1: { firstName: "Alice", lastName: "Smith" },
+          o2: { firstName: "Bob", lastName: "Jones" },
+        },
+      },
+      loading: false,
+      error: null,
+      validationError: null,
+    });
+    guestByRoomMock.mockReturnValue({
+      guestByRoom: { o1: { allocated: "101" }, o2: { allocated: "101" } },
+      loading: false,
+      error: null,
+    });
+    roomConfigsMock.mockReturnValue(2);
+
+    render(<Extension />);
+    // Exactly one Booking button should be visible (first row per booking)
+    expect(screen.getAllByRole("button", { name: "Guest" })).toHaveLength(2);
+    expect(screen.getAllByRole("button", { name: "Booking" })).toHaveLength(1);
+  });
+
   it("disables Guest button when nights input is cleared, re-enables when valid number entered", async () => {
     render(<Extension />);
     const guestBtn = screen.getByRole("button", { name: "Guest" });

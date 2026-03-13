@@ -28052,7 +28052,12 @@
       "why": "When a room has multiple guests, the 'Extend Booking' button only appears on one row — whichever guest happens to be listed first in the array. If that ordering is not predictable, staff may see the button on the wrong guest or not at all, causing confusion and failed extensions.",
       "intended_outcome": "The Extend Booking button reliably appears on the correct guest row regardless of how Firebase returns the occupant list.",
       "created_at": "2026-03-13T15:00:00.000Z",
-      "next_scope_now": "Fix the row-selection guard in Extension.tsx so the Booking button visibility uses a reliable identifier rather than positional array ordering."
+      "next_scope_now": "Fix the row-selection guard in Extension.tsx so the Booking button visibility uses a reliable identifier rather than positional array ordering.",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "micro_build_path": "docs/plans/reception-extension-booking-button-row/micro-build.md",
+        "stamped_at": "2026-03-13T15:00:00.000Z"
+      }
     },
     {
       "schema_version": "dispatch.v2",

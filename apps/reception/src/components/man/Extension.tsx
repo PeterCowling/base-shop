@@ -400,7 +400,7 @@ function Extension() {
                               >
                                 {availabilityMap[r.occupantId] ? "Guest" : "N/A"}
                               </Button>
-                              {r.occupantId === r.occupantIds[0] &&
+                              {filteredRows.find((row) => row.bookingRef === r.bookingRef) === r &&
                                 r.occupantCount > 1 && (
                                   <Button
                                     color={availabilityMap[r.occupantId] ? "primary" : "default"}

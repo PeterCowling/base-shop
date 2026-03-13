@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-13T18:36:31.300Z",
+  "last_updated": "2026-03-13T19:02:24.995Z",
   "counts": {
-    "enqueued": 39,
-    "processed": 27,
+    "enqueued": 38,
+    "processed": 26,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 340,
-    "fact_find_ready": 31,
+    "completed": 342,
+    "fact_find_ready": 30,
     "plan_ready": 0,
     "micro_build_ready": 6,
     "briefing_ready": 0,
@@ -359,7 +359,12 @@
         "statement": "ActivityInstance supports a duration field. The activities screen shows the correct end time for each activity. Existing activities without a duration fall back gracefully.",
         "source": "operator"
       },
-      "created_at": "2026-03-13T20:00:00.000Z"
+      "created_at": "2026-03-13T20:00:00.000Z",
+      "processed_by": {
+        "target_path": "docs/plans/prime-activity-duration/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -29636,9 +29641,9 @@
         "packages/platform-core/prisma/schema.prisma"
       ],
       "provisional_deliverable_family": "multi",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.91,
       "evidence_refs": [
@@ -29668,7 +29673,14 @@
         "status": "Ready-for-analysis",
         "target_path": "docs/plans/payment-management-app/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "inventory-uploader-user-attribution",
+        "fact_find_slug": "inventory-uploader-user-attribution"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/inventory-uploader-user-attribution/plan.md",
+        "completed_at": "2026-03-13T18:41:43.288Z",
+        "outcome": "Completed via inventory-uploader-user-attribution."
       }
     },
     {
@@ -29827,11 +29839,11 @@
         "packages/platform-core/src/products/"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
       "priority": "P3",
       "confidence": 0.72,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: adjustment and inflow API routes post stock changes with no actor/user ID attached to the event; session.ts can return the current user but it is not threaded into the ledger write",
         "apps/inventory-uploader/src/app/api/inventory/[shop]/adjustments/route.ts",
@@ -29847,7 +29859,14 @@
       "processed_by": {
         "target_path": "docs/plans/payment-management-app/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "inventory-uploader-user-attribution",
+        "fact_find_slug": "inventory-uploader-user-attribution"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/inventory-uploader-user-attribution/plan.md",
+        "completed_at": "2026-03-13T18:41:43.288Z",
+        "outcome": "Completed via inventory-uploader-user-attribution."
       }
     },
     {
@@ -29892,7 +29911,10 @@
         "stage": "lp-do-fact-find",
         "artifact": "docs/plans/inventory-uploader-batch-operations/fact-find.md",
         "processed_at": "2026-03-13T17:37:47.380Z",
-        "status": "Ready-for-analysis"
+        "status": "Ready-for-analysis",
+        "target_path": "docs/plans/inventory-uploader-batch-operations/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
       }
     },
     {

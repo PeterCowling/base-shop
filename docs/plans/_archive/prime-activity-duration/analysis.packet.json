@@ -1,0 +1,186 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "prime-activity-duration",
+  "source_artifact_path": "docs/plans/prime-activity-duration/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/prime-activity-duration/fact-find.md",
+    "plan": "docs/plans/prime-activity-duration/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The prime guest app shows activity finish times based on a fixed 2-hour assumption. Staff-run activities vary in length. Without a configurable duration field, every activity incorrectly shows the same finish time, and the live/ended lifecycle is wrong for any activity that isn't exactly 2 hours.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Activity finish times and lifecycle states reflect the real planned duration stored per instance, defaulting to 120 minutes when no duration is set.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "`formatFinishTime` updated → correct finish time shown",
+      "current_or_option_state": "Same but requires second read",
+      "gap_or_implication": "Plan must update `formatFinishTime` signature and one call site",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Both `resolveLifecycle` copies updated → correct live/ended boundary",
+      "current_or_option_state": "Same but adds async dependency",
+      "gap_or_implication": "Plan must update both copies atomically; test coverage for non-default duration",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — display-only field",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No auth changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "No new metrics needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Existing test passes; add non-default duration test case",
+      "current_or_option_state": "Would require async test mocking",
+      "gap_or_implication": "Add one test fixture with `durationMinutes: 30` to confirm lifecycle boundary",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`ActivityInstance` type gains optional field; RTDB schemaless",
+      "current_or_option_state": "Adds new RTDB path, new type shape",
+      "gap_or_implication": "RTDB records without field safe; old instances behave identically to today",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Trivial arithmetic; no new network call",
+      "current_or_option_state": "Second Firebase read per activity",
+      "gap_or_implication": "No performance impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive type change; `git revert` rolls back fully",
+      "current_or_option_state": "Rollback also requires RTDB path cleanup",
+      "gap_or_implication": "Clean rollback: revert 4 files; no DB state",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Activity finish times and lifecycle states in the prime guest app are calculated using a hardcoded 2-hour (120-minute) constant. This constant appears in three places across two files. The decision is: how should duration become data-driven? The answer is unambiguous from the evidence — add an optional `durationMinutes` field to `ActivityInstance` and replace the constant with `Math.max(1, activity.durationMinutes ?? 120)`. The only non-trivial sub-decision is whether to guard against invalid zero/negative values, which analysis resolves here.",
+    "goals": [
+      "Activity finish times reflect the actual planned duration of each instance",
+      "Live/ended lifecycle state is correct for non-120-minute activities",
+      "Backwards-compatible: existing instances without `durationMinutes` behave identically to today (120-minute default)",
+      "All three hardcoded call sites updated atomically"
+    ],
+    "non_goals": [
+      "`ActivityTemplate` default duration (per-template inheritance) — future enhancement",
+      "Staff activity creation UI within prime — no such UI exists; out of scope",
+      "Firebase security rules changes — duration is display metadata, no auth implications",
+      "Any activity management admin panel"
+    ],
+    "constraints": [
+      "RTDB is schemaless (NoSQL JSON tree) — no migration, but no enforcement either; `durationMinutes` will be absent on all existing instances",
+      "No Zod schema validates `ActivityInstance` at runtime — TypeScript-only type update sufficient",
+      "`chat/channel/page.tsx` has a copy-paste of `resolveLifecycle` — must be updated in the same change"
+    ],
+    "assumptions": [
+      "Staff will set `durationMinutes` via Firebase console when creating new instances; existing instances fall back to 120 min",
+      "`durationMinutes` values are positive integers (minutes); zero or negative should be guarded against"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Correct finish time for non-120-min activities",
+        "Why it matters": "Core goal — current state is broken for any duration ≠ 2h",
+        "Weight/priority": "Must-pass"
+      },
+      {
+        "Criterion": "Backwards compatibility",
+        "Why it matters": "Existing RTDB instances must not break",
+        "Weight/priority": "Must-pass"
+      },
+      {
+        "Criterion": "Zero code changes outside the 4 affected files",
+        "Why it matters": "Avoids scope creep",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Guard against invalid input",
+        "Why it matters": "Prevents immediate-end bug on `durationMinutes: 0`",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "No RTDB migration required",
+        "Why it matters": "Keeps rollout reversible and zero-risk",
+        "Weight/priority": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Add `durationMinutes?: number` to type + update 3 call sites",
+        "Description": "Optional field on `ActivityInstance`; `Math.max(1, durationMinutes ?? 120)` in both `resolveLifecycle` and `formatFinishTime`",
+        "Upside": "Zero migration; backwards compatible; minimal surface area; 4 files only",
+        "Downside": "Staff must set field via Firebase console (no in-app creation UI)",
+        "Key risks": "Zero/negative guard omitted without care",
+        "Viable?": "Yes — chosen"
+      },
+      {
+        "Option": "B — Separate RTDB \"activity config\" node",
+        "Description": "Store duration in a separate path, e.g. `messaging/activities/config/{instanceId}/durationMinutes`",
+        "Upside": "Clean separation of display config from instance data",
+        "Downside": "Requires a second Firebase read per activity; no existing pattern; over-engineered for a single field",
+        "Key risks": "Two-source fan-in complicates lifecycle resolver",
+        "Viable?": "No"
+      },
+      {
+        "Option": "C — Remove finish time display entirely",
+        "Description": "Stop showing end time; only show start time",
+        "Upside": "Eliminates the incorrect information",
+        "Downside": "Removes useful guest-facing information",
+        "Key risks": "Degrades UX; guests lose ability to plan",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — add `durationMinutes?: number` to `ActivityInstance`, update `formatFinishTime` to accept the full `ActivityInstance` object, and update both `resolveLifecycle` copies to use `Math.max(1, activity.durationMinutes ?? 120)`.",
+      "Why this wins": "Option A is the minimal, correct fix. The type system already describes `ActivityInstance` exhaustively — adding one optional field follows the established pattern. No new network calls, no new RTDB paths, no migration. Option B introduces an unnecessary fan-in pattern for a single field. Option C degrades UX with no benefit.",
+      "What it depends on": "Firebase RTDB schemaless behavior (confirmed); no Zod schema on `ActivityInstance` (confirmed); `formatFinishTime` has a single call site (confirmed at `ActivitiesClient.tsx:139`)."
+    },
+    "rejected_approaches": [
+      "**Option B (separate RTDB config node)** — over-engineered for a single optional field. Creates a two-source fan-in for lifecycle resolution with no compensating benefit. Rejected.",
+      "**Option C (remove finish time)** — removes useful guest information to avoid fixing the root cause. Rejected."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "Type update must precede UI call-site changes (TypeScript compiler enforces)",
+        "Both `resolveLifecycle` copies should be updated in the same commit for atomicity",
+        "Tests come last (validate the completed implementation)"
+      ],
+      "risks_to_carry_forward": [
+        "The two `resolveLifecycle` functions in different files are identical today — no divergence risk for this fix, but the duplication itself is a maintenance liability. Plan should note the duplication as a known code smell (out of scope to refactor now)."
+      ]
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. The change modifies three utility functions and one TypeScript interface within the prime guest app. No CI/deploy lane, operator runbook, Firebase security rule, or multi-step workflow is altered.",
+      "areas": []
+    }
+  }
+}

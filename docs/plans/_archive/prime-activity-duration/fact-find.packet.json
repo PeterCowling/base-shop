@@ -1,0 +1,135 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "prime-activity-duration",
+  "source_artifact_path": "docs/plans/prime-activity-duration/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "The prime guest app shows activity finish times based on a fixed 2-hour assumption. Staff-run activities vary in length. Without a configurable duration field, every activity incorrectly shows the same finish time, and the live/ended lifecycle is wrong for any activity that isn't exactly 2 hours.",
+    "intended_outcome_type": null,
+    "intended_outcome_statement": null,
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "Update `formatFinishTime` to show correct finish time",
+      "gap_or_implication": "`ActivityCard` displays finish time via this function",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "`resolveLifecycle` must use `durationMinutes ?? 120`",
+      "gap_or_implication": "Affects live/ended state boundary",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No new data exposure",
+      "gap_or_implication": "`durationMinutes` is display metadata",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No new metrics",
+      "gap_or_implication": "Duration is display-only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Existing lifecycle test passes; optional: add non-default duration case",
+      "gap_or_implication": "Test file at `__tests__/attendance-lifecycle.test.tsx`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`ActivityInstance` type updated; RTDB schemaless — no migration",
+      "gap_or_implication": "Old instances fall back to 120 min",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Trivial arithmetic change",
+      "gap_or_implication": "No performance impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Additive type change; backwards compatible; rollback = revert type + calc",
+      "gap_or_implication": "No DB state to roll back",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The prime guest app shows activity cards with a calculated finish time and lifecycle state (upcoming/live/ended). Both calculations hard-code the duration as 2 hours (120 minutes). Staff running activities of different lengths — a 30-minute yoga session or a 3-hour boat trip — cannot adjust the displayed finish time without a code change. This fact-find establishes what needs to change to make duration data-driven.",
+    "goals": [],
+    "non_goals": [],
+    "constraints": [],
+    "assumptions": [],
+    "key_entry_points": [],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Entry points confirmed": "`apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx` and `apps/prime/src/app/(guarded)/chat/channel/page.tsx`",
+      "Type to update": "`ActivityInstance` in `apps/prime/src/types/messenger/activity.ts`",
+      "Call sites": "3 — `formatFinishTime` (ActivitiesClient:58), `resolveLifecycle` (ActivitiesClient:69), `resolveLifecycle` copy (chat/channel/page.tsx:46)",
+      "RTDB": "schemaless, no migration required",
+      "Tests": "1 test file, non-breaking change",
+      "Execution track": "code",
+      "Delivery readiness": "90% (adjusted from 92% to reflect the third call site and zero-guard consideration)"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Type definition (`activity.ts`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "UI call sites (`ActivitiesClient.tsx`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`formatFinishTime` takes `startTime` only — signature change needed",
+        "Resolution Required": "No (noted in plan)"
+      },
+      {
+        "Scope Area": "RTDB schema (no migration)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — schemaless; old records safe",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test file",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — non-breaking type addition",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Third call site (`chat/channel/page.tsx:46`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Major: copy-paste `resolveLifecycle` with same constant — added to scope",
+        "Resolution Required": "No (fixed in fact-find)"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only. This change does not alter any multi-step process, workflow, lifecycle state, CI/deploy/release lane, approval path, or operator runbook. It modifies two utility functions within a single UI component and one TypeScript interface.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

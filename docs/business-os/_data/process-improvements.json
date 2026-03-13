@@ -276,22 +276,6 @@
     },
     {
       "type": "idea",
-      "business": "PLAT",
-      "title": "Inventory uploader — stock changes don't record who made them",
-      "body": "When stock goes missing or an error is spotted, there is no record of who made the change. Attaching the logged-in user to every stock adjustment makes it easy to audit who did what and catch mistakes.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T19:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "089938729bff1c3ba8ded072e70d977f0e42b181",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
       "business": "BOS",
       "title": "Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.",
       "body": "Build review surfaced \"Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.\" with supporting narrative: New skill — Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.",

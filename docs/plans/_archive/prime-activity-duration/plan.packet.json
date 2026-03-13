@@ -1,0 +1,182 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "prime-activity-duration",
+  "source_artifact_path": "docs/plans/prime-activity-duration/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-activity-duration/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The prime guest app shows activity finish times based on a fixed 2-hour assumption. Staff-run activities vary in length. Without a configurable duration field, every activity incorrectly shows the same finish time, and the live/ended lifecycle is wrong for any activity that isn't exactly 2 hours.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Activity finish times and lifecycle states reflect the real planned duration stored per instance, defaulting to 120 minutes when no duration is set.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "`formatFinishTime` updated — correct finish time shown in ActivityCard",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "One call site at `ActivitiesClient.tsx:139`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Both `resolveLifecycle` copies updated — correct live/ended boundary for non-120-min activities",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "3 call sites in 2 files updated atomically",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — display-only field; no auth implications",
+      "current_or_option_state": "—",
+      "gap_or_implication": "`durationMinutes` is display metadata",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no new metrics needed; trivial arithmetic change",
+      "current_or_option_state": "—",
+      "gap_or_implication": "Duration is display-only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Add non-default duration (30 min) test cases to confirm lifecycle boundary",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "Existing tests cover default (120 min) behavior implicitly",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`ActivityInstance` type gains optional `durationMinutes?: number` field; RTDB schemaless — no migration",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Old instances fall back to 120 min via `?? 120`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — trivial arithmetic; no new network call",
+      "current_or_option_state": "—",
+      "gap_or_implication": "No performance impact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive type change; backwards compatible; rollback = `git revert` on 4 files; no DB state",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Clean rollback with zero RTDB state to undo",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Add an optional `durationMinutes?: number` field to `ActivityInstance` and update three hardcoded 2-hour call sites across two files to use `Math.max(1, activity.durationMinutes ?? 120)`. This makes activity finish times and lifecycle state (live/ended) data-driven per instance, defaulting to 120 minutes for existing records. No RTDB migration is needed (schemaless). The change is fully backwards-compatible, affects 4 files, and is validated by one new test case for non-default duration lifecycle boundary.",
+    "goals": [
+      "Activity finish times reflect the actual planned duration of each instance",
+      "Live/ended lifecycle state is correct for non-120-minute activities",
+      "Existing instances without `durationMinutes` behave identically to today (120-minute default)",
+      "All three hardcoded call sites updated atomically in TASK-02"
+    ],
+    "non_goals": [
+      "`ActivityTemplate` default duration (per-template inheritance) — future enhancement",
+      "Staff activity creation UI within prime — no such UI exists",
+      "Firebase security rules changes — duration is display metadata, no auth implications",
+      "Any activity management admin panel"
+    ],
+    "constraints": [
+      "RTDB is schemaless — no migration; `durationMinutes` will be absent on all existing instances",
+      "No Zod schema validates `ActivityInstance` at runtime — TypeScript-only type update sufficient",
+      "`chat/channel/page.tsx` has a copy-paste of `resolveLifecycle` — must be updated in the same task as `ActivitiesClient.tsx`"
+    ],
+    "assumptions": [
+      "Staff set `durationMinutes` via Firebase console when creating new instances; existing instances fall back to 120 min",
+      "`durationMinutes` values are positive integers (minutes); zero or negative are guarded with `Math.max(1, ...)`"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Add `durationMinutes?: number` to `ActivityInstance` type",
+      "Change `formatFinishTime(startTime: number)` → `formatFinishTime(activity: ActivityInstance)` (one call site at `ActivitiesClient.tsx:139`)",
+      "Update `resolveLifecycle` in `ActivitiesClient.tsx:67` to use `Math.max(1, activity.durationMinutes ?? 120)`",
+      "Update `resolveLifecycle` in `chat/channel/page.tsx:44` (copy-paste) to use `Math.max(1, activity.durationMinutes ?? 120)`",
+      "Add test cases validating non-default (30 min) duration lifecycle boundary",
+      "Why planning is not reopening option selection:",
+      "Analysis settled the approach decisively with full evidence coverage",
+      "No operator-only questions remain open"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add `durationMinutes?: number` to `ActivityInstance`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/prime/src/types/messenger/activity.ts`",
+        "affects": "`apps/prime/src/types/messenger/activity.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Update 3 call sites in 2 files to use per-instance duration",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx`, `apps/prime/src/app/(guarded)/chat/channel/page.tsx`",
+        "affects": "`apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx`, `apps/prime/src/app/(guarded)/chat/channel/page.tsx`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add non-default duration lifecycle test cases",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/prime/src/app/(guarded)/activities/__tests__/attendance-lifecycle.test.tsx`",
+        "affects": "`apps/prime/src/app/(guarded)/activities/__tests__/attendance-lifecycle.test.tsx`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. This plan modifies three utility functions and one TypeScript interface within the prime guest app. No CI/deploy lane, operator runbook, Firebase security rule, or multi-step workflow is altered.",
+      "areas": []
+    }
+  }
+}

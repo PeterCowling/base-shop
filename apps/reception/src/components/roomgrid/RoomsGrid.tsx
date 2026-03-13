@@ -5,7 +5,7 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 import { Input } from "@acme/design-system";
-import { Stack } from "@acme/design-system/primitives";
+import { Cluster, Inline, Stack } from "@acme/design-system/primitives";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useGridData from "../../hooks/data/roomgrid/useGridData";
@@ -50,13 +50,13 @@ const RoomsGrid: FC = () => {
     <PageShell
       title="Room Grid"
       headerSlot={
-        <div className="mb-5 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <Cluster justify="between" className="mb-5">
+          <Inline gap={3}>
             <div className="h-7 w-1 rounded-full bg-primary-main" aria-hidden="true" />
             <h1 className="text-2xl font-heading font-semibold text-foreground">Room Grid</h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5">
+          </Inline>
+          <Inline gap={2}>
+            <Inline className="gap-1.5">
               <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider" htmlFor="start-date">
                 From
               </label>
@@ -68,9 +68,9 @@ const RoomsGrid: FC = () => {
                 value={startDate}
                 onChange={handleStartChange}
               />
-            </div>
+            </Inline>
             <span className="text-muted-foreground text-sm select-none">→</span>
-            <div className="flex items-center gap-1.5">
+            <Inline className="gap-1.5">
               <label className="text-xs font-medium text-muted-foreground uppercase tracking-wider" htmlFor="end-date">
                 To
               </label>
@@ -82,9 +82,9 @@ const RoomsGrid: FC = () => {
                 value={endDate}
                 onChange={handleEndChange}
               />
-            </div>
-          </div>
-        </div>
+            </Inline>
+          </Inline>
+        </Cluster>
       }
     >
       <DndProvider backend={HTML5Backend}>

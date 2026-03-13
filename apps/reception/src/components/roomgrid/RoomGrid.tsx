@@ -14,6 +14,8 @@
 import type { FC } from "react";
 import { memo, useCallback, useMemo, useState } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
+
 import type { GridReservationRow } from "../../hooks/data/roomgrid/useGridData";
 import type { MyLocalStatus } from "../../types/MyLocalStatus";
 
@@ -119,12 +121,12 @@ const RoomGrid: FC<RoomGridProps> = memo(
           className={`rounded-lg overflow-hidden border border-border-2 shadow-md ${styles.roomGridWrapper} ${styles.hideInfoColumn}`}
         >
           {/* Panel header */}
-          <div className="flex items-center gap-2.5 px-4 py-2.5 bg-surface-3 border-b border-border-2">
+          <Inline className="gap-2.5 px-4 py-2.5 bg-surface-3 border-b border-border-2">
             <div className="h-4 w-0.5 rounded-full bg-primary-main" aria-hidden="true" />
             <span className="text-xs font-semibold font-mono tracking-widest uppercase text-foreground">
               Room {roomNumber}
             </span>
-          </div>
+          </Inline>
 
           {/* Scrollable grid area */}
           <div className="overflow-x-auto bg-surface-2">

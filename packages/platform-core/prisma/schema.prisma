@@ -343,3 +343,106 @@ model Product {
   @@unique([shopId, id])
   @@index([shopId])
 }
+
+// ============================================================
+// Payment Manager (payment-management-app)
+// Centralised payment lifecycle management across all shops.
+// ============================================================
+
+/// Per-shop active payment provider selection and config.
+model ShopPaymentConfig {
+  id             String   @id @default(cuid())
+  shopId         String   @unique
+  /// "stripe" | "axerve" | "disabled"
+  activeProvider String   @default("axerve")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  credentials ShopProviderCredential[]
+  orders      Order[]
+}
+
+/// Encrypted payment provider credentials per shop and provider.
+/// encryptedValue stores base64(<12-byte-IV><AES-256-GCM-ciphertext>).
+model ShopProviderCredential {
+  shopId         String
+  /// "stripe" | "axerve"
+  provider       String
+  /// e.g. "apiKey", "shopLogin", "hmacSecret"
+  credentialKey  String
+  /// base64(<12-byte-IV><ciphertext>) — never plaintext
+  encryptedValue String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  config ShopPaymentConfig @relation(fields: [shopId], references: [shopId], onDelete: Cascade)
+
+  @@id([shopId, provider, credentialKey])
+  @@index([shopId, provider])
+}
+
+/// Immutable audit trail for payment config changes (provider switches, credential updates).
+model PaymentConfigAudit {
+  id          Int      @id @default(autoincrement())
+  shopId      String
+  changedBy   String
+  /// e.g. "activeProvider", "apiKey"
+  field       String
+  oldValue    String?
+  newValue    String?
+  changedAt   DateTime @default(now())
+
+  @@index([shopId])
+  @@index([changedAt])
+}
+
+/// Cross-portfolio order record. Written by storefront dual-write hooks (fire-and-forget).
+model Order {
+  id              String   @id @default(cuid())
+  shopId          String
+  /// "stripe" | "axerve"
+  provider        String
+  /// "pending" | "completed" | "failed" | "resolved"
+  status          String   @default("pending")
+  amountCents     Int
+  currency        String   @default("EUR")
+  customerEmail   String?
+  /// Stripe payment_intent id or Axerve shopTransactionId
+  providerOrderId String?
+  /// JSON array of line items: [{productId, sku, qty, unitCents}]
+  lineItemsJson   Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  config  ShopPaymentConfig @relation(fields: [shopId], references: [shopId], onDelete: Restrict)
+  refunds Refund[]
+
+  @@index([shopId])
+  @@index([createdAt])
+  @@index([status])
+}
+
+/// Refund record per order. Written on every refund attempt (success or failure).
+model Refund {
+  id               String   @id @default(cuid())
+  orderId          String
+  shopId           String
+  /// "stripe" | "axerve"
+  provider         String
+  amountCents      Int
+  /// "pending" | "succeeded" | "failed"
+  status           String   @default("pending")
+  /// operator email or "system"
+  issuedBy         String
+  /// Provider-assigned refund id (Stripe refund id or Axerve transaction id)
+  providerRefundId String?
+  errorMessage     String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Restrict)
+
+  @@index([orderId])
+  @@index([shopId])
+  @@index([createdAt])
+}

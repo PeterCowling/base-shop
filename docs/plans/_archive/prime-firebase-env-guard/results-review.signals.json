@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-13T20:16:38.922Z",
+  "plan_slug": "prime-firebase-env-guard",
+  "review_cycle_key": "prime-firebase-env-guard",
+  "source_path": "docs/plans/prime-firebase-env-guard/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

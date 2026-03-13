@@ -1,0 +1,16 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "prime-firebase-env-guard",
+  "dispatch_id": "IDEA-DISPATCH-20260313200000-PRIME-004",
+  "business": "BRIK",
+  "completed_at": "2026-03-13T20:11:44.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "outcome_type": "operational",
+  "outcome_statement": "On startup, Firebase config is validated — if any required env var is absent, a clear error is logged before any Firebase calls are attempted.",
+  "outcome_source": "operator",
+  "why": "Firebase initialises silently with empty strings when env vars are absent, making all real-time data failures look like data problems rather than configuration problems.",
+  "implementation_commit": "fb9e37369f",
+  "built_within_batched_wave": "prime-resilience-and-test-fixes",
+  "plan_path": "docs/plans/_archive/prime-firebase-env-guard/micro-build.md"
+}

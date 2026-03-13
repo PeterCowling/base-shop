@@ -1,19 +1,19 @@
 {
-  "last_updated": "2026-03-13T19:23:57.218Z",
+  "last_updated": "2026-03-13T20:20:18.860Z",
   "counts": {
-    "enqueued": 37,
-    "processed": 27,
+    "enqueued": 42,
+    "processed": 26,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 342,
-    "fact_find_ready": 29,
+    "completed": 345,
+    "fact_find_ready": 30,
     "plan_ready": 0,
-    "micro_build_ready": 6,
+    "micro_build_ready": 10,
     "briefing_ready": 0,
-    "total": 616
+    "total": 623
   },
   "dispatches": [
     {
@@ -178,9 +178,9 @@
         "apps/prime/src/services/firebase.ts"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.88,
       "evidence_refs": [
@@ -194,7 +194,18 @@
         "statement": "On startup, Firebase config is validated — if any required env var is absent, a clear error is thrown or logged before any Firebase calls are attempted.",
         "source": "operator"
       },
-      "created_at": "2026-03-13T20:00:00.000Z"
+      "created_at": "2026-03-13T20:00:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_slug": "prime-firebase-env-guard",
+        "micro_build_path": "docs/plans/_archive/prime-firebase-env-guard/micro-build.md",
+        "processed_at": "2026-03-13T20:11:44.000Z"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-firebase-env-guard/micro-build.md",
+        "completed_at": "2026-03-13T20:20:18.858Z",
+        "outcome": "Firebase startup env guard added: console.error logged when required env vars are missing, preventing cryptic runtime failures"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -343,9 +354,9 @@
         "apps/prime/src/types/messenger/activity.ts"
       ],
       "provisional_deliverable_family": "multi",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.88,
       "evidence_refs": [
@@ -363,7 +374,14 @@
       "processed_by": {
         "target_path": "docs/plans/prime-activity-duration/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "prime-activity-duration",
+        "fact_find_slug": "prime-activity-duration"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-activity-duration/plan.md",
+        "completed_at": "2026-03-13T19:02:38.493Z",
+        "outcome": "**TASK-01 (commit `242e3b6caa`):** Added `durationMinutes?: number` to the `ActivityInstance` interface in `apps/prime/src/types/messenger/activity.ts`. The field is optional so existing RTDB records without it fall back gracefully to 120 m"
       }
     },
     {
@@ -452,7 +470,12 @@
         "statement": "The owner dashboard distinguishes between an empty period (expected) and a stalled data pipeline (needs attention). When pipeline health is degraded, the owner sees a clear indicator.",
         "source": "operator"
       },
-      "created_at": "2026-03-13T20:00:00.000Z"
+      "created_at": "2026-03-13T20:00:00.000Z",
+      "processed_by": {
+        "target_path": "docs/plans/prime-owner-dashboard-pipeline/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -489,7 +512,12 @@
         "statement": "The ?edit=personalization entry point is tested and correctly re-enters the onboarding state machine. The flow completes without getting stuck.",
         "source": "operator"
       },
-      "created_at": "2026-03-13T20:00:00.000Z"
+      "created_at": "2026-03-13T20:00:00.000Z",
+      "processed_by": {
+        "target_path": "docs/plans/prime-portal-personalization/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -29901,11 +29929,11 @@
         "apps/inventory-uploader/src/components/"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
       "priority": "P3",
       "confidence": 0.68,
-      "queue_state": "processed",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: current adjustments and inflow forms handle one SKU at a time; there is no batch endpoint or multi-row UI; at end of day a stock-taker may need to update dozens of items",
         "apps/inventory-uploader/src/app/api/inventory/[shop]/adjustments/route.ts",
@@ -29924,7 +29952,14 @@
         "status": "Ready-for-analysis",
         "target_path": "docs/plans/inventory-uploader-batch-operations/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "inventory-uploader-batch-operations",
+        "fact_find_slug": "inventory-uploader-batch-operations"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/inventory-uploader-batch-operations/plan.md",
+        "completed_at": "2026-03-13T19:23:50.188Z",
+        "outcome": "Completed via inventory-uploader-batch-operations."
       }
     },
     {
@@ -30232,6 +30267,293 @@
         "outcome": "Inflow form now has Preview step showing projected stock changes before commit; dryRun API support added",
         "micro_build_path": "docs/plans/_archive/inventory-uploader-inflow-dry-run/micro-build.md"
       }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313192500-BRIK-REC-001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-dark-mode-bar-pos-text",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-dark-mode-bar-pos-text:20260313",
+      "anchor_key": "reception-dark-mode-bar-pos-text",
+      "cluster_key": "BRIK:PRODUCTS:reception-dark-mode-bar-pos-text",
+      "cluster_fingerprint": "bar-pos-dark-text-invisible",
+      "lineage_depth": 0,
+      "area_anchor": "Reception bar screen — all product buttons become invisible when dark mode is on",
+      "location_anchors": [
+        "apps/reception/src/app/bar",
+        "packages/themes/reception/tokens.css"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "confidence": 0.96,
+      "evidence_refs": [
+        "operator-stated: found in screen-by-screen UI audit 2026-03-13",
+        "measured: product card bg rgb(19,22,21) near-black; text color rgb(0,0,0) pure black; contrast ~1.1:1",
+        "cause: shade token dark variants are applied to bg but text color does not switch to light fg",
+        "coverage-hint: visual-regression, dark-mode"
+      ],
+      "why": "When staff switch the reception app to dark mode, every product button on the bar screen becomes unreadable — the text turns black against a near-black background. Staff cannot see product names or prices. The bar screen is unusable in dark mode.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Bar/POS product card text is legible in dark mode — white or near-white text on the dark shade-token backgrounds.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T19:25:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313192500-BRIK-REC-002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-theme-toggle-persistence",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-theme-toggle-persistence:20260313",
+      "anchor_key": "reception-theme-toggle-persistence",
+      "cluster_key": "BRIK:PRODUCTS:reception-theme-toggle-persistence",
+      "cluster_fingerprint": "theme-toggle-navigation-reset",
+      "lineage_depth": 0,
+      "area_anchor": "Reception app — switching to dark mode resets to light mode whenever you change screen",
+      "location_anchors": [
+        "apps/reception/src/app/layout.tsx",
+        "packages/ui/src/molecules/ThemeToggle.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: found in screen-by-screen UI audit 2026-03-13",
+        "measured: localStorage theme=dark IS set after toggle, but theme resets to light on every navigation",
+        "cause: ThemeToggle reads localStorage only after React hydration; root layout html class set server-side without reading localStorage",
+        "coverage-hint: ssr-hydration, dark-mode"
+      ],
+      "why": "When a staff member turns on dark mode, it only stays on for the current screen. As soon as they navigate to another screen, it flips back to light mode. Dark mode is effectively broken — staff cannot use it.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Dark mode preference persists across all navigation within the reception app.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T19:25:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313192500-BRIK-REC-003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-tab-active-state",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-tab-active-state:20260313",
+      "anchor_key": "reception-tab-active-state",
+      "cluster_key": "BRIK:PRODUCTS:reception-tab-active-state",
+      "cluster_fingerprint": "tab-active-colour-only",
+      "lineage_depth": 0,
+      "area_anchor": "Reception app — you can only tell which tab is selected by its colour, which is hard to read",
+      "location_anchors": [
+        "apps/reception/src/components/common/ScreenHeader.tsx",
+        "apps/reception/src/app/cash/page.tsx",
+        "apps/reception/src/app/analytics/page.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: found in screen-by-screen UI audit 2026-03-13",
+        "measured: active tab = green text only (rgb(21,132,62)); inactive = grey text; no background or border change",
+        "wcag: fails 1.4.1 use of colour — colour is the only distinguishing characteristic",
+        "affects: Till/Safe/Workbench tabs on /cash, Live/Dashboard/Variance/Menu/Stats on /analytics, bar category tabs"
+      ],
+      "why": "Across every tabbed screen in the reception app, the only way to see which tab you are on is by noticing the text is a slightly different shade of green. There is no background highlight, no underline, no weight change. It is easy to miss which section you are in, especially for staff who are colour-blind or working quickly.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Active tabs have a clear visual indicator beyond colour — background fill or bottom border — so any staff member can instantly see which tab is selected.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T19:25:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313192500-BRIK-REC-004",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-table-row-contrast",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-table-row-contrast:20260313",
+      "anchor_key": "reception-table-row-contrast",
+      "cluster_key": "BRIK:PRODUCTS:reception-table-row-contrast",
+      "cluster_fingerprint": "table-alt-row-imperceptible",
+      "lineage_depth": 0,
+      "area_anchor": "Reception tables — alternating row shading is invisible and small secondary text is too small to read comfortably",
+      "location_anchors": [
+        "packages/themes/reception/tokens.css",
+        "apps/reception/src/components/checkin",
+        "apps/reception/src/components/inbox"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: found in screen-by-screen UI audit 2026-03-13",
+        "measured: alt-row light hsl(150,5%,98%) vs white = 2% lightness difference — not visible",
+        "measured: alt-row dark hsl(160,8%,10%) vs hsl(160,8%,8%) = 2% lightness difference — not visible",
+        "measured: secondary/muted text at 12px in inbox stats, thread list — below practical minimum for counter use",
+        "coverage-hint: tokens, typography"
+      ],
+      "why": "Tables in the check-ins and inbox screens have alternating row backgrounds that are so faint they are invisible — all rows look the same. Staff scanning a long list of bookings or guest messages cannot quickly track across a row without losing their place. Small labels at the bottom of the screen are also too small to read easily at a reception desk.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Table rows have clearly visible alternating shading in both light and dark mode; secondary text labels are at minimum 13px.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T19:25:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313192500-BRIK-REC-005",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-login-dark-mode",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-login-dark-mode:20260313",
+      "anchor_key": "reception-login-dark-mode",
+      "cluster_key": "BRIK:PRODUCTS:reception-login-dark-mode",
+      "cluster_fingerprint": "login-inline-styles-no-dark-mode",
+      "lineage_depth": 0,
+      "area_anchor": "Reception login page — dark mode has no effect; page always stays in light colours",
+      "location_anchors": [
+        "apps/reception/src/app/login/page.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P3",
+      "confidence": 0.97,
+      "evidence_refs": [
+        "operator-stated: found in screen-by-screen UI audit 2026-03-13",
+        "code: login/page.tsx uses dangerouslySetInnerHTML with hardcoded inline CSS — not reading theme tokens",
+        "cause: inline styles override token system; dark mode class on html element has no effect on inline CSS"
+      ],
+      "why": "The login page always shows in light mode regardless of the device or app setting. If a staff member uses the app at night with dark mode on, the login page will be the only screen that stays bright white — a jarring inconsistency on the first screen they see.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Login page uses theme tokens and responds correctly to dark mode.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T19:25:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313192500-BRIK-REC-006",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-reception-colour-system-direction",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-colour-system-direction:20260313",
+      "anchor_key": "reception-colour-system-direction",
+      "cluster_key": "BRIK:PRODUCTS:reception-colour-system-direction",
+      "cluster_fingerprint": "colour-green-blue-clash",
+      "lineage_depth": 0,
+      "area_anchor": "Reception app — the green and blue colours used throughout the app clash with each other and make the interface feel muddled",
+      "location_anchors": [
+        "packages/themes/reception/tokens.css",
+        "packages/themes/reception/src/tokens.ts",
+        "apps/reception/src/app/rooms-grid",
+        "apps/reception/src/app/globals.css"
+      ],
+      "provisional_deliverable_family": "design",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.82,
+      "evidence_refs": [
+        "operator-stated: the green blue theme does not work as a combination of colours",
+        "measured: primary green hsl(142,72%,30%) vs booking-category blue hsl(210,45%,60%) — 68deg apart, similar saturation, visual competition",
+        "measured: blueShades-row1 through blueShades-row5 used in rooms-grid for occupancy coding",
+        "chart-1: hsl(240,60%,44%) blue appears in analytics charts alongside green chart-2",
+        "amber accent hsl(36,90%,50%) is defined but largely unused — natural complement to green",
+        "dark-mode: primary-dark hsl(142,70%,48%) is very vivid electric green — could benefit from reduced saturation"
+      ],
+      "why": "The reception app uses green as its main colour, but blue also appears in room booking categories and charts. These two colours compete with each other — neither one wins, so the screen looks busy and cluttered. The app already has a warm amber colour defined that pairs much better with green but is barely used. Fixing this would make the whole interface feel more coherent and professional.",
+      "intended_outcome": {
+        "type": "product",
+        "statement": "The reception app uses a harmonious two-colour system (green + amber) throughout, replacing the competing blue. The room booking colour coding is redesigned to use green-family shades rather than blue.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T19:25:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313192500-BRIK-BOS-007",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-startup-loop-ui-audit-integration",
+      "root_event_id": "operator:BRIK:BOS:startup-loop-ui-audit-integration:20260313",
+      "anchor_key": "startup-loop-ui-audit-integration",
+      "cluster_key": "BRIK:BOS:startup-loop-ui-audit-integration",
+      "cluster_fingerprint": "loop-missing-ui-audit-gate",
+      "lineage_depth": 0,
+      "area_anchor": "Startup loop — no requirement to audit rendered app UI screens before launch or weekly",
+      "location_anchors": [
+        "docs/business-os/startup-loop/specifications/loop-spec.yaml",
+        ".claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md",
+        ".claude/skills/tools-ui-contrast-sweep/SKILL.md"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.85,
+      "evidence_refs": [
+        "operator-stated: add UI audit requirement to startup loop",
+        "S9B already has /lp-launch-qa + /lp-design-qa as secondary skill — but /tools-ui-contrast-sweep is not included",
+        "no rendered screen-by-screen audit skill currently invoked in any loop stage",
+        "loop-spec.yaml S9B: skill /lp-launch-qa, secondary /lp-design-qa — no dark-mode or screen-sweep requirement",
+        "this session produced a full screen-by-screen rendered audit for BRIK reception — that workflow needs to be codified"
+      ],
+      "why": "The startup loop has no step that requires checking how every screen in the app actually looks when rendered — both in light and dark mode. Issues like invisible text in dark mode, clashing colours, and text that is too small are only caught by doing this audit manually. Adding a screen-by-screen rendered audit to the loop means these problems get found automatically for every product, every time, before launch.",
+      "intended_outcome": {
+        "type": "process",
+        "statement": "The startup loop includes a required rendered UI screen audit at S9B that covers every screen in both light and dark mode, with findings saved as an artifact and blocking issues preventing advance.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T19:25:00.000Z"
     }
   ]
 }

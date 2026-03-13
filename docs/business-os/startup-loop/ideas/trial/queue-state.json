@@ -1,21 +1,73 @@
 {
-  "last_updated": "2026-03-13T16:00:00.000Z",
+  "last_updated": "2026-03-13T16:12:56.338Z",
   "counts": {
-    "enqueued": 39,
-    "processed": 18,
+    "enqueued": 29,
+    "processed": 25,
     "declined": 2,
-    "skipped": 2,
+    "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 321,
-    "fact_find_ready": 24,
+    "completed": 328,
+    "fact_find_ready": 25,
     "plan_ready": 0,
-    "micro_build_ready": 13,
+    "micro_build_ready": 2,
     "briefing_ready": 0,
-    "total": 591
+    "total": 592
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313170000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-caryina-product-db-inventory-uploader-product-crud",
+      "root_event_id": "operator:BRIK:PRODUCTS:caryina-product-persistence-and-management:20260313",
+      "anchor_key": "caryina-product-management-db-migration",
+      "cluster_key": "BRIK:PRODUCTS:caryina-product-persistence",
+      "cluster_fingerprint": "caryina-product-db-inventory-uploader-product-crud",
+      "lineage_depth": 0,
+      "area_anchor": "BRIK — caryina products live in files that fail in production, and no tool exists to manage them safely",
+      "location_anchors": [
+        "packages/platform-core/prisma/schema.prisma",
+        "packages/platform-core/src/repositories/products.server.ts",
+        "apps/inventory-uploader/src/app/api/inventory/[shop]/",
+        "apps/inventory-uploader/src/components/",
+        "apps/caryina/wrangler.toml",
+        "data/shops/caryina/products.json",
+        "apps/caryina/src/app/admin/"
+      ],
+      "provisional_deliverable_family": "multi",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "confidence": 0.97,
+      "evidence_refs": [
+        "operator-stated: option A chosen — Prisma Product model + inventory-uploader product CRUD + caryina DB migration + admin panel removal",
+        "packages/platform-core/prisma/schema.prisma — no Product model exists; prismaProductsRepository write/update/delete silently fall back to JSON",
+        "apps/caryina/wrangler.toml — no DATABASE_URL secret, no DB_MODE; fs.readFile fails in Cloudflare Workers at runtime",
+        "apps/inventory-uploader — InventoryItem Prisma model exists and works in prod; product CRUD routes and Products UI are entirely absent",
+        "apps/caryina/src/app/admin/ — admin panel (products UI, auth, schemas) to be deleted once inventory-uploader covers product management",
+        "data/shops/caryina/products.json — 3 products to migrate to PostgreSQL",
+        "data/shops/caryina/inventory.json — 4 inventory rows already readable by InventoryItem model once DB_MODE set",
+        "coverage-hint: data-contracts",
+        "coverage-hint: security",
+        "coverage-hint: testing",
+        "coverage-hint: rollout-rollback"
+      ],
+      "why": "Right now, caryina's products and stock levels are saved in files that do not work on the hosting platform we use. This means the shop is silently relying on a setup that could fail at any time. On top of that, there is no screen in the inventory tool to add, edit, or remove products — not just for caryina but for any shop. Building proper database storage and adding product management to the inventory tool fixes both problems: product data becomes reliable, and staff can manage any shop's catalogue in one place.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Inventory-uploader has a working Products tab for all shops. Caryina products and inventory are stored in PostgreSQL. The caryina admin panel is removed. Product data is no longer stored in flat files for any shop.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T17:00:00.000Z"
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260313160000-0001",
@@ -39,7 +91,7 @@
       "provisional_deliverable_family": "code-change",
       "status": "micro_build_ready",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P1",
       "confidence": 0.97,
       "evidence_refs": [
@@ -81,7 +133,7 @@
       "provisional_deliverable_family": "infra",
       "status": "micro_build_ready",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P1",
       "confidence": 0.93,
       "evidence_refs": [
@@ -122,7 +174,7 @@
       "provisional_deliverable_family": "code-change",
       "status": "micro_build_ready",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P1",
       "confidence": 0.98,
       "evidence_refs": [
@@ -162,7 +214,7 @@
       "provisional_deliverable_family": "code-change",
       "status": "micro_build_ready",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P2",
       "confidence": 0.98,
       "evidence_refs": [
@@ -202,7 +254,7 @@
       "provisional_deliverable_family": "code-change",
       "status": "micro_build_ready",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P2",
       "confidence": 0.95,
       "evidence_refs": [
@@ -244,7 +296,7 @@
       "provisional_deliverable_family": "code-change",
       "status": "micro_build_ready",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P2",
       "confidence": 0.96,
       "evidence_refs": [
@@ -286,7 +338,7 @@
       "provisional_deliverable_family": "code-change",
       "status": "micro_build_ready",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P3",
       "confidence": 0.95,
       "evidence_refs": [
@@ -330,7 +382,7 @@
       "provisional_deliverable_family": "code-change",
       "status": "micro_build_ready",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P3",
       "confidence": 0.94,
       "evidence_refs": [
@@ -27839,7 +27891,8 @@
         "target_route": "lp-do-build",
         "target_kind": "plan",
         "target_path": "docs/plans/_archive/reception-till-reconciliation-bugs/plan.md",
-        "processed_at": "2026-03-13T14:00:00.000Z"
+        "processed_at": "2026-03-13T14:00:00.000Z",
+        "fact_find_slug": "reception-till-reconciliation-bugs"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-till-reconciliation-bugs/plan.md",
@@ -27889,7 +27942,8 @@
         "target_route": "lp-do-build",
         "target_kind": "plan",
         "target_path": "docs/plans/_archive/reception-till-reconciliation-bugs/plan.md",
-        "processed_at": "2026-03-13T14:00:00.000Z"
+        "processed_at": "2026-03-13T14:00:00.000Z",
+        "fact_find_slug": "reception-till-reconciliation-bugs"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-till-reconciliation-bugs/plan.md",
@@ -27940,7 +27994,8 @@
         "target_route": "lp-do-build",
         "target_kind": "plan",
         "target_path": "docs/plans/_archive/reception-till-reconciliation-bugs/plan.md",
-        "processed_at": "2026-03-13T14:00:00.000Z"
+        "processed_at": "2026-03-13T14:00:00.000Z",
+        "fact_find_slug": "reception-till-reconciliation-bugs"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-till-reconciliation-bugs/plan.md",
@@ -27990,7 +28045,8 @@
         "target_route": "lp-do-build",
         "target_kind": "plan",
         "target_path": "docs/plans/_archive/reception-till-reconciliation-bugs/plan.md",
-        "processed_at": "2026-03-13T14:00:00.000Z"
+        "processed_at": "2026-03-13T14:00:00.000Z",
+        "fact_find_slug": "reception-till-reconciliation-bugs"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-till-reconciliation-bugs/plan.md",
@@ -28040,7 +28096,8 @@
         "target_route": "lp-do-build",
         "target_kind": "plan",
         "target_path": "docs/plans/_archive/reception-till-reconciliation-bugs/plan.md",
-        "processed_at": "2026-03-13T14:00:00.000Z"
+        "processed_at": "2026-03-13T14:00:00.000Z",
+        "fact_find_slug": "reception-till-reconciliation-bugs"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/reception-till-reconciliation-bugs/plan.md",
@@ -28117,9 +28174,9 @@
         "apps/reception/src/components/roomgrid/RoomGrid.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "superseded",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "superseded",
+      "queue_state": "completed",
       "superseded_at": "2026-03-13T00:00:00Z",
       "superseded_reason": "operator-closed: confirmed done",
       "evidence_refs": [
@@ -28134,7 +28191,18 @@
         "source": "operator"
       },
       "created_at": "2026-03-13T14:00:00.000Z",
-      "work_package_slug": "reception-rooms-grid-bugs"
+      "work_package_slug": "reception-rooms-grid-bugs",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-rooms-grid-single-click-modal",
+        "micro_build_path": "docs/plans/_archive/reception-rooms-grid-single-click-modal/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-rooms-grid-single-click-modal/micro-build.md",
+        "completed_at": "2026-03-13T13:35:45.400Z",
+        "outcome": "Completed via reception-rooms-grid-single-click-modal."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -28156,9 +28224,9 @@
         "apps/reception/src/components/roomgrid/components/Grid/Grid.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "superseded",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "superseded",
+      "queue_state": "completed",
       "superseded_at": "2026-03-13T00:00:00Z",
       "superseded_reason": "operator-closed: confirmed done",
       "evidence_refs": [
@@ -28173,7 +28241,18 @@
         "source": "operator"
       },
       "created_at": "2026-03-13T14:00:00.000Z",
-      "work_package_slug": "reception-rooms-grid-bugs"
+      "work_package_slug": "reception-rooms-grid-bugs",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-rooms-grid-empty-state",
+        "micro_build_path": "docs/plans/_archive/reception-rooms-grid-empty-state/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-rooms-grid-empty-state/micro-build.md",
+        "completed_at": "2026-03-13T13:44:03.458Z",
+        "outcome": "Completed via reception-rooms-grid-empty-state."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -28207,7 +28286,7 @@
         "2026-10-31: start the larger post-season RTDB model redesign and migration planning once the hostel is closed for the year."
       ],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.86,
       "evidence_refs": [
@@ -28220,7 +28299,7 @@
         "coverage-hint: testing"
       ],
       "created_at": "2026-03-13T13:16:01.306Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "The hostel is close to opening, so a root-level data migration is too risky now. We still need Prime, Reception, booking email, and inbox guest matching to consume the live RTDB shape in the same way, so launch-season work should standardize handling, remove known contract drifts, and reduce operational risk without reshaping the database.",
       "intended_outcome": {
         "type": "operational",
@@ -28235,6 +28314,11 @@
         "target_path": "docs/plans/brik-hospitality-rtdb-current-contract-alignment/micro-build.md",
         "processed_at": "2026-03-13T13:16:13.578Z",
         "micro_build_path": "docs/plans/brik-hospitality-rtdb-current-contract-alignment/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/brik-hospitality-rtdb-current-contract-alignment/micro-build.md",
+        "completed_at": "2026-03-13T13:52:29.267Z",
+        "outcome": "Completed via brik-hospitality-rtdb-current-contract-alignment."
       }
     },
     {
@@ -28343,14 +28427,22 @@
       "completed_at": "2026-03-13T14:00:00.000Z",
       "completed_by": {
         "method": "operator-session",
-        "outcome": "9 files fixed. Patterns: (1) text-error-main → rounded bg-error-light + text-error-main; (2) bg-danger-fg/border-danger-fg → bg-error-main/border-error-main; (3) bg-success-surface → bg-success-light. Functional gap noted but not fixed: EntryDialogue.tsx handleProcessClick uses Math.random() to simulate payment — no real gateway integration."
+        "outcome": "9 files fixed. Patterns: (1) text-error-main → rounded bg-error-light + text-error-main; (2) bg-danger-fg/border-danger-fg → bg-error-main/border-error-main; (3) bg-success-surface → bg-success-light. Functional gap noted but not fixed: EntryDialogue.tsx handleProcessClick uses Math.random() to simulate payment — no real gateway integration.",
+        "micro_build_path": "docs/plans/_archive/reception-rooms-grid-dnd-crash/micro-build.md",
+        "completed_at": "2026-03-13T13:25:53.340Z"
       },
       "intended_outcome": {
         "type": "operational",
         "statement": "All token misuse instances found in MANAGEMENT screens are corrected. Residual patterns from the original reception-component-token-compliance sweep are eliminated from these routes.",
         "source": "operator"
       },
-      "domain": "PRODUCTS"
+      "domain": "PRODUCTS",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-rooms-grid-dnd-crash",
+        "micro_build_path": "docs/plans/_archive/reception-rooms-grid-dnd-crash/micro-build.md"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -28373,9 +28465,9 @@
         "apps/reception/src/components/man/modals/ExtensionPayModal.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: Booking button only shown when r.occupantId === r.occupantIds[0], but occupantIds array order from Firebase is not guaranteed to put the primary guest first",
         "coverage-hint: testing",
@@ -28388,7 +28480,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/reception-extension-booking-button-row/micro-build.md",
-        "stamped_at": "2026-03-13T15:00:00.000Z"
+        "stamped_at": "2026-03-13T15:00:00.000Z",
+        "target_kind": "build",
+        "target_slug": "reception-extension-booking-button-row"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-extension-booking-button-row/micro-build.md",
+        "completed_at": "2026-03-13T15:14:43.410Z",
+        "outcome": "Completed via reception-extension-booking-button-row."
       }
     },
     {
@@ -28411,9 +28510,9 @@
         "apps/reception/src/components/man/modals/ExtensionPayModal.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: saveActivity(code 9) fires outside the if (record.balance > 0) guard in markCityTaxPaid — the balance update is gated but the activity log write is not",
         "coverage-hint: testing",
@@ -28426,7 +28525,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/reception-extension-city-tax-activity-guard/micro-build.md",
-        "stamped_at": "2026-03-13T15:00:00.000Z"
+        "stamped_at": "2026-03-13T15:00:00.000Z",
+        "target_kind": "build",
+        "target_slug": "reception-extension-city-tax-activity-guard"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-extension-city-tax-activity-guard/micro-build.md",
+        "completed_at": "2026-03-13T15:02:12.260Z",
+        "outcome": "Single-line fix in `ExtensionPayModal.tsx`: moved `saveActivity(CITY_TAX_PAYMENT)` and its error check inside the `if (record.balance > 0)` guard, so the activity log is only written when the city tax balance write also fires. Added regress"
       }
     },
     {
@@ -28449,9 +28555,9 @@
         "apps/reception/src/components/man/Extension.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: parseInt('', 10) returns NaN, stored in nightsMap state; getNights() silently falls back to 1 when the value is NaN; input shows blank so staff may not realise the nights value has been reset",
         "coverage-hint: testing",
@@ -28464,7 +28570,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/reception-extension-nights-nan-guard/micro-build.md",
-        "stamped_at": "2026-03-13T15:00:00.000Z"
+        "stamped_at": "2026-03-13T15:00:00.000Z",
+        "target_kind": "build",
+        "target_slug": "reception-extension-nights-nan-guard"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-extension-nights-nan-guard/micro-build.md",
+        "completed_at": "2026-03-13T15:07:47.976Z",
+        "outcome": "Added `|| Number.isNaN(nightsMap[r.occupantId])` to the `disabled` prop of both the Guest and Booking action buttons in `Extension.tsx`. When the nights input is cleared, `parseInt(\"\", 10)` stores `NaN` in `nightsMap` — the buttons are now "
       }
     },
     {
@@ -28511,12 +28624,14 @@
         "target_slug": "caryina-theme-toggle-tokenise",
         "target_path": "docs/plans/caryina-theme-toggle-tokenise/micro-build.md",
         "processed_at": "2026-03-13T16:30:00.000Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "micro_build_path": "docs/plans/_archive/caryina-theme-toggle-tokenise/micro-build.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/caryina-theme-toggle-tokenise/micro-build.md",
         "completed_at": "2026-03-13T15:34:12.550Z",
-        "outcome": "All theme toggle glow and shadow values tokenised; rgba() brand values replaced with CSS custom property references"
+        "outcome": "All theme toggle glow and shadow values tokenised; rgba() brand values replaced with CSS custom property references",
+        "micro_build_path": "docs/plans/_archive/caryina-theme-toggle-tokenise/micro-build.md"
       }
     },
     {
@@ -28564,12 +28679,14 @@
         "target_slug": "caryina-admin-forms-ds-input",
         "target_path": "docs/plans/caryina-admin-forms-ds-input/micro-build.md",
         "processed_at": "2026-03-13T16:50:00.000Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "micro_build_path": "docs/plans/_archive/caryina-admin-forms-ds-input/micro-build.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/caryina-admin-forms-ds-input/micro-build.md",
         "completed_at": "2026-03-13T15:39:55.295Z",
-        "outcome": "Migrated 7 raw input elements in ProductForm and InventoryEditor to shared Input component from @acme/ui"
+        "outcome": "Migrated 7 raw input elements in ProductForm and InventoryEditor to shared Input component from @acme/ui",
+        "micro_build_path": "docs/plans/_archive/caryina-admin-forms-ds-input/micro-build.md"
       }
     },
     {
@@ -28616,12 +28733,14 @@
         "target_slug": "caryina-stockbadge-centralise",
         "target_path": "docs/plans/caryina-stockbadge-centralise/micro-build.md",
         "processed_at": "2026-03-13T17:05:00.000Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "micro_build_path": "docs/plans/_archive/caryina-stockbadge-centralise/micro-build.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/caryina-stockbadge-centralise/micro-build.md",
         "completed_at": "2026-03-13T15:47:07.099Z",
-        "outcome": "StockBadge moved to packages/ui/molecules; caryina shim + all imports updated; both typechecks clean"
+        "outcome": "StockBadge moved to packages/ui/molecules; caryina shim + all imports updated; both typechecks clean",
+        "micro_build_path": "docs/plans/_archive/caryina-stockbadge-centralise/micro-build.md"
       }
     },
     {
@@ -28644,11 +28763,11 @@
         "apps/caryina/package.json"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.98,
-      "queue_state": "skipped",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: @acme/design-system is declared in apps/caryina/package.json but has zero import statements in any .tsx/.ts file in the app",
         "apps/caryina/package.json",
@@ -28664,7 +28783,13 @@
         "target_kind": "build",
         "target_slug": "caryina-admin-forms-ds-input",
         "processed_at": "2026-03-13T17:05:00.000Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "micro_build_path": "docs/plans/_archive/caryina-admin-forms-ds-input/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/caryina-admin-forms-ds-input/micro-build.md",
+        "completed_at": "2026-03-13T15:40:03.702Z",
+        "outcome": "Completed via caryina-admin-forms-ds-input."
       }
     },
     {

@@ -122,7 +122,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Prisma schema — 5 new payment models | 85% | S | Complete (2026-03-13) | - | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 |
 | TASK-02 | IMPLEMENT | App scaffold — wrangler, KV, session auth (fail-closed), middleware | 80% | M | Complete (2026-03-13) | TASK-01 | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
-| TASK-03 | IMPLEMENT | Credential encryption module (AES-256-GCM) + rotation endpoint | 75% | M | Pending | TASK-02 | TASK-05, TASK-06 |
+| TASK-03 | IMPLEMENT | Credential encryption module (AES-256-GCM) + rotation endpoint | 80% | M | Pending | TASK-02 | TASK-05, TASK-06 |
 | TASK-04 | IMPLEMENT | Order list + detail UI + Caryina dual-write hook | 75% | M | Pending | TASK-02 | TASK-05, TASK-09, TASK-10, CHECKPOINT-01 |
 | TASK-05 | IMPLEMENT | Refund API (Stripe native + Axerve proxy via Caryina internal route) | 80% | M | Pending | TASK-02, TASK-03, TASK-04 | TASK-06, CHECKPOINT-01 |
 | TASK-06 | IMPLEMENT | Shop config UI + credential management | 80% | M | Pending | TASK-02, TASK-03, TASK-05 | CHECKPOINT-01 |
@@ -329,6 +329,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
   - `next.config.mjs` — inherits shared config; forces non-export output
   - `jest.config.cjs` — node testEnvironment
   - TC-02-01: typecheck passes ✓; TC-02-05: fail-closed test passes ✓; TC-02-06: HMAC token tests pass ✓; TC-02-07: tsc → 0 errors ✓
+  - Commits: d7034f70f0 (initial scaffold), 5d97c96aac (linter fixup)
 
 ---
 
@@ -344,11 +345,12 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Affects:** `apps/payment-manager/src/lib/crypto/credentials.ts` (new), `apps/payment-manager/src/app/api/admin/rotate-key/route.ts` (new), `apps/payment-manager/src/lib/crypto/credentials.test.ts` (new)
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05, TASK-06
-- **Confidence:** 75%
-  - Implementation: 75% — AES-256-GCM is well-understood cryptographically; CF Workers supports `crypto.subtle` (Web Crypto API); no existing implementation in repo to copy; risk in correct IV handling and CF Workers Web Crypto API compatibility
-  - Approach: 80% — Web Crypto API is available in CF Workers V8 isolate; `crypto.subtle.encrypt/decrypt` with AES-GCM mode is the correct approach (avoids Node.js `crypto` module)
-  - Impact: 80% — blocks refund and credential management tasks
-  - Score: min(75,80,80) = 75. Below 80 — capped due to no existing pattern in repo (reasoning-only evidence cap from confidence rules applies; M task with no prior implementation evidence).
+- **Confidence:** 80%
+  - Implementation: 80% — AES-256-GCM API surface verified via executable probe: `crypto.subtle.importKey("raw", keyBytes, {name:"AES-GCM"}, false, ["encrypt","decrypt"])` → `encrypt` → pack IV+ciphertext → `decrypt` round-trip confirmed in Node.js 22 (Jest test env). `@cloudflare/workers-types` v4.20260123 explicitly types `SubtleCrypto` with `encrypt/decrypt`. `iron-webcrypto` (in pnpm-lock) uses same `importKey("raw")` pattern against CF Workers. Base64 32-byte key produces 44-char string matching `PAYMENT_MANAGER_ENCRYPTION_KEY` min-length already enforced in `env.ts`. Prisma `$transaction` for rotation is standard confirmed pattern. Held-back test: only unknown that could push below 80 is CF Workers silently blocking AES-GCM in production (not Node.js test) — mitigated by workers-types typing and iron-webcrypto's use on CF Workers. No credible unknown remains unresolved.
+  - Approach: 80% — Web Crypto API is available in CF Workers V8 isolate; `crypto.subtle.encrypt/decrypt` with AES-GCM mode is the correct approach (avoids Node.js `crypto` module). Held-back test: no alternative approach exists for AES-GCM in CF Workers without `node:crypto`; this is the only viable path.
+  - Impact: 80% — blocks refund and credential management tasks. Held-back test: if Prisma `$transaction` fails under Neon HTTP adapter, rotation would be non-atomic. But Prisma `$transaction` with `@prisma/adapter-neon` is confirmed-used throughout the codebase.
+  - Score: min(80,80,80) = 80. Promoted from 75 on E2 evidence: executable Node.js probe confirmed full API surface; reasoning-only cap no longer applies.
+  - Replan evidence (2026-03-13): Node.js probe `crypto.subtle.importKey("raw", base64bytes, {name:"AES-GCM"}, false, ["encrypt","decrypt"])` → round-trip with 12-byte IV → confirmed output. `@cloudflare/workers-types` SubtleCrypto typed at `experimental/index.d.ts:1251`. `iron-webcrypto@0.2.8` in pnpm-lock uses same pattern on CF Workers.
 - **Acceptance:**
   - `encrypt(plaintext, key)` → returns base64 string containing IV + ciphertext
   - `decrypt(base64, key)` → returns original plaintext
@@ -385,7 +387,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Consumer tracing:**
   - `encrypt()` consumed by TASK-06 (credential save) and TASK-05 (credential decrypt before API call) — consumers addressed in dependent tasks
   - `decrypt()` consumed by TASK-05 (refund API: decrypt before Stripe/Axerve call) — in-scope in TASK-05
-- **Scouts:** Confirm `crypto.subtle.importKey` accepts raw 256-bit key from base64 string (Worker secrets are strings)
+- **Scouts:** Resolved (2026-03-13): `crypto.subtle.importKey("raw", base64keyBytes, {name:"AES-GCM"}, false, ["encrypt","decrypt"])` confirmed working in Node.js 22 probe. Base64 key is 44 chars for 32 bytes — matches `env.ts` min-length validation exactly.
 - **Edge Cases & Hardening:**
   - `PAYMENT_MANAGER_ENCRYPTION_KEY` absent → throw on startup (never silently proceed without key)
   - Key must be exactly 32 bytes for AES-256; validate and throw descriptive error if wrong length

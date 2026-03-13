@@ -250,7 +250,7 @@ async function parseCheckoutContext(req: NextRequest): Promise<
   | { ok: true; context: CheckoutContext }
   | { ok: false; response: NextResponse }
 > {
-  const provider = resolveCaryinaPaymentProvider();
+  const provider = await resolveCaryinaPaymentProvider();
   const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
   const checkout = parseCheckoutFields(body, provider);
   if (!checkout) {

@@ -15,87 +15,104 @@
     "analysis": "docs/plans/reception-design-system-compliance/analysis.md"
   },
   "outcome_contract": {
-    "why": "Every reception screen should use a consistent, themeable visual language. Inline styles override the CSS cascade, raw buttons bypass DS interaction patterns, and unflagged layout classes make theming harder to iterate.",
+    "why": "Inline styles and arbitrary layout classes make future theme changes, dark-mode maintenance, and design-system upgrades fragile. Centralising all layout through DS primitives and eliminating inline styles ensures that token changes propagate correctly throughout the app.",
     "intended_outcome_type": "operational",
-    "intended_outcome_statement": "All reception app components use DS Button for interactive elements, DS layout primitives where the ESLint rule flags violations, and contain zero inline style attributes. ESLint `ds/enforce-layout-primitives` warning count drops to 0.",
+    "intended_outcome_statement": "All reception app production components are free of inline `style={{` overrides; arbitrary Tailwind bracket values are either replaced with tokens or formally suppressed with justification; raw flex/grid layout class patterns are migrated to DS layout primitives.",
     "source": "operator"
   },
   "engineering_coverage": [
     {
       "coverage_area": "UI / visual",
-      "applicable": "Per-button variant selection preserves visual intent; DS Button provides consistent hover/focus states",
-      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
-      "gap_or_implication": "Visual regression risk is Low — DS Button is additive improvement",
+      "applicable": "Each screen-group task must spot-check affected layouts in browser; DS primitive gap/align defaults verified as equivalent to replaced Tailwind classes; explicit `align` set where `items-center` was present",
+      "current_or_option_state": "All TASK-01 to TASK-11",
+      "gap_or_implication": "Visual regression risk is low (mechanical swap) but requires post-build browser verification per group",
       "carry_forward_or_notes": null
     },
     {
       "coverage_area": "UX / states",
-      "applicable": "DS Button provides hover/focus/disabled states automatically; replaces manual className patterns",
-      "current_or_option_state": "TASK-02, TASK-03",
-      "gap_or_implication": "No UX regression expected",
+      "applicable": "JS-computed `top`/`left` positions retained in inline style; only `position` migrated to class; tooltip/dropdown positioning preserved",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No UX regression for other tasks — layout-only, no interactive state changes",
       "carry_forward_or_notes": null
     },
     {
       "coverage_area": "Security / privacy",
-      "applicable": "N/A",
-      "current_or_option_state": "-",
-      "gap_or_implication": "No auth or data exposure changes",
+      "applicable": "N/A — layout/structural change only; no auth, input, or data exposure involved",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "None",
       "carry_forward_or_notes": null
     },
     {
       "coverage_area": "Logging / observability / audit",
-      "applicable": "N/A",
-      "current_or_option_state": "-",
-      "gap_or_implication": "No log or audit changes",
+      "applicable": "N/A — no log, metric, or audit trail affected by layout class changes",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "None",
       "carry_forward_or_notes": null
     },
     {
       "coverage_area": "Testing / validation",
-      "applicable": "ESLint `ds/enforce-layout-primitives` → 0 warnings gate; TypeScript typecheck validates imports; snapshot updates in same commit",
-      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
-      "gap_or_implication": "CI-only test run; snapshot updates needed",
+      "applicable": "Existing RTL tests provide structural regression guard; CI test pass required per task; snapshot updates expected and intentional",
+      "current_or_option_state": "All TASK-01 to TASK-11",
+      "gap_or_implication": "Visual equivalence is unverifiable via RTL; manual browser spot-check required per screen group",
       "carry_forward_or_notes": null
     },
     {
       "coverage_area": "Data / contracts",
-      "applicable": "N/A",
-      "current_or_option_state": "-",
-      "gap_or_implication": "Purely presentational changes, no schema or API changes",
+      "applicable": "N/A — no schema, API, or type changes",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "None",
       "carry_forward_or_notes": null
     },
     {
       "coverage_area": "Performance / reliability",
-      "applicable": "N/A",
-      "current_or_option_state": "-",
-      "gap_or_implication": "CSS class changes only; no render path changes",
+      "applicable": "N/A — CSS class swaps have negligible runtime impact; no hot paths affected",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "None",
       "carry_forward_or_notes": null
     },
     {
       "coverage_area": "Rollout / rollback",
-      "applicable": "No migration; rollback = revert commit",
+      "applicable": "Single deploy per task group or all together; rollback is git revert of task-scoped commit",
       "current_or_option_state": "All tasks",
-      "gap_or_implication": "Low risk; purely visual",
+      "gap_or_implication": "No migration ordering for rollback; each task commit is independently revertable",
       "carry_forward_or_notes": null
     }
   ],
   "open_operator_questions": [],
   "stage_payload": {
-    "summary": "Three classes of DS violation remain in the reception app: 6 inline `style={{}}` attributes in 4 files, 35 raw `<button>` elements in 17 files (DraftReviewPanel already uses DS Button), and exactly 14 `ds/enforce-layout-primitives` ESLint warnings across 11 files (confirmed via live lint run on 2026-03-13 — 8 warnings in inbox/ScreenHeader/DraftReviewPanel files covered by TASK-02; 6 warnings in hub/StaffAccountsForm files covered by TASK-03). All changes are mechanical className/import replacements with no behaviour changes. Three disjoint task groups enable full Wave 1 parallel execution. Co",
+    "summary": "Migrates the reception app from raw Tailwind flex/grid layout classes to DS layout primitives (`<Inline>`, `<Stack>`, `<Cluster>`, `<Grid>`), fixes 2 inline-style overrides that bypass the token cascade, and enables the `ds/enforce-layout-primitives` ESLint rule as a permanent CI error gate. Work spans ~268 instances across 15 component folders. Task structure: (1) fix 2 inline-style files, (2) migrate shared `common/` components first (blast radius guard), (3) 9 parallel screen-group migrations, (4) ESLint error-gate activation. All layout changes are mechanical substitutions — no visual rede",
     "goals": [
-      "Zero inline `style={{}}` attributes across all reception components.",
-      "All interactive elements use DS `Button` from `@acme/design-system/atoms`.",
-      "All ESLint `ds/enforce-layout-primitives` warnings eliminated."
+      "Eliminate all inline `style={{` overrides in production components (except JS-computed coordinates)",
+      "Migrate all raw flex/grid layout class patterns to DS layout primitives",
+      "Enable `ds/enforce-layout-primitives` as a permanent CI error-level gate"
     ],
     "non_goals": [
-      "Semantic token compliance (already complete).",
-      "Converting layout classes on elements not flagged by the ESLint rule.",
-      "Design or UX changes — purely mechanical compliance fixes."
+      "New token definitions or color changes",
+      "Visual redesign of any component",
+      "Test file changes",
+      "Arbitrary Tailwind bracket values (3 already formally suppressed with justification comments — no action needed)"
     ],
-    "constraints": [],
-    "assumptions": [],
+    "constraints": [
+      "`_BookingTooltip` and `KeycardDepositMenu` use JS-computed `top`/`left` mouse/click coordinates — these must remain as inline styles; only `position` property migrated to Tailwind class",
+      "Both files already have `z-50` in their className — no `zIndex` arbitrary-value concern",
+      "`KeycardDepositButton` wrapper (line 280) has `className=\"relative\"` — `absolute` class on the menu is positionally safe",
+      "DS `<Inline>` `align` default is unknown — always set `align` explicitly where `items-center` is present; do not rely on defaults",
+      "`ds/enforce-layout-primitives` ESLint rule is currently `\"off\"` in root `.eslintrc.cjs` — no lint failures during migration; final task activates it",
+      "`common/` components are shared across multiple screens — TASK-02 must complete (or be in its own merge) before screen-group tasks begin"
+    ],
+    "assumptions": [
+      "DS `<Inline>` `gap` prop uses the same token scale as Tailwind `gap-*` — confirmed equivalent (`gap=\"2\"` = `gap-2` = 0.5rem)",
+      "`<Inline className=\"flex-col\">` antipattern is not used — `<Stack>` is the correct DS primitive for column layout",
+      "Primitives are used only with supported props, not with `className` overrides that override their layout semantics"
+    ],
     "selected_approach": [
-      "What was chosen: Per-file mechanical conversion — read each button's current className → pick DS Button variant/tone; replace ESLint-flagged flex/grid with DS primitives; remove inline styles with Tailwind equivalents (keeping JS-computed dynamic values).",
-      "Why planning is not reopening option selection: Option B (wholesale rewrite) has higher blast radius; Option C (ESLint suppression) defeats the purpose; Option D (partial scope) contradicts user directive. Analysis verdict was decisive."
+      "What was chosen:",
+      "Replace all `className=\"flex ...\"` patterns with `<Inline>`, `<Stack>`, `<Cluster>`, or `<Grid>` DS primitives",
+      "Fix 2 inline-style files by moving `position` property to Tailwind class, retaining computed `top`/`left`",
+      "Activate `ds/enforce-layout-primitives` as ESLint error in final task",
+      "Why planning is not reopening option selection:",
+      "Analysis settled the decision with score 4.5/5.0 — no operator questions remain open",
+      "1:1 mapping for every flex/grid pattern is confirmed; risk of gap/align mismatch is managed by always setting `align` explicitly"
     ],
     "plan_gates": {
       "Foundation Gate": "Pass",
@@ -106,54 +123,229 @@
     "task_briefs": [
       {
         "task_id": "TASK-01",
-        "title": "Fix all inline style attributes (4 files)",
+        "title": "Fix inline style overrides (_BookingTooltip, KeycardDepositMenu)",
         "type": "IMPLEMENT",
         "status": "Pending",
-        "confidence": 88,
+        "confidence": 90,
         "effort": "S",
         "depends_on": [],
-        "blocks": [],
+        "blocks": [
+          "TASK-12"
+        ],
         "execution_skill": "lp-do-build",
-        "deliverable": "code-change — remove all `style={{}}` attributes from 4 reception component files",
+        "deliverable": "code-change — 2 production component files; inline styles reduced to computed coordinates only",
         "affects": null
       },
       {
         "task_id": "TASK-02",
-        "title": "Convert inbox + ScreenHeader DS violations (8 files)",
+        "title": "Migrate common/ layout primitives (26 violations)",
         "type": "IMPLEMENT",
         "status": "Pending",
         "confidence": 85,
         "effort": "M",
         "depends_on": [],
-        "blocks": [],
+        "blocks": [
+          "TASK-03",
+          "TASK-04",
+          "TASK-05",
+          "TASK-06",
+          "TASK-07",
+          "TASK-08",
+          "TASK-09",
+          "TASK-10",
+          "TASK-11"
+        ],
         "execution_skill": "lp-do-build",
-        "deliverable": "code-change — replace raw `<button>` elements with DS Button; replace ESLint-flagged flex/grid with DS layout primitives; resolve 2 arbitrary bracket values; in 8 files (6 inbox + ScreenHeader + DraftReviewPanel)",
+        "deliverable": "code-change — all files in `apps/reception/src/components/common/` migrated to DS layout primitives",
         "affects": null
       },
       {
         "task_id": "TASK-03",
-        "title": "Convert remaining raw buttons and hub ESLint warnings (12 files)",
+        "title": "Migrate checkins/ layout primitives (~53 violations)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-12"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — all files in `apps/reception/src/components/checkins/` (excl. keycardButton/ inline-style files already handled in TASK-01) migrated to DS layout primitives",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Migrate inbox/ layout primitives (~46 violations)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-12"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — all files in `apps/reception/src/components/inbox/` migrated to DS layout primitives",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Migrate till/ layout primitives (~40 violations)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-12"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — all files in `apps/reception/src/components/till/` migrated to DS layout primitives",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Migrate bar/ layout primitives (~24 violations)",
         "type": "IMPLEMENT",
         "status": "Pending",
         "confidence": 87,
-        "effort": "M",
-        "depends_on": [],
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-12"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — all files in `apps/reception/src/components/bar/` migrated to DS layout primitives",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Migrate prepayments/ + inventory/ layout primitives (~25 violations)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 87,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-12"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — all files in `apps/reception/src/components/prepayments/` and `apps/reception/src/components/inventory/` migrated to DS layout primitives",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-08",
+        "title": "Migrate loans/ + safe/ layout primitives (~18 violations)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 87,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-12"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — all files in `apps/reception/src/components/loans/` and `apps/reception/src/components/safe/` migrated to DS layout primitives",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-09",
+        "title": "Migrate man/ + userManagement/ layout primitives (~13 violations)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 87,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-12"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — all files in `apps/reception/src/components/man/` and `apps/reception/src/components/userManagement/` migrated to DS layout primitives",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-10",
+        "title": "Migrate appNav/ + eodChecklist/ + cash/ layout primitives (~10 violations)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-12"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — all files in `apps/reception/src/components/appNav/`, `apps/reception/src/components/eodChecklist/`, and `apps/reception/src/components/cash/` migrated to DS layout primitives",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-11",
+        "title": "Migrate roomgrid/ layout primitives (~6 violations, excl. _BookingTooltip)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-12"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — all files in `apps/reception/src/components/roomgrid/` except `_BookingTooltip.tsx` migrated to DS layout primitives",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-12",
+        "title": "Enable ds/enforce-layout-primitives as ESLint error gate",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-03",
+          "TASK-04",
+          "TASK-05",
+          "TASK-06",
+          "TASK-07",
+          "TASK-08",
+          "TASK-09",
+          "TASK-10",
+          "TASK-11"
+        ],
         "blocks": [],
         "execution_skill": "lp-do-build",
-        "deliverable": "code-change — replace raw `<button>` elements with DS Button AND fix ESLint `ds/enforce-layout-primitives` warnings in 12 remaining reception component files",
+        "deliverable": "code-change — `\"ds/enforce-layout-primitives\"` changed from `\"off\"` to `\"error\"` in `.eslintrc.cjs`; `pnpm --filter reception lint` passes with zero errors",
         "affects": null
       }
     ],
     "next_runnable_task_ids": [
       "TASK-01",
-      "TASK-02",
-      "TASK-03"
+      "TASK-02"
     ],
     "validation_contracts": [],
     "open_decisions": [],
     "process_topology": {
       "changed": false,
-      "note": "None: no material process topology change — all changes are className/import replacements within component files.",
+      "note": "None: no material process topology change. This plan adds a permanent CI lint gate (activating an existing rule from `\"off\"` to `\"error\"`) but does not alter any operator workflow, approval path, lifecycle state, or deploy lane.",
       "areas": []
     }
   }

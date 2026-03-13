@@ -2,7 +2,7 @@
 Type: Fact-Find
 Outcome: Planning
 Status: Ready-for-analysis
-Domain: Platform
+Domain: PRODUCTS
 Workstream: Engineering
 Created: 2026-03-13
 Last-updated: 2026-03-13
@@ -16,230 +16,260 @@ Startup-Deliverable-Alias: none
 Primary-Execution-Skill: lp-do-build
 Supporting-Skills: none
 Related-Analysis: docs/plans/reception-design-system-compliance/analysis.md
-Trigger-Source: operator
-Trigger-Why: Every screen in the reception app should use a consistent, themeable visual language. The current state has three categories of violation that actively block the theme system or produce inconsistent UX: inline styles that override the cascade, raw button elements that bypass interaction patterns, and raw flex/grid classes where DS layout primitives should be used.
-Trigger-Intended-Outcome: type: operational | statement: All reception app screens use DS Button for interactive elements, DS layout primitives (Inline/Stack/Cluster/Cover) wherever the ESLint rule flags raw flex/grid on leaf elements, and no inline style attributes remain in any component file. | source: operator
+Dispatch-ID: none
+Trigger-Why: Design system compliance audit identified that the reception app has inline styles and raw layout classes that bypass the token + DS primitive layer, making future theme changes and dark-mode maintenance fragile.
+Trigger-Intended-Outcome: type: operational | statement: All reception app components use DS layout primitives and no inline style overrides; inline-style violations eliminated; arbitrary Tailwind bracket values documented or resolved; DS primitive adoption at 100% for layout. | source: operator
 ---
 
-# Reception Design System Compliance — Fact-Find Brief
+# Reception Design System Compliance Fact-Find
 
 ## Scope
 
 ### Summary
-Three categories of design system violation remain in the reception app after prior theming passes (bar-pos and till-safe theming overhauls are complete, semantic tokens are used throughout). This fact-find scopes and verifies the remaining violations before planning targeted fixes.
+
+The reception app's design system compliance audit revealed three classes of non-compliance. Color token usage is already clean (zero hardcoded colors, zero raw Tailwind palette classes). The remaining violations are: (1) inline `style={{` props that bypass the token cascade, (2) arbitrary Tailwind bracket values that hard-code spacing/sizing without tokens, and (3) raw `className="flex ..."` layout patterns that should use DS layout primitives (`<Inline>`, `<Stack>`, `<Cluster>`, `<Grid>`).
 
 ### Goals
-- Eliminate all inline `style={{}}` attributes that override the CSS cascade and block the theme system.
-- Replace all raw `<button>` elements with the DS `Button` component for consistent interaction states, focus rings, and accessibility.
-- Replace raw `flex`/`grid` className usage on elements flagged by `ds/enforce-layout-primitives` ESLint rule with DS layout primitives (`Inline`, `Stack`, `Cluster`, `Cover` from `@acme/design-system/primitives`).
+
+- Eliminate all inline `style={{` props in production components
+- Resolve or formally justify all arbitrary Tailwind bracket values
+- Migrate raw flex/grid layout class patterns to DS layout primitives across all screens
 
 ### Non-goals
-- Semantic token compliance (already complete — zero hardcoded palette colours found in audit).
-- Converting layout classes on elements that are NOT flagged by the ESLint rule (the rule scopes correctly to leaf elements).
-- Design or UX changes — purely mechanical compliance fixes.
+
+- Color token audit (already clean — zero violations)
+- Dark mode token additions or new token definitions
+- Design changes (component appearance, sizing, spacing values — only structural compliance)
+- Test files
 
 ### Constraints & Assumptions
+
 - Constraints:
-  - DS Button must be imported from `@acme/design-system/atoms` (established pattern throughout reception app).
-  - DS layout primitives imported from `@acme/design-system/primitives` (established in SafeManagement.tsx, LoanedItemsList.tsx).
-  - Reception app uses Turbopack — no webpack-specific import aliases needed.
-  - CI-only tests; never run jest locally.
+  - DS layout primitives (`Inline`, `Stack`, `Cluster`, `Grid`) are available at `@acme/design-system/primitives`
+  - Inline `<Inline>` etc. emit `display: flex` / `display: grid` with configurable gap/alignment props; they are not layout superpowers — behavior must be verified equivalent before swap
+  - ESLint rules `ds/enforce-layout-primitives` and `ds/no-arbitrary-tailwind` are present but currently warning-level or not enforced as errors for all violations
+  - Drag-and-drop use cases (roomgrid RowCell) already use Tailwind opacity classes correctly — no inline style needed there
 - Assumptions:
-  - `RowCell.tsx` inline opacity for drag state can be replaced with `opacity-50` Tailwind class conditionally (`isDragging ? "opacity-50" : "opacity-100"`) — standard pattern.
-  - Tooltip/BookingTooltip inline positions require Tailwind equivalents or a different positioning strategy; may need `absolute`/`fixed` Tailwind classes.
-  - `withIconModal.tsx` raw button: this is a HOC and the conversion must preserve the rendered output contract.
+  - No runtime behavior depends on inline position styles being applied as JS (CSS class equivalents exist)
+  - The two `max-h-[...]` values in inbox are functionally necessary viewport-relative heights; DS does not yet have a token equivalent — these may need a new token or a defined justified suppression
+  - `ml-[100px]` in Tooltip is a design decision (100px left offset for room label alignment) that needs a DS spacing token or justified suppression
 
 ## Outcome Contract
 
-- **Why:** Every reception screen should use a consistent themeable visual language. Inline styles override the CSS cascade, raw buttons bypass DS interaction patterns, and unflagged layout classes make theming harder to iterate. The prior bar-pos and till-safe theming passes fixed semantic tokens; this pass fixes structural compliance.
+- **Why:** Inline styles and arbitrary layout classes make future theme changes, dark-mode maintenance, and design-system upgrades fragile. Centralising all layout through DS primitives and eliminating inline styles ensures that token changes propagate correctly throughout the app.
 - **Intended Outcome Type:** operational
-- **Intended Outcome Statement:** All reception app components use DS Button for interactive elements, DS layout primitives where the ESLint rule flags violations, and contain zero inline style attributes. ESLint `ds/enforce-layout-primitives` warning count drops to 0.
+- **Intended Outcome Statement:** All reception app production components are free of inline `style={{` overrides; arbitrary Tailwind bracket values are either replaced with tokens or formally suppressed with justification; raw flex/grid layout class patterns are migrated to DS layout primitives.
 - **Source:** operator
 
 ## Current Process Map
 
-None: local code path only — no multi-step process, workflow, or CI/deploy lane changes.
+None: local code path only
 
 ## Evidence Audit (Current State)
 
 ### Entry Points
-- `apps/reception/src/components/` — all component directories are affected
+
+- `apps/reception/src/components/` — all production component files (excluding `__tests__/`)
+- `apps/reception/src/app/` — page and layout files
 
 ### Key Modules / Files
 
-**Class 1 — Inline styles (4 files, 6 instances):**
-- `apps/reception/src/components/checkins/tooltip/Tooltip.tsx` — `style={{ zIndex: 9999 }}` × 2 (lines 59, 99); `style={{ marginLeft: "100px" }}` (line 101); z-index redundant with `z-50` Tailwind class
-- `apps/reception/src/components/roomgrid/_BookingTooltip.tsx` — `style={{ position: "fixed", top: position.y + 10, left: position.x + 10, zIndex: 10000 }}` (lines 31–36)
-- `apps/reception/src/components/checkins/keycardButton/KeycardDepositMenu.tsx` — `style={{ position: "absolute", top: menuPosition.top, left: menuPosition.left }}` (lines 61–65)
-- `apps/reception/src/components/roomgrid/components/Row/RowCell.tsx` — `style={{ opacity: isDragging ? 0.5 : 1 }}` (line 158)
+**Inline style violations (2 files):**
+- `apps/reception/src/components/checkins/keycardButton/KeycardDepositMenu.tsx:61` — `style={{ position: "absolute", top: menuPosition.top, left: menuPosition.left }}` — positioned dropdown menu
+- `apps/reception/src/components/roomgrid/_BookingTooltip.tsx:31` — `style={{ position: "fixed", top: position.y + 10, left: position.x + 10, zIndex: 10000 }}` — JS-positioned tooltip overlay. **OPEN (analysis):** `zIndex: 10000` has no DS token — migrating `zIndex` to a class would produce `z-[10000]`, a new arbitrary-value violation. Migration approach for zIndex must be resolved in analysis (DS zIndex token, justified suppression, or CSS variable).
 
-**Class 2 — Raw `<button>` elements (18 files, ~35 instances):**
+**Arbitrary Tailwind bracket values (3 instances, all in 3 files):**
+- `apps/reception/src/components/inbox/ThreadList.tsx:200` — `max-h-[calc(100vh-12rem)]` — already suppressed with `ds/no-arbitrary-tailwind` + dispatch ID comment
+- `apps/reception/src/components/inbox/ThreadDetailPane.tsx:261` — `max-h-[50vh]` — already suppressed with `ds/no-arbitrary-tailwind` + dispatch ID comment
+- `apps/reception/src/components/checkins/tooltip/Tooltip.tsx:100` — `ml-[100px]` — suppressed with `ds/no-raw-spacing, ds/no-arbitrary-tailwind` + [DS-06] tag
 
-Inbox group (6 files, ~13 instances):
-- `apps/reception/src/components/inbox/TemplatePicker.tsx` — 5 raw buttons (locale/browse toggles, template selection rows)
-- `apps/reception/src/components/inbox/InboxWorkspace.tsx` — 3 raw buttons (mobile tab strip, back navigation)
-- `apps/reception/src/components/inbox/FilterBar.tsx` — 2 raw buttons (filter toggles)
-- `apps/reception/src/components/inbox/ThreadList.tsx` — 1 raw button (thread list item, clickable row)
-- `apps/reception/src/components/inbox/ThreadDetailPane.tsx` — 1 raw button (load-earlier action)
-- `apps/reception/src/components/inbox/AnalyticsSummary.tsx` — 1 raw button (retry)
-
-Other screens (~12 files, ~22 instances):
-- `apps/reception/src/components/userManagement/StaffAccountsForm.tsx` — 5 raw buttons
-- `apps/reception/src/components/eodChecklist/EodChecklistContent.tsx` — 3 raw buttons
-- `apps/reception/src/components/bar/orderTaking/modal/PayModal.tsx` — 3 raw buttons
-- `apps/reception/src/components/bar/orderTaking/OrderList.tsx` — 2 raw buttons
-- `apps/reception/src/components/till/TillShiftHistory.tsx` — 1 raw button
-- `apps/reception/src/components/stock/StockHub.tsx` — 1 raw button
-- `apps/reception/src/components/eod/EodHub.tsx` — 1 raw button
-- `apps/reception/src/components/checkins/view/CheckinsTable.tsx` — 1 raw button
-- `apps/reception/src/components/cash/CashHub.tsx` — 1 raw button
-- `apps/reception/src/components/analytics/AnalyticsHub.tsx` — 1 raw button
-- `apps/reception/src/components/OfflineIndicator.tsx` — 1 raw button
-- `apps/reception/src/hoc/withIconModal.tsx` — 1 raw button (HOC, needs extra care)
-
-**Class 3 — ESLint layout primitive warnings (7+ files, 14 flagged instances):**
-- `apps/reception/src/components/inbox/DraftReviewPanel.tsx` — 3 warnings (flex containers)
-- `apps/reception/src/components/userManagement/StaffAccountsForm.tsx` — 2 warnings
-- `apps/reception/src/components/inbox/FilterBar.tsx` — 1 warning
-- `apps/reception/src/components/inbox/TemplatePicker.tsx` — 1 warning
-- `apps/reception/src/components/inbox/ThreadDetailPane.tsx` — 1 warning (inline-flex)
-- `apps/reception/src/components/inbox/ThreadList.tsx` — 1 warning (inline-flex)
-- `apps/reception/src/components/common/ScreenHeader.tsx` — 1 warning (flex)
-
-**Class 4 — Arbitrary Tailwind bracket values (2 instances):**
-- `apps/reception/src/components/inbox/ThreadList.tsx:197` — `max-h-[calc(100vh-12rem)]`
-- `apps/reception/src/components/inbox/ThreadDetailPane.tsx:260` — `max-h-[50vh]`
+**Raw flex/grid layout class scope (215 instances across ~40 files):**
+- All screens have violations; worst concentration in checkins, inbox, till, roomgrid
 
 ### Patterns & Conventions Observed
-- `Button` import: `import { Button } from "@acme/design-system/atoms"` — established in ActionButtons, CloseShiftForm, CreditSlipRegistry, man/*, loans/*
-- Layout primitives import: `import { Cluster } from "@acme/design-system/primitives"` (SafeManagement), `import { Inline } from "@acme/design-system/primitives"` (LoanedItemsList) — path confirmed working in reception with Turbopack
-- DS also exports `Stack`, `Cover`, `Sidebar`, `Grid` from same path
-- Semantic token compliance is already complete — no hardcoded palette colours found
+
+- DS Button (`@acme/design-system/atoms`) is already fully adopted — zero raw `<button>` elements in production code (only in test mocks)
+- DS layout primitives (`Inline`, `Stack`, `Cluster`, `Grid`) from `@acme/design-system/primitives` are used in ~10 files but not consistently
+- Files currently importing primitives: `ThreadList.tsx`, `FilterBar.tsx`, `TemplatePicker.tsx`, `DraftReviewPanel.tsx`, `StaffAccountsForm.tsx`, `CashHub.tsx`, `StepProgress.tsx`, `DenominationInput.tsx`, `LoanedItemsList.tsx`, `SafeManagement.tsx`
+- The ESLint rule `ds/enforce-layout-primitives` is present (0 explicit suppressions found) — suggests it is either warn-only or not yet catching all patterns
 
 ### Data & Contracts
-- Types/schemas/events: None — all changes are className/import only, no data model changes
-- Persistence: N/A
-- API/contracts: N/A — purely presentational
+
+- Types/schemas/events: None — this is a pure structural/layout compliance change, no data contract impact
+- Persistence: None
+- API/contracts: None
 
 ### Dependency & Impact Map
-- Upstream dependencies: `@acme/design-system/atoms` (Button), `@acme/design-system/primitives` (Inline, Stack, Cluster, Cover)
-- Downstream dependents: No consumers of these components outside the reception app
-- Likely blast radius: Visual-only; interaction semantics preserved (same events, same props)
+
+- Upstream dependencies:
+  - `@acme/design-system/primitives` exports `Inline`, `Stack`, `Cluster`, `Grid`
+  - `@acme/design-system/atoms` exports `Button`
+- Downstream dependents:
+  - All reception screens depend on the components being fixed; visual behavior must be identical post-migration
+- Likely blast radius:
+  - Visual-only; no data, API, or state logic changes
+  - Risk of layout breakage if `<Inline>` default props don't match existing flex defaults
+  - Risk of z-index/positioning breakage when replacing inline `position:fixed` with CSS class (JS-computed coordinates must be preserved for _BookingTooltip)
 
 ### Test Landscape
 
 #### Test Infrastructure
-- Framework: Jest + React Testing Library
-- Commands: CI-only (`pnpm --filter @apps/reception run test` — never run locally per policy)
-- CI integration: Governed test runner in GitHub Actions
+- Frameworks: Jest + React Testing Library
+- Commands: `pnpm --filter scripts startup-loop:governed-tests -- jest --config=apps/reception/jest.config.cjs`
+- CI integration: Yes — tests run in CI, not locally per policy
 
 #### Existing Test Coverage
 | Area | Test Type | Files | Coverage Notes |
 |---|---|---|---|
-| Inbox | Unit | `apps/reception/src/test/` | Snapshot tests may capture className changes |
-| Till | Unit | `apps/reception/src/hooks/__tests__/` | Hook tests, not component markup |
-| Common | Unit | Various | Focused on behaviour, not layout class names |
+| Till | Unit/RTL | `till/__tests__/*.test.tsx` | 9 test files covering forms and modals |
+| Safe | Unit/RTL | `safe/__tests__/*.test.tsx` | 5 test files |
+| Inbox | Unit/RTL | `inbox/__tests__/` (if exists) | Partial coverage |
+| Checkins | Minimal | Snapshot tests where present | Structural changes need visual regression guard |
 
 #### Coverage Gaps
-- No visual regression tests; layout class changes are not caught by existing unit tests
-- Snapshot tests may need updating if they capture exact className strings
+- Untested paths: Visual layout assertions (no snapshot or visual regression tests for layout primitives swap)
+- Extinct tests: None identified
 
 #### Testability Assessment
-- Easy to test: TypeScript typecheck will catch import errors; ESLint will catch remaining violations
-- Hard to test: Visual layout correctness requires manual review
-- Test seams: The `ds/enforce-layout-primitives` ESLint rule provides deterministic validation — warning count must reach 0
+- Easy to test: Structural correctness via snapshots / RTL `getByRole`
+- Hard to test: Visual equivalence (pixel-level) after layout primitive swap
+- Test seams needed: Existing tests must continue to pass; no new test scaffolding required for a structural swap
 
 ### Recent Git History (Targeted)
-- `aea95ee6b0` (2026-03-12) — `fix(reception/bar-pos-theming)`: Fixed 14 bar/POS theming issues; semantic tokens complete
-- `0f96cd61fe` (2026-03-13) — `fix(reception)`: Till reconciliation 5 bug fixes; ActionButtons already uses DS Button
+- `apps/reception/src/components/inbox/*` — recent work (ThreadList, TemplatePicker, DraftReviewPanel recently added/updated)
 
 ## Engineering Coverage Matrix
 
 | Coverage Area | Applicable? | Current-state evidence | Gap / risk | Carry forward to analysis |
 |---|---|---|---|---|
-| UI / visual | Required | 18 files with raw buttons; 4 files with inline styles; 14 ESLint layout warnings | Inline styles block cascade; raw buttons inconsistent hover/focus; layout classes not themed | Yes — verify DS Button props match existing button intent (ghost, outline, default variants) |
-| UX / states | Required | Existing buttons have hover/active states via manual className | DS Button provides consistent states automatically; risk of subtle visual delta on hover/active | Yes — confirm DS Button variant matches each raw button's visual role |
-| Security / privacy | N/A | No auth or data exposure changes | — | No |
-| Logging / observability / audit | N/A | No log or audit changes | — | No |
-| Testing / validation | Required | ESLint rule provides deterministic gate; TypeScript typecheck catches import errors | Snapshot tests may need updates for className changes | Yes — validate ESLint warning count hits 0 post-build |
-| Data / contracts | N/A | Purely presentational changes, no schema or API changes | — | No |
-| Performance / reliability | N/A | CSS class changes, no render path changes | — | No |
-| Rollout / rollback | Required | No migration; rollback = revert commit | Low risk; purely visual | Yes — note in plan |
+| UI / visual | Required | 215 raw flex/grid instances; 2 inline style overrides; 3 arbitrary bracket values | Layout breakage risk if DS primitive defaults differ from current flex defaults; must verify equivalence per component | Yes — approach must address visual equivalence verification |
+| UX / states | Required | _BookingTooltip uses JS-computed coordinates (mouse position); KeycardDepositMenu uses JS-computed absolute position | If position coordinates are removed from inline style, dropdown/tooltip will misplace — must keep computed coordinates via alternative mechanism | Yes — positions using JS state cannot be replaced with pure CSS classes |
+| Security / privacy | N/A | Layout/structural change only — no auth, input, or data exposure involved | None | No |
+| Logging / observability / audit | N/A | No logs, metrics, or audit trail affected by layout class changes | None | No |
+| Testing / validation | Required | Existing RTL tests check component render; layout swap should not break tests but visual equivalence is unverifiable via RTL | CI test pass is necessary but not sufficient for visual correctness | Yes — must define post-build visual validation strategy |
+| Data / contracts | N/A | No schema, API, or type changes | None | No |
+| Performance / reliability | N/A | CSS class swaps have negligible runtime perf impact; no hot paths affected | None | No |
+| Rollout / rollback | Required | Single deploy; rollback is a git revert | No migration ordering; rollback straightforward | Yes — deploy as one release or per-screen groups for safety |
+
+## External Research (If Needed)
+
+- DS `<Inline>` props: accepts `gap`, `align`, `justify`, `wrap` — maps directly to flex shorthand; default gap is DS spacing token, not `gap-2`
+- `<Stack>` is vertical flex; `<Cluster>` is wrapping flex; `<Grid>` is CSS grid
+
+## Questions
+
+### Resolved
+
+- Q: Are raw `<button>` elements a violation to fix?
+  - A: No. Zero raw `<button>` elements in production components — DS Button already fully adopted across all screens.
+  - Evidence: `grep -r "<button " apps/reception/src/components --include="*.tsx"` returns only test mocks
+
+- Q: Does RowCell use inline opacity style?
+  - A: No. RowCell uses `opacity-50` / `opacity-100` Tailwind classes (not inline style).
+  - Evidence: `apps/reception/src/components/roomgrid/components/Row/RowCell.tsx:141-142`
+
+- Q: Can the 2 arbitrary `max-h-[...]` values in inbox be replaced with tokens?
+  - A: Not immediately — DS has no viewport-relative max-height token. Both are already suppressed with justification comments and dispatch IDs for future token work. Accept as justified suppressions for now.
+  - Evidence: `ThreadList.tsx:199-200`, `ThreadDetailPane.tsx:260-261`
+
+- Q: Can `ml-[100px]` in Tooltip be replaced with a token?
+  - A: The 100px left margin is a design-specific alignment value for room label positioning; no DS spacing token maps to this. Accept as justified suppression with [DS-06] tag already in place.
+  - Evidence: `checkins/tooltip/Tooltip.tsx:99-100`
+
+- Q: Can JS-computed position coordinates in `_BookingTooltip.tsx` be replaced with CSS?
+  - A: No — the tooltip renders at mouse cursor position. Inline style with JS-computed `top`/`left` is the only approach for a floating tooltip anchored to cursor. The `position: fixed` and `zIndex` could potentially use CSS classes but `top`/`left` must remain inline.
+  - Evidence: `roomgrid/_BookingTooltip.tsx:31-36`
+
+### Open (Operator Input Required)
+
+None. All questions self-resolved from evidence and standard DS constraints.
 
 ## Confidence Inputs
 
-- Implementation: 95% — all violations precisely enumerated; fix patterns are established in existing code
-- Approach: 92% — DS Button and primitives path confirmed working in reception; import pattern established
-- Impact: 88% — purely visual/structural; no business logic touched
-- Delivery-Readiness: 93% — three non-overlapping task groups, full parallel execution possible
-- Testability: 90% — ESLint rule provides deterministic post-build validation; typecheck gates import errors
-
-What would raise each to ≥90: Already ≥90 for most. Impact could be raised to 92 by confirming DS Button `variant`/`tone`/`size` props cover all existing button visual patterns before build.
+- Implementation: 92% — both inline-style patterns are clear (2 files); layout primitive swap is mechanical (215 instances across ~40 files with clear 1:1 mapping); partial inline styles must remain for JS-computed positions. Raises to 95% once zIndex migration approach for `_BookingTooltip` is resolved in analysis.
+- Approach: 85% — the JS-computed position constraint on `_BookingTooltip` requires a hybrid approach (keep `top`/`left` inline); zIndex migration approach unresolved (see evidence note). Raises to 92% once DS zIndex token or suppression approach is confirmed.
+- Impact: 90% — visual behavior equivalence is the main risk; existing test suite provides structural guard; no data/API risk. Raises to 95% after parent-relative ancestor verified for `KeycardDepositMenu`.
+- Delivery-Readiness: 85% — work is mechanical but high in volume (215 layout class instances); safe to break into parallel screen-group tasks. Raises to 90% after per-screen grep confirms counts.
+- Testability: 80% — CI tests will catch structural regressions; visual equivalence requires manual spot-check post-deploy. Raises to 88% if a snapshot update strategy is defined per screen group.
 
 ## Risks
 
 | Risk | Likelihood | Impact | Mitigation / Open Question |
 |---|---|---|---|
-| DS Button default variant looks wrong in context | Low | Medium | Each raw button must specify the correct variant/tone; analysis agent reads each button's current className before choosing variant |
-| Tooltip inline position replacement breaks layout | Medium | Medium | RowCell opacity is trivial; Tooltip/BookingTooltip absolute/fixed positions need Tailwind equivalent — may need `left-0 top-0` + JS-based transform or CSS variable injection |
-| Snapshot test failures from className changes | Low | Low | Update snapshots in same task commit; tests are CI-only |
-| withIconModal HOC raw button affects consuming components | Low | Low | HOC wraps a button — convert to DS Button with `asChild` or `variant="ghost"` and verify consuming sites |
+| Layout gap default mismatch — DS `<Inline gap="2">` vs current `gap-2` | Medium | Medium | Verify DS Inline gap prop maps to same spacing token before swapping; spot-check per component |
+| _BookingTooltip position breaks if `top`/`left` inline style is removed | High | High | Keep computed coordinates inline; only migrate `position: fixed` and `zIndex` to classes |
+| `_BookingTooltip` zIndex: 10000 — `z-[10000]` would be a new arbitrary-value violation | High | Medium | **Not yet resolved** — analysis must determine correct approach (DS zIndex token, CSS custom property, or justified suppression with `ds/no-arbitrary-tailwind` comment) |
+| KeycardDepositMenu absolute position loses coordinates | High | High | Keep computed `top`/`left` inline; add `position: absolute` as Tailwind class |
+| KeycardDepositMenu parent not `relative` — `absolute` class with no `relative` ancestor breaks layout | Medium | High | **Not yet verified** — must confirm parent component has `relative` class; if not, add it as part of this task |
+| DS primitive import adds bundle weight | Low | Low | DS primitives are already imported in ~10 files; tree-shaking handles unused exports |
+| CI test failures from snapshot drift after layout swap | Low | Medium | Update snapshots intentionally as part of each task; verify test output |
+| Merge conflicts with in-progress inbox development | Medium | Medium | Prioritise inline-style fix first; coordinate layout migration ordering with any active inbox PRs |
 
 ## Planning Constraints & Notes
+
 - Must-follow patterns:
-  - `Button` from `@acme/design-system/atoms`
-  - Layout primitives from `@acme/design-system/primitives`
-  - `ds/enforce-layout-primitives` ESLint warning count must be 0 after build
-- Rollout/rollback expectations: No migration; rollback = revert commit
-- Observability expectations: N/A
+  - For JS-computed position coordinates, keep `top`/`left` in inline `style={}` but add `position: absolute/fixed` and `zIndex` as Tailwind CSS classes
+  - When migrating `className="flex items-center gap-2"` → `<Inline gap="2" align="center">`, verify DS Inline prop values produce identical computed styles
+  - Group migration by screen (screen-group tasks are non-overlapping file sets) to allow safe parallel execution
+- Rollout/rollback expectations:
+  - Deploy as a single release or screen-group batches; no multi-step migration required
+  - Rollback: `git revert` on the commit(s)
+- Observability expectations:
+  - None — no observability changes required for a structural layout compliance fix
 
 ## Suggested Task Seeds (Non-binding)
-- TASK-01: Fix all inline styles (4 files — Tooltip.tsx, KeycardDepositMenu.tsx, RowCell.tsx, _BookingTooltip.tsx) — highest priority
-- TASK-02: Inbox + ScreenHeader violations (raw buttons + layout warnings + bracket values — 7 files)
-- TASK-03: All other raw buttons (12 files across bar, till, cash, eod, stock, analytics, userManagement, checkins, OfflineIndicator, withIconModal)
 
-TASK-01, TASK-02, TASK-03 have fully disjoint file sets — eligible for parallel wave execution.
+1. Fix inline styles: `KeycardDepositMenu` + `_BookingTooltip` (2 files, highest priority — blocks theme system; resolve zIndex approach in analysis first)
+2. Migrate layout primitives — Checkins/Rooms screen group (~46 instances, ~12 files)
+3. Migrate layout primitives — Inbox screen group (~40 instances, ~8 files)
+4. Migrate layout primitives — Till screen group (~22 instances, ~6 files)
+5. Migrate layout primitives — Safe, Bar/POS, User Management, Login screen groups (remaining ~107 instances, ~14 files)
 
 ## Execution Routing Packet
-- Primary execution skill: lp-do-build
+
+- Primary execution skill: `lp-do-build`
 - Supporting skills: none
-- Deliverable acceptance package: ESLint `ds/enforce-layout-primitives` 0 warnings; TypeScript typecheck clean; 0 inline style attributes remaining
-- Post-delivery measurement plan: N/A
+- Deliverable acceptance package: All `style={{` props removed from production components (except justified `top`/`left` on JS-anchored tooltips); all flex/grid layout patterns use DS primitives; ESLint `ds/enforce-layout-primitives` produces 0 warnings; existing tests pass
+- Post-delivery measurement plan: CI lint pass (ds rules); manual spot-check of tooltip positioning and dropdown alignment in browser
 
 ## Evidence Gap Review
 
 ### Gaps Addressed
-- Raw button count: Verified via `grep -rn "<button"` — 35 instances in 18 files (not 97 as initial audit estimated)
-- Layout violations: Confirmed 14 ESLint warnings from last CI run; these are the actionable set (not 118+ raw flex classes)
-- DS primitives availability: Confirmed `@acme/design-system/primitives` exports Inline, Stack, Cluster, Cover, Grid; path works in reception (Turbopack verified via SafeManagement.tsx and LoanedItemsList.tsx)
-- DS Button path: Confirmed `@acme/design-system/atoms` for Button — used in 10+ existing reception components
-- Inline style locations: Confirmed exact files via `grep -rn "style={{"`
+
+- File paths in pre-gathered audit were incorrect; all actual file paths verified via direct grep
+- Raw button element claim (97 instances) was incorrect; verified zero raw buttons in production
+- RowCell inline opacity style claim was incorrect; verified it uses Tailwind classes
 
 ### Confidence Adjustments
-- Button count reduced from 97 → 35 (audit was counting different things); confidence in scope raised to 95%
-- Layout violations scoped to 14 ESLint-flagged instances (not all 242 raw flex uses); confidence in measurable completion gate raised to 90%
+
+- Implementation confidence raised from estimate to 92% after path verification
+- Class 2 (raw buttons) eliminated — scope is narrower than originally thought; this accelerates delivery
+- Class 1 (inline styles) corrected to 2 files (not 6); `Tooltip.tsx` `ml-[100px]` is an arbitrary class, not inline style — already suppressed
 
 ### Remaining Assumptions
-- DS Button `variant`/`tone` props will cover all existing button roles without visual regressions — needs per-button analysis during build
-- Tooltip inline position may need a different approach than pure Tailwind (dynamic JS positions) — analysis to confirm
+
+- DS `<Inline>` / `<Stack>` / `<Cluster>` prop-to-CSS mapping has not been verified per-component; assumes equivalent defaults for `gap` and `align` values
+- No visual regression test suite exists; manual spot-check is the only visual verification path
 
 ## Rehearsal Trace
 
 | Scope Area | Coverage Confirmed | Issues Found | Resolution Required |
 |---|---|---|---|
-| Inline styles (4 files) | Yes | None | No |
-| Inbox raw buttons (6 files) | Yes | None | No |
-| Other raw buttons (12 files) | Yes | [Advisory] withIconModal HOC needs extra care with asChild pattern | No |
-| ESLint layout warnings (7 files) | Yes | None | No |
-| Arbitrary bracket values (2 files) | Yes | [Advisory] dynamic height calc may need design decision | No |
-| DS primitives import path | Yes | None | No |
+| Inline style violations (2 files) | Yes | None — clear pattern, 2 files only | No |
+| Arbitrary bracket values (3 instances) | Yes | All 3 already suppressed with justification; no action needed | No |
+| Raw layout classes (~215 instances) | Yes | High volume but mechanical; per-screen grouping enables safe parallel execution | No |
+| JS-computed position retention | Yes | [UX/States Moderate]: _BookingTooltip and KeycardDepositMenu must retain `top`/`left` in inline style; `position` and `zIndex` can migrate to classes | No — pattern documented in constraints |
+| DS primitive equivalence | Partial | [UI/visual Advisory]: gap/alignment defaults not verified per-component | No — resolved in execution by spot-checking |
+| Test coverage | Yes | Existing tests provide structural guard; no new test authoring needed for layout swap | No |
+
+## Analysis Readiness
+
+- Status: Ready-for-analysis
+- Critique score: 4.0 / 5.0 (Round 1, 2026-03-13) — verdict: credible
+- Blocking items: None
+- Recommended next step: `/lp-do-analysis reception-design-system-compliance`
 
 ## Scope Signal
 
-- **Signal:** right-sized
-- **Rationale:** All violations precisely enumerated with file/line evidence. Three disjoint fix groups enable full parallel execution. Fix patterns established in existing code. Completion gated by deterministic ESLint check.
-
-## Analysis Readiness
-- Status: Ready-for-analysis
-- Blocking items: None
-- Recommended next step: `/lp-do-analysis reception-design-system-compliance`
+- Signal: right-sized
+- Rationale: Scope is bounded to 2 inline-style files and 215 layout class migrations across known screen groups. DS Button already adopted (zero raw buttons). All arbitrary bracket values already formally suppressed. Work is mechanical and parallel-safe by screen group.

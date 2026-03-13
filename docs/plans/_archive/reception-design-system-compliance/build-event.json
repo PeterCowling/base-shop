@@ -1,5 +1,10 @@
 {
-  "schema_version": "build-event.v1",
-  "emitted_at": "2026-03-13T16:31:47.402Z",
-  "why": "Every reception screen should use a consistent, themeable visual language. Inline styles override the CSS cascade, raw buttons bypass DS interaction patterns, and unflagged layout classes make theming harder to iterate."
+  "event_type": "build_complete",
+  "slug": "reception-design-system-compliance",
+  "business": "BRIK",
+  "completed_at": "2026-03-13T21:00:00.000Z",
+  "outcome": "All 12 tasks complete: ~268 layout classes migrated to DS primitives; enforce-layout-primitives activated as ESLint error gate",
+  "tasks_total": 12,
+  "tasks_complete": 12,
+  "deliverable_type": "code-change"
 }

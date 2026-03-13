@@ -1,6 +1,6 @@
 {
   "schema_version": "bug-scan-findings.v1",
-  "generated_at": "2026-03-13T16:33:29.841Z",
+  "generated_at": "2026-03-13T21:02:45.133Z",
   "scan_scope": {
     "changed": true,
     "staged": false,

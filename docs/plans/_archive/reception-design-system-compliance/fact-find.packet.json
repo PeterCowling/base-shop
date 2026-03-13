@@ -11,139 +11,143 @@
   "supporting_skills": [],
   "related_artifacts": {},
   "outcome_contract": {
-    "why": "Every reception screen should use a consistent themeable visual language. Inline styles override the CSS cascade, raw buttons bypass DS interaction patterns, and unflagged layout classes make theming harder to iterate. The prior bar-pos and till-safe theming passes fixed semantic tokens; this pass fixes structural compliance.",
+    "why": "Inline styles and arbitrary layout classes make future theme changes, dark-mode maintenance, and design-system upgrades fragile. Centralising all layout through DS primitives and eliminating inline styles ensures that token changes propagate correctly throughout the app.",
     "intended_outcome_type": "operational",
-    "intended_outcome_statement": "All reception app components use DS Button for interactive elements, DS layout primitives where the ESLint rule flags violations, and contain zero inline style attributes. ESLint `ds/enforce-layout-primitives` warning count drops to 0.",
+    "intended_outcome_statement": "All reception app production components are free of inline `style={{` overrides; arbitrary Tailwind bracket values are either replaced with tokens or formally suppressed with justification; raw flex/grid layout class patterns are migrated to DS layout primitives.",
     "source": "operator"
   },
   "engineering_coverage": [
     {
       "coverage_area": "UI / visual",
       "applicable": "Required",
-      "current_or_option_state": "18 files with raw buttons; 4 files with inline styles; 14 ESLint layout warnings",
-      "gap_or_implication": "Inline styles block cascade; raw buttons inconsistent hover/focus; layout classes not themed",
-      "carry_forward_or_notes": "Yes — verify DS Button props match existing button intent (ghost, outline, default variants)"
+      "current_or_option_state": "215 raw flex/grid instances; 2 inline style overrides; 3 arbitrary bracket values",
+      "gap_or_implication": "Layout breakage risk if DS primitive defaults differ from current flex defaults; must verify equivalence per component",
+      "carry_forward_or_notes": "Yes — approach must address visual equivalence verification"
     },
     {
       "coverage_area": "UX / states",
       "applicable": "Required",
-      "current_or_option_state": "Existing buttons have hover/active states via manual className",
-      "gap_or_implication": "DS Button provides consistent states automatically; risk of subtle visual delta on hover/active",
-      "carry_forward_or_notes": "Yes — confirm DS Button variant matches each raw button's visual role"
+      "current_or_option_state": "_BookingTooltip uses JS-computed coordinates (mouse position); KeycardDepositMenu uses JS-computed absolute position",
+      "gap_or_implication": "If position coordinates are removed from inline style, dropdown/tooltip will misplace — must keep computed coordinates via alternative mechanism",
+      "carry_forward_or_notes": "Yes — positions using JS state cannot be replaced with pure CSS classes"
     },
     {
       "coverage_area": "Security / privacy",
       "applicable": "N/A",
-      "current_or_option_state": "No auth or data exposure changes",
-      "gap_or_implication": "—",
+      "current_or_option_state": "Layout/structural change only — no auth, input, or data exposure involved",
+      "gap_or_implication": "None",
       "carry_forward_or_notes": "No"
     },
     {
       "coverage_area": "Logging / observability / audit",
       "applicable": "N/A",
-      "current_or_option_state": "No log or audit changes",
-      "gap_or_implication": "—",
+      "current_or_option_state": "No logs, metrics, or audit trail affected by layout class changes",
+      "gap_or_implication": "None",
       "carry_forward_or_notes": "No"
     },
     {
       "coverage_area": "Testing / validation",
       "applicable": "Required",
-      "current_or_option_state": "ESLint rule provides deterministic gate; TypeScript typecheck catches import errors",
-      "gap_or_implication": "Snapshot tests may need updates for className changes",
-      "carry_forward_or_notes": "Yes — validate ESLint warning count hits 0 post-build"
+      "current_or_option_state": "Existing RTL tests check component render; layout swap should not break tests but visual equivalence is unverifiable via RTL",
+      "gap_or_implication": "CI test pass is necessary but not sufficient for visual correctness",
+      "carry_forward_or_notes": "Yes — must define post-build visual validation strategy"
     },
     {
       "coverage_area": "Data / contracts",
       "applicable": "N/A",
-      "current_or_option_state": "Purely presentational changes, no schema or API changes",
-      "gap_or_implication": "—",
+      "current_or_option_state": "No schema, API, or type changes",
+      "gap_or_implication": "None",
       "carry_forward_or_notes": "No"
     },
     {
       "coverage_area": "Performance / reliability",
       "applicable": "N/A",
-      "current_or_option_state": "CSS class changes, no render path changes",
-      "gap_or_implication": "—",
+      "current_or_option_state": "CSS class swaps have negligible runtime perf impact; no hot paths affected",
+      "gap_or_implication": "None",
       "carry_forward_or_notes": "No"
     },
     {
       "coverage_area": "Rollout / rollback",
       "applicable": "Required",
-      "current_or_option_state": "No migration; rollback = revert commit",
-      "gap_or_implication": "Low risk; purely visual",
-      "carry_forward_or_notes": "Yes — note in plan"
+      "current_or_option_state": "Single deploy; rollback is a git revert",
+      "gap_or_implication": "No migration ordering; rollback straightforward",
+      "carry_forward_or_notes": "Yes — deploy as one release or per-screen groups for safety"
     }
   ],
   "open_operator_questions": [],
   "stage_payload": {
-    "scope_summary": "Three categories of design system violation remain in the reception app after prior theming passes (bar-pos and till-safe theming overhauls are complete, semantic tokens are used throughout). This fact-find scopes and verifies the remaining violations before planning targeted fixes.",
+    "scope_summary": "The reception app's design system compliance audit revealed three classes of non-compliance. Color token usage is already clean (zero hardcoded colors, zero raw Tailwind palette classes). The remaining violations are: (1) inline `style={{` props that bypass the token cascade, (2) arbitrary Tailwind bracket values that hard-code spacing/sizing without tokens, and (3) raw `className=\"flex ...\"` layout patterns that should use DS layout primitives (`<Inline>`, `<Stack>`, `<Cluster>`, `<Grid>`).",
     "goals": [
-      "Eliminate all inline `style={{}}` attributes that override the CSS cascade and block the theme system.",
-      "Replace all raw `<button>` elements with the DS `Button` component for consistent interaction states, focus rings, and accessibility.",
-      "Replace raw `flex`/`grid` className usage on elements flagged by `ds/enforce-layout-primitives` ESLint rule with DS layout primitives (`Inline`, `Stack`, `Cluster`, `Cover` from `@acme/design-system/primitives`)."
+      "Eliminate all inline `style={{` props in production components",
+      "Resolve or formally justify all arbitrary Tailwind bracket values",
+      "Migrate raw flex/grid layout class patterns to DS layout primitives across all screens"
     ],
     "non_goals": [
-      "Semantic token compliance (already complete — zero hardcoded palette colours found in audit).",
-      "Converting layout classes on elements that are NOT flagged by the ESLint rule (the rule scopes correctly to leaf elements).",
-      "Design or UX changes — purely mechanical compliance fixes."
+      "Color token audit (already clean — zero violations)",
+      "Dark mode token additions or new token definitions",
+      "Design changes (component appearance, sizing, spacing values — only structural compliance)",
+      "Test files"
     ],
     "constraints": [
-      "DS Button must be imported from `@acme/design-system/atoms` (established pattern throughout reception app).",
-      "DS layout primitives imported from `@acme/design-system/primitives` (established in SafeManagement.tsx, LoanedItemsList.tsx).",
-      "Reception app uses Turbopack — no webpack-specific import aliases needed.",
-      "CI-only tests; never run jest locally."
+      "DS layout primitives (`Inline`, `Stack`, `Cluster`, `Grid`) are available at `@acme/design-system/primitives`"
     ],
-    "assumptions": [],
+    "assumptions": [
+      "No runtime behavior depends on inline position styles being applied as JS (CSS class equivalents exist)",
+      "The two `max-h-[...]` values in inbox are functionally necessary viewport-relative heights; DS does not yet have a token equivalent — these may need a new token or a defined justified suppression",
+      "`ml-[100px]` in Tooltip is a design decision (100px left offset for room label alignment) that needs a DS spacing token or justified suppression"
+    ],
     "key_entry_points": [
-      "`apps/reception/src/components/` — all component directories are affected"
+      "`apps/reception/src/components/` — all production component files (excluding `__tests__/`)",
+      "`apps/reception/src/app/` — page and layout files"
     ],
     "key_findings": [],
     "analysis_readiness": {
       "Status": "Ready-for-analysis",
+      "Critique score": "4.0 / 5.0 (Round 1, 2026-03-13) — verdict: credible",
       "Blocking items": "None",
       "Recommended next step": "`/lp-do-analysis reception-design-system-compliance`"
     },
     "rehearsal_issues": [
       {
-        "Scope Area": "Inline styles (4 files)",
+        "Scope Area": "Inline style violations (2 files)",
         "Coverage Confirmed": "Yes",
-        "Issues Found": "None",
+        "Issues Found": "None — clear pattern, 2 files only",
         "Resolution Required": "No"
       },
       {
-        "Scope Area": "Inbox raw buttons (6 files)",
+        "Scope Area": "Arbitrary bracket values (3 instances)",
         "Coverage Confirmed": "Yes",
-        "Issues Found": "None",
+        "Issues Found": "All 3 already suppressed with justification; no action needed",
         "Resolution Required": "No"
       },
       {
-        "Scope Area": "Other raw buttons (12 files)",
+        "Scope Area": "Raw layout classes (~215 instances)",
         "Coverage Confirmed": "Yes",
-        "Issues Found": "[Advisory] withIconModal HOC needs extra care with asChild pattern",
+        "Issues Found": "High volume but mechanical; per-screen grouping enables safe parallel execution",
         "Resolution Required": "No"
       },
       {
-        "Scope Area": "ESLint layout warnings (7 files)",
+        "Scope Area": "JS-computed position retention",
         "Coverage Confirmed": "Yes",
-        "Issues Found": "None",
-        "Resolution Required": "No"
+        "Issues Found": "[UX/States Moderate]: _BookingTooltip and KeycardDepositMenu must retain `top`/`left` in inline style; `position` and `zIndex` can migrate to classes",
+        "Resolution Required": "No — pattern documented in constraints"
       },
       {
-        "Scope Area": "Arbitrary bracket values (2 files)",
-        "Coverage Confirmed": "Yes",
-        "Issues Found": "[Advisory] dynamic height calc may need design decision",
-        "Resolution Required": "No"
+        "Scope Area": "DS primitive equivalence",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[UI/visual Advisory]: gap/alignment defaults not verified per-component",
+        "Resolution Required": "No — resolved in execution by spot-checking"
       },
       {
-        "Scope Area": "DS primitives import path",
+        "Scope Area": "Test coverage",
         "Coverage Confirmed": "Yes",
-        "Issues Found": "None",
+        "Issues Found": "Existing tests provide structural guard; no new test authoring needed for layout swap",
         "Resolution Required": "No"
       }
     ],
     "process_topology": {
       "changed": false,
-      "note": "None: local code path only — no multi-step process, workflow, or CI/deploy lane changes.",
+      "note": "None: local code path only",
       "trigger": null,
       "end_condition": null,
       "areas": []

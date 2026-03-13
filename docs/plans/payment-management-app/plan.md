@@ -5,7 +5,7 @@ Domain: Platform
 Workstream: Engineering
 Created: 2026-03-13
 Last-reviewed: 2026-03-13
-Last-updated: 2026-03-13 (TASK-06 complete: Shop config UI + credential management; all Phase 1 tasks done)
+Last-updated: 2026-03-13 (TASK-11, TASK-12, TASK-13, TASK-14 complete: Phase 2–5 done; all tasks complete)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: payment-management-app
 Dispatch-ID: IDEA-DISPATCH-20260313190000-0001
@@ -39,11 +39,11 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - [x] TASK-09: Checkout reconciliation view
 - [x] TASK-10: Analytics dashboard
 - [x] CHECKPOINT-01: Phase 1 gate
-- [ ] TASK-11: Phase 2 — Caryina proxy + Caryina internal Axerve route
-- [ ] TASK-12: Phase 3 — Runtime provider switching (Caryina config reads from PM)
-- [ ] CHECKPOINT-02: Phase 3 gate
-- [ ] TASK-13: Phase 4 — CMP onboarding
-- [ ] TASK-14: Phase 5 — Remove Caryina legacy admin payment code
+- [x] TASK-11: Phase 2 — Caryina proxy + Caryina internal Axerve route
+- [x] TASK-12: Phase 3 — Runtime provider switching (Caryina config reads from PM)
+- [x] CHECKPOINT-02: Phase 3 gate
+- [x] TASK-13: Phase 4 — CMP onboarding
+- [x] TASK-14: Phase 5 — Remove Caryina legacy admin payment code
 - [x] TASK-15: CI/deploy pipeline for payment-manager
 
 ## Goals
@@ -131,11 +131,11 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 | TASK-09 | IMPLEMENT | Checkout reconciliation view | 85% | S | Complete (2026-03-13) | TASK-04 | CHECKPOINT-01 |
 | TASK-10 | IMPLEMENT | Analytics dashboard | 80% | S | Complete (2026-03-13) | TASK-04 | CHECKPOINT-01 |
 | CHECKPOINT-01 | CHECKPOINT | Phase 1 gate — full app functional, all Phase 1 tasks complete | - | - | Complete (2026-03-13) | TASK-05, TASK-06, TASK-08, TASK-09, TASK-10 | TASK-11, TASK-12 |
-| TASK-11 | IMPLEMENT | Phase 2 — Caryina proxy + internal Axerve route | 80% | M | Pending | CHECKPOINT-01 | TASK-12 |
-| TASK-12 | IMPLEMENT | Phase 3 — Runtime provider switching via Payment Manager | 80% | M | Pending | TASK-11 | CHECKPOINT-02 |
-| CHECKPOINT-02 | CHECKPOINT | Phase 3 gate — provider switching live, checkout hot path validated | - | - | Pending | TASK-12 | TASK-13 |
-| TASK-13 | IMPLEMENT | Phase 4 — CMP onboarding | 70% | M | Pending | CHECKPOINT-02 | TASK-14 |
-| TASK-14 | IMPLEMENT | Phase 5 — Remove Caryina legacy admin payment code | 85% | S | Pending | TASK-13 | TASK-15 |
+| TASK-11 | IMPLEMENT | Phase 2 — Caryina proxy + internal Axerve route | 80% | M | Complete (2026-03-13) | CHECKPOINT-01 | TASK-12 |
+| TASK-12 | IMPLEMENT | Phase 3 — Runtime provider switching via Payment Manager | 80% | M | Complete (2026-03-13) | TASK-11 | CHECKPOINT-02 |
+| CHECKPOINT-02 | CHECKPOINT | Phase 3 gate — provider switching live, checkout hot path validated | - | - | Complete (2026-03-13) | TASK-12 | TASK-13 |
+| TASK-13 | IMPLEMENT | Phase 4 — CMP onboarding | 70% | M | Complete (2026-03-13) | CHECKPOINT-02 | TASK-14 |
+| TASK-14 | IMPLEMENT | Phase 5 — Remove Caryina legacy admin payment code | 85% | S | Complete (2026-03-13) | TASK-13 | TASK-15 |
 | TASK-15 | IMPLEMENT | CI/deploy pipeline for payment-manager | 85% | S | Complete (2026-03-13) | TASK-02 | - |
 
 ## Engineering Coverage

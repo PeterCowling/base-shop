@@ -1,7 +1,7 @@
 ---
 Type: Analysis
 Status: Ready-for-planning
-Domain: Platform
+Domain: PRODUCTS
 Workstream: Engineering
 Created: 2026-03-13
 Last-updated: 2026-03-13
@@ -17,128 +17,161 @@ Auto-Plan-Intent: analysis+auto
 artifact: analysis
 ---
 
-# Reception Design System Compliance — Analysis
+# Reception Design System Compliance Analysis
 
 ## Decision Frame
 
 ### Summary
-Three classes of DS violation remain in the reception app: inline `style={{}}` attributes (6 instances, 4 files), raw `<button>` elements (35 instances, 18 files), and raw flex/grid layout classes flagged by `ds/enforce-layout-primitives` ESLint rule (14 warnings, 7 files). The decision is how to sequence and execute the fixes — mechanically targeted per-file conversion vs. broader rewrites.
+
+The reception app has two classes of remaining DS compliance violations: (1) inline `style={{` props in 2 production files, and (2) ~266 raw `className="flex ..."` layout patterns across 15 component folders that should use DS layout primitives. The decision is: how to achieve compliance — by genuine migration to DS primitives, or by suppressing lint violations.
 
 ### Goals
-- Zero inline `style={{}}` attributes across all reception components.
-- All interactive elements use DS `Button` from `@acme/design-system/atoms`.
-- All ESLint `ds/enforce-layout-primitives` warnings eliminated (DS layout primitives from `@acme/design-system/primitives`).
+
+- Eliminate all inline `style={{` props (except unavoidable JS-computed coordinates)
+- Migrate raw flex/grid layout patterns to DS layout primitives
+- Enable DS ESLint rule `ds/enforce-layout-primitives` to run as error-level without suppressions
 
 ### Non-goals
-- Semantic token compliance (complete). Structural component rewrites. UX/behaviour changes.
+
+- New token definitions or color changes
+- Visual redesign of any component
+- Test file changes
 
 ### Constraints & Assumptions
-- DS Button: `@acme/design-system/atoms` — props: `color`, `tone`, `size`, `variant` (legacy), `asChild`, `leadingIcon`, `trailingIcon`. Pattern confirmed in 10+ existing reception components.
-- DS layout primitives: `@acme/design-system/primitives` — `Inline`, `Stack`, `Cluster`, `Cover`, `Grid`. Pattern confirmed working in SafeManagement, LoanedItemsList (Turbopack-compatible).
-- Dynamic JS-computed positions in Tooltip/BookingTooltip/KeycardDepositMenu must remain as computed values; only the static portions (z-index, redundant properties) are removable.
+
+- Constraints:
+  - `_BookingTooltip` and `KeycardDepositMenu` use JS-computed cursor/click coordinates (`top`/`left`) — these must remain as inline styles; only `position` property can be migrated to a Tailwind class
+  - Both files already have `z-50` in their className — the fact-find's "zIndex: 10000" concern does not apply; the zIndex is already handled via class
+  - `KeycardDepositButton` wrapper (line 280) already has `className="relative"` — `absolute` class on the menu is safe
+  - DS layout primitives use design-token-based gap values; Tailwind `gap-2` = `0.5rem`; DS `gap="2"` maps to the same token — confirmed equivalent
+- Assumptions:
+  - DS `<Inline>` `align` default is unknown at analysis time — always set `align` explicitly where `items-center` is present; do not rely on defaults
+  - The 3 arbitrary bracket values (`max-h-[calc(100vh-12rem)]`, `max-h-[50vh]`, `ml-[100px]`) are already formally suppressed with justification comments; no action needed
 
 ## Inherited Outcome Contract
 
-- **Why:** Every reception screen should use a consistent, themeable visual language. Inline styles override the CSS cascade, raw buttons bypass DS interaction patterns, and unflagged layout classes make theming harder to iterate.
+- **Why:** Inline styles and arbitrary layout classes make future theme changes, dark-mode maintenance, and design-system upgrades fragile. Centralising all layout through DS primitives and eliminating inline styles ensures that token changes propagate correctly throughout the app.
 - **Intended Outcome Type:** operational
-- **Intended Outcome Statement:** All reception app components use DS Button for interactive elements, DS layout primitives where the ESLint rule flags violations, and contain zero inline style attributes. ESLint `ds/enforce-layout-primitives` warning count drops to 0.
+- **Intended Outcome Statement:** All reception app production components are free of inline `style={{` overrides; arbitrary Tailwind bracket values are either replaced with tokens or formally suppressed with justification; raw flex/grid layout class patterns are migrated to DS layout primitives.
 - **Source:** operator
 
 ## Fact-Find Reference
+
 - Related brief: `docs/plans/reception-design-system-compliance/fact-find.md`
 - Key findings used:
-  - 35 raw `<button>` instances across 18 files (verified by grep)
-  - 14 `ds/enforce-layout-primitives` ESLint warnings from last CI run (actionable set)
-  - 6 inline style instances across 4 files (confirmed with file/line evidence)
-  - DS Button `asChild` prop confirmed present — covers withIconModal HOC case
-  - Dynamic positions in Tooltip/BookingTooltip/KeycardDepositMenu are JS-computed — cannot be pure Tailwind static classes
+  - Inline style violations: exactly 2 files (`_BookingTooltip.tsx`, `KeycardDepositMenu.tsx`)
+  - Both files already use `z-50` in className — no zIndex arbitrary-value issue
+  - Both files use JS-computed `top`/`left` — must keep as inline style
+  - `KeycardDepositButton` parent already has `relative` — absolute positioning will work correctly after migration
+  - Raw flex violations: ~266 instances across 15 component folders
+  - DS Button already fully adopted (zero raw `<button>` elements in production)
+  - 3 arbitrary bracket values already formally suppressed with justification comments
 
 ## Evaluation Criteria
 
 | Criterion | Why it matters | Weight/priority |
 |---|---|---|
-| Safety / blast radius | Changes spread across 18+ files; wrong variant choice causes visual regression | High |
-| Completeness gate reliability | ESLint warning count must reach 0 — deterministic, not subjective | High |
-| Execution speed | User requested parallel subagents; disjoint file groups enable this | Medium |
-| Rollback ease | No schema/API changes; revert is always safe | Medium |
+| True compliance vs suppression | Suppressions don't achieve the goal; they just hide violations | Critical |
+| Visual equivalence after migration | Must not break layouts; risk of gap/align default mismatch | High |
+| Execution parallelism | 266 instances across 15 folders; need to parallelise safely by screen group | High |
+| Regression risk | Must not break existing component behavior or CI tests | High |
+| Inline style safety | JS-computed positions must be preserved exactly | High |
 
 ## Options Considered
 
 | Option | Description | Upside | Downside | Key risks | Viable? |
 |---|---|---|---|---|---|
-| A — Targeted mechanical conversion | Per-file: read current className → pick DS Button variant/tone; replace ESLint-flagged flex/grid with DS primitives; remove inline styles with Tailwind equivalents (keep JS-computed dynamic values only) | Minimal blast radius; each file self-contained; 3 disjoint groups enable full parallelism | Requires reading each button's visual intent before choosing variant | Wrong variant on one button | Yes — **chosen** |
-| B — Wholesale rewrite | Rewrite entire components fresh using DS components | Cleaner output | Much higher blast radius; triggers snapshot test failures across more areas; slower | High regression risk on complex inbox components | No |
-| C — ESLint disable suppression | Add `// eslint-disable` comments to silence warnings | Zero code change risk | Does not fix the underlying issue; violates DS compliance goal | Permanent tech debt; blocks theme iteration | No |
-| D — Remove inline styles only, defer buttons | Prioritise inline styles (immediate theme blocker) and defer raw buttons | Fastest for the critical path | Leaves 35 raw buttons unchecked; contradicts user directive to proceed with all at once | Incomplete | No |
+| A | Full DS primitive migration — replace all raw flex/grid classes with `<Inline>`, `<Stack>`, `<Cluster>`, `<Grid>`; fix 2 inline styles by moving `position` to Tailwind class | Genuine compliance; `ds/enforce-layout-primitives` becomes error-level permanently; layout semantics expressed through DS | High volume (266 instances); visual equivalence must be verified per component | Gap/align defaults differ from raw Tailwind in edge cases; layout regressions possible | Yes — **chosen** |
+| B | Suppress all violations — add `// eslint-disable-next-line ds/enforce-layout-primitives` on each of the 266 instances | Low migration risk; no visual changes | Does not achieve compliance goal; suppressions are technical debt; future token changes still won't propagate through suppressed flex patterns | Suppression drift; opposite of stated goal | **No — rejected** |
 
 ## Engineering Coverage Comparison
 
-| Coverage Area | Option A (targeted conversion) | Option B (wholesale rewrite) | Chosen implication |
+| Coverage Area | Option A (migrate) | Option B (suppress) | Chosen implication |
 |---|---|---|---|
-| UI / visual | Per-button variant selection preserves visual intent; ESLint gate confirms completion | Wholesale rewrite risks visual regressions in complex components | Must read each button's current className before choosing DS Button variant |
-| UX / states | DS Button provides hover/focus/disabled states automatically; replaces manual className patterns | Same result but higher change surface | DS Button states are additive improvements — no UX regression expected |
-| Security / privacy | N/A — no auth or data changes | N/A | N/A |
+| UI / visual | Migration risk: gap/align defaults must match; spot-check required per screen group | Zero visual risk (no changes) | Must verify DS primitive defaults produce identical layout before swapping; `align` must be set explicitly where `items-center` is used |
+| UX / states | JS-computed `top`/`left` retained in inline style; `position` migrated to class — no UX regression | Zero UX risk | Plan execution must keep computed coordinates inline |
+| Security / privacy | N/A — layout-only change | N/A | N/A |
 | Logging / observability / audit | N/A | N/A | N/A |
-| Testing / validation | ESLint `ds/enforce-layout-primitives` count = 0 is the deterministic gate; TypeScript typecheck validates imports; snapshot tests may need updates | More snapshot changes | ESLint gate is the primary completion signal |
-| Data / contracts | No schema or API changes | No schema or API changes | N/A |
-| Performance / reliability | CSS class changes only; no render path changes | Same | N/A |
-| Rollout / rollback | No migration; rollback = revert commit | Same | Note in plan |
+| Testing / validation | Existing CI tests provide structural regression guard; snapshots updated intentionally per screen group | No test impact | CI test pass required per task group; snapshot drift is expected and intentional |
+| Data / contracts | N/A | N/A | N/A |
+| Performance / reliability | N/A — CSS class swaps negligible | N/A | N/A |
+| Rollout / rollback | Single deploy or per-screen-group batches; rollback is git revert | Same | Deploy per screen group enables early detection of visual regressions; rollback to prior commit |
 
 ## Chosen Approach
 
-- **Recommendation:** Option A — targeted mechanical conversion, executed as 3 parallel tasks with fully disjoint file sets.
-- **Why this wins:** Minimal blast radius; each file change is self-contained and reviewable; the 3 task groups share zero files so subagents can run in parallel without conflict detection overhead; the ESLint gate provides deterministic completion verification; the DS Button variant selection is the only judgment call and each instance has visible className evidence to guide it.
-- **What it depends on:** Reading each raw button's current className to determine the correct DS Button `color`/`tone`/`size` before replacing. For dynamic-position inline styles (Tooltip, BookingTooltip, KeycardDepositMenu), the JS-computed `top`/`left` values must remain — only the static `zIndex` and redundant properties are removed. RowCell opacity is trivially replaced with conditional Tailwind class (`isDragging ? "opacity-50" : "opacity-100"`).
-
-### Approach detail — inline style handling
-
-- `RowCell.tsx`: `style={{ opacity: isDragging ? 0.5 : 1 }}` → `className={isDragging ? "opacity-50" : "opacity-100"}` (or `cn({ "opacity-50": isDragging })`)
-- `Tooltip.tsx`: Remove `style={{ zIndex: 9999 }}` (redundant with `z-50` class already present); remove `style={{ marginLeft: "100px" }}` → replace with Tailwind class `ml-[100px]` (acceptable arbitrary value — there is no DS token for 100px; the inline style is the violation, not the pixel value)
-- `_BookingTooltip.tsx` / `KeycardDepositMenu.tsx`: Keep JS-computed top/left (required for click-relative positioning) but remove any hardcoded z-index from style — apply `z-50` via className instead
+- **Recommendation:** Option A — Full DS primitive migration, executed in parallel screen-group tasks.
+- **Why this wins:** Option B doesn't meet the stated goal. Option A achieves genuine compliance, enables `ds/enforce-layout-primitives` to run as a CI error permanently (preventing regression), and makes the DS token system the single source of truth for all layout. The 266-instance volume is high but mechanical — there's a direct 1:1 mapping for every pattern (`flex items-center gap-2` → `<Inline align="center" gap="2">`), and the work is safe to parallelise by non-overlapping screen groups.
+- **What it depends on:**
+  - DS `<Inline>` default gap must be verified equal to `gap-2` (0.5rem) — confirmed via DS source
+  - DS `<Inline>` `align` default must be explicitly set where `items-center` is present (do not rely on DS defaults — be explicit)
+  - `position` migration for `_BookingTooltip` and `KeycardDepositMenu` must be verified working in both light and dark mode
 
 ### Rejected Approaches
 
-- Option B (wholesale rewrite) — higher blast radius; violates "over-engineering" rule; no added value for what is a mechanical compliance fix
-- Option C (ESLint suppression) — defeats the purpose
-- Option D (partial scope) — contradicts the user's explicit "all at once" directive
+- Option B (suppress) — Suppressing 266 lint violations doesn't achieve compliance; it buries technical debt. The suppressions would need to be revisited every time the DS token system changes. Rejected.
 
 ### Open Questions (Operator Input Required)
 
-None — all decisions resolvable from existing code evidence and DS API.
+None. All design decisions are resolvable from evidence and DS contracts.
 
 ## End-State Operating Model
 
-None: no material process topology change — all changes are className/import replacements within component files.
+None: no material process topology change
 
 ## Planning Handoff
 
 - Planning focus:
-  - Decompose into 3 parallel IMPLEMENT tasks with strictly non-overlapping file sets
-  - TASK-01: Inline styles (4 files in `checkins/` and `roomgrid/`)
-  - TASK-02: Inbox + ScreenHeader DS violations (raw buttons + layout warnings + bracket values — 7 inbox files + ScreenHeader)
-  - TASK-03: All remaining raw buttons (12 files across bar, till, cash, eod, stock, analytics, userManagement, checkins, OfflineIndicator, withIconModal HOC)
+  - Task 1: Fix 2 inline style files (`_BookingTooltip`, `KeycardDepositMenu`) — highest priority, blocks theme system
+  - Tasks 2–N: Migrate layout primitives by screen group (non-overlapping, parallelisable)
+  - Final task: Enable `ds/enforce-layout-primitives` as error-level in ESLint config (or confirm it already is)
 - Validation implications:
-  - Each task: TypeScript typecheck clean after changes; ESLint warning count trending to 0
-  - Post all tasks: `pnpm --filter @apps/reception exec eslint src/ --rule '{"ds/enforce-layout-primitives": "warn"}'` must show 0 warnings
-  - Snapshot tests may need updates for className changes — update in same commit
+  - Each screen-group task must: (a) CI tests pass, (b) no snapshot regressions except intentional updates, (c) manually verify affected layouts in browser before shipping
+  - Inline style fix task: verify tooltip and dropdown positioning in browser (light + dark mode)
+  - `ds/enforce-layout-primitives` error gate: run `pnpm --filter reception lint` after all tasks — must be zero errors
 - Sequencing constraints:
-  - All 3 tasks are independent (disjoint file sets) — Wave 1 can run all 3 in parallel
-  - No task has a dependency on any other
+  - Inline style fix can be task 1 (independent)
+  - Screen group migrations can run in parallel (non-overlapping file sets)
+  - `common/` folder migration must complete before screen-specific tasks that consume shared components begin (or before their PRs merge)
+  - Parallel screen-group tasks can start after `common/` lands; the ESLint error gate is last
+  - ESLint error-gate timing: confirm whether `ds/enforce-layout-primitives` is currently warn or error level. If already error-level, PRs during migration will fail lint — either batch all screen-group tasks into one PR or temporarily demote to warn during migration, reverting to error after all tasks complete
 - Risks to carry into planning:
-  - Tooltip/BookingTooltip: JS-computed positions must remain; don't remove the entire style block
-  - withIconModal HOC: use `Button` with `asChild` (when wrapping a custom trigger child) or `variant="ghost"` (for a standalone button) — both are confirmed DS Button props; read the HOC before changing to verify which pattern applies
-  - DS Button variant mismatch: build agents must read each button's current className before choosing variant (ghost vs outline vs default)
+  - DS `<Inline>` `align` prop must be set explicitly (`align="center"`) when replacing `items-center` — relying on defaults risks silent layout shift
+  - `common/` components (26 violations) are shared by multiple screens — changes here have wider blast radius; treat as a standalone task
+  - Merge conflict risk: inbox has recent active development — coordinate this migration with any in-flight inbox PRs
+
+## Per-Screen-Group Breakdown for Planning
+
+| Screen Group | Folder(s) | Flex violations | Parallelisable? |
+|---|---|---|---|
+| Inline styles fix | `checkins/keycardButton/`, `roomgrid/` | 2 files | First (independent) |
+| Common components | `common/` | 26 | Standalone — **must complete before dependent screen group tasks begin** (shared components affect multiple screens) |
+| Checkins/Rooms | `checkins/` (excl. keycardButton) | ~53 | Yes |
+| Inbox | `inbox/` | 46 | Yes |
+| Till | `till/` | 40 | Yes |
+| Bar | `bar/` | 24 | Yes |
+| Prepayments | `prepayments/` | 15 | Yes |
+| Inventory | `inventory/` | 10 | Yes |
+| Loans | `loans/` | 9 | Yes |
+| Safe | `safe/` | 9 | Yes |
+| Man (Documents) | `man/` | 7 | Yes |
+| User Management | `userManagement/` | 6 | Yes |
+| Room Grid | `roomgrid/` (excl. `_BookingTooltip`) | 6 | Yes |
+| AppNav | `appNav/` | 5 | Yes |
+| EOD Checklist | `eodChecklist/` | 4 | Yes |
+| Cash | `cash/` | 1 | Yes |
 
 ## Risks to Carry Forward
 
 | Risk | Likelihood | Impact | Why not resolved in analysis | Planning implication |
 |---|---|---|---|---|
-| Wrong DS Button variant chosen for a raw button | Low | Low | Requires reading each button's context at build time | Build agents must read file before editing; choose variant matching current visual intent |
-| Tooltip static position removal breaks layout | Low | Low | Approach already decided: keep JS-computed top/left; remove only static zIndex (covered by `z-50` class) | Apply `z-50` className; do not remove the entire style block |
-| withIconModal HOC output contract broken | Low | Low | Requires reading HOC consumer sites | Read withIconModal.tsx consumers before changing |
-| Snapshot test failures require manual update | Low | Low | Cannot determine exact snapshot impact at analysis stage | Update snapshots in same commit; CI validates |
+| DS `<Inline>` align default differs from `items-center` | Medium | Medium | Needs per-component inspection — too granular for analysis | Each task must set `align="center"` explicitly where `items-center` is present |
+| `common/` components break multiple screens | Medium | High | Design decision — treat as standalone task | Plan as separate IMPLEMENT task before or concurrent with screen groups |
+| Merge conflict in inbox | Low | Medium | Active development in inbox — timing unknown | Serialise inbox migration after any in-flight inbox PRs merge |
+| Visual regression in complex flex layouts | Low | Medium | Cannot verify without browser rendering | Manual spot-check required per screen group task |
+| `<Inline className="flex-col">` antipattern — developers use primitive with override class instead of `<Stack>` | Medium | Low | Not yet stated | Planning note: primitives must be used with supported props only, not with className overrides that override their layout semantics |
 
 ## Planning Readiness
 
 - Status: Go
-- Rationale: All violation locations are precisely enumerated with file/line evidence. The DS Button and primitives APIs are confirmed. The chosen approach is mechanical with a deterministic ESLint completion gate. Three disjoint task groups are ready for parallel wave execution.
+- Critique score: 4.5 / 5.0 (Round 2, 2026-03-13) — verdict: credible
+- Rationale: Scope is clear, approach is unambiguous, all inline-style risks are resolved (zIndex concern eliminated — both files already use `z-50` in className; parent-relative verified for KeycardDepositMenu). Work is mechanical and parallel-safe. No operator input required.

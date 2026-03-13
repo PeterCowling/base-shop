@@ -8,6 +8,7 @@ import React, {
 } from "react";
 
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
+import { Inline } from "@acme/design-system/primitives";
 
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
@@ -201,9 +202,9 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
 
   return (
     <>
-      <div className="flex flex-wrap gap-12 mt-100px mb-75px">
+      <Inline gap={12} className="mt-100px mb-75px">
         {/* First Name */}
-        <div className="flex flex-col w-300px">
+        <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
           <label
             htmlFor="firstName"
             className="block mb-1 font-semibold text-info-dark"
@@ -226,7 +227,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
         </div>
 
         {/* Last Name */}
-        <div className="flex flex-col w-300px">
+        <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
           <label
             htmlFor="lastName"
             className="block mb-1 font-semibold text-info-dark"
@@ -249,7 +250,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
         </div>
 
         {/* Gender */}
-        <div className="flex flex-col w-300px">
+        <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
           <label
             htmlFor="gender"
             className="block mb-1 font-semibold text-info-dark"
@@ -284,7 +285,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
             </SelectContent>
           </Select>
         </div>
-      </div>
+      </Inline>
     </>
   );
 }

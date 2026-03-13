@@ -8,6 +8,7 @@ import React, {
 } from "react";
 
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
+import { Inline } from "@acme/design-system/primitives";
 
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 
@@ -131,9 +132,9 @@ function Row3({
 
 
   return (
-    <div className="flex flex-wrap gap-12 mb-75px">
+    <Inline gap={12} className="mb-75px">
       {/* Document Number */}
-      <div className="flex flex-col w-300px">
+      <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
         <label
           htmlFor="documentNumber"
           className="block mb-1 font-semibold text-info-dark"
@@ -154,7 +155,7 @@ function Row3({
       </div>
 
       {/* Document Type (Dropdown) */}
-      <div className="flex flex-col w-300px">
+      <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
         <label
           htmlFor="documentType"
           className="block mb-1 font-semibold text-info-dark"
@@ -199,10 +200,10 @@ function Row3({
       </div>
 
       {/* Date of Birth */}
-      <div className="flex flex-col w-300px">
+      <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
         <DOBSection occupantDetails={occupantDetails} saveField={saveField} />
       </div>
-    </div>
+    </Inline>
   );
 }
 

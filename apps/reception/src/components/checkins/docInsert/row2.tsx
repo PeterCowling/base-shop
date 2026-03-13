@@ -6,6 +6,8 @@ import React, {
   useState,
 } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
+
 import { type OccupantDetails } from "../../../types/hooks/data/guestDetailsData";
 import { showToast } from "../../../utils/toastUtils";
 
@@ -213,9 +215,9 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
   );
 
   return (
-    <div className="flex flex-wrap gap-12 mb-75px">
+    <Inline gap={12} className="mb-75px">
       {/* Place of Birth */}
-      <div className="flex flex-col w-300px">
+      <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
         <AutoComplete
           id="placeOfBirth"
           label="Place of Birth"
@@ -233,7 +235,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
       </div>
 
       {/* Citizenship */}
-      <div className="flex flex-col w-300px">
+      <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
         <AutoComplete
           id="citizenship"
           label="Citizenship"
@@ -251,7 +253,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
       </div>
 
       {/* Municipality */}
-      <div className="flex flex-col w-300px">
+      <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
         <label
           htmlFor="municipality"
           className="block mb-1 font-semibold text-info-dark"
@@ -273,7 +275,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
           }`}
         />
       </div>
-    </div>
+    </Inline>
   );
 }
 

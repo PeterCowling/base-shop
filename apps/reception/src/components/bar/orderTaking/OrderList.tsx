@@ -4,7 +4,7 @@ import React, { type FC, useCallback, useState } from "react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { Cluster } from "@acme/design-system/primitives";
+import { Cluster, Stack } from "@acme/design-system/primitives";
 
 import { type AggregatedOrder } from "../../../types/bar/BarTypes";
 
@@ -48,7 +48,8 @@ const OrderList: FC<OrderListProps> = React.memo(
     /* ------------------------------ render ------------------------------ */
     return (
       <>
-        <section className="flex h-full flex-col overflow-hidden rounded-lg shadow-inner">
+        <Stack asChild gap={0} className="h-full overflow-hidden rounded-lg shadow-inner">
+          <section>
           {/* ─────── List / table ─────── */}
           {orders.length ? (
             <Table className="w-full flex-1 border-separate border-spacing-0">
@@ -108,7 +109,8 @@ const OrderList: FC<OrderListProps> = React.memo(
               Clear All
             </Button>
           </div>
-        </section>
+          </section>
+        </Stack>
 
         {/* ─────── Modal – Pay ─────── */}
         {showPayModal && (

@@ -1,6 +1,8 @@
 /* File: src/components/bar/sales/Ticket.tsx */
 import { type FC, memo, useCallback } from "react";
 
+import { Stack } from "@acme/design-system/primitives";
+
 import { useOrderAgeColor } from "../../../hooks/orchestrations/bar/actions/clientActions/useOrderAgeColor";
 import { type SalesOrder } from "../../../types/bar/BarTypes";
 
@@ -25,26 +27,28 @@ const Ticket: FC<Props> = memo(
     );
 
     return (
-      <article className="flex flex-col overflow-hidden rounded-lg border border-border-2 bg-surface-2 shadow-md">
-        {/* --- Ticket header --- */}
-        <header
-          className={`flex cursor-pointer items-center justify-between px-4 py-3 transition-colors duration-1000 ${ageColor}`}
-          onDoubleClick={handleHeaderDblClick}
-        >
-          <span className="text-2xl font-extrabold tracking-wider text-primary-fg drop-shadow-sm">
-            {bleepNumber}
-          </span>
-          <time
-            dateTime={time}
-            className="text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+      <Stack asChild gap={0} className="overflow-hidden rounded-lg border border-border-2 bg-surface-2 shadow-md">
+        <article>
+          {/* --- Ticket header --- */}
+          <header
+            className={`flex cursor-pointer items-center justify-between px-4 py-3 transition-colors duration-1000 ${ageColor}`}
+            onDoubleClick={handleHeaderDblClick}
           >
-            {time}
-          </time>
-        </header>
+            <span className="text-2xl font-extrabold tracking-wider text-primary-fg drop-shadow-sm">
+              {bleepNumber}
+            </span>
+            <time
+              dateTime={time}
+              className="text-xs font-semibold uppercase tracking-widest text-muted-foreground"
+            >
+              {time}
+            </time>
+          </header>
 
-        {/* --- Ticket body --- */}
-        <TicketItems order={order} removeSingleItem={removeSingleItem} />
-      </article>
+          {/* --- Ticket body --- */}
+          <TicketItems order={order} removeSingleItem={removeSingleItem} />
+        </article>
+      </Stack>
     );
   }
 );

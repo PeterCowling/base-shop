@@ -2,6 +2,7 @@
 import { useCallback } from "react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
 
 import { withModalBackground } from "../../../../hoc/withModalBackground";
 
@@ -36,7 +37,7 @@ function IcedCoffeeSweetnessModalBase(
       <h2 className="text-lg font-semibold mb-4 text-center">
         {productName}: Sweetness
       </h2>
-      <div className="flex flex-col space-y-3 mb-4">
+      <Stack gap={3} className="mb-4">
         <Button
           onClick={handleSweetened}
           color="primary"
@@ -51,7 +52,7 @@ function IcedCoffeeSweetnessModalBase(
         >
           Unsweetened
         </Button>
-      </div>
+      </Stack>
       <Button
         onClick={onCancel}
         color="default"

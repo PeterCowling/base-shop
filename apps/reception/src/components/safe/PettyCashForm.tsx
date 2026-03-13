@@ -2,6 +2,7 @@
 import { memo, useCallback, useState } from "react";
 
 import { Input } from "@acme/design-system";
+import { Stack } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
 
 import { showToast } from "../../utils/toastUtils";
@@ -52,7 +53,7 @@ export const PettyCashForm = memo(function PettyCashForm({
       maxWidth="max-w-sm"
     >
       {/* Input */}
-      <div className="flex flex-col gap-4">
+      <Stack gap={4}>
         <Input
           compatibilityMode="no-wrapper"
           type="number"
@@ -62,7 +63,7 @@ export const PettyCashForm = memo(function PettyCashForm({
           value={amount}
           onChange={handleAmountChange}
         />
-      </div>
+      </Stack>
 
       {/* Reauth */}
       <div className="mt-6">

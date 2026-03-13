@@ -1,6 +1,7 @@
 import { memo, type ReactElement, useCallback, useMemo, useState } from "react";
 
 import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
+import { Cluster } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
 
 import { useLoanData } from "../../context/LoanDataContext";
@@ -121,34 +122,33 @@ function KeycardsModalComponent({
             {keycardTxns.map((txn, idx) => {
               const current = editedTypes[txn.id] ?? txn.depositType;
               return (
-                <li
-                  key={txn.id}
-                  className="flex items-center justify-between gap-2"
-                >
-                  <span>Card {idx + 1}</span>
-                  <Select
-                    value={current}
-                    onValueChange={(val) => handleTypeChange(txn.id, val)}
-                  >
-                    <SelectTrigger className="border rounded-lg px-2 py-1 flex-1">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="CASH">Cash</SelectItem>
-                      <SelectItem value="PASSPORT">Passport</SelectItem>
-                      <SelectItem value="LICENSE">License</SelectItem>
-                      <SelectItem value="ID">ID</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {current !== txn.depositType && (
-                    <Button
-                      onClick={() => handleSave(txn.id)}
-                      className="bg-primary-main hover:bg-primary-dark text-primary-fg px-2 py-1 rounded-lg"
+                <Cluster asChild key={txn.id} justify="between" gap={2}>
+                  <li>
+                    <span>Card {idx + 1}</span>
+                    <Select
+                      value={current}
+                      onValueChange={(val) => handleTypeChange(txn.id, val)}
                     >
-                      Save
-                    </Button>
-                  )}
-                </li>
+                      <SelectTrigger className="border rounded-lg px-2 py-1 flex-1">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="CASH">Cash</SelectItem>
+                        <SelectItem value="PASSPORT">Passport</SelectItem>
+                        <SelectItem value="LICENSE">License</SelectItem>
+                        <SelectItem value="ID">ID</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    {current !== txn.depositType && (
+                      <Button
+                        onClick={() => handleSave(txn.id)}
+                        className="bg-primary-main hover:bg-primary-dark text-primary-fg px-2 py-1 rounded-lg"
+                      >
+                        Save
+                      </Button>
+                    )}
+                  </li>
+                </Cluster>
               );
             })}
           </ul>

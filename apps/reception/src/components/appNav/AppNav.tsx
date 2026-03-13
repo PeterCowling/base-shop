@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Cluster, Stack } from "@acme/design-system/primitives";
 
 import { canAccess, isPrivileged } from "../../lib/roles";
 import { isStaffAccountsPeteIdentity } from "../../lib/staffAccountsAccess";
@@ -76,14 +77,17 @@ function AppNav({ user, onLogout }: AppNavProps) {
       )}
 
       {/* Sidebar */}
-      <nav
-        className={`fixed start-0 top-0 h-full w-64 transform bg-surface shadow-xl transition-transform duration-300 flex flex-col ${
+      <Stack
+        asChild
+        className={`fixed start-0 top-0 h-full w-64 transform bg-surface shadow-xl transition-transform duration-300 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         }`}
-        aria-label="Main navigation"
       >
+        <nav
+          aria-label="Main navigation"
+        >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-border p-4">
+        <Cluster justify="between" className="border-b border-border p-4">
           <div>
             <h2 className="text-lg font-semibold text-foreground">
               Reception
@@ -101,7 +105,7 @@ function AppNav({ user, onLogout }: AppNavProps) {
           >
             <X size={20} />
           </Button>
-        </div>
+        </Cluster>
 
         {/* Nav Sections */}
         <div className="flex-1 overflow-y-auto p-4">
@@ -159,7 +163,8 @@ function AppNav({ user, onLogout }: AppNavProps) {
             Sign out
           </Button>
         </div>
-      </nav>
+        </nav>
+      </Stack>
 
       {/* Keyboard shortcut hint (only shown when nav is closed) */}
       {!isOpen && (

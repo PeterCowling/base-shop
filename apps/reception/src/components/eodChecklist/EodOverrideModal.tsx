@@ -2,6 +2,7 @@ import { type FormEvent, memo, useCallback, useEffect, useRef, useState } from "
 
 import { Input, Textarea } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Cluster, Stack } from "@acme/design-system/primitives";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { getUserDisplayName } from "../../lib/roles";
@@ -72,7 +73,8 @@ function EodOverrideModalBase({ onConfirm, onCancel }: EodOverrideModalProps) {
         One or more required steps could not be completed. Provide your
         credentials and a reason to proceed.
       </p>
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <Stack asChild gap={3}>
+        <form onSubmit={handleSubmit}>
         <Input
           compatibilityMode="no-wrapper"
           ref={emailRef}
@@ -112,7 +114,7 @@ function EodOverrideModalBase({ onConfirm, onCancel }: EodOverrideModalProps) {
             {error}
           </div>
         )}
-        <div className="mt-2 flex justify-center gap-2">
+        <Cluster justify="center" className="mt-2">
           <Button
             type="button"
             onClick={onCancel}
@@ -129,8 +131,9 @@ function EodOverrideModalBase({ onConfirm, onCancel }: EodOverrideModalProps) {
           >
             {isSubmitting ? "Verifying..." : "Authorise override"}
           </Button>
-        </div>
+        </Cluster>
       </form>
+      </Stack>
     </ModalContainer>
   );
 }

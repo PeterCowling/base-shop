@@ -10,6 +10,7 @@ import { Banknote, FileText } from "lucide-react";
 
 import { Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Cluster, Inline, Stack } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
 
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
@@ -122,7 +123,7 @@ function LoanModalComponent({
       title={mode === "loan" ? "Add Loan" : "Return Item"}
       maxWidth="max-w-lg"
       footer={
-        <div className="flex justify-end items-center space-x-2">
+        <Cluster justify="end" gap={2}>
           <Button
             color="default"
             tone="soft"
@@ -137,7 +138,7 @@ function LoanModalComponent({
           >
             Confirm
           </Button>
-        </div>
+        </Cluster>
       }
     >
       <div className="space-y-6">
@@ -145,14 +146,14 @@ function LoanModalComponent({
         {occupant && (
           <div className="text-sm text-foreground bg-surface-2 p-3 rounded-lg">
             <div className="font-semibold">Occupant:</div>
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between mt-1">
+            <Stack className="md:flex-row md:items-center md:justify-between mt-1">
               <span>
                 {occupant.firstName} {occupant.lastName}
               </span>
               <span className="text-foreground">
                 Ref: {occupant.bookingRef}
               </span>
-            </div>
+            </Stack>
           </div>
         )}
 
@@ -177,7 +178,7 @@ function LoanModalComponent({
           >
             {mode === "loan" ? "Quantity to Loan" : "Quantity to Return"}
           </label>
-          <div className="flex items-center">
+          <Inline gap={2} wrap={false}>
             <Input compatibilityMode="no-wrapper"
               id="countInput"
               type="number"
@@ -190,7 +191,7 @@ function LoanModalComponent({
             {maxCount !== undefined && mode === "return" && (
               <span className="text-sm text-muted-foreground">(Max: {maxCount})</span>
             )}
-          </div>
+          </Inline>
         </div>
 
         {/* Deposit Method (only visible if mode === "loan" && item === "Keycard") */}

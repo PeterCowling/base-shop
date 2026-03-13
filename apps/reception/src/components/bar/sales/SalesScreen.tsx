@@ -3,6 +3,7 @@ import React, { type FC, useCallback, useMemo, useState } from "react";
 import { ref, remove, set } from "firebase/database";
 
 import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
 
 import { useSalesOrders } from "../../../hooks/data/bar/useSalesOrders";
 import { useBleeperMutations } from "../../../hooks/mutations/useBleeperMutations";
@@ -155,11 +156,11 @@ const SalesScreen: FC = React.memo(() => {
             removeSingleItem={handleRemoveSingleItem}
           />
         ) : (
-          <div className="flex h-60vh flex-col items-center justify-center">
+          <Stack align="center" gap={0} className="h-60vh justify-center">
             <p className="text-4xl font-semibold text-muted-foreground text-shadow-sm">
               No orders
             </p>
-          </div>
+          </Stack>
         )}
       </main>
     </div>

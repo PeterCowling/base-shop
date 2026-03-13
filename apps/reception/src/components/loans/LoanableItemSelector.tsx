@@ -2,6 +2,7 @@
 import React, { memo, type ReactElement, useCallback } from "react";
 
 import { Button, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@acme/design-system";
+import { Inline } from "@acme/design-system/primitives";
 
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
 
@@ -63,7 +64,7 @@ function LoanableItemSelectorComponent({
   }, [guest, guestSelectedItem, openModal]);
 
   return (
-    <div className="flex items-center gap-2">
+    <Inline gap={2}>
       <Select value={guestSelectedItem} onValueChange={handleSelect}>
         <SelectTrigger className="border px-2 py-1 rounded-lg">
           <SelectValue />
@@ -84,7 +85,7 @@ function LoanableItemSelectorComponent({
       >
         Loan
       </Button>
-    </div>
+    </Inline>
   );
 }
 

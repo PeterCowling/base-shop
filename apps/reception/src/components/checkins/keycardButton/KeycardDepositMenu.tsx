@@ -43,7 +43,7 @@ function KeycardDepositMenu({
   closeMenu,
 }: KeycardDepositMenuProps) {
   const containerClass = `
-    z-50 w-72 border border-border-2 rounded-lg shadow-lg bg-surface p-4
+    absolute z-50 w-72 border border-border-2 rounded-lg shadow-lg bg-surface p-4
     transition-opacity duration-200 transform-gpu
     ${menuOpen ? "opacity-100 scale-100" : "opacity-0 scale-95"}
   `;
@@ -59,7 +59,6 @@ function KeycardDepositMenu({
   return (
     <div
       style={{
-        position: "absolute",
         top: menuPosition.top,
         left: menuPosition.left,
       }}

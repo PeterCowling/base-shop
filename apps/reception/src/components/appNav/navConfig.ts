@@ -1,10 +1,8 @@
 import {
-  Activity,
-  AreaChart,
+  Banknote,
   BarChart3,
   Bed,
   CalendarPlus,
-  Carrot,
   ClipboardCheck,
   ClipboardList,
   CreditCard,
@@ -15,18 +13,12 @@ import {
   HandCoins,
   Home,
   Inbox,
-  LineChart,
-  List,
-  ListChecks,
   Mail,
   Package,
-  PieChart,
   Search,
-  Shield,
   ToggleRight,
   UserCheck,
   Users,
-  Wrench,
 } from "lucide-react";
 
 import { Permissions } from "../../lib/roles";
@@ -91,13 +83,8 @@ export const navSections: NavSection[] = [
     // permissionKey → withIconModal renders as read-only for users without TILL_ACCESS
     permissionKey: Permissions.TILL_ACCESS,
     items: [
-      { label: "Till",       icon: List,     route: "/till-reconciliation" },
-      { label: "Safe",       icon: Shield,   route: "/safe-reconciliation" },
-      { label: "Workbench",  icon: Wrench,   route: "/reconciliation-workbench" },
-      // Divergence #3: canonical icon → Activity (evocative of live data)
-      { label: "Live",       icon: Activity, route: "/live" },
-      { label: "Variance",   icon: AreaChart,route: "/variance-heatmap" },
-      { label: "End of Day", icon: FileText, route: "/end-of-day" },
+      { label: "Cash",       icon: Banknote, route: "/cash" },
+      { label: "EOD",        icon: FileText, route: "/eod" },
     ],
   },
   {
@@ -117,19 +104,10 @@ export const navSections: NavSection[] = [
     // permissionKey → withIconModal renders as read-only for users without MANAGEMENT_ACCESS
     permissionKey: Permissions.MANAGEMENT_ACCESS,
     items: [
-      { label: "Alloggiati",        icon: Database,      route: "/alloggiati" },
-      { label: "Stock",             icon: Package,       route: "/stock" },
-      { label: "Ingredients",       icon: Carrot,        route: "/ingredient-stock" },
-      { label: "Real Time",         icon: LineChart,     route: "/real-time-dashboard" },
-      // Divergence #5: Manager Audit absent from ManModal — add to Admin section.
-      { label: "Manager Audit",     icon: ClipboardCheck,route: "/manager-audit" },
-      // Divergence #6: EOD Checklist absent from ManModal — add to Admin section.
-      // Divergence #7: Label collision — renamed "End of Day" → "EOD Checklist" to distinguish from Till EOD.
-      { label: "EOD Checklist",     icon: ListChecks,    route: "/eod-checklist" },
-      // Divergence #8: "Menu Perf" → "Menu Performance" (canonical full label).
-      { label: "Menu Performance",  icon: PieChart,      route: "/menu-performance" },
-      { label: "Statistics",        icon: BarChart3,     route: "/statistics" },
-      // Divergence #4: Staff Accounts in Admin (not Management). peteOnly restricts to Pete's identity.
+      { label: "Alloggiati",    icon: Database,      route: "/alloggiati" },
+      { label: "Stock",         icon: Package,       route: "/stock" },
+      { label: "Analytics",     icon: BarChart3,     route: "/analytics" },
+      { label: "Manager Audit", icon: ClipboardCheck,route: "/manager-audit" },
       {
         label: "Staff Accounts",
         icon: Users,

@@ -3,6 +3,7 @@
 import React, { type FC, useCallback, useMemo } from "react";
 
 import { Input } from "@acme/design-system";
+import { Stack } from "@acme/design-system/primitives";
 
 import { useBleepersData } from "../../../hooks/data/bar/useBleepersData";
 
@@ -41,7 +42,7 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
     return (
       <section className="space-y-5 border-t border-border-2 bg-surface-2/80 p-4 backdrop-blur-md">
         {/* ─────── Bleep input ─────── */}
-        <div className="flex flex-col gap-1">
+        <Stack gap={1}>
           <label
             htmlFor="bleepInput"
             className="text-sm font-medium leading-none text-foreground"
@@ -60,7 +61,7 @@ const PaymentSection: FC<PaymentSectionProps> = React.memo(
             placeholder="No bleepers available"
             className="w-full min-h-11 rounded-md border border-border-2 bg-input py-2 px-3 text-sm shadow-inner focus:border-primary-main focus:outline-none focus-visible:ring-2 focus-visible:ring-primary-main/40"
           />
-        </div>
+        </Stack>
 
         {/* ─────── Total ─────── */}
         <p

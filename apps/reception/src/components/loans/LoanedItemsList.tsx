@@ -3,7 +3,7 @@
 import { memo, type ReactElement, useCallback, useMemo } from "react";
 
 import { Button } from "@acme/design-system/atoms";
-import { Inline } from "@acme/design-system/primitives";
+import { Cluster, Inline } from "@acme/design-system/primitives";
 
 import {
   type LoanItem,
@@ -151,7 +151,7 @@ function LoanedItemsListComponent({
         const showReturnButton = itemName !== "No_card";
 
         return (
-          <div key={key} className="flex items-center justify-between my-1">
+          <Cluster key={key} justify="between" className="my-1">
             <div>
               {itemName} (x{count}) - {getDepositLabel(depositType)}
             </div>
@@ -175,7 +175,7 @@ function LoanedItemsListComponent({
                 </Button>
               )}
             </Inline>
-          </div>
+          </Cluster>
         );
       })}
     </>

@@ -1,0 +1,14 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-extension-booking-button-row",
+  "business": "BRIK",
+  "build_date": "2026-03-13",
+  "outcome_type": "operational",
+  "outcome_statement": "The Extend Booking button reliably appears on the first visible row for each multi-occupant booking in the current display order.",
+  "why": "The Booking button relied on lexicographic ordering of occupant IDs to pick which row shows it. This could place the button on the wrong guest row in the sorted view.",
+  "source": "operator",
+  "dispatch_id": "IDEA-DISPATCH-20260313150000-0001",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "emitted_at": "2026-03-13T15:13:30.000Z"
+}

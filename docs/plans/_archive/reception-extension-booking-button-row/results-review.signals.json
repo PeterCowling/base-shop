@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-13T15:14:22.037Z",
+  "plan_slug": "reception-extension-booking-button-row",
+  "review_cycle_key": "reception-extension-booking-button-row",
+  "source_path": "docs/plans/reception-extension-booking-button-row/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

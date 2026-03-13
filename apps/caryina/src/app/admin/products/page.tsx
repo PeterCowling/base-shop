@@ -1,4 +1,9 @@
+import Link from "next/link";
+
+import { Button } from "@acme/design-system/shadcn";
 import { readRepo } from "@acme/platform-core/repositories/products.server";
+
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
 
 const SHOP = "caryina";
 
@@ -11,12 +16,13 @@ export default async function AdminProductsPage() {
     <div className="mx-auto max-w-4xl px-6 py-12">
       <div className="mb-8 flex items-center justify-between">
         <h1 className="text-2xl font-display">Products</h1>
-        <a
-          href="/admin/products/new"
-          className="btn-primary inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-6 py-2.5 text-sm"
+        <Button
+          asChild
+          compatibilityMode="passthrough"
+          className={`${BTN_PRIMARY} inline-flex min-h-11 min-w-11 items-center justify-center rounded-full px-6 py-2.5 text-sm`}
         >
-          + New product
-        </a>
+          <Link href="/admin/products/new">+ New product</Link>
+        </Button>
       </div>
 
       {products.length === 0 ? (

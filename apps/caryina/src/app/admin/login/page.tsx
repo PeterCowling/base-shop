@@ -3,6 +3,10 @@
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { Button } from "@acme/design-system/shadcn";
+
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
+
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -55,13 +59,14 @@ function LoginForm() {
         />
       </div>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
-      <button
+      <Button
         type="submit"
         disabled={pending}
-        className="btn-primary min-h-11 min-w-11 w-full rounded-full px-6 py-2.5 text-sm disabled:opacity-50"
+        compatibilityMode="passthrough"
+        className={`${BTN_PRIMARY} min-h-11 min-w-11 w-full rounded-full px-6 py-2.5 text-sm`}
       >
         {pending ? "Verifying…" : "Log in"}
-      </button>
+      </Button>
     </form>
   );
 }

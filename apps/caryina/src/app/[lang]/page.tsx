@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { Button } from "@acme/design-system/shadcn";
 import { type Locale, resolveLocale } from "@acme/i18n/locales";
 
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
@@ -17,6 +18,7 @@ import {
   getSkuFamilyLabel,
 } from "@/lib/launchMerchandising";
 import { formatMoney, readShopCurrency, readShopSkus } from "@/lib/shop";
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
 
 export async function generateMetadata({
   params,
@@ -52,8 +54,44 @@ export default async function LocaleHomePage({
   const familyAnchors = buildLaunchFamilyAnchors(skus, lang, familyCopy);
   const featuredSkus = skus.slice(0, 4);
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://caryina.com";
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: homeContent.faqItems.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Caryina",
+    url: siteUrl,
+    description:
+      "Caryina mini bag charms and micro accessories designed in Positano, Italy.",
+    logo: `${siteUrl}/og-image.png`,
+  };
+
   return (
-    <section className="space-y-12 sm:space-y-20">
+    <>
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        suppressHydrationWarning
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+      />
+      <section className="space-y-12 sm:space-y-20">
       <div className="hero-grid gap-8 md:items-center">
         <div className="space-y-5">
           <SectionEyebrow>{homeContent.eyebrow}</SectionEyebrow>
@@ -64,12 +102,13 @@ export default async function LocaleHomePage({
             {homeContent.summary}
           </p>
           <div className="flex flex-wrap items-center gap-3 pt-1">
-            <Link
-              href={`/${lang}/shop`}
-              className="btn-primary rounded-full px-6 py-2.5 text-sm"
+            <Button
+              asChild
+              compatibilityMode="passthrough"
+              className={`${BTN_PRIMARY} rounded-full px-6 py-2.5 text-sm`}
             >
-              {homeContent.ctaPrimary}
-            </Link>
+              <Link href={`/${lang}/shop`}>{homeContent.ctaPrimary}</Link>
+            </Button>
             <Link
               href={`/${lang}/shop?family=mini`}
               className="rounded-full border px-5 py-2.5 text-sm transition-colors hover:border-current"
@@ -154,7 +193,7 @@ export default async function LocaleHomePage({
                     href={`/${lang}/product/${sku.slug}`}
                     category={getSkuFamilyLabel(sku, index, familyCopy)}
                     title={sku.title}
-                    priceLabel={formatMoney(sku.price, currency)}
+                    priceLabel={formatMoney(sku.price, currency, lang)}
                     primarySrc={media.primarySrc}
                     primaryAlt={media.primaryAlt}
                     secondarySrc={media.secondarySrc}
@@ -182,5 +221,6 @@ export default async function LocaleHomePage({
         </ul>
       </section>
     </section>
+    </>
   );
 }

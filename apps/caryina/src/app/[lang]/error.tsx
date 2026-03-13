@@ -4,6 +4,10 @@ import { useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
+import { Button } from "@acme/design-system/shadcn";
+
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
+
 export default function Error({
   error,
   reset,
@@ -43,13 +47,14 @@ export default function Error({
         An unexpected error occurred. Please try again.
       </p>
       <div className="mt-8 flex items-center gap-4">
-        <button
+        <Button
           type="button"
           onClick={reset}
-          className="btn-primary min-h-11 min-w-11 rounded-full px-6 py-2.5 text-sm"
+          compatibilityMode="passthrough"
+          className={`${BTN_PRIMARY} min-h-11 min-w-11 rounded-full px-6 py-2.5 text-sm`}
         >
           Try again
-        </button>
+        </Button>
         <Link
           href={`/${lang}/shop`}
           className="text-sm underline underline-offset-4"

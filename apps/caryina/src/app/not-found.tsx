@@ -1,6 +1,10 @@
 import { headers } from "next/headers";
 import Link from "next/link";
 
+import { Button } from "@acme/design-system/shadcn";
+
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
+
 function detectLocale(pathname: string): string {
   const match = pathname.match(/^\/([a-z]{2})\//);
   return match?.[1] ?? "en";
@@ -34,12 +38,13 @@ export default async function NotFound() {
       >
         The page you are looking for does not exist or has been moved.
       </p>
-      <Link
-        href={`/${lang}/shop`}
-        className="btn-primary mt-8 rounded-full px-6 py-2.5 text-sm"
+      <Button
+        asChild
+        compatibilityMode="passthrough"
+        className={`${BTN_PRIMARY} mt-8 rounded-full px-6 py-2.5 text-sm`}
       >
-        Back to shop
-      </Link>
+        <Link href={`/${lang}/shop`}>Back to shop</Link>
+      </Button>
     </div>
   );
 }

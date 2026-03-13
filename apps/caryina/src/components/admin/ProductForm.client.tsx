@@ -3,9 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { Input } from "@acme/design-system/shadcn";
+import { Button, Input } from "@acme/design-system/shadcn";
 import type { ProductPublication } from "@acme/types";
 import type { MediaItem } from "@acme/types/MediaItem";
+
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
 
 type MediaRow = { url: string; type: "image" | "video"; altText: string };
 
@@ -106,13 +108,14 @@ interface FormActionsProps {
 function FormActions({ isEdit, pending, onDelete }: FormActionsProps) {
   return (
     <div className="flex items-center gap-3">
-      <button
+      <Button
         type="submit"
         disabled={pending}
-        className="btn-primary min-h-11 min-w-11 rounded-full px-6 py-2.5 text-sm disabled:opacity-50"
+        compatibilityMode="passthrough"
+        className={`${BTN_PRIMARY} min-h-11 min-w-11 rounded-full px-6 py-2.5 text-sm`}
       >
         {pending ? "Saving…" : isEdit ? "Save changes" : "Create product"}
-      </button>
+      </Button>
       {isEdit ? (
         <button
           type="button"

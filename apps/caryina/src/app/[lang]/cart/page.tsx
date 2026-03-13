@@ -3,7 +3,10 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
+import { Button } from "@acme/design-system/shadcn";
 import { useCart } from "@acme/platform-core/contexts/CartContext";
+
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
 
 const LOCALE_MAP: Record<string, string> = { en: "en-IE", de: "de-DE", it: "it-IT" };
 
@@ -102,13 +105,19 @@ export default function CartPage() {
           {formatEur(total, lang)}
         </p>
       </div>
+      <p className="max-w-2xl text-sm text-muted-foreground">
+        Delivery timing shown before payment is estimated. Eligible online consumer orders
+        normally include a 14-day cancellation right, and unused-item exchange requests may be
+        handled within 30 days after delivery where stock allows.
+      </p>
       <div className="flex flex-wrap gap-4">
-        <Link
-          href={`/${lang}/checkout`}
-          className="btn-primary rounded-full px-8 py-3 text-sm"
+        <Button
+          asChild
+          compatibilityMode="passthrough"
+          className={`${BTN_PRIMARY} rounded-full px-8 py-3 text-sm`}
         >
-          Proceed to payment
-        </Link>
+          <Link href={`/${lang}/checkout`}>Proceed to payment</Link>
+        </Button>
         <Link
           href={`/${lang}/shop`}
           className="rounded-full px-6 py-3 text-sm text-muted-foreground hover:text-foreground"

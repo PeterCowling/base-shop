@@ -34,29 +34,6 @@
   --brand-accent-color: hsl(var(--color-accent));
 }
 
-/* ── Component: Primary CTA ────────────────────────────── */
-@layer components {
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: hsl(var(--color-primary));
-    color: hsl(var(--color-primary-fg));
-    font-weight: 500;
-    transition: background-color 150ms ease;
-  }
-  .btn-primary:hover {
-    background-color: hsl(var(--color-primary-hover));
-  }
-  .btn-primary:active {
-    background-color: hsl(var(--color-primary-active));
-  }
-  .btn-primary:focus-visible {
-    outline: 2px solid hsl(var(--color-focus-ring));
-    outline-offset: 2px;
-  }
-}
-
 /* ── Utilities ─────────────────────────────────────────── */
 @layer utilities {
   .text-accent {

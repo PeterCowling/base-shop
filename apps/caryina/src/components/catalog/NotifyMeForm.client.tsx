@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 
+import { Button } from "@acme/design-system/shadcn";
 import { logAnalyticsEvent } from "@acme/platform-core/analytics/client";
+
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
 
 export interface NotifyMeStrings {
   consent: string;
@@ -121,13 +124,14 @@ export function NotifyMeForm({ productSlug, strings }: NotifyMeFormProps) {
         </p>
       )}
 
-      <button
+      <Button
         type="submit"
         disabled={loading || !email.trim() || !consent}
-        className="btn-primary min-h-11 min-w-11 rounded-full px-6 text-sm disabled:opacity-50"
+        compatibilityMode="passthrough"
+        className={`${BTN_PRIMARY} min-h-11 min-w-11 rounded-full px-6 text-sm`}
       >
         {loading ? strings.submitting : strings.submit}
-      </button>
+      </Button>
     </form>
   );
 }

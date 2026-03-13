@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 
-import { Input } from "@acme/design-system/shadcn";
+import { Button, Input } from "@acme/design-system/shadcn";
 import type { InventoryItem } from "@acme/platform-core/repositories/inventory.server";
+
+import { BTN_PRIMARY } from "@/styles/buttonStyles";
 
 interface InventoryEditorProps {
   productSku: string;
@@ -85,13 +87,14 @@ export function InventoryEditor({ productSku, inventoryItems }: InventoryEditorP
             className="w-28 rounded-lg border border-border px-3 py-2 text-sm"
           />
         </div>
-        <button
+        <Button
           type="submit"
           disabled={status === "saving"}
-          className="btn-primary min-h-11 min-w-11 rounded-full px-6 py-2.5 text-sm disabled:opacity-50"
+          compatibilityMode="passthrough"
+          className={`${BTN_PRIMARY} min-h-11 min-w-11 rounded-full px-6 py-2.5 text-sm`}
         >
           {status === "saving" ? "Saving..." : "Update stock"}
-        </button>
+        </Button>
         {status === "saved" ? (
           <span className="text-sm text-success-fg">Saved!</span>
         ) : null}

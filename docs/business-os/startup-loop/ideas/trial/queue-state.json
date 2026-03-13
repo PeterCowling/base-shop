@@ -1,17 +1,17 @@
 {
-  "last_updated": "2026-03-13T20:20:18.860Z",
+  "last_updated": "2026-03-13T20:26:50.467Z",
   "counts": {
-    "enqueued": 42,
+    "enqueued": 41,
     "processed": 26,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 345,
+    "completed": 346,
     "fact_find_ready": 30,
     "plan_ready": 0,
-    "micro_build_ready": 10,
+    "micro_build_ready": 9,
     "briefing_ready": 0,
     "total": 623
   },
@@ -265,9 +265,9 @@
         "apps/prime/src/components/pre-arrival/__tests__/value-framing.test.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P3",
       "confidence": 0.85,
       "evidence_refs": [
@@ -280,7 +280,18 @@
         "statement": "TC-03 passes. The confidence cue rendering path has working test coverage.",
         "source": "operator"
       },
-      "created_at": "2026-03-13T20:00:00.000Z"
+      "created_at": "2026-03-13T20:00:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_slug": "prime-value-framing-test",
+        "micro_build_path": "docs/plans/_archive/prime-value-framing-test/micro-build.md",
+        "processed_at": "2026-03-13T21:13:00.000Z"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-value-framing-test/micro-build.md",
+        "completed_at": "2026-03-13T20:26:50.466Z",
+        "outcome": "TC-03 passes; confidence cue rendering path has working test coverage"
+      }
     },
     {
       "schema_version": "dispatch.v2",

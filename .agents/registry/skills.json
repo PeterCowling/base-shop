@@ -97,6 +97,11 @@
       "path": ".claude/skills/lp-design-spec/SKILL.md"
     },
     {
+      "name": "lp-do-analysis",
+      "description": "Thin orchestrator for decision-grade approach selection. Converts evidence-first fact-finds into a chosen approach, rejected alternatives, and a planning handoff artifact ready for /lp-do-plan.",
+      "path": ".claude/skills/lp-do-analysis/SKILL.md"
+    },
+    {
       "name": "lp-do-assessment-01-problem-statement",
       "description": "Problem framing for new startups (ASSESSMENT-01). Produces a falsifiable problem statement artifact before entering ASSESSMENT intake. Upstream of lp-do-assessment-02-solution-profiling.",
       "path": ".claude/skills/lp-do-assessment-01-problem-statement/SKILL.md"
@@ -178,12 +183,17 @@
     },
     {
       "name": "lp-do-critique",
-      "description": "Hardnosed critic for lp-do-fact-find, lp-do-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.",
+      "description": "Hardnosed critic for lp-do-fact-find, lp-do-analysis, lp-do-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.",
       "path": ".claude/skills/lp-do-critique/SKILL.md"
     },
     {
+      "name": "lp-do-data-audit",
+      "description": "Data hardening audit for Next.js and web apps in this monorepo. Checks schema validation coverage, TypeScript strictness, environment variable safety, database type safety, client-side response validation, error handling, and unsafe cast patterns. Emits a structured audit report and a PASS/FAIL verdict. Run before site launch and periodically thereafter.",
+      "path": ".claude/skills/lp-do-data-audit/SKILL.md"
+    },
+    {
       "name": "lp-do-fact-find",
-      "description": "Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits planning artifacts ready for /lp-do-plan. For understanding-only briefings, use /lp-do-briefing.",
+      "description": "Thin orchestrator for discovery, intake routing, and evidence-first fact-finding. Routes to specialized modules and emits analysis-ready artifacts for /lp-do-analysis. For understanding-only briefings, use /lp-do-briefing.",
       "path": ".claude/skills/lp-do-fact-find/SKILL.md"
     },
     {
@@ -208,7 +218,7 @@
     },
     {
       "name": "lp-do-plan",
-      "description": "Thin orchestrator for confidence-gated planning. Routes to track-specific planning modules, persists plan artifacts from templates, and hands off to /lp-do-build by default unless --notauto is passed.",
+      "description": "Thin orchestrator for confidence-gated planning. Consumes analysis artifacts, decomposes the chosen approach into executable tasks, persists plan artifacts from templates, and hands off to /lp-do-build by default unless --notauto is passed.",
       "path": ".claude/skills/lp-do-plan/SKILL.md"
     },
     {
@@ -263,7 +273,7 @@
     },
     {
       "name": "lp-onboarding-audit",
-      "description": "Audit an app's onboarding flow against the \"Onboarding Done Right\" checklist. Customizes the generic checklist for the app's purpose and audience, then audits actual code using lp-do-fact-find's Outcome A process. Produces a planning-ready brief.",
+      "description": "Audit an app's onboarding flow against the \"Onboarding Done Right\" checklist. Customizes the generic checklist for the app's purpose and audience, then audits actual code using lp-do-fact-find's Outcome A process. Produces an analysis-ready brief.",
       "path": ".claude/skills/lp-onboarding-audit/SKILL.md"
     },
     {
@@ -282,14 +292,14 @@
       "path": ".claude/skills/lp-readiness/SKILL.md"
     },
     {
+      "name": "lp-sell-funnel-audit",
+      "description": "Audit a live sales funnel with rendered browser evidence, not DOM inference alone. Verifies mobile and fullscreen booking paths, captures screenshots, critiques stale reviews against the live site, writes a dated sales audit artifact, and updates SELL-08 activation evidence.",
+      "path": ".claude/skills/lp-sell-funnel-audit/SKILL.md"
+    },
+    {
       "name": "lp-seo",
       "description": "S6B phased SEO strategy skill - keyword research, content clustering, SERP analysis, technical audit, and snippet optimization for any business",
       "path": ".claude/skills/lp-seo/SKILL.md"
-    },
-    {
-      "name": "lp-signal-review",
-      "description": "Weekly signal strengthening review for startup loop runs. Audits a run against ten structural signal-strengthening principles, scores each on Severity × Support axes, identifies top findings, and emits a Signal Review artifact with ranked Finding Briefs (quality check — what went wrong this run) and Process-Improvement Stubs (continuous improvement — which process artifact caused it and what to change).",
-      "path": ".claude/skills/lp-signal-review/SKILL.md"
     },
     {
       "name": "lp-site-upgrade",
@@ -358,7 +368,7 @@
     },
     {
       "name": "tools-design-system",
-      "description": "Apply design tokens and system patterns correctly. Reference for semantic colors, spacing, typography, borders, and shadows. Never use arbitrary values.",
+      "description": "Apply the repo's current design-system contracts correctly. Use semantic tokens, DS component props, and app-level Tailwind v4 `@theme` aliases where appropriate. Avoid hardcoded colors and stale HSL-only guidance.",
       "path": ".claude/skills/tools-design-system/SKILL.md"
     },
     {

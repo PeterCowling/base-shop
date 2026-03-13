@@ -15,6 +15,11 @@ binding = "ASSETS"
 #   wrangler secret put INVENTORY_ADMIN_TOKEN
 #   wrangler secret put DATABASE_URL
 #   wrangler secret put INVENTORY_ALLOWED_IPS
+#
+# DATABASE_URL format (Neon serverless Postgres):
+#   postgresql://user:pass@<project>.neon.tech/<dbname>?sslmode=require
+# The Prisma client uses @prisma/adapter-neon in this Worker runtime so that
+# HTTP-based connections are used instead of TCP (TCP is blocked in V8 isolates).
 # ============================================================================
 
 [[kv_namespaces]]

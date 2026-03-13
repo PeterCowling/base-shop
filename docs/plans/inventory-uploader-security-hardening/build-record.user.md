@@ -93,6 +93,25 @@ Added `jest.config.cjs` and `test` script to `package.json`. Four test suites cr
 
 ---
 
+---
+
+### Dispatch IDEA-DISPATCH-20260313170000-0001 — Neon adapter for Cloudflare Workers
+**Date**: 2026-03-13
+
+Standard Prisma uses Node.js TCP connections which are blocked inside Cloudflare's V8 isolate runtime. This dispatch wires in `@neondatabase/serverless` and `@prisma/adapter-neon` so that the inventory-uploader app can reach its Neon Postgres database when deployed as a Cloudflare Worker.
+
+**Changes:**
+
+- `packages/platform-core/package.json` — added `@neondatabase/serverless` and `@prisma/adapter-neon@6.14.0` (matching existing prisma version) to `dependencies`
+- `packages/platform-core/prisma/schema.prisma` — added `previewFeatures = ["driverAdapters"]` to the generator block; Prisma client regenerated
+- `packages/platform-core/src/db.ts` — added `isCloudflareWorkersRuntime()` detection (checks `EdgeRuntime` global, `CF_PAGES`, `WORKERS_RS_VERSION`); in that path the client is created via `PrismaNeon(neon(DATABASE_URL))` adapter instead of a direct TCP datasource; the Node.js path (reception, prime, caryina, local dev) is unchanged
+- `apps/inventory-uploader/wrangler.toml` — added Neon connection string format note to the secrets comment block
+- `apps/inventory-uploader/.env.example` — created with `DATABASE_URL` placeholder and `INVENTORY_BACKEND=json` default for local dev
+
+The Node.js Prisma path used by all other apps is untouched. Neon packages are loaded via dynamic `require` so they are not bundled into Node.js builds.
+
+---
+
 ## Files created
 
 - `apps/inventory-uploader/src/lib/auth/requestIp.ts`

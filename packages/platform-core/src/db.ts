@@ -66,6 +66,21 @@ function missingPrismaClient(): PrismaClientType {
   ) as unknown as PrismaClientType;
 }
 
+/**
+ * Returns true when running inside a Cloudflare Workers V8 isolate runtime.
+ * Standard Node.js TCP connections are blocked in this environment; the Neon
+ * HTTP adapter must be used instead.
+ */
+function isCloudflareWorkersRuntime(): boolean {
+  // EdgeRuntime global is set by both CF Workers and Next.js edge runtime.
+  // CF_PAGES and WORKERS_RS_VERSION are set in actual Cloudflare deployments.
+  return (
+    typeof (globalThis as { EdgeRuntime?: unknown }).EdgeRuntime !== "undefined" ||
+    typeof process.env.CF_PAGES !== "undefined" ||
+    typeof process.env.WORKERS_RS_VERSION !== "undefined"
+  );
+}
+
 let DATABASE_URL: string | undefined;
 try {
   ({ DATABASE_URL } = loadCoreEnv());
@@ -89,6 +104,26 @@ const prisma: PrismaClientType = (() => {
 
   if (!DATABASE_URL) return missingPrismaClient();
 
+  // CF Workers / edge runtime — TCP connections are blocked; use the Neon HTTP adapter.
+  // Dynamic require prevents Neon packages from being bundled into Node.js builds.
+  if (isCloudflareWorkersRuntime()) {
+    try {
+      const req = resolveRequire();
+      if (!req) return missingPrismaClient();
+      const { neon } = req("@neondatabase/serverless") as { neon: (url: string) => unknown };
+      const { PrismaNeon } = req("@prisma/adapter-neon") as {
+        PrismaNeon: new (sql: unknown) => unknown;
+      };
+      const PC = loadPrismaClient();
+      if (!PC) return missingPrismaClient();
+      const adapter = new PrismaNeon(neon(DATABASE_URL));
+      return new PC({ adapter }) as unknown as PrismaClientType;
+    } catch {
+      return missingPrismaClient();
+    }
+  }
+
+  // Node.js runtime (reception, prime, caryina, local dev) — standard TCP connection.
   const PC = loadPrismaClient();
   if (!PC) return missingPrismaClient();
 

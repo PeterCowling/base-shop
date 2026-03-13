@@ -325,22 +325,6 @@
     {
       "type": "idea",
       "business": "PLAT",
-      "title": "All shops — refunds and payment provider switching need a central place to manage",
-      "body": "Right now, refunding a customer can only be done through a buried page inside the Caryina shop. There is no way to see or manage payments for any other shop from one place. If you want to switch from one payment provider to another, you have to change a server setting and redeploy the entire app, which takes time and risks downtime. Building a separate payment management app means all shops share one clear place to issue refunds, review orders, and switch providers instantly — no redeployment needed.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T19:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "089938729bff1c3ba8ded072e70d977f0e42b181",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "PLAT",
       "title": "Inventory uploader — duplicate product button is missing from the product table",
       "body": "Creating a new product that is similar to an existing one (e.g. same item in a new colour or size) means filling in the same form fields from scratch. A Duplicate button would copy the existing product and let staff edit just the differences.",
       "source": "queue-state.json",

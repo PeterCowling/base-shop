@@ -29590,7 +29590,7 @@
       "provisional_deliverable_family": "multi",
       "status": "fact_find_ready",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "priority": "P2",
       "confidence": 0.91,
       "evidence_refs": [
@@ -29612,7 +29612,13 @@
         "statement": "A standalone payment management app (apps/payment-manager/) is live on Cloudflare Workers: per-shop processor selection switchable at runtime via UI, cross-portfolio order list with refund issuance, and the Caryina admin refund route migrated to a proxy then removed.",
         "source": "operator"
       },
-      "created_at": "2026-03-13T19:00:00.000Z"
+      "created_at": "2026-03-13T19:00:00.000Z",
+      "processed_by": {
+        "agent": "lp-do-fact-find",
+        "processed_at": "2026-03-13T17:44:04Z",
+        "artifact": "docs/plans/inventory-uploader-user-attribution/fact-find.md",
+        "status": "Ready-for-analysis"
+      }
     },
     {
       "schema_version": "dispatch.v2",

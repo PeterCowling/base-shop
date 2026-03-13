@@ -1,0 +1,178 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "inventory-uploader-user-attribution",
+  "source_artifact_path": "docs/plans/inventory-uploader-user-attribution/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/inventory-uploader-user-attribution/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "When stock goes missing or an error is spotted, there is no record of who made the change. Attaching the logged-in user to every stock adjustment makes it easy to audit who did what and catch mistakes.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Every stock change record shows which staff member made it, enabling accountability and easier error investigation.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI changes; attribution is server-side only",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "No UX changes; ledger API response is additive",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Session is authenticated before routes execute; IP is derived server-side, not from request body. No untrusted user input is accepted as actor identity.",
+      "gap_or_implication": "Risk: IP may be `null` or empty when `INVENTORY_TRUST_PROXY_IP_HEADERS` is disabled — null is acceptable (stored as `operatorId: null`) but should be documented.",
+      "carry_forward_or_notes": "Yes — confirm null handling"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`operatorId` column exists but is always `null`. Attribution is the core deliverable of this change.",
+      "gap_or_implication": "Gap: `operatorId: null` hardcoded in both write paths. Carry forward: verify operatorId appears in ledger GET response.",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Integration test exists for inflows (no actor); no test for adjustments; no route-level tests.",
+      "gap_or_implication": "Gap: actor threading is untested end-to-end.",
+      "carry_forward_or_notes": "Yes — new tests required"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`LedgerEvent` type lacks `operatorId`; `StockAdjustmentActor`/`StockInflowActor` lack an IP field; event schemas use `.strict()`.",
+      "gap_or_implication": "Gap: type changes needed in 2–3 files. Schema migration not needed.",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "IP extraction is synchronous, negligible overhead. One extra field in DB write, no query change.",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No feature flag. Change is additive: `operatorId` was always nullable, now it gets a value. Rollback = revert the code; DB rows with `operatorId` set are harmless after rollback.",
+      "gap_or_implication": "Low risk — no migration to reverse.",
+      "carry_forward_or_notes": "Yes"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Stock adjustments and inflows are written to the `InventoryAuditEvent` table without recording who performed them. The `operatorId` column already exists in the Prisma schema (added in migration `20260308000000_add_inventory_audit_event`) and the repository functions already accept an optional `actor` parameter — but neither the route handlers nor the session module currently extract or forward a user identity. This change threads the session-derived identity through the HTTP request → route handler → repository → database write path.",
+    "goals": [
+      "Every `POST /api/inventory/[shop]/adjustments` write records the acting session identity in `operatorId`.",
+      "Every `POST /api/inventory/[shop]/inflows` write records the acting session identity in `operatorId`.",
+      "The ledger `GET /api/inventory/[shop]/ledger` response exposes `operatorId` so the UI can display who made each change.",
+      "No unauthenticated request can supply a fabricated actor identity."
+    ],
+    "non_goals": [
+      "Adding per-user login; the current single-token model remains unchanged (all authenticated users share one session token).",
+      "UI changes to display attribution (out of scope for this change; exposure in the API response is sufficient).",
+      "Retroactive backfill of historical `operatorId = null` rows."
+    ],
+    "constraints": [
+      "The session token is opaque (HMAC-signed, no embedded user metadata). The session module has no userId or userEmail. Identity must come from a different source — the request IP or a header like `X-Forwarded-For`, or the operator must supply a caller label at login time."
+    ],
+    "assumptions": [
+      "The most viable attribution for the current auth model is the requester's IP address (extractable via `requestIp.ts` which already exists and is used by the login rate limiter).",
+      "Alternatively, the operator could add a `callerLabel` field to the request body (optional, free text), which is stored verbatim — this adds no auth complexity.",
+      "The `inventoryAuditEvent.operatorId` column is already `String?` (nullable) so no migration is needed."
+    ],
+    "key_entry_points": [
+      "`apps/inventory-uploader/src/app/api/inventory/[shop]/adjustments/route.ts` — POST handler calls `applyStockAdjustment(shop, payload)` with no actor argument.",
+      "`apps/inventory-uploader/src/app/api/inventory/[shop]/inflows/route.ts` — POST handler calls `receiveStockInflow(shop, payload)` with no actor argument.",
+      "`apps/inventory-uploader/src/app/api/inventory/[shop]/ledger/route.ts` — GET handler reads `InventoryAuditEvent` rows and maps them to `LedgerEvent`; `operatorId` is not included in the mapped output."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis inventory-uploader-user-attribution`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Entry points (adjustments/inflows routes)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Repository actor parameter (extension point)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "DB schema (operatorId column)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Session module (identity availability)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — confirmed: no identity embedded",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "IP extraction utility (requestIp.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Type changes needed (LedgerEvent, Actor types)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Zod schema strict() impact",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Type contract gap] [Moderate]: Adding `ip` to actor types without updating the Zod event schemas will cause runtime parse failures on `stockAdjustmentEventSchema.parse()` and `stockInflowEventSchema.parse()`. Already noted in planning constraints.",
+        "Resolution Required": "No — mitigated in task seeds"
+      },
+      {
+        "Scope Area": "Test landscape",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap in investigation] [Minor]: No route-level test infrastructure exists; must be created alongside actor threading. Not a blocker but requires new test setup.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Ledger GET route (operatorId exposure)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only — this is a pure server-side code path change with no multi-step process, lifecycle state, CI/deploy lane, approval path, or operator runbook affected.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

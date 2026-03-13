@@ -67,6 +67,7 @@ export async function GET(
       quantityDelta: r.quantityDelta as number,
       referenceId: (r.referenceId as string | null) ?? null,
       note: (r.note as string | null) ?? null,
+      operatorId: (r.operatorId as string | null) ?? null,
     }));
 
     return NextResponse.json({ ok: true, events, nextCursor });

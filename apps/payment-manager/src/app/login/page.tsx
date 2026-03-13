@@ -24,7 +24,9 @@ export default async function PaymentManagerLoginPage() {
           <div className="h-1 bg-gate-accent" />
           <div className="p-8">
             <div className="mb-6 space-y-1 text-center">
+              {/* eslint-disable-next-line ds/no-hardcoded-copy -- PM-0001 internal operator tool, not public-facing */}
               <h1 className="text-xl font-semibold text-gate-ink">Payment Manager</h1>
+              {/* eslint-disable-next-line ds/no-hardcoded-copy -- PM-0001 internal operator tool, not public-facing */}
               <p className="text-sm text-gate-muted">Operator access only</p>
             </div>
             <PmLoginClient />

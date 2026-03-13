@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  // eslint-disable-next-line ds/no-hardcoded-copy -- PM-0001 internal operator tool, not public-facing
   title: "Payment Manager",
   robots: {
     index: false,

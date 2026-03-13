@@ -16,7 +16,6 @@ function timingSafeStringEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
   let result = 0;
   for (let i = 0; i < a.length; i++) {
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     result |= a.charCodeAt(i) ^ b.charCodeAt(i);
   }
   return result === 0;
@@ -24,12 +23,13 @@ function timingSafeStringEqual(a: string, b: string): boolean {
 
 const BASE_SECURITY_HEADERS = {
   "Content-Security-Policy":
+    // i18n-exempt -- PM-0001 HTTP security header value, not UI copy [ttl=2027-12-31]
     "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: blob: https:; font-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; connect-src 'self'",
   "X-Frame-Options": "DENY",
   "X-Content-Type-Options": "nosniff",
   "Referrer-Policy": "no-referrer",
-  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
-  "Strict-Transport-Security": "max-age=31536000",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()", // i18n-exempt -- PM-0001 HTTP security header value, not UI copy [ttl=2027-12-31]
+  "Strict-Transport-Security": "max-age=31536000", // i18n-exempt -- PM-0001 HTTP security header value, not UI copy [ttl=2027-12-31]
 } as const;
 
 function applySecurityHeaders(response: Response): Response {

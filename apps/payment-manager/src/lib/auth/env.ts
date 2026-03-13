@@ -13,11 +13,11 @@ import { z } from "zod";
 const envSchema = z.object({
   /** HMAC secret used to sign session tokens. Must be at least 32 chars. */
   PAYMENT_MANAGER_SESSION_SECRET: z.string().min(32, {
-    message: "PAYMENT_MANAGER_SESSION_SECRET must be at least 32 characters",
+    message: "PAYMENT_MANAGER_SESSION_SECRET must be at least 32 characters", // i18n-exempt -- PM-0001 server validation error, not UI copy [ttl=2027-12-31]
   }),
   /** Bearer token accepted for admin API access. Must be at least 32 chars. */
   PAYMENT_MANAGER_ADMIN_TOKEN: z.string().min(32, {
-    message: "PAYMENT_MANAGER_ADMIN_TOKEN must be at least 32 characters",
+    message: "PAYMENT_MANAGER_ADMIN_TOKEN must be at least 32 characters", // i18n-exempt -- PM-0001 server validation error, not UI copy [ttl=2027-12-31]
   }),
   /** Optional: comma-separated list of allowed client IP addresses. */
   PAYMENT_MANAGER_ALLOWED_IPS: z.string().optional(),

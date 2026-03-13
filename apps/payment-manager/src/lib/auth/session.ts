@@ -89,7 +89,7 @@ async function isSessionRevoked(issuedAt: number): Promise<boolean> {
     if (!kv) {
       // KV not bound — fail closed (treat as revoked to deny access).
       pmLog("warn", "revocation_kv_not_bound", {
-        message: "PAYMENT_MANAGER_KV not bound — failing closed (session denied)",
+        message: "PAYMENT_MANAGER_KV not bound — failing closed (session denied)", // i18n-exempt -- PM-0001 internal server log, not UI copy [ttl=2027-12-31]
       });
       return true;
     }
@@ -114,7 +114,7 @@ async function isSessionRevoked(issuedAt: number): Promise<boolean> {
     return false;
   } catch (err) {
     pmLog("warn", "revocation_kv_unavailable", {
-      message: "KV read failed during revocation check — failing closed",
+      message: "KV read failed during revocation check — failing closed", // i18n-exempt -- PM-0001 internal server log, not UI copy [ttl=2027-12-31]
       error: err instanceof Error ? err.message : String(err),
     });
     return true; // Fail closed — KV error = treat session as revoked

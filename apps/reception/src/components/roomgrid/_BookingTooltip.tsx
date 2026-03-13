@@ -29,11 +29,10 @@ const BookingTooltip: FC<BookingTooltipProps> = ({
   return (
     <div
       style={{
-        position: "fixed",
         top: position.y + 10, // Offset a bit from the cursor
         left: position.x + 10,
       }}
-      className="pointer-events-none rounded-lg bg-surface-3 px-2 py-1 text-primary-fg z-50"
+      className="fixed pointer-events-none rounded-lg bg-surface-3 px-2 py-1 text-primary-fg z-50"
     >
       <p>
         <strong>

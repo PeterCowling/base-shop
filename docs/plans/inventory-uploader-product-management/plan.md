@@ -24,7 +24,7 @@ Related-Analysis: docs/plans/inventory-uploader-product-management/analysis.md
 
 ## Summary
 
-Caryina's product and inventory data lives in JSON files that don't work on Cloudflare Workers — the shop silently returns zero products in production. This plan adds a full `Product` Prisma model, completes the stub Prisma product repository, adds product CRUD routes and a Products view to inventory-uploader (benefiting all shops), migrates caryina's 3 products and 4 inventory rows to PostgreSQL, wires caryina to use Prisma via env vars, moves the refunds endpoint from the unprotected caryina admin panel to inventory-uploader, and deletes the caryina admin panel. Deployment ordering is critical: migration must run before the `DB_MODE=prisma` env var is deployed.
+Caryina's product and inventory data lives in JSON files that don't work on Cloudflare Workers — the shop silently returns zero products in production. This plan adds a full `Product` Prisma model, completes the stub Prisma product repository, adds product CRUD routes and a Products view to inventory-uploader (benefiting all shops), migrates caryina's 3 products and 3 inventory rows to PostgreSQL, wires caryina to use Prisma via env vars, moves the refunds endpoint from the unprotected caryina admin panel to inventory-uploader, and deletes the caryina admin panel. Deployment ordering is critical: migration must run before the `DB_MODE=prisma` env var is deployed.
 
 ## Active tasks
 
@@ -34,9 +34,9 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 - [x] TASK-04: Add product CRUD API routes to inventory-uploader
 - [x] TASK-05: Add Products view to inventory-uploader UI
 - [x] TASK-06: Move refunds endpoint to inventory-uploader
-- [x] TASK-07: Write data migration script (3 products + 4 inventory rows)
+- [x] TASK-07: Write data migration script (3 products + 3 inventory rows)
 - [ ] CHECKPOINT-01: Run staging migration + smoke test
-- [ ] TASK-08: Wire caryina wrangler.toml (DATABASE_URL + DB_MODE=prisma)
+- [ ] TASK-08: Wire caryina env vars (DATABASE_URL + DB_MODE + CARYINA_INVENTORY_BACKEND)
 - [ ] TASK-09: Delete caryina admin panel and supporting files
 
 ## Goals
@@ -46,7 +46,7 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 - Add product CRUD API routes to inventory-uploader for all shops.
 - Add a Products view to the inventory-uploader console.
 - Move the refunds endpoint from caryina admin to inventory-uploader.
-- Migrate caryina's 3 products and 4 inventory rows to PostgreSQL.
+- Migrate caryina's 3 products and 3 inventory rows to PostgreSQL.
 - Wire caryina's wrangler.toml to use `DATABASE_URL` + `DB_MODE=prisma`.
 - Delete the caryina admin panel entirely.
 
@@ -122,7 +122,7 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 | TASK-06 | IMPLEMENT | Move refunds endpoint to inventory-uploader | 85% | S | Complete (2026-03-13) | TASK-03 | TASK-09 |
 | TASK-07 | IMPLEMENT | Write data migration script | 85% | S | Complete (2026-03-13) | TASK-01 | CHECKPOINT-01 |
 | CHECKPOINT-01 | CHECKPOINT | Staging migration + smoke test | — | — | Pending | TASK-07 | TASK-08 |
-| TASK-08 | IMPLEMENT | Wire caryina wrangler.toml (DB_MODE=prisma) | 90% | S | Pending | CHECKPOINT-01 | TASK-09 |
+| TASK-08 | IMPLEMENT | Wire caryina env vars (DB_MODE + CARYINA_INVENTORY_BACKEND) | 90% | S | Pending | CHECKPOINT-01 | TASK-09 |
 | TASK-09 | IMPLEMENT | Delete caryina admin panel | 85% | S | Pending | TASK-04, TASK-06, TASK-08 | - |
 
 ## Engineering Coverage
@@ -134,9 +134,9 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 | Security / privacy | New product routes auto-protected by existing inventory-uploader middleware; refunds route carries over `refundRequestSchema` Zod validation; payment credentials in wrangler secrets | TASK-04, TASK-06 | No new auth code needed for product routes |
 | Logging / observability / audit | `console.info` on product write/update/delete routes (`shopId`, `productId`, action); full AuditEvent trail deferred as future work | TASK-04 | Consistent with inventory routes' existing pattern |
 | Testing / validation | Unit tests for 4 new prismaProductsRepository methods; unit tests for 5 product routes + 1 refunds route; dry-run assertion for migration script; caryina admin test files deleted | TASK-02, TASK-04, TASK-06, TASK-07 | Per docs/testing-policy.md — CI only |
-| Data / contracts | Additive `Product` model covering full `ProductPublication` type; `@@unique([shopId, sku])` + `@@unique([shopId, id])`; `@@index([shopId])`; 3 products + 4 inventory rows migrated | TASK-01, TASK-07 | No existing models changed; migration is additive only |
+| Data / contracts | Additive `Product` model covering full `ProductPublication` type; `@@unique([shopId, sku])` + `@@unique([shopId, id])`; `@@index([shopId])`; 3 products + 3 inventory rows migrated | TASK-01, TASK-07 | No existing models changed; migration is additive only |
 | Performance / reliability | N/A — catalogue max ~100 products; Prisma singleton connection pooling handles Workers concurrency | — | N/A |
-| Rollout / rollback | Migration (TASK-07) must be verified before env var deployment (TASK-08); CHECKPOINT-01 enforces this gate; rollback: remove `DB_MODE` var → JSON fallback restores | TASK-07, CHECKPOINT-01, TASK-08 | Staging migration runs before production |
+| Rollout / rollback | Migration (TASK-07) must be verified before env var deployment (TASK-08); CHECKPOINT-01 enforces this gate; rollback: remove `DB_MODE` + `CARYINA_INVENTORY_BACKEND` vars → JSON fallback restores | TASK-07, CHECKPOINT-01, TASK-08 | Staging migration runs before production |
 
 ## Parallelism Guide
 
@@ -579,7 +579,7 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 
 ---
 
-### TASK-07: Write data migration script (3 products + 4 inventory rows)
+### TASK-07: Write data migration script (3 products + 3 inventory rows)
 
 - **Type:** IMPLEMENT
 - **Deliverable:** One-time migration script that reads `data/shops/caryina/products.json` and `data/shops/caryina/inventory.json` and inserts rows into PostgreSQL via Prisma
@@ -592,7 +592,7 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 - **Depends on:** TASK-01
 - **Blocks:** CHECKPOINT-01
 - **Confidence:** 85%
-  - Implementation: 85% — source data confirmed (3 products fully read; inventory.json not yet read but 4 rows with known InventoryItem schema); Prisma insert pattern is standard.
+  - Implementation: 85% — source data confirmed (3 products fully read; inventory.json confirmed 3 rows with known InventoryItem schema); Prisma insert pattern is standard.
   - Approach: 85% — one-time idempotent migration script; standard pattern.
   - Impact: 95% — CHECKPOINT-01 and TASK-08 depend on successful migration.
 - **Acceptance:**
@@ -613,7 +613,7 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
   - Performance / reliability: N/A — 7 rows total
   - Rollout / rollback: Required — idempotent upsert means re-running is safe; rollback = delete the 3 product rows from DB (does not restore JSON files, which remain as backup)
 - **Validation contract (TC-07):**
-  - TC-01: `pnpm tsx scripts/migrate-caryina-data.ts --dry-run` → logs "3 products would be inserted, 4 inventory rows would be inserted", exits 0
+  - TC-01: `pnpm tsx scripts/migrate-caryina-data.ts --dry-run` → logs "Found 3 product(s) and 3 inventory row(s)", exits 0
   - TC-02: `pnpm tsx scripts/migrate-caryina-data.ts` (real run against test DB) → `prisma.product.count({ where: { shopId: "caryina" } })` returns 3
   - TC-03: Run script twice → second run reports 0 new inserts (upsert idempotency)
 - **Execution plan:**
@@ -642,7 +642,7 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 
 **Gate criteria (all must pass before TASK-08 executes):**
 1. `pnpm --filter @acme/platform-core prisma migrate deploy` runs successfully on staging database.
-2. Migration script (`scripts/migrate-caryina-data.ts`) runs against staging DB: 3 products inserted, 4 inventory rows inserted, count assertions pass.
+2. Migration script (`scripts/migrate-caryina-data.ts`) runs against staging DB: 3 products inserted, 3 inventory rows inserted, count assertions pass.
 3. `prisma.product.findMany({ where: { shopId: "caryina" } })` returns exactly 3 rows in staging DB.
 4. Staging caryina storefront (if available) renders product listing with > 0 products after temporary `DB_MODE=prisma` + staging `DATABASE_URL` are set.
 
@@ -650,25 +650,27 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 
 ---
 
-### TASK-08: Wire caryina wrangler.toml (DATABASE_URL + DB_MODE=prisma)
+### TASK-08: Wire caryina env vars (DATABASE_URL + DB_MODE + CARYINA_INVENTORY_BACKEND)
 
 - **Type:** IMPLEMENT
-- **Deliverable:** Updated `apps/caryina/wrangler.toml` + verification that `prisma generate` runs in caryina's deployment pipeline
+- **Deliverable:** Updated `apps/caryina/src/lib/inventoryBackend.ts` (reads env var instead of hardcoded constant) + updated `apps/caryina/wrangler.toml` + verification that `prisma generate` runs in caryina's deployment pipeline
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
 - **Status:** Pending
-- **Affects:** `apps/caryina/wrangler.toml`, possibly `.github/workflows/brikette.yml`
+- **Affects:** `apps/caryina/src/lib/inventoryBackend.ts`, `apps/caryina/wrangler.toml`, possibly `.github/workflows/brikette.yml`
 - **Depends on:** CHECKPOINT-01
 - **Blocks:** TASK-09
 - **Confidence:** 90%
-  - Implementation: 90% — adding wrangler secrets/vars is a 5-line change; pattern exists in inventory-uploader.
-  - Approach: 90% — clear and unambiguous.
-  - Impact: 90% — storefront will start reading from PostgreSQL after this.
+  - Implementation: 90% — adding wrangler vars is a 5-line change; inventoryBackend.ts change is a 1-line env read; pattern exists in rest of codebase.
+  - Approach: 90% — clear and unambiguous. CARYINA_INVENTORY_BACKEND is currently hardcoded `"json" as const` — must be changed to read from env before wrangler.toml var can take effect.
+  - Impact: 90% — storefront will start reading inventory from PostgreSQL after this; without the inventoryBackend.ts fix, inventory reads would remain on JSON even after DB_MODE=prisma is set.
 - **Acceptance:**
+  - [ ] `apps/caryina/src/lib/inventoryBackend.ts` reads from `process.env.CARYINA_INVENTORY_BACKEND` with fallback to `"json"` (type-safe: `as "json" | "prisma"`).
   - [ ] `apps/caryina/wrangler.toml` has `DATABASE_URL` listed under `[secrets]` or as a wrangler secret (not hardcoded).
   - [ ] `apps/caryina/wrangler.toml` has `DB_MODE = "prisma"` in `[vars]`.
+  - [ ] `apps/caryina/wrangler.toml` has `CARYINA_INVENTORY_BACKEND = "prisma"` in `[vars]`.
   - [ ] Verified: `prisma generate` runs as part of caryina's CI/build pipeline (check `.github/workflows/brikette.yml`); if not present, add it.
   - [ ] After deployment: caryina storefront `/shop` page returns > 0 products (smoke test confirms).
 - **Engineering Coverage:**
@@ -677,18 +679,20 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
   - Security / privacy: Required — `DATABASE_URL` must be a wrangler secret (never in plaintext in wrangler.toml)
   - Logging / observability / audit: N/A
   - Testing / validation: Required — smoke test after deployment; product count > 0
-  - Data / contracts: Required — `DB_MODE=prisma` activates `repoResolver` Prisma path; data must be migrated before this deploys (gate enforced by CHECKPOINT-01)
+  - Data / contracts: Required — `DB_MODE=prisma` activates `repoResolver` Prisma path; `CARYINA_INVENTORY_BACKEND=prisma` activates Prisma inventory path in `shop.ts`; data must be migrated before this deploys (gate enforced by CHECKPOINT-01)
   - Performance / reliability: N/A
-  - Rollout / rollback: Required — rollback: remove `DB_MODE` var from wrangler.toml → JSON fallback restores (silent failure, but acceptable short-term)
+  - Rollout / rollback: Required — rollback: remove `DB_MODE` + `CARYINA_INVENTORY_BACKEND` vars from wrangler.toml → JSON fallback restores (silent failure, but acceptable short-term)
 - **Validation contract (TC-08):**
   - TC-01: `repoResolver` resolves to `prismaProductsRepository` when `DB_MODE=prisma` + `DATABASE_URL` set → products returned from DB (not empty)
   - TC-02: Caryina storefront `/shop` page shows 3 products after deployment
   - TC-03: `wrangler secret list --name caryina` confirms `DATABASE_URL` is a registered secret (not plaintext)
+  - TC-04: `inventoryBackend.ts` no longer exports `"json" as const`; reads `process.env.CARYINA_INVENTORY_BACKEND ?? "json"` with appropriate type cast
 - **Execution plan:**
-  - Add `DB_MODE = "prisma"` to `[vars]` in `apps/caryina/wrangler.toml`. Run `wrangler secret put DATABASE_URL --name caryina` (or confirm it's already set). Check `.github/workflows/brikette.yml` for `prisma generate` step; add if missing. Deploy. Smoke test.
+  - Change `apps/caryina/src/lib/inventoryBackend.ts` to `export const CARYINA_INVENTORY_BACKEND = (process.env.CARYINA_INVENTORY_BACKEND ?? "json") as "json" | "prisma";`. Add `DB_MODE = "prisma"` and `CARYINA_INVENTORY_BACKEND = "prisma"` to `[vars]` in `apps/caryina/wrangler.toml`. Run `wrangler secret put DATABASE_URL --name caryina` (or confirm it's already set). Check `.github/workflows/brikette.yml` for `prisma generate` step; add if missing. Deploy. Smoke test.
 - **Consumer tracing:**
-  - `repoResolver.ts` reads `DB_MODE` → switches all product/inventory repos to Prisma.
-  - All caryina storefront pages calling `readRepo("caryina")` become Prisma-backed.
+  - `repoResolver.ts` reads `DB_MODE` → switches all product repos to Prisma.
+  - `apps/caryina/src/lib/shop.ts` reads `CARYINA_INVENTORY_BACKEND` → switches inventory reads to Prisma.
+  - All caryina storefront pages calling `readRepo("caryina")` and `readInventory("caryina", ...)` become Prisma-backed.
 - **Scouts:** Check `apps/caryina/wrangler.toml` for any existing secret declarations (confirm DATABASE_URL is not already there).
 - **Edge Cases & Hardening:**
   - If `DATABASE_URL` points to a different cluster than inventory-uploader: will fail silently. Verify the value matches before deployment.
@@ -696,10 +700,11 @@ Caryina's product and inventory data lives in JSON files that don't work on Clou
 - **What would make this >=90%:** Confirm `DATABASE_URL` is the same value used by inventory-uploader before deploying.
 - **Rollout / rollback:**
   - Rollout: Deploy caryina with new wrangler.toml.
-  - Rollback: Remove `DB_MODE` var; redeploy → JSON path restores (silent failure, same as current broken state).
+  - Rollback: Remove `DB_MODE` and `CARYINA_INVENTORY_BACKEND` vars; redeploy → JSON path restores (silent failure, same as current broken state).
 - **Documentation impact:** None.
 - **Notes / references:**
   - `apps/inventory-uploader/wrangler.toml` — pattern reference for `DATABASE_URL` as wrangler secret.
+  - `apps/caryina/src/lib/inventoryBackend.ts` — currently `"json" as const`; must become env-var-driven (codemoot CRITICAL finding 2026-03-13).
 
 ---
 

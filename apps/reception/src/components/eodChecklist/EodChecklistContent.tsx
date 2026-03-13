@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useAuth } from "../../context/AuthContext";
 import useInventoryLedger from "../../hooks/data/inventory/useInventoryLedger";
 import { useTillShiftsData } from "../../hooks/data/till/useTillShiftsData";
@@ -239,7 +241,9 @@ export default function EodChecklistContent() {
               {floatDone ? "✓ Complete" : "✗ Incomplete"}
             </p>
             {!floatDone && (
-              <button
+              <Button
+                color="default"
+                tone="outline"
                 aria-expanded={showFloatModal}
                 className="mt-3 rounded-lg border border-border-2 bg-surface px-3 py-2 text-sm font-semibold text-foreground hover:bg-surface-2 active:bg-surface-3"
                 data-cy="float-set-button"
@@ -247,7 +251,7 @@ export default function EodChecklistContent() {
                 type="button"
               >
                 Set Opening Float
-              </button>
+              </Button>
             )}
           </>
         )}
@@ -268,25 +272,29 @@ export default function EodChecklistContent() {
       )}
 
       {allDone && !eodClosureLoading && (
-        <button
+        <Button
+          color="primary"
+          tone="solid"
           className="w-full rounded-lg bg-primary px-4 py-3 text-sm font-semibold text-primary-fg hover:bg-primary-hover active:bg-primary-active"
           data-cy="confirm-day-closed"
           onClick={() => void confirmDayClosed({ cashVariance, stockItemsCounted })}
           type="button"
         >
           Confirm day closed
-        </button>
+        </Button>
       )}
 
       {!allDone && !eodClosureLoading && closure === null && (
-        <button
+        <Button
+          color="warning"
+          tone="outline"
           className="w-full rounded-lg border border-warning-border bg-warning-surface px-4 py-3 text-sm font-semibold text-warning-fg hover:opacity-80 active:opacity-70"
           data-cy="eod-override-button"
           onClick={() => setShowOverrideModal(true)}
           type="button"
         >
           Override &amp; close day
-        </button>
+        </Button>
       )}
 
       {showFloatModal && (

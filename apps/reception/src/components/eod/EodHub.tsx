@@ -5,24 +5,21 @@ import { memo, useState } from "react";
 import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
 
-import SafeReconciliation from "@/components/safe/SafeReconciliation";
-import ReconciliationWorkbench from "@/components/till/ReconciliationWorkbench";
-import TillReconciliation from "@/components/till/Till";
-import { SafeDataProvider } from "@/context/SafeDataContext";
+import EodChecklistContent from "@/components/eodChecklist/EodChecklistContent";
+import EndOfDayPacket from "@/components/reports/EndOfDayPacket";
 
-type Tab = "till" | "safe" | "workbench";
+type Tab = "checklist" | "report";
 
 const TABS: { id: Tab; label: string }[] = [
-  { id: "till", label: "Till" },
-  { id: "safe", label: "Safe" },
-  { id: "workbench", label: "Workbench" },
+  { id: "checklist", label: "Checklist" },
+  { id: "report", label: "Report" },
 ];
 
-const CashHub = memo(function CashHub() {
-  const [activeTab, setActiveTab] = useState<Tab>("till");
+const EodHub = memo(function EodHub() {
+  const [activeTab, setActiveTab] = useState<Tab>("checklist");
 
   return (
-    <SafeDataProvider>
+    <>
       <Inline className="border-b border-border">
         {TABS.map((tab) => (
           <Button
@@ -39,11 +36,10 @@ const CashHub = memo(function CashHub() {
           </Button>
         ))}
       </Inline>
-      {activeTab === "till" && <TillReconciliation />}
-      {activeTab === "safe" && <SafeReconciliation />}
-      {activeTab === "workbench" && <ReconciliationWorkbench />}
-    </SafeDataProvider>
+      {activeTab === "checklist" && <EodChecklistContent />}
+      {activeTab === "report" && <EndOfDayPacket />}
+    </>
   );
 });
 
-export default CashHub;
+export default EodHub;

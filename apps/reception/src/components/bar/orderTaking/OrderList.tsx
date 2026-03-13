@@ -3,6 +3,7 @@
 import React, { type FC, useCallback, useState } from "react";
 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
+import { Button } from "@acme/design-system/atoms";
 import { Cluster } from "@acme/design-system/primitives";
 
 import { type AggregatedOrder } from "../../../types/bar/BarTypes";
@@ -87,21 +88,25 @@ const OrderList: FC<OrderListProps> = React.memo(
 
           {/* ─────── Action buttons ─────── */}
           <div className="space-y-2 border-t border-border-2 bg-surface-2 p-4">
-            <button
+            <Button
+              color="primary"
+              tone="solid"
               type="button"
               disabled={!orders.length}
               onClick={() => setShowPayModal(true)}
               className="w-full min-h-14 rounded-lg bg-primary-main px-4 py-3 text-lg font-bold text-primary-fg transition-all duration-150 hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Pay
-            </button>
-            <button
+            </Button>
+            <Button
+              color="danger"
+              tone="outline"
               type="button"
               onClick={onClearAll}
               className="w-full min-h-10 rounded-lg border-2 border-danger px-4 py-2 text-sm font-semibold text-danger transition-all duration-150 hover:bg-danger/10 active:scale-95"
             >
               Clear All
-            </button>
+            </Button>
           </div>
         </section>
 

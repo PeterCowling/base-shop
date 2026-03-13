@@ -2,7 +2,7 @@ import React from "react";
 import { AlertTriangle, Info, UserPlus } from "lucide-react";
 
 import { Input } from "@acme/design-system";
-import { Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
+import { Button, Table, TableBody, TableCell, TableRow } from "@acme/design-system/atoms";
 
 import type { CheckinMode } from "../../../hooks/utilities/useCheckinsModes";
 import { type CheckInRow } from "../../../types/component/CheckinRow";
@@ -153,13 +153,15 @@ const CheckinsTableView: React.FC<Props> = ({
                 Rooms Ready
               </span>
             ) : (
-              <button
+              <Button
+                color="primary"
+                tone="solid"
                 type="button"
                 onClick={() => setRoomsReady(true)}
                 className="rounded-lg bg-primary-main px-4 py-2 text-sm font-semibold text-primary-fg transition-all duration-150 hover:brightness-110 active:scale-95"
               >
                 Rooms Ready
-              </button>
+              </Button>
             )}
           </div>
         </div>

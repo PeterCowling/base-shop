@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { CheckCircle, RefreshCw, Save, Send, ShieldAlert, XCircle } from "lucide-react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Grid, Inline } from "@acme/design-system/primitives";
 
 import ConfirmModal from "@/components/common/ConfirmModal";
 import type { InboxThreadDetail } from "@/services/useInbox";
@@ -259,11 +260,11 @@ export default function DraftReviewPanel({
     <>
       <section className="rounded-2xl border border-border-1 bg-surface-2 shadow-sm">
         {/* Header with badges */}
-        <div className="flex items-center justify-between gap-3 px-5 py-3">
+        <Inline gap={3} className="justify-between px-5 py-3">
           <h3 className="text-sm font-semibold text-foreground">
             {channelCapabilities.bodyLabel}
           </h3>
-          <div className="flex items-center gap-2">
+          <Inline gap={2}>
             {currentDraft?.templateUsed && (
               <span className="rounded-full bg-surface-3 px-2 py-0.5 text-xs font-medium text-foreground/60">
                 {currentDraft.templateUsed}
@@ -279,8 +280,8 @@ export default function DraftReviewPanel({
                 {qualityBadge.label}
               </span>
             )}
-          </div>
-        </div>
+          </Inline>
+        </Inline>
 
         <div className="space-y-3 px-5 pb-4">
           {requiresManualDraft && (
@@ -312,7 +313,7 @@ export default function DraftReviewPanel({
           )}
 
           {(channelCapabilities.supportsSubject || channelCapabilities.supportsRecipients) && (
-            <div className="grid gap-3 sm:grid-cols-2">
+            <Grid gap={3} className="sm:grid-cols-2">
               {channelCapabilities.supportsSubject && (
                 <div>
                   <label className="mb-1 block text-xs font-semibold text-foreground/70">
@@ -352,7 +353,7 @@ export default function DraftReviewPanel({
                   )}
                 </div>
               )}
-            </div>
+            </Grid>
           )}
 
           {/* Message body */}
@@ -380,7 +381,7 @@ export default function DraftReviewPanel({
 
         {/* Action bar — clear visual hierarchy */}
         {showActionBar && (
-          <div className="flex items-center gap-2 border-t border-border-1 px-5 py-3">
+          <Inline gap={2} className="border-t border-border-1 px-5 py-3">
             {canSaveDraft && (
               <>
                 <Button
@@ -456,7 +457,7 @@ export default function DraftReviewPanel({
                 {sendingDraft ? "Sending..." : channelCapabilities.sendLabel}
               </Button>
             )}
-          </div>
+          </Inline>
         )}
       </section>
 

@@ -3,6 +3,9 @@
 import { useCallback, useMemo, useState } from "react";
 import { ChevronDown, ChevronRight, FileText, Search } from "lucide-react";
 
+import { Button } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
+
 import type {
   PrimeTemplate,
   PrimeTemplateCategory,
@@ -123,46 +126,40 @@ export default function TemplatePicker({
         <div className="flex items-center gap-2">
           {/* Locale toggle */}
           <div className="flex rounded-md border border-border-1" role="radiogroup" aria-label="Template language">
-            <button
+            <Button
               type="button"
-              className={`px-2 py-0.5 text-xs font-medium transition ${
-                locale === "en"
-                  ? "bg-primary-main text-primary-fg"
-                  : "text-foreground/60 hover:text-foreground"
-              } rounded-l-md`}
+              color={locale === "en" ? "primary" : "default"}
+              tone={locale === "en" ? "solid" : "ghost"}
+              className={`px-2 py-0.5 text-xs font-medium rounded-l-md`}
               onClick={() => setLocale("en")}
               role="radio"
               aria-checked={locale === "en"}
             >
               EN
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
-              className={`px-2 py-0.5 text-xs font-medium transition ${
-                locale === "it"
-                  ? "bg-primary-main text-primary-fg"
-                  : "text-foreground/60 hover:text-foreground"
-              } rounded-r-md`}
+              color={locale === "it" ? "primary" : "default"}
+              tone={locale === "it" ? "solid" : "ghost"}
+              className={`px-2 py-0.5 text-xs font-medium rounded-r-md`}
               onClick={() => setLocale("it")}
               role="radio"
               aria-checked={locale === "it"}
             >
               IT
-            </button>
+            </Button>
           </div>
           {/* Browse toggle */}
-          <button
+          <Button
             type="button"
-            className={`rounded-md px-2 py-0.5 text-xs font-medium transition ${
-              browsing
-                ? "bg-info-light text-info-main"
-                : "text-foreground/60 hover:text-foreground"
-            }`}
+            color={browsing ? "info" : "default"}
+            tone={browsing ? "outline" : "ghost"}
+            className="rounded-md px-2 py-0.5 text-xs font-medium"
             onClick={handleToggleBrowse}
             aria-pressed={browsing}
           >
             {browsing ? "Hide all" : "Browse all"}
-          </button>
+          </Button>
         </div>
       </div>
 
@@ -190,9 +187,11 @@ export default function TemplatePicker({
         <div className="space-y-1" role="list" aria-label="Templates by category">
           {Array.from(grouped.entries()).map(([category, templates]) => (
             <div key={category} role="listitem">
-              <button
+              <Button
                 type="button"
-                className="flex w-full items-center gap-1.5 rounded-lg px-2 py-1.5 text-xs font-semibold text-foreground/80 transition hover:bg-surface-3"
+                color="default"
+                tone="ghost"
+                className="flex w-full items-center gap-1.5 rounded-lg px-2 py-1.5 text-xs font-semibold text-foreground/80"
                 onClick={() => toggleCategory(category)}
                 aria-expanded={expandedCategories.has(category)}
               >
@@ -205,7 +204,7 @@ export default function TemplatePicker({
                 <span className="ml-auto text-foreground/40">
                   {templates.length}
                 </span>
-              </button>
+              </Button>
               {expandedCategories.has(category) && (
                 <div className="ml-4 space-y-1" role="list">
                   {templates.map((template) => (
@@ -224,7 +223,7 @@ export default function TemplatePicker({
         </div>
       ) : displayTemplates.length > 0 ? (
         // Flat list: suggestions or search results
-        <div className="flex flex-wrap gap-1.5" role="list" aria-label="Template suggestions">
+        <Cluster className="gap-1.5" role="list" aria-label="Template suggestions">
           {displayTemplates.map((template) => (
             <TemplateChip
               key={template.id}
@@ -234,7 +233,7 @@ export default function TemplatePicker({
               onSelect={handleSelect}
             />
           ))}
-        </div>
+        </Cluster>
       ) : (
         // Empty state
         <p className="py-1 text-center text-xs text-foreground/50">
@@ -263,10 +262,12 @@ function TemplateChip({
   onSelect: (template: PrimeTemplate) => void;
 }) {
   return (
-    <button
+    <Button
       type="button"
       role="listitem"
-      className={`max-w-full rounded-lg border px-2.5 py-1.5 text-left text-xs transition ${
+      color={isActive ? "primary" : "default"}
+      tone="outline"
+      className={`max-w-full rounded-lg px-2.5 py-1.5 text-left text-xs ${
         isActive
           ? "border-primary-main bg-primary-soft text-primary-main"
           : "border-border-1 bg-surface-3/50 text-foreground/80 hover:border-primary-main/40 hover:bg-surface-3"
@@ -277,6 +278,6 @@ function TemplateChip({
       <span className="font-medium">{CATEGORY_LABELS[template.category]}</span>
       <span className="mx-1 text-foreground/30">|</span>
       <span className="line-clamp-1">{template.answer[locale]}</span>
-    </button>
+    </Button>
   );
 }

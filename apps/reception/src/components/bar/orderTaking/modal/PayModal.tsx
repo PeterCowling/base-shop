@@ -10,6 +10,7 @@ import {
 } from "react";
 import { Banknote, Check, CreditCard, Nfc } from "lucide-react";
 
+import { Button } from "@acme/design-system/atoms";
 import { cn } from "@acme/design-system/utils/style";
 import { SimpleModal } from "@acme/ui/molecules";
 
@@ -30,7 +31,8 @@ interface SelectCardProps {
 
 function SelectCard({ selected, onClick, label, Icon }: SelectCardProps) {
   return (
-    <button
+    <Button
+      compatibilityMode="passthrough"
       type="button"
       onClick={onClick}
       className={cn(
@@ -42,7 +44,7 @@ function SelectCard({ selected, onClick, label, Icon }: SelectCardProps) {
     >
       <Icon size={28} />
       <span className="text-sm font-semibold">{label}</span>
-    </button>
+    </Button>
   );
 }
 
@@ -110,20 +112,24 @@ function PayModalBase({ onConfirm, onCancel }: PayModalProps): ReactElement {
 
         {/* Actions */}
         <div className="flex gap-3">
-          <button
+          <Button
+            color="default"
+            tone="outline"
             type="button"
             onClick={onCancel}
             className="min-h-11 rounded-lg border border-border-2 px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:border-border-strong hover:text-foreground"
           >
             Cancel
-          </button>
-          <button
+          </Button>
+          <Button
+            color="primary"
+            tone="solid"
             type="button"
             onClick={handleConfirmClick}
             className="flex-1 min-h-11 rounded-lg bg-primary-main px-4 py-2 text-sm font-bold text-primary-fg transition-all duration-150 hover:opacity-90 active:scale-95"
           >
             Confirm Payment
-          </button>
+          </Button>
         </div>
       </div>
     </SimpleModal>

@@ -1,6 +1,6 @@
 import { Fragment, memo, useCallback, useMemo, useState } from "react";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
 
 import { useTillData } from "../../context/TillDataContext";
 import { useTillShiftsRange } from "../../hooks/data/till/useTillShiftsRange";
@@ -251,7 +251,8 @@ const TillShiftHistory = memo(function TillShiftHistory() {
                       </TableCell>
                       <TableCell className="px-3 py-2 border-b border-border-muted">
                         {isExpandable ? (
-                          <button
+                          <Button
+                            compatibilityMode="passthrough"
                             type="button"
                             onClick={() => toggleExpanded(rowKey)}
                             aria-expanded={isExpanded}
@@ -262,7 +263,7 @@ const TillShiftHistory = memo(function TillShiftHistory() {
                             <span className="text-xs text-muted-foreground ml-1" aria-hidden="true">
                               {isExpanded ? "▲" : "▼"}
                             </span>
-                          </button>
+                          </Button>
                         ) : (
                           <VarianceCell value={shift.closeDifference} />
                         )}

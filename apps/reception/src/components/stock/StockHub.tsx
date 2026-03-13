@@ -5,24 +5,21 @@ import { memo, useState } from "react";
 import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
 
-import SafeReconciliation from "@/components/safe/SafeReconciliation";
-import ReconciliationWorkbench from "@/components/till/ReconciliationWorkbench";
-import TillReconciliation from "@/components/till/Till";
-import { SafeDataProvider } from "@/context/SafeDataContext";
+import IngredientStock from "@/components/inventory/IngredientStock";
+import Stock from "@/components/man/Stock";
 
-type Tab = "till" | "safe" | "workbench";
+type Tab = "stock" | "ingredients";
 
 const TABS: { id: Tab; label: string }[] = [
-  { id: "till", label: "Till" },
-  { id: "safe", label: "Safe" },
-  { id: "workbench", label: "Workbench" },
+  { id: "stock", label: "Stock" },
+  { id: "ingredients", label: "Ingredients" },
 ];
 
-const CashHub = memo(function CashHub() {
-  const [activeTab, setActiveTab] = useState<Tab>("till");
+const StockHub = memo(function StockHub() {
+  const [activeTab, setActiveTab] = useState<Tab>("stock");
 
   return (
-    <SafeDataProvider>
+    <>
       <Inline className="border-b border-border">
         {TABS.map((tab) => (
           <Button
@@ -39,11 +36,10 @@ const CashHub = memo(function CashHub() {
           </Button>
         ))}
       </Inline>
-      {activeTab === "till" && <TillReconciliation />}
-      {activeTab === "safe" && <SafeReconciliation />}
-      {activeTab === "workbench" && <ReconciliationWorkbench />}
-    </SafeDataProvider>
+      {activeTab === "stock" && <Stock />}
+      {activeTab === "ingredients" && <IngredientStock />}
+    </>
   );
 });
 
-export default CashHub;
+export default StockHub;

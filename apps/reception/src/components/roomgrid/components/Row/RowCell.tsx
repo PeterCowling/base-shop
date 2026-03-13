@@ -138,6 +138,8 @@ const RowCell = <TCustomStatus extends string = never>({
     "drop-over": isOver,
     "can-drop": canDropOnCell && isOver,
     "cannot-drop": !canDropOnCell && isOver,
+    "opacity-50": isDragging,
+    "opacity-100": !isDragging,
   });
 
   const topStatus = (dayStatus[0] ?? "free") as TDateStatus<TCustomStatus>;
@@ -155,7 +157,6 @@ const RowCell = <TCustomStatus extends string = never>({
       }
       data-testid={`cell-${rowId}-${cellDate}`}
       data-handler-id={handlerId ?? ""}
-      style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       <div className="day">
         <Day type={dayType} topColor={topColor} bottomColor={bottomColor} />

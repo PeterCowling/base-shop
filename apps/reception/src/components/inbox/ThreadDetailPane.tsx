@@ -2,6 +2,8 @@
 
 import { AlertTriangle, Calendar, ChevronUp, Loader2, MapPin, User } from "lucide-react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import type { InboxMessage, InboxThreadDetail } from "@/services/useInbox";
 
 import DraftReviewPanel from "./DraftReviewPanel";
@@ -261,11 +263,13 @@ export default function ThreadDetailPane({
             {(threadDetail.hasMore ?? (typeof threadDetail.totalMessages === "number"
               && threadDetail.messages.length < threadDetail.totalMessages)) && (
               <div className="flex justify-center">
-                <button
+                <Button
                   type="button"
+                  color="default"
+                  tone="ghost"
                   disabled={loadingMoreMessages}
                   onClick={() => void onLoadMoreMessages()}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-surface-3 px-3 py-1.5 text-xs font-semibold text-foreground/70 transition-colors hover:bg-surface-elevated hover:text-foreground disabled:opacity-50"
+                  className="gap-1.5 rounded-full bg-surface-3 px-3 py-1.5 text-xs font-semibold text-foreground/70 hover:bg-surface-elevated hover:text-foreground disabled:opacity-50"
                 >
                   {loadingMoreMessages ? (
                     <>
@@ -278,7 +282,7 @@ export default function ThreadDetailPane({
                       Load earlier messages
                     </>
                   )}
-                </button>
+                </Button>
               </div>
             )}
             {threadDetail.messages.map((message) => (

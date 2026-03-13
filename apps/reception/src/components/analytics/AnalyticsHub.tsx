@@ -2,6 +2,9 @@
 
 import { memo, useState } from "react";
 
+import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+
 import MenuPerformanceDashboard from "@/components/analytics/MenuPerformanceDashboard";
 import Live from "@/components/live/Live";
 import RealTimeDashboard from "@/components/reports/RealTimeDashboard";
@@ -23,9 +26,10 @@ const AnalyticsHub = memo(function AnalyticsHub() {
 
   return (
     <>
-      <div className="flex border-b border-border">
+      <Inline className="border-b border-border">
         {TABS.map((tab) => (
-          <button
+          <Button
+            compatibilityMode="passthrough"
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`px-6 py-3 text-sm font-medium transition-colors border-b-2 -mb-px ${
@@ -35,9 +39,9 @@ const AnalyticsHub = memo(function AnalyticsHub() {
             }`}
           >
             {tab.label}
-          </button>
+          </Button>
         ))}
-      </div>
+      </Inline>
       {activeTab === "live" && <Live />}
       {activeTab === "dashboard" && <RealTimeDashboard />}
       {activeTab === "variance" && <VarianceHeatMap />}

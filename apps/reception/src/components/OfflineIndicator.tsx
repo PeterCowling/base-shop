@@ -3,6 +3,8 @@
 import { memo } from "react";
 import { Wifi } from "lucide-react";
 
+import { Button } from "@acme/design-system/atoms";
+
 import { useOfflineSyncContext } from "../context/OfflineSyncContext";
 
 /**
@@ -28,12 +30,14 @@ function OfflineIndicator() {
           Sync failed: {failed} write{failed === 1 ? "" : "s"} could not be
           saved.
         </span>
-        <button
+        <Button
+          color="default"
+          tone="ghost"
           onClick={() => void triggerSync()}
           className="ml-2 underline underline-offset-2"
         >
           Retry?
-        </button>
+        </Button>
       </div>
     );
   }

@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
+
 export interface ScreenHeaderProps {
   title: string;
   /** Optional right-side slot — e.g., role-gated action buttons via ActionRail, status badge */
@@ -34,7 +36,7 @@ export const ScreenHeader = memo(function ScreenHeader({
         </h1>
       </div>
       {children && (
-        <div className="flex items-center">{children}</div>
+        <Inline>{children}</Inline>
       )}
     </div>
   );

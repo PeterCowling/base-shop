@@ -3,6 +3,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Filter, MailSearch } from "lucide-react";
 
+import { Button } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
+
 import type { InboxThreadSummary } from "@/services/useInbox";
 
 import FilterBar from "./FilterBar";
@@ -113,7 +116,7 @@ export default function ThreadList({
             Threads
           </h2>
           {threads.length > 0 && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-surface-3 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-foreground/70">
+            <Inline className="gap-1.5 rounded-full bg-surface-3 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-foreground/70">
               {hasActiveFilters && (
                 <>
                   <Filter className="h-3 w-3" />
@@ -121,7 +124,7 @@ export default function ThreadList({
                 </>
               )}
               {threads.length}
-            </span>
+            </Inline>
           )}
         </div>
       </div>
@@ -203,9 +206,11 @@ export default function ThreadList({
               const time = formatInboxTimestamp(thread.latestMessageAt ?? thread.updatedAt);
 
               return (
-                <button
+                <Button
                   key={thread.id}
                   type="button"
+                  color="default"
+                  tone="ghost"
                   onClick={() => void onSelect(thread.id)}
                   className={`group w-full border-l-2 px-4 py-2.5 text-left transition-colors duration-700 ${badge.edgeColor} ${
                     isSelected
@@ -243,7 +248,7 @@ export default function ThreadList({
                   <p className="mt-0.5 truncate text-xs text-foreground/50">
                     {thread.snippet ?? "No preview available."}
                   </p>
-                </button>
+                </Button>
               );
             })}
           </div>

@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "prime-refetch-error-logging-2026-03-13",
+  "feature_slug": "prime-refetch-error-logging",
+  "emitted_at": "2026-03-13T20:13:35.767Z",
+  "why": "Background data refresh failures in the Prime guest app were silently swallowed — no log, no signal, no way to diagnose stale-data incidents in error monitoring.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Refetch errors in useOccupantDataSources are logged via console.error so they appear in error monitoring and are diagnosable.",
+    "source": "operator"
+  }
+}

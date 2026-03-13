@@ -43,7 +43,8 @@ function formatDraftStatusLabel(status: string): string {
 
 function resolveLifecycle(activity: ActivityInstance, now: number): ActivityLifecycle {
   const start = activity.startTime;
-  const end = start + 2 * 60 * 60 * 1000;
+  // Math.max(1, ...) guards against durationMinutes: 0 causing immediate-end
+  const end = start + Math.max(1, activity.durationMinutes ?? 120) * 60 * 1000;
   if (now >= end || activity.status === 'archived') {
     return 'ended';
   }

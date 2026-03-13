@@ -54,8 +54,10 @@ function formatRelativeTime(
   return t('time.startingNow');
 }
 
-function formatFinishTime(startTime: number): string {
-  const finish = new Date(startTime + 2 * 60 * 60 * 1000);
+function formatFinishTime(activity: ActivityInstance): string {
+  // Math.max(1, ...) guards against durationMinutes: 0 causing immediate-end
+  const durationMs = Math.max(1, activity.durationMinutes ?? 120) * 60 * 1000;
+  const finish = new Date(activity.startTime + durationMs);
   return new Intl.DateTimeFormat(undefined, {
     hour: 'numeric',
     minute: '2-digit',
@@ -66,7 +68,8 @@ type ActivityLifecycle = 'upcoming' | 'live' | 'ended';
 
 function resolveLifecycle(activity: ActivityInstance, now: number): ActivityLifecycle {
   const start = activity.startTime;
-  const end = start + 2 * 60 * 60 * 1000;
+  // Math.max(1, ...) guards against durationMinutes: 0 causing immediate-end
+  const end = start + Math.max(1, activity.durationMinutes ?? 120) * 60 * 1000;
   if (now >= end || activity.status === 'archived') {
     return 'ended';
   }
@@ -136,7 +139,7 @@ function ActivityCard({
           <span>
             {new Intl.DateTimeFormat(undefined, { hour: 'numeric', minute: '2-digit' }).format(new Date(activity.startTime))}
             {' - '}
-            {formatFinishTime(activity.startTime)}
+            {formatFinishTime(activity)}
           </span>
         </div>
         {!isLive && (

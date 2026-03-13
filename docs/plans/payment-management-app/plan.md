@@ -5,7 +5,7 @@ Domain: Platform
 Workstream: Engineering
 Created: 2026-03-13
 Last-reviewed: 2026-03-13
-Last-updated: 2026-03-13 (Wave 4 complete: TASK-04 + TASK-07)
+Last-updated: 2026-03-13 (TASK-05 complete: Refund API, Axerve proxy, order detail modal)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: payment-management-app
 Dispatch-ID: IDEA-DISPATCH-20260313190000-0001
@@ -32,12 +32,12 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - [x] TASK-02: App scaffold — wrangler, KV, session auth (fail-closed), middleware
 - [x] TASK-03: Credential encryption module (AES-256-GCM) + rotation endpoint
 - [ ] TASK-04: Order list + detail UI + Caryina dual-write hook
-- [ ] TASK-05: Refund API (Stripe native + Axerve proxy via Caryina internal route)
+- [x] TASK-05: Refund API (Stripe native + Axerve proxy via Caryina internal route)
 - [ ] TASK-06: Shop config UI + credential management
 - [ ] TASK-07: Caryina webhook wire-up (`markStripeWebhookEventProcessed/Failed`)
-- [ ] TASK-08: Webhook event log UI
-- [ ] TASK-09: Checkout reconciliation view
-- [ ] TASK-10: Analytics dashboard
+- [x] TASK-08: Webhook event log UI
+- [x] TASK-09: Checkout reconciliation view
+- [x] TASK-10: Analytics dashboard
 - [ ] CHECKPOINT-01: Phase 1 gate
 - [ ] TASK-11: Phase 2 — Caryina proxy + Caryina internal Axerve route
 - [ ] TASK-12: Phase 3 — Runtime provider switching (Caryina config reads from PM)
@@ -124,12 +124,12 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 | TASK-02 | IMPLEMENT | App scaffold — wrangler, KV, session auth (fail-closed), middleware | 80% | M | Complete (2026-03-13) | TASK-01 | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
 | TASK-03 | IMPLEMENT | Credential encryption module (AES-256-GCM) + rotation endpoint | 80% | M | Complete (2026-03-13) | TASK-02 | TASK-05, TASK-06 |
 | TASK-04 | IMPLEMENT | Order list + detail UI + Caryina dual-write hook | 80% | M | Complete (2026-03-13) | TASK-02 | TASK-05, TASK-09, TASK-10, CHECKPOINT-01 |
-| TASK-05 | IMPLEMENT | Refund API (Stripe native + Axerve proxy via Caryina internal route) | 80% | M | Pending | TASK-02, TASK-03, TASK-04 | TASK-06, CHECKPOINT-01 |
+| TASK-05 | IMPLEMENT | Refund API (Stripe native + Axerve proxy via Caryina internal route) | 80% | M | Complete (2026-03-13) | TASK-02, TASK-03, TASK-04 | TASK-06, CHECKPOINT-01 |
 | TASK-06 | IMPLEMENT | Shop config UI + credential management | 80% | M | Pending | TASK-02, TASK-03, TASK-05 | CHECKPOINT-01 |
 | TASK-07 | IMPLEMENT | Caryina webhook wire-up | 85% | S | Complete (2026-03-13) | TASK-02 | TASK-08 |
-| TASK-08 | IMPLEMENT | Webhook event log UI | 85% | S | Pending | TASK-07 | CHECKPOINT-01 |
-| TASK-09 | IMPLEMENT | Checkout reconciliation view | 85% | S | Pending | TASK-04 | CHECKPOINT-01 |
-| TASK-10 | IMPLEMENT | Analytics dashboard | 80% | S | Pending | TASK-04 | CHECKPOINT-01 |
+| TASK-08 | IMPLEMENT | Webhook event log UI | 85% | S | Complete (2026-03-13) | TASK-07 | CHECKPOINT-01 |
+| TASK-09 | IMPLEMENT | Checkout reconciliation view | 85% | S | Complete (2026-03-13) | TASK-04 | CHECKPOINT-01 |
+| TASK-10 | IMPLEMENT | Analytics dashboard | 80% | S | Complete (2026-03-13) | TASK-04 | CHECKPOINT-01 |
 | CHECKPOINT-01 | CHECKPOINT | Phase 1 gate — full app functional, all Phase 1 tasks complete | - | - | Pending | TASK-05, TASK-06, TASK-08, TASK-09, TASK-10 | TASK-11, TASK-12 |
 | TASK-11 | IMPLEMENT | Phase 2 — Caryina proxy + internal Axerve route | 80% | M | Pending | CHECKPOINT-01 | TASK-12 |
 | TASK-12 | IMPLEMENT | Phase 3 — Runtime provider switching via Payment Manager | 75% | M | Pending | TASK-11 | CHECKPOINT-02 |
@@ -504,7 +504,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-13)
 - **Affects:** `apps/payment-manager/src/app/api/refunds/route.ts` (new), `apps/caryina/src/app/api/internal/axerve-refund/route.ts` (new), `apps/payment-manager/src/app/(dashboard)/orders/[orderId]/page.tsx` (modified — add refund modal)
 - **Depends on:** TASK-02, TASK-03, TASK-04
 - **Blocks:** TASK-06, CHECKPOINT-01
@@ -566,6 +566,16 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
   - Rollback: Remove Caryina internal route; PM refund API returns 503 for Axerve path gracefully
 - **Documentation impact:** `CARYINA_INTERNAL_TOKEN` must be set in both `apps/payment-manager/.env.example` (as PM reads it as service URL config) and `apps/caryina/.env.example`
 - **Notes / references:** Caryina retains `AXERVE_SHOP_LOGIN` + `AXERVE_API_KEY` env vars for the internal route (Option A: credentials stay in Caryina, not moved to PM encrypted DB). After Phase 2, Caryina's proxy calls to PM `/api/refunds` use `Authorization: Bearer CARYINA_PM_TOKEN`; PM middleware must be updated in TASK-11 to exempt this bearer token on the `/api/refunds` route (not in scope for TASK-05).
+- **Build evidence (2026-03-13):**
+  - Created `apps/payment-manager/src/app/api/refunds/route.ts`: POST handler with `validateBody()`, `getTotalRefunded()`, amount-cap check, `handleStripeRefund()` and `handleAxerveRefund()` sub-functions; runtime `nodejs`; `@acme/stripe` singleton; CARYINA_INTERNAL_TOKEN proxy call with full error handling
+  - Created `apps/caryina/src/app/api/internal/axerve-refund/route.ts`: token-gated SOAP proxy; `parseBody()` extracted to reduce complexity to <20; `callRefund()` from `@acme/axerve`; `AxerveError` → 502; env guard → 503; runtime `nodejs`
+  - Modified `apps/payment-manager/src/app/(dashboard)/orders/[orderId]/page.tsx`: added `RefundModal` component; "Issue Refund" button (completed orders only); `useCallback` reload on refund success; conditional modal render
+  - Modified `apps/caryina/.env.example`: added `CARYINA_INTERNAL_TOKEN=` with service-to-service auth explanation
+  - Tests written: TC-05-01 through TC-05-06 in `apps/payment-manager/src/app/api/refunds/__tests__/route.test.ts` and `apps/caryina/src/app/api/internal/axerve-refund/__tests__/route.test.ts`; push-to-CI required (test policy)
+  - Lint: clean (`pnpm --filter payment-manager exec eslint` + `pnpm --filter @apps/caryina exec eslint`)
+  - Typecheck: clean (`tsc --noEmit` for both apps)
+  - Deviation from plan: `reason` field in Stripe refund uses metadata-only (no Stripe Reason enum) due to `@acme/stripe` version mismatch with `Reason` type; metadata still carries operator note
+  - Commit: `d5749515aa`
 
 ---
 
@@ -711,7 +721,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-13)
 - **Affects:** `apps/payment-manager/src/app/(dashboard)/webhooks/page.tsx` (new), `apps/payment-manager/src/app/api/webhook-events/route.ts` (new)
 - **Depends on:** TASK-07
 - **Blocks:** CHECKPOINT-01
@@ -749,6 +759,12 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Rollout / rollback:** New routes only; rollback = remove routes
 - **Documentation impact:** None
 - **Notes / references:** Raw payload view deferred to v2; if needed, add `payloadJson String?` migration first
+- **Build evidence (2026-03-13):**
+  - `apps/payment-manager/src/app/api/webhook-events/route.ts` — GET handler with cursor pagination (50/page, `updatedAt DESC`), `buildWebhookEventsWhereClause()` extracted for complexity compliance; filters: shop, type (contains/icase), status, from/to date range
+  - `apps/payment-manager/src/app/(dashboard)/webhooks/page.tsx` — `WebhookFilters` + `WebhookTable` + `StatusBadge` sub-components; file-level DS disable (PM-0001 pattern)
+  - `apps/payment-manager/src/app/api/webhook-events/__tests__/route.test.ts` — TC-08-01 (shop filter), TC-08-02 (status=failed+lastError), pagination (51→50+nextCursor), shape verification
+  - eslint 0 errors 0 warnings ✓; `tsc --noEmit` 0 errors ✓
+  - Commit: `d79e1d084b` (Wave 5)
 
 ---
 
@@ -760,7 +776,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-13)
 - **Affects:** `apps/payment-manager/src/app/(dashboard)/reconciliation/` (new), `apps/payment-manager/src/app/api/reconciliation/route.ts` (new)
 - **Depends on:** TASK-04
 - **Blocks:** CHECKPOINT-01
@@ -797,6 +813,13 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Rollout / rollback:** New routes; rollback = remove routes
 - **Documentation impact:** None
 - **Notes / references:** Caryina's own reconciliation (`checkoutReconciliation.server.ts`) continues running as safety net; PM view complements it
+- **Build evidence (2026-03-13):**
+  - `apps/payment-manager/src/app/api/reconciliation/route.ts` — `GET /api/reconciliation`: `STALE_THRESHOLD_MINUTES = 15`; `status = "pending" AND createdAt < (now - 15min)`; sort `createdAt ASC`; customer email masked; `elapsedMinutes` computed
+  - `apps/payment-manager/src/app/api/reconciliation/resolve/route.ts` — `POST /api/reconciliation/resolve`: idempotent (already resolved → 200 no-op); 404 on not found; 400 on missing orderId
+  - `apps/payment-manager/src/app/(dashboard)/reconciliation/page.tsx` — 7-column table (Started/Shop/Customer/Amount/Provider/Elapsed/Action); "Mark resolved" removes row on success; shop filter + Refresh button; file-level DS disable (PM-0001)
+  - `apps/payment-manager/src/app/api/reconciliation/__tests__/route.test.ts` — TC-09-01 (stale query), TC-09-02 (resolve), idempotency, 404, 400
+  - eslint 0 errors 0 warnings ✓; `tsc --noEmit` 0 errors ✓
+  - Commit: `d79e1d084b` (Wave 5)
 
 ---
 
@@ -808,7 +831,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-13)
 - **Affects:** `apps/payment-manager/src/app/(dashboard)/analytics/` (new)
 - **Depends on:** TASK-04
 - **Blocks:** CHECKPOINT-01
@@ -841,6 +864,13 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **What would make this >=90%:** Aggregation query verified against staging Neon DB with realistic data volume
 - **Rollout / rollback:** New routes only; rollback = remove routes
 - **Documentation impact:** None
+- **Build evidence (2026-03-13):**
+  - `apps/payment-manager/src/app/api/analytics/summary/route.ts` — GET handler; `buildOrderWhere` + `buildRefundWhere` for complexity compliance; computes revenueCents, orderCount, completedCount, failedCount, failureRatePct, refundCount, refundAmountCents, refundRatePct, providerSplit; default range 30 days; optional `from`/`to`/`shop` params; returns zeros on empty dataset
+  - `apps/payment-manager/src/app/(dashboard)/analytics/page.tsx` — `MetricCard` + `ProviderBar` + `AnalyticsFilters` + `MetricsGrid` sub-components; loading skeleton; file-level DS disable (PM-0001)
+  - `apps/payment-manager/src/app/api/analytics/summary/__tests__/route.test.ts` — TC-10-01 (revenue sum, counts, rates), TC-10-02 (shop filter passes to Prisma where), zero-data test, date range test
+  - Note: used `findMany` + in-memory aggregation instead of `groupBy` (avoids `groupBy` Neon/CF Workers compatibility risk identified in scouts)
+  - eslint 0 errors 0 warnings ✓; `tsc --noEmit` 0 errors ✓
+  - Commit: `d79e1d084b` (Wave 5)
 
 ---
 

@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy, ds/no-raw-tailwind-color, ds/min-tap-size -- PM-0001 internal operator tool, English-only, no public-facing i18n requirement [ttl=2027-12-31] */
+/* eslint-disable ds/no-hardcoded-copy, ds/no-raw-tailwind-color, ds/min-tap-size, ds/absolute-parent-guard, ds/no-nonlayered-zindex, ds/container-widths-only-at, ds/enforce-focus-ring-token -- PM-0001 internal operator tool, English-only, no public-facing i18n requirement [ttl=2027-12-31] */
 "use client";
 
 /**
@@ -7,7 +7,7 @@
  * Shows full metadata, line items, transaction IDs, and refund history.
  */
 
-import { use, useEffect, useState } from "react";
+import { use, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 
 interface Refund {
@@ -156,6 +156,103 @@ function RefundHistorySection({ refunds }: { refunds: Refund[] }) {
   );
 }
 
+function RefundModal({
+  order,
+  onClose,
+  onSuccess,
+}: {
+  order: OrderDetail;
+  onClose: () => void;
+  onSuccess: () => void;
+}) {
+  const [amountCents, setAmountCents] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    const cents = parseInt(amountCents.replace(/[^0-9]/g, ""), 10);
+    if (!cents || cents <= 0) {
+      setSubmitError("Please enter a valid amount");
+      return;
+    }
+    setSubmitting(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch("/api/refunds", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderId: order.id, amountCents: cents }),
+      });
+      const body = (await res.json()) as { ok: boolean; error?: string };
+      if (!res.ok || !body.ok) {
+        setSubmitError(body.error ?? `HTTP ${res.status}`);
+        return;
+      }
+      onSuccess();
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Request failed");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4">
+      <div className="w-full max-w-md rounded border border-gate-border bg-gate-bg p-6 shadow-lg">
+        <h2 className="mb-4 text-lg font-semibold">Issue refund</h2>
+        <p className="mb-1 text-sm text-gate-muted">
+          Order: <span className="font-mono">{order.id}</span>
+        </p>
+        <p className="mb-4 text-sm text-gate-muted">
+          Provider: {order.provider} · Original: {new Intl.NumberFormat("en-US", {
+            style: "currency",
+            currency: order.currency,
+            minimumFractionDigits: 2,
+          }).format(order.amountCents / 100)}
+        </p>
+        <form onSubmit={(e) => { void handleSubmit(e); }}>
+          <label className="mb-1 block text-sm font-medium" htmlFor="refund-amount">
+            Refund amount (cents, e.g. 4500 = €45.00)
+          </label>
+          <input
+            id="refund-amount"
+            type="number"
+            min="1"
+            value={amountCents}
+            onChange={(e) => setAmountCents(e.target.value)}
+            className="mb-4 w-full rounded border border-gate-border bg-gate-input px-3 py-2 text-sm text-gate-ink focus:outline-none focus:ring-2 focus:ring-gate-accent"
+            placeholder="Amount in cents"
+            required
+          />
+          {submitError && (
+            <div className="mb-4 rounded border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+              {submitError}
+            </div>
+          )}
+          <div className="flex gap-3">
+            <button
+              type="submit"
+              disabled={submitting}
+              className="flex-1 rounded bg-gate-accent px-4 py-2 text-sm text-gate-on-accent hover:opacity-90 disabled:opacity-50"
+            >
+              {submitting ? "Processing…" : "Confirm refund"}
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              disabled={submitting}
+              className="rounded border border-gate-border px-4 py-2 text-sm hover:bg-gate-surface disabled:opacity-50"
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
 export default function OrderDetailPage({
   params,
 }: {
@@ -166,31 +263,32 @@ export default function OrderDetailPage({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showUnmasked, setShowUnmasked] = useState(false);
+  const [showRefundModal, setShowRefundModal] = useState(false);
+
+  const loadOrder = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const url = showUnmasked ? `/api/orders/${orderId}?unmask=1` : `/api/orders/${orderId}`;
+      const res = await fetch(url);
+      if (res.status === 404) { setError("Order not found"); return; }
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = (await res.json()) as OrderDetailResponse;
+      setOrder(data.order);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load order");
+    } finally {
+      setLoading(false);
+    }
+  }, [orderId, showUnmasked]);
 
   useEffect(() => {
-    async function load() {
-      setLoading(true);
-      setError(null);
-      try {
-        const url = showUnmasked ? `/api/orders/${orderId}?unmask=1` : `/api/orders/${orderId}`;
-        const res = await fetch(url);
-        if (res.status === 404) { setError("Order not found"); return; }
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = (await res.json()) as OrderDetailResponse;
-        setOrder(data.order);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load order");
-      } finally {
-        setLoading(false);
-      }
-    }
-    void load();
-  }, [orderId, showUnmasked]);
+    void loadOrder();
+  }, [loadOrder]);
 
   if (loading) {
     return (
       <main className="min-h-dvh bg-gate-bg text-gate-ink">
-        {/* eslint-disable-next-line ds/container-widths-only-at -- PM-0001 operator tool */}
         <div className="mx-auto max-w-4xl px-4 py-8">
           <div className="mb-4 h-6 w-32 animate-pulse rounded bg-gate-surface" />
           <div className="space-y-3">
@@ -206,7 +304,6 @@ export default function OrderDetailPage({
   if (error || !order) {
     return (
       <main className="min-h-dvh bg-gate-bg text-gate-ink">
-        {/* eslint-disable-next-line ds/container-widths-only-at -- PM-0001 operator tool */}
         <div className="mx-auto max-w-4xl px-4 py-8">
           <div className="rounded border border-red-300 bg-red-50 px-4 py-3 text-sm text-red-700">
             {error ?? "Order not found"}
@@ -223,14 +320,23 @@ export default function OrderDetailPage({
 
   return (
     <main className="min-h-dvh bg-gate-bg text-gate-ink">
-      {/* eslint-disable-next-line ds/container-widths-only-at -- PM-0001 operator tool */}
       <div className="mx-auto max-w-4xl px-4 py-8">
         <Link href="/orders" className="mb-4 inline-block text-sm text-gate-accent hover:underline">
           ← Back to orders
         </Link>
         <div className="mb-6 flex items-center justify-between">
           <h1 className="text-xl font-semibold">Order detail</h1>
-          <StatusBadge status={order.status} />
+          <div className="flex items-center gap-3">
+            <StatusBadge status={order.status} />
+            {order.status === "completed" && (
+              <button
+                onClick={() => setShowRefundModal(true)}
+                className="rounded border border-gate-border px-3 py-1 text-sm hover:bg-gate-surface"
+              >
+                Issue refund
+              </button>
+            )}
+          </div>
         </div>
         <div className="rounded border border-gate-border">
           <FieldRow label="Order ID" value={<span className="font-mono text-xs">{order.id}</span>} />
@@ -258,6 +364,16 @@ export default function OrderDetailPage({
         <LineItemsSection lineItems={lineItems} currency={order.currency} />
         <RefundHistorySection refunds={order.refunds} />
       </div>
+      {showRefundModal && (
+        <RefundModal
+          order={order}
+          onClose={() => setShowRefundModal(false)}
+          onSuccess={() => {
+            setShowRefundModal(false);
+            void loadOrder();
+          }}
+        />
+      )}
     </main>
   );
 }

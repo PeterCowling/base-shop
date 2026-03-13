@@ -1,8 +1,9 @@
 ---
 Type: Micro-Build
-Status: Active
+Status: Archived
 Created: 2026-03-13
 Last-updated: 2026-03-13
+Completed: 2026-03-13
 Feature-Slug: prime-checkin-code-resilience
 Execution-Track: code
 Deliverable-Type: code-change

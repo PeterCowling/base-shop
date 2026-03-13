@@ -1,10 +1,13 @@
-/* eslint-disable ds/min-tap-size, ds/container-widths-only-at, ds/enforce-layout-primitives -- BRIK-3 BRIK-002 prime DS rules deferred */
 'use client';
 
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { ArrowLeft, Search } from 'lucide-react';
+
+import { Inline } from '@acme/design-system/primitives';
+
+import { Container } from '@/components/layout/Container';
 
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 
@@ -59,7 +62,7 @@ export default function FindMyStayPage() {
 
   return (
     <main className="min-h-svh bg-muted p-4">
-      <div className="mx-auto max-w-md">
+      <Container className="max-w-md">
         <div className="mb-6 flex items-center gap-3">
           <Link
             href="/"
@@ -113,19 +116,21 @@ export default function FindMyStayPage() {
           <button
             type="submit"
             disabled={isLoading || !surname.trim() || !bookingRef.trim()}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-6 py-3 text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            className="min-h-11 min-w-11 w-full rounded-lg bg-primary px-6 py-3 text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
-            {isLoading ? (
-              <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
-            ) : (
-              <>
-                <Search className="h-5 w-5" />
-                {t('button.submit')}
-              </>
-            )}
+            <Inline className="items-center justify-center gap-2">
+              {isLoading ? (
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-primary-foreground border-t-transparent" />
+              ) : (
+                <>
+                  <Search className="h-5 w-5" />
+                  {t('button.submit')}
+                </>
+              )}
+            </Inline>
           </button>
         </form>
-      </div>
+      </Container>
     </main>
   );
 }

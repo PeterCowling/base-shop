@@ -1,4 +1,3 @@
-/* eslint-disable ds/container-widths-only-at, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 /**
  * PositanoGuide.tsx
  *
@@ -14,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeft, ExternalLink, MapPin, Sparkles, Sun, Sunset } from 'lucide-react';
 
+import { Container } from '@/components/layout/Container';
 import { useUnifiedBookingData } from '@/hooks/dataOrchestrator/useUnifiedBookingData';
 import { useCompletedTaskMutator } from '@/hooks/mutator/useCompletedTaskMutator';
 
@@ -112,7 +112,7 @@ const GuideCard: FC<GuideCardProps> = memo(function GuideCard({
       href={guideUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="group block rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:border-success hover:shadow-md"
+      className="group block min-h-11 min-w-11 rounded-xl border border-border bg-card p-4 shadow-sm transition-all hover:border-success hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex-1">
@@ -189,10 +189,10 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
       {/* Header */}
       {/* eslint-disable-next-line ds/no-nonlayered-zindex -- PRIME-1: positano guide sticky header, awaiting DS modal/popover migration */}
       <header className="sticky top-0 z-10 border-b border-border bg-card px-4 py-3">
-        <div className="mx-auto flex max-w-lg items-center gap-3">
+        <Container className="max-w-lg flex items-center gap-3">
           <button
             onClick={handleBack}
-            className="rounded-full p-2 transition-colors hover:bg-muted"
+            className="min-h-11 min-w-11 rounded-full p-2 transition-colors hover:bg-muted"
             aria-label={t('nav.goBack')}
           >
             <ArrowLeft className="h-5 w-5 text-foreground" />
@@ -204,11 +204,11 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
             <p className="text-sm text-muted-foreground">{t('meta.subtitle')}</p>
           </div>
           <MapPin className="ms-auto h-5 w-5 text-success" />
-        </div>
+        </Container>
       </header>
 
       {/* Content */}
-      <main className="mx-auto max-w-lg px-4 py-6">
+      <Container className="max-w-lg px-4 py-6">
         {/* Popular badge */}
         <div className="mb-6 flex items-center gap-2 rounded-lg bg-warning-soft px-3 py-2">
           <Sparkles className="h-4 w-4 text-warning-foreground" />
@@ -256,7 +256,7 @@ const PositanoGuide: FC = memo(function PositanoGuide() {
         <div className="mt-8 text-center text-xs text-muted-foreground">
           {t('cta.poweredBy')}
         </div>
-      </main>
+      </Container>
     </div>
   );
 });

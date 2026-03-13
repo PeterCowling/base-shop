@@ -1,4 +1,3 @@
-/* eslint-disable ds/container-widths-only-at, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 'use client';
 
 /**
@@ -13,6 +12,8 @@ import { Suspense, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { AlertCircle, ArrowLeft, Calendar, Clock, CreditCard, MapPin, Search, User } from 'lucide-react';
+
+import { Container } from '@/components/layout/Container';
 
 import StaffReadinessBadges from '../../components/check-in/StaffReadinessBadges';
 import { usePinAuth } from '../../contexts/messaging/PinAuthProvider';
@@ -116,7 +117,7 @@ function StaffLookupContent() {
   if (!user) {
     return (
       <div className="min-h-svh bg-muted p-4">
-        <div className="mx-auto mt-12 max-w-md rounded-xl bg-card p-6 shadow-sm">
+        <Container className="max-w-md mt-12 rounded-xl bg-card p-6 shadow-sm">
           <h1 className="text-xl font-bold text-foreground">Staff access</h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Enter your staff PIN to continue.
@@ -134,7 +135,7 @@ function StaffLookupContent() {
             <button
               type="submit"
               disabled={isAuthLoading || !pin.trim()}
-              className="w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              className="min-h-11 min-w-11 w-full rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
             >
               {isAuthLoading ? 'Signing in...' : 'Sign in'}
             </button>
@@ -149,7 +150,7 @@ function StaffLookupContent() {
               Failed attempts: {lockout.failedAttempts}. Remaining: {lockout.attemptsRemaining}.
             </p>
           )}
-        </div>
+        </Container>
       </div>
     );
   }
@@ -168,13 +169,13 @@ function StaffLookupContent() {
 
   return (
     <div className="min-h-svh bg-muted p-4">
-      <div className="mx-auto max-w-md">
+      <Container className="max-w-md">
         {/* Header */}
         <div className="mb-6 flex items-center gap-3">
           <button
             type="button"
             onClick={() => router.back()}
-            className="rounded-full p-2 hover:bg-muted"
+            className="min-h-11 min-w-11 rounded-full p-2 hover:bg-muted"
             aria-label={t('staffLookup.back')}
           >
             <ArrowLeft className="h-5 w-5" />
@@ -199,7 +200,7 @@ function StaffLookupContent() {
             <button
               type="submit"
               disabled={isLoading || !inputCode.trim()}
-              className="rounded-lg bg-primary px-4 py-3 text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+              className="min-h-11 min-w-11 rounded-lg bg-primary px-4 py-3 text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
             >
               <Search className="h-5 w-5" />
             </button>
@@ -328,7 +329,7 @@ function StaffLookupContent() {
             </div>
           </div>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

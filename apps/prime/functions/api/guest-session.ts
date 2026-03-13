@@ -72,7 +72,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
       return errorResponse('Token expired', 410); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]
     }
 
-    return jsonResponse({ status: 'ok', expiresAt: session.expiresAt }); // i18n-exempt -- PRIME-101 machine-readable API status [ttl=2026-12-31]
+    return jsonResponse({ status: 'ok', expiresAt: session.expiresAt, guestUuid: session.guestUuid ?? null }); // i18n-exempt -- PRIME-101 machine-readable API status [ttl=2026-12-31]
   } catch (error) {
     console.error('Error validating guest token:', error); // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
     return errorResponse('Failed to validate token', 500); // i18n-exempt -- PRIME-101 machine-readable API error [ttl=2026-12-31]

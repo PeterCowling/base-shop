@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useRouter } from 'next/navigation';
 
 import { DevTools } from '../../components/dev/DevTools';
+import { AuthSessionContext } from '../../contexts/auth/AuthSessionContext';
 import { ChatProvider } from '../../contexts/messaging/ChatProvider';
 import { PinAuthProvider, usePinAuth } from '../../contexts/messaging/PinAuthProvider';
 import { useSessionValidation } from '../../hooks/useSessionValidation';
@@ -20,6 +21,7 @@ function GuardedGate({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { t } = useTranslation('Homepage');
   const [gateState, setGateState] = useState<GateState>('checking');
+  const [sessionUuid, setSessionUuid] = useState<string | null>(null);
   const invalidateGuestSession = useCallback(() => {
     clearGuestSession();
     setGateState('denied');
@@ -48,12 +50,13 @@ function GuardedGate({ children }: { children: ReactNode }) {
         return;
       }
 
-      if (validation === 'valid') {
+      if (validation.status === 'valid') {
+        setSessionUuid(validation.guestUuid);
         setGateState('allowed');
         return;
       }
 
-      if (validation === 'network_error') {
+      if (validation.status === 'network_error') {
         setGateState('network_error');
         return;
       }
@@ -100,7 +103,11 @@ function GuardedGate({ children }: { children: ReactNode }) {
     return null;
   }
 
-  return <>{children}</>;
+  return (
+    <AuthSessionContext.Provider value={{ guestUuid: sessionUuid }}>
+      {children}
+    </AuthSessionContext.Provider>
+  );
 }
 
 export default function GuardedLayout({ children }: { children: ReactNode }) {

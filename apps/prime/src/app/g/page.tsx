@@ -1,10 +1,11 @@
-/* eslint-disable ds/container-widths-only-at, ds/min-tap-size -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { Suspense, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+
+import { Container } from '@/components/layout/Container';
 
 import { recordActivationFunnelEvent } from '../../lib/analytics/activationFunnel';
 
@@ -132,7 +133,7 @@ function GuestEntryContent() {
   if (status === 'error') {
     return (
       <main className="min-h-svh bg-muted p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+        <Container className="max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-2xl font-bold text-foreground">{t('guestEntry.errorTitle')}</h1>
           <p className="mb-6 text-muted-foreground">{error}</p>
           <Link
@@ -141,7 +142,7 @@ function GuestEntryContent() {
           >
             {t('guestEntry.findMyStay')}
           </Link>
-        </div>
+        </Container>
       </main>
     );
   }
@@ -149,7 +150,7 @@ function GuestEntryContent() {
   if (status === 'verified') {
     return (
       <main className="min-h-svh bg-muted p-4">
-        <div className="mx-auto max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
+        <Container className="max-w-md rounded-xl bg-card p-6 text-center shadow-sm">
           <h1 className="mb-2 text-2xl font-bold text-foreground">
             {guestFirstName ? t('guestEntry.welcomeName', { firstName: guestFirstName }) : t('guestEntry.youreIn')}
           </h1>
@@ -165,14 +166,14 @@ function GuestEntryContent() {
           >
             {t('guestEntry.continue')}
           </Link>
-        </div>
+        </Container>
       </main>
     );
   }
 
   return (
     <main className="min-h-svh bg-muted p-4">
-      <div className="mx-auto max-w-md">
+      <Container className="max-w-md">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold text-foreground">{t('guestEntry.confirmTitle')}</h1>
           <p className="mt-2 text-muted-foreground">
@@ -209,12 +210,12 @@ function GuestEntryContent() {
           <button
             type="submit"
             disabled={isVerifying || !lastName.trim()}
-            className="mt-5 w-full rounded-lg bg-primary px-4 py-3 text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
+            className="mt-5 min-h-11 min-w-11 w-full rounded-lg bg-primary px-4 py-3 text-primary-foreground hover:bg-primary/90 disabled:opacity-50"
           >
             {isVerifying ? t('guestEntry.checking') : t('guestEntry.continue')}
           </button>
         </form>
-      </div>
+      </Container>
     </main>
   );
 }

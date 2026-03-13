@@ -102,7 +102,7 @@ export function useOccupantDataSources(): OccupantDataSources {
     isLoading: isLoansLoading,
     error: loansError,
     refetch: refetchLoansData,
-  } = useFetchLoans({ bookingRef, enabled: secondaryEnabled });
+  } = useFetchLoans({ enabled: secondaryEnabled });
 
   // 4) Guest room allocation
   const {

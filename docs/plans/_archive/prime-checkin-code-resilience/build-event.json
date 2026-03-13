@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "IDEA-DISPATCH-20260313200000-PRIME-002",
+  "feature_slug": "prime-checkin-code-resilience",
+  "emitted_at": "2026-03-13T20:44:43.415Z",
+  "why": "A guest generates their check-in code successfully but then refetch fails, losing the code. Stale offline codes from previous stays had no expiry.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "After successful code generation, the API response is cached directly so refetch failure does not lose the code. Cache entries have a TTL so expired codes are not served offline.",
+    "source": "operator"
+  }
+}

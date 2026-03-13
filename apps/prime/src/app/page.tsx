@@ -1,9 +1,10 @@
-/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 'use client';
 
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'next/link';
+
+import { Container } from '@/components/layout/Container';
 
 import GuardedHomeExperience from '../components/homepage/GuardedHomeExperience';
 import { ChatProvider } from '../contexts/messaging/ChatProvider';
@@ -27,7 +28,7 @@ export default function HomePage() {
         return;
       }
 
-      if (result === 'valid' || result === 'network_error') {
+      if (result.status === 'valid' || result.status === 'network_error') {
         setMode('guest');
         return;
       }
@@ -63,7 +64,7 @@ export default function HomePage() {
 
   return (
     <main className="flex min-h-svh flex-col items-center justify-center bg-muted p-4">
-      <div className="mx-auto max-w-md text-center">
+      <Container className="max-w-md text-center">
         <h1 className="mb-4 text-3xl font-bold text-foreground">
           {t('landing.title')}
         </h1>
@@ -86,7 +87,7 @@ export default function HomePage() {
             </Link>
           )}
         </div>
-      </div>
+      </Container>
     </main>
   );
 }

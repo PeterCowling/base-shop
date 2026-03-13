@@ -18,4 +18,5 @@ export * from "./PromoCodeInput";
 export * from "./QuantityInput";
 export * from "./RatingSummary";
 export * from "./SearchBar";
+export * from "./StockBadge";
 export * from "./SustainabilityBadgeCluster";

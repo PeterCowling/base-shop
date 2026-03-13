@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import { StockBadge } from "@/components/catalog/StockBadge";
+import { StockBadge } from "../StockBadge";
 
 describe("StockBadge", () => {
   // TC-01: stock states with per-SKU thresholds

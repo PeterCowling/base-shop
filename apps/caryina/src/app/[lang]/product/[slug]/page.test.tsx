@@ -54,7 +54,7 @@ jest.mock("@/lib/contentPacket", () => ({
     relatedHeading: "Related products",
   })),
   getSeoKeywords: jest.fn(() => ["caryina", "bag" ]),
-  getTrustStripContent: jest.fn(() => ({ exchange: "30-day exchange" })),
+  getTrustStripContent: jest.fn(() => ({ exchange: "Unused-item exchange requests up to 30 days" })),
 }));
 
 jest.mock("@/lib/launchMerchandising", () => ({
@@ -86,7 +86,7 @@ jest.mock("@/components/catalog/ProductMediaCard", () => ({
   ProductMediaCard: () => <div data-cy="product-media-card" />,
 }));
 
-jest.mock("@/components/catalog/StockBadge", () => ({
+jest.mock("@acme/ui/components/molecules/StockBadge", () => ({
   StockBadge: () => <div data-cy="stock-badge" />,
 }));
 

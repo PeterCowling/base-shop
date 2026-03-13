@@ -1,21 +1,353 @@
 {
-  "last_updated": "2026-03-13T15:39:55.296Z",
+  "last_updated": "2026-03-13T16:00:00.000Z",
   "counts": {
-    "enqueued": 33,
+    "enqueued": 39,
     "processed": 18,
     "declined": 2,
-    "skipped": 1,
+    "skipped": 2,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 320,
+    "completed": 321,
     "fact_find_ready": 24,
     "plan_ready": 0,
-    "micro_build_ready": 7,
+    "micro_build_ready": 13,
     "briefing_ready": 0,
-    "total": 583
+    "total": 591
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313160000-0001",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-inventory-uploader-ip-allowlist",
+      "root_event_id": "operator:PLAT:BOS:inventory-uploader-security:20260313",
+      "anchor_key": "inventory-uploader-ip-allowlist",
+      "cluster_key": "PLAT:BOS:inventory-uploader-security",
+      "cluster_fingerprint": "inventory-uploader-security-ip-allowlist",
+      "lineage_depth": 0,
+      "area_anchor": "Inventory Manager — anyone who can reach the URL can attempt to log in, with no network barrier",
+      "location_anchors": [
+        "apps/inventory-uploader/src/middleware.ts",
+        "apps/inventory-uploader/src/lib/auth/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "confidence": 0.97,
+      "evidence_refs": [
+        "operator-stated: no IP-level access control; any internet user can reach login page",
+        "apps/inventory-uploader/src/middleware.ts — cookie-only check, no IP gate",
+        "apps/xa-uploader/src/lib/accessControl.ts — reference implementation to port",
+        "coverage-hint: security",
+        "coverage-hint: testing"
+      ],
+      "why": "Right now anyone on the internet can try to log in to the inventory manager just by knowing the URL. There is no check that blocks access before they even reach the login screen. Adding an IP-based allowlist means only approved devices can reach the tool at all, stopping unauthorised access attempts before they start.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "IP allowlist enforcement active in middleware; unapproved IPs receive a 404 before reaching login; INVENTORY_ALLOWED_IPS env var controls the list with deny-all default when unset.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T16:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313160000-0002",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-inventory-uploader-session-revocation",
+      "root_event_id": "operator:PLAT:BOS:inventory-uploader-security:20260313",
+      "anchor_key": "inventory-uploader-session-revocation",
+      "cluster_key": "PLAT:BOS:inventory-uploader-security",
+      "cluster_fingerprint": "inventory-uploader-security-session-revocation",
+      "lineage_depth": 0,
+      "area_anchor": "Inventory Manager — no way to immediately stop a stolen login session from working",
+      "location_anchors": [
+        "apps/inventory-uploader/src/lib/auth/session.ts",
+        "apps/inventory-uploader/wrangler.toml",
+        "apps/xa-uploader/src/lib/uploaderAuth.ts"
+      ],
+      "provisional_deliverable_family": "infra",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: session tokens valid 7 days with no revocation mechanism",
+        "apps/inventory-uploader/src/lib/auth/session.ts — no min-issued-at check",
+        "apps/xa-uploader/src/lib/uploaderAuth.ts — KV-backed revocation pattern to port",
+        "coverage-hint: security",
+        "coverage-hint: data-contracts",
+        "coverage-hint: rollout-rollback"
+      ],
+      "why": "If an inventory manager session token is stolen or leaked, there is no way to stop it working — it will remain valid for up to 7 days. An emergency lockout mechanism would let an administrator invalidate all active sessions instantly, stopping an attacker the moment a problem is discovered.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "KV-backed session revocation added; calling revokeAllSessions() immediately invalidates all existing sessions; wrangler KV binding configured.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T16:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313160000-0003",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-inventory-uploader-import-size-limit",
+      "root_event_id": "operator:PLAT:BOS:inventory-uploader-security:20260313",
+      "anchor_key": "inventory-uploader-import-size-limit",
+      "cluster_key": "PLAT:BOS:inventory-uploader-security",
+      "cluster_fingerprint": "inventory-uploader-security-import-size-limit",
+      "lineage_depth": 0,
+      "area_anchor": "Inventory Manager — file imports accept uploads of any size, with no cap",
+      "location_anchors": [
+        "apps/inventory-uploader/src/app/api/inventory/[shop]/import/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P1",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "operator-stated: /api/inventory/[shop]/import accepts multipart/form-data and JSON with no size cap",
+        "apps/inventory-uploader/src/app/api/inventory/[shop]/import/route.ts — no content-length or byte-count check",
+        "coverage-hint: security",
+        "coverage-hint: performance-reliability"
+      ],
+      "why": "The inventory import tool will accept a file of any size. Uploading a very large file could slow the tool down or exhaust available resources. A sensible size cap prevents this and brings the tool in line with all other routes in the platform.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Import route rejects files above a defined limit with a clear 413 error; limit set appropriate to real inventory CSV/JSON file sizes.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T16:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313160000-0004",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-inventory-uploader-security-headers",
+      "root_event_id": "operator:PLAT:BOS:inventory-uploader-security:20260313",
+      "anchor_key": "inventory-uploader-security-headers",
+      "cluster_key": "PLAT:BOS:inventory-uploader-security",
+      "cluster_fingerprint": "inventory-uploader-security-headers",
+      "lineage_depth": 0,
+      "area_anchor": "Inventory Manager — browser security protections not explicitly enabled",
+      "location_anchors": [
+        "apps/inventory-uploader/src/middleware.ts",
+        "apps/xa-uploader/src/middleware.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "operator-stated: no CSP, HSTS, X-Frame-Options, Referrer-Policy, or Permissions-Policy set",
+        "apps/inventory-uploader/src/middleware.ts — no BASE_SECURITY_HEADERS block",
+        "apps/xa-uploader/src/middleware.ts — reference implementation to port",
+        "coverage-hint: security"
+      ],
+      "why": "Modern browsers offer protections against common web attacks, but those protections only activate when the application explicitly requests them. Without these settings, the inventory tool is missing defences against clickjacking, content injection, and tracking. Adding them costs almost nothing and is standard practice.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, and Permissions-Policy headers applied to all responses via middleware.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T16:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313160000-0005",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-inventory-uploader-rate-limiter",
+      "root_event_id": "operator:PLAT:BOS:inventory-uploader-security:20260313",
+      "anchor_key": "inventory-uploader-rate-limiter",
+      "cluster_key": "PLAT:BOS:inventory-uploader-security",
+      "cluster_fingerprint": "inventory-uploader-security-rate-limiter",
+      "lineage_depth": 0,
+      "area_anchor": "Inventory Manager — login protection could exhaust server memory under sustained attack",
+      "location_anchors": [
+        "apps/inventory-uploader/src/app/api/inventory/login/route.ts",
+        "apps/xa-uploader/src/lib/uploaderAuth.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: rate limiter uses plain unbounded Map; no LRU eviction; no rate-limit response headers",
+        "apps/inventory-uploader/src/app/api/inventory/login/route.ts — inline Map with no key cap",
+        "apps/xa-uploader/src/lib/uploaderAuth.ts — memory-bounded rate limiter with LRU eviction to port",
+        "coverage-hint: security",
+        "coverage-hint: performance-reliability"
+      ],
+      "why": "The login protection system keeps a record of every IP address that has attempted to log in. If someone floods the tool with requests from many different addresses, this list could grow without limit and consume all available server memory. Capping the list with a smart eviction strategy prevents this, and adding standard rate-limit headers makes the behaviour transparent.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Rate limiter uses bounded memory with LRU eviction (max 20k keys); standard X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset, and Retry-After headers returned on all login responses.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T16:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313160000-0006",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-inventory-uploader-security-logging",
+      "root_event_id": "operator:PLAT:BOS:inventory-uploader-security:20260313",
+      "anchor_key": "inventory-uploader-security-logging",
+      "cluster_key": "PLAT:BOS:inventory-uploader-security",
+      "cluster_fingerprint": "inventory-uploader-security-logging",
+      "lineage_depth": 0,
+      "area_anchor": "Inventory Manager — failed logins and blocked access leave no record",
+      "location_anchors": [
+        "apps/inventory-uploader/src/app/api/inventory/login/route.ts",
+        "apps/inventory-uploader/src/middleware.ts",
+        "apps/inventory-uploader/src/lib/auth/session.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.96,
+      "evidence_refs": [
+        "operator-stated: no structured security event logging; failed logins, rate limit events, and IP blocks leave no trace",
+        "apps/inventory-uploader/src/app/api/inventory/login/route.ts — returns error JSON but logs nothing",
+        "apps/xa-uploader/src/lib/uploaderAuth.ts — uploaderLog() structured event pattern to port",
+        "coverage-hint: observability",
+        "coverage-hint: security"
+      ],
+      "why": "When someone tries to log in to the inventory tool and fails, nothing is recorded. If the tool were being probed or attacked, staff would have no way to know until something went wrong. Structured logging creates a clear record of security events — failed logins, blocked requests, rate limit hits — that can be reviewed at any time.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Security events (failed login, rate limit hit, IP block) logged as structured JSON with consistent field names; audit trail available for review and alerting.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T16:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313160000-0007",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-inventory-uploader-small-security-fixes",
+      "root_event_id": "operator:PLAT:BOS:inventory-uploader-security:20260313",
+      "anchor_key": "inventory-uploader-small-security-fixes",
+      "cluster_key": "PLAT:BOS:inventory-uploader-security",
+      "cluster_fingerprint": "inventory-uploader-security-small-fixes",
+      "lineage_depth": 0,
+      "area_anchor": "Inventory Manager — three small security weaknesses in session handling and server setup",
+      "location_anchors": [
+        "apps/inventory-uploader/src/lib/auth/session.ts",
+        "apps/inventory-uploader/next.config.mjs",
+        "apps/inventory-uploader/src/app/api/inventory/login/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P3",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: verifySessionToken version check uses plain !== not timing-safe comparison",
+        "operator-stated: no build-time validation of INVENTORY_ADMIN_TOKEN or INVENTORY_SESSION_SECRET",
+        "operator-stated: no E2E test token override; tests require hardcoded credentials",
+        "apps/inventory-uploader/src/lib/auth/session.ts:55 — version !== 'v1' plain comparison",
+        "apps/xa-uploader/next.config.mjs — build-time secret validation pattern to port",
+        "coverage-hint: security",
+        "coverage-hint: testing"
+      ],
+      "why": "Three small security issues were found during the audit: one step in the session checker could theoretically leak timing information to an attacker, required credentials are not checked at deploy time so a misconfigured server could accept any login silently, and automated tests require hardcoded credentials rather than a dedicated test token. Each fix is one to three lines of code.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Session version check uses timing-safe comparison; missing secrets fail the build in production; INVENTORY_E2E_ADMIN_TOKEN override supported in non-production environments.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T16:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313160000-0008",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-inventory-uploader-security-tests",
+      "root_event_id": "operator:PLAT:BOS:inventory-uploader-security:20260313",
+      "anchor_key": "inventory-uploader-security-tests",
+      "cluster_key": "PLAT:BOS:inventory-uploader-security",
+      "cluster_fingerprint": "inventory-uploader-security-tests",
+      "lineage_depth": 0,
+      "area_anchor": "Inventory Manager — authentication and security logic has no automated tests",
+      "location_anchors": [
+        "apps/inventory-uploader/src/lib/auth/session.ts",
+        "apps/inventory-uploader/src/app/api/inventory/login/route.ts",
+        "apps/inventory-uploader/src/middleware.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "status": "micro_build_ready",
+      "recommended_route": "lp-do-build",
+      "queue_state": "enqueued",
+      "priority": "P3",
+      "confidence": 0.94,
+      "evidence_refs": [
+        "operator-stated: zero test coverage for all auth and security functions; regressions not caught before deploy",
+        "apps/inventory-uploader/src/ — no __tests__ or *.test.ts files found for auth",
+        "apps/xa-uploader/src/lib/__tests__/ — 13 security test suites as reference",
+        "coverage-hint: security",
+        "coverage-hint: testing"
+      ],
+      "why": "The code that handles logins, validates sessions, and protects routes has no automated tests at all. This means a code change that accidentally breaks the protection would not be caught before going live. Tests for these functions are a standard safeguard that would catch problems automatically in future.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Test suites covering session issue/verify/expiry, login validation, rate limiting, IP allowlist, and import size limit; security regressions caught in CI before deploy.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T16:00:00.000Z"
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260312140500-0001",
@@ -28261,11 +28593,11 @@
         "packages/ui/src/components/molecules/"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.9,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: StockBadge shows in-stock/low-stock/out-of-stock status with no app-specific deps; identified as candidate for @acme/ui/molecules in design audit",
         "apps/caryina/src/components/StockBadge.tsx",
@@ -28277,7 +28609,20 @@
       "next_scope_now": "Move StockBadge to packages/ui/src/components/molecules/StockBadge.tsx, export it from the packages/ui index, and update apps/caryina to import from @acme/ui.",
       "why": "The badge that shows whether a product is in stock, low stock, or out of stock is implemented only inside the Caryina shop. It has no shop-specific logic and could be used by any product-selling app. Moving it to the shared component library means other apps benefit from it without rebuilding the same thing, and any future improvements apply everywhere at once.",
       "intended_outcome": "StockBadge moved to @acme/ui/molecules, re-exported from caryina, local copy removed, and existing behaviour confirmed with a component test.",
-      "created_at": "2026-03-13T16:30:00.000Z"
+      "created_at": "2026-03-13T16:30:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-stockbadge-centralise",
+        "target_path": "docs/plans/caryina-stockbadge-centralise/micro-build.md",
+        "processed_at": "2026-03-13T17:05:00.000Z",
+        "route": "dispatch-routed"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/caryina-stockbadge-centralise/micro-build.md",
+        "completed_at": "2026-03-13T15:47:07.099Z",
+        "outcome": "StockBadge moved to packages/ui/molecules; caryina shim + all imports updated; both typechecks clean"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -28303,7 +28648,7 @@
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.98,
-      "queue_state": "enqueued",
+      "queue_state": "skipped",
       "evidence_refs": [
         "operator-stated: @acme/design-system is declared in apps/caryina/package.json but has zero import statements in any .tsx/.ts file in the app",
         "apps/caryina/package.json",
@@ -28313,7 +28658,14 @@
       "next_scope_now": "Remove @acme/design-system from apps/caryina/package.json and run pnpm install to update pnpm-lock.yaml.",
       "why": "The design system package is listed as a dependency in the shop's configuration but nothing in the shop actually imports it. Dead dependencies add noise, slow down install times, and make it unclear whether the design system is intentionally avoided or just forgotten. Removing it makes the intent explicit and keeps the dependency list accurate.",
       "intended_outcome": "@acme/design-system removed from apps/caryina/package.json, pnpm-lock.yaml updated, and typecheck passes.",
-      "created_at": "2026-03-13T16:30:00.000Z"
+      "created_at": "2026-03-13T16:30:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-admin-forms-ds-input",
+        "processed_at": "2026-03-13T17:05:00.000Z",
+        "route": "dispatch-routed"
+      }
     },
     {
       "schema_version": "dispatch.v2",

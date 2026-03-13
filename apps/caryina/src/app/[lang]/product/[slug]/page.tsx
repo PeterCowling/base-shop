@@ -4,11 +4,11 @@ import { notFound } from "next/navigation";
 
 import { type Locale, LOCALES, resolveLocale } from "@acme/i18n/locales";
 import AddToCartButton from "@acme/platform-core/components/shop/AddToCartButton.client";
+import { StockBadge } from "@acme/ui/components/molecules/StockBadge";
 
 import { NotifyMeForm } from "@/components/catalog/NotifyMeForm.client";
 import { ProductGallery } from "@/components/catalog/ProductGallery.client";
 import { ProductMediaCard } from "@/components/catalog/ProductMediaCard";
-import { StockBadge } from "@/components/catalog/StockBadge";
 import ShippingReturnsTrustBlock from "@/components/ShippingReturnsTrustBlock";
 import {
   getChromeContent,
@@ -123,13 +123,13 @@ export default async function ProductDetailPage({
             </div>
 
             <div className="space-y-4">
-              <p className="text-xl font-medium">{formatMoney(product.price, currency)}</p>
+              <p className="text-xl font-medium">{formatMoney(product.price, currency, lang)}</p>
               <StockBadge stock={product.stock} lowStockThreshold={lowStockThreshold} />
               <div data-cy="pdp-checkout">
                 <AddToCartButton sku={product} disabled={product.stock === 0} />
               </div>
               <StickyCheckoutBar
-                priceLabel={formatMoney(product.price, currency)}
+                priceLabel={formatMoney(product.price, currency, lang)}
                 sku={product}
                 trustLine={trustStrip?.exchange}
               />
@@ -218,7 +218,7 @@ export default async function ProductDetailPage({
                       href={`/${lang}/product/${relatedSku.slug}`}
                       category={getSkuFamilyLabel(relatedSku, idx, familyCopy)}
                       title={relatedSku.title}
-                      priceLabel={formatMoney(relatedSku.price, currency)}
+                      priceLabel={formatMoney(relatedSku.price, currency, lang)}
                       primarySrc={media.primarySrc}
                       primaryAlt={media.primaryAlt}
                       secondarySrc={media.secondarySrc}

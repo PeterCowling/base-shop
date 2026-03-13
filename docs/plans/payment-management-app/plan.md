@@ -5,7 +5,7 @@ Domain: Platform
 Workstream: Engineering
 Created: 2026-03-13
 Last-reviewed: 2026-03-13
-Last-updated: 2026-03-13 (TASK-05 complete: Refund API, Axerve proxy, order detail modal)
+Last-updated: 2026-03-13 (TASK-06 complete: Shop config UI + credential management; all Phase 1 tasks done)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: payment-management-app
 Dispatch-ID: IDEA-DISPATCH-20260313190000-0001
@@ -31,9 +31,9 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - [x] TASK-01: Prisma schema — 5 new payment models
 - [x] TASK-02: App scaffold — wrangler, KV, session auth (fail-closed), middleware
 - [x] TASK-03: Credential encryption module (AES-256-GCM) + rotation endpoint
-- [ ] TASK-04: Order list + detail UI + Caryina dual-write hook
+- [x] TASK-04: Order list + detail UI + Caryina dual-write hook
 - [x] TASK-05: Refund API (Stripe native + Axerve proxy via Caryina internal route)
-- [ ] TASK-06: Shop config UI + credential management
+- [x] TASK-06: Shop config UI + credential management
 - [ ] TASK-07: Caryina webhook wire-up (`markStripeWebhookEventProcessed/Failed`)
 - [x] TASK-08: Webhook event log UI
 - [x] TASK-09: Checkout reconciliation view
@@ -125,7 +125,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 | TASK-03 | IMPLEMENT | Credential encryption module (AES-256-GCM) + rotation endpoint | 80% | M | Complete (2026-03-13) | TASK-02 | TASK-05, TASK-06 |
 | TASK-04 | IMPLEMENT | Order list + detail UI + Caryina dual-write hook | 80% | M | Complete (2026-03-13) | TASK-02 | TASK-05, TASK-09, TASK-10, CHECKPOINT-01 |
 | TASK-05 | IMPLEMENT | Refund API (Stripe native + Axerve proxy via Caryina internal route) | 80% | M | Complete (2026-03-13) | TASK-02, TASK-03, TASK-04 | TASK-06, CHECKPOINT-01 |
-| TASK-06 | IMPLEMENT | Shop config UI + credential management | 80% | M | Pending | TASK-02, TASK-03, TASK-05 | CHECKPOINT-01 |
+| TASK-06 | IMPLEMENT | Shop config UI + credential management | 80% | M | Complete (2026-03-13) | TASK-02, TASK-03, TASK-05 | CHECKPOINT-01 |
 | TASK-07 | IMPLEMENT | Caryina webhook wire-up | 85% | S | Complete (2026-03-13) | TASK-02 | TASK-08 |
 | TASK-08 | IMPLEMENT | Webhook event log UI | 85% | S | Complete (2026-03-13) | TASK-07 | CHECKPOINT-01 |
 | TASK-09 | IMPLEMENT | Checkout reconciliation view | 85% | S | Complete (2026-03-13) | TASK-04 | CHECKPOINT-01 |
@@ -587,7 +587,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-13)
 - **Affects:** `apps/payment-manager/src/app/(dashboard)/shops/` (new), `apps/payment-manager/src/app/api/shops/` (new)
 - **Depends on:** TASK-02, TASK-03, TASK-05
 - **Blocks:** CHECKPOINT-01
@@ -647,6 +647,13 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
   - Rollback: Remove PM; Caryina falls back to `PAYMENTS_PROVIDER` env var (unchanged)
 - **Documentation impact:** Seeding procedure in `apps/payment-manager/README.md`
 - **Notes / references:** Test-connection for Axerve is format-validation only in v1; full SOAP test-connection deferred to Option B (Axerve REST)
+
+**Build evidence (2026-03-13):**
+- Files created: `apps/payment-manager/src/app/api/shops/route.ts` (GET /api/shops list); `apps/payment-manager/src/app/api/shops/[shopId]/config/route.ts` (GET/PUT activeProvider + PaymentConfigAudit write); `apps/payment-manager/src/app/api/shops/[shopId]/credentials/[provider]/route.ts` (GET masked / PUT encrypt+upsert); `apps/payment-manager/src/app/api/shops/[shopId]/credentials/[provider]/test/route.ts` (Stripe direct-fetch + Axerve format validation); `apps/payment-manager/src/app/(dashboard)/shops/page.tsx` (shop list UI); `apps/payment-manager/src/app/(dashboard)/shops/[shopId]/page.tsx` (per-shop config + credential form + test-connection)
+- Tests: `apps/payment-manager/src/app/api/shops/__tests__/route.test.ts` — TC-06-01 (PUT config → 200 + audit record), TC-06-02 (GET credentials → masked only `****`), TC-06-03 (PUT credentials → encrypt called + upsert with encrypted value), TC-06-04 (Stripe valid key → `{ ok: true }`), TC-06-05 (Stripe invalid key → `{ ok: false, error: "No such API key" }`), TC-06-06 (Axerve valid format → `{ ok: true }`), plus 401/400/404 guard cases
+- Deviations: Stripe test-connection uses direct `fetch("https://api.stripe.com/v1/account")` (not `@acme/stripe` singleton which uses env key); `stripetestroute.ts` unused import removed. Axerve test-connection is format-validation only (v1) per plan acceptance criteria.
+- lint: payment-manager 0 errors (DS rule suppressions via file-level eslint-disable PM-0001); caryina 0 errors (warnings only — pre-existing); typecheck: cached pass (21/21 packages turbo cache hit)
+- Commit: `65678b5916` (includes TASK-05 + TASK-06 files together)
 
 ---
 

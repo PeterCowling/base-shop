@@ -1,14 +1,14 @@
 {
-  "last_updated": "2026-03-13T18:04:07.488Z",
+  "last_updated": "2026-03-13T18:08:03.256Z",
   "counts": {
     "enqueued": 43,
-    "processed": 28,
+    "processed": 27,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 335,
+    "completed": 336,
     "fact_find_ready": 32,
     "plan_ready": 0,
     "micro_build_ready": 9,
@@ -29963,12 +29963,15 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "target_path": "docs/plans/inventory-uploader-duplicate-product-button/micro-build.md",
-        "target_slug": "inventory-uploader-duplicate-product-button"
+        "target_slug": "inventory-uploader-duplicate-product-button",
+        "target_kind": "build",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-duplicate-product-button/micro-build.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/inventory-uploader-duplicate-product-button/micro-build.md",
         "completed_at": "2026-03-13T17:59:45.211Z",
-        "outcome": "Duplicate button added to product table; copies product with new SKU and refreshes list"
+        "outcome": "Duplicate button added to product table; copies product with new SKU and refreshes list",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-duplicate-product-button/micro-build.md"
       }
     },
     {
@@ -30010,12 +30013,15 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "target_path": "docs/plans/inventory-uploader-product-search/micro-build.md",
-        "target_slug": "inventory-uploader-product-search"
+        "target_slug": "inventory-uploader-product-search",
+        "target_kind": "build",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-product-search/micro-build.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/inventory-uploader-product-search/micro-build.md",
         "completed_at": "2026-03-13T18:04:07.487Z",
-        "outcome": "Real-time search/filter input added above products table; filters by SKU or title client-side"
+        "outcome": "Real-time search/filter input added above products table; filters by SKU or title client-side",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-product-search/micro-build.md"
       }
     },
     {
@@ -30080,12 +30086,17 @@
         "apps/inventory-uploader/src/components/ShopSelector.client.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "priority": "P2",
       "confidence": 0.9,
-      "queue_state": "processed",
-      "processed_by": null,
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "inventory-uploader-clear-shop-on-logout",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-clear-shop-on-logout/micro-build.md"
+      },
       "evidence_refs": [
         "operator-stated: the selected shop is stored in localStorage; on logout the session cookie is cleared but localStorage is not; a different user logging in on the same browser would see the previous user's shop pre-selected",
         "apps/inventory-uploader/src/app/api/auth/logout/route.ts",
@@ -30095,7 +30106,12 @@
       "next_scope_now": "On logout, call localStorage.removeItem for the shop selection key before or after the logout API call. This can be done in the logout button's click handler on the client side.",
       "why": "If two different staff members use the same computer, the second person logging in could accidentally see the first person's shop already selected. Clearing the shop on logout prevents this mix-up.",
       "intended_outcome": "Logging out clears the stored shop selection so the next login always starts from the shop selection screen.",
-      "created_at": "2026-03-13T19:00:00.000Z"
+      "created_at": "2026-03-13T19:00:00.000Z",
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-clear-shop-on-logout/micro-build.md",
+        "completed_at": "2026-03-13T17:52:42.223Z",
+        "outcome": "**TASK-01: Clear localStorage shop key on logout** Added a logout API route (`POST /api/auth/logout`) that clears the `inventory_admin` session cookie (maxAge 0) and attempts KV-backed session revocation, failing open if KV is unavailable. "
+      }
     },
     {
       "schema_version": "dispatch.v2",

@@ -1,0 +1,211 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-checkout-fridge-tracking",
+  "source_artifact_path": "docs/plans/reception-checkout-fridge-tracking/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-checkout-fridge-tracking/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff need to record at checkout whether a guest used the fridge, and see that flag on the checkout screen so nothing is missed before the guest leaves.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can toggle a fridge-used flag per guest on the checkout screen; the FRIDGE column shows a fridge icon when the flag is set, so staff know to retrieve fridge items before the guest departs.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "FRIDGE column header exists. Cell renders `{guest.fridge \\",
+      "gap_or_implication": "\\",
+      "carry_forward_or_notes": "\"\"}` (text). No icon, no toggle button."
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Empty state: blank cell when no fridge data. Loading state: global loading flag gates table render. Error state: global error banner exists. Toggle button: needs pending/disabled state during async write (analogous to Complete button).",
+      "gap_or_implication": "Toggle must be disabled or show optimistic update during the Firebase `update()` call to prevent double-fire. No current precedent in checkout for a per-row async toggle with local pending state.",
+      "carry_forward_or_notes": "Plan must address per-row pending state for toggle (either optimistic UI or disabled-during-write)."
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "`$other` wildcard allows any authenticated user read/write. All mutation callers in existing hooks gate on staff role. No PII in a boolean flag.",
+      "gap_or_implication": "Explicit `fridgeStorage` rule needed with role-gated write. No sensitive data concern.",
+      "carry_forward_or_notes": "Add rule."
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Bag-storage and checkout mutations use `console.error` on failure + `showToast`. No per-action audit trail.",
+      "gap_or_implication": "Same pattern applies. No new instrumentation needed.",
+      "carry_forward_or_notes": "Follow existing pattern."
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Existing fridge test in `CheckoutTable.component.test.tsx` uses outdated `fridge: string` shape. No schema/hook/mutation tests for fridge.",
+      "gap_or_implication": "Significant test gap: schema unit test, hook test, mutation test, updated component test, updated parity snapshot, new integration test case in `Checkout.test.tsx`.",
+      "carry_forward_or_notes": "All test files listed above must be created or updated."
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "No `fridgeStorage` Firebase node. `Guest.fridge?: string` in CheckoutTable — type will change to `fridgeUsed?: boolean`. `CheckoutTableProps` gains `onToggleFridge` callback. `CheckoutRow` unchanged.",
+      "gap_or_implication": "Type change to `Guest` interface is a breaking change to the component contract — all callers and tests must be updated. Firebase schema, Zod schema, TS types all new.",
+      "carry_forward_or_notes": "Enumerate all callsites of `Guest.fridge` and `CheckoutTableProps`; update them all."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`useBagStorageData` subscribes to the entire `bagStorage` node. Same approach for `fridgeStorage` is acceptable for a small hostel. Toggle mutation is a single `update()` call — fast and idempotent.",
+      "gap_or_implication": "No performance concern. Toggle failure must show toast and not leave UI in inconsistent state (rollback optimistic update if used).",
+      "carry_forward_or_notes": "Ensure toggle error path shows toast (existing `showToast` utility)."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No feature flags in this codebase. Changes are additive for Firebase node; type change to `Guest` interface is non-additive but contained to reception app.",
+      "gap_or_implication": "Rollback: revert `Checkout.tsx`, `CheckoutTable.tsx`, and hook files. Firebase node persists but is harmless if not read. No migration required — node is created on first use.",
+      "carry_forward_or_notes": "No flag needed. Low risk deploy."
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The checkout screen (`/checkout`) already has a FRIDGE column in `CheckoutTable.tsx` but it is always blank. `Checkout.tsx` line 323 hardcodes `fridge: \"\"`. No Firebase path, data hook, schema, or mutation exists for fridge storage. The operator has confirmed the data model and UX: - **Data model**: boolean flag `{ used: boolean }` at `fridgeStorage/<occupantId>` — mirrors `bagStorage/<occupantId>` exactly. - **Write path**: inline toggle button per guest row on the checkout screen. - **Display**: fridge icon (same approach as the Luggage icon for bag storage) when `used === true`. The bag-sto",
+    "goals": [
+      "Staff can toggle whether a guest used the fridge, directly on the checkout screen.",
+      "The FRIDGE column shows a fridge icon when `used === true`, blank otherwise.",
+      "The fridge flag is archived when the guest is archived (same lifecycle as bagStorage)."
+    ],
+    "non_goals": [
+      "No POS/financial transaction associated with fridge storage.",
+      "No fridge tracking on any screen other than the checkout screen.",
+      "No free-text description or item list — boolean only."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "The fridge flag is recorded against the occupant (not the booking).",
+      "The feature is write-enabled for `staff`, `admin`, `manager`, `developer`, and `owner` roles."
+    ],
+    "key_entry_points": [
+      "`apps/reception/src/components/checkout/Checkout.tsx` — main checkout component; orchestrates data fetching and derives the `Guest[]` array passed to `CheckoutTable`",
+      "`apps/reception/src/components/checkout/CheckoutTable.tsx` — renders the checkout table; already has FRIDGE column header and `{guest.fridge || \"\"}` cell; will receive toggle callback"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Firebase read hook pattern",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — bagStorage is direct analogue",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Firebase schema + types pattern",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Firebase mutation pattern",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `update()` pattern well established",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Checkout.tsx guest derivation pattern",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`fridge: \"\"` hardcode at line 323 identified",
+        "Resolution Required": "Yes — replace with live data"
+      },
+      {
+        "Scope Area": "CheckoutTable.tsx type change",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`Guest.fridge?: string` → `Guest.fridgeUsed?: boolean`; `CheckoutTableProps` needs `onToggleFridge`",
+        "Resolution Required": "Yes — breaking type change, all callsites"
+      },
+      {
+        "Scope Area": "Toggle button UX",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No per-row async pending state precedent in checkout screen",
+        "Resolution Required": "Yes — plan must specify approach"
+      },
+      {
+        "Scope Area": "Archive hook pattern",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No fridge archival exists",
+        "Resolution Required": "Yes — additive update needed"
+      },
+      {
+        "Scope Area": "Firebase rules",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`$other` wildcard covers new node; explicit rule preferred",
+        "Resolution Required": "Yes — add `fridgeStorage` rule"
+      },
+      {
+        "Scope Area": "Test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Existing fridge test uses stale `string` type; must be updated; schema/hook/mutation tests new",
+        "Resolution Required": "Yes — multiple test files to create/update"
+      },
+      {
+        "Scope Area": "Write UI scope",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Inline toggle button per row confirmed by operator",
+        "Resolution Required": "No — fully scoped"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Guest hands fridge items to staff at checkout; staff have no digital mechanism to record or be reminded of this.",
+      "end_condition": "FRIDGE column on checkout screen is always blank, providing no value.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Fridge flag recording",
+          "flow": "No digital step exists.",
+          "owners": "Reception staff",
+          "evidence": "n/a",
+          "issues": "No record, no reminder at checkout"
+        },
+        {
+          "id": null,
+          "label": "Checkout screen FRIDGE column",
+          "flow": "`Checkout.tsx:323` hardcodes `fridge: \"\"`. `CheckoutTable.tsx:226` renders `{guest.fridge \\",
+          "owners": "\\",
+          "evidence": "\"\"}` — always blank. No toggle button.",
+          "issues": "`Checkout.tsx`, `CheckoutTable.tsx`"
+        },
+        {
+          "id": null,
+          "label": "Bag storage (analogue — working)",
+          "flow": "Staff resolves a Prime bag-drop request; `usePrimeRequestResolution` sets `bagStorage/<occupantId>.optedIn = true`. `useBagStorageData` subscribes to the node. `Checkout.tsx` maps the flag to `bagStorageOptedIn` which renders a Luggage icon.",
+          "owners": "`usePrimeRequestResolution`, `useBagStorageData`, `Checkout.tsx`, `CheckoutTable.tsx`",
+          "evidence": "`apps/reception/src/hooks/mutations/usePrimeRequestResolution.ts:218`, `apps/reception/src/hooks/data/useBagStorageData.ts`",
+          "issues": "None — fully functional. Bag storage has no inline toggle on the checkout screen (set via Prime). Fridge will differ here."
+        },
+        {
+          "id": null,
+          "label": "Archive",
+          "flow": "`useArchiveCheckedOutGuests` moves `bagStorage/<occupantId>` → `archive/bagStorage/<occupantId>` and nulls the live node. No equivalent for fridge.",
+          "owners": "`useArchiveCheckedOutGuests.ts`",
+          "evidence": "`apps/reception/src/hooks/mutations/useArchiveCheckedOutGuests.ts:187-297`",
+          "issues": "No fridge archival exists"
+        }
+      ]
+    }
+  }
+}

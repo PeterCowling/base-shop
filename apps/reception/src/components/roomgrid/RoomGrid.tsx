@@ -54,19 +54,11 @@ const RoomGrid: FC<RoomGridProps> = memo(
       null
     );
 
-    const [lastClick, setLastClick] = useState<number>(0);
-
     /* ------------------------------------------------------------------
      * Event handlers
      * ---------------------------------------------------------------- */
     const onClickCell = useCallback(
       (eventData: TClickCellEventData<MyLocalStatus>): void => {
-        const now = Date.now();
-        if (now - lastClick > 400) {
-          setLastClick(now);
-          return;
-        }
-        setLastClick(0);
         const { id, date, dayType, dayStatus } = eventData;
 
         const clickedRow = data.find((row) => row.id === id);
@@ -103,7 +95,7 @@ const RoomGrid: FC<RoomGridProps> = memo(
           });
         }
       },
-      [data, roomNumber, lastClick]
+      [data, roomNumber]
     );
 
     const handleCloseModal = useCallback(() => setModalData(null), []);

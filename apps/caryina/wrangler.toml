@@ -6,3 +6,17 @@ compatibility_flags = ["nodejs_compat"]
 [assets]
 directory = ".open-next/assets"
 binding = "ASSETS"
+
+# ============================================================================
+# REQUIRED SECRETS — never put values in this file.
+# Set via `wrangler secret put` for production.
+#
+#   wrangler secret put DATABASE_URL
+#
+# DATABASE_URL format (Neon serverless Postgres):
+#   postgresql://user:pass@<project>.neon.tech/<dbname>?sslmode=require
+# ============================================================================
+
+[vars]
+DB_MODE = "prisma"
+INVENTORY_BACKEND = "prisma"

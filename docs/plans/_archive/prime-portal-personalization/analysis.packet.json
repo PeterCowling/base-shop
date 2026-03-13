@@ -1,0 +1,276 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "prime-portal-personalization",
+  "source_artifact_path": "docs/plans/prime-portal-personalization/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/prime-portal-personalization/fact-find.md",
+    "plan": "docs/plans/prime-portal-personalization/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Guest portal personalization relies on the `?uuid=` query parameter in a fragile way that could cause data leakage or silent fallback to wrong guest data.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All entry points to the guarded home pass uuid exclusively through the server-validated session; uuid tamper risk is eliminated; no guest can access another guest's data by manipulating the URL parameter.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no UI changes",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A — no UI changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Error state for transient context-null handled by localStorage fallback; no new user-facing state required",
+      "current_or_option_state": "Major UX regression risk (latency per read)",
+      "gap_or_implication": "Context-null must degrade to localStorage fallback; `useUuid` returns localStorage uuid + emits telemetry when context is absent",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Eliminates URL tamper vector; uuid sourced from server-validated session",
+      "current_or_option_state": "Eliminates URL tamper vector and SDK direct access entirely",
+      "gap_or_implication": "uuid is authoritative from server; URL param is advisory only (used for deep link compatibility only, rejected if it mismatches context)",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Add client-side event when URL uuid differs from context uuid (mismatch detection); retain server-side `console.warn` in `guest-booking.ts`",
+      "current_or_option_state": "CF Function logs cover all data reads",
+      "gap_or_implication": "Mismatch analytics event must be added to `useUuid`; baseline measurement before release needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "`validateGuestToken` return type change requires mock updates (4 callers + tests); `AuthSessionContext` is straightforward to mock in tests; `useUuid` becomes testable as context consumer",
+      "current_or_option_state": "All hooks need new test suites for CF endpoints",
+      "gap_or_implication": "TASK-08 (tests) must follow TASK-04 (context); mock update burden is bounded and mechanical",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`/api/guest-session` GET response contract extends (`guestUuid` added); `validateGuestToken` return type changes from `TokenValidationResult` string enum to `{status, guestUuid}` object",
+      "current_or_option_state": "All hook contracts change",
+      "gap_or_implication": "Contract changes are additive; `TokenValidationResult` can be kept as a sub-field; backward-compatible if callers handle both shapes during migration",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "One additional field in `/api/guest-session` GET response — negligible; context is populated before children render (blocking at GuardedGate); no new network calls",
+      "current_or_option_state": "Massive latency increase (26+ edge function calls per page load)",
+      "gap_or_implication": "Degrade gracefully on transient GET failure: use localStorage uuid + telemetry; gate on `!!uuid` already protects hooks from empty uuid",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "No feature flag needed; code revert restores prior behavior; existing bookmarked `/?uuid=<id>` links work as long as localStorage uuid matches session uuid (always true post-login)",
+      "current_or_option_state": "Staged rollout possible per hook; high regression risk per hook",
+      "gap_or_implication": "Simple rollback by code revert; bookmarked links should continue to work via localStorage fallback path",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "What are the current Firebase RTDB security rules for `bookings/`, `guestsDetails/`, `loans/`?"
+  ],
+  "stage_payload": {
+    "decision_summary": "The prime guest portal personalization mechanism uses a `?uuid=` URL query parameter (`occ_<13 digits>`) as the Firebase lookup key for all guest data. The authentication layer (`prime_session` HttpOnly cookie) validates session ownership but does not bind the uuid to the session at the client level. This creates a design gap: an authenticated guest can substitute any valid-format `occ_<id>` in the URL and — depending on Firebase RTDB rules — read another occupant's booking, financial, and personal data. Additionally, the `useFetchBookingsData` full-scan fallback sends the entire `bookings/` r",
+    "goals": [
+      "Eliminate the url-param tamper vector for guest data access.",
+      "Bind uuid resolution to the server-validated session (`prime_session` cookie path).",
+      "Fix find-booking to issue tokens for the matched occupant, not the lead guest.",
+      "Remove stale `prime_guest_token` localStorage reference.",
+      "Clean up `GuestSessionSnapshot` type divergence and stale test mocks.",
+      "Add test coverage for uuid tamper, mismatch, and localStorage fallback."
+    ],
+    "non_goals": [
+      "Rewriting Firebase RTDB security rules (out-of-codebase-scope; operator confirmation needed).",
+      "Staff/pin-auth flows.",
+      "Owner dashboard data access.",
+      "Any UI redesign."
+    ],
+    "constraints": [
+      "Cloudflare Pages Functions (CF Pages edge) — no server-side React rendering in the data-fetch path; context must be populated client-side after a GET to `/api/guest-session`.",
+      "26 `useUuid()` call sites must continue to work after the change; blast radius must be managed."
+    ],
+    "assumptions": [
+      "Firebase RTDB rules are assumed open (API-key-only) given the `FUNCTION_ONLY` declared vs. actual SDK-direct gap.",
+      "The chosen approach must degrade gracefully if `/api/guest-session` fails transiently — guests must not be silently locked out due to a network blip."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Eliminates uuid tamper vector",
+        "Why it matters": "Core security goal — prevents cross-occupant data reads",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Minimal consumer update burden",
+        "Why it matters": "26 call sites + 4 `validateGuestToken` callers affected",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Graceful degradation on transient failure",
+        "Why it matters": "Don't trade url tamper fragility for new session-context SPOF",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Backward-compatible with existing bookmarked URLs",
+        "Why it matters": "`/?uuid=<id>` links may be bookmarked; breaking them is a UX regression",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Test seam quality",
+        "Why it matters": "Hardening must be testable; context-based uuid is easier to mock than URL parsing",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Addresses passive full-scan exposure",
+        "Why it matters": "Separate risk but same threat surface",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Implementation simplicity",
+        "Why it matters": "Fewer layers = easier to maintain and audit",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Extend `/api/guest-session` GET + AuthSessionContext",
+        "Description": "Enhance GET to return `guestUuid`; update `validateGuestToken` to return `{status, guestUuid}`; store uuid in a new `AuthSessionContext` at `GuardedGate`; rewrite `useUuid` to read from context first, then localStorage fallback",
+        "Upside": "Authoritative server-sourced uuid; tamper vector eliminated; clean context API; test seam is straightforward to mock",
+        "Downside": "Changes `validateGuestToken` return type (4 callers + all mocks must update); adds one React context layer; requires `/api/guest-session` GET change",
+        "Key risks": "Context null on transient failure — must degrade to localStorage fallback with telemetry",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Enforce FUNCTION_ONLY at hook level (route all data through CF Functions)",
+        "Description": "Rewrite data hooks to call CF Functions instead of Firebase SDK directly; CF Functions already validate session and cross-check `guestUuid`",
+        "Upside": "Enforces declared policy; eliminates SDK direct access entirely; no URL param matters when server controls all data access",
+        "Downside": "Massive blast radius: 26+ hooks, all need CF Function endpoints; massive latency increase (edge function per read vs. SDK); complete rewrite of data layer",
+        "Key risks": "Very high complexity, breaks phased loading (OPT-03), likely regression-prone; disproportionate to the risk",
+        "Viable?": "Yes (partial — use for new flows only)"
+      },
+      {
+        "Option": "C: UUID-lock in localStorage at first write, reject URL override",
+        "Description": "Change `useUuid` to always prefer `localStorage['prime_guest_uuid']` over URL; ignore URL uuid if localStorage has a value",
+        "Upside": "No new API call; no context layer; minimal blast radius",
+        "Downside": "Does not bind uuid to server-verified session — an attacker clears localStorage and loads uuid from URL; still tamper-able",
+        "Key risks": "Doesn't actually solve the security problem, only raises the bar slightly",
+        "Viable?": "No — insufficient"
+      },
+      {
+        "Option": "D: Firebase RTDB per-occupant security rules only",
+        "Description": "Operator configures Firebase rules to enforce `auth.uid === occupantId` — no code change",
+        "Upside": "Solves the threat at the infrastructure layer",
+        "Downside": "Requires Firebase custom auth tokens per guest (the SDK connection is currently anonymous/API-key); major infrastructure change; not in codebase scope; blocks fast path",
+        "Key risks": "Requires Firebase custom auth token issuance — new auth flow entirely; incompatible with current CF-managed session model in short term",
+        "Viable?": "No — out of scope for this plan"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — extend `/api/guest-session` GET to return `guestUuid`, update `validateGuestToken` to return the session payload, populate `AuthSessionContext` at `GuardedGate`, and rewrite `useUuid` to read from context as primary source with localStorage as fallback.",
+      "**Why this wins": "**",
+      "Directly and surgically addresses the security gap": "uuid is now sourced from the server-validated session, not from an unverified URL parameter.",
+      "Minimal blast radius compared to Option B": "4 caller sites for `validateGuestToken` return type change, plus mechanical mock updates in tests. The 26 data-hook call sites are unchanged — `useUuid()` API surface stays the same.",
+      "Clean degradation path": "if `/api/guest-session` GET fails transiently (network error), `useUuid` falls back to `localStorage['prime_guest_uuid']` with an error telemetry event rather than returning empty string and breaking all 26 hooks silently. If context is null AND localStorage is also null (guest not yet authenticated), `useUuid` returns `null` and all downstream hooks remain gated on `!!uuid` — this is identical to today's not-yet-authenticated behavior.",
+      "Backward-compatible": "bookmarked `/?uuid=<id>` URLs continue to work because localStorage still holds the correct uuid post-login; the URL param becomes advisory-only for deep-link compatibility, overridden by context.",
+      "**What it depends on": "**",
+      "`app/page.tsx` at root also calls `validateGuestToken()` and renders `GuardedHomeExperience` — it is outside the `(guarded)` route group and does not go through `GuardedLayout`. **Decision": "** Accept that `app/page.tsx` will continue to source uuid from localStorage (via `useUuid` localStorage fallback path). This is correct and safe: the session POST already wrote `guestUuid` to localStorage, so the uuid is accurate; the root page is not a bookmarked tamper entry point. The plan should add a code comment at `app/page.tsx` documenting this deliberate exclusion from `AuthSessionContext` coverage.",
+      "**Option B (Full FUNCTION_ONLY enforcement)** — Rejected. Correct in principle (it is the declared policy), but the blast radius is disproportionate": "26+ hooks require new CF endpoints, adding latency to every data read, and breaking phased loading. Appropriate as a long-term architecture direction for new flows, not as this fix.",
+      "Q": "What are the current Firebase RTDB security rules for `bookings/`, `guestsDetails/`, `loans/`?",
+      "Why operator input is required": "rules are configured in the Firebase console, not in the codebase.",
+      "Planning impact": "determines whether this fix is prioritized as critical (rules open/API-key-only → data exposure is real) or advisory (rules already enforce per-occupant reads → fix is defense-in-depth). The plan proceeds either way, but the operator should confirm urgency before setting deadline."
+    },
+    "rejected_approaches": [
+      "**Option B (Full FUNCTION_ONLY enforcement)** — Rejected. Correct in principle (it is the declared policy), but the blast radius is disproportionate: 26+ hooks require new CF endpoints, adding latency to every data read, and breaking phased loading. Appropriate as a long-term architecture direction for new flows, not as this fix.",
+      "**Option C (localStorage-first with URL rejected)** — Rejected. Does not bind uuid to the server session. An attacker who clears localStorage and navigates with `?uuid=<target>` is still unimpeded. Not a security fix.",
+      "**Option D (Firebase per-occupant rules)** — Rejected for this plan. Requires Firebase custom auth token issuance — a significant infrastructure change incompatible with the current CF-managed session model. Track as a separate hardening item."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "All existing tests for `GuardedGate`, `portal/page.tsx`, and `useSessionValidation` require mock updates when `validateGuestToken` return type changes from string to object. These must be updated before or simultaneously with the API contract change to avoid CI breakage.",
+        "New tests for `useUuid` context path, localStorage fallback, null-both-absent, and mismatch detection are required before the artifact is complete.",
+        "The `/api/guest-session` GET endpoint needs a contract test confirming the `guestUuid` field is present in the response."
+      ],
+      "sequencing_constraints": [
+        "API contract extension must precede the context layer (context population needs the payload shape).",
+        "Context layer must be complete before `useUuid` tests can accurately cover the context source path."
+      ],
+      "risks_to_carry_forward": [
+        "`fetchViaFullScan` passive full-scan exposure is pre-existing and not addressed in this change set — planning must note it as a follow-up item requiring a separate feature slug.",
+        "`/api/assistant-query` endpoint auth model is unconfirmed — inspect before scoping the `digital-assistant` fix. If it requires an endpoint auth migration, scope and effort increase."
+      ]
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Deep link entry",
+          "current": "GET `/api/guest-session?token=<token>` returns `{status, expiresAt}`; client writes uuid to localStorage",
+          "trigger": "Guest visits `/g/<token>` and POST-verifies",
+          "future": "Unchanged — token verification still writes `bookingId`, `guestUuid`, `firstName`, `verifiedAt` to localStorage after POST `/api/guest-session`",
+          "steady": "POST flow, Set-Cookie, localStorage writes",
+          "seams": "None — this area is unchanged"
+        },
+        {
+          "id": null,
+          "label": "GuardedGate (auth check)",
+          "current": "`validateGuestToken()` returns `'valid' \\",
+          "trigger": "'expired' \\",
+          "future": "'invalid' \\",
+          "steady": "'network_error'`; sets `gateState='allowed'` on valid; no uuid propagated",
+          "seams": "Guest navigates to any route under `(guarded)/`"
+        },
+        {
+          "id": null,
+          "label": "uuid resolution in data hooks",
+          "current": "`useUuid()` reads `?uuid` from URL; falls back to localStorage; validates format",
+          "trigger": "Any guarded-section component mounts",
+          "future": "`useUuid()` reads `AuthSessionContext` first (server-confirmed uuid). If context is absent (transient failure), falls back to `localStorage['prime_guest_uuid']`. URL `?uuid` param is no longer an override — it is only used for initial deep-link routing compatibility (matching URL to stored session). If URL uuid differs from context uuid, a mismatch analytics event is emitted and context uuid wins.",
+          "steady": "Firebase lookup logic (reverse index + full scan); React Query caching; all 26 hook call sites",
+          "seams": "`app/page.tsx` is outside GuardedLayout so it has no `AuthSessionContext` — by design; `useUuid` localStorage fallback provides the correct uuid"
+        },
+        {
+          "id": null,
+          "label": "find-booking token issuance",
+          "current": "Token issued for `leadOccupantId`, not `matchedOccupantId`",
+          "trigger": "Guest submits surname + bookingRef on `/find-my-stay`",
+          "future": "Token issued for `matchedOccupantId`. If matched occupant is the lead, behavior is identical to current. Non-lead guests now get a session scoped to their own uuid, not the lead's.",
+          "steady": "Rate limiting; surname matching logic; redirect to `/g/<token>`",
+          "seams": "One edge case: if a booking has a single occupant who is both lead and matched, behavior is unchanged"
+        },
+        {
+          "id": null,
+          "label": "`digital-assistant` stale token read",
+          "current": "Reads `localStorage.getItem('prime_guest_token')` — always `null` under current flow; sends `null` to `/api/assistant-query`",
+          "trigger": "Assistant query submitted",
+          "future": "Remove `prime_guest_token` read; use cookie-based auth path (the assistant API should use `prime_session` cookie like all other endpoints)",
+          "steady": "Rest of digital-assistant functionality",
+          "seams": "`/api/assistant-query` endpoint must accept `prime_session` cookie instead of body `token` field; or the `token` field can be dropped from the request body if the endpoint validates via cookie"
+        },
+        {
+          "id": null,
+          "label": "Type / test cleanup",
+          "current": "`GuestSessionSnapshot` lacks `token` field; tests mock it with stale shape; `useSessionValidation` test references `token` param that doesn't exist on the hook",
+          "trigger": "—",
+          "future": "`GuestSessionSnapshot` type, test mocks, and `useSessionValidation` tests updated to match current implementation; no `token` param in hook or type",
+          "steady": "Behavior unchanged; only types and mocks cleaned up",
+          "seams": "Test suite must pass after type cleanup; no behavioral regressions"
+        }
+      ]
+    }
+  }
+}

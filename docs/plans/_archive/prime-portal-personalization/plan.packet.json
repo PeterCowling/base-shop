@@ -1,0 +1,333 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "prime-portal-personalization",
+  "source_artifact_path": "docs/plans/prime-portal-personalization/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-portal-personalization/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Guest portal personalization relies on the `?uuid=` query parameter in a fragile way that could cause data leakage or silent fallback to wrong guest data.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All entry points to the guarded home pass uuid exclusively through the server-validated session; uuid tamper risk is eliminated; no guest can access another guest's data by manipulating the URL parameter.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no UI changes",
+      "current_or_option_state": "—",
+      "gap_or_implication": "No visual changes in this plan",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Context-null degrades to localStorage fallback; no new user-facing state; network error state unchanged",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "If context is null AND localStorage is null, `useUuid` returns empty string and hooks remain gated; redirect to `/error` unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "uuid sourced from server-validated session; URL param is advisory only; mismatch event emitted",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03, TASK-04",
+      "gap_or_implication": "Eliminates URL tamper vector; Firebase RTDB rules remain open (operator action needed for full enforcement)",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Mismatch analytics event in `useUuid`; pre-release baseline captured; `console.warn` in `guest-booking.ts` unchanged",
+      "current_or_option_state": "TASK-04, TASK-09",
+      "gap_or_implication": "Mismatch event fires when URL uuid differs from context uuid",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "TASK-07 fixes stale mocks before TASK-02 return-type change; TASK-08 adds `useUuid` context tests; existing tests updated for new return type",
+      "current_or_option_state": "TASK-07, TASK-02, TASK-08",
+      "gap_or_implication": "TASK-07 must merge before or simultaneously with TASK-02 to prevent CI breakage",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`/api/guest-session` GET response adds `guestUuid` field; `validateGuestToken` return type changes from string enum to `{status, guestUuid}`",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Additive change; old callers updated in same TASK-02",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "One additional field in GET response — negligible; context blocks children render (populated in `GuardedGate` before `allowed` state); graceful fallback for transient GET failure",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "26 hook call sites unchanged; no new network calls",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "No feature flag; code revert restores prior behavior; bookmarked `/?uuid=<id>` links work via localStorage fallback",
+      "current_or_option_state": "All",
+      "gap_or_implication": "Simple rollback; no DB migration",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The prime guest portal reads the `?uuid=` URL parameter as the Firebase lookup key for all guest data without cross-checking it against the authenticated `prime_session` cookie — enabling any authenticated guest to read another occupant's data by substituting a valid-format `occ_<id>` in the URL. This plan hardens uuid resolution by extending `/api/guest-session` GET to return `guestUuid`, creating an `AuthSessionContext` populated at `GuardedGate`, and rewriting `useUuid` to read from the server-confirmed context first with localStorage fallback. Secondary fixes address a `find-booking` token",
+    "goals": [
+      "Eliminate the `?uuid=` URL tamper vector for guest data access.",
+      "Bind uuid resolution to the server-validated session (`prime_session` cookie path).",
+      "Fix `find-booking` to issue tokens for the matched occupant, not the lead guest.",
+      "Fix `digital-assistant` broken auth caused by stale `prime_guest_token` body token.",
+      "Remove stale `prime_guest_token` localStorage reference.",
+      "Clean up `GuestSessionSnapshot` type divergence and stale test mocks.",
+      "Add test coverage for uuid tamper, mismatch, and localStorage fallback."
+    ],
+    "non_goals": [
+      "Rewriting Firebase RTDB security rules (out-of-codebase-scope; operator confirmation needed).",
+      "Staff/pin-auth flows.",
+      "Owner dashboard data access.",
+      "Any UI redesign.",
+      "Addressing `fetchViaFullScan` passive full-scan exposure (separate feature slug needed)."
+    ],
+    "constraints": [
+      "Cloudflare Pages Functions (CF Pages edge) — no server-side React rendering in the data-fetch path; context must be populated client-side after a GET to `/api/guest-session`.",
+      "26 `useUuid()` call sites must continue to work after the change; `useUuid()` API surface stays `string` (empty string fallback, not `string | null`, per current return type)."
+    ],
+    "assumptions": [
+      "Firebase RTDB rules are assumed open (API-key-only) — this determines whether the fix is urgent vs. defense-in-depth, but does not change what is built.",
+      "`/api/assistant-query` validates `body.token` using `validateGuestSessionToken()` (CF Functions library, cookie-independent). The fix is to switch it to `prime_session` cookie auth (same pattern as all other CF Functions).",
+      "`GuestSessionToken` in Firebase includes `guestUuid` for all active sessions (written by `guest-session` POST and `find-booking`)."
+    ],
+    "selected_approach": [
+      "What was chosen: Server-authoritative uuid via `AuthSessionContext` populated at `GuardedGate`, with localStorage fallback for transient failures and for `app/page.tsx` root-page path.",
+      "Why planning is not reopening option selection: Analysis made the decision decisively. All four alternatives have documented rejection rationale. The only open question (Firebase RTDB rules) is operator-only and does not change what is built."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Extend `/api/guest-session` GET response to include `guestUuid`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `apps/prime/functions/api/guest-session.ts` — GET handler returns `{status, expiresAt, guestUuid}`.",
+        "affects": "`apps/prime/functions/api/guest-session.ts`"
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Clean up stale `GuestSessionSnapshot` type + test mocks",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/prime/src/lib/auth/__tests__/guestSessionGuard.test.ts`, `apps/prime/src/hooks/__tests__/useSessionValidation.test.ts`, and any other test file with stale `token` mock field or `token` parameter on `validateGuestToken`.",
+        "affects": "`apps/prime/src/lib/auth/__tests__/guestSessionGuard.test.ts`, `apps/prime/src/hooks/__tests__/useSessionValidation.test.ts`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Fix `find-booking` token issuance to use `matchedOccupantId`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `apps/prime/functions/api/find-booking.ts` — token issued for `matchedOccupantId` (not `leadOccupantId`).",
+        "affects": "`apps/prime/functions/api/find-booking.ts`"
+      },
+      {
+        "task_id": "TASK-09",
+        "title": "Capture pre-release baseline for `/error` redirect rate",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Baseline measurement note in `docs/plans/prime-portal-personalization/plan.md` Decision Log (or a separate `baseline.md` artifact) documenting the current `/error` redirect rate from `useUuid`. Required before TASK-04 ships.",
+        "affects": "`docs/plans/prime-portal-personalization/` (baseline record only)"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Update `validateGuestToken` return type + all 4 callers",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01",
+          "TASK-07"
+        ],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/prime/src/lib/auth/guestSessionGuard.ts` (`validateGuestToken` returns `{status: TokenValidationResult, guestUuid: string | null}`); updated callers: `app/page.tsx`, `app/portal/page.tsx`, `app/(guarded)/layout.tsx`, `hooks/useSessionValidation.ts`; updated tests.",
+        "affects": "`apps/prime/src/lib/auth/guestSessionGuard.ts`, `apps/prime/src/app/page.tsx`, `apps/prime/src/app/portal/page.tsx`, `apps/prime/src/app/(guarded)/layout.tsx`, `apps/prime/src/hooks/useSessionValidation.ts`"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Fix `digital-assistant` auth — switch `/api/assistant-query` to cookie auth",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/prime/functions/api/assistant-query.ts` (validate via `prime_session` cookie, not body token); updated `apps/prime/src/app/(guarded)/digital-assistant/page.tsx` (remove `prime_guest_token` body field).",
+        "affects": "`apps/prime/functions/api/assistant-query.ts`, `apps/prime/src/app/(guarded)/digital-assistant/page.tsx`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Create `AuthSessionContext` + populate in `GuardedGate`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New `apps/prime/src/contexts/auth/AuthSessionContext.tsx`; updated `apps/prime/src/app/(guarded)/layout.tsx` (`GuardedGate` stores `guestUuid` from `validateGuestToken` result in context).",
+        "affects": "`apps/prime/src/app/(guarded)/layout.tsx`, new `apps/prime/src/contexts/auth/AuthSessionContext.tsx`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Rewrite `useUuid` — context-first, localStorage fallback, mismatch telemetry",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-08"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/prime/src/hooks/useUuid.ts` — reads `AuthSessionContext` first, falls back to `localStorage['prime_guest_uuid']`, emits mismatch telemetry when URL uuid differs from context uuid, removes URL-as-primary-source behavior.",
+        "affects": "`apps/prime/src/hooks/useUuid.ts`"
+      },
+      {
+        "task_id": "TASK-08",
+        "title": "Add unit tests for `useUuid` — context, localStorage fallback, null-both, mismatch",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-04"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New/updated `apps/prime/src/hooks/__tests__/useUuid.test.ts` with full unit test coverage for the rewritten hook.",
+        "affects": "`apps/prime/src/hooks/__tests__/useUuid.test.ts` (new or updated)"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-07",
+      "TASK-05",
+      "TASK-09",
+      "TASK-06"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "GuardedGate auth + uuid binding",
+          "trigger": "Guest navigates to any route under `(guarded)/`",
+          "flow": "(1) `GuardedGate` calls `validateGuestToken()` → now returns `{status, guestUuid}`. (2) On `valid`, stores `guestUuid` in `AuthSessionContext`. (3) Renders children with context populated. (4) `useUuid()` in any child reads context uuid. (5) On transient failure (`network_error`), context is null — `useUuid` falls back to localStorage. (6) 30-min `useSessionValidation` interval unchanged.",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "Context-population race: must ensure context is stored before `gateState='allowed'` triggers child render; TASK-03 execution plan must address this ordering."
+        },
+        {
+          "id": null,
+          "label": "uuid resolution in data hooks",
+          "trigger": "Any guarded-section component mounts",
+          "flow": "`useUuid()` reads `AuthSessionContext` first (server-confirmed). Falls back to `localStorage['prime_guest_uuid']` if context absent. URL `?uuid` param is advisory only; if it differs from context uuid, mismatch event emitted and context uuid wins.",
+          "task_ids": [
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "`app/page.tsx` root page: intentionally excluded from context — uses localStorage path. Code comment added."
+        },
+        {
+          "id": null,
+          "label": "find-booking token issuance",
+          "trigger": "Guest submits surname + bookingRef at `/find-my-stay`",
+          "flow": "Token issued for `matchedOccupantId` (not `leadOccupantId`). Non-lead guests get session scoped to their own uuid.",
+          "task_ids": [
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "Single-occupant bookings: behavior identical (matched = lead)."
+        },
+        {
+          "id": null,
+          "label": "Digital assistant auth",
+          "trigger": "Guest submits query in `/digital-assistant`",
+          "flow": "`digital-assistant/page.tsx` removes `prime_guest_token` body field; sends query without token body field. `/api/assistant-query` validates via `prime_session` cookie (same pattern as `/api/guest-session`).",
+          "task_ids": [
+            "TASK-06"
+          ],
+          "dependency_note": null,
+          "seams": "`/api/assistant-query` must be updated to use cookie-based `validateGuestSessionToken` helper (or inline cookie parse)."
+        },
+        {
+          "id": null,
+          "label": "Type / test cleanup",
+          "trigger": "—",
+          "flow": "`GuestSessionSnapshot` type does not include `token` field. Tests for `readGuestSession` expect no `token` in snapshot. `validateGuestToken` mock shape updated to return `{status, guestUuid}`. `useSessionValidation` tests drop stale `token` prop.",
+          "task_ids": [
+            "TASK-07",
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "Must complete before TASK-02 merges to avoid CI failure window."
+        }
+      ]
+    }
+  }
+}

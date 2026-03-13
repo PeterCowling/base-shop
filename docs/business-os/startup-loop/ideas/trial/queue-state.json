@@ -1,19 +1,19 @@
 {
-  "last_updated": "2026-03-13T16:33:39.688Z",
+  "last_updated": "2026-03-13T16:58:16.338Z",
   "counts": {
-    "enqueued": 31,
+    "enqueued": 32,
     "processed": 26,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 328,
-    "fact_find_ready": 27,
+    "completed": 329,
+    "fact_find_ready": 28,
     "plan_ready": 0,
     "micro_build_ready": 2,
     "briefing_ready": 0,
-    "total": 595
+    "total": 597
   },
   "dispatches": [
     {
@@ -28870,11 +28870,11 @@
         "apps/caryina/src/components/"
       ],
       "provisional_deliverable_family": "design",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
       "priority": "P3",
       "confidence": 0.85,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: apps/caryina/src/styles/global.css defines .btn-primary in @layer components; @acme/ui Button exists with variant support but is not used; no documented decision on whether this divergence is intentional",
         "apps/caryina/src/styles/global.css",
@@ -28890,7 +28890,14 @@
       "processed_by": {
         "target_path": "docs/plans/caryina-button-strategy/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "caryina-button-strategy",
+        "fact_find_slug": "caryina-button-strategy"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/caryina-button-strategy/plan.md",
+        "completed_at": "2026-03-13T16:36:25.872Z",
+        "outcome": "TASK-01 migrated all 12 `.btn-primary` call sites in the caryina app to `<Button compatibilityMode=\"passthrough\">` from `@acme/design-system/shadcn`. Six direct `<button>` replacements (error page, NotifyMeForm, CheckoutClient, admin login,"
       }
     },
     {
@@ -29126,6 +29133,189 @@
             "fact-find.md"
           ],
           "expected_signal_change": "Address build-origin signal \"Candidate: The violation-enumeration step (grep + ESLint parse → structured file:line list) in the fact-find could be a standalone script rather than LLM work. Trigger: fact-find spent significant effort running and interpreting grep -rn \"<button\" and pnpm lint\" through the canonical lp-do-fact-find queue path.",
+          "risk_class": "low",
+          "maturity": "unknown"
+        }
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313190000-0001",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-payment-manager-app-portfolio-wide",
+      "root_event_id": "operator:PLAT:PRODUCTS:payment-management-portfolio-wide:20260313",
+      "anchor_key": "payment-manager-app-portfolio-wide",
+      "cluster_key": "PLAT:PRODUCTS:payment-management",
+      "cluster_fingerprint": "payment-management-app-neon-prisma-cf-workers",
+      "lineage_depth": 0,
+      "area_anchor": "All shops — refunds and payment provider switching need a central place to manage",
+      "location_anchors": [
+        "apps/caryina/src/app/admin/api/refunds/route.ts",
+        "apps/caryina/src/lib/payments/",
+        "apps/caryina/src/lib/checkoutIdempotency.server.ts",
+        "docs/plans/payment-management-app/spec.md",
+        "packages/platform-core/prisma/schema.prisma"
+      ],
+      "provisional_deliverable_family": "multi",
+      "status": "fact_find_ready",
+      "recommended_route": "lp-do-fact-find",
+      "queue_state": "enqueued",
+      "priority": "P2",
+      "confidence": 0.91,
+      "evidence_refs": [
+        "operator-stated: refund facility currently embedded inside Caryina admin, not accessible from other shops",
+        "operator-stated: payment processor selection is an env var requiring redeploy, not a runtime config",
+        "operator-stated: Neon + Prisma + CF Workers pattern already proven in inventory-uploader (same Neon project to be reused)",
+        "apps/caryina/src/app/admin/api/refunds/route.ts — only refund surface in the portfolio",
+        "apps/caryina/src/lib/payments/ — provider abstraction already built, ready to extract",
+        "docs/plans/payment-management-app/spec.md — full spec with 5-phase migration plan",
+        "coverage-hint: UI",
+        "coverage-hint: security",
+        "coverage-hint: data-contracts",
+        "coverage-hint: testing",
+        "coverage-hint: rollout-rollback"
+      ],
+      "why": "Right now, refunding a customer can only be done through a buried page inside the Caryina shop. There is no way to see or manage payments for any other shop from one place. If you want to switch from one payment provider to another, you have to change a server setting and redeploy the entire app, which takes time and risks downtime. Building a separate payment management app means all shops share one clear place to issue refunds, review orders, and switch providers instantly — no redeployment needed.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "A standalone payment management app (apps/payment-manager/) is live on Cloudflare Workers: per-shop processor selection switchable at runtime via UI, cross-portfolio order list with refund issuance, and the Caryina admin refund route migrated to a proxy then removed.",
+        "source": "operator"
+      },
+      "created_at": "2026-03-13T19:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313165816-0002",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "d7095cb2238d09126762e53ea1f20e6580438d5e",
+      "root_event_id": "build-origin:startup-loop-security-audit:d7095cb2238d09126762e53ea1f20e6580438d5e",
+      "anchor_key": "candidate-lp-security-remediation-recurring-workflow-when-gate-launch-sec-blocks",
+      "cluster_key": "build-origin:bos:startup-loop-security-audit:candidate-lp-security-remediation-recurring-workflow-when-gate-launch-sec-blocks",
+      "cluster_fingerprint": "83d60f2dee47325f42e814ca8cff48a589f248be897dbc5d1160a51ce8428615",
+      "lineage_depth": 0,
+      "area_anchor": "Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.",
+      "location_anchors": [
+        "docs/plans/startup-loop-security-audit/results-review.user.md",
+        "docs/plans/startup-loop-security-audit/results-review.signals.json",
+        "docs/plans/startup-loop-security-audit/pattern-reflection.user.md",
+        "docs/plans/startup-loop-security-audit/pattern-reflection.entries.json"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "New skill — Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.",
+      "next_scope_now": "Fact-find the build-origin improvement candidate \"Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.\" and validate the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.6200000000000001,
+      "evidence_refs": [
+        "docs/plans/startup-loop-security-audit/results-review.user.md",
+        "docs/plans/startup-loop-security-audit/results-review.signals.json",
+        "docs/plans/startup-loop-security-audit/pattern-reflection.user.md",
+        "docs/plans/startup-loop-security-audit/pattern-reflection.entries.json"
+      ],
+      "created_at": "2026-03-13T16:58:16.327Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced \"Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.\" with supporting narrative: New skill — Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet..",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "d7095cb2238d09126762e53ea1f20e6580438d5e",
+        "recurrence_key": "87a26adc5941f5a646dd41c5837e68b45a69ed4d",
+        "review_cycle_key": "startup-loop-security-audit",
+        "plan_slug": "startup-loop-security-audit",
+        "canonical_title": "Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.",
+        "primary_source": "pattern-reflection.entries.json",
+        "merge_state": "merged_cross_sidecar",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": true
+        },
+        "results_review_path": "docs/plans/startup-loop-security-audit/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/startup-loop-security-audit/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/startup-loop-security-audit/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": "docs/plans/startup-loop-security-audit/pattern-reflection.entries.json",
+        "reflection_fields": {
+          "category": "new-skill",
+          "routing_target": "defer",
+          "occurrence_count": 1
+        },
+        "gap_case": {
+          "schema_version": "gap-case.v1",
+          "gap_case_id": "gap-188b109a34685204",
+          "source_kind": "build_origin",
+          "business_id": "BOS",
+          "stage_id": null,
+          "capability_id": null,
+          "gap_type": "build_origin_new_skill",
+          "reason_code": "rule_p5_default",
+          "severity": 0.65,
+          "evidence_refs": [
+            "docs/plans/startup-loop-security-audit/results-review.user.md",
+            "docs/plans/startup-loop-security-audit/results-review.signals.json",
+            "docs/plans/startup-loop-security-audit/pattern-reflection.user.md",
+            "docs/plans/startup-loop-security-audit/pattern-reflection.entries.json"
+          ],
+          "recurrence_key": "87a26adc5941f5a646dd41c5837e68b45a69ed4d",
+          "requirement_posture": "optional_improvement",
+          "blocking_scope": "degrades_quality",
+          "structural_context": {
+            "plan_slug": "startup-loop-security-audit",
+            "review_cycle_key": "startup-loop-security-audit",
+            "primary_source": "pattern-reflection.entries.json",
+            "merge_state": "merged_cross_sidecar",
+            "source_presence": {
+              "results_review_signal": true,
+              "pattern_reflection_entry": true
+            },
+            "results_review_fields": {
+              "priority_tier": "P5",
+              "urgency": "U2",
+              "effort": "M",
+              "reason_code": "RULE_P5_DEFAULT"
+            },
+            "reflection_fields": {
+              "category": "new-skill",
+              "routing_target": "defer",
+              "occurrence_count": 1,
+              "evidence_refs": []
+            }
+          },
+          "runtime_binding": {
+            "binding_mode": "compiled_to_candidate",
+            "candidate_id": "cand-ffe750be6563697f"
+          }
+        },
+        "prescription": {
+          "schema_version": "prescription.v1",
+          "prescription_id": "rx-a3b086172c152959",
+          "prescription_family": "build_origin_fact_find_candidate",
+          "source": "build_origin",
+          "gap_types_supported": [
+            "build_origin_new_skill"
+          ],
+          "required_route": "lp-do-fact-find",
+          "required_inputs": [
+            "docs/plans/startup-loop-security-audit/results-review.signals.json",
+            "docs/plans/startup-loop-security-audit/pattern-reflection.entries.json"
+          ],
+          "expected_artifacts": [
+            "fact-find.md"
+          ],
+          "expected_signal_change": "Address build-origin signal \"Candidate: /lp-security-remediation — recurring workflow: when GATE-LAUNCH-SEC blocks due to status: fail on specific SEC checks (e.g., SEC-02 missing headers, SEC-04 bad cookie flags), there is a repeatable remediation + re-audit loop. Once a second business hits S9B this pattern will repeat. Trigger observation: s9b-gates.md step 4 defines a hard block path with \"Remediate all failing security checks (SEC-XX)\"; no guided remediation skill exists yet.\" through the canonical lp-do-fact-find queue path.",
           "risk_class": "low",
           "maturity": "unknown"
         }

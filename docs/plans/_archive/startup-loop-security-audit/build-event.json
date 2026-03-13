@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "startup-loop-security-audit-2026-03-13",
+  "feature_slug": "startup-loop-security-audit",
+  "emitted_at": "2026-03-13T16:52:22.002Z",
+  "why": "Security audits are required before any site goes live; the startup loop had no security-audit domain in the S9B launch QA gate, no structured runtime/site-level security checklist, and CI-level checks were absent from app-specific deploy workflows.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Every site progressing through the startup loop to launch is checked against a structured security baseline (OWASP top 10 runtime/headers, dependency CVEs, secrets, auth hardening, cookie security) before it goes live, with a hard gate preventing S9B→SIGNALS advance when critical security failures are present."
+  }
+}

@@ -64,7 +64,7 @@ Pre-launch quality assurance gate (S9B). Audits 6 domains in parallel and produc
 
 ### 2) Execute domain checks
 
-**If `--domain all`** (default): dispatch all 7 domain modules simultaneously via Task tool in a SINGLE message. Load `modules/report-template.md` for output format.
+**If `--domain all`** (default): dispatch all 8 domain modules simultaneously via Task tool in a SINGLE message. Load `modules/report-template.md` for output format.
 
 Protocol: `_shared/subagent-dispatch-contract.md` (Model A — domain subagents run read-only audit checks; orchestrator aggregates results).
 
@@ -86,6 +86,7 @@ Domain modules:
 - `modules/domain-brand-copy.md` — BC-04, BC-05, BC-07
 - `modules/domain-measurement.md` — M1–M7
 - `modules/domain-security.md` — SEC-01–SEC-08
+- `modules/domain-data-hardening.md` — DH-01–DH-07 (dispatches `/lp-do-data-audit`)
 
 ### 3) Cross-domain synthesis
 
@@ -100,13 +101,13 @@ Document synthesis findings in the report under "Cross-Domain Analysis" before e
 
 ### 4) Aggregate go/no-go decision
 
-Validate that all 7 domain verdicts are received before emitting. Then:
+Validate that all 8 domain verdicts are received before emitting. Then:
 - **GO**: all blocker checks pass; warnings documented for follow-up
 - **NO-GO**: one or more blocker checks fail
 
 **Blocker vs. warning severity:**
-- **Blocker:** Any failure in Conversion or Legal; Performance P1–P3 failures; Measurement M1, M2, or M7 failures; Security domain `status: fail` (any of SEC-01–SEC-05, SEC-07, SEC-08 [high/critical CVE], or SEC-06 [unauthenticated access to private route])
-- **Warning:** SEO failures; Performance P4–P5; all Brand Copy failures (GATE-BD-06b Warn); Measurement M3, M5, M6; all DV-series delayed checks; Security `status: warn` (SEC-06 missing rate-limiting when auth is correct; SEC-08 moderate/low CVEs only)
+- **Blocker:** Any failure in Conversion or Legal; Performance P1–P3 failures; Measurement M1, M2, or M7 failures; Security domain `status: fail` (any of SEC-01–SEC-05, SEC-07, SEC-08 [high/critical CVE], or SEC-06 [unauthenticated access to private route]); Data Hardening domain `status: fail` (any CRITICAL or HIGH finding from `/lp-do-data-audit`)
+- **Warning:** SEO failures; Performance P4–P5; all Brand Copy failures (GATE-BD-06b Warn); Measurement M3, M5, M6; all DV-series delayed checks; Security `status: warn` (SEC-06 missing rate-limiting when auth is correct; SEC-08 moderate/low CVEs only); Data Hardening MEDIUM/LOW findings only
 - **Existing-site gap advisory (non-blocking):** M1/M2 failure where S1B was not run → recommend `measurement-quality-audit-prompt.md`
 
 ### 5) Write QA report
@@ -122,7 +123,7 @@ A launch QA run is complete only if:
 - [ ] All invocation arguments validated
 - [ ] Site baseline and loop state located (or missing baseline reported as blocker)
 - [ ] Deployment URL identified and accessible
-- [ ] All selected domain checks executed (no checks skipped without documented reason)
+- [ ] All selected domain checks executed (no checks skipped without documented reason; data hardening domain runs `/lp-do-data-audit` and awaits its PASS/FAIL verdict)
 - [ ] Each check result includes pass/fail + evidence
 - [ ] Cross-domain synthesis completed before go/no-go
 - [ ] Blocker vs. warning severity correctly assigned

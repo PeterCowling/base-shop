@@ -1,6 +1,7 @@
 {
   "extends": "@acme/config/tsconfig.app.json",
   "compilerOptions": {
+    "strict": true,
     "allowJs": false,
     "allowImportingTsExtensions": true,
     "baseUrl": ".",
@@ -27,8 +28,7 @@
   "include": [
     "next-env.d.ts",
     "src/**/*",
-    "src/**/*.json",
-    ".next/types/**/*.ts"
+    "src/**/*.json"
   ],
   "exclude": [
     "**/__mocks__/**",

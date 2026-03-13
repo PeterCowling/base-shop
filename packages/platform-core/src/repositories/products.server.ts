@@ -1,5 +1,7 @@
 import "server-only";
 
+import { ulid } from "ulid";
+
 import { prisma } from "../db";
 import type { ProductPublication } from "../products/index";
 
@@ -75,4 +77,9 @@ export async function createProductInRepo<
 >(shop: string, product: T): Promise<T> {
   const repo = await getRepo();
   return repo.create(shop, product);
+}
+
+/** Generate a ULID product ID for use in route handlers before calling createProductInRepo. */
+export function generateProductId(): string {
+  return ulid();
 }

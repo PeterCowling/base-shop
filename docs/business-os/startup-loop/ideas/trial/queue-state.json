@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-13T18:31:43.385Z",
+  "last_updated": "2026-03-13T18:36:31.300Z",
   "counts": {
-    "enqueued": 40,
+    "enqueued": 39,
     "processed": 27,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 339,
-    "fact_find_ready": 32,
+    "completed": 340,
+    "fact_find_ready": 31,
     "plan_ready": 0,
     "micro_build_ready": 6,
     "briefing_ready": 0,
@@ -291,9 +291,9 @@
         "apps/prime/wrangler.toml"
       ],
       "provisional_deliverable_family": "infra",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P1",
       "confidence": 0.94,
       "evidence_refs": [
@@ -312,7 +312,14 @@
       "processed_by": {
         "target_path": "docs/plans/prime-d1-messaging-db/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "prime-d1-messaging-db",
+        "fact_find_slug": "prime-d1-messaging-db"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/prime-d1-messaging-db/plan.md",
+        "completed_at": "2026-03-13T18:23:29.811Z",
+        "outcome": "Completed via prime-d1-messaging-db."
       }
     },
     {
@@ -29928,12 +29935,15 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "target_path": "docs/plans/inventory-uploader-low-stock-badge/micro-build.md",
-        "target_slug": "inventory-uploader-low-stock-badge"
+        "target_slug": "inventory-uploader-low-stock-badge",
+        "target_kind": "build",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-low-stock-badge/micro-build.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/inventory-uploader-low-stock-badge/micro-build.md",
         "completed_at": "2026-03-13T18:25:45.081Z",
-        "outcome": "Low-stock badge (≤5 units) added to product rows; Low stock filter button added above table"
+        "outcome": "Low-stock badge (≤5 units) added to product rows; Low stock filter button added above table",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-low-stock-badge/micro-build.md"
       }
     },
     {
@@ -30180,12 +30190,15 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "target_path": "docs/plans/inventory-uploader-inflow-dry-run/micro-build.md",
-        "target_slug": "inventory-uploader-inflow-dry-run"
+        "target_slug": "inventory-uploader-inflow-dry-run",
+        "target_kind": "build",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-inflow-dry-run/micro-build.md"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/inventory-uploader-inflow-dry-run/micro-build.md",
         "completed_at": "2026-03-13T18:31:43.384Z",
-        "outcome": "Inflow form now has Preview step showing projected stock changes before commit; dryRun API support added"
+        "outcome": "Inflow form now has Preview step showing projected stock changes before commit; dryRun API support added",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-inflow-dry-run/micro-build.md"
       }
     }
   ]

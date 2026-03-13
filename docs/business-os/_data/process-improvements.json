@@ -261,22 +261,6 @@
     {
       "type": "idea",
       "business": "BRIK",
-      "title": "Prime guest app — the messaging storage database is not set up, so any message data will fail to save",
-      "body": "The prime app includes a messaging database for storing guest messages. The database ID in the deployment config is a placeholder that was never replaced with a real one. This means the database binding will fail when deployed to Cloudflare — any feature that reads or writes messages will not work in production.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T20:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "956b89f8f2dbde89758f54b1dba8e8029f64b895",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
       "title": "Prime guest app — when background data refreshes fail, the failure is invisible and stale data stays on screen",
       "body": "The app periodically refreshes guest data in the background. When that refresh fails, the failure is silently discarded and the guest or staff member continues to see outdated information. There is no log entry, no visible indicator, and no way to tell the problem is happening.",
       "source": "queue-state.json",

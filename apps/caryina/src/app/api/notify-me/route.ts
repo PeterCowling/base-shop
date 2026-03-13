@@ -2,7 +2,12 @@ import { type NextRequest, NextResponse } from "next/server";
 
 import { sendSystemEmail } from "@acme/platform-core/email";
 
+import { checkRateLimit, clientIp } from "@/lib/rateLimit";
+
 export const runtime = "nodejs";
+
+// 5 notify-me submissions per IP per 10 minutes
+const RL = { max: 5, windowMs: 10 * 60_000 };
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -13,6 +18,10 @@ function redactEmail(email: string): string {
 }
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
+  if (!checkRateLimit(clientIp(req), RL)) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   const body = (await req.json().catch(() => ({}))) as Record<string, unknown>;
   const { email, productSlug, consent } = body;
 

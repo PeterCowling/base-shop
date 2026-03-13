@@ -1,17 +1,17 @@
 {
-  "last_updated": "2026-03-13T17:59:45.213Z",
+  "last_updated": "2026-03-13T18:04:07.488Z",
   "counts": {
-    "enqueued": 44,
+    "enqueued": 43,
     "processed": 28,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 334,
+    "completed": 335,
     "fact_find_ready": 32,
     "plan_ready": 0,
-    "micro_build_ready": 10,
+    "micro_build_ready": 9,
     "briefing_ready": 0,
     "total": 616
   },
@@ -29991,11 +29991,11 @@
         "apps/inventory-uploader/src/components/products/ProductsView.client.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.88,
-      "queue_state": "processed",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: as the product catalogue grows, finding a specific product by SKU or title in the table requires scrolling; a client-side search input would make this instant",
         "apps/inventory-uploader/src/components/products/ProductsView.client.tsx",
@@ -30011,6 +30011,11 @@
         "target_route": "lp-do-build",
         "target_path": "docs/plans/inventory-uploader-product-search/micro-build.md",
         "target_slug": "inventory-uploader-product-search"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/inventory-uploader-product-search/micro-build.md",
+        "completed_at": "2026-03-13T18:04:07.487Z",
+        "outcome": "Real-time search/filter input added above products table; filters by SKU or title client-side"
       }
     },
     {

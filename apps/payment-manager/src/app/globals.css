@@ -1,0 +1,130 @@
+@config "../../../../tailwind.config.mjs";
+
+@import "@themes/base/tokens.css";
+@import "tailwindcss";
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+/* Gate token aliases — fully self-contained, immune to OS prefers-color-scheme */
+:root {
+  --gate-ink: hsl(0 0% 10%);
+  --gate-muted: hsl(0 0% 40%);
+  --gate-bg: hsl(0 0% 100%);
+  --gate-accent: hsl(190 70% 40%);
+  --gate-accent-soft: hsl(190 50% 95%);
+  --gate-header-bg: hsl(220 20% 10%);
+  --gate-header-fg: hsl(0 0% 92%);
+  --gate-header-muted: hsl(0 0% 60%);
+  --gate-surface: hsl(0 0% 96%);
+  --gate-status-ready: hsl(150 60% 40%);
+  --gate-status-draft: hsl(40 90% 50%);
+  --gate-status-incomplete: hsl(0 75% 55%);
+  --gate-input-bg: hsl(0 0% 100%);
+  --gate-on-accent: hsl(0 0% 100%);
+  --gate-border: hsl(0 0% 10% / 0.22);
+  --gate-header-border: hsla(0, 0%, 100%, 0.2);
+  --gate-header-accent: hsl(190 70% 40% / 0.35);
+}
+
+/* Gate color utilities */
+@utility text-gate-ink {
+  color: var(--gate-ink);
+}
+
+@utility text-gate-muted {
+  color: var(--gate-muted);
+}
+
+@utility text-gate-accent {
+  color: var(--gate-accent);
+}
+
+@utility text-gate-header-fg {
+  color: var(--gate-header-fg);
+}
+
+@utility text-gate-header-muted {
+  color: var(--gate-header-muted);
+}
+
+@utility bg-gate-bg {
+  background-color: var(--gate-bg);
+}
+
+@utility bg-gate-ink {
+  background-color: var(--gate-ink);
+}
+
+@utility bg-gate-accent {
+  background-color: var(--gate-accent);
+}
+
+@utility bg-gate-accent-soft {
+  background-color: var(--gate-accent-soft);
+}
+
+@utility bg-gate-header {
+  background-color: var(--gate-header-bg);
+}
+
+@utility bg-gate-surface {
+  background-color: var(--gate-surface);
+}
+
+@utility border-gate-ink {
+  border-color: var(--gate-ink);
+}
+
+@utility border-gate-accent {
+  border-color: var(--gate-accent);
+}
+
+@utility ring-gate-ink {
+  --tw-ring-color: var(--gate-ink);
+}
+
+@utility ring-gate-accent {
+  --tw-ring-color: var(--gate-accent);
+}
+
+@utility bg-gate-input {
+  background-color: var(--gate-input-bg);
+}
+
+@utility text-gate-on-accent {
+  color: var(--gate-on-accent);
+}
+
+@utility border-gate-border {
+  border-color: var(--gate-border);
+}
+
+@utility border-gate-header-border {
+  border-color: var(--gate-header-border);
+}
+
+@utility border-gate-header-accent {
+  border-color: var(--gate-header-accent);
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] {
+  --gate-ink: hsl(0 0% 90%);
+  --gate-muted: hsl(0 0% 60%);
+  --gate-bg: hsl(220 20% 8%);
+  --gate-accent-soft: hsl(190 40% 12%);
+  --gate-on-accent: hsl(0 0% 10%);
+  --gate-surface: hsl(220 18% 13%);
+  --gate-input-bg: hsl(220 18% 14%);
+  --gate-status-incomplete: hsl(var(--color-danger-fg));
+  --gate-border: hsl(220 15% 46%);
+  --gate-header-accent: hsl(190 70% 60% / 0.25);
+  --color-bg-muted: 220 15% 18%;
+  --color-danger-fg: 0 75% 65%;
+  --color-success-fg: 150 60% 50%;
+}

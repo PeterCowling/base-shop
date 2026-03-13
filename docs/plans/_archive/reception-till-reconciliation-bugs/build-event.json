@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-till-reconciliation-bugs-20260313",
+  "feature_slug": "reception-till-reconciliation-bugs",
+  "emitted_at": "2026-03-13T14:00:00.000Z",
+  "why": "Five confirmed bugs were blocking operational till workflows: edit/delete transaction modes were unreachable, the float confirmation left the modal open, keycard Firebase errors were silently swallowed, keycard audit records carried a hardcoded zero instead of the real difference, and shift-close retried with stale override state.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All five defects fixed, regression tests passing in CI. Till reconciliation workflows operate correctly: staff can enter and exit edit/delete modes, the float form closes on success, keycard errors surface as toasts, keycard reconcile records carry correct values, and shift-close does not carry stale override state across attempts.",
+    "source": "operator"
+  }
+}

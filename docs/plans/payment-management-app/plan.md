@@ -5,7 +5,7 @@ Domain: Platform
 Workstream: Engineering
 Created: 2026-03-13
 Last-reviewed: 2026-03-13
-Last-updated: 2026-03-13 (TASK-04 replan: promoted to 80% on E2 evidence)
+Last-updated: 2026-03-13 (Wave 4 complete: TASK-04 + TASK-07)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: payment-management-app
 Dispatch-ID: IDEA-DISPATCH-20260313190000-0001
@@ -123,10 +123,10 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 | TASK-01 | IMPLEMENT | Prisma schema — 5 new payment models | 85% | S | Complete (2026-03-13) | - | TASK-02, TASK-03, TASK-04, TASK-05, TASK-06 |
 | TASK-02 | IMPLEMENT | App scaffold — wrangler, KV, session auth (fail-closed), middleware | 80% | M | Complete (2026-03-13) | TASK-01 | TASK-03, TASK-04, TASK-05, TASK-06, TASK-07, TASK-08, TASK-09, TASK-10 |
 | TASK-03 | IMPLEMENT | Credential encryption module (AES-256-GCM) + rotation endpoint | 80% | M | Complete (2026-03-13) | TASK-02 | TASK-05, TASK-06 |
-| TASK-04 | IMPLEMENT | Order list + detail UI + Caryina dual-write hook | 80% | M | Pending | TASK-02 | TASK-05, TASK-09, TASK-10, CHECKPOINT-01 |
+| TASK-04 | IMPLEMENT | Order list + detail UI + Caryina dual-write hook | 80% | M | Complete (2026-03-13) | TASK-02 | TASK-05, TASK-09, TASK-10, CHECKPOINT-01 |
 | TASK-05 | IMPLEMENT | Refund API (Stripe native + Axerve proxy via Caryina internal route) | 80% | M | Pending | TASK-02, TASK-03, TASK-04 | TASK-06, CHECKPOINT-01 |
 | TASK-06 | IMPLEMENT | Shop config UI + credential management | 80% | M | Pending | TASK-02, TASK-03, TASK-05 | CHECKPOINT-01 |
-| TASK-07 | IMPLEMENT | Caryina webhook wire-up | 85% | S | Pending | TASK-02 | TASK-08 |
+| TASK-07 | IMPLEMENT | Caryina webhook wire-up | 85% | S | Complete (2026-03-13) | TASK-02 | TASK-08 |
 | TASK-08 | IMPLEMENT | Webhook event log UI | 85% | S | Pending | TASK-07 | CHECKPOINT-01 |
 | TASK-09 | IMPLEMENT | Checkout reconciliation view | 85% | S | Pending | TASK-04 | CHECKPOINT-01 |
 | TASK-10 | IMPLEMENT | Analytics dashboard | 80% | S | Pending | TASK-04 | CHECKPOINT-01 |
@@ -420,7 +420,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-13)
 - **Affects:** `apps/payment-manager/src/app/(dashboard)/orders/page.tsx` (new), `apps/payment-manager/src/app/(dashboard)/orders/[orderId]/page.tsx` (new), `apps/payment-manager/src/app/api/orders/route.ts` (new), `apps/payment-manager/src/app/api/orders/[orderId]/route.ts` (new), `apps/caryina/src/lib/checkoutSession.server.ts` (modified)
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05, TASK-09, TASK-10, CHECKPOINT-01
@@ -481,6 +481,18 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
   - Rollback: Remove dual-write line from `checkoutSession.server.ts`; redeploy Caryina
 - **Documentation impact:** None beyond code comments
 - **Notes / references:** `PAYMENT_MANAGER_SERVICE_URL` env var required in Caryina for dual-write to function
+- **Build evidence (2026-03-13):**
+  - `GET /api/orders`: cursor-paged (50/page), shop/provider/status/date/text filters; `buildOrdersWhereClause()` extracted to keep complexity ≤20; email masked by default via `maskEmail()` helper
+  - `GET /api/orders/:orderId`: returns full order with `refunds` relation; `?unmask=1` reveals email
+  - `POST /api/internal/orders`: CARYINA_INTERNAL_TOKEN bearer auth; upserts on `Order.id`; `validateRequiredFields()` + `upsertOrder()` extracted to keep complexity ≤20
+  - `pmOrderDualWrite.server.ts`: silently skips if PAYMENT_MANAGER_SERVICE_URL or CARYINA_INTERNAL_TOKEN not set; throws descriptive error on HTTP failure
+  - `checkoutSession.server.ts`: dual-write added after idempotency gate; `void pmOrderDualWrite(...).catch(warn)` pattern; never blocks checkout
+  - Orders list page: OrdersFilters + OrdersTable sub-components extracted; file-level DS exempt (PM-0001 internal tool)
+  - Order detail page: LineItemsSection + RefundHistorySection extracted; unmask toggle for customer email
+  - TC-04-01: pagination + nextCursor ✓; TC-04-02a–d: dual-write resilience ✓; TC-04-03: order detail ✓; TC-04-04: email masking ✓; TC-04-05: shop filter ✓; TC-04-06: Caryina typecheck ✓
+  - 10 PM API tests pass; 4 pmOrderDualWrite tests pass
+  - eslint 0 errors 0 warnings ✓; Caryina typecheck ✓
+  - Commit: `50b1b6ea82` (Wave 4 with TASK-07)
 
 ---
 
@@ -636,7 +648,7 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-13)
 - **Affects:** `apps/caryina/src/app/api/stripe-webhook/route.ts`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-08
@@ -681,6 +693,13 @@ Builds `apps/payment-manager/` — a standalone internal tool on Cloudflare Work
   - Rollback: Remove store calls; events stop appearing in PM webhook log
 - **Documentation impact:** None
 - **Notes / references:** CMP webhook handler at `apps/cover-me-pretty/src/api/stripe-webhook/route.ts` is the reference implementation
+- **Build evidence (2026-03-13):**
+  - Added `markStripeWebhookEventProcessed/Failed` imports from `@acme/platform-core/stripeWebhookEventStore` (resolved via wildcard `./*` export catch-all)
+  - `const SHOP = "caryina"` constant; store calls wrap `finalizeStripeSession`/`expireStripeSession` in try/catch to capture `handlerError`; separate outer try/catch ensures store write failures never cause 5xx (Stripe must not retry)
+  - TC-07-01: `markStripeWebhookEventProcessed` called with shop=caryina ✓; TC-07-02: store throws → 200 returned ✓; TC-07-03: TC-06-14 and TC-06-15 regression guards ✓
+  - 6 tests total (4 existing + 2 new) pass
+  - eslint 0 errors 0 warnings ✓; Caryina typecheck ✓
+  - Commit: `50b1b6ea82` (Wave 4 with TASK-04)
 
 ---
 

@@ -4,12 +4,10 @@ import { Input } from "@acme/design-system";
 import { TableCell, TableRow } from "@acme/design-system/atoms";
 
 import { type CheckInRow } from "../../../types/component/CheckinRow";
-import type { Activity } from "../../../types/hooks/data/activitiesData";
 import type { LoanMethod } from "../../../types/hooks/data/loansData";
 import { getKeycardIcon } from "../../../utils/keycardIcon";
 import CityTaxPaymentButton from "../cityTaxButton/CityTaxPaymentButton";
 import DocInsertButton from "../DocInsertButton";
-import EmailBookingButton from "../EmailBookingButton";
 import KeycardDepositButton from "../keycardButton/KeycardDepositButton";
 import BookingNotesModal from "../notes/BookingNotesModal";
 import RoomPaymentButton from "../roomButton/roomPaymentButton";
@@ -136,15 +134,6 @@ const BookingRowView: FC<BookingRowViewProps> = ({
           <DocInsertButton booking={booking} selectedDate={selectedDate} />
         </div>
       </TableCell>
-      <TableCell className="px-3 py-2">
-        <div className="flex justify-center items-center">
-          <EmailBookingButton
-            bookingRef={booking.bookingRef}
-            activities={(booking.activities ?? []) as Activity[]}
-            isFirstForBooking={Boolean(booking.isFirstForBooking)}
-          />
-        </div>
-      </TableCell>
     </TableRow>
     {notesOpen && booking.isFirstForBooking && (
       <TableRow>
@@ -153,7 +142,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
           table semantics (a <div> directly under <TableBody> triggers DOM nesting
           warnings during tests).
         */}
-        <TableCell colSpan={8} className="p-0">
+        <TableCell colSpan={7} className="p-0">
           <BookingNotesModal
             bookingRef={booking.bookingRef}
             onClose={closeNotes}

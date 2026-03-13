@@ -1230,12 +1230,18 @@ importers:
 
   apps/inventory-uploader:
     dependencies:
+      '@acme/axerve':
+        specifier: workspace:*
+        version: link:../../packages/axerve
       '@acme/next-config':
         specifier: workspace:*
         version: link:../../packages/next-config
       '@acme/platform-core':
         specifier: workspace:*
         version: link:../../packages/platform-core
+      '@acme/stripe':
+        specifier: workspace:*
+        version: link:../../packages/stripe
       '@acme/tailwind-config':
         specifier: workspace:*
         version: link:../../packages/tailwind-config

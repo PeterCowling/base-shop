@@ -69,3 +69,10 @@ export async function duplicateProductInRepo<
   const repo = await getRepo();
   return repo.duplicate(shop, id);
 }
+
+export async function createProductInRepo<
+  T extends ProductPublication = ProductPublication,
+>(shop: string, product: T): Promise<T> {
+  const repo = await getRepo();
+  return repo.create(shop, product);
+}

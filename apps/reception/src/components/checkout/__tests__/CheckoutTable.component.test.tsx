@@ -111,7 +111,7 @@ describe("CheckoutTable component", () => {
     );
   });
 
-  it("shows bag storage icon and fridge text", () => {
+  it("shows bag storage icon and fridge icon when fridgeUsed is true", () => {
     const guests: Guest[] = [
       {
         bookingRef: "BR1",
@@ -122,7 +122,7 @@ describe("CheckoutTable component", () => {
         roomAllocated: "101",
         loans: {},
         bagStorageOptedIn: true,
-        fridge: "Milk",
+        fridgeUsed: true,
         isCompleted: false,
       },
     ];
@@ -133,11 +133,104 @@ describe("CheckoutTable component", () => {
         guests={guests}
         removeLoanItem={jest.fn()}
         onComplete={jest.fn()}
+        onToggleFridge={jest.fn()}
       />
     );
 
     expect(screen.getByTitle(/bag storage/i)).toBeInTheDocument();
-    expect(screen.getByText("Milk")).toBeInTheDocument();
+    expect(screen.getByTitle(/fridge used/i)).toBeInTheDocument();
+    // toggle button is always rendered
+    expect(screen.getByRole("button", { name: /toggle fridge storage for G1/i })).toBeInTheDocument();
+  });
+
+  it("shows no fridge icon when fridgeUsed is false or undefined", () => {
+    const guests: Guest[] = [
+      {
+        bookingRef: "BR1",
+        guestId: "G1",
+        checkoutDate: "2025-01-01",
+        firstName: "Alice",
+        lastName: "Smith",
+        roomAllocated: "101",
+        loans: {},
+        fridgeUsed: false,
+        isCompleted: false,
+      },
+    ];
+    sortCheckoutsDataMock.mockReturnValue(guests);
+
+    render(
+      <CheckoutTable
+        guests={guests}
+        removeLoanItem={jest.fn()}
+        onComplete={jest.fn()}
+        onToggleFridge={jest.fn()}
+      />
+    );
+
+    expect(screen.queryByTitle(/fridge used/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /toggle fridge storage for G1/i })).toBeInTheDocument();
+  });
+
+  it("disables fridge toggle button when occupantId is in pendingFridgeOccupantIds", () => {
+    const guests: Guest[] = [
+      {
+        bookingRef: "BR1",
+        guestId: "G1",
+        checkoutDate: "2025-01-01",
+        firstName: "Alice",
+        lastName: "Smith",
+        roomAllocated: "101",
+        loans: {},
+        isCompleted: false,
+      },
+    ];
+    sortCheckoutsDataMock.mockReturnValue(guests);
+
+    render(
+      <CheckoutTable
+        guests={guests}
+        removeLoanItem={jest.fn()}
+        onComplete={jest.fn()}
+        onToggleFridge={jest.fn()}
+        pendingFridgeOccupantIds={new Set(["G1"])}
+      />
+    );
+
+    const toggleBtn = screen.getByRole("button", { name: /toggle fridge storage for G1/i });
+    expect(toggleBtn).toBeDisabled();
+  });
+
+  it("calls onToggleFridge when fridge toggle button is clicked", async () => {
+    const guests: Guest[] = [
+      {
+        bookingRef: "BR1",
+        guestId: "G1",
+        checkoutDate: "2025-01-01",
+        firstName: "Alice",
+        lastName: "Smith",
+        roomAllocated: "101",
+        loans: {},
+        fridgeUsed: false,
+        isCompleted: false,
+      },
+    ];
+    sortCheckoutsDataMock.mockReturnValue(guests);
+    const onToggleFridge = jest.fn();
+
+    render(
+      <CheckoutTable
+        guests={guests}
+        removeLoanItem={jest.fn()}
+        onComplete={jest.fn()}
+        onToggleFridge={onToggleFridge}
+      />
+    );
+
+    const toggleBtn = screen.getByRole("button", { name: /toggle fridge storage for G1/i });
+    await userEvent.click(toggleBtn);
+
+    expect(onToggleFridge).toHaveBeenCalledWith("G1", "BR1", false);
   });
 
   it("shows completed state and calls onComplete with true", async () => {

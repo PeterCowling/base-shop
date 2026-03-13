@@ -57,10 +57,10 @@ describe("useDeleteGuestFromBooking", () => {
       if (path === "activitiesByCode") {
         return snap({ 5: { occ1: { a: 1 } } });
       }
-      if (path === "roomByDate/2024-01-01/index_3/3") {
+      if (path === "roomsByDate/2024-01-01/index_3/3") {
         return snap({ guestIds: ["occ1"] });
       }
-      if (path === "roomByDate/2024-01-02/index_3/3") {
+      if (path === "roomsByDate/2024-01-02/index_3/3") {
         return snap({ guestIds: ["occ1", "other"] });
       }
       return snap(null);
@@ -86,14 +86,15 @@ describe("useDeleteGuestFromBooking", () => {
       "guestsDetails/BR1/occ1": null,
       "preorder/occ1": null,
       "bagStorage/occ1": null,
+      "fridgeStorage/occ1": null,
       "activities/occ1": null,
       "activitiesByCode/5/occ1": null,
       "checkins/2024-01-01/occ1": null,
       "checkins/2024-01-02/occ1": null,
       "checkouts/2024-01-01/occ1": null,
       "checkouts/2024-01-02/occ1": null,
-      "roomByDate/2024-01-01/index_3/3/guestIds": null,
-      "roomByDate/2024-01-02/index_3/3/guestIds": ["other"],
+      "roomsByDate/2024-01-01/index_3/3/guestIds": null,
+      "roomsByDate/2024-01-02/index_3/3/guestIds": ["other"],
     });
     expect(addActivityMock).toHaveBeenCalledWith("occ1", 25);
     expect(result.current.loading).toBe(false);
@@ -133,7 +134,7 @@ describe("useDeleteGuestFromBooking", () => {
       if (path === "checkouts") {
         return snap({ "2024-01-12": { occ1: { reservationCode: "R", timestamp: "t" } } });
       }
-      if (path === "roomByDate") {
+      if (path === "roomsByDate") {
         return snap({
           "2024-01-10": {
             index_3: {
@@ -158,7 +159,7 @@ describe("useDeleteGuestFromBooking", () => {
     expect(updates).toMatchObject({
       "checkins/2024-01-10/occ1": null,
       "checkouts/2024-01-12/occ1": null,
-      "roomByDate/2024-01-10/index_3/3/guestIds": ["other"],
+      "roomsByDate/2024-01-10/index_3/3/guestIds": ["other"],
     });
   });
 
@@ -177,7 +178,7 @@ describe("useDeleteGuestFromBooking", () => {
       if (path === "activitiesByCode") {
         return snap({ 5: { occ1: { a: 1 } } });
       }
-      if (path === "roomByDate/2024-01-01/index_3/3") {
+      if (path === "roomsByDate/2024-01-01/index_3/3") {
         return snap({ guestIds: ["occ1"] });
       }
       return snap(null);

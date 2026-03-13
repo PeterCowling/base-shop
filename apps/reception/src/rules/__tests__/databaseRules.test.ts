@@ -357,6 +357,28 @@ describe("Reception database rules", () => {
     );
   });
 
+  // TC-14: fridgeStorage — staff can create and null-write (archive/delete flows)
+  it("allows staff to create and null-write fridgeStorage entries", async () => {
+    const staffDb = testEnv.authenticatedContext(STAFF_UID).database();
+
+    // Staff can create a new fridgeStorage entry
+    await assertSucceeds(
+      set(ref(staffDb, "fridgeStorage/occ1"), { used: true })
+    );
+
+    // Staff can null-write (archive/delete) an existing fridgeStorage entry
+    await assertSucceeds(
+      set(ref(staffDb, "fridgeStorage/occ1"), null)
+    );
+  });
+
+  it("blocks unauthenticated writes to fridgeStorage", async () => {
+    const db = testEnv.unauthenticatedContext().database();
+    await assertFails(
+      set(ref(db, "fridgeStorage/occ1"), { used: true })
+    );
+  });
+
   // Additional: inventory/ledger is append-only and restricted to manager+
   it("enforces append-only inventory ledger for manager roles", async () => {
     const staffDb = testEnv.authenticatedContext(STAFF_UID).database();

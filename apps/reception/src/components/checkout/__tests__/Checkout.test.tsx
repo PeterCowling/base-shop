@@ -17,6 +17,8 @@ var activitiesByCodeDataMock: jest.Mock;
 var checkoutsMock: jest.Mock;
 var guestByRoomMock: jest.Mock;
 var bagStorageDataMock: jest.Mock;
+var fridgeStorageDataMock: jest.Mock;
+var setFridgeUsedMock: jest.Mock;
 var removeLoanItemMock: jest.Mock;
 var saveActivityMock: jest.Mock;
 var removeLastActivityMock: jest.Mock;
@@ -74,6 +76,16 @@ jest.mock("../../../hooks/data/useGuestByRoom", () => {
 jest.mock("../../../hooks/data/useBagStorageData", () => {
   bagStorageDataMock = jest.fn();
   return { __esModule: true, default: () => bagStorageDataMock() };
+});
+
+jest.mock("../../../hooks/data/useFridgeStorageData", () => {
+  fridgeStorageDataMock = jest.fn();
+  return { __esModule: true, default: () => fridgeStorageDataMock() };
+});
+
+jest.mock("../../../hooks/mutations/useSetFridgeUsedMutation", () => {
+  setFridgeUsedMock = jest.fn().mockResolvedValue(undefined);
+  return { __esModule: true, default: () => ({ setFridgeUsed: setFridgeUsedMock }) };
 });
 
 jest.mock("../../../hooks/mutations/useActivitiesMutations", () => {
@@ -178,6 +190,7 @@ function setAllHooks({
   checkoutsMock.mockReturnValue({ checkouts: null, loading, error });
   guestByRoomMock.mockReturnValue({ guestByRoom: null, loading, error });
   bagStorageDataMock.mockReturnValue({ bagStorage, loading, error });
+  fridgeStorageDataMock.mockReturnValue({ fridgeStorage: {}, loading, error });
   checkoutClientMock.mockReturnValue(rows);
 }
 
@@ -296,6 +309,30 @@ describe("Checkout component", () => {
     await waitFor(() => {
       expect(removeLastActivityMock).toHaveBeenCalledWith("G1", 14);
     });
+  });
+
+  it("calls setFridgeUsed when fridge toggle button is clicked", async () => {
+    const fridgeRows = [
+      {
+        ...sampleRows[0],
+        loans: {},
+        fridgeUsed: false,
+      } as typeof sampleRows[0],
+    ];
+    fridgeStorageDataMock.mockReturnValue({
+      fridgeStorage: { G1: { used: false } },
+      loading: false,
+      error: null,
+    });
+    checkoutClientMock.mockReturnValue(fridgeRows);
+    setAllHooks({ rows: fridgeRows });
+
+    render(<Checkout />);
+
+    const toggleBtn = screen.getByRole("button", { name: /toggle fridge storage for G1/i });
+    await userEvent.click(toggleBtn);
+
+    expect(setFridgeUsedMock).toHaveBeenCalledWith("G1", true);
   });
 
   it("applies dark mode classes when html has dark", () => {

@@ -1,17 +1,17 @@
 {
-  "last_updated": "2026-03-13T13:16:43.742Z",
+  "last_updated": "2026-03-13T13:30:52.930Z",
   "counts": {
-    "enqueued": 36,
+    "enqueued": 34,
     "processed": 18,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 310,
-    "fact_find_ready": 29,
+    "completed": 312,
+    "fact_find_ready": 28,
     "plan_ready": 0,
-    "micro_build_ready": 5,
+    "micro_build_ready": 4,
     "briefing_ready": 0,
     "total": 574
   },
@@ -24792,7 +24792,7 @@
       "next_scope_now": "Validate the historical carry-over candidate \"Duplicate component detection before drift compounds\" against current repo state and decide the next action.",
       "adjacent_later": [],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.58,
       "evidence_refs": [
@@ -24801,7 +24801,7 @@
         "docs/plans/_archive/reception-date-selector-unification/pattern-reflection.entries.json"
       ],
       "created_at": "2026-03-10T12:25:35.035Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "Some parts of the app have been built twice in slightly different ways. Each time one version is updated, the other quietly falls behind. Over time they create inconsistent experiences for staff. Finding and consolidating these duplicates now is far simpler than untangling them after they have diverged further.",
       "intended_outcome": {
         "type": "operational",
@@ -24826,7 +24826,14 @@
       "processed_by": {
         "target_path": "docs/plans/brikette-duplicate-screens/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "brikette-duplicate-screens",
+        "fact_find_slug": "brikette-duplicate-screens"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/brikette-duplicate-screens/plan.md",
+        "completed_at": "2026-03-13T13:30:20.151Z",
+        "outcome": "Completed via brikette-duplicate-screens."
       }
     },
     {
@@ -27665,9 +27672,9 @@
         "apps/reception/src/components/roomgrid/ReservationGrid.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: live browser audit 2026-03-13 confirmed crash on every cell click with error Cannot have two HTML5 backends at the same time",
         "operator-stated: root cause is DndProvider rendered once per RoomGrid — 10 instances on page — hoist to parent RoomsGrid.tsx resolves it",
@@ -27680,7 +27687,18 @@
         "source": "operator"
       },
       "created_at": "2026-03-13T14:00:00.000Z",
-      "work_package_slug": "reception-rooms-grid-bugs"
+      "work_package_slug": "reception-rooms-grid-bugs",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "reception-rooms-grid-dnd-crash",
+        "micro_build_path": "docs/plans/_archive/reception-rooms-grid-dnd-crash/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/reception-rooms-grid-dnd-crash/micro-build.md",
+        "completed_at": "2026-03-13T13:25:53.340Z",
+        "outcome": "Completed via reception-rooms-grid-dnd-crash."
+      }
     },
     {
       "schema_version": "dispatch.v2",

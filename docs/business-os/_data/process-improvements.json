@@ -149,22 +149,6 @@
     {
       "type": "idea",
       "business": "BRIK",
-      "title": "Reception rooms grid — clicking any room cell crashes the page",
-      "body": "Every click on any cell in the rooms grid crashes the page with an error about drag-and-drop. Staff cannot use the grid at all. The fix is to move the drag-and-drop wrapper from inside each individual room row up to the parent container so only one instance exists — a small, bounded change.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T14:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "38f735886bf2f3b402347ffe8ce47321bcb66daa",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
       "title": "Reception rooms grid — opening a booking detail requires two clicks instead of one",
       "body": "Staff have to click a room cell twice in quick succession to open the booking detail. The first click is silently thrown away by an old guard that was there to prevent accidental clicks during drag-and-drop. Since drag-and-drop is not enabled on this screen, the guard is unnecessary and just makes the grid frustrating to use.",
       "source": "queue-state.json",
@@ -452,36 +436,6 @@
         "source_paths": [
           "docs/plans/_archive/reception-component-token-compliance/results-review.signals.json",
           "docs/plans/_archive/reception-component-token-compliance/pattern-reflection.entries.json"
-        ],
-        "backfilled_at": "2026-03-10T12:25:35.035Z"
-      },
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
-      "title": "Brikette — Duplicate screens are slowly becoming different from each other without anyone noticing",
-      "body": "Some parts of the app have been built twice in slightly different ways. Each time one version is updated, the other quietly falls behind. Over time they create inconsistent experiences for staff. Finding and consolidating these duplicates now is far simpler than untangling them after they have diverged further.",
-      "source": "queue-state.json",
-      "date": "2026-03-10T12:25:35.035Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "529086073bbff654df1507f2be4bef314ee71191",
-      "historical_carryover": {
-        "schema_version": "dispatch-historical-carryover.v1",
-        "manifest_path": "docs/plans/startup-loop-results-review-historical-carryover/artifacts/historical-carryover-manifest.json",
-        "historical_candidate_id": "hc_33071236f714",
-        "source_audit_path": "docs/plans/_archive/startup-loop-results-review-queue-unification/artifacts/historical-carryover-audit.md",
-        "source_plan_slugs": [
-          "reception-date-selector-unification"
-        ],
-        "source_paths": [
-          "docs/plans/_archive/reception-date-selector-unification/results-review.signals.json",
-          "docs/plans/_archive/reception-date-selector-unification/pattern-reflection.entries.json"
         ],
         "backfilled_at": "2026-03-10T12:25:35.035Z"
       },

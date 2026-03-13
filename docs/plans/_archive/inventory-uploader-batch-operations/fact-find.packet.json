@@ -1,0 +1,168 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "inventory-uploader-batch-operations",
+  "source_artifact_path": "docs/plans/inventory-uploader-batch-operations/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Counting all the stock at the end of a season means updating dozens of items. Doing them one by one takes a very long time. A batch input approach would cut that work from hours to minutes.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can submit multiple stock changes in a single operation, reducing end-of-stock-take time significantly.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "Single-item form components (`StockAdjustments.client.tsx`, `StockInflows.client.tsx`); dense console design tokens (`gate-*`); tab layout in `InventoryConsole.client.tsx`",
+      "gap_or_implication": "Batch form needs dynamic row list — add/remove rows, per-row SKU selector and quantity input, shared note + reason fields; must stay compact within tab panel",
+      "carry_forward_or_notes": "Yes — UI approach is the primary architectural choice"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Preview (dry-run) button for adjustments; no preview for inflows; history panel below form; result panel per item",
+      "gap_or_implication": "Batch empty state (no rows added); partial-error state (backend rejects if any item fails with `PRODUCT_MISMATCH`); loading state while submitting N items; success state showing N results",
+      "carry_forward_or_notes": "Yes — error handling for partial failures"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Routes delegate to `applyStockAdjustment` / `receiveStockInflow`; Zod `.strict()` rejects extra fields; shop name validated via `validateShopName`; no auth gate in route code (middleware handles it)",
+      "gap_or_implication": "Batch payload size: no explicit limit on adjustments/inflows routes (unlike import's 5 MB limit). A batch of 50 items is ~5 KB — no practical risk, but worth noting",
+      "carry_forward_or_notes": "Low — document in plan that no size limit needed at this scale"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Per-item `inventoryAuditEvent` rows written for each item in a batch; shared `referenceId` (idempotency key) links all rows in a batch; `type: \"adjustment\"` or `type: \"inflow\"`",
+      "gap_or_implication": "No new gaps — audit trail already works for multi-item (already designed for it)",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Auth tests exist; UI components and API routes have no tests",
+      "gap_or_implication": "Multi-item repository tests and route integration tests should be written as part of this work",
+      "carry_forward_or_notes": "Yes — test tasks needed"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`stockAdjustmentRequestSchema` and `stockInflowRequestSchema` already accept `items[]` with no upper bound",
+      "gap_or_implication": "No schema changes needed; UI state shape for a row list needs definition",
+      "carry_forward_or_notes": "Yes — UI state type design"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Repository reads full inventory JSON, builds Map, iterates items, writes back — O(n) over inventory size; no N+1 for items in a batch",
+      "gap_or_implication": "For 50-item batch: inventory read + write happens once per POST (not per item); `Promise.all` for audit event creates is already in place; acceptable",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No feature flags; operator-tool with no external users; inventory-uploader deploys independently",
+      "gap_or_implication": "No migration required; UI change is additive; rollback = redeploy previous version",
+      "carry_forward_or_notes": "No"
+    }
+  ],
+  "open_operator_questions": [
+    "For the batch inflow form, should a dry-run preview step be added (matching the adjustment form)?",
+    "Should the batch form use a single `reason` for all items (simpler) or per-row `reason` (more precise)?"
+  ],
+  "stage_payload": {
+    "scope_summary": "Staff currently submit stock adjustments and stock inflows one item at a time via forms that select a single SKU, enter a delta/quantity, and POST a single-item `items[]` array to the API. The API layer already accepts an `items` array (Zod schema enforces `min(1)` but has no `max`), so the back-end already supports multi-item payloads structurally. The gap is entirely in the UI: the forms have no way to queue or submit multiple rows in one operation. This work would close that gap for end-of-season stock-takes where dozens of SKUs need updating.",
+    "goals": [
+      "Allow staff to submit adjustments for multiple SKUs in a single API call (batch adjustment).",
+      "Allow staff to receive stock for multiple SKUs in a single API call (batch inflow).",
+      "Reduce end-of-season stock-take from hours to minutes."
+    ],
+    "non_goals": [
+      "Changes to the import route (`/api/inventory/[shop]/import`) — it already handles bulk full-catalogue updates (CSV/JSON file). Batch adjustments/inflows are additive delta operations, not full catalogue replacements.",
+      "Automated stock-take triggering or scheduling.",
+      "Mobile-specific layout optimisation (tool is already a desktop operator console)."
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "key_entry_points": [
+      "`apps/inventory-uploader/src/app/api/inventory/[shop]/adjustments/route.ts` — POST handler for stock adjustments; delegates to `applyStockAdjustment`",
+      "`apps/inventory-uploader/src/app/api/inventory/[shop]/inflows/route.ts` — POST handler for stock inflows; delegates to `receiveStockInflow`",
+      "`apps/inventory-uploader/src/app/api/inventory/[shop]/import/route.ts` — POST handler for full-catalogue CSV/JSON import; already batch-capable"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "API schema (adjustments)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `items[]` already array with no max",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "API schema (inflows)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `items[]` already array with no max",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Repository multi-item handling",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — both repositories iterate items[] correctly",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Import route relevance",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Import replaces catalogue; not relevant for batch deltas",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "UI component inventory",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Two components to replace; one console wiring change",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Zero tests for UI components and routes — gap is real",
+        "Resolution Required": "Yes — plan must include test tasks"
+      },
+      {
+        "Scope Area": "Idempotency model",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Works for multi-item batches by design",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "SKU data volume",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Max 12 observed; form approach is appropriate",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Open questions",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "2 open questions remain (preview for inflows; per-row vs shared reason) — defaults assigned",
+        "Resolution Required": "No (defaults allow planning to proceed)"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only — this is a pure UI enhancement that changes how many items are collected before a single API POST. No workflow, approval path, CI lane, or operator runbook is affected.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

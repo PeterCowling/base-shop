@@ -1,0 +1,171 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "inventory-uploader-batch-operations",
+  "source_artifact_path": "docs/plans/inventory-uploader-batch-operations/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "none"
+  },
+  "outcome_contract": {
+    "why": "Counting all the stock at the end of a season means updating dozens of items. Doing them one by one takes a very long time. A batch input approach would cut that work from hours to minutes.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can submit multiple stock changes in a single operation, reducing end-of-stock-take time significantly.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Multi-row table with per-row SKU selector, delta/qty input, reason dropdown (adjustments), remove button; shared note at bottom; \"Add row\" button; compact gate-* tokens preserved",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Dense console convention preserved; eslint exemptions carry forward",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Empty state (no rows), per-row validation error, batch PRODUCT_MISMATCH error showing failing SKU, loading state (busy), success state showing per-SKU before/after, dry-run preview for both forms",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Preview step already exists in StockInflows — extend to multi-row",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "No route changes; Zod `.strict()` rejects extra fields; batch payload ≤50 items ~5 KB — within limits; no new attack surface",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "No change to auth/authz layer",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Per-item `inventoryAuditEvent` rows written by existing repository for each item in the batch; shared `referenceId` links all rows; unchanged",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "No new audit wiring needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Multi-item repository unit tests for `applyStockAdjustment` and `receiveStockInflow`",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "UI component tests deferred — noted in TASK-03",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No schema changes; UI row state typed explicitly (`BatchAdjRow`, `BatchInflowRow`); `items[]` built from rows before POST",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Both schemas are `.strict()` — variantAttributes only included when non-empty",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Repository reads/writes once per POST regardless of item count; `Promise.all` for audit events already in place; 50-item batch ~5 KB",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "No performance concern at these volumes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "No feature flags; operator tool with no end users; rollback = redeploy; no migration",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Staff currently submit stock adjustments and inflows one item at a time via single-row forms that artificially constrain the API's already-batch-capable `items[]` endpoint. This plan replaces both `StockAdjustments.client.tsx` and `StockInflows.client.tsx` with dynamic multi-row forms that allow N items to be submitted in a single POST. No back-end changes are needed — both API schemas already accept `items: z.array(...).min(1)` with no upper bound. Two UI components are rewritten plus targeted tests for the previously-uncovered multi-item repository code paths.",
+    "goals": [
+      "Allow staff to submit adjustments for multiple SKUs in a single API call.",
+      "Allow staff to receive stock for multiple SKUs in a single API call.",
+      "Reduce end-of-season stock-take from a per-item loop to a single batch submit."
+    ],
+    "non_goals": [
+      "Changes to the import route (`/api/inventory/[shop]/import`) — it already handles full-catalogue CSV/JSON uploads.",
+      "Automated stock-take triggering or scheduling.",
+      "Mobile-specific layout optimisation (desktop operator console).",
+      "CSV/JSON file upload for adjustments/inflows — over-engineered for ≤50 SKU volumes."
+    ],
+    "constraints": [
+      "Both API schemas are `.strict()` — no extra fields; UI state must map exactly to the schema.",
+      "`createKey()` from `inventory-utils.ts` must be used for idempotency key generation (one key per batch POST).",
+      "`/* eslint-disable ds/min-tap-size -- INV-0001 */` and `// eslint-disable-next-line max-lines-per-function -- INV-001` exemptions must carry forward.",
+      "No feature flags — operator tool with no end users; rollback = redeploy."
+    ],
+    "assumptions": [
+      "Per-row reason field for adjustments (default from fact-find; schema already supports per-item reason).",
+      "Dry-run preview step preserved for adjustments and added for inflows (default from fact-find; mirrors UX and reduces error risk for multi-item commits). StockInflows already has a preview step from a prior build — extend it to multi-row."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Replace the single-item state in both form components with a `rows` array. Each row has per-row SKU selector, quantity/delta input, and (for adjustments) reason dropdown. A shared note field remains at the form level. Submit builds the full `items[]` array and POSTs once.",
+      "Why planning is not reopening option selection:",
+      "Approach is settled by strong repo evidence (zero back-end changes, existing result panel handles multi-item, 3 approaches evaluated). No operator fork is unresolved — both open questions from fact-find have documented defaults."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Replace StockAdjustments form with multi-row batch input UI",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/inventory-uploader/src/components/inventory/StockAdjustments.client.tsx`",
+        "affects": "`apps/inventory-uploader/src/components/inventory/StockAdjustments.client.tsx`; `[readonly] packages/platform-core/src/types/stockAdjustments.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Replace StockInflows form with multi-row batch input UI",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/inventory-uploader/src/components/inventory/StockInflows.client.tsx`",
+        "affects": "`apps/inventory-uploader/src/components/inventory/StockInflows.client.tsx`; `[readonly] packages/platform-core/src/types/stockInflows.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add unit tests for multi-item adjustment and inflow repository paths",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — new test files in `packages/platform-core/src/repositories/__tests__/` (confirmed location — see Scouts below)",
+        "affects": "`packages/platform-core/src/repositories/__tests__/stockAdjustments.server.test.ts` (new file); confirms `stockInflows.server.test.ts` exists and may be extended."
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change — this is a pure UI enhancement that changes how many items are collected before a single API POST. No workflow, approval path, CI lane, or operator runbook is affected.",
+      "areas": []
+    }
+  }
+}

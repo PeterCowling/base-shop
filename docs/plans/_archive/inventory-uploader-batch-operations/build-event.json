@@ -1,0 +1,23 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "inventory-uploader-batch-operations",
+  "build_date": "2026-03-13",
+  "status": "complete",
+  "outcome_contract": {
+    "why": "Counting all the stock at the end of a season means updating dozens of items. Doing them one by one takes a very long time. A batch input approach cuts that work from hours to minutes.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can submit multiple stock changes in a single operation, reducing end-of-stock-take time significantly.",
+    "source": "operator"
+  },
+  "tasks_completed": ["TASK-01", "TASK-02", "TASK-03"],
+  "primary_execution_skill": "lp-do-build",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "validation_gates_passed": [
+    "typecheck @acme/inventory-uploader",
+    "lint @acme/inventory-uploader",
+    "build @acme/platform-core",
+    "lint @acme/platform-core",
+    "validate-engineering-coverage.sh"
+  ]
+}

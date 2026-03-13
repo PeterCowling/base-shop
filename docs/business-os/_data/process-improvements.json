@@ -213,22 +213,6 @@
     {
       "type": "idea",
       "business": "BRIK",
-      "title": "Prime guest app — design rules are switched off across several pages, meaning tap targets and layout may not meet standards",
-      "body": "Three pages in the prime app have design system rules disabled. These rules enforce minimum button and tap target sizes and consistent layout widths. Without them, these pages may have elements that are hard to tap on mobile, inconsistently laid out, or visually misaligned compared to the rest of the app. The disables are marked as deferred — they were never resolved.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T20:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "0167ceaecbc96d0ee67debd80015d656e558c759",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
       "title": "Prime guest app — missing configuration causes cryptic failures deep in the app with no clear error at startup",
       "body": "If the app is deployed with a missing config value, Firebase starts up successfully but every real-time data call silently fails. It looks like a data problem rather than a configuration problem, making it very hard to diagnose. An early warning at startup tells the deploying engineer immediately what is missing.",
       "source": "queue-state.json",

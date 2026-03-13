@@ -181,6 +181,21 @@ describe("Extension", () => {
     expect(screen.queryByTestId("pay-modal")).toBeNull();
   });
 
+  it("disables Guest button when nights input is cleared, re-enables when valid number entered", async () => {
+    render(<Extension />);
+    const guestBtn = screen.getByRole("button", { name: "Guest" });
+    expect(guestBtn).not.toBeDisabled();
+
+    const input = screen.getByRole("spinbutton");
+    await userEvent.clear(input);
+    // After clearing, input is empty (NaN state) — button must be disabled
+    expect(guestBtn).toBeDisabled();
+
+    // Typing a valid number re-enables the button
+    await userEvent.type(input, "3");
+    expect(guestBtn).not.toBeDisabled();
+  });
+
   it("filters rows based on search input", async () => {
     bookingsMock.mockReturnValue({
       bookings: {

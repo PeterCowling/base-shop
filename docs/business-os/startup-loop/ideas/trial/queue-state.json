@@ -28123,7 +28123,12 @@
       "why": "If a staff member clears the nights field while setting up an extension, the screen shows a blank input but the system silently books 1 night. Staff have no warning — they may confirm an extension for a different duration than intended.",
       "intended_outcome": "The nights input shows a validation error or disables the Confirm button when the field is empty, so staff cannot accidentally submit an unintended 1-night extension.",
       "created_at": "2026-03-13T15:00:00.000Z",
-      "next_scope_now": "Guard the nights input in Extension.tsx: treat NaN/empty as invalid, show an inline error or disable the Confirm button until a valid positive integer is entered."
+      "next_scope_now": "Guard the nights input in Extension.tsx: treat NaN/empty as invalid, show an inline error or disable the Confirm button until a valid positive integer is entered.",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "micro_build_path": "docs/plans/reception-extension-nights-nan-guard/micro-build.md",
+        "stamped_at": "2026-03-13T15:00:00.000Z"
+      }
     }
   ]
 }

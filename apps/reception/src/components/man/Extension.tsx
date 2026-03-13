@@ -396,7 +396,7 @@ function Extension() {
                                     setModalExtendType("single");
                                   }
                                 }}
-                                disabled={!availabilityMap[r.occupantId]}
+                                disabled={!availabilityMap[r.occupantId] || Number.isNaN(nightsMap[r.occupantId])}
                               >
                                 {availabilityMap[r.occupantId] ? "Guest" : "N/A"}
                               </Button>
@@ -415,7 +415,7 @@ function Extension() {
                                         setModalExtendType("all");
                                       }
                                     }}
-                                    disabled={!availabilityMap[r.occupantId]}
+                                    disabled={!availabilityMap[r.occupantId] || Number.isNaN(nightsMap[r.occupantId])}
                                   >
                                     {availabilityMap[r.occupantId]
                                       ? "Booking"

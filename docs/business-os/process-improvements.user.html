@@ -346,7 +346,7 @@
 
   <div class="page-footer">
     <span>docs/business-os/process-improvements.user.html</span>
-    <span>Last cleared: 2026-03-12 — extracted from build records, reflection debt, and results reviews</span>
+    <span>Last cleared: 2026-03-13 — extracted from build records, reflection debt, and results reviews</span>
     <span id="footer-generated"></span>
   </div>
 
@@ -359,7 +359,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-12T21:26:27.250Z";
+  var GEN_TS = "2026-03-13T06:56:39.633Z";
 
   var IDEA_ITEMS = [
     {
@@ -391,6 +391,40 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Add a pre-push broken-symlink hygiene check to the repo's validate-changes gates. Trigger observation: the planned wave commit was blocked by a pre-existing broken symlink under .agents/skills/, requiring an out-of-scope fix commit before CI could proceed. Suggested next action: create card.",
+      "body": "Build review surfaced \"Add a pre-push broken-symlink hygiene check to the repo's validate-changes gates. Trigger observation: the planned wave commit was blocked by a pre-existing broken symlink under .agents/skills/, requiring an out-of-scope fix commit before CI could proceed. Suggested next action: create card.\" with supporting narrative: New loop process — Add a pre-push broken-symlink hygiene check to the repo's validate-changes gates. Trigger observation: the planned wave commit was blocked by a pre-existing broken symlink under .agents/skills/, requiring an out-of-scope fix commit before CI could proceed. Suggested next action: create card.",
+      "source": "queue-state.json",
+      "date": "2026-03-13T06:54:56.296Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "0cece335177fe4a92a52d1a4e2ef1a5cec63c26e",
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "31c17bfb088f5bf47aa0de64d2afe72a78c96a28",
+        "recurrence_key": "600c6c8c4d5694837554bb9efdabd4f8a04b29d4",
+        "review_cycle_key": "brik-email-template-confidence-threshold",
+        "plan_slug": "brik-email-template-confidence-threshold",
+        "canonical_title": "Add a pre-push broken-symlink hygiene check to the repo's validate-changes gates. Trigger observation: the planned wave commit was blocked by a pre-existing broken symlink under .agents/skills/, requiring an out-of-scope fix commit before CI could proceed. Suggested next action: create card.",
+        "primary_source": "results-review.signals.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": false
+        },
+        "results_review_path": "docs/plans/brik-email-template-confidence-threshold/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/brik-email-template-confidence-threshold/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/brik-email-template-confidence-threshold/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": null
+      },
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",

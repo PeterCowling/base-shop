@@ -1,0 +1,25 @@
+Running node v22.16.0 (npm v10.9.2)
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/brik-email-template-confidence-threshold/plan.md",
+      "line": "224",
+      "message": "TASK-02’s regression contract is too weak to prove “booking-action enforcement unchanged.” In the current implementation, a `booking_action_required = true` + `booking-issues` draft with no URL hits both checks: `missing_required_link` at [draft-quality-check.ts](/Users/petercowling/base-shop/packages/mcp-server/src/tools/draft-quality-check.ts#L517) and the category/policy-based `missing_required_reference` path via [requiresReferenceForActionPlan](/Users/petercowling/base-shop/packages/mcp-server/src/tools/draft-quality-check.ts#L330). TC-02-02 only asserts that `missing_required_link` is present, so it would still pass even if the change accidentally disabled the stricter reference-policy enforcement. The regression should assert the full expected failure set."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 9,
+  "review": "- WARNING: docs/plans/brik-email-template-confidence-threshold/plan.md:224 TASK-02’s regression contract is too weak to prove “booking-action enforcement unchanged.” In the current implementation, a `booking_action_required = true` + `booking-issues` draft with no URL hits both checks: `missing_required_link` at [draft-quality-check.ts](/Users/petercowling/base-shop/packages/mcp-server/src/tools/draft-quality-check.ts#L517) and the category/policy-based `missing_required_reference` path via [requiresReferenceForActionPlan](/Users/petercowling/base-shop/packages/mcp-server/src/tools/draft-quality-check.ts#L330). TC-02-02 only asserts that `missing_required_link` is present, so it would still pass even if the change accidentally disabled the stricter reference-policy enforcement. The regression should assert the full expected failure set.\n\nVERDICT: NEEDS_REVISION\nSCORE: 9/10",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ce23b-5fa8-7a40-9076-a49734c4292d",
+  "resumed": true,
+  "usage": {
+    "inputTokens": 10772969,
+    "outputTokens": 35054,
+    "totalTokens": 10808023,
+    "costUsd": 0
+  },
+  "durationMs": 16559
+}

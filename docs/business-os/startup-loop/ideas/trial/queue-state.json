@@ -29947,7 +29947,7 @@
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.9,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "evidence_refs": [
         "operator-stated: the POST /api/inventory/[shop]/products/[id] endpoint already supports a duplicate action (copies product with new SKU), but the ProductsView table has no Duplicate button wired to it",
         "apps/inventory-uploader/src/components/products/ProductsView.client.tsx",
@@ -29960,7 +29960,11 @@
       "why": "Creating a new product that is similar to an existing one (e.g. same item in a new colour or size) means filling in the same form fields from scratch. A Duplicate button would copy the existing product and let staff edit just the differences.",
       "intended_outcome": "Each product row has a Duplicate action. Clicking it creates a copy with a new auto-generated SKU and returns to the product list with the new row visible.",
       "created_at": "2026-03-13T19:00:00.000Z",
-      "processed_by": null
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_path": "docs/plans/inventory-uploader-duplicate-product-button/micro-build.md",
+        "target_slug": "inventory-uploader-duplicate-product-button"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -30067,11 +30071,7 @@
       "priority": "P2",
       "confidence": 0.9,
       "queue_state": "processed",
-      "processed_by": {
-        "target_route": "lp-do-build",
-        "target_path": "docs/plans/inventory-uploader-clear-shop-on-logout/micro-build.md",
-        "target_slug": "inventory-uploader-clear-shop-on-logout"
-      },
+      "processed_by": null,
       "evidence_refs": [
         "operator-stated: the selected shop is stored in localStorage; on logout the session cookie is cleared but localStorage is not; a different user logging in on the same browser would see the previous user's shop pre-selected",
         "apps/inventory-uploader/src/app/api/auth/logout/route.ts",
@@ -30081,8 +30081,7 @@
       "next_scope_now": "On logout, call localStorage.removeItem for the shop selection key before or after the logout API call. This can be done in the logout button's click handler on the client side.",
       "why": "If two different staff members use the same computer, the second person logging in could accidentally see the first person's shop already selected. Clearing the shop on logout prevents this mix-up.",
       "intended_outcome": "Logging out clears the stored shop selection so the next login always starts from the shop selection screen.",
-      "created_at": "2026-03-13T19:00:00.000Z",
-      "processed_by": null
+      "created_at": "2026-03-13T19:00:00.000Z"
     },
     {
       "schema_version": "dispatch.v2",

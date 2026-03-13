@@ -52,6 +52,18 @@ export function ProductsView({ shop }: Props) {
     return () => abortRef.current?.abort();
   }, [load, refreshKey]);
 
+  async function handleDuplicate(id: string) {
+    const res = await fetch(
+      `/api/inventory/${encodeURIComponent(shop)}/products/${id}`,
+      { method: "POST" },
+    );
+    if (!res.ok) {
+      alert(`Duplicate failed (HTTP ${res.status})`);
+      return;
+    }
+    setRefreshKey((k) => k + 1);
+  }
+
   async function handleDelete(id: string) {
     if (!confirm("Delete this product? This cannot be undone.")) return;
     const res = await fetch(
@@ -134,6 +146,13 @@ export function ProductsView({ shop }: Props) {
                     className="me-3 text-gate-accent hover:underline"
                   >
                     Edit
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => void handleDuplicate(p.id)}
+                    className="me-3 text-gate-muted hover:text-gate-ink hover:underline"
+                  >
+                    Duplicate
                   </button>
                   <button
                     type="button"

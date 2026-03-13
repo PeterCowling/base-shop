@@ -293,22 +293,6 @@
     {
       "type": "idea",
       "business": "PLAT",
-      "title": "Inventory uploader — duplicate product button is missing from the product table",
-      "body": "Creating a new product that is similar to an existing one (e.g. same item in a new colour or size) means filling in the same form fields from scratch. A Duplicate button would copy the existing product and let staff edit just the differences.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T19:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "71fa0c4026099b90322f9f975be3f9de4d897bf9",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "PLAT",
       "title": "Inventory uploader — expired sessions show a raw error message instead of redirecting to login",
       "body": "If a staff member's session expires while they are in the middle of work, they see a confusing error code with no explanation. Showing a clear message that says 'please log in again' means they know exactly what to do.",
       "source": "queue-state.json",

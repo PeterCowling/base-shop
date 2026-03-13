@@ -1,0 +1,350 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "prime-owner-dashboard-pipeline",
+  "source_artifact_path": "docs/plans/prime-owner-dashboard-pipeline/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/prime-owner-dashboard-pipeline/fact-find.md",
+    "plan": "docs/plans/prime-owner-dashboard-pipeline/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The owner dashboard was built as part of the prime app wave 1 (TASK-47, TASK-48, TASK-49) but the aggregation writer (TASK-47 scheduled job) was never implemented. The dashboard returns empty/zero data indefinitely without it.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Owner dashboard shows non-zero, real guest KPI data after the aggregation writer runs for the first time. The `ownerKpis/{date}` nodes in Firebase RTDB are populated for recent dates.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — writer is server-side only",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A — no UI changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — dashboard UX unchanged; empty-state resolves when data is written",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "C2: role-gated writes via custom token; no rule weakening; service account UID registered with `admin` role (satisfies both `preArrival` read and `ownerKpis` write rules); endpoint protected by `PRIME_KPI_AGGREGATION_SECRET` bearer token",
+      "current_or_option_state": "C1: weakens RTDB rules — unacceptable",
+      "gap_or_implication": "Service account setup + endpoint secret required before deploy; `admin` role is narrowest role satisfying both rule sets",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Writer logs: date, guestCount, success/failure, Firebase write errors; `console.error` on failure (matches existing function pattern)",
+      "current_or_option_state": "Same, but less isolated (aggregator redesign obscures I/O boundary)",
+      "gap_or_implication": "Structured logging in writer CF Function; no new alerting infrastructure",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "B1: aggregator tests untouched; new projection unit tests + writer endpoint tests added",
+      "current_or_option_state": "B2: all aggregator tests must be rewritten",
+      "gap_or_implication": "2 new test files: projection shim unit tests, writer endpoint tests (Firebase mocked)",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "B1: `RawDayData` interface unchanged; projection shim is a new adapter layer; `DailyKpiRecord` write contract unchanged",
+      "current_or_option_state": "B2: `RawDayData` interface redesigned; all consumers updated",
+      "gap_or_implication": "Projection shim is the only new contract surface; `kpiAggregator.ts` is frozen",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "A1 primary (daily): O(rooms × bookingRefs) for `roomsByDate` traversal + O(guestUuids × (6 + N_requests)) per-UUID reads (including `occupantIndex`); A2 fallback (backfill/archived): O(all bookings) scan filtered in-memory, then same per-UUID reads; both paths idempotent upsert",
+      "current_or_option_state": "A2 primary every run — unbounded growth; unacceptable",
+      "gap_or_implication": "Daily run: ~90 reads for 10 guests × 2 requests avg — well within Firebase free tier; fallback scan acceptable for one-time backfill only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive CF Pages Function; no changes to existing routes; GitHub Actions cron can be disabled in seconds; RTDB writes are idempotent (re-run safe); rollback = disable cron + delete `ownerKpis/` subtree in Firebase console",
+      "current_or_option_state": "D2 (separate Worker) requires a wrangler delete for rollback",
+      "gap_or_implication": "Zero-risk rollout: new endpoint, new cron; existing guest flows untouched",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [
+    "Will you create the `messagingUsers/{svcUid}` entry in RTDB with `role: 'admin'` and confirm that `PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` + `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` are set in CF Pages?",
+    "Will you add `PRIME_KPI_AGGREGATION_SECRET` as a CF Pages secret and as a GitHub Actions repository secret?"
+  ],
+  "stage_payload": {
+    "decision_summary": "The owner dashboard (`/owner`, `/owner/scorecard`) is fully built and wired to a read layer that reads `ownerKpis/{date}` from Firebase RTDB. Nothing ever writes to those nodes. Three architectural decisions must be resolved before the writer can be built: (1) how to enumerate guests for a given date without a `checkInDate` index, (2) how to bridge the gap between the `kpiAggregator.ts` `RawDayData` interface and the actual RTDB multi-root schema, and (3) how to authenticate server-side writes against the role-gated `ownerKpis` rule.",
+    "goals": [
+      "Choose a guest enumeration strategy that avoids a full `bookings` scan.",
+      "Choose a data projection approach (aggregator redesign vs projection shim) that preserves existing tests.",
+      "Choose an auth approach for server-side RTDB writes.",
+      "Choose a trigger mechanism (cron vs on-demand endpoint) that ships with minimal infrastructure delta."
+    ],
+    "non_goals": [
+      "Dashboard UI changes.",
+      "Read layer (`kpiReader.ts`) changes.",
+      "New KPI metrics beyond `DailyKpiRecord`.",
+      "Changing the `aggregateDailyKpis()` computation logic."
+    ],
+    "constraints": [
+      "Cloudflare Pages does not support cron triggers natively.",
+      "`FirebaseRest` (REST-based, Workers-compatible) is the required write pattern — no Firebase Admin SDK.",
+      "`ownerKpis` RTDB write rule requires `messagingUsers/{uid}/role === 'owner' OR 'admin' OR 'developer'`.",
+      "`bookings` node does not index `checkInDate` — full scan without an alternative index.",
+      "`kpiAggregator.ts` tests must remain green."
+    ],
+    "assumptions": [],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Preserves existing aggregator tests",
+        "Why it matters": "`kpiAggregator.ts` tests are the primary correctness guarantee for KPI computation — must not break",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Minimal Firebase read cost per run",
+        "Why it matters": "Hostel scale is small but disciplined cost control is a project value",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Auth security",
+        "Why it matters": "`ownerKpis` data is business-sensitive; write access must be role-gated",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Implementation complexity",
+        "Why it matters": "Shipping speed matters — simpler is better when outcomes are equivalent",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Trigger flexibility",
+        "Why it matters": "Must be runnable manually (backfill) and daily (ongoing)",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Rollback safety",
+        "Why it matters": "First run writes real data to RTDB — should be recoverable if wrong",
+        "Weight/priority": "Low (data is additive, easily deleted)"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A1: `roomsByDate/{date}` index (primary)",
+        "Description": "Read `roomsByDate/{date}` → traverse `{room}/{bookingRef}/guestIds[]` → collect all UUIDs",
+        "Upside": "O(rooms × bookingRefs) read per date; no full scan; reliable for recent dates",
+        "Downside": "Mutable: entries removed on archive/delete — incomplete for historical backfill of archived dates",
+        "Key risks": "Silent miss for backfill without fallback; requires fallback path",
+        "Viable?": "Yes (primary, with fallback)"
+      },
+      {
+        "Option": "A2: Full `bookings` scan",
+        "Description": "Read entire `bookings` node, filter in-memory by `checkInDate`",
+        "Upside": "Complete record regardless of archival state; reliable fallback for backfill",
+        "Downside": "O(all bookings ever) — grows unbounded; expensive for daily use",
+        "Key risks": "Acceptable as backfill-only fallback, not daily path",
+        "Viable?": "Yes (backfill fallback only)"
+      },
+      {
+        "Option": "A3: Add `checkInDate` index to `bookings` in `database.rules.json`",
+        "Description": "Add `.indexOn: [\"checkInDate\"]` to `bookings` rules",
+        "Upside": "Clean direct query; no `roomsByDate` dependency",
+        "Downside": "Requires RTDB rule deploy",
+        "Key risks": "Minor rule deploy; would enable O(1) date-filtered query",
+        "Viable?": "Yes (future improvement, not in scope)"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "B1: Projection shim (preferred)",
+        "Description": "Build a new `projectGuestKpiData(date, guestUuids, firebase)` function in the writer layer that reads the 6 RTDB roots per UUID and returns `RawDayData`. `aggregateDailyKpis()` unchanged.",
+        "Upside": "All existing aggregator tests pass without modification. Clean separation: projection (I/O) vs aggregation (pure).",
+        "Downside": "Additional function to write and test.",
+        "Key risks": "Projection correctness must be verified independently.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B2: Redesign `aggregateDailyKpis()` to accept real RTDB types",
+        "Description": "Change the function signature to take multi-root data structures directly. Update all tests.",
+        "Upside": "Single function boundary; no projection layer indirection.",
+        "Downside": "All 5+ `kpiAggregator.ts` tests must be rewritten. Breaks the pure/IO separation. Increases blast radius.",
+        "Key risks": "Existing tests are the ground truth for KPI computation accuracy — losing them risks silent regressions in KPI values.",
+        "Viable?": "No"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "C1: Relax RTDB rule for `ownerKpis` writes (server-to-server)",
+        "Description": "Change the `ownerKpis` write rule to allow unauthenticated writes OR allow writes with just `CF_FIREBASE_API_KEY`",
+        "Upside": "Simplest implementation — no new credential management",
+        "Downside": "Weakens RTDB security model; `ownerKpis` data is business-sensitive; any authenticated user could overwrite it",
+        "Key risks": "High — opens write access to anyone who can obtain the database URL",
+        "Viable?": "No"
+      },
+      {
+        "Option": "C2: Pre-register service UID in `messagingUsers` with `admin` role + use custom token flow",
+        "Description": "Create a stable service account UID (e.g., `svc-kpi-aggregator`); register it in `messagingUsers/{svcUid}` with `role: 'admin'`; use `PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` + `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` (existing secret contract) via `firebase-custom-token.ts` to generate a custom JWT; exchange via Identity Toolkit for an ID token; use the ID token as the RTDB `auth=` credential",
+        "Upside": "Follows existing auth pattern (`staff-auth-session.ts`). `admin` role satisfies both `preArrival` read and `ownerKpis` write. No rule changes needed. Uses existing secret names.",
+        "Downside": "Requires operator to: (a) confirm `PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` + `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` are set in CF Pages; (b) create `messagingUsers/{svcUid}` entry with `role: 'admin'` in RTDB once. Writer must implement custom-token → ID-token exchange step.",
+        "Key risks": "One-time setup; token exchange adds one extra API call (Identity Toolkit) per run",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C3: Relax rule only for `ownerKpis` writes from a fixed IP / CF IP range",
+        "Description": "Not feasible — CF Pages doesn't have a stable IP range",
+        "Upside": "N/A",
+        "Downside": "N/A",
+        "Key risks": "N/A",
+        "Viable?": "No"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "D1: GitHub Actions `schedule:` cron",
+        "Description": "A workflow sends `POST /api/aggregate-kpis` with bearer auth daily at e.g. 02:00 UTC",
+        "Upside": "No new CF infrastructure. Works immediately. Free. Backfill by running workflow manually with date param.",
+        "Downside": "Depends on GitHub Actions availability for production daily operations.",
+        "Key risks": "GitHub Actions has rare outages; missing one day is tolerable (idempotent write can backfill).",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "D2: Separate Cloudflare Worker with cron trigger",
+        "Description": "A new Worker in the monorepo with `[triggers] crons = [\"0 2 * * *\"]` calls the aggregation logic",
+        "Upside": "True server-side cron; no GitHub dependency",
+        "Downside": "New Worker resource to deploy, manage, and pay for. Duplicates prime's CF infrastructure.",
+        "Key risks": "Added operational surface area for a small benefit.",
+        "Viable?": "Yes (secondary)"
+      },
+      {
+        "Option": "D3: On-demand CF Pages Function only (no automatic trigger)",
+        "Description": "Endpoint callable manually; no cron wired",
+        "Upside": "Immediate unblock for backfill and manual runs. Ships fastest.",
+        "Downside": "Dashboard only shows data if someone remembers to run it.",
+        "Key risks": "Operational debt — must be remembered to run daily.",
+        "Viable?": "Partial (start here, layer D1 on top)"
+      }
+    ],
+    "chosen_approach": {
+      "Read cost": "≤ 50 guests × (1 occupantIndex + 1 booking + 1 preArrival + 1 checkins + N_requests_byGuest + N_requests_byId + 1 bagStorage) reads per run. For 10 guests × 2 requests avg: ~90 reads/day. Acceptable for a daily job.",
+      "Operator creates `messagingUsers/{svcUid}` entry with `role": "'admin'` in RTDB (one-time setup; required before production auth works).",
+      "**A2 (full `bookings` scan) as primary** — Rejected as the primary daily path": "unbounded cost, violates read-budget discipline. Retained as automatic fallback for backfill of archived dates when `roomsByDate` is empty.",
+      "**B2 (redesign aggregator)** — Rejected": "breaks existing tests, increases blast radius, removes the pure/IO separation.",
+      "**C1 (relax RTDB rule)** — Rejected": "unacceptable security regression; `ownerKpis` is business-sensitive.",
+      "**C2 with `developer` role** — Rejected": "`developer` role cannot read `preArrival/{uuid}` (only `staff|admin|owner` can). Service account needs `admin` role to satisfy both the `preArrival` read rule and `ownerKpis` write rule simultaneously.",
+      "**D2 (separate CF Worker)** — Rejected": "unnecessary infrastructure overhead for a daily batch job; GitHub Actions cron achieves the same with less.",
+      "Q": "Will you add `PRIME_KPI_AGGREGATION_SECRET` as a CF Pages secret and as a GitHub Actions repository secret?",
+      "Why operator input is required": "This is a shared bearer secret that the operator must generate and register in two places.",
+      "Planning impact": "Without this, TASK-C's endpoint cannot be called securely from TASK-D's cron workflow."
+    },
+    "rejected_approaches": [
+      "**A2 (full `bookings` scan) as primary** — Rejected as the primary daily path: unbounded cost, violates read-budget discipline. Retained as automatic fallback for backfill of archived dates when `roomsByDate` is empty.",
+      "**B2 (redesign aggregator)** — Rejected: breaks existing tests, increases blast radius, removes the pure/IO separation.",
+      "**C1 (relax RTDB rule)** — Rejected: unacceptable security regression; `ownerKpis` is business-sensitive.",
+      "**C2 with `developer` role** — Rejected: `developer` role cannot read `preArrival/{uuid}` (only `staff|admin|owner` can). Service account needs `admin` role to satisfy both the `preArrival` read rule and `ownerKpis` write rule simultaneously.",
+      "**D2 (separate CF Worker)** — Rejected: unnecessary infrastructure overhead for a daily batch job; GitHub Actions cron achieves the same with less."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "Writer unit tests use the same Firebase mock pattern as existing `aggregate-read-path.test.tsx`.",
+        "Projection shim tests verify correct RTDB path construction and data mapping for each of the 6 signal roots."
+      ],
+      "sequencing_constraints": [
+        "TASK-A (RTDB setup + secrets) must complete before TASK-C can be tested in production.",
+        "TASK-B (projection shim) must precede TASK-C (writer endpoint).",
+        "TASK-C must deploy before TASK-D (cron) makes any sense.",
+        "TASK-E (access gate) can be done any time after TASK-C deploys."
+      ],
+      "risks_to_carry_forward": [
+        "`roomsByDate/{date}` may be empty for dates before the reception app started populating it — backfill (TASK-F) must handle gracefully (log warning, write zero-record, do not fail).",
+        "Custom token exchange involves two API calls (custom JWT generation + Identity Toolkit `signInWithCustomToken` exchange) — must be factored into CF Function timeout budget. Token should be cached for the duration of a single run.",
+        "`primeRequests/byGuest/{uuid}` stores boolean values keyed by request ID — the full request object (including `type`) lives at `primeRequests/byId/{requestId}`. Projection shim must traverse both paths to classify `extension` vs `bag_drop` requests for the count fields.",
+        "The endpoint bearer secret (`PRIME_KPI_AGGREGATION_SECRET`) must exist in both CF Pages and GitHub Actions secrets before TASK-C deploys and TASK-D wires up."
+      ]
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "KPI write path",
+          "current": "Does not exist; `ownerKpis/` subtree is empty",
+          "trigger": "GitHub Actions cron fires at 02:00 UTC (or manual POST call)",
+          "future": "1. GitHub Actions sends `POST /api/aggregate-kpis` with body `{\"date\":\"YYYY-MM-DD\"}` and `Authorization: Bearer <PRIME_KPI_AGGREGATION_SECRET>` header (previous day by default). 2. CF Pages Function validates bearer secret, then authenticates to Firebase: calls `firebase-custom-token.ts` with `PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` + `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` → custom JWT → exchanges via Identity Toolkit for Firebase ID token → uses ID token as RTDB `auth=` credential. 3. Reads `roomsByDate/{date}/{room}/{bookingRef}/guestIds[]` → collects all guest UUIDs; if empty falls back",
+          "steady": "`kpiReader.ts` read path unchanged; dashboard pages unchanged; aggregation pure functions unchanged",
+          "seams": "Service account secrets (`PRIME_FIREBASE_SERVICE_ACCOUNT_*`) must be in CF Pages; `messagingUsers/{svcUid}` with `role: 'admin'` must exist; `PRIME_KPI_AGGREGATION_SECRET` must be in CF Pages and GitHub Actions"
+        },
+        {
+          "id": null,
+          "label": "KPI read path",
+          "current": "Reads `ownerKpis/{date}`; returns zeros if missing",
+          "trigger": "Owner page load",
+          "future": "No change — read path already works; dashboard now shows real data instead of zeros",
+          "steady": "Same as today",
+          "seams": "None"
+        },
+        {
+          "id": null,
+          "label": "Owner dashboard access gate",
+          "current": "`NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES` unknown in production",
+          "trigger": "N/A",
+          "future": "Operator sets `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES=true` in CF Pages dashboard; owner pages become accessible in production",
+          "steady": "Dev behavior (`true` always) unchanged",
+          "seams": "Must be done separately; otherwise dashboard shows `StaffOwnerDisabledNotice` despite populated data"
+        }
+      ]
+    }
+  }
+}

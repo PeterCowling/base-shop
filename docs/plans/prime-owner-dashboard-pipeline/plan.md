@@ -5,7 +5,7 @@ Domain: Data | API | Infra
 Workstream: Engineering
 Created: 2026-03-13
 Last-reviewed: 2026-03-13
-Last-updated: 2026-03-13 (Wave 2 + TASK-05 complete)
+Last-updated: 2026-03-13 (Wave 2 + TASK-05 complete; TASK-06 Blocked; TASK-07 pending operator)
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: prime-owner-dashboard-pipeline
 Dispatch-ID: IDEA-DISPATCH-20260313200000-PRIME-010
@@ -33,8 +33,8 @@ The owner dashboard (`/owner`, `/owner/scorecard`) was built in prime app wave 1
 - [x] TASK-03: Build `kpi-projection.ts` — guest data projection shim
 - [x] TASK-04: Build `aggregate-kpis.ts` — CF Pages Function writer endpoint
 - [x] TASK-05: Build `prime-kpi-aggregation.yml` — GitHub Actions cron
-- [ ] TASK-06: Enable `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES=true` in CF Pages production (Blocked — security pre-condition)
-- [ ] TASK-07: Backfill `ownerKpis` for last 30 days via manual workflow dispatch
+- [ ] TASK-06: Enable `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES=true` in CF Pages production (Blocked — security pre-condition not met; see security analysis below)
+- [ ] TASK-07: Backfill `ownerKpis` for last 30 days via manual workflow dispatch (Pending operator action — requires deployed endpoint)
 
 ## Goals
 
@@ -115,13 +115,13 @@ The owner dashboard (`/owner`, `/owner/scorecard`) was built in prime app wave 1
 
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Add `PRIME_KPI_AGGREGATION_SECRET` to CF Pages + GHA secrets | 85% | S | Pending | - | TASK-04, TASK-05 |
-| TASK-02 | IMPLEMENT | Create `messagingUsers/{svcUid}` RTDB entry with `role: 'admin'` | 85% | S | Pending | - | TASK-04 |
-| TASK-03 | IMPLEMENT | Build `kpi-projection.ts` — projection shim with tests | 80% | M | Pending | - | TASK-04 |
+| TASK-01 | IMPLEMENT | Add `PRIME_KPI_AGGREGATION_SECRET` to CF Pages + GHA secrets | 85% | S | Complete (2026-03-13) | - | TASK-04, TASK-05 |
+| TASK-02 | IMPLEMENT | Create `messagingUsers/{svcUid}` RTDB entry with `role: 'admin'` | 85% | S | Complete (2026-03-13) | - | TASK-04 |
+| TASK-03 | IMPLEMENT | Build `kpi-projection.ts` — projection shim with tests | 80% | M | Complete (2026-03-13) | - | TASK-04 |
 | TASK-04 | IMPLEMENT | Build `aggregate-kpis.ts` — CF Pages POST endpoint with tests | 80% | M | Complete (2026-03-13) | TASK-01, TASK-02, TASK-03 | TASK-05, TASK-07 |
 | TASK-05 | IMPLEMENT | Build `prime-kpi-aggregation.yml` — GHA cron workflow | 85% | S | Complete (2026-03-13) | TASK-01, TASK-04 | - |
-| TASK-06 | IMPLEMENT | Enable `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES=true` in CF Pages prod | 90% | S | Pending | - | - |
-| TASK-07 | IMPLEMENT | Backfill `ownerKpis` for last 30 days via manual workflow dispatch | 80% | S | Pending | TASK-04, TASK-05 | - |
+| TASK-06 | IMPLEMENT | Enable `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES=true` in CF Pages prod | 90% | S | Blocked — security pre-condition not met | - | - |
+| TASK-07 | IMPLEMENT | Backfill `ownerKpis` for last 30 days via manual workflow dispatch | 80% | S | Pending operator action (deploy required) | TASK-04, TASK-05 | - |
 
 ## Engineering Coverage
 
@@ -458,7 +458,8 @@ The owner dashboard (`/owner`, `/owner/scorecard`) was built in prime app wave 1
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Blocked — security pre-condition not met (2026-03-13)
+- **Block reason:** `canAccessStaffOwnerRoutes()` in `apps/prime/src/lib/security/staffOwnerGate.ts` is a bare `process.env` check with no session auth or Cloudflare Access verification. Enabling `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES=true` would expose `/owner` and `/owner/scorecard` (containing real guest KPI data) to any unauthenticated HTTP request. The CF Pages Functions layer (`apps/prime/functions/lib/staff-owner-gate.ts`) does check `cf-access-authenticated-user-email` — but this only protects API routes, not Next.js SSR pages. No Cloudflare Access rule protecting the `/owner` path in production has been confirmed. Must confirm CF Access rule OR add session auth to the owner pages before enabling.
 - **Affects:** CF Pages environment variable configuration (live, not source-controlled)
 - **Depends on:** -
 - **Blocks:** -
@@ -503,7 +504,7 @@ The owner dashboard (`/owner`, `/owner/scorecard`) was built in prime app wave 1
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Pending operator action (2026-03-13) — requires Wave 2 code (TASK-04 + TASK-05) deployed to production via CF Pages. Wave 2 commit is `2abaa7719f` on branch `dev`. Once deployed, operator should run: `for i in $(seq 30 -1 1); do gh workflow run prime-kpi-aggregation.yml --repo <owner>/base-shop --field date=$(date -d "$i days ago" +%Y-%m-%d); sleep 2; done`
 - **Affects:** Firebase RTDB `ownerKpis/` subtree (live data)
 - **Depends on:** TASK-04, TASK-05
 - **Blocks:** -
@@ -576,6 +577,8 @@ The owner dashboard (`/owner`, `/owner/scorecard`) was built in prime app wave 1
 - 2026-03-13: [Critique Round 1 autofix] `roomsByDate` primary path provides `bookingRef` directly — `occupantIndex` lookup is redundant in primary path. `occupantIndex` only used in fallback (`bookings` scan) path. TASK-03 acceptance and execution plan updated.
 - 2026-03-13: [Critique Round 1 autofix] `bookings/{reservationCode}/{uuid}` only contains occupant fields (`checkInDate`, `checkOutDate`, `leadGuest`, `roomNumbers` per `bookingsSchemas.ts`). `checkInCode` sourced from `checkInCodes/byUuid/{uuid}.code`; `checkInAt` sourced from `checkins/{date}/{uuid}.timestamp` (ISO string → ms). TASK-03 reads list and scouts updated.
 - 2026-03-13: [Critique Round 1 autofix] TASK-06 security finding: `canAccessStaffOwnerRoutes()` is a bare env-var check with no session/auth layer. Enabling `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES=true` exposes owner KPI data publicly without additional protection. TASK-06 security coverage changed from N/A to Required; acceptance criterion added for operator to confirm auth protection before enabling.
+- 2026-03-13: [Build completion] TASK-06 confirmed Blocked. Investigation found two separate gate implementations: (1) `apps/prime/functions/lib/staff-owner-gate.ts` (CF Pages Functions API layer) — checks `cf-access-authenticated-user-email` header, properly gate-aware; (2) `apps/prime/src/lib/security/staffOwnerGate.ts` (Next.js SSR layer) — bare `process.env.NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES === 'true'` check, no Cloudflare Access verification. Enabling the env var enables the SSR pages without any auth protection. Blocked until operator confirms CF Access rule on `/owner` path or session auth is added to owner pages.
+- 2026-03-13: [Build completion] TASK-07 deferred to operator. Wave 2 commit `2abaa7719f` is on `dev` branch; backfill workflow dispatches require the endpoint to be live in production. Task status updated to "Pending operator action" with dispatch loop command documented in TASK-07 execution plan.
 
 ## Rehearsal Trace
 

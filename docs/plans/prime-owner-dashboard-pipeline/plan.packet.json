@@ -1,0 +1,291 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "prime-owner-dashboard-pipeline",
+  "source_artifact_path": "docs/plans/prime-owner-dashboard-pipeline/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-owner-dashboard-pipeline/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The owner dashboard was built as part of the prime app wave 1 (TASK-47, TASK-48, TASK-49) but the aggregation writer (TASK-47 scheduled job) was never implemented. The dashboard returns empty/zero data indefinitely without it.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Owner dashboard shows non-zero, real guest KPI data after the aggregation writer runs for the first time. The `ownerKpis/{date}` nodes in Firebase RTDB are populated for recent dates.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — writer is server-side only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No UI changes; dashboard already complete",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — empty-state copy resolves when data is written",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Dashboard already handles zero-data gracefully",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Bearer secret validates endpoint callers; service account `admin` role; no RTDB rule weakening; custom token → ID token exchange",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-04",
+      "gap_or_implication": "`admin` is narrowest role satisfying both `preArrival` read and `ownerKpis` write rules",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Writer logs: date, guestCount, enumeration path used (primary/fallback), success/failure, Firebase write errors",
+      "current_or_option_state": "TASK-04",
+      "gap_or_implication": "`console.error` on failure, structured JSON log on success",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Projection shim unit tests (Firebase mocked); endpoint handler tests (bearer auth + Firebase mocked); aggregator tests untouched",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "2 new test files; existing `arrivalKpis.test.ts`, `kpi-aggregation-daily.test.ts` must remain green",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`RawDayData` interface unchanged; projection shim adapts 6 RTDB roots; `DailyKpiRecord` write schema unchanged",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "`kpiAggregator.ts` is frozen",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "`roomsByDate` primary (O(rooms × bookingRefs)); `bookings` fallback (O(all bookings)) for archived dates only; idempotent upsert (PUT to `ownerKpis/{date}`)",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "Read cost ~90/day for 10 guests × 2 requests; CF Function timeout budget must accommodate 2-step token exchange",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive CF Pages Function; no existing routes changed; GHA cron disabled in seconds; RTDB writes idempotent; rollback = delete `ownerKpis/` subtree in Firebase console",
+      "current_or_option_state": "TASK-04, TASK-05",
+      "gap_or_implication": "Zero blast radius on existing guest flows",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The owner dashboard (`/owner`, `/owner/scorecard`) was built in prime app wave 1 but the TASK-47 aggregation writer was never implemented. The dashboard silently returns zeros for all KPI metrics because nothing ever writes to the `ownerKpis/{date}` Firebase RTDB subtree. This plan builds the missing pipeline: a projection shim that reads raw guest data from 6 RTDB roots, a `POST /api/aggregate-kpis` CF Pages Function that orchestrates auth + enumeration + projection + write, and a GitHub Actions cron job that calls it daily. The `kpiAggregator.ts` pure functions and all existing tests are lef",
+    "goals": [
+      "Implement the missing aggregation writer so the owner dashboard shows real guest KPI data.",
+      "Build a `POST /api/aggregate-kpis` CF Pages Function that authenticates via service-account custom token, enumerates guests from `roomsByDate/{date}` (with `bookings` fallback), projects RTDB data into `RawDayData`, calls `aggregateDailyKpis()`, and writes `DailyKpiRecord` to `ownerKpis/{date}`.",
+      "Schedule the writer to run daily via a GitHub Actions cron job.",
+      "Enable the owner dashboard route in CF Pages production."
+    ],
+    "non_goals": [
+      "Dashboard UI changes (`owner/page.tsx`, `owner/scorecard/page.tsx`).",
+      "Read layer changes (`kpiReader.ts`).",
+      "New KPI metrics beyond `DailyKpiRecord`.",
+      "Changes to `aggregateDailyKpis()` computation logic or its tests."
+    ],
+    "constraints": [
+      "Cloudflare Pages does not support cron triggers natively — cron must be external (GitHub Actions).",
+      "`FirebaseRest` is the required REST-based Firebase client; no Firebase Admin SDK.",
+      "`ownerKpis/{date}` write rule requires `messagingUsers/{uid}/role === 'owner' OR 'admin' OR 'developer'`.",
+      "`preArrival/{uuid}` read rule requires `messagingUsers/{uid}/role === 'staff' OR 'admin' OR 'owner'` — `developer` role cannot read it.",
+      "Service account must use `admin` role in `messagingUsers` to satisfy both `preArrival` read and `ownerKpis` write simultaneously.",
+      "`bookings` node does not index `checkInDate` — full scan is O(all bookings) and is fallback-only.",
+      "`roomsByDate` is mutable — entries are removed on archive/delete. Primary enumeration for daily runs; fallback for historical backfill.",
+      "`kpiAggregator.ts` tests must remain green (no changes to that file)."
+    ],
+    "assumptions": [
+      "`PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` and `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY` are already set in CF Pages secrets (matching the contract established by `staff-auth-session.ts`).",
+      "`roomsByDate/{date}/{room}/{bookingRef}/guestIds[]` is the correct schema (confirmed from `useRoomsByDateMutations.ts`).",
+      "`occupantIndex/{uuid} → reservationCode` is available for O(1) UUID→booking lookup (confirmed from `useFetchBookingsData.client.ts`).",
+      "`primeRequests/byGuest/{uuid}` stores boolean values keyed by request ID; `primeRequests/byId/{requestId}` holds the full request object with `type` field."
+    ],
+    "selected_approach": [
+      "What was chosen: Build `apps/prime/functions/lib/kpi-projection.ts` (projection shim) and `apps/prime/functions/api/aggregate-kpis.ts` (CF Pages Function) plus `.github/workflows/prime-kpi-aggregation.yml` (GHA cron). Service account uses `admin` role; custom token exchanged for ID token via Identity Toolkit REST.",
+      "Why planning is not reopening option selection: Analysis resolved all four decision axes decisively. Auth role intersection (`admin`), enumeration strategy (roomsByDate primary + bookings fallback), projection shim pattern, and POST+GHA cron trigger are all settled with codebase evidence."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add `PRIME_KPI_AGGREGATION_SECRET` to CF Pages and GitHub Actions secrets",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-04",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "CF Pages secret `PRIME_KPI_AGGREGATION_SECRET` registered; GitHub Actions repository secret `PRIME_KPI_AGGREGATION_SECRET` registered",
+        "affects": "`apps/prime/wrangler.toml` (doc comment only), `.env.example` (if present)"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Create `messagingUsers/{svcUid}` RTDB entry with `role: 'admin'`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Firebase RTDB entry at `messagingUsers/svc-kpi-aggregator` with `{ role: 'admin' }` (one-time data setup)",
+        "affects": "Firebase RTDB `messagingUsers` subtree (live data, not source-controlled)"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Build `kpi-projection.ts` — guest data projection shim",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/prime/functions/lib/kpi-projection.ts` + `apps/prime/functions/lib/__tests__/kpi-projection.test.ts`",
+        "affects": "`apps/prime/functions/lib/kpi-projection.ts` (new), `apps/prime/functions/lib/__tests__/kpi-projection.test.ts` (new), `[readonly] apps/prime/src/lib/owner/kpiAggregator.ts`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Build `aggregate-kpis.ts` — CF Pages POST endpoint",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [
+          "TASK-05",
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/prime/functions/api/aggregate-kpis.ts` + `apps/prime/functions/api/__tests__/aggregate-kpis.test.ts`",
+        "affects": "`apps/prime/functions/api/aggregate-kpis.ts` (new), `apps/prime/functions/api/__tests__/aggregate-kpis.test.ts` (new), `apps/prime/functions/__tests__/helpers.ts` (may need `PRIME_KPI_AGGREGATION_SECRET` added to `MockEnv`)"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Build `prime-kpi-aggregation.yml` — GitHub Actions cron",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-04"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`.github/workflows/prime-kpi-aggregation.yml`",
+        "affects": "`.github/workflows/prime-kpi-aggregation.yml` (new)"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Enable `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES=true` in CF Pages production",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 75,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "CF Pages env var `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES=true` set for the `prime` project production environment",
+        "affects": "CF Pages environment variable configuration (live, not source-controlled)"
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Backfill `ownerKpis` for last 30 days via manual workflow dispatch",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "S",
+        "depends_on": [
+          "TASK-04",
+          "TASK-05"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Manual `workflow_dispatch` runs of `prime-kpi-aggregation.yml` for each of the last 30 dates, resulting in `ownerKpis/{date}` nodes populated in RTDB",
+        "affects": "Firebase RTDB `ownerKpis/` subtree (live data)"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "KPI write path (daily)",
+          "trigger": "GitHub Actions cron at 02:00 UTC",
+          "flow": "1. GHA sends `POST /api/aggregate-kpis` with JSON `{\"date\":\"YYYY-MM-DD\"}` and `Authorization: Bearer <PRIME_KPI_AGGREGATION_SECRET>`. 2. CF Pages Function validates bearer secret (HTTP 401 if missing/wrong). 3. Generates custom JWT via `firebase-custom-token.ts` using `PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL` + `PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY`. 4. Exchanges custom JWT for Firebase ID token via Identity Toolkit REST. 5. Reads `roomsByDate/{date}` (traverses `{room}/{bookingRef}/guestIds[]`, `bookingRef` available directly from path); if empty, falls back to full `bookings` scan with in",
+          "task_ids": [],
+          "dependency_note": "\"fallback\"}`.",
+          "seams": "TASK-01, TASK-02, TASK-03, TASK-04, TASK-05"
+        },
+        {
+          "id": null,
+          "label": "KPI write path (on-demand / backfill)",
+          "trigger": "Manual `workflow_dispatch` with date param",
+          "flow": "Same flow as above but date comes from workflow input parameter",
+          "task_ids": [
+            "TASK-04",
+            "TASK-05",
+            "TASK-07"
+          ],
+          "dependency_note": null,
+          "seams": "None beyond daily path"
+        },
+        {
+          "id": null,
+          "label": "KPI read path",
+          "trigger": "Owner page load (SSR)",
+          "flow": "Unchanged — `readKpiRange()` reads `ownerKpis/{date}`; now returns real data instead of zeros",
+          "task_ids": [],
+          "dependency_note": "None (read path unchanged)",
+          "seams": "None"
+        },
+        {
+          "id": null,
+          "label": "Owner dashboard access",
+          "trigger": "Production CF Pages env",
+          "flow": "Operator sets `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES=true` in CF Pages; `/owner` and `/owner/scorecard` pages become accessible behind `canAccessStaffOwnerRoutes()`. **Note:** `canAccessStaffOwnerRoutes()` is a bare env-var check with no session auth — must confirm Cloudflare Access or equivalent protects these routes before enabling.",
+          "task_ids": [
+            "TASK-06"
+          ],
+          "dependency_note": null,
+          "seams": "**Security blocker**: must confirm auth protection before enabling flag"
+        }
+      ]
+    }
+  }
+}

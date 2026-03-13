@@ -1,0 +1,228 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "prime-owner-dashboard-pipeline",
+  "source_artifact_path": "docs/plans/prime-owner-dashboard-pipeline/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-owner-dashboard-pipeline/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The owner dashboard was built as part of the prime app wave 1 (TASK-47, TASK-48, TASK-49) but the aggregation writer (TASK-47 scheduled job) was never implemented. The dashboard returns empty/zero data indefinitely without it.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Owner dashboard shows non-zero, real guest KPI data after the aggregation writer runs for the first time. The `ownerKpis/{date}` nodes in Firebase RTDB are populated for recent dates.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "Dashboard UI complete. Writer is server-side only.",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "Dashboard shows empty-state copy (\"No guest data available\") gracefully. Writer does not affect UX directly.",
+      "gap_or_implication": "The empty-state message will disappear once the writer runs — this is the intended outcome.",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "RTDB rules restrict `ownerKpis` write to `messagingUsers/{uid}/role === 'owner OR admin OR developer'`. `firebase-custom-token.ts` already exists for generating service-account custom tokens. `staff-auth-session.ts` shows the pattern for custom-token-based Firebase auth.",
+      "gap_or_implication": "`CF_FIREBASE_API_KEY` alone is unlikely to satisfy role check (it is an Identity Toolkit key, not a Firebase Auth UID with a role entry). Writer needs either: (a) a dedicated `messagingUsers` entry with `developer` role for a service account UID, exchanged via custom token flow; or (b) a relaxed RTDB rule for server-to-server writes to `ownerKpis`.",
+      "carry_forward_or_notes": "Yes — resolve service-account auth path before implementation"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "No existing logging in `kpiAggregator.ts` (pure function). `kpiReader.ts` logs errors to `console.error`.",
+      "gap_or_implication": "Writer should log: date processed, guestCount aggregated, success/failure, and any Firebase write errors. No alerting hook exists for aggregation failures.",
+      "carry_forward_or_notes": "Yes — add structured logging to writer"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Aggregation logic fully tested. Read layer fully tested. No writer tests exist.",
+      "gap_or_implication": "Writer test needed. Integration test for Firebase query shape needed.",
+      "carry_forward_or_notes": "Yes — writer unit test required"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`DailyKpiRecord` schema and write path `ownerKpis/{date}` defined. `RawDayData` input interface exists but does not match actual RTDB schema (confirmed by factcheck). Actual signals distributed across 6 RTDB roots.",
+      "gap_or_implication": "`kpiAggregator.ts`'s `RawDayData` input interface needs redesign or a projection shim so the writer can feed it from actual RTDB paths. `checkInDate` is NOT indexed on `bookings` (confirmed: `database.rules.json` indexes `start_time`, `occupants` only).",
+      "carry_forward_or_notes": "Yes — redesign aggregator input OR build projection shim; confirm date-lookup strategy"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Budget baseline: 7 reads per 7-day view. Write cost: 1 write per date per aggregation run (idempotent upsert).",
+      "gap_or_implication": "`bookings` node has no `checkInDate` index → full scan required. Each aggregation run for one date requires: 1 bookings scan + N reads across 5 additional roots (one per guest per root) = O(N * 5) reads. For 10 guests on a date that is ~50 reads. Acceptable for a daily job, but must be designed as a batch with bounded parallelism. Writer must be idempotent (re-running same date overwrites cleanly).",
+      "carry_forward_or_notes": "Yes — design bounded-parallelism batch; implement idempotent upsert"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No feature flag on the writer (it does not exist yet). `canAccessStaffOwnerRoutes` gates dashboard reads in production.",
+      "gap_or_implication": "First run will populate RTDB with real data — no rollback path for that data. Writer endpoint should be protected (staff/admin only). Rollback = disable the trigger/cron; existing zero-default behavior is the fallback state.",
+      "carry_forward_or_notes": "Yes — protect endpoint, document rollback"
+    }
+  ],
+  "open_operator_questions": [
+    "Should the writer be triggered via (A) a new CF Pages Function endpoint, (B) a GitHub Actions cron job, or (C) a separate Cloudflare Worker?",
+    "What Firebase auth credential should the writer use to satisfy the RTDB `ownerKpis` write rule?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The owner dashboard (`/owner` and `/owner/scorecard`) exists and is fully wired to a read layer (`kpiReader.ts`) that pulls pre-aggregated daily KPI nodes from Firebase RTDB at `ownerKpis/{date}`. However, **nothing ever writes to those nodes**. The aggregation logic (`kpiAggregator.ts`) is a collection of pure functions with no caller in the codebase. The TASK-47 \"scheduled job\" referenced in the lineage doc does not exist. Until that writer is built and scheduled, the dashboard will silently return zeros for every metric on every day. **Critical finding from factcheck:** The `kpiAggregator.t",
+    "goals": [
+      "Build the missing aggregation writer that calls `aggregateDailyKpis()` and persists results to `ownerKpis/{date}` in Firebase RTDB.",
+      "Provide a trigger mechanism (Cloudflare Pages cron, or on-demand API endpoint, or manual backfill command) so the job can run.",
+      "Validate that after the first run the dashboard shows real data rather than an empty-state placeholder."
+    ],
+    "non_goals": [
+      "Changing the dashboard UI (`owner/page.tsx`, `owner/scorecard/page.tsx`) — already complete.",
+      "Changing the read layer (`kpiReader.ts`) — already complete and tested.",
+      "Changing the aggregation logic (`kpiAggregator.ts`) — already complete and unit-tested.",
+      "Adding new KPI metrics beyond those already defined in `DailyKpiRecord`."
+    ],
+    "constraints": [
+      "The prime app deploys as Cloudflare Pages + Functions. Cloudflare Pages does not support cron triggers natively — cron is only available in Workers.",
+      "The app uses Firebase REST client (`FirebaseRest` class in `functions/lib/firebase-rest`) for server-side Firebase writes in existing CF Pages functions. The aggregation writer should follow the same pattern.",
+      "Firebase RTDB rules at `ownerKpis` restrict writes to authenticated users with `owner`, `admin`, or `developer` role (`messagingUsers/{uid}/role`). The writer must use an authenticated credential with one of these roles. The existing `CF_FIREBASE_API_KEY` is an Identity Toolkit key; `firebase-rest.ts` passes it as an RTDB `auth=` token, which is an informal pattern. A proper service-account credential using `firebase-custom-token.ts` (already exists) is the correct production path.",
+      "The `aggregateDailyKpis()` pure function's `RawDayData` interface (`bookings/{bookingId}/occupants/{uuid}/preArrival` etc.) does NOT match the actual RTDB schema. The actual data lives across multiple top-level roots (see Critical Finding in Summary). The writer needs a projection layer or the aggregator interface needs redesign.",
+      "The `bookings` node is indexed on `start_time` and `occupants`, not `checkInDate`. `checkInDate` is definitively not indexed — querying by it would require a full scan of all bookings."
+    ],
+    "assumptions": [],
+    "key_entry_points": [
+      "`apps/prime/src/app/owner/page.tsx` — SSR async page that calls `readKpiRange()` directly. Displays 4 KPI cards + daily breakdown. Protected by `canAccessStaffOwnerRoutes()`.",
+      "`apps/prime/src/app/owner/scorecard/page.tsx` — SSR async page that calls `readKpiRange()` + `computeBusinessScorecard()`. Shows 5 metric categories with targets + operating review. Protected by same gate.",
+      "`apps/prime/src/app/owner/setup/page.tsx` — Setup page; shows `ActivationFunnelSummary` component (reads `localStorage`, client-only). Not part of the pipeline gap."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis prime-owner-dashboard-pipeline`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Owner dashboard pages (read path)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "KPI reader module",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — reads correctly, returns zeros for missing data",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "KPI aggregation pure functions",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — fully unit-tested",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Missing writer (pipeline gap)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Missing Domain Coverage] [Blocking]: No writer exists — `aggregateDailyKpis()` has no non-test caller in the codebase",
+        "Resolution Required": "No (this is the work)"
+      },
+      {
+        "Scope Area": "RTDB security rules for `ownerKpis`",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Missing Domain Coverage] [Advisory]: Write rule requires role check — auth strategy for server-side write is an open question",
+        "Resolution Required": "Yes (resolved as open question for planning)"
+      },
+      {
+        "Scope Area": "Trigger/scheduling mechanism",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Missing Domain Coverage] [Advisory]: No cron trigger in prime app. Options identified (CF Worker, GitHub Actions, on-demand endpoint) but decision deferred to operator.",
+        "Resolution Required": "Yes (open question for planning)"
+      },
+      {
+        "Scope Area": "RTDB `bookings` index for `checkInDate`",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[System Boundary Coverage] [Blocking]: `checkInDate` is definitively NOT indexed in `database.rules.json` (only `start_time`, `occupants`). Full scan confirmed as necessary unless `roomsByDate/{date}` is usable.",
+        "Resolution Required": "Yes (task seed TASK-A)"
+      },
+      {
+        "Scope Area": "RTDB data topology mismatch",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Missing Domain Coverage] [Blocking]: `kpiAggregator.ts` `RawDayData` assumes `bookings/{bookingId}/occupants/{uuid}/preArrival` etc. Actual schema distributes signals across 6 roots: `preArrival/`, `checkInCodes/byUuid/`, `checkins/{date}/`, `primeRequests/byGuest/`, `bagStorage/`. Writer must project from real paths.",
+        "Resolution Required": "Yes (task seed TASK-A)"
+      },
+      {
+        "Scope Area": "Test coverage for writer",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — writer tests documented as gap; existing patterns provide clear seam for new tests",
+        "Resolution Required": "No (captured in test landscape)"
+      },
+      {
+        "Scope Area": "Production access gate",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[System Boundary Coverage] [Advisory]: `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES` env var status in production unknown",
+        "Resolution Required": "No (separate concern, captured as risk)"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "None — no current process exists to write `ownerKpis/{date}` nodes.",
+      "end_condition": "N/A (job does not exist)",
+      "areas": [
+        {
+          "id": null,
+          "label": "KPI read path",
+          "flow": "`OwnerPage` and `ScorecardPage` call `readKpiRange(start, end)` → `readDailyKpi(date)` → Firebase `get(ownerKpis/{date})` → returns `ZERO_SAFE_DEFAULTS` if node missing",
+          "owners": "Prime Next.js SSR → Firebase RTDB",
+          "evidence": "`apps/prime/src/lib/owner/kpiReader.ts`",
+          "issues": "Silently returns zeros; no error raised. Dashboard shows \"No guest data available for this period.\""
+        },
+        {
+          "id": null,
+          "label": "KPI write path",
+          "flow": "**Does not exist.** `aggregateDailyKpis()` is a pure function with no caller outside tests.",
+          "owners": "—",
+          "evidence": "`apps/prime/src/lib/owner/kpiAggregator.ts`",
+          "issues": "No writer, no scheduler, no trigger. `ownerKpis/` subtree in RTDB is permanently empty."
+        },
+        {
+          "id": null,
+          "label": "RTDB data topology",
+          "flow": "The actual signal data lives across 6 RTDB roots: `bookings/{bookingId}/{uuid}` (booking/occupant records), `preArrival/{uuid}` (checklist + ETA), `checkInCodes/byUuid/{uuid}` (codes), `checkins/{date}/{uuid}` (actual checkins), `primeRequests/byGuest/{uuid}` (extension/bag-drop), `bagStorage/{uuid}` (bag drops)",
+          "owners": "Firebase RTDB",
+          "evidence": "`apps/prime/database.rules.json`, `packages/lib/src/hospitality/index.ts`, `apps/prime/functions/api/*.ts`",
+          "issues": "`kpiAggregator.ts`'s `RawDayData` interface assumes all data under `bookings/{id}/occupants` — this does not match the live schema. The writer must perform a multi-path join."
+        },
+        {
+          "id": null,
+          "label": "Access gate",
+          "flow": "`canAccessStaffOwnerRoutes()` returns `true` in dev; in production requires `NEXT_PUBLIC_ENABLE_STAFF_OWNER_ROUTES === 'true'`",
+          "owners": "`staffOwnerGate.ts` → env var",
+          "evidence": "`apps/prime/src/lib/security/staffOwnerGate.ts`",
+          "issues": "Production access status unknown — env var not confirmed as set in CF Pages deployment."
+        },
+        {
+          "id": null,
+          "label": "Firebase auth for write",
+          "flow": "`ownerKpis` write rule requires `messagingUsers/{uid}/role === 'owner' OR 'admin' OR 'developer'`. The app has a `firebase-custom-token.ts` library for generating service-account-based custom tokens for auth.",
+          "owners": "CF Pages secrets → Firebase Auth → RTDB",
+          "evidence": "`apps/prime/functions/lib/firebase-custom-token.ts`, `apps/prime/functions/api/staff-auth-session.ts`",
+          "issues": "Current `FirebaseRest` read/write pattern uses `CF_FIREBASE_API_KEY` as an RTDB `auth=` token — this works for unprotected paths but is unlikely to satisfy the `messagingUsers` role check for `ownerKpis`. Proper auth requires a custom token or relaxing the RTDB rule for server-side writes."
+        }
+      ]
+    }
+  }
+}

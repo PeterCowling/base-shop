@@ -308,3 +308,38 @@ model InventoryAuditEvent {
   @@index([shopId, type])
   @@index([referenceId])
 }
+
+/// Product catalogue entry for all shops. Replaces JSON file-backed products.json.
+/// Worker-safe (Prisma/PostgreSQL only). All shops share this model via shopId.
+model Product {
+  id               String   @id
+  shopId           String
+  sku              String
+  title            Json
+  description      Json
+  media            Json
+  price            Int
+  currency         String
+  status           String
+  row_version      Int      @default(1)
+  forSale          Boolean  @default(true)
+  forRental        Boolean  @default(false)
+  deposit          Int      @default(0)
+  rentalTerms      String?
+  dailyRate        Int?
+  weeklyRate       Int?
+  monthlyRate      Int?
+  wearAndTearLimit Int?
+  maintenanceCycle Int?
+  availability     Json?
+  materials        Json?
+  dimensions       Json?
+  weight           Json?
+  publishShops     Json?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@unique([shopId, sku])
+  @@unique([shopId, id])
+  @@index([shopId])
+}

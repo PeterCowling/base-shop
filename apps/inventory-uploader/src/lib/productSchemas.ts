@@ -1,0 +1,57 @@
+import { z } from "zod";
+
+export const mediaItemInputSchema = z.object({
+  url: z.string().min(1),
+  type: z.enum(["image", "video"]).default("image"),
+  altText: z.string().optional(),
+});
+
+/**
+ * Request body schema for creating a new product.
+ * MVP: title/description are English-only; the API defaults all locales to the English value.
+ * price must be in minor currency units (e.g. 2500 = €25.00).
+ */
+export const createProductSchema = z.object({
+  sku: z.string().min(1),
+  title: z.string().min(1),
+  description: z.string().default(""),
+  price: z.number().int().positive(),
+  currency: z.string().min(1).default("EUR"),
+  status: z.enum(["draft", "active", "archived"]).default("draft"),
+  media: z.array(mediaItemInputSchema).default([]),
+  forSale: z.boolean().optional().default(true),
+  initialStock: z.number().int().min(0).default(0),
+});
+
+/**
+ * Request body schema for updating an existing product.
+ * All fields are optional; only provided fields are patched.
+ */
+export const updateProductSchema = z.object({
+  title: z.string().min(1).optional(),
+  description: z.string().optional(),
+  price: z.number().int().positive().optional(),
+  currency: z.string().min(1).optional(),
+  status: z.enum(["draft", "active", "archived"]).optional(),
+  media: z.array(mediaItemInputSchema).optional(),
+  forSale: z.boolean().optional(),
+});
+
+/**
+ * Request body schema for initiating a refund through Axerve or Stripe.
+ * At least one of `shopTransactionId` or `bankTransactionId` must be provided.
+ * `shopTransactionId` is preferred — it appears in every merchant notification email.
+ * `amountCents` is in minor units (e.g. 4500 = €45.00).
+ * `stripePaymentIntentId` is required for Stripe refunds (inventory-uploader cannot look up
+ * the Stripe payment intent from caryina's checkout-idempotency store).
+ */
+export const refundRequestSchema = z
+  .object({
+    shopTransactionId: z.string().min(1).optional(),
+    bankTransactionId: z.string().min(1).optional(),
+    amountCents: z.number().int().positive().max(1000000),
+    stripePaymentIntentId: z.string().optional(),
+  })
+  .refine((data) => data.shopTransactionId ?? data.bankTransactionId, {
+    message: "At least one of shopTransactionId or bankTransactionId is required",
+  });

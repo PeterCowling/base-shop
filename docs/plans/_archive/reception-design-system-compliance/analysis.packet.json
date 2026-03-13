@@ -1,0 +1,181 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-design-system-compliance",
+  "source_artifact_path": "docs/plans/reception-design-system-compliance/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-design-system-compliance/fact-find.md",
+    "plan": "docs/plans/reception-design-system-compliance/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Every reception screen should use a consistent, themeable visual language. Inline styles override the CSS cascade, raw buttons bypass DS interaction patterns, and unflagged layout classes make theming harder to iterate.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All reception app components use DS Button for interactive elements, DS layout primitives where the ESLint rule flags violations, and contain zero inline style attributes. ESLint `ds/enforce-layout-primitives` warning count drops to 0.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Per-button variant selection preserves visual intent; ESLint gate confirms completion",
+      "current_or_option_state": "Wholesale rewrite risks visual regressions in complex components",
+      "gap_or_implication": "Must read each button's current className before choosing DS Button variant",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "DS Button provides hover/focus/disabled states automatically; replaces manual className patterns",
+      "current_or_option_state": "Same result but higher change surface",
+      "gap_or_implication": "DS Button states are additive improvements — no UX regression expected",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no auth or data changes",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "ESLint `ds/enforce-layout-primitives` count = 0 is the deterministic gate; TypeScript typecheck validates imports; snapshot tests may need updates",
+      "current_or_option_state": "More snapshot changes",
+      "gap_or_implication": "ESLint gate is the primary completion signal",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No schema or API changes",
+      "current_or_option_state": "No schema or API changes",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "CSS class changes only; no render path changes",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "No migration; rollback = revert commit",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Note in plan",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Three classes of DS violation remain in the reception app: inline `style={{}}` attributes (6 instances, 4 files), raw `<button>` elements (35 instances, 18 files), and raw flex/grid layout classes flagged by `ds/enforce-layout-primitives` ESLint rule (14 warnings, 7 files). The decision is how to sequence and execute the fixes — mechanically targeted per-file conversion vs. broader rewrites.",
+    "goals": [
+      "Zero inline `style={{}}` attributes across all reception components.",
+      "All interactive elements use DS `Button` from `@acme/design-system/atoms`.",
+      "All ESLint `ds/enforce-layout-primitives` warnings eliminated (DS layout primitives from `@acme/design-system/primitives`)."
+    ],
+    "non_goals": [
+      "Semantic token compliance (complete). Structural component rewrites. UX/behaviour changes."
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Safety / blast radius",
+        "Why it matters": "Changes spread across 18+ files; wrong variant choice causes visual regression",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Completeness gate reliability",
+        "Why it matters": "ESLint warning count must reach 0 — deterministic, not subjective",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Execution speed",
+        "Why it matters": "User requested parallel subagents; disjoint file groups enable this",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Rollback ease",
+        "Why it matters": "No schema/API changes; revert is always safe",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Targeted mechanical conversion",
+        "Description": "Per-file: read current className → pick DS Button variant/tone; replace ESLint-flagged flex/grid with DS primitives; remove inline styles with Tailwind equivalents (keep JS-computed dynamic values only)",
+        "Upside": "Minimal blast radius; each file self-contained; 3 disjoint groups enable full parallelism",
+        "Downside": "Requires reading each button's visual intent before choosing variant",
+        "Key risks": "Wrong variant on one button",
+        "Viable?": "Yes — **chosen**"
+      },
+      {
+        "Option": "B — Wholesale rewrite",
+        "Description": "Rewrite entire components fresh using DS components",
+        "Upside": "Cleaner output",
+        "Downside": "Much higher blast radius; triggers snapshot test failures across more areas; slower",
+        "Key risks": "High regression risk on complex inbox components",
+        "Viable?": "No"
+      },
+      {
+        "Option": "C — ESLint disable suppression",
+        "Description": "Add `// eslint-disable` comments to silence warnings",
+        "Upside": "Zero code change risk",
+        "Downside": "Does not fix the underlying issue; violates DS compliance goal",
+        "Key risks": "Permanent tech debt; blocks theme iteration",
+        "Viable?": "No"
+      },
+      {
+        "Option": "D — Remove inline styles only, defer buttons",
+        "Description": "Prioritise inline styles (immediate theme blocker) and defer raw buttons",
+        "Upside": "Fastest for the critical path",
+        "Downside": "Leaves 35 raw buttons unchecked; contradicts user directive to proceed with all at once",
+        "Key risks": "Incomplete",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — targeted mechanical conversion, executed as 3 parallel tasks with fully disjoint file sets.",
+      "Why this wins": "Minimal blast radius; each file change is self-contained and reviewable; the 3 task groups share zero files so subagents can run in parallel without conflict detection overhead; the ESLint gate provides deterministic completion verification; the DS Button variant selection is the only judgment call and each instance has visible className evidence to guide it.",
+      "What it depends on": "Reading each raw button's current className to determine the correct DS Button `color`/`tone`/`size` before replacing. For dynamic-position inline styles (Tooltip, BookingTooltip, KeycardDepositMenu), the JS-computed `top`/`left` values must remain — only the static `zIndex` and redundant properties are removed. RowCell opacity is trivially replaced with conditional Tailwind class (`isDragging ? \"opacity-50\" : \"opacity-100\"`).",
+      "`RowCell.tsx`": "`style={{ opacity: isDragging ? 0.5 : 1 }}` → `className={isDragging ? \"opacity-50\" : \"opacity-100\"}` (or `cn({ \"opacity-50\": isDragging })`)",
+      "`Tooltip.tsx`": "Remove `style={{ zIndex: 9999 }}` (redundant with `z-50` class already present); remove `style={{ marginLeft: \"100px\" }}` → replace with Tailwind class `ml-[100px]` (acceptable arbitrary value — there is no DS token for 100px; the inline style is the violation, not the pixel value)",
+      "`_BookingTooltip.tsx` / `KeycardDepositMenu.tsx`": "Keep JS-computed top/left (required for click-relative positioning) but remove any hardcoded z-index from style — apply `z-50` via className instead"
+    },
+    "rejected_approaches": [
+      "Option B (wholesale rewrite) — higher blast radius; violates \"over-engineering\" rule; no added value for what is a mechanical compliance fix",
+      "Option C (ESLint suppression) — defeats the purpose",
+      "Option D (partial scope) — contradicts the user's explicit \"all at once\" directive"
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Decompose into 3 parallel IMPLEMENT tasks with strictly non-overlapping file sets"
+      ],
+      "validation_implications": [],
+      "sequencing_constraints": [
+        "All 3 tasks are independent (disjoint file sets) — Wave 1 can run all 3 in parallel",
+        "No task has a dependency on any other"
+      ],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change — all changes are className/import replacements within component files.",
+      "areas": []
+    }
+  }
+}

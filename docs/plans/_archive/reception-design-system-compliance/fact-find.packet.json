@@ -1,0 +1,152 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-design-system-compliance",
+  "source_artifact_path": "docs/plans/reception-design-system-compliance/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Every reception screen should use a consistent themeable visual language. Inline styles override the CSS cascade, raw buttons bypass DS interaction patterns, and unflagged layout classes make theming harder to iterate. The prior bar-pos and till-safe theming passes fixed semantic tokens; this pass fixes structural compliance.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All reception app components use DS Button for interactive elements, DS layout primitives where the ESLint rule flags violations, and contain zero inline style attributes. ESLint `ds/enforce-layout-primitives` warning count drops to 0.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "18 files with raw buttons; 4 files with inline styles; 14 ESLint layout warnings",
+      "gap_or_implication": "Inline styles block cascade; raw buttons inconsistent hover/focus; layout classes not themed",
+      "carry_forward_or_notes": "Yes — verify DS Button props match existing button intent (ghost, outline, default variants)"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Existing buttons have hover/active states via manual className",
+      "gap_or_implication": "DS Button provides consistent states automatically; risk of subtle visual delta on hover/active",
+      "carry_forward_or_notes": "Yes — confirm DS Button variant matches each raw button's visual role"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth or data exposure changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No log or audit changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "ESLint rule provides deterministic gate; TypeScript typecheck catches import errors",
+      "gap_or_implication": "Snapshot tests may need updates for className changes",
+      "carry_forward_or_notes": "Yes — validate ESLint warning count hits 0 post-build"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "Purely presentational changes, no schema or API changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "CSS class changes, no render path changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No migration; rollback = revert commit",
+      "gap_or_implication": "Low risk; purely visual",
+      "carry_forward_or_notes": "Yes — note in plan"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Three categories of design system violation remain in the reception app after prior theming passes (bar-pos and till-safe theming overhauls are complete, semantic tokens are used throughout). This fact-find scopes and verifies the remaining violations before planning targeted fixes.",
+    "goals": [
+      "Eliminate all inline `style={{}}` attributes that override the CSS cascade and block the theme system.",
+      "Replace all raw `<button>` elements with the DS `Button` component for consistent interaction states, focus rings, and accessibility.",
+      "Replace raw `flex`/`grid` className usage on elements flagged by `ds/enforce-layout-primitives` ESLint rule with DS layout primitives (`Inline`, `Stack`, `Cluster`, `Cover` from `@acme/design-system/primitives`)."
+    ],
+    "non_goals": [
+      "Semantic token compliance (already complete — zero hardcoded palette colours found in audit).",
+      "Converting layout classes on elements that are NOT flagged by the ESLint rule (the rule scopes correctly to leaf elements).",
+      "Design or UX changes — purely mechanical compliance fixes."
+    ],
+    "constraints": [
+      "DS Button must be imported from `@acme/design-system/atoms` (established pattern throughout reception app).",
+      "DS layout primitives imported from `@acme/design-system/primitives` (established in SafeManagement.tsx, LoanedItemsList.tsx).",
+      "Reception app uses Turbopack — no webpack-specific import aliases needed.",
+      "CI-only tests; never run jest locally."
+    ],
+    "assumptions": [],
+    "key_entry_points": [
+      "`apps/reception/src/components/` — all component directories are affected"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis reception-design-system-compliance`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Inline styles (4 files)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Inbox raw buttons (6 files)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Other raw buttons (12 files)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Advisory] withIconModal HOC needs extra care with asChild pattern",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "ESLint layout warnings (7 files)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Arbitrary bracket values (2 files)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Advisory] dynamic height calc may need design decision",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "DS primitives import path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only — no multi-step process, workflow, or CI/deploy lane changes.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

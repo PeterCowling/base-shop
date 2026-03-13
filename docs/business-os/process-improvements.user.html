@@ -359,7 +359,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-13T16:19:34.406Z";
+  var GEN_TS = "2026-03-13T16:35:04.351Z";
 
   var IDEA_ITEMS = [
     {
@@ -517,6 +517,74 @@
       "date": "2026-03-13T17:00:00.000Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "9c4315e58e42c715bfdef2354a9574cb44d5f36a",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Candidate: A ds-compliance-sweep skill that runs grep + ESLint + tsc to produce a targeted list of remaining DS violations (raw buttons, inline styles, layout warnings) could be useful before future theming passes. The violation-enumeration work (fact-find phase) was substantial for this plan; a deterministic script could produce the same list in seconds. Trigger: this build's fact-find enumerated 35 raw buttons, 14 ESLint warnings, and 6 inline styles via manual grep — fully mechanizable.",
+      "body": "Build review surfaced \"Candidate: A ds-compliance-sweep skill that runs grep + ESLint + tsc to produce a targeted list of remaining DS violations (raw buttons, inline styles, layout warnings) could be useful before future theming passes. The violation-enumeration work (fact-find phase) was substantial for this plan; a deterministic script could produce the same list in seconds. Trigger: this build's fact-find enumerated 35 raw buttons, 14 ESLint warnings, and 6 inline styles via manual grep — fully mechanizable.\" with supporting narrative: New skill — Candidate: A ds-compliance-sweep skill that runs grep + ESLint + tsc to produce a targeted list of remaining DS violations (raw buttons, inline styles, layout warnings) could be useful before future theming passes. The violation-enumeration work (fact-find phase) was substantial for this plan; a deterministic script could produce the same list in seconds. Trigger: this build's fact-find enumerated 35 raw buttons, 14 ESLint warnings, and 6 inline styles via manual grep — fully mechanizable.",
+      "source": "queue-state.json",
+      "date": "2026-03-13T16:33:39.678Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "38b6907bc3310adbfc3ca275b060e23aa61b0e3c",
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "c0eea30d2b195578bc501951acea235be1452ae3",
+        "recurrence_key": "60348bae30723c95fb4916144e5428b51307d48b",
+        "review_cycle_key": "reception-design-system-compliance",
+        "plan_slug": "reception-design-system-compliance",
+        "canonical_title": "Candidate: A ds-compliance-sweep skill that runs grep + ESLint + tsc to produce a targeted list of remaining DS violations (raw buttons, inline styles, layout warnings) could be useful before future theming passes. The violation-enumeration work (fact-find phase) was substantial for this plan; a deterministic script could produce the same list in seconds. Trigger: this build's fact-find enumerated 35 raw buttons, 14 ESLint warnings, and 6 inline styles via manual grep — fully mechanizable.",
+        "primary_source": "results-review.signals.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": false
+        },
+        "results_review_path": "docs/plans/reception-design-system-compliance/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/reception-design-system-compliance/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/reception-design-system-compliance/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": null
+      },
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Candidate: The violation-enumeration step (grep + ESLint parse → structured file:line list) in the fact-find could be a standalone script rather than LLM work. Trigger: fact-find spent significant effort running and interpreting grep -rn \"<button\" and pnpm lint",
+      "body": "Build review surfaced \"Candidate: The violation-enumeration step (grep + ESLint parse → structured file:line list) in the fact-find could be a standalone script rather than LLM work. Trigger: fact-find spent significant effort running and interpreting grep -rn \"<button\" and pnpm lint\" with supporting narrative: AI-to-mechanistic — Candidate: The violation-enumeration step (grep + ESLint parse → structured file:line list) in the fact-find could be a standalone script rather than LLM work. Trigger: fact-find spent significant effort running and interpreting grep -rn \"<button\" and pnpm lint | grep enforce-layout-primitives outputs across 23 files — fully deterministic. A script that outputs a JSON list of {file, line, type, description} violations would be reusable for all future DS compliance passes.",
+      "source": "queue-state.json",
+      "date": "2026-03-13T16:33:39.678Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "4fd39deb8f55fa3cf576916eae0a9eff0ea3c85e",
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "dbd51781127b61187c1f57baaf68c2ab0152e586",
+        "recurrence_key": "61be4cf25b263f092c53e3e798938713d63b8def",
+        "review_cycle_key": "reception-design-system-compliance",
+        "plan_slug": "reception-design-system-compliance",
+        "canonical_title": "Candidate: The violation-enumeration step (grep + ESLint parse → structured file:line list) in the fact-find could be a standalone script rather than LLM work. Trigger: fact-find spent significant effort running and interpreting grep -rn \"<button\" and pnpm lint",
+        "primary_source": "results-review.signals.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": false
+        },
+        "results_review_path": "docs/plans/reception-design-system-compliance/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/reception-design-system-compliance/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/reception-design-system-compliance/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": null
+      },
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

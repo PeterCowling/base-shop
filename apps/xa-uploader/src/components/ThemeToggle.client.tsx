@@ -21,7 +21,7 @@ export function ThemeToggle({ variant = "dark" }: { variant?: "light" | "dark" }
   const { t } = useUploaderI18n();
   const [theme, setTheme] = React.useState<Theme>(getInitialTheme);
 
-  React.useEffect(() => {
+  React.useLayoutEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
     document.documentElement.classList.toggle("theme-dark", theme === "dark");
     // eslint-disable-next-line react-hooks/exhaustive-deps -- XAUP-0001 apply DOM attribute on mount only; toggle callback handles subsequent updates

@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-13T11:55:02.291Z",
+  "why": "Staff using screen readers or keyboard-only navigation could not operate the product filter dropdown — it lacked ARIA cues for assistive technology and the theme toggle flashed on every page load."
+}

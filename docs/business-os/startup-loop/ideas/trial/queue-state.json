@@ -1,19 +1,19 @@
 {
-  "last_updated": "2026-03-13T06:54:56.312Z",
+  "last_updated": "2026-03-13T11:57:26.228Z",
   "counts": {
-    "enqueued": 49,
-    "processed": 23,
-    "declined": 0,
+    "enqueued": 41,
+    "processed": 17,
+    "declined": 1,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 282,
-    "fact_find_ready": 38,
+    "completed": 300,
+    "fact_find_ready": 37,
     "plan_ready": 0,
-    "micro_build_ready": 7,
+    "micro_build_ready": 2,
     "briefing_ready": 0,
-    "total": 558
+    "total": 564
   },
   "dispatches": [
     {
@@ -61,6 +61,12 @@
         "commit": "bd215f9036",
         "completed_at": "2026-03-12T00:00:00Z",
         "outcome": "Switched CARYINA_INVENTORY_BACKEND from prisma to json; inventory.json (silver:5, rose-splash:7, peach:4) now hydrates stock correctly into SKU objects, enabling add-to-cart on all in-stock PDPs"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-add-to-cart-blocked",
+        "fact_find_slug": "caryina-add-to-cart-blocked"
       }
     },
     {
@@ -496,9 +502,9 @@
         "apps/caryina/src/lib/contentPacket.ts"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "processed",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "The site supports three languages in the URL, but the footer links ('Terms', 'Privacy', 'Returns & Refunds'), the header navigation ('Shop', 'Support'), the cookie consent banner, and the shipping trust strip are all hardcoded in English. A German or Italian visitor gets a mixed-language experience — translated product pages but English navigation. This undermines trust, especially for legal pages like privacy and terms where language matters. Fixing this requires deciding whether to pull these strings from the content packet or a separate i18n file.",
       "intended_outcome": {
         "type": "operational",
@@ -512,7 +518,19 @@
         "coverage-hint:Testing/validation: i18n parity audit"
       ],
       "current_truth": "SiteFooter, Header, ConsentBanner, and ShippingReturnsTrustBlock all contain hardcoded English text with no locale awareness.",
-      "next_scope_now": "Investigate the best approach for internationalizing UI chrome strings and implement it."
+      "next_scope_now": "Investigate the best approach for internationalizing UI chrome strings and implement it.",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-i18n-hardcoded-english",
+        "fact_find_slug": "caryina-i18n-hardcoded-english",
+        "target_path": "docs/plans/_archive/caryina-i18n-hardcoded-english/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/caryina-i18n-hardcoded-english/plan.md",
+        "completed_at": "2026-03-12T21:10:51.801Z",
+        "outcome": "**TASK-01** added German and Italian translations to all 25 chrome strings in the `CHROME_DEFAULTS` constant in `apps/caryina/src/lib/contentPacket.ts`. The constant was renamed from `CHROME_EN_DEFAULTS` to `CHROME_DEFAULTS` and a JSDoc com"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -615,7 +633,8 @@
       "completed_by": {
         "plan_path": "docs/plans/reception-inbox-live-auto-refresh/micro-build.md",
         "outcome": "Reception now auto-refreshes the inbox list every 15 seconds while the tab is visible and online, and the worker can auto-sync Gmail into D1 every minute via an authenticated internal cron route without requiring staff to press Sync.",
-        "completed_at": "2026-03-11T19:50:00.000Z"
+        "completed_at": "2026-03-11T19:50:00.000Z",
+        "micro_build_path": "docs/plans/reception-inbox-live-auto-refresh/micro-build.md"
       }
     },
     {
@@ -686,7 +705,8 @@
       "completed_by": {
         "plan_path": "docs/plans/brikette-commercial-richtext-seo-hardening/micro-build.md",
         "outcome": "Arrival intro copy now renders <Trans>-backed links/strong text, static export auditing catches leaked rich-text tags on how-to-get-here routes, chooser JSON-LD matches the private booking IA, redirect-only private roots are excluded from sitemap generation, and regression tests cover these contracts.",
-        "completed_at": "2026-03-11T17:42:03.000Z"
+        "completed_at": "2026-03-11T17:42:03.000Z",
+        "micro_build_path": "docs/plans/brikette-commercial-richtext-seo-hardening/micro-build.md"
       }
     },
     {
@@ -1079,12 +1099,15 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/ideas-queue-auto-executed-state-violation/micro-build.md",
-        "processed_at": "2026-03-09T12:30:00.000Z"
+        "processed_at": "2026-03-09T12:30:00.000Z",
+        "target_kind": "build",
+        "target_slug": "ideas-queue-auto-executed-state-violation"
       },
       "completed_by": {
         "plan_path": "docs/plans/_archive/ideas-queue-auto-executed-state-violation",
         "outcome": "All 19 auto_executed entries reclassified to processed. Counts corrected. Guard note added to SKILL.md. completed terminal state added to trial contract Section 7.",
-        "completed_at": "2026-03-09T12:30:00.000Z"
+        "completed_at": "2026-03-09T12:30:00.000Z",
+        "micro_build_path": "docs/plans/_archive/ideas-queue-auto-executed-state-violation/micro-build.md"
       }
     },
     {
@@ -1127,6 +1150,18 @@
         "type": "operational",
         "statement": "The three repetitive signal artifact anchors are suppressed at the registry/emission level so they no longer produce stub dispatches; malformed sentence-fragment anchor keys are rejected before reaching the queue; and the 160 existing stubs are removed or marked skipped so the queue accurately reflects only substantive ideas.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "ideas-queue-noise-stub-suppression",
+        "fact_find_slug": "ideas-queue-noise-stub-suppression",
+        "target_path": "docs/plans/ideas-queue-noise-stub-suppression/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/ideas-queue-noise-stub-suppression/fact-find.md",
+        "completed_at": "2026-03-13T11:57:26.186Z",
+        "outcome": "Completed via ideas-queue-noise-stub-suppression."
       }
     },
     {
@@ -1995,6 +2030,16 @@
         "type": "operational",
         "statement": "Claude Bash access is narrowed to an executor-only surface that preserves guarded write and validation flows without making shell the default tool.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "claude-bash-permission-surface",
+        "fact_find_slug": "claude-bash-permission-surface"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.186Z",
+        "outcome": "Completed via claude-bash-permission-surface."
       }
     },
     {
@@ -2037,6 +2082,16 @@
         "type": "operational",
         "statement": "Claude-facing guidance defines a canonical tool-selection ladder and the related permission model so discovery and semantic work happen without unnecessary shell calls.",
         "source": "operator"
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "claude-tool-selection-protocol",
+        "fact_find_slug": "claude-tool-selection-protocol"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.186Z",
+        "outcome": "Completed via claude-tool-selection-protocol."
       }
     },
     {
@@ -2465,7 +2520,17 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T15:00:00.000Z",
-      "queue_state": "completed"
+      "queue_state": "completed",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-loading-skeleton-states",
+        "fact_find_slug": "xa-uploader-loading-skeleton-states"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.186Z",
+        "outcome": "Completed via xa-uploader-loading-skeleton-states."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -2481,7 +2546,7 @@
       "area_anchor": "Brikette — Guest emails can get two replies when the system is interrupted",
       "location_anchors": [
         "packages/mcp-server/src/tools/gmail.ts",
-        "packages/mcp-server/src/tools/gmail-handlers.ts"
+        "packages/mcp-server/src/tools/gmail-organize.ts"
       ],
       "provisional_deliverable_family": "code-change",
       "domain": "BOS",
@@ -2490,9 +2555,10 @@
       "priority": "P1",
       "confidence": 0.88,
       "evidence_refs": [
-        "operator-stated: guard review found gmail_create_draft has no duplicate check — session crash after draft creation but before gmail_mark_processed applies terminal label leaves email re-exposed to queue, causing duplicate drafts on next run",
-        "packages/mcp-server/src/tools/gmail.ts (handleCreateDraft, lines 2603-2676)",
-        "packages/mcp-server/src/__tests__/gmail-booking-dedup.test.ts (dedup exists only for booking reservation path, not inquiry path)"
+        "packages/mcp-server/src/tools/gmail.ts handleCreateDraft — thread-level dedup implemented: checks in:drafts thread:{threadId} before creating, returns already_exists:true and logs inquiry-draft-dedup-skipped audit entry",
+        "packages/mcp-server/src/tools/gmail-organize.ts runStartupRecovery — called at start of handleOrganizeInbox: requeues In-Progress emails with no valid lock file back to Needs-Processing",
+        "packages/mcp-server/src/__tests__/gmail-create-draft.test.ts TC-10 and TC-11 cover dedup skip and fail-open paths",
+        "packages/mcp-server/src/__tests__/gmail-organize-inbox.test.ts TC-03-05 covers startup recovery requeue"
       ],
       "why": "If the AI is interrupted mid-session while writing a reply to a guest inquiry, the email can get picked up and processed again from scratch. The guest ends up receiving two separate replies to the same message, which looks unprofessional and confusing. Fixing this ensures every guest receives exactly one reply, no matter what happens in the background.",
       "intended_outcome": {
@@ -2501,7 +2567,17 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T11:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "completed",
+      "completed_by": {
+        "completed_at": "2026-03-13T00:00:00.000Z",
+        "outcome": "Thread-level dedup added to handleCreateDraft (checks in:drafts thread:{threadId}, fail-open); startup recovery wired into handleOrganizeInbox to requeue stale In-Progress emails. Both paths tested."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brik-gmail-create-draft-dedup-guard",
+        "fact_find_slug": "brik-gmail-create-draft-dedup-guard"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -2522,7 +2598,7 @@
       "provisional_deliverable_family": "code-change",
       "domain": "BOS",
       "recommended_route": "lp-do-fact-find",
-      "status": "completed",
+      "status": "superseded",
       "priority": "P1",
       "confidence": 0.85,
       "evidence_refs": [
@@ -2537,7 +2613,9 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T11:00:00.000Z",
-      "queue_state": "enqueued"
+      "queue_state": "superseded",
+      "superseded_at": "2026-03-13T00:00:00Z",
+      "superseded_reason": "operator-closed: two-layer automatic recovery is fully shipped — gmail_reconcile_in_progress runs non-dry-run at every ops-inbox session start, and recoverStaleThreads() fires every 30 minutes via Cloudflare Workers cron with no agent dependency"
     },
     {
       "schema_version": "dispatch.v2",
@@ -3251,6 +3329,13 @@
         "plan_path": "docs/plans/caryina-inventory-addition-flow-hardening/plan.md",
         "completed_at": "2026-03-09T14:06:08Z",
         "outcome": "**TASK-01/TASK-02:** fixed the original PATCH create-on-missing inventory contract and validated Caryina scope. **TASK-03:** added `initialStock` to Caryina product creation, bootstrapped the first inventory row during create, rolled back product creation if stock bootstrap fails, and blocked new/first activation to `active` when stock is zero."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-inventory-addition-create-path-broken",
+        "fact_find_slug": "caryina-inventory-addition-create-path-broken",
+        "target_path": "docs/plans/caryina-inventory-addition-flow-hardening/plan.md"
       }
     },
     {
@@ -3291,6 +3376,13 @@
         "plan_path": "docs/plans/hbag-caryina-checkout-integrity-phase2/plan.md",
         "completed_at": "2026-03-09T14:52:33Z",
         "outcome": "Aligned Caryina inventory reads and writes with the same Prisma backend already used by checkout holds. Added explicit inventory backend override plumbing in platform-core, routed Caryina cart/catalog/admin inventory paths through it, and validated that successful sales now decrement the live storefront stock source instead of a hidden alternate backend."
+      },
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "hbag-caryina-checkout-inventory-not-decremented-after-sale",
+        "fact_find_slug": "hbag-caryina-checkout-inventory-not-decremented-after-sale",
+        "target_path": "docs/plans/hbag-caryina-checkout-integrity-phase2/plan.md"
       }
     },
     {
@@ -3324,7 +3416,17 @@
         "operator-stated: Caryina coverage review identified zero direct tests for proxy.ts admin guard logic",
         "operator-stated: admin authentication boundary is a release-risk path and needs explicit branch coverage"
       ],
-      "created_at": "2026-03-02T09:59:25.138Z"
+      "created_at": "2026-03-02T09:59:25.138Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-admin-proxy-guard-tests-missing",
+        "fact_find_slug": "caryina-admin-proxy-guard-tests-missing"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.188Z",
+        "outcome": "Completed via caryina-admin-proxy-guard-tests-missing."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -3359,7 +3461,17 @@
         "operator-stated: coverage audit found one page test for seventeen page routes in Caryina",
         "operator-stated: PDP and PLP server paths contain highest conversion-risk branch logic without direct test contracts"
       ],
-      "created_at": "2026-03-02T09:59:26.138Z"
+      "created_at": "2026-03-02T09:59:26.138Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-storefront-server-page-contract-tests-missing",
+        "fact_find_slug": "caryina-storefront-server-page-contract-tests-missing"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.188Z",
+        "outcome": "Completed via caryina-storefront-server-page-contract-tests-missing."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -3393,7 +3505,17 @@
         "operator-stated: coverage review found no tests for admin login page and admin form client components",
         "operator-stated: catalog and inventory admin regressions can block operations without early detection"
       ],
-      "created_at": "2026-03-02T09:59:27.138Z"
+      "created_at": "2026-03-02T09:59:27.138Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-admin-ui-flow-tests-missing",
+        "fact_find_slug": "caryina-admin-ui-flow-tests-missing"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.188Z",
+        "outcome": "Completed via caryina-admin-ui-flow-tests-missing."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -3427,7 +3549,17 @@
         "operator-stated: no direct tests currently validate analytics event payloads from storefront emitter components",
         "operator-stated: funnel instrumentation drift risk is high because these components trigger monetization events"
       ],
-      "created_at": "2026-03-02T09:59:28.138Z"
+      "created_at": "2026-03-02T09:59:28.138Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-analytics-emitter-contract-tests-missing",
+        "fact_find_slug": "caryina-analytics-emitter-contract-tests-missing"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.188Z",
+        "outcome": "Completed via caryina-analytics-emitter-contract-tests-missing."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -3461,7 +3593,17 @@
         "operator-stated: caryina pipeline lacks an app-specific enforced coverage threshold while other app quality gates are present",
         "operator-stated: current test pass signal does not quantify behavioral coverage depth for storefront-critical paths"
       ],
-      "created_at": "2026-03-02T09:59:29.138Z"
+      "created_at": "2026-03-02T09:59:29.138Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "caryina-test-governance-coverage-gate-gap",
+        "fact_find_slug": "caryina-test-governance-coverage-gate-gap"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.188Z",
+        "outcome": "Completed via caryina-test-governance-coverage-gate-gap."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -3789,7 +3931,16 @@
         "route": "auto-executed",
         "processed_at": "2026-03-01T18:30:00Z",
         "fact_find_slug": "brikette-room-detail-component-split",
-        "fact_find_path": "docs/plans/brikette-room-detail-component-split/fact-find.md"
+        "fact_find_path": "docs/plans/brikette-room-detail-component-split/fact-find.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-room-detail-component-split",
+        "target_path": "docs/plans/brikette-room-detail-component-split/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/brikette-room-detail-component-split/fact-find.md",
+        "completed_at": "2026-03-13T11:57:26.189Z",
+        "outcome": "Completed via brikette-room-detail-component-split."
       }
     },
     {
@@ -4517,7 +4668,14 @@
         "fact_find_slug": "coverage-system-integration",
         "fact_find_path": "docs/plans/coverage-system-integration/fact-find.md",
         "processed_at": "2026-02-26T22:05:00Z",
-        "route": "auto-executed"
+        "route": "auto-executed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "coverage-system-integration"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.190Z",
+        "outcome": "Completed via coverage-system-integration."
       }
     },
     {
@@ -5470,7 +5628,16 @@
         "fact_find_slug": "lp-do-build-post-build-validation",
         "fact_find_path": "docs/plans/lp-do-build-post-build-validation/fact-find.md",
         "processed_at": "2026-02-25T00:00:00Z",
-        "route": "dispatch-routed"
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "lp-do-build-post-build-validation",
+        "target_path": "docs/plans/lp-do-build-post-build-validation/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/lp-do-build-post-build-validation/fact-find.md",
+        "completed_at": "2026-03-13T11:57:26.193Z",
+        "outcome": "Completed via lp-do-build-post-build-validation."
       }
     },
     {
@@ -5559,7 +5726,15 @@
       "processed_by": {
         "note": "Directly fixed — solution fully known (one-line change per instance); no fact-find investigation required",
         "processed_at": "2026-02-26T16:00:00Z",
-        "route": "direct-fix"
+        "route": "direct-fix",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "payments-view-test-data-cy",
+        "fact_find_slug": "payments-view-test-data-cy"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.193Z",
+        "outcome": "Completed via payments-view-test-data-cy."
       }
     },
     {
@@ -5592,7 +5767,15 @@
       "processed_by": {
         "note": "Directly fixed — removed all 5 console.log calls plus the TODO comment from checkAvailability and availabilityMap; no fact-find investigation required",
         "processed_at": "2026-02-26T16:00:00Z",
-        "route": "direct-fix"
+        "route": "direct-fix",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "extension-debug-logs-removal",
+        "fact_find_slug": "extension-debug-logs-removal"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.193Z",
+        "outcome": "Completed via extension-debug-logs-removal."
       }
     },
     {
@@ -6822,10 +7005,18 @@
       "processed_by": {
         "route": "auto-executed-via-lp-do-plan",
         "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
-        "processed_at": "2026-02-27T21:00:00Z"
+        "processed_at": "2026-02-27T21:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-agreement-no-firebase-write",
+        "fact_find_slug": "reception-agreement-no-firebase-write"
       },
       "created_at": "2026-02-27T21:00:00Z",
-      "updated_at": "2026-02-27T21:00:00Z"
+      "updated_at": "2026-02-27T21:00:00Z",
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.197Z",
+        "outcome": "Completed via reception-agreement-no-firebase-write."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -6853,10 +7044,18 @@
       "processed_by": {
         "route": "auto-executed-via-lp-do-plan",
         "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
-        "processed_at": "2026-02-27T21:00:00Z"
+        "processed_at": "2026-02-27T21:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-activitiesByCode-fanout-missing",
+        "fact_find_slug": "reception-activitiesByCode-fanout-missing"
       },
       "created_at": "2026-02-27T21:00:00Z",
-      "updated_at": "2026-02-27T21:00:00Z"
+      "updated_at": "2026-02-27T21:00:00Z",
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.197Z",
+        "outcome": "Completed via reception-activitiesByCode-fanout-missing."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -6885,10 +7084,18 @@
       "processed_by": {
         "route": "auto-executed-via-lp-do-plan",
         "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
-        "processed_at": "2026-02-27T21:00:00Z"
+        "processed_at": "2026-02-27T21:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-codes-2-3-4-silent-fire",
+        "fact_find_slug": "reception-codes-2-3-4-silent-fire"
       },
       "created_at": "2026-02-27T21:00:00Z",
-      "updated_at": "2026-02-27T21:00:00Z"
+      "updated_at": "2026-02-27T21:00:00Z",
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.197Z",
+        "outcome": "Completed via reception-codes-2-3-4-silent-fire."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -6917,10 +7124,18 @@
       "processed_by": {
         "route": "auto-executed-via-lp-do-plan",
         "fact_find_path": "docs/plans/reception-email-activity-control-audit/fact-find.md",
-        "processed_at": "2026-02-27T21:00:00Z"
+        "processed_at": "2026-02-27T21:00:00Z",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-code22-no-guest-email",
+        "fact_find_slug": "reception-code22-no-guest-email"
       },
       "created_at": "2026-02-27T21:00:00Z",
-      "updated_at": "2026-02-27T21:00:00Z"
+      "updated_at": "2026-02-27T21:00:00Z",
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.197Z",
+        "outcome": "Completed via reception-code22-no-guest-email."
+      }
     },
     {
       "schema_version": "dispatch.v1",
@@ -8511,7 +8726,14 @@
         "completed_at": "2026-03-09T00:00:00.000Z",
         "outcome": "strategy/ reorganised into per-business subdirectories (BRIK, HBAG, HEAD, PET, XA, PWRB, etc.) plus _templates and shared docs. No longer a flat 200-file dump."
       },
-      "domain": "BOS"
+      "domain": "BOS",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "bos-standing-data-domain-container-split",
+        "fact_find_slug": "bos-standing-data-domain-container-split",
+        "target_path": "docs/business-os/strategy/"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -8559,7 +8781,14 @@
         "completed_at": "2026-03-09T00:00:00.000Z",
         "outcome": "startup-loop/ root reorganised into contracts/, schemas/, operations/, specifications/, _deprecated/, _generated/ subdirectories. Navigation no longer grep-dependent."
       },
-      "domain": "BOS"
+      "domain": "BOS",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "startup-loop-root-containers",
+        "fact_find_slug": "startup-loop-root-containers",
+        "target_path": "docs/business-os/startup-loop/"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -9051,7 +9280,7 @@
         "CDN caching strategy for product images"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.92,
       "evidence_refs": [
@@ -9060,14 +9289,28 @@
         "apps/xa-uploader/src/lib/catalogDraftToContract.ts (maps draft image paths to contract format without upload verification)"
       ],
       "created_at": "2026-03-03T20:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
+      "superseded_at": "2026-03-13T00:00:00Z",
+      "superseded_reason": "operator-closed: image upload to R2 is fully implemented — POST /api/catalog/images uploads binaries to Cloudflare R2, useImageUploadController auto-uploads on save, and a hard save-time guard blocks publishing live products without images",
       "why": "When staff add products using the main upload workflow, there is currently no way to attach product photos at the same time. Products can appear live in the store without images, which looks unprofessional and loses sales — shoppers browsing a luxury fashion brand expect visuals for everything. Completing the image upload step is essential before the store is ready for real customers.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Product images uploaded through xa-uploader are stored in a Cloudflare-free-tier-compatible location and reliably served on xa-b product pages after sync.",
         "source": "operator"
       },
-      "domain": "PRODUCTS"
+      "domain": "PRODUCTS",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-uploader-image-required-for-publish",
+        "fact_find_slug": "xa-uploader-image-required-for-publish",
+        "target_path": "docs/plans/_archive/xa-uploader-image-required-for-publish/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/xa-uploader-image-required-for-publish/plan.md",
+        "completed_at": "2026-03-12T18:59:47.763Z",
+        "outcome": "**TASK-01 + TASK-02 (Wave 1, single commit):** Added a hard pre-save client-side gate in `handleSaveImpl` (`apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts`) at lines 435–439. The guard fires when `!suppressUiBusy && draft."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -9107,7 +9350,17 @@
         "statement": "CatalogConsole has a storefront selector and logout button, enabling secure session management and multi-storefront operation.",
         "source": "operator"
       },
-      "domain": "MARKET"
+      "domain": "MARKET",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-console-storefront-logout-regression",
+        "fact_find_slug": "xa-console-storefront-logout-regression"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.201Z",
+        "outcome": "Completed via xa-console-storefront-logout-regression."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -9148,7 +9401,17 @@
         "statement": "All sync API confirmation codes have matching client-side handlers with clear user-facing messages explaining the situation and recovery steps.",
         "source": "operator"
       },
-      "domain": "STRATEGY"
+      "domain": "STRATEGY",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-sync-confirm-flow-mismatch",
+        "fact_find_slug": "xa-sync-confirm-flow-mismatch"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.201Z",
+        "outcome": "Completed via xa-sync-confirm-flow-mismatch."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -9189,7 +9452,17 @@
         "statement": "All ZIP/submission-related code is removed from the codebase, leaving only the cloud sync workflow as the single canonical publish path.",
         "source": "operator"
       },
-      "domain": "STRATEGY"
+      "domain": "STRATEGY",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-dead-zip-submission-code",
+        "fact_find_slug": "xa-dead-zip-submission-code"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.201Z",
+        "outcome": "Completed via xa-dead-zip-submission-code."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -10254,7 +10527,14 @@
         "completed_at": "2026-03-09T00:00:00.000Z",
         "outcome": "DELETE handler implemented with keyIsStillReferenced() reference check and deletePersistedImageKey() R2 deletion. Rate-limited at 30 req/min. Orphaned object cleanup is available via explicit DELETE calls."
       },
-      "domain": "STRATEGY"
+      "domain": "STRATEGY",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-r2-orphaned-objects-cleanup",
+        "fact_find_slug": "xa-r2-orphaned-objects-cleanup",
+        "target_path": "apps/xa-uploader/src/app/api/catalog/images/route.ts"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -10296,7 +10576,17 @@
       },
       "created_at": "2026-03-04T00:15:00.000Z",
       "queue_state": "completed",
-      "domain": "STRATEGY"
+      "domain": "STRATEGY",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "xa-upload-preview-and-alt-text",
+        "fact_find_slug": "xa-upload-preview-and-alt-text"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.204Z",
+        "outcome": "Completed via xa-upload-preview-and-alt-text."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -10677,7 +10967,14 @@
         "completed_at": "2026-03-09T00:00:00.000Z",
         "outcome": "Fully implemented: 5 structured core questions plus 6 conditional evidence prompts (incident, deadline, recurrence, leakage, risk, metric). Deterministic assembly rules replace free-text LLM signal detection."
       },
-      "domain": "BOS"
+      "domain": "BOS",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "ideas-intake-structured-questions",
+        "fact_find_slug": "ideas-intake-structured-questions",
+        "target_path": ".claude/skills/lp-do-ideas/modules/operator-idea-structured-intake.md"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -12656,7 +12953,7 @@
       "current_truth": "The core triad regressed by +42 to +95 lines since last audit. lp-do-plan grew from 214 to 309 lines, lp-do-build from 222 to 308, lp-do-fact-find from 201 to 243.",
       "next_scope_now": "Define and implement enforceable size-budget checks and exception policy for the three core workflow skills.",
       "recommended_route": "lp-do-fact-find",
-      "status": "complete",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.85,
       "evidence_refs": [
@@ -12664,14 +12961,26 @@
         "docs/business-os/platform-capability/skill-efficiency-audit-2026-03-04-1143.md"
       ],
       "created_at": "2026-03-04T12:25:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "The three tools that power every improvement cycle have already grown significantly bigger than they should be, and without firm limits they will keep drifting. Larger tools are slower, harder to maintain, and more likely to give inconsistent results. Setting size guardrails now prevents the same problem from recurring every few months.",
       "intended_outcome": {
         "type": "operational",
         "statement": "Define and implement enforceable size-budget checks and exception policy for lp-do-fact-find, lp-do-plan, and lp-do-build.",
         "source": "operator"
       },
-      "domain": "BOS"
+      "domain": "BOS",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "core-triad-size-budget-guardrails",
+        "fact_find_slug": "core-triad-size-budget-guardrails",
+        "target_path": "docs/plans/core-triad-size-budget-guardrails/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/core-triad-size-budget-guardrails/plan.md",
+        "completed_at": "2026-03-12T17:58:07.490Z",
+        "outcome": "Added a shared skill-size metric collector for startup-loop skill audits and reused it in the existing `meta-loop-efficiency` audit path. Added a checked-in triad budget manifest covering `lp-do-fact-find`, `lp-do-plan`, and `lp-do-build`, "
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -12712,7 +13021,14 @@
         "completed_at": "2026-03-09T00:00:00.000Z",
         "outcome": "cmd-advance.md split into 6 focused modules: advance-contract.md, assessment-gates.md, gap-fill-gates.md, market-product-website-gates.md, sell-gates.md, signals-gates.md. Was 532 lines monolith."
       },
-      "domain": "BOS"
+      "domain": "BOS",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "bos:startup-loop:cmd-advance-split",
+        "fact_find_slug": "bos:startup-loop:cmd-advance-split",
+        "target_path": ".claude/skills/startup-loop/modules/cmd-advance/"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -12752,9 +13068,17 @@
       },
       "completed_by": {
         "completed_at": "2026-03-09T18:23:00.000Z",
-        "outcome": "H4/H5 deterministic-extraction and shrink-without-simplification heuristics are defined in .claude/skills/meta-loop-efficiency/SKILL.md, implemented in scripts/src/startup-loop/diagnostics/meta-loop-efficiency-audit.ts, covered by tests in scripts/src/startup-loop/__tests__/meta-loop-efficiency-audit.test.ts, and exercised successfully by the 2026-03-09 dry-run audit."
+        "outcome": "H4/H5 deterministic-extraction and shrink-without-simplification heuristics are defined in .claude/skills/meta-loop-efficiency/SKILL.md, implemented in scripts/src/startup-loop/diagnostics/meta-loop-efficiency-audit.ts, covered by tests in scripts/src/startup-loop/__tests__/meta-loop-efficiency-audit.test.ts, and exercised successfully by the 2026-03-09 dry-run audit.",
+        "plan_path": "docs/plans/meta-loop-efficiency-h4-h5/plan.md"
       },
-      "domain": "BOS"
+      "domain": "BOS",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "meta-loop-efficiency-h4-h5",
+        "fact_find_slug": "meta-loop-efficiency-h4-h5",
+        "target_path": "docs/plans/meta-loop-efficiency-h4-h5/plan.md"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -12902,19 +13226,25 @@
       "trigger": "operator_idea",
       "domain": "PRODUCTS",
       "area_anchor": "XA — Developers cannot test product catalogue changes without a live internet connection",
-      "status": "fact_find_ready",
+      "status": "declined",
       "recommended_route": "lp-do-fact-find",
       "recommended_slug": "xa-local-catalog-pipeline",
       "evidence_refs": [
         "operator-stated: System walkthrough revealed xa-uploader sync fails 503 when contract unconfigured, xa-b build cannot read local sync output, no products CSV exists. Data formats identical at every stage — no cloud needed for local pipeline."
       ],
       "created_at": "2026-03-04T13:53:23.637Z",
-      "queue_state": "enqueued",
+      "queue_state": "declined",
       "why": "The system that moves product data from the upload tool into the store does not work on a developer's own machine without a live cloud connection. This means every change to how products are displayed has to be tested against the live environment, which is slow and risky. Getting local testing working means faster and safer improvements to the store.",
       "intended_outcome": {
         "type": "operational",
         "statement": "xa-uploader sync generates catalog artifacts locally, xa-b build consumes them directly, products flow from uploader to storefront without cloud dependencies.",
         "source": "operator"
+      },
+      "declined_by": {
+        "actor_id": "pete",
+        "actor_name": "Pete",
+        "declined_at": "2026-03-13T11:00:24.892Z",
+        "reason": "Declined by operator"
       }
     },
     {
@@ -14416,7 +14746,7 @@
       ],
       "provisional_deliverable_family": "code-change",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.9,
       "evidence_refs": [
@@ -14431,8 +14761,23 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T09:00:00.000Z",
-      "queue_state": "enqueued",
-      "domain": "SELL"
+      "queue_state": "completed",
+      "domain": "SELL",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "mcp-server-reply",
+        "target_path": "docs/plans/mcp-server-reply/fact-find.md",
+        "processed_at": "2026-03-13T11:31:16.071Z",
+        "fact_find_slug": "mcp-server-reply",
+        "fact_find_path": "docs/plans/mcp-server-reply/fact-find.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brik-email-template-confidence-threshold/plan.md",
+        "completed_at": "2026-03-13T06:55:20.021Z",
+        "outcome": "**TASK-01 — Category-compatibility gate + confidence floor for single-question path:** Added `selectSingleQuestionTemplate` helper to `packages/mcp-server/src/tools/draft-generate.ts`. The helper mirrors `selectQuestionTemplateCandidate` se"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -14468,8 +14813,18 @@
         "source": "operator"
       },
       "created_at": "2026-03-06T09:00:00.000Z",
-      "queue_state": "enqueued",
-      "domain": "BOS"
+      "queue_state": "processed",
+      "domain": "BOS",
+      "processed_by": {
+        "route": "dispatch-routed",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "mcp-server-reply",
+        "target_path": "docs/plans/mcp-server-reply/fact-find.md",
+        "processed_at": "2026-03-13T11:31:16.072Z",
+        "fact_find_slug": "mcp-server-reply",
+        "fact_find_path": "docs/plans/mcp-server-reply/fact-find.md"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -22443,7 +22798,17 @@
         "statement": "All activity codes are named constants imported from a single constants/activityCodes.ts file."
       },
       "queue_state": "completed",
-      "created_at": "2026-03-09T11:30:00.000Z"
+      "created_at": "2026-03-09T11:30:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-activity-codes-constants",
+        "fact_find_slug": "reception-activity-codes-constants"
+      },
+      "completed_by": {
+        "completed_at": "2026-03-13T11:57:26.208Z",
+        "outcome": "Completed via reception-activity-codes-constants."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -23847,7 +24212,7 @@
       "current_truth": "Brikette still runs a staging-labelled reusable validate/test pipeline inside the release flow. staging pushes can hit both the fast staging workflow and the full deploy workflow, while dev-to-main PR checks show up under Deploy (staging) names even when no staging deploy should occur.",
       "next_scope_now": "Separate staging into a passthrough Pages deploy lane for user testing only, and make dev-to-main a clearly named release CI lane with main as the production publishing branch.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.93,
       "evidence_refs": [
@@ -23856,7 +24221,7 @@
         "code-ref: .github/workflows/brikette-staging-fast.yml"
       ],
       "created_at": "2026-03-09T20:25:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "The current Brikette workflow mixes staging user-testing semantics with release validation semantics, which makes release failures look like staging deploy failures and keeps staging on the critical path.",
       "intended_outcome": {
         "type": "operational",
@@ -23871,6 +24236,11 @@
         "target_path": "docs/plans/brikette-release-lane-separation/micro-build.md",
         "processed_at": "2026-03-09T20:37:15.978Z",
         "micro_build_path": "docs/plans/brikette-release-lane-separation/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/brikette-release-lane-separation/micro-build.md",
+        "completed_at": "2026-03-09T20:39:53.132Z",
+        "outcome": "Completed via brikette-release-lane-separation."
       }
     },
     {
@@ -24631,7 +25001,7 @@
         "Add dedicated GA4 breakdown for chooser branch selection on neutral support surfaces."
       ],
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P1",
       "confidence": 0.91,
       "evidence_refs": [
@@ -24641,7 +25011,7 @@
         "code-ref: apps/brikette/src/components/cta/ContentStickyCta.tsx"
       ],
       "created_at": "2026-03-10T14:45:00.000Z",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "why": "Neutral commercial-support surfaces are currently optimized for the hostel funnel only, which causes private-intent leakage and weakens the coherence of the broader Brikette sales flow.",
       "intended_outcome": {
         "type": "operational",
@@ -24656,6 +25026,11 @@
         "target_path": "docs/plans/brikette-support-deals-intent-routing/micro-build.md",
         "processed_at": "2026-03-10T14:46:00.000Z",
         "micro_build_path": "docs/plans/brikette-support-deals-intent-routing/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/brikette-support-deals-intent-routing/micro-build.md",
+        "completed_at": "2026-03-10T14:59:46.977Z",
+        "outcome": "Completed via brikette-support-deals-intent-routing."
       }
     },
     {
@@ -24916,7 +25291,7 @@
       "current_truth": "An identical resolveTranslatedCopy helper (i18n string validation + fallback) is copy-pasted verbatim in 4 separate files. Any bug fix or change to the validation pattern must be applied in all 4 locations independently.",
       "next_scope_now": "Extract resolveTranslatedCopy to a shared utility (apps/brikette/src/utils/i18nContent.ts) and update all 4 call sites to import from it. No functional change to behaviour.",
       "recommended_route": "lp-do-build",
-      "status": "micro_build_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.95,
       "evidence_refs": [
@@ -24927,14 +25302,25 @@
         "apps/brikette/src/app/[lang]/dorms/RoomsPageContent.tsx"
       ],
       "created_at": "2026-03-11T10:00:00.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "A core piece of code that validates how content is translated appears in four separate places in the app. Any future improvement has to be applied four times, and missing one causes inconsistent behaviour. Consolidating it into one shared location means changes happen once and apply everywhere automatically.",
       "intended_outcome": {
         "type": "operational",
         "statement": "resolveTranslatedCopy is defined once in apps/brikette/src/utils/i18nContent.ts and imported by all 4 former duplicates. TypeScript confirms no remaining inline copies.",
         "source": "operator"
       },
-      "domain": "SELL"
+      "domain": "SELL",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "brikette-i18n-util-resolve-translated-copy-dedup",
+        "micro_build_path": "docs/plans/_archive/brikette-i18n-util-resolve-translated-copy-dedup/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/brikette-i18n-util-resolve-translated-copy-dedup/micro-build.md",
+        "completed_at": "2026-03-11T08:23:11.135Z",
+        "outcome": "Completed via brikette-i18n-util-resolve-translated-copy-dedup."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -24999,7 +25385,7 @@
       "current_truth": "BookingCalendarPanel (14 props), SecureBookingPageClient (17 props), and OctorateCustomPageShell (14+ props) expose flat label strings in their signatures. Related labels (checkIn/checkOut/guests aria) are unrelated positionally. Callers must maintain long prop lists for every usage site.",
       "next_scope_now": "Audit all 3 components and their callers to determine the right grouping strategy. Produce a plan for introducing typed label sub-objects (e.g. BookingCalendarLabels, BookingWidgetLabels) that reduce caller verbosity without breaking existing usage sites.",
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P3",
       "confidence": 0.78,
       "evidence_refs": [
@@ -25009,14 +25395,26 @@
         "apps/brikette/src/components/booking/OctorateCustomPageShell.tsx"
       ],
       "created_at": "2026-03-11T10:00:02.000Z",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "why": "The booking calendar and secure checkout components each receive their display text as a long list of individual settings — up to 17 separate items each time they are used. Adding a single new label means updating every place in the codebase that uses these components. Grouping the labels together makes future changes simpler and reduces the risk of mistakes.",
       "intended_outcome": {
         "type": "operational",
         "statement": "All 3 booking components expose typed label sub-objects; existing callers are updated and tests pass. No regression in booking flow behaviour.",
         "source": "operator"
       },
-      "domain": "SELL"
+      "domain": "SELL",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "brikette-booking-component-prop-sprawl",
+        "fact_find_slug": "brikette-booking-component-prop-sprawl",
+        "target_path": "docs/plans/_archive/brikette-booking-component-prop-sprawl/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/brikette-booking-component-prop-sprawl/plan.md",
+        "completed_at": "2026-03-11T09:17:20.653Z",
+        "outcome": "**TASK-01 — BookingCalendarPanel labels bag:** Defined and exported `BookingCalendarPanelLabels` (7 fields: `stayHelper`, `clearDates`, `checkIn`, `checkOut`, `guests`, `decreaseGuests`, `increaseGuests`) in `BookingCalendarPanel.tsx`. Repl"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -25122,12 +25520,7 @@
       "lineage_depth": 0,
       "area_anchor": "XA — When the upload tool breaks in production, there is nothing to investigate",
       "location_anchors": [
-        "apps/xa-uploader/src/app/api/catalog/images/route.ts",
-        "apps/xa-uploader/src/app/api/catalog/sync/route.ts",
-        "apps/xa-uploader/src/app/api/catalog/publish/route.ts",
-        "apps/xa-uploader/src/lib/deployHook.ts",
-        "apps/xa-uploader/src/lib/catalogDraftContractClient.ts",
-        "apps/xa-uploader/src/components/catalog/catalogConsoleActions.ts"
+        "apps/xa-uploader/src/components/catalog/CatalogProductImagesFields.client.tsx"
       ],
       "domain": "SELL",
       "provisional_deliverable_family": "code-change",
@@ -25135,18 +25528,17 @@
       "recommended_route": "lp-do-build",
       "queue_state": "enqueued",
       "priority": "P1",
-      "confidence": 0.88,
+      "confidence": 0.97,
       "evidence_refs": [
-        "operator-stated: xa-uploader golden path uses console.log only; no structured logging, no server-side logging for image uploads or deploy hook failures",
-        "coverage-hint: observability",
-        "coverage-hint: testing"
+        "uploaderLogger utility complete with tests; 10+ server routes instrumented; only client-side image deletion component remains on raw console.warn",
+        "coverage-hint: observability"
       ],
-      "current_truth": "xa-uploader uses console.log throughout; image upload failures, deploy hook errors, draft contract errors, and publish latency are not structured-logged, making production diagnosis difficult.",
-      "next_scope_now": "Add a minimal structured logger utility to xa-uploader and instrument the golden path (image upload, save, deploy hook, draft contract, publish) with structured log calls.",
+      "current_truth": "All server-side routes (sync, publish, deploy hook, draft contract, login, middleware) now use uploaderLog. Two raw console.warn calls remain in CatalogProductImagesFields.client.tsx (image deletion error and network error paths).",
+      "next_scope_now": "Replace the two console.warn calls in CatalogProductImagesFields.client.tsx with uploaderLog calls to complete the structured logging rollout.",
       "why": "The product upload pipeline currently only sends messages to the developer console, which is invisible in a live environment. When something goes wrong for real users, there is no record of what happened or why. Adding proper logging means any failure leaves a clear trail, making problems far faster to diagnose and fix.",
       "intended_outcome": {
         "type": "operational",
-        "statement": "xa-uploader emits structured log events for golden-path operations (image upload, product save, deploy hook trigger/failure, draft contract errors, publish latency) so production failures can be diagnosed from wrangler tail output.",
+        "statement": "xa-uploader emits structured log events for all golden-path operations including client-side image deletion, so every failure mode leaves a trace visible in wrangler tail output.",
         "source": "operator"
       },
       "created_at": "2026-03-11T15:30:00.000Z"
@@ -25173,9 +25565,9 @@
       ],
       "domain": "SELL",
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "superseded",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "superseded",
       "priority": "P1",
       "confidence": 0.87,
       "evidence_refs": [
@@ -25191,6 +25583,8 @@
         "statement": "xa-uploader golden path (edit, save, image cycle, publish, sync, deploy) has test coverage for the critical failure modes that would otherwise regress silently.",
         "source": "operator"
       },
+      "superseded_at": "2026-03-13T00:00:00Z",
+      "superseded_reason": "operator-closed: tests for add-product, publish, and sync-to-store already exist — 26 test cases across route.test.ts, route.publish.test.ts, and route.cloud-publish.test.ts cover the golden path",
       "created_at": "2026-03-11T15:30:00.000Z"
     },
     {
@@ -25214,9 +25608,9 @@
       ],
       "domain": "SELL",
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.86,
       "evidence_refs": [
@@ -25236,7 +25630,14 @@
       "processed_by": {
         "target_route": "lp-do-build",
         "micro_build_path": "docs/plans/xa-uploader-branch-coverage/micro-build.md",
-        "processed_at": "2026-03-12T16:00:00.000Z"
+        "processed_at": "2026-03-12T16:00:00.000Z",
+        "target_kind": "build",
+        "target_slug": "xa-uploader-branch-coverage"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/xa-uploader-branch-coverage/micro-build.md",
+        "completed_at": "2026-03-12T20:44:42.748Z",
+        "outcome": "Completed via xa-uploader-branch-coverage."
       }
     },
     {
@@ -25287,11 +25688,19 @@
       },
       "processed_by": {
         "target_slug": "reception-till-safe-theming-overhaul",
-        "target_route": "lp-do-build"
+        "target_route": "lp-do-build",
+        "target_kind": "fact-find",
+        "fact_find_slug": "reception-bar-pos-theming-overhaul",
+        "target_path": "docs/plans/_archive/reception-bar-pos-theming-overhaul/plan.md"
       },
       "completed_at": "2026-03-12T00:00:00.000Z",
       "outcome": "Fixed 14 bar/POS theming issues with semantic design tokens",
-      "created_at": "2026-03-12T10:00:00.000Z"
+      "created_at": "2026-03-12T10:00:00.000Z",
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-bar-pos-theming-overhaul/plan.md",
+        "completed_at": "2026-03-12T07:19:22.337Z",
+        "outcome": "Fixed 14 theming issues across 8 bar/POS component files in a single atomic commit. All fixes are className string replacements using verified semantic tokens — no component API changes, no new token definitions. Key changes: **CompScreen**"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -25341,11 +25750,19 @@
       },
       "processed_by": {
         "target_slug": "reception-till-safe-theming-overhaul",
-        "target_route": "lp-do-build"
+        "target_route": "lp-do-build",
+        "target_kind": "fact-find",
+        "fact_find_slug": "reception-till-safe-theming-overhaul",
+        "target_path": "docs/plans/_archive/reception-till-safe-theming-overhaul/plan.md"
       },
       "completed_at": "2026-03-12T00:00:00.000Z",
       "outcome": "Fixed till/safe/common theming: correct foreground tokens and interaction states",
-      "created_at": "2026-03-12T10:00:00.000Z"
+      "created_at": "2026-03-12T10:00:00.000Z",
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-till-safe-theming-overhaul/plan.md",
+        "completed_at": "2026-03-12T07:43:06.354Z",
+        "outcome": "Fixed 9 theming issues across 7 till/safe/common component files in a single atomic commit (aea95ee6b0). All fixes are className string replacements using verified semantic tokens from the reception theme config. One fix (CloseShiftForm) ad"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -25362,34 +25779,43 @@
       "location_anchors": [
         "apps/reception/src/components/reports/VarianceHeatMap.tsx",
         "apps/reception/src/components/reports/EndOfDayPacket.tsx",
-        "apps/reception/src/components/reports/RealTimeDashboard.tsx",
-        "apps/reception/src/components/analytics/MenuPerformanceDashboard.tsx",
         "apps/reception/src/components/stats/Statistics.tsx"
       ],
       "domain": "PRODUCTS",
       "provisional_deliverable_family": "code-change",
-      "status": "fact_find_ready",
-      "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "status": "completed",
+      "recommended_route": "lp-do-build",
+      "queue_state": "completed",
       "priority": "P2",
-      "confidence": 0.85,
+      "confidence": 0.95,
       "evidence_refs": [
-        "operator-stated: Reports, analytics, and statistics screens have 15+ violations — heatmap colours lack dark mode support, chart colours use CSS variables without fallbacks, error text without background fails contrast in dark mode, danger vs error naming inconsistency",
-        "apps/reception/src/components/reports/VarianceHeatMap.tsx — getVarianceClass returns -light tokens without text colour or dark mode support",
-        "apps/reception/src/components/reports/EndOfDayPacket.tsx — conditional error text without background colour",
-        "apps/reception/src/components/stats/Statistics.tsx:125 — uses danger token instead of error-main",
-        "coverage-hint: UI",
-        "coverage-hint: UX"
+        "apps/reception/src/components/reports/VarianceHeatMap.tsx:28 — getVarianceClass() uses undefined token text-danger-fg; heatmap text becomes invisible in dark mode",
+        "apps/reception/src/components/reports/EndOfDayPacket.tsx — 9 instances of text-error-main on bare background with no surface colour, failing dark mode contrast",
+        "apps/reception/src/components/stats/Statistics.tsx:125 — uses undefined token text-danger instead of text-error-main",
+        "RealTimeDashboard.tsx and MenuPerformanceDashboard.tsx: chart-1 through chart-7 tokens all defined, dark mode variants present — no issues in these files",
+        "coverage-hint: UI"
       ],
-      "current_truth": "Reports and analytics screens have chart colour variables without fallbacks, heatmap colours that become unreadable in dark mode, conditional error text with no background, and the danger vs error naming inconsistency. The EndOfDayPacket has ~8 separate conditional colour issues.",
-      "next_scope_now": "Assess all reports, analytics, and statistics theming violations and determine the correct token replacements.",
+      "current_truth": "Three token bugs remain: (1) VarianceHeatMap getVarianceClass uses undefined text-danger-fg, making heatmap text invisible in dark mode; (2) EndOfDayPacket has 9 bare text-error-main instances with no surface colour backing, failing dark mode contrast; (3) Statistics error container uses undefined text-danger instead of text-error-main. Chart colours in RealTimeDashboard and MenuPerformanceDashboard are correctly defined.",
+      "next_scope_now": "Fix the three token bugs: replace text-danger-fg with text-error-main in VarianceHeatMap; add bg-error-light to the 9 bare error text instances in EndOfDayPacket; replace text-danger with text-error-main in Statistics.",
       "why": "Managers use reports and charts to make daily decisions about cash variance, menu performance, and end-of-day reconciliation. Some charts use colours that have no fallback if the theme is missing them, and heatmap cells become unreadable in dark mode. Fixing this means reports always show data clearly, regardless of the display mode.",
       "intended_outcome": {
         "type": "operational",
-        "statement": "All report, analytics, and statistics components use semantic tokens with correct dark mode support and consistent chart colour fallbacks.",
+        "statement": "VarianceHeatMap, EndOfDayPacket, and Statistics use only defined semantic tokens; heatmap text is readable in dark mode; error states have sufficient contrast in both themes.",
         "source": "operator"
       },
-      "created_at": "2026-03-12T10:00:00.000Z"
+      "created_at": "2026-03-12T10:00:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "reception-remaining-theming-overhaul",
+        "fact_find_slug": "reception-remaining-theming-overhaul",
+        "target_path": "docs/plans/_archive/reception-remaining-theming-overhaul/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-remaining-theming-overhaul/plan.md",
+        "completed_at": "2026-03-12T08:21:38.898Z",
+        "outcome": "TASK-01 applied ~36 className fixes across 26 component files in the reception app. The fixes covered five categories: (1) wrong foreground tokens on coloured backgrounds — replaced `text-foreground` and `text-primary-fg` with semantic toke"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -25577,9 +26003,9 @@
         "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.8,
       "evidence_refs": [
@@ -25598,8 +26024,19 @@
         "source": "operator"
       },
       "created_at": "2026-03-12T07:58:40.000Z",
-      "processed_by": "docs/plans/do-workflow-claude-token-auto-capture/fact-find.md",
-      "processed_at": "2026-03-12T08:08:57.000Z"
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "do-workflow-claude-token-auto-capture",
+        "fact_find_slug": "do-workflow-claude-token-auto-capture",
+        "target_path": "docs/plans/_archive/do-workflow-claude-token-auto-capture/plan.md"
+      },
+      "processed_at": "2026-03-12T08:08:57.000Z",
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/do-workflow-claude-token-auto-capture/plan.md",
+        "completed_at": "2026-03-12T08:34:02.772Z",
+        "outcome": "**TASK-01 + TASK-02:** Added a hybrid cascade for automatic Claude Code session discovery to `workflow-runtime-token-usage.ts`. The cascade tries: (1) explicit session ID from env vars (authoritative), (2) `sessions-index.json` project-scop"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -25740,9 +26177,9 @@
         "docs/business-os/startup-loop/ideas/trial/telemetry.jsonl"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.82,
       "evidence_refs": [
@@ -25761,7 +26198,22 @@
         "statement": "Deliverable completeness is automatically validated against output contracts and reported in telemetry.",
         "source": "operator"
       },
-      "created_at": "2026-03-12T07:58:40.000Z"
+      "created_at": "2026-03-12T07:58:40.000Z",
+      "queue_state_set_at": "2026-03-13T00:00:00Z",
+      "superseded_at": "2026-03-13T00:00:00Z",
+      "superseded_reason": "operator-closed: comprehensive validators exist (validate-plan.ts, validate-fact-find.ts, validate-engineering-coverage.ts) and run as mandatory skill-checklist gates — work cannot be marked complete within the skill flow without passing these checks; telemetry reporting of results is a separate future enhancement",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "do-workflow-deliverable-quality-metrics",
+        "fact_find_slug": "do-workflow-deliverable-quality-metrics",
+        "target_path": "docs/plans/_archive/do-workflow-deliverable-quality-metrics/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/do-workflow-deliverable-quality-metrics/plan.md",
+        "completed_at": "2026-03-12T12:49:06.363Z",
+        "outcome": "**TASK-01 (ecea901888):** Added `deterministic_check_results` as an optional field on `WorkflowStepTelemetryRecord` with a new `CheckResultSummary` interface (`{ valid: boolean; error_count: number; warning_count: number }`). The CLI gained"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -25954,9 +26406,9 @@
       "adjacent_later": [
         "Component architecture refactor: error boundaries, splitting large components (1067/766/607 lines), reducing prop drilling"
       ],
-      "status": "complete",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "priority": "P2",
       "confidence": 0.95,
       "why": "When a staff member navigates around the admin tool, background requests that were started on a previous screen keep running and trying to update parts of the page that no longer exist. If the server is slow, loading screens can stay stuck forever with no timeout. Over a long session this leaks memory and can eventually make the browser tab unresponsive. These are all standard React cleanup patterns with clear fixes.",
@@ -25974,7 +26426,18 @@
         "apps/xa-uploader/src/components/catalog/CurrencyRatesPanel.client.tsx:100-140",
         "coverage-hint: performance-reliability, UI"
       ],
-      "created_at": "2026-03-12T15:00:00.000Z"
+      "created_at": "2026-03-12T15:00:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "xa-uploader-memory-leak-fixes",
+        "micro_build_path": "docs/plans/xa-uploader-memory-leak-fixes/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/xa-uploader-memory-leak-fixes/micro-build.md",
+        "completed_at": "2026-03-12T13:07:35.792Z",
+        "outcome": "Four targeted fixes to prevent memory leaks and UI freezes in the XA admin tool: 1. **deployHook.ts** -- Moved `clearTimeout` from the catch block and post-try position into a `finally` block in `triggerDeployHookOnce`, ensuring the timeout"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -26003,9 +26466,9 @@
       "provisional_deliverable_family": "code-change",
       "current_truth": "Auth errors masked as 404 via .catch(() => false), generic catch treats all errors as validation failures (400), inconsistent auth/rate-limit ordering across routes, inconsistent error response shapes, missing error logging in bulk and deploy-drain routes, misleading error message in catalogDraftToContract, no currency rate sanity check.",
       "next_scope_now": "Standardize error handling patterns across all API routes.",
-      "status": "superseded",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "superseded",
+      "queue_state": "completed",
       "superseded_at": "2026-03-12T00:00:00Z",
       "superseded_reason": "resolved: error conflation, silent swallowing, and structured logging all addressed in commits 581074e4d4 and e9132bd393 (C008-C011)",
       "priority": "P2",
@@ -26024,7 +26487,18 @@
         "apps/xa-uploader/src/lib/catalogDraftToContract.ts:493",
         "coverage-hint: observability"
       ],
-      "created_at": "2026-03-12T15:00:00.000Z"
+      "created_at": "2026-03-12T15:00:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "xa-uploader-error-handling-fixes",
+        "micro_build_path": "docs/plans/xa-uploader-error-handling-fixes/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/xa-uploader-error-handling-fixes/micro-build.md",
+        "completed_at": "2026-03-12T09:48:50.634Z",
+        "outcome": "Completed via xa-uploader-error-handling-fixes."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -26051,9 +26525,9 @@
       "provisional_deliverable_family": "code-change",
       "current_truth": "Image alt text is hardcoded in English. Custom filter dropdown missing aria-haspopup, aria-expanded, aria-controls, and keyboard navigation. Save and publish buttons have independent state machines that do not coordinate, allowing simultaneous clicks. ThemeToggle initializes to wrong theme causing a flash.",
       "next_scope_now": "Fix accessibility attributes, add i18n keys for alt text, coordinate save/publish state, fix theme initialization.",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P3",
       "confidence": 0.9,
       "why": "Staff using screen readers or keyboard navigation cannot properly use the product filter dropdown — it lacks the standard cues that assistive technology needs. Image descriptions are stuck in English regardless of the user language setting. The save and publish buttons can be clicked at the same time, which could cause confusing results. And the theme flashes light then dark on every page load. These are all small fixes that make the tool more reliable and inclusive for every staff member.",
@@ -26070,7 +26544,18 @@
         "apps/xa-uploader/src/components/ThemeToggle.client.tsx:20-29",
         "coverage-hint: UI, UX"
       ],
-      "created_at": "2026-03-12T15:00:00.000Z"
+      "created_at": "2026-03-12T15:00:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "micro-build",
+        "target_slug": "xa-uploader-accessibility",
+        "micro_build_path": "docs/plans/xa-uploader-accessibility/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/_archive/xa-uploader-accessibility/micro-build.md",
+        "completed_at": "2026-03-13T11:56:27.242Z",
+        "outcome": "Completed via xa-uploader-accessibility."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -26089,35 +26574,39 @@
       "lineage_depth": 0,
       "area_anchor": "XA — Dead code and duplicated logic increase maintenance burden",
       "location_anchors": [
-        "apps/xa-uploader/src/lib/catalogDraftContractClient.ts",
-        "apps/xa-uploader/src/lib/catalogContractClient.ts",
-        "apps/xa-uploader/src/lib/catalogSyncInput.ts",
-        "apps/xa-uploader/src/app/api/catalog/deploy-drain/route.ts",
-        "apps/xa-uploader/src/components/catalog/EditProductFilterSelector.client.tsx"
+        "apps/xa-uploader/src/components/catalog/EditProductFilterSelector.client.tsx",
+        "apps/xa-uploader/src/components/catalog/__tests__/EditProductFilterSelector.test.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "current_truth": "buildCatalogContractUrl() is duplicated across catalogDraftContractClient.ts and catalogContractClient.ts. catalogSyncInput.ts uses confusing import alias. deploy-drain/route.ts has dead code (statePaths always undefined). Unsafe type assertions in catalogDraftContractClient.ts and deployHook.ts. 10 skipped tests in EditProductFilterSelector.test.tsx.",
-      "next_scope_now": "Extract shared URL builder, fix import alias, remove dead code, add type guards, implement skipped tests.",
-      "status": "micro_build_ready",
+      "current_truth": "URL builder extracted to catalogContractUtils.ts; dead statePaths variable removed from deploy-drain/route.ts; unsafe type assertion replaced with isRecord() guard in catalogDraftContractClient.ts. Remaining: 10 skipped test stubs (TC-01 through TC-10) in EditProductFilterSelector.test.tsx covering the show-all products mode.",
+      "next_scope_now": "Implement the 10 skipped tests for EditProductFilterSelector show-all mode: show-all button visibility, show-all rendering, product selection, back-to-filter behaviour, criteria bypass, empty state, empty brandHandle subtitle, i18n, data-testid attributes, and auto-select useEffect.",
+      "status": "completed",
       "recommended_route": "lp-do-build",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "priority": "P3",
       "confidence": 0.95,
-      "why": "The same URL-building code exists in two separate files, which means a fix in one place can be missed in the other. There is dead code that looks like an unfinished feature but actually does nothing. Some type checks are skipped with unsafe shortcuts that could hide bugs. And 10 tests are marked as skipped, meaning those features have no automated safety net. Cleaning these up makes the codebase more trustworthy and easier for any developer to work on.",
+      "why": "10 tests are marked as skipped, meaning the show-all mode of the product filter selector has no automated safety net. Implementing them means any regression in that code path is caught automatically before it reaches anyone.",
       "intended_outcome": {
         "type": "measurable",
-        "statement": "Shared buildCatalogContractUrl extracted; catalogSyncInput uses standard fs import; dead statePaths removed; unsafe as-casts replaced with Zod or type guards; 10 skipped tests implemented",
+        "statement": "All 10 skipped tests in EditProductFilterSelector.test.tsx are implemented and passing",
         "source": "operator"
       },
       "evidence_refs": [
-        "operator-stated: duplicate URL construction, confusing import alias, dead code, unsafe type assertions, skipped tests",
-        "apps/xa-uploader/src/lib/catalogDraftContractClient.ts:73-85",
-        "apps/xa-uploader/src/lib/catalogContractClient.ts:73-90",
-        "apps/xa-uploader/src/lib/catalogSyncInput.ts:1",
-        "apps/xa-uploader/src/app/api/catalog/deploy-drain/route.ts:87",
+        "apps/xa-uploader/src/components/catalog/__tests__/EditProductFilterSelector.test.tsx — 10 it.skip stubs TC-01 through TC-10 covering show-all mode: button visibility, rendering, selection, back-to-filter, criteria bypass, empty state, empty brandHandle, zh locale, data-testid attrs, auto-select useEffect",
         "coverage-hint: testing"
       ],
-      "created_at": "2026-03-12T15:00:00.000Z"
+      "created_at": "2026-03-12T15:00:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "xa-uploader-code-cleanup",
+        "micro_build_path": "docs/plans/xa-uploader-code-cleanup/micro-build.md"
+      },
+      "completed_by": {
+        "micro_build_path": "docs/plans/xa-uploader-code-cleanup/micro-build.md",
+        "completed_at": "2026-03-12T09:49:11.120Z",
+        "outcome": "Completed via xa-uploader-code-cleanup."
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -26154,11 +26643,23 @@
         "statement": "Deterministic admission guards prevent noise entering the queue, existing queue data is cleaned and domain-classified, and a fresh pattern analysis on clean data is produced.",
         "source": "operator"
       },
-      "status": "complete",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "processed",
+      "queue_state": "completed",
       "first_observed_at": "2026-03-12",
-      "created_at": "2026-03-12T12:30:37.266Z"
+      "created_at": "2026-03-12T12:30:37.266Z",
+      "processed_by": {
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find",
+        "target_slug": "ideas-queue-quality-gates",
+        "fact_find_slug": "ideas-queue-quality-gates",
+        "target_path": "docs/plans/_archive/ideas-queue-quality-gates/plan.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/ideas-queue-quality-gates/plan.md",
+        "completed_at": "2026-03-12T14:11:44.305Z",
+        "outcome": "**Admission guards (TASK-01):** A pure `validateDispatchContent()` function added to `lp-do-ideas-queue-admission.ts` with 4 deterministic guard rules: forbidden-pattern detection (9 regex patterns matching agent reasoning, table rows, mark"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -26470,10 +26971,18 @@
       "created_at": "2026-03-12T15:30:00.000Z",
       "processed_by": {
         "target_route": "superseded",
-        "target_slug": "process-improvements-operator-decision-inbox"
+        "target_slug": "process-improvements-operator-decision-inbox",
+        "target_kind": "fact-find",
+        "fact_find_slug": "process-improvements-snooze-buttons",
+        "target_path": "docs/plans/_archive/process-improvements-snooze-buttons/plan.md"
       },
       "completed_at": "2026-03-12",
-      "outcome": "Superseded — deferral feature already built as part of process-improvements-operator-decision-inbox plan"
+      "outcome": "Superseded — deferral feature already built as part of process-improvements-operator-decision-inbox plan",
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/process-improvements-snooze-buttons/plan.md",
+        "completed_at": "2026-03-12T19:58:48.384Z",
+        "outcome": "**TASK-01** — Snooze state management and UI buttons added to `apps/business-os/src/components/process-improvements/InProgressInbox.tsx`. Three localStorage helpers were added inline (`readSnoozeMap`, `snoozePlan`, `isSnoozed`) under the ke"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -26592,6 +27101,237 @@
           "risk_class": "low",
           "maturity": "unknown"
         }
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313120000-0001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-brik-bar-payment-bleep-or-go-ignored",
+      "root_event_id": "operator:BRIK:BOS:bar-bleep-or-go-ignored:20260313",
+      "anchor_key": "brik-bar-payment-bleep-or-go-ignored",
+      "cluster_key": "BRIK:BOS:bar-bleeper-bugs",
+      "cluster_fingerprint": "bar-payment-bleeper-order-taking-ux",
+      "lineage_depth": 0,
+      "area_anchor": "Reception — Payment type choice (Bleep or Go) is ignored when processing orders",
+      "location_anchors": [
+        "apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx",
+        "apps/reception/src/components/bar/orderTaking/OrderList.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The Pay modal shows a Bleep or Go toggle, but the selection is never used. The code always falls back to reading the bleepNumber input field regardless of which option the user chose.",
+      "next_scope_now": "Fix OrderTakingContainer to honour the usage parameter from the Pay modal, routing correctly to go-mode when Go is selected.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.95,
+      "evidence_refs": [
+        "operator-stated: confirmed during live bar audit 2026-03-13 — Bleep/Go toggle in PayModal has no effect on order flow"
+      ],
+      "created_at": "2026-03-13T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Staff choose Go when a guest wants to take their order away without a bleeper, and Bleep when the guest waits at a table. Right now that choice does nothing — every order goes through the bleeper check regardless. Staff are confused when the system still asks for a bleeper number after they chose Go.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Choosing Go in the Pay modal bypasses bleeper validation entirely. Choosing Bleep proceeds to bleeper assignment as normal. Staff experience matches the UI label.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313120000-0002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-brik-bar-comp-preorder-eligibility-date",
+      "root_event_id": "operator:BRIK:BOS:bar-comp-preorder-eligibility-date:20260313",
+      "anchor_key": "brik-bar-comp-preorder-eligibility-date",
+      "cluster_key": "BRIK:BOS:bar-bleeper-bugs",
+      "cluster_fingerprint": "bar-payment-bleeper-order-taking-ux",
+      "lineage_depth": 0,
+      "area_anchor": "Reception — Staff see the wrong guests listed as eligible for a free preorder breakfast or drink",
+      "location_anchors": [
+        "apps/reception/src/components/bar/CompScreen.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "COMP mode shows a guest as eligible for a preorder if they have one booked on any night of their stay — even if tonight is not one of those nights. A guest staying 3 nights with a preorder only on night 3 appears eligible on night 1.",
+      "next_scope_now": "Update the preorder eligibility check to only consider tonight's date when deciding whether a guest qualifies.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.93,
+      "evidence_refs": [
+        "operator-stated: confirmed during live bar audit 2026-03-13 — eligibility check uses any-night logic, not tonight's date"
+      ],
+      "created_at": "2026-03-13T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Staff use the COMP screen to give guests their pre-booked free breakfast or drink. If a guest shows up on night 1 but their preorder is for night 3, staff currently see them as eligible and may give them something for free when they shouldn't. It could also go the other way — a guest eligible tonight might not be shown if the logic misfires.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The COMP screen only shows a guest as eligible if they have a preorder for tonight specifically. Guests with preorders on other nights are not shown as eligible until their correct night.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313120000-0003",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-brik-bar-bleeper-race-condition",
+      "root_event_id": "operator:BRIK:BOS:bar-bleeper-race-condition:20260313",
+      "anchor_key": "brik-bar-bleeper-availability-race-condition",
+      "cluster_key": "BRIK:BOS:bar-bleeper-bugs",
+      "cluster_fingerprint": "bar-payment-bleeper-order-taking-ux",
+      "lineage_depth": 0,
+      "area_anchor": "Reception — Two orders placed in quick succession can silently end up with the same bleeper number",
+      "location_anchors": [
+        "apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx",
+        "apps/reception/src/components/bar/sales/SalesScreen.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "When an order is paid, the app marks the bleeper as taken in the database. If the database write fails, the order still completes locally and no error is shown. Two rapid orders can both be assigned the same bleeper number with neither staff member aware.",
+      "next_scope_now": "Ensure the bleeper availability write either succeeds before completing the order, or surfaces a visible error to staff so they can reassign manually.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: confirmed during live bar audit 2026-03-13 — no error handling on bleeper Firebase write failure"
+      ],
+      "created_at": "2026-03-13T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "If two orders go out at almost the same time, both could get bleeper 5. Two tables of guests both think their food is coming when bleeper 5 buzzes — one table gets the order, the other doesn't, and staff have no record of what went wrong.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "If marking a bleeper as taken fails, the order is not silently completed. Staff see an error and can re-assign the bleeper before the order goes out.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313120000-0004",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-brik-bar-bleep-stale-value",
+      "root_event_id": "operator:BRIK:BOS:bar-bleep-stale-value:20260313",
+      "anchor_key": "brik-bar-bleep-number-stale-across-sessions",
+      "cluster_key": "BRIK:BOS:bar-bleeper-bugs",
+      "cluster_fingerprint": "bar-payment-bleeper-order-taking-ux",
+      "lineage_depth": 0,
+      "area_anchor": "Reception — The bleeper number from the last session reappears in the field after the page reloads",
+      "location_anchors": [
+        "apps/reception/src/components/bar/orderTaking/OrderTakingContainer.tsx",
+        "apps/reception/src/components/bar/orderTaking/PaymentSection.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The Bleep # field retains its value across page reloads. A staff member who used bleeper 5 yesterday will see 5 pre-filled when they open the page today, even though bleeper 5 may be in use with another table.",
+      "next_scope_now": "Clear the persisted bleeper value on session start, or default to the auto-suggested next available bleeper rather than the stored value.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P2",
+      "confidence": 0.97,
+      "evidence_refs": [
+        "operator-stated: reproduced directly during audit — page loaded with value 5 pre-filled from a prior session"
+      ],
+      "created_at": "2026-03-13T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "If a staff member opens the page and immediately processes a payment without noticing the pre-filled bleeper number, they might assign bleeper 5 to a new table even though bleeper 5 is already out with a different guest. No conflict warning appears.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The Bleep # field starts empty or auto-suggests the next available bleeper on every page load. No stale value from a previous session is carried over.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313120000-0005",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-brik-bar-ticket-key-instability",
+      "root_event_id": "operator:BRIK:BOS:bar-ticket-key-instability:20260313",
+      "anchor_key": "brik-bar-ticket-items-key-instability",
+      "cluster_key": "BRIK:BOS:bar-bleeper-bugs",
+      "cluster_fingerprint": "bar-payment-bleeper-order-taking-ux",
+      "lineage_depth": 0,
+      "area_anchor": "Reception — Order ticket items flicker on every render, breaking any future animation or transition",
+      "location_anchors": [
+        "apps/reception/src/components/bar/sales/TicketItems.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Each ticket item is given a random ID on every render when no stable ID is available. React treats this as a brand-new element every time, unmounting and remounting it unnecessarily. Any animation or smooth transition on ticket items will never work correctly.",
+      "next_scope_now": "Replace the randomUUID fallback with a stable index-based key so React can track items across renders.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.98,
+      "evidence_refs": [
+        "operator-stated: confirmed during code review 2026-03-13 — TicketItems.tsx uses crypto.randomUUID() as React key fallback"
+      ],
+      "created_at": "2026-03-13T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "The order ticket loses its render state on every update. While not visually broken today, it means any attempt to add animation or smooth transitions to the ticket will fail, and the unnecessary unmount/remount cycle adds small but avoidable overhead on every order interaction.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Ticket items use stable keys. React does not remount them on re-render. The ticket is ready to support smooth item transitions if needed in future.",
+        "source": "operator"
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260313120000-0006",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "BOS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260313-brik-bar-bleep-placeholder-misleading",
+      "root_event_id": "operator:BRIK:BOS:bar-bleep-placeholder-misleading:20260313",
+      "anchor_key": "brik-bar-bleep-placeholder-contradicts-behaviour",
+      "cluster_key": "BRIK:BOS:bar-bleeper-bugs",
+      "cluster_fingerprint": "bar-payment-bleeper-order-taking-ux",
+      "lineage_depth": 0,
+      "area_anchor": "Reception — Clearing the bleeper number field doesn't select Go as the hint text suggests",
+      "location_anchors": [
+        "apps/reception/src/components/bar/orderTaking/PaymentSection.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The Bleep # field shows the hint 'Leave blank for Go', but clearing the field auto-fills it with the next available bleeper number instead of selecting Go mode. Blank does not mean Go.",
+      "next_scope_now": "Either make blank genuinely mean Go (consistent with the label), or update the placeholder to accurately describe what happens when the field is cleared.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.97,
+      "evidence_refs": [
+        "operator-stated: confirmed during code review 2026-03-13 — PaymentSection.tsx placeholder text does not match actual blank-field behaviour"
+      ],
+      "created_at": "2026-03-13T12:00:00.000Z",
+      "queue_state": "enqueued",
+      "why": "Staff who try to clear the field to select Go mode will find it immediately refills with a bleeper number. The instruction printed on the field is wrong. This erodes trust in the interface and may cause staff to use the wrong payment mode.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "The Bleep # field label/placeholder matches what actually happens when it is cleared. Either blank truly means Go, or the hint text is corrected to say what will happen.",
+        "source": "operator"
       }
     }
   ]

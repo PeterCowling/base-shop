@@ -91,10 +91,29 @@ function FilterSelect({
   testId?: string;
 }) {
   const [open, setOpen] = React.useState(false);
+  const [focusedIndex, setFocusedIndex] = React.useState(-1);
   const ref = React.useRef<HTMLDivElement>(null);
+  // Stable ref so the keydown handler can read current focusedIndex without stale closure
+  const focusedIndexRef = React.useRef(-1);
+  focusedIndexRef.current = focusedIndex;
+
+  const uid = React.useId();
+  const listboxId = `${uid}-listbox`;
+
+  const allOptions = [{ value: "", label: placeholder }, ...options];
+  const selectedLabel = allOptions.find((o) => o.value === value)?.label ?? placeholder;
 
   React.useEffect(() => {
-    if (!open) return;
+    if (!open) {
+      setFocusedIndex(-1);
+      return;
+    }
+    // Prime virtual focus to current selection when dropdown opens
+    const primed = allOptions.findIndex((o) => o.value === value);
+    setFocusedIndex(primed >= 0 ? primed : 0);
+
+    const optionCount = allOptions.length;
+
     function handleClickOutside(e: MouseEvent) {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setOpen(false);
@@ -103,6 +122,19 @@ function FilterSelect({
     function handleKeyDown(e: KeyboardEvent) {
       if (e.key === "Escape") {
         setOpen(false);
+      } else if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setFocusedIndex((i) => Math.min(i + 1, optionCount - 1));
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setFocusedIndex((i) => Math.max(i - 1, 0));
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        const idx = focusedIndexRef.current;
+        if (idx >= 0 && idx < optionCount) {
+          onChange(allOptions[idx]!.value);
+          setOpen(false);
+        }
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -111,10 +143,8 @@ function FilterSelect({
       document.removeEventListener("mousedown", handleClickOutside);
       document.removeEventListener("keydown", handleKeyDown);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- XAUP-0002 open controls setup/teardown; allOptions stable for dropdown lifetime
   }, [open]);
-
-  const allOptions = [{ value: "", label: placeholder }, ...options];
-  const selectedLabel = allOptions.find((o) => o.value === value)?.label ?? placeholder;
 
   return (
     <div ref={ref} className="relative mt-2">
@@ -123,6 +153,8 @@ function FilterSelect({
         onClick={() => setOpen((o) => !o)}
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-controls={open ? listboxId : undefined}
+        aria-activedescendant={open && focusedIndex >= 0 ? `${listboxId}-opt-${focusedIndex}` : undefined}
         className="flex min-h-11 min-w-11 w-full items-center justify-between rounded-md border border-gate-border bg-gate-input px-3 py-2 text-sm transition-colors focus:border-gate-accent focus:outline-none focus-visible:ring-2 focus-visible:ring-gate-accent focus-visible:ring-offset-1"
         data-testid={testId}
       >
@@ -131,9 +163,13 @@ function FilterSelect({
         <span className="text-xs text-gate-muted">{open ? "▴" : "▾"}</span>
       </button>
       {open ? (
-        <ul role="listbox" className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md border border-gate-border bg-gate-surface py-1 shadow-elevation-2">
-          {allOptions.map((opt) => (
-            <li key={opt.value} role="option" aria-selected={opt.value === value}>
+        <ul
+          id={listboxId}
+          role="listbox"
+          className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md border border-gate-border bg-gate-surface py-1 shadow-elevation-2"
+        >
+          {allOptions.map((opt, index) => (
+            <li key={opt.value} id={`${listboxId}-opt-${index}`} role="option" aria-selected={opt.value === value}>
               <button
                 type="button"
                 onClick={() => {
@@ -141,8 +177,8 @@ function FilterSelect({
                   setOpen(false);
                 }}
                 className={`w-full px-3 py-2 text-start text-sm transition-colors hover:bg-gate-accent-soft ${
-                  opt.value === value ? "text-gate-accent" : "text-gate-ink"
-                }`}
+                  index === focusedIndex ? "bg-gate-accent-soft" : ""
+                } ${opt.value === value ? "text-gate-accent" : "text-gate-ink"}`}
               >
                 {opt.label}
               </button>

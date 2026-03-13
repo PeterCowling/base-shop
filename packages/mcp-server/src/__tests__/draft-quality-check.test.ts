@@ -886,6 +886,69 @@ describe("draft_quality_check TC-02 — booking-issues strict reference removal"
     expect(payload.failed_checks).toContain("missing_required_reference");
   });
 
+  // TC-pool-missing: pool question answered with generic facility text → coverage status "missing"
+  // Regression guard: "facility" and "amenity" removed from SYNONYMS["pool"] in template-ranker.ts
+  it("TC-pool-missing: pool question answered with generic facility text scores missing coverage", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Is there a pool?" }],
+          requests: [],
+        },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
+        scenario: { category: "general-inquiry" },
+        thread_summary: { prior_commitments: [] },
+      },
+      draft: {
+        bodyPlain:
+          "We have excellent facilities and amenities for all guests. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>We have excellent facilities and amenities for all guests.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    const poolCoverage = payload.question_coverage?.find(q =>
+      q.question.toLowerCase().includes("pool")
+    );
+    // "facility" and "amenity" no longer expand "pool" synonym set — must score missing
+    expect(poolCoverage?.status).toBe("missing");
+  });
+
+  // TC-pool-covered: draft mentioning "swimming" or "rooftop" → coverage status "covered"
+  // Regression guard: retained synonyms ("swimming", "swim", "rooftop") still work correctly
+  it("TC-pool-covered: draft mentioning swimming pool scores covered coverage", async () => {
+    const result = await handleDraftQualityTool("draft_quality_check", {
+      actionPlan: {
+        language: "EN" as const,
+        intents: {
+          questions: [{ text: "Do you have a pool?" }],
+          requests: [],
+        },
+        workflow_triggers: {
+          booking_action_required: false,
+          booking_context: false,
+        },
+        scenario: { category: "general-inquiry" },
+        thread_summary: { prior_commitments: [] },
+      },
+      draft: {
+        bodyPlain:
+          "Yes, we have a rooftop swimming pool available to all guests. Best regards, Hostel Brikette",
+        bodyHtml:
+          "<!DOCTYPE html><html><body><p>Yes, we have a rooftop swimming pool available to all guests.</p></body></html>",
+      },
+    });
+    const payload = parseResult(result);
+    const poolCoverage = payload.question_coverage?.find(q =>
+      q.question.toLowerCase().includes("pool")
+    );
+    expect(poolCoverage?.status).toBe("covered");
+  });
+
   it("TC-02-03: cancellation scenario still enforces missing_required_reference (other strict categories unchanged)", async () => {
     const result = await handleDraftQualityTool("draft_quality_check", {
       actionPlan: {

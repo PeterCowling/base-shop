@@ -39,4 +39,10 @@ config.moduleNameMapper["(\\.\\.\\/)+context/modal/provider$"] = modalMock;
 // Add short timeout to fail fast if tests hang
 config.testTimeout = 10000; // 10 seconds per test
 
+// Exclude agent worktrees from haste module map to prevent duplicate-mock errors
+config.modulePathIgnorePatterns = [
+  ...(config.modulePathIgnorePatterns || []),
+  "/.claude/worktrees/",
+];
+
 module.exports = config;

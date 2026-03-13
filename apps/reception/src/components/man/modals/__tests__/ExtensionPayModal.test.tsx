@@ -179,6 +179,28 @@ describe("ExtensionPayModal", () => {
     );
   });
 
+  it("does not write city tax activity for occupant whose balance is already zero", async () => {
+    const onClose = jest.fn();
+    // defaultProps has o1: balance=5, o2: balance=0
+    // Selecting "extend all" puts both in cityTaxTargets
+    render(<ExtensionPayModal {...defaultProps} onClose={onClose} />);
+    await userEvent.click(screen.getByLabelText(/extend all guests/i));
+    await userEvent.click(screen.getByLabelText(/mark city tax as paid/i));
+    await userEvent.click(screen.getByRole("button", { name: /extend/i }));
+
+    // saveCityTax only called for o1 (balance > 0)
+    expect(saveCityTaxMock).toHaveBeenCalledTimes(1);
+    expect(saveCityTaxMock).toHaveBeenCalledWith("B1", "o1", { balance: 0, totalPaid: 5 });
+
+    // saveActivity(code 9) only called for o1 — not for o2 whose balance was 0
+    const ctCalls = saveActivityMock.mock.calls.filter(
+      ([, payload]) => payload.code === 9
+    );
+    expect(ctCalls).toHaveLength(1);
+    expect(ctCalls[0][0]).toBe("o1");
+    expect(onClose).toHaveBeenCalled();
+  });
+
   it("fails closed when saveActivity returns success:false", async () => {
     const onClose = jest.fn();
     saveActivityMock.mockResolvedValueOnce({

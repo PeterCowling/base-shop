@@ -128,15 +128,15 @@ function ExtensionPayModalBase({
                   balance: 0,
                   totalPaid: record.totalDue,
                 });
-              }
-              const cityTaxActivityResult = await saveActivity(id, {
-                code: ActivityCode.CITY_TAX_PAYMENT,
-              });
-              if (!cityTaxActivityResult.success) {
-                throw new Error(
-                  cityTaxActivityResult.error ??
-                    `Failed to save city tax activity for occupant ${id}.`
-                );
+                const cityTaxActivityResult = await saveActivity(id, {
+                  code: ActivityCode.CITY_TAX_PAYMENT,
+                });
+                if (!cityTaxActivityResult.success) {
+                  throw new Error(
+                    cityTaxActivityResult.error ??
+                      `Failed to save city tax activity for occupant ${id}.`
+                  );
+                }
               }
             }
           })

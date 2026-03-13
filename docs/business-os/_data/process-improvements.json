@@ -249,22 +249,6 @@
     {
       "type": "idea",
       "business": "BRIK",
-      "title": "Prime guest app — the link to re-open the personalisation setup may not work correctly",
-      "body": "Guests can be sent a link to update their personalisation preferences (room type, activities, dietary needs). That link uses a URL parameter to open the personalisation flow. The implementation reads the URL directly rather than going through the normal state machine, so there is a risk the flow opens in a broken or incomplete state.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T20:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "69ba4742bfd7e0bdeec908e3d089ac864e7c2e67",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
       "title": "Reception app — switching to dark mode resets to light mode whenever you change screen",
       "body": "When a staff member turns on dark mode, it only stays on for the current screen. As soon as they navigate to another screen, it flips back to light mode. Dark mode is effectively broken — staff cannot use it.",
       "source": "queue-state.json",

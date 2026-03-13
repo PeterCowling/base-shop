@@ -11,6 +11,8 @@ import { apiError } from "../../../../../lib/api-helpers";
 
 export const runtime = "nodejs";
 
+const IMPORT_MAX_BYTES = 5 * 1024 * 1024; // 5 MB
+
 /**
  * Parse a simple CSV string into an array of objects keyed by header.
  * Handles quoted fields but not multi-line values (sufficient for inventory CSVs).
@@ -64,6 +66,63 @@ function parseCsv(text: string): Record<string, string>[] {
 
 type RowResult = { row: number; status: "ok" | "error"; error?: string; sku?: string };
 
+interface ParseBodyOk { ok: true; rows: Record<string, string>[]; isJson: boolean }
+interface ParseBodyErr { ok: false; response: NextResponse }
+type ParseBodyResult = ParseBodyOk | ParseBodyErr;
+
+function bodyErr(response: NextResponse): ParseBodyErr {
+  return { ok: false, response } satisfies ParseBodyErr;
+}
+
+function bodyOk(rows: Record<string, string>[], isJson: boolean): ParseBodyOk {
+  return { ok: true, rows, isJson } satisfies ParseBodyOk;
+}
+
+async function parseImportBody(req: NextRequest): Promise<ParseBodyResult> {
+  const contentType = req.headers.get("content-type") ?? "";
+
+  if (contentType.includes("multipart/form-data")) {
+    const form = await req.formData();
+    const file = form.get("file");
+    if (!file || !(file instanceof Blob)) {
+      return bodyErr(NextResponse.json({ ok: false, error: "No file provided" }, { status: 400 }));
+    }
+    const text = await file.text();
+    if (Buffer.byteLength(text, "utf8") > IMPORT_MAX_BYTES) {
+      return bodyErr(NextResponse.json({ ok: false, error: "payload_too_large" }, { status: 413 }));
+    }
+    const fname = (file as File).name ?? "";
+    if (fname.endsWith(".json") || contentType.includes("json")) {
+      const data = JSON.parse(text) as unknown;
+      const arr = Array.isArray(data) ? data : [data];
+      return bodyOk(arr as Record<string, string>[], true);
+    }
+    return bodyOk(parseCsv(text), false);
+  }
+
+  if (contentType.includes("application/json")) {
+    const rawText = await req.text();
+    if (Buffer.byteLength(rawText, "utf8") > IMPORT_MAX_BYTES) {
+      return bodyErr(NextResponse.json({ ok: false, error: "payload_too_large" }, { status: 413 }));
+    }
+    let body: unknown;
+    try {
+      body = JSON.parse(rawText);
+    } catch {
+      return bodyErr(NextResponse.json({ ok: false, error: "Invalid JSON body" }, { status: 400 }));
+    }
+    const arr = Array.isArray(body) ? body : [body];
+    return bodyOk(arr as Record<string, string>[], true);
+  }
+
+  // Assume CSV text body
+  const text = await req.text();
+  if (Buffer.byteLength(text, "utf8") > IMPORT_MAX_BYTES) {
+    return bodyErr(NextResponse.json({ ok: false, error: "payload_too_large" }, { status: 413 }));
+  }
+  return bodyOk(parseCsv(text), false);
+}
+
 function validateRows(
   rows: Record<string, string>[],
 ): { valid: ReturnType<typeof expandInventoryItem>[]; results: RowResult[] } {
@@ -95,40 +154,19 @@ export async function POST(
   const url = new URL(req.url);
   const dryRun = url.searchParams.get("dryRun") === "true";
 
-  try {
-    const contentType = req.headers.get("content-type") ?? "";
-    let rows: Record<string, string>[] = [];
-    let isJson = false;
-
-    if (contentType.includes("multipart/form-data")) {
-      const form = await req.formData();
-      const file = form.get("file");
-      if (!file || !(file instanceof Blob)) {
-        return NextResponse.json({ ok: false, error: "No file provided" }, { status: 400 });
-      }
-      const text = await file.text();
-      const fname = (file as File).name ?? "";
-      if (fname.endsWith(".json") || contentType.includes("json")) {
-        const data = JSON.parse(text) as unknown;
-        const arr = Array.isArray(data) ? data : [data];
-        rows = arr as Record<string, string>[];
-        isJson = true;
-      } else {
-        rows = parseCsv(text);
-      }
-    } else if (contentType.includes("application/json")) {
-      const body = await req.json().catch(() => null) as unknown;
-      if (body === null) {
-        return NextResponse.json({ ok: false, error: "Invalid JSON body" }, { status: 400 });
-      }
-      const arr = Array.isArray(body) ? body : [body];
-      rows = arr as Record<string, string>[];
-      isJson = true;
-    } else {
-      // Assume CSV text body
-      const text = await req.text();
-      rows = parseCsv(text);
+  // Check content-length header first (fast path).
+  const contentLength = req.headers.get("content-length");
+  if (contentLength) {
+    const parsed = Number(contentLength);
+    if (Number.isFinite(parsed) && parsed > IMPORT_MAX_BYTES) {
+      return NextResponse.json({ ok: false, error: "payload_too_large" }, { status: 413 });
     }
+  }
+
+  try {
+    const bodyResult = await parseImportBody(req);
+    if (!bodyResult.ok) return (bodyResult as ParseBodyErr).response;
+    const { rows, isJson } = bodyResult as ParseBodyOk;
 
     if (rows.length === 0) {
       return NextResponse.json({ ok: false, error: "No rows found in file" }, { status: 400 });

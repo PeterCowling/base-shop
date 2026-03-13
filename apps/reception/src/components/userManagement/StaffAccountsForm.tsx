@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { Button } from "@acme/design-system/atoms";
-import { Inline } from "@acme/design-system/primitives";
+import { Cluster, Inline } from "@acme/design-system/primitives";
 
 import { useAuth } from "../../context/AuthContext";
 import { canAccess, Permissions } from "../../lib/roles";
@@ -424,7 +424,7 @@ export default function StaffAccountsForm() {
                 {formState.setupEmailError}
               </p>
             ) : null}
-            <div className="flex gap-3">
+            <Inline gap={3}>
               <Button
                 type="button"
                 color="primary"
@@ -443,7 +443,7 @@ export default function StaffAccountsForm() {
               >
                 Add another
               </Button>
-            </div>
+            </Inline>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -545,7 +545,7 @@ export default function StaffAccountsForm() {
                   key={account.uid}
                   className="rounded-md border border-border bg-surface-2 p-3"
                 >
-                  <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
+                  <Cluster gap={2} justify="between" className="mb-2">
                     <div>
                       <p className="text-sm font-medium text-foreground">
                         {account.displayName}
@@ -564,7 +564,7 @@ export default function StaffAccountsForm() {
                         ? "Removing access..."
                         : "Remove staff access"}
                     </Button>
-                  </div>
+                  </Cluster>
 
                   <Inline gap={4} className="mb-3 flex-wrap">
                     {MANAGED_ROLES.map((role) => (

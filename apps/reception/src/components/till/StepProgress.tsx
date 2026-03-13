@@ -1,7 +1,7 @@
 import { type FC, useMemo } from "react";
 
 import { Button } from "@acme/design-system/atoms";
-import { Inline } from "@acme/design-system/primitives";
+import { Inline, Stack } from "@acme/design-system/primitives";
 
 import { canAccess, Permissions } from "../../lib/roles";
 import type { User } from "../../types/domains/userDomain";
@@ -33,22 +33,26 @@ const StepProgress: FC<StepProgressProps> = ({ step, onStepChange, user }) => {
           const active = index === step;
           const clickable = index < step || (canOverride && index > step);
           return (
-            <li key={label} className="flex flex-1 flex-col items-center">
-              <Button
-                type="button"
-                onClick={() => handleClick(index)}
-                disabled={!clickable}
-                aria-current={active ? 'step' : undefined}
-                className={`w-8 h-8 rounded-full border flex items-center justify-center ${
-                  active
-                    ? 'bg-primary-main text-primary-fg'
-                    : 'bg-surface-3 text-muted-foreground'
-                } ${clickable ? 'hover:bg-primary-light' : 'cursor-default'}`}
-              >
-                {index + 1}
-              </Button>
-              <span className="text-xs mt-1">{label}</span>
-            </li>
+            <Stack key={label} asChild gap={0} align="center">
+              <li className="flex-1">
+                <Inline asChild gap={0}>
+                  <Button
+                    type="button"
+                    onClick={() => handleClick(index)}
+                    disabled={!clickable}
+                    aria-current={active ? 'step' : undefined}
+                    className={`w-8 h-8 rounded-full border justify-center ${
+                      active
+                        ? 'bg-primary-main text-primary-fg'
+                        : 'bg-surface-3 text-muted-foreground'
+                    } ${clickable ? 'hover:bg-primary-light' : 'cursor-default'}`}
+                  >
+                    {index + 1}
+                  </Button>
+                </Inline>
+                <span className="text-xs mt-1">{label}</span>
+              </li>
+            </Stack>
           );
         })}
       </ol>

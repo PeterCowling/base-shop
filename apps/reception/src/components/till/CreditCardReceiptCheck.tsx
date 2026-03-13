@@ -3,6 +3,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 
 import { Input } from "@acme/design-system";
+import { Inline } from "@acme/design-system/primitives";
 
 import { useCCReceiptConfirmations } from "../../hooks/mutations/useCCReceiptConfirmations";
 import { type Transaction } from "../../types/component/Till";
@@ -94,25 +95,26 @@ export const CreditCardReceiptCheck = memo(function CreditCardReceiptCheck({
             : "N/A";
 
           return (
-            <li
-              key={txnId}
-              className="flex flex-wrap items-center gap-3 border border-info-light p-2 rounded-lg"
-            >
-              <label className="flex items-center gap-2">
-                <Input
-                  compatibilityMode="no-wrapper"
-                  type="checkbox"
-                  className="h-4 w-4"
-                  checked={checkMap[txnId] || false}
-                  onChange={(e) => handleCheckChange(txnId, e.target.checked)}
-                />
-                <span className="text-sm">Reconciled</span>
-              </label>
-              <div className="text-sm text-info-dark">
-                <strong>{displayDate}:</strong> {description ?? "CC payment"}{" "}
-                (Amount: €{amount.toFixed(2)})
-              </div>
-            </li>
+            <Inline key={txnId} asChild gap={3} className="border border-info-light p-2 rounded-lg">
+              <li>
+                <Inline asChild gap={2}>
+                  <label>
+                    <Input
+                      compatibilityMode="no-wrapper"
+                      type="checkbox"
+                      className="h-4 w-4"
+                      checked={checkMap[txnId] || false}
+                      onChange={(e) => handleCheckChange(txnId, e.target.checked)}
+                    />
+                    <span className="text-sm">Reconciled</span>
+                  </label>
+                </Inline>
+                <div className="text-sm text-info-dark">
+                  <strong>{displayDate}:</strong> {description ?? "CC payment"}{" "}
+                  (Amount: €{amount.toFixed(2)})
+                </div>
+              </li>
+            </Inline>
           );
         })}
       </ul>

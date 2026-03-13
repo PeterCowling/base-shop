@@ -1,6 +1,7 @@
 import { Fragment, memo, useCallback, useMemo, useState } from "react";
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Inline, Stack } from "@acme/design-system/primitives";
 
 import { useTillData } from "../../context/TillDataContext";
 import { useTillShiftsRange } from "../../hooks/data/till/useTillShiftsRange";
@@ -139,8 +140,8 @@ const TillShiftHistory = memo(function TillShiftHistory() {
       </div>
 
       {/* Filter controls */}
-      <div className="flex flex-wrap gap-4 items-end mb-4">
-        <div className="flex flex-col">
+      <Inline gap={4} alignY="end" className="mb-4">
+        <Stack gap={0}>
           <label htmlFor="tillShiftStaffFilter" className="text-xs font-semibold text-muted-foreground mb-1">
             Staff
           </label>
@@ -152,8 +153,8 @@ const TillShiftHistory = memo(function TillShiftHistory() {
             placeholder="Filter by name…"
             className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
-        </div>
-        <div className="flex flex-col">
+        </Stack>
+        <Stack gap={0}>
           <label htmlFor="tillShiftStartDate" className="text-xs font-semibold text-muted-foreground mb-1">
             From
           </label>
@@ -164,8 +165,8 @@ const TillShiftHistory = memo(function TillShiftHistory() {
             onChange={(e) => setStartDate(e.target.value)}
             className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
-        </div>
-        <div className="flex flex-col">
+        </Stack>
+        <Stack gap={0}>
           <label htmlFor="tillShiftEndDate" className="text-xs font-semibold text-muted-foreground mb-1">
             To
           </label>
@@ -176,8 +177,8 @@ const TillShiftHistory = memo(function TillShiftHistory() {
             onChange={(e) => setEndDate(e.target.value)}
             className="border border-border-strong rounded-md px-2 py-1 text-sm focus:outline-none focus-visible:ring-1 focus-visible:ring-ring"
           />
-        </div>
-      </div>
+        </Stack>
+      </Inline>
 
       {loading && <ReceptionSkeleton rows={5} />}
 

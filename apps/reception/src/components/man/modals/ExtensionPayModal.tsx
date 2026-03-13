@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
 
 import { ActivityCode } from "../../../constants/activities";
 import { withModalBackground } from "../../../hoc/withModalBackground";
@@ -269,7 +270,7 @@ function ExtensionPayModalBase({
         </label>
       </div>
 
-      <div className="flex justify-center gap-2">
+      <Cluster gap={2} justify="center">
         <Button
           onClick={handleExtend}
           color="primary"
@@ -286,7 +287,7 @@ function ExtensionPayModalBase({
         >
           Close
         </Button>
-      </div>
+      </Cluster>
     </ModalContainer>
   );
 }

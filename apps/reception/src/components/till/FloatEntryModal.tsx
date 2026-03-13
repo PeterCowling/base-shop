@@ -3,6 +3,7 @@ import { z } from "zod";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Stack } from "@acme/design-system/primitives";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import { showToast } from "../../utils/toastUtils";
@@ -54,7 +55,7 @@ function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
           </h2>
 
           {/* Amount */}
-          <div className="flex flex-col text-center  items-center justify-center  mb-12 sm:flex-row sm:items-end">
+          <Stack gap={0} align="center" className="text-center justify-center mb-12 sm:flex-row sm:items-end">
             <Input
               compatibilityMode="no-wrapper"
               type="number"
@@ -64,15 +65,15 @@ function FloatEntryModalBase({ onConfirm, onClose }: FloatEntryModalProps) {
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
-          </div>
+          </Stack>
 
           {/* PIN */}
-          <div className="mt-6 flex flex-col items-center gap-4">
+          <Stack gap={4} align="center" className="mt-6">
             <PasswordReauthInline
               onSubmit={handleConfirm}
               submitLabel="Confirm change"
             />
-          </div>
+          </Stack>
         </div>
       </ModalContainer>
 

@@ -6,6 +6,7 @@ import { z } from "zod";
 
 import { Input } from "@acme/design-system";
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
+import { Inline } from "@acme/design-system/primitives";
 
 import { TillDataProvider, useTillData } from "../../context/TillDataContext";
 import usePmsPostings from "../../hooks/data/till/usePmsPostings";
@@ -51,7 +52,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
   }, [amount, method, note, onSubmit]);
 
   return (
-    <div className="flex items-end gap-2 flex-wrap">
+    <Inline gap={2} alignY="end">
       <div>
         <label className="block text-xs mb-1">Amount</label>
         <Input
@@ -96,7 +97,7 @@ const PmsPostingForm = memo(function PmsPostingForm({ onSubmit }: PmsPostingForm
       >
         {submitting ? "Saving…" : "Add PMS Posting"}
       </Button>
-    </div>
+    </Inline>
   );
 });
 
@@ -126,7 +127,7 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
   }, [amount, note, onSubmit]);
 
   return (
-    <div className="flex items-end gap-2 flex-wrap">
+    <Inline gap={2} alignY="end">
       <div>
         <label className="block text-xs mb-1">Amount</label>
         <Input
@@ -159,7 +160,7 @@ const TerminalBatchForm = memo(function TerminalBatchForm({ onSubmit }: Terminal
       >
         {submitting ? "Saving…" : "Add Terminal Batch"}
       </Button>
-    </div>
+    </Inline>
   );
 });
 

@@ -5,6 +5,7 @@ import React, { useCallback, useMemo, useState } from "react";
 
 import { Input, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
 
 import useRoomConfigs from "../../hooks/client/checkin/useRoomConfigs";
 import useActivitiesByCodeData from "../../hooks/data/useActivitiesByCodeData";
@@ -384,7 +385,7 @@ function Extension() {
                             />
                           </TableCell>
                           <TableCell className="p-2 border-b text-center">
-                            <div className="flex gap-2 justify-center">
+                            <Cluster gap={2} justify="center">
                               <Button
                                 color={availabilityMap[r.occupantId] ? "primary" : "default"}
                                 tone={availabilityMap[r.occupantId] ? "solid" : "soft"}
@@ -422,7 +423,7 @@ function Extension() {
                                       : "N/A"}
                                   </Button>
                                 )}
-                            </div>
+                            </Cluster>
                           </TableCell>
                         </TableRow>
                       ))}

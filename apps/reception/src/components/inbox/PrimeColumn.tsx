@@ -2,6 +2,8 @@
 
 import { MessageSquare } from "lucide-react";
 
+import { Stack } from "@acme/design-system/primitives";
+
 import type { InboxThreadSummary } from "@/services/useInbox";
 
 import ThreadList from "./ThreadList";
@@ -25,7 +27,7 @@ export default function PrimeColumn({
   const showEmptyState = !loading && !error && primeThreads.length === 0;
 
   return (
-    <div className="flex flex-col gap-2">
+    <Stack gap={2}>
       {/* Column header */}
       <div className="flex items-center gap-2 px-1">
         <MessageSquare className="h-4 w-4 shrink-0 text-foreground/70" />
@@ -42,7 +44,7 @@ export default function PrimeColumn({
       {/* Channel-specific empty state */}
       {showEmptyState ? (
         <div className="rounded-2xl border border-border-1 bg-surface-2 shadow-sm">
-          <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
+          <Stack gap={3} align="center" className="justify-center px-6 py-16 text-center">
             <div className="rounded-full bg-surface-3 p-3 text-muted-foreground">
               <MessageSquare className="h-6 w-6" />
             </div>
@@ -52,7 +54,7 @@ export default function PrimeColumn({
                 Prime campaign messages will appear here.
               </p>
             </div>
-          </div>
+          </Stack>
         </div>
       ) : (
         <ThreadList
@@ -63,6 +65,6 @@ export default function PrimeColumn({
           onSelect={onSelect}
         />
       )}
-    </div>
+    </Stack>
   );
 }

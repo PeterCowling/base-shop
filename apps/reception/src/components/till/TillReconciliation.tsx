@@ -83,7 +83,7 @@ function TillReconciliation(): JSX.Element {
             <span className="text-foreground text-sm font-semibold">
               Opening float not set —{" "}
               <a
-                href="/eod-checklist/"
+                href="/eod"
                 className="underline hover:opacity-80"
                 data-cy="float-nudge-link"
               >

@@ -97,6 +97,9 @@ function formatCampaignStatus(status: string): string {
   return status.replace(/_/g, " ");
 }
 
+// Non-uniform gap-x/gap-y layout — DS Inline/Cluster only supports symmetric gaps
+const campaignMetaRowClass = "flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-foreground/60";
+
 export default function ThreadDetailPane({
   threadDetail,
   loading,
@@ -187,7 +190,7 @@ export default function ThreadDetailPane({
 
           {threadDetail.campaign && (
             <div className="mt-3 rounded-xl border border-border-1 bg-surface-2 px-3 py-2">
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-foreground/60">
+              <div className={campaignMetaRowClass}>
                 <span className="font-medium text-foreground">
                   {threadDetail.campaign.title ?? "Prime campaign"}
                 </span>

@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
-import { Stack } from "@acme/design-system/primitives";
+import { Inline, Stack } from "@acme/design-system/primitives";
 
 import { withModalBackground } from "../../hoc/withModalBackground";
 import type {
@@ -78,7 +78,7 @@ function TenderRemovalModalBase({
           </h2>
 
           {/* Form row */}
-          <div className="flex flex-wrap text-center items-center justify-center gap-12 mb-12">
+          <Inline gap={12} className="justify-center text-center mb-12">
             <Input
               compatibilityMode="no-wrapper"
               type="number"
@@ -110,7 +110,7 @@ function TenderRemovalModalBase({
                 <option value="BANK">Bank</option>
               </select>
             )}
-          </div>
+          </Inline>
 
           {/* Confirmation */}
           <Stack gap={4} align="center" className="mt-6">

@@ -105,12 +105,12 @@ Related-Analysis: docs/plans/prime-ds-rules-deferred/analysis.md
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | INVESTIGATE | Lint dry-run: remove all BRIK-3 disables, enumerate violations | 90% | S | Complete (2026-03-13) | - | TASK-02, TASK-03, TASK-04, TASK-05 |
-| TASK-02 | IMPLEMENT | Fix `container-widths-only-at`-only files (10 files) | 85% | M | Pending | TASK-01 | TASK-07 |
-| TASK-03 | IMPLEMENT | Fix single-rule files: min-tap-size only (CheckInQR, ChatOptInControls) + enforce-layout-primitives only (NextActionCard) + inline-only BRIK-3 (RoutePlanner:271, RouteDetail:40+222) | 85% | S | Pending | TASK-01 | TASK-07 |
-| TASK-04 | IMPLEMENT | Fix multi-rule pages cluster (ActivitiesClient, booking-details, find-my-stay, g/page, StaffLookupClient, CheckInClient, PositanoGuide, digital-assistant) | 82% | M | Pending | TASK-01 | TASK-07 |
-| TASK-05 | IMPLEMENT | Fix multi-rule components cluster (TaskCard, ServiceCard + 4 non-BRIK-3 files with pre-existing violations: chat/channel/page, pwa/CacheSettings, pwa/UpdatePrompt, quests/BadgeCollection) | 83% | M | Pending | TASK-01 | TASK-07 |
-| TASK-06 | IMPLEMENT | Add tap-size class assertions to key test files | 80% | S | Pending | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-07 |
-| TASK-07 | IMPLEMENT | Final full-codebase lint validation: `pnpm --filter prime lint -- --full` | 88% | S | Pending | TASK-06 | - |
+| TASK-02 | IMPLEMENT | Fix `container-widths-only-at`-only files (10 files) | 85% | M | Complete (2026-03-13) | TASK-01 | TASK-07 |
+| TASK-03 | IMPLEMENT | Fix single-rule files: min-tap-size only (CheckInQR, ChatOptInControls) + enforce-layout-primitives only (NextActionCard) + inline-only BRIK-3 (RoutePlanner:271, RouteDetail:40+222) | 85% | S | Complete (2026-03-13) | TASK-01 | TASK-07 |
+| TASK-04 | IMPLEMENT | Fix multi-rule pages cluster (ActivitiesClient, booking-details, find-my-stay, g/page, StaffLookupClient, CheckInClient, PositanoGuide, digital-assistant) | 82% | M | Complete (2026-03-13) | TASK-01 | TASK-07 |
+| TASK-05 | IMPLEMENT | Fix multi-rule components cluster (TaskCard, ServiceCard + 4 non-BRIK-3 files with pre-existing violations: chat/channel/page, pwa/CacheSettings, pwa/UpdatePrompt, quests/BadgeCollection) | 83% | M | Complete (2026-03-13) | TASK-01 | TASK-07 |
+| TASK-06 | IMPLEMENT | Add tap-size class assertions to key test files | 80% | S | Complete (2026-03-13) | TASK-02, TASK-03, TASK-04, TASK-05 | TASK-07 |
+| TASK-07 | IMPLEMENT | Final full-codebase lint validation: `pnpm --filter prime lint -- --full` | 88% | S | Complete (2026-03-13) | TASK-06 | - |
 
 ## Engineering Coverage
 | Coverage Area | Planned handling | Tasks covering it | Notes |

@@ -1,74 +1,59 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-13T17:32:51.105Z",
+  "generated_at": "2026-03-13T21:19:36.445Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
-  "sessions_with_findings": 18,
+  "sessions_with_findings": 19,
   "findings": [
-    {
-      "session_id": "969abe03-192f-4bdd-8de7-1b162492fdef",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/969abe03-192f-4bdd-8de7-1b162492fdef.jsonl",
-      "updated_at": "2026-03-13T17:32:47.852Z",
-      "findings": [
-        "INVENTORY_ADMIN_TOKEN` isn't set in any local env file — the app will throw on startup if it's missing.",
-        "Here's what needs to change, ranked by priority: --- ## Security Gaps: inventory-uploader vs xa-uploader ### Critical **1.",
-        "Session revocation (completely absent)** xa-uploader uses a KV-backed minimum-issued-at timestamp — you can invalidate all active sessions instantly.",
-        "Security headers missing** xa-uploader sets CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy in middleware.",
-        "All 8 gaps are clear to route as `micro_build_ready` (the xa-uploader pattern is a proven reference for each one).",
-        "Env var needed ``` DATABASE_URL=postgresql://user:pass@host:5432/dbname ``` Currently missing from your `apps/inventory-uploader/.env.local` — add it there pointing at your local Postgres.",
-        "Standard Prisma with a `postgresql://` connection string **will not work in a Cloudflare Worker** — Workers run in a V8 isolate, not Node.js, so TCP socket connections (which Prisma uses) are blocked.",
-        "The API token doesn't have membership lookup access (known issue with account-scoped tokens).",
-        "Worker isn't deployed yet — can't set secrets on a non-existent script.",
-        "Migration failure — `DATETIME` is MySQL syntax, not valid Postgres.",
-        "Now resolve the failed migration state and re-run:",
-        "DATABASE_URL** — saved to `apps/inventory-uploader/.env.local`. Wrangler secret can't be set until the worker is first deployed; the `wrangler.toml` already documents `wrangler secret put DATABASE_URL` as a required post-deploy step.",
-        "Wrangler auth pattern (the `CLOUDFLARE_ACCOUNT_ID` fix that bypasses the memberships error)",
-        "TypeScript strictness** — enable `strict: true` (+ ideally `noUncheckedIndexedAccess`) and fix all resulting errors",
-        "Two parallel workstreams — integrating the audit into the startup loop, and fixing the inventory-uploader issues directly:",
-        "CRITICAL or HIGH findings **block launch** — same severity as security failures.",
-        "The failed task is benign — it was a duplicate attempt that found nothing staged because the fix agent had already committed.",
-        "Lines 55, 62: `no-alert` disable missing ticket ID → add `INV-0001`",
-        "Clean commit — 16 tasks successful, 0 errors.",
-        "what's noise: --- ## High-Value Improvements ### Functionality gaps that actually hurt operations **1."
-      ]
-    },
-    {
-      "session_id": "244be0a3-daea-473b-8bb9-2c146be50ba2",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/244be0a3-daea-473b-8bb9-2c146be50ba2.jsonl",
-      "updated_at": "2026-03-13T17:32:32.342Z",
-      "findings": [
-        "Anyone can issue refunds without authentication.** Same for `/admin/api/products` (create/edit/delete) and `/admin/api/inventory`.",
-        "Missing: `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`.",
-        "The fail-safe (`500` when unset) is correct but the omission from docs will cause confusion.",
-        "Here's what the audit found — a lot to unpack, so I'll lead with the critical gaps and then lay out the concrete paths forward.",
-        "Critical deployment gap:** Caryina's `wrangler.toml` has no `DATABASE_URL` secret and no `[[d1_databases]]` section.",
-        "Platform gap** — inventory-uploader has no product management (affects all shops)",
-        "Running targeted reads in parallel to fill evidence gaps.",
-        "Fix 4** → `## Test Landscape / Coverage Gaps` → Add `apps/inventory-uploader/src/app/api/inventory/[shop]/refunds/route.test.ts` as a gap to fill.",
-        "Issues ledger updated at `docs/plans/inventory-uploader-product-management/critique-history.md`.",
-        "All three payment helpers (`checkoutIdempotency.server`, `stripeRefund.server`, `provider.server`) are in `apps/caryina/src/lib/` and cannot be imported by inventory-uploader.",
-        "Issues ledger updated at `critique-history.md`.",
-        "This is an operator action that cannot be automated.",
-        "The next tasks (TASK-08, TASK-09) are blocked pending operator confirmation that the staging migration ran successfully.",
-        "Let me run the build-time ideas hook once more for the overall wave (it's advisory) and then surface the checkpoint clearly: The build has progressed to CHECKPOINT-01 — an operator gate that cannot be automated.",
-        "CARYINA_INVENTORY_BACKEND` is a hardcoded TypeScript constant — it can't be toggled by an env var until `inventoryBackend.ts` is changed to read from `process.env`.",
-        "Now run typecheck for caryina to verify nothing is broken:"
-      ]
-    },
     {
       "session_id": "e2d5e9f6-1b7c-4c18-942f-ff9f38dd32ae",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/e2d5e9f6-1b7c-4c18-942f-ff9f38dd32ae.jsonl",
-      "updated_at": "2026-03-13T17:32:08.059Z",
+      "updated_at": "2026-03-13T21:19:35.210Z",
       "findings": [
         "When offline, `generateCode()` calls `setGenerateError()` but there's no user-visible feedback path wired up.",
-        "If `refetch()` fails after the API call succeeds, the newly generated code is silently lost."
+        "If `refetch()` fails after the API call succeeds, the newly generated code is silently lost.",
+        "Now I'll produce the build-record, then run codemoot to refine results-review, then telemetry, bug scan, and complete:",
+        "Sidecar path resolution issue (pre-existing) — advisory/fail-open, logging and continuing.",
+        "Implementing in order: **PRIME-005 — Refetch error logging (simplest):**",
+        "Both validators pass (no blocking issues).",
+        "\"CF API confirmed: 0 databases named `prime-messaging` exist\"** — most critical; if a DB already existed, TASK-01 would fail or create a duplicate.",
+        "Issues ledger created at `docs/plans/prime-d1-messaging-db/critique-history.md`.",
+        "\"4 migration files are complete, confirmed, and apply cleanly in order\"** — if any migration has syntax errors or unmet dependencies, TASK-02 will fail.",
+        "Failure points:** - Token scope: addressed in TASK-01 Scout + Risks.",
+        "Issues ledger updated at `docs/plans/prime-d1-messaging-db/critique-history.md`.",
+        "The issue is clear: `wrangler d1 migrations apply` reads `database_id` from `wrangler.toml` to make the API call — the placeholder `000...000` is being passed.",
+        "[Major] — Missing call site: `chat/channel/page.tsx:46`**",
+        "Fix 1 continued — Update Evidence Gap Review and Scope Signal:**",
+        "No orphaned \"two call sites\" references remain except in the `## Evidence Gap Review` \"Gaps Addressed\" which I already updated.",
+        "Now write the critique-history.md: **Step AF-4 — Issues Ledger Update:**",
+        "Issues ledger created at `docs/plans/prime-activity-duration/critique-history.md`.",
+        "Biggest decision-quality failures: None Critical or Major.",
+        "Issues ledger updated at `docs/plans/prime-activity-duration/critique-history.md`.",
+        "Lint warnings in `chat/channel/page.tsx` are pre-existing DS compliance issues on unrelated lines (BRIK-3 deferred — same pattern as `ActivitiesClient.tsx`'s `eslint-disable` comment).",
+        "Now run the remaining steps in parallel — self-evolving bridge, reflection debt emitter, and bug scan:",
+        "bfr5d5a3g`** — codemoot `results-review` refinement timed out (exit 144), but the pre-filled scaffold was already committed in the archive. Advisory failure, non-blocking.",
+        "Info:** The core pipeline gap (missing KPI writer) is correctly identified.",
+        "Codemoot critique for PRIME-011 (`prime-portal-personalization`) timed out — session resume failed, fresh exec also hit idle timeout at 347s.",
+        "Warning 4:** Trigger auth missing — the scheduled endpoint must satisfy the `staff-owner-gate.ts` (`PRIME_ENABLE_STAFF_OWNER_ROUTES=true` + `x-prime-access-token`), but TASK-D describes a bare GET that would 403 in production.",
+        "guestSessionGuard › returns validation states`** — `validateGuestToken('token-a', okFetch)` resolves to `network_error` instead of `valid`. The agent's change to the validation path broke the happy-path case.",
+        "Security gap in TASK-06** — `/owner` and `/owner/scorecard` pages only gate on `canAccessStaffOwnerRoutes()` (the env flag).",
+        "checkins/docInsert/row1-3.tsx` — 9 errors",
+        "The 6 \"failed\" suites are `businessScorecard.test.ts` across 6 worktrees — import-time failures with 0 tests, meaning the code they reference doesn't exist yet (that's what PRIME-010 is building).",
+        "Consistent result — same pre-existing `businessScorecard.test.ts` import failures across 6 worktrees (Jest haste map duplicate conflict from parallel worktrees), but all 108 real tests pass.",
+        "PRIME-002 (`prime-checkin-code-resilience`) has TASK-01 complete but archive step failed with `nvm` error.",
+        "The `queue-state-complete` failed because the files weren't moved yet when it ran.",
+        "The prime lint-wrapper catches pre-existing `!max-w-md` and `simple-import-sort` errors across all changed prime files — blocking any prime commit until PRIME-009 clears those violations.",
+        "The PRIME-009 TASK-01 commit removed the BRIK-3 blanket disable, exposing `ds/no-important` and `simple-import-sort` errors — now blocking ALL prime commits.",
+        "All prime code commits are blocked until PRIME-009 TASK-02/03/04/05 land.",
+        "checkin/CheckInClient.tsx`, `error/page.tsx`, `ServiceCard.tsx`, `TaskCard.tsx`, `StaffOwnerDisabledNotice.tsx` — PRIME-009 TASK-05 remaining DS fixes",
+        "Sidecar extract has a path resolution issue (advisory/fail-open)."
       ]
     },
     {
       "session_id": "7e18b249-868e-4c73-877b-9d932d35381c",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/7e18b249-868e-4c73-877b-9d932d35381c.jsonl",
-      "updated_at": "2026-03-13T17:31:51.381Z",
+      "updated_at": "2026-03-13T21:16:59.746Z",
       "findings": [
         "Still on the login page — let me check for errors.",
         "Let me check if login succeeded (PIN setup panel) or if there's an auth error:",
@@ -129,7 +114,123 @@
         "The \"215 instances\" count is approximate and unsegmented by screen group — the planning constraint hints at 8 groups but the count breakdown by group is missing.",
         "The `_BookingTooltip` zIndex note now appears in both the Evidence Audit and the Risks table, but they are complementary (one names the open question, the other defines the risk) — no duplication issue.",
         "Issues ledger created at `docs/plans/reception-design-system-compliance/critique-history.md`.",
-        "Failure points: `<Inline>` align prop default unknown — mitigated by \"always set explicitly\" guidance."
+        "Failure points: `<Inline>` align prop default unknown — mitigated by \"always set explicitly\" guidance.",
+        "Two systematic Moderate gaps exist across all UI-impacting IMPLEMENT tasks: missing `Expected user-observable behavior` checklists and missing scoped post-build QA loop requirements.",
+        "Now run the post-fix consistency scan and update the plan Status to Active, then update the issues ledger:",
+        "The backtick in `.env.local` causes shell sourcing to fail.",
+        "Primary button `bg:#15843e` (green) with `fg:#1a1a1a` (near-black) — contrast ratio ~4.4:1, borderline failing WCAG AA.",
+        "/safe-management` throws a runtime error in dev — noting this.",
+        "Let me verify the background colours to confirm dark-on-dark failure.",
+        "Confirmed critical dark mode issue on Bar/POS: product cards have `bg: rgb(19,22,21)` (near-black) and `fg: rgb(0,0,0)` (pure black) — ~1.1:1 contrast, essentially invisible.",
+        "No h1 heading — staff cannot instantly confirm which app section they're in",
+        "gap={0}` is not a valid value — valid range is 1-6.",
+        "Import sort error in `PasswordReauthInline.tsx`.",
+        "Zero errors, only pre-existing warnings.",
+        "Once all 9 complete, I'll run TASK-12 (enable `ds/enforce-layout-primitives` as ESLint error gate) and then close out the plan with post-build artifacts.",
+        "The agent itself will handle the lint failure and report the full result when it finishes.",
+        "No Wave 2 commits landed yet — the wave agents are still running (or some failed to commit due to lock contention).",
+        "All Wave 2 agent edits are in the working tree — no TypeScript errors, just unused-disable warnings (expected until TASK-12 activates the rule).",
+        "There's a TypeScript error in staged prime files blocking the commit.",
+        "Now executing TASK-12 — enabling the `ds/enforce-layout-primitives` ESLint rule as an error gate:",
+        "The rule is now a hard CI error gate for future reception code."
+      ]
+    },
+    {
+      "session_id": "cc8e4c7b-3234-4953-8bad-9efd61cd640b",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/cc8e4c7b-3234-4953-8bad-9efd61cd640b.jsonl",
+      "updated_at": "2026-03-13T21:11:31.202Z",
+      "findings": [
+        "This is the core problem to solve first, because the standard Prisma client doesn't work in Cloudflare Workers — Workers don't support TCP connections, and Postgres speaks TCP.",
+        "Here's how each approach plays out at your cost level: --- ### The problem Standard `prisma` + any Postgres host = **TCP connection** = blocked in Workers runtime.",
+        "Session KV**: Fail-closed (not open like inventory-uploader's template)."
+      ]
+    },
+    {
+      "session_id": "804e41c4-4c53-4075-9536-bbf8e3e796a1",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/804e41c4-4c53-4075-9536-bbf8e3e796a1.jsonl",
+      "updated_at": "2026-03-13T21:04:43.574Z",
+      "findings": [
+        "The issue is clear: the header's `inProgressCount` is computed server-side (no snooze awareness), while the client-side `InProgressInbox` also filters out snoozed plans.",
+        "Live summary banner at top** showing total active items, items running right now, blocked count, next due — in large readable numbers without needing to scroll",
+        "B6 is already guarded at line 282 (not a bug).",
+        "Also remove B6/B7 from the task seeds and risks since they're not real bugs:",
+        "Now address the sub-nav data-plumbing gap — add a resolved question and planning note:",
+        "5 real bugs** (B1–B5): stale counts, hardcoded zero, React children count, SSR-locked badge, internal jargon in operator copy — each traced to exact file/line",
+        "Fix 4 (WARNING)**: TASK-01 B3 — reclassify from \"confirmed bug\" to \"code quality improvement\":",
+        "Testing/validation: TASK-01, TASK-02, TASK-03, TASK-05, TASK-07, TASK-08 ✓ — regression per bug fix; snapshots per phase",
+        "Evaluating what can be verified: The CSS infrastructure is in place (typecheck pass, lint 0 errors, correct utility patterns).",
+        "Three errors to fix in `ProcessImprovementsSubNav.tsx`.",
+        "Now run typecheck to confirm no regressions:",
+        "Fix the 3 errors - `text-left` → `text-start`, and move `flex` off the button element:",
+        "Replace the `<div className=\"flex items-center gap-2\">` wrapper with `<Inline gap={2}>`:",
+        "Now run the self-evolving build-output bridge and bug scan:",
+        "Phase 1** — 4 data accuracy bugs fixed (stale SSR counts, hardcoded zero badge, brittle children-length, internal label copy)",
+        "premium\" gap without restructuring anything."
+      ]
+    },
+    {
+      "session_id": "969abe03-192f-4bdd-8de7-1b162492fdef",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/969abe03-192f-4bdd-8de7-1b162492fdef.jsonl",
+      "updated_at": "2026-03-13T19:25:13.836Z",
+      "findings": [
+        "INVENTORY_ADMIN_TOKEN` isn't set in any local env file — the app will throw on startup if it's missing.",
+        "Here's what needs to change, ranked by priority: --- ## Security Gaps: inventory-uploader vs xa-uploader ### Critical **1.",
+        "Session revocation (completely absent)** xa-uploader uses a KV-backed minimum-issued-at timestamp — you can invalidate all active sessions instantly.",
+        "Security headers missing** xa-uploader sets CSP, HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy in middleware.",
+        "All 8 gaps are clear to route as `micro_build_ready` (the xa-uploader pattern is a proven reference for each one).",
+        "Env var needed ``` DATABASE_URL=postgresql://user:pass@host:5432/dbname ``` Currently missing from your `apps/inventory-uploader/.env.local` — add it there pointing at your local Postgres.",
+        "Standard Prisma with a `postgresql://` connection string **will not work in a Cloudflare Worker** — Workers run in a V8 isolate, not Node.js, so TCP socket connections (which Prisma uses) are blocked.",
+        "The API token doesn't have membership lookup access (known issue with account-scoped tokens).",
+        "Worker isn't deployed yet — can't set secrets on a non-existent script.",
+        "Migration failure — `DATETIME` is MySQL syntax, not valid Postgres.",
+        "Now resolve the failed migration state and re-run:",
+        "DATABASE_URL** — saved to `apps/inventory-uploader/.env.local`. Wrangler secret can't be set until the worker is first deployed; the `wrangler.toml` already documents `wrangler secret put DATABASE_URL` as a required post-deploy step.",
+        "Wrangler auth pattern (the `CLOUDFLARE_ACCOUNT_ID` fix that bypasses the memberships error)",
+        "TypeScript strictness** — enable `strict: true` (+ ideally `noUncheckedIndexedAccess`) and fix all resulting errors",
+        "Two parallel workstreams — integrating the audit into the startup loop, and fixing the inventory-uploader issues directly:",
+        "CRITICAL or HIGH findings **block launch** — same severity as security failures.",
+        "The failed task is benign — it was a duplicate attempt that found nothing staged because the fix agent had already committed.",
+        "Lines 55, 62: `no-alert` disable missing ticket ID → add `INV-0001`",
+        "Clean commit — 16 tasks successful, 0 errors.",
+        "what's noise: --- ## High-Value Improvements ### Functionality gaps that actually hurt operations **1.",
+        "Next: error states (item 6 — 401 auth expiry redirect).",
+        "401 error states** — Session-expired message with login link replaces raw \"HTTP 401\" in all fetch handlers",
+        "The `codemoot` failure (exit code 144 = not found) is the expected fail-open path — all builds used the inline critique fallback."
+      ]
+    },
+    {
+      "session_id": "244be0a3-daea-473b-8bb9-2c146be50ba2",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/244be0a3-daea-473b-8bb9-2c146be50ba2.jsonl",
+      "updated_at": "2026-03-13T18:15:27.684Z",
+      "findings": [
+        "Anyone can issue refunds without authentication.** Same for `/admin/api/products` (create/edit/delete) and `/admin/api/inventory`.",
+        "Missing: `Content-Security-Policy`, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`.",
+        "The fail-safe (`500` when unset) is correct but the omission from docs will cause confusion.",
+        "Here's what the audit found — a lot to unpack, so I'll lead with the critical gaps and then lay out the concrete paths forward.",
+        "Critical deployment gap:** Caryina's `wrangler.toml` has no `DATABASE_URL` secret and no `[[d1_databases]]` section.",
+        "Platform gap** — inventory-uploader has no product management (affects all shops)",
+        "Running targeted reads in parallel to fill evidence gaps.",
+        "Fix 4** → `## Test Landscape / Coverage Gaps` → Add `apps/inventory-uploader/src/app/api/inventory/[shop]/refunds/route.test.ts` as a gap to fill.",
+        "Issues ledger updated at `docs/plans/inventory-uploader-product-management/critique-history.md`.",
+        "All three payment helpers (`checkoutIdempotency.server`, `stripeRefund.server`, `provider.server`) are in `apps/caryina/src/lib/` and cannot be imported by inventory-uploader.",
+        "Issues ledger updated at `critique-history.md`.",
+        "This is an operator action that cannot be automated.",
+        "The next tasks (TASK-08, TASK-09) are blocked pending operator confirmation that the staging migration ran successfully.",
+        "Let me run the build-time ideas hook once more for the overall wave (it's advisory) and then surface the checkpoint clearly: The build has progressed to CHECKPOINT-01 — an operator gate that cannot be automated.",
+        "CARYINA_INVENTORY_BACKEND` is a hardcoded TypeScript constant — it can't be toggled by an env var until `inventoryBackend.ts` is changed to read from `process.env`.",
+        "Now run typecheck for caryina to verify nothing is broken:",
+        "Schema drift warning**: `InventoryItem` and ~10 other models had no migration files; `prisma migrate status` reports \"up to date\" but tables were missing — resolved with `prisma db push --accept-data-loss`; migration count is now 14",
+        "Here's the security posture post-changes: ## Overall: Clean, no critical issues The admin panel deletion went cleanly — zero admin routes remain.",
+        "The lint failure is in `apps/payment-manager` — a different app with pre-existing errors, not related to the cron change."
+      ]
+    },
+    {
+      "session_id": "ad340232-a169-4b03-9026-8cccec0cd033",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/ad340232-a169-4b03-9026-8cccec0cd033.jsonl",
+      "updated_at": "2026-03-13T17:51:55.851Z",
+      "findings": [
+        "The city tax bug (`90eafcfb62`, committed at 15:58 CET today) caused `saveActivity(CITY_TAX_PAYMENT)` — code 9 — to fire for **all** occupants in a booking (including future arrivals with balance=0) during any extension.",
+        "Code 9 with no code 12 is always a bug artifact — genuinely-paid-city-tax guests also have code 12 (CHECKIN_COMPLETE), so they'll still be filtered by that."
       ]
     },
     {
@@ -168,15 +269,6 @@
         "stage-operator-dictionary.yaml` at `3.12.0` — pre-existing gap, no new stage added, no regeneration required.",
         "The writer-lock bash -c block's git add seems to be not staging files — possibly lint-staged's rollback from the previous failed attempt is clearing things.",
         ".claude/skills/lp-launch-qa/modules/domain-security.md` — 8 OWASP runtime checks (SEC-01–SEC-08) with pass/fail/warn semantics"
-      ]
-    },
-    {
-      "session_id": "cc8e4c7b-3234-4953-8bad-9efd61cd640b",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/cc8e4c7b-3234-4953-8bad-9efd61cd640b.jsonl",
-      "updated_at": "2026-03-13T17:25:14.428Z",
-      "findings": [
-        "This is the core problem to solve first, because the standard Prisma client doesn't work in Cloudflare Workers — Workers don't support TCP connections, and Postgres speaks TCP.",
-        "Here's how each approach plays out at your cost level: --- ### The problem Standard `prisma` + any Postgres host = **TCP connection** = blocked in Workers runtime."
       ]
     },
     {
@@ -486,45 +578,6 @@
         "Critique round 2 still found 3 warnings — test coverage overstatement, logging accuracy, and an internal consistency issue around Ready-for-analysis status vs needing operator input.",
         "From the internet (no allowlisted IP)** — You get a 404 on every request. The app is invisible. You can't even confirm it exists beyond the Worker responding.",
         "SEO: Sitemap** — No `sitemap.xml` generation. Crawlers can't discover pages efficiently."
-      ]
-    },
-    {
-      "session_id": "d93e3f01-1ef8-48f7-b62c-bef4c297e6c8",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/d93e3f01-1ef8-48f7-b62c-bef4c297e6c8.jsonl",
-      "updated_at": "2026-03-12T14:07:22.046Z",
-      "findings": [
-        "Error count separation** — distinguish recoverable vs. unrecoverable errors in sync results (currently lumped together)",
-        "Let me now produce the structured intake and routing for each gap.",
-        "UI component**: `AnalyticsSummary` showing 4 key metrics in the InboxWorkspace header with loading/empty/error states",
-        "I'll decompose these 27 issues into independently actionable packets, create dispatches, and launch builds.",
-        "Type error from one of the builds — `rows_written` doesn't exist on the D1 result type.",
-        "The error may have already been fixed by one of the running agents.",
-        "Quality/failure queries apply time filters to both sides of the join",
-        "Error banner with retry button, 5-minute client-side cache via `useRef`.",
-        "Stricter email regex, `onBlur` validation with inline errors, separate save/refresh feedback.",
-        "SyncStepError` class tracks pipeline step on failure, metadata parse warnings logged, telemetry write failures logged.",
-        "A sub-agent lint failure — the agent will handle retries internally.",
-        "failed_checks` array now stored in draft metadata for analytics",
-        "Analytics error state UI + 5-minute client cache",
-        "The 0003 error was a false alarm — D1 used `ALTER TABLE ADD COLUMN` which is idempotent for already-existing columns (it errored but the tracker still recorded it, and the actual new migrations 0005-0007 ran fine).",
-        "14** — Add `send_failed` telemetry event",
-        "Quick fixes** (2 items): Idempotency off-by-one, guest map failure handling",
-        "Recovery failure handling** — guest map build failures now throw instead of silently continuing. Recovery will retry on next cycle. Done.",
-        "Send failure telemetry** — `send_failed` events now recorded for optimistic lock conflicts and Gmail errors.",
-        "Error messages sanitized to generic strings (no infrastructure details leak)",
-        "Regenerate route returns 400 for Prime threads (unsupported, not missing)",
-        "Typecheck clean, lint clean (0 errors, 14 pre-existing warnings only).",
-        "502 on the analytics route — likely a D1 query error.",
-        "The 502 is likely a D1 SQL error — possibly a missing table or column.",
-        "The 502 is likely a runtime error in the Worker.",
-        "The component gracefully handles errors (shows \"Analytics unavailable\" banner).",
-        "The 502 is likely a SQL execution error in D1.",
-        "Auth failures would return 401/403/500, not 502.",
-        "Also make the `json_each` query more defensive — guard against rows where `failed_checks` is missing:",
-        "Each metric query is now wrapped in `safeCompute()` — if a single SQL query fails, it returns empty data instead of crashing the Worker",
-        "Looking at the screenshot, the contrast issues are clear: 1.",
-        "Now let me also check the ThreadDetailPane and DraftReviewPanel for the detail area contrast issues.",
-        "The problem isn't the token value — it's that the inbox components overuse `text-muted-foreground` for content that should be more prominent."
       ]
     }
   ]

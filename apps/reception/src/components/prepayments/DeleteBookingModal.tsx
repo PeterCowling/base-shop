@@ -1,6 +1,7 @@
 import { type FC, memo, useCallback } from "react";
 
 import { Button } from "@acme/design-system/atoms";
+import { Cluster } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
 
 import { type PrepaymentData } from "../../hooks/client/checkin/usePrepaymentData";
@@ -33,7 +34,7 @@ const DeleteBookingModal: FC<DeleteBookingModalProps> = ({
       title="Confirm Deletion"
       maxWidth="max-w-sm"
       footer={
-        <div className="flex justify-end space-x-3">
+        <Cluster justify="end" gap={3}>
           <Button
             onClick={onClose}
             color="default"
@@ -49,7 +50,7 @@ const DeleteBookingModal: FC<DeleteBookingModalProps> = ({
           >
             {loading ? "Deleting..." : "Delete"}
           </Button>
-        </div>
+        </Cluster>
       }
     >
       <p className="mb-4">

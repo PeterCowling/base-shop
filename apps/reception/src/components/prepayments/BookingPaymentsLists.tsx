@@ -8,7 +8,7 @@ import React, {
 } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import { Stack } from "@acme/design-system/primitives";
+import { Cluster, Inline, Stack } from "@acme/design-system/primitives";
 
 import BookingRefChipPrepayComponent from "./BookingRefChipPrepay";
 import CheckInDateChip from "./CheckInDateChip";
@@ -107,7 +107,7 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
   const sectionStyles = {
     neutral: { bg: "bg-surface-2", border: "border-border-strong", bar: "bg-primary-main", text: "text-foreground" },
     warning: { bg: "bg-warning/10", border: "border-warning", bar: "bg-warning", text: "text-foreground" },
-    danger: { bg: "bg-error-main/10", border: "border-danger-fg", bar: "bg-danger-fg", text: "text-foreground" },
+    danger: { bg: "bg-error-main/10", border: "border-error-main", bar: "bg-error-main", text: "text-foreground" },
   } as const;
 
   const renderListSection = (
@@ -135,12 +135,12 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
             className="mb-8 w-full bg-surface border border-border-strong rounded-lg overflow-hidden"
           >
             {/* Subheader */}
-            <div className={`p-4 ${sectionStyles[variant].bg} border-b ${sectionStyles[variant].border} flex items-center gap-3`}>
+            <Inline gap={3} className={`p-4 ${sectionStyles[variant].bg} border-b ${sectionStyles[variant].border}`}>
               <div className={`h-5 w-0.5 rounded-full ${sectionStyles[variant].bar} shrink-0`} aria-hidden="true" />
               <h3 className={`font-heading font-bold text-sm uppercase tracking-wide ${sectionStyles[variant].text}`}>
                 {title}
               </h3>
-            </div>
+            </Inline>
 
             {/* Items transition */}
             <TransitionGroup component="ul" className="px-4 pb-4 pt-2">
@@ -179,7 +179,10 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                     classNames="fade-item"
                   >
                     <li ref={itemRef} className="my-4 fade-item-move">
-                      <div
+                      <Cluster
+                        justify="between"
+                        gap={3}
+                        wrap
                         role="button"
                         tabIndex={0}
                         title="Double-click to open this booking"
@@ -199,10 +202,10 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                             }
                           }
                         }}
-                        className="w-full text-start cursor-pointer transition-colors p-4 rounded-lg hover:bg-surface-2 font-body flex flex-wrap items-center justify-between gap-3"
+                        className="w-full text-start cursor-pointer transition-colors p-4 rounded-lg hover:bg-surface-2 font-body"
                       >
                         {/* Left side: Check-In Date, Booking Ref, Guest Name */}
-                        <div className="flex flex-wrap items-center gap-3">
+                        <Inline gap={3}>
                           <CheckInDateChip
                             checkInDate={checkInDate ?? undefined}
                           />
@@ -213,10 +216,10 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                           <span className="inline-block px-4 py-2 text-sm font-semibold">
                             {occupantName}
                           </span>
-                        </div>
+                        </Inline>
 
                         {/* Right side: Hours chip + Payment actions */}
-                        <div className="flex items-center gap-2">
+                        <Inline gap={2} wrap={false}>
                           <HoursChip
                             hoursElapsed={hoursElapsed}
                             thresholdHours={thresholdHours}
@@ -245,8 +248,8 @@ const BookingPaymentsLists: React.FC<BookingPaymentsListsProps> = ({
                               }}
                             />
                           )}
-                        </div>
-                      </div>
+                        </Inline>
+                      </Cluster>
                     </li>
                   </CSSTransition>
                 );

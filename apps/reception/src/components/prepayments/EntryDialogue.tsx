@@ -10,6 +10,7 @@ import React, {
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Cluster, Stack } from "@acme/design-system/primitives";
 import { SimpleModal } from "@acme/ui/molecules";
 
 import { creditCardSchema } from "../../schemas/creditCardSchema";
@@ -170,7 +171,7 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
       className="font-body"
       showCloseButton={!isProcessing && !isSaving}
       footer={
-        <div className="flex flex-wrap gap-2 justify-end">
+        <Cluster gap={2} justify="end" wrap>
           {/* Process button only shows if card details already exist */}
           {hasExistingCard && (
             <Button
@@ -200,7 +201,7 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
           >
             Cancel
           </Button>
-        </div>
+        </Cluster>
       }
     >
       {/* Subtitle shown below title inside body */}
@@ -216,12 +217,12 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
       <div className="relative">
         {/* Loading indicator */}
         {(isProcessing || isSaving) && (
-          <div className="absolute inset-0 bg-surface/75 flex flex-col items-center justify-center gap-3 z-10">
+          <Stack gap={3} align="center" className="absolute inset-0 bg-surface/75 z-10 justify-center">
             <Spinner size="md" label={isSaving ? "Saving" : "Processing"} />
             <p className="text-sm font-medium text-foreground">
               {isSaving ? "Saving..." : "Processing..."}
             </p>
-          </div>
+          </Stack>
         )}
 
         <div className="space-y-4">

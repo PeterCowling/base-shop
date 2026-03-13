@@ -2,6 +2,7 @@ import { memo } from "react";
 
 import { Input } from "@acme/design-system";
 import { Button } from "@acme/design-system/atoms";
+import { Cluster, Inline } from "@acme/design-system/primitives";
 
 import { type PrepaymentData } from "../../hooks/client/checkin/usePrepaymentData";
 import DeleteButton from "../checkins/header/DeleteButton";
@@ -88,7 +89,7 @@ function PrepaymentsView({
     <PageShell title="PREPAYMENTS">
       <div>
         <div className="flex-grow bg-surface rounded-lg shadow-lg p-6 space-y-4">
-            <div className="w-full flex justify-end mb-4 gap-2">
+            <Cluster justify="end" gap={2} className="w-full mb-4">
               <div className="w-72">
                 <label
                   htmlFor="filterInput"
@@ -116,26 +117,26 @@ function PrepaymentsView({
                 Recall Last
               </Button>
               {isPrivileged && <DeleteButton onClick={handleDeleteClick} />}
-            </div>
+            </Cluster>
             {isDeleteMode && (
-              <div className="bg-warning/10 border border-warning rounded-lg px-4 py-3 flex items-center gap-3">
+              <Inline gap={3} className="bg-warning/10 border border-warning rounded-lg px-4 py-3">
                 <span className="text-warning shrink-0 text-base" aria-hidden="true">⚠</span>
                 <span className="text-foreground text-sm font-semibold">
                   Click a row to delete the booking
                 </span>
-              </div>
+              </Inline>
             )}
 
             {loading && (
-              <div className="my-4 flex items-center justify-center gap-2" aria-live="polite">
+              <Cluster justify="center" gap={2} className="my-4" aria-live="polite">
                 <Spinner size="md" label="Loading prepayment data" />
                 <p className="text-sm text-muted-foreground">Loading prepayment data...</p>
-              </div>
+              </Cluster>
             )}
 
             {error && (
               <div
-                className="text-danger-fg font-semibold text-center mt-4 p-3 bg-danger-fg/10 rounded-lg border border-danger-fg/30"
+                className="text-error-main font-semibold text-center mt-4 p-3 bg-error-light rounded-lg border border-error-main/30"
                 role="alert"
               >
                 Error loading payment data:{" "}

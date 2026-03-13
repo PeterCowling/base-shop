@@ -359,7 +359,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-13T14:06:21.960Z";
+  var GEN_TS = "2026-03-13T14:38:33.017Z";
 
   var IDEA_ITEMS = [
     {
@@ -533,86 +533,6 @@
       "date": "2026-03-13T14:00:00.000Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "078ba6e5826ac4d810a58f2b787427050336bc56",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
-      "title": "Reception till — a failed shift close leaves a stale authorisation that can affect the next attempt",
-      "body": "If closing the till fails — for example because it was already closed or because the wrong staff member tried to close it — the system leaves behind a stale manager override from the failed attempt. If that same member then tries again, the override from the failed attempt may still be active, bypassing the check that should require proper authorisation. The override should be cleared any time a close attempt fails.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T13:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "394423ac01752717e3bf61827f356487c6082308",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
-      "title": "Reception till — keycard count records are saved with wrong values, making the audit trail misleading",
-      "body": "When staff do a keycard count at the end of a shift, the system saves a record with zero for the cash count and zero for the difference — even though the actual number counted was different. The keycard number itself is saved correctly, but the record looks like nothing was counted. This could mislead a manager reviewing the audit trail, who would see a zero where they expect a real figure.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T13:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "6ac9d02406fa2af40797e6b38753d56c842cb456",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
-      "title": "Reception till — keycard count shows wrong total if a save fails, with no error shown to staff",
-      "body": "When staff add or return keycards through the till, the screen updates the keycard count immediately — but the actual save to the database happens a moment later with no error check. If the save fails silently, the screen shows a count that does not match the real record. Staff would not know the keycard transfer was never saved, and the count would be wrong until the next page reload.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T13:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "99dba1cbb2a8b4781378f0e15176e7eeb449ffa9",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
-      "title": "Reception till — staff cannot edit or delete transactions because no button exists to enter edit/delete mode",
-      "body": "The till screen has the ability to edit and delete transactions built into it, but there is no button for staff to activate that mode. The banners that prompt staff to click a row, and the row-click handlers, all exist — but with no way to turn them on, staff cannot correct mistakes in the transaction list. Any wrong entry is permanent until a manager manually fixes the database.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T13:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "7f7154b444e570d5cf881eeeea22561fb130301d",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
-      "title": "Reception till — the opening float entry form stays open after staff confirm it",
-      "body": "When a staff member sets the opening float for the day, the form does not close after they confirm. They have to dismiss it manually, and if they do not realise it is still open, they may accidentally submit it a second time. The exchange form (a similar flow) closes correctly — the float form is missing the same step.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T13:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "39ce2c0383c4d86e6671ad243bca7e3042961c2e",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

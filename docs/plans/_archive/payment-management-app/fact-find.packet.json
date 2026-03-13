@@ -1,0 +1,250 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "payment-management-app",
+  "source_artifact_path": "docs/plans/payment-management-app/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Refunding requires accessing a buried page inside Caryina only; switching payment processors requires redeploying the entire app with downtime risk; no cross-shop payment visibility exists.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A standalone payment management app (`apps/payment-manager/`) is live on Cloudflare Workers: per-shop processor selection switchable at runtime via UI, cross-portfolio order list with refund issuance, and the Caryina admin refund route migrated to a proxy then removed.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "No UI exists yet for cross-portfolio payments; Caryina admin has a minimal refund form",
+      "gap_or_implication": "Must design and build full UI from scratch: order list, order detail, refund modal, provider config form, reconciliation view, analytics",
+      "carry_forward_or_notes": "Design system (`@acme/design-system`) is available; confirm Tailwind v4 compatible with new app"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Caryina refund handler has validation errors and clear HTTP status codes",
+      "gap_or_implication": "New UI must handle: empty order list, loading states, refund in-flight, refund success/failure, provider switch confirmation modal, credential masked entry",
+      "carry_forward_or_notes": "Partial refund amount cap logic and line-item selection are new UX states not yet designed"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Caryina admin protected by middleware (cookie-based, admin-only matcher); Axerve credentials in env vars",
+      "gap_or_implication": "New app stores payment credentials encrypted in DB; encryption key as Worker secret; session auth + IP allowlist pattern from inventory-uploader; customer email masked in UI; credentials never returned decrypted to client. Minimum viable rotation procedure: run `wrangler secret put PAYMENT_MANAGER_ENCRYPTION_KEY` with new key value; admin endpoint re-encrypts all `ShopProviderCredential` rows before old key is retired",
+      "carry_forward_or_notes": "AES-256-GCM implementation needed (new, no existing pattern in repo); rotation endpoint must be built as part of TASK-03"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Caryina logs refund OK/KO to console with structured data; no audit trail for provider switches",
+      "gap_or_implication": "New app requires: immutable audit log for config changes, refund audit trail per order, structured logs for all provider API calls, alert emails for reconciliation errors (existing pattern in `checkoutReconciliation.server.ts`)",
+      "carry_forward_or_notes": "Audit log model is in spec; carry forward: how operator views logs beyond UI"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Caryina refund route: 9 unit tests; Axerve and Stripe packages have unit tests",
+      "gap_or_implication": "CF Workers Axerve test path limited (SOAP not available); new credential encryption needs unit tests; proxy behavior needs integration test",
+      "carry_forward_or_notes": "Test for Caryina proxy shape must be written before Phase 2 ships"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`CheckoutAttemptRecord` in JSON file; `StripeWebhookEvent` model already in schema (different from spec's proposed model); `RentalOrder` in Prisma for CMP",
+      "gap_or_implication": "**Critical**: spec proposes new `StripeWebhookEvent` model named `StripeWebhookEvent` but one already exists in schema with different fields — name collision must be resolved; Caryina idempotency data is in a JSON file (may not exist in production at time of migration)",
+      "carry_forward_or_notes": "Spec uses D1 inconsistently in Phase 1 migration script description (\"Populate D1 `orders` table\") but Technical Architecture section correctly says Neon/Prisma — clarify"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Caryina file-lock idempotency store: 5s timeout, stale lock cleanup; Stripe session TTL 30 min",
+      "gap_or_implication": "New DB-backed order store must handle concurrent refund requests (idempotent refund API); Axerve SOAP in CF Workers is a hard blocker — SOAP dynamic import not supported in V8 isolates",
+      "carry_forward_or_notes": "**Critical**: Axerve `callRefund` uses `import(\"soap\")` which CF Workers cannot execute; must replace with Axerve HTTP API or proxy via a Node.js service"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No existing rollout plan for payment-manager app; Caryina admin routes active and in use",
+      "gap_or_implication": "Phase-based rollout (5 phases in spec) is sensible; rollback triggers and methods not specified; credential encryption key rotation not defined; Caryina proxy in Phase 2 is the highest-risk step",
+      "carry_forward_or_notes": "If Payment Manager is down during Phase 2, Caryina refunds are blocked — need fallback plan"
+    }
+  ],
+  "open_operator_questions": [
+    "Should Axerve refunds in Payment Manager be handled by a Node.js proxy sidecar, or should the Axerve SOAP integration be replaced with Axerve's REST API?"
+  ],
+  "stage_payload": {
+    "scope_summary": "Build a standalone internal tool (`apps/payment-manager/`) that centralises payment lifecycle management across all shops in the portfolio. Currently, refunds can only be issued via a buried Caryina admin page, payment processor selection requires redeployment of `apps/caryina`, and no cross-portfolio order visibility exists. The new app replaces these gaps with runtime-switchable provider configuration, a unified cross-shop order list with refund issuance, checkout reconciliation visibility, and a webhook event log.",
+    "goals": [
+      "Per-shop processor selection (Axerve / Stripe) switchable at runtime without redeploy",
+      "Cross-portfolio order list with filtering, search, and refund issuance",
+      "Migrate Caryina's `/admin/api/refunds` route to the new app (then remove or proxy it)",
+      "Checkout reconciliation view and webhook event log",
+      "Basic analytics dashboard (revenue, refund rate, failed payment rate)"
+    ],
+    "non_goals": [
+      "Customer-facing payment UI (stays in each storefront)",
+      "Dispute/chargeback management",
+      "New payment provider integrations beyond Axerve and Stripe",
+      "Payout management or bank reconciliation"
+    ],
+    "constraints": [
+      "Cloudflare Workers V8 isolate runtime; TCP-based database connections not allowed — must use Neon HTTP adapter via `@prisma/adapter-neon`",
+      "`@acme/axerve` uses `soap` dynamic import (`import(\"soap\")`) — SOAP dynamic imports may not work in a CF Workers isolate; needs validation",
+      "Axerve refund route currently requires `export const runtime = \"nodejs\"` — incompatible with CF Workers unless Axerve client is replaced",
+      "`checkoutIdempotency.server.ts` uses `fs` — cannot run inside CF Workers; order data must be read from Prisma DB, not the JSON file",
+      "The new `StripeWebhookEvent` model in the spec conflicts with an existing `StripeWebhookEvent` model already in `packages/platform-core/prisma/schema.prisma`"
+    ],
+    "assumptions": [
+      "Neon project `silent-flower-70372159` (`eu-west-2`) is shared — new payment tables are additive migrations on top of existing schema",
+      "Session auth pattern from `apps/inventory-uploader` is the correct template (HMAC cookie + KV revocation)",
+      "Initial order data comes from Caryina's `checkout-idempotency.json` file (once the file exists on disk) or is populated going forward from checkout events",
+      "Cover-me-pretty orders live in `RentalOrder` model in Prisma and via the `addOrder` / `handleStripeWebhook` path in `@acme/platform-core`"
+    ],
+    "key_entry_points": [
+      "`apps/caryina/src/app/admin/api/refunds/route.ts` — only refund surface in portfolio; requires Node.js runtime (SOAP)",
+      "`apps/caryina/src/lib/checkoutSession.server.ts` — checkout initiation; calls `resolveCaryinaPaymentProvider()`; writes to JSON idempotency store",
+      "`apps/caryina/src/app/api/stripe-webhook/route.ts` — Stripe webhook receiver; finalize/expire via local handlers",
+      "`apps/cover-me-pretty/src/api/stripe-webhook/route.ts` — CMP Stripe webhook; uses `handleStripeWebhook` from platform-core",
+      "`apps/cover-me-pretty/src/api/checkout-session/route.ts` — CMP checkout; creates `RentalOrder` in Prisma",
+      "`apps/inventory-uploader/wrangler.toml` — Worker deployment template (KV + Prisma via Neon adapter)",
+      "`apps/inventory-uploader/src/lib/auth/session.ts` — session auth template (HMAC cookie + KV revocation)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "None blocking analysis entry. However, analysis must treat Axerve resolution (Open Q1": "REST vs sidecar proxy) as a required Option A vs Option B evaluation — one approach must be selected before planning can scope TASK-06 (Refund API). Analysis that defers this choice cannot produce a complete plan.",
+      "`/lp-do-analysis payment-management-app` — key analysis question": "Axerve REST vs SOAP-proxy approach (Option A vs Option B); the Stripe-only scope can be planned independently of this decision, but Axerve refund scope cannot."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Caryina refund infrastructure (entry points, contracts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Axerve package CF Workers compatibility",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Integration boundary not handled][Critical]: `callRefund()` uses `import(\"soap\")` — dynamic Node.js SOAP import; CF Workers V8 isolate cannot execute; route.ts declares `runtime = \"nodejs\"`",
+        "Resolution Required": "Yes — must resolve before Axerve refunds can be built for Payment Manager"
+      },
+      {
+        "Scope Area": "Stripe package CF Workers compatibility",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `createFetchHttpClient()` is CF Workers compatible",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Inventory-uploader pattern (auth, KV, Prisma, wrangler)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — full pattern confirmed",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Prisma schema (existing models + new models)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Type contract gap][Major]: spec proposes `model StripeWebhookEvent` but name already used in schema with different fields; Prisma migration would fail",
+        "Resolution Required": "Yes — rename to `PaymentWebhookEvent`"
+      },
+      {
+        "Scope Area": "Spec D1/Neon consistency",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap][Minor]: spec Phase 1 migration steps say \"D1 table\" but Tech Architecture correctly says Neon/Prisma — inconsistency in spec prose",
+        "Resolution Required": "No — spec prose inconsistency only; plan should use Neon/Prisma throughout"
+      },
+      {
+        "Scope Area": "Cover-me-pretty order data source",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `RentalOrder` in Prisma confirmed; no admin refund surface exists",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Credential encryption (new requirement)",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Missing precondition][Moderate]: no existing AES-256-GCM pattern or test seam in repo; `PAYMENT_MANAGER_ENCRYPTION_KEY` rotation procedure undefined",
+        "Resolution Required": "Yes — design decision needed before Task-03"
+      },
+      {
+        "Scope Area": "Checkout idempotency JSON migration",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Missing data dependency][Minor]: `data/shops/caryina/checkout-idempotency.json` does not yet exist; migration script must handle ENOENT",
+        "Resolution Required": "No — minor; script can handle gracefully"
+      },
+      {
+        "Scope Area": "Phase 2 proxy rollback plan",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Integration boundary not handled][Moderate]: if Payment Manager is down during Phase 2, Caryina loses refund capability entirely; no circuit-breaker or fallback defined in spec",
+        "Resolution Required": "Yes — define fallback behavior in plan"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Merchant needs to issue a refund or switch payment processor",
+      "end_condition": "Refund issued or provider switched",
+      "areas": [
+        {
+          "id": null,
+          "label": "Refund issuance (Caryina)",
+          "flow": "Operator navigates to `/admin` page inside `apps/caryina` → enters `shopTransactionId` or `bankTransactionId` + amount → POST `/admin/api/refunds` → handler looks up provider from JSON idempotency store → dispatches to Axerve SOAP or Stripe REST",
+          "owners": "`apps/caryina/src/app/admin/api/refunds/route.ts`, `checkoutIdempotency.server.ts`",
+          "evidence": "`apps/caryina/src/app/admin/api/refunds/route.ts`",
+          "issues": "Only accessible inside Caryina admin; no other shop can use it; Axerve requires Node.js runtime (SOAP)"
+        },
+        {
+          "id": null,
+          "label": "Provider selection",
+          "flow": "`PAYMENTS_PROVIDER` env var read at startup via `@acme/config/env/payments` (`paymentsEnv.PAYMENTS_PROVIDER`) → fallback to `\"axerve\"`",
+          "owners": "`apps/caryina/src/lib/payments/provider.server.ts`",
+          "evidence": "`provider.server.ts`",
+          "issues": "Changing provider requires redeploy of entire Caryina app; no audit trail"
+        },
+        {
+          "id": null,
+          "label": "Checkout session (Caryina)",
+          "flow": "Customer cart → POST `/api/checkout-session` → `checkoutSession.server.ts` calls `resolveCaryinaPaymentProvider()` → branches Axerve S2S or Stripe redirect → writes attempt record to `data/shops/caryina/checkout-idempotency.json` via file lock",
+          "owners": "`checkoutSession.server.ts`, `checkoutIdempotency.server.ts`",
+          "evidence": "`apps/caryina/src/lib/checkoutSession.server.ts`",
+          "issues": "File-based store not visible to other services; lock mechanism is local FS only"
+        },
+        {
+          "id": null,
+          "label": "Stripe webhook processing (Caryina)",
+          "flow": "Stripe POST `/api/stripe-webhook` → verify signature → `finalizeStripeSession` / `expireStripeSession` → updates JSON idempotency store",
+          "owners": "`apps/caryina/src/app/api/stripe-webhook/route.ts`, `stripeCheckout.server.ts`",
+          "evidence": "route.ts",
+          "issues": "Webhook events not persisted anywhere queryable; no cross-shop visibility"
+        },
+        {
+          "id": null,
+          "label": "Stripe webhook processing (CMP)",
+          "flow": "Stripe POST `/api/stripe-webhook` → verify → `handleStripeWebhook` (platform-core) → `assertStripeWebhookTenant`",
+          "owners": "`apps/cover-me-pretty/src/api/stripe-webhook/route.ts`",
+          "evidence": "route.ts",
+          "issues": "Uses different handler (`@acme/platform-core/stripe-webhook`), not Caryina's local handler; separate credentials"
+        },
+        {
+          "id": null,
+          "label": "Checkout reconciliation",
+          "flow": "`reconcileStaleCheckoutAttempts` called periodically from Caryina → lists stale in-progress attempts from JSON store → releases inventory holds → sends alert emails",
+          "owners": "`checkoutReconciliation.server.ts`",
+          "evidence": "`apps/caryina/src/lib/checkoutReconciliation.server.ts`",
+          "issues": "Only runs for Caryina; not visible to operator without reading logs"
+        },
+        {
+          "id": null,
+          "label": "Order data (Cover-me-pretty)",
+          "flow": "Checkout creates `RentalOrder` in Prisma via `addOrder()` from `@acme/platform-core/orders/creation`; fallback to `orders.jsonl` file",
+          "owners": "`apps/cover-me-pretty/src/api/checkout-session/route.ts`",
+          "evidence": "route.ts",
+          "issues": "Some orders may be in JSONL fallback rather than Prisma; no refund surface"
+        }
+      ]
+    }
+  }
+}

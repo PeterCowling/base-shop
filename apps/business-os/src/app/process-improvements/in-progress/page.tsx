@@ -2,14 +2,20 @@
 
 import Link from "next/link";
 
-import { InProgressInbox } from "@/components/process-improvements/InProgressInbox";
-import { loadActivePlans } from "@/lib/process-improvements/active-plans";
+import {
+  InProgressCountBadge,
+  InProgressInbox,
+  LiveNewIdeasCount,
+} from "@/components/process-improvements/InProgressInbox";
+import { collectInProgressDispatchIds, loadActivePlans } from "@/lib/process-improvements/active-plans";
+import { loadProcessImprovementsProjection } from "@/lib/process-improvements/projection";
 
 export const dynamic = "force-dynamic";
 
-export default function InProgressPage() {
+export default async function InProgressPage() {
+  const projection = await loadProcessImprovementsProjection();
   const activePlans = loadActivePlans();
-  const inProgressCount = activePlans.length;
+  const inProgressDispatchIds = collectInProgressDispatchIds(activePlans);
 
   return (
     <main className="min-h-dvh bg-bg text-fg">
@@ -33,15 +39,22 @@ export default function InProgressPage() {
 
             <div className="flex gap-3">
               <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
-                <p className="text-2xl font-semibold tabular-nums">{inProgressCount}</p>
+                <p className="text-2xl font-semibold tabular-nums">
+                  <InProgressCountBadge initialActivePlans={activePlans} />
+                </p>
                 <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">In progress</p>
               </div>
               <Link
                 href="/process-improvements/new-ideas"
                 className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3 transition-colors hover:bg-hero-foreground/16"
               >
-                <p className="text-2xl font-semibold tabular-nums">→</p>
-                <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">New ideas</p>
+                <p className="text-2xl font-semibold tabular-nums">
+                  <LiveNewIdeasCount
+                    initialItems={projection.items}
+                    initialInProgressDispatchIds={[...inProgressDispatchIds]}
+                  />
+                </p>
+                <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Awaiting decision</p>
               </Link>
             </div>
           </div>

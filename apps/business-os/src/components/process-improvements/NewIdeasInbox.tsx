@@ -38,6 +38,7 @@ interface NewIdeasInboxProps {
   initialItems: ProcessImprovementsInboxItem[];
   initialRecentActions: ProcessImprovementsRecentAction[];
   initialInProgressDispatchIds: string[];
+  initialInProgressCount: number;
 }
 
 interface PendingState {
@@ -82,6 +83,22 @@ function formatDeterministicDate(value: string): string {
   const day = String(parsed.getUTCDate()).padStart(2, "0");
 
   return `${day} ${monthLabel} ${year}`;
+}
+
+function formatPriorityLabel(reason: string): string {
+  const map: Record<string, string> = {
+    "Queue backlog P1": "High priority",
+    "Queue backlog P2": "Standard priority",
+    "Queue backlog P3": "Low priority",
+    "Deferred queue item": "Deferred",
+    "Unprioritized queue backlog": "No priority set",
+    "Resolved operator action": "Resolved",
+    "Snoozed operator action": "Snoozed",
+  };
+  // Dynamic patterns: "Active <kind>" → "Active", "Overdue <kind>" → "Overdue"
+  if (reason.startsWith("Active ")) return "Active";
+  if (reason.startsWith("Overdue ")) return "Overdue";
+  return map[reason] ?? reason;
 }
 
 function formatDeterministicDateTime(value: string): string {
@@ -442,7 +459,7 @@ function useNewIdeasInboxState(
         setItems((current) => removeItemFromList(current, item.itemKey));
         setRecentActions((current) => [
           createRecentQueueAction(item, decision, payload.targetPath, rationale),
-          ...current,
+          ...current.filter((record) => record.itemKey !== item.itemKey),
         ]);
       } catch (error) {
         setActionError(
@@ -757,7 +774,7 @@ function WorkItemPriorityPanel({ item }: { item: ProcessImprovementsInboxItem })
     >
       <p className="text-xs text-muted">Why now</p>
       <p className="mt-0.5 text-sm leading-relaxed text-secondary">
-        {item.priorityReason}
+        {formatPriorityLabel(item.priorityReason)}
       </p>
     </div>
   );
@@ -997,7 +1014,7 @@ function WorkItemCard({
   return (
     <div
       className={cn(
-        "group relative overflow-hidden rounded-xl border bg-surface-1 shadow-elevation-1 transition-all duration-200 hover:shadow-elevation-3",
+        "group relative rounded-xl border bg-surface-1 shadow-elevation-1 transition-all duration-200 hover:shadow-elevation-3",
         item.isOverdue
           ? "border-danger-soft"
           : isSelected
@@ -1050,7 +1067,7 @@ function WorkItemCard({
           isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
         )}
       >
-        <div className="overflow-hidden">
+        <div className={cn("overflow-hidden", isExpanded && "overflow-visible")}>
           <div className="space-y-3 px-4 pb-4 ps-5 md:px-5 md:pb-5 md:ps-6">
             {isProcessImprovementQueueItem(item) && item.decisionBrief ? (
               <DecisionBriefPanel
@@ -1460,10 +1477,12 @@ export function NewIdeasInbox({
   initialItems,
   initialRecentActions,
   initialInProgressDispatchIds,
+  initialInProgressCount,
 }: NewIdeasInboxProps) {
   const {
     activeItems,
     deferredItems,
+    activeOperatorActionCount,
     recentActions,
     pendingState,
     errorByKey,
@@ -1473,6 +1492,13 @@ export function NewIdeasInbox({
   } = useNewIdeasInboxState(initialItems, initialRecentActions);
   const [inProgressDispatchIds, setInProgressDispatchIds] = useState(
     () => new Set(initialInProgressDispatchIds)
+  );
+  const headerQueueIdeasCount = useMemo(
+    () =>
+      activeItems.filter(
+        (item) => isProcessImprovementQueueItem(item) && !inProgressDispatchIds.has(item.dispatchId)
+      ).length,
+    [activeItems, inProgressDispatchIds]
   );
   const { lastRefreshed, isRefreshing } = useAutoRefresh(
     refreshFromServer,
@@ -1554,6 +1580,31 @@ export function NewIdeasInbox({
 
   return (
     <div className="space-y-5">
+      <div className="flex gap-3">
+        <a
+          href="/process-improvements/in-progress"
+          className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3 transition-colors hover:bg-hero-foreground/16"
+        >
+          <p className="text-2xl font-semibold tabular-nums">{initialInProgressCount}</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">In progress</p>
+        </a>
+        <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
+          <p className="text-2xl font-semibold tabular-nums">{activeOperatorActionCount}</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Actions</p>
+        </div>
+        <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
+          <p className="text-2xl font-semibold tabular-nums">{headerQueueIdeasCount}</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">New ideas</p>
+        </div>
+        <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
+          <p className="text-2xl font-semibold tabular-nums">{deferredItems.length}</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Deferred</p>
+        </div>
+        <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
+          <p className="text-2xl font-semibold tabular-nums">{recentActions.length}</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Done</p>
+        </div>
+      </div>
       <div className="flex items-center justify-between">
         <ProcessImprovementsSummary
           newIdeasCount={newIdeasItems.length}

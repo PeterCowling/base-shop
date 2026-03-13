@@ -444,3 +444,94 @@ describe("NewIdeasInbox", () => {
     expect(screen.getByText(/BRIK · do at/i)).toBeInTheDocument();
   });
 });
+
+describe("formatPriorityLabel", () => {
+  const fetchMock = jest.fn();
+
+  beforeEach(() => {
+    fetchMock.mockReset();
+    (global as typeof globalThis & { fetch: typeof fetch }).fetch =
+      fetchMock as unknown as typeof fetch;
+  });
+
+  it("TC-B5-01: maps known internal label to plain language", async () => {
+    const user = userEvent.setup();
+    const p2Item: ProcessImprovementQueueInboxItem = {
+      ...baseItem,
+      itemKey: "idea-b5-01",
+      ideaKey: "idea-b5-01",
+      dispatchId: "dispatch-b5-01",
+      title: "B5-01 test item",
+      priorityReason: "Queue backlog P2",
+    };
+
+    render(
+      <NewIdeasInbox
+        initialItems={[p2Item]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    // Expand the card by clicking its title
+    await user.click(screen.getByRole("heading", { level: 3, name: "B5-01 test item" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Standard priority")).toBeInTheDocument();
+    });
+    expect(screen.queryByText("Queue backlog P2")).not.toBeInTheDocument();
+  });
+
+  it("TC-B5-02: maps Active decision_waiting label", async () => {
+    const user = userEvent.setup();
+    const activeItem: ProcessImprovementQueueInboxItem = {
+      ...baseItem,
+      itemKey: "idea-b5-02",
+      ideaKey: "idea-b5-02",
+      dispatchId: "dispatch-b5-02",
+      title: "B5-02 test item",
+      priorityReason: "Active blocker",
+    };
+
+    render(
+      <NewIdeasInbox
+        initialItems={[activeItem]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    await user.click(screen.getByRole("heading", { level: 3, name: "B5-02 test item" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("Active")).toBeInTheDocument();
+    });
+    expect(screen.queryByText("Active blocker")).not.toBeInTheDocument();
+  });
+
+  it("TC-B5-03: unknown label falls back to raw value", async () => {
+    const user = userEvent.setup();
+    const unknownItem: ProcessImprovementQueueInboxItem = {
+      ...baseItem,
+      itemKey: "idea-b5-03",
+      ideaKey: "idea-b5-03",
+      dispatchId: "dispatch-b5-03",
+      title: "B5-03 test item",
+      priorityReason: "some_unknown_value",
+    };
+
+    render(
+      <NewIdeasInbox
+        initialItems={[unknownItem]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    await user.click(screen.getByRole("heading", { level: 3, name: "B5-03 test item" }));
+
+    await waitFor(() => {
+      expect(screen.getByText("some_unknown_value")).toBeInTheDocument();
+    });
+  });
+});

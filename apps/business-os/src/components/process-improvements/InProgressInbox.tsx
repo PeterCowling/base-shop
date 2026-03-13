@@ -11,6 +11,7 @@ import { Stack } from "@acme/design-system/primitives/Stack";
 import { cn } from "@acme/design-system/utils/style";
 
 import type { ActivePlanProgress } from "@/lib/process-improvements/active-plans";
+import type { ProcessImprovementsInboxItem } from "@/lib/process-improvements/projection";
 
 /* eslint-disable ds/no-hardcoded-copy -- BOS-PI-102 internal operator UI copy pending i18n extraction [ttl=2026-06-30] */
 
@@ -467,6 +468,83 @@ function useInProgressAutoRefresh(
   }, [isPending]);
 
   return { lastRefreshed, isRefreshing };
+}
+
+export function InProgressCountBadge({
+  initialActivePlans,
+}: {
+  initialActivePlans: ActivePlanProgress[];
+}) {
+  const [count, setCount] = useState(
+    initialActivePlans.filter(
+      (p) => p.tasksTotal === 0 || p.tasksComplete < p.tasksTotal
+    ).length
+  );
+
+  useEffect(() => {
+    const snoozeMap = readSnoozeMap();
+    setCount(
+      initialActivePlans
+        .filter((p) => p.tasksTotal === 0 || p.tasksComplete < p.tasksTotal)
+        .filter((p) => !isSnoozed(p.slug, snoozeMap)).length
+    );
+  }, [initialActivePlans]);
+
+  return <>{count}</>;
+}
+
+export function LiveNewIdeasCount({
+  initialItems,
+  initialInProgressDispatchIds,
+}: {
+  initialItems: ProcessImprovementsInboxItem[];
+  initialInProgressDispatchIds: string[];
+}) {
+  const inProgressSet = new Set(initialInProgressDispatchIds);
+  const [count, setCount] = useState(
+    initialItems
+      .filter((item) => item.statusGroup === "active")
+      .filter(
+        (item) =>
+          item.itemType !== "process_improvement" || !inProgressSet.has(item.dispatchId)
+      ).length
+  );
+
+  useEffect(() => {
+    let mounted = true;
+
+    async function poll() {
+      if (!mounted) return;
+      try {
+        const response = await fetch("/api/process-improvements/items");
+        if (!response.ok || !mounted) return;
+        const data = (await response.json()) as {
+          items: ProcessImprovementsInboxItem[];
+          inProgressDispatchIds: string[];
+        };
+        if (mounted) {
+          const ids = new Set(data.inProgressDispatchIds);
+          const newCount = data.items
+            .filter((item) => item.statusGroup === "active")
+            .filter(
+              (item) =>
+                item.itemType !== "process_improvement" || !ids.has(item.dispatchId)
+            ).length;
+          setCount(newCount);
+        }
+      } catch {
+        // silently keep last known count on error
+      }
+    }
+
+    const id = setInterval(poll, 30_000);
+    return () => {
+      mounted = false;
+      clearInterval(id);
+    };
+  }, []);
+
+  return <>{count}</>;
 }
 
 export function InProgressInbox({ initialActivePlans }: InProgressInboxProps) {

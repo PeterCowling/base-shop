@@ -6,8 +6,9 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import type { ActivePlanProgress } from "@/lib/process-improvements/active-plans";
+import type { ProcessImprovementsInboxItem } from "@/lib/process-improvements/projection";
 
-import { InProgressInbox } from "./InProgressInbox";
+import { InProgressInbox, LiveNewIdeasCount } from "./InProgressInbox";
 
 const activePlan: ActivePlanProgress = {
   slug: "process-improvements-active-plan-activity-ring",
@@ -311,5 +312,131 @@ describe("InProgressInbox", () => {
       // (This checks the synchronous render output before act() flushes effects)
       expect(container.firstChild).toBeNull();
     });
+  });
+});
+
+function makeProcessImprovementItem(
+  overrides: Partial<ProcessImprovementsInboxItem> & { dispatchId: string }
+): ProcessImprovementsInboxItem {
+  return {
+    itemType: "process_improvement",
+    itemKey: overrides.dispatchId,
+    ideaKey: overrides.dispatchId,
+    dispatchId: overrides.dispatchId,
+    business: "BOS",
+    title: `Item ${overrides.dispatchId}`,
+    body: "Test body",
+    sourcePath: "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+    statusGroup: "active",
+    stateLabel: "Awaiting decision",
+    priorityBand: 50,
+    priorityReason: "Queue backlog",
+    isOverdue: false,
+    queueState: "enqueued",
+    queueMode: "trial",
+    locationAnchors: [],
+    availableActions: [],
+    ...overrides,
+  } as ProcessImprovementsInboxItem;
+}
+
+describe("LiveNewIdeasCount", () => {
+  beforeEach(() => {
+    jest.useFakeTimers();
+    global.fetch = jest.fn();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
+
+  it("TC-B4-01: shows count of active items not in progress dispatch IDs", () => {
+    const items = [
+      makeProcessImprovementItem({ dispatchId: "d-001" }),
+      makeProcessImprovementItem({ dispatchId: "d-002" }),
+      makeProcessImprovementItem({ dispatchId: "d-003" }),
+    ];
+
+    const { container } = render(
+      <LiveNewIdeasCount initialItems={items} initialInProgressDispatchIds={[]} />
+    );
+
+    expect(container).toHaveTextContent("3");
+  });
+
+  it("TC-B4-02: excludes items that are already in-progress dispatch IDs", () => {
+    const items = [
+      makeProcessImprovementItem({ dispatchId: "d-001" }),
+      makeProcessImprovementItem({ dispatchId: "d-002" }),
+      makeProcessImprovementItem({ dispatchId: "d-003" }),
+    ];
+
+    const { container } = render(
+      <LiveNewIdeasCount
+        initialItems={items}
+        initialInProgressDispatchIds={["d-002"]}
+      />
+    );
+
+    expect(container).toHaveTextContent("2");
+  });
+
+  it("TC-B4-03: updates count on poll response", async () => {
+    const initialItems = [
+      makeProcessImprovementItem({ dispatchId: "d-001" }),
+      makeProcessImprovementItem({ dispatchId: "d-002" }),
+    ];
+
+    const updatedItems = [
+      makeProcessImprovementItem({ dispatchId: "d-001" }),
+      makeProcessImprovementItem({ dispatchId: "d-002" }),
+      makeProcessImprovementItem({ dispatchId: "d-003" }),
+    ];
+
+    (global.fetch as jest.Mock).mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        items: updatedItems,
+        inProgressDispatchIds: [],
+      }),
+    });
+
+    const { container } = render(
+      <LiveNewIdeasCount initialItems={initialItems} initialInProgressDispatchIds={[]} />
+    );
+
+    expect(container).toHaveTextContent("2");
+
+    await act(async () => {
+      jest.advanceTimersByTime(30_000);
+      await Promise.resolve();
+    });
+
+    await waitFor(() => {
+      expect(container).toHaveTextContent("3");
+    });
+  });
+
+  it("TC-B4-04: keeps last known count on API error", async () => {
+    const initialItems = [
+      makeProcessImprovementItem({ dispatchId: "d-001" }),
+      makeProcessImprovementItem({ dispatchId: "d-002" }),
+    ];
+
+    (global.fetch as jest.Mock).mockRejectedValue(new Error("Network error"));
+
+    const { container } = render(
+      <LiveNewIdeasCount initialItems={initialItems} initialInProgressDispatchIds={[]} />
+    );
+
+    expect(container).toHaveTextContent("2");
+
+    await act(async () => {
+      jest.advanceTimersByTime(30_000);
+      await Promise.resolve();
+    });
+
+    expect(container).toHaveTextContent("2");
   });
 });

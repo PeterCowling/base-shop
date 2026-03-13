@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-import { Table, TableBody } from "@acme/design-system";
+import { Table, TableBody, TableCell, TableRow } from "@acme/design-system";
 
 import { MainProvider } from "../../context";
 import type { TMainContext } from "../../interfaces/mainContext.interface";
@@ -93,7 +93,17 @@ function Grid<TCustomStatus extends string = never>(
       <div className="rvg-wrapper" data-testid="grid-wrapper">
         <Table className="rvg-table">
           <Header title={title} info={info} />
-          <TableBody>{data.map((row) => renderRow(row))}</TableBody>
+          <TableBody>
+            {data.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={999} className="rvg-empty-state px-4 py-3 text-sm text-center italic opacity-50">
+                  No bookings
+                </TableCell>
+              </TableRow>
+            ) : (
+              data.map((row) => renderRow(row))
+            )}
+          </TableBody>
         </Table>
       </div>
     </MainProvider>

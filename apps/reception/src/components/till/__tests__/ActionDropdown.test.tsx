@@ -18,10 +18,14 @@ function renderButtons(
     handleKeycardCountClick = noop,
     shiftOpenTime = new Date(),
     roles = ["staff"],
+    setIsEditMode = noop,
+    setIsDeleteMode = noop,
   }: {
     handleKeycardCountClick?: () => void;
     shiftOpenTime?: Date | null;
     roles?: User["roles"];
+    setIsEditMode?: (v: boolean) => void;
+    setIsDeleteMode?: (v: boolean) => void;
   } = {}
 ) {
   render(
@@ -41,6 +45,8 @@ function renderButtons(
       handleAddKeycard={noop}
       handleLiftClick={noop}
       handleReturnKeycard={noop}
+      setIsEditMode={setIsEditMode}
+      setIsDeleteMode={setIsDeleteMode}
     />
   );
 }
@@ -110,5 +116,25 @@ describe("ActionDropdown", () => {
     expect(
       screen.getByRole("menuitem", { name: "Count Keycards" })
     ).toHaveAttribute("aria-disabled", "true");
+  });
+
+  it("TC-01: calls setIsEditMode(true) when Edit Transaction is clicked", async () => {
+    const user = userEvent.setup();
+    const mockSetIsEditMode = jest.fn();
+    renderButtons("Pete", { setIsEditMode: mockSetIsEditMode });
+
+    await user.click(screen.getByRole("button", { name: "Cash" }));
+    await user.click(screen.getByRole("menuitem", { name: "Edit Transaction" }));
+    expect(mockSetIsEditMode).toHaveBeenCalledWith(true);
+  });
+
+  it("TC-02: calls setIsDeleteMode(true) when Delete Transaction is clicked", async () => {
+    const user = userEvent.setup();
+    const mockSetIsDeleteMode = jest.fn();
+    renderButtons("Pete", { setIsDeleteMode: mockSetIsDeleteMode });
+
+    await user.click(screen.getByRole("button", { name: "Cash" }));
+    await user.click(screen.getByRole("menuitem", { name: "Delete Transaction" }));
+    expect(mockSetIsDeleteMode).toHaveBeenCalledWith(true);
   });
 });

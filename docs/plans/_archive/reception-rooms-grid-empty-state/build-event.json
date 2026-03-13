@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "reception-rooms-grid-empty-state",
+  "business": "BRIK",
+  "dispatch_id": "IDEA-DISPATCH-20260313140000-0003",
+  "build_date": "2026-03-13",
+  "execution_track": "code",
+  "outcome_type": "operational",
+  "outcome_statement": "Rooms with no bookings show a clear 'No bookings' message in their grid row instead of a blank space.",
+  "outcome_source": "operator",
+  "status": "complete"
+}

@@ -2,7 +2,7 @@
 
 import React from "react";
 import type { LucideIcon } from "lucide-react";
-import { Ban, CircleHelp, Cloud, Lock, Luggage, Umbrella, Wind } from "lucide-react";
+import { Ban, CircleHelp, Cloud, Lock, Luggage, Refrigerator, Umbrella, Wind } from "lucide-react";
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
 
@@ -31,7 +31,7 @@ export interface Guest {
   lastName: string;
   roomAllocated: string;
   loans?: Record<string, Loan>;
-  fridge?: string;
+  fridgeUsed?: boolean;
   isCompleted: boolean;
   /**
    * Indicates if bag storage is opted in for this occupant.
@@ -54,6 +54,12 @@ interface CheckoutTableProps {
     isCompleted: boolean,
     checkoutDate: string
   ) => void;
+  onToggleFridge: (
+    guestId: string,
+    bookingRef: string,
+    currentValue: boolean
+  ) => void;
+  pendingFridgeOccupantIds?: Set<string>;
 }
 
 /**
@@ -121,7 +127,7 @@ export function getLoanTitle(
  *   - Among equally complete, use booking's min allocated room
  */
 const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
-  ({ guests, removeLoanItem, onComplete }) => {
+  ({ guests, removeLoanItem, onComplete, onToggleFridge, pendingFridgeOccupantIds = new Set() }) => {
     if (!guests || guests.length === 0) {
       return (
         <div className="bg-surface border border-border-2 rounded-lg shadow-md p-8 text-center italic text-muted-foreground">
@@ -222,8 +228,27 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                       </span>
                     )}
                   </TableCell>
-                  <TableCell className="p-3 border-b border-border-2">
-                    {guest.fridge || ""}
+                  <TableCell className="p-3 border-b border-border-2 text-center">
+                    {guest.fridgeUsed && (
+                      <span title="Fridge used">
+                        <Refrigerator size={18} className="text-primary-main inline-block" aria-hidden="true" />
+                      </span>
+                    )}
+                    <Button
+                      onClick={() =>
+                        onToggleFridge(
+                          guest.guestId,
+                          guest.bookingRef,
+                          guest.fridgeUsed ?? false
+                        )
+                      }
+                      disabled={pendingFridgeOccupantIds.has(guest.guestId)}
+                      aria-label={`Toggle fridge storage for ${guest.guestId}`}
+                      className="inline-flex items-center px-1 ms-1 text-foreground hover:text-foreground transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                      title={guest.fridgeUsed ? "Unmark fridge used" : "Mark fridge used"}
+                    >
+                      <Refrigerator size={14} className="text-muted-foreground" aria-hidden="true" />
+                    </Button>
                   </TableCell>
                   <TableCell className="p-3 border-b border-border-2 text-center">
                     <Button

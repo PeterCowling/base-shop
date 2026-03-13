@@ -72,15 +72,19 @@ export function useTillReconciliationLogic(
   }, [closeAllForms]);
 
   const confirmAddKeycard = useCallback(
-    (count: number) => {
+    async (count: number) => {
       if (count > safeKeycards) {
         showToast("Not enough keycards in safe.", "error");
-        return Promise.resolve();
+        return;
       }
       tillLogic.addKeycardsFromSafe(count);
-      updateSafeKeycards(safeKeycards - count);
       setShowAddKeycardModal(false);
-      return recordKeycardTransfer(count, "fromSafe");
+      try {
+        await recordKeycardTransfer(count, "fromSafe");
+        updateSafeKeycards(safeKeycards - count);
+      } catch {
+        showToast("Failed to record keycard transfer.", "error");
+      }
     },
     [tillLogic, updateSafeKeycards, safeKeycards, recordKeycardTransfer]
   );
@@ -90,14 +94,18 @@ export function useTillReconciliationLogic(
   }, []);
 
   const confirmReturnKeycard = useCallback(
-    (count: number) => {
+    async (count: number) => {
       const success = tillLogic.returnKeycardsToSafe(count);
       if (!success) {
-        return Promise.resolve();
+        return;
       }
-      updateSafeKeycards(safeKeycards + count);
       setShowReturnKeycardModal(false);
-      return recordKeycardTransfer(count, "toSafe");
+      try {
+        await recordKeycardTransfer(count, "toSafe");
+        updateSafeKeycards(safeKeycards + count);
+      } catch {
+        showToast("Failed to record keycard transfer.", "error");
+      }
     },
     [tillLogic, updateSafeKeycards, safeKeycards, recordKeycardTransfer]
   );
@@ -116,11 +124,12 @@ export function useTillReconciliationLogic(
           },
           { run: () => recordFloatEntry(amount) },
         ]);
+        ui.setCashForm("none");
       } catch {
         showToast("Failed to confirm float.", "error");
       }
     },
-    [recordWithdrawal, recordDeposit, recordFloatEntry]
+    [recordWithdrawal, recordDeposit, recordFloatEntry, ui]
   );
 
   const confirmExchange = useCallback(

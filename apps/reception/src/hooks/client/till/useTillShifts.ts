@@ -448,6 +448,7 @@ export function useTillShifts() {
           "Cannot close the till because it is not currently open.",
           "error"
         );
+        setPendingOverride(null);
         return;
       }
 
@@ -457,6 +458,7 @@ export function useTillShifts() {
           "Only the shift owner or an authorized manager can close this shift.",
           "error"
         );
+        setPendingOverride(null);
         return;
       }
 
@@ -619,7 +621,7 @@ export function useTillShifts() {
       if (diff !== 0) {
         addKeycardDiscrepancy(diff);
       }
-      addCashCount("reconcile", 0, 0, undefined, undefined, counted);
+      addCashCount("reconcile", 0, diff, undefined, undefined, counted);
       setFinalKeycardCount(counted);
       setShowKeycardCountForm(false);
     },

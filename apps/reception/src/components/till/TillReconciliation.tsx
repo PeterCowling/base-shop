@@ -71,6 +71,8 @@ function TillReconciliation(): JSX.Element {
           handleAddKeycard={props.handleAddKeycard}
           handleReturnKeycard={props.handleReturnKeycard}
           handleLiftClick={props.handleLiftClick}
+          setIsEditMode={props.setIsEditMode}
+          setIsDeleteMode={props.setIsDeleteMode}
         />
         {props.shiftOpenTime === null && !floatDoneToday && (
           <div

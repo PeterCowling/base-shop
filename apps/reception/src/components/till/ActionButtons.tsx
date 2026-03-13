@@ -27,6 +27,8 @@ interface ActionButtonsProps {
   handleAddKeycard: () => void;
   handleReturnKeycard: () => void;
   handleLiftClick: () => void;
+  setIsEditMode: (v: boolean) => void;
+  setIsDeleteMode: (v: boolean) => void;
 }
 
 const ActionButtons: FC<ActionButtonsProps> = ({
@@ -45,6 +47,8 @@ const ActionButtons: FC<ActionButtonsProps> = ({
   handleAddKeycard,
   handleReturnKeycard,
   handleLiftClick,
+  setIsEditMode,
+  setIsDeleteMode,
 }) => {
   const [openId, setOpenId] = useState<string | null>(null);
   const [showDrawerReauth, setShowDrawerReauth] = useState(false);
@@ -124,6 +128,16 @@ const ActionButtons: FC<ActionButtonsProps> = ({
               {
                 label: "Lift",
                 onClick: handleLiftClick,
+                disabled: !shiftOpenTime,
+              },
+              {
+                label: "Edit Transaction",
+                onClick: () => setIsEditMode(true),
+                disabled: !shiftOpenTime,
+              },
+              {
+                label: "Delete Transaction",
+                onClick: () => setIsDeleteMode(true),
                 disabled: !shiftOpenTime,
               },
             ]}

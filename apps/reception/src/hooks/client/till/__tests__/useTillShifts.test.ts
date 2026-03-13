@@ -278,11 +278,12 @@ describe("useTillShifts", () => {
       result.current.confirmKeycardReconcile(5);
     });
 
+    // expectedKeycardsAtClose=0 (no opening), counted=5 → diff=5
     expect(addKeycardDiscrepancy).toHaveBeenCalledWith(5);
     expect(addCashCount).toHaveBeenCalledWith(
       "reconcile",
       0,
-      0,
+      5,
       undefined,
       undefined,
       5
@@ -488,5 +489,99 @@ describe("useTillShifts — drawer lock and override", () => {
       expect.any(String),
       expect.not.objectContaining({ override: expect.anything() })
     );
+  });
+
+  // TC-06: Bug 4 — keycard reconcile record must carry computed diff, not hardcoded 0
+  it("TC-06: confirmKeycardReconcile passes computed diff (counted − expected) to addCashCount", async () => {
+    // Opening shift with keycardCount=5 so expectedKeycardsAtClose=5
+    cashCounts = [
+      {
+        user: "Alice",
+        timestamp: "2024-01-01T09:00:00Z",
+        type: "opening",
+        count: 100,
+        keycardCount: 5,
+      },
+    ];
+
+    const { useTillShifts } = await import("../useTillShifts");
+    const { result } = renderHook(() => useTillShifts());
+
+    await waitFor(() => expect(result.current.expectedKeycardsAtClose).toBe(5));
+
+    act(() => {
+      // counted=3, expected=5 → diff = 3 − 5 = −2
+      result.current.confirmKeycardReconcile(3);
+    });
+
+    // Third argument must be diff (−2), not hardcoded 0
+    expect(addCashCount).toHaveBeenCalledWith(
+      "reconcile",
+      0,
+      -2,
+      undefined,
+      undefined,
+      3
+    );
+    expect(addKeycardDiscrepancy).toHaveBeenCalledWith(-2);
+  });
+
+  // TC-07: Bug 5 — pendingOverride must be cleared when confirmShiftClose returns early
+  it("TC-07: pendingOverride cleared on early return prevents stale auth bypass on next attempt", async () => {
+    // Set up Bob's shift so Alice (logged-in user) needs an override to close it
+    cashCounts = [
+      { user: "Bob", timestamp: "2024-01-01T09:00:00Z", type: "opening", count: 100 },
+    ];
+
+    const { useTillShifts } = await import("../useTillShifts");
+    const { result } = renderHook(() => useTillShifts());
+
+    await waitFor(() => expect(result.current.shiftOwner).toBe("Bob"));
+
+    // Trigger override flow to set pendingOverride internally
+    act(() => { result.current.handleCloseShiftClick("close"); });
+
+    const override = {
+      overriddenBy: "Manager",
+      overriddenByUid: "mgr-uid",
+      overriddenAt: "2024-01-01T10:00:00Z",
+      overrideReason: "Staff left early",
+    };
+
+    // Remove the shift BEFORE the re-render triggered by confirmDrawerOverride,
+    // so the hook's next render sees empty cashCounts
+    cashCounts = [];
+    act(() => { result.current.confirmDrawerOverride(override); });
+
+    // confirmShiftClose → "no open shift" early return; pendingOverride must be cleared
+    act(() => {
+      result.current.confirmShiftClose("close", 100, 0, true, {});
+    });
+    expect(showToastMock).toHaveBeenCalledWith(
+      "Cannot close the till because it is not currently open.",
+      "error"
+    );
+    expect(recordShiftClose).not.toHaveBeenCalled();
+    showToastMock.mockClear();
+    recordShiftClose.mockClear();
+
+    // Restore Bob's shift; trigger a re-render so the hook picks it up
+    cashCounts = [
+      { user: "Bob", timestamp: "2024-01-01T09:00:00Z", type: "opening", count: 100 },
+    ];
+    act(() => { result.current.setShowCloseShiftForm(true); });
+    await waitFor(() => expect(result.current.shiftOwner).toBe("Bob"));
+
+    // Call confirmShiftClose WITHOUT a new override.
+    // Bug 5 fix: pendingOverride was cleared → auth guard fires → error toast
+    // Bug 5 (unfixed): stale pendingOverride bypasses guard → close proceeds (WRONG)
+    act(() => {
+      result.current.confirmShiftClose("close", 100, 0, true, {});
+    });
+    expect(showToastMock).toHaveBeenCalledWith(
+      "Only the shift owner or an authorized manager can close this shift.",
+      "error"
+    );
+    expect(recordShiftClose).not.toHaveBeenCalled();
   });
 });

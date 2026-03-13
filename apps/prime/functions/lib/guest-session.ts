@@ -1,4 +1,4 @@
-import { FirebaseRest, errorResponse } from './firebase-rest';
+import { errorResponse,FirebaseRest } from './firebase-rest';
 
 export interface GuestSessionToken {
   bookingId: string;

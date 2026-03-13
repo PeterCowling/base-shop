@@ -16,5 +16,8 @@ database_id = "23db01e1-8e9a-4e0d-9ce4-2f46bb32df70"
 [vars]
 CF_FIREBASE_DATABASE_URL = "https://prime-f3652-default-rtdb.europe-west1.firebasedatabase.app"
 
-# API key is set as a Cloudflare Pages secret (not in source control):
+# Secrets are set as Cloudflare Pages secrets (not in source control):
 #   wrangler pages secret put CF_FIREBASE_API_KEY --project-name prime
+#   wrangler pages secret put PRIME_FIREBASE_SERVICE_ACCOUNT_EMAIL --project-name prime
+#   wrangler pages secret put PRIME_FIREBASE_SERVICE_ACCOUNT_PRIVATE_KEY --project-name prime
+#   wrangler pages secret put PRIME_KPI_AGGREGATION_SECRET --project-name prime

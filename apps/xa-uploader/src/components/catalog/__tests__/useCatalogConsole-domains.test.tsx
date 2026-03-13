@@ -72,6 +72,9 @@ function renderHarness() {
         <button type="button" onClick={() => void state.handleSave()}>
           save
         </button>
+        <button type="button" onClick={() => state.handleSaveAdvanceFeedback()}>
+          save-advance
+        </button>
         <button type="button" onClick={() => void state.handleDelete()}>
           delete
         </button>
@@ -302,6 +305,38 @@ describe("useCatalogConsole domain behavior", () => {
       expect(deleteCalls).toContain("/api/catalog/products/studio-jacket?storefront=xa-b");
     });
     expect(deleteCalls).not.toContain("/api/catalog/products/edited-after-select?storefront=xa-b");
+  });
+
+  it("TC-03c: save-advance opens a new draft after a successful save", async () => {
+    global.fetch = jest.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      const url = String(input);
+      if (url === "/api/uploader/session") return jsonResponse({ authenticated: true });
+      if (url.startsWith("/api/catalog/products?storefront=")) {
+        if (init?.method === "POST") return jsonResponse({ ok: true, product: VALID_DRAFT, revision: "rev-2" });
+        return jsonResponse({ ok: true, products: [VALID_DRAFT], revisionsById: { p1: "rev-2" } });
+      }
+      if (url.startsWith("/api/catalog/sync?storefront=")) {
+        return jsonResponse({ ok: true, ready: true, missingScripts: [] });
+      }
+      throw new Error(`Unhandled fetch: ${url}`);
+    }) as unknown as typeof fetch;
+
+    renderHarness();
+
+    await clickButton("seed-draft");
+    await clickButton("save");
+    await waitFor(() => {
+      expect(screen.getByTestId("selected-slug")).toHaveTextContent("studio-jacket");
+      expect(screen.getByTestId("draft-feedback")).toHaveTextContent("success:Saved product details.");
+    });
+
+    await clickButton("save-advance");
+
+    expect(screen.getByTestId("selected-slug")).toHaveTextContent("");
+    expect(screen.getByTestId("draft-revision")).toHaveTextContent("");
+    expect(screen.getByTestId("draft-feedback")).toHaveTextContent(
+      "success:Saved. Ready for next product.",
+    );
   });
 
   it("TC-04: sync action is gated when readiness check reports missing dependencies", async () => {

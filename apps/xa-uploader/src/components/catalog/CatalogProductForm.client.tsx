@@ -56,12 +56,13 @@ function StatusDot({
 
 function useSaveButtonTransition(params: {
   busy: boolean;
+  advanceContextKey: string;
   peerBusyRef: React.RefObject<boolean>;
   onSavedFeedback?: () => void;
   onSave: () => Promise<SaveResult>;
   t: ReturnType<typeof useUploaderI18n>["t"];
 }) {
-  const { busy, peerBusyRef, onSavedFeedback, onSave, t } = params;
+  const { busy, advanceContextKey, peerBusyRef, onSavedFeedback, onSave, t } = params;
   const [saveButtonState, setSaveButtonState] = React.useState<SaveButtonState>("idle");
   const saveAdvanceTimerRef = React.useRef<number | null>(null);
   const clearSaveAdvanceTimer = React.useCallback(() => {
@@ -76,6 +77,12 @@ function useSaveButtonTransition(params: {
       clearSaveAdvanceTimer();
     };
   }, [clearSaveAdvanceTimer]);
+
+  React.useEffect(() => {
+    if (saveButtonState !== "saved") return;
+    clearSaveAdvanceTimer();
+    setSaveButtonState("idle");
+  }, [advanceContextKey, clearSaveAdvanceTimer, saveButtonState]);
 
   const handleSaveClick = React.useCallback(async () => {
     if (saveButtonState === "saving" || saveButtonState === "saved" || busy || peerBusyRef.current) return;
@@ -394,9 +401,11 @@ export function CatalogProductForm({
   const autosaveCopy = getAutosaveCopy({ autosaveStatus, t });
   const saveBusyRef = React.useRef(false);
   const publishBusyRef = React.useRef(false);
+  const advanceContextKey = `${selectedSlug ?? "__new__"}:${draft.id ?? ""}:${draft.slug ?? ""}`;
   const { handleSaveClick, saveButtonClass, saveButtonLabel, saveButtonDisabled, cancelPendingSaveAdvance } =
     useSaveButtonTransition({
       busy,
+      advanceContextKey,
       peerBusyRef: publishBusyRef,
       onSave,
       onSavedFeedback,

@@ -901,6 +901,16 @@
     {
       "type": "pending-review",
       "business": "BOS",
+      "title": "Pending results review: xa-uploader-save-opens-new-draft",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/xa-uploader-save-opens-new-draft/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-13T12:01:33.982Z",
+      "path": "docs/plans/xa-uploader-save-opens-new-draft/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
       "title": "Pending results review: xa-uploader-memory-leak-fixes",
       "body": "Build is complete but no results review has been written yet.",
       "suggested_action": "Write docs/plans/xa-uploader-memory-leak-fixes/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",

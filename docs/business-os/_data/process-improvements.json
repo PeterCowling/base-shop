@@ -293,22 +293,6 @@
     {
       "type": "idea",
       "business": "PLAT",
-      "title": "Inventory uploader — low-stock products have no visual warning",
-      "body": "When a product is about to run out, staff need to notice it immediately. A coloured badge on low-stock items means nothing slips through unnoticed.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T19:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "41dac0b10cd9f2de77808453f3259cfed1e093fc",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "PLAT",
       "title": "Inventory uploader — receiving new stock has no preview step before it is committed",
       "body": "When a delivery arrives, staff need to count and enter the quantities. A preview step shows exactly what the stock levels will be after receiving the delivery, so a typo can be caught before it is committed to the system.",
       "source": "queue-state.json",

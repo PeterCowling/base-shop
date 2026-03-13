@@ -95,6 +95,10 @@ export function ProductForm({ shop, product, onSaved, onCancel }: Props) {
         body: JSON.stringify(body),
       });
       if (!res.ok) {
+        if (res.status === 401) {
+          setError("session-expired");
+          return;
+        }
         const json = (await res.json()) as { error?: string };
         setError(json.error ?? `HTTP ${res.status}`);
         return;
@@ -220,7 +224,20 @@ export function ProductForm({ shop, product, onSaved, onCancel }: Props) {
           </div>
         </div>
 
-        {error && <p className="text-xs text-danger-fg">{error}</p>}
+        {error && (
+          <p className="text-xs text-danger-fg">
+            {error === "session-expired" ? (
+              <>
+                Your session has expired.{" "}
+                <a href="/login" className="underline">
+                  Log in again
+                </a>
+              </>
+            ) : (
+              error
+            )}
+          </p>
+        )}
 
         <div className="flex gap-2 pt-1">
           <button

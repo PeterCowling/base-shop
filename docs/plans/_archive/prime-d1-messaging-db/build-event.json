@@ -1,0 +1,16 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "prime-d1-messaging-db",
+  "emitted_at": "2026-03-13T18:21:09.677Z",
+  "plan_path": "docs/plans/prime-d1-messaging-db/plan.md",
+  "build_record_path": "docs/plans/prime-d1-messaging-db/build-record.user.md",
+  "intended_outcome": {
+    "why": "The prime app includes a messaging database for storing guest messages. The database ID in the deployment config was a placeholder that was never replaced with a real one. Any feature that reads or writes messages could not work in production.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The real Cloudflare D1 database ID is in wrangler.toml, migrations have been applied, and the PRIME_MESSAGING_DB binding resolves correctly at runtime.",
+    "source": "operator"
+  },
+  "tasks_completed": 4,
+  "tasks_total": 4,
+  "delivery_complete": true
+}

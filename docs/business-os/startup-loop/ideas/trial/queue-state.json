@@ -29913,7 +29913,7 @@
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.85,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "evidence_refs": [
         "operator-stated: the products table shows current stock level as a number but uses no colour or badge to highlight when stock is low; a threshold like ≤5 units could trigger a warning badge",
         "apps/inventory-uploader/src/components/products/ProductsView.client.tsx",
@@ -29925,7 +29925,11 @@
       "why": "When a product is about to run out, staff need to notice it immediately. A coloured badge on low-stock items means nothing slips through unnoticed.",
       "intended_outcome": "Products with stock at or below a threshold show a visible warning badge. A filter tab lets staff review all low-stock items at a glance.",
       "created_at": "2026-03-13T19:00:00.000Z",
-      "processed_by": null
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_path": "docs/plans/inventory-uploader-low-stock-badge/micro-build.md",
+        "target_slug": "inventory-uploader-low-stock-badge"
+      }
     },
     {
       "schema_version": "dispatch.v2",

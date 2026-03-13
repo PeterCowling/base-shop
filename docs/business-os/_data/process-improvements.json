@@ -213,22 +213,6 @@
     {
       "type": "idea",
       "business": "BRIK",
-      "title": "Prime guest app — when background data refreshes fail, the failure is invisible and stale data stays on screen",
-      "body": "The app periodically refreshes guest data in the background. When that refresh fails, the failure is silently discarded and the guest or staff member continues to see outdated information. There is no log entry, no visible indicator, and no way to tell the problem is happening.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T20:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "8d223c50d23df62e8f4a45318ae00867218c4659",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
       "title": "Reception app — switching to dark mode resets to light mode whenever you change screen",
       "body": "When a staff member turns on dark mode, it only stays on for the current screen. As soon as they navigate to another screen, it flips back to light mode. Dark mode is effectively broken — staff cannot use it.",
       "source": "queue-state.json",

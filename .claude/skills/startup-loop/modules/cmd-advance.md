@@ -25,7 +25,8 @@ Keep this file as the stable `/startup-loop advance` entrypoint. Detailed gate a
 3. Load `modules/cmd-advance/market-product-website-gates.md` when the current transition touches MARKET-06 completion, PRODUCT-02 advisory checks, or WEBSITE->DO handoff.
 4. Load `modules/cmd-advance/signals-gates.md` when the current transition touches SIGNALS weekly advance (legacy S10).
 5. Load `modules/cmd-advance/sell-gates.md` when the current transition touches SELL-01 strategy design, SELL-08 activation readiness, or SELL-01 secondary dispatch.
-6. Always evaluate `modules/cmd-advance/gap-fill-gates.md` on any `advance` call.
+6. Load `modules/cmd-advance/s9b-gates.md` when the current transition touches the S9B launch QA gate or the S9B→SIGNALS advance.
+7. Always evaluate `modules/cmd-advance/gap-fill-gates.md` on any `advance` call.
 
 ## Gate And Dispatch Map
 
@@ -64,6 +65,12 @@ Load `modules/cmd-advance/sell-gates.md` for:
 - `GATE-SELL-ACT-01`
 - the SELL-01 secondary dispatch after `/lp-channels` completes
 - the supporting artifacts `stockist-target-list.user.md`, `channel-health-log.user.md`, `channel-policy.user.md`, and `weekly-demand-plan.user.md`
+
+### QA and Security Family
+
+Load `modules/cmd-advance/s9b-gates.md` for:
+- `GATE-LAUNCH-SEC`
+- S9B→SIGNALS advance gate (hard block on security domain fail or stale/missing QA report)
 
 ### Gap-Fill Family
 

@@ -1,17 +1,17 @@
 {
-  "last_updated": "2026-03-13T18:08:03.256Z",
+  "last_updated": "2026-03-13T18:17:04.642Z",
   "counts": {
-    "enqueued": 43,
+    "enqueued": 42,
     "processed": 27,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 336,
+    "completed": 337,
     "fact_find_ready": 32,
     "plan_ready": 0,
-    "micro_build_ready": 9,
+    "micro_build_ready": 8,
     "briefing_ready": 0,
     "total": 616
   },
@@ -308,7 +308,12 @@
         "statement": "The real Cloudflare D1 database ID is in wrangler.toml, migrations have been applied, and the PRIME_MESSAGING_DB binding resolves correctly at runtime.",
         "source": "operator"
       },
-      "created_at": "2026-03-13T20:00:00.000Z"
+      "created_at": "2026-03-13T20:00:00.000Z",
+      "processed_by": {
+        "target_path": "docs/plans/prime-d1-messaging-db/plan.md",
+        "target_route": "lp-do-fact-find",
+        "target_kind": "fact-find"
+      }
     },
     {
       "schema_version": "dispatch.v2",
@@ -30046,11 +30051,11 @@
         "apps/inventory-uploader/src/app/api/inventory/[shop]/products/route.ts"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.87,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: when a session expires and a fetch call returns 401, the current components display the raw HTTP error string; they should instead redirect to /login or show a clear 'Session expired — please log in again' message with a link",
         "apps/inventory-uploader/src/components/products/ProductsView.client.tsx",
@@ -30063,7 +30068,19 @@
       "why": "If a staff member's session expires while they are in the middle of work, they see a confusing error code with no explanation. Showing a clear message that says 'please log in again' means they know exactly what to do.",
       "intended_outcome": "401 responses from any inventory API route result in a clear 'Session expired' message with a login link, rather than a raw HTTP error code.",
       "created_at": "2026-03-13T19:00:00.000Z",
-      "processed_by": null
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_path": "docs/plans/inventory-uploader-error-states/micro-build.md",
+        "target_slug": "inventory-uploader-error-states",
+        "target_kind": "build",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-error-states/micro-build.md"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/inventory-uploader-error-states/micro-build.md",
+        "completed_at": "2026-03-13T18:15:10.685Z",
+        "outcome": "401 responses now show session-expired message with login link instead of raw HTTP error code",
+        "micro_build_path": "docs/plans/_archive/inventory-uploader-error-states/micro-build.md"
+      }
     },
     {
       "schema_version": "dispatch.v2",

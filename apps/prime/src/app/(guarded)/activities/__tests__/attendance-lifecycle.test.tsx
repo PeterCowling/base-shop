@@ -6,6 +6,7 @@ const mockSet = jest.fn(async () => undefined);
 const mockOnValue = jest.fn();
 const mockOff = jest.fn();
 const mockDb = { __db: true };
+const mockUseChat = jest.fn();
 
 jest.mock("react-i18next", () => ({
   useTranslation: () => ({
@@ -41,37 +42,35 @@ jest.mock("react-i18next", () => ({
 }));
 
 jest.mock("../../../../contexts/messaging/ChatProvider", () => ({
-  useChat: () => ({
-    activities: {
-      live1: {
-        id: "live1",
-        templateId: "tmpl1",
-        title: "Sunset Walk",
-        startTime: Date.now() - 10 * 60 * 1000,
-        status: "live",
-        createdBy: "staff",
-      },
-      upcoming1: {
-        id: "upcoming1",
-        templateId: "tmpl2",
-        title: "Boat Tour",
-        startTime: Date.now() + 3 * 60 * 60 * 1000,
-        status: "upcoming",
-        createdBy: "staff",
-      },
-      ended1: {
-        id: "ended1",
-        templateId: "tmpl3",
-        title: "Morning Hike",
-        startTime: Date.now() - 6 * 60 * 60 * 1000,
-        status: "archived",
-        createdBy: "staff",
-      },
-    },
-    hasMoreActivities: false,
-    loadMoreActivities: jest.fn(),
-  }),
+  useChat: (...args: unknown[]) => mockUseChat(...args),
 }));
+
+const defaultActivities = {
+  live1: {
+    id: "live1",
+    templateId: "tmpl1",
+    title: "Sunset Walk",
+    startTime: Date.now() - 10 * 60 * 1000,
+    status: "live" as const,
+    createdBy: "staff",
+  },
+  upcoming1: {
+    id: "upcoming1",
+    templateId: "tmpl2",
+    title: "Boat Tour",
+    startTime: Date.now() + 3 * 60 * 60 * 1000,
+    status: "upcoming" as const,
+    createdBy: "staff",
+  },
+  ended1: {
+    id: "ended1",
+    templateId: "tmpl3",
+    title: "Morning Hike",
+    startTime: Date.now() - 6 * 60 * 60 * 1000,
+    status: "archived" as const,
+    createdBy: "staff",
+  },
+};
 
 jest.mock("../../../../hooks/useUuid", () => ({
   __esModule: true,
@@ -102,6 +101,11 @@ jest.mock("../../../../services/firebase", () => ({
 describe("ActivitiesClient attendance lifecycle", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockUseChat.mockReturnValue({
+      activities: defaultActivities,
+      hasMoreActivities: false,
+      loadMoreActivities: jest.fn(),
+    });
     mockOnValue.mockImplementation((_path: string, callback: (snapshot: unknown) => void) => {
       callback({
         exists: () => true,
@@ -132,6 +136,11 @@ describe("ActivitiesClient attendance lifecycle", () => {
   });
 
   it("TC-05: live activity allows marking presence", async () => {
+    mockUseChat.mockReturnValueOnce({
+      activities: defaultActivities,
+      hasMoreActivities: false,
+      loadMoreActivities: jest.fn(),
+    });
     mockOnValue.mockImplementationOnce((_path: string, callback: (snapshot: unknown) => void) => {
       callback({
         exists: () => false,
@@ -147,5 +156,64 @@ describe("ActivitiesClient attendance lifecycle", () => {
     await waitFor(() => {
       expect(mockSet).toHaveBeenCalled();
     });
+  });
+});
+
+describe("ActivitiesClient — non-default durationMinutes lifecycle", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockOnValue.mockImplementation((_path: string, callback: (snapshot: unknown) => void) => {
+      callback({ exists: () => false, val: () => ({}) });
+      return jest.fn();
+    });
+  });
+
+  it("TC-P09: activity with durationMinutes:30, 25 min elapsed, renders as live (not ended)", () => {
+    // startTime 25 min ago; durationMinutes=30 → ends in 5 more min → still live
+    mockUseChat.mockReturnValueOnce({
+      activities: {
+        short1: {
+          id: "short1",
+          templateId: "tmpl1",
+          title: "Short Yoga",
+          startTime: Date.now() - 25 * 60 * 1000,
+          durationMinutes: 30,
+          status: "live" as const,
+          createdBy: "staff",
+        },
+      },
+      hasMoreActivities: false,
+      loadMoreActivities: jest.fn(),
+    });
+
+    const { container } = render(<ActivitiesClient />);
+    // Activity is in the "live" section — check the live badge is rendered
+    expect(container.textContent).toContain("Short Yoga");
+    expect(container.textContent).toContain("Live now");
+    expect(container.textContent).not.toContain("Event ended");
+  });
+
+  it("TC-P10: activity with durationMinutes:30, 35 min elapsed, renders as ended", () => {
+    // startTime 35 min ago; durationMinutes=30 → ended 5 min ago
+    mockUseChat.mockReturnValueOnce({
+      activities: {
+        short2: {
+          id: "short2",
+          templateId: "tmpl2",
+          title: "Quick Sprint",
+          startTime: Date.now() - 35 * 60 * 1000,
+          durationMinutes: 30,
+          status: "live" as const, // status field is 'live' but time has passed
+          createdBy: "staff",
+        },
+      },
+      hasMoreActivities: false,
+      loadMoreActivities: jest.fn(),
+    });
+
+    const { container } = render(<ActivitiesClient />);
+    expect(container.textContent).toContain("Quick Sprint");
+    expect(container.textContent).toContain("Event ended");
+    expect(container.textContent).not.toContain("Live now");
   });
 });

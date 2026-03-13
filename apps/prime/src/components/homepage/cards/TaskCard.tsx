@@ -1,4 +1,3 @@
-/* eslint-disable ds/container-widths-only-at, ds/enforce-layout-primitives -- BRIK-3 prime DS rules deferred */
 /**
  * TaskCard.tsx
  *
@@ -11,7 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
 
-import { Card } from '@acme/design-system/primitives';
+import { Card, Stack } from '@acme/design-system/primitives';
 
 export interface TaskCardProps {
   title: string;
@@ -72,7 +71,7 @@ export const TaskCard = memo(function TaskCard({
 
         {/* Content Section (Image and Note) */}
         {(image || note) && (
-          <div className="flex flex-col items-center p-4 pt-0 gap-4 w-full">
+          <Stack align="center" gap={4} className="p-4 pt-0 w-full">
             {image &&
               (link ? (
                 <Link href={link}>
@@ -81,7 +80,7 @@ export const TaskCard = memo(function TaskCard({
                     alt={alt || ''}
                     width={200}
                     height={200}
-                    className="max-w-48 object-cover rounded"
+                    className="w-48 object-cover rounded"
                     unoptimized
                   />
                 </Link>
@@ -92,7 +91,7 @@ export const TaskCard = memo(function TaskCard({
                     alt={alt || ''}
                     width={200}
                     height={200}
-                    className="max-w-48 object-cover rounded"
+                    className="w-48 object-cover rounded"
                     unoptimized
                   />
                 </>
@@ -102,7 +101,7 @@ export const TaskCard = memo(function TaskCard({
                 {note}
               </p>
             )}
-          </div>
+          </Stack>
         )}
       </Card>
     );

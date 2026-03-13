@@ -1,4 +1,4 @@
-/* eslint-disable ds/no-hardcoded-copy -- BRIK-3 prime DS rules deferred */
+/* eslint-disable ds/no-hardcoded-copy -- PRIME-CHK-001 hardcoded staff-facing copy deferred for i18n pass */
 'use client';
 
 /**

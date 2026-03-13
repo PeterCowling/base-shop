@@ -11,6 +11,8 @@ import { type FC, memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Award, Lock, Trophy } from 'lucide-react';
 
+import { Grid, Inline } from '@acme/design-system/primitives';
+
 import { BADGES, QUEST_TIERS } from '../../config/quests/questTiers';
 import { useComputedQuestState } from '../../hooks/useComputedQuestState';
 
@@ -48,7 +50,7 @@ const BadgeCollection: FC<BadgeCollectionProps> = memo(function BadgeCollection(
         {/* Badge count */}
         {badges.length > 0 && (
           <div className="flex items-center gap-1">
-            <div className="flex -space-x-1">
+            <Inline gap={0} className="-space-x-1">
               {badges.slice(0, 3).map((badgeId) => (
                 <div
                   key={badgeId}
@@ -57,7 +59,7 @@ const BadgeCollection: FC<BadgeCollectionProps> = memo(function BadgeCollection(
                   <BadgeIcon badgeId={badgeId} size="sm" className="text-accent" />
                 </div>
               ))}
-            </div>
+            </Inline>
             {badges.length > 3 && (
               <span className="text-xs text-muted-foreground">+{badges.length - 3}</span>
             )}
@@ -96,7 +98,7 @@ const BadgeCollection: FC<BadgeCollectionProps> = memo(function BadgeCollection(
       </div>
 
       {/* Badge grid */}
-      <div className="grid grid-cols-3 gap-3">
+      <Grid cols={3} gap={3}>
         {BADGES.map((badge) => {
           const isEarned = badges.includes(badge.id);
           const tier = QUEST_TIERS.find((t) => t.badge === badge.id);
@@ -147,7 +149,7 @@ const BadgeCollection: FC<BadgeCollectionProps> = memo(function BadgeCollection(
             </div>
           );
         })}
-      </div>
+      </Grid>
     </div>
   );
 });

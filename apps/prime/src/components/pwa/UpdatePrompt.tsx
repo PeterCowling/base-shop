@@ -77,7 +77,7 @@ export const UpdatePrompt: FC<UpdatePromptProps> = memo(function UpdatePrompt({
           <div className="mt-3 flex gap-2">
             <button
               onClick={applyUpdate}
-              className="px-3 py-1.5 text-sm font-medium text-primary-foreground bg-primary rounded hover:bg-primary/90 transition-colors"
+              className="min-h-11 min-w-11 px-3 py-1.5 text-sm font-medium text-primary-foreground bg-primary rounded hover:bg-primary/90 transition-colors"
             >
               Refresh now
             </button>

@@ -6,6 +6,8 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { ArrowLeft, Send, Users } from 'lucide-react';
 
+import { Grid, Inline } from '@acme/design-system/primitives';
+
 import { useChat } from '@/contexts/messaging/ChatProvider';
 import { useGuestProfiles } from '@/hooks/data/useGuestProfiles';
 import { readGuestSession } from '@/lib/auth/guestSessionGuard';
@@ -364,7 +366,7 @@ export default function ChannelPage() {
                     </div>
                   )}
                   {hasBadges && (
-                    <div className="mb-2 flex flex-wrap gap-1.5">
+                    <Inline gap={1} className="mb-2 flex-wrap gap-1.5">
                       {msg.kind === 'promotion' && (
                         <span className="rounded-full bg-warning-soft px-2 py-0.5 text-xs font-medium text-warning-foreground">
                           {t('promotionMessage', 'Promotion')}
@@ -385,11 +387,11 @@ export default function ChannelPage() {
                           {`${msg.draft.source === 'agent' ? t('agentDraft', 'Agent draft') : t('staffDraft', 'Staff draft')} · ${formatDraftStatusLabel(msg.draft.status)}`}
                         </span>
                       )}
-                    </div>
+                    </Inline>
                   )}
                   {textContent && <div className="text-sm whitespace-pre-wrap">{textContent}</div>}
                   {msg.links && msg.links.length > 0 && (
-                    <div className="mt-3 flex flex-wrap gap-2">
+                    <Inline gap={2} className="mt-3 flex-wrap">
                       {msg.links.map((linkItem, index) => (
                         <a
                           key={linkItem.id ?? `link-${index}`}
@@ -407,17 +409,17 @@ export default function ChannelPage() {
                           {linkItem.label}
                         </a>
                       ))}
-                    </div>
+                    </Inline>
                   )}
                   {imagePreviews.length > 0 && (
-                    <div className="mt-3 grid gap-2">
+                    <Grid gap={2} className="mt-3">
                       {imagePreviews.map((image) => (
                         <a
                           key={image.id}
                           href={image.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="block overflow-hidden rounded-xl border border-border/60"
+                          className="block min-h-11 min-w-11 overflow-hidden rounded-xl border border-border/60"
                         >
                           <div
                             className="h-40 w-full bg-cover bg-center"
@@ -427,10 +429,10 @@ export default function ChannelPage() {
                           />
                         </a>
                       ))}
-                    </div>
+                    </Grid>
                   )}
                   {msg.cards && msg.cards.length > 0 && (
-                    <div className="mt-3 grid gap-2">
+                    <Grid gap={2} className="mt-3">
                       {msg.cards.map((card, index) => (
                         <div
                           key={card.id ?? `card-${index}`}
@@ -468,10 +470,10 @@ export default function ChannelPage() {
                           </div>
                         </div>
                       ))}
-                    </div>
+                    </Grid>
                   )}
                   {fileAttachments.length > 0 && (
-                    <div className="mt-3 grid gap-2">
+                    <Grid gap={2} className="mt-3">
                       {fileAttachments.map((attachment, index) => (
                         <a
                           key={attachment.id ?? `file-${index}`}
@@ -487,7 +489,7 @@ export default function ChannelPage() {
                           {attachment.title || attachment.url}
                         </a>
                       ))}
-                    </div>
+                    </Grid>
                   )}
                   <div
                     className={`mt-1 text-xs ${

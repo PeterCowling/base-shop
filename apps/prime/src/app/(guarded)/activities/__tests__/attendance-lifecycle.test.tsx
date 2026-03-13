@@ -157,6 +157,18 @@ describe("ActivitiesClient attendance lifecycle", () => {
       expect(mockSet).toHaveBeenCalled();
     });
   });
+
+  it("TC-TAP-01: presence button meets minimum 40px tap target (min-h-11 min-w-11)", async () => {
+    mockOnValue.mockImplementation((_path: string, callback: (snapshot: unknown) => void) => {
+      callback({ exists: () => false, val: () => ({}) });
+      return jest.fn();
+    });
+    render(<ActivitiesClient />);
+    const markButtons = screen.getAllByRole("button", { name: "I'm here" });
+    expect(markButtons.length).toBeGreaterThan(0);
+    expect(markButtons[0].className).toContain("min-h-11");
+    expect(markButtons[0].className).toContain("min-w-11");
+  });
 });
 
 describe("ActivitiesClient — non-default durationMinutes lifecycle", () => {

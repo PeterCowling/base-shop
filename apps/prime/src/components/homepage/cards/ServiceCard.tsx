@@ -1,4 +1,3 @@
-/* eslint-disable ds/container-widths-only-at -- BRIK-3 prime DS rules deferred */
 /**
  * ServiceCard.tsx
  *
@@ -37,7 +36,7 @@ export const ServiceCard = memo(function ServiceCard({
   return (
     <Card
       className="
-        w-full max-w-sm
+        w-full
         overflow-hidden
         transition-transform duration-300
         flex flex-col
@@ -66,7 +65,7 @@ export const ServiceCard = memo(function ServiceCard({
               alt={alt || ''}
               width={200}
               height={200}
-              className="max-w-48 object-cover rounded"
+              className="w-48 object-cover rounded"
               unoptimized
             />
           </Link>

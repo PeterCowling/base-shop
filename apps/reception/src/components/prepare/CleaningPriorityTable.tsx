@@ -108,7 +108,7 @@ const CleaningPriorityTable: FC<CleaningPriorityTableProps> = memo(
                       color={isDirty ? "red" : "green"}
                     />
                     {isToday && isDirty && (
-                      <span className="ms-2 text-error-main font-semibold">
+                      <span className="ms-2 rounded-lg bg-error-light px-1 text-error-main font-semibold">
                         (Needs cleaning)
                       </span>
                     )}

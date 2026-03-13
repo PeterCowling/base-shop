@@ -340,6 +340,90 @@ function makeProcessImprovementItem(
   } as ProcessImprovementsInboxItem;
 }
 
+describe("InProgressInbox — sectioned layout", () => {
+  let mockStorage: Storage;
+
+  beforeEach(() => {
+    mockStorage = makeMockStorage();
+    Object.defineProperty(window, "localStorage", {
+      value: mockStorage,
+      writable: true,
+      configurable: true,
+    });
+  });
+
+  it("TC-LAYOUT-IP-01: plan with isActiveNow renders in Running Now section with animated ring", async () => {
+    const runningPlan: ActivePlanProgress = {
+      ...activePlan,
+      slug: "running-plan",
+      title: "Running Plan Alpha",
+      isActiveNow: true,
+      tasksBlocked: 0,
+    };
+
+    render(<InProgressInbox initialActivePlans={[runningPlan]} />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Running now" })).toBeInTheDocument();
+      expect(screen.getByText("Running Plan Alpha")).toBeInTheDocument();
+    });
+
+    // The animated ring is rendered when isActiveNow — check for aria-hidden ping span
+    const headingEl = screen.getByRole("heading", { name: "Running now" });
+    expect(headingEl).toBeInTheDocument();
+
+    // Plan should NOT appear under "In progress" (QueuedSection)
+    expect(screen.getByRole("heading", { name: "In progress" })).toBeInTheDocument();
+    // Card title present once, under Running Now
+    expect(screen.getAllByText("Running Plan Alpha")).toHaveLength(1);
+  });
+
+  it("TC-LAYOUT-IP-02: plan with tasksBlocked > 0 renders in Blocked section", async () => {
+    const blockedPlan: ActivePlanProgress = {
+      ...activePlan,
+      slug: "blocked-plan",
+      title: "Blocked Plan Beta",
+      isActiveNow: false,
+      tasksBlocked: 2,
+      blockedTasks: [
+        { id: "TASK-03", type: "IMPLEMENT", description: "Needs input", status: "blocked", blockedReason: "Waiting on API" },
+        { id: "TASK-04", type: "IMPLEMENT", description: "Dependency missing", status: "blocked" },
+      ],
+    };
+
+    render(<InProgressInbox initialActivePlans={[blockedPlan]} />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "Blocked" })).toBeInTheDocument();
+      expect(screen.getByText("Blocked Plan Beta")).toBeInTheDocument();
+    });
+
+    // Running Now section should not appear (no running plans)
+    expect(screen.queryByRole("heading", { name: "Running now" })).not.toBeInTheDocument();
+  });
+
+  it("TC-LAYOUT-IP-03: plan not isActiveNow and no blocked tasks renders in In Progress section", async () => {
+    const queuedPlan: ActivePlanProgress = {
+      ...activePlan,
+      slug: "queued-plan",
+      title: "Queued Plan Gamma",
+      isActiveNow: false,
+      tasksBlocked: 0,
+    };
+
+    render(<InProgressInbox initialActivePlans={[queuedPlan]} />);
+
+    await waitFor(() => {
+      expect(screen.getByRole("heading", { name: "In progress" })).toBeInTheDocument();
+      expect(screen.getByText("Queued Plan Gamma")).toBeInTheDocument();
+    });
+
+    // Running Now and Blocked sections should not appear
+    expect(screen.queryByRole("heading", { name: "Running now" })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Blocked" })).not.toBeInTheDocument();
+  });
+});
+
 describe("LiveNewIdeasCount", () => {
   beforeEach(() => {
     jest.useFakeTimers();

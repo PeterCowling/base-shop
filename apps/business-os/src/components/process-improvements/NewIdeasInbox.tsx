@@ -379,6 +379,13 @@ function useProcessImprovementsDerivedItems(items: ProcessImprovementsInboxItem[
       activeOperatorActionCount: activeItems.filter(
         isProcessImprovementsOperatorActionItem
       ).length,
+      overdueActiveItems: activeItems.filter((item) => item.isOverdue),
+      operatorActionActiveItems: activeItems.filter(
+        (item) => !item.isOverdue && isProcessImprovementsOperatorActionItem(item)
+      ),
+      ideasQueueActiveItems: activeItems.filter(
+        (item) => !item.isOverdue && !isProcessImprovementsOperatorActionItem(item)
+      ),
     };
   }, [items]);
 }
@@ -397,6 +404,9 @@ function useNewIdeasInboxState(
     deferredItems,
     activeQueueCount,
     activeOperatorActionCount,
+    overdueActiveItems,
+    operatorActionActiveItems,
+    ideasQueueActiveItems,
   } = useProcessImprovementsDerivedItems(items);
   function setActionError(targetKey: string, error: string | null) {
     setErrorByKey((current) => {
@@ -568,6 +578,9 @@ function useNewIdeasInboxState(
     deferredItems,
     activeQueueCount,
     activeOperatorActionCount,
+    overdueActiveItems,
+    operatorActionActiveItems,
+    ideasQueueActiveItems,
     recentActions,
     pendingState,
     errorByKey,
@@ -1438,6 +1451,7 @@ function InboxSection({
   description,
   emptyCopy,
   count,
+  variant = "default",
   children,
 }: {
   id?: string;
@@ -1445,6 +1459,7 @@ function InboxSection({
   description: string;
   emptyCopy: string;
   count?: number;
+  variant?: "default" | "danger";
   children: ReactNode;
 }) {
   const childCount = Array.isArray(children) ? children.length : children ? 1 : 0;
@@ -1454,10 +1469,16 @@ function InboxSection({
     <section id={id} className="scroll-mt-4 space-y-3">
       <div className="flex items-baseline justify-between gap-3 px-1">
         <div className="flex items-center gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-fg">
+          <h2 className={cn(
+            "text-sm font-semibold uppercase tracking-wider",
+            variant === "danger" ? "text-danger" : "text-fg"
+          )}>
             {title}
           </h2>
-          <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-primary-soft px-1.5 text-xs font-semibold tabular-nums text-fg">
+          <span className={cn(
+            "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold tabular-nums",
+            variant === "danger" ? "bg-danger-soft text-danger-fg" : "bg-primary-soft text-fg"
+          )}>
             {displayCount}
           </span>
         </div>
@@ -1472,6 +1493,167 @@ function InboxSection({
         <div className="space-y-3">{children}</div>
       )}
     </section>
+  );
+}
+
+function NewIdeasHeaderStats({
+  inProgressCount,
+  activeOperatorActionCount,
+  headerQueueIdeasCount,
+  deferredCount,
+  doneCount,
+}: {
+  inProgressCount: number;
+  activeOperatorActionCount: number;
+  headerQueueIdeasCount: number;
+  deferredCount: number;
+  doneCount: number;
+}) {
+  return (
+    <div className="flex gap-3">
+      <a
+        href="/process-improvements/in-progress"
+        className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3 transition-colors hover:bg-hero-foreground/16"
+      >
+        <p className="text-2xl font-semibold tabular-nums">{inProgressCount}</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">In progress</p>
+      </a>
+      <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
+        <p className="text-2xl font-semibold tabular-nums">{activeOperatorActionCount}</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Actions</p>
+      </div>
+      <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
+        <p className="text-2xl font-semibold tabular-nums">{headerQueueIdeasCount}</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">New ideas</p>
+      </div>
+      <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
+        <p className="text-2xl font-semibold tabular-nums">{deferredCount}</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Deferred</p>
+      </div>
+      <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
+        <p className="text-2xl font-semibold tabular-nums">{doneCount}</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Done</p>
+      </div>
+    </div>
+  );
+}
+
+function useNewIdeasFilters(
+  activeItems: ProcessImprovementsInboxItem[],
+  deferredItems: ProcessImprovementsInboxItem[],
+  recentActions: ProcessImprovementsRecentAction[],
+  initialItems: ProcessImprovementsInboxItem[],
+  initialRecentActions: ProcessImprovementsRecentAction[],
+  inProgressDispatchIds: Set<string>
+) {
+  const [selectedBusiness, setSelectedBusiness] = useState(ALL_BUSINESSES_FILTER);
+  const [selectedType, setSelectedType] = useState(ALL_TYPES_FILTER);
+  const [selectedPriority, setSelectedPriority] = useState(ALL_PRIORITIES_FILTER);
+  const businessOptions = useMemo(
+    () => deriveBusinessOptions(initialItems, initialRecentActions),
+    [initialItems, initialRecentActions]
+  );
+  const filteredActiveItems = useMemo(() => {
+    let result = filterByBusiness(activeItems, selectedBusiness);
+    if (selectedType !== ALL_TYPES_FILTER) {
+      result = result.filter((item) => item.itemType === selectedType);
+    }
+    if (selectedPriority !== ALL_PRIORITIES_FILTER) {
+      result = result.filter(
+        (item) => isProcessImprovementQueueItem(item) && item.priority === selectedPriority
+      );
+    }
+    return result;
+  }, [activeItems, selectedBusiness, selectedType, selectedPriority]);
+  const filteredOverdueItems = useMemo(
+    () => filteredActiveItems.filter((item) => item.isOverdue),
+    [filteredActiveItems]
+  );
+  const filteredOperatorActionItems = useMemo(
+    () => filteredActiveItems.filter((item) => !item.isOverdue && isProcessImprovementsOperatorActionItem(item)),
+    [filteredActiveItems]
+  );
+  const filteredIdeasQueueItems = useMemo(
+    () => filteredActiveItems.filter(
+      (item) => !item.isOverdue && !isProcessImprovementsOperatorActionItem(item) &&
+        (!isProcessImprovementQueueItem(item) || !inProgressDispatchIds.has(item.dispatchId))
+    ),
+    [filteredActiveItems, inProgressDispatchIds]
+  );
+  const filteredDeferredItems = useMemo(
+    () => filterByBusiness(deferredItems, selectedBusiness),
+    [deferredItems, selectedBusiness]
+  );
+  const filteredRecentActions = useMemo(
+    () => filterByBusiness(recentActions, selectedBusiness),
+    [recentActions, selectedBusiness]
+  );
+  const filteredActiveQueueCount = useMemo(
+    () => filteredIdeasQueueItems.filter(isProcessImprovementQueueItem).length,
+    [filteredIdeasQueueItems]
+  );
+  return {
+    selectedBusiness, setSelectedBusiness,
+    selectedType, setSelectedType,
+    selectedPriority, setSelectedPriority,
+    businessOptions,
+    filteredOverdueItems, filteredOperatorActionItems, filteredIdeasQueueItems,
+    filteredDeferredItems, filteredRecentActions,
+    filteredActiveQueueCount,
+    filteredActiveOperatorActionCount: filteredOperatorActionItems.length,
+  };
+}
+
+function ActiveSwimlanes({
+  overdueItems, operatorActionItems, ideasQueueItems, deferredItems,
+  pendingState, errorByKey, isPending, onDecision,
+  expandedKeys, toggleExpanded, selectedKeys, toggleSelected,
+  activeEmptyCopy, deferredEmptyCopy,
+}: {
+  overdueItems: ProcessImprovementsInboxItem[];
+  operatorActionItems: ProcessImprovementsInboxItem[];
+  ideasQueueItems: ProcessImprovementsInboxItem[];
+  deferredItems: ProcessImprovementsInboxItem[];
+  pendingState: PendingState | null;
+  errorByKey: Record<string, string>;
+  isPending: boolean;
+  onDecision: (item: ProcessImprovementsInboxItem, decision: PendingDecision, postponeDays?: number, rationale?: string) => void;
+  expandedKeys: Set<string>;
+  toggleExpanded: (key: string) => void;
+  selectedKeys: Set<string>;
+  toggleSelected: (key: string) => void;
+  activeEmptyCopy: string;
+  deferredEmptyCopy: string;
+}) {
+  const renderCard = (item: ProcessImprovementsInboxItem, selectable = true) => (
+    <WorkItemCard
+      key={item.itemKey}
+      item={item}
+      pendingState={pendingState}
+      errorMessage={errorByKey[item.itemKey]}
+      isPending={isPending}
+      onDecision={onDecision}
+      isExpanded={expandedKeys.has(item.itemKey)}
+      onToggleExpanded={toggleExpanded}
+      isSelected={selectable ? selectedKeys.has(item.itemKey) : undefined}
+      onToggleSelected={selectable ? toggleSelected : undefined}
+    />
+  );
+  return (
+    <>
+      <InboxSection id="overdue" title="Overdue" description="Items past their due date — action required." emptyCopy="No overdue items." count={overdueItems.length} variant="danger">
+        {overdueItems.map((item) => renderCard(item))}
+      </InboxSection>
+      <InboxSection id="operator-actions" title="Operator Actions" description="Items waiting for an operator decision." emptyCopy="No pending operator actions." count={operatorActionItems.length}>
+        {operatorActionItems.map((item) => renderCard(item))}
+      </InboxSection>
+      <InboxSection id="ideas-queue" title="Ideas Queue" description="New ideas awaiting an initial decision." emptyCopy={activeEmptyCopy} count={ideasQueueItems.length}>
+        {ideasQueueItems.map((item) => renderCard(item))}
+      </InboxSection>
+      <InboxSection title="Deferred" description="Items temporarily moved out of the active queue." emptyCopy={deferredEmptyCopy} count={deferredItems.length}>
+        {deferredItems.map((item) => renderCard(item, false))}
+      </InboxSection>
+    </>
   );
 }
 
@@ -1495,81 +1677,31 @@ export function NewIdeasInbox({
     () => new Set(initialInProgressDispatchIds)
   );
   const headerQueueIdeasCount = useMemo(
-    () =>
-      activeItems.filter(
-        (item) => isProcessImprovementQueueItem(item) && !inProgressDispatchIds.has(item.dispatchId)
-      ).length,
+    () => activeItems.filter(
+      (item) => isProcessImprovementQueueItem(item) && !inProgressDispatchIds.has(item.dispatchId)
+    ).length,
     [activeItems, inProgressDispatchIds]
   );
-  const { lastRefreshed, isRefreshing } = useAutoRefresh(
-    refreshFromServer,
-    setInProgressDispatchIds,
-    isPending
-  );
+  const { lastRefreshed, isRefreshing } = useAutoRefresh(refreshFromServer, setInProgressDispatchIds, isPending);
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
   const toggleExpanded = useCallback((itemKey: string) => {
     setExpandedKeys((prev) => {
       const next = new Set(prev);
-      if (next.has(itemKey)) {
-        next.delete(itemKey);
-      } else {
-        next.add(itemKey);
-      }
+      if (next.has(itemKey)) { next.delete(itemKey); } else { next.add(itemKey); }
       return next;
     });
   }, []);
   const { selectedKeys, toggleSelected, clearSelection, bulkPending, handleBulkDecision } =
     useBulkSelection(activeItems, handleItemDecision);
-  const [selectedBusiness, setSelectedBusiness] = useState(
-    ALL_BUSINESSES_FILTER
-  );
-  const [selectedType, setSelectedType] = useState(ALL_TYPES_FILTER);
-  const [selectedPriority, setSelectedPriority] = useState(ALL_PRIORITIES_FILTER);
-  const businessOptions = useMemo(
-    () => deriveBusinessOptions(initialItems, initialRecentActions),
-    [initialItems, initialRecentActions]
-  );
-  const filteredActiveItems = useMemo(
-    () => {
-      let result = filterByBusiness(activeItems, selectedBusiness);
-      if (selectedType !== ALL_TYPES_FILTER) {
-        result = result.filter((item) => item.itemType === selectedType);
-      }
-      if (selectedPriority !== ALL_PRIORITIES_FILTER) {
-        result = result.filter(
-          (item) => isProcessImprovementQueueItem(item) && item.priority === selectedPriority
-        );
-      }
-      return result;
-    },
-    [activeItems, selectedBusiness, selectedType, selectedPriority]
-  );
-  // Split active items: "new ideas" = not linked to an in-progress plan
-  const newIdeasItems = useMemo(
-    () =>
-      filteredActiveItems.filter(
-        (item) =>
-          !isProcessImprovementQueueItem(item) ||
-          !inProgressDispatchIds.has(item.dispatchId)
-      ),
-    [filteredActiveItems, inProgressDispatchIds]
-  );
-  const filteredDeferredItems = useMemo(
-    () => filterByBusiness(deferredItems, selectedBusiness),
-    [deferredItems, selectedBusiness]
-  );
-  const filteredRecentActions = useMemo(
-    () => filterByBusiness(recentActions, selectedBusiness),
-    [recentActions, selectedBusiness]
-  );
-  const filteredActiveQueueCount = useMemo(
-    () => newIdeasItems.filter(isProcessImprovementQueueItem).length,
-    [newIdeasItems]
-  );
-  const filteredActiveOperatorActionCount = useMemo(
-    () => newIdeasItems.filter(isProcessImprovementsOperatorActionItem).length,
-    [newIdeasItems]
-  );
+  const {
+    selectedBusiness, setSelectedBusiness,
+    selectedType, setSelectedType,
+    selectedPriority, setSelectedPriority,
+    businessOptions,
+    filteredOverdueItems, filteredOperatorActionItems, filteredIdeasQueueItems,
+    filteredDeferredItems, filteredRecentActions,
+    filteredActiveQueueCount, filteredActiveOperatorActionCount,
+  } = useNewIdeasFilters(activeItems, deferredItems, recentActions, initialItems, initialRecentActions, inProgressDispatchIds);
   const activeEmptyCopy =
     selectedBusiness === ALL_BUSINESSES_FILTER
       ? "No new ideas waiting for a decision."
@@ -1581,34 +1713,16 @@ export function NewIdeasInbox({
 
   return (
     <div className="space-y-5">
-      <div className="flex gap-3">
-        <a
-          href="/process-improvements/in-progress"
-          className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3 transition-colors hover:bg-hero-foreground/16"
-        >
-          <p className="text-2xl font-semibold tabular-nums">{inProgressDispatchIds.size}</p>
-          <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">In progress</p>
-        </a>
-        <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
-          <p className="text-2xl font-semibold tabular-nums">{activeOperatorActionCount}</p>
-          <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Actions</p>
-        </div>
-        <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
-          <p className="text-2xl font-semibold tabular-nums">{headerQueueIdeasCount}</p>
-          <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">New ideas</p>
-        </div>
-        <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
-          <p className="text-2xl font-semibold tabular-nums">{deferredItems.length}</p>
-          <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Deferred</p>
-        </div>
-        <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
-          <p className="text-2xl font-semibold tabular-nums">{recentActions.length}</p>
-          <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Done</p>
-        </div>
-      </div>
+      <NewIdeasHeaderStats
+        inProgressCount={inProgressDispatchIds.size}
+        activeOperatorActionCount={activeOperatorActionCount}
+        headerQueueIdeasCount={headerQueueIdeasCount}
+        deferredCount={deferredItems.length}
+        doneCount={recentActions.length}
+      />
       <div className="flex items-center justify-between">
         <ProcessImprovementsSummary
-          newIdeasCount={newIdeasItems.length}
+          newIdeasCount={filteredIdeasQueueItems.length}
           inProgressCount={inProgressDispatchIds.size}
           activeQueueCount={filteredActiveQueueCount}
           activeOperatorActionCount={filteredActiveOperatorActionCount}
@@ -1623,58 +1737,29 @@ export function NewIdeasInbox({
           onPriorityChange={setSelectedPriority}
         />
       </div>
-
       <RefreshIndicator lastRefreshed={lastRefreshed} isRefreshing={isRefreshing} />
-
       <BulkActionBar
         selectedCount={selectedKeys.size}
         isPending={bulkPending || isPending}
         onBulkDecision={handleBulkDecision}
         onClearSelection={clearSelection}
       />
-
-      <InboxSection
-        id="new-ideas"
-        title="New ideas"
-        description="Items awaiting an initial decision — not yet being worked on."
-        emptyCopy={activeEmptyCopy} count={newIdeasItems.length}
-      >
-        {newIdeasItems.map((item) => (
-          <WorkItemCard
-            key={item.itemKey}
-            item={item}
-            pendingState={pendingState}
-            errorMessage={errorByKey[item.itemKey]}
-            isPending={isPending}
-            onDecision={handleItemDecision}
-            isExpanded={expandedKeys.has(item.itemKey)}
-            onToggleExpanded={toggleExpanded}
-            isSelected={selectedKeys.has(item.itemKey)}
-            onToggleSelected={toggleSelected}
-          />
-        ))}
-      </InboxSection>
-
-      <InboxSection
-        title="Deferred"
-        description="Items temporarily moved out of the active queue."
-        emptyCopy={deferredEmptyCopy}
-        count={filteredDeferredItems.length}
-      >
-        {filteredDeferredItems.map((item) => (
-          <WorkItemCard
-            key={item.itemKey}
-            item={item}
-            pendingState={pendingState}
-            errorMessage={errorByKey[item.itemKey]}
-            isPending={isPending}
-            onDecision={handleItemDecision}
-            isExpanded={expandedKeys.has(item.itemKey)}
-            onToggleExpanded={toggleExpanded}
-          />
-        ))}
-      </InboxSection>
-
+      <ActiveSwimlanes
+        overdueItems={filteredOverdueItems}
+        operatorActionItems={filteredOperatorActionItems}
+        ideasQueueItems={filteredIdeasQueueItems}
+        deferredItems={filteredDeferredItems}
+        pendingState={pendingState}
+        errorByKey={errorByKey}
+        isPending={isPending}
+        onDecision={handleItemDecision}
+        expandedKeys={expandedKeys}
+        toggleExpanded={toggleExpanded}
+        selectedKeys={selectedKeys}
+        toggleSelected={toggleSelected}
+        activeEmptyCopy={activeEmptyCopy}
+        deferredEmptyCopy={deferredEmptyCopy}
+      />
       <RecentlyActionedSection
         recentActions={filteredRecentActions}
         selectedBusiness={selectedBusiness}

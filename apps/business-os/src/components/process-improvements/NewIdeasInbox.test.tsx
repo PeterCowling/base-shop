@@ -133,7 +133,7 @@ describe("NewIdeasInbox", () => {
       fetchMock as unknown as typeof fetch;
   });
 
-  it("TC-01: renders one prioritized active worklist across queue and operator items", () => {
+  it("TC-01: renders three swimlane sections across queue and operator items", () => {
     render(
       <NewIdeasInbox
         initialItems={[baseItem, operatorActionItem]}
@@ -142,12 +142,17 @@ describe("NewIdeasInbox", () => {
       />
     );
 
+    // operatorActionItem is isOverdue=true → Overdue section
+    // baseItem is process_improvement, not overdue → Ideas Queue section
     expect(
-      screen.getByRole("heading", { name: "New ideas" })
+      screen.getByRole("heading", { name: "Ideas Queue" })
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("heading", { name: "Operator actions" })
-    ).not.toBeInTheDocument();
+      screen.getByRole("heading", { name: "Overdue" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "Operator Actions" })
+    ).toBeInTheDocument();
     expect(
       screen.queryByRole("heading", { name: "Awaiting decision" })
     ).not.toBeInTheDocument();
@@ -536,6 +541,57 @@ describe("formatPriorityLabel", () => {
   });
 });
 
+describe("TASK-07a swimlane categorization", () => {
+  const fetchMock = jest.fn();
+
+  beforeEach(() => {
+    fetchMock.mockReset();
+    (global as typeof globalThis & { fetch: typeof fetch }).fetch =
+      fetchMock as unknown as typeof fetch;
+  });
+
+  it("TC-LAYOUT-NI-01: renders Overdue, Operator Actions, and Ideas Queue section headings", () => {
+    const overdueItem: ProcessImprovementsOperatorActionItem = {
+      ...operatorActionItem,
+      itemKey: "overdue-item-1",
+      actionId: "overdue-item-1",
+      isOverdue: true,
+      statusGroup: "active",
+    };
+
+    const activeOperatorActionItem: ProcessImprovementsOperatorActionItem = {
+      ...operatorActionItem,
+      itemKey: "operator-action-active-1",
+      actionId: "operator-action-active-1",
+      isOverdue: false,
+      dueAt: undefined,
+      statusGroup: "active",
+      priorityReason: "Active blocker",
+    };
+
+    const queueItem: ProcessImprovementQueueInboxItem = {
+      ...baseItem,
+      itemKey: "queue-item-1",
+      ideaKey: "queue-item-1",
+      dispatchId: "dispatch-queue-1",
+      isOverdue: false,
+      statusGroup: "active",
+    };
+
+    render(
+      <NewIdeasInbox
+        initialItems={[overdueItem, activeOperatorActionItem, queueItem]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    expect(screen.getByRole("heading", { name: "Overdue" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Operator Actions" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Ideas Queue" })).toBeInTheDocument();
+  });
+});
+
 describe("B1/B2/B3 data accuracy", () => {
   const fetchMock = jest.fn();
 
@@ -587,7 +643,7 @@ describe("B1/B2/B3 data accuracy", () => {
     expect(inProgressPills.length).toBeGreaterThan(0);
   });
 
-  it("TC-B3-01: InboxSection count badge shows explicit count prop (newIdeasItems.length)", () => {
+  it("TC-B3-01: InboxSection count badge shows explicit count prop for Ideas Queue", () => {
     render(
       <NewIdeasInbox
         initialItems={[baseItem, operatorActionItem]}
@@ -596,10 +652,11 @@ describe("B1/B2/B3 data accuracy", () => {
       />
     );
 
-    // "New ideas" section header should show badge with "2" (both items are active, neither in-progress)
-    const heading = screen.getByRole("heading", { name: "New ideas" });
+    // baseItem is process_improvement, not overdue → Ideas Queue (count=1)
+    // operatorActionItem is isOverdue=true → Overdue (count=1), not Operator Actions
+    const heading = screen.getByRole("heading", { name: "Ideas Queue" });
     const badge = heading.closest("div")?.querySelector("span.tabular-nums");
-    expect(badge?.textContent).toBe("2");
+    expect(badge?.textContent).toBe("1");
   });
 
   it("TC-B3-02: InboxSection count badge shows 0 when items array is empty", () => {
@@ -611,7 +668,7 @@ describe("B1/B2/B3 data accuracy", () => {
       />
     );
 
-    const heading = screen.getByRole("heading", { name: "New ideas" });
+    const heading = screen.getByRole("heading", { name: "Ideas Queue" });
     const badge = heading.closest("div")?.querySelector("span.tabular-nums");
     expect(badge?.textContent).toBe("0");
   });

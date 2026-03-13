@@ -1,0 +1,171 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "prime-ds-rules-deferred",
+  "source_artifact_path": "docs/plans/prime-ds-rules-deferred/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-ds-rules-deferred/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Three pages in the prime app have design system rules disabled. These rules enforce minimum button and tap target sizes and consistent layout widths. Without them, these pages may have elements that are hard to tap on mobile, inconsistently laid out, or visually misaligned compared to the rest of the app. The disables are marked as deferred — they were never resolved.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All 24 files with file-level BRIK-3 eslint-disable comments and all inline BRIK-3 disable comments pass DS lint rules with no suppressions. `pnpm --filter prime lint` returns zero DS rule violations.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "24 files use raw `max-w-*` and ad-hoc flex on leaves; visual appearance unchanged at runtime (rule is lint-only)",
+      "gap_or_implication": "Layout structural regressions if layout primitives change reflow",
+      "carry_forward_or_notes": "Yes — verify no visible reflow after refactor"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Button states (disabled, hover) defined inline; tap targets may be physically small on mobile",
+      "gap_or_implication": "Buttons under 40px: rule requires BOTH min-h-10 AND min-w-10 (not just height); w-full alone does not satisfy the check",
+      "carry_forward_or_notes": "Yes — add both min-h-10 min-w-10 (or size-10) to all violating interactive elements"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "No auth, data-exposure, or privacy implications from lint compliance work",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No logging changes",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "DS migration tests exist but test colour only, not structural compliance",
+      "gap_or_implication": "No test asserts tap-size classes after fix",
+      "carry_forward_or_notes": "Yes — add targeted assertions for min-h-10 on buttons where easily testable"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "Purely UI class changes; no schemas, API shapes, or types touched",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "No hot paths or data fetching affected",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Single branch, standard CI gate; no feature flag needed",
+      "gap_or_implication": "Rollback = revert the PR",
+      "carry_forward_or_notes": "Yes — confirm CI lint passes cleanly before merge"
+    }
+  ],
+  "open_operator_questions": [
+    "Should the full set of 24 files be fixed, or only the three originally identified in the dispatch?"
+  ],
+  "stage_payload": {
+    "scope_summary": "Three DS lint rules — `ds/container-widths-only-at`, `ds/enforce-layout-primitives`, and `ds/min-tap-size` — are suppressed with blanket file-level `/* eslint-disable */` comments across 24 files in the Prime guest app. These were explicitly deferred under reference label \"BRIK-3\" during the initial Prime build. The disables prevent CI lint from flagging layout, tap-target, and container-width violations. The concrete risks are: interactive elements on mobile that are too small to tap reliably, inconsistent max-width container discipline, and ad-hoc flex/grid layout that bypasses DS layout pri",
+    "goals": [
+      "Enumerate every file affected by BRIK-3-tagged DS disable comments and the exact rules silenced in each.",
+      "Understand what compliance requires per-rule so the plan can be right-sized.",
+      "Determine per-rule effort: targeted add-class tweak vs. structural layout refactor.",
+      "Establish whether any files are exempt on legitimate grounds (not just deferred).",
+      "Produce planning evidence to either fix or formally document the deferral with a TTL."
+    ],
+    "non_goals": [
+      "Fixing the violations (fact-find only).",
+      "Covering non-BRIK-3 disables such as BRIK-2 meal-orders or PLAT-ENG-0001 (separate scope and different owner).",
+      "Any Prime backend or data-model changes."
+    ],
+    "constraints": [
+      "DS primitives (Stack, Inline, Grid, Sidebar, Cluster, Cover) are available via `@acme/design-system/primitives` and imported by some Prime files already — `GuestDirectory.tsx` and `TaskCard.tsx` already use `Button` and `Card` respectively.",
+      "`enforce-layout-primitives` only applies to **leaf** JSX elements (elements with no JSXElement children). Non-leaf elements with flex/grid are not flagged.",
+      "`container-widths-only-at` only fires when `confident` class parsing succeeds; template-literal classNames are not flagged.",
+      "`min-tap-size` only fires for `button`, `a`, and interactive `input` elements where class parsing is confident and the detected px size falls below 40px.",
+      "All 24 affected files already have semantic DS theme tokens (color migration completed in TASK-12 / `prime-ui-theme-centralization`)."
+    ],
+    "assumptions": [
+      "BRIK-3 is a label coined internally during the prime build sprint, not a Jira/Linear ticket; no external tracker link exists."
+    ],
+    "key_entry_points": [
+      "`apps/prime/src/app/(guarded)/activities/ActivitiesClient.tsx:1` — file-level disable for all 3 rules; BRIK-3",
+      "`apps/prime/src/app/(guarded)/chat/GuestDirectory.tsx` — no top-level disable found on re-read; dispatch evidence refs incorrectly identified this file; verified: no BRIK-3 file-level comment in current state",
+      "`apps/prime/src/app/staff-lookup/StaffLookupClient.tsx:1` — file-level disable for `container-widths-only-at` and `min-tap-size`; BRIK-3"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis prime-ds-rules-deferred`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Full file enumeration (all BRIK-3 files)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Rule semantics (what each rule checks)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "DS primitives availability in Prime",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Fix pattern per rule",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "GuestDirectory dispatch discrepancy",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Correctness Minor]: dispatch refs incorrect for GuestDirectory",
+        "Resolution Required": "No — resolved in Resolved Questions"
+      },
+      {
+        "Scope Area": "Test landscape coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Coverage Minor]: existing tests do not assert structural compliance",
+        "Resolution Required": "No — noted as gap"
+      },
+      {
+        "Scope Area": "Git history traceability",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only. The BRIK-3 suppressions are static eslint-disable comments in source files. No multi-step process, lifecycle state, CI lane, or operator runbook is affected beyond the lint gate. Removing the comments will cause CI lint to surface real violations which must be fixed before the branch can merge; that is the intent.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

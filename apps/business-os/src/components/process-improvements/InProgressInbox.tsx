@@ -374,58 +374,132 @@ export function ActivePlanCard({
   );
 }
 
-function InProgressSection({
-  activePlans,
+function SectionHeading({
+  id,
+  label,
+  count,
+  subtitle,
+  accentClass,
+  countClass,
+}: {
+  id: string;
+  label: string;
+  count: number;
+  subtitle?: string;
+  accentClass?: string;
+  countClass?: string;
+}) {
+  return (
+    <div className="flex items-baseline justify-between gap-3 px-1">
+      <div className="flex items-center gap-2">
+        <h2
+          id={id}
+          className={cn(
+            "text-sm font-semibold uppercase tracking-wider",
+            accentClass ?? "text-fg"
+          )}
+        >
+          {label}
+        </h2>
+        <span
+          className={cn(
+            "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold tabular-nums",
+            countClass ?? "bg-info-soft text-info-fg"
+          )}
+        >
+          {count}
+        </span>
+      </div>
+      {subtitle ? (
+        <p className="text-xs text-muted">{subtitle}</p>
+      ) : null}
+    </div>
+  );
+}
+
+function RunningNowSection({
+  plans,
   onSnooze,
 }: {
-  activePlans: ActivePlanProgress[];
+  plans: ActivePlanProgress[];
   onSnooze: (slug: string, days: number) => void;
 }) {
-  if (activePlans.length === 0) {
-    return (
-      <section id="in-progress" className="scroll-mt-4 space-y-3">
-        <div className="flex items-baseline justify-between gap-3 px-1">
-          <div className="flex items-center gap-2">
-            <h2 className="text-sm font-semibold uppercase tracking-wider text-fg">
-              In progress
-            </h2>
-            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-info-soft px-1.5 text-xs font-semibold tabular-nums text-info-fg">
-              0
-            </span>
-          </div>
-          <p className="text-xs text-muted">Active plans across all sources</p>
-        </div>
-        <p className="text-sm text-muted">No plans currently in progress</p>
-      </section>
-    );
-  }
-
-  const blockedCount = activePlans.filter((p) => p.tasksBlocked > 0).length;
+  if (plans.length === 0) return null;
 
   return (
-    <section id="in-progress" className="scroll-mt-4 space-y-3">
-      <div className="flex items-baseline justify-between gap-3 px-1">
-        <div className="flex items-center gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-fg">
-            In progress
-          </h2>
-          <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-info-soft px-1.5 text-xs font-semibold tabular-nums text-info-fg">
-            {activePlans.length}
-          </span>
-          {blockedCount > 0 ? (
-            <span className="inline-flex h-5 items-center rounded-full bg-warning-soft px-2 text-xs font-semibold text-warning-fg">
-              {blockedCount} blocked
-            </span>
-          ) : null}
-        </div>
-        <p className="text-xs text-muted">Active plans across all sources</p>
-      </div>
-
+    <section aria-labelledby="section-running-now" className="scroll-mt-4 space-y-3">
+      <SectionHeading
+        id="section-running-now"
+        label="Running now"
+        count={plans.length}
+        subtitle="Agent activity detected in the last 10 minutes"
+        accentClass="text-info"
+        countClass="bg-info-soft text-info-fg"
+      />
       <div className="space-y-2">
-        {activePlans.map((plan) => (
+        {plans.map((plan) => (
           <ActivePlanCard key={plan.slug} plan={plan} onSnooze={onSnooze} />
         ))}
       </div>
+    </section>
+  );
+}
+
+function BlockedSection({
+  plans,
+  onSnooze,
+}: {
+  plans: ActivePlanProgress[];
+  onSnooze: (slug: string, days: number) => void;
+}) {
+  if (plans.length === 0) return null;
+
+  return (
+    <section aria-labelledby="section-blocked" className="scroll-mt-4 space-y-3">
+      <SectionHeading
+        id="section-blocked"
+        label="Blocked"
+        count={plans.length}
+        subtitle="Plans with one or more blocked tasks"
+        accentClass="text-warning-fg"
+        countClass="bg-warning-soft text-warning-fg"
+      />
+      <div className="space-y-2">
+        {plans.map((plan) => (
+          <ActivePlanCard key={plan.slug} plan={plan} onSnooze={onSnooze} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function QueuedSection({
+  plans,
+  onSnooze,
+  totalActivePlansCount,
+}: {
+  plans: ActivePlanProgress[];
+  onSnooze: (slug: string, days: number) => void;
+  totalActivePlansCount: number;
+}) {
+  return (
+    <section aria-labelledby="section-in-progress" className="scroll-mt-4 space-y-3">
+      <SectionHeading
+        id="section-in-progress"
+        label="In progress"
+        count={plans.length}
+        subtitle={totalActivePlansCount === 0 ? "Active plans across all sources" : undefined}
+        countClass="bg-info-soft text-info-fg"
+      />
+      {plans.length === 0 ? (
+        <p className="text-sm text-muted">No plans currently in progress</p>
+      ) : (
+        <div className="space-y-2">
+          {plans.map((plan) => (
+            <ActivePlanCard key={plan.slug} plan={plan} onSnooze={onSnooze} />
+          ))}
+        </div>
+      )}
     </section>
   );
 }
@@ -576,6 +650,21 @@ export function InProgressInbox({ initialActivePlans }: InProgressInboxProps) {
     [activePlans, selectedBusiness, snoozeMap]
   );
 
+  const runningNowPlans = useMemo(
+    () => filteredActivePlans.filter((p) => p.isActiveNow),
+    [filteredActivePlans]
+  );
+
+  const blockedPlans = useMemo(
+    () => filteredActivePlans.filter((p) => !p.isActiveNow && p.tasksBlocked > 0),
+    [filteredActivePlans]
+  );
+
+  const queuedPlans = useMemo(
+    () => filteredActivePlans.filter((p) => !p.isActiveNow && p.tasksBlocked === 0),
+    [filteredActivePlans]
+  );
+
   useInProgressAutoRefresh(setActivePlans, false);
 
   if (!isMounted) {
@@ -583,8 +672,14 @@ export function InProgressInbox({ initialActivePlans }: InProgressInboxProps) {
   }
 
   return (
-    <div className="space-y-5">
-      <InProgressSection activePlans={filteredActivePlans} onSnooze={handleSnooze} />
+    <div className="space-y-8">
+      <RunningNowSection plans={runningNowPlans} onSnooze={handleSnooze} />
+      <BlockedSection plans={blockedPlans} onSnooze={handleSnooze} />
+      <QueuedSection
+        plans={queuedPlans}
+        onSnooze={handleSnooze}
+        totalActivePlansCount={filteredActivePlans.length}
+      />
     </div>
   );
 }

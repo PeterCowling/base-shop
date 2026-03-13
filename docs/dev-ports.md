@@ -26,6 +26,7 @@ Canonical localhost port assignments for repo apps. Keep ports unique. Regenerat
 | `apps/inventory-uploader` | `@acme/inventory-uploader` | `3021` | package.json script "dev" (apps/inventory-uploader/package.json)<br>package.json script "start" (apps/inventory-uploader/package.json) |
 | `apps/business-os` | `@apps/business-os` | `3022` | package.json script "dev" (apps/business-os/package.json)<br>package.json script "start" (apps/business-os/package.json) |
 | `apps/reception` | `@apps/reception` | `3023` | package.json script "dev" (apps/reception/package.json)<br>package.json script "start" (apps/reception/package.json) |
+| `apps/payment-manager` | `@acme/payment-manager` | `3025` | package.json script "dev" (apps/payment-manager/package.json)<br>package.json script "start" (apps/payment-manager/package.json) |
 | `apps/storybook` | `@apps/storybook` | `6006` | package.json script "dev" (apps/storybook/package.json) |
 | `apps/cochlearfit-worker` | `@apps/cochlearfit-worker` | `8788` | package.json script "dev" (apps/cochlearfit-worker/package.json) |
 | `apps/product-pipeline-queue-worker` | `@apps/product-pipeline-queue-worker` | `8789` | package.json script "dev" (apps/product-pipeline-queue-worker/package.json) |

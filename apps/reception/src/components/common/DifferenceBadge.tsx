@@ -19,7 +19,7 @@ export const DifferenceBadge = memo(function DifferenceBadge({
     : Math.abs(value).toFixed(2);
   return (
     <span
-      className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-semibold ${
+      className={`inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
         isPositive ? positiveClassName : negativeClassName
       } ${className}`.trim()}
     >

@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import type { LucideIcon } from "lucide-react";
 
 import { Input } from "@acme/design-system";
+import { Inline } from "@acme/design-system/primitives";
 
 interface RadioOptionProps<T extends string> {
   label: string;
@@ -27,21 +28,23 @@ function RadioOptionInner<T extends string>({
   const isActive = currentValue === value;
   return (
     <label
-      className={`flex items-center gap-2 border rounded-lg p-2 hover:bg-surface-2 ${
+      className={`block border rounded-lg p-2 hover:bg-surface-2 ${
         isActive ? activeClassName : ""
       }`}
     >
-      <Input
-        compatibilityMode="no-wrapper"
-        type="radio"
-        name={name}
-        value={value}
-        checked={isActive}
-        onChange={onChange}
-        className="sr-only"
-      />
-      {React.createElement(icon, { size: 16, className: iconClass })}
-      {label}
+      <Inline gap={2}>
+        <Input
+          compatibilityMode="no-wrapper"
+          type="radio"
+          name={name}
+          value={value}
+          checked={isActive}
+          onChange={onChange}
+          className="sr-only"
+        />
+        {React.createElement(icon, { size: 16, className: iconClass })}
+        {label}
+      </Inline>
     </label>
   );
 }

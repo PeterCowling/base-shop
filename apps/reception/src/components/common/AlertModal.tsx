@@ -76,9 +76,12 @@ function AlertModal({
         </Cluster>
       }
     >
-      <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full ${colors.bg}`}>
+      <Cluster
+        justify="center"
+        className={`mx-auto h-12 w-12 rounded-full ${colors.bg}`}
+      >
         <Icon className={`h-6 w-6 ${colors.icon}`} />
-      </div>
+      </Cluster>
       <p
         id="alert-message"
         className="mt-2 text-center text-sm text-muted-foreground"

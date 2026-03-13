@@ -9,7 +9,7 @@ import {
 } from "react";
 
 import { Input } from "@acme/design-system";
-import { Grid } from "@acme/design-system/primitives";
+import { Grid, Stack } from "@acme/design-system/primitives";
 
 interface PinInputProps {
   onChange: (pin: string) => void;
@@ -102,7 +102,7 @@ function PinInput({
   );
 
   return (
-    <div className="flex flex-col items-center">
+    <Stack align="center" gap={0}>
       {title && (
         <h2 className="mb-2 text-xl font-semibold text-center">{title}</h2>
       )}
@@ -128,7 +128,7 @@ function PinInput({
           />
         ))}
       </Grid>
-    </div>
+    </Stack>
   );
 }
 

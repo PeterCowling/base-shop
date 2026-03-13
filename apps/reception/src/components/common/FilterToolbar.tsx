@@ -1,5 +1,7 @@
 import { memo } from "react";
 
+import { Inline } from "@acme/design-system/primitives";
+
 export interface FilterToolbarProps {
   /**
    * Caller-injected controls: date selector, control chips, auxiliary buttons.
@@ -35,10 +37,11 @@ export const FilterToolbar = memo(function FilterToolbar({
   if (!children) return null;
 
   return (
-    <div
-      className={`mb-4 flex flex-wrap items-center gap-3${className ? ` ${className}` : ""}`}
+    <Inline
+      gap={3}
+      className={`mb-4${className ? ` ${className}` : ""}`}
     >
       {children}
-    </div>
+    </Inline>
   );
 });

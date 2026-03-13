@@ -4,7 +4,7 @@ import { TriangleAlert } from "lucide-react";
 import { Input } from "@acme/design-system";
 import type { ButtonProps } from "@acme/design-system/atoms";
 import { Button } from "@acme/design-system/atoms";
-import { Cluster, Inline } from "@acme/design-system/primitives";
+import { Cluster, Inline, Stack } from "@acme/design-system/primitives";
 
 import { DISCREPANCY_LIMIT } from "../../constants/cash";
 import { useDenominationCalculator } from "../../hooks/client/till/useDenominationCalculator";
@@ -108,9 +108,9 @@ export const CashCountingForm = memo(function CashCountingForm({
 
   return (
     <div className={`mb-6 border ${borderClass} rounded-lg p-4`}>
-      <div className="flex justify-between items-center mb-2">
+      <Cluster justify="between" className="mb-2">
         <h2 className="text-xl font-semibold">{title}</h2>
-      </div>
+      </Cluster>
       <DenominationInput
         denomCounts={denomCounts}
         handleChange={handleDenomChange}
@@ -118,7 +118,7 @@ export const CashCountingForm = memo(function CashCountingForm({
         denominations={denominations}
       />
       {showKeycards && (
-        <div className="mt-4 flex items-center gap-2">
+        <Inline gap={2} className="mt-4">
           <label
             htmlFor={`${idPrefix}keycards`}
             className="font-semibold text-sm"
@@ -133,12 +133,14 @@ export const CashCountingForm = memo(function CashCountingForm({
             onChange={(e) => setKeycardInput(e.target.value)}
             className="border border-border-strong rounded-lg p-1 w-24"
           />
-        </div>
+        </Inline>
       )}
       {children}
       {showExpected && expectedCash !== undefined && (
-        <div
-          className={`flex flex-col items-end mt-6 text-sm ${textClass} text-right`}
+        <Stack
+          align="end"
+          gap={0}
+          className={`mt-6 text-sm ${textClass} text-right`}
         >
           <strong className="mb-2">Total: {formatEuro(totalDenomValue)}</strong>
           <div className="mb-2">Expected cash: {formatEuro(expectedCash)}</div>
@@ -158,7 +160,7 @@ export const CashCountingForm = memo(function CashCountingForm({
                 />
               )}
           </Cluster>
-        </div>
+        </Stack>
       )}
       <Inline wrap={false} gap={2} className="mt-4">
         {!hideCancel && (

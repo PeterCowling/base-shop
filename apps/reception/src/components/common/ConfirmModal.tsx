@@ -83,8 +83,9 @@ function ConfirmModal({
         </Cluster>
       }
     >
-      <div
-        className={`mx-auto flex h-12 w-12 items-center justify-center rounded-full ${
+      <Cluster
+        justify="center"
+        className={`mx-auto h-12 w-12 rounded-full ${
           isDanger ? "bg-error-light" : "bg-info-light"
         }`}
       >
@@ -93,7 +94,7 @@ function ConfirmModal({
             isDanger ? "text-error-main" : "text-info-main"
           }`}
         />
-      </div>
+      </Cluster>
       <p
         id="confirm-message"
         className="mt-2 text-center text-sm text-muted-foreground"

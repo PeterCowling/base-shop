@@ -1234,9 +1234,13 @@ function BulkActionBar({
 function RecentlyActionedSection({
   recentActions,
   selectedBusiness,
+  isExpanded,
+  onToggle,
 }: {
   recentActions: ProcessImprovementsRecentAction[];
   selectedBusiness: string;
+  isExpanded: boolean;
+  onToggle: () => void;
 }) {
   const emptyCopy =
     selectedBusiness === ALL_BUSINESSES_FILTER
@@ -1246,18 +1250,26 @@ function RecentlyActionedSection({
   return (
     <section className="space-y-3">
       <div className="flex items-baseline justify-between gap-3 px-1">
-        <div className="flex items-center gap-2">
-          <h2 className="text-sm font-semibold uppercase tracking-wider text-fg">
-            Recently actioned
-          </h2>
-          <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-success-soft px-1.5 text-xs font-semibold tabular-nums text-success-fg">
-            {recentActions.length}
-          </span>
-        </div>
+        <button
+          type="button"
+          onClick={onToggle}
+          aria-label={isExpanded ? "Hide Recently actioned" : "Show Recently actioned"}
+          className="text-start"
+        >
+          <Inline gap={2} className="items-center">
+            <h2 className="text-sm font-semibold uppercase tracking-wider text-fg">
+              Recently actioned
+            </h2>
+            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-success-soft px-1.5 text-xs font-semibold tabular-nums text-success-fg">
+              {recentActions.length}
+            </span>
+            <span className="text-xs text-muted">{isExpanded ? "▼" : "▶"}</span>
+          </Inline>
+        </button>
         <p className="text-xs text-muted">Last 7 days</p>
       </div>
 
-      {recentActions.length === 0 ? (
+      {!isExpanded ? null : recentActions.length === 0 ? (
         <div className="rounded-xl border border-dashed border-border bg-surface-2 px-5 py-8 text-center text-sm text-muted">
           {emptyCopy}
         </div>
@@ -1452,6 +1464,8 @@ function InboxSection({
   emptyCopy,
   count,
   variant = "default",
+  collapsed,
+  onToggle,
   children,
 }: {
   id?: string;
@@ -1460,6 +1474,8 @@ function InboxSection({
   emptyCopy: string;
   count?: number;
   variant?: "default" | "danger";
+  collapsed?: boolean;
+  onToggle?: () => void;
   children: ReactNode;
 }) {
   const childCount = Array.isArray(children) ? children.length : children ? 1 : 0;
@@ -1468,24 +1484,51 @@ function InboxSection({
   return (
     <section id={id} className="scroll-mt-4 space-y-3">
       <div className="flex items-baseline justify-between gap-3 px-1">
-        <div className="flex items-center gap-2">
-          <h2 className={cn(
-            "text-sm font-semibold uppercase tracking-wider",
-            variant === "danger" ? "text-danger" : "text-fg"
-          )}>
-            {title}
-          </h2>
-          <span className={cn(
-            "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold tabular-nums",
-            variant === "danger" ? "bg-danger-soft text-danger-fg" : "bg-primary-soft text-fg"
-          )}>
-            {displayCount}
-          </span>
-        </div>
+        <Inline gap={2} className="items-center">
+          {onToggle ? (
+            <button
+              type="button"
+              onClick={onToggle}
+              aria-label={collapsed ? `Show ${title}` : `Hide ${title}`}
+              className="text-start"
+            >
+              <Inline gap={2} className="items-center">
+                <h2 className={cn(
+                  "text-sm font-semibold uppercase tracking-wider",
+                  variant === "danger" ? "text-danger" : "text-fg"
+                )}>
+                  {title}
+                </h2>
+                <span className={cn(
+                  "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold tabular-nums",
+                  variant === "danger" ? "bg-danger-soft text-danger-fg" : "bg-primary-soft text-fg"
+                )}>
+                  {displayCount}
+                </span>
+                <span className="text-xs text-muted">{collapsed ? "▶" : "▼"}</span>
+              </Inline>
+            </button>
+          ) : (
+            <>
+              <h2 className={cn(
+                "text-sm font-semibold uppercase tracking-wider",
+                variant === "danger" ? "text-danger" : "text-fg"
+              )}>
+                {title}
+              </h2>
+              <span className={cn(
+                "inline-flex h-5 min-w-5 items-center justify-center rounded-full px-1.5 text-xs font-semibold tabular-nums",
+                variant === "danger" ? "bg-danger-soft text-danger-fg" : "bg-primary-soft text-fg"
+              )}>
+                {displayCount}
+              </span>
+            </>
+          )}
+        </Inline>
         <p className="text-xs text-muted">{description}</p>
       </div>
 
-      {displayCount === 0 ? (
+      {collapsed ? null : displayCount === 0 ? (
         <div className="rounded-xl border border-dashed border-border bg-surface-2 px-5 py-8 text-center text-sm text-muted">
           {emptyCopy}
         </div>
@@ -1609,6 +1652,7 @@ function ActiveSwimlanes({
   pendingState, errorByKey, isPending, onDecision,
   expandedKeys, toggleExpanded, selectedKeys, toggleSelected,
   activeEmptyCopy, deferredEmptyCopy,
+  isDeferredExpanded, onToggleDeferredExpanded,
 }: {
   overdueItems: ProcessImprovementsInboxItem[];
   operatorActionItems: ProcessImprovementsInboxItem[];
@@ -1624,6 +1668,8 @@ function ActiveSwimlanes({
   toggleSelected: (key: string) => void;
   activeEmptyCopy: string;
   deferredEmptyCopy: string;
+  isDeferredExpanded: boolean;
+  onToggleDeferredExpanded: () => void;
 }) {
   const renderCard = (item: ProcessImprovementsInboxItem, selectable = true) => (
     <WorkItemCard
@@ -1650,7 +1696,14 @@ function ActiveSwimlanes({
       <InboxSection id="ideas-queue" title="Ideas Queue" description="New ideas awaiting an initial decision." emptyCopy={activeEmptyCopy} count={ideasQueueItems.length}>
         {ideasQueueItems.map((item) => renderCard(item))}
       </InboxSection>
-      <InboxSection title="Deferred" description="Items temporarily moved out of the active queue." emptyCopy={deferredEmptyCopy} count={deferredItems.length}>
+      <InboxSection
+        title="Deferred"
+        description="Items temporarily moved out of the active queue."
+        emptyCopy={deferredEmptyCopy}
+        count={deferredItems.length}
+        collapsed={!isDeferredExpanded}
+        onToggle={onToggleDeferredExpanded}
+      >
         {deferredItems.map((item) => renderCard(item, false))}
       </InboxSection>
     </>
@@ -1683,6 +1736,10 @@ export function NewIdeasInbox({
     [activeItems, inProgressDispatchIds]
   );
   const { lastRefreshed, isRefreshing } = useAutoRefresh(refreshFromServer, setInProgressDispatchIds, isPending);
+  const [isDeferredExpanded, setIsDeferredExpanded] = useState(false);
+  const [isDoneExpanded, setIsDoneExpanded] = useState(false);
+  const toggleDeferredExpanded = useCallback(() => setIsDeferredExpanded((v) => !v), []);
+  const toggleDoneExpanded = useCallback(() => setIsDoneExpanded((v) => !v), []);
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
   const toggleExpanded = useCallback((itemKey: string) => {
     setExpandedKeys((prev) => {
@@ -1759,10 +1816,14 @@ export function NewIdeasInbox({
         toggleSelected={toggleSelected}
         activeEmptyCopy={activeEmptyCopy}
         deferredEmptyCopy={deferredEmptyCopy}
+        isDeferredExpanded={isDeferredExpanded}
+        onToggleDeferredExpanded={toggleDeferredExpanded}
       />
       <RecentlyActionedSection
         recentActions={filteredRecentActions}
         selectedBusiness={selectedBusiness}
+        isExpanded={isDoneExpanded}
+        onToggle={toggleDoneExpanded}
       />
     </div>
   );

@@ -590,6 +590,41 @@ describe("TASK-07a swimlane categorization", () => {
     expect(screen.getByRole("heading", { name: "Operator Actions" })).toBeInTheDocument();
     expect(screen.getByRole("heading", { name: "Ideas Queue" })).toBeInTheDocument();
   });
+
+  it("TC-LAYOUT-NI-02: Deferred section collapsed on mount; content shown after click", async () => {
+    const user = userEvent.setup();
+    const deferredItem: ProcessImprovementQueueInboxItem = {
+      ...baseItem,
+      itemKey: "deferred-item-1",
+      ideaKey: "deferred-item-1",
+      dispatchId: "dispatch-deferred-1",
+      statusGroup: "deferred",
+      stateLabel: "Deferred",
+      title: "A deferred idea",
+      priorityReason: "Deferred queue item",
+    };
+
+    render(
+      <NewIdeasInbox
+        initialItems={[deferredItem]}
+        initialRecentActions={[]}
+        initialInProgressDispatchIds={[]}
+      />
+    );
+
+    // Deferred section header should be visible
+    expect(screen.getByRole("heading", { name: "Deferred" })).toBeInTheDocument();
+
+    // Deferred item content should NOT be visible (collapsed by default)
+    expect(screen.queryByRole("heading", { level: 3, name: "A deferred idea" })).not.toBeInTheDocument();
+
+    // Click the toggle button to expand
+    const toggleButton = screen.getByRole("button", { name: /show deferred/i });
+    await user.click(toggleButton);
+
+    // Content now visible
+    expect(screen.getByRole("heading", { level: 3, name: "A deferred idea" })).toBeInTheDocument();
+  });
 });
 
 describe("B1/B2/B3 data accuracy", () => {

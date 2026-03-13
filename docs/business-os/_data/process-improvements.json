@@ -165,22 +165,6 @@
     {
       "type": "idea",
       "business": "CARY",
-      "title": "Caryina — Admin product forms use raw browser inputs instead of the shared design system",
-      "body": "The product and inventory edit forms use basic browser input fields built from scratch. The shared design system already has a polished Input component that handles focus, error, and disabled states consistently. Using raw inputs means admin forms look and behave differently from the rest of the platform, and any accessibility or style improvements to the shared Input won't automatically apply here.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T16:30:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "c741f7834e3246be64dd352aef41fc698b8da4b9",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "CARY",
       "title": "Caryina — Shop buttons are styled locally with no connection to the shared design system",
       "body": "The shop uses its own custom button class defined in the global stylesheet, separate from the shared Button component that other apps use. This means button styling, hover states, and accessibility behaviour can drift apart over time without anyone noticing. Before migrating, a decision is needed on the right approach — and that decision needs to be documented so it doesn't get revisited from scratch every time someone touches the buttons.",
       "source": "queue-state.json",

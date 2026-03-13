@@ -1,17 +1,17 @@
 {
-  "last_updated": "2026-03-13T15:34:12.551Z",
+  "last_updated": "2026-03-13T15:39:55.296Z",
   "counts": {
-    "enqueued": 34,
+    "enqueued": 33,
     "processed": 18,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 319,
+    "completed": 320,
     "fact_find_ready": 24,
     "plan_ready": 0,
-    "micro_build_ready": 8,
+    "micro_build_ready": 7,
     "briefing_ready": 0,
     "total": 583
   },
@@ -28209,11 +28209,11 @@
         "packages/ui/src/components/atoms/shadcn/Input.tsx"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.9,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: ProductForm and InventoryEditor use raw <input className=\"...\" /> elements; @acme/ui Input component exists and supports disabled, placeholder, size props with consistent styling",
         "apps/caryina/src/components/ProductForm.tsx",
@@ -28225,7 +28225,20 @@
       "next_scope_now": "Replace raw <input> elements in ProductForm.tsx and InventoryEditor.tsx with <Input /> from @acme/ui/components/atoms/shadcn/Input.",
       "why": "The product and inventory edit forms use basic browser input fields built from scratch. The shared design system already has a polished Input component that handles focus, error, and disabled states consistently. Using raw inputs means admin forms look and behave differently from the rest of the platform, and any accessibility or style improvements to the shared Input won't automatically apply here.",
       "intended_outcome": "ProductForm and InventoryEditor use the shared Input component from @acme/ui, with styling and behaviour consistent with the rest of the platform.",
-      "created_at": "2026-03-13T16:30:00.000Z"
+      "created_at": "2026-03-13T16:30:00.000Z",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-admin-forms-ds-input",
+        "target_path": "docs/plans/caryina-admin-forms-ds-input/micro-build.md",
+        "processed_at": "2026-03-13T16:50:00.000Z",
+        "route": "dispatch-routed"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/caryina-admin-forms-ds-input/micro-build.md",
+        "completed_at": "2026-03-13T15:39:55.295Z",
+        "outcome": "Migrated 7 raw input elements in ProductForm and InventoryEditor to shared Input component from @acme/ui"
+      }
     },
     {
       "schema_version": "dispatch.v2",

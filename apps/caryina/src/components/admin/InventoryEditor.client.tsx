@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Input } from "@acme/design-system/shadcn";
 import type { InventoryItem } from "@acme/platform-core/repositories/inventory.server";
 
 interface InventoryEditorProps {
@@ -74,7 +75,7 @@ export function InventoryEditor({ productSku, inventoryItems }: InventoryEditorP
           <label htmlFor="inv-quantity" className="block text-sm font-medium">
             Quantity
           </label>
-          <input
+          <Input
             id="inv-quantity"
             type="number"
             min="0"

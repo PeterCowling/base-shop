@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "caryina-admin-forms-ds-input",
+  "business": "CARY",
+  "dispatch_id": "IDEA-DISPATCH-20260313163000-0002",
+  "completed_at": "2026-03-13T16:55:00.000Z",
+  "outcome_type": "operational",
+  "outcome_statement": "ProductForm and InventoryEditor use the shared Input component from @acme/ui, with styling and behaviour consistent with the rest of the platform.",
+  "outcome_source": "operator",
+  "track": "code",
+  "deliverable_type": "code-change"
+}

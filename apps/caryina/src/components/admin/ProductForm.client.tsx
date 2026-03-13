@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { Input } from "@acme/design-system/shadcn";
 import type { ProductPublication } from "@acme/types";
 import type { MediaItem } from "@acme/types/MediaItem";
 
@@ -50,7 +51,7 @@ function MediaSection({ rows, onAdd, onRemove, onUpdate }: MediaSectionProps) {
       <legend className="text-sm font-medium">Media</legend>
       {rows.map((row, i) => (
         <div key={i} className="flex gap-2">
-          <input
+          <Input
             type="url"
             placeholder="https://..."
             value={row.url}
@@ -67,7 +68,7 @@ function MediaSection({ rows, onAdd, onRemove, onUpdate }: MediaSectionProps) {
             <option value="image">Image</option>
             <option value="video">Video</option>
           </select>
-          <input
+          <Input
             type="text"
             placeholder="Alt text"
             value={row.altText}
@@ -231,7 +232,7 @@ export function ProductForm({ product }: ProductFormProps) {
           SKU {!isEdit && <span aria-hidden>*</span>}
           {isEdit && <span className="ms-1 text-xs font-normal text-muted-foreground">(read-only)</span>}
         </label>
-        <input
+        <Input
           id="pf-sku"
           type="text"
           value={sku}
@@ -246,7 +247,7 @@ export function ProductForm({ product }: ProductFormProps) {
         <label htmlFor="pf-title" className="block text-sm font-medium">
           Title <span aria-hidden>*</span>
         </label>
-        <input id="pf-title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} required className="block w-full rounded-lg border border-border px-3 py-2 text-sm" />
+        <Input id="pf-title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} required className="block w-full rounded-lg border border-border px-3 py-2 text-sm" />
       </div>
       <div className="space-y-1.5">
         <label htmlFor="pf-description" className="block text-sm font-medium">Description</label>
@@ -255,7 +256,7 @@ export function ProductForm({ product }: ProductFormProps) {
       <div className="grid grid-cols-2 gap-4">
         <div className="space-y-1.5">
           <label htmlFor="pf-price" className="block text-sm font-medium">Price (€) <span aria-hidden>*</span></label>
-          <input id="pf-price" type="number" step="0.01" min="0.01" value={price} onChange={(e) => setPrice(e.target.value)} required className="block w-full rounded-lg border border-border px-3 py-2 text-sm" />
+          <Input id="pf-price" type="number" step="0.01" min="0.01" value={price} onChange={(e) => setPrice(e.target.value)} required className="block w-full rounded-lg border border-border px-3 py-2 text-sm" />
         </div>
         <div className="space-y-1.5">
           <label htmlFor="pf-status" className="block text-sm font-medium">Status</label>
@@ -270,7 +271,7 @@ export function ProductForm({ product }: ProductFormProps) {
           <label htmlFor="pf-initial-stock" className="block text-sm font-medium">
             Initial stock
           </label>
-          <input
+          <Input
             id="pf-initial-stock"
             type="number"
             min="0"

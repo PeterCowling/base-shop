@@ -29995,7 +29995,7 @@
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.88,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
       "evidence_refs": [
         "operator-stated: as the product catalogue grows, finding a specific product by SKU or title in the table requires scrolling; a client-side search input would make this instant",
         "apps/inventory-uploader/src/components/products/ProductsView.client.tsx",
@@ -30007,7 +30007,11 @@
       "why": "With many products in the catalogue, finding a specific one means scrolling through the whole list. A search box at the top means typing a few letters instantly narrows it down.",
       "intended_outcome": "A search input above the products table filters rows in real time by SKU or title. Clearing the search restores the full list.",
       "created_at": "2026-03-13T19:00:00.000Z",
-      "processed_by": null
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_path": "docs/plans/inventory-uploader-product-search/micro-build.md",
+        "target_slug": "inventory-uploader-product-search"
+      }
     },
     {
       "schema_version": "dispatch.v2",

@@ -25,7 +25,16 @@ export function ProductsView({ shop }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [editState, setEditState] = useState<EditState>(null);
   const [refreshKey, setRefreshKey] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const abortRef = useRef<AbortController | null>(null);
+
+  const visibleProducts = searchQuery.trim()
+    ? products.filter(
+        (p) =>
+          p.sku.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.title.en.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
+    : products;
 
   const load = useCallback(() => {
     abortRef.current?.abort();
@@ -105,13 +114,25 @@ export function ProductsView({ shop }: Props) {
         </button>
       </div>
 
+      <input
+        type="search"
+        className="w-full rounded border border-gate-border bg-gate-input-bg px-2 py-1 text-xs text-gate-ink placeholder:text-gate-muted focus:outline-none focus-visible:ring-1 focus-visible:ring-gate-accent"
+        placeholder="Search by SKU or title…"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+
       {loading && <p className="text-xs text-gate-muted">Loading…</p>}
       {error && <p className="text-xs text-danger-fg">{error}</p>}
       {!loading && !error && products.length === 0 && (
         <p className="text-xs text-gate-muted">No products yet. Create one above.</p>
       )}
 
-      {products.length > 0 && (
+      {searchQuery && visibleProducts.length === 0 && products.length > 0 && (
+        <p className="text-xs text-gate-muted">No products match &ldquo;{searchQuery}&rdquo;.</p>
+      )}
+
+      {visibleProducts.length > 0 && (
         <table className="w-full text-xs">
           <thead>
             <tr className="border-b border-gate-border text-start text-gate-muted">
@@ -123,7 +144,7 @@ export function ProductsView({ shop }: Props) {
             </tr>
           </thead>
           <tbody>
-            {products.map((p) => (
+            {visibleProducts.map((p) => (
               <tr key={p.id} className="border-b border-gate-border/40 last:border-0">
                 <td className="py-2 pr-4 font-mono">{p.sku}</td>
                 <td className="py-2 pr-4">{p.title.en}</td>

@@ -325,22 +325,6 @@
     {
       "type": "idea",
       "business": "PLAT",
-      "title": "Inventory uploader — no way to search or filter products in the table",
-      "body": "With many products in the catalogue, finding a specific one means scrolling through the whole list. A search box at the top means typing a few letters instantly narrows it down.",
-      "source": "queue-state.json",
-      "date": "2026-03-13T19:00:00.000Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "e9ab96d0bfcebbc6246d32aac8b7376ac3f0a88c",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "PLAT",
       "title": "Inventory uploader — receiving new stock has no preview step before it is committed",
       "body": "When a delivery arrives, staff need to count and enter the quantities. A preview step shows exactly what the stock levels will be after receiving the delivery, so a typo can be caught before it is committed to the system.",
       "source": "queue-state.json",

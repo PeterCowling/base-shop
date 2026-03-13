@@ -359,7 +359,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-13T21:10:42.757Z";
+  var GEN_TS = "2026-03-13T21:18:54.006Z";
 
   var IDEA_ITEMS = [
     {
@@ -539,6 +539,74 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P4_PROCESS_QUALITY"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Possible: Container/Inline codemod. The fix pattern for container-widths-only-at (replace with ) and for enforce-layout-primitives (replace on leaf elements with ) are deterministic enough to be implemented as a jscodeshift codemod. Would eliminate LLM reasoning for the mechanical substitution step.",
+      "body": "Build review surfaced \"Possible: Container/Inline codemod. The fix pattern for container-widths-only-at (replace with ) and for enforce-layout-primitives (replace on leaf elements with ) are deterministic enough to be implemented as a jscodeshift codemod. Would eliminate LLM reasoning for the mechanical substitution step.\" with supporting narrative: AI-to-mechanistic — Possible: Container/Inline codemod. The fix pattern for container-widths-only-at (replace with ) and for enforce-layout-primitives (replace on leaf elements with ) are deterministic enough to be implemented as a jscodeshift codemod. Would eliminate LLM reasoning for the mechanical substitution step.",
+      "source": "queue-state.json",
+      "date": "2026-03-13T21:18:07.045Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "4bf99dea242ec0bd866cbb4eef0867cac66bbe27",
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "a909aec473560dacdeb17dad446ec161fff100a6",
+        "recurrence_key": "f854b99789492ff34edd7ca8b6ba32c18cf6bda2",
+        "review_cycle_key": "prime-ds-rules-deferred",
+        "plan_slug": "prime-ds-rules-deferred",
+        "canonical_title": "Possible: Container/Inline codemod. The fix pattern for container-widths-only-at (replace with ) and for enforce-layout-primitives (replace on leaf elements with ) are deterministic enough to be implemented as a jscodeshift codemod. Would eliminate LLM reasoning for the mechanical substitution step.",
+        "primary_source": "results-review.signals.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": false
+        },
+        "results_review_path": "docs/plans/prime-ds-rules-deferred/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/prime-ds-rules-deferred/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/prime-ds-rules-deferred/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": null
+      },
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "Possible: DS-Lint Batch Fix Skill. This build repeated a clear pattern: enumerate violations with dry-run lint, apply per-rule fix patterns (Container swap, Inline/Stack for leaf flex/grid, min-h-10 min-w-10 for tap targets) across clusters, validate with full lint. A parameterized skill for \"fix all DS lint suppression debts in a given app\" could automate this reliably and reduce build cycle time from hours to minutes for future DS compliance recovery sprints.",
+      "body": "Build review surfaced \"Possible: DS-Lint Batch Fix Skill. This build repeated a clear pattern: enumerate violations with dry-run lint, apply per-rule fix patterns (Container swap, Inline/Stack for leaf flex/grid, min-h-10 min-w-10 for tap targets) across clusters, validate with full lint. A parameterized skill for \"fix all DS lint suppression debts in a given app\" could automate this reliably and reduce build cycle time from hours to minutes for future DS compliance recovery sprints.\" with supporting narrative: New skill — Possible: DS-Lint Batch Fix Skill. This build repeated a clear pattern: enumerate violations with dry-run lint, apply per-rule fix patterns (Container swap, Inline/Stack for leaf flex/grid, min-h-10 min-w-10 for tap targets) across clusters, validate with full lint. A parameterized skill for \"fix all DS lint suppression debts in a given app\" could automate this reliably and reduce build cycle time from hours to minutes for future DS compliance recovery sprints.",
+      "source": "queue-state.json",
+      "date": "2026-03-13T21:18:07.045Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "ff800f751cd07113509b94580cdcf280c3ab248f",
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "2924245d626ebc53863f5a729d3fb4bcfbbf8394",
+        "recurrence_key": "023b309ea333df3dab8f0facb7454e213def49fd",
+        "review_cycle_key": "prime-ds-rules-deferred",
+        "plan_slug": "prime-ds-rules-deferred",
+        "canonical_title": "Possible: DS-Lint Batch Fix Skill. This build repeated a clear pattern: enumerate violations with dry-run lint, apply per-rule fix patterns (Container swap, Inline/Stack for leaf flex/grid, min-h-10 min-w-10 for tap targets) across clusters, validate with full lint. A parameterized skill for \"fix all DS lint suppression debts in a given app\" could automate this reliably and reduce build cycle time from hours to minutes for future DS compliance recovery sprints.",
+        "primary_source": "results-review.signals.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": false
+        },
+        "results_review_path": "docs/plans/prime-ds-rules-deferred/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/prime-ds-rules-deferred/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/prime-ds-rules-deferred/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": null
+      },
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
     },
     {
       "type": "idea",

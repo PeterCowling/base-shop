@@ -1,0 +1,258 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "prime-ds-rules-deferred",
+  "source_artifact_path": "docs/plans/prime-ds-rules-deferred/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-ds-rules-deferred/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Three pages in the prime app have design system rules disabled. These rules enforce minimum button and tap target sizes and consistent layout widths. Without them, these pages may have elements that are hard to tap on mobile, inconsistently laid out, or visually misaligned compared to the rest of the app. The disables are marked as deferred — they were never resolved.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All 24 unique BRIK-3 files (22 file-level suppressions + 2 inline-only files) pass DS lint rules with no suppressions. `pnpm --filter prime lint -- --full` returns zero DS rule violations across the entire Prime codebase.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Class additions (min-h-10 min-w-10) and Container wrapper swap; visual spot-check on key pages",
+      "current_or_option_state": "TASK-02, TASK-03, TASK-04, TASK-05",
+      "gap_or_implication": "Container swap adds `w-full` base class — not guaranteed visual no-op; spot-check Activities, StaffLookup, BookingDetails, DigitalAssistant",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "All interactive elements gain correct 40px minimum tap target; buttons with `w-full` use `min-h-10 min-w-10`",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "`size-10` reserved for icon/constrained buttons only — do NOT use on `w-full` buttons",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — purely UI class changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No auth, data-exposure, or privacy implications",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No logging changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Lint dry-run enumerates violations; class assertions for `min-h-10 min-w-10` on interactive elements in 2–3 key test files; final full lint validation",
+      "current_or_option_state": "TASK-01, TASK-06, TASK-07",
+      "gap_or_implication": "Testing policy: tests run in CI only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A — purely UI changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No schemas, API shapes, or types touched",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No hot paths or data fetching affected",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single PR to dev; no feature flag; rollback = revert PR",
+      "current_or_option_state": "TASK-07",
+      "gap_or_implication": "Confirm `pnpm --filter prime lint -- --full` passes cleanly before merge",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "24 unique files in the Prime guest app carry BRIK-3-labelled DS lint suppressions that were deferred during the initial Prime build sprint and never resolved. Three rules are suppressed: `ds/container-widths-only-at`, `ds/enforce-layout-primitives`, and `ds/min-tap-size`. This plan fixes all 24 files in a single pass using established fix patterns: `min-h-10 min-w-10` on interactive elements, the Prime-local `Container` component for width violations, and `Inline`/`Stack` DS primitives for leaf flex/grid violations. The lint dry-run in TASK-01 enumerates exact per-file violations before any co",
+    "goals": [
+      "Remove all 22 file-level BRIK-3 eslint-disable blocks and 3 inline BRIK-3 disable comments across 24 unique files.",
+      "Fix every revealed DS lint violation using established per-rule patterns.",
+      "Restore `pnpm --filter prime lint -- --full` to zero DS violations.",
+      "Add class-level test assertions for `min-h-10 min-w-10` on interactive elements in 2–3 key test files."
+    ],
+    "non_goals": [
+      "BRIK-2 (meal-orders), PLAT-ENG-0001, or any non-BRIK-3 disables.",
+      "Backend, data model, or API changes.",
+      "Broader DS primitive adoption beyond what's needed to clear violations.",
+      "Visual redesign — fix patterns preserve the current layout; they do not redesign pages."
+    ],
+    "constraints": [
+      "`ds/min-tap-size` requires BOTH `min-h-X` AND `min-w-X` numeric scale (or `size-X`) ≥ 10. `w-full`, padding, and text width do not count.",
+      "`ds/enforce-layout-primitives` only fires on leaf JSX elements (no JSXElement children).",
+      "`ds/container-widths-only-at` only flags confident class parsing — template literals not flagged.",
+      "Prime's local `Container` component (`apps/prime/src/components/layout/Container.tsx`) injects `w-full max-w-6xl` as base. Override via `className` prop cascades correctly in Tailwind. Pages needing `max-w-md` must use `<Container className=\"!max-w-md\">` or equivalent.",
+      "`@acme/design-system/primitives` exports `Inline`, `Stack`, `Grid`, `Cluster`, `Cover`, `Sidebar`, `Button`, `Card` — does NOT export `Page`, `Section`, `Container`, or `Overlay`.",
+      "Tests run in CI only (testing policy). Never run `jest` locally.",
+      "`pnpm --filter prime lint -- --full` is required for acceptance; default `pnpm lint` only lints changed files."
+    ],
+    "assumptions": [
+      "TASK-01 dry-run may reveal the exact per-file violation count differs from analysis estimates; plan budgets flex accordingly.",
+      "`enforce-layout-primitives` leaf-only check may flag fewer files than expected post dry-run.",
+      "`w-full` buttons must use `min-h-10 min-w-10` (not `size-10`) to preserve full-width behavior.",
+      "Container swap adds `w-full` base class — small structural change, not a guaranteed visual no-op. Spot-check required on 3–4 key pages."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Option A: Fix all 24 BRIK-3-affected files in one PR using established per-rule patterns.",
+      "Task decomposition by file cluster (not rule track) to prevent concurrent same-file edits.",
+      "Why planning is not reopening option selection:",
+      "Analysis gates pass. Option A was decisive, no operator-only forks remain. Analysis critique reached `credible` (8/10) with no Critical findings."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Lint dry-run — enumerate all BRIK-3 violations",
+        "type": "INVESTIGATE",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Console output artifact listing per-file, per-rule violations; agent records findings in a brief note before proceeding",
+        "affects": "`apps/prime/` (readonly lint pass only — no file changes committed)"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Fix `container-widths-only-at`-only files",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "10 files in `apps/prime/` with BRIK-3 disable removed and `<Container>` wrapper applied; zero `ds/container-widths-only-at` violations on those files",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Fix single-rule remaining files",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "5 files with BRIK-3 disables removed and violations fixed; zero DS violations on those files",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Fix multi-rule pages cluster",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 82,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "8 page/client files with all BRIK-3 disables removed and all violations fixed; zero DS violations on those files",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Fix multi-rule components cluster",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`TaskCard.tsx` (confirmed) plus any additional files found by TASK-01 dry-run — BRIK-3 disables removed and violations fixed (late-checkin, main-door-access, overnight-issues confirmed BRIK-3-free at planning time)",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Add tap-size class assertions to key test files",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04",
+          "TASK-05"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "2–3 existing test files updated with `min-h-10 min-w-10` class assertions on interactive elements",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Final full-codebase lint validation",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "S",
+        "depends_on": [
+          "TASK-06"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`pnpm --filter prime lint -- --full` passes with zero DS violations; documented in build record",
+        "affects": "`apps/prime/` (readonly lint pass)"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. The chosen approach removes lint suppression comments and fixes class/wrapper patterns in 24 source files. CI lint gates operate identically before and after; the only difference is that violations are no longer hidden. No workflows, runbooks, lifecycle states, or deploy lanes are altered.",
+      "areas": []
+    }
+  }
+}

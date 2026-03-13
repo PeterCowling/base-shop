@@ -1,0 +1,10 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-13T21:16:53.938Z",
+  "plan_slug": "prime-ds-rules-deferred",
+  "review_cycle_key": "prime-ds-rules-deferred",
+  "source_path": "docs/plans/prime-ds-rules-deferred/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": []
+}

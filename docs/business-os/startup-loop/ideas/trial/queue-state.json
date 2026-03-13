@@ -1,17 +1,17 @@
 {
-  "last_updated": "2026-03-13T18:17:04.642Z",
+  "last_updated": "2026-03-13T18:25:45.082Z",
   "counts": {
-    "enqueued": 42,
+    "enqueued": 41,
     "processed": 27,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 337,
+    "completed": 338,
     "fact_find_ready": 32,
     "plan_ready": 0,
-    "micro_build_ready": 8,
+    "micro_build_ready": 7,
     "briefing_ready": 0,
     "total": 616
   },
@@ -29909,11 +29909,11 @@
         "apps/inventory-uploader/src/app/api/inventory/[shop]/products/route.ts"
       ],
       "provisional_deliverable_family": "code-change",
-      "status": "micro_build_ready",
+      "status": "completed",
       "recommended_route": "lp-do-build",
       "priority": "P3",
       "confidence": 0.85,
-      "queue_state": "processed",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: the products table shows current stock level as a number but uses no colour or badge to highlight when stock is low; a threshold like ≤5 units could trigger a warning badge",
         "apps/inventory-uploader/src/components/products/ProductsView.client.tsx",
@@ -29929,6 +29929,11 @@
         "target_route": "lp-do-build",
         "target_path": "docs/plans/inventory-uploader-low-stock-badge/micro-build.md",
         "target_slug": "inventory-uploader-low-stock-badge"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/inventory-uploader-low-stock-badge/micro-build.md",
+        "completed_at": "2026-03-13T18:25:45.081Z",
+        "outcome": "Low-stock badge (≤5 units) added to product rows; Low stock filter button added above table"
       }
     },
     {

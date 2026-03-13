@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 import { inventoryRepository } from "@acme/platform-core/repositories/inventory.server";
 import { inventoryItemSchema } from "@acme/platform-core/types/inventory";
@@ -10,6 +11,8 @@ import {
 import { apiError } from "../../../../../lib/api-helpers";
 
 export const runtime = "nodejs";
+
+const jsonArraySchema = z.array(z.record(z.string(), z.unknown()));
 
 const IMPORT_MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 
@@ -93,9 +96,18 @@ async function parseImportBody(req: NextRequest): Promise<ParseBodyResult> {
     }
     const fname = (file as File).name ?? "";
     if (fname.endsWith(".json") || contentType.includes("json")) {
-      const data = JSON.parse(text) as unknown;
+      let data: unknown;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        return bodyErr(NextResponse.json({ ok: false, error: "Invalid JSON in uploaded file" }, { status: 400 }));
+      }
       const arr = Array.isArray(data) ? data : [data];
-      return bodyOk(arr as Record<string, string>[], true);
+      const validated = jsonArraySchema.safeParse(arr);
+      if (!validated.success) {
+        return bodyErr(NextResponse.json({ ok: false, error: "JSON must be an array of objects" }, { status: 400 }));
+      }
+      return bodyOk(validated.data as Record<string, string>[], true);
     }
     return bodyOk(parseCsv(text), false);
   }
@@ -112,7 +124,11 @@ async function parseImportBody(req: NextRequest): Promise<ParseBodyResult> {
       return bodyErr(NextResponse.json({ ok: false, error: "Invalid JSON body" }, { status: 400 }));
     }
     const arr = Array.isArray(body) ? body : [body];
-    return bodyOk(arr as Record<string, string>[], true);
+    const validated = jsonArraySchema.safeParse(arr);
+    if (!validated.success) {
+      return bodyErr(NextResponse.json({ ok: false, error: "JSON must be an array of objects" }, { status: 400 }));
+    }
+    return bodyOk(validated.data as Record<string, string>[], true);
   }
 
   // Assume CSV text body

@@ -51,9 +51,9 @@ export async function POST(
 ) {
   const { shop } = await context.params;
 
-  let body: Record<string, unknown>;
+  let body: unknown;
   try {
-    body = (await req.json()) as Record<string, unknown>;
+    body = await req.json();
   } catch {
     return NextResponse.json({ ok: false, error: "invalid_body" }, { status: 400 });
   }

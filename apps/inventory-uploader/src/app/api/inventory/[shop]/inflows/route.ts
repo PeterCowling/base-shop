@@ -34,8 +34,11 @@ export async function POST(
   const dryRunParam = url.searchParams.get("dryRun") === "true";
 
   try {
-    const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
-    const payload = dryRunParam ? { ...(body ?? {}), dryRun: true } : (body ?? {});
+    const body: unknown = await req.json().catch(() => null);
+    const bodyObj: Record<string, unknown> = body !== null && typeof body === "object" && !Array.isArray(body)
+      ? (body as Record<string, unknown>)
+      : {};
+    const payload = dryRunParam ? { ...bodyObj, dryRun: true } : bodyObj;
     const result = await receiveStockInflow(shop, payload);
     if (!result.ok) {
       return NextResponse.json(result, { status: 400 });

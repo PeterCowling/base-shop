@@ -1,3 +1,6 @@
+// Validate required environment variables at module load time.
+import "../env";
+
 import crypto from "node:crypto";
 
 import type { NextResponse } from "next/server";

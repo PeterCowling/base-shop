@@ -63,7 +63,7 @@ function PaymentForm() {
             <Button
               compatibilityMode="passthrough"
               disabled={isDisabled}
-              className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none ${ // eslint-disable-line ds/enforce-layout-primitives -- TASK-03 Button passthrough; DS primitive renders div
+              className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none ${
                 leftButtonClass}`}
               title={
                 isDisabled
@@ -79,7 +79,7 @@ function PaymentForm() {
             compatibilityMode="passthrough"
             onClick={handleImmediatePayment}
             disabled={isDisabled}
-            className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none text-xs font-medium ${ // eslint-disable-line ds/enforce-layout-primitives -- TASK-03 Button passthrough; DS primitive renders div
+            className={`h-9 px-2.5 flex items-center justify-center focus:outline-none transition-colors rounded-none text-xs font-medium ${
               rightButtonClass}`}
             title={
               isDisabled

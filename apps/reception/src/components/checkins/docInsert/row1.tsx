@@ -204,7 +204,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
     <>
       <Inline gap={12} className="mt-100px mb-75px">
         {/* First Name */}
-        <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
+        <div className="flex flex-col w-300px">
           <label
             htmlFor="firstName"
             className="block mb-1 font-semibold text-info-dark"
@@ -227,7 +227,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
         </div>
 
         {/* Last Name */}
-        <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
+        <div className="flex flex-col w-300px">
           <label
             htmlFor="lastName"
             className="block mb-1 font-semibold text-info-dark"
@@ -250,7 +250,7 @@ function Row1({ occupantDetails, saveField, setSnackbar }: Row1Props) {
         </div>
 
         {/* Gender */}
-        <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
+        <div className="flex flex-col w-300px">
           <label
             htmlFor="gender"
             className="block mb-1 font-semibold text-info-dark"

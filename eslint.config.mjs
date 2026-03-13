@@ -2466,7 +2466,7 @@ export default [
       "ds/no-raw-color": "error",
       "ds/no-raw-tailwind-color": "warn",
       /* DS structural governance enabled post-migration (TASK-12) */
-      "ds/enforce-layout-primitives": "warn", // currently 42 known warnings; tracked for follow-up cleanups
+      "ds/enforce-layout-primitives": "error", // escalated to error after Wave 2 migration complete (TASK-12)
       "ds/no-hardcoded-copy": "off", // internal staff tool — not localized
       /* DS rules off — not applicable for internal desktop tool */
       "ds/min-tap-size": "off", // 164 violations — desktop-only internal tool

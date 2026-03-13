@@ -217,7 +217,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
   return (
     <Inline gap={12} className="mb-75px">
       {/* Place of Birth */}
-      <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
+      <div className="flex flex-col w-300px">
         <AutoComplete
           id="placeOfBirth"
           label="Place of Birth"
@@ -235,7 +235,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
       </div>
 
       {/* Citizenship */}
-      <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
+      <div className="flex flex-col w-300px">
         <AutoComplete
           id="citizenship"
           label="Citizenship"
@@ -253,7 +253,7 @@ function Row2({ occupantDetails, saveField }: Row2Props): JSX.Element {
       </div>
 
       {/* Municipality */}
-      <div className="flex flex-col w-300px"> {/* eslint-disable-line ds/enforce-layout-primitives -- TASK-03 no-gap flex-col column; DS primitive renders div */}
+      <div className="flex flex-col w-300px">
         <label
           htmlFor="municipality"
           className="block mb-1 font-semibold text-info-dark"

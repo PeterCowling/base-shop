@@ -32,6 +32,7 @@ function defaultPrepareData() {
     error: null as unknown,
     noRoomsData: false,
     noCheckinsData: false,
+    roomStatusMap: null,
   };
 }
 

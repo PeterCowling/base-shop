@@ -676,4 +676,81 @@ describe('/api/direct-message', () => {
     expect(admissionInsert?.binds[3]).toBe('staff_reply_present');
     expect(threadUpsert?.binds[10]).toBe('review_later');
   });
+
+  it('TC-10: rejects DM to ghost-mode recipient with 403', async () => {
+    const bookingId = 'BOOK123';
+    const senderUuid = 'occ_aaa';
+    const peerUuid = 'occ_bbb';
+
+    getSpy.mockImplementation(async (path: string) => {
+      if (path === 'guestSessionsByToken/token-1') {
+        return {
+          bookingId,
+          guestUuid: senderUuid,
+          createdAt: '2026-02-01T00:00:00.000Z',
+          expiresAt: '2099-02-01T00:00:00.000Z',
+        };
+      }
+      if (path === `bookings/${bookingId}/${senderUuid}`) {
+        return { firstName: 'Jane' };
+      }
+      if (path === `bookings/${bookingId}/${peerUuid}`) {
+        return { firstName: 'Alex' };
+      }
+      if (path === `guestProfiles/${senderUuid}`) {
+        return {
+          bookingId,
+          profileStatus: 'complete',
+          intent: 'mixed',
+          interests: [],
+          stayGoals: [],
+          pace: 'relaxed',
+          socialOptIn: true,
+          chatOptIn: true,
+          ghostMode: false,
+          blockedUsers: [],
+          createdAt: 1,
+          updatedAt: 1,
+        };
+      }
+      if (path === `guestProfiles/${peerUuid}`) {
+        return {
+          bookingId,
+          profileStatus: 'complete',
+          intent: 'social',
+          interests: [],
+          stayGoals: [],
+          pace: 'active',
+          socialOptIn: true,
+          chatOptIn: true,
+          ghostMode: true,
+          blockedUsers: [],
+          createdAt: 1,
+          updatedAt: 1,
+        };
+      }
+      return null;
+    });
+
+    const response = await onRequestPost(
+      createPagesContext({
+        url: 'https://prime.example.com/api/direct-message',
+        method: 'POST',
+        headers: {
+          'X-Prime-Guest-Token': 'token-1',
+          'X-Prime-Guest-Booking-Id': bookingId,
+        },
+        body: {
+          bookingId,
+          peerUuid,
+          channelId: 'dm_occ_aaa_occ_bbb',
+          content: 'Hello',
+        },
+      }),
+    );
+
+    expect(response.status).toBe(403);
+    expect(setSpy).not.toHaveBeenCalled();
+    expect(updateSpy).not.toHaveBeenCalled();
+  });
 });

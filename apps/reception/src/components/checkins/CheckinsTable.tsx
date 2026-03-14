@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 import useBookingMetaStatuses from "../../hooks/data/useBookingMetaStatuses";
 import useCheckinsTableData from "../../hooks/data/useCheckinsTableData";
+import useRoomStatusData from "../../hooks/data/useRoomStatus";
 import useAddGuestToBookingMutation from "../../hooks/mutations/useAddGuestToBookingMutation";
 import useArchiveEligibleCount from "../../hooks/mutations/useArchiveEligibleCount";
 import useCheckinsModes from "../../hooks/utilities/useCheckinsModes";
@@ -78,6 +79,8 @@ const CheckinsTable: React.FC = () => {
   }, [sortedData]);
 
   const bookingStatuses = useBookingMetaStatuses(allBookingRefs);
+
+  const { roomStatusMap } = useRoomStatusData();
 
   /**
    * Toggle for showing/hiding cancelled bookings
@@ -263,6 +266,7 @@ const CheckinsTable: React.FC = () => {
       showCancelled={showCancelled}
       onToggleCancelled={() => setShowCancelled((prev) => !prev)}
       bookingStatuses={bookingStatuses}
+      roomStatusMap={roomStatusMap}
     />
   );
 };

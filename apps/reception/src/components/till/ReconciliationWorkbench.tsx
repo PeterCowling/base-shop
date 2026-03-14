@@ -174,8 +174,8 @@ const ReconciliationWorkbenchContent = memo(
     const { transactions, cashCounts } = useTillData();
     const { postings, loading: pmsLoading } = usePmsPostings();
     const { batches, loading: batchLoading } = useTerminalBatches();
-    const { addPmsPosting } = usePmsPostingsMutations();
-    const { addTerminalBatch } = useTerminalBatchesMutations();
+    const { addPmsPosting, removePmsPosting } = usePmsPostingsMutations();
+    const { addTerminalBatch, removeTerminalBatch } = useTerminalBatchesMutations();
 
     /* ------------------------------- POS totals ------------------------------ */
     const posCashTotal = useMemo(
@@ -401,10 +401,40 @@ const ReconciliationWorkbenchContent = memo(
             <div>
               <h3 className="text-sm font-semibold mb-2">Add PMS Posting</h3>
               <PmsPostingForm onSubmit={addPmsPosting} />
+              {todayPostings.length > 0 && (
+                <ul className="mt-2 space-y-1">
+                  {todayPostings.map((p) => (
+                    <li key={p.id} className="flex items-center gap-2 text-sm">
+                      <span>{p.method} — {formatEuro(p.amount)}{p.note ? ` (${p.note})` : ""}</span>
+                      <Button
+                        onClick={() => removePmsPosting(p.id)}
+                        className="text-xs text-error-main hover:opacity-75"
+                      >
+                        Delete
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
             <div>
               <h3 className="text-sm font-semibold mb-2">Add Terminal Batch</h3>
               <TerminalBatchForm onSubmit={addTerminalBatch} />
+              {todayBatches.length > 0 && (
+                <ul className="mt-2 space-y-1">
+                  {todayBatches.map((b) => (
+                    <li key={b.id} className="flex items-center gap-2 text-sm">
+                      <span>{formatEuro(b.amount)}{b.note ? ` (${b.note})` : ""}</span>
+                      <Button
+                        onClick={() => removeTerminalBatch(b.id)}
+                        className="text-xs text-error-main hover:opacity-75"
+                      >
+                        Delete
+                      </Button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </div>

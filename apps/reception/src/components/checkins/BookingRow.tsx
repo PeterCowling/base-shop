@@ -6,6 +6,7 @@ import useBookingNotes from "../../hooks/data/useBookingNotes";
 import useKeycardInfo from "../../hooks/data/useKeycardInfo";
 import useRoomAllocation from "../../hooks/utilities/useRoomAllocation";
 import { type CheckInRow } from "../../types/component/CheckinRow";
+import type { SingleRoomStatus } from "../../types/hooks/data/roomStatusData";
 
 import BookingRowView from "./view/BookingRow";
 
@@ -22,6 +23,7 @@ interface BookingRowProps {
   allGuests: CheckInRow[];
   onRowClick?: (booking: CheckInRow) => void;
   isCancelled?: boolean;
+  roomStatusMap?: Record<string, SingleRoomStatus> | null;
 }
 
 /**
@@ -44,6 +46,7 @@ const BookingRow: FC<BookingRowProps> = ({
   allGuests,
   onRowClick,
   isCancelled,
+  roomStatusMap,
 }) => {
   const { draftValue, setDraftValue, handleBlur, handleKeyDown } =
     useRoomAllocation({ booking, selectedDate, allGuests });
@@ -105,6 +108,7 @@ const BookingRow: FC<BookingRowProps> = ({
       notesOpen={notesOpen}
       closeNotes={() => setNotesOpen(false)}
       isCancelled={isCancelled}
+      roomStatusMap={roomStatusMap}
     />
   );
 };

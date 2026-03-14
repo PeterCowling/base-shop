@@ -5,6 +5,7 @@ import { TableCell, TableRow } from "@acme/design-system/atoms";
 
 import { type CheckInRow } from "../../../types/component/CheckinRow";
 import type { LoanMethod } from "../../../types/hooks/data/loansData";
+import type { SingleRoomStatus } from "../../../types/hooks/data/roomStatusData";
 import { getKeycardIcon } from "../../../utils/keycardIcon";
 import CityTaxPaymentButton from "../cityTaxButton/CityTaxPaymentButton";
 import DocInsertButton from "../DocInsertButton";
@@ -29,6 +30,7 @@ interface BookingRowViewProps {
   notesOpen: boolean;
   closeNotes: () => void;
   isCancelled?: boolean;
+  roomStatusMap?: Record<string, SingleRoomStatus> | null;
 }
 
 const BookingRowView: FC<BookingRowViewProps> = ({
@@ -46,6 +48,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
   notesOpen,
   closeNotes,
   isCancelled,
+  roomStatusMap: _roomStatusMap,
 }) => (
   <>
     <TableRow
@@ -82,6 +85,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
         <div className="flex items-center justify-center">
           <Input compatibilityMode="no-wrapper"
             type="text"
+            aria-label="Room number"
             className="w-10 px-0.5 py-0.5 border border-border-2 rounded-lg text-center bg-surface-2 text-foreground text-sm font-mono focus:outline-none focus:border-primary-main"
             value={draftValue}
             onChange={(e) => onDraftChange(e.target.value)}

@@ -1,0 +1,10 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-14T09:21:13.804Z",
+  "plan_slug": "reception-prime-activity-inbox",
+  "review_cycle_key": "reception-prime-activity-inbox",
+  "source_path": "docs/plans/reception-prime-activity-inbox/pattern-reflection.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "entries": []
+}

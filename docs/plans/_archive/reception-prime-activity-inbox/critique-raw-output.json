@@ -1,0 +1,47 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-activity-inbox/fact-find.md",
+      "line": "46",
+      "message": "This treats the `message_threads.channel_type` comment as an enforced schema constraint and says a migration is required to "add" `activity`. In D1/SQLite that comment is neither stored nor enforced, so a comment-only migration would be a no-op rather than a real runtime requirement."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-activity-inbox/fact-find.md",
+      "line": "30",
+      "message": "The summary says staff replies would use the existing send path "with a service-account Firebase write," but `review-thread-send.ts`/`projectPrimeThreadMessageToFirebase()` currently writes through `FirebaseRest` using `CF_FIREBASE_API_KEY` as the `auth=` token and does not perform the service-account token exchange used by `activity-manage.ts`. Analysis should not assume those paths are equivalent."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-activity-inbox/fact-find.md",
+      "line": "171",
+      "message": "The proposed `booking_id = 'hostel'` workaround is not low-risk as written. Reception maps Prime `bookingId` directly to `guestBookingRef` and renders it verbatim in `ThreadDetailPane`, so this would surface a bogus `#hostel` booking reference unless the UI mapping changes too."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-activity-inbox/fact-find.md",
+      "line": "183",
+      "message": "The security note over-trusts current RTDB writes. `database.rules.json` allows any authenticated client to write under `messaging/**`, so a listener/poller shadow-write path cannot treat an activity message as inherently guest-authentic just because it came from Firebase."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-activity-inbox/fact-find.md",
+      "line": "155",
+      "message": "The dependency map undercounts the non-broadcast fallthrough surface. Beyond `resolveChannel`, helpers like `prime-review-send-support.ts` still classify every non-broadcast thread as direct/support, so analysis based on this map will miss required `activity` handling."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-prime-activity-inbox/fact-find.md",
+      "line": "52",
+      "message": "Activity IDs are generated with `crypto.randomUUID()` in `activity-manage.ts`, not as Firebase push keys. The collision conclusion likely still holds, but the stated rationale is inaccurate."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "review": "Score 8/10 → lp_score 4.0. Five warnings (Major), one info (Minor). Key corrections needed: (1) channel_type migration is TypeScript-level only, not schema enforcement. (2) projectPrimeThreadMessageToFirebase uses CF_FIREBASE_API_KEY (REST auth=), not service-account token exchange. (3) booking_id sentinel 'hostel' leaks into Reception UI guestBookingRef display. (4) Security claim overstated — RTDB write source is not inherently trustworthy. (5) prime-review-send-support.ts and other non-broadcast fallthroughs not listed in dependency map. (6) Activity IDs are crypto.randomUUID(), not Firebase push keys.",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ce23b-5fa8-7a40-9076-a49734c4292d",
+  "round": 1
+}

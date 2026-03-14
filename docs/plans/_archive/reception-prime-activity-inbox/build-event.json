@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "reception-prime-activity-inbox-20260314",
+  "feature_slug": "reception-prime-activity-inbox",
+  "emitted_at": "2026-03-14T00:00:00.000Z",
+  "why": "Staff had no visibility into activity group chats. Guest questions or issues posted to activity channels went unnoticed, creating a service gap for a running feature.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Activity channel messages appear in Reception's Prime inbox column within the same polling window as direct messages. Staff can read full conversation history and post replies that appear in the guest app.",
+    "source": "operator"
+  }
+}

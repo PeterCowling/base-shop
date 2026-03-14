@@ -1,0 +1,41 @@
+{
+  "round": 3,
+  "mode": "file",
+  "score": 8,
+  "lp_score": 4.0,
+  "verdict": "needs_revision",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-room-cleaning-status-pipeline/fact-find.md",
+      "line": "51",
+      "message": "The documented guard is still not type-safe. `SingleRoomStatus.cleaned` is `string | false | undefined`, so `toEpochMillis(dbStatus.cleaned)` cannot be called without narrowing first; following this literally will either fail TypeScript or rely on unsafe coercion.",
+      "status": "fixed"
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-room-cleaning-status-pipeline/fact-find.md",
+      "line": "293",
+      "message": "The rehearsal trace still says `PrepareDashboard` must call `useRoomStatusData()` directly and that `usePrepareDashboardData()` does not expose it. That contradicts the adopted no-second-listener approach at lines 85 and 250, so the document is internally inconsistent on the prepare-side wiring.",
+      "status": "fixed"
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-room-cleaning-status-pipeline/fact-find.md",
+      "line": "90",
+      "message": "The key-modules note still presents per-row `useRoomStatusData()` as an option for `BookingRow`, even though the document later resolves that per-row subscriptions are the wrong approach. Tighten this to prop-threading only.",
+      "status": "fixed"
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-room-cleaning-status-pipeline/fact-find.md",
+      "line": "91",
+      "message": "The \"8th cell or inline cleanliness pill\" note still understates the table impact. If the 8th-cell route is chosen, `TableHeader.tsx` and the notes-row `colSpan={7}` in `view/BookingRow.tsx` also need to change.",
+      "status": "fixed"
+    }
+  ],
+  "codexThreadId": "Q1qNA84XAQMYM94_",
+  "finalRound": true,
+  "finalVerdict": "credible",
+  "finalLpScore": 4.0
+}

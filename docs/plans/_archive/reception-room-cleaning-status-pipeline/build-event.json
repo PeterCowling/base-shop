@@ -1,0 +1,10 @@
+{
+  "slug": "reception-room-cleaning-status-pipeline",
+  "business": "BRIK",
+  "outcome_type": "operational",
+  "why": "Cleaning staff have no way to signal when a room is done. Reception staff checking guests in are flying blind on whether the room is actually ready.",
+  "intended_outcome": "Cleaning staff can mark individual rooms as cleaned on the prepare dashboard. The checkins screen shows a per-room cleanliness indicator. Reception staff can see at a glance whether a room is ready before a guest reaches the desk.",
+  "source": "operator",
+  "completed_at": "2026-03-14",
+  "plan_path": "docs/plans/_archive/reception-room-cleaning-status-pipeline/plan.md"
+}

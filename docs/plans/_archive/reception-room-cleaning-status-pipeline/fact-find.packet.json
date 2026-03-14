@@ -1,0 +1,246 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-room-cleaning-status-pipeline",
+  "source_artifact_path": "docs/plans/reception-room-cleaning-status-pipeline/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-room-cleaning-status-pipeline/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Cleaning staff have no way to signal when a room is done. Reception staff checking guests in are flying blind on whether the room is actually ready. Fixing this means both teams can do their jobs without phone calls or guesswork.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Cleaning staff can mark individual rooms as cleaned on the prepare dashboard. The checkins screen shows a per-room cleanliness indicator. Reception staff can see at a glance whether a room is ready before a guest reaches the desk.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`CleaningPriorityTable.tsx` uses `Chip` component with semantic tokens; checkins `BookingRow` has 7 cells",
+      "gap_or_implication": "No \"Mark Clean\" button; no cleanliness pill in BookingRow",
+      "carry_forward_or_notes": "Button design and placement; pill style; ds-compliant token usage"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Prepare table shows static Clean/Dirty chip; checkins rows have no loading state for sub-data",
+      "gap_or_implication": "Missing: loading state for mark-clean action (optimistic?), already-clean state, error state on failed write",
+      "carry_forward_or_notes": "Optimistic update vs await-then-refresh; dirty→clean transition animation"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "`/roomStatus` writes are Firebase RTDB; auth is Firebase Auth (same for all reception staff); no PII in room status",
+      "gap_or_implication": "No role restriction on who can mark clean (all staff can write); acceptable for hostel context",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "`saveRoomStatus` only records error state and rethrows — no logging of its own; `console.error` calls are inside `usePrepareDashboard` auto-sync effect, not in the mutation hook itself",
+      "gap_or_implication": "New manual button path has no error handling today; a failure is swallowed silently",
+      "carry_forward_or_notes": "New button needs explicit `try/catch` with `showToast(\"Failed to mark room as clean\", \"error\")` — `showToast` utility already exists at `apps/reception/src/utils/toastUtils.ts`"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "`PrepareDashboard.test.tsx` mocks hooks; `BookingRow.test.tsx` mocks sub-components; `usePrepareDashboard.test.ts` exists",
+      "gap_or_implication": "No test for mark-clean button interaction; no test for cleanliness pill; no test for auto-sync guard",
+      "carry_forward_or_notes": "New component tests for button + pill; new unit test for guard logic"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`roomStatusSchema` is strict Zod — no new fields needed; `saveRoomStatus` mutation exists; `cleaned` is an ISO timestamp string written by `getItalyIsoString()` (not a `YYYY-MM-DD` date)",
+      "gap_or_implication": "Auto-sync guard must use `toEpochMillis(dbStatus.cleaned) >= todayTime` — same pattern already in `mergedData` at line ~315 of `usePrepareDashboard.ts`; using `isToday(dbStatus.cleaned)` would silently fail because `isToday` expects `YYYY-MM-DD`",
+      "carry_forward_or_notes": "Guard condition (correct): `clean === \"Yes\" && toEpochMillis(cleaned) >= todayTime` → skip dirty overwrite"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`useFirebaseSubscription` creates one `onValue` listener per hook instance — no React-layer dedup; `/roomStatus` has 10 rooms (small dataset)",
+      "gap_or_implication": "Per-row `useRoomStatusData()` calls would create per-row listeners; must use one subscription at CheckinsTable level and pass `roomStatusMap` as prop",
+      "carry_forward_or_notes": "Single subscription at CheckinsTable; prop-thread through CheckinsTableView → BookingRow"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Reception is a Cloudflare Worker deploy (hot-swap); no DB migration needed; Firebase writes are idempotent",
+      "gap_or_implication": "No rollback concern beyond revert deploy; the auto-sync guard change is backward compatible (clean rooms already get `cleaned` timestamp)",
+      "carry_forward_or_notes": "No feature flag needed; deploy + revert is sufficient rollback"
+    },
+    {
+      "coverage_area": "Area",
+      "applicable": "Test Type",
+      "current_or_option_state": "Files",
+      "gap_or_implication": "Coverage Notes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "---",
+      "applicable": "---",
+      "current_or_option_state": "---",
+      "gap_or_implication": "---",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "PrepareDashboard",
+      "applicable": "Unit (hook-mocked)",
+      "current_or_option_state": "`prepare/__tests__/PrepareDashboard.test.tsx`",
+      "gap_or_implication": "Covers loading, error, no-data, table render; no interactive test",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "BookingRow",
+      "applicable": "Unit (component-mocked)",
+      "current_or_option_state": "`checkins/__tests__/BookingRow.test.tsx`",
+      "gap_or_implication": "Covers render, room alloc, row click, notes; no room status test",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Cleaning staff need a way to mark individual rooms as finished on the prepare dashboard. Front desk staff checking in guests need to see per-room cleanliness status on the checkins screen. Currently the prepare dashboard is fully read-only and the checkins screen has only a global \"Rooms Ready\" toggle disconnected from per-room data.",
+    "goals": [
+      "Cleaning staff can tap/click a \"Mark Clean\" button per room on the prepare dashboard",
+      "The mark-clean signal is persisted to Firebase `/roomStatus/index_<room>` and survives page reload",
+      "The auto-sync in `usePrepareDashboard` is guarded so a manual clean signal is never overwritten while the room is still occupied (stayover cleans)",
+      "The checkins table shows a per-room cleanliness pill next to each booking row (green \"Clean\" / red \"Dirty\") derived from the same `/roomStatus` data",
+      "The existing global \"Rooms Ready\" toggle is left unchanged (separate concern)"
+    ],
+    "non_goals": [
+      "Replacing or removing the global \"Rooms Ready\" toggle on the checkins screen",
+      "Adding a \"mark as dirty\" button (auto-sync already handles this when occupants are detected)",
+      "Per-occupant or per-bed cleaning status (room-level is sufficient)",
+      "Historical cleaning audit log"
+    ],
+    "constraints": [
+      "Firebase `/roomStatus` schema must remain backward compatible (`SingleRoomStatus` strict Zod schema)",
+      "No new Firebase paths needed — `/roomStatus/index_<room>` is the existing write target",
+      "UI must follow reception design system tokens (Tailwind v4, semantic tokens)",
+      "No new npm dependencies"
+    ],
+    "assumptions": [
+      "`roomAllocated` in `CheckInRow` holds the raw room number (e.g. \"3\") — the Firebase key is `index_3`",
+      "`useFirebaseSubscription` does NOT deduplicate across React hook instances; each call installs its own `onValue` listener — this is why `roomStatusMap` must be subscribed once at `CheckinsTable` level and passed as a prop, not called per-row"
+    ],
+    "key_entry_points": [
+      "`apps/reception/src/app/prepare-dashboard/page.tsx` — route `/prepare-dashboard`, renders `<PrepareDashboard />`",
+      "`apps/reception/src/app/checkin/page.tsx` — route `/checkin`, renders checkins UI via `CheckinContent.tsx` → `CheckinsTable`"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "**Status": "Ready-for-analysis**",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis reception-room-cleaning-status-pipeline`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Entry points (`/prepare-dashboard`, checkins route)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`CleaningPriorityTable` — add Mark Clean button",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`usePrepareDashboard` — auto-sync guard",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`useRoomStatusData` — subscription hook",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`useRoomStatusMutations` — write path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`CheckInRow.roomAllocated` → Firebase key mapping",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`CheckinsTable` — subscription location decision",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — subscription must live at CheckinsTable level (not per-row); prop-threading required through CheckinsTableView → BookingRow (2 prop additions)",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`view/BookingRow` — cleanliness pill",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Minor] `usePrepareDashboard.test.ts` has no guard assertions — confirmed known gap to fill",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Prepare-side wiring (saveRoomStatus + roomStatusMap)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — `usePrepareDashboardData()` already subscribes to `/roomStatus` internally; expose `roomStatusMap` in its return value (no second listener needed); `PrepareDashboard` calls `useRoomStatusMutations()` directly for `saveRoomStatus` (write-only, no subscription overhead)",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Schema backward compatibility",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Cleaning staff finish cleaning a room",
+      "end_condition": "Reception staff can confirm room is ready when checking a guest in",
+      "areas": [
+        {
+          "id": null,
+          "label": "Cleaning staff workflow",
+          "flow": "Staff clean room → have no system action available → room status unchanged in system",
+          "owners": "Cleaning staff → Firebase RTDB (passive)",
+          "evidence": "`CleaningPriorityTable.tsx` (read-only, no button)",
+          "issues": "No write path for cleaning staff"
+        },
+        {
+          "id": null,
+          "label": "Prepare dashboard auto-sync",
+          "flow": "`usePrepareDashboard` `useEffect` runs on every render when date=today → writes `clean: false` if occupants active, `clean: \"Yes\"` if no occupants → overwrites any prior value",
+          "owners": "`usePrepareDashboard.ts:358–430`",
+          "evidence": "`usePrepareDashboard.ts`",
+          "issues": "Overwrites manual clean signal for occupied rooms (stayover bug)"
+        },
+        {
+          "id": null,
+          "label": "Checkins room readiness",
+          "flow": "Reception views checkins table → no per-room status shown → clicks global \"Rooms Ready\" toggle manually based on offline knowledge",
+          "owners": "`CheckinsTable.tsx:124` `useSharedDailyToggle(\"roomsReady\")`",
+          "evidence": "`CheckinsTable.tsx`, `CheckinsTableView`",
+          "issues": "Global toggle disconnected from per-room data; no individual room signal"
+        }
+      ]
+    }
+  }
+}

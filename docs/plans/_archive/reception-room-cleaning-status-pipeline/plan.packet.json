@@ -1,0 +1,267 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-room-cleaning-status-pipeline",
+  "source_artifact_path": "docs/plans/reception-room-cleaning-status-pipeline/plan.md",
+  "source_artifact_status": "Draft",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-room-cleaning-status-pipeline/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Cleaning staff have no way to signal when a room is done. Reception staff checking guests in are flying blind on whether the room is actually ready. Fixing this means both teams can do their jobs without phone calls or guesswork.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Cleaning staff can mark individual rooms as cleaned on the prepare dashboard. The checkins screen shows a per-room cleanliness indicator. Reception staff can see at a glance whether a room is ready before a guest reaches the desk.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Mark Clean button per row in `CleaningPriorityTable`; cleanliness pill in `view/BookingRow` 8th cell; \"Room Ready\" header in `TableHeader`",
+      "current_or_option_state": "TASK-03, TASK-05",
+      "gap_or_implication": "Chip reused from `CleaningPriorityTable`; semantic tokens `bg-success-main`/`bg-error-main`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Button disabled when `!isToday`; button disabled during write; error toast on failure; already-clean state visible in pill",
+      "current_or_option_state": "TASK-03, TASK-05",
+      "gap_or_implication": "Await-not-optimistic; `showToast` on error",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — same Firebase auth as all reception staff; no PII in room status",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Acceptable for hostel context",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`try/catch` + `showToast(\"Failed to mark room as clean\", \"error\")` in `PrepareDashboard` handler",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "`saveRoomStatus` already rethrows; toast wraps it",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Guard unit test; button interaction test + mock update; cleanliness pill test; prop-threading test; TableHeader snapshot update",
+      "current_or_option_state": "TASK-06",
+      "gap_or_implication": "5 test files; TableHeader test reconciles pre-existing Email Booking mismatch",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`SingleRoomStatus` schema unchanged; `usePrepareDashboardData()` return additive; guard: `clean === \"Yes\" && typeof cleaned === \"string\" && toEpochMillis(cleaned) >= todayTime`",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "No Zod schema change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Single `useRoomStatusData()` at `CheckinsTable` level; prop-thread through `CheckinsTableView → BookingRow`; no per-row listeners",
+      "current_or_option_state": "TASK-04",
+      "gap_or_implication": "`useRoomStatusMutations()` has no subscription overhead; calling it in `PrepareDashboard` (TASK-03) does not create a duplicate listener — `usePrepareDashboardData()` only calls it for internal write path; the \"single subscription\" constraint applies to `useRoomStatusData()` only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Cloudflare Worker hot-swap; no DB migration; Firebase writes idempotent; no feature flag needed",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Deploy + revert is sufficient rollback",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Connects the prepare dashboard and checkins screen via the existing `/roomStatus` Firebase path. Cleaning staff get a per-room \"Mark Clean\" button (today-only) on the prepare dashboard. Reception staff get a per-row cleanliness pill on the checkins table. The auto-sync guard bug is patched first so manual clean signals from occupied rooms are never silently overwritten. All changes are additive; no new Firebase paths or npm dependencies are required.",
+    "goals": [
+      "Cleaning staff can mark a room as cleaned on the prepare dashboard (today-only)",
+      "Manual clean signals are never overwritten by the auto-sync for occupied rooms",
+      "Reception staff see a per-room cleanliness pill on the checkins screen",
+      "No new Firebase paths or npm dependencies"
+    ],
+    "non_goals": [
+      "Global \"Rooms Ready\" toggle replacement",
+      "\"Mark as dirty\" manual button",
+      "Per-occupant/per-bed status",
+      "Historical cleaning audit log"
+    ],
+    "constraints": [
+      "`SingleRoomStatus` Zod schema must remain backward compatible",
+      "`/roomStatus/index_<room>` is the write target — no new paths",
+      "UI must use reception design system tokens (Tailwind v4 semantic tokens)",
+      "Tests run in CI only — validate by pushing to dev branch (testing policy)"
+    ],
+    "assumptions": [
+      "`roomAllocated` in `CheckInRow` holds raw room number (e.g. \"3\") → Firebase key `index_3`",
+      "`useFirebaseSubscription` creates one `onValue` listener per hook instance — no React-layer deduplication",
+      "`usePrepareDashboardData()` currently returns an inferred object (no explicit interface); adding `roomStatusMap` is additive and does not break callers"
+    ],
+    "selected_approach": [
+      "What was chosen: Full pipeline — Mark Clean button on prepare dashboard + auto-sync guard patch + per-room cleanliness pill on checkins screen",
+      "Why planning is not reopening option selection: Analysis resolved all sub-architecture choices (subscription placement, prepare-side wiring, today-only gating, await-not-optimistic UX) and closed all open questions with defaults"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Expose `roomStatusMap` from `usePrepareDashboardData()` return value",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/reception/src/hooks/orchestrations/prepare/usePrepareDashboard.ts` return value update",
+        "affects": "`apps/reception/src/hooks/orchestrations/prepare/usePrepareDashboard.ts`, `apps/reception/src/components/prepare/__tests__/PrepareDashboard.test.tsx`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Patch auto-sync guard in `usePrepareDashboard.ts`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/reception/src/hooks/orchestrations/prepare/usePrepareDashboard.ts` auto-sync `useEffect` guard",
+        "affects": "`apps/reception/src/hooks/orchestrations/prepare/usePrepareDashboard.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Mark Clean button on prepare dashboard",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/reception/src/components/prepare/CleaningPriorityTable.tsx` (button UI), `apps/reception/src/components/prepare/PrepareDashboard.tsx` (handler + mutation)",
+        "affects": "`apps/reception/src/components/prepare/CleaningPriorityTable.tsx`, `apps/reception/src/components/prepare/PrepareDashboard.tsx`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "`useRoomStatusData()` at `CheckinsTable` level + prop-threading",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `CheckinsTable.tsx` (controller), `view/CheckinsTable.tsx` (view), `BookingRow.tsx` (container), `view/BookingRow.tsx` (view)",
+        "affects": "`apps/reception/src/components/checkins/CheckinsTable.tsx`, `apps/reception/src/components/checkins/view/CheckinsTable.tsx`, `apps/reception/src/components/checkins/BookingRow.tsx`, `apps/reception/src/components/checkins/view/BookingRow.tsx`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Cleanliness pill + `TableHeader` 8th column + `colSpan` update",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-04"
+        ],
+        "blocks": [
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/reception/src/components/checkins/view/BookingRow.tsx`, `apps/reception/src/components/checkins/TableHeader.tsx`",
+        "affects": "`apps/reception/src/components/checkins/view/BookingRow.tsx`, `apps/reception/src/components/checkins/TableHeader.tsx`"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Tests",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02",
+          "TASK-03",
+          "TASK-04",
+          "TASK-05"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — test files across 5 files",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-04"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Cleaning staff workflow",
+          "trigger": "Cleaning staff finishes cleaning a room",
+          "flow": "1. Staff opens `/prepare-dashboard` for today; 2. Each room row shows \"Mark Clean\" button (disabled for past/future dates); 3. Staff clicks button → button disables during write → Firebase `/roomStatus/index_<room>` updated with `{ clean: \"Yes\", cleaned: <ISO timestamp> }` → chip refreshes to \"Clean\" in real-time; 4. If write fails: toast error shown, chip stays \"Dirty\"",
+          "task_ids": [
+            "TASK-02",
+            "TASK-03"
+          ],
+          "dependency_note": "(guard) (button)",
+          "seams": "Error path: network failure shows toast; room stays \"Dirty\""
+        },
+        {
+          "id": null,
+          "label": "Auto-sync (stayover guard)",
+          "trigger": "`usePrepareDashboard` `useEffect` fires when `selectedDate === today`",
+          "flow": "For each room: if `clean === \"Yes\"` AND `typeof cleaned === \"string\"` AND `toEpochMillis(cleaned) >= todayTime` → skip dirty overwrite; stayover clean survives until midnight",
+          "task_ids": [
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "Occupants who check in after manual clean still show as Dirty on next auto-sync cycle — this is acceptable (manual re-clean may be needed)"
+        },
+        {
+          "id": null,
+          "label": "Reception checkins view",
+          "trigger": "Guest approaches desk for check-in",
+          "flow": "1. Reception opens `/checkin`; 2. Per-row \"Room Ready\" pill visible in 8th column for each booking row; 3. Green \"Clean\" or red \"Dirty\" derived from `/roomStatus/index_<roomAllocated>`; 4. Single Firebase subscription at `CheckinsTable` level; all rows read from shared `roomStatusMap` prop",
+          "task_ids": [
+            "TASK-04",
+            "TASK-05"
+          ],
+          "dependency_note": "(subscription) (pill)",
+          "seams": "`roomAllocated` undefined → pill renders nothing (graceful); `colSpan` update required alongside header"
+        }
+      ]
+    }
+  }
+}

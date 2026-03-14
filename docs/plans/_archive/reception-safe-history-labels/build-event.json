@@ -1,0 +1,8 @@
+{
+  "slug": "reception-safe-history-labels",
+  "business": "BRIK",
+  "emitted_at": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "Safe history rows show human-readable labels and stay expanded by stable entry ID.",
+  "source": "operator"
+}

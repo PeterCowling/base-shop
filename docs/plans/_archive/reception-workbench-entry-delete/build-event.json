@@ -1,0 +1,8 @@
+{
+  "slug": "reception-workbench-entry-delete",
+  "business": "BRIK",
+  "emitted_at": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "PMS postings and terminal batches can be deleted from the workbench.",
+  "source": "operator"
+}

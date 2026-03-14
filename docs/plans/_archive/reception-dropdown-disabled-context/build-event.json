@@ -1,0 +1,8 @@
+{
+  "slug": "reception-dropdown-disabled-context",
+  "business": "BRIK",
+  "emitted_at": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "Disabled dropdown items show a tooltip \"Open a shift first\" on hover/focus.",
+  "source": "operator"
+}

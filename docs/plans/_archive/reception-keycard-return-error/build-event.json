@@ -1,0 +1,8 @@
+{
+  "slug": "reception-keycard-return-error",
+  "business": "BRIK",
+  "emitted_at": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "All keycard return failures surface a toast notification to the user.",
+  "source": "operator"
+}

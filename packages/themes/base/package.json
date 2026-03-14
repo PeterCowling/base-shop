@@ -22,6 +22,11 @@
       "types": "./dist/build-profile.d.ts",
       "import": "./dist/build-profile.js",
       "require": "./dist/build-profile.js"
+    },
+    "./build-theme-css": {
+      "types": "./dist/build-theme-css.d.ts",
+      "import": "./dist/build-theme-css.js",
+      "require": "./dist/build-theme-css.js"
     }
   },
   "acmeTheme": {

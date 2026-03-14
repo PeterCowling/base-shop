@@ -11,7 +11,8 @@
     ".": "./src/index.ts",
     "./assets": "./src/assets.ts",
     "./design-profile": "./src/design-profile.ts",
-    "./recipes": "./src/recipes.ts"
+    "./recipes": "./src/recipes.ts",
+    "./theme-css-config": "./src/theme-css-config.ts"
   },
   "sideEffects": false,
   "scripts": {

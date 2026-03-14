@@ -139,3 +139,22 @@ export const formatDisplayDate = (date: Date): string => {
   const mon = MONTH_ABBR[date.getMonth()];
   return `${dd} ${mon}`;
 };
+
+/**
+ * Counts the number of nights between two dates.
+ *
+ * Accepts either ISO "YYYY-MM-DD" strings or `Date` objects.
+ *
+ * @param checkin  - Check-in date.
+ * @param checkout - Check-out date.
+ * @returns The number of nights (rounded to nearest integer).
+ */
+export const countNights = (
+  checkin: string | Date,
+  checkout: string | Date,
+): number => {
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const start = checkin instanceof Date ? checkin.getTime() : new Date(checkin).getTime();
+  const end = checkout instanceof Date ? checkout.getTime() : new Date(checkout).getTime();
+  return Math.round((end - start) / msPerDay);
+};

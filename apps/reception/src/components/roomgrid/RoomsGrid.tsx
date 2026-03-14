@@ -13,6 +13,8 @@ import { addDays, formatDateForInput, getYesterday } from "../../utils/dateUtils
 import { PageShell } from "../common/PageShell";
 
 import RoomGrid from "./RoomGrid";
+import StatusLegend from "./StatusLegend";
+import UnallocatedPanel from "./UnallocatedPanel";
 
 /**
  * Renders multiple reservation grids (one per room) using the known room configs
@@ -27,7 +29,7 @@ const RoomsGrid: FC = () => {
     formatDateForInput(addDays(getYesterday(), 14))
   );
 
-  const { getReservationDataForRoom, loading, error } = useGridData(
+  const { getReservationDataForRoom, unallocatedOccupants, loading, error } = useGridData(
     startDate,
     endDate
   );
@@ -87,6 +89,8 @@ const RoomsGrid: FC = () => {
         </Cluster>
       }
     >
+      <StatusLegend />
+
       <DndProvider backend={HTML5Backend}>
         <Stack gap={5} className="bg-surface rounded-lg shadow-lg p-5">
           {loading && (
@@ -97,20 +101,25 @@ const RoomsGrid: FC = () => {
             <p className="p-4 text-error-main">Error: {String(error)}</p>
           )}
 
-          {!loading &&
-            error == null &&
-            knownRooms.map((roomNumber) => {
-              const dataForRoom = getReservationDataForRoom(roomNumber);
-              return (
-                <RoomGrid
-                  key={roomNumber}
-                  roomNumber={roomNumber}
-                  data={dataForRoom}
-                  startDate={startDate}
-                  endDate={endDate}
-                />
-              );
-            })}
+          {!loading && error == null && (
+            <>
+              {unallocatedOccupants.length > 0 && (
+                <UnallocatedPanel occupants={unallocatedOccupants} />
+              )}
+              {knownRooms.map((roomNumber) => {
+                const dataForRoom = getReservationDataForRoom(roomNumber);
+                return (
+                  <RoomGrid
+                    key={roomNumber}
+                    roomNumber={roomNumber}
+                    data={dataForRoom}
+                    startDate={startDate}
+                    endDate={endDate}
+                  />
+                );
+              })}
+            </>
+          )}
         </Stack>
       </DndProvider>
     </PageShell>

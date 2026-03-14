@@ -9,13 +9,11 @@ artifact: results-review
 # Results Review
 
 ## Observed Outcomes
-- `packages/themes/xa-uploader/` package created with full three-layer theme system: `assets.ts`, `design-profile.ts`, `theme-css-config.ts`, `post-process.ts`, `index.ts`.
-- Generator script `scripts/xa-uploader/generate-theme-tokens.ts` produces committed CSS `apps/xa-uploader/src/app/theme-tokens.generated.css` with all 17 `--gate-*` vars in `:root`; no `color-scheme`, `--theme-transition-duration`, or `.dark` block.
-- `apps/xa-uploader/src/app/globals.css` `:root` block removed; replaced with `@import "./theme-tokens.generated.css"`. Dark override block and all `@utility` classes untouched.
-- `generated-parity.test.ts` (45 tests) and `coverage-parity.test.ts` (14 tests): 59/59 pass via governed runner.
-- `scripts/package.json`: `xa-uploader:generate-theme-tokens` alias added.
-- Governed test script path fixed to `../../../` for correct depth resolution.
-- All tasks complete: TASK-01 through TASK-06 (original plan) + final path fix task.
+- The xa-uploader theme token compiler retrofit is fully landed: source files under `packages/themes/xa-uploader/src/`, the generator at `scripts/xa-uploader/generate-theme-tokens.ts`, the committed `apps/xa-uploader/src/app/theme-tokens.generated.css`, and the `globals.css` import cutover are all in place.
+- The parity guard is active end-to-end: `packages/themes/xa-uploader/__tests__/generated-parity.test.ts` and `coverage-parity.test.ts` both pass under the governed Jest runner for a combined 59/59 passing tests.
+- TASK-01: Complete (2026-03-14) — `packages/themes/xa-uploader/package.json` now uses `../../../scripts/tests/run-governed-test.sh`, fixing the governed test-script path that prevented `pnpm --filter @themes/xa-uploader test` from resolving the runner correctly.
+- Validation passed: repo-root governed Jest run passed, package-directory governed Jest run via corrected relative path passed, `scripts/validate-engineering-coverage.sh` passed, TypeScript check clean.
+- 1 of 1 active plan tasks completed.
 
 ## Standing Updates
 - No standing updates: no registered artifacts changed
@@ -32,7 +30,7 @@ artifact: results-review
 - New open-source package — None.
 - New skill — None.
 - New loop process — None.
-- AI-to-mechanistic — None.
+- AI-to-mechanistic — Add a deterministic validator for governed test-runner relative paths in package manifests. Trigger observation: the only remaining build task was correcting `packages/themes/xa-uploader/package.json` from `../../scripts/tests/run-governed-test.sh` to `../../../scripts/tests/run-governed-test.sh` after the shorter path resolved to a non-existent location. A path-depth validator could catch this class of error at lint/pre-commit time. Suggested next action: create card.
 
 ## Standing Expansion
 - No standing expansion: no new external data sources or artifacts identified

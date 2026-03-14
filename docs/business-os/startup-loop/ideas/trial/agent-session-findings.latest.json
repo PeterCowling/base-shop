@@ -1,15 +1,24 @@
 {
   "schema_version": "agent-session-findings.v1",
-  "generated_at": "2026-03-14T20:03:23.801Z",
+  "generated_at": "2026-03-14T20:43:23.500Z",
   "business": "BOS",
   "transcript_root": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop",
   "sessions_scanned": 20,
   "sessions_with_findings": 17,
   "findings": [
     {
+      "session_id": "39280f97-d047-4a5d-877c-290aa120d3b8",
+      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/39280f97-d047-4a5d-877c-290aa120d3b8.jsonl",
+      "updated_at": "2026-03-14T20:43:20.407Z",
+      "findings": [
+        "The broadcast role gate blocks this path entirely (requires `owner` or `admin` role) — old reception deployments without `PRIME_ACTOR_CLAIMS_SECRET` configured cannot initiate broadcasts",
+        "Critique (Round 1 — self-review):** Issues raised: 1."
+      ]
+    },
+    {
       "session_id": "25cbd7ab-95e9-4bd2-b8eb-b8c9c5ba3a47",
       "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/25cbd7ab-95e9-4bd2-b8eb-b8c9c5ba3a47.jsonl",
-      "updated_at": "2026-03-14T20:01:27.385Z",
+      "updated_at": "2026-03-14T20:36:18.900Z",
       "findings": [
         "Now let me read a few specific files to validate the key structural issues before writing the report.",
         "The core finding:** The architecture (tokens, generation, overrides) is sound, but the *workflow* is broken.",
@@ -52,16 +61,16 @@
         "The operator has described 7 distinct gaps (one per app).",
         "All 7 gaps are material, each opens a planning gap, and each is independently actionable.",
         "Caryina fact-find complete.** Key findings: 20 custom properties total, 12 missing brand colors in assets.ts, critical asset format mismatch (hsl-wrapped vs bare triplets), dark mode selector mismatch (`.dark` vs `html.theme-dark`).",
-        "Now let me also run a broader typecheck to make sure nothing is broken:"
-      ]
-    },
-    {
-      "session_id": "39280f97-d047-4a5d-877c-290aa120d3b8",
-      "transcript_path": "/Users/petercowling/.claude/projects/-Users-petercowling-base-shop/39280f97-d047-4a5d-877c-290aa120d3b8.jsonl",
-      "updated_at": "2026-03-14T20:01:01.898Z",
-      "findings": [
-        "The broadcast role gate blocks this path entirely (requires `owner` or `admin` role) — old reception deployments without `PRIME_ACTOR_CLAIMS_SECRET` configured cannot initiate broadcasts",
-        "Critique (Round 1 — self-review):** Issues raised: 1."
+        "Now let me also run a broader typecheck to make sure nothing is broken:",
+        "One of the agents tried to commit but didn't stage files properly — likely a writer lock issue with parallel agents.",
+        "XA-B plan+critique complete** (score 4.0/credible, all issues resolved).",
+        "Cover Me Pretty** completed planning + critique (all issues resolved).",
+        "A commit from another agent failed — likely writer lock contention.",
+        "Another commit failure from lock contention.",
+        "Lint failure in `@themes/bcd` (not CMS) is blocking the commit hook.",
+        "Pre-existing lint issue in `@themes/bcd` — not caused by our changes.",
+        "The lint failure was transient — these packages existed briefly from agent work and were removed.",
+        "Another commit failure from an agent — I'll handle all commits in one batch after agents complete."
       ]
     },
     {

@@ -1,10 +1,25 @@
 {
   "schema_version": "pattern-reflection.entries.v1",
-  "generated_at": "2026-03-14T20:33:14.306Z",
+  "generated_at": "2026-03-14T20:42:52.361Z",
   "plan_slug": "xa-uploader-theme-token-compiler",
   "review_cycle_key": "xa-uploader-theme-token-compiler",
-  "source_path": "docs/plans/xa-uploader-theme-token-compiler/pattern-reflection.user.md",
+  "source_path": "docs/plans/_archive/xa-uploader-theme-token-compiler/pattern-reflection.user.md",
   "build_origin_status": "ready",
   "failures": [],
-  "entries": []
+  "entries": [
+    {
+      "canonical_title": "Add a deterministic validator for governed test-runner relative paths in package manifests. Trigger observation: the only remaining build task was correcting packages/themes/xa-uploader/package.json from ../../scripts/tests/run-governed-test.sh to ../../../scripts/tests/run-governed-test.sh after the shorter path resolved to a non-existent location. A path-depth validator could catch this class of error at lint/pre-commit time. Suggested next action: create card.",
+      "pattern_summary": "Add a deterministic validator for governed test-runner relative paths in package manifests. Trigg...",
+      "category": "ai-to-mechanistic",
+      "routing_target": "defer",
+      "occurrence_count": 2,
+      "evidence_refs": [
+        "docs/plans/_archive/xa-uploader-theme-token-compiler/results-review.user.md"
+      ],
+      "review_cycle_key": "xa-uploader-theme-token-compiler",
+      "build_signal_id": "aa6bc766598f6159eab587bc442e69188596041c",
+      "recurrence_key": "b86156dbd0fcf8ee5a4dce26ae9f22efa3e160fd",
+      "build_origin_status": "ready"
+    }
+  ]
 }

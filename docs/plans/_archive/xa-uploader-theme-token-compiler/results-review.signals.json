@@ -1,10 +1,32 @@
 {
   "schema_version": "results-review.signals.v1",
-  "generated_at": "2026-03-14T20:32:55.597Z",
+  "generated_at": "2026-03-14T20:42:40.610Z",
   "plan_slug": "xa-uploader-theme-token-compiler",
   "review_cycle_key": "xa-uploader-theme-token-compiler",
-  "source_path": "docs/plans/xa-uploader-theme-token-compiler/results-review.user.md",
+  "source_path": "docs/plans/_archive/xa-uploader-theme-token-compiler/results-review.user.md",
   "build_origin_status": "ready",
   "failures": [],
-  "items": []
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic — Add a deterministic validator for governed test-runner relative paths in package manifests. Trigger observation: the only remaining build task was correcting packages/themes/xa-uploader/package.json from ../../scripts/tests/run-governed-test.sh to ../../../scripts/tests/run-governed-test.sh after the shorter path resolved to a non-existent location. A path-depth validator could catch this class of error at lint/pre-commit time. Suggested next action: create card.",
+      "body": "AI-to-mechanistic — Add a deterministic validator for governed test-runner relative paths in package manifests. Trigger observation: the only remaining build task was correcting packages/themes/xa-uploader/package.json from ../../scripts/tests/run-governed-test.sh to ../../../scripts/tests/run-governed-test.sh after the shorter path resolved to a non-existent location. A path-depth validator could catch this class of error at lint/pre-commit time. Suggested next action: create card.",
+      "source": "results-review.user.md",
+      "date": "2026-03-14T00:00:00.000Z",
+      "path": "docs/plans/_archive/xa-uploader-theme-token-compiler/results-review.user.md",
+      "idea_key": "603ea528f33f2b6aa4cc291330c524c8105fbb03",
+      "review_cycle_key": "xa-uploader-theme-token-compiler",
+      "canonical_title": "Add a deterministic validator for governed test-runner relative paths in package manifests. Trigger observation: the only remaining build task was correcting packages/themes/xa-uploader/package.json from ../../scripts/tests/run-governed-test.sh to ../../../scripts/tests/run-governed-test.sh after the shorter path resolved to a non-existent location. A path-depth validator could catch this class of error at lint/pre-commit time. Suggested next action: create card.",
+      "build_signal_id": "aa6bc766598f6159eab587bc442e69188596041c",
+      "recurrence_key": "b86156dbd0fcf8ee5a4dce26ae9f22efa3e160fd",
+      "build_origin_status": "ready",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
 }

@@ -1,0 +1,39 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "docs/plans/startup-loop-ui-audit-integration/plan.md",
+      "line": "233",
+      "message": "The planned gate does not enforce the stated outcome of \"all routes in both light and dark mode.\" TASK-02 only checks `Business`, `Audit-Date`, `Status`, `Routes-Tested > 0`, and `S1-Blockers = 0`; it never validates `Modes-Tested` includes both `light,dark` or that route coverage is complete. A single-route, single-mode sweep could pass while violating the operator contract."
+    },
+    {
+      "severity": "critical",
+      "file": "docs/plans/startup-loop-ui-audit-integration/plan.md",
+      "line": "479",
+      "message": "TASK-05 creates a second gate implementation path that the real startup-loop advance flow does not consume. `.claude/skills/startup-loop/modules/cmd-advance.md` loads `.claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md`, and there is no runtime consumer of a proposed `scripts/src/startup-loop/s9b-gates.ts`. That means tests can pass against dead code while the live Markdown gate used by operators diverges."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/startup-loop-ui-audit-integration/plan.md",
+      "line": "449",
+      "message": "The validation contract is not executable as written. `scripts/package.json` has a `test` script, but no `typecheck` or `lint` script, so `pnpm --filter scripts typecheck` and `pnpm --filter scripts lint` here and again at line 520 will fail before validating anything. The plan needs the actual repo-local validation path."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/startup-loop-ui-audit-integration/plan.md",
+      "line": "421",
+      "message": "The plan is internally inconsistent on test scope. TASK-05 is introduced as \"covering 7 gate scenarios,\" but the acceptance list immediately defines 8 cases, and the decision log later says the count changed from 7 to 8. The same mismatch appears earlier in the summary/task table/engineering coverage, which makes scope and confidence tracking unreliable."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/startup-loop-ui-audit-integration/plan.md",
+      "line": "273",
+      "message": "Using `Audit-Date:` from frontmatter instead of deriving staleness from the directory slug is well grounded in the live sweep artifact schema and is a cleaner contract than the filename-parse pattern used by `GATE-LAUNCH-SEC`."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 6,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ce23b-5fa8-7a40-9076-a49734c4292d"
+}

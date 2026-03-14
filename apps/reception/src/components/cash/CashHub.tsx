@@ -1,6 +1,7 @@
 "use client";
 
-import { memo, useState } from "react";
+import { memo, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Button } from "@acme/design-system/atoms";
 import { Inline } from "@acme/design-system/primitives";
@@ -12,6 +13,8 @@ import { SafeDataProvider } from "@/context/SafeDataContext";
 
 type Tab = "till" | "safe" | "workbench";
 
+const VALID_TABS = new Set<Tab>(["till", "safe", "workbench"]);
+
 const TABS: { id: Tab; label: string }[] = [
   { id: "till", label: "Till" },
   { id: "safe", label: "Safe" },
@@ -19,7 +22,20 @@ const TABS: { id: Tab; label: string }[] = [
 ];
 
 const CashHub = memo(function CashHub() {
-  const [activeTab, setActiveTab] = useState<Tab>("till");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const tabParam = searchParams.get("tab");
+  const activeTab: Tab =
+    tabParam && VALID_TABS.has(tabParam as Tab) ? (tabParam as Tab) : "till";
+
+  const setActiveTab = useCallback(
+    (tab: Tab) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("tab", tab);
+      router.replace(`/cash?${params.toString()}`, { scroll: false });
+    },
+    [router, searchParams]
+  );
 
   return (
     <SafeDataProvider>

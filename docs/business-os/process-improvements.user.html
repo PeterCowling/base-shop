@@ -359,7 +359,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-14T10:42:48.161Z";
+  var GEN_TS = "2026-03-14T10:49:32.142Z";
 
   var IDEA_ITEMS = [
     {
@@ -407,6 +407,22 @@
       "effort": "M",
       "proximity": null,
       "reason_code": "RULE_P3_MEASUREMENT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette reception — daily check-in and check-out counts not visible at a glance",
+      "body": "At the start of a shift, the first question is always 'who is arriving today and how many have already checked in?'. Right now, answering this requires scrolling through every room and counting manually. A short strip at the top — showing how many guests are expected today, how many are already checked in, and whether anyone is overdue to check out — would give staff a complete picture in seconds and help them prioritise their work.",
+      "source": "queue-state.json",
+      "date": "2026-03-14T19:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "63d303f2e0b6def7745bc0e92d2cc815c3821e63",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
     },
     {
       "type": "idea",
@@ -542,6 +558,70 @@
     },
     {
       "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette reception — colour meanings on the room grid require guessing without a key",
+      "body": "The room grid uses different colours to show things like 'guest is checked in', 'booking confirmed but not arrived', 'keys returned', and several other states. There is no key explaining what any of these colours mean. Someone covering reception who has not memorised the colour scheme has to guess or ask a colleague. Adding a small legend removes this friction entirely and makes the page usable by anyone on the team.",
+      "source": "queue-state.json",
+      "date": "2026-03-14T19:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "d48d4fa76a88e2d4316b4bd6ec1c8efa9b055c8d",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette reception — guests with confirmed bookings can be invisible on the room grid",
+      "body": "When a guest books a bed, the reservation comes in without a specific bed assignment until staff allocate one. Until that allocation happens, the guest simply does not appear on the room grid at all. Staff have no way to spot this gap until the guest arrives, which can cause confusion and delays at check-in. Adding a visible list of unassigned bookings means staff can spot and resolve these in advance, before they become a problem.",
+      "source": "queue-state.json",
+      "date": "2026-03-14T19:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "54f8061f99d79089589fcc0c28ab3bd21b4b1f30",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette reception — no quick view of which nights are busy or slow across all rooms",
+      "body": "To know whether next Saturday is nearly full or has lots of empty beds, someone using the room grid has to count occupied cells across every room — a slow and error-prone mental task. A single row of daily totals at the top of the grid, colour-coded from red to green, would make this instantly readable. That means faster decisions on whether to push discounts, adjust minimum stays, or block availability.",
+      "source": "queue-state.json",
+      "date": "2026-03-14T19:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "2702893be717dea5051f963da7d5bd2ceaa98bcc",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Brikette reception — short unsellable gaps between bookings look the same as open availability",
+      "body": "When there is a single free night sandwiched between two bookings, it almost certainly cannot be filled because most guests stay at least two nights. But on the room grid, that tiny gap looks exactly the same as a whole empty week. Highlighting short gaps in a different colour lets staff immediately see where availability is fragmented and decide whether to try adjusting adjacent bookings, change the minimum stay, or simply accept the lost night.",
+      "source": "queue-state.json",
+      "date": "2026-03-14T19:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "de393c9fa13e371566a20bde987e5dba26fe3bea",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
       "business": "HBAG",
       "title": "Caryina — no customer reviews or social proof to help shoppers trust a new brand",
       "body": "Shoppers on a brand they've never heard of rely heavily on reviews and social signals to decide whether to trust it with their money. When there are none, a significant share of visitors who were nearly ready to buy will hesitate. Even a handful of real testimonials — or a link to a social account with real posts — meaningfully improves conversion for a new brand.",
@@ -606,6 +686,22 @@
     },
     {
       "type": "idea",
+      "business": "BRIK",
+      "title": "Reception — the compose-and-send modal for guest messages has no confirmation step, doesn't refresh after send, and guests can't see who sent the message",
+      "body": "Without a confirmation step, a staff member could accidentally send a half-finished message to every guest in the hostel. After sending, there's no way to see the message appeared in the inbox — it just disappears. Guests receiving the message don't know who sent it, which makes it harder to follow up. These are small gaps that make the feature feel unfinished.",
+      "source": "queue-state.json",
+      "date": "2026-03-14T16:00:03.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "a80d80e7790a49a3aa00d65b7ecf2650fea15f70",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
       "business": "PLAT",
       "title": "Caryina — shopping cart and checkout history are lost between requests when deployed to Cloudflare",
       "body": "The shopping cart and the record of in-progress checkouts are both stored in temporary files on disk. On Cloudflare, the app runs in isolated sandboxes that don't share disk storage — so a customer who adds items to their cart and proceeds to checkout may find their cart empty, and duplicate checkout attempts can slip through. Both pieces of state need to move to a proper database or shared store that works on Cloudflare.",
@@ -622,6 +718,22 @@
     },
     {
       "type": "idea",
+      "business": "BRIK",
+      "title": "Reception — Prime messaging has no timeouts, silently loses audit records, and rate limiting can be disabled without warning",
+      "body": "If the Prime service is slow, staff stare at a spinning modal forever and don't know if the message sent. If the audit record fails to write, there's no warning and compliance records silently disappear. If the rate limiter isn't configured, anyone can spam all guests repeatedly. These are the kinds of issues that are invisible until something goes wrong.",
+      "source": "queue-state.json",
+      "date": "2026-03-14T16:00:02.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "3c54f09943540c81c52066830cd9f42aa7db2cd3",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
       "business": "PLAT",
       "title": "Caryina — the shop, product, and checkout pages crash if product data hasn't been prepared",
       "body": "Every page of the Caryina shop depends on a product data file that must be generated before the app can start. If that file is missing — which happens on any fresh checkout or CI deployment that skips the generation step — every page throws a hard error and the shop is completely offline. Fixing this means the shop either generates the data automatically or shows a helpful error instead of crashing.",
@@ -629,6 +741,38 @@
       "date": "2026-03-14T16:00:01.000Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "972382231b05b84c308be58f24eef04ac9ba6777",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Reception — any staff member can impersonate any other staff member when sending a guest message",
+      "body": "Right now a receptionist could send a broadcast pretending to be the manager, and the audit trail would show the wrong person. Anyone with staff login access can send hostel-wide messages regardless of their role. Fixing this means the audit trail is trustworthy and junior staff can't accidentally — or deliberately — send messages they shouldn't.",
+      "source": "queue-state.json",
+      "date": "2026-03-14T16:00:01.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "7638609fbafefdd5c71315876ff544c7f5b7ad89",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Reception — sending a message to all guests can silently fail or send twice",
+      "body": "If a staff member sends a message to all guests, there are five ways it can go wrong without anyone knowing: the message might reach nobody, it might be sent twice if there's a hiccup on the network, it might get created but never actually dispatched, it might fail because the system isn't ready when send is called, or it might target the wrong pool of guests. All five of these happen silently — the send button shows success either way.",
+      "source": "queue-state.json",
+      "date": "2026-03-14T16:00:00.000Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "0952dabb202f7b53bf55b7415c35ca2a0d405f90",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",

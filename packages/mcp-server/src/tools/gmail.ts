@@ -190,6 +190,7 @@ export type EmailSourcePath = "queue" | "reception" | "outbound" | "unknown";
 
 export type TelemetryEventKey =
   | "email_draft_created"
+  | "email_sent"
   | "email_draft_deferred"
   | "email_outcome_labeled"
   | "email_queue_transition"
@@ -217,6 +218,7 @@ const TelemetryEventSchema = z.object({
   ts: z.string(),
   event_key: z.enum([
     "email_draft_created",
+    "email_sent",
     "email_draft_deferred",
     "email_outcome_labeled",
     "email_queue_transition",
@@ -367,7 +369,7 @@ function computeDailyTelemetryRollup(
     const day = ts.toISOString().slice(0, 10);
     const bucket = getBucket(day);
 
-    if (event.event_key === "email_draft_created") {
+    if (event.event_key === "email_draft_created" || event.event_key === "email_sent") {
       bucket.drafted += 1;
       continue;
     }

@@ -602,6 +602,23 @@ describe("inbox regenerate/send/resolve routes", () => {
     expect(payload.data.sentMessageId).toBe("gmail-msg-1");
   });
 
+  it("returns 502 with GMAIL_AUTH_EXPIRED when sendGmailDraft throws 401", async () => {
+    isPrimeInboxThreadIdMock.mockReturnValue(false);
+    getThreadMock.mockResolvedValue(buildThreadRecord());
+    createGmailDraftMock.mockResolvedValue({ id: "gmail-draft-1" });
+    updateDraftMock.mockResolvedValueOnce({ ...buildThreadRecord().drafts[0], gmail_draft_id: "gmail-draft-1" });
+    sendGmailDraftMock.mockRejectedValue(new Error("Gmail API request failed: HTTP 401"));
+
+    const response = await sendDraft(
+      buildPostRequest("http://localhost/api/mcp/inbox/thread-1/send"),
+      { params: { threadId: "thread-1" } },
+    );
+    const payload = await response.json();
+
+    expect(response.status).toBe(502);
+    expect(payload).toMatchObject({ code: "GMAIL_AUTH_EXPIRED" });
+  });
+
   it("routes Prime resolve through the Prime review proxy for prefixed threads", async () => {
     isPrimeInboxThreadIdMock.mockReturnValue(true);
     resolvePrimeInboxThreadMock.mockResolvedValue({

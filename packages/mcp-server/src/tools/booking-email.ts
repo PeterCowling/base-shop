@@ -5,7 +5,7 @@ import { createRawEmail } from "../utils/email-mime.js";
 import { generateEmailHtml } from "../utils/email-template.js";
 import { errorResult, formatError, jsonResult } from "../utils/validation.js";
 
-import { appendTelemetryEvent,applyDraftOutcomeLabelsStrict } from "./gmail.js";
+import { appendTelemetryEvent } from "./gmail.js";
 
 const bookingEmailSchema = z.object({
   bookingRef: z.string().min(1),
@@ -19,7 +19,7 @@ export type BookingEmailInput = z.infer<typeof bookingEmailSchema>;
 export const bookingEmailTools = [
   {
     name: "mcp_send_booking_email",
-    description: "Create booking app-link email drafts via Gmail using MCP tooling.",
+    description: "Send booking app-link emails via Gmail using MCP tooling.",
     inputSchema: {
       type: "object",
       properties: {
@@ -92,35 +92,37 @@ export async function sendBookingEmail(
   const gmail = clientResult.client;
   const raw = createRawEmail(recipients.join(", "), subjectText, bodyText, bodyHtml);
 
-  const response = await gmail.users.drafts.create({
+  const draftResponse = await gmail.users.drafts.create({
     userId: "me",
     requestBody: {
       message: { raw },
     },
   });
-  const draftMessageId = response.data?.message?.id;
-  await applyDraftOutcomeLabelsStrict(gmail, {
-    draftMessageId: draftMessageId ?? "",
-    sourcePath: "reception",
-    actor: "human",
-    outboundCategory: "pre-arrival",
-    toolName: "mcp_send_booking_email",
+  const draftId = draftResponse.data?.id;
+  if (!draftId) {
+    throw new Error("Gmail draft creation did not return a draft id");
+  }
+
+  const sentResponse = await gmail.users.drafts.send({
+    userId: "me",
+    requestBody: { id: draftId },
   });
+  const sentMessageId = sentResponse.data?.id ?? null;
 
   appendTelemetryEvent({
     ts: new Date().toISOString(),
-    event_key: "email_draft_created",
+    event_key: "email_sent",
     source_path: "reception",
     tool_name: "mcp_send_booking_email",
-    message_id: draftMessageId || null,
-    draft_id: response.data?.id || null,
+    message_id: sentMessageId,
+    draft_id: draftId,
     actor: "system",
   });
 
   return {
     success: true,
-    draftId: response.data?.id || undefined,
-    messageId: response.data?.message?.id || undefined,
+    draftId,
+    messageId: sentMessageId ?? undefined,
     subject: subjectText,
     recipients,
     bookingRef,

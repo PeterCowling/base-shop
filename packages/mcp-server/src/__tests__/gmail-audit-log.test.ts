@@ -378,6 +378,12 @@ describe("gmail audit log (TASK-01)", () => {
         actor: "system",
       },
       {
+        ts: "2026-02-19T08:01:00.000Z",
+        event_key: "email_sent",
+        source_path: "reception",
+        actor: "system",
+      },
+      {
         ts: "2026-02-19T08:05:00.000Z",
         event_key: "email_draft_deferred",
         source_path: "reception",
@@ -415,7 +421,7 @@ describe("gmail audit log (TASK-01)", () => {
       daily: Array<{ day: string; drafted: number; deferred: number; requeued: number; fallback: number; recovered: number }>;
     };
     expect(payload.totals).toEqual({
-      drafted: 1,
+      drafted: 2,
       deferred: 1,
       requeued: 1,
       fallback: 1,
@@ -423,7 +429,7 @@ describe("gmail audit log (TASK-01)", () => {
     });
     expect(payload.daily[0]).toMatchObject({
       day: "2026-02-19",
-      drafted: 1,
+      drafted: 2,
       deferred: 1,
       requeued: 1,
       fallback: 1,

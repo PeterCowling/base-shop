@@ -73,7 +73,7 @@ describe("EmailBookingButton", () => {
       />,
     );
 
-    await userEvent.click(screen.getByTitle("Create booking email draft"));
+    await userEvent.click(screen.getByTitle("Send booking email"));
 
     await waitFor(() => {
       expect(sendBookingEmailMock).toHaveBeenCalledWith("BOOK1", {
@@ -85,7 +85,7 @@ describe("EmailBookingButton", () => {
     expect(logActivityMock).toHaveBeenCalledTimes(2);
     expect(logActivityMock).toHaveBeenCalledWith("occ1", 26);
     expect(logActivityMock).toHaveBeenCalledWith("occ2", 26);
-    expect(showToastMock).toHaveBeenCalledWith("Email draft created", "success");
+    expect(showToastMock).toHaveBeenCalledWith("Email sent", "success");
   });
 
   it("does not log activity when booking email draft creation fails", async () => {
@@ -106,7 +106,7 @@ describe("EmailBookingButton", () => {
       />,
     );
 
-    await userEvent.click(screen.getByTitle("Create booking email draft"));
+    await userEvent.click(screen.getByTitle("Send booking email"));
 
     await waitFor(() => {
       expect(showToastMock).toHaveBeenCalledWith("MCP unavailable", "error");
@@ -133,16 +133,16 @@ describe("EmailBookingButton", () => {
       />,
     );
 
-    await userEvent.click(screen.getByTitle("Create booking email draft"));
+    await userEvent.click(screen.getByTitle("Send booking email"));
 
     await waitFor(() => {
       expect(showToastMock).toHaveBeenCalledWith(
-        "Email draft created, but activity logging failed. Please check history.",
+        "Email sent, but activity logging failed. Please check history.",
         "error"
       );
     });
     expect(showToastMock).not.toHaveBeenCalledWith(
-      "Email draft created",
+      "Email sent",
       "success"
     );
   });

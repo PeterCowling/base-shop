@@ -177,6 +177,35 @@ describe("booking-email route auth + payload validation", () => {
     });
   });
 
+  it("returns 502 with GMAIL_AUTH_EXPIRED when Gmail returns 401", async () => {
+    requireStaffAuthMock.mockResolvedValue({
+      ok: true,
+      uid: "uid-1",
+      roles: ["staff"],
+    });
+    sendBookingEmailMock.mockRejectedValue(new Error("Gmail API request failed: HTTP 401"));
+
+    const response = await POST(
+      buildRequest({
+        bookingRef: "BOOK1",
+        recipients: ["a@example.com"],
+        occupantLinks: ["https://example.com/occ-1"],
+      })
+    );
+    const payload = (await response.json()) as {
+      success: boolean;
+      code: string;
+      error: string;
+    };
+
+    expect(response.status).toBe(502);
+    expect(payload).toMatchObject({
+      success: false,
+      code: "GMAIL_AUTH_EXPIRED",
+      error: expect.stringContaining("Gmail authorisation has expired"),
+    });
+  });
+
   it("returns 200 and forwards payload for authorized staff", async () => {
     requireStaffAuthMock.mockResolvedValue({
       ok: true,

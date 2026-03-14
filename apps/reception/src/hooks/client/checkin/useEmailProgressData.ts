@@ -12,6 +12,7 @@ import { type Activity } from "../../../types/hooks/data/activitiesData";
 import {
   computeHoursElapsed,
   findTimestampForCode,
+  toEpochMillis,
 } from "../../../utils/dateUtils";
 import useActivitiesByCodeData from "../../data/useActivitiesByCodeData";
 import useActivitiesData from "../../data/useActivitiesData";
@@ -153,6 +154,26 @@ export default function useEmailProgressData(): UseEmailProgressDataResult {
   /* ------------------------------------------------------------------ */
   // Allowed activity codes are centralized in `EMAIL_CODES`
 
+  function findAttributionForCode(
+    activityList: Activity[],
+    code: number
+  ): { who: string | undefined; timestamp: string | undefined } {
+    let earliest: number | null = null;
+    let who: string | undefined;
+    let timestamp: string | undefined;
+    for (const act of activityList) {
+      if (act.code === code && act.timestamp) {
+        const t = toEpochMillis(act.timestamp);
+        if (earliest === null || t < earliest) {
+          earliest = t;
+          who = act.who;
+          timestamp = act.timestamp;
+        }
+      }
+    }
+    return { who, timestamp };
+  }
+
   const emailData = useMemo<EmailProgressData[]>(() => {
     if (!bookings || !financialsRoom || !guestsDetails) return [];
 
@@ -203,6 +224,8 @@ export default function useEmailProgressData(): UseEmailProgressDataResult {
               : "Unknown Guest";
             const occupantEmail = detailsObj.email ?? "";
 
+            const attribution = findAttributionForCode(activityList, currentCode);
+
             const candidate = {
               occupantId,
               bookingRef,
@@ -210,6 +233,8 @@ export default function useEmailProgressData(): UseEmailProgressDataResult {
               occupantEmail,
               currentCode,
               hoursElapsed,
+              lastActionedBy: attribution.who,
+              lastActionedAt: attribution.timestamp,
             };
 
             try {

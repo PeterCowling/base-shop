@@ -44,7 +44,26 @@ function invalidPayloadResponse(validationError: z.ZodError) {
   );
 }
 
+function isGmailAuthExpiredError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    message.includes("401") ||
+    message.toLowerCase().includes("unauthorized") ||
+    message.toLowerCase().includes("invalid_grant")
+  );
+}
+
 function mcpToolErrorResponse(error: unknown) {
+  if (isGmailAuthExpiredError(error)) {
+    return NextResponse.json(
+      {
+        success: false,
+        code: "GMAIL_AUTH_EXPIRED",
+        error: "Email sending failed — Gmail authorisation has expired. Contact your administrator.",
+      },
+      { status: 502 }
+    );
+  }
   const message = error instanceof Error ? error.message : String(error);
   return NextResponse.json(
     {

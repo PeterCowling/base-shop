@@ -120,26 +120,31 @@ const ActionButtons: FC<ActionButtonsProps> = ({
                 label: "Add",
                 onClick: handleAddChangeClick,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Exchange Notes",
                 onClick: handleExchangeClick,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Lift",
                 onClick: handleLiftClick,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Edit Transaction",
                 onClick: () => setIsEditMode(true),
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Delete Transaction",
                 onClick: () => setIsDeleteMode(true),
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
             ]}
           />
@@ -153,16 +158,19 @@ const ActionButtons: FC<ActionButtonsProps> = ({
                 label: "Add Keycard",
                 onClick: handleAddKeycard,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Return Keycard",
                 onClick: handleReturnKeycard,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
               {
                 label: "Count Keycards",
                 onClick: handleKeycardCountClick,
                 disabled: !shiftOpenTime,
+                disabledReason: !shiftOpenTime ? "Open a shift first" : undefined,
               },
             ]}
           />

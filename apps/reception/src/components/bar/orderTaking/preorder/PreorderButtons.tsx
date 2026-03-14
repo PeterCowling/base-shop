@@ -37,12 +37,30 @@ import {
 /* ------------------------------------------------------------------ */
 /* 🔹 Helpers                                                          */
 /* ------------------------------------------------------------------ */
-function getPreorderType(): "breakfastPreorders" | "evDrinkPreorders" | null {
+
+/**
+ * Returns which preorder type is relevant for the current half of the day.
+ * Before 14:00 Rome → breakfastPreorders; from 14:00 onward → evDrinkPreorders.
+ * Never returns null — staff can always see the relevant panel.
+ */
+function getPreorderType(): "breakfastPreorders" | "evDrinkPreorders" {
   const now = getCurrentDateInRome();
   const hour = now.getHours();
-  if (hour >= 7 && hour < 11) return "breakfastPreorders";
-  if (hour >= 18 && hour < 21) return "evDrinkPreorders";
-  return null;
+  return hour < 14 ? "breakfastPreorders" : "evDrinkPreorders";
+}
+
+/**
+ * Returns true when the current Rome time falls within the strict service
+ * window for the given preorder type.
+ * breakfast: 07:00–10:59  |  evDrinks: 18:00–20:59
+ */
+function isWithinServiceWindow(
+  preorderType: "breakfastPreorders" | "evDrinkPreorders"
+): boolean {
+  const now = getCurrentDateInRome();
+  const hour = now.getHours();
+  if (preorderType === "breakfastPreorders") return hour >= 7 && hour < 11;
+  return hour >= 18 && hour < 21;
 }
 
 /* ------------------------------------------------------------------ */
@@ -86,7 +104,6 @@ interface PreorderButtonDataWithRemoval extends PreorderButtonData {
 
 interface PreorderButtonProps {
   data: PreorderButtonDataWithRemoval;
-  onClick: (order: PreorderOrder) => void;
 }
 
 interface ConfirmDeleteModalProps {
@@ -136,7 +153,7 @@ ConfirmDeleteModal.displayName = "ConfirmDeleteModal";
 /* ------------------------------------------------------------------ */
 /* 🔹 PreorderButton                                                   */
 /* ------------------------------------------------------------------ */
-const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
+const PreorderButton: FC<PreorderButtonProps> = memo(({ data }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -160,29 +177,10 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
   });
   const { deletePreorder } = useDeletePreorder();
 
-  /* Complimentary preorder object                    */
-  const complimentaryOrder: PreorderOrder = useMemo(
-    () => ({
-      uuid: data.uuid,
-      guestFirstName: data.firstName,
-      guestSurname: data.surname,
-      confirmed: true,
-      paymentMethod: "complimentary",
-      items: data.items,
-    }),
-    [data]
-  );
-
   /* ────────────────────────────────────────────────
-   * Single‑click  → mark as complimentary preorder
-   * Double‑click → convert to zero‑price sale
+   * Convert to zero‑price sale — shared by single‑click and double‑click
    * ──────────────────────────────────────────────── */
-  const handleClick = useCallback(
-    () => onClick(complimentaryOrder),
-    [complimentaryOrder, onClick]
-  );
-
-  const handleDoubleClick = useCallback(async () => {
+  const convertToSale = useCallback(async () => {
     try {
       const saleItems = data.items.map((i) => ({ ...i, price: 0 }));
 
@@ -239,6 +237,17 @@ const PreorderButton: FC<PreorderButtonProps> = memo(({ data, onClick }) => {
     userName,
     createSale,
   ]);
+
+  /* Single‑click and double‑click both trigger the same convert-to-sale flow */
+  const handleClick = useCallback(
+    () => { void convertToSale(); },
+    [convertToSale]
+  );
+
+  const handleDoubleClick = useCallback(
+    () => { void convertToSale(); },
+    [convertToSale]
+  );
 
   /* Tooltip text                                       */
   const tooltipText = useMemo(
@@ -377,10 +386,6 @@ const PreorderButtons: FC<PreorderButtonsProps> = memo(() => {
 
     useEffect(() => {
       const preorderType = getPreorderType();
-      if (!preorderType) {
-        setSnapshotData([]);
-        return;
-      }
 
       const { monthName, day } = getItalyLocalDateParts(0);
       const db = getDatabase();
@@ -484,34 +489,40 @@ const PreorderButtons: FC<PreorderButtonsProps> = memo(() => {
       [displayData]
     );
 
-    /* Single‑click handler (complimentary flow) */
-    const handlePreorderClick = useCallback((order: PreorderOrder) => {
-      /* Replace with toast / mutation as desired */
-      console.log("Complimentary order:", order);
-    }, []);
+    /* Derive current preorder type and service-window status */
+    const currentPreorderType = getPreorderType();
+    const withinWindow = isWithinServiceWindow(currentPreorderType);
 
     /* ────────────────────────────────────────────────
      *  Render
      * ──────────────────────────────────────────────── */
     return (
-      <LayoutGrid
-        cols={1}
-        gap={4}
-        id="preorder-buttons-container"
-        className={`
-        auto-rows-fr grid-flow-row p-4
-        border-t border-primary-main/20 bg-gradient-to-b from-surface to-surface-2
-        transition-all duration-800 md:grid-cols-auto-fill-7
-      `}
-      >
-        {sortedDisplayData.map((data) => (
-          <PreorderButton
-            key={data.transactionId}
-            data={data}
-            onClick={handlePreorderClick}
-          />
-        ))}
-      </LayoutGrid>
+      <div id="preorder-buttons-container">
+        {!withinWindow && (
+          <div
+            className="px-4 pt-3 pb-1 text-xs font-medium text-foreground/50 italic"
+            aria-label="Outside service hours"
+          >
+            outside service hours
+          </div>
+        )}
+        <LayoutGrid
+          cols={1}
+          gap={4}
+          className={`
+          auto-rows-fr grid-flow-row p-4
+          border-t border-primary-main/20 bg-gradient-to-b from-surface to-surface-2
+          transition-all duration-800 md:grid-cols-auto-fill-7
+        `}
+        >
+          {sortedDisplayData.map((data) => (
+            <PreorderButton
+              key={data.transactionId}
+              data={data}
+            />
+          ))}
+        </LayoutGrid>
+      </div>
     );
   }
 );

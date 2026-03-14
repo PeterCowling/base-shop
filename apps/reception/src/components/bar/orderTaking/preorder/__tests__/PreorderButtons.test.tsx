@@ -111,18 +111,17 @@ beforeEach(() => {
 /* ------------------------------------------------------------------ */
 
 describe("PreorderButtons", () => {
-  it("logs complimentary order on click", async () => {
+  it("converts preorder to sale on single click", async () => {
     setupSnapshotWithOrder();
-    const logSpy = jest.spyOn(console, "log").mockImplementation(() => undefined);
+    mockCreateSale.mockResolvedValue("sale456");
     render(<PreorderButtons />);
     const mainButton = await screen.findByText("08:30");
     const button = mainButton.closest("button");
     if (!button) throw new Error("Button not found");
     await userEvent.click(button);
-    expect(logSpy).toHaveBeenCalledWith(
-      "Complimentary order:",
-      expect.objectContaining({ guestFirstName: "John", guestSurname: "Doe" })
-    );
+    await waitFor(() => expect(mockCreateSale).toHaveBeenCalled());
+    expect(mockSetBleeperAvailability).toHaveBeenCalledWith(1, false);
+    expect(removeMock).toHaveBeenCalled();
   });
 
   it("converts preorder to sale on double click", async () => {

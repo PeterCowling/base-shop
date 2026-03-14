@@ -10,6 +10,7 @@ topic arises. Read the file for a topic before acting on it.
 |---|---|
 | `cloudflare-api.md` | CF account ID, token verification pattern, DNS zone IDs, wrangler auth fix (must set `CLOUDFLARE_ACCOUNT_ID`), Pages domain API |
 | `reference-inventory-uploader.md` | Deployed Worker URL, Neon project/DB details, Prisma/CF adapter architecture, KV binding, wrangler secrets |
+| `payment-manager.md` | Payment Manager Worker — live URL, Prisma models, API routes, secrets list, build/deploy instructions, Caryina integration, local dev setup |
 
 ## Data Access
 

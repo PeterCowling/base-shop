@@ -1,0 +1,143 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-prime-shadow-write-logging",
+  "source_artifact_path": "docs/plans/reception-prime-shadow-write-logging/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "none"
+  },
+  "outcome_contract": {
+    "why": "Silent shadow-write failures cause activity thread messages to go missing from the reception inbox with no trace, making diagnosis impossible.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "When D1 is unavailable during an activity message shadow write, a structured error log is emitted with enough context (threadId, channelId, error message, timestamp) to diagnose the failure.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — server-side Cloudflare Pages function only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No UI involved",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — no user-visible state change; 200 response is unchanged",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Error is operator-diagnostic only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — log emits threadId and channelId (no PII); no new data exposure",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "threadId/channelId are non-sensitive internal identifiers",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required — this is the entire purpose of the change",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Structured console.error with threadId, channelId, error message, timestamp",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — TC-11 extended to assert console.error fields",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A — no schema changes, no API contract changes",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Catch block does not alter the return value or any D1/Firebase path",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — change is in the catch block only; the shadow-write is awaited on the request path (success adds latency, but this change does not alter that); no hot-path impact from added structured logging",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A — single file change; no feature flag needed; rollback = revert commit",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "When the D1 shadow write for a Prime activity message fails, the error is currently caught and the raw error object is logged with no structured context. This makes it impossible to diagnose which thread or channel was affected. The fix adds structured fields — `threadId`, `channelId`, `error message`, and `timestamp` — to the existing `console.error` call inside the catch block in `apps/prime/functions/api/activity-message.ts`. The existing test TC-11 already proves the 200 response is preserved on failure; it needs to be extended to assert the structured `console.error` is emitted with the e",
+    "goals": [
+      "On D1 shadow-write failure, emit a structured `console.error` containing `threadId`, `channelId`, error message, and timestamp.",
+      "TC-11 asserts both 200 response and structured `console.error` call.",
+      "Guest-facing behavior is unchanged: 200 is always returned even when D1 is unavailable."
+    ],
+    "non_goals": [
+      "Converting the shadow write from synchronous catch to `ctx.waitUntil` fire-and-forget (the code does not currently use `waitUntil` for this path).",
+      "Adding metrics counters, alerting, or Sentry integration.",
+      "Touching the direct-message shadow-write path.",
+      "Any schema or database changes."
+    ],
+    "constraints": [
+      "Do NOT throw inside the catch — guest must receive 200.",
+      "Do NOT convert the synchronous catch to blocking/async restructure.",
+      "Stay within the existing catch block (lines 154–156 of `activity-message.ts`)."
+    ],
+    "assumptions": [
+      "`channelId` and `activityId` are both in scope at the catch site. Since `activityId === channelId` per the enforced invariant at line 84, `channelId` is used for both the `threadId` and `channelId` log fields. There is no standalone `threadId` variable — the value is derived from `channelId`.",
+      "`Date.now()` is acceptable for the failure timestamp (no external clock required).",
+      "The i18n-exempt comment convention must be preserved on the new log line."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Replace the bare `console.error('Failed to shadow-write Prime activity message to D1:', shadowWriteError)` with a structured object log including `threadId`, `channelId`, `error`, and `failedAt` timestamp fields.",
+      "Why planning is not reopening option selection:",
+      "The problem is precisely defined (missing structured fields in an existing catch block). There is one natural fix location and no competing approaches."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add structured fields to shadow-write catch log + extend TC-11",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 92,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/prime/functions/api/activity-message.ts` (catch block), `apps/prime/functions/__tests__/activity-message.test.ts` (TC-11 extension)",
+        "affects": "`apps/prime/functions/api/activity-message.ts`, `apps/prime/functions/__tests__/activity-message.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change.",
+      "areas": []
+    }
+  }
+}

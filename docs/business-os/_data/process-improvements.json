@@ -1176,6 +1176,16 @@
     {
       "type": "pending-review",
       "business": "BOS",
+      "title": "Pending results review: prime-outbound-resilience-hardening",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/prime-outbound-resilience-hardening/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-14T11:03:11.183Z",
+      "path": "docs/plans/prime-outbound-resilience-hardening/build-record.user.md"
+    },
+    {
+      "type": "pending-review",
+      "business": "BOS",
       "title": "Pending results review: inventory-uploader-security-hardening",
       "body": "Build is complete but no results review has been written yet.",
       "suggested_action": "Write docs/plans/inventory-uploader-security-hardening/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",

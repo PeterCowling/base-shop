@@ -1,5 +1,6 @@
 import "server-only";
 
+import { signActorClaims } from "./actor-claims";
 import type {
   InboxDraftApiModel,
   InboxMessageApiModel,
@@ -255,8 +256,19 @@ async function primeRequest<T>(path: string, init: RequestInit = {}): Promise<T>
   return payload.data;
 }
 
-function buildPrimeActorHeaders(actorUid?: string): Record<string, string> | undefined {
-  return actorUid ? { "x-prime-actor-uid": actorUid } : undefined;
+async function buildPrimeActorHeaders(
+  actorUid?: string,
+  roles?: string[],
+): Promise<Record<string, string> | undefined> {
+  if (!actorUid) return undefined;
+  const secret = process.env.PRIME_ACTOR_CLAIMS_SECRET?.trim();
+  if (!secret) {
+    throw new Error(
+      "PRIME_ACTOR_CLAIMS_SECRET is required to sign actor claims for Prime requests",
+    );
+  }
+  const claimsHeader = await signActorClaims({ uid: actorUid, roles: roles ?? [] }, secret);
+  return { "x-prime-actor-claims": claimsHeader };
 }
 
 /**
@@ -464,6 +476,7 @@ export async function savePrimeInboxDraft(
   prefixedThreadId: string,
   payload: { plainText: string; templateUsed?: string },
   actorUid?: string,
+  roles?: string[],
 ): Promise<InboxDraftApiModel | null> {
   const threadId = parsePrimeInboxThreadId(prefixedThreadId);
   if (!threadId) {
@@ -474,7 +487,7 @@ export async function savePrimeInboxDraft(
     `/api/review-thread-draft?threadId=${encodeURIComponent(threadId)}`,
     {
       method: "PUT",
-      headers: buildPrimeActorHeaders(actorUid),
+      headers: await buildPrimeActorHeaders(actorUid, roles),
       body: JSON.stringify({ plainText: payload.plainText }),
     },
   );
@@ -489,6 +502,7 @@ export async function savePrimeInboxDraft(
 export async function resolvePrimeInboxThread(
   prefixedThreadId: string,
   actorUid?: string,
+  roles?: string[],
 ): Promise<InboxThreadSummaryApiModel | null> {
   const threadId = parsePrimeInboxThreadId(prefixedThreadId);
   if (!threadId) {
@@ -499,7 +513,7 @@ export async function resolvePrimeInboxThread(
     `/api/review-thread-resolve?threadId=${encodeURIComponent(threadId)}`,
     {
       method: "POST",
-      headers: buildPrimeActorHeaders(actorUid),
+      headers: await buildPrimeActorHeaders(actorUid, roles),
     },
   );
 
@@ -509,6 +523,7 @@ export async function resolvePrimeInboxThread(
 export async function dismissPrimeInboxThread(
   prefixedThreadId: string,
   actorUid?: string,
+  roles?: string[],
 ): Promise<InboxThreadSummaryApiModel | null> {
   const threadId = parsePrimeInboxThreadId(prefixedThreadId);
   if (!threadId) {
@@ -519,7 +534,7 @@ export async function dismissPrimeInboxThread(
     `/api/review-thread-dismiss?threadId=${encodeURIComponent(threadId)}`,
     {
       method: "POST",
-      headers: buildPrimeActorHeaders(actorUid),
+      headers: await buildPrimeActorHeaders(actorUid, roles),
     },
   );
 
@@ -529,6 +544,7 @@ export async function dismissPrimeInboxThread(
 export async function sendPrimeInboxThread(
   prefixedThreadId: string,
   actorUid?: string,
+  roles?: string[],
 ): Promise<{
   draft: InboxDraftApiModel | null;
   sentMessageId: string | null;
@@ -549,7 +565,7 @@ export async function sendPrimeInboxThread(
     `/api/review-thread-send?threadId=${encodeURIComponent(threadId)}`,
     {
       method: "POST",
-      headers: buildPrimeActorHeaders(actorUid),
+      headers: await buildPrimeActorHeaders(actorUid, roles),
     },
   );
 
@@ -571,6 +587,7 @@ export async function sendPrimeInboxThread(
 export async function initiatePrimeOutboundThread(input: {
   text: string;
   actorUid?: string;
+  roles?: string[];
 }): Promise<{ detail: PrimeReviewThreadDetail } | null> {
   if (!readPrimeReviewConfig()) {
     return null;
@@ -581,7 +598,7 @@ export async function initiatePrimeOutboundThread(input: {
     {
       method: "POST",
       body: JSON.stringify({ plainText: input.text }),
-      headers: buildPrimeActorHeaders(input.actorUid),
+      headers: await buildPrimeActorHeaders(input.actorUid, input.roles),
       // 10-second hard timeout: prevents a slow Prime function from hanging the Reception API route.
       signal: AbortSignal.timeout(10_000),
     },
@@ -602,6 +619,7 @@ export async function initiatePrimeOutboundThread(input: {
 export async function staffBroadcastSend(input: {
   text: string;
   actorUid?: string;
+  roles?: string[];
 }): Promise<{ sentMessageId: string | null } | null> {
   if (!readPrimeReviewConfig()) {
     return null;
@@ -612,7 +630,7 @@ export async function staffBroadcastSend(input: {
     {
       method: "POST",
       body: JSON.stringify({ plainText: input.text }),
-      headers: buildPrimeActorHeaders(input.actorUid),
+      headers: await buildPrimeActorHeaders(input.actorUid, input.roles),
       // 10-second hard timeout: prevents a slow Prime function from hanging the Reception API route.
       signal: AbortSignal.timeout(10_000),
     },
@@ -633,7 +651,7 @@ export async function replayPrimeInboxCampaignDelivery(
     `/api/review-campaign-replay?campaignId=${encodeURIComponent(campaignId)}&deliveryId=${encodeURIComponent(deliveryId)}`,
     {
       method: "POST",
-      headers: buildPrimeActorHeaders(actorUid),
+      headers: await buildPrimeActorHeaders(actorUid),
     },
   );
 

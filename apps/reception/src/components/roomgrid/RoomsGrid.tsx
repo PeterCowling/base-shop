@@ -1,6 +1,6 @@
 // File: src/components/roomgrid/RoomsGrid.tsx
 import type { ChangeEvent, FC } from "react";
-import { memo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
@@ -12,6 +12,7 @@ import useGridData from "../../hooks/data/roomgrid/useGridData";
 import { addDays, formatDateForInput, getYesterday } from "../../utils/dateUtils";
 import { PageShell } from "../common/PageShell";
 
+import OccupancyStrip, { computeOccupancyCount } from "./OccupancyStrip";
 import RoomGrid from "./RoomGrid";
 import StatusLegend from "./StatusLegend";
 import UnallocatedPanel from "./UnallocatedPanel";
@@ -32,6 +33,16 @@ const RoomsGrid: FC = () => {
   const { getReservationDataForRoom, unallocatedOccupants, loading, error } = useGridData(
     startDate,
     endDate
+  );
+
+  const today = formatDateForInput(new Date());
+  const todayInWindow = today >= startDate && today <= endDate;
+  const occupiedCount = useMemo(
+    () =>
+      todayInWindow
+        ? computeOccupancyCount(knownRooms, getReservationDataForRoom, today)
+        : 0,
+    [todayInWindow, knownRooms, getReservationDataForRoom, today]
   );
 
   const handleStartChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -90,6 +101,10 @@ const RoomsGrid: FC = () => {
       }
     >
       <StatusLegend />
+
+      {!loading && error == null && todayInWindow && (
+        <OccupancyStrip occupiedCount={occupiedCount} totalRooms={knownRooms.length} />
+      )}
 
       <DndProvider backend={HTML5Backend}>
         <Stack gap={5} className="bg-surface rounded-lg shadow-lg p-5">

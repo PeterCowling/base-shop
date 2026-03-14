@@ -8,6 +8,65 @@ import { getChromeContent } from "./contentPacket";
  * getChromeContent falls back to CHROME_DEFAULTS automatically. No mocking needed.
  */
 
+/**
+ * Fallback path tests for readPayload().
+ *
+ * These tests use jest.isolateModules() to get fresh module instances with a
+ * clean cachedPayload so each test exercises the fallback path independently.
+ * The node:fs module is mocked inside each isolateModules block.
+ */
+describe("readPayload — fallback paths", () => {
+  test("TC-01: missing file — getHomeContent returns SAFE_DEFAULTS and warns", () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      jest.isolateModules(() => {
+        jest.mock("node:fs", () => ({
+          existsSync: () => false,
+          readFileSync: jest.fn(),
+          mkdirSync: jest.fn(),
+          writeFileSync: jest.fn(),
+        }));
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const mod = require("./contentPacket") as typeof import("./contentPacket");
+        const result = mod.getHomeContent("en");
+        expect(result.heading).toBeTruthy();
+        expect(typeof result.heading).toBe("string");
+        expect(result.heading.length).toBeGreaterThan(0);
+      });
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Missing generated site-content payload"),
+      );
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  test("TC-02: malformed JSON — getHomeContent returns SAFE_DEFAULTS and warns", () => {
+    const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => {});
+    try {
+      jest.isolateModules(() => {
+        jest.mock("node:fs", () => ({
+          existsSync: (p: string) => p.includes("data/shops/caryina"),
+          readFileSync: () => "invalid{json",
+          mkdirSync: jest.fn(),
+          writeFileSync: jest.fn(),
+        }));
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const mod = require("./contentPacket") as typeof import("./contentPacket");
+        const result = mod.getHomeContent("en");
+        expect(result.heading).toBeTruthy();
+        expect(typeof result.heading).toBe("string");
+        expect(result.heading.length).toBeGreaterThan(0);
+      });
+      expect(warnSpy).toHaveBeenCalledWith(
+        expect.stringContaining("Invalid generated site-content payload"),
+      );
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+});
+
 describe("getChromeContent — DE locale", () => {
   const de = getChromeContent("de");
 
@@ -33,6 +92,10 @@ describe("getChromeContent — DE locale", () => {
     expect(de.footer.privacy).toBe("Datenschutz");
   });
 
+  test("footer: cookie is Cookies", () => {
+    expect(de.footer.cookie).toBe("Cookies");
+  });
+
   test("footer: shipping is Versand", () => {
     expect(de.footer.shipping).toBe("Versand");
   });
@@ -51,6 +114,10 @@ describe("getChromeContent — DE locale", () => {
 
   test("consent: privacyLink is Datenschutzerklärung", () => {
     expect(de.consent.privacyLink).toBe("Datenschutzerklärung");
+  });
+
+  test("consent: cookieLink is Cookie-Richtlinie", () => {
+    expect(de.consent.cookieLink).toBe("Cookie-Richtlinie");
   });
 
   test("trust: shippingLink is Versandrichtlinie", () => {
@@ -95,6 +162,10 @@ describe("getChromeContent — IT locale", () => {
     expect(it.footer.privacy).toBe("Privacy");
   });
 
+  test("footer: cookie is Cookie", () => {
+    expect(it.footer.cookie).toBe("Cookie");
+  });
+
   test("footer: shipping is Spedizione", () => {
     expect(it.footer.shipping).toBe("Spedizione");
   });
@@ -114,6 +185,10 @@ describe("getChromeContent — IT locale", () => {
 
   test("consent: privacyLink is Italian", () => {
     expect(it.consent.privacyLink).toBe("informativa sulla privacy");
+  });
+
+  test("consent: cookieLink is Italian", () => {
+    expect(it.consent.cookieLink).toBe("cookie policy");
   });
 
   // TC-07
@@ -144,6 +219,10 @@ describe("getChromeContent — EN locale (unchanged)", () => {
 
   test("footer: returnsRefunds is English", () => {
     expect(en.footer.returnsRefunds).toBe("Returns & Refunds");
+  });
+
+  test("footer: cookie is English", () => {
+    expect(en.footer.cookie).toBe("Cookies");
   });
 
   test("header: shop is Shop", () => {

@@ -13,7 +13,7 @@ export const statusColors: Record<MyLocalStatus, string> = {
   "1": "var(--reception-signal-info-bg)",
   "8": "var(--reception-signal-info-fg)",
   "23": "var(--reception-signal-warning-fg)",
-  "12": "var(--reception-signal-ready-fg)",
+  "12": "var(--reception-grid-checkedin-fill)",
   "14": "hsl(var(--color-border))",
   "16": "hsl(var(--color-fg-muted))",
 };

@@ -1,5 +1,3 @@
-// src/libs/reservation-grid/src/lib/interfaces/theme.interface.ts
-
 import type { TDateStatus } from "./grid.interface";
 
 interface TTheme<TCustomStatus extends string = never> {

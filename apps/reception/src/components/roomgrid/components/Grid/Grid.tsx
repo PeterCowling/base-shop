@@ -1,5 +1,3 @@
-// src/libs/reservation-grid/src/lib/components/Grid/Grid.tsx
-
 import { useEffect, useState } from "react";
 
 import { Table, TableBody, TableCell, TableRow } from "@acme/design-system";

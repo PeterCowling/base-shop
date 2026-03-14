@@ -1,5 +1,3 @@
-// src/libs/reservation-grid/src/lib/components/Row/Row.interface.ts
-
 import type { ReactNode } from "react";
 
 import type { TDateStatus, TDayType } from "../../interfaces/grid.interface";

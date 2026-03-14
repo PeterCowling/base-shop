@@ -1,5 +1,3 @@
-// src/libs/reservation-grid/src/lib/utils/styleUtils/styleUtils.ts
-
 import { THEME } from "../../../../constants/theme";
 import type { TTheme } from "../../../../interfaces/theme.interface";
 

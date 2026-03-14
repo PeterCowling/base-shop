@@ -1,5 +1,3 @@
-// File: /src/libs/reservation-grid/src/lib/utils/buildData.ts
-
 import {
   formatItalyDate,
   generateDateRange,

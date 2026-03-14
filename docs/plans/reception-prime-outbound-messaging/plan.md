@@ -9,6 +9,7 @@ Last-updated: 2026-03-14
 Build-Wave-1: Complete (2026-03-14) — TASK-01 exported WHOLE_HOSTEL_BROADCAST_CHANNEL_ID; TASK-03 added KV rate limit to review-campaign-send. Commit 5633aaebd5. All TC pass; typecheck clean.
 Build-Wave-2: Complete (2026-03-14) — TASK-02 new POST /api/staff-initiate-thread CF endpoint + 6 TCs; TASK-04 broadcast ChannelMode in chat/channel/page.tsx + 3 TCs. Commit 67d338b582. Lint/typecheck clean.
 Build-Wave-3: Complete (2026-03-14) — TASK-05 "Staff messages" Link in GuestDirectory.tsx (5 TCs); TASK-06 initiatePrimeOutboundThread in prime-review.server.ts (6 TCs). Commit e89101cadf. Typecheck + lint clean.
+Build-Wave-4: Complete (2026-03-14) — TASK-07 prime-compose route + prime_broadcast_initiated telemetry event (10 TCs). Commit 2522ba7a39. Typecheck + lint clean.
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-prime-outbound-messaging
 Dispatch-ID: IDEA-DISPATCH-20260314140001-BRIK-002
@@ -36,7 +37,7 @@ This plan delivers end-to-end whole-hostel broadcast messaging: Reception staff 
 - [x] TASK-04: Guest broadcast mode in `chat/channel/page.tsx`
 - [x] TASK-05: "Staff messages" nav entry point in `GuestDirectory.tsx`
 - [x] TASK-06: Reception proxy function `initiatePrimeOutboundThread`
-- [ ] TASK-07: Reception API route `POST /api/mcp/inbox/prime-compose`
+- [x] TASK-07: Reception API route `POST /api/mcp/inbox/prime-compose`
 - [ ] TASK-08: PrimeColumn compose button + modal
 
 ## Goals
@@ -115,7 +116,7 @@ This plan delivers end-to-end whole-hostel broadcast messaging: Reception staff 
 | TASK-04 | IMPLEMENT | Guest broadcast mode in `chat/channel/page.tsx` + nav entry point | 85% | M | Complete (2026-03-14) | TASK-01 | - |
 | TASK-05 | IMPLEMENT | "Staff messages" nav entry point in `GuestDirectory.tsx` | 85% | S | Complete (2026-03-14) | TASK-01 | TASK-04 |
 | TASK-06 | IMPLEMENT | Reception proxy function `initiatePrimeOutboundThread` | 85% | S | Complete (2026-03-14) | TASK-02 | TASK-07 |
-| TASK-07 | IMPLEMENT | Reception API route `POST /api/mcp/inbox/prime-compose` | 85% | S | Pending | TASK-06 | TASK-08 |
+| TASK-07 | IMPLEMENT | Reception API route `POST /api/mcp/inbox/prime-compose` | 85% | S | Complete (2026-03-14) | TASK-06 | TASK-08 |
 | TASK-08 | IMPLEMENT | PrimeColumn compose button + modal | 80% | M | Pending | TASK-07 | - |
 
 ## Engineering Coverage
@@ -505,7 +506,8 @@ This plan delivers end-to-end whole-hostel broadcast messaging: Reception staff 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-14)
+- **Build evidence:** `prime_broadcast_initiated` added to `inboxEventTypes` as-const array. New route `POST /api/mcp/inbox/prime-compose` created: `requireStaffAuth` → text validation → `initiatePrimeOutboundThread` → `sendPrimeInboxThread` → `recordInboxEvent`. 10 TCs covering auth reject (401), empty text (400), null config (503), send throw (502), success (200), telemetry (TC-06). All pass. Commit 2522ba7a39.
 - **Affects:**
   - `apps/reception/src/app/api/mcp/inbox/prime-compose/route.ts` (new)
   - `apps/reception/src/app/api/mcp/inbox/prime-compose/route.test.ts` (new)

@@ -3,7 +3,7 @@ import path from "path";
 
 export default defineConfig({
   e2e: {
-    baseUrl: process.env.CYPRESS_BASE_URL || "http://localhost:3020",
+    baseUrl: process.env.CYPRESS_BASE_URL || "http://localhost:3022",
     specPattern: path.join(__dirname, "cypress/e2e/**/*.cy.{js,ts}"),
     supportFile: path.join(__dirname, "cypress/support/e2e.ts"),
     video: false,

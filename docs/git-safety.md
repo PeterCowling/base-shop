@@ -848,6 +848,11 @@ Do not use command-mode shells such as `scripts/agents/integrator-shell.sh -- ba
 long-lived locked shells. Use `--interactive-write-shell` / `--interactive-shell` only for rare,
 bounded repairs, then exit immediately after the serialized write window closes.
 
+Do not run long-lived non-write commands under the writer lock. `pnpm ... dev`, `next dev`,
+`vite`, `wrangler dev`, `storybook`, `watch`, `serve`, and `preview` are policy-forbidden in write
+mode and the wrappers must block them. Run those commands via
+`scripts/agents/integrator-shell.sh --read-only -- <command>` instead.
+
 Lock diagnostics:
 
 ```bash
@@ -890,6 +895,7 @@ The writer lock prevents multiple agents (or a human + agents) from writing to t
    - Long-lived locked `codex` / `claude` sessions require explicit opt-in:
      - `scripts/agents/integrator-shell.sh --agent-write-session -- <agent-cli>`
      - `scripts/agents/with-writer-lock.sh --agent-write-session -- <agent-cli>`
+   - Long-lived non-write commands are forbidden while the writer lock is held. Wrappers must fail closed for `dev`, `start`, `storybook`, `preview`, `serve`, and `watch` sessions and redirect them to `scripts/agents/integrator-shell.sh --read-only -- <command>`.
 
 2. **Queue** — if the lock is held, the wrapper joins a FIFO queue (ticket-numbered). Waiters poll until they reach the head of the queue AND the lock directory is free.
 

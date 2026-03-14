@@ -729,6 +729,37 @@ export function getWeekdayShortLabel(
 }
 
 /**
+ * Returns the short weekday label plus the day-of-month number (e.g. "Sun 15").
+ */
+export function getWeekdayShortLabelWithDay(
+  dateStr: string,
+  locale = "en-US",
+): string {
+  if (!dateStr) return "";
+  const date = parseLocalDate(dateStr);
+  if (!date) return "";
+  const weekday = date.toLocaleDateString(locale, { weekday: "short" });
+  return `${weekday} ${date.getDate()}`;
+}
+
+/**
+ * Formats a YYYY-MM-DD string as a short human-readable label (e.g. "Sat, Mar 14").
+ */
+export function formatShortDateLabel(
+  dateStr: string,
+  locale = "en-US",
+): string {
+  if (!dateStr) return "";
+  const date = parseLocalDate(dateStr);
+  if (!date) return dateStr;
+  return date.toLocaleDateString(locale, {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+}
+
+/**
  * Formats a Date object as "DD/MM/YYYY".
  */
 export function formatDdMmYyyy(date: Date): string {

@@ -149,6 +149,12 @@ function writeFixture(filePath: string, fixture: QueueStateFixture): void {
   writeFileSync(filePath, JSON.stringify(fixture, null, 2) + "\n", "utf-8");
 }
 
+function writeBuildRecord(rootDir: string, relativePath: string, content: string): void {
+  const filePath = join(rootDir, relativePath);
+  mkdirSync(join(filePath, ".."), { recursive: true });
+  writeFileSync(filePath, content.trim() + "\n", "utf-8");
+}
+
 function readFixture(filePath: string): QueueStateFixture {
   return JSON.parse(readFileSync(filePath, "utf-8")) as QueueStateFixture;
 }
@@ -249,6 +255,124 @@ describe("markDispatchesCompleted", () => {
         measurement_status: "pending",
       }),
     );
+  });
+
+  it("TC-06B: auto-extracts verified self-evolving measurement from build-record", () => {
+    const dir = makeTmpDir();
+    const queueStatePath = join(dir, "queue-state.json");
+    const planPath = "docs/plans/_archive/my-slug/plan.md";
+    writeFixture(
+      queueStatePath,
+      makeQueueFixture([
+        makeDispatch({
+          self_evolving: {
+            candidate_id: "cand-verified",
+            decision_id: "decision-verified",
+            policy_version: "self-evolving-policy.v1",
+            recommended_route_origin: "lp-do-plan",
+            executor_path: "lp-do-build:container:feedback-intel-v1",
+            handoff_emitted_at: BASE_TIME,
+          },
+        }),
+      ]),
+    );
+    writeBuildRecord(
+      dir,
+      "docs/plans/_archive/my-slug/build-record.user.md",
+      `
+## Self-Evolving Measurement
+
+- **Status:** verified
+- **KPI Name:** reply_rate
+- **KPI Value:** 0.42
+- **KPI Unit:** ratio
+- **Aggregation Method:** rate
+- **Sample Size:** 45
+- **Baseline Ref:** docs/plans/my-slug/baseline.md
+- **Measurement Window:** 2026-02-20/2026-02-26
+- **Baseline Window:** 2026-02-13/2026-02-19
+- **Post Window:** 2026-02-20/2026-02-26
+- **Measured Impact:** 0.08
+- **Impact Confidence:** 0.74
+- **Regressions Detected:** 0
+- **Data Quality Status:** ok
+- **Traffic Segment:** all
+- **Artifact Refs:** docs/plans/_archive/my-slug/build-record.user.md, docs/plans/my-slug/baseline.md
+      `,
+    );
+
+    const fixedClock = () => new Date("2026-02-26T12:34:56.000Z");
+    const result = markDispatchesCompleted({
+      queueStatePath,
+      featureSlug: "my-slug",
+      planPath,
+      outcome: "Verified KPI improvement shipped",
+      rootDir: dir,
+      clock: fixedClock,
+    });
+
+    expect(result).toEqual({ ok: true, mutated: 1, skipped: 0 });
+
+    const updated = readFixture(queueStatePath);
+    expect(updated.dispatches[0]?.completed_by?.self_evolving).toEqual(
+      expect.objectContaining({
+        candidate_id: "cand-verified",
+        decision_id: "decision-verified",
+        maturity_status: "matured",
+        measurement_status: "verified",
+      }),
+    );
+  });
+
+  it("TC-06C: malformed declared self-evolving measurement returns parse_error", () => {
+    const dir = makeTmpDir();
+    const queueStatePath = join(dir, "queue-state.json");
+    const planPath = "docs/plans/_archive/my-slug/plan.md";
+    writeFixture(
+      queueStatePath,
+      makeQueueFixture([
+        makeDispatch({
+          self_evolving: {
+            candidate_id: "cand-bad",
+            decision_id: "decision-bad",
+            policy_version: "self-evolving-policy.v1",
+            recommended_route_origin: "lp-do-plan",
+            executor_path: "lp-do-build:container:feedback-intel-v1",
+            handoff_emitted_at: BASE_TIME,
+          },
+        }),
+      ]),
+    );
+    writeBuildRecord(
+      dir,
+      "docs/plans/_archive/my-slug/build-record.user.md",
+      `
+## Self-Evolving Measurement
+
+- **Status:** verified
+- **KPI Name:** reply_rate
+- **KPI Unit:** ratio
+      `,
+    );
+
+    const result = markDispatchesCompleted({
+      queueStatePath,
+      featureSlug: "my-slug",
+      planPath,
+      outcome: "Should fail",
+      rootDir: dir,
+      clock: () => new Date("2026-02-26T12:34:56.000Z"),
+    });
+
+    expect(result.ok).toBe(false);
+    if (result.ok) {
+      throw new Error("expected parse_error result");
+    }
+    expect(result.reason).toBe("parse_error");
+    expect(result.error).toContain("build_record_self_evolving_measurement_parse_failed");
+
+    const updated = readFixture(queueStatePath);
+    expect(updated.dispatches[0]?.queue_state).toBe("auto_executed");
   });
 
   it("TC-02: idempotency preserves first completion timestamp", () => {

@@ -27,8 +27,7 @@
     "src/**/*",
     "src/app/**/*",
     "src/app/**/*.ts",
-    "src/app/**/*.tsx",
-    ".next/types/**/*.ts"
+    "src/app/**/*.tsx"
   ],
   "exclude": [
     ".next/types/server.d.ts",

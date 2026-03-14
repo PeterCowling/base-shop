@@ -1,0 +1,182 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "do-workflow-stage-handoff-packets",
+  "source_artifact_path": "docs/plans/do-workflow-stage-handoff-packets/plan.md",
+  "source_artifact_status": "Complete",
+  "source_last_updated": "2026-03-11",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-ideas",
+    "lp-do-fact-find",
+    "lp-do-analysis",
+    "lp-do-plan",
+    "lp-do-build",
+    "lp-do-critique"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-stage-handoff-packets/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The workflow now measures real token usage and shows that repeated stage-shell and thread carryover dominate cost, especially between analysis and plan.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Add deterministic stage handoff packets so downstream DO stages can load bounded structured sidecars first, escalate to full upstream markdown only when needed, and preserve engineering coverage expectations across the whole workflow.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: workflow/process change only",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "no product UI",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "packet-first loading and clear fallback rules",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "progressive disclosure stays explicit",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "packets remain source-derived and repo-local",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "no extra sensitive runtime data",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "telemetry examples and proof run include packet paths",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "packet use becomes measurable",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "typecheck/lint + fact-find/plan/coverage validators + real packet generation",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "proof is deterministic",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "one canonical packet contract plus generator schema",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "avoids drifting semantics",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "compact packet fields and packet-first load order",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "bounded context is the main performance goal",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "additive sidecars with markdown fallback",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "packet-first, not packet-only",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Add a deterministic stage handoff packet generator in `packages/skill-runner`, define one canonical packet contract for `fact-find`, `analysis`, and `plan`, update the DO workflow docs and skills so downstream stages use packet-first progressive disclosure, and prove the flow with a persisted feature slug that emits real packet sidecars and workflow telemetry.",
+    "goals": [
+      "reduce cross-stage context load by default,",
+      "lift the bounded summary work into deterministic code,",
+      "keep engineering coverage, validation, and task selection intact across the workflow."
+    ],
+    "non_goals": [
+      "eliminating all remaining hidden thread/system overhead,",
+      "replacing the canonical markdown artifacts,",
+      "changing the ideas queue routing semantics."
+    ],
+    "constraints": [
+      "packet generation must be deterministic and source-derived,",
+      "packet semantics must be defined in one canonical contract,",
+      "build still needs full task-block escalation on demand."
+    ],
+    "assumptions": [
+      "`skill-runner` typecheck/lint plus artifact validators are sufficient proof for this change,",
+      "packet files can be treated as normal telemetry `--input-path` artifacts."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "implement a generator and CLI wrapper in `packages/skill-runner`,",
+      "add `do-stage-handoff-packet-contract.md` as the canonical contract,",
+      "update the workflow guide and stage skills to require packet generation and packet-first loading,",
+      "prove the flow with a real feature slug and packet files.",
+      "Why planning is not reopening option selection:",
+      "analysis already rejected docs-only discipline and a larger runtime-handoff program for this increment."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add deterministic stage handoff packet generation in skill-runner",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-11)",
+        "confidence": 90,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change in `packages/skill-runner` plus shell wrapper in `scripts/`",
+        "affects": "`packages/skill-runner/src/generate-stage-handoff-packet.ts`, `packages/skill-runner/src/stage-handoff-packet-markdown.ts`, `packages/skill-runner/src/stage-handoff-packet-types.ts`, `packages/skill-runner/src/cli/generate-stage-handoff-packet.ts`, `packages/skill-runner/src/index.ts`, `scripts/generate-stage-handoff-packet.sh`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Wire packet-first progressive disclosure into the workflow contract and stage skills",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-11)",
+        "confidence": 88,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "workflow contract and skill/doc updates",
+        "affects": "`docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`, `docs/business-os/startup-loop/contracts/loop-output-contracts.md`, `docs/agents/feature-workflow-guide.md`, `.claude/skills/lp-do-ideas/SKILL.md`, `.claude/skills/lp-do-fact-find/SKILL.md`, `.claude/skills/lp-do-analysis/SKILL.md`, `.claude/skills/lp-do-plan/SKILL.md`, `.claude/skills/lp-do-build/SKILL.md`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Persist the workflow artifact chain, emit real packet sidecars, and validate end to end",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-11)",
+        "confidence": 89,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "persisted workflow docs, packet sidecars, telemetry lines, and build record",
+        "affects": "`docs/plans/do-workflow-stage-handoff-packets/fact-find.md`, `docs/plans/do-workflow-stage-handoff-packets/analysis.md`, `docs/plans/do-workflow-stage-handoff-packets/plan.md`, `docs/plans/do-workflow-stage-handoff-packets/fact-find.packet.json`, `docs/plans/do-workflow-stage-handoff-packets/analysis.packet.json`, `docs/plans/do-workflow-stage-handoff-packets/plan.packet.json`, `docs/plans/do-workflow-stage-handoff-packets/critique-history.md`, `docs/plans/do-workflow-stage-handoff-packets/build-record.user.md`, `docs/business-os/startup-loop/ideas/trial/telemetry.jsonl`"
+      }
+    ],
+    "next_runnable_task_ids": [],
+    "validation_contracts": [
+      "TC-01: packet generator and wrapper compile/lint and produce bounded packet files",
+      "TC-02: workflow contract and skills enforce packet-first loading consistently",
+      "TC-03: the persisted feature slug validates and emits packet-aware workflow telemetry"
+    ],
+    "open_decisions": []
+  }
+}

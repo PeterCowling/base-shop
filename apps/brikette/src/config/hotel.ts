@@ -5,6 +5,12 @@ import type { Hotel, RatingSource } from "../types/machine-layer/ml.ts";
 import { hotelSchema } from "../types/schemas";
 /** Official hostel contact e-mail. */
 export const CONTACT_EMAIL = "hostelpositano@gmail.com" as const;
+/** WhatsApp link for direct guest messaging. */
+export const WHATSAPP_URL = "https://wa.me/393287073695" as const;
+/** Build a wa.me URL with a pre-filled message. */
+export function buildWhatsappMessageUrl(message: string): string {
+  return `${WHATSAPP_URL}?text=${encodeURIComponent(message)}`;
+}
 export const RATINGS_SNAPSHOT_DATE = "2025-11-01" as const;
 
 const ratings: RatingSource[] = [
@@ -58,7 +64,7 @@ const hotel: Hotel = {
   },
 
   /* ── contacts ───────────────────────────────────────────── */
-  url: "https://www.hostel-positano.com",
+  url: "https://hostel-positano.com",
   email: CONTACT_EMAIL,
 
   /* ── address ─────────────────────────────────────────────── */

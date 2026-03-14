@@ -59,28 +59,6 @@ describe("lane-transitions", () => {
     expect(await stageDocExists(repoPath, "TEST-001", "fact-find", "user")).toBe(true);
   });
 
-  it("supports legacy filename reads only while dual-read is enabled", async () => {
-    const cardDir = path.join(repoPath, "docs/business-os/cards/TEST-LEGACY");
-    await mkdirWithinRoot(repoPath, cardDir, { recursive: true });
-    await writeFileWithinRoot(
-      repoPath,
-      path.join(cardDir, "fact-finding.user.md"),
-      "legacy content",
-      "utf-8"
-    );
-
-    jest.useFakeTimers();
-    try {
-      jest.setSystemTime(new Date("2026-02-14T12:00:00.000Z"));
-      expect(await stageDocExists(repoPath, "TEST-LEGACY", "fact-find", "user")).toBe(true);
-
-      jest.setSystemTime(new Date("2026-02-15T12:00:00.000Z"));
-      expect(await stageDocExists(repoPath, "TEST-LEGACY", "fact-find", "user")).toBe(false);
-    } finally {
-      jest.useRealTimers();
-    }
-  });
-
   it("creates a generic stage doc template", async () => {
     const docPath = await createStageDoc(repoPath, "TEST-001", "fact-find", "user");
     const content = (await readFileWithinRoot(repoPath, docPath, "utf-8")) as string;

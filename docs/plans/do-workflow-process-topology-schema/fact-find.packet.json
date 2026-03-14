@@ -1,0 +1,187 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "do-workflow-process-topology-schema",
+  "source_artifact_path": "docs/plans/do-workflow-process-topology-schema/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-ideas",
+    "lp-do-fact-find",
+    "lp-do-analysis",
+    "lp-do-plan",
+    "lp-do-build"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-process-topology-schema/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The workflow now has the right walkthrough checkpoints, but the packet payload is still carrying repeated markdown column names instead of a compact TS-owned topology shape. That leaves a real token-efficiency gap even after the earlier packet work.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "DO packets carry a compact typed process_topology payload for process-changing work, and regenerated packets for a proof slug show a smaller topology subpayload than the current raw row-object shape.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "Workflow/tooling change only",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Packet-first exists, but process topology is still a verbose row-copy representation",
+      "gap_or_implication": "The packet is less efficient than it claims to be",
+      "carry_forward_or_notes": "Prefer a stage-aware topology model"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Packets remain repo-local and source-derived",
+      "gap_or_implication": "New compact fields must not invite free-form summaries",
+      "carry_forward_or_notes": "Keep extraction deterministic"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Packet artifacts already prove shape changes",
+      "gap_or_implication": "No deterministic size proof is yet persisted for the compact schema",
+      "carry_forward_or_notes": "Measure payload bytes in build evidence"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Existing validators and packet generation commands already cover artifact correctness",
+      "gap_or_implication": "No type-level compact topology model exists yet",
+      "carry_forward_or_notes": "Add typecheck/lint plus packet regeneration proof"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Contract and generator are aligned on the current raw row arrays",
+      "gap_or_implication": "The compact topology shape is not yet owned in TS",
+      "carry_forward_or_notes": "Move the schema into `stage-handoff-packet-types.ts`"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Current payloads are bounded but not optimally compact",
+      "gap_or_implication": "Repeated key strings waste packet bytes",
+      "carry_forward_or_notes": "Replace table-header keys with short stage-aware fields"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Packet sidecars are additive artifacts",
+      "gap_or_implication": "Schema change must not remove markdown fallback",
+      "carry_forward_or_notes": "Keep canonical markdown unchanged"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The current walkthrough lift is deterministic but not yet materially token-efficient because the packet still stores process rows as generic markdown-table objects. This increment is about moving that shape into compact TS-owned topology types and proving the resulting payload is actually smaller.",
+    "goals": [
+      "replace raw process-row arrays with a compact typed topology payload,",
+      "keep packet-first progressive disclosure intact,",
+      "persist proof that the new topology payload is smaller on a real workflow slug."
+    ],
+    "non_goals": [
+      "replacing canonical markdown artifacts,",
+      "redesigning workflow telemetry,",
+      "auto-deriving every walkthrough sentence from plan prose."
+    ],
+    "constraints": [
+      "packet payloads must remain deterministic and source-derived,",
+      "packet-first must remain packet-first, not packet-only,",
+      "the schema change must stay bounded to the handoff packet seam."
+    ],
+    "assumptions": [
+      "the three walkthrough sections are stable enough to map to stage-specific compact types,",
+      "stage-specific typed rows will be smaller than generic table-header objects."
+    ],
+    "key_entry_points": [
+      "`docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md` - canonical packet contract and payload requirements.",
+      "`packages/skill-runner/src/generate-stage-handoff-packet.ts` - generator that currently emits raw process-row arrays.",
+      "`packages/skill-runner/src/stage-handoff-packet-types.ts` - current packet envelope types with no explicit process-topology model.",
+      "`packages/skill-runner/src/stage-handoff-packet-markdown.ts` - markdown extraction helpers for tables, fields, and bounded text."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready for analysis",
+      "Rationale": "The problem is now specific and evidenced: the packets are deterministic but still not compact enough. The remaining decision is the exact compact schema and how much of the stage-specific prose should be normalized.",
+      "Blocking items": "None",
+      "Recommended analysis focus": "Choose the smallest stage-aware topology schema that materially reduces bytes without pretending markdown is no longer needed."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Generator seam",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None - current process fields are isolated to one file",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Type ownership",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Data / contracts] [Moderate]: no explicit compact topology interfaces exist yet",
+        "Resolution Required": "Yes"
+      },
+      {
+        "Scope Area": "Contract seam",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Performance / reliability] [Moderate]: contract still describes verbose stage-specific arrays rather than compact schema",
+        "Resolution Required": "Yes"
+      },
+      {
+        "Scope Area": "Proof path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None - a new slug can regenerate packets and compare payload sizes",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "A process-changing DO feature is packetized after fact-find, analysis, or plan.",
+      "end_condition": "Upstream packets express process topology through a compact typed payload that is smaller than the current raw table-row representation while keeping markdown as the canonical source.",
+      "areas": [
+        {
+          "id": "AREA-01",
+          "label": "fact-find packet process rows",
+          "flow": "`generate-stage-handoff-packet.ts` reads `## Current Process Map`, extracts named fields plus the `Process Areas` table, and stores each row with the original markdown header strings as JSON keys.",
+          "owners": "`packages/skill-runner`, packet contract, fact-find packet consumers",
+          "evidence": "`packages/skill-runner/src/generate-stage-handoff-packet.ts`; `packages/skill-runner/src/stage-handoff-packet-markdown.ts`; `docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`",
+          "issues": "Repeated keys like `Current step-by-step flow` and `Owners / systems / handoffs` add overhead without adding meaning once the stage is known."
+        },
+        {
+          "id": "AREA-02",
+          "label": "analysis packet operating model",
+          "flow": "`analysis.packet.json` stores `End-State Operating Model` rows as generic objects keyed by markdown column labels.",
+          "owners": "`packages/skill-runner`, analysis packet consumers",
+          "evidence": "`packages/skill-runner/src/generate-stage-handoff-packet.ts`; `docs/plans/_templates/analysis.md`",
+          "issues": "The packet keeps the full human table shape instead of a compact stage-specific topology record."
+        },
+        {
+          "id": "AREA-03",
+          "label": "plan packet delivered processes",
+          "flow": "`plan.packet.json` stores `Delivered Processes` rows as generic objects keyed by column labels like `Tasks / dependencies`.",
+          "owners": "`packages/skill-runner`, build packet consumers",
+          "evidence": "`packages/skill-runner/src/generate-stage-handoff-packet.ts`; `docs/plans/_templates/plan.md`",
+          "issues": "Task linkage is still prose-heavy even though task IDs can be extracted deterministically."
+        },
+        {
+          "id": "AREA-04",
+          "label": "contract and type ownership",
+          "flow": "The packet contract describes stage-specific arrays, but `stage-handoff-packet-types.ts` does not define compact process topology interfaces.",
+          "owners": "contract doc, `skill-runner` types, generator",
+          "evidence": "`docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`; `packages/skill-runner/src/stage-handoff-packet-types.ts`",
+          "issues": "The compact process structure is described only informally, so TS cannot own or normalize it yet."
+        }
+      ]
+    }
+  }
+}

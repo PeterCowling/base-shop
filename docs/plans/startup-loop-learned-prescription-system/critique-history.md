@@ -43,3 +43,26 @@
 | Prior ID | Severity | Rounds Open | Summary |
 |---|---|---|---|
 | None | - | - | None |
+
+## Round 3 — 2026-03-10
+
+### Issues Opened This Round
+| ID | Severity | Target | Summary |
+|---|---|---|---|
+| 3-01 | Moderate | TASK-05 | The milestone-producer investigation was still too soft for a hard predecessor because its output artifact and minimum contents were not pinned. |
+| 3-02 | Moderate | TASK-08 | The unknown-prescription discovery contract was still too vague; it did not yet pin minimum machine fields or forbid narrative-only pseudo-structure. |
+| 3-03 | Moderate | Rehearsal Trace / TASK-01 | The rehearsal trace understated the identity risk by marking the foundational contract task as issue-free despite the plan treating identity proof as load-bearing. |
+| 3-04 | Moderate | What would make this >=90% | The confidence-raising evidence list still lacked an explicit promotion proof-threshold item, even though promotion efficacy vs safety is one of the plan's core design proofs. |
+
+### Issues Confirmed Resolved This Round
+| Prior ID | Severity | Summary | How resolved |
+|---|---|---|---|
+| 3-01 | Moderate | TASK-05 output too soft for a hard blocker | Pinned TASK-05 to a concrete sibling artifact path, `artifacts/milestone-root-producer-map.md`, and kept producer/root/precedence requirements explicit in the deliverable. |
+| 3-02 | Moderate | Discovery contract still too vague | Added minimum machine fields to TASK-08 deliverable and a validation rule that narrative rationale cannot substitute for required structure. |
+| 3-03 | Moderate | Rehearsal trace underplayed identity risk | Updated the TASK-01 rehearsal row to mark identity mapping as a Major issue that must be resolved before later tasks are safe. |
+| 3-04 | Moderate | Missing promotion-threshold evidence in confidence section | Added a concrete `>=90%` evidence item requiring a promotion proof-threshold table that separates nomination efficacy from promotion safety. |
+
+### Issues Carried Open (not yet resolved)
+| Prior ID | Severity | Rounds Open | Summary |
+|---|---|---|---|
+| None | - | - | None |

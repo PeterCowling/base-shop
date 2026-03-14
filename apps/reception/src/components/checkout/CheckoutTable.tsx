@@ -1,8 +1,8 @@
 // File: /src/components/checkout/CheckoutTable.tsx
 
-import React from "react";
+import React, { useState } from "react";
 import type { LucideIcon } from "lucide-react";
-import { Ban, CircleHelp, Cloud, Lock, Luggage, Refrigerator, Umbrella, Wind } from "lucide-react";
+import { Ban, Check, CircleHelp, Cloud, Lock, Luggage, Refrigerator, Umbrella, Wind, X } from "lucide-react";
 
 import { Button, Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@acme/design-system/atoms";
 
@@ -54,12 +54,18 @@ interface CheckoutTableProps {
     isCompleted: boolean,
     checkoutDate: string
   ) => void;
-  onToggleFridge: (
+  onToggleFridge?: (
     guestId: string,
     bookingRef: string,
     currentValue: boolean
   ) => void;
   pendingFridgeOccupantIds?: Set<string>;
+  onToggleBagStorage?: (
+    guestId: string,
+    bookingRef: string,
+    currentValue: boolean
+  ) => void;
+  pendingBagStorageOccupantIds?: Set<string>;
 }
 
 /**
@@ -127,7 +133,18 @@ export function getLoanTitle(
  *   - Among equally complete, use booking's min allocated room
  */
 const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
-  ({ guests, removeLoanItem, onComplete, onToggleFridge, pendingFridgeOccupantIds = new Set() }) => {
+  ({
+    guests,
+    removeLoanItem,
+    onComplete,
+    onToggleFridge,
+    pendingFridgeOccupantIds = new Set(),
+    onToggleBagStorage,
+    pendingBagStorageOccupantIds = new Set(),
+  }) => {
+    // Tracks which loan txnKey is awaiting removal confirmation (null = none pending)
+    const [pendingRemovalKey, setPendingRemovalKey] = useState<string | null>(null);
+
     if (!guests || guests.length === 0) {
       return (
         <div className="bg-surface border border-border-2 rounded-lg shadow-md p-8 text-center italic text-muted-foreground">
@@ -189,6 +206,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                   <TableCell className="p-3 border-b text-center  border-border-2">
                     {guest.roomAllocated}
                   </TableCell>
+                  {/* LOANS: first click enters confirm mode; second click (confirm) removes */}
                   <TableCell className="p-3 border-b border-border-2 w-48">
                     {loanEntries.map(([txnKey, loan]) => {
                       const { Icon: LoanIcon, colorClass } = getLoanIcon(
@@ -199,44 +217,78 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                         loan.item,
                         loan.depositType
                       );
+                      const isPending = pendingRemovalKey === txnKey;
                       return (
-                        <Button
-                          key={txnKey}
-                          onClick={() =>
-                            removeLoanItem(
-                              guest.bookingRef,
-                              guest.guestId,
-                              txnKey,
-                              loan.item,
-                              loan.depositType
-                            )
-                          }
-                          aria-label={`Remove ${loanTitle}`}
-                          className="inline-flex items-center px-1 me-1 text-foreground hover:text-foreground transition-colors duration-200"
-                          title={loanTitle}
-                        >
-                          <LoanIcon size={18} className={colorClass} aria-hidden="true" />
-                        </Button>
+                        <span key={txnKey} className="inline-flex items-center">
+                          {isPending ? (
+                            <>
+                              <Button
+                                onClick={() => {
+                                  removeLoanItem(
+                                    guest.bookingRef,
+                                    guest.guestId,
+                                    txnKey,
+                                    loan.item,
+                                    loan.depositType
+                                  );
+                                  setPendingRemovalKey(null);
+                                }}
+                                aria-label={`Confirm remove ${loanTitle}`}
+                                className="inline-flex items-center px-1 text-error-main hover:text-error-dark transition-colors duration-200"
+                                title={`Confirm remove ${loanTitle}`}
+                              >
+                                <Check size={16} aria-hidden="true" />
+                              </Button>
+                              <Button
+                                onClick={() => setPendingRemovalKey(null)}
+                                aria-label={`Cancel remove ${loanTitle}`}
+                                className="inline-flex items-center px-1 text-muted-foreground hover:text-foreground transition-colors duration-200"
+                                title="Cancel"
+                              >
+                                <X size={14} aria-hidden="true" />
+                              </Button>
+                            </>
+                          ) : (
+                            <Button
+                              onClick={() => setPendingRemovalKey(txnKey)}
+                              aria-label={`Remove ${loanTitle}`}
+                              className="inline-flex items-center px-1 me-1 text-foreground hover:text-foreground transition-colors duration-200"
+                              title={loanTitle}
+                            >
+                              <LoanIcon size={18} className={colorClass} aria-hidden="true" />
+                            </Button>
+                          )}
+                        </span>
                       );
                     })}
                   </TableCell>
-                  {/* Show an icon if the occupant opted into bag storage */}
+                  {/* BAG STORAGE: single toggle button, highlighted when opted in */}
                   <TableCell className="p-3 border-b border-border-2 text-center">
-                    {guest.bagStorageOptedIn && (
-                      <span title="Bag Storage">
-                        <Luggage size={18} className="text-primary-main inline-block" aria-hidden="true" />
-                      </span>
-                    )}
-                  </TableCell>
-                  <TableCell className="p-3 border-b border-border-2 text-center">
-                    {guest.fridgeUsed && (
-                      <span title="Fridge used">
-                        <Refrigerator size={18} className="text-primary-main inline-block" aria-hidden="true" />
-                      </span>
-                    )}
                     <Button
                       onClick={() =>
-                        onToggleFridge(
+                        onToggleBagStorage?.(
+                          guest.guestId,
+                          guest.bookingRef,
+                          guest.bagStorageOptedIn ?? false
+                        )
+                      }
+                      disabled={pendingBagStorageOccupantIds.has(guest.guestId)}
+                      aria-label={`Toggle bag storage for ${guest.guestId}`}
+                      className={`inline-flex items-center px-1 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed ${
+                        guest.bagStorageOptedIn
+                          ? "text-primary-main"
+                          : "text-muted-foreground"
+                      }`}
+                      title={guest.bagStorageOptedIn ? "Remove bag storage opt-in" : "Mark bag storage opt-in"}
+                    >
+                      <Luggage size={18} aria-hidden="true" />
+                    </Button>
+                  </TableCell>
+                  {/* FRIDGE: single toggle button, highlighted when used */}
+                  <TableCell className="p-3 border-b border-border-2 text-center">
+                    <Button
+                      onClick={() =>
+                        onToggleFridge?.(
                           guest.guestId,
                           guest.bookingRef,
                           guest.fridgeUsed ?? false
@@ -244,12 +296,17 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                       }
                       disabled={pendingFridgeOccupantIds.has(guest.guestId)}
                       aria-label={`Toggle fridge storage for ${guest.guestId}`}
-                      className="inline-flex items-center px-1 ms-1 text-foreground hover:text-foreground transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
+                      className={`inline-flex items-center px-1 transition-colors duration-200 disabled:opacity-40 disabled:cursor-not-allowed ${
+                        guest.fridgeUsed
+                          ? "text-primary-main"
+                          : "text-muted-foreground"
+                      }`}
                       title={guest.fridgeUsed ? "Unmark fridge used" : "Mark fridge used"}
                     >
-                      <Refrigerator size={14} className="text-muted-foreground" aria-hidden="true" />
+                      <Refrigerator size={18} aria-hidden="true" />
                     </Button>
                   </TableCell>
+                  {/* COMPLETE: green + "Undo" when done, blue + "Complete" when pending */}
                   <TableCell className="p-3 border-b border-border-2 text-center">
                     <Button
                       onClick={() =>
@@ -276,7 +333,7 @@ const CheckoutTable: React.FC<CheckoutTableProps> = React.memo(
                           : "Complete checkout"
                       }
                     >
-                      {guest.isCompleted ? "Completed" : "Complete"}
+                      {guest.isCompleted ? "Undo" : "Complete"}
                     </Button>
                   </TableCell>
                 </TableRow>

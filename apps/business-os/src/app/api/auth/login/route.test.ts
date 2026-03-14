@@ -7,7 +7,7 @@ import { POST } from "./route";
 
 describe("/api/auth/login", () => {
   it("should return 400 for missing credentials", async () => {
-    const request = new Request("http://localhost:3020/api/auth/login", {
+    const request = new Request("http://localhost:3022/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({}),
@@ -21,7 +21,7 @@ describe("/api/auth/login", () => {
   });
 
   it("should return 401 for invalid credentials", async () => {
-    const request = new Request("http://localhost:3020/api/auth/login", {
+    const request = new Request("http://localhost:3022/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -38,7 +38,7 @@ describe("/api/auth/login", () => {
   });
 
   it("should return 200 for valid credentials", async () => {
-    const request = new Request("http://localhost:3020/api/auth/login", {
+    const request = new Request("http://localhost:3022/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -57,7 +57,7 @@ describe("/api/auth/login", () => {
   });
 
   it("should set session cookie", async () => {
-    const request = new Request("http://localhost:3020/api/auth/login", {
+    const request = new Request("http://localhost:3022/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

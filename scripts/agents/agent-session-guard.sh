@@ -40,6 +40,46 @@ interactive_shell_name_from_token() {
   esac
 }
 
+command_string_from_argv() {
+  local token=""
+  local joined=""
+
+  if (( $# == 0 )); then
+    return 1
+  fi
+
+  for token in "$@"; do
+    if [[ -n "$joined" ]]; then
+      joined+=" "
+    fi
+    joined+="$token"
+  done
+
+  printf '%s\n' "$joined"
+}
+
+detect_long_lived_non_write_command_in_string() {
+  local command_string="${1:-}"
+  local package_manager_regex='(^|[[:space:]])(pnpm|npm|yarn|bun)([[:space:]][^;&|]+)*[[:space:]]((run|exec)[[:space:]]+)?(dev|start|storybook|preview|serve|watch)([[:space:]]|$)'
+  local direct_command_regex='(^|[[:space:]])((next[[:space:]]+dev)|(wrangler[[:space:]]+dev)|(vite([[:space:]]+(dev|preview))?)|(storybook([[:space:]]+(dev|serve))?)|(nodemon)|(tsx[[:space:]]+watch))([[:space:]]|$)'
+
+  if [[ -z "$command_string" ]]; then
+    return 1
+  fi
+
+  if [[ "$command_string" =~ $package_manager_regex ]]; then
+    printf '%s\n' "${BASH_REMATCH[7]}"
+    return 0
+  fi
+
+  if [[ "$command_string" =~ $direct_command_regex ]]; then
+    printf '%s\n' "${BASH_REMATCH[2]}"
+    return 0
+  fi
+
+  return 1
+}
+
 detect_long_lived_agent_cli_in_shell_command() {
   local script="${1:-}"
   local shell_command_regex='(^|[;&|][;&|]?)[[:space:]]*(((env[[:space:]]+([A-Za-z_][A-Za-z0-9_]*=[^[:space:]]+[[:space:]]+)*)|(nvm[[:space:]]+exec([[:space:]]+[^[:space:]]+)?[[:space:]]+)|((pnpm|npm|yarn|bun)[[:space:]]+(exec|dlx|x)[[:space:]]+)|((npx|pnpx|bunx)[[:space:]]+)|(node[[:space:]]+))?([^[:space:];|&()]*\/)?(codex|claude))([[:space:]]|$))'
@@ -57,6 +97,17 @@ detect_long_lived_agent_cli_in_shell_command() {
     fi
   fi
 
+  return 1
+}
+
+detect_long_lived_non_write_command_in_shell_command() {
+  local script="${1:-}"
+
+  if [[ -z "$script" ]]; then
+    return 1
+  fi
+
+  detect_long_lived_non_write_command_in_string "$script" && return 0
   return 1
 }
 
@@ -84,6 +135,33 @@ detect_long_lived_agent_cli_after_wrapper() {
 
   if (( i < ${#argv[@]} )); then
     detect_long_lived_agent_cli "${argv[@]:i}" && return 0
+  fi
+
+  return 1
+}
+
+detect_long_lived_non_write_command_after_wrapper() {
+  local -a argv=("$@")
+  local i=0
+
+  while (( i < ${#argv[@]} )); do
+    case "${argv[i]}" in
+      --)
+        ((i++))
+        break
+        ;;
+      -*)
+        ((i++))
+        continue
+        ;;
+      *)
+        break
+        ;;
+    esac
+  done
+
+  if (( i < ${#argv[@]} )); then
+    detect_long_lived_non_write_command "${argv[@]:i}" && return 0
   fi
 
   return 1
@@ -121,6 +199,83 @@ shell_invocation_opens_interactive_session() {
   done
 
   return 0
+}
+
+detect_long_lived_non_write_command() {
+  local -a argv=("$@")
+  local first=""
+  local token=""
+  local i=0
+  local command_string=""
+
+  if (( ${#argv[@]} == 0 )); then
+    return 1
+  fi
+
+  if command_string="$(command_string_from_argv "${argv[@]}")"; then
+    detect_long_lived_non_write_command_in_string "$command_string" && return 0
+  fi
+
+  first="${argv[0]}"
+  case "$(basename -- "$first")" in
+    command)
+      if (( ${#argv[@]} > 1 )); then
+        detect_long_lived_non_write_command "${argv[@]:1}" && return 0
+      fi
+      return 1
+      ;;
+    env)
+      i=1
+      while (( i < ${#argv[@]} )); do
+        token="${argv[i]}"
+        case "$token" in
+          --)
+            ((i++))
+            break
+            ;;
+          -u)
+            ((i += 2))
+            continue
+            ;;
+          -*)
+            ((i++))
+            continue
+            ;;
+          [A-Za-z_][A-Za-z0-9_]*=*)
+            ((i++))
+            continue
+            ;;
+          *)
+            break
+            ;;
+        esac
+      done
+
+      if (( i < ${#argv[@]} )); then
+        detect_long_lived_non_write_command "${argv[@]:i}" && return 0
+      fi
+      return 1
+      ;;
+    bash|sh|zsh)
+      for ((i = 1; i < ${#argv[@]}; i++)); do
+        token="${argv[i]}"
+        case "$token" in
+          -c|-lc|-cl)
+            detect_long_lived_non_write_command_in_shell_command "${argv[i+1]:-}" && return 0
+            return 1
+            ;;
+        esac
+      done
+      return 1
+      ;;
+    with-git-guard.sh|integrator-shell.sh|with-writer-lock.sh)
+      detect_long_lived_non_write_command_after_wrapper "${argv[@]:1}" && return 0
+      return 1
+      ;;
+    *)
+      return 1
+      ;;
+  esac
 }
 
 detect_interactive_shell_after_wrapper() {

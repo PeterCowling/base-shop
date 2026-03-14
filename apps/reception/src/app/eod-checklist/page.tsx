@@ -1,12 +1,5 @@
-import Providers from "@/components/ClientProviders";
-import EodChecklistContent from "@/components/eodChecklist/EodChecklistContent";
-
-export const dynamic = "force-dynamic";
+import { redirect } from "next/navigation";
 
 export default function EodChecklistPage() {
-  return (
-    <Providers>
-      <EodChecklistContent />
-    </Providers>
-  );
+  redirect("/eod");
 }

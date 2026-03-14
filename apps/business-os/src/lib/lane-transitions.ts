@@ -13,7 +13,6 @@ import {
   mkdirWithinRoot,
   writeFileWithinRoot,
 } from "./safe-fs";
-import { getStageDocPathCandidates } from "./stage-doc-paths";
 import type { Lane, StageType } from "./types";
 
 export function getRequiredStage(_lane: Lane): StageType | null {
@@ -26,30 +25,19 @@ export async function stageDocExists(
   stage: StageType,
   audience: "user" | "agent"
 ): Promise<boolean> {
-  const { canonicalPath, legacyPaths } = getStageDocPathCandidates({
-    repoRoot: repoPath,
+  const canonicalPath = path.join(
+    repoPath,
+    "docs/business-os/cards",
     cardId,
-    stage,
-    audience,
-  });
+    `${stage}.${audience}.md`
+  );
 
   try {
     await accessWithinRoot(repoPath, canonicalPath);
     return true;
   } catch {
-    // Fall through to legacy candidates when enabled.
+    return false;
   }
-
-  for (const legacyPath of legacyPaths) {
-    try {
-      await accessWithinRoot(repoPath, legacyPath);
-      return true;
-    } catch {
-      // keep looking
-    }
-  }
-
-  return false;
 }
 
 export async function createStageDoc(

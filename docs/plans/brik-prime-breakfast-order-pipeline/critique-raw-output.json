@@ -1,0 +1,6 @@
+{
+  "severity": "info",
+  "file": "docs/plans/brik-prime-breakfast-order-pipeline/plan.md",
+  "line": "138",
+  "message": "The observability note still says this replaces \u201cthree separate `console.error` calls (sequential write approach)\u201d, but the current live handler at [preorders.ts](/Users/petercowling/base-shop/apps/prime/functions/api/firebase/preorders.ts#L124) is a single write path with one catch log at [preorders.ts](/Users/petercowling/base-shop/apps/prime/functions/api/firebase/preorders.ts#L234). The note should be tightened to match the actual baseline."
+}

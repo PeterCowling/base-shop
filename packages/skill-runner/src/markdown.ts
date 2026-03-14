@@ -52,12 +52,13 @@ export function getFrontmatterString(
 ): string | null {
   const target = key.trim().toLowerCase().replace(/\s+/g, "-");
   for (const [rawKey, value] of Object.entries(frontmatter)) {
-    if (typeof value !== "string") {
-      continue;
-    }
     const normalizedKey = rawKey.trim().toLowerCase().replace(/\s+/g, "-");
     if (normalizedKey === target) {
-      const trimmed = value.trim();
+      const coerced = coerceFrontmatterScalar(value);
+      if (!coerced) {
+        return null;
+      }
+      const trimmed = coerced.trim();
       return trimmed.length > 0 ? trimmed : null;
     }
   }
@@ -244,6 +245,19 @@ export function parseTaskIdList(rawValue: string): string[] {
   }
 
   return output;
+}
+
+function coerceFrontmatterScalar(value: unknown): string | null {
+  if (typeof value === "string") {
+    return value;
+  }
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? null : value.toISOString();
+  }
+  if (typeof value === "number" || typeof value === "boolean") {
+    return String(value);
+  }
+  return null;
 }
 
 export function formatTaskIdList(taskIds: readonly string[]): string {

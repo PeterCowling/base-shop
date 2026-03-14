@@ -22,14 +22,14 @@ Last-updated: 2026-02-05
 
 This script will:
 1. Check if cloudflared is installed (install if missing)
-2. Start the Business OS dev server (port 3020)
+2. Start the Business OS dev server (port 3022)
 3. Create a tunnel and display the public URL
 4. Keep running until you press Ctrl+C
 
 **Output example:**
 ```
 ✓ cloudflared is installed
-✓ Starting Business OS dev server on port 3020...
+✓ Starting Business OS dev server on port 3022...
 ✓ Creating tunnel...
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -75,12 +75,12 @@ cd /path/to/base-shop
 pnpm --filter @apps/business-os dev
 ```
 
-Wait for "Ready on http://localhost:3020"
+Wait for "Ready on http://localhost:3022"
 
 ### 3. Create tunnel (in new terminal)
 
 ```bash
-cloudflared tunnel --url http://localhost:3020
+cloudflared tunnel --url http://localhost:3022
 ```
 
 **Output:**
@@ -134,8 +134,8 @@ If cloudflared crashes or the tunnel URL stops working:
 
 3. **Check for port conflicts:**
    ```bash
-   # If port 3020 is in use
-   lsof -ti:3020 | xargs kill -9
+   # If port 3022 is in use
+   lsof -ti:3022 | xargs kill -9
    ```
 
 ---
@@ -159,7 +159,7 @@ brew install ngrok/ngrok/ngrok
 pnpm --filter @apps/business-os dev
 
 # Start ngrok tunnel (terminal 2)
-ngrok http 3020
+ngrok http 3022
 ```
 
 **Differences vs TryCloudflare:**
@@ -179,9 +179,9 @@ ngrok http 3020
 - Run `which cloudflared` to verify
 - Try reinstalling: `brew reinstall cloudflared` (macOS)
 
-### "Failed to connect to localhost:3020"
+### "Failed to connect to localhost:3022"
 - Dev server not running
-- Check: `curl http://localhost:3020/api/health`
+- Check: `curl http://localhost:3022/api/health`
 - Restart dev server: `pnpm --filter @apps/business-os dev`
 
 ### "Tunnel connection failed"

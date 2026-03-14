@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { describe, expect, it } from "@jest/globals";
 
-import { loadOperatorActionRegistryItems } from "../../../../../scripts/src/startup-loop/build/operator-actions-registry.js";
+import { loadOperatorActionRegistryItems } from "../../../../../scripts/src/startup-loop/build/operator-actions-registry.ts";
 import { mkdirWithinRoot, writeFileWithinRoot } from "../safe-fs";
 
 import { appendProcessImprovementsOperatorActionDecisionEvent } from "./operator-actions-ledger";

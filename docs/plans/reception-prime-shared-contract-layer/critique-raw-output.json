@@ -1,0 +1,30 @@
+{
+  "round": 1,
+  "date": "2026-03-14",
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-shared-contract-layer/plan.md",
+      "line": "268",
+      "message": "TASK-03 does not actually centralize the whole-hostel broadcast ID. It only edits `apps/prime/functions/lib/actor-claims.ts` and `apps/prime/functions/lib/prime-review-api.ts`, while active Prime code still hardcodes the same value in `apps/prime/functions/lib/prime-whole-hostel-campaigns.ts:17`. The supporting evidence is also stale: Prime already exports `WHOLE_HOSTEL_BROADCAST_CHANNEL_ID` from `apps/prime/src/lib/chat/directMessageChannel.ts:109`, so the plan is starting from the wrong baseline and missing a live production consumer."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-shared-contract-layer/plan.md",
+      "line": "170",
+      "message": "The validation commands are not executable as written. `packages/lib/package.json` has no `typecheck` script, so `pnpm --filter @acme/lib typecheck` will fail, and later contracts use invalid filters `reception` and `prime` instead of the real package names `@apps/reception` and `@apps/prime`. As written, the plan's main validation gate cannot be run."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-shared-contract-layer/plan.md",
+      "line": "370",
+      "message": "The plan overstates the enforcement of the structural `satisfies` tests. `packages/lib/tsconfig.json` only includes `src/**/*.ts` and explicitly excludes `**/__tests__/**`, so tests placed under `packages/lib/__tests__/prime/` are outside the `pnpm --filter @acme/lib typecheck` gate. These checks may still run under Jest, but they do not fail at package typecheck time as the plan claims."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "lp_score": 3.5,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1"
+}

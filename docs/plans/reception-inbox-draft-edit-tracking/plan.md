@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Data
 Workstream: Engineering
 Created: 2026-03-07
@@ -24,9 +24,9 @@ Auto-Build-Intent: plan+auto
 Add `original_plain_text` and `original_html` columns to the D1 `drafts` table so that when staff edit an AI-generated draft, the original generated text is preserved. Currently the PUT handler overwrites `plain_text` and the original is lost. This is a prerequisite for any future diff-based learning from staff corrections. Three tasks: D1 migration, repository/type updates with capture logic, and API serialization update.
 
 ## Active tasks
-- [ ] TASK-01: D1 migration — add original_plain_text and original_html columns
-- [ ] TASK-02: Repository types + capture/preserve logic
-- [ ] TASK-03: API serialization + client type update
+- [x] TASK-01: D1 migration — add original_plain_text and original_html columns
+- [x] TASK-02: Repository types + capture/preserve logic
+- [x] TASK-03: API serialization + client type update
 
 ## Goals
 - Preserve original AI-generated draft text when staff edits
@@ -92,7 +92,7 @@ Add `original_plain_text` and `original_html` columns to the D1 `drafts` table s
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `apps/reception/migrations/0004_inbox_draft_original_text.sql`
 - **Depends on:** -
 - **Blocks:** TASK-02
@@ -127,7 +127,7 @@ Add `original_plain_text` and `original_html` columns to the D1 `drafts` table s
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `apps/reception/src/lib/inbox/repositories.server.ts`, `apps/reception/src/app/api/mcp/inbox/[threadId]/draft/regenerate/route.ts`, `[readonly] apps/reception/src/app/api/mcp/inbox/[threadId]/draft/route.ts`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03
@@ -178,7 +178,7 @@ Add `original_plain_text` and `original_html` columns to the D1 `drafts` table s
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `apps/reception/src/lib/inbox/api-models.server.ts`, `apps/reception/src/services/useInbox.ts`
 - **Depends on:** TASK-02
 - **Blocks:** -
@@ -224,11 +224,11 @@ Add `original_plain_text` and `original_html` columns to the D1 `drafts` table s
 - Alerts/Dashboards: None
 
 ## Acceptance Criteria (overall)
-- [ ] D1 migration applied successfully
-- [ ] After draft regeneration, `original_plain_text` is populated
-- [ ] After staff edit, `original_plain_text` is preserved (not overwritten)
-- [ ] TypeScript types updated across server and client
-- [ ] `pnpm typecheck` passes
+- [x] D1 migration applied successfully
+- [x] After draft regeneration, `original_plain_text` is populated
+- [x] After staff edit, `original_plain_text` is preserved (not overwritten)
+- [x] TypeScript types updated across server and client
+- [x] `pnpm typecheck` passes
 
 ## Decision Log
 - 2026-03-07: Chose to capture original at both createDraft and regenerate-update paths (covers all generation scenarios)

@@ -1,0 +1,27 @@
+{
+  "schema_version": "dispatch.v2",
+  "id": "IDEA-DISPATCH-20260312-PRIME-TEMPLATES",
+  "mode": "trial",
+  "trigger": "operator_idea",
+  "business": "BRIK",
+  "domain": "SELL",
+  "area_anchor": "Brikette — Staff can't quickly answer common guest questions via Prime messaging",
+  "location_anchors": [
+    "apps/prime/src/lib/assistant/answerComposer.ts",
+    "apps/reception/src/lib/inbox/prime-review.server.ts",
+    "apps/reception/src/app/api/mcp/inbox/[threadId]/draft/route.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "status": "fact_find_ready",
+  "recommended_route": "lp-do-fact-find",
+  "queue_state": "enqueued",
+  "why": "When guests message through Prime, staff have no pre-written answers to draw from. Every reply is written from scratch, even for common questions like 'how do I get to the hostel?' or 'what's included in breakfast?'. The Prime app already has a rule-based Q&A agent with good answers and links — but that knowledge isn't available to staff replying in the reception inbox. Making those answers available as templates, and learning from manual replies when no template fits, means faster responses and consistently helpful answers.",
+  "intended_outcome": "Staff can select from template responses when replying to Prime messages, each giving a clear answer plus a link for more detail. When staff write a manual reply to a question no template covers, the system captures that as a candidate for a new template — building the knowledge base over time.",
+  "evidence_refs": [
+    "operator-stated: Prime app answerComposer.ts already has rule-based Q&A with keyword matching, categories (booking, transport, food, experiences, bag_drop), and answer+links pattern",
+    "operator-stated: Reception inbox Prime draft flow is manual-only (no regeneration) — staff write from scratch every time",
+    "operator-stated: Self-improvement loop needed — manual responses should feed back into template creation"
+  ],
+  "current_truth": "Prime threads in reception inbox support draft save and send but NOT draft regeneration. Staff write every reply manually. The Prime app has a separate rule-based Q&A agent (answerComposer.ts) with ~6 categories of pre-composed answers plus links, and an LLM fallback for unmatched questions. These two systems are completely disconnected — reception staff cannot access Prime's existing Q&A knowledge when composing replies.",
+  "next_scope_now": "Fact-find to determine: (1) how to surface Prime Q&A templates in the reception draft UI, (2) where templates should be stored and how matching works, (3) how the self-improvement loop captures manual responses as template candidates, (4) whether to reuse answerComposer patterns or build a separate template store."
+}

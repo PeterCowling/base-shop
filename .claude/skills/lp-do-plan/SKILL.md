@@ -267,6 +267,26 @@ Write a `## Rehearsal Trace` section into the plan draft (before persisting in P
 
 Apply the blocking/advisory threshold exactly as defined in `../_shared/simulation-protocol.md`. Do not restate or weaken the threshold here.
 
+## Phase 7.6: Process Walkthrough Gate
+
+This gate is distinct from rehearsal:
+- Rehearsal asks whether the tasks can execute in sequence.
+- Process walkthrough asks what exact process the finished plan will create.
+
+Before persist, write `## Delivered Processes` in the plan draft.
+
+This section may be a single line `None: no material process topology change` only when the plan does not change any multi-step process, workflow, lifecycle state, CI/deploy/release lane, approval path, or operator runbook.
+
+For process-affecting work, walk the delivered process area by area:
+1. area name
+2. trigger/start condition
+3. step-by-step delivered flow after all planned tasks land
+4. systems/owners/handoffs involved
+5. tasks that create or modify that flow
+6. unresolved issues, seams, or rollback points
+
+Hard rule: if any affected area cannot be walked from trigger to end state using current repo evidence plus the planned tasks, the plan is not ready. Fix the task structure or add precursor work before Phase 8.
+
 ## Phase 8: Persist Plan
 
 Write/update:
@@ -278,7 +298,22 @@ Status policy:
 - Set `Status: Active` only when:
   - mode is `plan+auto` (default) or user explicitly wants build handoff now, and
   - plan gates pass, and
-  - no unresolved blocking rehearsal findings remain (from Phase 7.5).
+  - no unresolved blocking rehearsal findings remain (from Phase 7.5), and
+  - no unresolved blocking process walkthrough gaps remain (from Phase 7.6).
+
+## Phase 8.5: Dispatch Link Stamping
+
+After persisting the plan (Phase 8), if the plan's frontmatter includes a `Dispatch-ID` that is not `none`, stamp `processed_by.target_path` in the ideas queue-state so the dispatch appears in the "in progress" column of process-improvements reports:
+
+```bash
+pnpm --filter scripts startup-loop:lp-do-ideas-completion-reconcile -- --write
+```
+
+Rules:
+- Run this even when mode is `plan-only` — the link between dispatch and plan should be visible as soon as the plan exists.
+- Skip when `Dispatch-ID: none` or no `Dispatch-ID` field is present in the plan.
+- Failure is non-fatal: log a warning and continue to Phase 9. The reconcile can be retried manually.
+- The command only stamps `processed_by.target_path` on active (non-completed) dispatches; it does not change `queue_state`.
 
 ## Phase 9: Critique Loop (1–3 rounds, mandatory)
 
@@ -371,6 +406,7 @@ Plan+auto:
 - [ ] Frontend IMPLEMENT tasks include scoped post-build QA loop requirements (design QA + contrast + breakpoint sweeps)
 - [ ] Consumer tracing complete for all new outputs and modified behaviors in M/L code/mixed tasks
 - [ ] Phase 7.5 Rehearsal Trace run — trace table present in plan draft; all blocking findings resolved or validly waived before Phase 8 persist
+- [ ] Phase 7.6 Process Walkthrough Gate run — `## Delivered Processes` present; process-affecting areas walked trigger-to-end-state; all blocking gaps resolved before Phase 8 persist
 - [ ] lp-do-factcheck run if plan contains codebase claims (file paths, function signatures, coverage assertions)
 - [ ] Phase 9 critique loop run (1–3 rounds, mandatory): round count and final verdict recorded
 - [ ] Phase 9.5 Delivery Rehearsal run — engineering coverage rows (for code/mixed) or applicable delivery lenses (for business-artifact) checked; same-outcome findings folded into plan; adjacent ideas logged with `[Adjacent: delivery-rehearsal]` tag; all blocking findings resolved or replanned before Phase 10

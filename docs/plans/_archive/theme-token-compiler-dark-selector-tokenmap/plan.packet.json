@@ -1,0 +1,143 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "theme-token-compiler-dark-selector-tokenmap",
+  "source_artifact_path": "docs/plans/theme-token-compiler-dark-selector-tokenmap/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "4 of 7 apps use `html.theme-dark` (not `.dark`), and reception has 107 tokens in flat `TokenMap` format that can't flow through `colorVarMap`. Without these two compiler extensions, app retrofits would require either duplicating logic in `derivedVars` or post-processing the generated CSS — both fragile workarounds.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The theme compiler supports all dark mode selectors and token formats used across the monorepo, unblocking all 7 app retrofit plans.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "—",
+      "gap_or_implication": "Compiler output only; no UI changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "—",
+      "gap_or_implication": "No user-facing states",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "—",
+      "gap_or_implication": "Build-time code generation",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "—",
+      "gap_or_implication": "Pure function, no runtime",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Unit tests for both features",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "`ThemeCSSConfig` type extension",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "—",
+      "gap_or_implication": "Build-time only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A",
+      "current_or_option_state": "—",
+      "gap_or_implication": "Backward-compatible additions",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Extend `generateThemeCSS()` in `packages/themes/base/src/build-theme-css.ts` with two backward-compatible features required by 6 of 7 downstream app retrofits: 1. **Configurable dark selector** — replace hardcoded `.dark` with an optional `darkSelector` field (default `.dark`). Needed by caryina, reception, xa-b, and cms which all use `html.theme-dark` or `@media (prefers-color-scheme: dark)`. 2. **TokenMap code path** (`tokenVarMap`) — a new section that emits CSS vars from a flat `TokenMap` structure (`{ \"--var-name\": { light: \"...\", dark?: \"...\" } }`). Needed by reception (107 tokens in thi",
+    "goals": [
+      "Compiler accepts `darkSelector` and emits the configured selector instead of `.dark`",
+      "Compiler accepts `tokenVarMap` entries and emits them in `:root` and dark blocks",
+      "Brikette backward compatibility preserved (all existing tests pass without changes)",
+      "New unit tests in `packages/themes/base/__tests__/` cover both features"
+    ],
+    "non_goals": [
+      "Retrofitting any individual app (each has its own plan)",
+      "Multi-selector dark mode (e.g. both `@media` and class) — apps needing both will use CSS aliases in their globals.css",
+      "Changes to `ThemeAssets`, `DesignProfile`, or recipe types"
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "selected_approach": [],
+    "plan_gates": {
+      "Foundation Gate": "Pass — deliverable type, track, execution skill all clear; evidence from 4 fact-finds",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add `darkSelector` config field and compiler support",
+        "type": "IMPLEMENT",
+        "status": "Ready",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `ThemeCSSConfig` type + `generateThemeCSS()` function",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add `tokenVarMap` config field and compiler support",
+        "type": "IMPLEMENT",
+        "status": "Ready",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`tokenVarMap` support in `ThemeCSSConfig` + `generateThemeCSS()`",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. Both tasks are additive compiler features consumed by downstream app plans. ---",
+      "areas": []
+    }
+  }
+}

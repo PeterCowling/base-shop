@@ -14,7 +14,7 @@ pnpm --filter @apps/product-pipeline dev
 pnpm --filter @apps/product-pipeline exec next-on-pages
 pnpm --filter @apps/product-pipeline exec wrangler pages dev .vercel/output/static \
   --compatibility-flag=nodejs_compat \
-  --port 3012
+  --port 3014
 ```
 
 ## Notes
@@ -32,7 +32,7 @@ Use the runner script to process Stage M jobs with human-gated, headed capture a
 ```bash
 pnpm --filter @apps/product-pipeline exec tsx scripts/runner.ts \
   --capture --playwright --headful --human \
-  --base-url http://localhost:3012 \
+  --base-url http://localhost:3014 \
   --artifact-kind snapshot_html \
   --screenshot-kind snapshot_png
 ```

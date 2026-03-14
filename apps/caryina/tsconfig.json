@@ -24,7 +24,6 @@
     "next-env.d.ts",
     "playwright.config.ts",
     "src/**/*",
-    ".next/types/**/*.ts",
     "shop.json"
   ],
   "exclude": [

@@ -3328,6 +3328,70 @@
       "plan_slug": "theme-token-compiler-dark-selector-tokenmap",
       "completed_at": "2026-03-14",
       "output_link": "docs/plans/_archive/theme-token-compiler-dark-selector-tokenmap/plan.md"
+    },
+    {
+      "idea_key": "b182df44463ace6d9d8863c7c98eee6af7358e09",
+      "title": "IDEA-DISPATCH-20260314200000-0008",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-prime-source-field-consistency",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-prime-source-field-consistency/plan.md"
+    },
+    {
+      "idea_key": "78d5660e38b0c809e2840b0e8ef8b28ca5d59360",
+      "title": "IDEA-DISPATCH-20260314200000-0006",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-prime-shadow-write-logging",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-prime-shadow-write-logging/plan.md"
+    },
+    {
+      "idea_key": "8cc8bc6a18d36337cce8203b356e992605837527",
+      "title": "IDEA-DISPATCH-20260314200000-0009",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-prime-request-retry",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-prime-request-retry/plan.md"
+    },
+    {
+      "idea_key": "81067b2b8f4fed972957e6a887e18558850e3e3f",
+      "title": "IDEA-DISPATCH-20260314200000-0001",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-prime-shared-contract-layer",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-prime-shared-contract-layer/plan.md"
+    },
+    {
+      "idea_key": "788bd8662c6cef122ee6a3ac8b9bcc0c2bb209e2",
+      "title": "IDEA-DISPATCH-20260314200000-0003",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-prime-actor-claims-compat",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-prime-actor-claims-compat/plan.md"
+    },
+    {
+      "idea_key": "d04b0e9794d6d6eabfdda25c5b6d7a6a34b370ec",
+      "title": "IDEA-DISPATCH-20260314200000-0005",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-prime-lastsyncdat-fix",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-prime-lastsyncdat-fix/plan.md"
+    },
+    {
+      "idea_key": "1649e95cb148bcf1fccc2f8ed9f6e16bb9e9f563",
+      "title": "IDEA-DISPATCH-20260314200000-0002",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-prime-guest-name-lookup",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/reception-prime-guest-name-lookup/plan.md"
+    },
+    {
+      "idea_key": "9bba99914c617fdba5bc8e8a54a13b5a18d00050",
+      "title": "IDEA-DISPATCH-20260314200000-0007",
+      "source_path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "plan_slug": "reception-prime-deprecated-endpoint-cleanup",
+      "completed_at": "2026-03-14",
+      "output_link": "docs/plans/_archive/reception-prime-deprecated-endpoint-cleanup/plan.md"
     }
   ]
 }

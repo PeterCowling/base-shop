@@ -42,6 +42,15 @@ jest.mock("@acme/platform-core/utils", () => ({
   recordMetric: jest.fn(),
 }));
 
+jest.mock("../../../lib/payments/provider.server", () => ({
+  resolveCaryinaPaymentProvider: jest.fn(() => "axerve"),
+  isAxerveProvider: (provider: string) => provider === "axerve",
+}));
+
+jest.mock("../../../lib/payments/stripeCheckout.server", () => ({
+  createStripeCheckoutRedirect: jest.fn(),
+}));
+
 jest.mock("../../../lib/checkoutIdempotency.server", () => ({
   beginCheckoutAttempt: jest.fn(),
   buildCheckoutRequestHash: jest.fn(() => "hash-123"),
@@ -85,6 +94,18 @@ const { sendSystemEmail } = jest.requireMock("@acme/platform-core/email") as {
   sendSystemEmail: jest.Mock;
 };
 
+const { resolveCaryinaPaymentProvider } = jest.requireMock(
+  "../../../lib/payments/provider.server",
+) as {
+  resolveCaryinaPaymentProvider: jest.Mock;
+};
+
+const { createStripeCheckoutRedirect } = jest.requireMock(
+  "../../../lib/payments/stripeCheckout.server",
+) as {
+  createStripeCheckoutRedirect: jest.Mock;
+};
+
 const {
   beginCheckoutAttempt,
   markCheckoutAttemptPaymentAttempted,
@@ -106,6 +127,7 @@ const { reconcileStaleCheckoutAttempts } = jest.requireMock(
 const VALID_BODY = {
   idempotencyKey: "idem-123",
   lang: "en",
+  acceptedLegalTerms: true,
   cardNumber: "4111111111111111",
   expiryMonth: "12",
   expiryYear: "2027",
@@ -172,6 +194,11 @@ describe("POST /api/checkout-session", () => {
     commitInventoryHold.mockResolvedValue(undefined);
     releaseInventoryHold.mockResolvedValue({ ok: true, status: "released" });
     sendSystemEmail.mockResolvedValue(undefined);
+    resolveCaryinaPaymentProvider.mockReturnValue("axerve");
+    createStripeCheckoutRedirect.mockResolvedValue({
+      sessionId: "cs_test_123",
+      url: "https://checkout.stripe.com/c/pay/cs_test_123",
+    });
     callPayment.mockResolvedValue({
       success: true,
       transactionId: "txn-001",
@@ -483,6 +510,46 @@ describe("POST /api/checkout-session", () => {
     expect(errorSpy).toHaveBeenCalledWith(
       "Auto checkout reconciliation failed",
       expect.any(Error),
+    );
+  });
+
+  it("TC-06-13: Stripe provider creates a hosted checkout redirect without Axerve card fields", async () => {
+    resolveCaryinaPaymentProvider.mockReturnValue("stripe");
+
+    const res = await POST(
+      makeReq({ idempotencyKey: "idem-123", lang: "en", acceptedLegalTerms: true }) as never,
+    );
+
+    expect(res.status).toBe(200);
+    await expect(res.json()).resolves.toEqual({
+      success: true,
+      mode: "redirect",
+      provider: "stripe",
+      sessionId: "cs_test_123",
+      url: "https://checkout.stripe.com/c/pay/cs_test_123",
+    });
+    expect(callPayment).not.toHaveBeenCalled();
+    expect(markCheckoutAttemptPaymentAttempted).not.toHaveBeenCalled();
+    expect(markCheckoutAttemptReservation).toHaveBeenCalledWith(
+      expect.objectContaining({
+        shopId: "caryina",
+        idempotencyKey: "idem-123",
+        holdId: "hold-001",
+        acceptedLegalTerms: true,
+        provider: "stripe",
+      }),
+    );
+    expect(createStripeCheckoutRedirect).toHaveBeenCalledWith(
+      expect.objectContaining({
+        acceptedLegalTermsAt: expect.any(String),
+        cartId: "cart-abc",
+        holdId: "hold-001",
+        idempotencyKey: "idem-123",
+        lang: "en",
+        shopTransactionId: expect.stringContaining("caryina-"),
+        totalCents: 4500,
+      }),
+      "http://localhost",
     );
   });
 });

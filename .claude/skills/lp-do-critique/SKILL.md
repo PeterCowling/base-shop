@@ -1,11 +1,11 @@
 ---
 name: lp-do-critique
-description: Hardnosed critic for lp-do-fact-find, lp-do-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.
+description: Hardnosed critic for lp-do-fact-find, lp-do-analysis, lp-do-plan, lp-offer, and process/skill documents. Surfaces weak claims, missing evidence, hidden assumptions, feasibility gaps, and unaddressed risks with no glazing.
 ---
 
 # Critique Document (Compact Hardnosed Mode)
 
-Critique lp-do-fact-find, lp-do-plan, lp-offer, or process/skill documents for decision quality.
+Critique lp-do-fact-find, lp-do-analysis, lp-do-plan, lp-offer, or process/skill documents for decision quality.
 No compliments, no filler, no vibe-based approval.
 
 ## Operating Mode
@@ -30,7 +30,7 @@ Required:
 - Path to target doc
 
 Supported targets:
-- Planning docs (`docs/plans/*-lp-do-fact-find.md`, `docs/plans/*-plan.md`)
+- Planning docs (`docs/plans/*/fact-find.md`, `docs/plans/*/analysis.md`, `docs/plans/*/plan.md`)
 - Domain plan docs (for example `docs/cms-plan/*.md`)
 - Offer artifacts (`docs/business-os/strategy/*/*-offer.user.md` or similar)
 - Process/skill docs (for example `.claude/skills/*/SKILL.md`)
@@ -64,10 +64,10 @@ Note: plans-lint.ts planning-field checks apply only to `docs/plans/*/plan.md` (
 ## Auto-Detection and Schema Mode
 
 Detection order:
-1. If frontmatter `Type` is `Fact-Find` or `Plan` and structure is consistent, use Section A or B.
-2. Else if structure is consistent with planning docs, use Section A or B (filename is supportive, not required).
+1. If frontmatter `Type` is `Fact-Find`, `Analysis`, or `Plan` and structure is consistent, use Section A, B, or C.
+2. Else if structure is consistent with planning docs, use Section A, B, or C (filename is supportive, not required).
 3. Else if structure is consistent with offer docs, load `modules/offer-lens.md` (Offer schema mode).
-4. Else use Section C (Process schema mode).
+4. Else use Section D (Process schema mode).
 
 If `Type` conflicts with structure:
 - Route by structure
@@ -79,7 +79,12 @@ Structure consistency rubric (A/B/D routing):
   - `Scope` or `Scope & Intent`
   - `Evidence Audit` or `Evidence Audit (Current State)`
   - `Confidence Inputs` or `Confidence Assessment`
-  - `Planning Readiness`
+  - `Analysis Readiness` or `Planning Readiness`
+- Analysis consistent if >=3 of 4 headings exist with substantive content:
+  - `Decision Frame`
+  - `Evaluation Criteria`
+  - `Options Considered`
+  - `Chosen Approach` or `Planning Handoff`
 - Plan consistent if >=3 of 4 headings exist with substantive content:
   - `Summary` or `Overview`
   - `Task Summary` or `Task List`
@@ -95,8 +100,9 @@ Structure consistency rubric (A/B/D routing):
 Schema modes:
 - Current: aligns with current templates/policies
 - Legacy: older/different schema
+- Analysis: analysis artifacts
 - Offer: offer artifacts (lp-offer output)
-- Process: non Fact-Find/Plan/Offer docs
+- Process: non Fact-Find/Analysis/Plan/Offer docs
 
 Current/Legacy classification is separate from defect scoring.
 A doc can be Current and still contain decision-quality defects.
@@ -265,7 +271,21 @@ After completing the checks above, run a forward rehearsal trace of the target d
 
 In summary: identify the proposed execution sequence (task order for plans; investigation order for fact-finds; proposed implementation steps for other artifacts), apply the issue taxonomy to each step, classify findings by severity, and record findings inline within Step 5 output using the `[Rehearsal]` label.
 
-Critical rehearsal findings must be surfaced in the Top Issues section (Section 2) and in the Fix List (Section 11). They do not trigger a separate hard gate in critique mode — that gate lives in lp-do-plan (Phase 7.5) and lp-do-fact-find (Phase 5.5). Rehearsal findings here are advisory to the critique score.
+Blocking-tier rehearsal findings (`Critical`, `Major`, or `Moderate`) must be surfaced in the Top Issues section (Section 2) and in the Fix List (Section 11). They do not trigger a separate hard gate in critique mode — that gate is defined in the shared rehearsal protocol and enforced in lp-do-plan and lp-do-fact-find. Rehearsal findings here are advisory to the critique score.
+
+### Step 5b: Process Walkthrough Verification
+
+For fact-finds, analyses, and plans that describe or imply a process/operating-model change, verify the process sections against repository evidence:
+- `## Current Process Map`
+- `## End-State Operating Model`
+- `## Delivered Processes`
+
+Rules:
+- Each section must either be substantive or explicitly `None: <reason>`.
+- When the document changes CI/deploy/release lanes, approvals, orchestration, lifecycle states, or multi-step operator flows, a missing or hand-wavy process section is Major.
+- Reconstruct the process area by area and check trigger, step order, systems/owners, handoffs, end state, and unresolved issues against the code/docs.
+- If the walkthrough contradicts the chosen approach, task graph, or current repo state, score it Major or Critical depending on blast radius.
+- Record findings inline within Step 5 output using the `[Walkthrough]` label.
 
 ### Step 6 - Contrarian Attacks
 
@@ -286,11 +306,15 @@ Prefer merged, high-leverage fixes over many tiny edits.
 
 For fact-find artifacts, load `modules/fact-find-lens.md`. It contains required frontmatter and section checks, confidence dimension rules, and the fact-find minimum bar.
 
-## Section B: Plan Lens
+## Section B: Analysis Lens
+
+For analysis artifacts, load `modules/analysis-lens.md`. It contains analysis frontmatter checks, minimum comparison requirements, recommendation quality checks, and planning-handoff requirements.
+
+## Section C: Plan Lens
 
 For plan artifacts, load `modules/plan-lens.md`. It contains plan frontmatter checks, confidence-gated marker rules, IMPLEMENT task structural requirements, VC quality checks, and agent-resolvable deferral checks.
 
-## Section C: Process/Skill Lens
+## Section D: Process/Skill Lens
 
 Required checks:
 - Audience and decision/action are explicit
@@ -301,14 +325,17 @@ Required checks:
 - Output template enforces method steps
 - Alignment with source-of-truth docs and legacy handling
 
-## Section D: Offer Lens
+## Section E: Offer Lens
 
 For offer artifacts (lp-offer output), load `modules/offer-lens.md`. It contains required checks for all 6 lp-offer sections, Offer-Specific Quality Dimensions scoring weights, and Munger Inversion Attacks (Offer-Specific).
 
-## Cross-Document Consistency (Plan + Fact-Find)
+## Cross-Document Consistency (Analysis + Fact-Find, Plan + Analysis)
 
-If a plan references a lp-do-fact-find:
-- Compare goals, approach, open questions, confidence transitions, execution routing, and coverage gaps.
+If an analysis references a fact-find:
+- Compare goals, outcome contract, evidence limits, open questions, and risk transfer.
+
+If a plan references an analysis:
+- Compare goals, selected approach, open questions, confidence transitions, execution routing, and coverage gaps.
 - If conflicts arise, apply Step 2A and record resolution.
 
 ## Scoring (Recalibrated)
@@ -406,6 +433,8 @@ Prose output from Step 5 checks (code/mixed paths, dependency chain realism, fai
 
 Forward rehearsal trace findings (from Step 5a) are written inline here with the `[Rehearsal]` label. Critical rehearsal findings are also surfaced in Section 2 (Top Issues) and Section 11 (Concrete Fixes).
 
+Process walkthrough verification findings (from Step 5b) are written inline here with the `[Walkthrough]` label. Missing or contradictory walkthroughs for process-affecting work must also be surfaced in Section 2 (Top Issues) and Section 11 (Concrete Fixes).
+
 ### 6) Hidden Assumptions
 
 | # | Assumption | Type | Fragility | Cheap Test |
@@ -493,6 +522,7 @@ After all steps, output:
 
 Recommended next actions:
 - Fact-find has major evidence gaps -> additional `/lp-do-fact-find`
+- Analysis lacks a decisive recommendation -> revise `/lp-do-analysis`
 - Fact-find confidence unjustified -> rework confidence with evidence
 - Plan confidence inflation -> `/lp-do-replan`
 - Plan missing validation contracts -> revise plan before `/lp-do-build`

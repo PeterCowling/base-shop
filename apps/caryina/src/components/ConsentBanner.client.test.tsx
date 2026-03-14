@@ -7,6 +7,15 @@ import { ConsentBanner } from "@/components/ConsentBanner.client";
 
 const COOKIE_NAME = "consent.analytics";
 
+const TEST_STRINGS = {
+  message: "We use analytics cookies.",
+  privacyLink: "privacy policy",
+  cookieLink: "cookie policy",
+  decline: "Decline",
+  accept: "Accept",
+  ariaLabel: "Cookie consent",
+};
+
 /**
  * Replace document.cookie with a simple writable string property so reads
  * and writes behave deterministically in jsdom (pattern from client.test.ts).
@@ -26,7 +35,7 @@ beforeEach(() => {
 describe("ConsentBanner", () => {
   // TC-01: No consent.analytics cookie → banner renders with Accept and Decline.
   it("TC-01: shows banner when no consent cookie is set", async () => {
-    render(<ConsentBanner lang="en" />);
+    render(<ConsentBanner lang="en" strings={TEST_STRINGS} />);
 
     await waitFor(() => {
       expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -39,9 +48,9 @@ describe("ConsentBanner", () => {
   // TC-02: consent.analytics=true already set → banner does not render.
   it("TC-02: hides banner when consent.analytics=true cookie is already set", async () => {
     mockCookieAs(`${COOKIE_NAME}=true`);
-    render(<ConsentBanner lang="en" />);
+    render(<ConsentBanner lang="en" strings={TEST_STRINGS} />);
 
-    // useEffect runs asynchronously; give it a tick then assert
+    // useSyncExternalStore reads the cookie synchronously; assert immediately
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
     });
@@ -50,7 +59,7 @@ describe("ConsentBanner", () => {
   // TC-03: consent.analytics=false already set → banner does not render.
   it("TC-03: hides banner when consent.analytics=false cookie is already set", async () => {
     mockCookieAs(`${COOKIE_NAME}=false`);
-    render(<ConsentBanner lang="en" />);
+    render(<ConsentBanner lang="en" strings={TEST_STRINGS} />);
 
     await waitFor(() => {
       expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
@@ -59,7 +68,7 @@ describe("ConsentBanner", () => {
 
   // TC-04: Click Accept → cookie written with "true", banner hides.
   it("TC-04: Accept writes consent.analytics=true and hides banner", async () => {
-    render(<ConsentBanner lang="en" />);
+    render(<ConsentBanner lang="en" strings={TEST_STRINGS} />);
 
     await waitFor(() => {
       expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -75,7 +84,7 @@ describe("ConsentBanner", () => {
 
   // TC-05: Click Decline → cookie written with "false", banner hides.
   it("TC-05: Decline writes consent.analytics=false and hides banner", async () => {
-    render(<ConsentBanner lang="en" />);
+    render(<ConsentBanner lang="en" strings={TEST_STRINGS} />);
 
     await waitFor(() => {
       expect(screen.getByRole("dialog")).toBeInTheDocument();
@@ -89,15 +98,17 @@ describe("ConsentBanner", () => {
     });
   });
 
-  // TC-06: lang="en" → privacy link href is /en/privacy.
-  it("TC-06: privacy link points to /{lang}/privacy", async () => {
-    render(<ConsentBanner lang="en" />);
+  // TC-06: lang="en" → privacy and cookie links use localized routes.
+  it("TC-06: policy links point to localized routes", async () => {
+    render(<ConsentBanner lang="en" strings={TEST_STRINGS} />);
 
     await waitFor(() => {
       expect(screen.getByRole("dialog")).toBeInTheDocument();
     });
 
-    const link = screen.getByRole("link", { name: /privacy policy/i });
-    expect(link).toHaveAttribute("href", "/en/privacy");
+    const privacyLink = screen.getByRole("link", { name: /privacy policy/i });
+    const cookieLink = screen.getByRole("link", { name: /cookie policy/i });
+    expect(privacyLink).toHaveAttribute("href", "/en/privacy");
+    expect(cookieLink).toHaveAttribute("href", "/en/cookie-policy");
   });
 });

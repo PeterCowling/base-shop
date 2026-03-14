@@ -194,6 +194,7 @@ Post-build artifacts are reflective only — they must not contain unexecuted wo
 
 1. Produce `build-record.user.md` per `docs/business-os/startup-loop/contracts/loop-output-contracts.md`.
    - Enforce `## Outcome Contract` presence and populated fields (`Why`, `Intended Outcome Type`, `Intended Outcome Statement`, `Source`) before proceeding. Use explicit `TBD/auto` fallback only when canonical values are unavailable.
+   - When the build closes a self-evolving dispatch and a verified KPI result exists, populate `## Self-Evolving Measurement` in `build-record.user.md`. `startup-loop:queue-state-complete` reads this section automatically from the adjacent build record; malformed declared proof must be fixed before queue completion runs.
 1.4 Record workflow-step telemetry for the build stage and add the summary to `build-record.user.md`.
    - Run:
    ```
@@ -297,6 +298,7 @@ Post-build artifacts are reflective only — they must not contain unexecuted wo
    - `--business` is optional but recommended when known to avoid cross-business slug collisions.
    - The command prints JSON to stdout on success and on benign `no_match`.
    - The command exits non-zero only for real failures (`parse_error`, `write_error`, `file_not_found`).
+   - When `docs/plans/_archive/<feature-slug>/build-record.user.md` contains `## Self-Evolving Measurement` with `Status: verified`, the command auto-extracts that block and writes verified self-evolving outcome closure. Missing section or `Status: none` preserves the current pending/missing path.
 
    **Failure policy (must enforce before proceeding to step 8):**
    - `{ ok: true }` — log `mutated` count and continue.
@@ -348,6 +350,7 @@ Run through this before emitting the "Build complete" message:
 
 - [ ] `build-record.user.md` produced
 - [ ] `build-record.user.md` includes `## Outcome Contract` with populated fields (or explicit `TBD/auto` fallback)
+- [ ] When applicable, `build-record.user.md` includes a valid `## Self-Evolving Measurement` block for proof-bearing self-evolving builds
 - [ ] `build-record.user.md` includes `## Workflow Telemetry Summary` when workflow-step telemetry was recorded
 - [ ] For code/mixed work, `build-record.user.md` includes `## Engineering Coverage Evidence`
 - [ ] `build-event.json` emitted and non-empty at `docs/plans/<slug>/build-event.json`

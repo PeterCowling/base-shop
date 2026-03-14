@@ -1,0 +1,146 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "brikette-ci-release-lane-simplification",
+  "source_artifact_path": "docs/plans/brikette-ci-release-lane-simplification/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "The current Brikette CI and deploy flow is harder to reason about than it should be. The operator wants one straightforward release model: changed-only validation on dev, staging as the preview lane reached by merge, and main as the live lane reached by merge.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Brikette has an analysis-ready fact-find for a simplified GitHub Actions setup where dev performs changed-only lint, typecheck, and tests in CI, staging is a merge-only preview lane, and main is a merge-only production lane.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No product UI surface changes are being scoped in this fact-find.",
+      "gap_or_implication": "None.",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Branch-promotion scripts and workflow triggers define the operator and agent interaction model for dev, staging, and main.",
+      "gap_or_implication": "The current workflow surface is harder to reason about than the desired three-lane mental model.",
+      "carry_forward_or_notes": "Compare whether one workflow per lane or a more centralized workflow is clearer without losing guarantees."
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Deploy lanes rely on GitHub branch flow, PR auto-merge, and Cloudflare secrets.",
+      "gap_or_implication": "Manual dispatch paths and duplicated workflows increase the number of privileged execution paths.",
+      "carry_forward_or_notes": "Keep the final design branch-driven and reduce ad hoc publication paths."
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "CI already exposes changed-only job state, and branch-promotion scripts make the release path auditable through PRs.",
+      "gap_or_implication": "Multiple workflows split visibility across dev validation, staging deploy, and production publish.",
+      "carry_forward_or_notes": "Prefer a shape where each branch has one obvious source of truth for its outcome."
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "`ci.yml` already performs affected lint, typecheck, and unit tests; Brikette workflows add smoke/export checks.",
+      "gap_or_implication": "Changed-only validation is only partial, and Brikette dev validation duplicates some repo-level guarantees.",
+      "carry_forward_or_notes": "Decide the minimum unique Brikette validation that must survive beyond core CI."
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Workflow outputs, branch scripts, and env vars already define the release contracts.",
+      "gap_or_implication": "Contracts are spread across core CI, reusable-app, Brikette-specific YAML, and branch-promotion scripts.",
+      "carry_forward_or_notes": "Consolidate the contract into the smallest set of workflow files possible."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Archived staging-upload-speed work and current workflow duplication show Pages deploy and repeated export builds are the major operational pressure points.",
+      "gap_or_implication": "Extra jobs and repeated export logic increase runtime and failure surface.",
+      "carry_forward_or_notes": "Favor lane separation that reduces duplicated export work and preserves staging as the pressure-release lane."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Current branch scripts already provide PR-based promotion to staging and main.",
+      "gap_or_implication": "The workflow set still mixes validation, preview publish, and production publish responsibilities across multiple files and manual triggers.",
+      "carry_forward_or_notes": "Preserve branch-driven rollback/promotion semantics and keep the final shape compatible with current scripts."
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Investigate the simplest GitHub Actions and branch-flow shape that satisfies the stated Brikette release goals: CI owns validation, dev only validates code that actually changed, staging is a preview lane reached by merge for humans and agents, and main is the live lane reached by merge. The fact-find focuses on current workflow contracts, duplication, and the specific places where the current setup violates the desired \"nothing changed, nothing to do\" rule.",
+    "goals": [
+      "Establish the current validation and deploy lane behavior for `dev`, `staging`, and `main`.",
+      "Identify where Brikette already meets the desired merge-only branch flow and where complexity remains.",
+      "Trace exactly which CI steps are already changed-only and which still fan out beyond changed code.",
+      "Produce an analysis-ready inventory of the smallest workflow changes that would reach the target state."
+    ],
+    "non_goals": [
+      "Implement workflow changes in this artifact.",
+      "Redesign Brikette application code or static-export architecture beyond what is needed to explain workflow constraints.",
+      "Generalize the final solution to non-Brikette apps in this fact-find.",
+      "Re-open the already-landed repo policy decision that tests should run in CI rather than locally."
+    ],
+    "constraints": [
+      "The user wants the simplest, most straightforward GitHub Actions that satisfy the stated release requirements.",
+      "Validation of code changes must be CI-owned; local resource-heavy test execution is explicitly out of scope for the desired end state.",
+      "Staging must remain usable for users and agents, including MCP and Playwright-style verification.",
+      "Production publish should require nothing more than the normal merge path into `main`.",
+      "Staging and production should skip publication when a merge does not include Brikette-relevant changes.",
+      "Staging and production should be branch-merge only lanes with no manual publish entrypoint."
+    ],
+    "assumptions": [
+      "Changed scope should be defined by what is in the push and its affected dependency/workspace surface, with lint, typecheck, and test run only where relevant.",
+      "The current `staging.<project>.pages.dev` host is an acceptable staging preview surface for users and agent tooling.",
+      "Brikette-specific branch lanes can be simplified without changing the repo-wide `dev -> staging -> main` policy."
+    ],
+    "key_entry_points": [
+      "`.github/workflows/ci.yml` - core CI lane for affected lint, affected typecheck, and affected unit tests on non-staging pushes and PRs.",
+      "`.github/workflows/brikette.yml` - Brikette-specific dev/main workflow containing smoke, static-export verification, release CI, and production deploy logic.",
+      "`.github/workflows/brikette-staging-fast.yml` - staging preview lane that already deploys from `staging` branch pushes with no lint, typecheck, or tests.",
+      "`.github/workflows/reusable-app.yml` - shared app pipeline providing app-scoped validation, test sharding, and deploy gating.",
+      "`scripts/git/ship-to-staging.sh` - current PR + auto-merge path into `staging`.",
+      "`scripts/git/promote-to-main.sh` - current PR + auto-merge path from `dev` into `main`.",
+      "`package.json` - root scripts defining `test:affected` and repo-level validation surfaces.",
+      "`apps/brikette/src/utils/buildLanguages.ts` - current staging language subset lever already used by the staging fast path."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Dev validation lane (`ci.yml`, `brikette.yml`, `reusable-app.yml`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Staging preview lane (`brikette-staging-fast.yml`, `ship-to-staging.sh`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Main production lane (`brikette.yml`, `promote-to-main.sh`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Shared branch-flow and operator contract",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Advisory] Existing behavior is already close to target, but the remaining complexity is distributed across multiple workflow files and overlapping checks.",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

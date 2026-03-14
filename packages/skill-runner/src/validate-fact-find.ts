@@ -10,20 +10,26 @@ export interface FactFindValidationResult {
   warnings: string[];
 }
 
-const REQUIRED_SECTIONS = [
-  "Scope",
-  "Outcome Contract",
-  "Evidence Audit",
-  "Confidence Inputs",
-  "Planning Readiness",
-] as const;
+/* eslint-disable ds/no-hardcoded-copy -- SKILL-2401 [ttl=2026-12-31] Internal markdown section labels for deterministic artifact validation. */
+const REQUIRED_SECTION_ALIASES: ReadonlyArray<readonly string[]> = [
+  ["Scope"],
+  ["Outcome Contract"],
+  ["Current Process Map"],
+  ["Evidence Audit", "Evidence Audit (Current State)"],
+  ["Confidence Inputs"],
+  ["Rehearsal Trace"],
+  ["Analysis Readiness"],
+];
+/* eslint-enable ds/no-hardcoded-copy */
 
 export function validateFactFindFile(
   factFindPath: string,
   critiqueHistoryPath?: string,
 ): FactFindValidationResult {
+  // eslint-disable-next-line security/detect-non-literal-fs-filename -- SKILL-2401 CLI path is operator-provided local file input [ttl=2026-12-31]
   const factFindMarkdown = readFileSync(factFindPath, "utf8");
   const critiqueHistoryMarkdown = critiqueHistoryPath
+    // eslint-disable-next-line security/detect-non-literal-fs-filename -- SKILL-2401 Optional CLI path is operator-provided local file input [ttl=2026-12-31]
     ? readFileSync(critiqueHistoryPath, "utf8")
     : null;
   return validateFactFindMarkdown(factFindMarkdown, critiqueHistoryMarkdown);
@@ -36,9 +42,9 @@ export function validateFactFindMarkdown(
   const blockingIssues: string[] = [];
   const warnings: string[] = [];
 
-  for (const section of REQUIRED_SECTIONS) {
-    if (!hasSection(factFindMarkdown, section)) {
-      blockingIssues.push(`Missing required section: ${section}`);
+  for (const aliases of REQUIRED_SECTION_ALIASES) {
+    if (!aliases.some((section) => hasSection(factFindMarkdown, section))) {
+      blockingIssues.push(`Missing required section: ${aliases[0]}`);
     }
   }
 
@@ -59,12 +65,12 @@ export function validateFactFindMarkdown(
 
   if (score === null) {
     blockingIssues.push(
-      "Critique score is missing. Ready-for-planning requires recorded critique score.",
+      "Critique score is missing. Ready-for-analysis requires recorded critique score.",
     );
   }
   if (criticalCount > 0) {
     blockingIssues.push(
-      `Critical findings remain (${criticalCount}). Ready-for-planning is blocked.`,
+      `Critical findings remain (${criticalCount}). Ready-for-analysis is blocked.`,
     );
   }
 
@@ -81,6 +87,11 @@ export function validateFactFindMarkdown(
   if (status === "Ready-for-planning" && blockingIssues.length > 0) {
     warnings.push(
       "Frontmatter says Ready-for-planning but deterministic gate evaluation indicates blockers.",
+    );
+  }
+  if (status === "Ready-for-analysis" && blockingIssues.length > 0) {
+    warnings.push(
+      "Frontmatter says Ready-for-analysis but deterministic gate evaluation indicates blockers.",
     );
   }
 

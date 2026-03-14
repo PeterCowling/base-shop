@@ -2,8 +2,9 @@ import type { Metadata } from "next";
 
 import { type Locale, resolveLocale } from "@acme/i18n/locales";
 
-import { PolicyPage } from "@/components/PolicyPage";
-import { getPolicyContent, getSeoKeywords } from "@/lib/contentPacket";
+import { LegalDocumentPage } from "@/components/LegalDocumentPage";
+import { getSeoKeywords } from "@/lib/contentPacket";
+import { getLegalDocument } from "@/lib/legalContent";
 
 export async function generateMetadata({
   params,
@@ -12,7 +13,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
-  const content = getPolicyContent(lang, "shipping");
+  const content = getLegalDocument(lang, "shipping");
   return {
     title: `${content.title} | Caryina`,
     description: content.summary,
@@ -27,15 +28,9 @@ export default async function ShippingPage({
 }) {
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
-  const content = getPolicyContent(lang, "shipping");
+  const content = getLegalDocument(lang, "shipping");
 
   return (
-    <PolicyPage
-      title={content.title}
-      summary={content.summary}
-      bullets={content.bullets}
-      notice={content.notice}
-      sourcePath="docs/business-os/startup-baselines/HBAG-content-packet.md"
-    />
+    <LegalDocumentPage document={content} lang={lang} currentKind="shipping" />
   );
 }

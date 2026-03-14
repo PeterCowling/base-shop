@@ -92,7 +92,7 @@ export function useGuideSearch(
   };
 
   const lang = useCurrentLanguage();
-  const { t, i18n } = useTranslation("guides");
+  const { t } = useTranslation("guides");
 
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<GuideSearchResult[]>([]);
@@ -155,7 +155,7 @@ export function useGuideSearch(
     // Build index
     service.buildIndex(lang, filteredGuides, getTitle, getSummary);
     setIsReady(true);
-  }, [lang, filteredGuides, t, i18n]);
+  }, [lang, filteredGuides, t]);
 
   // Perform search with debounce
   const performSearch = useCallback(

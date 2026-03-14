@@ -65,7 +65,7 @@ Current working directory has modifications:
 
 1. **Pushing to `main` triggers CI + staging deploys** (for most apps)
 2. **Production deploys require:**
-   - For Brikette: Manual workflow dispatch with `publish_to_production: true`
+   - For Brikette: Merge to `main` with Brikette-relevant changes
    - For other apps (Prime, Skylar, CMS): Push to `main` OR `staging` triggers deploy based on branch name
 3. **The new `dev -> staging -> main` pipeline is documented but not enforced on GitHub yet**
 4. **The `auto-pr.yml` workflow expects `work/**` branches, NOT `dev`** (see line 22-27)
@@ -225,4 +225,4 @@ scripts/git/promote-to-main.sh
 4. Only merge to `main` after staging is verified
 5. Production deploys happen automatically for some apps when `main` is updated
 
-**Brikette is the safest app** - it requires manual workflow dispatch for production deploy. Other apps (Prime, Skylar, CMS) deploy to production automatically when `main` or `staging` is pushed.
+**Brikette now follows the same merge-driven release model** - merge to `staging` for preview and merge to `main` for production, both only when Brikette-relevant changes are present. Other apps (Prime, Skylar, CMS) also deploy automatically based on branch updates.

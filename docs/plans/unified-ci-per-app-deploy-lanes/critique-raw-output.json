@@ -1,0 +1,32 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/unified-ci-per-app-deploy-lanes/plan.md",
+      "line": "155",
+      "message": "The plan still leaves `ci.yml` `promote-app:*` guards unchanged, so app-scoped promotion PRs do not actually run lint/typecheck/test in `ci.yml`. That conflicts with the stated goal at line 38 that `ci.yml` is the sole validation workflow for all apps on dev/PR; if this carve-out is intentional, the goal/outcome language needs to say so explicitly."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/unified-ci-per-app-deploy-lanes/plan.md",
+      "line": "401",
+      "message": "The consumer-tracing claim is inaccurate. In the current `.github/workflows/merge-gate.yml`, `reception.yml` is only watched via `scopeWorkflowMap` for scoped promotions, not in the default PR path, so \"merge-gate watches reception.yml completion\" is not generally true."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/unified-ci-per-app-deploy-lanes/plan.md",
+      "line": "446",
+      "message": "The checkpoint assumption says \"Reception main deploy works via wrangler deploy,\" but TASK-04 explicitly routes Reception through `apps/reception/scripts/worker-deploy-safe.mjs`, not raw `wrangler deploy`. That is an internal contract mismatch for the later checkpoint/replan step."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/unified-ci-per-app-deploy-lanes/plan.md",
+      "line": "107",
+      "message": "The TASK-06 row in the summary table still uses the older description (\"Update merge-gate, auto-pr.yml, archive reusable-app.yml\"), while the active-task list and TASK-06 body now also include trigger narrowing and path-classifier/filter cleanup."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "round": 3
+}

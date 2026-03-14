@@ -15,9 +15,5 @@ export const HOSTEL_ADDRESS = `${hotel.address.streetAddress}, ${hotel.address.p
 
 export const LANGUAGE_ORDER = Object.freeze([...getPublicBuildLanguages()]);
 
-export const formatDate = (date: Date): string => {
-  return `${date.getUTCFullYear()}-${String(date.getUTCMonth() + 1).padStart(2, "0")}-${String(date.getUTCDate()).padStart(2, "0")}`;
-};
-
 export { i18nConfig };
 export type { AppLanguage };

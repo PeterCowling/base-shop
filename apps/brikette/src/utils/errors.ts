@@ -3,7 +3,7 @@
 
 import { captureError } from "@acme/telemetry";
 
-const IS_DEV = process.env.NODE_ENV !== "production";
+import { IS_DEV } from "@/config/env";
 
 /**
  * Error context for logging

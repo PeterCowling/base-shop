@@ -9,9 +9,10 @@ import { Inline, Stack } from "@acme/design-system/primitives";
 import type { InboxThreadSummary } from "@/services/useInbox";
 
 import FilterBar from "./FilterBar";
-import { applyThreadFilters, type ThreadFilterKey } from "./filters";
+import { applyThreadFilters, countThreadsByFilter, type ThreadFilterKey } from "./filters";
 import {
   buildInboxThreadBadge,
+  cleanSnippet,
   formatInboxTimestamp,
 } from "./presentation";
 
@@ -55,6 +56,11 @@ export default function ThreadList({
   const filteredThreads = useMemo(
     () => applyThreadFilters(threads, activeFilters),
     [threads, activeFilters],
+  );
+
+  const filterCounts = useMemo(
+    () => countThreadsByFilter(threads),
+    [threads],
   );
 
   const hasActiveFilters = activeFilters.size > 0;
@@ -134,6 +140,7 @@ export default function ThreadList({
         <div className="border-b border-border-1 px-4 py-2">
           <FilterBar
             activeFilters={activeFilters}
+            counts={filterCounts}
             onToggle={handleToggleFilter}
             onClear={handleClearFilters}
           />
@@ -246,7 +253,7 @@ export default function ThreadList({
 
                   {/* Row 3: snippet */}
                   <p className="mt-0.5 truncate text-xs text-foreground/50">
-                    {thread.snippet ?? "No preview available."}
+                    {thread.snippet ? cleanSnippet(thread.snippet) : "No preview available."}
                   </p>
                 </Button>
               );

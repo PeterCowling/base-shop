@@ -4,7 +4,7 @@ Use this module for `Outcome: planning` with `Execution-Track: code` (and for th
 
 ## Objective
 
-Produce evidence that lets `/lp-do-plan` create safe, testable implementation tasks.
+Produce evidence that lets `/lp-do-analysis` compare viable approaches and lets `/lp-do-plan` later create safe, testable implementation tasks.
 
 ## Required Evidence Slices
 
@@ -21,17 +21,22 @@ Produce evidence that lets `/lp-do-plan` create safe, testable implementation ta
 - Upstream inputs and downstream dependents.
 - Include integration boundaries (queues/webhooks/external APIs) when relevant.
 
-5. Security and performance boundaries
+5. Engineering coverage matrix
+- Use the canonical rows from `../../_shared/engineering-coverage-matrix.md`.
+- For each row, capture current-state evidence plus the likely gap/risk.
+
+6. Security, observability, and performance boundaries
 - Auth/authz points, untrusted input validation.
+- Logging/metrics/audit seams and current operator visibility.
 - Potential hot paths, caching seams, and N+1 risk surfaces.
 
-6. Test landscape
+7. Test landscape
 - Existing tests (unit/integration/e2e).
 - Coverage gaps for touched paths.
 - Extinct tests (obsolete assertions) to be removed/updated during build.
 - Testability constraints and required seams.
 
-7. Targeted git context
+8. Targeted git context
 - Recent relevant changes in the affected area and implications.
 
 ## External Research Rule
@@ -59,6 +64,7 @@ Ensure these sections in the planning brief are filled (or explicitly marked not
 - `### Key Modules / Files`
 - `### Data & Contracts`
 - `### Dependency & Impact Map`
+- `## Engineering Coverage Matrix`
 - `### Test Landscape`
 - `### Recent Git History (Targeted)`
 - `## Scope Signal` (`constrained | right-sized | limited-thinking`; include 1-3 expansion suggestions only when `limited-thinking`)

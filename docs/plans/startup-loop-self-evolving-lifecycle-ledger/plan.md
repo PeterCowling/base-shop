@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-09
@@ -25,8 +25,8 @@ The current self-evolving ledger records observation ingestion but not the decis
 
 ## Active tasks
 - [x] TASK-01: Extend the event contract with lifecycle event types and payload support
-- [ ] TASK-02: Emit lifecycle events from candidate generation, explicit operator review, follow-up dispatch handoff, and completion seams
-- [ ] TASK-03: Write a self-evolving control-flow contract defining precedence across the resulting systems
+- [x] TASK-02: Emit lifecycle events from candidate generation, explicit operator review, follow-up dispatch handoff, and completion seams
+- [x] TASK-03: Write a self-evolving control-flow contract defining precedence across the resulting systems
 
 ## Goals
 - Record candidate lifecycle, not just observation ingestion.
@@ -80,8 +80,8 @@ The current self-evolving ledger records observation ingestion but not the decis
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Extend event contract and helpers for lifecycle event types and structured payloads | 86% | M | Complete (2026-03-09) | - | TASK-02 |
-| TASK-02 | IMPLEMENT | Emit lifecycle events from candidate generation, explicit operator review, follow-up dispatch handoff, and completion seams | 82% | L | Pending | TASK-01 | TASK-03 |
-| TASK-03 | IMPLEMENT | Write a self-evolving control-flow contract defining precedence across evidence posture, route, queue state, lifecycle events, and review-required state | 80% | M | Pending | TASK-02 | - |
+| TASK-02 | IMPLEMENT | Emit lifecycle events from candidate generation, explicit operator review, follow-up dispatch handoff, and completion seams | 82% | L | Complete | TASK-01 | TASK-03 |
+| TASK-03 | IMPLEMENT | Write a self-evolving control-flow contract defining precedence across evidence posture, route, queue state, lifecycle events, and review-required state | 80% | M | Complete | TASK-02 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -130,8 +130,8 @@ The current self-evolving ledger records observation ingestion but not the decis
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** L
-- **Status:** Pending
-- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`, any operator-review seam introduced to persist the decision event
+- **Status:** Complete
+- **Affects:** `scripts/src/startup-loop/self-evolving/self-evolving-orchestrator.ts`, `scripts/src/startup-loop/self-evolving/self-evolving-backbone-consume.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-queue-state-completion.ts`, `scripts/src/startup-loop/ideas/lp-do-ideas-operator-review-reconcile.ts`, `scripts/src/startup-loop/__tests__/self-evolving-orchestrator-integration.test.ts`
 - **Depends on:** TASK-01
 - **Blocks:** -
 - **Confidence:** 82%
@@ -154,7 +154,7 @@ The current self-evolving ledger records observation ingestion but not the decis
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** mixed
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `docs/business-os/startup-loop/self-evolving/README.md` or adjacent canonical contract path, `docs/plans/startup-loop-self-evolving-lifecycle-ledger/plan.md`, any touched startup-loop contract doc needed for cross-linking
 - **Depends on:** TASK-02
 - **Blocks:** -
@@ -183,11 +183,11 @@ The current self-evolving ledger records observation ingestion but not the decis
 - Alerts/Dashboards: future ledger-derived reporting.
 
 ## Acceptance Criteria (overall)
-- [ ] Self-evolving events can represent candidate lifecycle, not just ingestion.
-- [ ] Candidate and workflow handoff history become auditable through linked events.
-- [ ] Existing event files remain readable.
-- [ ] Operator review decisions are explicit first-class events.
-- [ ] A single control-flow contract defines precedence across the resulting systems.
+- [x] Self-evolving events can represent candidate lifecycle, not just ingestion.
+- [x] Candidate and workflow handoff history become auditable through linked events.
+- [x] Existing event files remain readable.
+- [x] Operator review decisions are explicit first-class events.
+- [x] A single control-flow contract defines precedence across the resulting systems.
 
 ## Decision Log
 - 2026-03-09: Chose additive prospective lifecycle events instead of retroactive event reconstruction.

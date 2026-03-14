@@ -1,0 +1,36 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-out-of-stock-status/fact-find.md",
+      "line": "145",
+      "message": "`No coverage gaps identified for out-of-stock functionality` is overstated. Current tests cover schema/workflow, publish/sync, inventory, and cart rejection, but there is no explicit test for the public storefront’s sold-out presentation in [`XaProductCard.tsx`](/Users/petercowling/base-shop/apps/xa-b/src/components/XaProductCard.tsx) or the cart-page unavailable label path, even though the brief claims storefront display support."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-out-of-stock-status/fact-find.md",
+      "line": "242",
+      "message": "`Observability expectations: N/A - logging already includes publishState` is inaccurate. [`publish/route.ts`](/Users/petercowling/base-shop/apps/xa-uploader/src/app/api/catalog/publish/route.ts#L88) logs `publishState` only on `publish_complete`; [`publish_start`](/Users/petercowling/base-shop/apps/xa-uploader/src/app/api/catalog/publish/route.ts#L88) and [`publish_error`](/Users/petercowling/base-shop/apps/xa-uploader/src/app/api/catalog/publish/route.ts#L234) omit it."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/xa-uploader-out-of-stock-status/fact-find.md",
+      "line": "297",
+      "message": "The workflow state is internally inconsistent. The document is marked `Ready-for-analysis` with no blockers, but it also says operator input is required to decide whether any work is needed and that analysis/plan steps may be unnecessary if the operator confirms the existing behavior is sufficient."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "review": "Re-checking the updated fact-find now. The main implementation evidence looked sound earlier, so I’m focusing on whether the revised dispatch reference and readiness state are now consistent with the repo.\nThe two remaining areas I’m checking are internal consistency and whether the “no coverage gaps” claim is still overstated. The dispatch citation is now valid, so I’m looking at planning-state and test-evidence precision.\nI found one possible overstatement left: the document says there are no test gaps, but I haven’t seen a test that explicitly covers the storefront’s visible sold-out state on product cards. I’m verifying that absence before I decide whether it’s a real finding or just a nit.\n- WARNING: docs/plans/xa-uploader-out-of-stock-status/fact-find.md:145 `No coverage gaps identified for out-of-stock functionality` is overstated. Current tests cover schema/workflow, publish/sync, inventory, and cart rejection, but there is no explicit test for the public storefront’s sold-out presentation in [`XaProductCard.tsx`](/Users/petercowling/base-shop/apps/xa-b/src/components/XaProductCard.tsx) or the cart-page unavailable label path, even though the brief claims storefront display support.\n\n- WARNING: docs/plans/xa-uploader-out-of-stock-status/fact-find.md:242 `Observability expectations: N/A - logging already includes publishState` is inaccurate. [`publish/route.ts`](/Users/petercowling/base-shop/apps/xa-uploader/src/app/api/catalog/publish/route.ts#L88) logs `publishState` only on `publish_complete`; [`publish_start`](/Users/petercowling/base-shop/apps/xa-uploader/src/app/api/catalog/publish/route.ts#L88) and [`publish_error`](/Users/petercowling/base-shop/apps/xa-uploader/src/app/api/catalog/publish/route.ts#L234) omit it.\n\n- WARNING: docs/plans/xa-uploader-out-of-stock-status/fact-find.md:297 The workflow state is internally inconsistent. The document is marked `Ready-for-analysis` with no blockers, but it also says operator input is required to decide whether ",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ce1c1-3714-7ed1-9116-038662743eb4",
+  "resumed": true,
+  "usage": {
+    "inputTokens": 24023768,
+    "outputTokens": 84130,
+    "totalTokens": 24107898,
+    "costUsd": 0
+  },
+  "durationMs": 60893
+}

@@ -51,14 +51,22 @@ describe("StickyCheckoutBar", () => {
   });
 
   it("renders trust line when trustLine prop is provided", () => {
-    render(<StickyCheckoutBar priceLabel="$89.00" sku={MOCK_SKU} trustLine="30-day exchange" />);
+    render(
+      <StickyCheckoutBar
+        priceLabel="$89.00"
+        sku={MOCK_SKU}
+        trustLine="Unused-item exchange requests up to 30 days"
+      />,
+    );
 
-    expect(screen.getByText("30-day exchange")).toBeInTheDocument();
+    expect(screen.getByText("Unused-item exchange requests up to 30 days")).toBeInTheDocument();
   });
 
   it("does not render trust line when trustLine is not provided", () => {
     render(<StickyCheckoutBar priceLabel="$89.00" sku={MOCK_SKU} />);
 
-    expect(screen.queryByText("30-day exchange")).not.toBeInTheDocument();
+    expect(
+      screen.queryByText("Unused-item exchange requests up to 30 days"),
+    ).not.toBeInTheDocument();
   });
 });

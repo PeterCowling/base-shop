@@ -5,16 +5,10 @@ import { resolveLocale } from "@acme/i18n/locales";
 
 import { getSeoKeywords } from "@/lib/contentPacket";
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ lang?: string }>;
-}): Promise<Metadata> {
-  const { lang: rawLang } = await params;
-  const lang = resolveLocale(rawLang);
+export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: `Checkout cancelled (${lang}) | Caryina`,
-    description: "Checkout was cancelled before payment confirmation.",
+    title: "Checkout Cancelled | Caryina",
+    description: "Your checkout was cancelled. Your cart is still saved.",
     keywords: getSeoKeywords(),
   };
 }

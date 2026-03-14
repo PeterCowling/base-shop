@@ -1,0 +1,149 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-prime-template-responses",
+  "source_artifact_path": "docs/plans/reception-prime-template-responses/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": null,
+    "intended_outcome_type": null,
+    "intended_outcome_statement": null,
+    "source": null
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "Unit tests",
+      "applicable": "Required",
+      "current_or_option_state": "Template matching logic: given a message, return ranked template suggestions",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Integration tests",
+      "applicable": "Required",
+      "current_or_option_state": "Draft flow with template selection: template populates textarea, templateUsed is recorded on save",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Type safety",
+      "applicable": "Required",
+      "current_or_option_state": "Template type definitions, template picker props",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Error handling",
+      "applicable": "Required",
+      "current_or_option_state": "Graceful fallback when no template matches (show empty state, not an error)",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Migration",
+      "applicable": "N/A",
+      "current_or_option_state": "No DB schema change needed for static JSON approach",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance",
+      "applicable": "Required",
+      "current_or_option_state": "Template lookup is O(n) keyword scan — with <20 templates this is instant",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security",
+      "applicable": "N/A",
+      "current_or_option_state": "Internal staff tool, templates are hardcoded text, no user input injection risk",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Accessibility",
+      "applicable": "Required",
+      "current_or_option_state": "Template picker UI needs keyboard navigation and screen reader labels",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "i18n",
+      "applicable": "Required",
+      "current_or_option_state": "EN + IT template text; language selection mechanism",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Monitoring",
+      "applicable": "N/A",
+      "current_or_option_state": "Optional: track template usage rates via existing telemetry",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "### In Scope - Template data file: extract answerComposer answers into a shared static JSON/TS module with EN + IT text, categories, keywords, and links - Template picker component: new UI component in DraftReviewPanel that shows matching/browsable templates for Prime threads only - Template selection: clicking a template populates the draft textarea and sets `templateUsed` identifier - Draft save integration: extend save payload to pass `templateUsed` through to the draft record - Unit tests for template matching logic - Integration tests for draft flow with template selection ### Out of Scop",
+    "goals": [],
+    "non_goals": [],
+    "constraints": [],
+    "assumptions": [],
+    "key_entry_points": [],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Architecture fully mapped": "Prime Q&A engine, reception draft flow, channel adapters, existing template plumbing"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Template data extraction",
+        "Coverage Confirmed": "Yes — answerComposer.ts has 6 categories with structured answers + links",
+        "Issues Found": "Answers are EN-only in code; IT versions needed",
+        "Resolution Required": "Create bilingual template data file"
+      },
+      {
+        "Scope Area": "Draft UI integration",
+        "Coverage Confirmed": "Yes — DraftReviewPanel has clear insertion point and existing templateUsed badge",
+        "Issues Found": "Template picker component does not exist yet",
+        "Resolution Required": "Build new TemplatePicker component"
+      },
+      {
+        "Scope Area": "Draft save flow",
+        "Coverage Confirmed": "Yes — PUT draft route accepts plainText and templateUsed is tracked on the draft model",
+        "Issues Found": "templateUsed is not currently passed from client to server on save",
+        "Resolution Required": "Extend save payload to include templateUsed"
+      },
+      {
+        "Scope Area": "Channel adapter",
+        "Coverage Confirmed": "Yes — Prime direct adapter has supportsDraftSave: true",
+        "Issues Found": "No changes needed to adapter capabilities",
+        "Resolution Required": "None"
+      },
+      {
+        "Scope Area": "Self-improvement loop",
+        "Coverage Confirmed": "Partially — sent drafts with null templateUsed are observable",
+        "Issues Found": "No capture mechanism exists",
+        "Resolution Required": "Phase 2 or simple logging in v1"
+      },
+      {
+        "Scope Area": "i18n",
+        "Coverage Confirmed": "Yes — Homepage.json has EN + IT preset questions",
+        "Issues Found": "answerComposer answers are EN-only",
+        "Resolution Required": "Create IT translations for template answers"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

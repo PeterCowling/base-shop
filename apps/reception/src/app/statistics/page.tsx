@@ -1,13 +1,5 @@
-import Providers from "@/components/ClientProviders";
-import Statistics from "@/components/stats/Statistics";
-
-// Prevent static prerendering — Firebase RTDB requires runtime env vars
-export const dynamic = "force-dynamic";
+import { redirect } from "next/navigation";
 
 export default function StatisticsPage() {
-  return (
-    <Providers>
-      <Statistics />
-    </Providers>
-  );
+  redirect("/analytics");
 }

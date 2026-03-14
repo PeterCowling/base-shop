@@ -1,0 +1,17 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "theme-token-compiler-dark-selector-tokenmap",
+  "business": "BRIK",
+  "completed_at": "2026-03-14T19:55:19.198Z",
+  "outcome_contract": {
+    "why": "4 of 7 apps use html.theme-dark (not .dark), and reception has 107 tokens in flat TokenMap format that cannot flow through colorVarMap.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "The theme compiler supports all dark mode selectors and token formats used across the monorepo, unblocking all 7 app retrofit plans.",
+    "source": "operator"
+  },
+  "tasks_completed": [
+    "TASK-01",
+    "TASK-02"
+  ],
+  "verdict": "PASS"
+}

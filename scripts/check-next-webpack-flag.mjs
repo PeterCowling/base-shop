@@ -55,6 +55,10 @@ const APP_COMMAND_POLICY_MATRIX = Object.freeze({
     dev: RULE_ALLOW_ANY,
     build: RULE_ALLOW_ANY,
   }),
+  "business-os": Object.freeze({
+    dev: RULE_ALLOW_ANY,
+    build: RULE_ALLOW_ANY,
+  }),
 });
 
 // Packages-level policy matrix. Keys are `packages/<pkg>` (without trailing slash).

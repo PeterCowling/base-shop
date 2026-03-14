@@ -137,21 +137,14 @@ Use `pnpm preflight:brikette-deploy -- --json` for machine-readable output.
 
 Brikette staging CI now supports sharded Jest execution in the reusable deploy pipeline.
 
-- Shard mode: `3` shards (`1/3`, `2/3`, `3/3`)
-- Trigger: Brikette validation path when `run_validation=true`
-- Test selection modes:
-  - `test_scope=related`: run related tests only
-    - `pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard=<n>/3 --findRelatedTests <changed-source-files...>`
-  - `test_scope=full`: run full suite shard
-    - `pnpm --filter @apps/brikette exec jest --ci --runInBand --passWithNoTests --shard=<n>/3`
-  - `run_validation=false`: skip lint/typecheck/test entirely (deploy-only, confident)
-- Safety fallback:
-  - Any uncertain/unknown classification falls back to `test_scope=full`
-  - Any related-test mode with no eligible files falls back to full-suite shard execution
-- Cache restore is enabled for shard jobs:
-  - `.ts-jest`
-  - `node_modules/.cache/jest`
-  - `apps/brikette/node_modules/.cache/jest`
+- Trigger: Brikette validation path on `dev` pushes and Brikette-relevant pull requests
+- Validation contract:
+  - changed-scope lint via `pnpm exec turbo run lint --affected`
+  - changed-scope typecheck via `pnpm exec turbo run typecheck --affected`
+  - changed-scope unit tests via `pnpm test:affected`
+- Publish contract:
+  - `staging` and `main` publish only on merge-driven branch pushes
+  - workflow-only changes do not publish staging or production
 
 When diagnosing CI duration regressions, compare shard runtimes and overall `Validate & build` time using:
 

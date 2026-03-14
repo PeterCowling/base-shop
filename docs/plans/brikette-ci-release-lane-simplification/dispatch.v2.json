@@ -1,0 +1,67 @@
+{
+  "schema_version": "dispatch.v2",
+  "dispatch_id": "IDEA-DISPATCH-20260311153000-9601",
+  "mode": "trial",
+  "business": "BRIK",
+  "trigger": "operator_idea",
+  "domain": "PLATFORM",
+  "root_event_id": "operator:BRIK:PLATFORM:brikette-ci-release-lane-simplification:20260311",
+  "anchor_key": "brikette-ci-release-lane-simplification",
+  "cluster_key": "BRIK:PLATFORM:brikette-ci-release-lane-simplification:operator:20260311",
+  "cluster_fingerprint": "brikette-ci-release-lane-simplification-20260311",
+  "lineage_depth": 0,
+  "area_anchor": "BRIK - simplify Brikette CI and release lanes to changed-only dev validation plus merge-only staging and main publishing",
+  "location_anchors": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/brikette.yml",
+    ".github/workflows/brikette-staging-fast.yml",
+    ".github/workflows/reusable-app.yml",
+    "scripts/git/ship-to-staging.sh",
+    "scripts/git/promote-to-main.sh",
+    "apps/brikette/src/utils/buildLanguages.ts"
+  ],
+  "provisional_deliverable_family": "code-change",
+  "current_truth": "Brikette already has CI-only test policy, an app-specific dev/main workflow, and a separate staging fast-path workflow. Changed-only validation is only partial today: core lint and unit tests are affected-scoped, but repo-global governance jobs still run and core typecheck also includes a fixed package loop. Staging and production are mostly branch-merge driven already, but the workflow surface is still more complex than the target state and still exposes manual dispatch paths.",
+  "next_scope_now": "Run a fact-find that defines the simplest GitHub Actions shape for Brikette: dev runs changed-only lint, typecheck, and tests when relevant code changed; staging is a merge-only preview lane for users and agents; main is a merge-only live lane; and duplicated or non-essential workflow steps are identified for removal or consolidation.",
+  "adjacent_later": [
+    "Revisit Brikette deploy-unit splitting if workflow simplification alone does not materially reduce Pages and Wrangler friction.",
+    "Generalize any successful changed-only validation pattern from Brikette to other app pipelines only after the Brikette lane is proven."
+  ],
+  "recommended_route": "lp-do-fact-find",
+  "status": "fact_find_ready",
+  "priority": "P1",
+  "confidence": 0.92,
+  "evidence_refs": [
+    "operator-stated: Brikette should validate only changed code in CI, while staging and main should require nothing beyond branch merges.",
+    "code-ref: .github/workflows/ci.yml",
+    "code-ref: .github/workflows/brikette.yml",
+    "code-ref: .github/workflows/brikette-staging-fast.yml",
+    "code-ref: .github/workflows/reusable-app.yml",
+    "code-ref: scripts/git/ship-to-staging.sh",
+    "code-ref: scripts/git/promote-to-main.sh",
+    "code-ref: docs/plans/_archive/ci-only-test-execution/fact-find.md",
+    "code-ref: docs/plans/_archive/brikette-staging-upload-speed/fact-find.md",
+    "coverage-hint: testing",
+    "coverage-hint: data-contracts",
+    "coverage-hint: performance-reliability",
+    "coverage-hint: rollout-rollback"
+  ],
+  "created_at": "2026-03-11T15:30:00.000Z",
+  "queue_state": "processed",
+  "why": "The current Brikette CI and deploy flow is harder to reason about than it should be. The operator wants one straightforward release model: changed-only validation on dev, staging as the preview lane reached by merge, and main as the live lane reached by merge.",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Brikette has an analysis-ready fact-find for a simplified GitHub Actions setup where dev performs changed-only lint, typecheck, and tests in CI, staging is a merge-only preview lane, and main is a merge-only production lane.",
+    "source": "operator"
+  },
+  "processed_by": {
+    "route": "dispatch-routed",
+    "target_route": "lp-do-fact-find",
+    "target_kind": "fact-find",
+    "target_slug": "brikette-ci-release-lane-simplification",
+    "target_path": "docs/plans/brikette-ci-release-lane-simplification/fact-find.md",
+    "processed_at": "2026-03-11T15:45:00.000Z",
+    "fact_find_slug": "brikette-ci-release-lane-simplification",
+    "fact_find_path": "docs/plans/brikette-ci-release-lane-simplification/fact-find.md"
+  }
+}

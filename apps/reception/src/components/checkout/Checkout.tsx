@@ -21,6 +21,7 @@ import useActivitiesMutations from "../../hooks/mutations/useActivitiesMutations
 import useAllTransactions from "../../hooks/mutations/useAllTransactionsMutations";
 import { useCheckoutsMutation } from "../../hooks/mutations/useCheckoutsMutation";
 import { useKeycardAssignmentsMutations } from "../../hooks/mutations/useKeycardAssignmentsMutations";
+import useSetBagStorageOptedInMutation from "../../hooks/mutations/useSetBagStorageOptedInMutation";
 import useSetFridgeUsedMutation from "../../hooks/mutations/useSetFridgeUsedMutation";
 import { type FirebaseBookings } from "../../types/hooks/data/bookingsData";
 import { type LoanItem, type LoanMethod } from "../../types/hooks/data/loansData";
@@ -155,8 +156,10 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
   const { assignmentsRecord } = useKeycardAssignments();
   const { returnKeycard } = useKeycardAssignmentsMutations();
   const { setFridgeUsed } = useSetFridgeUsedMutation();
+  const { setBagStorageOptedIn } = useSetBagStorageOptedInMutation();
 
   const [pendingFridgeOccupantIds, setPendingFridgeOccupantIds] = useState<Set<string>>(new Set());
+  const [pendingBagStorageOccupantIds, setPendingBagStorageOccupantIds] = useState<Set<string>>(new Set());
 
   // Remove a single loan item
   const handleRemoveLoanItem = useCallback(
@@ -320,6 +323,26 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
     [setFridgeUsed]
   );
 
+  // Toggle bag-storage opted-in flag for a single occupant
+  const onToggleBagStorage = useCallback(
+    async (guestId: string, _bookingRef: string, currentValue: boolean) => {
+      setPendingBagStorageOccupantIds((prev) => new Set([...prev, guestId]));
+      try {
+        await setBagStorageOptedIn(guestId, !currentValue);
+      } catch (err) {
+        console.error(`[Checkout] Error toggling bag storage for ${guestId}:`, err);
+        showToast("Failed to update bag storage", "error");
+      } finally {
+        setPendingBagStorageOccupantIds((prev) => {
+          const next = new Set(prev);
+          next.delete(guestId);
+          return next;
+        });
+      }
+    },
+    [setBagStorageOptedIn]
+  );
+
   // ────────────────────────────────────────── derive table data ──────────────────────────────────
   const guests: Guest[] = useMemo(
     () =>
@@ -380,7 +403,7 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
             accessMode="unrestricted"
             calendarPlacement="inline"
             calendarColorVariant="primary"
-            username={user.user_name}
+            quickDays={0}
           />
 
         {!!error && (
@@ -398,6 +421,8 @@ function CheckoutComponent({ debug: _debug }: CheckoutProps) {
             onComplete={onComplete}
             onToggleFridge={onToggleFridge}
             pendingFridgeOccupantIds={pendingFridgeOccupantIds}
+            onToggleBagStorage={onToggleBagStorage}
+            pendingBagStorageOccupantIds={pendingBagStorageOccupantIds}
           />
         )}
       </div>

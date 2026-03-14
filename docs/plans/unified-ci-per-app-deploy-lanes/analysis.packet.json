@@ -1,0 +1,195 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "unified-ci-per-app-deploy-lanes",
+  "source_artifact_path": "docs/plans/unified-ci-per-app-deploy-lanes/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/unified-ci-per-app-deploy-lanes/fact-find.md",
+    "plan": "docs/plans/unified-ci-per-app-deploy-lanes/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The current CI setup is fragmented: validation is duplicated across ci.yml, reusable-app.yml, and per-app workflows. The operator wants the simplest possible model.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All apps share one validation workflow (ci.yml) on dev/PR and thin per-app deploy workflows on staging/main, with no validation duplication, no workflow_dispatch, and path-gated skip-if-unchanged semantics.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A — no product UI changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Clear two-layer model: ci.yml validates, per-app deploys",
+      "current_or_option_state": "Same two-layer model but with paths-ignore sync burden",
+      "gap_or_implication": "Option A is simpler mental model",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "All pushes get security audit, secret scanning, license checks. workflow_dispatch removed (with auto-pr.yml exception).",
+      "current_or_option_state": "Pure app-only pushes skip security audit/license checks — a governance gap.",
+      "gap_or_implication": "Option A has better security coverage",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "One validation workflow + one deploy workflow per app. Clear audit trail.",
+      "current_or_option_state": "Same structure but paths-ignore can cause confusion about why ci.yml didn't run for a commit.",
+      "gap_or_implication": "Option A clearer",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "turbo --affected handles all validation scoping. App-specific gates (prime firebase, reception firebase rules) move to ci.yml as conditional steps.",
+      "current_or_option_state": "Same validation approach but paths-ignore means some pushes never trigger ci.yml at all.",
+      "gap_or_implication": "Option A — ci.yml is truly universal",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "merge-gate scopeWorkflowMap + auto-pr.yml dispatch updated. filter-config.ts paths-ignore entries removed.",
+      "current_or_option_state": "merge-gate updated. filter-config.ts paths-ignore maintained.",
+      "gap_or_implication": "Option A removes sync burden",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "~6-8 governance jobs run on every push (~5-10 min overhead for pure app-only changes). turbo --affected keeps validation scoped.",
+      "current_or_option_state": "Pure app-only pushes skip governance jobs. Shared package pushes trigger both ci.yml and deploy workflows.",
+      "gap_or_implication": "Option A trades modest CI minutes for simplicity",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Phased: update ci.yml + one app, verify, extend. Rollback via git revert.",
+      "current_or_option_state": "Same rollout approach.",
+      "gap_or_implication": "Same rollout shape",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Choose the simplest architecture for splitting validation (lint/typecheck/test) from deployment across all apps. The operator wants one mental model: ci.yml validates changed code on dev/PR, per-app workflows deploy on staging/main, nothing else. The prior Brikette-only attempt introduced duplication instead of removing it; this analysis covers all apps.",
+    "goals": [
+      "ci.yml is the sole validation workflow for all apps on dev/PR.",
+      "Per-app deploy workflows are thin: detect changes, build, deploy. No lint/typecheck/test.",
+      "\"Nothing changed, nothing to do\" at both layers.",
+      "Remove workflow_dispatch from app workflows (accounting for auto-pr.yml dependency).",
+      "Add staging deploy to apps that lack it."
+    ],
+    "non_goals": [
+      "Redesign app code, static-export architecture, or Cloudflare project structure.",
+      "Change the dev → staging → main branch promotion policy.",
+      "Modify non-app workflows (storybook, consent-analytics, lighthouse, cypress)."
+    ],
+    "constraints": [
+      "merge-gate.yml watches specific workflow file IDs — must be updated atomically.",
+      "auto-pr.yml dispatches brikette.yml by workflow_id — must be accounted for.",
+      "Per-app deploy secrets, health checks, and build quirks (route-hide/restore, SOPS decrypt) must be preserved.",
+      "Worker apps (caryina, reception, business-os) lack staging wrangler config — adding staging deploy requires wrangler config changes."
+    ],
+    "assumptions": [
+      "turbo --affected covers all app workspaces for lint/typecheck/test.",
+      "ci.yml governance jobs (security audit, secret scanning, dep alignment, license check, docs lint, token validation) are repo-level checks that should run on all pushes."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Simplicity",
+        "Why it matters": "Operator's explicit top priority — \"simplest, most straightforward\"",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "No validation duplication",
+        "Why it matters": "Core problem being solved",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Minimal merge-gate disruption",
+        "Why it matters": "merge-gate is the PR gating mechanism — breakage blocks all merges",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Preserved deploy correctness",
+        "Why it matters": "Build quirks, secrets, health checks must survive",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "CI minute efficiency",
+        "Why it matters": "Governance jobs running unnecessarily wastes minutes",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "File count / maintenance burden",
+        "Why it matters": "Fewer files to maintain, less sync burden",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A: Remove paths-ignore + thin per-app deploy",
+        "Description": "Remove ci.yml paths-ignore entirely. ci.yml validates all pushes. Per-app workflows become deploy-only on staging/main.",
+        "Upside": "Simplest config. No validation duplication. No paths-ignore sync burden. One mental model.",
+        "Downside": "Governance jobs (security audit, secret scanning, dep alignment, license, docs lint, token validation) run on every push including pure app-only changes. ~6-8 extra jobs per push.",
+        "Key risks": "CI minutes increase modestly for pure app-only changes.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B: Keep paths-ignore + thin per-app deploy",
+        "Description": "Keep ci.yml paths-ignore for apps with deploy workflows. Per-app deploy workflows are deploy-only.",
+        "Upside": "Saves governance job runs on pure app-only pushes.",
+        "Downside": "Must maintain paths-ignore in sync with app dependency trees. Pure app-only changes get NO governance checks (security audit, license, etc.) — a real coverage gap. If a brikette-only change introduces a license-incompatible dependency, it's missed.",
+        "Key risks": "Governance coverage gap for excluded apps. paths-ignore sync burden remains.",
+        "Viable?": "Yes but weaker"
+      },
+      {
+        "Option": "C: Reusable deploy workflow",
+        "Description": "Replace reusable-app.yml with a thin reusable-deploy.yml. Per-app callers pass build/deploy commands.",
+        "Upside": "Reduces per-app file size. Shared deploy logic in one place.",
+        "Downside": "Adds indirection. Build quirks (route-hide, SOPS decrypt, OpenNext) vary so much per app that the reusable workflow becomes a kitchen sink again.",
+        "Key risks": "Recreates the reusable-app.yml complexity problem in a different form.",
+        "Viable?": "Yes but defeats the simplicity goal"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Remove ci.yml paths-ignore entirely. ci.yml validates all pushes via turbo --affected. Per-app workflows become deploy-only on staging/main.",
+      "**Why this wins": "**",
+      "One mental model": "ci.yml validates everything, per-app workflows only deploy.",
+      "**What it depends on": "**"
+    },
+    "rejected_approaches": [
+      "**Option B (keep paths-ignore)** — Rejected because it creates a governance coverage gap for excluded apps (security audit, license checks don't run on pure app-only changes) and perpetuates the paths-ignore sync burden that caused the original fragmentation.",
+      "**Option C (reusable deploy workflow)** — Rejected because per-app build quirks (route-hide/restore, SOPS decrypt, OpenNext, preflight scripts, language subsets) vary so much that a reusable workflow becomes a kitchen sink — recreating the reusable-app.yml problem. Thin per-app files are simpler despite more files."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "actionlint on all modified workflow files.",
+        "merge-gate scopeWorkflowMap must reference correct workflow file IDs.",
+        "Verify auto-pr.yml dispatch compatibility.",
+        "CI run on dev to confirm turbo --affected covers all apps after paths-ignore removal."
+      ],
+      "sequencing_constraints": [
+        "ci.yml paths-ignore removal must happen before or atomically with per-app workflow simplification — otherwise removing per-app validation creates a gap.",
+        "merge-gate + auto-pr.yml update must be atomic with workflow file identity changes.",
+        "Worker app staging deploy (Phase 4) can be deferred if wrangler config changes are complex — it's additive, not blocking."
+      ],
+      "risks_to_carry_forward": [
+        "CMS test duration without 4-shard parallelism may be long — monitor and re-add sharding as a ci.yml conditional job if needed.",
+        "auto-pr.yml brikette dispatch may be redundant (brikette.yml triggers on dev push anyway) — verify and potentially remove the dispatch.",
+        "XA apps (3 apps in 1 workflow) may need special handling — either keep as one deploy workflow or split into 3."
+      ]
+    }
+  }
+}

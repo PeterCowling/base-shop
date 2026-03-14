@@ -55,10 +55,11 @@ This plan tracks work related to the AI-first documentation conventions defined 
 - Scope:
   - Provide a lightweight way to validate doc headers and generate a registry for agents.
 - Implementation:
-  - Added `scripts/src/docs-lint.ts` and `pnpm docs:lint`:
-    - Validates presence of `Type`/`Status` headers.
-    - Ensures `Domain` and code pointers for `Charter`/`Contract` docs.
-    - Writes `docs/registry.json` with `{ path, type, status, domain }` entries.
+  - Added `scripts/src/docs-lint.ts` and the split command surface:
+    - `pnpm docs:registry` writes `docs/registry.json` with `{ path, type, status, domain }` entries.
+    - `pnpm docs:lint:changed` validates changed docs only.
+    - `pnpm docs:lint:full` runs the full repository sweep.
+    - `pnpm docs:lint` is the convenience wrapper (`docs:registry` + `docs:lint:changed`).
   - Wired a `Docs lint` step into `.github/workflows/ci.yml` so documentation issues are surfaced alongside other CI checks.
 
 ## DOC-05 — Extend taxonomy to remaining docs
@@ -75,4 +76,4 @@ This plan tracks work related to the AI-first documentation conventions defined 
 - Scope:
   - Once all important docs have headers, tighten the CI step.
 - Implementation:
-  - Updated the `Docs lint` step in `.github/workflows/ci.yml` to run `pnpm run docs:lint` without `|| true` so missing headers or invalid statuses fail CI.
+  - Updated the `Docs lint` step in `.github/workflows/ci.yml` to refresh `docs/registry.json` and run changed-doc validation without `|| true` so regressions in touched docs fail CI.

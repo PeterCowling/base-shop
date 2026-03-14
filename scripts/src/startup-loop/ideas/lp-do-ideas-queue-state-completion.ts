@@ -6,6 +6,7 @@
  * and intentionally does not depend on or mutate the in-memory TrialQueue class.
  */
 
+import { existsSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import type {
@@ -32,6 +33,7 @@ import {
 } from "./lp-do-ideas-queue-state-file.js";
 
 const DEFAULT_QUEUE_STATE_PATH = IDEAS_TRIAL_QUEUE_STATE_PATH;
+const BUILD_RECORD_FILENAME = "build-record.user.md";
 
 export interface SelfEvolvingMeasurementInput {
   kpi_name: string;
@@ -70,6 +72,10 @@ export type MarkDispatchesCompletedResult =
       error?: string;
     };
 
+type MeasurementExtractionResult =
+  | { ok: true; measurement: SelfEvolvingMeasurementInput | null }
+  | { ok: false; error: string };
+
 function resolveRootDir(inputRootDir: string | undefined): string {
   if (inputRootDir) {
     return inputRootDir;
@@ -77,6 +83,173 @@ function resolveRootDir(inputRootDir: string | undefined): string {
   return process.cwd().endsWith(`${path.sep}scripts`)
     ? path.resolve(process.cwd(), "..")
     : process.cwd();
+}
+
+function resolveRelativeToRoot(rootDir: string, filePath: string): string {
+  return path.isAbsolute(filePath) ? filePath : path.join(rootDir, filePath);
+}
+
+function resolveBuildRecordPath(rootDir: string, planPath: string): string {
+  return path.join(path.dirname(resolveRelativeToRoot(rootDir, planPath)), BUILD_RECORD_FILENAME);
+}
+
+function extractMarkdownSection(markdown: string, heading: string): string | null {
+  const lines = markdown.split(/\r?\n/);
+  const normalizedHeading = heading.trim().toLowerCase();
+  let startIndex = -1;
+
+  for (let index = 0; index < lines.length; index += 1) {
+    if (lines[index]?.trim().toLowerCase() === normalizedHeading) {
+      startIndex = index + 1;
+      break;
+    }
+  }
+
+  if (startIndex === -1) {
+    return null;
+  }
+
+  const sectionLines: string[] = [];
+  for (let index = startIndex; index < lines.length; index += 1) {
+    const line = lines[index] ?? "";
+    if (line.trim().startsWith("## ")) {
+      break;
+    }
+    sectionLines.push(line);
+  }
+
+  return sectionLines.join("\n").trim();
+}
+
+function extractBoldLabeledFields(section: string): Map<string, string> {
+  const fields = new Map<string, string>();
+  const regex = /^[-*]?\s*\*\*([^*]+)\*\*:?\s*(.+)$/gm;
+  for (let match = regex.exec(section); match; match = regex.exec(section)) {
+    const label = match[1]?.trim().toLowerCase();
+    const value = match[2]?.trim();
+    if (label && value) {
+      fields.set(label, value);
+    }
+  }
+  return fields;
+}
+
+function readRequiredField(fields: ReadonlyMap<string, string>, key: string): string {
+  const value = fields.get(key.toLowerCase());
+  if (!value || value.trim().length === 0) {
+    throw new Error(`missing_self_evolving_measurement_field:${key}`);
+  }
+  return value.trim();
+}
+
+function parseRequiredNumber(fields: ReadonlyMap<string, string>, key: string): number {
+  const raw = readRequiredField(fields, key);
+  const value = Number(raw);
+  if (!Number.isFinite(value)) {
+    throw new Error(`invalid_self_evolving_measurement_number:${key}:${raw}`);
+  }
+  return value;
+}
+
+function parseRequiredInteger(fields: ReadonlyMap<string, string>, key: string): number {
+  const value = parseRequiredNumber(fields, key);
+  if (!Number.isInteger(value)) {
+    throw new Error(`invalid_self_evolving_measurement_integer:${key}:${value}`);
+  }
+  return value;
+}
+
+function parseEnumValue<T extends string>(
+  fields: ReadonlyMap<string, string>,
+  key: string,
+  allowed: readonly T[],
+): T {
+  const value = readRequiredField(fields, key).toLowerCase() as T;
+  if (!allowed.includes(value)) {
+    throw new Error(`invalid_self_evolving_measurement_enum:${key}:${value}`);
+  }
+  return value;
+}
+
+function parseArtifactRefs(value: string | undefined): string[] | undefined {
+  if (!value) {
+    return undefined;
+  }
+  const normalized = value.trim();
+  if (normalized.length === 0 || normalized.toLowerCase() === "none") {
+    return undefined;
+  }
+  const refs = normalized
+    .split(",")
+    .map((entry) => entry.trim())
+    .filter((entry) => entry.length > 0);
+  return refs.length > 0 ? refs : undefined;
+}
+
+function extractMeasurementFromBuildRecord(
+  rootDir: string,
+  planPath: string,
+): MeasurementExtractionResult {
+  const buildRecordPath = resolveBuildRecordPath(rootDir, planPath);
+  if (!existsSync(buildRecordPath)) {
+    return { ok: true, measurement: null };
+  }
+
+  const buildRecord = readFileSync(buildRecordPath, "utf-8");
+  const section = extractMarkdownSection(buildRecord, "## Self-Evolving Measurement");
+  if (!section) {
+    return { ok: true, measurement: null };
+  }
+
+  try {
+    const fields = extractBoldLabeledFields(section);
+    const status = readRequiredField(fields, "Status").toLowerCase();
+    if (status === "none") {
+      return { ok: true, measurement: null };
+    }
+    if (status !== "verified") {
+      throw new Error(`invalid_self_evolving_measurement_status:${status}`);
+    }
+
+    const measurement: SelfEvolvingMeasurementInput = {
+      kpi_name: readRequiredField(fields, "KPI Name"),
+      kpi_value: parseRequiredNumber(fields, "KPI Value"),
+      kpi_unit: parseEnumValue(fields, "KPI Unit", [
+        "ratio",
+        "count",
+        "currency",
+        "seconds",
+        "score",
+      ]),
+      aggregation_method: parseEnumValue(fields, "Aggregation Method", [
+        "mean",
+        "median",
+        "sum",
+        "rate",
+      ]),
+      sample_size: parseRequiredInteger(fields, "Sample Size"),
+      baseline_ref: readRequiredField(fields, "Baseline Ref"),
+      measurement_window: readRequiredField(fields, "Measurement Window"),
+      baseline_window: readRequiredField(fields, "Baseline Window"),
+      post_window: readRequiredField(fields, "Post Window"),
+      measured_impact: parseRequiredNumber(fields, "Measured Impact"),
+      impact_confidence: parseRequiredNumber(fields, "Impact Confidence"),
+      regressions_detected: parseRequiredInteger(fields, "Regressions Detected"),
+      data_quality_status: parseEnumValue(fields, "Data Quality Status", [
+        "ok",
+        "degraded",
+      ]),
+      traffic_segment: fields.get("traffic segment")?.trim() || null,
+      artifact_refs: parseArtifactRefs(fields.get("artifact refs")),
+    };
+
+    return { ok: true, measurement };
+  } catch (error) {
+    return {
+      ok: false,
+      error: `build_record_self_evolving_measurement_parse_failed:${buildRecordPath}:${error instanceof Error ? error.message : String(error)}`,
+    };
+  }
 }
 
 function addDays(isoTimestamp: string, days: number): string {
@@ -510,6 +683,13 @@ export function markDispatchesCompleted(
 ): MarkDispatchesCompletedResult {
   const clock = options.clock ?? (() => new Date());
   const rootDir = resolveRootDir(options.rootDir);
+  const measurementResult: MeasurementExtractionResult =
+    options.selfEvolvingMeasurement == null
+      ? extractMeasurementFromBuildRecord(rootDir, options.planPath)
+      : { ok: true, measurement: options.selfEvolvingMeasurement };
+  if (!measurementResult.ok) {
+    return { ok: false, reason: "parse_error", error: measurementResult.error };
+  }
   const queueResult = readQueueStateFile(options.queueStatePath);
   if (!queueResult.ok) {
     return queueResult;
@@ -550,7 +730,7 @@ export function markDispatchesCompleted(
         planPath: options.planPath,
         outcome: options.outcome,
         completedAt,
-        measurement: options.selfEvolvingMeasurement,
+        measurement: measurementResult.measurement ?? undefined,
       }) ?? undefined,
     };
     mutated += 1;

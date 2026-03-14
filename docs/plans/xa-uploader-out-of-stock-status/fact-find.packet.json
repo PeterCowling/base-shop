@@ -1,0 +1,202 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "xa-uploader-out-of-stock-status",
+  "source_artifact_path": "docs/plans/xa-uploader-out-of-stock-status/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/xa-uploader-out-of-stock-status/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Operator wants products to remain visible on the storefront while marked as unavailable for purchase, requiring a distinct out-of-stock status beyond draft/live.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "out-of-stock status is fully supported across schema, xa-uploader UI, publish flow, storefront display, and cart validation",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "Out-of-stock button, status dot, and labels already rendered in CatalogProductForm.client.tsx and CatalogProductsList.client.tsx",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "Full state machine: draft -> live -> out_of_stock -> live transitions work; i18n copy covers running/complete/success/failure for all transitions",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Publish route requires `hasUploaderSession()` auth check; no additional auth surface from existing feature",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "`uploaderLog` calls exist for `publish_start`, `publish_complete`, and `publish_error`; however, only `publish_complete` includes the `publishState` field (line 172). `publish_start` logs storefront only (line 88); `publish_error` logs storefront and reason only (line 234)",
+      "gap_or_implication": "Minor: `publishState` not logged on start/error events, but this is pre-existing and not specific to out-of-stock",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "N/A",
+      "current_or_option_state": "Unit and integration tests exist for workflow derivation, cart rejection, inventory availability, publish API, and listing filters",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "`catalogPublishStateSchema` includes `out_of_stock`; contract export uses `deriveCatalogPublishState` which preserves it; storefront model accepts it",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Same publish pipeline used for live and out_of_stock; no hot path changes",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A",
+      "current_or_option_state": "Feature is already deployed and operational; no rollout needed",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "The operator requested adding an out-of-stock product status to xa-uploader so products can remain visible on the xa-b storefront but be marked as unavailable for purchase. Investigation reveals that **this feature already exists end-to-end.** The `out_of_stock` status is fully implemented across the schema, workflow derivation, publish API, UI controls, i18n copy, storefront filtering, cart validation, and inventory logic. No code changes are required.",
+    "goals": [
+      "Confirm that `out_of_stock` is a valid publish state in the catalog schema",
+      "Confirm that the xa-uploader UI supports setting a product to out-of-stock",
+      "Confirm that the storefront (xa-b) correctly handles out-of-stock products",
+      "Identify any gaps in the existing implementation"
+    ],
+    "non_goals": [
+      "Numeric inventory tracking (explicitly rejected by operator in prior session)",
+      "Semantic image roles (already removed in favour of main-image-plus-gallery)"
+    ],
+    "constraints": [
+      "Must not break existing draft/live state transitions"
+    ],
+    "assumptions": [
+      "The operator may not be aware that this feature is already implemented",
+      "The prior dispatch (IDEA-DISPATCH-20260306172218-9027) which covered this scope is already `completed`"
+    ],
+    "key_entry_points": [
+      "`apps/xa-uploader/src/app/api/catalog/publish/route.ts` - POST handler accepts `publishState: \"live\" | \"out_of_stock\"` and transitions products between states",
+      "`apps/xa-uploader/src/components/catalog/CatalogProductForm.client.tsx` - UI form with \"Mark Out of Stock\" button for live products"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "The feature is already implemented end-to-end. Analysis should confirm no further work is needed and close the pipeline. If the operator identifies specific gaps beyond what was investigated, a separate scoped fact-find should be initiated for those gaps."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Schema definition (catalogAdminSchema.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Workflow derivation (catalogWorkflow.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Publish API route",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Cloud snapshot state management",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Contract export (catalogDraftToContract.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "UI form controls and status display",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "i18n translations (EN + ZH)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Storefront model parsing (xaCatalogModel.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Cart validation (XaCartContext.tsx)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Inventory availability (inventoryStore.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Listing filters (useXaListingFilters.ts)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Operator clicks \"Mark Out of Stock\" (or \"Make Live\") button in the xa-uploader product form",
+      "end_condition": "Product status updated in cloud draft snapshot, catalog contract re-published, optional xa-b deploy triggered",
+      "areas": [
+        {
+          "id": null,
+          "label": "Publish state transition",
+          "flow": "1. Auth check (`hasUploaderSession`) 2. Parse request payload (draftId, ifMatch, publishState) 3. Acquire cloud sync lock 4. Read cloud draft snapshot + currency rates 5. Update product publishState in snapshot 6. Build catalog artifacts from drafts 7. Validate cloud media existence 8. Publish contract payload to catalog service 9. Write updated draft snapshot 10. Trigger xa-b deploy (if applicable) 11. Release lock",
+          "owners": "xa-uploader API / Cloud catalog contract / R2 storage / xa-b deploy hook",
+          "evidence": "`apps/xa-uploader/src/app/api/catalog/publish/route.ts` lines 81-181",
+          "issues": "Draft snapshot write failure after contract publish is caught but only logged as warning (line 150-155)"
+        }
+      ]
+    }
+  }
+}

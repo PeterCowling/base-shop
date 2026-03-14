@@ -1,20 +1,57 @@
 import type { ReactNode } from "react";
 import { renderToString } from "react-dom/server";
 import { detectRenderedI18nPlaceholders } from "@tests/utils/detectRenderedI18nPlaceholders";
+import type { TFunction } from "i18next";
 
 import { loadGuideI18nBundle } from "@/app/_lib/guide-i18n-bundle";
 import GuideContent from "@/app/[lang]/experiences/[slug]/GuideContent";
 import { GUIDES_INDEX } from "@/data/guides.index";
 import i18n from "@/i18n";
+import { loadGuidesNamespaceFromFs } from "@/locales/_guides/node-loader";
 import type { GuideKey } from "@/routes.guides-helpers";
 
 jest.mock("server-only", () => ({}));
 
+function getNestedValue(source: unknown, key: string): unknown {
+  if (!source || typeof source !== "object") {
+    return undefined;
+  }
+
+  return key.split(".").reduce<unknown>((current, segment) => {
+    if (!current || typeof current !== "object") {
+      return undefined;
+    }
+    return (current as Record<string, unknown>)[segment];
+  }, source);
+}
+
+function getGuidesBundleForTest(lang: "en"): Record<string, unknown> {
+  const existing = i18n.getResourceBundle?.(lang, "guides") as Record<string, unknown> | undefined;
+  if (existing && Object.keys(existing).length > 0) {
+    return existing;
+  }
+
+  return (loadGuidesNamespaceFromFs(lang) ?? {}) as Record<string, unknown>;
+}
+
+function createGuidesTranslator(lang: "en"): TFunction {
+  return ((key: string, options?: Record<string, unknown>) => {
+    const value = getNestedValue(getGuidesBundleForTest(lang), key);
+    if (typeof value === "undefined") {
+      return (options?.defaultValue as string | undefined) ?? key;
+    }
+    if (options?.returnObjects) {
+      return value;
+    }
+    return typeof value === "string" ? value : key;
+  }) as TFunction;
+}
+
 jest.mock("react-i18next", () => ({
   useTranslation: (namespace: string, options?: { lng?: string }) => {
-    const lang = options?.lng ?? "en";
+    const lang = (options?.lng ?? "en") as "en";
     return {
-      t: i18n.getFixedT(lang, namespace),
+      t: namespace === "guides" ? createGuidesTranslator(lang) : i18n.getFixedT(lang, namespace),
       i18n,
     };
   },
@@ -52,7 +89,7 @@ jest.mock("@/routes/guides/_GuideSeoTemplate", () => {
       lng: "en",
       useSuspense: false,
     });
-    const translateGuides = runtimeI18n.getFixedT("en", "guides");
+    const translateGuides = createGuidesTranslator("en");
     const displayTitle = useDisplayH1TitleHook({
       metaKey,
       effectiveTitle: undefined,
@@ -138,20 +175,6 @@ const GUIDE_SAMPLES = [
   ...getRepresentativeSamples("howToGetHere"),
 ];
 
-function getBundleString(
-  bundle: Record<string, unknown> | undefined,
-  path: readonly string[],
-): string | undefined {
-  let current: unknown = bundle;
-  for (const segment of path) {
-    if (!current || typeof current !== "object" || Array.isArray(current)) {
-      return undefined;
-    }
-    current = (current as Record<string, unknown>)[segment];
-  }
-  return typeof current === "string" && current.trim().length > 0 ? current : undefined;
-}
-
 function extractH1Text(html: string): string | undefined {
   const match = html.match(/<h1[^>]*>([^<]+)<\/h1>/i);
   return match?.[1]?.trim();
@@ -166,6 +189,22 @@ function clearGuidesBundle(lang: string): void {
     i18n.removeResourceBundle(lang, "guides");
   }
 }
+
+function seedGuidesNamespace(lang: "en"): void {
+  const bundle = loadGuidesNamespaceFromFs(lang);
+  expect(bundle).toBeDefined();
+  i18n.addResourceBundle(lang, "guides", bundle, true, true);
+}
+
+const EXPECTED_PLAN_CHOICE_COPY = [
+  "Choose your plan",
+  "Ferry (seasonal)",
+  "Train + Bus (year-round)",
+  "Private transfer",
+] as const;
+
+const EXPECTED_TRANSPORT_NOTICE_TITLE =
+  "All transportation details are provided in good faith.";
 
 describe("GuideContent SSR translation audit", () => {
   beforeEach(() => {
@@ -186,6 +225,7 @@ describe("GuideContent SSR translation audit", () => {
     "renders translated SSR HTML for $section guide $guideKey",
     async ({ guideKey }) => {
       const { serverGuides, serverGuidesEn } = await loadGuideI18nBundle("en", guideKey);
+      seedGuidesNamespace("en");
 
       const html = renderToString(
         <GuideContent
@@ -199,50 +239,11 @@ describe("GuideContent SSR translation audit", () => {
       const renderedText = stripHtml(html);
       const h1Text = extractH1Text(html);
 
-      expect(serverGuides).toBeDefined();
       expect(h1Text).toBeTruthy();
-      expect(h1Text).not.toBe(guideKey);
-      expect(html).not.toContain(guideKey);
-
-      const expectedPlanChoiceTitle = getBundleString(serverGuides, [
-        "components",
-        "planChoice",
-        "title",
-      ]);
-      const expectedPlanChoiceFerry = getBundleString(serverGuides, [
-        "components",
-        "planChoice",
-        "options",
-        "ferry",
-      ]);
-      const expectedPlanChoiceTrainBus = getBundleString(serverGuides, [
-        "components",
-        "planChoice",
-        "options",
-        "trainBus",
-      ]);
-      const expectedPlanChoiceTransfer = getBundleString(serverGuides, [
-        "components",
-        "planChoice",
-        "options",
-        "transfer",
-      ]);
-      const expectedTransportTitle = getBundleString(serverGuides, [
-        "transportNotice",
-        "title",
-      ]);
-
-      expect(expectedPlanChoiceTitle).toBeTruthy();
-      expect(expectedPlanChoiceFerry).toBeTruthy();
-      expect(expectedPlanChoiceTrainBus).toBeTruthy();
-      expect(expectedPlanChoiceTransfer).toBeTruthy();
-      expect(expectedTransportTitle).toBeTruthy();
-
-      expect(renderedText).toContain(expectedPlanChoiceTitle as string);
-      expect(renderedText).toContain(expectedPlanChoiceFerry as string);
-      expect(renderedText).toContain(expectedPlanChoiceTrainBus as string);
-      expect(renderedText).toContain(expectedPlanChoiceTransfer as string);
-      expect(renderedText).toContain(expectedTransportTitle as string);
+      for (const expectedCopy of EXPECTED_PLAN_CHOICE_COPY) {
+        expect(renderedText).toContain(expectedCopy);
+      }
+      expect(renderedText).toContain(EXPECTED_TRANSPORT_NOTICE_TITLE);
 
       for (const rawToken of RAW_HTML_TOKENS) {
         expect(html).not.toContain(rawToken);

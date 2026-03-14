@@ -27,6 +27,8 @@ interface NightData {
   drink2?: string;
   /** txnId backref written by Prime bridge write (breakfast field is NOT overwritten) */
   breakfastTxnId?: string;
+  /** txnId backref written by Prime bridge write (drink1 field is NOT overwritten) */
+  drink1Txn?: string;
 }
 
 type PreorderData = Record<string, NightData>;
@@ -73,6 +75,7 @@ interface RowData {
   occId: string;
   guestName: string;
   plan: string;
+  drinkPreordered: boolean;
   preorder: PreorderData | null;
   occupantCheckIn: string;
 }
@@ -123,6 +126,11 @@ const TableRow: React.FC<{
         >
           {row.plan}
         </span>
+        {row.drinkPreordered && (
+          <span className="ml-1 inline-block rounded-full bg-accent px-2 py-1 text-xs font-semibold uppercase tracking-wide text-foreground">
+            drink ✓
+          </span>
+        )}
       </TableCell>
     )}
   </DSTableRow>
@@ -264,12 +272,14 @@ const CompScreen: React.FC = React.memo(() => {
       const plan = tonightPreorder?.breakfastTxnId
         ? "preordered"
         : (tonightPreorder?.breakfast ?? "NA");
+      const drinkPreordered = Boolean(tonightPreorder?.drink1Txn);
 
       return {
         bookingRef,
         occId: id,
         guestName,
         plan,
+        drinkPreordered,
         preorder: occPre,
         occupantCheckIn,
       };

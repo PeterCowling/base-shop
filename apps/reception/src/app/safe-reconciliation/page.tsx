@@ -1,16 +1,5 @@
-import Providers from "@/components/ClientProviders";
-import SafeReconciliation from "@/components/safe/SafeReconciliation";
-import { SafeDataProvider } from "@/context/SafeDataContext";
-
-// Prevent static prerendering — Firebase RTDB requires runtime env vars
-export const dynamic = "force-dynamic";
+import { redirect } from "next/navigation";
 
 export default function SafeReconciliationPage() {
-  return (
-    <Providers>
-      <SafeDataProvider>
-        <SafeReconciliation />
-      </SafeDataProvider>
-    </Providers>
-  );
+  redirect("/cash");
 }

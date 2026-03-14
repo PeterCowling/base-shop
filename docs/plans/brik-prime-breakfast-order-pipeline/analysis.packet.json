@@ -1,0 +1,278 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "brik-prime-breakfast-order-pipeline",
+  "source_artifact_path": "docs/plans/brik-prime-breakfast-order-pipeline/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/brik-prime-breakfast-order-pipeline/fact-find.md",
+    "plan": "docs/plans/brik-prime-breakfast-order-pipeline/plan.md"
+  },
+  "outcome_contract": {
+    "why": "When a guest uses the app to choose their breakfast, their order is saved but it never makes its way to the staff working the bar. The bar screen shows no record of it. Staff have no way to know what was ordered or even that an order was placed. Fixing this closes the loop so that every guest order placed in the app shows up as a clear ticket for bar staff to act on.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A fact-find is complete that defines the bridge architecture: where it lives, how the order text is converted to structured bar items, and how a transaction reference is stored so the Comp screen can display placed orders.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Dual-field strategy: `breakfastText` / `drink1Text` stores human-readable string; `breakfast` stores txnId; `drink1` unchanged; `drink1Txn` stores drink txnId. `MealOrderPage.existingOrders` reads `breakfastText ?? breakfast` (and `drink1Text ?? drink1` for drinks). `CompScreen` plan badge interprets `breakfast.startsWith(\"txn_\")` as `\"preordered\"`. Both display regressions resolved. Existing `MealOrderPage` and `CompScreen` tests must be updated or extended to cover the new field reads.",
+      "current_or_option_state": "Same dual-field strategy required for display regressions.",
+      "gap_or_implication": "TASK-04 updates `MealOrderPage.existingOrders` (add `breakfastText ?? breakfast` read) and `CompScreen` plan column (txnId-prefix → `\"preordered\"` interpretation). Existing tests in `MealOrderPage.test.tsx` and `CompScreen.test.tsx` / `CompScreen.preorder.test.tsx` must be checked for regression coverage.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Bar ticket appears during service window as soon as atomic write completes. `ModalPreorderDetails` modal shows structured items. Drink entitlement preserved because `drink1` is left unchanged. No silent-failure state.",
+      "current_or_option_state": "Same happy path. On bridge write failure, bar ticket silently missing and no guest retry signal. Drink entitlement still preserved if sequential writes use `drink1Txn` for backref.",
+      "gap_or_implication": "Atomic write eliminates silent-failure state. Guest sees error response on total write failure and can retry.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Bridge write executes only after `validateGuestSessionToken` and `hasServiceEntitlement` pass. No guest-facing direct RTDB write. `guestFirstName`, `guestSurname` written to internal `barOrders` path only.",
+      "current_or_option_state": "Identical security profile.",
+      "gap_or_implication": "No additional security surface.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Single `console.error` on multi-path write failure covers all paths together. `console.warn` on malformed pipe-string parser input.",
+      "current_or_option_state": "Three separate `console.error` calls; partial-write state harder to trace.",
+      "gap_or_implication": "Log bridge write failure as a single error event. Add `console.warn` for unparseable input.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "One `FirebaseRest.prototype.update` spy assertion covers the entire atomic payload. Existing spy infrastructure in `preorders.test.ts` is directly reusable. Parser and helpers are pure functions. Existing `MealOrderPage.test.tsx`, `CompScreen.test.tsx`, and `CompScreen.preorder.test.tsx` provide regression surface for TASK-04 changes.",
+      "current_or_option_state": "Three separate spy calls; partial-write simulation requires mid-sequence mock failure setup.",
+      "gap_or_implication": "Unit tests for: parser, month/day helper, txnId generator. Integration tests: extend TC-01 to assert multi-path payload; add TC-05 (breakfast bridge) and TC-06 (drink bridge). TASK-04 must verify no regressions in existing `MealOrderPage` and `CompScreen` test suites.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Multi-path payload writes full `PreorderNight` object (preserving `night`, `drink1`, `drink2`, `serviceDate` fields). New optional fields: `breakfastText: string`, `drink1Txn: string`, `drink1Text: string`. Three type definitions require updating: `PreorderNight` (functions layer, `preorders.ts:27-33`), `PreorderNightData` (`apps/prime/src/types/preorder.ts:7-14`), `GuestBookingSnapshot` preorders inline type (`useGuestBookingSnapshot.ts:21-30`) — `MealOrderPage` reads `snapshot.preorders` via `useGuestBookingSnapshot` and must see the new fields typed. Bar record satisfies both `placedPreorde",
+      "current_or_option_state": "Same type updates required. No savings on contract surface.",
+      "gap_or_implication": "TASK-03 defines canonical `BarPreorderRecord` write type. TASK-01 updates all three type definitions. Type surface change is cross-layer but not breaking — all new fields are optional. `useMealPlanEligibility` pre-existing format mismatch is explicitly out of scope.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "One REST call replacing the current single `set` call. At hostel scale (<20 orders/morning) this is not a hot path. Atomic write reduces RTDB contention vs. three sequential writes.",
+      "current_or_option_state": "Three sequential REST calls; ≈2× latency for non-preorder writes at low hostel volume. More total failure surface.",
+      "gap_or_implication": "Atomic multi-path write is both faster and more reliable.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "**Reception `PreorderButtons` (bar screen) requires no code changes** — it already has correct read logic and will start receiving data as soon as Prime writes to the expected paths. **`CompScreen` (plan badge) does require a Reception code change** (TASK-04) — it is not zero-change. **Prime UI also requires changes** (TASK-04 `MealOrderPage`). Two apps (Prime CF Pages + Reception) must deploy for full correctness. Rollback: Prime CF Pages redeploy removing the bridge write block. Residual: any `preorder` nodes already holding a txnId in `breakfast` will display \"Breakfast transaction not foun",
+      "current_or_option_state": "Same rollback story. Partial-write residue (preorder written, no bar record) leaves Comp in a worse state.",
+      "gap_or_implication": "No feature flag needed. Reception deployment for `CompScreen` plan badge change is a separate deploy step from the Prime function deploy. Rollback of the Prime function alone is sufficient to stop new bridge writes.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "A guest who pre-orders breakfast or evening drinks through the Prime app has their order recorded in Firebase but it never reaches bar staff. The bar screen in Reception reads from a different Firebase path that Prime never writes to. This analysis decides how to bridge the two paths, how to structure the written record so the bar screen can display tickets and (for breakfast) the Comp screen modal can look up the placed order, and how to preserve the human-readable order text for the Prime guest-facing \"existing orders\" view. **Evening drink scope limitation:** The `ModalPreorderDetails` comp",
+    "goals": [],
+    "non_goals": [
+      "Changing the wizard UI in Prime.",
+      "Changing bar staff order-taking flow (PreorderButtons single-click / double-click handling).",
+      "Replacing the pipe-delimited string format as the order submission encoding.",
+      "Adding pricing to Prime-originated preorders (all complimentary; `price: 0`).",
+      "Internationalisation of order item names.",
+      "Handling the `drink2` slot (no Prime UI exposes it)."
+    ],
+    "constraints": [
+      "Prime functions layer runs as Cloudflare Pages Functions — no persistent compute, no scheduled tasks.",
+      "Firebase RTDB is the only persistence layer in scope.",
+      "The `txnId` must conform to `txn_YYYYMMDDhhmmssfff` (Rome timezone) to be locatable by `usePlacedPreorder` and `useCompletedOrder`.",
+      "All RTDB writes from Prime go through `FirebaseRest`.",
+      "Month/day path segments must be un-padded (e.g. `\"1\"`, `\"14\"`), matching Reception's `getItalyLocalDateParts` output.",
+      "`drink1` must not be overwritten with a txnId — it is used as the drink-tier entitlement marker by `detectDrinkTier()`."
+    ],
+    "assumptions": [
+      "`FirebaseRest.update('/', multiPathPayload)` supports fan-out atomic writes — confirmed by `createPrimeRequestWritePayload` pattern.",
+      "CF Workers support `Intl.DateTimeFormat` with the `Europe/Rome` timezone and `Date.now()` — sufficient to reimplement the txnId timestamp format without the Reception-only `getItalyTimestampCompact`.",
+      "`getItalyTimestampCompact` is not exported from a shared package (to be confirmed before build; fallback is inline reimplementation using `Intl.DateTimeFormat`)."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Atomicity / data integrity",
+        "Why it matters": "Half-written state leaves bar tickets missing silently — no operator alert",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Codebase pattern alignment",
+        "Why it matters": "Reduces implementation risk and review cost",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Consumer regression avoidance",
+        "Why it matters": "Drink-tier entitlement and preorder node consumers must not break",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Consumer update burden",
+        "Why it matters": "Minimise Reception code changes needed to receive data",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Rollback cost",
+        "Why it matters": "CF Pages redeploy is the only rollback mechanism",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Test seam quality",
+        "Why it matters": "Bridge path has zero test coverage today — must be testable",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Display regression risk",
+        "Why it matters": "Cosmetic regressions degrade guest and staff UX",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Atomic multi-path write in `onRequestPost`",
+        "Description": "Generate txnId before the preorder write. Replace `firebase.set(preorderPath, nextNight)` with a single `FirebaseRest.update('/', multiPathPayload)` call writing: (1) full `nextNight` object at `preorder/{uuid}/{nightKey}` (with `breakfast = txnId` and `breakfastText = value` added for breakfast; `drink1Txn = txnId` and `drink1Text = value` added for drinks, `drink1` left as-is), (2) the bar record at `barOrders/{type}/{monthName}/{day}/{txnId}`.",
+        "Upside": "Matches `createPrimeRequestWritePayload` fan-out pattern; eliminates half-write risk; single REST round-trip; txnId known before any write so the path is fully constructible. Consumer regressions avoided by preserving full `nextNight` object and leaving `drink1` unchanged.",
+        "Downside": "Slightly more logic to pre-compute txnId; must gate write after all validation passes.",
+        "Key risks": "Format parity for txnId timestamp; month/day un-padded day requirement.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — Sequential writes: preorder first, then bridge",
+        "Description": "Preserve existing `firebase.set(preorderPath, nextNight)` call (retains full object write). Then issue two additional `set()` calls: one for the bar record, one for the backref field.",
+        "Upside": "Minimal change to the preorder write path — existing object write preserved exactly.",
+        "Downside": "Three separate REST calls; if second or third fails, preorder is written but bar ticket and backref are missing — silent failure invisible to bar staff. Harder to test atomicity. Does not match fan-out pattern.",
+        "Key risks": "Partial write silently drops bar tickets; three-call test assertions are more fragile.",
+        "Viable?": "Yes (inferior)"
+      },
+      {
+        "Option": "C — Separate Cloud Function / scheduled job",
+        "Description": "A Firebase RTDB trigger or polling Cloud Function reads `preorder/` and writes to `barOrders/`.",
+        "Upside": "Fully decoupled from Prime function.",
+        "Downside": "Violates the CF-Pages-Functions-only constraint. New infra surface, new deployment pipeline, trigger latency, no aligned rollback path.",
+        "Key risks": "Constraint violation; architectural mismatch.",
+        "Viable?": "No"
+      },
+      {
+        "Option": "D — Reception-side write at check-in",
+        "Description": "Reception operator manually triggers preorder population per guest.",
+        "Upside": "No Prime changes.",
+        "Downside": "Manual, failure-prone, does not meet Goal 1.",
+        "Key risks": "High operational failure rate.",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A — Atomic multi-path write in `onRequestPost`",
+      "**Why this wins": "**",
+      "**What it depends on": "**"
+    },
+    "rejected_approaches": [
+      "Option B (sequential writes) — Superficially simpler but pushes the half-write risk into production. If the bar record write fails after the preorder write succeeds, the bar ticket is silently missing with no guest retry signal and no reception alert. Does not match the fan-out pattern.",
+      "Option C (separate Cloud Function / scheduled job) — Violates the CF-Pages-Functions-only constraint. New infra surface with no aligned rollback path. Architecturally inconsistent for a gap that is straightforwardly fixed in the existing handler.",
+      "Option D (Reception-side manual trigger) — Requires staff action per guest, fails silently when staff forget, does not constitute an automated pipeline. Does not meet Goal 1."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [
+        "Month/day format helper must have a passing unit test before TASK-03 can proceed.",
+        "Parser must produce items that round-trip correctly against `buildOrderValue` test cases.",
+        "TC-05 and TC-06 must assert the exact multi-path update payload (full `nextNight` object + bar record) via the existing `FirebaseRest.prototype.update` spy infrastructure.",
+        "`placedPreorderSchema` validation must pass on the written bar record shape.",
+        "Existing `MealOrderPage.test.tsx` and `CompScreen.test.tsx` / `CompScreen.preorder.test.tsx` must not regress after TASK-04."
+      ],
+      "sequencing_constraints": [
+        "TASK-01 and TASK-02 must complete before TASK-03 (helpers are dependencies).",
+        "TASK-03 and TASK-04 are independent and can proceed in parallel once TASK-01 and TASK-02 are done."
+      ],
+      "risks_to_carry_forward": [
+        "`getItalyTimestampCompact` availability in shared package — TASK-01 must confirm before writing txnId logic.",
+        "`drink1` must not be overwritten with txnId — TASK-03 build contract must explicitly specify `drink1` unchanged and `drink1Txn` as the new backref field.",
+        "`PreorderButtonData` runtime fields (`guestFirstName`, `guestSurname`, `uuid`) — TASK-03 build contract must list all required fields in the bar record write.",
+        "TASK-04 Reception-side (`CompScreen`) change — must confirm existing Reception tests pass after the plan badge update."
+      ]
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Prime guest order write (breakfast)",
+          "current": "`onRequestPost` → `firebase.set(preorderPath, nextNight)` with `breakfast = pipeString`. Bar path never written.",
+          "trigger": "Guest confirms breakfast order",
+          "future": "`onRequestPost` validates auth + entitlement → txnId generated → pipe-string parsed into `SalesOrderItem[]` → month/day path segments computed → `FirebaseRest.update('/', { [preorderPath]: { ...nextNight, breakfast: txnId, breakfastText: pipeString }, [barPath]: barRecord })`",
+          "steady": "Auth gates, entitlement check, nightKey derivation, `drink1` / `drink2` / `serviceDate` fields",
+          "seams": "txnId format must exactly match `txn_YYYYMMDDhhmmssfff` Rome timezone; month/day must be un-padded"
+        },
+        {
+          "id": null,
+          "label": "Prime guest order write (drinks)",
+          "current": "`onRequestPost` → `firebase.set(preorderPath, nextNight)` with `drink1 = pipeString`. Bar path never written.",
+          "trigger": "Guest confirms drinks order",
+          "future": "Same multi-path write: `{ [preorderPath]: { ...nextNight, drink1Txn: txnId, drink1Text: pipeString }, [barPath]: barRecord }`. `drink1` retains its current entitlement marker value — it is NOT overwritten with the txnId.",
+          "steady": "`drink1` field (entitlement marker), auth gates, nightKey derivation",
+          "seams": "`drink1` must remain unchanged; `drink1Txn` is the new backref field; no ModalPreorderDetails lookup for drinks unless that component is extended (out of scope)"
+        },
+        {
+          "id": null,
+          "label": "Bar screen ticket display",
+          "current": "`PreorderButtons` subscribes to `barOrders/{type}/{monthName}/{day}/` but receives no Prime-sourced data",
+          "trigger": "Above atomic write completes",
+          "future": "`PreorderButtons` receives new barOrder node; renders guest name, items, preorder time as an action ticket during service window",
+          "steady": "`PreorderButtons` component, time-gating, render logic — no code changes needed",
+          "seams": "Bar path format must match exactly (full English month name, un-padded day)"
+        },
+        {
+          "id": null,
+          "label": "Comp screen modal lookup (breakfast)",
+          "current": "`ModalPreorderDetails` checks `nightValue.breakfast?.startsWith(\"txn_\")` — fails for pipe-string; falls through to raw text",
+          "trigger": "Above atomic write completes (breakfast path)",
+          "future": "`breakfast = txnId` → `startsWith(\"txn_\")` check passes → `usePlacedPreorder` fetches `barOrders/breakfastPreorders/.../txnId` → modal shows structured items",
+          "steady": "`ModalPreorderDetails` component, `usePlacedPreorder` hook — no code changes needed",
+          "seams": "None if bar record write shape satisfies both schema and runtime fields"
+        },
+        {
+          "id": null,
+          "label": "Comp screen modal lookup (drinks)",
+          "current": "`ModalPreorderDetails` checks `nightValue.drink1?.startsWith(\"txn_\")` — fails because `drink1` is kept as the entitlement marker (not overwritten with txnId)",
+          "trigger": "N/A",
+          "future": "**Out of scope.** `drink1Txn` backref written to RTDB for future use. `ModalPreorderDetails` is not updated to read `drink1Txn`. Drink Comp modal continues to show text fallback for Prime-originated drink orders.",
+          "steady": "Drink modal lookup logic — unchanged",
+          "seams": "Drink Comp modal lookup requires a separate feature to wire `drink1Txn` into `ModalPreorderDetails`"
+        },
+        {
+          "id": null,
+          "label": "Prime existing-orders display",
+          "current": "`MealOrderPage.existingOrders` reads `night.breakfast` (or `night.drink1`) as text — after bridge, `breakfast` holds txnId, `drink1` is unchanged",
+          "trigger": "Same atomic write",
+          "future": "`existingOrders` reads `night.breakfastText ?? night.breakfast` for breakfast; `night.drink1Text ?? night.drink1` for drinks. Human-readable text displayed.",
+          "steady": "Wizard UI, submission flow — unchanged",
+          "seams": "`MealOrderPage` update is TASK-04; existing `MealOrderPage.test.tsx` must be extended to cover new field reads"
+        },
+        {
+          "id": null,
+          "label": "CompScreen plan badge",
+          "current": "Plan column reads `breakfast` value as plan label (e.g. `\"cooked\"`, `\"continental\"`); txnId would display as unlabelled token",
+          "trigger": "Same atomic write",
+          "future": "`CompScreen` plan label logic interprets any `breakfast` value starting with `\"txn_\"` as a `\"preordered\"` label",
+          "steady": "Plan logic for non-Prime preorders — unchanged",
+          "seams": "Small Reception-side code change (TASK-04); existing `CompScreen.test.tsx` and `CompScreen.preorder.test.tsx` must be checked for regression"
+        }
+      ]
+    }
+  }
+}

@@ -511,3 +511,103 @@ Review-trigger: After each build cycle
     expect(hasOwner).toBe(false);
   });
 });
+
+describe("resolveCliOptions", () => {
+  it("defaults to lint mode and full scope", async () => {
+    const { resolveCliOptions } = await import("./docs-lint");
+    const options = resolveCliOptions(["node", "docs-lint.ts"], {});
+
+    expect(options).toEqual({
+      mode: "lint",
+      scope: "all",
+      includeUntracked: false,
+      includeWorktree: false,
+      writeRegistry: false,
+    });
+  });
+
+  it("supports the registry-only command", async () => {
+    const { resolveCliOptions } = await import("./docs-lint");
+    const options = resolveCliOptions(["node", "docs-lint.ts", "--mode=registry"], {});
+
+    expect(options).toEqual({
+      mode: "registry",
+      scope: "all",
+      includeUntracked: false,
+      includeWorktree: false,
+      writeRegistry: true,
+    });
+  });
+
+  it("supports changed-only lint via argv", async () => {
+    const { resolveCliOptions } = await import("./docs-lint");
+    const options = resolveCliOptions(
+      ["node", "docs-lint.ts", "--mode=lint", "--scope=changed"],
+      {},
+    );
+
+    expect(options).toEqual({
+      mode: "lint",
+      scope: "changed",
+      includeUntracked: false,
+      includeWorktree: false,
+      writeRegistry: false,
+    });
+  });
+
+  it("preserves the legacy changed-only env path", async () => {
+    const { resolveCliOptions } = await import("./docs-lint");
+    const options = resolveCliOptions(
+      ["node", "docs-lint.ts"],
+      { DOCS_LINT_CHANGED_ONLY: "1" },
+    );
+
+    expect(options).toEqual({
+      mode: "lint",
+      scope: "changed",
+      includeUntracked: false,
+      includeWorktree: false,
+      writeRegistry: false,
+    });
+  });
+
+  it("supports explicit worktree inclusion", async () => {
+    const { resolveCliOptions } = await import("./docs-lint");
+    const options = resolveCliOptions(
+      ["node", "docs-lint.ts", "--scope=changed", "--include-worktree"],
+      {},
+    );
+
+    expect(options).toEqual({
+      mode: "lint",
+      scope: "changed",
+      includeUntracked: false,
+      includeWorktree: true,
+      writeRegistry: false,
+    });
+  });
+
+  it("supports explicit untracked inclusion", async () => {
+    const { resolveCliOptions } = await import("./docs-lint");
+    const options = resolveCliOptions(
+      ["node", "docs-lint.ts", "--scope=changed", "--include-untracked"],
+      {},
+    );
+
+    expect(options).toEqual({
+      mode: "lint",
+      scope: "changed",
+      includeUntracked: true,
+      includeWorktree: false,
+      writeRegistry: false,
+    });
+  });
+
+  it("rejects unknown arguments", async () => {
+    const { resolveCliOptions } = await import("./docs-lint");
+
+    expect(() =>
+      resolveCliOptions(["node", "docs-lint.ts", "--not-a-real-flag"], {}),
+    ).toThrow("[docs-lint] Unknown argument: --not-a-real-flag");
+  });
+});

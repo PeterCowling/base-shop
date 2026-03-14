@@ -84,7 +84,6 @@
     "src/**/*.d.ts",
     "src/**/*.json",
     "src/**/*",
-    ".next/types/**/*.ts",
     "src/test/helpers/**/*",
     "src/test/content-readiness/helpers/**/*"
   ],

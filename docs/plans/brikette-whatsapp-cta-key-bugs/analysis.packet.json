@@ -1,0 +1,218 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "brikette-whatsapp-cta-key-bugs",
+  "source_artifact_path": "docs/plans/brikette-whatsapp-cta-key-bugs/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/brikette-whatsapp-cta-key-bugs/fact-find.md",
+    "plan": "docs/plans/brikette-whatsapp-cta-key-bugs/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Two booking pages display wrong WhatsApp CTA labels. Bug B is visually broken today. Bug A is fragile and would silently break if section translations diverge.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Both WhatsApp CTA buttons on the apartment booking and double-room booking pages use semantically correct translation keys, eliminating label drift risk.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Bug B still renders \"More About This Room\"",
+      "current_or_option_state": "Renders correct WhatsApp CTA text",
+      "gap_or_implication": "Fix Bug B correctly",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "No state change",
+      "current_or_option_state": "No state change",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Tests unaffected (data-testid)",
+      "current_or_option_state": "Tests unaffected (data-testid)",
+      "gap_or_implication": "No test changes needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "N/A",
+      "current_or_option_state": "18 locale files gain one root-level key",
+      "gap_or_implication": "Must cover all 18 locales",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Standard deploy",
+      "current_or_option_state": "Standard deploy",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Two private-rooms booking pages use wrong i18n translation keys for their WhatsApp CTA buttons. This analysis selects the fix approach for each bug. Bug A (ApartmentBookContent) is a 1-line key path correction with no locale changes. Bug B (DoubleRoomBookContent) requires choosing how to expose a correct `whatsappCta` key to the component.",
+    "goals": [
+      "Select the cleanest fix for Bug A (wrong key path within correct namespace)",
+      "Select the cleanest fix for Bug B (wrong key in wrong namespace)",
+      "Avoid locale key proliferation or unnecessary namespace loading"
+    ],
+    "non_goals": [
+      "Changing WhatsApp CTA copy",
+      "Adding a shared i18n infrastructure",
+      "Fixing pre-existing machine translation quality issues in vi/zh"
+    ],
+    "constraints": [
+      "Must not change rendered text in any locale",
+      "Locale files must be updated consistently across all 18 locales"
+    ],
+    "assumptions": [
+      "`apartmentPage.book.whatsappCta` is the canonical source of translated WhatsApp CTA text",
+      "Loading an entire namespace for one key is not ideal"
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "No locale changes (Bug A)",
+        "Why it matters": "Locale edits are error-prone and need 18-file consistency",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Minimal locale changes (Bug B)",
+        "Why it matters": "Fewer locale files to touch = fewer mistakes",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Semantic correctness",
+        "Why it matters": "Key name should reflect the feature, not a sibling page",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "No unnecessary namespace loading",
+        "Why it matters": "Loading a large namespace for one key wastes bundle budget",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Forward compatibility",
+        "Why it matters": "Fix should remain correct if CTA copy diverges between room types",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A1 (chosen)",
+        "Description": "`t(\"book.whatsappCta\")` — use the `book` section key",
+        "Upside": "Semantically correct; no locale changes needed; key exists in all 18 locales",
+        "Downside": "None",
+        "Key risks": "None",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "A2",
+        "Description": "`t(\"privateStay.whatsappCta\")` — use another existing section key",
+        "Upside": "Same text value",
+        "Downside": "Still semantically wrong; same fragility problem",
+        "Key risks": "Key drift if copy diverges",
+        "Viable?": "No — same problem as current code"
+      },
+      {
+        "Option": "A3",
+        "Description": "Add a top-level `apartmentPage.whatsappCta` key",
+        "Upside": "Clean top-level name",
+        "Downside": "Requires 18 locale edits for no functional benefit",
+        "Key risks": "Locale coverage risk",
+        "Viable?": "No — unnecessary complexity when A1 exists"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "B1 (chosen)",
+        "Description": "Add `whatsappCta` to root of `bookPage.json` in all 18 locales; use `tBook(\"whatsappCta\")`",
+        "Upside": "`tBook` already loaded; semantically correct (booking fallback is booking-generic); clean root-level placement",
+        "Downside": "18 locale file edits needed",
+        "Key risks": "Must cover all 18 locales",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B2",
+        "Description": "Load `apartmentPage` namespace in DoubleRoomBookContent; use `tApt(\"book.whatsappCta\")`",
+        "Upside": "No new locale keys",
+        "Downside": "Loads entire 6kb+ `apartmentPage` namespace for one key; couples double-room semantics to apartment namespace",
+        "Key risks": "Namespace coupling; bundle bloat",
+        "Viable?": "No — wrong coupling"
+      },
+      {
+        "Option": "B3",
+        "Description": "Add `whatsappCta` under `bookPage.apartment.*`",
+        "Upside": "Grouped with existing apartment keys in bookPage",
+        "Downside": "Semantically wrong for double-room (not apartment-specific); would require `tBook(\"apartment.whatsappCta\")`",
+        "Key risks": "Copy would be semantically tied to apartment",
+        "Viable?": "No — should be room-agnostic"
+      },
+      {
+        "Option": "B4",
+        "Description": "Add `whatsappCta` to `roomsPage.json` in 18 locales; use `tRooms(\"whatsappCta\")`",
+        "Upside": "`tRooms` already loaded",
+        "Downside": "`roomsPage` is a room-listing namespace, not booking; semantically wrong home",
+        "Key risks": "Future confusion if `roomsPage` is split",
+        "Viable?": "No — wrong namespace home"
+      }
+    ],
+    "chosen_approach": {},
+    "rejected_approaches": [],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. Both changes are isolated i18n key lookups in client components. No workflow, lifecycle state, CI lane, approval path, or operator runbook is affected.",
+      "areas": []
+    }
+  }
+}

@@ -38,7 +38,7 @@ describe("CheckoutTable component", () => {
     expect(sortCheckoutsDataMock).not.toHaveBeenCalled();
   });
 
-  it("calls removeLoanItem when loan button clicked", async () => {
+  it("enters confirm mode on first loan click, calls removeLoanItem on confirm", async () => {
     const guests: Guest[] = [
       {
         bookingRef: "BR1",
@@ -65,6 +65,13 @@ describe("CheckoutTable component", () => {
     const loanBtn = screen.getByRole("button", { name: /remove umbrella/i });
     await userEvent.click(loanBtn);
 
+    // After first click: confirm mode — removeLoanItem not called yet
+    expect(removeLoanItem).not.toHaveBeenCalled();
+    expect(screen.queryByRole("button", { name: /remove umbrella/i })).not.toBeInTheDocument();
+
+    const confirmBtn = screen.getByRole("button", { name: /confirm remove umbrella/i });
+    await userEvent.click(confirmBtn);
+
     expect(removeLoanItem).toHaveBeenCalledWith(
       "BR1",
       "G1",
@@ -72,6 +79,41 @@ describe("CheckoutTable component", () => {
       "Umbrella",
       undefined
     );
+  });
+
+  it("cancels loan removal when cancel button is clicked", async () => {
+    const guests: Guest[] = [
+      {
+        bookingRef: "BR1",
+        guestId: "G1",
+        checkoutDate: "2025-01-01",
+        firstName: "Alice",
+        lastName: "Smith",
+        roomAllocated: "101",
+        loans: { L1: { item: "Umbrella" } },
+        isCompleted: false,
+      },
+    ];
+    sortCheckoutsDataMock.mockReturnValue(guests);
+    const removeLoanItem = jest.fn();
+
+    render(
+      <CheckoutTable
+        guests={guests}
+        removeLoanItem={removeLoanItem}
+        onComplete={jest.fn()}
+      />
+    );
+
+    const loanBtn = screen.getByRole("button", { name: /remove umbrella/i });
+    await userEvent.click(loanBtn);
+
+    const cancelBtn = screen.getByRole("button", { name: /cancel remove umbrella/i });
+    await userEvent.click(cancelBtn);
+
+    // Should return to normal state; original button visible again
+    expect(screen.getByRole("button", { name: /remove umbrella/i })).toBeInTheDocument();
+    expect(removeLoanItem).not.toHaveBeenCalled();
   });
 
   it("calls onComplete when complete button clicked", async () => {
@@ -111,7 +153,7 @@ describe("CheckoutTable component", () => {
     );
   });
 
-  it("shows bag storage icon and fridge icon when fridgeUsed is true", () => {
+  it("shows fridge toggle button highlighted when fridgeUsed is true", () => {
     const guests: Guest[] = [
       {
         bookingRef: "BR1",
@@ -137,13 +179,13 @@ describe("CheckoutTable component", () => {
       />
     );
 
-    expect(screen.getByTitle(/bag storage/i)).toBeInTheDocument();
-    expect(screen.getByTitle(/fridge used/i)).toBeInTheDocument();
-    // toggle button is always rendered
-    expect(screen.getByRole("button", { name: /toggle fridge storage for G1/i })).toBeInTheDocument();
+    const fridgeBtn = screen.getByRole("button", { name: /toggle fridge storage for G1/i });
+    expect(fridgeBtn).toBeInTheDocument();
+    expect(fridgeBtn.className).toContain("text-primary-main");
+    expect(fridgeBtn).toHaveAttribute("title", "Unmark fridge used");
   });
 
-  it("shows no fridge icon when fridgeUsed is false or undefined", () => {
+  it("shows fridge toggle button muted when fridgeUsed is false or undefined", () => {
     const guests: Guest[] = [
       {
         bookingRef: "BR1",
@@ -168,8 +210,9 @@ describe("CheckoutTable component", () => {
       />
     );
 
-    expect(screen.queryByTitle(/fridge used/i)).not.toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /toggle fridge storage for G1/i })).toBeInTheDocument();
+    const fridgeBtn = screen.getByRole("button", { name: /toggle fridge storage for G1/i });
+    expect(fridgeBtn.className).toContain("text-muted-foreground");
+    expect(fridgeBtn).toHaveAttribute("title", "Mark fridge used");
   });
 
   it("disables fridge toggle button when occupantId is in pendingFridgeOccupantIds", () => {
@@ -233,7 +276,39 @@ describe("CheckoutTable component", () => {
     expect(onToggleFridge).toHaveBeenCalledWith("G1", "BR1", false);
   });
 
-  it("shows completed state and calls onComplete with true", async () => {
+  it("calls onToggleBagStorage when bag storage toggle button is clicked", async () => {
+    const guests: Guest[] = [
+      {
+        bookingRef: "BR1",
+        guestId: "G1",
+        checkoutDate: "2025-01-01",
+        firstName: "Alice",
+        lastName: "Smith",
+        roomAllocated: "101",
+        loans: {},
+        bagStorageOptedIn: false,
+        isCompleted: false,
+      },
+    ];
+    sortCheckoutsDataMock.mockReturnValue(guests);
+    const onToggleBagStorage = jest.fn();
+
+    render(
+      <CheckoutTable
+        guests={guests}
+        removeLoanItem={jest.fn()}
+        onComplete={jest.fn()}
+        onToggleBagStorage={onToggleBagStorage}
+      />
+    );
+
+    const toggleBtn = screen.getByRole("button", { name: /toggle bag storage for G1/i });
+    await userEvent.click(toggleBtn);
+
+    expect(onToggleBagStorage).toHaveBeenCalledWith("G1", "BR1", false);
+  });
+
+  it("shows completed state with Undo label and calls onComplete with true", async () => {
     const guests: Guest[] = [
       {
         bookingRef: "BR1",
@@ -260,7 +335,7 @@ describe("CheckoutTable component", () => {
     const completeBtn = screen.getByRole("button", {
       name: /undo checkout completion/i,
     });
-    expect(completeBtn).toHaveTextContent(/completed/i);
+    expect(completeBtn).toHaveTextContent(/undo/i);
 
     await userEvent.click(completeBtn);
 

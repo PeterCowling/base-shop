@@ -1,0 +1,67 @@
+[
+  {
+    "id": "U-001",
+    "severity": "S2",
+    "breakpoint": "all",
+    "mode": "both",
+    "route": "reports and status views",
+    "componentFamily": "StatusColor utility",
+    "drift": "statusColors.ts:18 wraps one value in hsl() while others use bare var() — inconsistent with Tailwind v4 color resolution",
+    "referenceScreenshot": null,
+    "driftScreenshot": null,
+    "likelyCause": "Manual edit predating Tailwind v4 cascade fix; hsl() wrapper incorrect for tokens that already resolve to full color values",
+    "fixDirection": "Remove hsl() wrapper from the single inconsistent entry"
+  },
+  {
+    "id": "U-002",
+    "severity": "S2",
+    "breakpoint": "all",
+    "mode": "both",
+    "route": "/reports (dashboard views)",
+    "componentFamily": "Chart/data visualization",
+    "drift": "MenuPerformanceDashboard.tsx and RealTimeDashboard.tsx reference --chart-6 and --chart-7 which may not be defined in reception theme (only 1-5 defined)",
+    "referenceScreenshot": null,
+    "driftScreenshot": null,
+    "likelyCause": "Components ported from a theme with more chart colors; reception theme token set not updated",
+    "fixDirection": "Define --chart-6 and --chart-7 in reception theme tokens, or cap chart color cycle at 5"
+  },
+  {
+    "id": "U-003",
+    "severity": "S3",
+    "breakpoint": "all",
+    "mode": "both",
+    "route": "modal surfaces",
+    "componentFamily": "Modal/form input",
+    "drift": "ManagerAuthModal, EodOverrideModal, DenominationInput, DOBSection use arbitrary sizing (w-[280px], h-[44px]) instead of 8-pt token scale",
+    "referenceScreenshot": null,
+    "driftScreenshot": null,
+    "likelyCause": "Components built before design system spacing conventions were established",
+    "fixDirection": "Replace arbitrary values with nearest token-scale equivalents (w-72, h-11, max-w-sm)"
+  },
+  {
+    "id": "U-004",
+    "severity": "S3",
+    "breakpoint": "all",
+    "mode": "light",
+    "route": "bar-POS",
+    "componentFamily": "Shade color system",
+    "drift": "grayishShades family has fewer defined rows than other shade families, creating gaps when shade picker cycles uniformly",
+    "referenceScreenshot": null,
+    "driftScreenshot": null,
+    "likelyCause": "Shade families added incrementally; grayish not fully populated",
+    "fixDirection": "Audit all 35 shade families for row count consistency and add missing rows"
+  },
+  {
+    "id": "U-005",
+    "severity": "S3",
+    "breakpoint": "all",
+    "mode": "both",
+    "route": "bar sales",
+    "componentFamily": "Ticket item list",
+    "drift": "TicketItems.tsx:23 hover and active states use identical background color — no visual distinction between hover and press",
+    "referenceScreenshot": null,
+    "driftScreenshot": null,
+    "likelyCause": "Copy-paste or incomplete interaction state design",
+    "fixDirection": "Use hover:bg-surface-2 and active:bg-surface-3 for distinct interaction feedback"
+  }
+]

@@ -17,7 +17,6 @@
     "src/**/*",
     "src/**/*.json",
     "data/**/*.json",
-    ".next/types/**/*.ts",
     "next-env.d.ts",
     "middleware.ts"
   ],

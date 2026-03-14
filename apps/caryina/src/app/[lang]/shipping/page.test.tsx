@@ -1,33 +1,38 @@
 import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
 
-import { getPolicyContent, getSeoKeywords } from "@/lib/contentPacket";
+import { getSeoKeywords } from "@/lib/contentPacket";
+import { getLegalDocument } from "@/lib/legalContent";
 
 import ShippingPage, { generateMetadata } from "./page";
 
 jest.mock("@/lib/contentPacket", () => ({
-  getPolicyContent: jest.fn(),
   getSeoKeywords: jest.fn(),
 }));
 
-jest.mock("@/components/PolicyPage", () => ({
-  PolicyPage: ({ title, sourcePath }: { title: string; sourcePath?: string }) => (
-    <div data-cy="policy-page">{`${title}:${sourcePath ?? ""}`}</div>
+jest.mock("@/lib/legalContent", () => ({
+  getLegalDocument: jest.fn(),
+}));
+
+jest.mock("@/components/LegalDocumentPage", () => ({
+  LegalDocumentPage: ({ document }: { document: { title: string } }) => (
+    <div data-testid="policy-page">{document.title}</div>
   ),
 }));
 
-const mockGetPolicyContent = getPolicyContent as jest.MockedFunction<typeof getPolicyContent>;
 const mockGetSeoKeywords = getSeoKeywords as jest.MockedFunction<typeof getSeoKeywords>;
+const mockGetLegalDocument = getLegalDocument as jest.MockedFunction<typeof getLegalDocument>;
 
 describe("ShippingPage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockGetSeoKeywords.mockReturnValue(["shipping", "policy"]);
-    mockGetPolicyContent.mockReturnValue({
+    mockGetLegalDocument.mockReturnValue({
       title: "Shipping",
       summary: "Shipping summary",
-      bullets: ["Tracked delivery"],
-      notice: null,
+      effectiveDate: "13 March 2026",
+      intro: ["Intro"],
+      sections: [],
     });
   });
 
@@ -39,7 +44,7 @@ describe("ShippingPage", () => {
       description: "Shipping summary",
       keywords: ["shipping", "policy"],
     });
-    expect(mockGetPolicyContent).toHaveBeenCalledWith("en", "shipping");
+    expect(mockGetLegalDocument).toHaveBeenCalledWith("en", "shipping");
   });
 
   it("renders policy page for shipping", async () => {
@@ -49,8 +54,6 @@ describe("ShippingPage", () => {
 
     render(ui);
 
-    expect(screen.getByTestId("policy-page")).toHaveTextContent(
-      "Shipping:docs/business-os/startup-baselines/HBAG-content-packet.md",
-    );
+    expect(screen.getByTestId("policy-page")).toHaveTextContent("Shipping");
   });
 });

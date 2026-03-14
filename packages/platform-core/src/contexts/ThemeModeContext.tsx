@@ -71,6 +71,7 @@ export function ThemeModeProvider({ children }: { children: ReactNode }) {
     const resolved = mode === "system" ? (systemPrefersDark ? "dark" : "light") : mode;
     root.classList.toggle("theme-dark", resolved === "dark");
     root.classList.toggle("dark", resolved === "dark");
+    root.classList.toggle("theme-light", resolved === "light");
     root.style.colorScheme = resolved === "dark" ? "dark" : "light";
   }, [mode, systemPrefersDark]);
 

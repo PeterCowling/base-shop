@@ -41,10 +41,13 @@ export function usePagePreload({
 
     const load = async () => {
       try {
-        await preloadNamespacesWithFallback(lang, namespaces, { optional });
+        const loads: Array<Promise<void>> = [
+          preloadNamespacesWithFallback(lang, namespaces, { optional }),
+        ];
         if (optionalNamespaces?.length) {
-          await preloadI18nNamespaces(lang, optionalNamespaces, { optional: true });
+          loads.push(preloadI18nNamespaces(lang, optionalNamespaces, { optional: true }));
         }
+        await Promise.all(loads);
         if (!cancelled) {
           await i18n.changeLanguage(lang);
         }

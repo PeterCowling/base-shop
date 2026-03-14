@@ -9,6 +9,7 @@ import {
   setUploaderCookie,
   validateUploaderAdminToken,
 } from "../../../../lib/uploaderAuth";
+import { uploaderLog } from "../../../../lib/uploaderLogger";
 
 export const runtime = "nodejs";
 
@@ -68,6 +69,7 @@ export async function POST(request: Request) {
 
   const valid = await validateUploaderAdminToken(token);
   if (!valid) {
+    uploaderLog("warn", "login_failed", { ip: requestIp });
     return withRateHeaders(
       NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 }),
       limit,

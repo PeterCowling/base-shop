@@ -5,16 +5,16 @@
 import { parseBreakfastOrderString, parseEvDrinkOrderString } from '../preorder-parser';
 
 describe('parseBreakfastOrderString', () => {
-  it('TC-P01: Eggs order with sides — kds food item + individual bds side items + bds drink item', () => {
+  it('TC-P01: Eggs order with sides — kds food item + individual kds side items + bds drink item', () => {
     const result = parseBreakfastOrderString(
       'Eggs (Scrambled) | Bacon, Ham, Toast | Americano, Oat Milk, No Sugar | 09:00',
     );
     expect(result.preorderTime).toBe('09:00');
     expect(result.items).toEqual([
       { product: 'Eggs (Scrambled)', count: 1, lineType: 'kds', price: 0 },
-      { product: 'Bacon', count: 1, lineType: 'bds', price: 0 },
-      { product: 'Ham', count: 1, lineType: 'bds', price: 0 },
-      { product: 'Toast', count: 1, lineType: 'bds', price: 0 },
+      { product: 'Bacon', count: 1, lineType: 'kds', price: 0 },
+      { product: 'Ham', count: 1, lineType: 'kds', price: 0 },
+      { product: 'Toast', count: 1, lineType: 'kds', price: 0 },
       { product: 'Americano, Oat Milk, No Sugar', count: 1, lineType: 'bds', price: 0 },
     ]);
   });
@@ -65,7 +65,7 @@ describe('parseBreakfastOrderString', () => {
     expect(result.preorderTime).toBe('08:00');
     expect(result.items).toEqual([
       { product: 'Eggs (Over-easy)', count: 1, lineType: 'kds', price: 0 },
-      { product: 'Toast', count: 1, lineType: 'bds', price: 0 },
+      { product: 'Toast', count: 1, lineType: 'kds', price: 0 },
       { product: 'Americano, No Milk, No Sugar', count: 1, lineType: 'bds', price: 0 },
     ]);
   });

@@ -1,0 +1,217 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-prime-template-responses",
+  "source_artifact_path": "docs/plans/reception-prime-template-responses/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-prime-template-responses/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "When guests message through Prime, staff have no pre-written answers to draw from. Every reply is written from scratch, even for common questions. The Prime app already has a rule-based Q&A agent with good answers and links, but that knowledge is not available to staff replying in the reception inbox. Making those answers available as templates means faster responses and consistently helpful answers.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Staff can select from template responses when replying to Prime messages, each giving a clear answer plus a link for more detail. When staff write a manual reply to a question no template covers, the system captures that as a candidate for a new template — building the knowledge base over time.",
+    "source": "dispatch"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "TemplatePicker component: suggestion chips, category sections, search input, template badge",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Channel-gated to Prime threads only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Three states: keyword-matched suggestions, category browsing (Browse all), empty state (no match)",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Empty state shows \"No matching templates — browse all or type your reply\"",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — internal staff tool, hardcoded text, no user input injection",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No new attack surface",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "`templateUsed` field on draft tracks adoption; null value signals manual reply; telemetry event for manual Prime replies",
+      "current_or_option_state": "TASK-03, TASK-04",
+      "gap_or_implication": "Existing `recordInboxEvent` used for signal capture",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests for `matchTemplates` pure function; component tests for TemplatePicker; integration test for templateUsed in save payload",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "Tests run in CI only per testing policy",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "New `PrimeTemplate` type; `updateDraftPayloadSchema` extended with optional `templateUsed`; `InboxDraftUpdateInput` extended",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "No DB migration needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Client-side O(n) keyword scan over <20 items — instant; no network calls for template data",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Zero-latency template lookup",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Deploy new code; rollback = deploy previous version; no data to migrate or clean up",
+      "current_or_option_state": "All",
+      "gap_or_implication": "Single app deploy, no coordination",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Staff replying to Prime guest messages currently write every response from scratch, even for the six most common question categories already answered by the Prime Q&A engine (`answerComposer.ts`). This plan delivers a static TypeScript template module in the reception app with bilingual (EN/IT) template data, a TemplatePicker component in DraftReviewPanel gated to Prime threads, and the wiring to track which template was used when saving a draft. The approach is Option A (static TS module) from the analysis — no database, no migration, no cross-app coupling. Four tasks decompose the work: temp",
+    "goals": [
+      "Staff can select a template response when replying to common Prime guest questions, reducing reply time from minutes to seconds",
+      "Template selection is tracked via the `templateUsed` field so adoption can be measured",
+      "The architecture supports adding a self-improvement loop in a future phase without rework"
+    ],
+    "non_goals": [
+      "Automated template management UI (Phase 2)",
+      "LLM-based template suggestion beyond keyword matching (Phase 2)",
+      "Self-improvement loop that promotes manual replies to templates (Phase 2)",
+      "Template analytics dashboard (Phase 2)"
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Staff will adopt templates when they are prominent and one-click (supported by high auto-draft adoption for email threads)",
+      "The 6 answerComposer categories cover the most common Prime guest questions (supported by the 10 preset questions in Homepage.json)",
+      "Prime internal links render as tappable links in Prime chat messages (supported by the `links` field in message objects)"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Static TypeScript module with bilingual template data, client-side keyword matching, and a TemplatePicker component",
+      "Why planning is not reopening option selection:",
+      "Analysis evaluated all three options against 7 weighted criteria; Option A scored highest on time-to-value and implementation complexity (both High weight) while matching or exceeding on all other dimensions"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Create template data module",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/reception/src/lib/inbox/prime-templates.ts` + unit tests",
+        "affects": "`apps/reception/src/lib/inbox/prime-templates.ts` (new), `[readonly] apps/prime/src/lib/assistant/answerComposer.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add TemplatePicker component to DraftReviewPanel",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`apps/reception/src/components/inbox/TemplatePicker.tsx` (new), modifications to `DraftReviewPanel.tsx`",
+        "affects": "`apps/reception/src/components/inbox/TemplatePicker.tsx` (new), `apps/reception/src/components/inbox/DraftReviewPanel.tsx`, `[readonly] apps/reception/src/lib/inbox/prime-templates.ts`, `[readonly] apps/reception/src/services/useInbox.ts`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Wire templateUsed tracking through draft save",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modifications to draft save route, client save function, and DraftReviewPanel",
+        "affects": "`apps/reception/src/app/api/mcp/inbox/[threadId]/draft/route.ts`, `apps/reception/src/services/useInbox.ts`, `apps/reception/src/components/inbox/DraftReviewPanel.tsx`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Self-improvement signal capture for manual replies",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Telemetry event logging when Prime drafts are sent without a template",
+        "affects": "`apps/reception/src/app/api/mcp/inbox/[threadId]/send/route.ts`, `[readonly] apps/reception/src/lib/inbox/telemetry.server.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Staff reply to Prime guest questions",
+          "trigger": "Staff opens a Prime thread in the reception inbox",
+          "flow": "1. Staff opens Prime thread. 2. TemplatePicker shows keyword-matched suggestions based on latest inbound message. 3. Staff clicks a template to populate the textarea with answer text + formatted links. 4. Staff can edit the text before saving. 5. Staff clicks Save (templateUsed is recorded), then Send. Total time: ~30 seconds for template matches.",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "If keyword matching gives poor suggestions, staff fall back to category browsing or manual typing. Rollback: deploy previous version."
+        },
+        {
+          "id": null,
+          "label": "Template-miss signal capture",
+          "trigger": "Staff sends a Prime reply without selecting a template",
+          "flow": "1. Draft is sent with `templateUsed: null`. 2. System logs a telemetry event (`prime_manual_reply`) with thread context (guest question snippet, detected category if any). 3. Event is queryable for periodic operator review to identify template gaps.",
+          "task_ids": [
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "No active review process in v1 — observability only."
+        }
+      ]
+    }
+  }
+}

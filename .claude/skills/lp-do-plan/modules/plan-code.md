@@ -47,6 +47,7 @@ Minimum required:
 - Affects, Depends on, Blocks
 - Confidence breakdown (Implementation/Approach/Impact)
 - Acceptance
+- `Engineering Coverage` block with all canonical rows from `../../_shared/engineering-coverage-matrix.md`
 - `Expected user-observable behavior` checklist in Acceptance for any UI/user-facing task
 - Validation contract (TC-XX with expected outcomes)
 - For frontend/UI tasks, include scoped post-build QA loop contract in validation notes:
@@ -61,6 +62,8 @@ Minimum required:
 ## Validation Contract Rules
 
 - Every acceptance criterion maps to TC-XX cases.
+- Every `Engineering Coverage` row marked `Required` maps to either Acceptance, TC evidence, or rollout/build notes.
+- `N/A` rows need a short reason; omission is not allowed.
 - Include happy path, failure path, and edge conditions.
 - For M/L tasks, planning evidence must show command/check outcomes.
 

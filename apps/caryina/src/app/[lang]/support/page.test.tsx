@@ -47,5 +47,10 @@ describe("SupportPage", () => {
     expect(screen.getByText("Email")).toBeInTheDocument();
     expect(screen.getByText("WhatsApp")).toBeInTheDocument();
     expect(screen.getByText("Replies within 24h.")).toBeInTheDocument();
+    expect(screen.getByText("Skylar SRL")).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Privacy policy" })).toHaveAttribute(
+      "href",
+      "/it/privacy",
+    );
   });
 });

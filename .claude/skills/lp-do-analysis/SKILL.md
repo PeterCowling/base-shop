@@ -108,6 +108,7 @@ Require:
 - rejected options documented with rationale
 - planning handoff notes present (validation implications, sequencing constraints, risk transfer)
 - for `Execution-Track: code | mixed`, engineering-coverage implications carried forward explicitly
+- `## End-State Operating Model` present with area-by-area delivered flow, or explicit `None: no material process topology change`
 - only operator-only questions remain open
 
 If the recommendation is still hedged, analysis is not complete.
@@ -144,6 +145,21 @@ Rules:
 - Carry forward the outcome contract from the fact-find without fabricating operator-authored rationale.
 - For `Execution-Track: code | mixed`, fill `## Engineering Coverage Comparison` using `../_shared/engineering-coverage-matrix.md`.
 
+## Phase 5.5: End-State Operating Model (Non-omittable)
+
+Before persist, write `## End-State Operating Model`.
+
+This section may be a single line `None: no material process topology change` only when the chosen approach does not alter any multi-step process, workflow, lifecycle state, CI/deploy/release lane, approval path, or operator runbook.
+
+For process-affecting work, describe the target state area by area:
+- current state
+- trigger/start condition
+- step-by-step end-state flow after the chosen approach lands
+- what remains unchanged
+- unresolved seams/risks that planning must absorb
+
+If the target process cannot be explained without hiding behind task-level detail, the analysis is not decision-grade yet.
+
 ## Phase 6: Persist Analysis
 
 Write/update:
@@ -163,15 +179,24 @@ After the analysis is persisted (Phase 6), run the critique loop in analysis mod
 
 Load and follow: `../_shared/critique-loop-protocol.md`
 
-## Phase 7.5: Deterministic Coverage Validation
+## Phase 7.5: Deterministic Validation
 
-For `Execution-Track: code | mixed`, run:
+Run:
+
+```bash
+scripts/validate-analysis.sh docs/plans/<feature-slug>/analysis.md
+```
+
+For `Execution-Track: code | mixed`, also run:
 
 ```bash
 scripts/validate-engineering-coverage.sh docs/plans/<feature-slug>/analysis.md
 ```
 
-If it fails, analysis is not ready for planning.
+Rules:
+- `validate-analysis.sh` is required for all analyses.
+- `validate-engineering-coverage.sh` is required for `Execution-Track: code | mixed`.
+- If any required validator fails, analysis is not ready for planning.
 
 After required validators pass, generate the stage handoff packet:
 
@@ -182,12 +207,13 @@ scripts/generate-stage-handoff-packet.sh docs/plans/<feature-slug>/analysis.md
 After required validators pass, append workflow-step telemetry:
 
 ```bash
-pnpm --filter scripts startup-loop:lp-do-ideas-record-workflow-telemetry -- --stage lp-do-analysis --feature-slug <feature-slug> --module <loaded-module-relative-to-stage-skill> [--module <additional-module>] [--input-path docs/plans/<feature-slug>/fact-find.packet.json] [--input-path docs/plans/<feature-slug>/fact-find.md] --deterministic-check scripts/validate-engineering-coverage.sh
+pnpm --filter scripts startup-loop:lp-do-ideas-record-workflow-telemetry -- --stage lp-do-analysis --feature-slug <feature-slug> --module <loaded-module-relative-to-stage-skill> [--module <additional-module>] [--input-path docs/plans/<feature-slug>/fact-find.packet.json] [--input-path docs/plans/<feature-slug>/fact-find.md] --deterministic-check scripts/validate-analysis.sh [--deterministic-check scripts/validate-engineering-coverage.sh]
 ```
 
 Rules:
 - Record once per materially updated analysis artifact.
 - Include the analysis module(s) actually loaded plus the upstream packet and any full upstream artifact paths that were materially loaded as context.
+- Include `scripts/validate-analysis.sh` on every analysis telemetry record, plus `scripts/validate-engineering-coverage.sh` when required by track.
 - Codex token usage is auto-captured when `CODEX_THREAD_ID` is available.
 - Claude token usage is auto-captured via project session logs (sessions-index.json → debug/latest fallback). Explicit `--claude-session-id` still takes priority when supplied.
 
@@ -212,10 +238,12 @@ Analysis+auto:
 - [ ] Evidence Gate populated and evaluated
 - [ ] Option Gate populated and evaluated
 - [ ] Planning Handoff Gate populated and evaluated
+- [ ] `## End-State Operating Model` present (or explicit `None: no material process topology change`)
 - [ ] For code/mixed work, `## Engineering Coverage Comparison` is complete
 - [ ] Chosen approach is decisive, not hedged
 - [ ] Rejected options have explicit rationale
 - [ ] Only operator-only questions remain open
+- [ ] `validate-analysis.sh` passed
 - [ ] For code/mixed work, `validate-engineering-coverage.sh` passed
 - [ ] `analysis.packet.json` generated after validators pass
 - [ ] Workflow-step telemetry appended after validators pass

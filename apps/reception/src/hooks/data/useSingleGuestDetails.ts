@@ -47,8 +47,9 @@ export default function useSingleGuestDetails(
   const [mutationError, setMutationError] = useState<Error | null>(null);
 
   const parsed = useMemo(() => {
-    if (!occupantData) return null;
-    return occupantDetailsSchema.safeParse(occupantData);
+    // Treat a missing Firebase entry (null) as empty data so the form renders
+    // blank and ready to fill in for new guests.
+    return occupantDetailsSchema.safeParse(occupantData ?? {});
   }, [occupantData]);
 
   const occupantDetails = useMemo(() => {

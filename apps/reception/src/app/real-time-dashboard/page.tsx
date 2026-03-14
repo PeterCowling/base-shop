@@ -1,13 +1,5 @@
-import Providers from "@/components/ClientProviders";
-import RealTimeDashboard from "@/components/reports/RealTimeDashboard";
-
-// Prevent static prerendering — Firebase RTDB requires runtime env vars
-export const dynamic = "force-dynamic";
+import { redirect } from "next/navigation";
 
 export default function RealTimeDashboardPage() {
-  return (
-    <Providers>
-      <RealTimeDashboard />
-    </Providers>
-  );
+  redirect("/analytics");
 }

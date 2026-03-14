@@ -8,7 +8,7 @@
  *   1. pre-website-low-signal:       No DEP → STRAT FAIL, ACT NOT_EVALUATED
  *   2. pre-website-valid-demand:     DEP ✓, no measurement doc → STRAT PASS, ACT FAIL (check-1)
  *   3. website-live-partial-meas:    DEP ✓, measurement Draft, risks present → STRAT PASS, ACT FAIL
- *   4. website-live-decision-grade:  DEP ✓, measurement Active, no risks, events ✓ → both PASS
+ *   4. website-live-decision-grade:  DEP ✓, measurement Active, no risks, events ✓, rendered audit ✓ → both PASS
  *
  * Task: TASK-12 (startup-loop-marketing-sales-capability-gap-audit)
  */
@@ -63,6 +63,18 @@ function planPath(repoRoot: string): string {
     "strategy",
     BIZ,
     "plan.user.md",
+  );
+}
+
+function salesAuditPath(repoRoot: string, filename: string): string {
+  return path.join(
+    repoRoot,
+    "docs",
+    "business-os",
+    "strategy",
+    BIZ,
+    "sales",
+    filename,
   );
 }
 
@@ -136,6 +148,50 @@ Last-reviewed: 2026-02-18
 |---|---|
 | begin_checkout | 0 |
 `;
+
+function isoDateDaysAgo(daysAgo: number): string {
+  const date = new Date();
+  date.setUTCDate(date.getUTCDate() - daysAgo);
+  return date.toISOString().slice(0, 10);
+}
+
+function buildAuditPass(date: string): string {
+  return `---
+Type: Sales-Funnel-Audit
+Status: Active
+Business: ${BIZ}
+Date: ${date}
+Viewport-Scope: mobile, fullscreen
+Rendered-Evidence: required
+Activation-Decision: Pass
+Activation-Blockers-High: 0
+Activation-Blockers-Critical: 0
+---
+
+# Rendered sales funnel audit
+
+Activation-ready funnel.
+`;
+}
+
+function buildAuditBlocked(date: string): string {
+  return `---
+Type: Sales-Funnel-Audit
+Status: Active
+Business: ${BIZ}
+Date: ${date}
+Viewport-Scope: mobile, fullscreen
+Rendered-Evidence: required
+Activation-Decision: Blocked
+Activation-Blockers-High: 1
+Activation-Blockers-Critical: 0
+---
+
+# Rendered sales funnel audit
+
+High-severity blocker remains open.
+`;
+}
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -247,6 +303,13 @@ describe("SELL-01 Gate Simulation (VC-02)", () => {
     );
     // Clean plan: no measurement risks, non-zero conversion events
     await writeFile(planPath(repoRoot), PLAN_CLEAN);
+    await writeFile(
+      salesAuditPath(
+        repoRoot,
+        "2026-03-12-test-biz-sales-funnel-rendered-audit.user.md",
+      ),
+      buildAuditPass(isoDateDaysAgo(0)),
+    );
 
     const results = await evaluateSellGates(repoRoot, BIZ);
 
@@ -262,6 +325,13 @@ describe("SELL-01 Gate Simulation (VC-02)", () => {
       MEAS_ACTIVE,
     );
     await writeFile(planPath(repoRoot), PLAN_CLEAN);
+    await writeFile(
+      salesAuditPath(
+        repoRoot,
+        "2026-03-12-test-biz-sales-funnel-rendered-audit.user.md",
+      ),
+      buildAuditPass(isoDateDaysAgo(0)),
+    );
 
     const results = await evaluateSellGates(repoRoot, BIZ);
 
@@ -279,10 +349,66 @@ describe("SELL-01 Gate Simulation (VC-02)", () => {
       MEAS_ACTIVE,
     );
     await writeFile(planPath(repoRoot), PLAN_CLEAN);
+    await writeFile(
+      salesAuditPath(
+        repoRoot,
+        "2026-03-12-test-biz-sales-funnel-rendered-audit.user.md",
+      ),
+      buildAuditPass(isoDateDaysAgo(0)),
+    );
 
     const run1 = await evaluateSellGates(repoRoot, BIZ);
     const run2 = await evaluateSellGates(repoRoot, BIZ);
 
     expect(JSON.stringify(run1)).toBe(JSON.stringify(run2));
+  });
+
+  it("VC-02: ACT fails check-4 when the latest rendered audit is blocked", async () => {
+    await writeFile(depPath(repoRoot), DEP_CONTENT);
+    await writeFile(
+      measPath(repoRoot, "2026-02-01-measurement-verification.user.md"),
+      MEAS_ACTIVE,
+    );
+    await writeFile(planPath(repoRoot), PLAN_CLEAN);
+    await writeFile(
+      salesAuditPath(
+        repoRoot,
+        "2026-03-12-test-biz-sales-funnel-rendered-audit.user.md",
+      ),
+      buildAuditBlocked(isoDateDaysAgo(0)),
+    );
+
+    const results = await evaluateSellGates(repoRoot, BIZ);
+    const reasons = gateReasons(results, "GATE-SELL-ACT-01");
+
+    expect(gateState(results, "GATE-SELL-ACT-01")).toBe("FAIL");
+    expect(reasons.some((r) => r.includes("[check-4]"))).toBe(true);
+  });
+
+  it("VC-02: ACT fails check-4 when the latest rendered audit declares the wrong business", async () => {
+    await writeFile(depPath(repoRoot), DEP_CONTENT);
+    await writeFile(
+      measPath(repoRoot, "2026-02-01-measurement-verification.user.md"),
+      MEAS_ACTIVE,
+    );
+    await writeFile(planPath(repoRoot), PLAN_CLEAN);
+    await writeFile(
+      salesAuditPath(
+        repoRoot,
+        "2026-03-12-test-biz-sales-funnel-rendered-audit.user.md",
+      ),
+      buildAuditPass(isoDateDaysAgo(0)).replace(
+        `Business: ${BIZ}`,
+        "Business: WRONG-BIZ",
+      ),
+    );
+
+    const results = await evaluateSellGates(repoRoot, BIZ);
+    const reasons = gateReasons(results, "GATE-SELL-ACT-01");
+
+    expect(gateState(results, "GATE-SELL-ACT-01")).toBe("FAIL");
+    expect(reasons.some((r) => r.includes("declares Business: WRONG-BIZ"))).toBe(
+      true,
+    );
   });
 });

@@ -2,7 +2,7 @@
 Type: Guide
 Status: Active
 Domain: Repo / Agents
-Last-reviewed: 2026-02-09
+Last-reviewed: 2026-03-12
 ---
 
 # Feature Workflow Guide (All Agents)
@@ -23,6 +23,7 @@ Read only the skill you need for the current phase:
 
 - **Briefing (understand only):** `.claude/skills/lp-do-briefing/SKILL.md`
 - **Fact-find (planning):** `.claude/skills/lp-do-fact-find/SKILL.md`
+- **Analysis (choose approach):** `.claude/skills/lp-do-analysis/SKILL.md`
 - **Plan:** `.claude/skills/lp-do-plan/SKILL.md` (auto-runs `/lp-do-sequence` at the end)
 - **Build:** `.claude/skills/lp-do-build/SKILL.md`
 - **Re-plan:** `.claude/skills/lp-do-replan/SKILL.md` (auto-runs `/lp-do-sequence` at the end)
@@ -33,6 +34,7 @@ For non-code deliverables, `/lp-do-build` dispatches to progressive execution sk
 
 - **You want to understand a system without planning a change** → Briefing (`/lp-do-briefing`)
 - **You don't understand current behavior or blast radius yet, and intend to change it** → Fact-find
+- **You understand the current state and need to compare/select the right approach** → Analysis
 - **You need tasks + acceptance criteria + confidence** → Plan-feature (includes sequencing)
 - **You have an approved plan + an eligible task** → Build-feature
 - **Task is below its execution threshold (`IMPLEMENT/SPIKE <80`, `INVESTIGATE <60`), blocked, or scope changes during build** → Re-plan (includes sequencing)
@@ -69,13 +71,68 @@ When running `/lp-do-replan`, confidence increases must be evidence-led:
 - Targeted tests only; never run unfiltered `pnpm test` (see `docs/testing-policy.md`).
 - `pnpm typecheck && pnpm lint` is the baseline validation gate (also enforced by git hooks where available).
 - Avoid destructive git commands; follow `AGENTS.md` and `docs/git-safety.md`.
+- For `Execution-Track: code | mixed`, use the shared engineering contract at `.claude/skills/_shared/engineering-coverage-matrix.md` across fact-find, analysis, plan, and build artifacts.
+- Deterministic workflow helpers:
+  - `scripts/validate-analysis.sh`
+  - `scripts/validate-fact-find.sh`
+  - `scripts/validate-plan.sh`
+  - `scripts/validate-engineering-coverage.sh`
+  - `scripts/generate-stage-handoff-packet.sh`
+
+## Progressive Handoff Packets
+
+The DO workflow now uses bounded stage sidecars as the default cross-stage handoff:
+
+- `fact-find.md` -> `fact-find.packet.json`
+- `analysis.md` -> `analysis.packet.json`
+- `plan.md` -> `plan.packet.json`
+
+Contract: `docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`
+
+Default load order:
+1. upstream packet sidecar
+2. current stage artifact
+3. full upstream markdown only if the packet is insufficient
+
+For process-changing work, the upstream packet is also expected to carry a compact `process_topology` payload derived from:
+- `## Current Process Map`
+- `## End-State Operating Model`
+- `## Delivered Processes`
+
+Generate/update the packet after the stage validators pass:
+
+```bash
+scripts/generate-stage-handoff-packet.sh docs/plans/<feature-slug>/fact-find.md
+scripts/generate-stage-handoff-packet.sh docs/plans/<feature-slug>/analysis.md
+scripts/generate-stage-handoff-packet.sh docs/plans/<feature-slug>/plan.md
+```
+
+## Workflow Telemetry
+
+The ideas queue already records admission/cycle telemetry. DO stages should append `workflow_step` records to the same telemetry stream so token cost can be measured instead of inferred.
+
+- Recorder:
+  - `pnpm --filter scripts startup-loop:lp-do-ideas-record-workflow-telemetry -- --stage <lp-do-ideas|lp-do-fact-find|lp-do-analysis|lp-do-plan|lp-do-build> --feature-slug <slug> [--module <stage-local-module>] [--input-path <repo-relative-path>] [--deterministic-check <command-or-check-id>]`
+- Reporter:
+  - `pnpm --filter scripts startup-loop:lp-do-ideas-report-workflow-telemetry -- --feature-slug <slug> --format markdown`
+
+Minimum expectation per stage:
+- record the canonical persisted artifact for the stage,
+- record the stage shell plus explicitly loaded modules,
+- record any deterministic validators/checks run at that stage,
+- record upstream `*.packet.json` paths when those bounded sidecars were part of the actual context load,
+- let the recorder auto-capture token counts from Codex session metadata when `CODEX_THREAD_ID` is available,
+- let the recorder auto-capture Claude token counts only when a concrete Claude session id is supplied (`--claude-session-id <session-id>` or `CLAUDE_SESSION_ID=<session-id>`); otherwise leave Claude on manual/unknown fallback.
 
 ## Outputs by Phase
 
 - **Fact-find:** `docs/plans/<feature>/fact-find.md` (evidence + impact map)
+- **Analysis:** `docs/plans/<feature>/analysis.md` (options compared + chosen approach + planning handoff)
 - **Plan-feature:** `docs/plans/<feature>/plan.md` (atomic tasks + per-task confidence)
 - **Build-feature:** code and/or business artifacts + plan updated per task; commits tied to TASK IDs
 - **Re-plan:** plan updated with evidence/decisions/confidence (no implementation changes)
+
+For `fact-find`, `analysis`, and `plan`, the canonical bounded handoff packet is also emitted alongside the markdown artifact.
 
 ## Optional CASS Pilot (Session Retrieval)
 
@@ -98,7 +155,7 @@ Configuration:
 
 ## Business OS Card Tracking
 
-DO workflow skills (`/lp-do-fact-find`, `/lp-do-plan`, `/lp-do-build`) are **filesystem-only**. They do not create or update BOS cards, stage docs, or lane transitions. Card and lane tracking for DO-stage work is done manually via `/idea-advance` when needed.
+DO workflow skills (`/lp-do-fact-find`, `/lp-do-analysis`, `/lp-do-plan`, `/lp-do-build`) are **filesystem-only**. They do not create or update BOS cards, stage docs, or lane transitions. Card and lane tracking for DO-stage work is done manually via `/idea-advance` when needed.
 
 ### What is automated via BOS API
 

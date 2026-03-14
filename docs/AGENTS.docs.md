@@ -81,7 +81,11 @@ It builds on the existing structure (`AGENTS.md`, `docs/index.md`, `docs/cms-pla
   **Efficiency note:** ~30-40 minutes of targeted investigation can raise 3-5 tasks by 20-30 percentage points.
 
 - **Registry powers tooling**
-  - The docs-lint script (`pnpm docs:lint`) writes `docs/registry.json` with `{ path, type, status, domain }` entries.
+  - `pnpm docs:registry` writes `docs/registry.json` with `{ path, type, status, domain }` entries.
+  - `pnpm docs:lint:changed` validates the explicit branch delta when `DOCS_LINT_BASE`/`DOCS_LINT_HEAD` are set (CI), plus staged docs locally.
+  - Add `--include-untracked` (or `DOCS_LINT_INCLUDE_UNTRACKED=1`) for new untracked docs, and `--include-worktree` (or `DOCS_LINT_INCLUDE_WORKTREE=1`) for unstaged tracked docs.
+  - `pnpm docs:lint:full` runs the full backlog sweep.
+  - `pnpm docs:lint` is the default local/CI convenience command: refresh registry, then lint changed docs.
   - Tools and agents can import `scripts/src/docs-registry.ts` to load and query the registry (for example, "give me all Contracts for Domain = CMS").
 
 ---
@@ -451,8 +455,9 @@ When recording evidence in any Business OS doc, use typed evidence sources:
 - `other` — catchall (use sparingly)
 
 **Validation:**
-- Business OS docs are validated by `pnpm docs:lint` (implemented in `scripts/src/docs-lint.ts`)
-- Registry entries written to `docs/registry.json`
+- Business OS docs are validated by `scripts/src/docs-lint.ts`
+- `pnpm docs:registry` writes `docs/registry.json`
+- `pnpm docs:lint:changed` is the default validation gate; `pnpm docs:lint:full` is the repo-wide sweep
 - Type-specific required frontmatter fields enforced (hard errors):
   - **Idea**: Type, Status, Business, Owner (warn), ID
   - **Card**: Type, Status, Business, Lane, Priority, Owner (warn), ID, Created, Last-updated (warn)

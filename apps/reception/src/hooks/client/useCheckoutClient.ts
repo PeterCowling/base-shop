@@ -161,12 +161,6 @@ function useCheckoutClient({
             });
           });
 
-          // Debug: inspect occupant transactions for loan items
-          console.debug(
-            `[useCheckoutClient] Txns for ${bookingRef}/${occupantId}:`,
-            occupantTxns
-          );
-
           const occupantActs: ActivityData = activities?.[occupantId] || {};
           const rawArray: Activity[] = Object.values(occupantActs);
           const code14Arr: Activity[] = code14Activities[occupantId]

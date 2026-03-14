@@ -9,6 +9,7 @@ usage() {
   echo "Acquires the Base-Shop single-writer lock and exports BASESHOP_WRITER_LOCK_TOKEN"
   echo "for child processes (git hooks use this to enforce single-writer commits/pushes)."
   echo "Command-mode interactive shells such as '-- bash' are forbidden; use --interactive-shell instead."
+  echo "Long-lived non-write commands such as dev/watch/serve/preview are forbidden while the writer lock is held."
   echo ""
   echo "Options:"
   echo "  --interactive-shell  Explicitly open a locked interactive shell (rare)"
@@ -86,6 +87,27 @@ Anti-retry list:
 - scripts/agents/with-writer-lock.sh -- zsh
 - scripts/agents/with-writer-lock.sh -- scripts/agents/with-git-guard.sh -- bash
 Escalation/stop condition: if you genuinely need a rare interactive locked shell for a bounded repair, rerun with scripts/agents/with-writer-lock.sh --interactive-shell and exit as soon as the serialized write window closes.
+EOF
+  exit 1
+}
+
+block_long_lived_non_write_command() {
+  local rendered=""
+
+  printf -v rendered '%q ' "$@"
+  rendered="${rendered% }"
+
+  cat >&2 <<EOF
+ERROR: long-lived non-write commands are forbidden while holding the writer lock.
+Failure reason: ${rendered} is a long-lived non-write session (for example dev/watch/serve/preview) and would hold the Base-Shop writer lock without performing serialized repo mutation.
+Retry posture: retry-forbidden
+Exact next step: scripts/agents/integrator-shell.sh --read-only -- ${rendered}
+Anti-retry list:
+- scripts/agents/with-writer-lock.sh -- ${rendered}
+- scripts/agents/with-writer-lock.sh --wait-forever -- ${rendered}
+- scripts/agents/with-writer-lock.sh --timeout 0 -- ${rendered}
+- scripts/agents/with-writer-lock.sh --agent-write-session -- ${rendered}
+Escalation/stop condition: if this command truly must mutate the shared checkout while it runs, stop and ask the operator to define the serialized write window explicitly; after one blocked retry, stop local retries and escalate.
 EOF
   exit 1
 }
@@ -174,6 +196,9 @@ fi
 if [[ "$command_mode" == "1" ]]; then
   if detect_interactive_shell "$@" >/dev/null; then
     block_command_mode_interactive_shell
+  fi
+  if detect_long_lived_non_write_command "$@" >/dev/null; then
+    block_long_lived_non_write_command "$@"
   fi
 fi
 

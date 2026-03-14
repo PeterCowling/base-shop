@@ -1,5 +1,5 @@
 import Providers from "@/components/ClientProviders";
-import Stock from "@/components/man/Stock";
+import StockHub from "@/components/stock/StockHub";
 
 // Prevent static prerendering — Firebase RTDB requires runtime env vars
 export const dynamic = "force-dynamic";
@@ -7,7 +7,7 @@ export const dynamic = "force-dynamic";
 export default function StockPage() {
   return (
     <Providers>
-      <Stock />
+      <StockHub />
     </Providers>
   );
 }

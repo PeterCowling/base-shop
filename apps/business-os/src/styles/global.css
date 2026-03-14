@@ -139,19 +139,59 @@
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* Light mode base: near-white with subtle indigo tint — restrained, on-brand.
-   Dark mode: restrained purple-violet (lower saturation vs previous hsl(320 80% 62%)) */
+/* Cmd-centre hero gradient — cooler, multi-glow, drama from localized blobs not one loud sweep */
 @utility bg-cmd-hero {
-  background-image: linear-gradient(135deg, hsl(240 15% 96%) 0%, hsl(260 20% 92%) 100%);
-
-  @media (prefers-color-scheme: dark) {
-    background-image: linear-gradient(135deg, hsl(300 35% 45%) 0%, hsl(260 55% 38%) 100%);
-  }
+  background-image:
+    radial-gradient(44rem 24rem at 28% 16%, hsl(266 90% 70% / 0.26), transparent 60%),
+    radial-gradient(38rem 20rem at 74% 10%, hsl(327 84% 69% / 0.22), transparent 58%),
+    radial-gradient(30rem 18rem at 84% 82%, hsl(191 99% 63% / 0.10), transparent 54%),
+    linear-gradient(135deg, hsl(245 29% 22%) 0%, hsl(231 33% 16%) 52%, hsl(223 36% 12%) 100%);
 }
 
-/* Manual dark theme toggle support */
 html.theme-dark .bg-cmd-hero {
-  background-image: linear-gradient(135deg, hsl(300 35% 45%) 0%, hsl(260 55% 38%) 100%);
+  background-image:
+    radial-gradient(44rem 24rem at 28% 16%, hsl(266 90% 70% / 0.26), transparent 60%),
+    radial-gradient(38rem 20rem at 74% 10%, hsl(327 84% 69% / 0.22), transparent 58%),
+    radial-gradient(30rem 18rem at 84% 82%, hsl(191 99% 63% / 0.10), transparent 54%),
+    linear-gradient(135deg, hsl(245 29% 22%) 0%, hsl(231 33% 16%) 52%, hsl(223 36% 12%) 100%);
+}
+
+/* Hero semantic text utilities — scoped to cmd-centre hero sections.
+   Use these instead of text-white/* on hero content so the palette
+   can be adjusted via CSS vars without touching JSX. */
+@utility hero-label {
+  color: var(--hero-text-label);
+}
+
+@utility hero-subtitle {
+  color: var(--hero-text-sub);
+}
+
+@utility hero-stat-label {
+  color: var(--hero-text-stat);
+}
+
+/* Glass card — floats on atmospheric background.
+   Variables are set per-mode on .cmd-centre so this adapts automatically. */
+@utility glass-card {
+  background-color: var(--glass-card-bg, rgba(255, 255, 255, 0.65));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-card-border, rgba(255, 255, 255, 0.85));
+  box-shadow: var(--glass-card-shadow, 0 4px 24px rgba(80, 60, 180, 0.08), 0 1px 3px rgba(0,0,0,0.06));
+}
+
+/* Priority glow rings — tied to semantic color tokens */
+@utility glow-danger {
+  box-shadow: 0 0 0 1px hsl(var(--color-danger) / 0.45), 0 0 28px hsl(var(--color-danger) / 0.18);
+}
+
+@utility glow-warning {
+  box-shadow: 0 0 0 1px hsl(var(--color-warning) / 0.45), 0 0 28px hsl(var(--color-warning) / 0.15);
+}
+
+@utility glow-info {
+  box-shadow: 0 0 0 1px hsl(var(--color-info) / 0.45), 0 0 28px hsl(var(--color-info) / 0.15);
 }
 
 @utility cmd-glow-sm {
@@ -186,38 +226,160 @@ html.theme-dark .bg-cmd-hero {
   box-shadow: var(--elevation-5);
 }
 
-/* Command Centre scoped theme — process-improvements section only */
-/* Light mode: inherit base tokens; only force hero foreground to dark text
-   (--hero-fg defaults to white in :root; must override for light surfaces) */
+/* Command Centre scoped theme — process-improvements section only.
+   Palette: 70% deep indigo neutrals / 20% cool lavender text+borders / 10% neon accents. */
 .cmd-centre {
-  /* NOTE: do NOT use var(--color-fg-dark) here — it is near-white (0 0% 93%)
-     and would reproduce the contrast failure on light backgrounds */
-  --hero-fg: var(--color-fg);
+  /* Hero foreground — cool lavender-white, not pure white */
+  --hero-fg: 240 40% 97%;
+  min-height: 100dvh;
+
+  /* Hero text/glass CSS variables — consumed by @utility hero-* classes and JSX */
+  --hero-text-label:         hsl(238 36% 91% / 0.66);
+  --hero-text-sub:           hsl(238 36% 92% / 0.74);
+  --hero-text-stat:          hsl(238 38% 93% / 0.80);
+  --hero-border-glass:       hsl(245 67% 91% / 0.30);
+  --hero-bg-glass:           hsl(229 34% 18% / 0.42);
+  --hero-bg-glass-hover:     hsl(229 36% 22% / 0.52);
+  --hero-border-glass-hover: hsl(246 72% 92% / 0.38);
+
+  /* Accent palette anchors */
+  --accent-violet: hsl(264 82% 70%);
+  --accent-pink:   hsl(327 84% 69%);
+  --accent-cyan:   hsl(191 99% 63%);
+  --accent-lime:   hsl(108 79% 67%);
+
+  /* Glass card — light: smoked tinted, not milky white */
+  --glass-card-bg:     hsl(229 27% 30% / 0.18);
+  --glass-card-border: hsl(245 67% 96% / 0.22);
+  --glass-card-shadow: 0 4px 24px hsl(229 31% 8% / 0.12), 0 1px 3px hsl(229 31% 8% / 0.08);
+
+  /* Light atmospheric background — cool periwinkle fog with violet/cyan meshes */
+  background:
+    radial-gradient(ellipse 65% 45% at 8% 0%, hsl(264 82% 70% / 0.14), transparent),
+    radial-gradient(ellipse 50% 40% at 92% 100%, hsl(191 99% 63% / 0.10), transparent),
+    radial-gradient(ellipse 55% 55% at 52% 50%, hsl(245 40% 88% / 0.35), transparent),
+    hsl(231 24% 92%);
 }
 
-/* Dark mode: restore dark-surface overrides */
+/* Dark mode: deep indigo atmosphere with restrained accent glows.
+   Scoped to html:not(.theme-light) so the explicit light-mode toggle
+   overrides the media query (split-state fix — U-01). */
 @media (prefers-color-scheme: dark) {
-  .cmd-centre {
-    --color-bg: 222 30% 10%;
-    --color-fg: 210 15% 92%;
-    --surface-1: 222 25% 12%;
-    --surface-2: 222 22% 14%;
-    --surface-3: 222 18% 16%;
-    --color-border: 222 20% 20%;
-    --color-border-muted: 222 18% 22%;
-    --color-fg-muted: 210 10% 60%;
+  html:not(.theme-light) .cmd-centre {
+    --color-bg:           229 31% 8%;
+    --color-fg:           240 30% 94%;
+    --surface-1:          228 26% 14%;
+    --surface-2:          229 27% 18%;
+    --surface-3:          229 28% 23%;
+    --color-border:       233 22% 46%;
+    --color-border-muted: 232 18% 34%;
+    --color-fg-muted:     236 18% 72%;
+    --color-success:      108 79% 67%;
+
+    /* Semantic fg — tuned to deep indigo environment */
+    --color-info-fg:    192 100% 80%;
+    --color-warning-fg: 31 100% 82%;
+    --color-danger-fg:  339 100% 86%;
+    --color-success-fg: 111 100% 85%;
+
+    /* Glass card — dark: smoked indigo glass */
+    --glass-card-bg:     hsl(229 34% 18% / 0.42);
+    --glass-card-border: hsl(245 67% 91% / 0.28);
+    --glass-card-shadow: 0 4px 32px hsl(229 31% 8% / 0.55), inset 0 1px 0 hsl(245 67% 91% / 0.10);
+
+    background:
+      radial-gradient(ellipse 78% 52% at 8% -8%, hsl(264 82% 70% / 0.08), transparent),
+      radial-gradient(ellipse 60% 48% at 88% 108%, hsl(327 84% 69% / 0.07), transparent),
+      radial-gradient(ellipse 42% 50% at 68% 18%, hsl(191 99% 63% / 0.06), transparent),
+      radial-gradient(ellipse 50% 38% at 28% 78%, hsl(264 82% 70% / 0.05), transparent),
+      hsl(229 31% 8%);
   }
+
+  /* Semantic soft backgrounds — scoped override so inbox cards match palette */
+  html:not(.theme-light) .cmd-centre .bg-info-soft    { background-color: hsl(191 99% 63% / 0.12); }
+  html:not(.theme-light) .cmd-centre .bg-warning-soft { background-color: hsl(28 100% 68% / 0.14); }
+  html:not(.theme-light) .cmd-centre .bg-danger-soft  { background-color: hsl(340 86% 67% / 0.16); }
+  html:not(.theme-light) .cmd-centre .bg-success-soft { background-color: hsl(108 79% 67% / 0.14); }
+  html:not(.theme-light) .cmd-centre .bg-primary-soft { background-color: hsl(264 82% 70% / 0.14); }
+  html:not(.theme-light) .cmd-centre .border-warning  { border-color: hsl(28 100% 68% / 0.28); }
+  html:not(.theme-light) .cmd-centre .border-s-warning { border-inline-start-color: hsl(28 100% 68% / 0.18); }
+  html:not(.theme-light) .cmd-centre .border-danger-soft { border-color: hsl(340 85% 71% / 0.28); }
+  html:not(.theme-light) .cmd-centre .border-primary  { border-color: hsl(264 85% 72% / 0.28); }
+  html:not(.theme-light) .cmd-centre .border-info\/30 { border-color: hsl(191 99% 63% / 0.30); }
 }
 
 html.theme-dark .cmd-centre {
-  --color-bg: 222 30% 10%;
-  --color-fg: 210 15% 92%;
-  --surface-1: 222 25% 12%;
-  --surface-2: 222 22% 14%;
-  --surface-3: 222 18% 16%;
-  --color-border: 222 20% 20%;
-  --color-border-muted: 222 18% 22%;
-  --color-fg-muted: 210 10% 60%;
+  --color-bg:           229 31% 8%;
+  --color-fg:           240 30% 94%;
+  --surface-1:          228 26% 14%;
+  --surface-2:          229 27% 18%;
+  --surface-3:          229 28% 23%;
+  --color-border:       233 22% 46%;
+  --color-border-muted: 232 18% 34%;
+  --color-fg-muted:     236 18% 72%;
+  --color-success:      108 79% 67%;
+
+  --color-info-fg:    192 100% 80%;
+  --color-warning-fg: 31 100% 82%;
+  --color-danger-fg:  339 100% 86%;
+  --color-success-fg: 111 100% 85%;
+
+  --glass-card-bg:     hsl(229 34% 18% / 0.42);
+  --glass-card-border: hsl(245 67% 91% / 0.28);
+  --glass-card-shadow: 0 4px 32px hsl(229 31% 8% / 0.55), inset 0 1px 0 hsl(245 67% 91% / 0.10);
+
+  background:
+    radial-gradient(ellipse 78% 52% at 8% -8%, hsl(264 82% 70% / 0.08), transparent),
+    radial-gradient(ellipse 60% 48% at 88% 108%, hsl(327 84% 69% / 0.07), transparent),
+    radial-gradient(ellipse 42% 50% at 68% 18%, hsl(191 99% 63% / 0.06), transparent),
+    radial-gradient(ellipse 50% 38% at 28% 78%, hsl(264 82% 70% / 0.05), transparent),
+    hsl(229 31% 8%);
+}
+
+html.theme-dark .cmd-centre .bg-info-soft    { background-color: hsl(191 99% 63% / 0.12); }
+html.theme-dark .cmd-centre .bg-warning-soft { background-color: hsl(28 100% 68% / 0.14); }
+html.theme-dark .cmd-centre .bg-danger-soft  { background-color: hsl(340 86% 67% / 0.16); }
+html.theme-dark .cmd-centre .bg-success-soft { background-color: hsl(108 79% 67% / 0.14); }
+html.theme-dark .cmd-centre .bg-primary-soft { background-color: hsl(264 82% 70% / 0.14); }
+html.theme-dark .cmd-centre .border-warning  { border-color: hsl(28 100% 68% / 0.28); }
+html.theme-dark .cmd-centre .border-s-warning { border-inline-start-color: hsl(28 100% 68% / 0.18); }
+html.theme-dark .cmd-centre .border-danger-soft { border-color: hsl(340 85% 71% / 0.28); }
+html.theme-dark .cmd-centre .border-primary  { border-color: hsl(264 85% 72% / 0.28); }
+html.theme-dark .cmd-centre .border-info\/30 { border-color: hsl(191 99% 63% / 0.30); }
+
+/* C-01: Sub-nav contrast fix.
+   The nav glass bg is 30% opaque dark. In light mode this blends with the light body bg
+   to produce a medium-gray nav bg, which breaks contrast for both light and dark text.
+   Fix: (a) increase nav bg opacity to 88% in non-dark mode so it stays dark, and
+        (b) use opaque lavender-white for inactive link/button text.
+   In dark mode the original 30% glass is restored (dark body bg keeps it dark). */
+
+/* Light mode nav: opaque enough to stay dark in all scroll positions */
+.cmd-centre nav {
+  background-color: hsl(229 34% 18% / 0.88);
+}
+/* Dark mode nav: restore the subtle glass transparency */
+html.theme-dark .cmd-centre nav {
+  background-color: hsl(229 34% 18% / 0.30);
+}
+@media (prefers-color-scheme: dark) {
+  html:not(.theme-light) .cmd-centre nav {
+    background-color: hsl(229 34% 18% / 0.30);
+  }
+}
+
+/* Inactive links and icon buttons — opaque lavender-white, passes on dark glass */
+.cmd-centre nav a.text-muted {
+  color: hsl(238 36% 87%);
+}
+.cmd-centre nav a.text-muted:hover {
+  color: hsl(var(--hero-fg));
+}
+.cmd-centre nav button.text-muted-foreground {
+  color: hsl(238 36% 87%);
+}
+.cmd-centre nav button.text-muted-foreground:hover {
+  color: hsl(var(--hero-fg));
 }
 
 /* Base styles */

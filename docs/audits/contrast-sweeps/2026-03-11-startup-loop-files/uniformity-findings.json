@@ -1,0 +1,15 @@
+[
+  {
+    "id": "U-001",
+    "severity": "S1",
+    "breakpoint": "all",
+    "mode": "dark vs light",
+    "route": "/docs/business-os/startup-loop-files.user.html",
+    "componentFamily": "CardTag / GateBadge",
+    "drift": "Light mode: white text on dark border bg (passes, ≥5.93:1). Dark mode: same white text on bright border bg (fails, worst 1.67:1). Token adaptation is one-directional — border colours were updated for dark mode but tag text colour was not.",
+    "referenceScreenshot": "./screenshots/1280-light-full.png",
+    "driftScreenshot": "./screenshots/1280-dark-full.png",
+    "likelyCause": "color:#fff is hardcoded on .card-tag, .gate-badge, .card-gate. The --{role}-border tokens correctly flip to bright colours in dark mode (to stay visible as card borders), but no corresponding override flips the tag text to a dark colour.",
+    "fixDirection": "Add @media (prefers-color-scheme: dark) / [data-theme=dark] block that overrides each .file-card.{role} .card-tag with: background set to a darker role shade, or color set to var(--{role}-text). The role text vars already pass in dark mode (operator-text #fde68a on fbbf24 = 12.89:1)."
+  }
+]

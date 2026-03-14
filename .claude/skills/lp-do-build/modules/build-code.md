@@ -25,6 +25,7 @@ Execute IMPLEMENT work via TDD with strict scope control and accurate regression
 ## Workflow
 
 1. Read task constraints and TC contract.
+   - Read the task's `Engineering Coverage` block and treat every `Required` row as part of the execution contract.
 2. Apply extinct test policy (`../../_shared/testing-extinct-tests.md`).
 3. Implement TDD cycle:
 - write/activate tests from TC contract

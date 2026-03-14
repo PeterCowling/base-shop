@@ -138,26 +138,16 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
     }
   }, [cardNumber, expiryDate, onSaveOrUpdate]);
 
-  // Simulate payment processing (replace with actual payment gateway integration)
   const handleProcessClick = useCallback(async () => {
     setIsProcessing(true);
-    console.log("Attempting payment with card:", cardNumber);
-    // --- !!! Placeholder for actual payment gateway interaction !!! ---
-    // Example: Replace this timeout with your actual payment API call
-    await new Promise((resolve) => setTimeout(resolve, 1500)); // Simulate network delay
-    const paymentSuccess = Math.random() > 0.3; // Simulate success/failure
-    // --- !!! End Placeholder !!! ---
-
     try {
-      await onProcessPayment(paymentSuccess ? "paid" : "failed");
-      // Parent handles messaging and state updates based on status
+      await onProcessPayment("paid");
     } catch (error) {
-      // Parent handles messaging
       console.error("Dialog: Error during payment processing callback", error);
     } finally {
       setIsProcessing(false);
     }
-  }, [cardNumber, onProcessPayment]); // Include cardNumber if payment needs it immediately
+  }, [onProcessPayment]);
 
   // Conditional loading/feedback inside the dialog
   // const showSpinner = isFetchingDetails || isProcessing || isSaving; // Combine loading states
@@ -166,7 +156,7 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
     <SimpleModal
       isOpen={open}
       onClose={onClose}
-      title={hasExistingCard ? "Update or Process Payment" : "Enter Payment Details"}
+      title={hasExistingCard ? "Card Details" : "Enter Payment Details"}
       maxWidth="max-w-md"
       className="font-body"
       showCloseButton={!isProcessing && !isSaving}
@@ -180,7 +170,7 @@ const EntryDialog: React.FC<EntryDialogProps> = ({
               color="primary"
               tone="solid"
             >
-              {isProcessing ? "Processing..." : "Process Payment"}
+              {isProcessing ? "Saving..." : "Mark Paid"}
             </Button>
           )}
           {/* Save/Update Button */}

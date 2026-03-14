@@ -50,8 +50,7 @@
     "next-env.d.ts",
     "src/**/*",
     "src/**/*.json",
-    "functions/**/*.ts",
-    ".next/types/**/*.ts"
+    "functions/**/*.ts"
   ],
   "exclude": [
     "**/__mocks__/**",

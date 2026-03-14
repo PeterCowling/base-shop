@@ -194,16 +194,6 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
 
       const depositType: LoanMethod = selectionToLoanMethod(payType, docType);
 
-      console.log("[KeycardDepositButton] issue keycard", {
-        bookingRef,
-        occupantId,
-        payType,
-        docType,
-        depositType,
-        depositAmount,
-        item,
-      });
-
       await saveLoan(bookingRef, occupantId, transactionId, {
         count: cardCount,
         createdAt,
@@ -308,7 +298,14 @@ function KeycardDepositButton({ booking }: KeycardDepositButtonProps) {
           className={`${baseButtonClass} rounded-none ${rightButtonClass}`}
           title={
             disabledDueToKeycard
-              ? "Guest already has a keycard."
+              ? "Keycard already issued."
+              : isDisabled
+              ? "Keycard deposit action not available."
+              : "Confirm keycard deposit"
+          }
+          aria-label={
+            disabledDueToKeycard
+              ? "Keycard already issued."
               : isDisabled
               ? "Keycard deposit action not available."
               : "Confirm keycard deposit"

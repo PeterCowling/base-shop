@@ -1,0 +1,191 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "brikette-ci-release-lane-simplification",
+  "source_artifact_path": "docs/plans/brikette-ci-release-lane-simplification/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-analysis",
+    "lp-do-critique"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/brikette-ci-release-lane-simplification/fact-find.md",
+    "plan": "docs/plans/brikette-ci-release-lane-simplification/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The current Brikette CI and deploy flow is harder to reason about than it should be. The operator wants one straightforward release model: changed-only validation on dev, staging as the preview lane reached by merge, and main as the live lane reached by merge.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Brikette has an analysis-ready fact-find for a simplified GitHub Actions setup where dev performs changed-only lint, typecheck, and tests in CI, staging is a merge-only preview lane, and main is a merge-only production lane.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "No direct impact; leaves preview/live publication surface split across files",
+      "current_or_option_state": "No direct impact; preview/live lanes become one clearer publish surface",
+      "gap_or_implication": "No UI changes; simplify workflow ownership only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Operator has to remember which branch hits which workflow file",
+      "current_or_option_state": "Branch meaning becomes straightforward: `dev` validates, `staging` previews, `main` publishes live",
+      "gap_or_implication": "Prefer branch-to-workflow clarity over preserving current file layout",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Manual dispatch remains tempting unless explicitly removed in multiple places",
+      "current_or_option_state": "Branch-only publish path narrows privileged execution paths",
+      "gap_or_implication": "Remove `workflow_dispatch` and keep credentialed deploys on branch merges only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Audit trail remains split across validation, staging, and production files",
+      "current_or_option_state": "One validation workflow and one publish workflow make CI outcomes easier to audit",
+      "gap_or_implication": "Preserve branch-driven auditability while reducing workflow sprawl",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Dev still has overlapping repo CI and Brikette CI concerns",
+      "current_or_option_state": "Dev validation centralizes on changed-scope CI; staging becomes first export proof point",
+      "gap_or_implication": "Remove Brikette dev smoke/export gates and keep export proof in staging/main publish flow",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Reusable workflow inputs still obscure Brikette's actual deploy contract",
+      "current_or_option_state": "Branch/path triggers and explicit build/deploy steps become the contract",
+      "gap_or_implication": "Prefer explicit Brikette deploy steps over reusable-app indirection",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Duplicate export/build logic and extra workflow fan-out remain",
+      "current_or_option_state": "Fewer workflow surfaces and no publish on irrelevant merges reduce wasted work",
+      "gap_or_implication": "Consolidate publish logic and keep path gates on `staging` and `main`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Promotion scripts still work, but lane responsibilities remain fuzzy",
+      "current_or_option_state": "Promotion scripts align directly to two workflow surfaces and symmetric publish rules",
+      "gap_or_implication": "Preserve current branch flow and make rollback/promotion reasoning simpler",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Choose the simplest GitHub Actions shape for Brikette now that the operator has resolved the main policy forks: changed-scope validation in CI, merge-only staging and production publishes, no manual publish entrypoints, no publish when nothing Brikette-relevant changed, and no Brikette-specific smoke/static-export gating on `dev`.",
+    "goals": [
+      "Make `dev` validation easy to reason about: changed-scope lint, typecheck, and tests in CI only.",
+      "Make `staging` the preview lane for humans and agents, entered by merge only.",
+      "Make `main` the live lane, entered by merge only.",
+      "Remove overlapping Brikette workflow responsibility and manual publish paths."
+    ],
+    "non_goals": [
+      "Re-architect Brikette's static export shape or Cloudflare Pages footprint.",
+      "Solve every repo-wide CI governance concern unrelated to Brikette release flow.",
+      "Introduce bespoke file-level classifiers beyond what the push diff and its affected surface require."
+    ],
+    "constraints": [
+      "Changed scope is defined by what is in the push and its affected dependency/workspace surface, with lint, typecheck, and tests run only where relevant.",
+      "Brikette-specific smoke/static-export checks are deferred from `dev`; the first export proof point moves to merge-driven staging.",
+      "`staging` and `main` are merge-only publish lanes with no `workflow_dispatch` fallback.",
+      "`staging` and `main` should skip publication when no Brikette-relevant paths changed."
+    ],
+    "assumptions": [
+      "The current Pages staging host is sufficient for MCP and Playwright usage.",
+      "Consolidating workflows is preferable to preserving reusable workflow abstractions if the abstraction is part of the current complexity."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Operator clarity",
+        "Why it matters": "The release model should be obvious from branch to workflow",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Changed-scope correctness",
+        "Why it matters": "CI should do only relevant lint/typecheck/test work",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Workflow simplicity",
+        "Why it matters": "Fewer overlapping files and fewer special cases reduce maintenance",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Publish efficiency",
+        "Why it matters": "Staging and production should not rebuild/deploy on irrelevant merges",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Regression containment",
+        "Why it matters": "Removing dev smoke/export must still leave a clear export proof point before live",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A",
+        "Description": "Keep the current split surfaces and trim obvious waste: retain `ci.yml`, keep a reduced `brikette.yml`, and keep `brikette-staging-fast.yml`",
+        "Upside": "Smallest YAML diff",
+        "Downside": "Operator still has to reason across three overlapping workflow surfaces; Brikette remains partly special-cased",
+        "Key risks": "Complexity remains distributed; duplicate export logic persists",
+        "Viable?": "Partial"
+      },
+      {
+        "Option": "B",
+        "Description": "Collapse Brikette to two obvious workflow surfaces: `ci.yml` owns changed-scope dev validation, and one Brikette publish workflow handles merge-only staging and production with path-gated branch pushes",
+        "Upside": "Clearest mental model; removes manual publish paths; keeps staging/main behavior symmetrical; reduces Brikette-specific workflow count",
+        "Downside": "Requires refactoring current `brikette.yml` and likely retiring the reusable-app path for Brikette deploys",
+        "Key risks": "Need to preserve required production-only checks explicitly when leaving reusable-app",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C",
+        "Description": "Build a bespoke Brikette-only validation workflow with custom per-file relevance logic, plus separate staging and production deploy workflows",
+        "Upside": "Maximum local control over what runs",
+        "Downside": "More YAML, more classifiers, and more special-case logic than the operator asked for",
+        "Key risks": "Brittle maintenance; duplicates capabilities already present in `ci.yml`",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Use a two-surface model for Brikette: `ci.yml` for changed-scope dev validation, and one Brikette publish workflow for merge-only `staging` and `main` publication with Brikette path filters and no manual dispatch.",
+      "Why this wins": "It matches the operator's requirements with the smallest ongoing mental model. `dev` has one job: validate changed code in CI. `staging` has one job: build and publish preview when Brikette changed. `main` has one job: build and publish live when Brikette changed. This removes the current overlap between `ci.yml`, `brikette.yml`, `brikette-staging-fast.yml`, and the reusable-app path while keeping the branch flow the repo already uses.",
+      "What it depends on": "Narrowing or isolating the parts of `ci.yml` that currently widen beyond Brikette's changed-scope requirement, folding staging and production publish behavior into one explicit Brikette deploy workflow, and carrying forward any production-only health checks now hidden inside the reusable-app abstraction."
+    },
+    "rejected_approaches": [
+      "Option A — rejected because it trims symptoms but leaves the same distributed contract in place. The operator would still be reasoning across three Brikette-related workflow surfaces.",
+      "Option C — rejected because custom file-level classifier logic is more complicated than the stated requirement and duplicates capabilities the repo already has through push diff plus affected-scope evaluation."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "Define the exact changed-scope validation contract Brikette should inherit from `ci.yml`, including which wideners must be removed or bypassed for Brikette-only pushes.",
+        "Design the single Brikette publish workflow that handles both `staging` and `main` branch pushes with path filters and branch-specific build/deploy settings.",
+        "Remove Brikette dev validation and manual dispatch paths from the current app workflows."
+      ],
+      "validation_implications": [
+        "Workflow validation should prove that Brikette-relevant pushes on `dev` run lint/typecheck/test only where relevant.",
+        "Branch-trigger validation should prove that `staging` and `main` publish only on Brikette-relevant merges and never via manual dispatch.",
+        "Production planning must preserve any required post-deploy health checks currently supplied by `reusable-app.yml`."
+      ],
+      "sequencing_constraints": [
+        "Finalize the target workflow boundary before editing triggers, otherwise path filters and branch responsibilities will drift.",
+        "Preserve production-only healthcheck behavior before removing Brikette's reusable-app production path.",
+        "Remove manual dispatch only after the branch-triggered publish path is confirmed complete."
+      ],
+      "risks_to_carry_forward": [
+        "`ci.yml` may need either targeted narrowing or a Brikette-specific entry path if repo-global governance jobs cannot be cleanly separated.",
+        "Consolidating staging and production publish into one workflow must not accidentally drop required production verification."
+      ]
+    }
+  }
+}

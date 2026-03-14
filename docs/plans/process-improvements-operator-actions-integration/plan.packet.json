@@ -1,0 +1,196 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "process-improvements-operator-actions-integration",
+  "source_artifact_path": "docs/plans/process-improvements-operator-actions-integration/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": null,
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/process-improvements-operator-actions-integration/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The operator now has two separate places to look for work that should really be managed together: the process-improvements inbox and the output-registry operator card. That splits attention, hides overdue actions, and leaves the app unable to show the most important operator decisions. Fixing this should create one integrated inbox backed by a canonical structured operator-actions source, not a fragile HTML scrape.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Business OS has an analysis-ready fact-find for one integrated operator inbox that can show both process improvements and structured operator actions from startup-loop sources, with distinct card styling and no runtime HTML parsing.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Distinct operator-action cards, badges, and overdue styling in the Business OS route",
+      "current_or_option_state": "TASK-01, TASK-04",
+      "gap_or_implication": "Use warning-soft and danger-soft tokens, not hardcoded colours",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Separate queue and operator-action sections; empty states stay explicit; read-only operator-action messaging for tranche 1",
+      "current_or_option_state": "TASK-01, TASK-04",
+      "gap_or_implication": "Avoid implying operator-action buttons exist before they do",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Keep existing admin-only queue mutations unchanged; operator-action support is read-only in task 1",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "No new write API in the first slice",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Preserve operator-action IDs and source paths in the structured contract for future auditability",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "Follow-on task will extend durable action state",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Update projection/component tests and run targeted typecheck/lint; CI covers Jest execution",
+      "current_or_option_state": "TASK-01, TASK-04",
+      "gap_or_implication": "Local test execution remains out of scope by policy",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Introduce explicit `operator-actions` schema plus typed app projection union",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "Registry parity depends on this contract",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Add empty-safe file loading and additive projection merge",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Route must still render if operator-actions file is missing",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive route change; rollback is removing operator-action source loading while keeping queue path intact",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "No queue migration required",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The next build tranche should stop treating `/process-improvements` as queue-only. It should become an integrated operator inbox that can show the existing queue-backed process-improvement items alongside a new canonical `operator-actions` source for startup-loop blockers and related operator work. The first runnable unit is additive and intentionally conservative. It does not reopen the queue-backed action model. Instead, it introduces the structured operator-action contract, updates the app projection to load mixed item types, and renders operator-action cards with a warning-tinted backgroun",
+    "goals": [
+      "Surface operator actions and queue-backed process improvements in one authenticated route.",
+      "Make operator-action cards visually distinct from process-improvement cards.",
+      "Preserve queue-backed `Do`, `Defer`, and `Decline` behavior unchanged during the first build slice.",
+      "Introduce a reusable structured operator-actions contract that the registry can adopt later."
+    ],
+    "non_goals": [
+      "Replacing queue state as the authority for process-improvement actions.",
+      "Implementing every registry-visible operator block in the first task.",
+      "Parsing registry HTML at runtime or build time.",
+      "Renaming the route path away from `/process-improvements`."
+    ],
+    "constraints": [
+      "Runtime HTML parsing remains out of scope.",
+      "Existing queue APIs and ledger semantics must continue to work unchanged.",
+      "The first integrated inbox slice must be shippable without a new operator-action mutation API.",
+      "The app must remain safe when the structured operator-actions file is absent or empty.",
+      "Local Jest runs remain out of scope under repo policy; CI is the test authority."
+    ],
+    "assumptions": [
+      "A canonical `operator-actions` JSON contract is the right foundation even before registry parity lands.",
+      "Read-only operator-action cards are acceptable in the first slice if they clearly explain that resolution still happens outside the app.",
+      "Warning and danger semantic tokens in Business OS are sufficient for the visual distinction the user requested."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Add a canonical `operator-actions` source, a mixed app projection, and visually distinct operator-action cards in `/process-improvements`.",
+      "Why planning is not reopening option selection:",
+      "Analysis already eliminated runtime parsing and queue coercion as inferior approaches. The remaining work is implementation sequencing, not architectural choice."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add canonical operator-actions source support and mixed inbox rendering",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-11)",
+        "confidence": 84,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "additive Business OS inbox support for canonical operator-action items, including a structured source file, mixed projection, and visually distinct operator-action cards",
+        "affects": "`docs/business-os/startup-loop/operator-actions.json`, `apps/business-os/src/lib/process-improvements/projection.ts`, `apps/business-os/src/lib/process-improvements/projection.test.ts`, `apps/business-os/src/app/process-improvements/page.tsx`, `apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx`, `apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.test.tsx`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add operator-action state transitions and durable action memory",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 81,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "typed operator-action completion/snooze semantics with durable state and app controls",
+        "affects": "`apps/business-os/src/lib/process-improvements/**`, any new operator-action persistence surface, route/API tests"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Align registry/report generation to the same operator-actions source",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "registry/report consumption of the canonical operator-actions source plus parity validation between app and report",
+        "affects": "startup-loop registry/report generation paths, operator-actions source consumers, associated tests"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Checkpoint parity, QA, and residual contract gaps",
+        "type": "CHECKPOINT",
+        "status": "Pending",
+        "confidence": 83,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "written verification of mixed-inbox behavior, operator-action parity status, and any remaining contract gaps",
+        "affects": "`docs/plans/process-improvements-operator-actions-integration/plan.md`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-02",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

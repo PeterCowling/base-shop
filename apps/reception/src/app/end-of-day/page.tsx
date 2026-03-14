@@ -1,13 +1,5 @@
-import Providers from "@/components/ClientProviders";
-import EndOfDayPacket from "@/components/reports/EndOfDayPacket";
-
-// Prevent static prerendering — Firebase RTDB requires runtime env vars
-export const dynamic = "force-dynamic";
+import { redirect } from "next/navigation";
 
 export default function EndOfDayPage() {
-  return (
-    <Providers>
-      <EndOfDayPacket />
-    </Providers>
-  );
+  redirect("/eod");
 }

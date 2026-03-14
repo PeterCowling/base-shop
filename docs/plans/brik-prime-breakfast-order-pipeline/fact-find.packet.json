@@ -1,0 +1,202 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "brik-prime-breakfast-order-pipeline",
+  "source_artifact_path": "docs/plans/brik-prime-breakfast-order-pipeline/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/brik-prime-breakfast-order-pipeline/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "When a guest uses the app to choose their breakfast, their order is saved but it never makes its way to the staff working the bar. The bar screen shows no record of it. Staff have no way to know what was ordered or even that an order was placed. Fixing this closes the loop so that every guest order placed in the app shows up as a clear ticket for bar staff to act on.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A fact-find is complete that defines the bridge architecture: where it lives, how the order text is converted to structured bar items, and how a transaction reference is stored so the Comp screen can display placed orders.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`MealOrderPage.existingOrders` renders `night.breakfast` text. `PreorderButtons` renders bar tickets from RTDB.",
+      "gap_or_implication": "After bridge backref write, existing orders list in Prime will show raw txnId instead of order description.",
+      "carry_forward_or_notes": "How to keep human-readable text visible on Prime after txnId is stored: dual-field or parse-back display."
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "`ModalPreorderDetails` has loading + not-found states for txnId lookup. `PreorderButtons` handles empty/loading states.",
+      "gap_or_implication": "Prime existing orders UI has no fallback for txnId display regression. Bar ticket rendering is complete once data is written.",
+      "carry_forward_or_notes": "Plan must address existing-orders display regression."
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "`onRequestPost` validates session token; entitlement check enforced. Bridge write executes only after auth passes.",
+      "gap_or_implication": "Bridge write adds new RTDB paths writable from Prime function only (server-side). No guest-facing direct RTDB write. Guest name fields (`guestFirstName`, `guestSurname`) are written to `barOrders` — acceptable for internal staff tool.",
+      "carry_forward_or_notes": "Confirm no cross-guest data leakage; guestUuid is authenticated before any write."
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`console.error` on catch in `onRequestPost`. No structured logging for bridge writes.",
+      "gap_or_implication": "Bridge write success/failure is invisible to operators. No alert if bar tickets are silently missing.",
+      "carry_forward_or_notes": "Add explicit `console.error` (or structured log) on bridge write failure. Consider whether a silent failure (bar ticket not written) should surface to Reception."
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "TC-01 through TC-04 in `preorders.test.ts`. Good coverage of string builder. `PreorderButtons` tested.",
+      "gap_or_implication": "Bridge write path completely untested. Month/day format parity untested.",
+      "carry_forward_or_notes": "New test cases required for bridge path, backref, parse logic, and format parity."
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`placedPreorderSchema` defines bar record shape. `PreorderButtonData` runtime type defines additional fields. `preorder/{guestUuid}/{nightKey}.breakfast` currently holds pipe-delimited string.",
+      "gap_or_implication": "Schema gap: `PreorderButtonData` requires `guestFirstName`, `guestSurname`, `uuid` not in `placedPreorderSchema`. Bridge must write both schema-validated fields and runtime-expected fields.",
+      "carry_forward_or_notes": "Define canonical bar preorder write shape that satisfies both usePlacedPreorder schema and PreorderButtons runtime fields."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`onRequestPost` is a Cloudflare Pages Function — short-lived, no connection pooling. Multi-path Firebase write uses REST (no SDK).",
+      "gap_or_implication": "Bridge adds one extra Firebase write per order submission (REST PUT/PATCH). At hostel scale (typically <20 orders/morning) this is not a hot path. Risk: if bridge write fails after preorder write, data is in a half-written state.",
+      "carry_forward_or_notes": "Use `FirebaseRest.update('/', multiPathPayload)` to write both the bar record and the backref atomically — reduces the half-write risk."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "No feature flags in Prime functions layer currently. Deployment is CF Pages deploy.",
+      "gap_or_implication": "Bridge write is a pure additive change — no existing callers are broken by its addition. The preorder backref overwrite is the only potentially breaking change (existing orders display).",
+      "carry_forward_or_notes": "Rollback: remove bridge write from handler and redeploy. No migration required. If preorder field already holds txnId from a bridge write, the existing-orders display regression is visible until rollback."
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Guest orders placed via the Prime app (complimentary breakfast and evening drinks) are written to Firebase at `preorder/{guestUuid}/{nightKey}` as a pipe-delimited human-readable string (e.g. `\"Eggs (Scrambled) | Bacon, Ham, Toast | Americano, Oat Milk, No Sugar | 09:00\"`). The bar screen in Reception reads from a completely different path (`barOrders/breakfastPreorders/{monthName}/{day}/{txnId}`) and expects structured items (`{product, count, lineType, price}`). Nothing bridges these two paths. Guest orders are invisible to bar staff. A secondary consequence is that `ModalPreorderDetails` in",
+    "goals": [],
+    "non_goals": [
+      "Changing the wizard UI in Prime.",
+      "Changing the bar staff order-taking flow (PreorderButtons single-click / double-click handling is unchanged).",
+      "Replacing the pipe-delimited string format as the order submission encoding. The backref write changes the stored `breakfast` field to a txnId; the pipe-string format is preserved as the parser input on the server side and is stored in the new `breakfastText` field for Prime guest display.",
+      "Adding pricing to Prime-originated preorders (they are complimentary; price = 0).",
+      "Internationalisation of order item names."
+    ],
+    "constraints": [
+      "The Prime functions layer runs as Cloudflare Pages Functions with no persistent compute — any bridge write must happen synchronously inside `onRequestPost`.",
+      "Firebase RTDB is the only persistence layer in scope.",
+      "The `txnId` must conform to the existing `txn_YYYYMMDDhhmmssfff` format generated by `generateTransactionId()` in Reception, so that `usePlacedPreorder` and `useCompletedOrder` can locate it by ID.",
+      "The Prime function has access to `CF_FIREBASE_DATABASE_URL` and `CF_FIREBASE_API_KEY` via env bindings; all writes go through `FirebaseRest`."
+    ],
+    "assumptions": [],
+    "key_entry_points": [
+      "`apps/prime/functions/api/firebase/preorders.ts` — `onRequestPost`: the single POST handler that receives guest orders from the Prime UI. This is the sole write point for `preorder/{guestUuid}/{nightKey}`. **This is where the bridge write must be added.**",
+      "`apps/reception/src/components/bar/orderTaking/preorder/PreorderButtons.tsx` — `PreorderButtons`: live Firebase listener that renders bar tickets from `barOrders/{type}/{monthName}/{day}`. Reads are already correct; they receive no data because nothing writes to this path from Prime.",
+      "`apps/reception/src/components/bar/CompScreen.tsx` — `CompScreen`: reads `preorder/{occId}` as-is (raw preorder node) and passes it to `ModalPreorderDetails`.",
+      "`apps/reception/src/components/bar/ModalPreorderDetails.tsx` — `PreorderNightDetails`: checks `nightValue.breakfast?.startsWith(\"txn_\")` to decide whether to call `usePlacedPreorder`."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None. All open questions resolved.",
+      "Recommended next step": "`/lp-do-analysis brik-prime-breakfast-order-pipeline` — the bridge architecture is well-defined; analysis should compare atomic multi-path write vs. sequential write; display strategy is resolved as dual-field."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Prime write path (`onRequestPost`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Bridge write absent",
+        "Resolution Required": "Yes — TASK-03"
+      },
+      {
+        "Scope Area": "Bar screen read path (`PreorderButtons`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No data received; reads are correct",
+        "Resolution Required": "No code change needed on Reception side"
+      },
+      {
+        "Scope Area": "Comp screen modal (`ModalPreorderDetails`)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "txnId backref not written; falls to text fallback",
+        "Resolution Required": "Yes — fixed by TASK-03 backref write"
+      },
+      {
+        "Scope Area": "NightKey alignment",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Low risk; backref approach is robust",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Existing-orders display regression",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Will show txnId raw string without dual-field fix",
+        "Resolution Required": "Yes — TASK-03 (write `breakfastText`) + TASK-04 (read `breakfastText` in Prime UI)"
+      },
+      {
+        "Scope Area": "Schema parity (placedPreorderSchema vs PreorderButtonData)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "PreorderButtonData requires extra fields not in schema",
+        "Resolution Required": "Yes — bridge must write all required fields"
+      },
+      {
+        "Scope Area": "Test coverage",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "Bridge path untested; hooks untested",
+        "Resolution Required": "Yes — TASK-01, TASK-02, TASK-03 test extensions"
+      },
+      {
+        "Scope Area": "Month/day format parity",
+        "Coverage Confirmed": "No",
+        "Issues Found": "Format not unit-tested between apps",
+        "Resolution Required": "Yes — TASK-01"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Guest selects a service date and completes the wizard in the Prime app; presses \"Confirm order\".",
+      "end_condition": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Prime guest order write",
+          "flow": "Guest submits → `MealOrderPage.submitOrder()` → `POST /api/firebase/preorders` → `preorder/{guestUuid}/{nightKey}.breakfast` = pipe-delimited string",
+          "owners": "Prime CF Pages Function",
+          "evidence": "`apps/prime/functions/api/firebase/preorders.ts:220-226`",
+          "issues": "String is not a txnId; bar path is never written"
+        },
+        {
+          "id": null,
+          "label": "Bar screen read",
+          "flow": "`PreorderButtons` subscribes to `barOrders/{breakfastPreorders",
+          "owners": "evDrinkPreorders}/{monthName}/{day}/` via `onValue`",
+          "evidence": "Reception Firebase RTDB listener",
+          "issues": "`apps/reception/src/components/bar/orderTaking/preorder/PreorderButtons.tsx:387-392`"
+        },
+        {
+          "id": null,
+          "label": "Comp screen modal lookup",
+          "flow": "`ModalPreorderDetails` reads `nightValue.breakfast`, checks if it starts with `txn_`, then calls `usePlacedPreorder(type, monthName, dayStr, txnId)` to fetch `barOrders/.../txnId`",
+          "owners": "Reception hooks",
+          "evidence": "`apps/reception/src/components/bar/ModalPreorderDetails.tsx:84-103`",
+          "issues": "Text string fails `startsWith(\"txn_\")` check; falls through to raw text display"
+        },
+        {
+          "id": null,
+          "label": "NightKey derivation",
+          "flow": "Prime: position of matching `serviceDate` in existing preorders record → `nightKey`. Comp: `Math.floor((today - checkIn) / msPerDay) + 1`",
+          "owners": "Both apps independently",
+          "evidence": "`apps/prime/functions/api/firebase/preorders.ts:61-76`, `apps/reception/src/components/bar/CompScreen.tsx:33-44`",
+          "issues": "Alignment unverified for multi-night guests"
+        }
+      ]
+    }
+  }
+}

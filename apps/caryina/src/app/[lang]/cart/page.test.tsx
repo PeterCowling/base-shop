@@ -48,6 +48,9 @@ describe("CartPage", () => {
     render(<CartPage />);
     expect(screen.getByText("Silver Ring")).toBeInTheDocument();
     expect(screen.getByText("2")).toBeInTheDocument();
+    expect(
+      screen.getByText(/eligible online consumer orders normally include a 14-day cancellation right/i),
+    ).toBeInTheDocument();
   });
 
   it("TC-03: decrements quantity when minus is clicked", () => {

@@ -211,7 +211,6 @@
     "src/**/*.json",
     "../../packages/i18n/dist/**/*.json",
     "../../packages/themes/*/src/**/*.ts",
-    ".next/types/**/*.ts",
     "jest.env.ts"
   ],
   "exclude": [

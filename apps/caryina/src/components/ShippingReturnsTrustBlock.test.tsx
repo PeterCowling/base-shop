@@ -21,7 +21,8 @@ jest.mock("next/link", () => ({
 
 const DEFAULT_PROPS = {
   shippingSummary: "Dispatch policy: Delivery estimated at checkout",
-  returnsSummary: "Returns policy: 30-day free exchange on any order",
+  returnsSummary:
+    "Returns policy: Eligible online orders normally include a 14-day cancellation right, and unused-item exchange requests may be handled within 30 days where stock allows.",
   lang: "en",
 };
 
@@ -31,7 +32,9 @@ describe("ShippingReturnsTrustBlock", () => {
     render(<ShippingReturnsTrustBlock {...DEFAULT_PROPS} />);
 
     expect(
-      screen.getByText("Free exchange within 30 days · Delivery estimated at checkout"),
+      screen.getByText(
+        "Delivery estimate shown at checkout · 14-day cancellation right on eligible online orders",
+      ),
     ).toBeInTheDocument();
   });
 
@@ -52,7 +55,7 @@ describe("ShippingReturnsTrustBlock", () => {
       screen.getByText("Dispatch policy: Delivery estimated at checkout"),
     ).toBeInTheDocument();
     expect(
-      screen.getByText("Returns policy: 30-day free exchange on any order"),
+      screen.getByText(DEFAULT_PROPS.returnsSummary),
     ).toBeInTheDocument();
   });
 

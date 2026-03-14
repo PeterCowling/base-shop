@@ -86,7 +86,6 @@ GitHub Environments provide deployment URLs and optional protection rules. Confi
 
 - **Used by:** brikette, business-os, cms, prime, product-pipeline, skylar (via `ci.yml` or app-specific workflows)
 - **Triggers:** Push to `main` branch (auto-deploy after CI passes)
-- **Exception:** Brikette production requires manual `workflow_dispatch` with `publish_to_production: true`
 
 ### staging
 
@@ -96,7 +95,7 @@ GitHub Environments provide deployment URLs and optional protection rules. Confi
 ### staging-pages
 
 - **Used by:** brikette (static export to Cloudflare Pages free tier)
-- **Triggers:** Push to `main` or `staging` branch
+- **Triggers:** Push to `staging` branch after a merge that changes Brikette deploy-surface files
 
 ### xa-staging
 

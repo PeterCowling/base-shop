@@ -39,6 +39,7 @@ Do not embed long templates, long checklists, or API payload blocks here.
 - Evidence first: non-trivial claims require explicit pointers.
 - Unknowns must include a concrete verification path.
 - Omit sections with no evidence, or collapse to a one-line `Not investigated: <reason>`.
+- Process-affecting work must capture the current process map area by area. A touched-file list is not enough when the change alters CI/deploy/release lanes, approvals, orchestration, lifecycle states, or multi-step operator flows.
 - Keep signal high:
   - max 10 key files/modules in primary evidence list
   - max 10 risks
@@ -134,6 +135,22 @@ For `Execution-Track: code | mixed`, also load:
 - `../_shared/engineering-coverage-matrix.md`
 
 Use it to fill `## Engineering Coverage Matrix` in the artifact with explicit `Required` / `N/A` treatment for every canonical row.
+
+## Phase 5.4: Current Process Map (Non-omittable)
+
+Before rehearsal, write `## Current Process Map` in the fact-find draft.
+
+This section may be a single line `None: local code path only` only when the work does not change any multi-step process, workflow, lifecycle state, CI/deploy/release lane, approval path, or operator runbook.
+
+For process-affecting work, map the current state area by area:
+- trigger/start condition
+- step-by-step current flow
+- owners/systems/handoffs
+- end condition
+- known issues already visible in current state
+- evidence refs for each area
+
+If you cannot explain the current process end-to-end from trigger to end state, the fact-find is not ready for analysis. Expand the investigation first.
 
 ## Phase 5.5: Scope Rehearsal
 
@@ -302,6 +319,7 @@ Status-dependent next action (execute immediately, do not wait for user):
 - [ ] Only relevant module(s) loaded
 - [ ] Scope signal classified (`constrained`, `right-sized`, or `limited-thinking`) with evidence-backed rationale
 - [ ] `## Outcome Contract` present and populated (dispatch payload or trigger frontmatter; fallback `Why: TBD`, `Source: auto` when unavailable)
+- [ ] `## Current Process Map` present (or explicit `None: local code path only`)
 - [ ] For code/mixed work, `## Engineering Coverage Matrix` present with all canonical rows
 - [ ] Outcome A evidence gap review completed and recorded
 - [ ] lp-do-factcheck run if fact-find contains codebase claims (file paths, function names, coverage assertions)

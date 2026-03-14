@@ -101,11 +101,18 @@ export function buildThreadSendConflictMessage(thread: PrimeMessageThreadRow): s
 export function resolveSentMessageKind(
   thread: PrimeMessageThreadRow,
 ): PrimeMessageRecordRow['kind'] {
+  // 'activity' correctly returns 'support' via this else-branch; no new case needed.
   return thread.channel_type === 'broadcast' ? 'promotion' : 'support';
 }
 
 export function resolveSentAdmissionReason(thread: PrimeMessageThreadRow): string {
-  return thread.channel_type === 'broadcast' ? 'staff_broadcast_send' : 'staff_direct_send';
+  if (thread.channel_type === 'broadcast') {
+    return 'staff_broadcast_send'; // i18n-exempt -- PRIME-101 [ttl=2026-12-31]
+  }
+  if (thread.channel_type === 'activity') {
+    return 'staff_activity_send'; // i18n-exempt -- PRIME-101 [ttl=2026-12-31]
+  }
+  return 'staff_direct_send'; // i18n-exempt -- PRIME-101 [ttl=2026-12-31]
 }
 
 export function getCurrentReviewDraft(drafts: PrimeMessageDraftRow[]): PrimeMessageDraftRow | null {

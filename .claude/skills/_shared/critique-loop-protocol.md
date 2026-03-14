@@ -1,6 +1,6 @@
 # Critique Loop Protocol (Shared)
 
-Used by `lp-do-fact-find` (Phase 7a, fact-find mode) and `lp-do-plan` (Phase 9, plan mode).
+Used by `lp-do-fact-find` (Phase 7a, fact-find mode), `lp-do-analysis` (Phase 7, analysis mode), and `lp-do-plan` (Phase 9, plan mode).
 
 ## Pre-Critique Factcheck Gate
 
@@ -11,7 +11,7 @@ Before Round 1, evaluate whether `/lp-do-factcheck` should run. Run it if the ar
 
 > **Fact-find mode:** Also check for architecture descriptions referencing actual code structure. Skip factcheck if the artifact is purely business/hypothesis-based with no codebase claims.
 
-> **Plan mode:** Items also include "Test coverage or CI behavior assertions". This check may run before Round 1 or between rounds if critique surfaces factual claim issues — use judgment on timing.
+> **Plan / Analysis mode:** Items also include "Test coverage or CI behavior assertions". This check may run before Round 1 or between rounds if critique surfaces factual claim issues — use judgment on timing.
 
 ## Critique Route Selection
 
@@ -86,6 +86,11 @@ Before each round after the first: revise the artifact to address prior-round fi
 - `partially credible` (2.6–2.9 or 3.0–3.5) → set `Status: Draft`, block auto-build, recommend `/lp-do-replan`.
 - `credible` (3.6–3.9 or score ≥ 4.0) → proceed normally.
 - Ordering: runs after Phase 8 (persist), before Phase 10 (build handoff). Re-evaluate build eligibility after autofixes.
+
+**Analysis mode:**
+- `not credible` (score ≤ 2.5) → set `Status: Draft`, block planning handoff, recommend revising `/lp-do-analysis` or returning to `/lp-do-fact-find`.
+- `partially credible` (2.6–2.9 or 3.0–3.5) → set `Status: Draft`, block planning handoff, recommend revising `/lp-do-analysis`.
+- `credible` (3.6–3.9 or score ≥ 4.0) → proceed normally.
 
 ## Idempotency (Fact-Find Mode Only)
 

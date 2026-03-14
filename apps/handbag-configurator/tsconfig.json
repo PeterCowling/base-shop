@@ -52,8 +52,7 @@
   },
   "include": [
     "next-env.d.ts",
-    "src/**/*",
-    ".next/types/**/*.ts"
+    "src/**/*"
   ],
   "exclude": [
     ".next/types/server.d.ts",

@@ -7,7 +7,9 @@ import {
   isBroadcastChannelId,
   isDirectMessageChannelId,
   isStaffThreadChannelId,
+  WHOLE_HOSTEL_BROADCAST_CHANNEL_ID,
 } from '../directMessageChannel';
+
 
 describe('directMessageChannel', () => {
   it('builds deterministic channel IDs regardless of input order', () => {
@@ -38,6 +40,16 @@ describe('directMessageChannel', () => {
     expect(channelId).toBe('broadcast_whole_hostel');
     expect(isBroadcastChannelId(channelId)).toBe(true);
     expect(getPrimeMessageChannelKind(channelId)).toBe('broadcast');
+  });
+
+  it('exports WHOLE_HOSTEL_BROADCAST_CHANNEL_ID with the correct stable value', () => {
+    // TC-01: exported constant must equal 'broadcast_whole_hostel'
+    expect(WHOLE_HOSTEL_BROADCAST_CHANNEL_ID).toBe('broadcast_whole_hostel');
+    // Must be consistent with buildBroadcastChannelId helper
+    expect(WHOLE_HOSTEL_BROADCAST_CHANNEL_ID).toBe(buildBroadcastChannelId('whole_hostel'));
+    // Must be detected as a broadcast channel
+    expect(isBroadcastChannelId(WHOLE_HOSTEL_BROADCAST_CHANNEL_ID)).toBe(true);
+    expect(getPrimeMessageChannelKind(WHOLE_HOSTEL_BROADCAST_CHANNEL_ID)).toBe('broadcast');
   });
 
   it('checks whether a direct channel includes a specific guest UUID', () => {

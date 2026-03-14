@@ -3,11 +3,11 @@
   "private": true,
   "scripts": {
     "pretypecheck": "pnpm --filter @acme/pipeline-engine build && pnpm --filter @acme/ui build",
-    "dev": "next dev --webpack -p 3012",
+    "dev": "bash ../../scripts/dev/run-next-app.sh --port 3014 -- --webpack",
     "build": "next build --webpack",
-    "start": "next start -p 3012",
+    "start": "next start -p 3014",
     "lint": "echo 'Lint temporarily disabled - see eslint.config.mjs ignores'",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "bash ../../scripts/dev/run-next-app.sh --mode typecheck --port 3014 -- pnpm exec tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs"
   },
   "dependencies": {

@@ -117,6 +117,7 @@ When baseline/brief is stale or missing, output must include:
 4. Each P1/P2 candidate must include acceptance criteria and evidence refs.
 5. If confidence is low on a claim, mark it explicitly and attach a validation test.
 6. In Image-First Merchandising Auto-Mode, never ship generic visual advice; require measurable media contracts for homepage, PLP, PDP, and mobile gallery behavior.
+7. For any customer-facing website build or upgrade, include a legal/compliance baseline in the brief or handoff packet: required policy pages for the business model/jurisdictions, disclosed business identity/contact surface, consent-management surface for non-essential tracking, and storefront promise-copy alignment against those policies.
 
 ## Output Contract
 
@@ -138,6 +139,7 @@ Must include:
 - best-of synthesis matrix
 - exemplar image shot-board (required when Image-First Merchandising Auto-Mode is active)
 - website and technical implications
+- legal/compliance website baseline when customer-facing commerce, lead capture, or tracking is present
 - image-heavy launch contract with measurable acceptance criteria (required when Image-First Merchandising Auto-Mode is active)
 - prioritized backlog candidates
 - open questions
@@ -149,6 +151,7 @@ Must include:
 - candidate backlog table with priority, rationale, acceptance criteria, dependencies
 - mapping from each item to outcome and decision link
 - unresolved decisions requiring user input
+- explicit legal/compliance backlog items when policy pages, consent management, business disclosure, or storefront-policy alignment are missing
 
 ## Red Flags (Invalid Run)
 

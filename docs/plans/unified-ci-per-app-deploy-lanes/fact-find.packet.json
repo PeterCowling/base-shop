@@ -1,0 +1,180 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "unified-ci-per-app-deploy-lanes",
+  "source_artifact_path": "docs/plans/unified-ci-per-app-deploy-lanes/fact-find.md",
+  "source_artifact_status": "Draft",
+  "source_last_updated": null,
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/unified-ci-per-app-deploy-lanes/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The current CI setup is fragmented: validation is duplicated across ci.yml, reusable-app.yml, and per-app workflows. A Brikette-only fix created new duplication instead of reducing it. The operator wants the simplest possible model: one validation workflow, thin deploy workflows, merge-only staging and main.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All apps share one validation workflow (ci.yml) on dev/PR and thin per-app deploy workflows on staging/main, with no validation duplication, no workflow_dispatch, and path-gated skip-if-unchanged semantics.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No product UI changes. Workflow/infra only.",
+      "gap_or_implication": "None.",
+      "carry_forward_or_notes": "N/A"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Branch-to-workflow behavior defines the operator/agent interaction model. Current model is fragmented across 10+ workflow files with inconsistent trigger/deploy semantics.",
+      "gap_or_implication": "Multiple mental models needed to understand which workflow does what for which app.",
+      "carry_forward_or_notes": "Simplify to two clear layers: ci.yml validates, per-app deploys."
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Deploy lanes rely on GitHub branch flow, secrets, SOPS decryption. workflow_dispatch creates additional privileged execution paths.",
+      "gap_or_implication": "Extra manual publish paths increase attack surface.",
+      "carry_forward_or_notes": "Remove workflow_dispatch; keep branch-driven, PR-gated deploys only."
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "CI job logs are the primary visibility surface. Multiple workflows for the same app split visibility.",
+      "gap_or_implication": "Hard to determine which workflow ran for a given commit when 2-3 fire simultaneously.",
+      "carry_forward_or_notes": "One validation workflow + one deploy workflow per app = clear audit trail."
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "ci.yml runs turbo --affected for lint/typecheck/test. Per-app workflows duplicate this. Some app-specific validation (CMS sharding, prime firebase gate, reception firebase rules) exists only in per-app or reusable-app workflows.",
+      "gap_or_implication": "App-specific validations may not be covered by turbo --affected. Must verify before removing.",
+      "carry_forward_or_notes": "Decide whether app-specific gates move to ci.yml or remain in thin deploy workflows."
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Workflow triggers, path filters, merge-gate scopeWorkflowMap, and filter-config.ts define the release contracts.",
+      "gap_or_implication": "Contracts are spread across 10+ files. merge-gate is the critical coupling point.",
+      "carry_forward_or_notes": "Consolidate; update merge-gate and filter-config atomically."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Validation duplication doubles CI minutes for shared-package changes. reusable-app checkout retry logic suggests reliability issues.",
+      "gap_or_implication": "Duplicate validation wastes CI minutes and increases failure surface.",
+      "carry_forward_or_notes": "Remove duplicate validation; keep checkout retries only where needed."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Current branch scripts (ship-to-staging.sh, promote-to-main.sh) already enforce PR-based promotion.",
+      "gap_or_implication": "Workflow file changes are reversible via git revert. Merge-gate update must be atomic with workflow changes.",
+      "carry_forward_or_notes": "Phase the rollout: update ci.yml + one app first, verify, then extend."
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Replace the current patchwork of per-app validation+deploy workflows with a clean two-layer model: (1) `ci.yml` as the single validation workflow for all apps on dev/PR, running turbo lint/typecheck/test --affected; (2) thin per-app deploy-only workflows on staging/main that build and publish when relevant paths changed, with no lint/typecheck/test and no workflow_dispatch. This extends the Brikette-only CI simplification to every deployable app and fixes issues found in that implementation.",
+    "goals": [
+      "Eliminate validation duplication: ci.yml owns all lint, typecheck, and test for every app on dev/PR.",
+      "Each deployable app gets a thin deploy workflow: detect changes, build, deploy. Triggered only on staging/main push.",
+      "\"Nothing changed, nothing to do\" for both validation (turbo --affected) and deploy (path-gated skip).",
+      "Remove workflow_dispatch from all app deploy workflows.",
+      "Staging and main are merge-only lanes — no manual publish entrypoint.",
+      "Add staging deploy capability to apps that lack it (caryina, reception, business-os)."
+    ],
+    "non_goals": [
+      "Redesign application code, static-export architecture, or Cloudflare Pages project structure.",
+      "Change the dev → staging → main branch promotion policy or scripts.",
+      "Add new testing frameworks or CI tooling beyond what already exists.",
+      "Modify non-app workflows (storybook, consent-analytics, lighthouse, cypress)."
+    ],
+    "constraints": [
+      "Tests run in CI only — no local Jest/e2e execution (existing policy).",
+      "Merge-gate.yml must continue to function — it watches specific workflow file IDs.",
+      "Ship-to-staging.sh and promote-to-main.sh scripts must remain compatible.",
+      "Per-app deploy secrets, environment variables, and health-check scripts must be preserved.",
+      "Static export workarounds (route-hide/restore) must be preserved for apps that need them."
+    ],
+    "assumptions": [
+      "\"Changed code\" = what's in the push and its affected workspace/dependency surface.",
+      "Current Pages staging hosts are sufficient for MCP and Playwright agent tooling.",
+      "ci.yml's existing turbo --affected lint/typecheck/test is the correct foundation — no per-app validation is needed beyond it."
+    ],
+    "key_entry_points": [
+      "`.github/workflows/ci.yml` — core validation: turbo lint/typecheck/test --affected on dev/PR pushes",
+      "`.github/workflows/reusable-app.yml` — 845-line shared app pipeline with validation, test sharding, deploy",
+      "`.github/workflows/brikette.yml` — standalone Brikette validation + deploy (recently rewritten, duplicates ci.yml)",
+      "`.github/workflows/cms.yml` — standalone CMS lint/typecheck/test + deploy",
+      "`.github/workflows/xa.yml` — standalone XA lint/typecheck/test + deploy",
+      "`.github/workflows/merge-gate.yml` — PR merge gating: watches per-app workflow completion",
+      "`scripts/src/ci/filter-config.ts` — path filter configs for ci.yml, merge-gate, lighthouse"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "ci.yml validation coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Per-app workflow inventory",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "reusable-app.yml analysis",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Merge gate dependency",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "auto-pr.yml workflow dispatch dependency",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Scope gap resolved] auto-pr.yml dispatches brikette.yml by workflow_id — must be accounted for when removing workflow_dispatch",
+        "Resolution Required": "No — documented in resolved questions and risks"
+      },
+      {
+        "Scope Area": "App-specific validation gates",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Scope gap] [Moderate]: CMS 4-shard test, prime firebase cost gate, and reception firebase rules test are not covered by turbo --affected. Must decide where these move.",
+        "Resolution Required": "Yes — resolved below"
+      },
+      {
+        "Scope Area": "Deploy type mapping (Pages vs Worker)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Branch promotion scripts",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Path filter config",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

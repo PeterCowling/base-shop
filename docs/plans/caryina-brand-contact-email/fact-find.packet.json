@@ -1,0 +1,231 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "caryina-brand-contact-email",
+  "source_artifact_path": "docs/plans/caryina-brand-contact-email/fact-find.md",
+  "source_artifact_status": "Needs-input",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "A fashion brand's only customer contact email being a hostel Gmail address damages",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Caryina uses a dedicated brand email address on its own",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "Support page renders hardcoded email at `support/page.tsx:80-82`; success page renders via CONTACT_EMAIL",
+      "gap_or_implication": "Support page bypass of constant is a pre-existing bug",
+      "carry_forward_or_notes": "Yes — fix hardcoding in support/page.tsx"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "No state logic involved",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "CONTACT_EMAIL appears in Privacy Policy as the GDPR data-rights contact address — must be a monitored, responsive address",
+      "gap_or_implication": "If new address is unmonitored, privacy rights requests go unacknowledged — a GDPR compliance risk",
+      "carry_forward_or_notes": "Yes — operator must confirm monitoring"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No logging changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "`route.test.ts:53` has email hardcoded — will break after change",
+      "gap_or_implication": "Test must be updated",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`site-content.generated.json:164` hardcodes the email in prose — separate from constant",
+      "gap_or_implication": "Generated file must be updated",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "String constant change; no performance implications",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Low risk rollout; rollback is updating the constant value. Key dependency: new email must be live and monitored before deploying",
+      "gap_or_implication": "If new email is dead on deploy, returns and privacy requests are silently lost",
+      "carry_forward_or_notes": "Yes"
+    }
+  ],
+  "open_operator_questions": [
+    "What should the brand email address be?"
+  ],
+  "stage_payload": {
+    "scope_summary": "The customer-facing contact email for Caryina is `hostelpositano@gmail.com` — the email address of the Brikette hostel business, not a Caryina brand email. This appears on the support page, in four legal policy documents (Terms, Privacy, Returns, Cookie Policy), in order-confirmation emails sent to customers, and in the returns-request system email. The fix has two components: (1) a business decision — what the brand email address should be and how it is routed; and (2) a code change — updating the constant, fixing a hardcoded occurrence on the support page that is not wired to the constant, a",
+    "goals": [
+      "Replace `hostelpositano@gmail.com` with a brand email across all customer-facing surfaces.",
+      "Fix the `support/page.tsx` hardcoding to use the centralised `CONTACT_EMAIL` constant",
+      "Update **both** tracked copies of the generated site-content JSON — `contentPacket.ts`",
+      "Update `COMPANY_WEBSITE` from `https://hostel-positano.com` to `https://caryina.com`",
+      "Recommend an env-var approach so the email is configurable without code deploys; use a",
+      "Surface the `MERCHANT_NOTIFY_EMAIL` gap for the operator to address in the same pass."
+    ],
+    "non_goals": [
+      "Setting up or migrating the email delivery infrastructure (SMTP/Resend) — this is",
+      "Changing the legal entity details (Skylar SRL, VAT number, registered address) — those"
+    ],
+    "constraints": [
+      "`CONTACT_EMAIL` is a compile-time constant in `legalContent.ts`. Until an env-var",
+      "`caryina.com` is already the brand domain used in sitemap, robots, and notification"
+    ],
+    "assumptions": [
+      "The operator controls or can set up email forwarding on `caryina.com` (this is an",
+      "A simple email forward (e.g. `hello@caryina.com` → personal Gmail) is acceptable as"
+    ],
+    "key_entry_points": [
+      "`apps/caryina/src/lib/legalContent.ts:25` — `CONTACT_EMAIL` constant, single source of truth for all policy documents",
+      "`apps/caryina/src/app/[lang]/support/page.tsx:80-82` — support page hardcodes the email directly (not via constant)"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "**Status": "Needs-input**"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "`legalContent.ts` constant",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`support/page.tsx` hardcoding",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Correctness] [Major]: hardcoded email bypasses constant — won't update with constant change",
+        "Resolution Required": "Yes — explicit task in seeds"
+      },
+      {
+        "Scope Area": "Policy documents (Terms, Privacy, Returns, Cookie)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — all use constant",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`notifications.server.ts` (order confirmation emails)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — uses constant",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`returns-request/route.ts` (inbound returns `to:` address)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — uses constant; monitoring risk noted",
+        "Resolution Required": "No (monitoring risk in risks table)"
+      },
+      {
+        "Scope Area": "`success/page.tsx` (post-purchase page)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — uses constant",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`site-content.generated.json` (generated EN copy)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Correctness] [Minor]: hardcoded prose string not via constant",
+        "Resolution Required": "Yes — explicit task in seeds"
+      },
+      {
+        "Scope Area": "`route.test.ts` test",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Testing] [Major]: hardcoded expected email will fail after constant change",
+        "Resolution Required": "Yes — explicit task in seeds"
+      },
+      {
+        "Scope Area": "`MERCHANT_NOTIFY_EMAIL` (ops email)",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Correctness] [Minor]: defaults to personal Gmail in prod",
+        "Resolution Required": "Advisory — operator env var action"
+      },
+      {
+        "Scope Area": "Email routing on `caryina.com`",
+        "Coverage Confirmed": "No — operator knowledge required",
+        "Issues Found": "[Unknowns] [Blocking]: cannot verify without operator confirmation",
+        "Resolution Required": "Yes — blocking open question"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "A customer visits the support page, receives an order confirmation, submits",
+      "end_condition": "Customer sees or receives `hostelpositano@gmail.com` as the brand contact.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Support page",
+          "flow": "Customer navigates to `/[lang]/support` → page renders with hardcoded `hostelpositano@gmail.com` as `href` and display text",
+          "owners": "`apps/caryina/src/app/[lang]/support/page.tsx:80-82`",
+          "evidence": "`support/page.tsx:80-82`",
+          "issues": "Email is hardcoded in JSX, not using `CONTACT_EMAIL` constant — will not auto-update when constant is changed"
+        },
+        {
+          "id": null,
+          "label": "Legal policies",
+          "flow": "`CONTACT_EMAIL` constant imported from `legalContent.ts` and interpolated into Terms, Privacy, Returns, Cookie Policy text",
+          "owners": "`legalContent.ts:25, 45, 137, 270, 373`",
+          "evidence": "`legalContent.ts`",
+          "issues": "Single constant controls all four policy documents — updating the constant updates all four"
+        },
+        {
+          "id": null,
+          "label": "Order confirmation emails",
+          "flow": "`notifications.server.ts` imports `CONTACT_EMAIL` and includes it in the customer-facing confirmation email body",
+          "owners": "`notifications.server.ts:96`",
+          "evidence": "`notifications.server.ts`",
+          "issues": "Updates automatically with constant"
+        },
+        {
+          "id": null,
+          "label": "Returns-request flow",
+          "flow": "Customer submits returns form → system emails customer (confirming receipt) and emails merchant (to action the request) at `CONTACT_EMAIL`",
+          "owners": "`returns-request/route.ts:70, 82`",
+          "evidence": "`route.ts:82`",
+          "issues": "Returns go to the hostel Gmail; correct address needed to reach the Caryina operator"
+        },
+        {
+          "id": null,
+          "label": "Generated site content",
+          "flow": "`site-content.generated.json` channels EN copy includes `hostelpositano@gmail.com` hardcoded as human-readable text",
+          "owners": "`data/shops/caryina/site-content.generated.json:164`",
+          "evidence": "Generated file",
+          "issues": "Requires regeneration or direct edit to update"
+        },
+        {
+          "id": null,
+          "label": "Merchant ops alerts",
+          "flow": "Checkout anomalies and notify-me captures sent to `MERCHANT_NOTIFY_EMAIL` env var, defaulting to `peter.cowling1976@gmail.com`",
+          "owners": "`checkoutReconciliation.server.ts:22`, `notify-me/route.ts:46`",
+          "evidence": "`.env.example:17`",
+          "issues": "Not customer-facing but not a brand address; requires env var in production to override"
+        }
+      ]
+    }
+  }
+}

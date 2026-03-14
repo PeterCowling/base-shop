@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: Platform / Business-OS
 Workstream: Engineering
 Created: 2026-02-15
@@ -95,7 +95,7 @@ See `## Tasks` section for the active task list.
 | TASK-10 | IMPLEMENT | Migrate legacy fact-finding docs/links to fact-find (rename + reference updates) | 82% | M | Complete (2026-02-15) | TASK-03, TASK-04 | TASK-11 |
 | TASK-11 | CHECKPOINT | Horizon checkpoint: validate alias usage drop + lint coverage before removing compatibility support | 95% | S | Complete (2026-02-15) | TASK-02, TASK-05, TASK-06, TASK-07, TASK-08, TASK-10 | TASK-12 |
 | TASK-12 | IMPLEMENT | Window end (operational): disable aliases + dual-read via config (code path remains for rollback) | 85% | S | Complete (2026-02-15) | TASK-11 | TASK-13 |
-| TASK-13 | IMPLEMENT | Later cleanup (code hygiene): remove dead alias/dual-read code + remove allowlists | 75% ⚠️ | M | Deferred (earliest 2026-02-22) | TASK-12, TASK-14 | - |
+| TASK-13 | IMPLEMENT | Later cleanup (code hygiene): remove dead alias/dual-read code + remove allowlists | 75% ⚠️ | M | Complete (2026-03-12) | TASK-12, TASK-14 | - |
 | TASK-14 | INVESTIGATE | Stability gate: confirm post-cutoff alias/legacy usage is zero (telemetry + repo audit) | 85% | S | Complete (2026-02-15) | TASK-12 | TASK-13 |
 
 > Effort scale: S=1, M=2, L=3 (used for Overall-confidence weighting)
@@ -583,9 +583,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - **Rollout / rollback:**
   - Rollout: only after stability period following TASK-12.
   - Rollback: revert commit/PR.
-- **Status:** Deferred
-  - Earliest re-evaluation: 2026-02-22 (7 days after 2026-02-15T00:00Z cutoff).
-  - Gate evidence lives in `docs/plans/startup-loop-contract-hardening/replan-notes.md` (GO/NO-GO).
+- **Status:** Complete (2026-03-12)
+  - Removed: `contract-migration.ts`, `contract-migration.generated.ts`, `stage-doc-paths.ts`, `generate-contract-migration.mjs`
+  - Cleaned: alias normalization from stage-doc route handlers, dual-read from lane-transitions and repo-reader, SQ-15 allowlist from lint, expired YAML config sections
+  - Typecheck: pass. SQ-15 lint: pass.
 
 #### Re-plan Update (2026-02-15)
 - **Previous confidence:** 75%
@@ -615,10 +616,10 @@ Execution waves for subagent dispatch. Tasks within a wave can run in parallel.
 - Headers: optional `x-bos-stage-normalized` for operator visibility.
 
 ## Acceptance Criteria (overall)
-- [ ] `bash scripts/check-startup-loop-contracts.sh` passes with 0 warnings.
-- [ ] Stage-doc API accepts aliases during the window and normalizes to canonical; rejects after window end.
-- [ ] No skills emit legacy stage keys for writes.
-- [ ] Canonical contract docs references resolve.
+- [x] `bash scripts/check-startup-loop-contracts.sh` passes with 0 warnings.
+- [x] Stage-doc API accepts aliases during the window and normalizes to canonical; rejects after window end.
+- [x] No skills emit legacy stage keys for writes.
+- [x] Canonical contract docs references resolve.
 
 ## Decision Log
 - 2026-02-15: Chose alias-and-migrate with config-driven cutoffs and deterministic precedence (canonical wins).

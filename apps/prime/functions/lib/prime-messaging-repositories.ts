@@ -12,7 +12,7 @@ import type {
 } from '../../src/types/messenger/chat';
 import type { Role } from '../../src/types/messenger/roles';
 
-export const primeMessagingChannelTypes = ['direct', 'broadcast'] as const;
+export const primeMessagingChannelTypes = ['direct', 'broadcast', 'activity'] as const;
 export type PrimeMessagingChannelType = (typeof primeMessagingChannelTypes)[number];
 
 export const primeMessagingTakeoverStates = ['automated', 'staff_active', 'suppressed'] as const;

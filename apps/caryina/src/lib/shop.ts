@@ -60,9 +60,16 @@ export async function readShopCurrency(): Promise<string> {
   }
 }
 
-export function formatMoney(minorAmount: number, currency: string): string {
+const LOCALE_TO_INTL: Record<string, string> = {
+  en: "en-IE",
+  de: "de-DE",
+  it: "it-IT",
+};
+
+export function formatMoney(minorAmount: number, currency: string, locale?: string): string {
+  const intlLocale = LOCALE_TO_INTL[locale ?? "en"] ?? "en-IE";
   try {
-    return new Intl.NumberFormat("en-US", {
+    return new Intl.NumberFormat(intlLocale, {
       style: "currency",
       currency: currency.toUpperCase(),
       maximumFractionDigits: 2,

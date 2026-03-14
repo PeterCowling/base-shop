@@ -77,10 +77,34 @@ const PRIME_BROADCAST_CHANNEL_ADAPTER: InboxChannelAdapter = {
   },
 };
 
+const PRIME_ACTIVITY_CHANNEL_ADAPTER: InboxChannelAdapter = {
+  channel: "prime_activity",
+  channelLabel: "Activity chat",
+  lane: "support",
+  reviewMode: "message_draft",
+  capabilities: {
+    supportsSubject: false,
+    supportsRecipients: false,
+    supportsHtml: false,
+    supportsDraftMutations: true,
+    supportsDraftSave: true,
+    supportsDraftRegenerate: false,
+    supportsDraftSend: true,
+    supportsThreadMutations: true,
+    subjectLabel: "Subject",
+    recipientLabel: "Audience",
+    bodyLabel: "Message",
+    bodyPlaceholder: "Write a message to all activity participants.",
+    sendLabel: "Send message",
+    readOnlyNotice: "Activity chat — read and reply supported. No individual guest targeting.",
+  },
+};
+
 const CHANNEL_ADAPTERS: Record<InboxChannel, InboxChannelAdapter> = {
   email: EMAIL_CHANNEL_ADAPTER,
   prime_direct: PRIME_DIRECT_CHANNEL_ADAPTER,
   prime_broadcast: PRIME_BROADCAST_CHANNEL_ADAPTER,
+  prime_activity: PRIME_ACTIVITY_CHANNEL_ADAPTER,
 };
 
 export function resolveInboxChannelAdapter(channel: unknown): InboxChannelAdapter {

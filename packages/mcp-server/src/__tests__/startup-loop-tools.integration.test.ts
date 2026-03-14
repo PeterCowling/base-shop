@@ -378,7 +378,7 @@ function setupStartupLoopIntegrationEnvironment() {
 
   beforeEach(async () => {
     tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "mcp-startup-loop-integration-"));
-    process.env.BOS_AGENT_API_BASE_URL = "http://localhost:3020";
+    process.env.BOS_AGENT_API_BASE_URL = "http://localhost:3022";
     process.env.BOS_AGENT_API_KEY = "bos_test_key_1234567890";
     process.env.STARTUP_LOOP_ARTIFACT_ROOT = tempRoot;
     process.env.STARTUP_LOOP_STALE_THRESHOLD_SECONDS = "2592000";

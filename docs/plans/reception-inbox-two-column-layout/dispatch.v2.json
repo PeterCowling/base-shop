@@ -22,7 +22,7 @@
   "current_truth": "The inbox shows either email threads or Prime messaging threads in a single list. Staff have to switch between views to manage both channels, losing context when toggling back and forth.",
   "next_scope_now": "Redesign the inbox workspace into a two-column layout: email threads on the left, Prime messaging on the right. Both columns independently scrollable with their own thread lists and detail views.",
   "recommended_route": "lp-do-fact-find",
-  "status": "fact_find_ready",
+  "status": "complete",
   "priority": "P2",
   "confidence": 0.8,
   "evidence_refs": [
@@ -32,7 +32,7 @@
     "coverage-hint: UX"
   ],
   "created_at": "2026-03-12T16:00:00.000Z",
-  "queue_state": "enqueued",
+  "queue_state": "processed",
   "why": "Reception staff manage both guest emails and Prime campaign messages throughout the day. Currently they have to switch between separate views, which means they lose sight of one channel while working on the other. A side-by-side layout lets them see everything at once and respond faster.",
   "intended_outcome": {
     "type": "operational",

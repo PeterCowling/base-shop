@@ -26,11 +26,21 @@ Load this module when the current transition touches SELL-01 strategy design, SE
 
 **Rationale**: Channel spend before working measurement is structurally invalid. CAC, CVR, and channel performance cannot be evaluated if key conversion events are not firing in production.
 
-**Rule — all three checks must pass**:
+**Rule — all four checks must pass**:
 1. Measurement verification artifact exists with `Status: Active`:
    `docs/business-os/strategy/<BIZ>/*measurement-verification*.user.md`
 2. No active measurement risks at `Severity: High` or `Severity: Critical` in `plan.user.md`.
 3. Key conversion-intent events are verified firing in production (non-zero in the locked 7-day baseline or a subsequent verified period).
+4. A rendered sales funnel audit artifact exists at `docs/business-os/strategy/<BIZ>/sales/YYYY-MM-DD-*-sales-funnel-rendered-audit.user.md` with:
+   - `Type: Sales-Funnel-Audit`
+   - `Business: <BIZ>`
+   - `Status: Active`
+   - `Viewport-Scope: mobile, fullscreen`
+   - `Rendered-Evidence: required`
+   - `Activation-Decision: Pass`
+   - `Activation-Blockers-High: 0`
+   - `Activation-Blockers-Critical: 0`
+   - `Date:` within the prior 30 days
 
 ```bash
 # Check 1: measurement verification doc exists and is Active
@@ -41,11 +51,16 @@ grep -i "measurement" docs/business-os/strategy/<BIZ>/plan.user.md | grep -iE "s
 
 # Check 3: conversion events non-zero (begin_checkout, add_to_cart, or equivalent)
 grep -iE "begin_checkout|add_to_cart|conversion" docs/business-os/strategy/<BIZ>/plan.user.md | grep -v "| 0$\\|0.00%\\| 0 "
+
+# Check 4: latest rendered sales funnel audit passes activation readiness
+ls docs/business-os/strategy/<BIZ>/sales/*sales-funnel*audit*.user.md 2>/dev/null | tail -n 1
+grep -E "^(Type|Business|Status|Viewport-Scope|Rendered-Evidence|Activation-Decision|Activation-Blockers-High|Activation-Blockers-Critical|Date):" \
+  docs/business-os/strategy/<BIZ>/sales/*sales-funnel*audit*.user.md 2>/dev/null | tail -n 9
 ```
 
 **When blocked**:
-- Blocking reason: `GATE-SELL-ACT-01: Decision-grade measurement signal not verified. Channel spend before working measurement is waste.`
-- Next action: `Resolve active measurement risks, verify conversion events firing in production, and update measurement-verification artifact to Status: Active. Then re-run /startup-loop status --business <BIZ>.`
+- Blocking reason: `GATE-SELL-ACT-01: Decision-grade measurement and rendered funnel integrity are not both verified. Channel spend before a working, trustworthy funnel is waste.`
+- Next action: `Resolve active measurement risks, verify conversion events firing in production, run /lp-sell-funnel-audit --business <BIZ>, and ensure the latest audit passes with no High/Critical blockers. Then re-run /startup-loop status --business <BIZ>.`
 
 Surface this gate when the business moves from channel strategy completion (plan done) to channel activation planning (budget allocation, first ad spend). Strategy design output may be completed and persisted without triggering this gate.
 

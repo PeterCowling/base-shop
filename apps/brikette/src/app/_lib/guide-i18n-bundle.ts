@@ -45,12 +45,14 @@ export async function loadGuideI18nBundle(
   lang: AppLanguage,
   guideKey: GuideKey,
 ): Promise<GuideI18nBundle> {
-  // Populate i18n stores in the server render path before extracting.
-  await getTranslations(lang, ["guides"]);
+  // Populate i18n stores and fetch central bundle in parallel; extract only after store is populated.
+  const [, centralBundle] = await Promise.all([
+    getTranslations(lang, ["guides"]),
+    readCentralGuideBundle(lang, guideKey),
+  ]);
 
   const legacyGuides = extractGuideBundle(lang, guideKey);
   const legacyGuidesEn = lang === "en" ? undefined : extractGuideBundle("en", guideKey);
-  const centralBundle = await readCentralGuideBundle(lang, guideKey);
 
   if (!centralBundle) {
     return {

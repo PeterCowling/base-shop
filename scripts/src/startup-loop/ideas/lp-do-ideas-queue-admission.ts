@@ -22,6 +22,96 @@ const ARTIFACT_DOMAIN_VALUES = new Set([
   "BOS",
 ]);
 
+// ---------------------------------------------------------------------------
+// Semantic similarity helpers
+// ---------------------------------------------------------------------------
+
+const STOP_WORDS = new Set([
+  "a", "an", "the", "is", "are", "was", "were", "be", "been", "being",
+  "have", "has", "had", "do", "does", "did", "will", "would", "could",
+  "should", "may", "might", "can", "for", "of", "in", "on", "at", "to",
+  "from", "with", "by", "as", "that", "this", "it", "its", "not", "and",
+  "or", "but", "so", "when", "where", "how", "what", "which", "who",
+  "any", "all", "some", "no", "get", "got", "go", "just", "than", "they",
+  "their", "there", "then", "now", "more", "also", "even", "up", "out",
+  "into", "only", "already", "still", "too", "very", "if", "about",
+  "after", "before", "during", "need", "needs", "make", "use",
+]);
+
+/**
+ * Strips the leading "Business Name — " prefix that ideas carry
+ * (e.g., "Brikette — ", "XA — ", "Business OS — ").
+ */
+function stripBusinessPrefix(anchor: string): string {
+  return anchor.replace(/^[^—–\-]+[—–\-]\s*/, "").trim();
+}
+
+/**
+ * Returns the set of meaningful content words from an anchor string.
+ * Strips business prefix, lowercases, splits on non-word chars, and
+ * removes stop words and tokens shorter than 3 characters.
+ */
+export function extractContentWords(anchor: string): string[] {
+  const stripped = stripBusinessPrefix(anchor.toLowerCase());
+  return stripped
+    .split(/\W+/)
+    .filter((token) => token.length >= 3 && !STOP_WORDS.has(token));
+}
+
+/**
+ * Jaccard similarity over two word lists (treats each list as a set).
+ * Returns 0 if both are empty; 1 if both are empty (degenerate case handled
+ * before call-site).
+ */
+function jaccardSimilarity(wordsA: string[], wordsB: string[]): number {
+  const setA = new Set(wordsA);
+  const setB = new Set(wordsB);
+  let intersect = 0;
+  for (const word of setA) {
+    if (setB.has(word)) intersect += 1;
+  }
+  const union = setA.size + setB.size - intersect;
+  return union === 0 ? 0 : intersect / union;
+}
+
+/**
+ * Returns true if the incoming anchor is semantically too similar to any
+ * of the existing anchors.  Uses Jaccard similarity on content-word sets.
+ * Only fires when both sides yield ≥ MIN_CONTENT_WORDS_FOR_SEMANTIC tokens
+ * (prevents false positives on very short anchors).
+ */
+function isSemanticallyDuplicate(
+  incomingAnchor: string,
+  existingAnchorList: string[],
+): boolean {
+  const incomingWords = extractContentWords(incomingAnchor);
+  if (incomingWords.length < SEMANTIC_SIMILARITY_THRESHOLD_MIN_WORDS) {
+    return false;
+  }
+
+  for (const existing of existingAnchorList) {
+    const existingWords = extractContentWords(existing);
+    if (existingWords.length < SEMANTIC_SIMILARITY_THRESHOLD_MIN_WORDS) {
+      continue;
+    }
+    if (jaccardSimilarity(incomingWords, existingWords) >= SEMANTIC_SIMILARITY_JACCARD_THRESHOLD) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/** Minimum content words required on both sides before semantic check fires. */
+const SEMANTIC_SIMILARITY_THRESHOLD_MIN_WORDS = 3;
+
+/**
+ * Jaccard threshold for semantic duplicate detection.
+ * At 0.30, two anchors sharing roughly 30 % of their unique content words
+ * are considered the same underlying idea.
+ */
+const SEMANTIC_SIMILARITY_JACCARD_THRESHOLD = 0.30;
+
 const FORBIDDEN_PATTERNS: readonly RegExp[] = [
   /^(Now|Here are|But it|Let me|Looking at|Based on|Step \d)\s/i,
   /TASK-\d+/,
@@ -48,6 +138,10 @@ export interface ContentGuardResult {
  * 1. Forbidden patterns on area_anchor (agent reasoning, malformed content)
  * 2. Minimum word count (≥5 for artifact_delta trigger)
  * 3. Area_anchor exact-match dedup against existing queue entries
+ * 3.5. Semantic similarity dedup — Jaccard on content words catches the same
+ *      idea reworded (e.g., "Choose a name" vs "Select the trading name").
+ *      Requires ≥ SEMANTIC_SIMILARITY_THRESHOLD_MIN_WORDS content words on
+ *      both sides; fires at SEMANTIC_SIMILARITY_JACCARD_THRESHOLD (0.30).
  * 4. Domain canonical check (ArtifactDomain enum) when domain field is present
  *
  * @param packet - Object with area_anchor, trigger, and optional domain
@@ -79,6 +173,15 @@ export function validateDispatchContent(
   const normalizedExisting = new Set(existingAreaAnchors.map((a) => a.trim().toLowerCase()));
   if (normalizedExisting.has(normalizedAnchor)) {
     return { accepted: false, reason: "area_anchor_duplicate" };
+  }
+
+  // 3.5 Semantic similarity dedup
+  // Catches the same underlying idea re-submitted with different wording
+  // (e.g., "Choose a name for the business" vs "Select the trading name").
+  // Uses Jaccard similarity on content-word sets; both sides must have at
+  // least SEMANTIC_SIMILARITY_THRESHOLD_MIN_WORDS tokens before the check fires.
+  if (isSemanticallyDuplicate(trimmedAnchor, existingAreaAnchors)) {
+    return { accepted: false, reason: "semantic_duplicate" };
   }
 
   // 4. Domain canonical check (only when domain is present)

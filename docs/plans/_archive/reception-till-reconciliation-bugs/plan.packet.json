@@ -1,0 +1,173 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-till-reconciliation-bugs",
+  "source_artifact_path": "docs/plans/reception-till-reconciliation-bugs/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-till-reconciliation-bugs/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Five confirmed bugs blocking operational till workflows (edit/delete transaction modes unreachable, float confirmation leaves modal open, keycard Firebase errors silent, keycard audit record corrupt, shift-close retry retains stale override).",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All five defects fixed, regression tests passing in CI. Till reconciliation workflows operate correctly: staff can enter and exit edit/delete modes, the float form closes on success, keycard errors surface as toasts, keycard reconcile records carry correct values, and shift-close does not carry stale override state across attempts.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Bug 1 adds Edit/Void menu items to Cash dropdown using existing DS `ActionDropdown` pattern",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Verify menu item labels match existing ActionDropdown options pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Bug 2 closes float modal on success; Bug 3 keycard state updates after ~100ms Firebase write (acceptable on LAN); Bug 5 override state always clean on retry",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — no auth/authz or data exposure change in any fix",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Pure state-machine and error-handling corrections",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Bug 3 Firebase error surfaced as toast (was silent); Bug 4 `difference` field corrected in audit record",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "5 regression TCs across 3 files; TASK-01 adds to `ActionDropdown.test.tsx`; TASK-02 creates `useTillReconciliationLogic.test.ts`; TASK-03 adds to `useTillShifts.test.ts`",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Bug 4 fix writes correct `difference` arg to `addCashCount`; no downstream consumers of this field exist (grep verified)",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Bug 3 async reorder adds ~100ms perceived lag for keycard operations on LAN; Firebase error is now contained as toast",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "LAN latency acceptable per analysis",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A — no schema migration, feature flag, or deployment step; rollback = revert commit",
+      "current_or_option_state": "-",
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Five confirmed code-level bugs in `apps/reception`'s till reconciliation subsystem, all found during a live audit on 2026-03-13. The three IMPLEMENT tasks cover three separate files (no edit conflicts): Bug 1 (`ActionButtons.tsx` + `TillReconciliation.tsx`), Bugs 2+3 (`useTillReconciliationLogic.ts`), Bugs 4+5 (`useTillShifts.ts`). All tasks are fully parallel with no inter-task dependencies. Dispatch IDs covered: IDEA-DISPATCH-20260313130000-0001 through 0005.",
+    "goals": [
+      "All five bugs fixed, regression-tested, and CI-green.",
+      "Till reconciliation workflows operational: edit/delete modes reachable, float form closes after success, keycard Firebase errors surface as toasts, keycard reconcile record carries correct `difference`, shift-close does not carry stale override state across attempts."
+    ],
+    "non_goals": [
+      "UX redesign beyond the minimum needed for each fix.",
+      "Other till subsystem areas (TillShiftHistory, DrawerLimitWarning, safe management).",
+      "Performance optimisation."
+    ],
+    "constraints": [
+      "Firebase Realtime DB; all write mutations through custom Firebase hooks.",
+      "Tests run in CI only. NEVER run jest locally.",
+      "Writer lock required for commits (`scripts/agents/with-writer-lock.sh`).",
+      "Pre-commit hook runs `turbo lint` on all changed packages."
+    ],
+    "assumptions": [
+      "`useEndOfDayReportData.ts` confirmed to NOT read `difference` from reconcile-type cashCount records (grep verified in fact-find). Bug 4 fix has no downstream consumer to update.",
+      "Reception app is on LAN; Firebase write latency is typically <100ms in production context."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Three IMPLEMENT tasks aligned to three file scopes; all fully parallel.",
+      "Bug 3: `async (count: number) => { await recordKeycardTransfer; updateSafeKeycards; }` pattern with try/catch toast.",
+      "Bug 1 regression TCs added to `ActionDropdown.test.tsx` (not a new file — that file already tests `ActionButtons` directly).",
+      "Why planning is not reopening option selection:",
+      "Analysis fully resolved both decision points (Bug 3 UX and grouping strategy).",
+      "No operator-only questions remain."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes",
+      "Critique": "1 round, verdict credible (4.5/5.0)"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Bug 1 — Add Edit/Void mode buttons to ActionButtons and wire props",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change — `ActionButtons.tsx` (interface + menu items), `TillReconciliation.tsx` (prop forwarding), `ActionDropdown.test.tsx` (2 new TCs)",
+        "affects": "`apps/reception/src/components/till/ActionButtons.tsx`, `apps/reception/src/components/till/TillReconciliation.tsx`, `apps/reception/src/components/till/__tests__/ActionDropdown.test.tsx`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Bugs 2+3 — Fix float modal close and keycard async ordering",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change — `useTillReconciliationLogic.ts` (Bug 2: `confirmFloat` success path; Bug 3: `confirmAddKeycard`/`confirmReturnKeycard` async reorder), new `useTillReconciliationLogic.test.ts` (3 TCs)",
+        "affects": "`apps/reception/src/hooks/useTillReconciliationLogic.ts`, `apps/reception/src/hooks/__tests__/useTillReconciliationLogic.test.ts` (new file)"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Bugs 4+5 — Fix keycard diff arg and pendingOverride leak",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Code change — `useTillShifts.ts` (Bug 4: `diff` arg at line 622; Bug 5: `setPendingOverride(false)` at lines 446–461), `useTillShifts.test.ts` (2 new TCs)",
+        "affects": "`apps/reception/src/hooks/client/till/useTillShifts.ts`, `apps/reception/src/hooks/client/till/__tests__/useTillShifts.test.ts`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-03"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change — five pure React hook/component fixes. No CI/deploy/release lane, approval path, workflow lifecycle state, or operator runbook is affected.",
+      "areas": []
+    }
+  }
+}

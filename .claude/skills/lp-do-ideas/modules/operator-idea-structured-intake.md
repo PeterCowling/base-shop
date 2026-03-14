@@ -166,6 +166,15 @@ Capture:
 - `funnel_step`
 - `metric_name`
 
+### Engineering coverage hints (code-bearing only)
+
+Ask only when `provisional deliverable family` is likely code-bearing (`code-change`, `multi`, `infra`, `design`):
+
+> Which engineering surfaces are likely affected? Answer comma-separated using any of: `UI`, `UX`, `security`, `observability`, `testing`, `data-contracts`, `performance-reliability`, `rollout-rollback`. If none are obvious, answer `unknown`.
+
+Capture:
+- `coverage_hints`
+
 ## Deterministic Assembly Rules
 
 Build one intake block per gap with these fields.
@@ -174,16 +183,25 @@ Build one intake block per gap with these fields.
 
 Format:
 
-`"<business> <area label> - <gap clause>"`
+`"<Business> — <plain English description of the opportunity or problem>"`
 
 Rules:
-- keep it short and concrete
-- target <=12 words when possible
-- no full sentences
+- Plain business language only — no code paths, function names, schema names, or system-internal terms
+- Describe the business outcome affected, not the technical component broken
+- Must make sense to someone who has never seen the codebase
+- A 14-year-old should be able to read this and know roughly what the problem is
+- Target ≤15 words
+- Use an em dash (—) not a hyphen
 
-Examples:
-- `BRIK checkout tracking - no confirmation metric baseline`
-- `PLAT tool selection - no explicit read-first protocol`
+Good:
+- `Brikette — Guest emails with two questions only get one answer`
+- `XA — New arrivals look the same as everything else in mixed listings`
+- `PWRB — No pilot locations have been identified to test with real customers`
+
+Bad (technical, no business context):
+- `BRIK email pipeline — intent extraction collapses clause-level questions`
+- `XA xa-b product cards — missing New In badge`
+- `BRIK gmail pipeline — In-Progress recovery not auto-scheduled`
 
 ### `location_anchors`
 
@@ -196,6 +214,7 @@ Always include, in this order:
 1. `operator-stated: <gap clause>`
 2. each `location_anchor`
 3. any structured evidence references the operator supplied (`repro_ref`, `risk_ref`, named doc/log references)
+4. any engineering coverage hints as `coverage-hint: <label>`
 
 ### `current_truth`
 
@@ -216,12 +235,28 @@ Fallback:
 
 ### `why`
 
-If the operator already gave a concrete reason in the opening description, compress it to
-one sentence and keep it operator-authored.
+Write 2–3 plain sentences at a 14-year-old reading level. No jargon, no code paths, no technical system names.
 
-Fallback:
+Structure:
+1. What is happening now that is a problem (described in business terms — what staff, customers, or the business experiences)
+2. The real-world consequence (what gets missed, delayed, broken, or lost)
+3. What specifically gets better when this is fixed (the benefit to the business)
 
-`"This gap is currently blocking or weakening <area label> for <business>."`
+Rules:
+- Never name a code function, file path, schema, or internal tool
+- If you must reference something technical, describe what it does for the user, not its name
+- Avoid passive voice where possible
+- Keep sentences short
+
+Good example:
+> "When a guest asks two things in one email, the AI sometimes only answers the main question and ignores the rest. The guest then either waits for a follow-up or thinks we ignored part of their message. Fixing this ensures every question gets a proper answer, every time."
+
+Bad example (technical, no consequence stated):
+> "Mixed-intent guest emails currently collapse to a single dominant answer path. The extraction layer must atomize compound clauses before scenario ranking."
+
+Fallback if no information is available:
+
+`"This affects how <business> handles <plain description of the affected area>. Without this fix, <plain description of the consequence>. Resolving it would <plain description of the benefit>."`
 
 ### `intended_outcome`
 

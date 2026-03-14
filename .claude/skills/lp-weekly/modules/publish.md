@@ -15,7 +15,6 @@ Emits the additive S10 weekly packet, updates the latest pointer, and records fi
 | `lane_b_status` | orchestrate.md output |
 | `lane_c_status` | orchestrate.md output |
 | `kpcs_decision_ref` | orchestrate.md output |
-| `signal_review_ref` | orchestrate.md output |
 | `feedback_audit_ref` | orchestrate.md output |
 | `measurement_summary` | orchestrate.md output |
 | `rem_delta` | orchestrate.md output |
@@ -83,7 +82,6 @@ lane_c: complete | carry-forward
 packet: docs/business-os/strategy/<BIZ>/s10-weekly-packet-<YYYY-Www>.md
 latest_pointer: docs/business-os/strategy/<BIZ>/s10-weekly-packet-latest.md
 kpcs_decision_ref: <path or pending>
-signal_review_ref: <path or null>
 unresolved_rem_count: <N>
 next_experiment_backlog_delta: <+N added, +N carried>
 ```
@@ -117,7 +115,6 @@ These artifacts are produced by their authoritative owners and referenced here. 
 | Artifact | Path | Status |
 |---|---|---|
 | KPCS decision memo | <path or pending> | complete \| pending |
-| Signal review | <path or null> | emitted \| not-emitted |
 | Feedback loop audit | <path or null> | emitted \| not-emitted |
 | Monthly deep-audit | <path or N/A> | due \| not-due \| complete |
 
@@ -151,7 +148,6 @@ These artifacts are produced by their authoritative owners and referenced here. 
 
 | Sub-flow | Invoked | Outcome |
 |---|---|---|
-| `/lp-signal-review` | yes \| no | <artifact path or skip reason> |
 | GATE-LOOP-GAP-03 feedback audit | yes \| no | <artifact path or skip reason> |
 | KPCS prompt handoff | yes \| no | <artifact path or pending> |
 | `/lp-experiment readout` (per experiment) | <list> | <outcomes> |

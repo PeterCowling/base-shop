@@ -1,0 +1,249 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "unified-ci-per-app-deploy-lanes",
+  "source_artifact_path": "docs/plans/unified-ci-per-app-deploy-lanes/plan.md",
+  "source_artifact_status": "Draft",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/unified-ci-per-app-deploy-lanes/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The current CI setup is fragmented: validation is duplicated across ci.yml, reusable-app.yml, and per-app workflows. A Brikette-only fix created new duplication instead of reducing it. The operator wants the simplest possible model.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All apps share one validation workflow (ci.yml) on dev/PR and thin per-app deploy workflows on staging/main, with no validation duplication, no workflow_dispatch, and path-gated skip-if-unchanged semantics.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: no product UI changes — workflow/infra only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required: clear two-layer model (ci.yml validates, per-app deploys) replaces fragmented multi-workflow model",
+      "current_or_option_state": "TASK-01 through TASK-06",
+      "gap_or_implication": "Operator mental model simplification",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required: workflow_dispatch removed (with auto-pr.yml exception), all pushes get governance checks",
+      "current_or_option_state": "TASK-01, TASK-06",
+      "gap_or_implication": "No more manual publish paths",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required: one validation workflow + one deploy workflow per app = clear audit trail",
+      "current_or_option_state": "TASK-01 through TASK-04",
+      "gap_or_implication": "Deploy workflows log skip-if-unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required: ci.yml turbo --affected covers all apps; app-specific gates (prime firebase, reception firebase rules) moved to ci.yml",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "actionlint on all modified workflows",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required: merge-gate scopeWorkflowMap, auto-pr.yml dispatch, filter-config.ts updated atomically",
+      "current_or_option_state": "TASK-06",
+      "gap_or_implication": "Workflow file IDs kept stable where possible",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required: validation duplication eliminated; CMS 4-shard dropped (monitor for re-add)",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "~5-10 min governance overhead on pure app pushes accepted",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required: phased by task; rollback via git revert of workflow changes",
+      "current_or_option_state": "All tasks",
+      "gap_or_implication": "Merge-gate update must be atomic with workflow identity changes",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Replace the current fragmented CI/CD setup with a clean two-layer model: ci.yml as the sole validation workflow for all apps on dev/PR (turbo lint/typecheck/test --affected), and thin per-app deploy-only workflows on staging/main. This eliminates validation duplication across ci.yml, reusable-app.yml, and 10+ per-app workflows. The plan phases: (1) make ci.yml universal, (2) convert all per-app workflows to deploy-only, (3) update merge-gate/auto-pr and archive reusable-app.yml, (4) add staging deploy for Worker apps that lack it.",
+    "goals": [
+      "ci.yml is the sole validation workflow for all apps on dev/PR. (Exception: promotion PRs dev→main skip lint/typecheck/test via promote-app:* guards — intentional, since validation already ran on the dev push.)",
+      "Per-app deploy workflows are thin: detect changes, build, deploy. No lint/typecheck/test.",
+      "\"Nothing changed, nothing to do\" at both layers (turbo --affected for validation, path-gated for deploy).",
+      "Remove workflow_dispatch from all app workflows (with auto-pr.yml exception handled).",
+      "Staging and main are merge-only lanes — no manual publish entrypoint.",
+      "Add staging deploy to apps that lack it (caryina, reception, business-os)."
+    ],
+    "non_goals": [
+      "Redesign app code, static-export architecture, or Cloudflare project structure.",
+      "Change the dev → staging → main branch promotion policy.",
+      "Modify non-app workflows (storybook, consent-analytics, lighthouse, cypress).",
+      "Add new testing frameworks or CI tooling."
+    ],
+    "constraints": [
+      "Tests run in CI only — no local Jest/e2e execution (existing policy).",
+      "merge-gate.yml scopeWorkflowMap must reference correct workflow file IDs after changes.",
+      "auto-pr.yml dispatches brikette.yml and merge-gate.yml by workflow_id.",
+      "Per-app deploy secrets, environment variables, build quirks (route-hide/restore, SOPS decrypt, OpenNext), and health checks must be preserved verbatim.",
+      "ci.yml paths-ignore removal must happen before or atomically with per-app validation removal."
+    ],
+    "assumptions": [
+      "turbo --affected correctly scopes lint/typecheck/test to changed workspaces (verified in fact-find).",
+      "Keeping workflow filenames stable avoids merge-gate scopeWorkflowMap changes.",
+      "CMS test duration under single-job turbo is acceptable initially; sharding can be re-added if needed."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Remove ci.yml paths-ignore. ci.yml validates all pushes. Per-app workflows become deploy-only (staging + main, path-gated, merge-only). Archive reusable-app.yml.",
+      "Why planning is not reopening option selection:",
+      "Analysis evaluated 3 options and decisively selected Option A with clear rejection rationale for B (governance gap + sync burden) and C (kitchen-sink reusable deploy recreates the problem). Score: 4.2/5.0 credible."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Make ci.yml the universal validation workflow",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `.github/workflows/ci.yml` and `.github/workflows/brikette.yml`",
+        "affects": "`.github/workflows/ci.yml`, `.github/workflows/brikette.yml`, `scripts/src/ci/filter-config.ts`, `[readonly] .github/workflows/reusable-app.yml`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Strip standalone app workflows to deploy-only (cms, xa, pwrb-brochure)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `.github/workflows/cms.yml`, `.github/workflows/xa.yml`, `.github/workflows/pwrb-brochure.yml`",
+        "affects": "`.github/workflows/cms.yml`, `.github/workflows/xa.yml`, `.github/workflows/pwrb-brochure.yml`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Convert Pages reusable-app callers to thin deploy-only (skylar, prime, product-pipeline)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `.github/workflows/skylar.yml`, `.github/workflows/prime.yml`, `.github/workflows/product-pipeline.yml`",
+        "affects": "`.github/workflows/skylar.yml`, `.github/workflows/prime.yml`, `.github/workflows/product-pipeline.yml`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Convert Worker reusable-app callers to thin deploy-only (caryina, reception, business-os)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 80,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `.github/workflows/caryina.yml`, `.github/workflows/reception.yml`, `.github/workflows/business-os-deploy.yml`",
+        "affects": "`.github/workflows/caryina.yml`, `.github/workflows/reception.yml`, `.github/workflows/business-os-deploy.yml`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Horizon checkpoint — reassess downstream plan",
+        "type": "CHECKPOINT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "blocks": [
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "updated plan evidence via /lp-do-replan",
+        "affects": "`docs/plans/unified-ci-per-app-deploy-lanes/plan.md`"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Update merge-gate, narrow triggers, archive reusable-app.yml",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 82,
+        "effort": "L",
+        "depends_on": [
+          "TASK-05"
+        ],
+        "blocks": [
+          "TASK-07"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `.github/workflows/merge-gate.yml`, `.github/workflows/auto-pr.yml`, `.github/workflows/reusable-app.yml`, `scripts/src/ci/filter-config.ts`, `scripts/ci/path-classifier.cjs`, plus trigger narrowing in ALL per-app workflow files from TASK-01/02/03/04",
+        "affects": "`.github/workflows/merge-gate.yml`, `.github/workflows/auto-pr.yml`, `.github/workflows/reusable-app.yml`, `scripts/src/ci/filter-config.ts`, `scripts/ci/path-classifier.cjs`, `.github/workflows/brikette.yml`, `.github/workflows/cms.yml`, `.github/workflows/xa.yml`, `.github/workflows/skylar.yml`, `.github/workflows/prime.yml`, `.github/workflows/product-pipeline.yml`, `.github/workflows/caryina.yml`, `.github/workflows/reception.yml`, `.github/workflows/business-os-deploy.yml`"
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Add staging deploy for Worker apps",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 70,
+        "effort": "M",
+        "depends_on": [
+          "TASK-06"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change to `apps/caryina/wrangler.toml`, `apps/reception/wrangler.toml`, `apps/business-os/wrangler.toml`, `.github/workflows/caryina.yml`, `.github/workflows/reception.yml`, `.github/workflows/business-os-deploy.yml`",
+        "affects": "`apps/caryina/wrangler.toml`, `apps/reception/wrangler.toml`, `apps/business-os/wrangler.toml`, `.github/workflows/caryina.yml`, `.github/workflows/reception.yml`, `.github/workflows/business-os-deploy.yml`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

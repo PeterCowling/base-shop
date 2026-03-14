@@ -42,8 +42,8 @@ Derived from UTC date at invocation using ISO 8601 week numbering. Week boundary
 
 ### Allowed actions
 
-- Read stage artifacts, KPI sources, prior-week packet, canonical prompt docs, and signal-review outputs.
-- Invoke sub-flows: `/lp-signal-review`, GATE-LOOP-GAP-03 feedback-loop audit, `/lp-experiment readout` (per experiment), KPCS prompt handoff.
+- Read stage artifacts, KPI sources, prior-week packet, and canonical prompt docs.
+- Invoke sub-flows: GATE-LOOP-GAP-03 feedback-loop audit, `/lp-experiment readout` (per experiment), KPCS prompt handoff.
 - Write one weekly packet per `YYYY-Www` key (overwrite in-place on rerun).
 - Emit lane status summaries and REM delta sections within the packet.
 
@@ -52,7 +52,7 @@ Derived from UTC date at invocation using ISO 8601 week numbering. Week boundary
 - Replacing or modifying the canonical weekly KPCS decision memo.
 - Introducing new hard stage blocks or gate-semantics changes (first iteration no-block posture).
 - Modifying `docs/business-os/startup-loop/specifications/loop-spec.yaml` stage graph.
-- Removing or suppressing `/lp-signal-review`, GATE-BD-08, or GATE-LOOP-GAP-03 dispatch behaviors.
+- Removing or suppressing GATE-BD-08 or GATE-LOOP-GAP-03 dispatch behaviors.
 - Silent failure: partial inputs must produce `restricted` lane state + REM, not silent degraded output.
 - Destructive shell or git commands.
 - Creating files outside the weekly packet and its cross-artifact links.
@@ -97,7 +97,6 @@ Required packet sections:
 - `lane_b_status`: `ready` | `restricted`
 - `lane_c_status`: `complete` | `carry-forward`
 - `kpcs_decision_ref`: path to canonical KPCS decision artifact
-- `signal_review_ref`: path to signal review artifact (if emitted this week)
 - `feedback_audit_ref`: path to feedback loop audit artifact (if exists this cycle)
 - `measurement_summary`: normalized measurement summary or `restricted` note
 - `rem_delta`: new and resolved REM items this week
@@ -120,7 +119,6 @@ Required packet sections:
 ## Integration
 
 **Sub-flows invoked by `/lp-weekly`:**
-- `/lp-signal-review` — audit and signal strengthening (lane `a`, CI capture step)
 - GATE-LOOP-GAP-03 feedback-loop audit — pre-decision advisory input (lane `a`)
 - KPCS decision prompt handoff — authoritative weekly decision (step 3, decisioning)
 - `/lp-experiment readout` — per-experiment readout (lane `c`, experiment rollup step)
@@ -130,7 +128,6 @@ During S10 advance, `/startup-loop` routes through `/lp-weekly` before returning
 
 **Canonical artifacts produced outside `/lp-weekly` (referenced, not replaced):**
 - `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-weekly-kpcs-decision.user.md`
-- `docs/business-os/strategy/<BIZ>/signal-review-<YYYYMMDD>-<HHMM>-W<ISOweek>.md`
 - `docs/business-os/strategy/<BIZ>/feedback-loop-audit-<YYYY-MM-DD>.md`
 - `docs/business-os/strategy/<BIZ>/<YYYY-MM>-monthly-audit.user.md`
 

@@ -146,17 +146,6 @@ function addBundleAndCache(params: {
   }
 }
 
-function clearStaleBundleCache(params: {
-  forceReload: boolean;
-  onceKey: string;
-  nodeKey?: string;
-}): void {
-  const { forceReload, onceKey, nodeKey } = params;
-  if (forceReload) return;
-  onceCache.delete(onceKey);
-  if (nodeKey) nodeCache.delete(nodeKey);
-}
-
 /**
  * Load one (lang, ns) bundle exactly once.
  */
@@ -171,14 +160,11 @@ export async function loadI18nNs(lang: string, ns: string): Promise<void> {
     return;
   }
 
-  // The cache only proves we loaded this bundle once. If a test or runtime path
-  // removes the bundle from i18n afterwards, cached markers must be invalidated
-  // so the namespace can be reloaded.
-  clearStaleBundleCache({ forceReload, onceKey });
+  if (onceCache.has(onceKey) && !forceReload) return;
 
   if (isServerRuntime()) {
     const nodeKey = `${lang}/${ns}`;
-    clearStaleBundleCache({ forceReload, onceKey, nodeKey });
+    if (nodeCache.has(nodeKey) && !forceReload) return;
 
     if (ns === "guides") {
       const guidesBundle = await loadGuidesNamespace(lang);
@@ -274,13 +260,15 @@ export async function preloadNamespacesWithFallback(
     preload = preloadI18nNamespaces,
   } = options;
 
-  await preload(lang, namespaces, { optional });
-
   if (!fallbackLang || fallbackLang === lang) {
+    await preload(lang, namespaces, { optional });
     return;
   }
 
-  await preload(fallbackLang, namespaces, { optional: fallbackOptional });
+  await Promise.all([
+    preload(lang, namespaces, { optional }),
+    preload(fallbackLang, namespaces, { optional: fallbackOptional }),
+  ]);
 }
 
 async function loadGuidesNamespace(lang: string): Promise<GuidesNamespace | undefined> {

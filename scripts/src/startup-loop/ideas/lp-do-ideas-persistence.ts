@@ -15,20 +15,15 @@
  * Seam:     docs/business-os/startup-loop/ideas/lp-do-ideas-go-live-seam.md
  */
 
-import { randomBytes } from "node:crypto";
 import {
   existsSync,
-  mkdirSync,
   readFileSync,
-  renameSync,
-  writeFileSync,
 } from "node:fs";
-import { tmpdir } from "node:os";
-import { basename, dirname, join } from "node:path";
 
 // ---------------------------------------------------------------------------
 // Classification JSONL persistence
 // ---------------------------------------------------------------------------
+import { appendJsonlRecords, atomicWrite, readJsonlRecords } from "./ideas-jsonl.js";
 import type { IdeaClassification } from "./lp-do-ideas-classifier.js";
 import type { LiveDispatchPacket } from "./lp-do-ideas-live.js";
 import type {
@@ -122,26 +117,6 @@ export interface PersistenceResult {
 }
 
 // ---------------------------------------------------------------------------
-// Atomic write helper
-// ---------------------------------------------------------------------------
-
-/**
- * Writes content to a temp file in the same directory as `targetPath`,
- * then renames it to `targetPath` atomically.
- *
- * The temp file is placed in the same directory as the target to ensure
- * rename() is an atomic on-disk operation (same filesystem).
- */
-function atomicWrite(targetPath: string, content: string): void {
-  const dir = dirname(targetPath);
-  mkdirSync(dir, { recursive: true });
-  const suffix = randomBytes(4).toString("hex");
-  const tmpPath = join(dir, `.${basename(targetPath)}.tmp.${suffix}`);
-  writeFileSync(tmpPath, content, "utf-8");
-  renameSync(tmpPath, targetPath);
-}
-
-// ---------------------------------------------------------------------------
 // Queue state persistence
 // ---------------------------------------------------------------------------
 
@@ -207,6 +182,18 @@ export function writeQueueState(
 // Telemetry JSONL persistence
 // ---------------------------------------------------------------------------
 
+function isPersistedTelemetryRecord(value: unknown): value is PersistedTelemetryRecord {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof (value as PersistedTelemetryRecord).dispatch_id === "string" &&
+    (value as PersistedTelemetryRecord).dispatch_id.length > 0 &&
+    typeof (value as PersistedTelemetryRecord).recorded_at === "string" &&
+    (value as PersistedTelemetryRecord).recorded_at.length > 0 &&
+    typeof (value as PersistedTelemetryRecord).kind === "string"
+  );
+}
+
 /** Builds a deduplication key for a telemetry record. */
 function telemetryDedupeKey(record: PersistedTelemetryRecord): string {
   return `${record.dispatch_id}::${record.recorded_at}::${record.kind}`;
@@ -218,33 +205,7 @@ function telemetryDedupeKey(record: PersistedTelemetryRecord): string {
  * Silently skips malformed lines (append-only semantics are preserved).
  */
 function readExistingTelemetry(filePath: string): PersistedTelemetryRecord[] {
-  if (!existsSync(filePath)) {
-    return [];
-  }
-
-  let raw: string;
-  try {
-    raw = readFileSync(filePath, "utf-8");
-  } catch {
-    return [];
-  }
-
-  const records: PersistedTelemetryRecord[] = [];
-  for (const line of raw.split("\n")) {
-    const trimmed = line.trim();
-    if (trimmed.length === 0) {
-      continue;
-    }
-    try {
-      const record = JSON.parse(trimmed) as PersistedTelemetryRecord;
-      if (typeof record.dispatch_id === "string" && record.dispatch_id.length > 0) {
-        records.push(record);
-      }
-    } catch {
-      // Skip malformed lines
-    }
-  }
-  return records;
+  return readJsonlRecords(filePath, isPersistedTelemetryRecord);
 }
 
 /**
@@ -256,28 +217,24 @@ export function appendTelemetry(
   filePath: string,
   records: PersistedTelemetryRecord[],
 ): void {
-  if (records.length === 0) {
-    return;
-  }
-
-  const existingRecords = readExistingTelemetry(filePath);
-  const seenKeys = new Set(existingRecords.map(telemetryDedupeKey));
-
-  const newRecords = records.filter(
-    (record) => !seenKeys.has(telemetryDedupeKey(record)),
-  );
-  if (newRecords.length === 0) {
-    return;
-  }
-
-  const allRecords = [...existingRecords, ...newRecords];
-  const content = allRecords.map((r) => JSON.stringify(r)).join("\n") + "\n";
-  atomicWrite(filePath, content);
+  appendJsonlRecords(filePath, records, telemetryDedupeKey, isPersistedTelemetryRecord);
 }
 
 /** Builds a deduplication key for a classification record. */
 function classificationDedupeKey(record: IdeaClassification): string {
   return `${record.idea_id}::${record.classified_at}`;
+}
+
+function isIdeaClassification(value: unknown): value is IdeaClassification {
+  const record = value as IdeaClassification;
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    typeof record.idea_id === "string" &&
+    record.idea_id.length > 0 &&
+    typeof record.classified_at === "string" &&
+    record.classified_at.length > 0
+  );
 }
 
 /**
@@ -286,33 +243,7 @@ function classificationDedupeKey(record: IdeaClassification): string {
  * Silently skips malformed lines (append-only semantics are preserved).
  */
 function readExistingClassifications(filePath: string): IdeaClassification[] {
-  if (!existsSync(filePath)) {
-    return [];
-  }
-
-  let raw: string;
-  try {
-    raw = readFileSync(filePath, "utf-8");
-  } catch {
-    return [];
-  }
-
-  const records: IdeaClassification[] = [];
-  for (const line of raw.split("\n")) {
-    const trimmed = line.trim();
-    if (trimmed.length === 0) {
-      continue;
-    }
-    try {
-      const record = JSON.parse(trimmed) as IdeaClassification;
-      if (typeof record.idea_id === "string" && record.idea_id.length > 0) {
-        records.push(record);
-      }
-    } catch {
-      // Skip malformed lines
-    }
-  }
-  return records;
+  return readJsonlRecords(filePath, isIdeaClassification);
 }
 
 /**
@@ -336,23 +267,7 @@ export function appendClassifications(
   filePath: string,
   records: IdeaClassification[],
 ): void {
-  if (records.length === 0) {
-    return;
-  }
-
-  const existingRecords = readExistingClassifications(filePath);
-  const seenKeys = new Set(existingRecords.map(classificationDedupeKey));
-
-  const newRecords = records.filter(
-    (record) => !seenKeys.has(classificationDedupeKey(record)),
-  );
-  if (newRecords.length === 0) {
-    return;
-  }
-
-  const allRecords = [...existingRecords, ...newRecords];
-  const content = allRecords.map((r) => JSON.stringify(r)).join("\n") + "\n";
-  atomicWrite(filePath, content);
+  appendJsonlRecords(filePath, records, classificationDedupeKey, isIdeaClassification);
 }
 
 // ---------------------------------------------------------------------------

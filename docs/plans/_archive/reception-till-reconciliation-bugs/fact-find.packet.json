@@ -1,0 +1,179 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-till-reconciliation-bugs",
+  "source_artifact_path": "docs/plans/reception-till-reconciliation-bugs/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-till-reconciliation-bugs/analysis.md"
+  },
+  "outcome_contract": {
+    "why": null,
+    "intended_outcome_type": null,
+    "intended_outcome_statement": null,
+    "source": null
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "`UI / visual`",
+      "applicable": "Required",
+      "current_or_option_state": "Bug 1 adds Edit/Delete menu items to `ActionButtons.tsx` using existing DS `ActionDropdown` pattern. Other bugs are hook-only fixes with no UI change.",
+      "gap_or_implication": "DS component compliance; visual consistency with existing menu items",
+      "carry_forward_or_notes": "Verify DS ActionDropdown usage matches existing menu item pattern"
+    },
+    {
+      "coverage_area": "`UX / states`",
+      "applicable": "Required",
+      "current_or_option_state": "Bug 2: float form stays open on success (confirmed). Bug 3: keycard count may lag after Firebase-write reorder. Bug 5: stale override on close failure path.",
+      "gap_or_implication": "Bug 3 fix removes optimistic update — UX may lag; plan must decide optimistic-with-rollback vs. remove-optimistic.",
+      "carry_forward_or_notes": "Bug 3 UX trade-off resolution required in analysis/plan"
+    },
+    {
+      "coverage_area": "`Security / privacy`",
+      "applicable": "N/A",
+      "current_or_option_state": "These fixes are state-machine and error-handling corrections. No auth/authz, no user data exposure, no PII change.",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "`Logging / observability / audit`",
+      "applicable": "Required",
+      "current_or_option_state": "Bug 4: keycard reconcile record has `difference=0` — audit trail is misleading. Bug 3: Firebase errors are silently swallowed.",
+      "gap_or_implication": "Bug 3 fix must surface Firebase errors as toast. Bug 4 fix must write correct `difference` value to audit record.",
+      "carry_forward_or_notes": "Verify `addKeycardDiscrepancy` + `addCashCount` together give complete audit for keycard reconcile"
+    },
+    {
+      "coverage_area": "`Testing / validation`",
+      "applicable": "Required",
+      "current_or_option_state": "5 regression TCs required (one per bug). Existing infrastructure: `useTillShifts.test.ts`, `TillReconciliation.test.tsx`, `useTillReconciliationUI.test.ts`. Bug 1 TC needs non-mocked ActionButtons approach.",
+      "gap_or_implication": "Bug 1 regression TC cannot be in `TillReconciliation.test.tsx` (ActionButtons is fully mocked there). Needs dedicated ActionButtons test or integration approach.",
+      "carry_forward_or_notes": "Test strategy for Bug 1 must be resolved in plan"
+    },
+    {
+      "coverage_area": "`Data / contracts`",
+      "applicable": "Required",
+      "current_or_option_state": "Bug 4: `addCashCount(\"reconcile\", 0, 0, ...)` writes incorrect `difference` field. `addCashCount` signature verified: `(type, count, difference, amount, denomBreakdown, keycardCount)`.",
+      "gap_or_implication": "Any downstream consumer reading `difference` from keycard reconcile records will currently see 0 — need to check if report consumers exist.",
+      "carry_forward_or_notes": "Check if EOD report or other audit consumer reads `difference` from reconcile records"
+    },
+    {
+      "coverage_area": "`Performance / reliability`",
+      "applicable": "Required",
+      "current_or_option_state": "Bug 3: `recordKeycardTransfer` is async Firebase write with no error boundary. Reordering to await-before-state-update impacts perceived latency.",
+      "gap_or_implication": "UX lag if Firebase write takes >200ms. Plan must accept the latency or implement loading state.",
+      "carry_forward_or_notes": "N/A for planning decision; flag as implementation note"
+    },
+    {
+      "coverage_area": "`Rollout / rollback`",
+      "applicable": "N/A",
+      "current_or_option_state": "All five fixes are pure React hook/component code changes with no schema migration, no Firebase structure change, and no feature flag needed. Rollback = revert commit.",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "None"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Five confirmed code-level defects in the till reconciliation feature of the reception app (`apps/reception`). All defects were observed during a live audit on 2026-03-13. They span three source files and cover UI-flow gaps, missing error handling, incorrect data writes, and stale state leakage.",
+    "goals": [
+      "Fix all five defects so till reconciliation is fully operational: edit/delete modes reachable, float form closes after success, keycard Firebase writes surface errors, keycard reconcile record is accurate, and shift-close override state is always clean.",
+      "Add targeted regression tests for each fix."
+    ],
+    "non_goals": [
+      "Redesigning the till reconciliation UX beyond the minimum needed for each fix.",
+      "Addressing other till subsystem areas (TillShiftHistory, DrawerLimitWarning, safe management).",
+      "Performance optimisation."
+    ],
+    "constraints": [
+      "Reception app uses Firebase Realtime DB (not Prisma/Postgres). All write mutations go through custom Firebase hooks.",
+      "Tests run in CI only (`docs/testing-policy.md`). NEVER run jest locally."
+    ],
+    "assumptions": [
+      "`useTillReconciliationUI.ts` and its test already exist and are passing. New tests should follow the established mocking pattern in `TillReconciliation.test.tsx` and `useTillShifts.test.ts`."
+    ],
+    "key_entry_points": [],
+    "key_findings": [],
+    "analysis_readiness": {},
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Bug 1: ActionButtons.tsx source read",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 1: grep for setIsEditMode(true)/setIsDeleteMode(true) callers",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — no callers exist anywhere",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 2: confirmFloat success path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 2: confirmExchange pattern comparison",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 3: async ordering and .catch gap",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 3: useKeycardTransfer async contract",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 4: addCashCount line 622",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 4: diff computed at line 618",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 5: confirmShiftClose early returns",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Bug 5: setPendingOverride in success path",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test landscape coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only — these are pure logic/state bugs in the React hook layer. No CI/deploy/release lane, approval path, or multi-step operator runbook is affected by these fixes. The till component tree operates as a self-contained feature within the reception app. Current component topology (for context): - `TillReconciliation.tsx` — composite root; reads state from `useTillReconciliationUI` + `useTillReconciliationLogic` - `ActionButtons.tsx` — renders per-action dropdown buttons (Shift, Cash, Keycards); never activates edit/delete modes - `TransactionModals.tsx` — renders `EditTrans",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

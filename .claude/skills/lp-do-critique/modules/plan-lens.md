@@ -5,7 +5,7 @@ Apply checks in order:
 2. Repo metadata policy conformance
 
 Plan frontmatter baseline:
-- `Type`, `Status`, `Domain`, `Workstream`, `Created`, `Last-updated`, `Feature-Slug`, `Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`, `Supporting-Skills`
+- `Type`, `Status`, `Domain`, `Workstream`, `Created`, `Last-updated`, `Feature-Slug`, `Deliverable-Type`, `Execution-Track`, `Primary-Execution-Skill`, `Supporting-Skills`, `Related-Analysis`
 
 Repo metadata policy check:
 - `Last-reviewed` and `Relates-to charter`
@@ -24,6 +24,7 @@ Each IMPLEMENT task must include:
 - Type, Deliverable, Execution-Skill, Affects, Depends on, Blocks
 - Confidence (3 dimensions + evidence)
 - Acceptance criteria
+- Engineering Coverage block for code/mixed IMPLEMENT tasks
 - Validation contract (TC-XX or VC-XX)
 - Execution plan:
   - Code/mixed: Red -> Green -> Refactor
@@ -36,14 +37,17 @@ Business-artifact/mixed VC quality check (apply to each VC-XX):
 - Anti-patterns to flag: "Validate demand is sufficient" (not isolated, not pre-committed, not observable), "Check market response" (no sample size, no deadline), "Confirm unit economics work" (conflates multiple variables).
 - VCs failing ≥3 quality principles are Major; failing 1-2 is Moderate.
 
-Agent-resolvable deferral checks (apply to every DECISION task and the Proposed Approach section):
+Agent-resolvable deferral checks (apply to every DECISION task and the Selected Approach Summary section):
 - **Agent-resolvable DECISION task** (Major): a DECISION task whose `**Decision input needed:**` questions the agent could have answered by reasoning about available evidence, effectiveness, efficiency, or documented business requirements. The task should have been folded into an IMPLEMENT task with the chosen approach, or the `**Recommendation:**` should have been decisive and `**Decision input needed:**` left empty. Flag the specific question and what reasoning would have resolved it.
 - **Weak or deferred recommendation** (Major): a DECISION task where `**Recommendation:**` is a hedge ("either A or B would work", "depends on preference", blank, or TBD). If the agent has enough context to list options, it has enough context to recommend. Flag and require a decisive position.
-- **Deferred approach** (Major): `Chosen approach:` in `## Proposed Approach` is blank, TBD, or deferred to a DECISION task that itself fails the self-resolve gate. The agent must choose.
+- **Analysis bypass** (Major): the plan reopens broad option comparison or contains multiple competing top-level approaches that analysis should have settled. Planning should inherit a chosen direction, not re-run analysis.
+- **Deferred approach summary** (Major): `## Selected Approach Summary` is blank, TBD, or contradictory to the referenced analysis. The plan must inherit a clear chosen direction.
 
 Plan minimum bar:
 - Falsifiable objective
 - Risk-first dependency order
+- `## Delivered Processes` present and concrete for process-affecting work (or explicit `None: no material process topology change`)
+- For code/mixed work, engineering coverage is explicit at both plan and task level
 - Enumerated validation cases
 - Confidence tied to evidence
 - Explicit risks and mitigations

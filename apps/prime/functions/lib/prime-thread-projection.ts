@@ -144,6 +144,33 @@ async function ensureBroadcastChannelMeta(
   });
 }
 
+async function ensureActivityChannelMeta(
+  firebase: FirebaseRest,
+  thread: PrimeMessageThreadRow,
+  occurredAt: number,
+): Promise<void> {
+  const existingMeta = await firebase.get<PrimeChannelMeta>(`messaging/channels/${thread.id}/meta`);
+
+  if (!existingMeta) {
+    await firebase.set(`messaging/channels/${thread.id}/meta`, {
+      channelType: 'activity',
+      bookingId: 'activity',
+      audience: 'whole_hostel',
+      createdAt: occurredAt,
+      updatedAt: occurredAt,
+    });
+    return;
+  }
+
+  if (existingMeta.channelType !== 'activity') {
+    throw new Error('Activity channel metadata failed validation'); // i18n-exempt -- PRIME-101 developer error [ttl=2026-12-31]
+  }
+
+  await firebase.update(`messaging/channels/${thread.id}/meta`, {
+    updatedAt: occurredAt,
+  });
+}
+
 export async function projectPrimeThreadMessageToFirebase(
   env: FirebaseEnv,
   input: {
@@ -158,7 +185,10 @@ export async function projectPrimeThreadMessageToFirebase(
 
   if (input.thread.channel_type === 'broadcast') {
     await ensureBroadcastChannelMeta(firebase, input.thread, occurredAt);
+  } else if (input.thread.channel_type === 'activity') {
+    await ensureActivityChannelMeta(firebase, input.thread, occurredAt);
   } else {
+    // 'direct' is the else fallback; all channel types must be handled above.
     await ensureDirectChannelMeta(firebase, input.thread, occurredAt);
   }
 

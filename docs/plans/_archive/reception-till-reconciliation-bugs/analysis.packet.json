@@ -1,0 +1,205 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-till-reconciliation-bugs",
+  "source_artifact_path": "docs/plans/reception-till-reconciliation-bugs/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-till-reconciliation-bugs/fact-find.md",
+    "plan": "docs/plans/reception-till-reconciliation-bugs/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Five confirmed bugs blocking operational till workflows (edit/delete transaction modes unreachable, float confirmation leaves modal open, keycard Firebase errors silent, keycard audit record corrupt, shift-close retry retains stale override).",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All five defects fixed, regression tests passing in CI. Till reconciliation workflows operate correctly: staff can enter and exit edit/delete modes, the float form closes on success, keycard errors surface as toasts, keycard reconcile records carry correct values, and shift-close does not carry stale override state across attempts.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "`UI / visual`",
+      "applicable": "Bug 1 adds menu items using existing DS ActionDropdown pattern — same for both options",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Verify ActionDropdown usage pattern in ActionButtons during build",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "`UX / states`",
+      "applicable": "Keycard count updates after ~100ms LAN write. Acceptable in production context.",
+      "current_or_option_state": "Immediate count update; rollback required on error",
+      "gap_or_implication": "Option A: minor lag, simpler states. Option B: more states, rollback complexity",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "`Security / privacy`",
+      "applicable": "N/A — no auth/data exposure change",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "`Logging / observability / audit`",
+      "applicable": "Bug 3 error surfaced as toast. Bug 4 `difference` field corrected. All errors visible.",
+      "current_or_option_state": "Same, plus rollback event would need separate toast",
+      "gap_or_implication": "Option A simpler error surface",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "`Testing / validation`",
+      "applicable": "5 regression TCs; Bug 1 needs dedicated ActionButtons.test.tsx",
+      "current_or_option_state": "Same + rollback state TC required",
+      "gap_or_implication": "Option A has fewer test paths",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "`Data / contracts`",
+      "applicable": "Bug 4 fix confirmed safe — no downstream `difference` consumers found",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "Fix is safe to land",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "`Performance / reliability`",
+      "applicable": "Slight keycard update lag (~100ms). Firebase error contained as toast, no silent failure.",
+      "current_or_option_state": "Faster UI; more code surface for reliability bugs",
+      "gap_or_implication": "Option A is more reliable with less code",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "`Rollout / rollback`",
+      "applicable": "N/A — no schema migration, rollback = revert commit",
+      "current_or_option_state": "Same",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Five confirmed code-level bugs in the till reconciliation subsystem of `apps/reception`. All five have verified fix locations. The analysis must resolve two open choices before planning: (1) Bug 3 UX approach — whether to remove the optimistic keycard state update or replace it with an optimistic-update-plus-rollback pattern; (2) Plan grouping strategy — single plan or one plan per bug/file. All other bugs have a single viable fix path.",
+    "goals": [
+      "All five bugs fixed, regression-tested, and merged.",
+      "Till reconciliation workflows operational: edit/delete modes reachable, float form closes after success, keycard Firebase errors surface as toasts, keycard reconcile record carries correct difference, shift-close cannot carry stale override state."
+    ],
+    "non_goals": [
+      "UX redesign beyond the minimum needed for each fix.",
+      "Other till subsystem areas (TillShiftHistory, DrawerLimitWarning, safe management).",
+      "Performance optimisation."
+    ],
+    "constraints": [
+      "Firebase Realtime DB; all write mutations through custom Firebase hooks.",
+      "Tests run in CI only. NEVER run jest locally.",
+      "Writer lock required for commits.",
+      "Pre-commit hook runs `turbo lint` on all changed packages."
+    ],
+    "assumptions": [
+      "`useEndOfDayReportData.ts` confirmed to NOT read `difference` from reconcile-type cashCount records (grep verified). Bug 4 fix has no downstream consumer to update.",
+      "Reception app is on a stable LAN/WiFi connection; Firebase write latency is typically <100ms in production context."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Fix correctness",
+        "Why it matters": "Each fix must eliminate the defect without introducing new bugs",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Pattern consistency",
+        "Why it matters": "Fixes should match existing codebase patterns to reduce review friction",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "UX impact",
+        "Why it matters": "Especially relevant for Bug 3 — change must not noticeably degrade perceived responsiveness",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Test isolation",
+        "Why it matters": "Each bug must have an independently verifiable regression TC",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Scope minimality",
+        "Why it matters": "Avoid scope creep beyond the confirmed defects",
+        "Weight/priority": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Remove optimistic update",
+        "Description": "Await Firebase write, THEN call `updateSafeKeycards`. Wrap entire block in try/catch; show toast on error.",
+        "Upside": "Simple, correct, matches SafeManagement.tsx pattern. No rollback state needed.",
+        "Downside": "Keycard count in UI updates after Firebase round-trip (~50–150ms LAN). Slight perceived lag on button tap.",
+        "Key risks": "None — this is the simpler of two correct approaches",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — Optimistic update + rollback",
+        "Description": "Call `updateSafeKeycards` immediately, then await Firebase write; on error, reverse the state update and show toast.",
+        "Upside": "Immediate UI feedback on tap. More responsive feel.",
+        "Downside": "Requires storing previous count, adding rollback logic, significantly more complex. Two possible out-of-sync states on error.",
+        "Key risks": "Rollback logic could introduce race condition if user taps again before error resolves",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "A — Single plan, 5 tasks",
+        "Description": "One plan with one IMPLEMENT task per bug. Tasks for Bugs 2+3 share `useTillReconciliationLogic.ts`; Bugs 4+5 share `useTillShifts.ts`; Bug 1 is independent.",
+        "Upside": "Shared test infrastructure, single commit scope, one archive. No inter-plan dependency.",
+        "Downside": "If one task blocks, the whole plan stalls.",
+        "Key risks": "Minimal — all 5 fixes are independently bounded.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B — Split plans per file",
+        "Description": "Three mini-plans: (1) ActionButtons Bug 1, (2) useTillReconciliationLogic Bugs 2+3, (3) useTillShifts Bugs 4+5.",
+        "Upside": "Each mini-plan is independently archivable.",
+        "Downside": "Overhead of 3 plans, 3 critique loops, 3 build cycles, 3 archive commits. Disproportionate for 5 point fixes.",
+        "Key risks": "None",
+        "Viable?": "Yes"
+      }
+    ],
+    "chosen_approach": {
+      "Bug 3": "Option A (await-then-update) matches the `SafeManagement.tsx` pattern for `recordKeycardTransfer` (confirmed — `SafeManagement.tsx` line 304 wraps the call in a `run:` step that awaits). Rollback (Option B) adds significant complexity for negligible UX benefit on a LAN connection where round-trips are <150ms. Staff interaction with keycard buttons is deliberate (multi-tap unlikely during the write window).",
+      "Grouping": "Single plan eliminates the overhead of 3 separate artifact sets for 5 point fixes. All five tasks can be sequenced independently; if one stalls, the plan is still `Partially complete` rather than blocked. The shared test infrastructure (same mock patterns) makes a single plan natural.",
+      "Bug 1 test strategy": "Create `ActionButtons.test.tsx` — follows the repo pattern of component-level test files. Clean isolation, no interference with `TillReconciliation.test.tsx`.",
+      "Bug 1 test": "ActionDropdown or Button click simulation in a new test file.",
+      "**Bug 3 optimistic + rollback** — adds rollback state management and race-condition risk. The correct behavior is await-then-update; the LAN latency is acceptable. Rejected": "complexity exceeds benefit.",
+      "**Split plans per file** — disproportionate overhead for 5 bounded point fixes with shared infrastructure. Rejected": "wasteful process overhead."
+    },
+    "rejected_approaches": [
+      "**Bug 3 optimistic + rollback** — adds rollback state management and race-condition risk. The correct behavior is await-then-update; the LAN latency is acceptable. Rejected: complexity exceeds benefit.",
+      "**Split plans per file** — disproportionate overhead for 5 bounded point fixes with shared infrastructure. Rejected: wasteful process overhead."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change — five pure React hook/component fixes. No CI/deploy/release lane, approval path, workflow lifecycle state, or operator runbook is affected.",
+      "areas": []
+    }
+  }
+}

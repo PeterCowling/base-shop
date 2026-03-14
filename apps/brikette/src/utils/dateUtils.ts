@@ -104,6 +104,18 @@ export const parseIsoToLocalDate = (iso: string): Date => {
  * @param iso - A "YYYY-MM-DD" date string (or any string).
  * @returns A valid `Date` in local time, or `undefined` if input is invalid.
  */
+/**
+ * Counts the number of nights between two dates (minimum 1).
+ *
+ * Uses `getTime()` arithmetic so it is TZ-safe regardless of DST transitions.
+ *
+ * @param from - Check-in `Date`.
+ * @param to   - Check-out `Date`.
+ * @returns Number of nights, always ≥ 1.
+ */
+export const countNights = (from: Date, to: Date): number =>
+  Math.max(1, Math.round((to.getTime() - from.getTime()) / (1000 * 60 * 60 * 24)));
+
 export const safeParseIso = (iso: string): Date | undefined => {
   if (!iso) return undefined;
   const d = parseIsoToLocalDate(iso);

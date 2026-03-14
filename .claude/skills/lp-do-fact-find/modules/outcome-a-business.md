@@ -4,7 +4,7 @@ Use this module for `Outcome: planning` with `Execution-Track: business-artifact
 
 ## Objective
 
-Produce evidence that lets `/lp-do-plan` create validation-first, channel-aware business tasks.
+Produce evidence that lets `/lp-do-analysis` compare viable approaches and lets `/lp-do-plan` later create validation-first, channel-aware business tasks.
 
 ## Required Evidence Slices
 

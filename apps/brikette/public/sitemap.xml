@@ -3,7 +3,6 @@
   <url><loc>https://hostel-positano.com/</loc></url>
   <url><loc>https://hostel-positano.com/ar</loc></url>
   <url><loc>https://hostel-positano.com/ar/ghuraf</loc></url>
-  <url><loc>https://hostel-positano.com/ar/ghuraf-khassa</loc></url>
   <url><loc>https://hostel-positano.com/ar/ghuraf-khassa/ghurfa-muzdawaja</loc></url>
   <url><loc>https://hostel-positano.com/ar/ghuraf-khassa/iqama-khassa</loc></url>
   <url><loc>https://hostel-positano.com/ar/ghuraf-khassa/shaqqa-itlala-bahriya</loc></url>
@@ -16,6 +15,7 @@
   <url><loc>https://hostel-positano.com/ar/ghuraf/mahja-mukhtalat-8-asira</loc></url>
   <url><loc>https://hostel-positano.com/ar/ghuraf/mahja-mukhtalat-hammam-dakhili</loc></url>
   <url><loc>https://hostel-positano.com/ar/ghuraf/mahja-mukhtalat-shurfa-bahriya</loc></url>
+  <url><loc>https://hostel-positano.com/ar/hajz</loc></url>
   <url><loc>https://hostel-positano.com/ar/hajz-ghurfa-muzdawaja</loc></url>
   <url><loc>https://hostel-positano.com/ar/hajz-iqama-khassa</loc></url>
   <url><loc>https://hostel-positano.com/ar/kayfa-tasil</loc></url>
@@ -224,6 +224,7 @@
   <url><loc>https://hostel-positano.com/ar/wazayif</loc></url>
   <url><loc>https://hostel-positano.com/da</loc></url>
   <url><loc>https://hostel-positano.com/da/barmenu</loc></url>
+  <url><loc>https://hostel-positano.com/da/bestil</loc></url>
   <url><loc>https://hostel-positano.com/da/bestil-dobbeltvaerelse</loc></url>
   <url><loc>https://hostel-positano.com/da/bestil-privat-ophold</loc></url>
   <url><loc>https://hostel-positano.com/da/cookiepolitik</loc></url>
@@ -425,7 +426,6 @@
   <url><loc>https://hostel-positano.com/da/oplevelser/spiaggia-grande-guide-positanos-hovedstrand</loc><lastmod>2026-01-29T00:00:00.000Z</lastmod></url>
   <url><loc>https://hostel-positano.com/da/oplevelser/spis-som-en-lokal-positanos-bedste-budget-bites</loc></url>
   <url><loc>https://hostel-positano.com/da/oplevelser/top-of-the-mountain-vandring-fra-hostel-brikette</loc><lastmod>2026-02-04T00:00:00.000Z</lastmod></url>
-  <url><loc>https://hostel-positano.com/da/private-vaerelser</loc></url>
   <url><loc>https://hostel-positano.com/da/private-vaerelser/ankomst-uden-trapper</loc></url>
   <url><loc>https://hostel-positano.com/da/private-vaerelser/dobbeltvaerelse</loc></url>
   <url><loc>https://hostel-positano.com/da/private-vaerelser/lejlighed-havudsigt</loc></url>
@@ -478,6 +478,7 @@
   <url><loc>https://hostel-positano.com/de/angebote</loc></url>
   <url><loc>https://hostel-positano.com/de/bar-speisekarte</loc></url>
   <url><loc>https://hostel-positano.com/de/bedingungen</loc></url>
+  <url><loc>https://hostel-positano.com/de/buchen</loc></url>
   <url><loc>https://hostel-positano.com/de/cookie-richtlinie</loc></url>
   <url><loc>https://hostel-positano.com/de/datenschutz</loc></url>
   <url><loc>https://hostel-positano.com/de/doppelzimmer-buchen</loc></url>
@@ -648,7 +649,6 @@
   <url><loc>https://hostel-positano.com/de/hilfe/work-und-travel-remote-arbeit-in-positano</loc></url>
   <url><loc>https://hostel-positano.com/de/karriere</loc></url>
   <url><loc>https://hostel-positano.com/de/privatunterkunft-buchen</loc></url>
-  <url><loc>https://hostel-positano.com/de/privatzimmer</loc></url>
   <url><loc>https://hostel-positano.com/de/privatzimmer/ankunft-ohne-treppen</loc></url>
   <url><loc>https://hostel-positano.com/de/privatzimmer/apartment-meerblick</loc></url>
   <url><loc>https://hostel-positano.com/de/privatzimmer/doppelzimmer</loc></url>
@@ -690,6 +690,7 @@
   <url><loc>https://hostel-positano.com/en</loc></url>
   <url><loc>https://hostel-positano.com/en/about</loc></url>
   <url><loc>https://hostel-positano.com/en/bar-menu</loc></url>
+  <url><loc>https://hostel-positano.com/en/book</loc></url>
   <url><loc>https://hostel-positano.com/en/book-double-room</loc></url>
   <url><loc>https://hostel-positano.com/en/book-private-accommodations</loc></url>
   <url><loc>https://hostel-positano.com/en/breakfast-menu</loc></url>
@@ -902,7 +903,6 @@
   <url><loc>https://hostel-positano.com/en/how-to-get-here/sorrento-positano-bus</loc></url>
   <url><loc>https://hostel-positano.com/en/how-to-get-here/sorrento-positano-ferry</loc></url>
   <url><loc>https://hostel-positano.com/en/privacy-policy</loc></url>
-  <url><loc>https://hostel-positano.com/en/private-rooms</loc></url>
   <url><loc>https://hostel-positano.com/en/private-rooms/double-room</loc></url>
   <url><loc>https://hostel-positano.com/en/private-rooms/private-stay</loc></url>
   <url><loc>https://hostel-positano.com/en/private-rooms/sea-view-apartment</loc></url>
@@ -1107,7 +1107,6 @@
   <url><loc>https://hostel-positano.com/es/experiencias/spots-de-foto-en-positano</loc><lastmod>2026-02-02T00:00:00.000Z</lastmod></url>
   <url><loc>https://hostel-positano.com/es/experiencias/tours-en-barco-cruceros-al-atardecer-hasta-charters-privados</loc></url>
   <url><loc>https://hostel-positano.com/es/habitaciones</loc></url>
-  <url><loc>https://hostel-positano.com/es/habitaciones-privadas</loc></url>
   <url><loc>https://hostel-positano.com/es/habitaciones-privadas/apartamento-vista-mar</loc></url>
   <url><loc>https://hostel-positano.com/es/habitaciones-privadas/estancia-privada</loc></url>
   <url><loc>https://hostel-positano.com/es/habitaciones-privadas/habitacion-doble</loc></url>
@@ -1125,6 +1124,7 @@
   <url><loc>https://hostel-positano.com/es/ofertas</loc></url>
   <url><loc>https://hostel-positano.com/es/politica-de-cookies</loc></url>
   <url><loc>https://hostel-positano.com/es/politica-de-privacidad</loc></url>
+  <url><loc>https://hostel-positano.com/es/reservar</loc></url>
   <url><loc>https://hostel-positano.com/es/reservar-alojamientos-privados</loc></url>
   <url><loc>https://hostel-positano.com/es/reservar-habitacion-doble</loc></url>
   <url><loc>https://hostel-positano.com/es/sobre-nosotros</loc></url>
@@ -1169,7 +1169,6 @@
   <url><loc>https://hostel-positano.com/fr/carrieres</loc></url>
   <url><loc>https://hostel-positano.com/fr/carte-boissons</loc></url>
   <url><loc>https://hostel-positano.com/fr/chambres</loc></url>
-  <url><loc>https://hostel-positano.com/fr/chambres-privees</loc></url>
   <url><loc>https://hostel-positano.com/fr/chambres-privees/appartement-vue-mer</loc></url>
   <url><loc>https://hostel-positano.com/fr/chambres-privees/arrivee-sans-escaliers</loc></url>
   <url><loc>https://hostel-positano.com/fr/chambres-privees/chambre-double</loc></url>
@@ -1348,9 +1347,11 @@
   <url><loc>https://hostel-positano.com/fr/politique-confidentialite</loc></url>
   <url><loc>https://hostel-positano.com/fr/politique-cookies</loc></url>
   <url><loc>https://hostel-positano.com/fr/reglement-interieur</loc></url>
+  <url><loc>https://hostel-positano.com/fr/reserver</loc></url>
   <url><loc>https://hostel-positano.com/fr/reserver-chambre-double</loc></url>
   <url><loc>https://hostel-positano.com/fr/reserver-hebergements-prives</loc></url>
   <url><loc>https://hostel-positano.com/hi</loc></url>
+  <url><loc>https://hostel-positano.com/hi/aarakshan</loc></url>
   <url><loc>https://hostel-positano.com/hi/anubhav</loc></url>
   <url><loc>https://hostel-positano.com/hi/anubhav/amaalphii-ke-maadhym-se-devtaaon-kaa-pth-bs-paidl-yaatraa</loc></url>
   <url><loc>https://hostel-positano.com/hi/anubhav/amaalphii-kostt-pr-kainping</loc></url>
@@ -1528,7 +1529,6 @@
   <url><loc>https://hostel-positano.com/hi/nashta-menu</loc></url>
   <url><loc>https://hostel-positano.com/hi/naukri</loc></url>
   <url><loc>https://hostel-positano.com/hi/niji-aavaas-aarakshan</loc></url>
-  <url><loc>https://hostel-positano.com/hi/niji-kamre</loc></url>
   <url><loc>https://hostel-positano.com/hi/niji-kamre/bina-seedhi-pahunch</loc></url>
   <url><loc>https://hostel-positano.com/hi/niji-kamre/dabal-kamra</loc></url>
   <url><loc>https://hostel-positano.com/hi/niji-kamre/niji-thaharav</loc></url>
@@ -1704,6 +1704,7 @@
   <url><loc>https://hostel-positano.com/hu/elmenyek/teraszos-naplemente</loc><lastmod>2026-02-02T00:00:00.000Z</lastmod></url>
   <url><loc>https://hostel-positano.com/hu/elmenyek/tura-a-hegy-tetejen-a-hostel-brikette-tol</loc><lastmod>2026-02-04T00:00:00.000Z</lastmod></url>
   <url><loc>https://hostel-positano.com/hu/feltetelek</loc></url>
+  <url><loc>https://hostel-positano.com/hu/foglalas</loc></url>
   <url><loc>https://hostel-positano.com/hu/hazi-szabalyok</loc></url>
   <url><loc>https://hostel-positano.com/hu/hogyan-jutsz-ide</loc></url>
   <url><loc>https://hostel-positano.com/hu/hogyan-jutsz-ide/amalfi-positano-bus</loc><lastmod>2026-01-31T00:00:00.000Z</lastmod></url>
@@ -1740,7 +1741,6 @@
   <url><loc>https://hostel-positano.com/hu/karrier</loc></url>
   <url><loc>https://hostel-positano.com/hu/ketagyas-szoba-foglalas</loc></url>
   <url><loc>https://hostel-positano.com/hu/privat-szallas-foglalas</loc></url>
-  <url><loc>https://hostel-positano.com/hu/privat-szobak</loc></url>
   <url><loc>https://hostel-positano.com/hu/privat-szobak/erkezes-lepcso-nelkul</loc></url>
   <url><loc>https://hostel-positano.com/hu/privat-szobak/ketagyas-szoba</loc></url>
   <url><loc>https://hostel-positano.com/hu/privat-szobak/privat-tartozkodas</loc></url>
@@ -1828,7 +1828,6 @@
   <url><loc>https://hostel-positano.com/it/assistenza/work-exchange-negli-ostelli-italiani</loc></url>
   <url><loc>https://hostel-positano.com/it/assistenza/work-und-travel-bilanciare-il-lavoro-da-remoto</loc></url>
   <url><loc>https://hostel-positano.com/it/camere</loc></url>
-  <url><loc>https://hostel-positano.com/it/camere-private</loc></url>
   <url><loc>https://hostel-positano.com/it/camere-private/appartamento-vista-mare</loc></url>
   <url><loc>https://hostel-positano.com/it/camere-private/arrivo-senza-scale</loc></url>
   <url><loc>https://hostel-positano.com/it/camere-private/camera-doppia</loc></url>
@@ -2008,6 +2007,7 @@
   <url><loc>https://hostel-positano.com/it/menu-colazione</loc></url>
   <url><loc>https://hostel-positano.com/it/offerte</loc></url>
   <url><loc>https://hostel-positano.com/it/politica-cookie</loc></url>
+  <url><loc>https://hostel-positano.com/it/prenota</loc></url>
   <url><loc>https://hostel-positano.com/it/prenota-alloggi-privati</loc></url>
   <url><loc>https://hostel-positano.com/it/prenota-camera-doppia</loc></url>
   <url><loc>https://hostel-positano.com/it/regole-della-casa</loc></url>
@@ -2058,7 +2058,6 @@
   <url><loc>https://hostel-positano.com/ja/heya/josei-senyo-domitori-oogata-umi-terasu</loc></url>
   <url><loc>https://hostel-positano.com/ja/heya/josei-senyo-oshan-byu-7-beddo-domitori</loc></url>
   <url><loc>https://hostel-positano.com/ja/heya/josei-senyo-oshan-byu-domitori</loc></url>
-  <url><loc>https://hostel-positano.com/ja/kojin-heya</loc></url>
   <url><loc>https://hostel-positano.com/ja/kojin-heya-yoyaku</loc></url>
   <url><loc>https://hostel-positano.com/ja/kojin-heya/daburu-rumu</loc></url>
   <url><loc>https://hostel-positano.com/ja/kojin-heya/kaidan-nashi-tochaku</loc></url>
@@ -2233,6 +2232,7 @@
   <url><loc>https://hostel-positano.com/ja/taiken/terasunori</loc><lastmod>2026-02-02T00:00:00.000Z</lastmod></url>
   <url><loc>https://hostel-positano.com/ja/taiken/wuliaoyinshengtua-pozita-nosance</loc></url>
   <url><loc>https://hostel-positano.com/ja/taiken/wulinakukapuridaowolesimufangfa</loc></url>
+  <url><loc>https://hostel-positano.com/ja/yoyaku</loc></url>
   <url><loc>https://hostel-positano.com/ko</loc></url>
   <url><loc>https://hostel-positano.com/ko/achim-menu</loc></url>
   <url><loc>https://hostel-positano.com/ko/bang</loc></url>
@@ -2375,7 +2375,6 @@
   <url><loc>https://hostel-positano.com/ko/cheheom/teraseu-noeul</loc><lastmod>2026-02-02T00:00:00.000Z</lastmod></url>
   <url><loc>https://hostel-positano.com/ko/deobeul-rum-yeyak</loc></url>
   <url><loc>https://hostel-positano.com/ko/gaein-jeongbo-bangchim</loc></url>
-  <url><loc>https://hostel-positano.com/ko/gaein-sil</loc></url>
   <url><loc>https://hostel-positano.com/ko/gaein-sil-yeyak</loc></url>
   <url><loc>https://hostel-positano.com/ko/gaein-sil/bada-jeonmang-apateu</loc></url>
   <url><loc>https://hostel-positano.com/ko/gaein-sil/deobeul-rum</loc></url>
@@ -2453,8 +2452,10 @@
   <url><loc>https://hostel-positano.com/ko/sogae</loc></url>
   <url><loc>https://hostel-positano.com/ko/teukga</loc></url>
   <url><loc>https://hostel-positano.com/ko/yagwan</loc></url>
+  <url><loc>https://hostel-positano.com/ko/yeyak</loc></url>
   <url><loc>https://hostel-positano.com/no</loc></url>
   <url><loc>https://hostel-positano.com/no/barmeny</loc></url>
+  <url><loc>https://hostel-positano.com/no/bestill</loc></url>
   <url><loc>https://hostel-positano.com/no/bestill-dobbeltrom</loc></url>
   <url><loc>https://hostel-positano.com/no/bestill-privat-opphold</loc></url>
   <url><loc>https://hostel-positano.com/no/cookiepolicy</loc></url>
@@ -2658,7 +2659,6 @@
   <url><loc>https://hostel-positano.com/no/opplevelser/tagger/work-life</loc></url>
   <url><loc>https://hostel-positano.com/no/opplevelser/toppen-av-fjellet-fottur-fra-hostel-brikette</loc><lastmod>2026-02-04T00:00:00.000Z</lastmod></url>
   <url><loc>https://hostel-positano.com/no/personvern</loc></url>
-  <url><loc>https://hostel-positano.com/no/private-rom</loc></url>
   <url><loc>https://hostel-positano.com/no/private-rom/ankomst-uten-trapper</loc></url>
   <url><loc>https://hostel-positano.com/no/private-rom/dobbeltrom</loc></url>
   <url><loc>https://hostel-positano.com/no/private-rom/leilighet-havutsikt</loc></url>
@@ -2839,7 +2839,6 @@
   <url><loc>https://hostel-positano.com/pl/menu-sniadaniowe</loc></url>
   <url><loc>https://hostel-positano.com/pl/o-nas</loc></url>
   <url><loc>https://hostel-positano.com/pl/pokoje</loc></url>
-  <url><loc>https://hostel-positano.com/pl/pokoje-prywatne</loc></url>
   <url><loc>https://hostel-positano.com/pl/pokoje-prywatne/apartament-z-widokiem-na-morze</loc></url>
   <url><loc>https://hostel-positano.com/pl/pokoje-prywatne/dojazd-bez-schodow</loc></url>
   <url><loc>https://hostel-positano.com/pl/pokoje-prywatne/pokoj-dwuosobowy</loc></url>
@@ -2892,6 +2891,7 @@
   <url><loc>https://hostel-positano.com/pl/praca</loc></url>
   <url><loc>https://hostel-positano.com/pl/promocje</loc></url>
   <url><loc>https://hostel-positano.com/pl/regulamin</loc></url>
+  <url><loc>https://hostel-positano.com/pl/rezerwuj</loc></url>
   <url><loc>https://hostel-positano.com/pl/rezerwuj-pokoj-dwuosobowy</loc></url>
   <url><loc>https://hostel-positano.com/pl/rezerwuj-prywatny-pobyt</loc></url>
   <url><loc>https://hostel-positano.com/pl/zasady-domu</loc></url>
@@ -3098,7 +3098,6 @@
   <url><loc>https://hostel-positano.com/pt/politica-de-cookies</loc></url>
   <url><loc>https://hostel-positano.com/pt/politica-de-privacidade</loc></url>
   <url><loc>https://hostel-positano.com/pt/quartos</loc></url>
-  <url><loc>https://hostel-positano.com/pt/quartos-privados</loc></url>
   <url><loc>https://hostel-positano.com/pt/quartos-privados/apartamento-vista-mar</loc></url>
   <url><loc>https://hostel-positano.com/pt/quartos-privados/chegada-sem-escadas</loc></url>
   <url><loc>https://hostel-positano.com/pt/quartos-privados/estadia-privada</loc></url>
@@ -3112,14 +3111,15 @@
   <url><loc>https://hostel-positano.com/pt/quartos/dormitorio-misto-varanda-mar</loc></url>
   <url><loc>https://hostel-positano.com/pt/quartos/quarto-misto-camas-individuais</loc></url>
   <url><loc>https://hostel-positano.com/pt/regras-da-casa</loc></url>
+  <url><loc>https://hostel-positano.com/pt/reservar</loc></url>
   <url><loc>https://hostel-positano.com/pt/reservar-acomodacoes-privadas</loc></url>
   <url><loc>https://hostel-positano.com/pt/reservar-quarto-duplo</loc></url>
   <url><loc>https://hostel-positano.com/pt/sobre-nos</loc></url>
   <url><loc>https://hostel-positano.com/pt/termos-condicoes</loc></url>
   <url><loc>https://hostel-positano.com/ru</loc></url>
   <url><loc>https://hostel-positano.com/ru/bron-dvukhmestnogo</loc></url>
+  <url><loc>https://hostel-positano.com/ru/bronirovanie</loc></url>
   <url><loc>https://hostel-positano.com/ru/bronirovat-chastnoe-prozhivanie</loc></url>
-  <url><loc>https://hostel-positano.com/ru/chastnye-nomera</loc></url>
   <url><loc>https://hostel-positano.com/ru/chastnye-nomera/apartamenty-s-vidom-na-more</loc></url>
   <url><loc>https://hostel-positano.com/ru/chastnye-nomera/chastnoe-prozhivanie</loc></url>
   <url><loc>https://hostel-positano.com/ru/chastnye-nomera/dvukhmestniy-nomer</loc></url>
@@ -3339,6 +3339,7 @@
   <url><loc>https://hostel-positano.com/ru/vpechatleniya/vozvrashchenie-s-glavnogo-plyazha-pozitano</loc></url>
   <url><loc>https://hostel-positano.com/sv</loc></url>
   <url><loc>https://hostel-positano.com/sv/barmeny</loc></url>
+  <url><loc>https://hostel-positano.com/sv/boka</loc></url>
   <url><loc>https://hostel-positano.com/sv/boka-dubbelrum</loc></url>
   <url><loc>https://hostel-positano.com/sv/boka-privat-boende</loc></url>
   <url><loc>https://hostel-positano.com/sv/cookiepolicy</loc></url>
@@ -3415,7 +3416,6 @@
   <url><loc>https://hostel-positano.com/sv/integritetspolicy</loc></url>
   <url><loc>https://hostel-positano.com/sv/karriar</loc></url>
   <url><loc>https://hostel-positano.com/sv/om-oss</loc></url>
-  <url><loc>https://hostel-positano.com/sv/privata-rum</loc></url>
   <url><loc>https://hostel-positano.com/sv/privata-rum/ankomst-utan-trappor</loc></url>
   <url><loc>https://hostel-positano.com/sv/privata-rum/dubbelrum</loc></url>
   <url><loc>https://hostel-positano.com/sv/privata-rum/lagenhet-havsutsikt</loc></url>
@@ -3594,11 +3594,11 @@
   <url><loc>https://hostel-positano.com/vi/chinh-sach-bao-mat</loc></url>
   <url><loc>https://hostel-positano.com/vi/chinh-sach-cookie</loc></url>
   <url><loc>https://hostel-positano.com/vi/dat-cho-o-rieng-tu</loc></url>
+  <url><loc>https://hostel-positano.com/vi/dat-phong</loc></url>
   <url><loc>https://hostel-positano.com/vi/dat-phong-doi</loc></url>
   <url><loc>https://hostel-positano.com/vi/dieu-khoan</loc></url>
   <url><loc>https://hostel-positano.com/vi/noi-quy-nha</loc></url>
   <url><loc>https://hostel-positano.com/vi/phong</loc></url>
-  <url><loc>https://hostel-positano.com/vi/phong-rieng</loc></url>
   <url><loc>https://hostel-positano.com/vi/phong-rieng/can-ho-view-bien</loc></url>
   <url><loc>https://hostel-positano.com/vi/phong-rieng/den-noi-khong-cau-thang</loc></url>
   <url><loc>https://hostel-positano.com/vi/phong-rieng/luu-tru-rieng-tu</loc></url>
@@ -3859,7 +3859,6 @@
   <url><loc>https://hostel-positano.com/zh/ruhe-daoda/salerno-positano-ferry</loc><lastmod>2026-01-31T00:00:00.000Z</lastmod></url>
   <url><loc>https://hostel-positano.com/zh/ruhe-daoda/sorrento-positano-bus</loc><lastmod>2026-01-31T00:00:00.000Z</lastmod></url>
   <url><loc>https://hostel-positano.com/zh/ruhe-daoda/sorrento-positano-ferry</loc><lastmod>2026-01-31T00:00:00.000Z</lastmod></url>
-  <url><loc>https://hostel-positano.com/zh/siren-kefang</loc></url>
   <url><loc>https://hostel-positano.com/zh/siren-kefang/haijing-gongyu</loc></url>
   <url><loc>https://hostel-positano.com/zh/siren-kefang/mian-taijie-daoda</loc></url>
   <url><loc>https://hostel-positano.com/zh/siren-kefang/shuangren-fang</loc></url>
@@ -3995,6 +3994,7 @@
   <url><loc>https://hostel-positano.com/zh/tiyan/zaiboxitanuobaochikangbudaohaitan</loc><lastmod>2026-02-04T00:00:00.000Z</lastmod></url>
   <url><loc>https://hostel-positano.com/zh/tiyan/zoudaoboxitanuodehaitan</loc></url>
   <url><loc>https://hostel-positano.com/zh/yinsi-zhengce</loc></url>
+  <url><loc>https://hostel-positano.com/zh/yuding</loc></url>
   <url><loc>https://hostel-positano.com/zh/yuding-shuangrenfang</loc></url>
   <url><loc>https://hostel-positano.com/zh/yuding-siren-zhusu</loc></url>
   <url><loc>https://hostel-positano.com/zh/zaocan-caidan</loc></url>

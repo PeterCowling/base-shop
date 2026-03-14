@@ -1,0 +1,214 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "do-workflow-process-walkthrough-packets",
+  "source_artifact_path": "docs/plans/do-workflow-process-walkthrough-packets/plan.md",
+  "source_artifact_status": "Complete",
+  "source_last_updated": "2026-03-12",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-ideas",
+    "lp-do-fact-find",
+    "lp-do-analysis",
+    "lp-do-plan",
+    "lp-do-build"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-process-walkthrough-packets/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The walkthrough gate fixed a planning-quality blind spot, but it made the markdown artifacts larger. If the handoff packets keep omitting those new process sections, downstream stages will reopen full upstream markdown and lose much of the deterministic token-efficiency gain.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "DO workflow packets carry compact walkthrough/process rows for fact-find, analysis, and plan, and analysis has a deterministic validator so packet-first progressive disclosure remains real after the walkthrough gate.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: workflow/process change only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "no product UI",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "packet-first workflow remains truthful for process-changing features",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "packets carry the new process rows",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "packet and validator data stays repo-local and source-derived",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "no new external inputs",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "generated packet sidecars and validation artifacts prove the path",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "optional workflow telemetry may be appended if recorded",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "typecheck/lint plus fact-find/analysis/plan/engineering validators and packet generation",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "no local Jest runs",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "one packet contract plus one new validator family",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "additive contract evolution",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "bounded process rows reduce needless markdown reopening",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "packet-first remains the default",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "additive packet fields and additive validator introduction",
+      "current_or_option_state": "TASK-02, TASK-03",
+      "gap_or_implication": "markdown fallback remains unchanged",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Lift the new walkthrough/process sections into compact DO stage handoff packet rows, add a deterministic analysis validator and wrapper, update workflow guidance to require that validator, and prove the full path with a persisted feature slug, generated packet sidecars, and validation evidence.",
+    "goals": [
+      "keep walkthrough quality gains while preserving packet-first progressive disclosure,",
+      "eliminate the analysis validator gap,",
+      "prove the new path with a real workflow slug and regenerated packets."
+    ],
+    "non_goals": [
+      "replacing canonical markdown artifacts,",
+      "redesigning workflow telemetry,",
+      "building a larger runtime session handoff system."
+    ],
+    "constraints": [
+      "packet fields must stay source-derived and compact,",
+      "analysis validator section names must match the actual skill/template language,",
+      "build still escalates to the full task block before execution."
+    ],
+    "assumptions": [
+      "table-shaped walkthrough sections are stable enough for deterministic extraction,",
+      "targeted typecheck/lint plus workflow validators are sufficient proof for this increment."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "update the packet contract to require the new walkthrough/process-row fields,",
+      "extend packet generation to extract current-process, end-state, and delivered-process rows,",
+      "add `validate-analysis.sh` plus `skill-runner` validator/CLI wiring,",
+      "update the analysis skill and feature workflow guide to require the new validator,",
+      "regenerate packet sidecars and validation artifacts for this slug.",
+      "Why planning is not reopening option selection:",
+      "analysis already settled that packetization and deterministic validation belong in the same bounded increment."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Extend the packet contract and generator with compact process-row extraction",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-12)",
+        "confidence": 89,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code/doc change in packet contract + `packages/skill-runner`",
+        "affects": "`docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`, `packages/skill-runner/src/generate-stage-handoff-packet.ts`, `packages/skill-runner/src/stage-handoff-packet-markdown.ts`, `[readonly] docs/plans/_templates/fact-find-planning.md`, `[readonly] docs/plans/_templates/analysis.md`, `[readonly] docs/plans/_templates/plan.md`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add validate-analysis and wire workflow guidance to it",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-12)",
+        "confidence": 87,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "validator + CLI/shell wrapper + workflow doc/skill updates",
+        "affects": "`packages/skill-runner/src/validate-analysis.ts`, `packages/skill-runner/src/cli/validate-analysis.ts`, `packages/skill-runner/src/index.ts`, `scripts/validate-analysis.sh`, `.claude/skills/lp-do-analysis/SKILL.md`, `docs/agents/feature-workflow-guide.md`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Persist packet sidecars and validate the new path end to end",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-12)",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "persisted workflow docs, packet sidecars, validation evidence, and build record",
+        "affects": "`docs/plans/do-workflow-process-walkthrough-packets/fact-find.md`, `docs/plans/do-workflow-process-walkthrough-packets/analysis.md`, `docs/plans/do-workflow-process-walkthrough-packets/plan.md`, `docs/plans/do-workflow-process-walkthrough-packets/fact-find.packet.json`, `docs/plans/do-workflow-process-walkthrough-packets/analysis.packet.json`, `docs/plans/do-workflow-process-walkthrough-packets/plan.packet.json`, `docs/plans/do-workflow-process-walkthrough-packets/critique-history.md`, `docs/plans/do-workflow-process-walkthrough-packets/build-record.user.md`"
+      }
+    ],
+    "next_runnable_task_ids": [],
+    "validation_contracts": [
+      "TC-01: `@acme/skill-runner` typecheck/lint stay green after the packet + validator changes",
+      "TC-02: fact-find, analysis, plan, and engineering-coverage validators pass for this slug",
+      "TC-03: regenerated packet sidecars include the new process-row fields"
+    ],
+    "open_decisions": [],
+    "process_topology_change": true,
+    "process_topology_note": null,
+    "delivered_process_areas": [
+      {
+        "Area": "AREA-01: fact-find -> analysis process handoff",
+        "Trigger": "`lp-do-analysis` starts on process-changing work",
+        "Delivered step-by-step flow": "Analysis loads `fact-find.packet.json`, reads compact current-process trigger/end-condition/area rows first, then opens `fact-find.md` only if packet detail is insufficient or a cited claim needs verification",
+        "Tasks / dependencies": "TASK-01 -> TASK-03",
+        "Unresolved issues / rollback seam": "Older packet files remain valid but lack the new rows until regenerated"
+      },
+      {
+        "Area": "AREA-02: analysis -> plan operating-model handoff",
+        "Trigger": "`lp-do-plan` starts",
+        "Delivered step-by-step flow": "Plan loads `analysis.packet.json`, reads end-state operating-model rows there first, and reopens `analysis.md` only when planning needs path-specific supporting detail",
+        "Tasks / dependencies": "TASK-01 -> TASK-02 -> TASK-03",
+        "Unresolved issues / rollback seam": "Option nuance still lives in markdown by design"
+      },
+      {
+        "Area": "AREA-03: plan -> build delivered-process handoff",
+        "Trigger": "`lp-do-build` starts",
+        "Delivered step-by-step flow": "Build loads `plan.packet.json`, sees task briefs plus delivered-process rows, then escalates to the specific task block in `plan.md` before execution",
+        "Tasks / dependencies": "TASK-01 -> TASK-03",
+        "Unresolved issues / rollback seam": "Packet-first must not be misread as task-block replacement"
+      },
+      {
+        "Area": "AREA-04: analysis validation path",
+        "Trigger": "`lp-do-analysis` is ready to persist",
+        "Delivered step-by-step flow": "Analysis runs `validate-analysis.sh`; for code/mixed work it then runs `validate-engineering-coverage.sh`; after required validators pass it emits `analysis.packet.json`",
+        "Tasks / dependencies": "TASK-02 -> TASK-03",
+        "Unresolved issues / rollback seam": "Historical analyses are only checked when touched or rerun"
+      }
+    ]
+  }
+}

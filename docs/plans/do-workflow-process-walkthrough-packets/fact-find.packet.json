@@ -1,0 +1,193 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "do-workflow-process-walkthrough-packets",
+  "source_artifact_path": "docs/plans/do-workflow-process-walkthrough-packets/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-ideas",
+    "lp-do-fact-find",
+    "lp-do-analysis",
+    "lp-do-plan",
+    "lp-do-build"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-process-walkthrough-packets/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The walkthrough gate fixed a planning-quality blind spot, but it made the markdown artifacts larger. If the handoff packets keep omitting those new process sections, downstream stages will reopen full upstream markdown and lose much of the deterministic token-efficiency gain.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "DO workflow packets carry compact walkthrough/process rows for fact-find, analysis, and plan, and analysis has a deterministic validator so packet-first progressive disclosure remains real after the walkthrough gate.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "Workflow/process change only",
+      "gap_or_implication": "-",
+      "carry_forward_or_notes": "-"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Packet-first loading exists, but process topology still falls back to full markdown for walkthrough sections",
+      "gap_or_implication": "Progressive disclosure is less effective than claimed",
+      "carry_forward_or_notes": "Compare options that preserve packet-first as default"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Packet content is repo-local and source-derived",
+      "gap_or_implication": "New process-row fields must stay bounded and deterministic",
+      "carry_forward_or_notes": "Keep extraction table-driven"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Workflow telemetry can already record packet paths",
+      "gap_or_implication": "No direct signal yet that process rows are packetized",
+      "carry_forward_or_notes": "Carry packet/regeneration proof into build"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Fact-find and plan have deterministic validators; analysis does not",
+      "gap_or_implication": "Missing analysis validator leaves new section as a soft gate",
+      "carry_forward_or_notes": "Add `validate-analysis` as explicit build scope"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Packet contract owns stage payload semantics",
+      "gap_or_implication": "Contract currently lags the new walkthrough sections",
+      "carry_forward_or_notes": "Extend contract and generator together"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Templates already offer compact table structures for process sections",
+      "gap_or_implication": "If omitted from packets, downstream stages reopen full markdown",
+      "carry_forward_or_notes": "Use compact row extraction, not prose copy"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Packet sidecars and validators are additive",
+      "gap_or_implication": "Historical analyses will not auto-backfill validator status without rerun",
+      "carry_forward_or_notes": "Keep rollout additive and fail-closed only for new/edited analyses"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Add compact walkthrough/process-row extraction to DO stage handoff packets for fact-find, analysis, and plan. Add a deterministic analysis validator and wire the workflow docs/skill references to require it before packet emission. Persist a new feature slug with packet sidecars and validation evidence proving the path end-to-end.",
+    "goals": [
+      "Lift the new walkthrough/process sections into packet fields without copying full prose",
+      "Add a standalone deterministic validator for analysis",
+      "Prove the new path with regenerated sidecars and validation evidence"
+    ],
+    "non_goals": [
+      "Telemetry redesign beyond existing workflow-step recording",
+      "Replacing canonical markdown artifacts",
+      "A separate runtime handoff system",
+      "Constraints:",
+      "packet fields must stay compact and source-derived",
+      "markdown fallback must remain available when packet detail is insufficient",
+      "Assumptions:",
+      "the current walkthrough tables are stable extraction seams",
+      "targeted validators plus typecheck/lint are enough proof for this increment"
+    ],
+    "constraints": [
+      "packet fields must stay compact and source-derived",
+      "markdown fallback must remain available when packet detail is insufficient"
+    ],
+    "assumptions": [
+      "the current walkthrough tables are stable extraction seams",
+      "targeted validators plus typecheck/lint are enough proof for this increment"
+    ],
+    "key_entry_points": [
+      "`docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md` - canonical packet contract and load-order rules.",
+      "`packages/skill-runner/src/generate-stage-handoff-packet.ts` - deterministic packet builder for fact-find, analysis, and plan.",
+      "`packages/skill-runner/src/stage-handoff-packet-markdown.ts` - helper functions used to extract bounded fields from markdown.",
+      "`.claude/skills/lp-do-analysis/SKILL.md` - analysis-stage validation and packet-generation instructions.",
+      "`docs/agents/feature-workflow-guide.md` - short workflow entrypoint listing deterministic helpers."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready for analysis",
+      "Rationale": "The generator, contract, validator, and workflow-doc seams are all identified, and the main decision is now whether to solve the packet omission and the analysis validation gap together or separately.",
+      "Blocking items": "None",
+      "Recommended analysis focus": "Choose the smallest coherent change set that keeps the walkthrough gate token-efficient: packetize the process sections and add the analysis validator in the same increment."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Packet contract",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Packet generator extraction seam",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None - existing table parsers are sufficient for the new sections",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Analysis validation seam",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Testing / validation] [Moderate]: analysis has no dedicated deterministic validator",
+        "Resolution Required": "Yes"
+      },
+      {
+        "Scope Area": "Workflow guide / skill references",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[UX / states] [Moderate]: short-form docs still list no analysis validator",
+        "Resolution Required": "Yes"
+      },
+      {
+        "Scope Area": "Build proof artifact chain",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None - new slug can emit packets and validation evidence like earlier DO workflow features",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology_change": true,
+    "process_topology_note": null,
+    "process_trigger": "A process-changing feature enters the DO chain and requires fact-find, analysis, plan, and build handoffs.",
+    "process_end_condition": "Downstream stages can read compact process rows from the upstream packet first and only reopen full markdown when packet detail is insufficient or a quoted claim needs verification.",
+    "current_process_areas": [
+      {
+        "Area": "AREA-01: fact-find -> analysis walkthrough handoff",
+        "Current step-by-step flow": "`lp-do-fact-find` writes `## Current Process Map` in markdown, validates fact-find, generates `fact-find.packet.json`, then `lp-do-analysis` loads the packet first and often still reopens `fact-find.md` for the process map because the packet omits it.",
+        "Owners / systems / handoffs": "`lp-do-fact-find`, `lp-do-analysis`, `packages/skill-runner`, packet contract",
+        "Evidence refs": "`docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`; `packages/skill-runner/src/generate-stage-handoff-packet.ts`; `.claude/skills/lp-do-analysis/SKILL.md`",
+        "Known issues": "Packet-first policy is partially hollow for process-changing work because the new section is markdown-only."
+      },
+      {
+        "Area": "AREA-02: analysis -> plan operating-model handoff",
+        "Current step-by-step flow": "`lp-do-analysis` writes `## End-State Operating Model` in markdown, runs engineering coverage, generates `analysis.packet.json`, then `lp-do-plan` loads the packet and still needs `analysis.md` when the operating-model rows matter.",
+        "Owners / systems / handoffs": "`lp-do-analysis`, `lp-do-plan`, `packages/skill-runner`",
+        "Evidence refs": "`packages/skill-runner/src/generate-stage-handoff-packet.ts`; `.claude/skills/lp-do-plan/SKILL.md`; `docs/plans/_templates/analysis.md`",
+        "Known issues": "The new operating-model gate is not lifted into deterministic packet data."
+      },
+      {
+        "Area": "AREA-03: plan -> build delivered-process handoff",
+        "Current step-by-step flow": "`lp-do-plan` writes `## Delivered Processes` in markdown and generates `plan.packet.json`; `lp-do-build` loads the packet for task selection, but the delivered process walkthrough remains only in `plan.md`.",
+        "Owners / systems / handoffs": "`lp-do-plan`, `lp-do-build`, `packages/skill-runner`",
+        "Evidence refs": "`packages/skill-runner/src/generate-stage-handoff-packet.ts`; `.claude/skills/lp-do-build/SKILL.md`; `docs/plans/_templates/plan.md`",
+        "Known issues": "Build can see task briefs but not the compact delivered process map that explains why the plan topology looks the way it does."
+      },
+      {
+        "Area": "AREA-04: analysis validation gate",
+        "Current step-by-step flow": "`lp-do-analysis` currently runs `validate-engineering-coverage.sh` for code/mixed work and then emits the packet. There is no `validate-analysis.sh` enforcing core analysis sections like `## End-State Operating Model` or `## Planning Handoff`.",
+        "Owners / systems / handoffs": "`lp-do-analysis`, `packages/skill-runner`, shell wrappers",
+        "Evidence refs": "`.claude/skills/lp-do-analysis/SKILL.md`; `scripts/validate-fact-find.sh`; `scripts/validate-plan.sh`; `packages/skill-runner/src`",
+        "Known issues": "Analysis is the only DO planning-stage artifact without a standalone deterministic validator."
+      }
+    ]
+  }
+}

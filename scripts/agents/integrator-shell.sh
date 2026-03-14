@@ -14,6 +14,7 @@ usage() {
   echo "  - Agent write session mode: explicit opt-in for long-lived agent CLIs that edit the shared checkout"
   echo "  - Enables command guards (git safety + broad-test safety)"
   echo "  - Command-mode interactive shells such as '-- bash' are forbidden; use --interactive-write-shell instead"
+  echo "  - Long-lived non-write commands such as dev/watch/serve/preview are forbidden in write mode"
   echo ""
   echo "Options:"
   echo "  --read-only       Guard-only mode (no writer lock; use for long audits/dry-runs)"
@@ -77,6 +78,28 @@ Anti-retry list:
 - scripts/agents/integrator-shell.sh -- zsh
 - scripts/agents/integrator-shell.sh -- scripts/agents/with-git-guard.sh -- bash
 Escalation/stop condition: if you genuinely need a rare interactive write shell for a bounded repair, rerun with scripts/agents/integrator-shell.sh --interactive-write-shell and exit as soon as the serialized write window closes.
+EOF
+  exit 1
+}
+
+block_long_lived_non_write_write_mode() {
+  local rendered=""
+
+  printf -v rendered '%q ' "$@"
+  rendered="${rendered% }"
+
+  cat >&2 <<EOF
+ERROR: long-lived non-write commands are forbidden in integrator write mode.
+Failure reason: ${rendered} is a long-lived non-write session (for example dev/watch/serve/preview) and would hold the Base-Shop writer lock without performing serialized repo mutation.
+Retry posture: retry-forbidden
+Exact next step: scripts/agents/integrator-shell.sh --read-only -- ${rendered}
+Anti-retry list:
+- scripts/agents/integrator-shell.sh -- ${rendered}
+- scripts/agents/integrator-shell.sh --write -- ${rendered}
+- scripts/agents/integrator-shell.sh --wait-forever -- ${rendered}
+- scripts/agents/integrator-shell.sh --timeout 0 -- ${rendered}
+- scripts/agents/integrator-shell.sh --agent-write-session -- ${rendered}
+Escalation/stop condition: if this command truly must mutate the shared checkout while it runs, stop and ask the operator to define the serialized write window explicitly; after one blocked retry, stop local retries and escalate.
 EOF
   exit 1
 }
@@ -233,6 +256,9 @@ fi
 if [[ "$command_mode" == "1" ]]; then
   if detect_interactive_shell "$@" >/dev/null; then
     block_command_mode_interactive_write_shell
+  fi
+  if detect_long_lived_non_write_command "$@" >/dev/null; then
+    block_long_lived_non_write_write_mode "$@"
   fi
 fi
 

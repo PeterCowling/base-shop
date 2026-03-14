@@ -8,7 +8,7 @@ describe("bos tools", () => {
   const originalApiKey = process.env.BOS_AGENT_API_KEY;
 
   beforeEach(() => {
-    process.env.BOS_AGENT_API_BASE_URL = "http://localhost:3020";
+    process.env.BOS_AGENT_API_BASE_URL = "http://localhost:3022";
     process.env.BOS_AGENT_API_KEY = "bos_test_key_1234567890";
     global.fetch = jest.fn() as unknown as typeof fetch;
   });
@@ -61,7 +61,7 @@ describe("bos tools", () => {
     );
     expect(payload.cards[0].content).toBeUndefined();
     expect(fetchMock).toHaveBeenCalledWith(
-      "http://localhost:3020/api/agent/cards?business=BRIK",
+      "http://localhost:3022/api/agent/cards?business=BRIK",
       expect.objectContaining({
         method: "GET",
         headers: {
@@ -105,7 +105,7 @@ describe("bos tools", () => {
       })
     );
     expect(fetchMock).toHaveBeenCalledWith(
-      "http://localhost:3020/api/agent/stage-docs/BRIK-ENG-0001/fact-find",
+      "http://localhost:3022/api/agent/stage-docs/BRIK-ENG-0001/fact-find",
       expect.any(Object)
     );
   });
@@ -220,7 +220,7 @@ describe("bos tools", () => {
 
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock).toHaveBeenCalledWith(
-      "http://localhost:3020/api/agent/stage-docs/BRIK-ENG-0001/plan",
+      "http://localhost:3022/api/agent/stage-docs/BRIK-ENG-0001/plan",
       expect.objectContaining({
         method: "PATCH",
         headers: {

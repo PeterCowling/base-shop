@@ -1,7 +1,6 @@
 /* eslint-disable ds/no-hardcoded-copy -- LINT-1007 [ttl=2026-12-31] Non-UI literals pending localization. */
 // src/hooks/useScrollProgress.ts
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
-import { flushSync } from "react-dom";
 
 export interface ScrollProgress {
   scrolled: boolean;
@@ -27,25 +26,24 @@ export function useScrollProgress(): ScrollProgress {
 
   const handleScroll = useCallback((): void => {
     const { y, pct } = readScrollPosition();
-    flushSync(() => {
-      setScrolled(y > 50);
-      setProgress(pct);
-    });
+    setScrolled(y > 50);
+    setProgress(pct);
   }, []);
 
   const handleMouseMove = useCallback((e: MouseEvent): void => {
-    const rect = headerRef.current?.getBoundingClientRect();
-    const isWithinHeader = Boolean(
-      rect &&
-        e.clientX >= rect.left &&
-        e.clientX <= rect.right &&
-        e.clientY >= rect.top &&
-        e.clientY <= rect.bottom
-    );
+    // Avoid getBoundingClientRect reflow when clientY alone satisfies the condition.
+    const nearTop = e.clientY < 50 || (() => {
+      const rect = headerRef.current?.getBoundingClientRect();
+      return Boolean(
+        rect &&
+          e.clientX >= rect.left &&
+          e.clientX <= rect.right &&
+          e.clientY >= rect.top &&
+          e.clientY <= rect.bottom
+      );
+    })();
 
-    flushSync(() => {
-      setMouseNearTop(e.clientY < 50 || isWithinHeader);
-    });
+    setMouseNearTop(nearTop);
   }, []);
 
   useLayoutEffect(() => {

@@ -56,6 +56,7 @@ export interface ReconcileResult {
   completed_registry_added: number;
   already_completed_matches: number;
   unresolved_dispatches: number;
+  active_plan_links_stamped: number;
   source_counts: Record<string, number>;
   error?: string;
 }
@@ -69,6 +70,7 @@ export interface IdeaCompletionReconcileSnapshot {
   completed_registry_added: number;
   already_completed_matches: number;
   unresolved_dispatches: number;
+  active_plan_links_stamped: number;
   source_counts: Record<string, number>;
 }
 
@@ -135,13 +137,13 @@ function extractDispatchIds(markdown: string): string[] {
   const single = extractFrontmatterValue(markdown, "Dispatch-ID");
   const multiple = extractFrontmatterValue(markdown, "Dispatch-IDs");
   const dispatchIds = new Set<string>();
-  if (single) {
+  if (single && single.toLowerCase() !== "none") {
     dispatchIds.add(single);
   }
   if (multiple) {
     for (const entry of multiple.split(",")) {
       const normalized = entry.trim();
-      if (normalized.length > 0) {
+      if (normalized.length > 0 && normalized.toLowerCase() !== "none") {
         dispatchIds.add(normalized);
       }
     }
@@ -299,7 +301,12 @@ function collectExplicitDispatchEvidence(rootDir: string): Map<string, Completio
         walk(absolute);
         continue;
       }
-      if (dirent.isFile() && (dirent.name === "fact-find.md" || dirent.name === "micro-build.md")) {
+      if (
+        dirent.isFile() &&
+        (dirent.name === "fact-find.md" ||
+          dirent.name === "micro-build.md" ||
+          dirent.name === "plan.md")
+      ) {
         artifactPaths.push(absolute);
       }
     }
@@ -699,6 +706,77 @@ function applyCompletionEvidence(
   return { queueMutated, registryAdded, alreadyCompleted, sourceCounts };
 }
 
+/**
+ * Scans active (non-archived) plan.md files for Dispatch-ID frontmatter and
+ * returns a map from dispatch_id → repo-relative plan path.
+ * Used to stamp processed_by.target_path so "in-progress" reports reflect
+ * plans that are underway but not yet complete.
+ */
+function collectActivePlanDispatchLinks(rootDir: string): Map<string, string> {
+  const links = new Map<string, string>();
+  const plansRoot = resolvePath(rootDir, PLAN_ROOT);
+  if (!existsSync(plansRoot)) {
+    return links;
+  }
+  for (const dirent of readdirSync(plansRoot, { withFileTypes: true })) {
+    if (!dirent.isDirectory() || dirent.name.startsWith("_")) {
+      continue;
+    }
+    const planPath = path.join(plansRoot, dirent.name, "plan.md");
+    if (!existsSync(planPath)) {
+      continue;
+    }
+    const raw = readUtf8(planPath);
+    const status = extractFrontmatterValue(raw, "Status") ?? "";
+    if (status !== "Active") {
+      continue;
+    }
+    const dispatchIds = extractDispatchIds(raw);
+    if (dispatchIds.length === 0) {
+      continue;
+    }
+    const repoRelativePlanPath = toRepoRelative(rootDir, planPath);
+    for (const dispatchId of dispatchIds) {
+      if (!links.has(dispatchId)) {
+        links.set(dispatchId, repoRelativePlanPath);
+      }
+    }
+  }
+  return links;
+}
+
+/**
+ * For dispatches linked to active plans (via collectActivePlanDispatchLinks),
+ * stamps processed_by.target_path without changing queue_state.
+ * Returns the number of dispatches that had processed_by newly stamped.
+ */
+function applyActivePlanLinks(
+  queue: QueueFileShape,
+  activePlanLinks: Map<string, string>,
+): number {
+  let stamped = 0;
+  for (const dispatch of queue.dispatches) {
+    const dispatchId = typeof dispatch.dispatch_id === "string" ? dispatch.dispatch_id : "";
+    if (!dispatchId || dispatch.queue_state === "completed") {
+      continue;
+    }
+    const planPath = activePlanLinks.get(dispatchId);
+    if (!planPath) {
+      continue;
+    }
+    if (!dispatch.processed_by || typeof dispatch.processed_by !== "object") {
+      dispatch.processed_by = {};
+    }
+    if (!dispatch.processed_by.target_path) {
+      dispatch.processed_by.target_path = planPath;
+      dispatch.processed_by.target_route ??= "lp-do-fact-find";
+      dispatch.processed_by.target_kind ??= "fact-find";
+      stamped += 1;
+    }
+  }
+  return stamped;
+}
+
 export function buildIdeaCompletionReconcileSnapshot(
   options: IdeaCompletionReconcileOptions,
 ): IdeaCompletionReconcileSnapshotResult {
@@ -714,6 +792,7 @@ export function buildIdeaCompletionReconcileSnapshot(
       completed_registry_added: 0,
       already_completed_matches: 0,
       unresolved_dispatches: 0,
+      active_plan_links_stamped: 0,
       source_counts: {},
       error: queueResult.error ?? queueResult.reason,
     };
@@ -747,6 +826,11 @@ export function buildIdeaCompletionReconcileSnapshot(
   );
   const unresolvedDispatches = queueResult.queue.dispatches.length - evidenceByDispatchId.size;
 
+  // Stamp processed_by.target_path for dispatches linked to active (non-complete) plans.
+  // This makes "in progress" reports reflect plans that are underway but not yet archived.
+  const activePlanLinks = collectActivePlanDispatchLinks(options.rootDir);
+  const activePlanLinksStamped = applyActivePlanLinks(queueResult.queue, activePlanLinks);
+
   return {
     ok: true,
     queue_state_path: options.queueStatePath,
@@ -760,6 +844,7 @@ export function buildIdeaCompletionReconcileSnapshot(
       completed_registry_added: registryAdded,
       already_completed_matches: alreadyCompleted,
       unresolved_dispatches: unresolvedDispatches,
+      active_plan_links_stamped: activePlanLinksStamped,
       source_counts: sourceCounts,
     },
   };
@@ -788,6 +873,7 @@ export function runIdeaCompletionReconcile(options: IdeaCompletionReconcileOptio
         completed_registry_added: snapshot.completed_registry_added,
         already_completed_matches: snapshot.already_completed_matches,
         unresolved_dispatches: snapshot.unresolved_dispatches,
+        active_plan_links_stamped: snapshot.active_plan_links_stamped,
         source_counts: snapshot.source_counts,
         error: writeQueueResult.error,
       };
@@ -805,6 +891,7 @@ export function runIdeaCompletionReconcile(options: IdeaCompletionReconcileOptio
     completed_registry_added: snapshot.completed_registry_added,
     already_completed_matches: snapshot.already_completed_matches,
     unresolved_dispatches: snapshot.unresolved_dispatches,
+    active_plan_links_stamped: snapshot.active_plan_links_stamped,
     source_counts: snapshot.source_counts,
   };
 }

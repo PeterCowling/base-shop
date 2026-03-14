@@ -1,0 +1,240 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "do-workflow-process-topology-schema",
+  "source_artifact_path": "docs/plans/do-workflow-process-topology-schema/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-ideas",
+    "lp-do-fact-find",
+    "lp-do-analysis",
+    "lp-do-plan",
+    "lp-do-build"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/do-workflow-process-topology-schema/fact-find.md",
+    "plan": "docs/plans/do-workflow-process-topology-schema/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The workflow now has the right walkthrough checkpoints, but the packet payload is still carrying repeated markdown column names instead of a compact TS-owned topology shape. That leaves a real token-efficiency gap even after the earlier packet work.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "DO packets carry a compact typed process_topology payload for process-changing work, and regenerated packets for a proof slug show a smaller topology subpayload than the current raw row-object shape.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Packet-first still carries a verbose process payload",
+      "current_or_option_state": "Packet-first carries a more compact but still human-legible topology payload",
+      "gap_or_implication": "Option B",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "No change",
+      "current_or_option_state": "No change; still source-derived",
+      "gap_or_implication": "Option B keeps repo-local behavior unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Better evidence, same inefficiency",
+      "current_or_option_state": "Better evidence plus actual payload reduction",
+      "gap_or_implication": "Option B",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Proof without product change",
+      "current_or_option_state": "Proof tied directly to the new schema via regenerated packets",
+      "gap_or_implication": "Option B",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Contract remains prose-first",
+      "current_or_option_state": "Contract and TS types converge on one compact shape",
+      "gap_or_implication": "Option B",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "No packet-size improvement",
+      "current_or_option_state": "Expected byte reduction in the topology subpayload",
+      "gap_or_implication": "Option B",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "No contract churn",
+      "current_or_option_state": "Schema change is additive at the workflow level because markdown remains canonical",
+      "gap_or_implication": "Option B",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The current packetized walkthrough lift solved correctness but not compactness. The decision is whether to keep serializing generic table rows, add telemetry-only measurement, or move the walkthrough shape into a compact TS-owned `process_topology` schema that can carry only the stage-specific fields that matter.",
+    "goals": [
+      "reduce process-topology packet bytes through a TS-owned compact schema,",
+      "preserve packet-first progressive disclosure,",
+      "prove the compact schema with regenerated packets and measured byte deltas."
+    ],
+    "non_goals": [
+      "replacing markdown walkthrough sections,",
+      "building packet consumers that execute from process topology alone,",
+      "redesigning workflow telemetry."
+    ],
+    "constraints": [
+      "stage payloads must stay deterministic and markdown-derived,",
+      "the new schema must be readable enough for workflow consumers,",
+      "byte reduction must be demonstrated, not assumed."
+    ],
+    "assumptions": [
+      "stage-specific topology records can be more compact than raw per-column row objects,",
+      "a schema bump is acceptable because packets are generated sidecars, not committed runtime API contracts."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Byte reduction",
+        "Why it matters": "This is the explicit goal of the increment",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Determinism",
+        "Why it matters": "Packet data must remain source-derived and stable",
+        "Weight/priority": "Critical"
+      },
+      {
+        "Criterion": "Schema clarity",
+        "Why it matters": "The compact shape should be owned in TS and documented once",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Workflow safety",
+        "Why it matters": "Packet-first remains packet-first, not packet-only",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Implementation size",
+        "Why it matters": "The change should stay within one bounded workflow increment",
+        "Weight/priority": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A",
+        "Description": "Keep the current raw row-object fields and only add telemetry/measurement",
+        "Upside": "Lowest implementation cost",
+        "Downside": "Does not actually reduce packet size",
+        "Key risks": "User concern remains unresolved",
+        "Viable?": "No"
+      },
+      {
+        "Option": "B",
+        "Description": "Replace the stage-specific raw row arrays with a compact typed `process_topology` object and measure the payload delta",
+        "Upside": "Addresses the real inefficiency and lifts schema ownership into TS",
+        "Downside": "Requires a schema change and regenerated packets",
+        "Key risks": "Compact fields could drop too much nuance if chosen poorly",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C",
+        "Description": "Try to auto-derive most walkthrough content from plan graph/task metadata now",
+        "Upside": "Potentially the smallest eventual payload",
+        "Downside": "Too much scope for one increment and weak coverage for fact-find/analysis stages",
+        "Key risks": "Overbuild and partial correctness",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option B",
+      "Why this wins": "It is the smallest change that actually improves token efficiency instead of just documenting the problem. The current generic row objects preserve markdown headers that are redundant once the stage is known. A compact stage-specific `process_topology` schema can replace those repeated keys with typed fields, keep the meaningful text, and prove the gain on regenerated packets.",
+      "What it depends on": "New topology interfaces in `stage-handoff-packet-types.ts`, stage-aware extraction helpers in `stage-handoff-packet-markdown.ts`, generator changes in `generate-stage-handoff-packet.ts`, contract/doc updates, and a measured payload comparison in build evidence."
+    },
+    "rejected_approaches": [
+      "Option A was rejected because measurement alone does not change the packet hot path.",
+      "Option C was rejected because the current stages still need authored walkthrough reasoning, and full derivation would expand the increment too far."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "introduce stage-specific compact topology interfaces in `stage-handoff-packet-types.ts`,",
+        "replace the current raw row-array fields with one `process_topology` object per stage,",
+        "update the contract doc to the new schema and bump the packet version,",
+        "regenerate packets for the proof slug and persist before/after byte measurements."
+      ],
+      "validation_implications": [
+        "`pnpm --filter @acme/skill-runner typecheck`",
+        "`pnpm --filter @acme/skill-runner lint`",
+        "`scripts/validate-fact-find.sh docs/plans/do-workflow-process-topology-schema/fact-find.md docs/plans/do-workflow-process-topology-schema/critique-history.md`",
+        "`scripts/validate-analysis.sh docs/plans/do-workflow-process-topology-schema/analysis.md`",
+        "`scripts/validate-plan.sh docs/plans/do-workflow-process-topology-schema/plan.md`",
+        "`scripts/validate-engineering-coverage.sh docs/plans/do-workflow-process-topology-schema/analysis.md`",
+        "`scripts/validate-engineering-coverage.sh docs/plans/do-workflow-process-topology-schema/plan.md`",
+        "`scripts/generate-stage-handoff-packet.sh` for all three stage artifacts"
+      ],
+      "sequencing_constraints": [
+        "types/extractors/generator before contract wording is finalized,",
+        "packet regeneration only after the schema is stable,",
+        "byte comparison only after the new packets are generated."
+      ],
+      "risks_to_carry_forward": [
+        "compact records might still be too verbose if field names are not tight,",
+        "plan task dependency prose may need a fallback note field when task IDs do not capture all nuance."
+      ]
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": "AREA-01",
+          "label": "fact-find packet topology",
+          "current": "`fact-find.packet.json` stores `current_process_areas` as raw row objects keyed by markdown column names",
+          "trigger": "`lp-do-fact-find` emits packet sidecar",
+          "future": "Packet stores `process_topology` with `changed`, `note`, `trigger`, `end_condition`, and compact area records such as `id`, `label`, `flow`, `owners`, `evidence`, `issues`",
+          "steady": "`fact-find.md` remains canonical and can still be reopened for full evidence",
+          "seams": "Compact records must retain enough context to remain useful"
+        },
+        {
+          "id": "AREA-02",
+          "label": "analysis packet topology",
+          "current": "`analysis.packet.json` stores `end_state_process_areas` as raw row objects",
+          "trigger": "`lp-do-analysis` emits packet sidecar",
+          "future": "Packet stores stage-aware compact topology records such as `id`, `label`, `current`, `trigger`, `future`, `steady`, `seams`",
+          "steady": "Analysis markdown remains canonical",
+          "seams": "Need to avoid stage fields that are mostly null"
+        },
+        {
+          "id": "AREA-03",
+          "label": "plan packet topology",
+          "current": "`plan.packet.json` stores `delivered_process_areas` with verbose row keys and prose task references",
+          "trigger": "`lp-do-plan` emits packet sidecar",
+          "future": "Packet stores compact records such as `id`, `label`, `trigger`, `flow`, `task_ids`, `seams`, while task briefs remain the richer task graph source",
+          "steady": "Build still reads the full task block before execution",
+          "seams": "`task_ids` extraction must not silently discard important non-task dependency text"
+        },
+        {
+          "id": "AREA-04",
+          "label": "contract + packet versioning",
+          "current": "Contract still documents v1 raw process-row fields",
+          "trigger": "Generator and contract are updated together",
+          "future": "New packets declare `do-stage-handoff.v2` and the contract names the compact `process_topology` shape per stage",
+          "steady": "Old packet files remain historical artifacts",
+          "seams": "v1/v2 coexistence must be clear in docs"
+        }
+      ]
+    }
+  }
+}

@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 
 import { type Locale, resolveLocale } from "@acme/i18n/locales";
 
-import { PolicyPage } from "@/components/PolicyPage";
-import { getPolicyContent, getSeoKeywords } from "@/lib/contentPacket";
+import { LegalDocumentPage } from "@/components/LegalDocumentPage";
+import { ReturnsRequestForm } from "@/components/ReturnsRequestForm.client";
+import { getSeoKeywords } from "@/lib/contentPacket";
+import { getLegalDocument } from "@/lib/legalContent";
 
 export async function generateMetadata({
   params,
@@ -12,7 +14,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
-  const content = getPolicyContent(lang, "returns");
+  const content = getLegalDocument(lang, "returns");
   return {
     title: `${content.title} | Caryina`,
     description: content.summary,
@@ -27,15 +29,12 @@ export default async function ReturnsPage({
 }) {
   const { lang: rawLang } = await params;
   const lang: Locale = resolveLocale(rawLang);
-  const content = getPolicyContent(lang, "returns");
+  const content = getLegalDocument(lang, "returns");
 
   return (
-    <PolicyPage
-      title={content.title}
-      summary={content.summary}
-      bullets={content.bullets}
-      notice={content.notice}
-      sourcePath="docs/business-os/startup-baselines/HBAG-content-packet.md"
-    />
+    <div className="space-y-10">
+      <LegalDocumentPage document={content} lang={lang} currentKind="returns" />
+      <ReturnsRequestForm />
+    </div>
   );
 }

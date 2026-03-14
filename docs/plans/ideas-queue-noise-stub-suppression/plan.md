@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: BOS
 Workstream: Engineering
 Created: 2026-03-09
@@ -25,10 +25,10 @@ Auto-Build-Intent: plan+auto
 180 stub dispatches in the ideas trial queue inflate the visible backlog from ~60 substantive items to 240 — a 4x distortion. The root causes are dual: three signal artifact registry entries carry the wrong class/policy (`source_process/eligible` instead of `system_telemetry/never`), and the anchor-key builder has no length cap, allowing sentence-fragment slugs from agent transcripts to pass through. This plan fixes the registry, adds the length cap, and marks all 180 existing noise stubs as skipped to restore an accurate queue signal.
 
 ## Active tasks
-- [ ] TASK-01: Fix registry entries for the three signal artifacts
-- [ ] TASK-02: Add anchor_key length cap in buildAnchorKey()
-- [ ] TASK-03: Clean up existing noise stubs in queue-state.json
-- [ ] TASK-04: Typecheck and commit
+- [x] TASK-01: Fix registry entries for the three signal artifacts
+- [x] TASK-02: Add anchor_key length cap in buildAnchorKey()
+- [x] TASK-03: Clean up existing noise stubs in queue-state.json
+- [x] TASK-04: Typecheck and commit
 
 ## Goals
 - Reclassify the three signal artifacts as `system_telemetry/never` so future bridge runs produce zero new dispatches.
@@ -81,10 +81,10 @@ Auto-Build-Intent: plan+auto
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Fix registry entries (artifact_class + trigger_policy) | 95% | S | Pending | - | TASK-03 |
-| TASK-02 | IMPLEMENT | Add 80-char anchor_key length cap in buildAnchorKey() | 92% | S | Pending | - | TASK-04 |
-| TASK-03 | IMPLEMENT | Mark 180 noise stubs skipped in queue-state.json | 92% | S | Pending | TASK-01 | TASK-04 |
-| TASK-04 | IMPLEMENT | Typecheck and commit | 95% | S | Pending | TASK-01, TASK-02, TASK-03 | - |
+| TASK-01 | IMPLEMENT | Fix registry entries (artifact_class + trigger_policy) | 95% | S | Complete | - | TASK-03 |
+| TASK-02 | IMPLEMENT | Add 80-char anchor_key length cap in buildAnchorKey() | 92% | S | Complete | - | TASK-04 |
+| TASK-03 | IMPLEMENT | Mark 180 noise stubs skipped in queue-state.json | 92% | S | Complete | TASK-01 | TASK-04 |
+| TASK-04 | IMPLEMENT | Typecheck and commit | 95% | S | Complete | TASK-01, TASK-02, TASK-03 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -102,7 +102,7 @@ Auto-Build-Intent: plan+auto
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `docs/business-os/startup-loop/ideas/standing-registry.json`
 - **Depends on:** -
 - **Blocks:** TASK-03
@@ -125,7 +125,7 @@ Auto-Build-Intent: plan+auto
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `scripts/src/startup-loop/ideas/lp-do-ideas-trial.ts`
 - **Depends on:** -
 - **Blocks:** TASK-04
@@ -148,7 +148,7 @@ Auto-Build-Intent: plan+auto
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `docs/business-os/startup-loop/ideas/trial/queue-state.json`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-04
@@ -173,7 +173,7 @@ Auto-Build-Intent: plan+auto
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** all changed files
 - **Depends on:** TASK-01, TASK-02, TASK-03
 - **Blocks:** -
@@ -199,10 +199,10 @@ Auto-Build-Intent: plan+auto
 - Alerts/Dashboards: Queue audit tool will reflect accurate backlog depth
 
 ## Acceptance Criteria (overall)
-- [ ] standing-registry.json: three entries have `artifact_class: "system_telemetry"` and `trigger_policy: "never"`
-- [ ] lp-do-ideas-trial.ts: `buildAnchorKey()` returns at most 80-character strings
-- [ ] queue-state.json: 180 stubs at `queue_state: "skipped"`, counts block shows `enqueued: 60`, `skipped: 180`
-- [ ] `pnpm --filter scripts typecheck` exits 0
+- [x] standing-registry.json: three entries have `artifact_class: "system_telemetry"` and `trigger_policy: "never"`
+- [x] lp-do-ideas-trial.ts: `buildAnchorKey()` returns at most 80-character strings
+- [x] queue-state.json: noise stubs suppressed (196 suppressed; 68 enqueued — actual counts differ from plan estimate due to queue activity between planning and execution)
+- [x] `pnpm --filter scripts typecheck` exits 0
 
 ## Decision Log
 - 2026-03-09: `propagation_mode` kept as required field; changed to `"source_task"` (schema does not allow `"none"`)

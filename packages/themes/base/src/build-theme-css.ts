@@ -53,6 +53,19 @@ export interface ThemeCSSConfig {
    * hex color in brandColors.
    */
   rgbVarMap?: Record<string, string>;
+  /**
+   * CSS selector for the dark mode block. Defaults to ".dark".
+   * Use "html.theme-dark" for apps that toggle dark mode via a class on <html>.
+   * Note: this must be a CSS selector, not an @media query.
+   */
+  darkSelector?: string;
+  /**
+   * Flat token map entries. Keys are full CSS var names (including --).
+   * Values have light (required) and optional dark overrides.
+   * Used by apps whose tokens don't originate from assets.brandColors
+   * (e.g. reception's TokenMap with 107 semantic + shade tokens).
+   */
+  tokenVarMap?: Record<`--${string}`, { light: string; dark?: string }>;
 }
 
 export interface GenerateThemeCSSOptions {
@@ -190,6 +203,19 @@ function generateDerivedVars(
   );
 }
 
+function generateTokenVarLines(
+  tokenVarMap: Record<`--${string}`, { light: string; dark?: string }>,
+  mode: "light" | "dark",
+): string[] {
+  const lines: string[] = [];
+  for (const [varName, token] of Object.entries(tokenVarMap)) {
+    const value = mode === "dark" ? token.dark : token.light;
+    if (value === undefined) continue;
+    lines.push(`  ${varName}: ${value};`);
+  }
+  return lines;
+}
+
 // ---------------------------------------------------------------------------
 // Main compiler
 // ---------------------------------------------------------------------------
@@ -234,6 +260,16 @@ export function generateThemeCSS(options: GenerateThemeCSSOptions): string {
     rootLines.push("  /* Brand colors */");
     rootLines.push(...colorLines);
     rootLines.push("");
+  }
+
+  // Token var map entries (light)
+  if (config.tokenVarMap) {
+    const tokenLines = generateTokenVarLines(config.tokenVarMap, "light");
+    if (tokenLines.length > 0) {
+      rootLines.push("  /* Token overrides */");
+      rootLines.push(...tokenLines);
+      rootLines.push("");
+    }
   }
 
   // RGB triplet vars
@@ -281,6 +317,16 @@ export function generateThemeCSS(options: GenerateThemeCSSOptions): string {
     darkLines.push("");
   }
 
+  // Token var map entries (dark)
+  if (config.tokenVarMap) {
+    const darkTokenLines = generateTokenVarLines(config.tokenVarMap, "dark");
+    if (darkTokenLines.length > 0) {
+      darkLines.push("  /* Token overrides */");
+      darkLines.push(...darkTokenLines);
+      darkLines.push("");
+    }
+  }
+
   // Derived vars (dark)
   if (config.derivedVars?.dark) {
     const derivedDarkLines = generateDerivedVars(config.derivedVars.dark);
@@ -290,7 +336,8 @@ export function generateThemeCSS(options: GenerateThemeCSSOptions): string {
     }
   }
 
-  sections.push(`.dark {\n${darkLines.join("\n")}\n}`);
+  const darkSelector = config.darkSelector ?? ".dark";
+  sections.push(`${darkSelector} {\n${darkLines.join("\n")}\n}`);
 
   return sections.join("\n\n") + "\n";
 }

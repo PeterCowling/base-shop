@@ -1,0 +1,221 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-prime-projection-job-status",
+  "source_artifact_path": "docs/plans/reception-prime-projection-job-status/fact-find.md",
+  "source_artifact_status": "Needs-input",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-prime-projection-job-status/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Every time a message is sent through the reception inbox, a background job is created to keep related data up to date. If the status code on that job does not match what the background processor looks for, the jobs quietly pile up and the downstream data is never refreshed — with no error visible to staff.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Projection job records written by inbound message shadow-write paths carry `status: 'projected'` (not `'pending'`), consistent with the fact that Firebase is already written inline before the shadow-write is called. The shadow-write call sites are guarded by tests that assert the correct status value. There is no silent accumulation of semantically-incorrect `'pending'` records.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI change — backend job lifecycle only",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "No user-facing state change",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Staff-owner gate on replay API; no new auth surface in fix",
+      "gap_or_implication": "Fix does not introduce new attack surface; batch processor would need auth",
+      "carry_forward_or_notes": "If batch processor added: confirm no unauthenticated trigger path"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "No current log on shadow-write job insertion; `attempt_count` + `last_error` on job row provide post-hoc auditability",
+      "gap_or_implication": "No observable signal when `'pending'` jobs pile up — silent failure",
+      "carry_forward_or_notes": "Add log/metric when job count exceeds threshold, or at write time"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "TC-08 missing status assertion; no enqueue→process→complete cycle test",
+      "gap_or_implication": "Regression risk if default status changes",
+      "carry_forward_or_notes": "Add bind assertion + cycle test"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Schema unchanged. `status` enum is correct. `EnqueuePrimeProjectionJobInput.status?` is optional — dual-use (work-queue vs audit) is ambiguous",
+      "gap_or_implication": "Optional `status` allows callers to silently bypass the queue",
+      "carry_forward_or_notes": "Consider whether `status` should be required at call sites, or add named factory helpers"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "`listPrimePendingProjectionJobs` queries with `WHERE status = 'pending' ORDER BY updated_at ASC`. Index `idx_message_projection_jobs_status_updated` on `(status, updated_at)` already exists — `apps/prime/migrations/0001_prime_messaging_init.sql:113`",
+      "gap_or_implication": "No index gap. Concern is retry backoff if inline projection is added; no max retry count defined",
+      "carry_forward_or_notes": "Define max retry count or circuit breaker for inline projection failures"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Schema is forward-compatible; job rows are idempotent by ID",
+      "gap_or_implication": "If shadow-write path is changed to inline-project, rollback is straightforward; if a processor is added, rollback requires disabling the processor trigger",
+      "carry_forward_or_notes": "Low risk for status-only fix; medium risk for processor addition"
+    }
+  ],
+  "open_operator_questions": [
+    "Should `message_projection_jobs` rows written by shadow-write paths be retained as audit records (with `status: 'projected'`), or should they be removed entirely since Firebase projection is already done by the time shadow-write is called?"
+  ],
+  "stage_payload": {
+    "scope_summary": "When a message is sent through the Prime review flow, a `message_projection_jobs` row is written to D1. This row is supposed to coordinate background sync of that message to Firebase (the real-time database powering the reception inbox). The bug hypothesis was that the job might be written with status `'projected'` — which is the terminal/complete state — rather than `'pending'` — which is the work-queue state the only batch consumer (`listPrimePendingProjectionJobs`) queries for. Investigation reveals the hypothesis is **substantially revised by deeper code inspection**: Firebase writes happe",
+    "goals": [],
+    "non_goals": [
+      "Fixing Firebase RTDB schema or the content of projected messages.",
+      "Re-architecting the messaging stack beyond the projection job lifecycle."
+    ],
+    "constraints": [
+      "Cloudflare Pages does not support `scheduled` cron handlers in the same way as Workers — the `wrangler.toml` for prime uses `pages_build_output_dir`, which is a Pages deployment. Cron triggers require a Worker binding.",
+      "D1 is the persistence layer; the schema cannot be migrated in an incompatible way during a live session."
+    ],
+    "assumptions": [
+      "The inline Firebase projection in `sendPrimeReviewThread` is intentional (not a bug) — the job is written post-projection for audit/replay purposes with attempt_count=1.",
+      "Shadow-write paths (inbound guest messages) are expected to be batched and replayed later — but no such processor exists."
+    ],
+    "key_entry_points": [
+      "`apps/prime/functions/api/direct-message.ts` — inbound guest direct message handler; writes Firebase inline (lines 168-207) then calls `shadowWritePrimeInboundDirectMessage`",
+      "`apps/prime/functions/api/activity-message.ts` — inbound guest activity message handler; writes Firebase inline (lines 116-153) then calls `shadowWritePrimeInboundActivityMessage`",
+      "`apps/prime/functions/lib/prime-review-send.ts` — staff outbound send; writes Firebase inline then writes projection job with `status: 'projected'`",
+      "`apps/prime/functions/lib/prime-messaging-shadow-write.ts` — inbound guest message shadow-write; writes D1 records and projection job with `status: 'pending'` (default) AFTER Firebase is already written by caller",
+      "`apps/prime/functions/lib/prime-review-campaign-runtime.ts` — broadcast campaign; INSERT `'pending'`, immediately UPDATE to `'projected'`",
+      "`apps/prime/functions/api/review-projection-replay.ts` — manual per-job replay API endpoint"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Needs-input",
+      "One open preference question": "retain shadow-write projection records as `'projected'` or remove them entirely (see Open Questions). Either path unblocks the fix; analysis can proceed with both options.",
+      "**Top findings addressed in Round 3 autofixes": "**",
+      "Recommended next step": "Operator review of findings summary above; confirm retain-vs-remove preference; then invoke `/lp-do-analysis reception-prime-projection-job-status` to continue."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "`enqueuePrimeProjectionJob` INSERT status",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`listPrimePendingProjectionJobs` query predicate",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — confirmed queries `'pending'`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "All callers of `enqueuePrimeProjectionJob`",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "`prime-review-send.ts` writes `'projected'` explicitly (intentional); `shadow-write.ts` writes `'pending'` (orphaned)",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Production consumer existence",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Structural] [High]: No production consumer of `listPrimePendingProjectionJobs` exists",
+        "Resolution Required": "No — documented as finding"
+      },
+      {
+        "Scope Area": "End-to-end test coverage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Coverage] [Medium]: No cycle test; TC-08 and activity-message test missing status bind assertion for shadow-write `'pending'`; `sendPrimeReviewThread` INSERT is asserted in review-threads tests",
+        "Resolution Required": "No — documented as gap"
+      },
+      {
+        "Scope Area": "Cron / scheduled handler",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Structural] [High]: `wrangler.toml` has no cron triggers",
+        "Resolution Required": "No — documented as finding"
+      },
+      {
+        "Scope Area": "Campaign runtime paths",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — inline projection + immediate update to `'projected'` is correct",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Replay API — direct-thread constraint",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Structural] [Medium]: `replayPrimeProjectionJob` rejects non-direct threads (`prime-projection-replay.ts:66`) — activity-channel `'pending'` jobs cannot use this helper without extension",
+        "Resolution Required": "No — documented as blocker for batch processor option"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "A message event is written in Prime — either (A) staff sending a review thread reply via `sendPrimeReviewThread`, or (B) inbound guest message arriving via `shadowWritePrimeInbound*`.",
+      "end_condition": "Firebase RTDB is updated with the message content so the reception inbox displays it in real time.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Path A — staff outbound (review send)",
+          "flow": "`sendPrimeReviewThread` (1) calls `projectPrimeThreadMessageToFirebase` inline, (2) writes D1 records (message, draft, thread, admission), (3) calls `enqueuePrimeProjectionJob` with `status: 'projected'`, `attemptCount: 1`, `lastAttemptAt: <now>`",
+          "owners": "Prime functions / D1 + Firebase",
+          "evidence": "`prime-review-send.ts:207-222`",
+          "issues": "No bug — Firebase already written. Job is audit record. But intent is invisible from schema."
+        },
+        {
+          "id": null,
+          "label": "Path B — inbound shadow-write (guest messages)",
+          "flow": "The **API handler** (`direct-message.ts:168-217` / `activity-message.ts:116-153`) (1) writes the message to Firebase RTDB server-side **before** calling `shadowWritePrimeInbound*`. The shadow-write then (2) writes D1 records (thread, message, admission) and (3) calls `enqueuePrimeProjectionJob` with no status override (defaults to `'pending'`), `attemptCount: 0`.",
+          "owners": "Prime functions API / D1 + Firebase",
+          "evidence": "`direct-message.ts:200-207` (Firebase write then shadow-write), `activity-message.ts:139-153`, `prime-messaging-shadow-write.ts:175,253`",
+          "issues": "**Revised diagnosis**: Firebase is already written inline in the API handler, before shadow-write is called. The `'pending'` projection job written by `shadowWritePrimeInbound*` is therefore a dead/audit record similar to Path A — but written as `'pending'` instead of `'projected'`, making it appear as a work item. The shadow-write wraps its call in a `try/catch` — if the shadow-write fails, the Firebase write has already succeeded. The projection job being `'pending'` is arguably incorrect (should be `'projected'` since projection already happened) but the real-time Firebase sync is not broke"
+        },
+        {
+          "id": null,
+          "label": "Path C — campaign runtime",
+          "flow": "`prime-review-campaign-runtime.ts` (1) calls Firebase projection inline, (2) calls `updatePrimeProjectionJob` to `'projected'`",
+          "owners": "Campaign runtime / D1 + Firebase",
+          "evidence": "`prime-review-campaign-runtime.ts:428-431`",
+          "issues": "Correct pattern — update, not insert. No bug."
+        },
+        {
+          "id": null,
+          "label": "Path D — campaign actions replay",
+          "flow": "`prime-review-campaign-actions.ts` — replay manually triggered via API; calls Firebase inline then updates job status to `'projected'`",
+          "owners": "Replay API / D1 + Firebase",
+          "evidence": "`prime-review-campaign-actions.ts:213`",
+          "issues": "Correct — manual replay path only."
+        },
+        {
+          "id": null,
+          "label": "Batch consumer",
+          "flow": "`listPrimePendingProjectionJobs` queries `WHERE status = 'pending'`. Called only in tests. No production caller exists.",
+          "owners": "No owner / no system",
+          "evidence": "`prime-messaging-repositories.ts:1423–1440`",
+          "issues": "Dead infrastructure — function exists, no production invocation path."
+        },
+        {
+          "id": null,
+          "label": "Replay API",
+          "flow": "`review-projection-replay.ts` / `review-campaign-replay.ts` — staff-triggered manual replay per job or delivery ID",
+          "owners": "Staff owner API / D1 + Firebase",
+          "evidence": "`functions/api/review-projection-replay.ts`",
+          "issues": "Only handles `status != 'projected'` — rejects already-projected jobs (conflict). No batch replay."
+        }
+      ]
+    }
+  }
+}

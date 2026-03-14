@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: SEO | Routing
 Workstream: Engineering
 Created: 2026-03-04
@@ -24,12 +24,12 @@ Auto-Build-Intent: plan-only
 The live site currently serves two URL contracts for many locale pages: internal App Router segments (for example `/ar/experiences`) and localized slugs (for example `/ar/tajarib`). This creates duplicate crawl paths and inconsistent user-visible URLs. The target contract is single-canonical localized URLs per locale, with permanent redirects from internal-segment URLs to localized URLs, while preserving static-export rendering via edge rewrites. This plan removes public duplication, aligns sitemap/internal links/structured data to localized paths, and adds regression tests so the issue does not reappear.
 
 ## Active tasks
-- [ ] TASK-01: Freeze route contract and generate authoritative redirect matrix
-- [ ] TASK-02: Enforce internal -> localized permanent redirects at edge
-- [ ] TASK-03: Emit localized URLs from all user-facing links and redirects
-- [ ] TASK-04: Emit localized-only SEO surfaces (sitemap + structured data targets)
-- [ ] TASK-05: Add route-contract regression tests and CI guards
-- [ ] TASK-06: Staging and live verification gate (redirect-chain and loop safety)
+- [x] TASK-01: Freeze route contract and generate authoritative redirect matrix
+- [x] TASK-02: Enforce internal -> localized permanent redirects at edge
+- [x] TASK-03: Emit localized URLs from all user-facing links and redirects
+- [x] TASK-04: Emit localized-only SEO surfaces (sitemap + structured data targets)
+- [x] TASK-05: Add route-contract regression tests and CI guards
+- [x] TASK-06: Staging and live verification gate (redirect-chain and loop safety)
 
 ## Goals
 - One public URL set per locale, localized by language.
@@ -79,12 +79,12 @@ The live site currently serves two URL contracts for many locale pages: internal
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | INVESTIGATE | Build authoritative locale route pair matrix (localized vs internal; top-level + nested guide/tag families) | 95% | S | Pending | - | TASK-02,TASK-05,TASK-06 |
-| TASK-02 | IMPLEMENT | Generate internal->localized 301 rules while preserving localized->internal 200 rendering rewrites | 82% | M | Pending | TASK-01 | TASK-06 |
-| TASK-03 | IMPLEMENT | Replace internal-segment user-facing href emission with localized slugs; remove redirect-chain sources | 78% | M | Pending | TASK-01 | TASK-06 |
-| TASK-04 | IMPLEMENT | Localized-only sitemap/SEO target emission (route inventory + structured data target paths) | 80% | M | Pending | TASK-01 | TASK-06 |
-| TASK-05 | IMPLEMENT | Add regression tests and static guards for route contract and redirect safety | 76% | M | Pending | TASK-01,TASK-02,TASK-03,TASK-04 | TASK-06 |
-| TASK-06 | CHECKPOINT | Staging/live audit: status codes, canonicals, chains, loops, sitemap contract | 84% | S | Pending | TASK-02,TASK-03,TASK-04,TASK-05 | - |
+| TASK-01 | INVESTIGATE | Build authoritative locale route pair matrix (localized vs internal; top-level + nested guide/tag families) | 95% | S | Complete | - | TASK-02,TASK-05,TASK-06 |
+| TASK-02 | IMPLEMENT | Generate internal->localized 301 rules while preserving localized->internal 200 rendering rewrites | 82% | M | Complete | TASK-01 | TASK-06 |
+| TASK-03 | IMPLEMENT | Replace internal-segment user-facing href emission with localized slugs; remove redirect-chain sources | 78% | M | Complete | TASK-01 | TASK-06 |
+| TASK-04 | IMPLEMENT | Localized-only sitemap/SEO target emission (route inventory + structured data target paths) | 80% | M | Complete | TASK-01 | TASK-06 |
+| TASK-05 | IMPLEMENT | Add regression tests and static guards for route contract and redirect safety | 76% | M | Complete | TASK-01,TASK-02,TASK-03,TASK-04 | TASK-06 |
+| TASK-06 | CHECKPOINT | Staging/live audit: status codes, canonicals, chains, loops, sitemap contract | 84% | S | Complete | TASK-02,TASK-03,TASK-04,TASK-05 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -100,7 +100,7 @@ The live site currently serves two URL contracts for many locale pages: internal
 - **Type:** INVESTIGATE
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `apps/brikette/src/slug-map.ts`, `apps/brikette/src/routing/sectionSegments.ts`, `apps/brikette/src/data/guides.index.ts`, `apps/brikette/src/routing/staticExportRedirects.ts`
 - **Depends on:** -
 - **Blocks:** TASK-02, TASK-05, TASK-06
@@ -113,7 +113,7 @@ The live site currently serves two URL contracts for many locale pages: internal
 - **Type:** IMPLEMENT
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `apps/brikette/src/routing/staticExportRedirects.ts`, `apps/brikette/scripts/generate-static-export-redirects.ts`, `apps/brikette/public/_redirects`
 - **Depends on:** TASK-01
 - **Blocks:** TASK-06
@@ -127,7 +127,7 @@ The live site currently serves two URL contracts for many locale pages: internal
 - **Type:** IMPLEMENT
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** link emitters and redirect stubs using internal segments (for example nav/footer/language-modal redirect paths and `/[lang]/help`, `/[lang]/guides` stubs)
 - **Depends on:** TASK-01
 - **Blocks:** TASK-06
@@ -142,7 +142,7 @@ The live site currently serves two URL contracts for many locale pages: internal
 - **Type:** IMPLEMENT
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `apps/brikette/src/routing/routeInventory.ts`, `apps/brikette/scripts/generate-public-seo.ts`, structured-data path emitters using internal segments
 - **Depends on:** TASK-01
 - **Blocks:** TASK-06
@@ -155,7 +155,7 @@ The live site currently serves two URL contracts for many locale pages: internal
 - **Type:** IMPLEMENT
 - **Execution-Track:** code
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** route/SEO tests under `apps/brikette/src/test/**` and any new redirect-contract tests
 - **Depends on:** TASK-01,TASK-02,TASK-03,TASK-04
 - **Blocks:** TASK-06
@@ -171,7 +171,7 @@ The live site currently serves two URL contracts for many locale pages: internal
 - **Type:** CHECKPOINT
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Depends on:** TASK-02,TASK-03,TASK-04,TASK-05
 - **Acceptance:**
   - Staging and live checks pass for matrix sample and full generated route list.
@@ -208,11 +208,11 @@ The live site currently serves two URL contracts for many locale pages: internal
 - Alerts/Dashboards: None: add if internal-segment traffic does not decline after migration window.
 
 ## Acceptance Criteria (overall)
-- [ ] For all locale+section pairs where localized slug differs, internal URL returns permanent redirect to localized URL.
-- [ ] Localized URL returns `200` and is canonical/self-consistent.
-- [ ] Sitemap contains only localized URLs for mismatched locale segments.
-- [ ] No core navigation path produces a redirect chain longer than one hop.
-- [ ] Regression tests enforce the contract in CI.
+- [x] For all locale+section pairs where localized slug differs, internal URL returns permanent redirect to localized URL.
+- [x] Localized URL returns `200` and is canonical/self-consistent.
+- [x] Sitemap contains only localized URLs for mismatched locale segments.
+- [x] No core navigation path produces a redirect chain longer than one hop.
+- [x] Regression tests enforce the contract in CI.
 
 ## Decision Log
 - 2026-03-04: Chose permanent redirects (not hard 404) from internal-segment URLs to localized URLs to preserve link equity and user continuity while enforcing single canonical locale routes.

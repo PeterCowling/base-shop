@@ -1,0 +1,156 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-prime-deprecated-endpoint-cleanup",
+  "source_artifact_path": "docs/plans/reception-prime-deprecated-endpoint-cleanup/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "none"
+  },
+  "outcome_contract": {
+    "why": "Remove dead code created by the single-hop broadcast refactor. Reduces maintenance surface and eliminates the risk of accidentally calling the deprecated path. Ensure no regression coverage is lost in the process.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "After the change, `initiatePrimeOutboundThread` does not exist, `/api/staff-initiate-thread` does not exist, the replacement test files cover the auth contract that the deleted tests previously owned, and TypeScript compiles cleanly.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Pure server-side changes; no UI surface",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No UX change",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required — ensure auth/claims coverage survives deletion",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "The deleted test files are the only auth regression coverage for broadcast endpoints; TASK-01 ports it first",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No logging changes",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — port auth coverage, delete deprecated tests, typecheck both apps",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Auth coverage ported before deletion",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required — verify no production importers of deleted export",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "Caller search confirmed zero production importers",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Deletion; no performance surface",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required — two-commit sequence; each individually revertible",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "No migration; rollback = revert commit(s)",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Two deprecated code paths exist alongside their already-shipped replacements: `initiatePrimeOutboundThread()` in `apps/reception/src/lib/inbox/prime-review.server.ts` (which calls `/api/staff-initiate-thread`) and the route file `apps/prime/functions/api/staff-initiate-thread.ts`. The replacement path (`staffBroadcastSend()` / `/api/staff-broadcast-send`) is live. **Caller search results (confirmed at planning time):** - `initiatePrimeOutboundThread` production callers in `apps/reception/src/app/`: zero. - `initiatePrimeOutboundThread` import sites outside its own definition and test file: non",
+    "goals": [
+      "Ensure auth/claims test coverage from deprecated test files is preserved in the replacement test files before deletion.",
+      "Remove `initiatePrimeOutboundThread()` from `prime-review.server.ts` and its dedicated test file.",
+      "Remove `apps/prime/functions/api/staff-initiate-thread.ts` and its dedicated test file.",
+      "Confirm TypeScript compiles cleanly after deletion."
+    ],
+    "non_goals": [
+      "Changing `staffBroadcastSend` or `/api/staff-broadcast-send` behaviour.",
+      "Porting every test case — only the coverage categories absent from the replacement files: auth/claims verification.",
+      "Removing the comment in `staff-broadcast-send.ts` line 50 (comment-only reference to old endpoint, harmless)."
+    ],
+    "constraints": [
+      "Tests run in CI only — no local Jest runs. TypeScript typecheck (`pnpm --filter @apps/reception typecheck`, `pnpm --filter @apps/prime typecheck`) is the local validation gate.",
+      "Writer lock must be acquired via `with-writer-lock.sh` for the commit.",
+      "`pnpm --filter @apps/reception lint` and `pnpm --filter @apps/prime lint` used for scoped linting (not root turbo)."
+    ],
+    "assumptions": [
+      "The `.open-next/` build artefact is generated output; production callers verified via source-only search."
+    ],
+    "selected_approach": [
+      "What was chosen: two-task sequential approach — port auth coverage first, then delete.",
+      "Why planning is not reopening option selection: the alternative (delete and add coverage after) would create a window where live auth contracts have no regression tests in CI; porting first eliminates that window entirely."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Port auth and claims coverage to replacement test files",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — add auth/role-gate test cases to `apps/prime/functions/__tests__/staff-broadcast-send.test.ts`; create new `apps/reception/src/lib/inbox/__tests__/staff-broadcast-send.test.ts` that directly tests `staffBroadcastSend` header construction (mirroring the existing `initiate-prime-outbound-thread.test.ts` pattern).",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Delete deprecated function and endpoint",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — remove `initiatePrimeOutboundThread` from `prime-review.server.ts`, delete `staff-initiate-thread.ts`, delete both dedicated test files.",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. The broadcast pipeline (`staffBroadcastSend` → `/api/staff-broadcast-send`) is unchanged. This cleanup removes a dead code path and its dedicated tests after porting their unique coverage.",
+      "areas": []
+    }
+  }
+}

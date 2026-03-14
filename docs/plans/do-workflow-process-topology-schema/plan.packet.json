@@ -1,0 +1,238 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "do-workflow-process-topology-schema",
+  "source_artifact_path": "docs/plans/do-workflow-process-topology-schema/plan.md",
+  "source_artifact_status": "Complete",
+  "source_last_updated": "2026-03-12T00:00:00.000Z",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-ideas",
+    "lp-do-fact-find",
+    "lp-do-analysis",
+    "lp-do-plan",
+    "lp-do-build"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/do-workflow-process-topology-schema/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The workflow now has the right walkthrough checkpoints, but the packet payload is still carrying repeated markdown column names instead of a compact TS-owned topology shape. That leaves a real token-efficiency gap even after the earlier packet work.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "DO packets carry a compact typed process_topology payload for process-changing work, and regenerated packets for a proof slug show a smaller topology subpayload than the current raw row-object shape.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A: workflow/tooling change only",
+      "current_or_option_state": "-",
+      "gap_or_implication": "no product UI",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Compact topology stays readable while reducing repeated-key overhead",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "packet-first behavior remains explicit",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Source-derived extraction only",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "no external data",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Persist regenerated packets and measured byte comparison",
+      "current_or_option_state": "TASK-03",
+      "gap_or_implication": "build evidence is the proof surface",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Typecheck/lint plus artifact validators and packet regeneration",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "no local Jest",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "TS schema and contract doc must converge on one topology model",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "version bump included",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Replace verbose row objects with stage-aware compact fields",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "explicit byte reduction required",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Markdown fallback remains intact; old packets can remain historical",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "no destructive migration",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Replace the current raw walkthrough row arrays in DO handoff packets with a compact typed `process_topology` schema owned in TypeScript, bump the packet schema version, update the contract to match, regenerate the proof slug packets, and persist measured before/after byte reductions for the topology subpayload.",
+    "goals": [
+      "lift process-topology ownership into `skill-runner` types,",
+      "reduce packet bytes for process-changing walkthrough payloads,",
+      "preserve packet-first progressive disclosure with canonical markdown fallback."
+    ],
+    "non_goals": [
+      "replacing markdown walkthrough sections,",
+      "changing workflow telemetry semantics,",
+      "deriving all walkthrough text from task graphs."
+    ],
+    "constraints": [
+      "packet content must remain deterministic and markdown-derived,",
+      "the compact schema must still be understandable to downstream stages,",
+      "old packet artifacts may remain in the repo without being backfilled."
+    ],
+    "assumptions": [
+      "stage-aware compact records will materially beat raw row-object shape on bytes,",
+      "one proof slug is sufficient evidence for this increment."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "add compact topology interfaces to `stage-handoff-packet-types.ts`,",
+      "add stage-aware extraction helpers in `stage-handoff-packet-markdown.ts`,",
+      "emit `process_topology` in `generate-stage-handoff-packet.ts`,",
+      "bump packet schema version to `do-stage-handoff.v2`,",
+      "update the packet contract and regenerate packets for this slug with byte-delta evidence.",
+      "Why planning is not reopening option selection:",
+      "analysis already showed that measurement-only and full derivation are both weaker than a compact schema refactor."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Implement compact `process_topology` types, extraction, and `do-stage-handoff.v2` packet generation",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-12)",
+        "confidence": 89,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code/doc change in `packages/skill-runner` and packet schema version",
+        "affects": "`packages/skill-runner/src/stage-handoff-packet-types.ts`, `packages/skill-runner/src/stage-handoff-packet-markdown.ts`, `packages/skill-runner/src/generate-stage-handoff-packet.ts`, `[readonly] docs/plans/_templates/fact-find-planning.md`, `[readonly] docs/plans/_templates/analysis.md`, `[readonly] docs/plans/_templates/plan.md`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Update contract/docs to the compact topology schema",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-12)",
+        "confidence": 87,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "packet contract update and workflow wording aligned to compact topology",
+        "affects": "`docs/business-os/startup-loop/contracts/do-stage-handoff-packet-contract.md`, `docs/agents/feature-workflow-guide.md`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Regenerate proof packets, validate artifacts, and persist byte-reduction evidence",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-12)",
+        "confidence": 86,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "regenerated workflow artifacts, packet sidecars, validation evidence, and before/after byte measurements",
+        "affects": "`docs/plans/do-workflow-process-topology-schema/fact-find.md`, `docs/plans/do-workflow-process-topology-schema/analysis.md`, `docs/plans/do-workflow-process-topology-schema/plan.md`, `docs/plans/do-workflow-process-topology-schema/fact-find.packet.json`, `docs/plans/do-workflow-process-topology-schema/analysis.packet.json`, `docs/plans/do-workflow-process-topology-schema/plan.packet.json`, `docs/plans/do-workflow-process-topology-schema/critique-history.md`, `docs/plans/do-workflow-process-topology-schema/build-record.user.md`"
+      }
+    ],
+    "next_runnable_task_ids": [],
+    "validation_contracts": [
+      "TC-01: `@acme/skill-runner` typecheck/lint stay green after the topology refactor",
+      "TC-02: regenerated packets for this slug emit `do-stage-handoff.v2` and a compact `process_topology` payload for all three stages",
+      "TC-03: the new topology subpayload is smaller than the current raw row-object equivalent for this slug",
+      "TC-04: fact-find, analysis, plan, and engineering-coverage validators pass for the persisted workflow artifacts"
+    ],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": "AREA-01",
+          "label": "fact-find packet topology",
+          "trigger": "`lp-do-fact-find` emits packet sidecar for process-changing work",
+          "flow": "Generator emits `process_topology` with compact fact-find area records instead of `current_process_areas`, so analysis reads one typed topology object first and only reopens markdown when it needs fuller evidence",
+          "task_ids": [
+            "TASK-01",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Old v1 packets remain in repo until regenerated"
+        },
+        {
+          "id": "AREA-02",
+          "label": "analysis packet topology",
+          "trigger": "`lp-do-analysis` emits packet sidecar",
+          "flow": "Generator emits compact analysis topology records instead of `end_state_process_areas`, preserving current/future/seam meaning without repeated header keys",
+          "task_ids": [
+            "TASK-01",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Stage-specific compact fields must stay expressive enough for planning"
+        },
+        {
+          "id": "AREA-03",
+          "label": "plan packet topology",
+          "trigger": "`lp-do-plan` emits packet sidecar",
+          "flow": "Generator emits compact plan topology records with `task_ids` extracted from the walkthrough row, so build sees topology linkage and task briefs together before reopening the task block",
+          "task_ids": [
+            "TASK-01",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Non-task dependency nuance may still require a small fallback seam field"
+        },
+        {
+          "id": "AREA-04",
+          "label": "schema contract coherence",
+          "trigger": "Packet version changes to `do-stage-handoff.v2`",
+          "flow": "Contract doc, TS interfaces, generator output, and regenerated proof packets all describe the same compact topology shape",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02",
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "Historical docs referencing v1 stay unchanged"
+        }
+      ]
+    }
+  }
+}

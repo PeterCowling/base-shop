@@ -169,6 +169,14 @@ export function stripQuotedContent(body: string): string {
   return stripBookingComRelayBoilerplate(result.join("\n").trimEnd());
 }
 
+/**
+ * Clean a thread snippet for display in the thread list.
+ * Strips booking.com relay boilerplate that bleeds into preview text.
+ */
+export function cleanSnippet(snippet: string): string {
+  return stripBookingComRelayBoilerplate(snippet);
+}
+
 export function findLatestInboundSender(messages: InboxMessage[]): string | null {
   const latestInbound = [...messages]
     .reverse()

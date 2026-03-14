@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete (2026-03-12)
 Domain: UI
 Workstream: Engineering
 Created: 2026-03-10
@@ -24,9 +24,9 @@ Auto-Build-Intent: plan-only
 This plan turns the March 10, 2026 Brikette dead-code audit into a ranked cleanup sequence for `apps/brikette`. The audit produced 18 findings: 2 high-confidence, 9 medium-confidence, and 7 low-confidence. The first wave is straightforward: delete the two `_api-off` routes that are unreachable by naming convention. The remaining work is gated behind targeted verification because the audit also surfaced one confirmed false positive (`book-dorm-bed`) and several modules that may be intentionally retained for tests, previews, or future route inventory coverage.
 
 ## Active tasks
-- [ ] TASK-05: Horizon checkpoint after verification passes
-- [ ] TASK-06: Execute low-confidence cleanup or document intentional keepers
-- [ ] TASK-07: Final validation and cleanup summary
+- [x] TASK-05: Horizon checkpoint after verification passes
+- [x] TASK-06: Execute low-confidence cleanup or document intentional keepers
+- [x] TASK-07: Final validation and cleanup summary
 
 ## Goals
 - Remove the two disabled `_api-off` route files from Brikette immediately.
@@ -86,9 +86,9 @@ This plan turns the March 10, 2026 Brikette dead-code audit into a ranked cleanu
 | TASK-02 | INVESTIGATE | Verify medium-confidence export candidates | 80% | M | Complete (2026-03-10) | - | TASK-03, TASK-05 |
 | TASK-03 | IMPLEMENT | Delete medium-confidence export candidates confirmed dead by TASK-02 | 88% | M | Complete (2026-03-10) | TASK-02 | TASK-05 |
 | TASK-04 | INVESTIGATE | Resolve low-confidence findings into keep/delete buckets | 90% | S | Complete (2026-03-10) | - | TASK-05, TASK-06 |
-| TASK-05 | CHECKPOINT | Horizon checkpoint after verification passes | 95% | S | Pending | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06 |
-| TASK-06 | IMPLEMENT | Execute low-confidence cleanup or document intentional keepers | 82% | M | Pending | TASK-05 | TASK-07 |
-| TASK-07 | IMPLEMENT | Final validation and cleanup summary | 88% | S | Pending | TASK-06 | - |
+| TASK-05 | CHECKPOINT | Horizon checkpoint after verification passes | 95% | S | Complete (2026-03-12) | TASK-01, TASK-02, TASK-03, TASK-04 | TASK-06 |
+| TASK-06 | IMPLEMENT | Execute low-confidence cleanup or document intentional keepers | 82% | M | Complete (2026-03-12) | TASK-05 | TASK-07 |
+| TASK-07 | IMPLEMENT | Final validation and cleanup summary | 88% | S | Complete (2026-03-12) | TASK-06 | - |
 
 ## Parallelism Guide
 | Wave | Tasks | Prerequisites | Notes |
@@ -306,7 +306,7 @@ This plan turns the March 10, 2026 Brikette dead-code audit into a ranked cleanu
 - **Execution-Skill:** lp-do-build
 - **Execution-Track:** code
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `docs/plans/brikette-dead-code-cleanup/plan.md`
 - **Depends on:** TASK-01, TASK-02, TASK-03, TASK-04
 - **Blocks:** TASK-06
@@ -333,7 +333,7 @@ This plan turns the March 10, 2026 Brikette dead-code audit into a ranked cleanu
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** bounded subset from TASK-04/TASK-05
 - **Depends on:** TASK-05
 - **Blocks:** TASK-07
@@ -380,7 +380,7 @@ This plan turns the March 10, 2026 Brikette dead-code audit into a ranked cleanu
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-12)
 - **Affects:** `docs/plans/brikette-dead-code-cleanup/plan.md`, `[readonly] apps/brikette/**`
 - **Depends on:** TASK-06
 - **Blocks:** -

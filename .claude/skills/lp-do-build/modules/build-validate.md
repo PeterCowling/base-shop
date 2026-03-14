@@ -6,6 +6,8 @@ After existing gates (tests/typecheck/lint/VC checks) pass, run a type-adaptive 
 
 **Scope:** IMPLEMENT tasks only. SPIKE, INVESTIGATE, and CHECKPOINT tasks have no shippable deliverable and do not run this module.
 
+For code/mixed IMPLEMENT tasks, also read the task's `Engineering Coverage` block and the shared contract at `../../_shared/engineering-coverage-matrix.md`. Any row marked `Required` must have concrete build evidence before the walkthrough can pass.
+
 ---
 
 ## Mode Selection Rule
@@ -116,6 +118,19 @@ Use when the active browser session-open tool is unavailable or the dev/staging 
 
 ---
 
+## Engineering Coverage Evidence Rule
+
+Before declaring a code/mixed IMPLEMENT task complete:
+
+1. Review the task's `Engineering Coverage` block.
+2. For each row marked `Required`, record explicit build evidence in the plan/build notes.
+3. For each row marked `N/A`, preserve the stated reason unless execution disproves it.
+4. If a `Required` row has no evidence by the end of validation, the task does not pass even if the primary walkthrough looks correct.
+
+This rule applies to Mode 1, Mode 2, and mixed Mode 1+2 tasks.
+
+---
+
 ## Fix+Retry Loop
 
 Applies to all three modes when a walkthrough fails.
@@ -143,6 +158,7 @@ Post-build validation:
   Attempt: [1 | 2 | 3]
   Result: [Pass | Fail | Blocked]
   Evidence: [screenshot session ID and URL / execution trace / review summary paragraph]
+  Engineering coverage evidence: [Required rows + proof, or N/A rows + reason]
   Scoped audits (Mode 1): [scope + lp-design-qa result + contrast-sweep result + breakpoint-sweep result]
   Autofix actions (Mode 1): [None | list of Critical/Major findings and applied fixes]
   Symptom patches: [None | describe each]

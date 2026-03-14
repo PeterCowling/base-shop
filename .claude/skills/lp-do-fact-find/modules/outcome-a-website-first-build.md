@@ -40,6 +40,12 @@ If either prerequisite is missing, stale, or not active:
 - Acceptance check
 - Risk/unknown
 - Owner
+- Mandatory legal/compliance surface must appear in this matrix when the site is customer-facing:
+  - legal pages required for the business model/jurisdictions (`terms`, `privacy`, `returns`, `shipping`, `cookie-policy` where tracking exists)
+  - support/contact route for legal and post-sale requests
+  - disclosed business identity fields needed on-site
+  - consent-management surface if analytics or other non-essential tracking is present
+  - storefront-to-policy promise-alignment checkpoints (PDP, trust strips, cart, checkout, support, transactional email)
 
 3. Prioritized V1 implementation backlog candidates
 - Priority, item, rationale, acceptance criteria, dependencies, evidence refs
@@ -47,7 +53,8 @@ If either prerequisite is missing, stale, or not active:
 4. Risks and unknowns
 - Missing env/config, data, or integration decisions that can block build
 - Explicit default assumptions and validation path
+- Missing legal entity/address/tax data, policy jurisdiction decisions, returns handling rules, or consent requirements must be called out as blockers or named assumptions, not buried in copy tasks
 
 ## Hand-off Rule
 
-If WEBSITE-01 prerequisites are active and decision-grade, emit `fact-find.md` at `Ready-for-planning` and hand off directly to `/lp-do-plan`.
+If WEBSITE-01 prerequisites are active and decision-grade, emit `fact-find.md` at `Ready-for-analysis` and hand off to `/lp-do-analysis`.

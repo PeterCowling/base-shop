@@ -1,0 +1,15 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-14T07:22:57.579Z",
+  "plan_slug": "payment-manager-post-build-fixes",
+  "review_cycle_key": "payment-manager-post-build-fixes",
+  "source_path": "scripts/docs/plans/payment-manager-post-build-fixes/results-review.user.md",
+  "build_origin_status": "source_missing",
+  "failures": [
+    {
+      "code": "source_missing",
+      "message": "scripts/docs/plans/payment-manager-post-build-fixes/results-review.user.md not found"
+    }
+  ],
+  "items": []
+}

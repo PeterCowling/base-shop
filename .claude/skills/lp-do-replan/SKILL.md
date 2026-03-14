@@ -112,6 +112,15 @@ ID policy:
 - New tasks get next available TASK-ID and remain stable.
 - Dependencies reference stable TASK-IDs.
 
+## Phase 3.5: Walkthrough Refresh Gate
+
+If the replan changes process topology or operating-model behavior — branch triggers, CI/deploy lanes, approval paths, lifecycle states, handoffs, or multi-app orchestration — refresh the plan's `## Delivered Processes` section, not just the task tables.
+
+Rules:
+- Re-walk only the affected areas, but keep the full end-state flow internally consistent.
+- Update unresolved seams or known issues when task splits, new precursor tasks, or dependency changes alter the delivered process.
+- If the refreshed walkthrough exposes a new blocking seam, convert it into an explicit precursor task or lower readiness.
+
 ## Phase 4: Sequencing
 
 When topology changed, run `/lp-do-sequence` with stable IDs preserved.
@@ -166,4 +175,5 @@ Infeasible:
 - [ ] Unknowns converted to formal precursor tasks
 - [ ] Validation contracts complete for runnable tasks
 - [ ] Stable task IDs preserved
+- [ ] `## Delivered Processes` refreshed when the replan changed operating-model behavior
 - [ ] `/lp-do-sequence` run after topology changes (no renumber)

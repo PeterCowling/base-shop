@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Complete
 Domain: UI
 Workstream: Engineering
 Created: 2026-03-12
@@ -28,9 +28,9 @@ The reception inbox currently shows email and Prime messaging threads in a singl
 Three tasks execute sequentially: extend `useInbox` with two independent selection slots, create `EmailColumn` and `PrimeColumn` wrapper components, then redesign `InboxWorkspace` to the three-zone grid layout.
 
 ## Active tasks
-- [ ] TASK-01: Add independent selection state to useInbox
-- [ ] TASK-02: Create EmailColumn and PrimeColumn wrapper components
-- [ ] TASK-03: Redesign InboxWorkspace to two-column grid layout
+- [x] TASK-01: Add independent selection state to useInbox
+- [x] TASK-02: Create EmailColumn and PrimeColumn wrapper components
+- [x] TASK-03: Redesign InboxWorkspace to two-column grid layout
 
 ## Goals
 - Show email threads and Prime threads side-by-side in independent, scrollable columns on desktop (xl+).
@@ -100,9 +100,9 @@ Three tasks execute sequentially: extend `useInbox` with two independent selecti
 ## Task Summary
 | Task ID | Type | Description | Confidence | Effort | Status | Depends on | Blocks |
 |---|---|---|---:|---:|---|---|---|
-| TASK-01 | IMPLEMENT | Add independent selection state to useInbox | 85% | S | Pending | - | TASK-02 |
-| TASK-02 | IMPLEMENT | Create EmailColumn and PrimeColumn wrapper components | 85% | S | Pending | TASK-01 | TASK-03 |
-| TASK-03 | IMPLEMENT | Redesign InboxWorkspace to two-column grid layout | 80% | M | Pending | TASK-02 | - |
+| TASK-01 | IMPLEMENT | Add independent selection state to useInbox | 85% | S | Complete | - | TASK-02 |
+| TASK-02 | IMPLEMENT | Create EmailColumn and PrimeColumn wrapper components | 85% | S | Complete | TASK-01 | TASK-03 |
+| TASK-03 | IMPLEMENT | Redesign InboxWorkspace to two-column grid layout | 80% | M | Complete | TASK-02 | - |
 
 ## Engineering Coverage
 | Coverage Area | Planned handling | Tasks covering it | Notes |
@@ -141,7 +141,7 @@ Three tasks execute sequentially: extend `useInbox` with two independent selecti
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `apps/reception/src/services/useInbox.ts`
 - **Depends on:** -
 - **Blocks:** TASK-02
@@ -196,7 +196,7 @@ Three tasks execute sequentially: extend `useInbox` with two independent selecti
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `apps/reception/src/components/inbox/EmailColumn.tsx` (new), `apps/reception/src/components/inbox/PrimeColumn.tsx` (new)
 - **Depends on:** TASK-01
 - **Blocks:** TASK-03
@@ -251,7 +251,7 @@ Three tasks execute sequentially: extend `useInbox` with two independent selecti
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete
 - **Affects:** `apps/reception/src/components/inbox/InboxWorkspace.tsx`
 - **Depends on:** TASK-02
 - **Blocks:** -
@@ -313,16 +313,16 @@ Three tasks execute sequentially: extend `useInbox` with two independent selecti
 - Alerts/Dashboards: None.
 
 ## Acceptance Criteria (overall)
-- [ ] Desktop (xl+): Email and Prime threads appear in separate, independently scrollable columns side by side.
-- [ ] Selecting a thread from either column opens its detail in the shared `ThreadDetailPane`.
-- [ ] All mutations (save draft, send, resolve, dismiss) operate correctly on the selected thread.
-- [ ] After resolve/dismiss, the resolved thread disappears from its column; the detail pane updates.
-- [ ] Mobile: two-tab strip ("Email" / "Prime") is present above the single visible thread list.
-- [ ] Mobile: switching tabs changes which channel's threads are shown.
-- [ ] Mobile: tapping a thread opens the detail view; back button returns to the last active tab.
-- [ ] Header counts (manual draft count, ready-to-send count) remain accurate over the full thread set.
-- [ ] No additional API calls introduced; auto-refresh continues as a single interval.
-- [ ] `ThreadList` and `ThreadDetailPane` source files are not modified.
+- [x] Desktop (xl+): Email and Prime threads appear in separate, independently scrollable columns side by side.
+- [x] Selecting a thread from either column opens its detail in the shared `ThreadDetailPane`.
+- [x] All mutations (save draft, send, resolve, dismiss) operate correctly on the selected thread.
+- [x] After resolve/dismiss, the resolved thread disappears from its column; the detail pane updates.
+- [x] Mobile: two-tab strip ("Email" / "Prime") is present above the single visible thread list.
+- [x] Mobile: switching tabs changes which channel's threads are shown.
+- [x] Mobile: tapping a thread opens the detail view; back button returns to the last active tab.
+- [x] Header counts (manual draft count, ready-to-send count) remain accurate over the full thread set.
+- [x] No additional API calls introduced; auto-refresh continues as a single interval.
+- [x] `ThreadList` and `ThreadDetailPane` source files are not modified.
 
 ## Decision Log
 - 2026-03-12: Selected Option C (thin column wrappers) over Option A (two useInbox instances) to preserve single-fetch shared cache. Selected shared `ThreadDetailPane` over two separate detail panes to avoid duplicating draft review UI.

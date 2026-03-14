@@ -1,4 +1,14 @@
-import { getRequesterIpFromHeaders, isUploaderIpAllowedByHeaders } from "../accessControl";
+import {
+  _resetCoherenceWarningForTest,
+  getRequesterIpFromHeaders,
+  isUploaderIpAllowedByHeaders,
+} from "../accessControl";
+
+// Mock uploaderLog to verify coherence warning calls.
+const mockUploaderLog = jest.fn();
+jest.mock("../uploaderLogger", () => ({
+  uploaderLog: (...args: unknown[]) => mockUploaderLog(...args),
+}));
 
 describe("accessControl", () => {
   const originalAllowedIps = process.env.XA_UPLOADER_ALLOWED_IPS;
@@ -7,6 +17,8 @@ describe("accessControl", () => {
   afterEach(() => {
     process.env.XA_UPLOADER_ALLOWED_IPS = originalAllowedIps;
     process.env.XA_TRUST_PROXY_IP_HEADERS = originalTrustProxyHeaders;
+    _resetCoherenceWarningForTest();
+    mockUploaderLog.mockClear();
   });
 
   it("prefers cf-connecting-ip when available", () => {
@@ -35,11 +47,18 @@ describe("accessControl", () => {
     expect(getRequesterIpFromHeaders(headers)).toBe("");
   });
 
-  it("allows all requests when allowlist is not configured", () => {
+  it("denies all requests when allowlist is not configured (deny-all default)", () => {
     process.env.XA_TRUST_PROXY_IP_HEADERS = "true";
     delete process.env.XA_UPLOADER_ALLOWED_IPS;
     const headers = new Headers({ "cf-connecting-ip": "203.0.113.10" });
-    expect(isUploaderIpAllowedByHeaders(headers)).toBe(true);
+    expect(isUploaderIpAllowedByHeaders(headers)).toBe(false);
+  });
+
+  it("denies all requests when allowlist is empty string", () => {
+    process.env.XA_TRUST_PROXY_IP_HEADERS = "true";
+    process.env.XA_UPLOADER_ALLOWED_IPS = "";
+    const headers = new Headers({ "cf-connecting-ip": "203.0.113.10" });
+    expect(isUploaderIpAllowedByHeaders(headers)).toBe(false);
   });
 
   it("denies requests from non-allowlisted IPs", () => {
@@ -54,5 +73,62 @@ describe("accessControl", () => {
     process.env.XA_UPLOADER_ALLOWED_IPS = "198.51.100.10,203.0.113.10";
     const headers = new Headers({ "cf-connecting-ip": "203.0.113.10" });
     expect(isUploaderIpAllowedByHeaders(headers)).toBe(true);
+  });
+
+  describe("coherence warning", () => {
+    it("logs warning when allowlist is configured but proxy trust is disabled", () => {
+      delete process.env.XA_TRUST_PROXY_IP_HEADERS;
+      process.env.XA_UPLOADER_ALLOWED_IPS = "198.51.100.10";
+      const headers = new Headers({ "cf-connecting-ip": "198.51.100.10" });
+
+      isUploaderIpAllowedByHeaders(headers);
+
+      expect(mockUploaderLog).toHaveBeenCalledWith(
+        "warn",
+        "security_coherence_mismatch",
+        expect.objectContaining({
+          allowlistSize: 1,
+        }),
+      );
+    });
+
+    it("does not log warning when proxy trust is enabled", () => {
+      process.env.XA_TRUST_PROXY_IP_HEADERS = "1";
+      process.env.XA_UPLOADER_ALLOWED_IPS = "198.51.100.10";
+      const headers = new Headers({ "cf-connecting-ip": "198.51.100.10" });
+
+      isUploaderIpAllowedByHeaders(headers);
+
+      expect(mockUploaderLog).not.toHaveBeenCalledWith(
+        "warn",
+        "security_coherence_mismatch",
+        expect.anything(),
+      );
+    });
+
+    it("deduplicates coherence warning (fires only once per process)", () => {
+      delete process.env.XA_TRUST_PROXY_IP_HEADERS;
+      process.env.XA_UPLOADER_ALLOWED_IPS = "198.51.100.10";
+      const headers = new Headers({ "cf-connecting-ip": "198.51.100.10" });
+
+      isUploaderIpAllowedByHeaders(headers);
+      isUploaderIpAllowedByHeaders(headers);
+      isUploaderIpAllowedByHeaders(headers);
+
+      const coherenceCalls = mockUploaderLog.mock.calls.filter(
+        (call: unknown[]) => call[1] === "security_coherence_mismatch",
+      );
+      expect(coherenceCalls).toHaveLength(1);
+    });
+
+    it("does not log warning when allowlist is empty", () => {
+      delete process.env.XA_TRUST_PROXY_IP_HEADERS;
+      delete process.env.XA_UPLOADER_ALLOWED_IPS;
+      const headers = new Headers({ "cf-connecting-ip": "198.51.100.10" });
+
+      isUploaderIpAllowedByHeaders(headers);
+
+      expect(mockUploaderLog).not.toHaveBeenCalled();
+    });
   });
 });

@@ -1,0 +1,146 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "fact-find",
+  "feature_slug": "process-improvements-operator-actions-integration",
+  "source_artifact_path": "docs/plans/process-improvements-operator-actions-integration/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "The operator now has two separate places to look for work that should really be managed together: the process-improvements inbox and the output-registry operator card. That splits attention, hides overdue actions, and leaves the app unable to show the most important operator decisions. Fixing this should create one integrated inbox backed by a canonical structured operator-actions source, not a fragile HTML scrape.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Business OS has an analysis-ready fact-find for one integrated operator inbox that can show both process improvements and structured operator actions from startup-loop sources, with distinct card styling and no runtime HTML parsing.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`ProcessImprovementsInbox.tsx` uses a single neutral card treatment; app CSS exposes semantic warning/danger tokens.",
+      "gap_or_implication": "Operator-action cards are not visually distinct today.",
+      "carry_forward_or_notes": "Compare section-based versus mixed-list card treatments using semantic tokens only."
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Current inbox supports awaiting, deferred, and actioned queue states only.",
+      "gap_or_implication": "Operator actions need due-date, overdue, owner, and likely different actions.",
+      "carry_forward_or_notes": "Define typed states and item-specific consequences before UI tasks are planned."
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Current decision API is admin-gated.",
+      "gap_or_implication": "Any new operator-action mutation endpoints must preserve equivalent authz.",
+      "carry_forward_or_notes": "Keep auth boundary explicit in any future typed action model."
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "Queue and ledger provide auditability for process-improvement decisions.",
+      "gap_or_implication": "Structured operator actions currently have no traced audit dataset in this brief.",
+      "carry_forward_or_notes": "Identify the authoritative write seam and required audit trail before plan."
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Queue-only route and component tests already exist.",
+      "gap_or_implication": "No mixed-type or overdue-state coverage exists.",
+      "carry_forward_or_notes": "Require projection, route, and schema tests for the integrated inbox."
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`ProcessImprovementsInboxItem` and API payloads are queue-shaped only.",
+      "gap_or_implication": "New typed operator-action contract is missing and is the main architecture seam.",
+      "carry_forward_or_notes": "Compare contract options and choose one canonical operator-actions dataset."
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Required",
+      "current_or_option_state": "Current route reads queue state and ledger only.",
+      "gap_or_implication": "Adding another source without a clean contract could create drift or double-read complexity.",
+      "carry_forward_or_notes": "Evaluate consumer model that keeps report and app in sync without runtime HTML parsing."
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Current queue-only app surface is already live.",
+      "gap_or_implication": "An integrated inbox could confuse operators if terminology and sections shift abruptly.",
+      "carry_forward_or_notes": "Plan additive rollout with fallback to existing queue-only route behavior if needed."
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Investigate how to integrate the startup-loop operator work currently surfaced inside `docs/business-os/startup-loop-output-registry.user.html` into the authenticated Business OS `/process-improvements` route without parsing HTML at runtime. The target outcome is one operator inbox that can show both queue-backed process-improvement items and structured operator-action items with distinct visual treatment and type-aware actions.",
+    "goals": [
+      "Establish the current source-of-truth boundaries for queue-backed process improvements versus registry-visible operator actions.",
+      "Identify the minimum new structured dataset and app projection contract needed for an integrated inbox.",
+      "Trace the UI, API, decision, and report seams that would change if operator-action cards are added.",
+      "Carry forward the locked constraint that runtime HTML parsing is out of scope."
+    ],
+    "non_goals": [
+      "Implement the integrated inbox in this artifact.",
+      "Reopen the prior decision that the Business OS app, not a static report, is the action runtime.",
+      "Treat the existing registry HTML as a runtime data source.",
+      "Decide final implementation tasks or sequencing."
+    ],
+    "constraints": [
+      "No runtime HTML parsing is allowed.",
+      "Existing queue-backed `Do`, `Defer`, and `Decline` semantics remain authoritative for process-improvement items unless later analysis proves otherwise.",
+      "The integrated surface must make operator-action cards visually distinct at a glance.",
+      "The current date is 2026-03-11, so surfaced due dates before that point should be treated as overdue in any future integrated inbox."
+    ],
+    "assumptions": [
+      "The correct host remains `apps/business-os`, not a static doc.",
+      "A new operator-actions dataset can be introduced without making the registry HTML authoritative.",
+      "Mixed card types in one route are feasible if the projection and action model become type-aware."
+    ],
+    "key_entry_points": [
+      "`apps/business-os/src/app/process-improvements/page.tsx` - current authenticated route wrapper and page framing.",
+      "`apps/business-os/src/lib/process-improvements/projection.ts` - current read model for queue-backed inbox items and actioned history.",
+      "`apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx` - current single-card-type operator UI and card styling.",
+      "`apps/business-os/src/app/api/process-improvements/decision/[decision]/route.ts` - decision API boundary and auth gate.",
+      "`apps/business-os/src/lib/process-improvements/decision-service.ts` - queue handoff/decline behavior behind the app API.",
+      "`docs/business-os/startup-loop-output-registry.user.html` - current static surface that already contains operator-action content.",
+      "`scripts/src/startup-loop/build/generate-build-summary.ts` - build-summary generator seam for the registry page.",
+      "`docs/plans/process-improvements-operator-decision-inbox/plan.md` - active queue-only app plan that defines the current tranche boundary."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Ready for analysis": "Yes",
+      "Reason": "The brief identifies the current app/runtime boundaries, the visible second operator-work stream, the missing structured contract, the immediate overdue-state implication, and the main unanswered architecture comparison that analysis must resolve.",
+      "Best next step": "Compare authoritative-source options for operator actions and select the integrated inbox read model that preserves queue semantics while avoiding runtime HTML parsing."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Registry operator-action source",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Scope gap] [Minor]: The brief proves the app does not consume these items today, but it does not yet trace the authoring/generation path for the current operator-card blocks.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Process-improvements app read model",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Decision/action boundary",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Visual differentiation and overdue states",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ]
+  }
+}

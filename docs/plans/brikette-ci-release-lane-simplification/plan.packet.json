@@ -1,0 +1,175 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "plan",
+  "feature_slug": "brikette-ci-release-lane-simplification",
+  "source_artifact_path": "docs/plans/brikette-ci-release-lane-simplification/plan.md",
+  "source_artifact_status": "Archived",
+  "source_last_updated": "2026-03-11 (all tasks complete)",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/brikette-ci-release-lane-simplification/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The current Brikette CI and deploy flow is harder to reason about than it should be. The operator wants one straightforward release model: changed-only validation on dev, staging as the preview lane reached by merge, and main as the live lane reached by merge.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Brikette has an analysis-ready fact-find for a simplified GitHub Actions setup where dev performs changed-only lint, typecheck, and tests in CI, staging is a merge-only preview lane, and main is a merge-only production lane.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "Workflow/docs change only; no product UI impact.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Clarify branch-to-workflow behavior so operator/agent flows are predictable",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Workflow triggers and publish skip rules are the relevant state model.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Remove manual publish entrypoints and preserve secreted deploy paths only on merge-driven branches",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "No new secrets introduced.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Keep one active Brikette workflow and preserve production health checks",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "Merge-gate and post-deploy visibility must still work.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Enforce changed-scope lint/typecheck/test for app-only Brikette changes; validate YAML and shell flow statically locally",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "No local Jest/e2e runs.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Update workflow triggers, path contracts, and any classifier config consistently",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Merge-gate/current docs must agree on the active workflow contract.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Remove duplicate publish surfaces and avoid deploys on workflow-only/no-op merges",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Export still runs on staging/main only.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Keep rollback as workflow-file reversion and branch redeploy",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "No irreversible infra change in repo code.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "This plan simplifies Brikette CI down to one dedicated workflow file and one core-CI carve-out. Pure `apps/brikette/**` changes should validate through changed-scope lint, typecheck, and tests in `brikette.yml` without triggering broad core CI. Merge-driven `staging` and `main` publishes should live in the same `brikette.yml` file, with no `workflow_dispatch`, no dev smoke/export gates, and no deploy when only workflow-only files changed. Shared package changes that genuinely affect more than Brikette should still be allowed to trigger core CI.",
+    "goals": [
+      "Ensure pure Brikette app changes trigger only relevant Brikette validation checks.",
+      "Keep changed scope defined by the push and its affected dependency/workspace surface.",
+      "Make `staging` preview-only by merge and `main` live-only by merge, both path-gated and manual-trigger-free.",
+      "Remove the old Brikette staging fast-path and reusable-app indirection from the active Brikette release path."
+    ],
+    "non_goals": [
+      "Re-architect Brikette application code or shrink the Pages artifact in this change.",
+      "Replace repo-wide merge-gate policy or unrelated app workflows.",
+      "Add bespoke file-level classifiers for every validation step."
+    ],
+    "constraints": [
+      "Local tests remain offloaded to CI; no local Jest/e2e execution.",
+      "`staging` and `main` must skip publish when no Brikette-relevant code changed.",
+      "`workflow_dispatch` must be removed from the Brikette release path.",
+      "Existing production health-check coverage must survive the workflow refactor."
+    ],
+    "assumptions": [
+      "Pure `apps/brikette/**` changes can safely bypass broad core-CI governance jobs once Brikette has its own changed-scope validation path.",
+      "Shared package changes should still be allowed to hit both core CI and Brikette CI when they genuinely affect both surfaces."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Keep `.github/workflows/brikette.yml` as the single active Brikette workflow.",
+      "Remove `.github/workflows/brikette-staging-fast.yml`.",
+      "Move Brikette dev/PR validation into changed-scope steps inside `brikette.yml`.",
+      "Narrow `.github/workflows/ci.yml` so pure Brikette app/workflow changes do not trigger broad core CI.",
+      "Why planning is not reopening option selection:",
+      "The operator closed the major policy forks, and deeper workflow inspection showed this boundary is simpler than forcing Brikette back through the broad core workflow."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Rebuild `brikette.yml` as the single Brikette validation + publish workflow",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-11)",
+        "confidence": 84,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `.github/workflows/brikette.yml` plus any supporting helper/config files needed to express one active Brikette workflow",
+        "affects": "`.github/workflows/brikette.yml`, `scripts/brikette/build-static-export.sh`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Narrow `ci.yml`, remove the staging fast-path workflow, and update current docs",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-11)",
+        "confidence": 86,
+        "effort": "M",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-03"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `.github/workflows/ci.yml`, deleted `.github/workflows/brikette-staging-fast.yml`, and corrected current documentation",
+        "affects": "`.github/workflows/ci.yml`, `.github/workflows/brikette-staging-fast.yml`, `scripts/src/ci/filter-config.ts`, `scripts/ci/path-classifier.cjs`, `docs/github-setup.md`, `docs/testing-policy.md`, `docs/brikette-deploy-decisions.md`, `docs/briefs/safe-github-update-strategy-briefing.md`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Validate the new workflow contract and record final build evidence",
+        "type": "IMPLEMENT",
+        "status": "Complete (2026-03-11)",
+        "confidence": 92,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Verified workflow/docs state plus updated plan/build artifacts for this slug",
+        "affects": "`docs/plans/brikette-ci-release-lane-simplification/plan.md`, `docs/plans/brikette-ci-release-lane-simplification/build-record.user.md`, `docs/plans/brikette-ci-release-lane-simplification/analysis.md`"
+      }
+    ],
+    "next_runnable_task_ids": [],
+    "validation_contracts": [],
+    "open_decisions": []
+  }
+}

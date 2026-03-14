@@ -8,7 +8,7 @@
 #
 # What it does:
 #   1. Checks cloudflared installation (installs if missing on macOS)
-#   2. Starts Business OS dev server (port 3020)
+#   2. Starts Business OS dev server (port 3022)
 #   3. Creates TryCloudflare tunnel
 #   4. Displays public URL
 #
@@ -23,6 +23,7 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 BOLD='\033[1m'
+PORT=3022
 
 # Repo root detection
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -55,24 +56,24 @@ else
   echo -e "${GREEN}✓${NC} cloudflared is installed ($(cloudflared --version | head -1))"
 fi
 
-# Check if port 3020 is already in use
-if lsof -Pi :3020 -sTCP:LISTEN -t >/dev/null 2>&1; then
-  echo -e "${YELLOW}⚠${NC}  Port 3020 is already in use"
+# Check if port is already in use
+if lsof -Pi :"$PORT" -sTCP:LISTEN -t >/dev/null 2>&1; then
+  echo -e "${YELLOW}⚠${NC}  Port ${PORT} is already in use"
   echo -e "${BLUE}ℹ${NC}  Assuming Business OS dev server is already running..."
   DEV_SERVER_PID=""
 else
   # Start Business OS dev server in background
-  echo -e "${BLUE}ℹ${NC}  Starting Business OS dev server on port 3020..."
+  echo -e "${BLUE}ℹ${NC}  Starting Business OS dev server on port ${PORT}..."
   cd "$REPO_ROOT"
 
   # Start dev server in background, suppress initial output
   pnpm --filter @apps/business-os dev > /tmp/business-os-dev.log 2>&1 &
   DEV_SERVER_PID=$!
 
-  # Wait for dev server to be ready (check for port 3020 listening)
+  # Wait for dev server to be ready (check for configured port listening)
   MAX_WAIT=30
   WAIT_COUNT=0
-  while ! lsof -Pi :3020 -sTCP:LISTEN -t >/dev/null 2>&1; do
+  while ! lsof -Pi :"$PORT" -sTCP:LISTEN -t >/dev/null 2>&1; do
     sleep 1
     WAIT_COUNT=$((WAIT_COUNT + 1))
     if [ $WAIT_COUNT -ge $MAX_WAIT ]; then
@@ -101,14 +102,14 @@ cleanup() {
 trap cleanup SIGINT SIGTERM EXIT
 
 # Start cloudflared tunnel
-echo -e "${BLUE}ℹ${NC}  Creating tunnel to localhost:3020..."
+echo -e "${BLUE}ℹ${NC}  Creating tunnel to localhost:${PORT}..."
 echo ""
 
 # Create temp file to capture cloudflared output
 TUNNEL_LOG=$(mktemp)
 
 # Start cloudflared in background, capture output
-cloudflared tunnel --url http://localhost:3020 2>&1 | tee "$TUNNEL_LOG" &
+cloudflared tunnel --url "http://localhost:${PORT}" 2>&1 | tee "$TUNNEL_LOG" &
 TUNNEL_PID=$!
 
 # Wait for tunnel URL to appear in logs (max 15 seconds)

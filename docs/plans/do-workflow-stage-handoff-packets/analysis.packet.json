@@ -1,0 +1,188 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "do-workflow-stage-handoff-packets",
+  "source_artifact_path": "docs/plans/do-workflow-stage-handoff-packets/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-11",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "lp-do-ideas",
+    "lp-do-fact-find",
+    "lp-do-analysis",
+    "lp-do-plan",
+    "lp-do-build",
+    "lp-do-critique"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/do-workflow-stage-handoff-packets/fact-find.md",
+    "plan": "docs/plans/do-workflow-stage-handoff-packets/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The workflow now measures real token usage and shows that repeated stage-shell and thread carryover dominate cost, especially between analysis and plan.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Add deterministic stage handoff packets so downstream DO stages can load bounded structured sidecars first, escalate to full upstream markdown only when needed, and preserve engineering coverage expectations across the whole workflow.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "agents still decide ad hoc what to load",
+      "current_or_option_state": "one explicit packet-first load order",
+      "gap_or_implication": "prefer explicit packet-first load order",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "no new artifact",
+      "current_or_option_state": "new sidecars, but source-derived only",
+      "gap_or_implication": "sidecars acceptable if source-derived",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "telemetry keeps pointing at large markdown artifacts",
+      "current_or_option_state": "telemetry can record packet paths directly",
+      "gap_or_implication": "telemetry alignment favors packets",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "nothing new to validate",
+      "current_or_option_state": "generator and real packet outputs can be validated deterministically",
+      "gap_or_implication": "bounded validation burden is acceptable",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "no new contract",
+      "current_or_option_state": "one canonical sidecar contract",
+      "gap_or_implication": "contract clarity favors packets",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "token efficiency remains mostly policy-driven",
+      "current_or_option_state": "packet size and fields can be bounded deterministically",
+      "gap_or_implication": "packet approach is more reliable",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "no change",
+      "current_or_option_state": "additive sidecars with markdown fallback",
+      "gap_or_implication": "additive rollout is safe",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Choose the right way to bound cross-stage context in the DO workflow now that telemetry shows repeated upstream carryover is the dominant token cost.",
+    "goals": [
+      "reduce cross-stage context volume with deterministic artifacts,",
+      "keep packet semantics centralized,",
+      "preserve end-to-end engineering coverage and task selection fidelity."
+    ],
+    "non_goals": [
+      "forcing a full workflow-runtime reset mechanism in this change,",
+      "replacing `plan.md` task blocks with JSON execution contracts,",
+      "adding a second competing handoff format."
+    ],
+    "constraints": [
+      "build still needs access to the full plan task block before it executes or edits a task,",
+      "the packet should not become a shadow artifact with its own free-form prose,",
+      "the workflow contract must stay simple enough for agents to follow."
+    ],
+    "assumptions": [
+      "a compact packet plus packet-first skill instructions is enough to materially improve progressive disclosure now,",
+      "telemetry can prove whether the packet paths are actually being used."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Determinism",
+        "Why it matters": "token-saving artifacts must not become a second source of interpretation",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Progressive disclosure quality",
+        "Why it matters": "downstream stages should load less by default",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Contract clarity",
+        "Why it matters": "packet semantics should live in one place",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Build fidelity",
+        "Why it matters": "build must still identify runnable tasks and task scope cleanly",
+        "Weight": "High"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A",
+        "Description": "Keep markdown-only artifacts and tighten skill prose about “load less”",
+        "Upside": "low implementation cost",
+        "Downside": "relies on agent discipline, not a deterministic artifact",
+        "Key risks": "drift and inconsistent token savings",
+        "Viable?": "No"
+      },
+      {
+        "Option": "B",
+        "Description": "Add canonical deterministic packet sidecars plus packet-first load order in the workflow docs and skills",
+        "Upside": "bounded context artifact with one contract and measurable use in telemetry",
+        "Downside": "adds a new sidecar file family",
+        "Key risks": "packet content must stay compact and source-derived",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "C",
+        "Description": "Build a full runtime session-handoff system first",
+        "Upside": "attacks hidden thread carryover directly",
+        "Downside": "much larger surface and higher uncertainty",
+        "Key risks": "over-scoped for the measured next step",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "add canonical deterministic packet sidecars for `fact-find`, `analysis`, and `plan`; generate them after validators pass; and make packet-first loading the default rule for downstream DO stages.",
+      "Why this wins": "it lifts the bounded summary work into code, keeps the semantics centralized in one contract, and gives the telemetry system a concrete smaller artifact to measure instead of relying on stage-shell discipline alone.",
+      "What it depends on": "a deterministic generator in `packages/skill-runner`, one canonical contract doc, and coordinated updates to the workflow guide and DO stage skills."
+    },
+    "rejected_approaches": [
+      "docs-only “be more careful with context” guidance — rejected because it does not mechanize the repeated workload.",
+      "full runtime handoff/session reset system first — rejected because it is the larger follow-on optimization, not the best immediate move."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "implement a deterministic generator and CLI wrapper,",
+        "bind packet generation and packet-first loading into the core workflow docs and skills,",
+        "prove the flow with a persisted feature slug and real packet files."
+      ],
+      "validation_implications": [
+        "`@acme/skill-runner` typecheck and lint,",
+        "fact-find / engineering coverage / plan validators for the new slug,",
+        "packet generation commands must produce stable sidecars for the new artifacts."
+      ],
+      "sequencing_constraints": [
+        "generator before skill wiring,",
+        "contract before skill references,",
+        "persisted packet outputs before telemetry summary and build record."
+      ],
+      "risks_to_carry_forward": [
+        "build must not be documented as packet-only,",
+        "packet field scope must stay bounded enough to save tokens while still surfacing runnable tasks."
+      ]
+    }
+  }
+}

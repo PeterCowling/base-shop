@@ -42,7 +42,7 @@ The E2E test suite covers these core workflows:
    ```bash
    pnpm dev
    ```
-   The app will run on http://localhost:3020
+   The app will run on http://localhost:3022
 
 ### Run Tests
 
@@ -77,7 +77,7 @@ These tests are designed to:
 
 ## Notes
 
-- Tests assume the dev server is running on port 3020
+- Tests assume the dev server is running on port 3022
 - Tests are resilient to empty/missing data (e.g., no cards on board)
 - The baseUrl can be overridden with `CYPRESS_BASE_URL` environment variable
 - Tests will retry twice in CI mode if they fail (flake tolerance)

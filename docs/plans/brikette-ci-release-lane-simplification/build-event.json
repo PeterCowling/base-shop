@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "brikette-ci-release-lane-simplification-20260311",
+  "feature_slug": "brikette-ci-release-lane-simplification",
+  "emitted_at": "2026-03-11T17:10:35.673Z",
+  "why": "The current Brikette CI and deploy flow is harder to reason about than it should be. The operator wants one straightforward release model: changed-only validation on dev, staging as the preview lane reached by merge, and main as the live lane reached by merge.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "Brikette has an analysis-ready fact-find for a simplified GitHub Actions setup where dev performs changed-only lint, typecheck, and tests in CI, staging is a merge-only preview lane, and main is a merge-only production lane.",
+    "source": "operator"
+  }
+}

@@ -40,6 +40,10 @@ Before SELL-01 starts, a valid DEP record must pass the floor defined in `docs/b
 
 Paid spend authorization is evaluated separately at SELL-08 after strategy output exists. This skill can produce a complete strategy artifact even when spend activation is still blocked.
 
+SELL-08 now requires both:
+- decision-grade measurement signal verification, and
+- a recent rendered sales-funnel audit pass from `/lp-sell-funnel-audit --business <BIZ>` with no unresolved High/Critical blockers on the mobile + fullscreen core booking path.
+
 Optional (enhances quality):
 - Competitor channel analysis, budget/resource constraints, existing audiences, market research
 - `docs/business-os/strategy/<BIZ>/<YYYY-MM-DD>-brand-identity-dossier.user.md` — channel voice and tone alignment

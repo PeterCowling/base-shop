@@ -1,0 +1,37 @@
+Running node v22.16.0 (npm v10.9.2)
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "docs/plans/reception-prime-deprecated-endpoint-cleanup/plan.md",
+      "line": "201",
+      "message": "The plan still deletes the only Reception-side test that exercises live `buildPrimeActorHeaders` behavior without providing a real replacement. `prime-compose/route.test.ts` mocks `staffBroadcastSend`, and the Prime-side `staff-broadcast-send.test.ts` cannot observe headers built in `apps/reception/src/lib/inbox/prime-review.server.ts:654-662`. After TASK-02, there would be no test covering the signed-header construction/omission path used by the live `staffBroadcastSend` helper."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-deprecated-endpoint-cleanup/plan.md",
+      "line": "165",
+      "message": "The TASK-01 acceptance criteria are not achievable as written. `prime-compose/route.test.ts` cannot assert `x-prime-actor-claims` header presence/absence because it only verifies arguments passed into a mocked `staffBroadcastSend` call; it never sees the downstream fetch request."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-deprecated-endpoint-cleanup/plan.md",
+      "line": "66",
+      "message": "The stated local validation gate does not actually validate the planned test changes. `apps/reception/tsconfig.json`, `apps/prime/tsconfig.json`, and `apps/prime/tsconfig.functions.json` all exclude `*.test.*` and `__tests__/**`, so `pnpm --filter @apps/reception typecheck` and `pnpm --filter @apps/prime typecheck` will not typecheck the new or ported test files in TASK-01."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "review": "I’m reviewing the revised cleanup plan against the current live tests and endpoint files. The main check is whether the proposed coverage port really preserves the auth seams before the deprecated files are deleted.\nI’ve confirmed the broad shape: the package filters are fixed and the prime endpoint really does share the same auth gates before its extra rate-limit/send logic. The remaining question is whether TASK-01’s proposed test port is actually capable of preserving the Reception-side header-signing seam.\nI’ve isolated one real plan bug: the Reception-side header-signing seam is still not preservable via `prime-compose/route.test.ts`, because that file only asserts the mocked helper call, not the headers built inside `prime-review.server.ts`. I’m checking the app tsconfigs now to see whether the stated local typecheck gate would even validate those new test-file edits.\nI found a second concrete problem: the plan relies on `pnpm --filter @apps/... typecheck` as the local gate for TASK-01, but both app tsconfigs explicitly exclude `*.test.*` and `__tests__/**`, so those commands won’t validate the new ported test code at all. I’m doing one quick search for any existing direct test of the Reception `staffBroadcastSend` helper before I close this review.\n- CRITICAL: docs/plans/reception-prime-deprecated-endpoint-cleanup/plan.md:201 The plan still deletes the only Reception-side test that exercises live `buildPrimeActorHeaders` behavior without providing a real replacement. `prime-compose/route.test.ts` mocks `staffBroadcastSend`, and the Prime-side `staff-broadcast-send.test.ts` cannot observe headers built in `apps/reception/src/lib/inbox/prime-review.server.ts:654-662`. After TASK-02, there would be no test covering the signed-header construction/omission path used by the live `staffBroadcastSend` helper.\n\n- WARNING: docs/plans/reception-prime-deprecated-endpoint-cleanup/plan.md:165 The TASK-01 acceptance criteria are not achievable as written. `prime-compose/rou",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1",
+  "resumed": true,
+  "usage": {
+    "inputTokens": 33833294,
+    "outputTokens": 119439,
+    "totalTokens": 33952733,
+    "costUsd": 0
+  },
+  "durationMs": 121157
+}

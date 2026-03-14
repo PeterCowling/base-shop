@@ -9,6 +9,7 @@ import { CfHeroImage } from "@acme/ui/atoms/CfHeroImage";
 import { CfImage } from "@acme/ui/atoms/CfImage";
 
 import ApartmentStructuredData from "@/components/seo/ApartmentStructuredData";
+import { WHATSAPP_URL } from "@/config/hotel";
 import type { AppLanguage } from "@/i18n.config";
 
 import ApartmentPageClientEffects from "./ApartmentPageClientEffects";
@@ -25,7 +26,6 @@ const HIGHLIGHT_IMAGES = [
   "/img/apt2.jpg",
 ] as const;
 const AMENITIES_IMAGE_SRC = "/img/725818368.jpg";
-const WHATSAPP_URL = "https://wa.me/393287073695";
 const AMENITY_ICONS = [Wifi, Utensils, Snowflake, WashingMachine, Bath, Maximize2] as const;
 const CHECK_AVAILABILITY_EVENT = "click_check_availability";
 const WHATSAPP_EVENT = "click_whatsapp";

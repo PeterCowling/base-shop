@@ -3,9 +3,7 @@
 
 import { DOMAIN } from "@/config";
 import { IS_TEST } from "@/config/env";
-import { normaliseBrowserOrigin } from "@/utils/origin";
-
-const LOOPBACK_HOSTS = new Set(["localhost", "127.0.0.1", "0.0.0.0", "::1", "[::1]"]);
+import { LOCAL_HOSTS, normaliseBrowserOrigin } from "@/utils/origin";
 
 const getDocumentElement = (): HTMLElement | null =>
   typeof document !== "undefined" ? document.documentElement : null;
@@ -14,7 +12,7 @@ const isLoopbackOrigin = (origin: string | undefined): boolean => {
   if (!origin) return false;
   try {
     const { hostname } = new URL(origin);
-    return LOOPBACK_HOSTS.has(hostname.toLowerCase());
+    return LOCAL_HOSTS.has(hostname.toLowerCase());
   } catch {
     return false;
   }

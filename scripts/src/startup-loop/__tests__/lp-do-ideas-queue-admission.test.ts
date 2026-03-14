@@ -6,6 +6,7 @@ import { join } from "node:path";
 import {
   type ContentGuardResult,
   enqueueQueueDispatches,
+  extractContentWords,
   validateDispatchContent,
 } from "../ideas/lp-do-ideas-queue-admission.js";
 
@@ -248,6 +249,101 @@ describe("validateDispatchContent", () => {
 });
 
 // ---------------------------------------------------------------------------
+// TC-09: Semantic similarity dedup
+// ---------------------------------------------------------------------------
+describe("semantic duplicate detection", () => {
+  it("TC-09a: rejects anchor semantically identical to existing (same key words, different order)", () => {
+    const result = validateDispatchContent(
+      {
+        area_anchor: "Select the trading name for the cochlearfit business",
+        trigger: "operator_idea",
+      },
+      ["Choose a name for the cochlearfit business"],
+    );
+    expect(result.accepted).toBe(false);
+    expect(result.reason).toBe("semantic_duplicate");
+  });
+
+  it("TC-09b: rejects anchor with sufficient shared content words across different wording", () => {
+    const result = validateDispatchContent(
+      {
+        area_anchor: "Pick a product name for the cochlearfit headband startup",
+        trigger: "operator_idea",
+      },
+      ["Choose a name for the cochlearfit headband business"],
+    );
+    expect(result.accepted).toBe(false);
+    expect(result.reason).toBe("semantic_duplicate");
+  });
+
+  it("TC-09c: accepts anchor that shares only generic words with existing", () => {
+    const result = validateDispatchContent(
+      {
+        area_anchor: "Staging site deployments take longer than expected",
+        trigger: "artifact_delta",
+      },
+      ["Guest emails need faster response times during peak season"],
+    );
+    expect(result.accepted).toBe(true);
+  });
+
+  it("TC-09d: semantic check does not fire for anchors below min content-word threshold", () => {
+    // "Fix payments" → only 2 content words (fix, payments) — check skipped, accepted
+    const result = validateDispatchContent(
+      { area_anchor: "Fix payments", trigger: "operator_idea" },
+      ["Fix the payments flow immediately"],
+    );
+    expect(result.accepted).toBe(true);
+  });
+
+  it("TC-09e: business prefix is stripped before comparison", () => {
+    const result = validateDispatchContent(
+      {
+        area_anchor: "CochlearFit — Pick the product trading name for launch",
+        trigger: "operator_idea",
+      },
+      ["CochlearFit — Choose a product name for the launch"],
+    );
+    expect(result.accepted).toBe(false);
+    expect(result.reason).toBe("semantic_duplicate");
+  });
+
+  it("TC-09f: distinct ideas with some shared words are still accepted", () => {
+    // Both mention "staging" and "site" but are clearly different problems
+    const result = validateDispatchContent(
+      {
+        area_anchor: "Staging site build is getting too large and hitting file limits",
+        trigger: "artifact_delta",
+      },
+      ["Staging site deployments take longer than they need to"],
+    );
+    expect(result.accepted).toBe(true);
+  });
+});
+
+describe("extractContentWords", () => {
+  it("strips business prefix and stop words", () => {
+    const words = extractContentWords("Brikette — Guest emails need faster response");
+    expect(words).toContain("guest");
+    expect(words).toContain("emails");
+    expect(words).toContain("faster");
+    expect(words).toContain("response");
+    expect(words).not.toContain("brikette");
+    expect(words).not.toContain("need");
+  });
+
+  it("handles anchors without business prefix", () => {
+    const words = extractContentWords("Choose a name for the cochlearfit business");
+    expect(words).toContain("choose");
+    expect(words).toContain("name");
+    expect(words).toContain("cochlearfit");
+    expect(words).toContain("business");
+    expect(words).not.toContain("for");
+    expect(words).not.toContain("the");
+  });
+});
+
+// ---------------------------------------------------------------------------
 // Integration: enqueueQueueDispatches with content guards
 // ---------------------------------------------------------------------------
 describe("enqueueQueueDispatches with content guards", () => {
@@ -335,6 +431,28 @@ describe("enqueueQueueDispatches with content guards", () => {
       ],
     });
     expect(result.appended).toBe(2);
+    expect(result.suppressed).toBe(1);
+  });
+
+  it("rejects semantically duplicate packet against existing queue entry", () => {
+    const existing = makePacket({
+      dispatch_id: "existing-cochlear-1",
+      area_anchor: "Choose a name for the cochlearfit headband business",
+      trigger: "operator_idea",
+    });
+    const { queuePath, telemetryPath } = writeQueue(tmpDir, [existing]);
+    const result = enqueueQueueDispatches({
+      queueStatePath: queuePath,
+      telemetryPath,
+      telemetryReason: "test",
+      packets: [
+        makePacket({
+          area_anchor: "Select the trading name for the cochlearfit headband startup",
+          trigger: "operator_idea",
+        }),
+      ],
+    });
+    expect(result.appended).toBe(0);
     expect(result.suppressed).toBe(1);
   });
 

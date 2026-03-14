@@ -170,5 +170,6 @@ export function parseBookingPayload(raw: unknown): BookingPayload | null {
     deal: optString(obj.deal),
     source: optString(obj.source),
     rateType: parseRateType(obj.rateType),
+    room: obj.room,
   };
 }

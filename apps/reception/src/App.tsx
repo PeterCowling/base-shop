@@ -129,7 +129,7 @@ function App({ children }: AppProps) {
     setActiveModal(null);
   }, []);
 
-  useInactivityLogout(!!user, handleLogout, 60000);
+  useInactivityLogout(!!user, handleLogout, 600000);
 
   // Convert new user format to legacy format for AuthenticatedApp
   const legacyUser = useMemo(() => {

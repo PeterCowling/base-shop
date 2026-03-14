@@ -69,6 +69,13 @@ if ! "$REPO_ROOT/scripts/agents/generate-skill-registry" --check; then
 fi
 echo "OK: Skill registry drift check passed"
 
+echo "Checking localhost dev port registry..."
+if ! pnpm --filter scripts validate-dev-ports; then
+    echo "FAIL: localhost dev port registry validation failed"
+    exit 1
+fi
+echo "OK: localhost dev port registry validation passed"
+
 # 0. Check for orphaned test processes (incident 2026-01-16)
 if [ "$VALIDATE_INCLUDE_TESTS" = "1" ] && [ "$ALLOW_TEST_PROCS" != "1" ]; then
     JEST_PROCS=$(ps -ef | grep -E 'jest-worker|jest\.js' | grep -v grep | wc -l | tr -d ' ')
@@ -646,6 +653,55 @@ if [ -x "./scripts/check-ideas-go-faster-contracts.sh" ]; then
     echo "OK: ideas-go-faster contract checks passed"
 else
     echo "INFO: scripts/check-ideas-go-faster-contracts.sh not found; skipping."
+fi
+
+# 7.2. Complete-but-unarchived plan guard
+# Fails if a changed plan.md has Status: Active but every task in ## Active tasks is checked off.
+CHANGED_PLANS=$(echo "$ALL_CHANGED" | grep -E '^docs/plans/[^_][^/]*/plan\.md$' || true)
+if [ -n "$CHANGED_PLANS" ]; then
+    echo ""
+    echo "> Complete-but-unarchived plan check..."
+    UNARCHIVED_COMPLETE=""
+    for plan_file in $CHANGED_PLANS; do
+        if [ ! -f "$REPO_ROOT/$plan_file" ]; then
+            continue
+        fi
+        plan_status=$(grep -m1 "^Status:" "$REPO_ROOT/$plan_file" 2>/dev/null | sed 's/^Status:[[:space:]]*//' | tr -d '\r')
+        if [ "$plan_status" != "Active" ]; then
+            continue
+        fi
+        unchecked=$(awk '/^## Active tasks/{f=1; next} /^## /{if(f) exit} f && /^- \[ \]/' "$REPO_ROOT/$plan_file" | wc -l | tr -d ' ')
+        checked=$(awk '/^## Active tasks/{f=1; next} /^## /{if(f) exit} f && /^- \[[xX]\]/' "$REPO_ROOT/$plan_file" | wc -l | tr -d ' ')
+        if [ "$unchecked" -eq 0 ] && [ "$checked" -gt 0 ]; then
+            UNARCHIVED_COMPLETE="$UNARCHIVED_COMPLETE $plan_file"
+        fi
+    done
+    if [ -n "$UNARCHIVED_COMPLETE" ]; then
+        echo "FAIL: Plan(s) have all tasks complete but Status is still Active:"
+        for f in $UNARCHIVED_COMPLETE; do
+            echo "  $f"
+        done
+        echo "  Move to docs/plans/_archive/<slug>/, set Status: Archived, then run:"
+        echo "    pnpm --filter scripts startup-loop:queue-state-complete -- --slug <slug> --plan-path docs/plans/_archive/<slug>/plan.md --outcome \"<summary>\""
+        exit 1
+    fi
+    echo "OK: No fully-complete unarchived plans"
+else
+    echo "Skipping complete-plan check (no plan.md changes)"
+fi
+
+# 7.5. Ideas queue reconciliation (stamps processed_by for new plans, marks completed for archived plans)
+PLAN_OR_QUEUE_CHANGED=$(echo "$ALL_CHANGED" | grep -E '^(docs/plans/[^_]|docs/business-os/startup-loop/ideas/)' || true)
+if [ -n "$PLAN_OR_QUEUE_CHANGED" ]; then
+    echo ""
+    echo "> Ideas queue reconciliation..."
+    if pnpm --filter scripts startup-loop:lp-do-ideas-completion-reconcile -- --write > /dev/null 2>&1; then
+        echo "OK: Ideas queue reconciliation complete"
+    else
+        echo "WARN: Ideas queue reconciliation failed (non-fatal, check manually)"
+    fi
+else
+    echo "Skipping ideas queue reconciliation (no plan/queue-state changes)"
 fi
 
 # 8. Summary

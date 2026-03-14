@@ -70,6 +70,14 @@ export async function reconcileStaleCheckoutAttempts(params: {
 
   for (const attempt of queue) {
     try {
+      if (
+        attempt.provider === "stripe" &&
+        typeof attempt.stripeSessionExpiresAt === "string" &&
+        attempt.stripeSessionExpiresAt > new Date().toISOString()
+      ) {
+        continue;
+      }
+
       if (attempt.paymentAttemptedAt) {
         summary.needsReview += 1;
         await markCheckoutAttemptResult({

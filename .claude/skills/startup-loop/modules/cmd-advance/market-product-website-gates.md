@@ -57,7 +57,7 @@ grep -l "Status: Active" docs/business-os/strategy/<BIZ>/site-v1-builder-prompt.
 grep "Site V1 Builder Prompt" docs/business-os/strategy/<BIZ>/index.user.md | grep "Active"
 
 # Check 3: DO handover fact-find exists and is ready
-grep -l "Status: Ready-for-planning" docs/plans/<biz>-website-v1-first-build/fact-find.md 2>/dev/null
+grep -l "Status: Ready-for-analysis" docs/plans/<biz>-website-v1-first-build/fact-find.md 2>/dev/null
 ```
 
 **Decision table:**
@@ -65,8 +65,8 @@ grep -l "Status: Ready-for-planning" docs/plans/<biz>-website-v1-first-build/fac
 | WEBSITE-01 contract status | WEBSITE first-build fact-find status | Gate result | Action |
 |---|---|---|---|
 | Missing or `Draft` | — | `blocked` | Run WEBSITE-01 prompt handoff first |
-| `Active` | Missing or not `Ready-for-planning` | `blocked` | Dispatch `/lp-do-fact-find` with WEBSITE first-build alias |
-| `Active` | `Ready-for-planning` | `pass` | Continue DO progression (`/lp-do-plan`), then `/lp-do-build` only after `plan.md` is `Status: Active` |
+| `Active` | Missing or not `Ready-for-analysis` | `blocked` | Dispatch `/lp-do-fact-find` with WEBSITE first-build alias |
+| `Active` | `Ready-for-analysis` | `pass` | Continue DO progression (`/lp-do-analysis` → `/lp-do-plan`), then `/lp-do-build` only after `plan.md` is `Status: Active` |
 
 **When blocked (WEBSITE-01 missing/draft):**
 - `blocking_reason`: `GATE-WEBSITE-DO-01: WEBSITE-01 first-build contract is not Active. DO handover requires an active site-v1-builder-prompt artifact.`

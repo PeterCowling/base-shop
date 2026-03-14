@@ -19,6 +19,7 @@ var guestByRoomMock: jest.Mock;
 var bagStorageDataMock: jest.Mock;
 var fridgeStorageDataMock: jest.Mock;
 var setFridgeUsedMock: jest.Mock;
+var setBagStorageOptedInMock: jest.Mock;
 var removeLoanItemMock: jest.Mock;
 var saveActivityMock: jest.Mock;
 var removeLastActivityMock: jest.Mock;
@@ -86,6 +87,11 @@ jest.mock("../../../hooks/data/useFridgeStorageData", () => {
 jest.mock("../../../hooks/mutations/useSetFridgeUsedMutation", () => {
   setFridgeUsedMock = jest.fn().mockResolvedValue(undefined);
   return { __esModule: true, default: () => ({ setFridgeUsed: setFridgeUsedMock }) };
+});
+
+jest.mock("../../../hooks/mutations/useSetBagStorageOptedInMutation", () => {
+  setBagStorageOptedInMock = jest.fn().mockResolvedValue(undefined);
+  return { __esModule: true, default: () => ({ setBagStorageOptedIn: setBagStorageOptedInMock }) };
 });
 
 jest.mock("../../../hooks/mutations/useActivitiesMutations", () => {
@@ -220,6 +226,10 @@ describe("Checkout component", () => {
 
     const loanBtn = screen.getByRole("button", { name: /remove umbrella/i });
     await userEvent.click(loanBtn);
+    // First click enters confirm mode — not called yet
+    expect(removeLoanItemMock).not.toHaveBeenCalled();
+    const confirmBtn = screen.getByRole("button", { name: /confirm remove umbrella/i });
+    await userEvent.click(confirmBtn);
     expect(removeLoanItemMock).toHaveBeenCalledWith(
       "BR1",
       "G1",
@@ -283,6 +293,8 @@ describe("Checkout component", () => {
     render(<Checkout />);
     const loanBtn = screen.getByRole("button", { name: /remove keycard/i });
     await userEvent.click(loanBtn);
+    const confirmBtn = screen.getByRole("button", { name: /confirm remove keycard/i });
+    await userEvent.click(confirmBtn);
 
     expect(addToAllTransactionsMock).toHaveBeenCalledWith(
       expect.any(String),

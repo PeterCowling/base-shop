@@ -1,7 +1,7 @@
 ---
 Type: Fact-Find
 Outcome: Planning
-Status: <Draft | Ready-for-planning | Needs-input>
+Status: <Draft | Ready-for-analysis | Needs-input>
 Domain: <CMS | Platform | UI | API | Data | Infra | etc.>
 Workstream: <Engineering | Product | Marketing | Sales | Operations | Finance | Mixed>
 Created: YYYY-MM-DD
@@ -15,7 +15,7 @@ Deliverable-Type: <code-change | email-message | whatsapp-message | product-brie
 Startup-Deliverable-Alias: <none | startup-budget-envelope | startup-channel-plan | startup-demand-test-protocol | startup-supply-timeline | startup-weekly-kpcs-memo | website-first-build-backlog | website-upgrade-backlog>
 Primary-Execution-Skill: <lp-do-build | draft-email | biz-product-brief | draft-marketing | biz-spreadsheet | draft-whatsapp>
 Supporting-Skills: <comma-separated or none>
-Related-Plan: docs/plans/<feature-slug>/plan.md
+Related-Analysis: docs/plans/<feature-slug>/analysis.md
 # Optional — present when opened via one queued dispatch packet:
 Dispatch-ID: <IDEA-DISPATCH-YYYYMMDDHHmmss-NNNN>
 # Optional — present when one fact-find promotes multiple related dispatches:
@@ -65,6 +65,22 @@ use Why: TBD and Source: auto — these are excluded from quality metrics.
 - **Intended Outcome Type:** <measurable | operational>
 - **Intended Outcome Statement:** <non-empty statement; for measurable: include metric + target + timeframe; for operational: describe process/doc deliverable; use TBD placeholder if unknown>
 - **Source:** <operator | auto> <!-- "operator" = confirmed by operator at Option B; "auto" = auto-generated fallback, excluded from quality metrics -->
+
+## Current Process Map
+
+<!--
+NON-OMITTABLE SECTION. If the work does not change any multi-step process, workflow,
+lifecycle state, CI/deploy/release lane, approval path, or operator runbook, write:
+`None: local code path only`.
+-->
+
+- Trigger:
+- End condition:
+
+### Process Areas
+| Area | Current step-by-step flow | Owners / systems / handoffs | Evidence refs | Known issues |
+|---|---|---|---|---|
+| ... | ... | ... | ... | ... |
 
 ## Discovery Contract Output
 
@@ -209,6 +225,19 @@ Do not omit in that case, and do not replace the machine fields below with prose
 ### Recent Git History (Targeted)
 - `path/to/area/*` - <what changed + implications>
 
+## Engineering Coverage Matrix
+<!-- Required for Execution-Track: code | mixed. For business-artifact work, omit or write `None: not a code-bearing change`. Use the canonical row labels from `.claude/skills/_shared/engineering-coverage-matrix.md`. -->
+| Coverage Area | Applicable? | Current-state evidence | Gap / risk | Carry forward to analysis |
+|---|---|---|---|---|
+| UI / visual | Required / N/A | ... | ... | ... |
+| UX / states | Required / N/A | ... | ... | ... |
+| Security / privacy | Required / N/A | ... | ... | ... |
+| Logging / observability / audit | Required / N/A | ... | ... | ... |
+| Testing / validation | Required / N/A | ... | ... | ... |
+| Data / contracts | Required / N/A | ... | ... | ... |
+| Performance / reliability | Required / N/A | ... | ... | ... |
+| Rollout / rollback | Required / N/A | ... | ... | ... |
+
 ## External Research (If Needed)
 - Finding: <summary> - <source>
 
@@ -271,12 +300,17 @@ For each score, include evidence basis and what would raise it to >=80 and >=90.
 ### Remaining Assumptions
 - ...
 
-## Planning Readiness
-- Status: <Ready-for-planning | Needs-input>
+## Rehearsal Trace
+| Scope Area | Coverage Confirmed | Issues Found | Resolution Required |
+|---|---|---|---|
+| ... | Yes / Partial / No | None — or: [Category] [Severity]: description | Yes / No |
+
+## Analysis Readiness
+- Status: <Ready-for-analysis | Needs-input>
 - Blocking items:
   - ...
 - Recommended next step:
-  - `/lp-do-plan` or answer blocking questions
+  - `/lp-do-analysis` or answer blocking questions
 
 ## Section Omission Rule
 
@@ -287,3 +321,5 @@ If a section has no evidence for this run, either:
 **Exception — non-omittable sections:**
 - `## Outcome Contract` — MUST be present. If operator has not confirmed values, use:
   `Why: TBD` and `Source: auto`. Do not omit even for legacy or infrastructure-only fact-finds.
+- `## Current Process Map` — MUST be present. If there is no material process topology change, use:
+  `None: local code path only`.

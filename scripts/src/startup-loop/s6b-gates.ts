@@ -19,6 +19,66 @@ export interface GateResult {
   reasons: string[];
 }
 
+const SALES_AUDIT_MAX_AGE_DAYS = 30;
+
+function stripQuotes(value: string): string {
+  return value.replace(/^"(.*)"$/, "$1").replace(/^'(.*)'$/, "$1");
+}
+
+function extractFrontmatter(content: string): string | null {
+  if (!content.startsWith("---\n")) return null;
+  const end = content.indexOf("\n---\n", 4);
+  if (end === -1) return null;
+  return content.slice(4, end);
+}
+
+function readFrontmatterValue(content: string, key: string): string | null {
+  const frontmatter = extractFrontmatter(content);
+  if (!frontmatter) return null;
+  for (const rawLine of frontmatter.split("\n")) {
+    const line = rawLine.trim();
+    if (!line.startsWith(`${key}:`)) continue;
+    const value = line.slice(key.length + 1).trim();
+    return value ? stripQuotes(value) : null;
+  }
+  return null;
+}
+
+function parseAuditDate(value: string | null): Date | null {
+  if (!value) return null;
+  const normalized = `${value}T00:00:00Z`;
+  const parsed = new Date(normalized);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function ageInDays(date: Date, now: Date): number {
+  return Math.floor((now.getTime() - date.getTime()) / 86_400_000);
+}
+
+async function findLatestSalesFunnelAudit(
+  strategyDir: string,
+): Promise<{ filePath: string; content: string } | null> {
+  const salesDir = path.join(strategyDir, "sales");
+  try {
+    const entries = await fs.readdir(salesDir);
+    const auditFiles = entries
+      .filter(
+        (entry) =>
+          /sales-funnel.*audit.*\.user\.md$/i.test(entry),
+      )
+      .sort((a, b) => b.localeCompare(a));
+
+    const latest = auditFiles[0];
+    if (!latest) return null;
+
+    const filePath = path.join(salesDir, latest);
+    const content = await fs.readFile(filePath, "utf8");
+    return { filePath, content };
+  } catch {
+    return null;
+  }
+}
+
 // ── GATE-SELL-STRAT-01 ──────────────────────────────────────────────────────
 
 /**
@@ -67,10 +127,12 @@ export async function checkSellStratGate(
 /**
  * GATE-SELL-ACT-01 (Hard) — Spend activation gate.
  *
- * All three checks must pass (inherits GATE-MEAS-01 conditions, loop-spec v1.2.0):
+ * All four checks must pass:
  *   Check 1: A measurement-verification artifact exists with Status: Active.
  *   Check 2: No active measurement risks at Severity: High or Critical in plan.user.md.
  *   Check 3: Key conversion-intent events are verified non-zero in the baseline.
+ *   Check 4: A recent rendered sales-funnel audit for this business passes on
+ *            mobile + fullscreen.
  *
  * Evaluated only after GATE-SELL-STRAT-01 passes.
  */
@@ -120,7 +182,7 @@ export async function checkSellActGate(
   if (!check1Pass) {
     reasons.push(
       "GATE-SELL-ACT-01 [check-1]: No measurement-verification artifact with Status: Active found in " +
-        `docs/business-os/strategy/${business}/`,
+        `docs/business-os/strategy/${business}/assessment/ or the legacy root strategy directory`,
     );
   }
 
@@ -150,8 +212,84 @@ export async function checkSellActGate(
     }
   } catch {
     reasons.push(
-      "GATE-SELL-ACT-01 [check-3]: plan.user.md not found — conversion events cannot be verified",
+      "GATE-SELL-ACT-01 [check-3]: plan.user.md not found - conversion events cannot be verified",
     );
+  }
+
+  // ── Check 4: rendered sales-funnel audit passes activation readiness ─────
+  const audit = await findLatestSalesFunnelAudit(strategyDir);
+  if (!audit) {
+    reasons.push(
+      "GATE-SELL-ACT-01 [check-4]: No rendered sales-funnel audit artifact found in " +
+        `docs/business-os/strategy/${business}/sales/ matching *sales-funnel*audit*.user.md`,
+    );
+  } else {
+    const type = readFrontmatterValue(audit.content, "Type");
+    const auditBusiness = readFrontmatterValue(audit.content, "Business");
+    const status = readFrontmatterValue(audit.content, "Status");
+    const viewportScope = readFrontmatterValue(audit.content, "Viewport-Scope");
+    const renderedEvidence = readFrontmatterValue(audit.content, "Rendered-Evidence");
+    const activationDecision = readFrontmatterValue(audit.content, "Activation-Decision");
+    const highBlockersRaw = readFrontmatterValue(
+      audit.content,
+      "Activation-Blockers-High",
+    );
+    const criticalBlockersRaw = readFrontmatterValue(
+      audit.content,
+      "Activation-Blockers-Critical",
+    );
+    const auditDate = parseAuditDate(readFrontmatterValue(audit.content, "Date"));
+    const now = new Date();
+
+    const highBlockers = Number.parseInt(highBlockersRaw ?? "", 10);
+    const criticalBlockers = Number.parseInt(criticalBlockersRaw ?? "", 10);
+
+    if (type !== "Sales-Funnel-Audit") {
+      reasons.push(
+        "GATE-SELL-ACT-01 [check-4]: Latest rendered sales-funnel artifact does not declare Type: Sales-Funnel-Audit",
+      );
+    } else if (auditBusiness !== business) {
+      reasons.push(
+        `GATE-SELL-ACT-01 [check-4]: Latest rendered sales-funnel audit declares Business: ${auditBusiness ?? "(missing)"} instead of ${business}`,
+      );
+    } else if (status !== "Active") {
+      reasons.push(
+        "GATE-SELL-ACT-01 [check-4]: Latest rendered sales-funnel audit is not Status: Active",
+      );
+    } else if (!auditDate) {
+      reasons.push(
+        "GATE-SELL-ACT-01 [check-4]: Latest rendered sales-funnel audit is missing a valid Date frontmatter field",
+      );
+    } else if (ageInDays(auditDate, now) > SALES_AUDIT_MAX_AGE_DAYS) {
+      reasons.push(
+        `GATE-SELL-ACT-01 [check-4]: Latest rendered sales-funnel audit is older than ${SALES_AUDIT_MAX_AGE_DAYS} days`,
+      );
+    } else if (
+      !viewportScope ||
+      !viewportScope.toLowerCase().includes("mobile") ||
+      !viewportScope.toLowerCase().includes("fullscreen")
+    ) {
+      reasons.push(
+        "GATE-SELL-ACT-01 [check-4]: Latest rendered sales-funnel audit does not cover both mobile and fullscreen viewports",
+      );
+    } else if (renderedEvidence !== "required") {
+      reasons.push(
+        "GATE-SELL-ACT-01 [check-4]: Latest rendered sales-funnel audit does not declare Rendered-Evidence: required",
+      );
+    } else if (activationDecision !== "Pass") {
+      reasons.push(
+        "GATE-SELL-ACT-01 [check-4]: Latest rendered sales-funnel audit is not activation-ready (Activation-Decision is not Pass)",
+      );
+    } else if (
+      Number.isNaN(highBlockers) ||
+      Number.isNaN(criticalBlockers) ||
+      highBlockers !== 0 ||
+      criticalBlockers !== 0
+    ) {
+      reasons.push(
+        "GATE-SELL-ACT-01 [check-4]: Latest rendered sales-funnel audit does not confirm zero High/Critical activation blockers",
+      );
+    }
   }
 
   return {

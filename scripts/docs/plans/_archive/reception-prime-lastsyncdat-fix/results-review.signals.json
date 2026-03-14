@@ -1,0 +1,15 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-14T20:32:41.738Z",
+  "plan_slug": "reception-prime-lastsyncdat-fix",
+  "review_cycle_key": "reception-prime-lastsyncdat-fix",
+  "source_path": "scripts/docs/plans/_archive/reception-prime-lastsyncdat-fix/results-review.user.md",
+  "build_origin_status": "source_missing",
+  "failures": [
+    {
+      "code": "source_missing",
+      "message": "scripts/docs/plans/_archive/reception-prime-lastsyncdat-fix/results-review.user.md not found"
+    }
+  ],
+  "items": []
+}

@@ -11,6 +11,12 @@
   - **Evidence:** Screenshot of consent banner + network tab showing no tracking requests before consent
   - **Fail condition:** No consent banner, tracking cookies set before consent, cannot reject
 
+- **L1c: Consent preference can be revisited from the site UI**
+  - **What:** Verify there is a visible route or control from the website (normally footer or cookie-policy page) that lets a user review and change analytics/non-essential consent after the first visit
+  - **Pass condition:** User can reach a preferences surface from the live site UI, see current consent state, and change it without clearing browser storage manually
+  - **Evidence:** Screenshot of entry point + screenshot of preferences surface before/after a consent change
+  - **Fail condition:** Consent can only be changed by manually deleting cookies/site data, or no revisit path exists
+
 - **L1b: Two-phase consent signal check (Consent Mode v2)**
   - **What:** Verify that GA4 Consent Mode v2 signals fire in the correct phases: (a) before consent — `analytics_storage: denied`, no `_ga` cookie, no analytics network requests; (b) after consent accepted — `analytics_storage: granted`, `_ga` cookie set, analytics events visible in GA4 DebugView
   - **Pass condition:** Both phases correct. Before accept: no `_ga` cookie, no analytics beacons. After accept: `_ga` cookie present, DebugView shows events with no consent-denied signal
@@ -42,6 +48,12 @@
   - **Pass condition:** Contact/imprint page exists with required info; linked from footer
   - **Evidence:** Contact page URL + screenshot showing required fields
   - **Fail condition:** Missing contact info, incomplete address, no contact link
+
+- **L5b: Storefront promise copy matches policy truth**
+  - **What:** Compare policy/legal pages against customer-facing promise surfaces: PDP trust strips, shipping/returns callouts, cart, checkout, support, and transactional-email copy where available
+  - **Pass condition:** No surface makes a stronger or contradictory promise than the legal pages support; key policy-linked promises are phrased consistently across storefront and post-purchase touchpoints
+  - **Evidence:** Short matrix listing each checked surface and the matching policy clause or page
+  - **Fail condition:** Any mismatch that could mislead a customer about delivery timing, cancellation rights, exchange handling, refunds, warranty/fault remedies, duties/taxes, privacy, or consent
 
 - **L6: Disclaimers for user-generated content (if applicable)**
   - **What:** If site allows user reviews, comments, or UGC, verify disclaimer exists

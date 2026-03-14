@@ -10,12 +10,17 @@ import {
   generateBuildSummaryRows,
   inferBusinessFromPlanSlug,
   inlineBuildSummaryIntoHtml,
+  inlineOperatorActionsIntoHtml,
   sanitizeAndCap,
   serializeRows,
   shouldExcludeSourcePath,
   sortRows,
 } from "../build/generate-build-summary";
 import { emitBuildEvent, writeBuildEvent } from "../build/lp-do-build-event-emitter";
+import {
+  computeOperatorActionRegistryParity,
+  loadOperatorActionRegistryItems,
+} from "../build/operator-actions-registry";
 
 const FIXED_TIMESTAMP = "2026-02-25T00:00:00.000Z";
 
@@ -663,6 +668,120 @@ describe("generate-build-summary", () => {
     const parsed = JSON.parse(m![1]!);
     expect(parsed[0]?.why).toBe("Target price is $152 per unit to hit margin");
     expect(parsed[0]?.intended).toBe("Revenue of $10k MRR within 90 days");
+
+    await fs.rm(repoRoot, { recursive: true, force: true });
+  });
+
+  it("inlines canonical operator actions into the registry marker block with parity", async () => {
+    const repoRoot = await fs.mkdtemp(path.join(os.tmpdir(), "build-summary-operator-actions-"));
+
+    const htmlDir = path.join(repoRoot, "docs/business-os");
+    await fs.mkdir(htmlDir, { recursive: true });
+    const htmlPath = path.join(htmlDir, "startup-loop-output-registry.user.html");
+    await fs.writeFile(
+      htmlPath,
+      `<html><body><!-- STARTUP_LOOP_OPERATOR_ACTIONS_HEAD_START --><p>stale</p><!-- STARTUP_LOOP_OPERATOR_ACTIONS_HEAD_END --></body></html>`,
+      "utf8",
+    );
+
+    await writeFile(
+      repoRoot,
+      "docs/business-os/startup-loop/operator-actions.json",
+      `${JSON.stringify(
+        {
+          items: [
+            {
+              id: "HEAD-GATE-01",
+              business: "HEAD",
+              kind: "stage_gate",
+              title: "DISCOVERY-04 Naming",
+              summary: "Naming decision pending.",
+              owner: "Pete",
+              state: "pending",
+              source_path:
+                "docs/business-os/strategy/HEAD/assessment/naming-workbench/2026-02-20-candidate-names.user.md",
+            },
+            {
+              id: "HEAD-BLK-01",
+              business: "HEAD",
+              kind: "blocker",
+              title: "Confirm stock date",
+              summary: "Need the launch stock date.",
+              owner: "Pete",
+              due_at: "2026-03-03",
+              state: "open",
+              source_path:
+                "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md",
+            },
+            {
+              id: "HEAD-72H-01",
+              business: "HEAD",
+              kind: "next_step",
+              title: "Lock stock date",
+              summary: "Publish the inventory cap rule.",
+              owner: "Pete",
+              state: "open",
+              source_path:
+                "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md",
+            },
+            {
+              id: "DEC-HEAD-01",
+              business: "HEAD",
+              kind: "decision_waiting",
+              title: "Scale paid expansion vs hold/fix",
+              summary: "Wait for denominator-valid week-2 evidence.",
+              owner: "Pete",
+              state: "not_ready",
+              source_path: "docs/business-os/startup-loop-output-registry.user.html",
+            },
+          ],
+        },
+        null,
+        2,
+      )}\n`,
+      "utf8",
+    );
+
+    await writeFile(
+      repoRoot,
+      "docs/business-os/process-improvements/operator-action-decisions.jsonl",
+      `${JSON.stringify({
+        schema_version: "process-improvements.operator-action-decision.v1",
+        event_id: "evt-1",
+        action_id: "HEAD-BLK-01",
+        business: "HEAD",
+        source_path:
+          "docs/business-os/startup-baselines/HEAD/2026-02-12-assessment-intake-packet.user.md",
+        decision: "snooze",
+        actor_id: "pete",
+        actor_name: "Pete",
+        decided_at: "2026-03-11T12:00:00.000Z",
+        snooze_until: "2026-03-18T12:00:00.000Z",
+      })}\n`,
+      "utf8",
+    );
+
+    const updated = inlineOperatorActionsIntoHtml(repoRoot, "HEAD");
+    expect(updated).toBe(true);
+
+    const html = await fs.readFile(htmlPath, "utf8");
+    expect(html).toContain('data-operator-action-id="HEAD-GATE-01"');
+    expect(html).toContain('data-operator-action-id="HEAD-BLK-01"');
+    expect(html).toContain('data-operator-action-id="HEAD-72H-01"');
+    expect(html).toContain('data-operator-action-id="DEC-HEAD-01"');
+    expect(html).toContain("Snoozed until 2026-03-18");
+
+    const parity = computeOperatorActionRegistryParity(
+      loadOperatorActionRegistryItems(repoRoot, "HEAD"),
+      html,
+    );
+    expect(parity).toEqual(
+      expect.objectContaining({
+        ok: true,
+        missingIds: [],
+        extraIds: [],
+      }),
+    );
 
     await fs.rm(repoRoot, { recursive: true, force: true });
   });

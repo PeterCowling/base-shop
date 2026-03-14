@@ -5,16 +5,22 @@ on:
     branches-ignore:
       - staging
     paths-ignore:
+      - "apps/brikette/**"
       - "apps/skylar/**"
       - "apps/cms/**"
+      - ".github/workflows/brikette.yml"
       - ".github/workflows/skylar.yml"
       - ".github/workflows/cms.yml"
+      - "scripts/brikette/build-static-export.sh"
   pull_request:
     paths-ignore:
+      - "apps/brikette/**"
       - "apps/skylar/**"
       - "apps/cms/**"
+      - ".github/workflows/brikette.yml"
       - ".github/workflows/skylar.yml"
       - ".github/workflows/cms.yml"
+      - "scripts/brikette/build-static-export.sh"
 
 concurrency:
   group: core-ci-${{ github.ref }}
@@ -240,15 +246,15 @@ jobs:
 
           # Fallback: first push events can have an empty/zero before SHA.
           if [ -z "${DOCS_LINT_BASE}" ] || [ "${DOCS_LINT_BASE}" = "0000000000000000000000000000000000000000" ]; then
+            DOCS_LINT_BASE="$(git rev-parse "${{ github.sha }}^" 2>/dev/null || true)"
+            export DOCS_LINT_BASE
+          fi
+          if [ -z "${DOCS_LINT_BASE}" ] || [ "${DOCS_LINT_BASE}" = "0000000000000000000000000000000000000000" ]; then
             unset DOCS_LINT_BASE
-            export DOCS_LINT_CHANGED_ONLY="0"
-          else
-            export DOCS_LINT_CHANGED_ONLY="1"
           fi
 
-          pnpm run docs:lint
-        env:
-          DOCS_LINT_CHANGED_ONLY: "1"
+          pnpm run docs:registry
+          pnpm run docs:lint:changed
       - name: Plans lint
         if: ${{ github.event_name != 'push' || github.ref != 'refs/heads/staging' }}
         run: pnpm run plans:lint

@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Closed
 Domain: UI
 Workstream: Engineering
 Created: 2026-03-06

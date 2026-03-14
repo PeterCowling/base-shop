@@ -50,38 +50,38 @@ Issues are classified using the same severity labels as `lp-do-critique`: **Crit
 
 ## Tiered Gate Rules
 
-Rehearsal findings are tiered: Critical findings are a hard gate; Major, Moderate, and Minor findings are advisory.
+Rehearsal findings are tiered, but only `Minor` findings may remain unresolved in a passing artifact.
 
-**Critical findings (hard gate):**
-- Block the artifact from being emitted with a passing status (`Status: Active` for plans; `Status: Ready-for-planning` for fact-finds).
-- The agent must either resolve the Critical issue before emitting the artifact, or write a `Rehearsal-Critical-Waiver` block (see Waiver Format below).
-- Unresolved Critical findings with no waiver = artifact must not proceed.
+**Blocking findings (`Critical` / `Major` / `Moderate`):**
+- Block the artifact from being emitted with a passing status (`Status: Active` for plans; `Status: Ready-for-analysis` for fact-finds).
+- The agent must either resolve the blocking issue before emitting the artifact, or write a `Rehearsal-Blocking-Waiver` block (see Waiver Format below).
+- Unresolved blocking findings with no waiver = artifact must not proceed.
 
-**Major / Moderate / Minor findings (advisory):**
+**Advisory findings (`Minor` only):**
 - Written into the `## Rehearsal Trace` section of the artifact.
 - Do not block emission.
-- Are visible to `lp-do-critique` in subsequent rounds; unresolved Major findings will degrade Evidence, Feasibility, and Risk-handling dimension scores.
+- Are visible to `lp-do-critique` in subsequent rounds; unresolved Minor findings may still degrade Evidence, Feasibility, and Risk-handling dimension scores when they indicate sloppiness or avoidable ambiguity.
 - Operator and critique can accept, address, or override these findings without a formal waiver.
 
 ## Waiver Format
 
-When a Critical rehearsal finding is a false positive — the agent has incorrectly identified something as missing that actually exists elsewhere or is provided implicitly — write a `Rehearsal-Critical-Waiver` block immediately below the `## Rehearsal Trace` section:
+When a blocking rehearsal finding is a false positive — the agent has incorrectly identified something as missing that actually exists elsewhere or is provided implicitly — write a `Rehearsal-Blocking-Waiver` block immediately below the `## Rehearsal Trace` section:
 
 ```
-## Rehearsal-Critical-Waiver
+## Rehearsal-Blocking-Waiver
 
-- **Critical flag:** <describe the Critical finding being waived>
+- **Blocking finding:** <describe the blocking finding being waived>
 - **False-positive reason:** <explain why this finding is incorrect — what the rehearsal could not see>
 - **Evidence of missing piece:** <cite the file, section, task, or implicit contract that provides the prerequisite the rehearsal thought was absent>
 ```
 
-All three fields are required. A waiver with any field missing or vague is not a valid waiver — resolve the Critical issue instead.
+All three fields are required. A waiver with any field missing or vague is not a valid waiver — resolve the blocking issue instead.
 
-The waiver is visible to `lp-do-critique`. Critique will evaluate whether the waiver reasoning is sound. An unconvincing waiver will be flagged as a Major finding.
+The waiver is visible to `lp-do-critique`. Critique will evaluate whether the waiver reasoning is sound. An unconvincing waiver will be flagged as a blocking finding.
 
 ## Rehearsal Trace Output Format
 
-The trace is written as a `## Rehearsal Trace` section added to the artifact **before the persist step** (before `Status: Active` or `Status: Ready-for-planning` is set).
+The trace is written as a `## Rehearsal Trace` section added to the artifact **before the persist step** (before `Status: Active` or `Status: Ready-for-analysis` is set).
 
 For **lp-do-plan** (plan trace — one row per task in the sequenced task list):
 
@@ -115,6 +115,6 @@ Within Step 5 (Feasibility and Execution Reality), after completing the existing
 2. For each step in the sequence, apply the issue taxonomy above: check for Missing preconditions, Circular dependencies, Undefined config keys, API signature mismatches, Type contract gaps, Missing data dependencies, Integration boundaries not handled, and Ordering inversions.
 3. Classify each finding by severity (Critical / Major / Moderate / Minor) and state the specific issue category.
 4. Record findings inline within Step 5 output. Use the label `[Rehearsal]` to distinguish these from standard feasibility findings.
-5. If a Critical rehearsal finding is identified: flag it explicitly in the Top Issues section (Section 2) and in the Fix List (Section 10). Do not fold Critical rehearsal findings silently into Step 5 prose.
+5. If a blocking rehearsal finding is identified (`Critical`, `Major`, or `Moderate`): flag it explicitly in the Top Issues section (Section 2) and in the Fix List (Section 10). Do not fold blocking rehearsal findings silently into Step 5 prose.
 
-Rehearsal findings in critique are advisory to the critique score — they do not trigger a separate hard gate in critique mode. The hard gate lives in lp-do-plan (Phase 7.5) and lp-do-fact-find (Phase 5.5), before the artifact reaches critique.
+Rehearsal findings in critique are advisory to the critique score — they do not trigger a separate hard gate in critique mode. The blocking gate is defined here and enforced by lp-do-plan (Phase 7.5 and Phase 9.5) and lp-do-fact-find (Phase 5.5), before the artifact reaches critique or build handoff.

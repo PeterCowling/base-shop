@@ -4,9 +4,8 @@
 /*  No side-effects, no throws — always returns a discriminated-union result. */
 /* -------------------------------------------------------------------------- */
 
-import { isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
-
-const OCTORATE_BASE = "https://book.octorate.com/octobook/site/reservation";
+import { ISO_DATE_PATTERN, isValidPax, isValidStayRange } from "@/utils/bookingDateRules";
+import { OCTORATE_RESULT_ENDPOINT } from "@/utils/octorateLinks";
 
 export interface BuildOctorateUrlParams {
   /** Check-in date in YYYY-MM-DD format */
@@ -68,8 +67,7 @@ export function buildOctorateUrl(
   }
 
   // Guard: dates must be non-empty strings in YYYY-MM-DD format
-  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
-  if (!datePattern.test(checkin) || !datePattern.test(checkout) || !isValidStayRange(checkin, checkout) || !isValidPax(pax)) {
+  if (!ISO_DATE_PATTERN.test(checkin) || !ISO_DATE_PATTERN.test(checkout) || !isValidStayRange(checkin, checkout) || !isValidPax(pax)) {
     return { ok: false, error: "invalid_dates" };
   }
 
@@ -93,7 +91,7 @@ export function buildOctorateUrl(
     urlParams.set("utm_campaign", dealCode);
   }
 
-  const url = `${OCTORATE_BASE}/result.xhtml?${urlParams.toString()}`;
+  const url = `${OCTORATE_RESULT_ENDPOINT}?${urlParams.toString()}`;
 
   return { ok: true, url };
 }

@@ -5,6 +5,11 @@ import path from "node:path";
 import { load as loadYaml } from "js-yaml";
 
 import { getPlanDir, readBuildEvent } from "./lp-do-build-event-emitter.js";
+import {
+  computeOperatorActionRegistryParity,
+  loadOperatorActionRegistryItems,
+  renderOperatorActionRegistrySections,
+} from "./operator-actions-registry.js";
 
 const SOURCE_ROOT = "docs/business-os";
 const BUSINESS_CATALOG_RELATIVE_PATH = "docs/business-os/strategy/businesses.json";
@@ -13,6 +18,8 @@ const HTML_FILE_RELATIVE_PATH = "docs/business-os/startup-loop-output-registry.u
 const PLANS_ROOT = "docs/plans";
 const INLINE_SCRIPT_PATTERN =
   /(<script\b[^>]*id="build-summary-inline-data"[^>]*>)([\s\S]*?)(<\/script>)/;
+const OPERATOR_ACTIONS_MARKER_PATTERN =
+  /(<!-- STARTUP_LOOP_OPERATOR_ACTIONS_HEAD_START -->)([\s\S]*?)(<!-- STARTUP_LOOP_OPERATOR_ACTIONS_HEAD_END -->)/;
 
 const MISSING_VALUE = "—";
 const TEXT_CAP = 320;
@@ -913,6 +920,40 @@ export function inlineBuildSummaryIntoHtml(repoRoot: string, rows: BuildSummaryR
   return true;
 }
 
+export function inlineOperatorActionsIntoHtml(
+  repoRoot: string,
+  business: string = "HEAD"
+): boolean {
+  const absHtmlPath = path.join(repoRoot, HTML_FILE_RELATIVE_PATH);
+  let html: string;
+  try {
+    html = readFileSync(absHtmlPath, "utf8");
+  } catch {
+    return false;
+  }
+
+  const items = loadOperatorActionRegistryItems(repoRoot, business);
+  const renderedSections = renderOperatorActionRegistrySections(items);
+  const updated = html.replace(
+    OPERATOR_ACTIONS_MARKER_PATTERN,
+    `$1\n${renderedSections}\n              $3`
+  );
+
+  if (updated === html) {
+    return false;
+  }
+
+  const parity = computeOperatorActionRegistryParity(items, updated);
+  if (!parity.ok) {
+    throw new Error(
+      `Operator action registry parity failed for ${business}: missing=${parity.missingIds.join(",") || "none"} extra=${parity.extraIds.join(",") || "none"}`
+    );
+  }
+
+  writeFileSync(absHtmlPath, updated, "utf8");
+  return true;
+}
+
 function updateStartupLoopNav(html: string): string {
   const pattern = /<nav id="sl-nav">[\s\S]*?<\/nav>/;
   if (!pattern.test(html)) {
@@ -925,7 +966,7 @@ function updateStartupLoopNav(html: string): string {
   );
 }
 
-export function run(repoRoot: string = path.resolve(__dirname, "../../..")): void {
+export function run(repoRoot: string = process.cwd()): void {
   const rows = generateBuildSummaryRows(repoRoot);
   writeBuildSummaryJson(repoRoot, rows);
   process.stdout.write(`[generate-build-summary] wrote ${OUTPUT_RELATIVE_PATH} (${rows.length} rows)\n`);
@@ -934,6 +975,13 @@ export function run(repoRoot: string = path.resolve(__dirname, "../../..")): voi
   if (inlined) {
     process.stdout.write(
       `[generate-build-summary] inlined data into ${HTML_FILE_RELATIVE_PATH}\n`,
+    );
+  }
+
+  const operatorActionsInlined = inlineOperatorActionsIntoHtml(repoRoot);
+  if (operatorActionsInlined) {
+    process.stdout.write(
+      `[generate-build-summary] refreshed operator actions in ${HTML_FILE_RELATIVE_PATH}\n`,
     );
   }
 }

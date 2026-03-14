@@ -36,6 +36,7 @@ const SERVER_MESSAGE_SELECTOR = createBannerSelector("message");
 const SERVER_CTA_SELECTOR = createBannerSelector("cta");
 
 const ACTIVATION_KEYS = new Set(["Enter", " ", "Space", "Spacebar"]);
+const BANNER_HIDDEN_KEY = "bannerHidden" as const;
 
 type Invocable = (...args: never[]) => void;
 
@@ -109,10 +110,9 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
 
   /* check persisted state on mount */
   useEffect(() => {
-    const hidden = localStorage.getItem("bannerHidden") === "true";
+    const hidden = localStorage.getItem(BANNER_HIDDEN_KEY) === "true";
     if (hidden) {
       setIsVisible(false);
-      localStorage.setItem("bannerHidden", "true");
       setBannerRef(null);
     }
   }, [setBannerRef]);
@@ -188,7 +188,7 @@ function NotificationBanner({ lang: explicitLang }: { lang?: AppLanguage }): JSX
 
   const close = useCallback(() => {
     setIsVisible(false);
-    localStorage.setItem("bannerHidden", "true");
+    localStorage.setItem(BANNER_HIDDEN_KEY, "true");
     setBannerRef(null);
   }, [setBannerRef]);
 

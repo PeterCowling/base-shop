@@ -217,31 +217,34 @@ curl -sS -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
 
 ### Workflow: `.github/workflows/brikette.yml`
 
-Triggers: push to `main`/`staging` (with path filters), PRs, manual dispatch.
+Triggers: Brikette-relevant pushes to `dev`, `staging`, and `main`, plus Brikette-relevant pull requests. No manual dispatch.
 
-**Staging job**: Always runs. Uses `reusable-app.yml` with:
-- `build-cmd`: Turbo builds deps → hide incompatible routes → `OUTPUT_EXPORT=1 next build` → restore
-- `artifact-path`: `apps/brikette/out`
-- `deploy-cmd`: `wrangler pages deploy out --project-name brikette-website --branch staging`
-- Health check runs against staging URL and requires canonical localized booking routes to return `200` (`/it/prenota`, `/it/prenota-alloggi-privati`)
-- Cache headers check **skipped** (only runs for production — static Pages can't set custom headers)
+**Validation job**: Runs on `dev` pushes and relevant pull requests. Uses changed-scope CI only:
+- `pnpm exec turbo run lint --affected`
+- `pnpm exec turbo run typecheck --affected`
+- `pnpm test:affected`
 
-**Production job**: Manual dispatch only (`publish_to_production: true`, `main` branch). Uses:
-- `build-cmd`: same static export + route-hide + localized-route normalization + redirect generation flow as staging
-- `artifact-path`: `apps/brikette/out`
-- `deploy-cmd`: `wrangler pages deploy out --project-name brikette-website --branch main`
-- Health check runs against `https://www.hostel-positano.com`, verifies `/api/health`, `/api/availability`, and requires `/it/prenota` plus `/it/prenota-alloggi-privati` to return direct `200`
+**Staging job**: Runs only on `staging` pushes when Brikette deploy-surface files changed. Uses:
+- `scripts/brikette/build-static-export.sh` for the route-hide/export/restore flow
+- `BRIKETTE_BUILD_LANGS=en,it`
+- `wrangler pages deploy out --project-name brikette-website --branch staging`
+
+**Production job**: Runs only on `main` pushes when Brikette deploy-surface files changed. Uses:
+- the same static export helper script
+- `NEXT_PUBLIC_OCTORATE_LIVE_AVAILABILITY=1` via the helper environment
+- `wrangler pages deploy out --project-name brikette-website --branch main`
+- post-deploy health checks against `https://www.hostel-positano.com`
 
 ### Post-Deploy Checks
 
 | Check | Staging | Production |
 |---|---|---|
-| Health check | Yes (via `--staging` flag) | Yes |
+| Health check | No | Yes |
 | Cache headers | Skipped | Yes |
 
-### Test Skipping (TEMPORARY)
+### Publish Skipping
 
-Tests are currently skipped on the `staging` branch via `if: github.ref != 'refs/heads/staging'` in `reusable-app.yml`. This is a temporary measure — remove once tests are stabilised.
+Workflow-only changes still run GitHub workflow validation paths, but they do not publish `staging` or `main`. A publish happens only when Brikette deploy-surface files changed.
 
 ---
 

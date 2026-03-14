@@ -1,11 +1,11 @@
 ---
 Type: Schema-Contract
 Status: Active
-Version: 1.3.0
+Version: 1.3.1
 Domain: Venture-Studio
 Workstream: Feature-Development
 Created: 2026-02-22
-Last-updated: 2026-03-11
+Last-updated: 2026-03-14
 Owner: startup-loop maintainers
 Related-plan: docs/plans/startup-loop-standing-info-gap-analysis/plan.md
 ---
@@ -231,6 +231,7 @@ Deliverable-Type: <canonical type>
 | `## Engineering Coverage Evidence` | Required for `Execution-Track: code | mixed`. Records evidence for each canonical engineering coverage row or explicit `N/A`. |
 | `## Scope Deviations` | Any controlled scope expansions made during build, with rationale. `None` if no deviations. |
 | `## Outcome Contract` | Canonical outcome fields carried from plan `## Inherited Outcome Contract`. Required for `build-event.json` emitter to produce operator-attributed `why_source`. See sub-fields below. |
+| `## Self-Evolving Measurement` | Optional structured verified-measurement payload used by queue completion to close self-evolving dispatches with observed proof. |
 
 #### `## Outcome Contract` Sub-fields (required in build-record)
 
@@ -250,6 +251,47 @@ Field notes:
 - `Intended Outcome Type`: `measurable` or `operational`. No KPI required for `operational` type.
 - `Intended Outcome Statement`: non-empty statement. Must not be a template placeholder.
 - `Source`: `operator` if the operator confirmed values at Option B; `auto` if auto-generated. `auto` values pass schema but are excluded from quality metrics. The emitter copies this as `why_source` in `build-event.json` (with `"heuristic"` as fallback for missing/TBD).
+
+#### `## Self-Evolving Measurement` Sub-fields (optional in build-record)
+
+Use this section only for builds that close a self-evolving dispatch. The queue completion hook reads the section automatically from the adjacent `build-record.user.md` when `startup-loop:queue-state-complete` runs.
+
+Minimum shape:
+
+```markdown
+## Self-Evolving Measurement
+
+- **Status:** none
+```
+
+Verified shape:
+
+```markdown
+## Self-Evolving Measurement
+
+- **Status:** verified
+- **KPI Name:** <name>
+- **KPI Value:** <number>
+- **KPI Unit:** <ratio | count | currency | seconds | score>
+- **Aggregation Method:** <mean | median | sum | rate>
+- **Sample Size:** <integer>
+- **Baseline Ref:** <baseline identifier or artifact ref>
+- **Measurement Window:** <window label or ISO range>
+- **Baseline Window:** <window label or ISO range>
+- **Post Window:** <window label or ISO range>
+- **Measured Impact:** <number>
+- **Impact Confidence:** <number>
+- **Regressions Detected:** <integer>
+- **Data Quality Status:** <ok | degraded>
+- **Traffic Segment:** <segment or all>
+- **Artifact Refs:** <comma-separated repo-relative paths or refs>
+```
+
+Rules:
+- `Status: none` is the explicit empty state. It preserves current pending/missing maturity behavior.
+- `Status: verified` declares that the block is complete and parseable. A malformed declared block should fail queue completion rather than silently downgrading the build to narrative-only closure.
+- `Artifact Refs` is optional; when omitted, queue completion falls back to the plan/build artifact path.
+- `Data Quality Status: degraded` maps to `measurement_status: verified_degraded`; `ok` maps to `verified`.
 
 ### Required Frontmatter Fields
 

@@ -1,31 +1,38 @@
 import type { ReactElement } from "react";
 import { render, screen } from "@testing-library/react";
 
-import { getPolicyContent, getSeoKeywords } from "@/lib/contentPacket";
+import { getSeoKeywords } from "@/lib/contentPacket";
+import { getLegalDocument } from "@/lib/legalContent";
 
 import PrivacyPage, { generateMetadata } from "./page";
 
 jest.mock("@/lib/contentPacket", () => ({
-  getPolicyContent: jest.fn(),
   getSeoKeywords: jest.fn(),
 }));
 
-jest.mock("@/components/PolicyPage", () => ({
-  PolicyPage: ({ title }: { title: string }) => <div data-cy="policy-page">{title}</div>,
+jest.mock("@/lib/legalContent", () => ({
+  getLegalDocument: jest.fn(),
 }));
 
-const mockGetPolicyContent = getPolicyContent as jest.MockedFunction<typeof getPolicyContent>;
+jest.mock("@/components/LegalDocumentPage", () => ({
+  LegalDocumentPage: ({ document }: { document: { title: string } }) => (
+    <div data-testid="policy-page">{document.title}</div>
+  ),
+}));
+
 const mockGetSeoKeywords = getSeoKeywords as jest.MockedFunction<typeof getSeoKeywords>;
+const mockGetLegalDocument = getLegalDocument as jest.MockedFunction<typeof getLegalDocument>;
 
 describe("PrivacyPage", () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockGetSeoKeywords.mockReturnValue(["privacy", "policy"]);
-    mockGetPolicyContent.mockReturnValue({
+    mockGetLegalDocument.mockReturnValue({
       title: "Privacy",
       summary: "Privacy summary",
-      bullets: ["Data handling"],
-      notice: null,
+      effectiveDate: "13 March 2026",
+      intro: ["Intro"],
+      sections: [],
     });
   });
 
@@ -37,7 +44,7 @@ describe("PrivacyPage", () => {
       description: "Privacy summary",
       keywords: ["privacy", "policy"],
     });
-    expect(mockGetPolicyContent).toHaveBeenCalledWith("it", "privacy");
+    expect(mockGetLegalDocument).toHaveBeenCalledWith("it", "privacy");
   });
 
   it("renders privacy policy page", async () => {

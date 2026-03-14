@@ -54,10 +54,47 @@ _To be completed during Fact-finding phase_
 
 ## Transition Decision
 
-**Next Lane:** {Ready-for-planning | Needs more fact-finding | Dropped}
+**Next Lane:** {Ready-for-analysis | Needs more fact-finding | Dropped}
 
 **Rationale:**
 - {Evidence supporting transition}
+```
+
+## Analysis Stage Doc
+
+Created when `/lp-do-analysis` completes with a Card-ID.
+
+```markdown
+---
+Type: Stage
+Card-ID: {CARD-ID}
+Stage: analysis
+Created: {DATE}
+Analysis-Link: docs/plans/{feature-slug}/analysis.md
+---
+
+# Analysis: {CARD-TITLE}
+
+## Analysis Reference
+
+**Analysis Document:** `docs/plans/{feature-slug}/analysis.md`
+
+## Selected Approach
+
+- {Chosen approach}
+- {Why it won}
+
+## Planning Handoff
+
+- {Constraint 1}
+- {Risk 1}
+
+## Transition Criteria
+
+**To Planned:**
+- Analysis is decision-grade
+- Chosen approach is explicit
+- `/lp-do-plan` initiated
 ```
 
 ## Planned Stage Doc

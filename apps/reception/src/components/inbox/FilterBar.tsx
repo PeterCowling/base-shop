@@ -9,12 +9,14 @@ import { THREAD_FILTER_OPTIONS, type ThreadFilterKey } from "./filters";
 
 interface FilterBarProps {
   activeFilters: Set<ThreadFilterKey>;
+  counts?: Record<ThreadFilterKey, number>;
   onToggle: (key: ThreadFilterKey) => void;
   onClear: () => void;
 }
 
 export default function FilterBar({
   activeFilters,
+  counts,
   onToggle,
   onClear,
 }: FilterBarProps) {
@@ -39,6 +41,15 @@ export default function FilterBar({
             }`}
           >
             {option.label}
+            {counts && counts[option.key] > 0 && (
+              <span className={`ml-1.5 rounded-full px-1.5 py-px text-xs font-semibold tabular-nums leading-tight ${
+                isActive
+                  ? "bg-primary-main/20 text-primary-main"
+                  : "bg-surface-elevated text-foreground/60"
+              }`}>
+                {counts[option.key]}
+              </span>
+            )}
           </Button>
         );
       })}

@@ -10,7 +10,7 @@ If any API call fails, **stop and surface the error**. Do **not** fall back to w
 
 - `BOS_AGENT_API_BASE_URL`
   - Prod: `https://business-os.peter-cowling1976.workers.dev`
-  - Local: `http://localhost:3020`
+  - Local: `http://localhost:3022`
 - `BOS_AGENT_API_KEY`
 - Header: `X-Agent-API-Key: <value>`
 

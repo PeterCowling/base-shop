@@ -4,11 +4,11 @@
   "scripts": {
     "pretypecheck": "pnpm --filter @acme/i18n build",
     "prelint": "pnpm --filter @acme/eslint-plugin-ds build",
-    "dev": "next dev -p 3008",
+    "dev": "bash ../../scripts/dev/run-next-app.sh --port 3008",
     "build": "next build",
     "start": "next start -p 3008",
     "lint": "eslint .",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "typecheck": "bash ../../scripts/dev/run-next-app.sh --mode typecheck --port 3008 -- pnpm exec tsc -p tsconfig.json --noEmit",
     "test": "pnpm exec jest --ci --runInBand --detectOpenHandles --config ./jest.config.cjs"
   },
   "dependencies": {

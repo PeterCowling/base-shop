@@ -544,30 +544,15 @@ if [[ $sq14_fail -eq 0 ]]; then
   check_pass
 fi
 
-# ── SQ-15: Legacy stage-doc filename references allowlist ──
-# During the compatibility window, allow the legacy filename only in explicitly allowlisted locations.
+# ── SQ-15: Legacy stage-doc filename references banned ──
+# Compatibility window expired 2026-02-14. Any reference to the legacy filename is now a hard failure.
 
 sq15_fail=0
-declare -a MIGRATION_ALLOWLIST=(
-  "docs/business-os/startup-loop/operations/contract-migration.yaml"
-  "docs/business-os/cards/BRIK-ENG-0020.user.md"
-  "docs/registry.json"
-)
 
-while IFS= read -r match; do
-  match_file="${match%%:*}"
-  allowed=0
-  for allow in "${MIGRATION_ALLOWLIST[@]}"; do
-    if [[ "$match_file" == "$allow" ]]; then
-      allowed=1
-      break
-    fi
-  done
-  if [[ "$allowed" -eq 0 ]]; then
-    check_fail "Legacy filename reference fact-finding.user.md found in non-allowlisted file: ${match_file} (SQ-15)"
-    sq15_fail=1
-  fi
-done < <(rg -n --fixed-strings 'fact-finding.user.md' docs/business-os docs/registry.json 2>/dev/null || true)
+if rg -n --fixed-strings 'fact-finding.user.md' docs/business-os docs/registry.json 2>/dev/null; then
+  check_fail "Legacy filename reference fact-finding.user.md found — compatibility window expired 2026-02-14 (SQ-15)"
+  sq15_fail=1
+fi
 
 if [[ $sq15_fail -eq 0 ]]; then
   check_pass

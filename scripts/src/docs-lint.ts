@@ -2,6 +2,7 @@
 import { execFileSync } from "child_process";
 import { promises as fs } from "fs";
 import path from "path";
+import { fileURLToPath } from "url";
 
 import {
   checkBareStageIds,
@@ -12,51 +13,194 @@ import {
 const ROOT = process.cwd();
 const DOCS_DIR = path.join(ROOT, "docs");
 const DOCS_DIR_WITH_TRAILING = `${DOCS_DIR}${path.sep}`;
+const ZERO_SHA = "0000000000000000000000000000000000000000";
 
-function tryGetTrackedMarkdownDocs(): string[] | null {
+type DocsLintMode = "registry" | "lint";
+type DocsLintScope = "all" | "changed";
+
+export type DocsLintOptions = {
+  mode: DocsLintMode;
+  scope: DocsLintScope;
+  includeUntracked: boolean;
+  includeWorktree: boolean;
+  writeRegistry: boolean;
+};
+
+function runGit(args: string[]): string | null {
   try {
-    const stdout = execFileSync(
-      "git",
-      ["ls-files", "-z", "--", "docs/**/*.md"],
-      { cwd: ROOT, encoding: "utf8" },
-    );
-    const files = stdout
-      .split("\0")
-      .map((f) => f.trim())
-      .filter(Boolean)
-      .map((rel) => path.join(ROOT, rel));
-
-    return files;
+    return execFileSync("git", args, { cwd: ROOT, encoding: "utf8" });
   } catch {
     return null;
   }
 }
 
-function tryGetChangedMarkdownDocs(baseRef: string, headRef: string): string[] | null {
-  try {
-    const stdout = execFileSync(
-      "git",
-      [
-        "diff",
-        "--name-only",
-        "--diff-filter=ACMR",
-        baseRef,
-        headRef,
-        "--",
-        "docs/**/*.md",
-      ],
-      { cwd: ROOT, encoding: "utf8" },
-    );
-    const files = stdout
-      .split("\n")
-      .map((f) => f.trim())
-      .filter(Boolean)
-      .map((rel) => path.join(ROOT, rel));
+function normalizeGitPathOutput(stdout: string | null, separator: "\0" | "\n"): string[] {
+  if (!stdout) {
+    return [];
+  }
 
-    return files;
-  } catch {
+  return stdout
+    .split(separator)
+    .map((entry) => entry.trim())
+    .filter(Boolean)
+    .map((rel) => path.join(ROOT, rel));
+}
+
+function uniqueSortedPaths(paths: string[]): string[] {
+  return [...new Set(paths)].sort((a, b) => a.localeCompare(b));
+}
+
+function normalizeRef(ref: string | undefined): string | null {
+  if (!ref || ref === ZERO_SHA) {
     return null;
   }
+  return ref;
+}
+
+function tryGetChangedMarkdownDocs(baseRef: string | null, headRef: string): string[] {
+  if (!baseRef) {
+    return [];
+  }
+
+  return normalizeGitPathOutput(
+    runGit([
+      "diff",
+      "--name-only",
+      "--diff-filter=ACMR",
+      baseRef,
+      headRef,
+      "--",
+      "docs/**/*.md",
+    ]),
+    "\n",
+  );
+}
+
+function tryGetWorkingTreeMarkdownDocs(): string[] {
+  return normalizeGitPathOutput(
+    runGit([
+      "diff",
+      "--name-only",
+      "--diff-filter=ACMR",
+      "--",
+      "docs/**/*.md",
+    ]),
+    "\n",
+  );
+}
+
+function tryGetStagedMarkdownDocs(): string[] {
+  return normalizeGitPathOutput(
+    runGit([
+      "diff",
+      "--cached",
+      "--name-only",
+      "--diff-filter=ACMR",
+      "--",
+      "docs/**/*.md",
+    ]),
+    "\n",
+  );
+}
+
+function tryGetUntrackedMarkdownDocs(): string[] {
+  return normalizeGitPathOutput(
+    runGit([
+      "ls-files",
+      "--others",
+      "--exclude-standard",
+      "--",
+      "docs/**/*.md",
+    ]),
+    "\n",
+  );
+}
+
+function tryResolveChangedBaseRef(env: NodeJS.ProcessEnv): string | null {
+  return normalizeRef(env.DOCS_LINT_BASE ?? env.TURBO_SCM_BASE);
+}
+
+function resolveChangedHeadRef(env: NodeJS.ProcessEnv): string {
+  return normalizeRef(env.DOCS_LINT_HEAD ?? env.TURBO_SCM_HEAD) ?? "HEAD";
+}
+
+export function resolveCliOptions(
+  argv: string[],
+  env: NodeJS.ProcessEnv = process.env,
+): DocsLintOptions {
+  let mode: DocsLintMode = env.DOCS_LINT_MODE === "registry" ? "registry" : "lint";
+  let scope: DocsLintScope = env.DOCS_LINT_CHANGED_ONLY === "1" ? "changed" : "all";
+  let includeUntracked = env.DOCS_LINT_INCLUDE_UNTRACKED === "1";
+  let includeWorktree = env.DOCS_LINT_INCLUDE_WORKTREE === "1";
+  let writeRegistry = mode === "registry";
+
+  if (env.DOCS_LINT_WRITE_REGISTRY === "1") {
+    writeRegistry = true;
+  }
+  if (env.DOCS_LINT_WRITE_REGISTRY === "0") {
+    writeRegistry = false;
+  }
+
+  for (const arg of argv.slice(2)) {
+    if (arg === "--registry-only" || arg === "--mode=registry") {
+      mode = "registry";
+      writeRegistry = true;
+      continue;
+    }
+
+    if (arg === "--mode=lint") {
+      mode = "lint";
+      continue;
+    }
+
+    if (arg === "--changed-only" || arg === "--scope=changed") {
+      scope = "changed";
+      continue;
+    }
+
+    if (arg === "--full" || arg === "--scope=all") {
+      scope = "all";
+      continue;
+    }
+
+    if (arg === "--write-registry") {
+      writeRegistry = true;
+      continue;
+    }
+
+    if (arg === "--include-worktree") {
+      includeWorktree = true;
+      continue;
+    }
+
+    if (arg === "--include-untracked") {
+      includeUntracked = true;
+      continue;
+    }
+
+    if (arg === "--no-include-untracked") {
+      includeUntracked = false;
+      continue;
+    }
+
+    if (arg === "--no-include-worktree") {
+      includeWorktree = false;
+      continue;
+    }
+
+    if (arg === "--no-write-registry") {
+      writeRegistry = false;
+      continue;
+    }
+
+    throw new Error(`[docs-lint] Unknown argument: ${arg}`);
+  }
+
+  if (mode === "registry") {
+    writeRegistry = true;
+  }
+
+  return { mode, scope, includeUntracked, includeWorktree, writeRegistry };
 }
 
 function docsPath(target: string): string {
@@ -69,19 +213,19 @@ function docsPath(target: string): string {
 
 async function readDocsDir(dir: string) {
   const normalized = docsPath(dir);
-   
+
   return fs.readdir(normalized, { withFileTypes: true });
 }
 
 async function readDocFile(filePath: string) {
   const normalized = docsPath(filePath);
-   
+
   return fs.readFile(normalized, "utf8");
 }
 
 async function writeDocFile(filePath: string, content: string) {
   const normalized = docsPath(filePath);
-   
+
   return fs.writeFile(normalized, content, "utf8");
 }
 
@@ -98,6 +242,10 @@ const ALLOWED_STATUSES = new Set([
   "Archive",
   "Archived",
   "Complete",
+  "Ready-for-analysis",
+  "Ready-for-planning",
+  "Needs-input",
+  "Infeasible",
 ]);
 
 const TYPE_HEADER_OPTIONAL_PATH_SUFFIXES = new Set([
@@ -158,7 +306,7 @@ async function buildRegistry(docs: string[]) {
       content = await readDocFile(file);
     } catch (error) {
       if (isMissingFileError(error)) {
-        console.warn(`[docs-lint] Skipping missing tracked doc in registry build: ${rel}`);
+        console.warn(`[docs-lint] Skipping missing doc in registry build: ${rel}`);
         continue;
       }
       throw error;
@@ -173,26 +321,34 @@ async function buildRegistry(docs: string[]) {
     });
   }
   await writeDocFile("registry.json", JSON.stringify(entries, null, 2));
+  return entries.length;
 }
 
-async function main() {
-  const changedOnly = process.env.DOCS_LINT_CHANGED_ONLY === "1";
-  const baseRef = process.env.DOCS_LINT_BASE ?? process.env.TURBO_SCM_BASE ?? "";
-  const headRef = process.env.DOCS_LINT_HEAD ?? process.env.TURBO_SCM_HEAD ?? "HEAD";
-  const trackedDocs = tryGetTrackedMarkdownDocs();
-  const allDocs = trackedDocs ?? (await walk(DOCS_DIR));
-  let docs = allDocs;
-  if (changedOnly && baseRef) {
-    const changedDocs = tryGetChangedMarkdownDocs(baseRef, headRef);
-    if (changedDocs) {
-      docs = changedDocs;
-      if (docs.length === 0) {
-        console.log("[docs-lint] No changed docs detected; skipping checks.");
-        return;
-      }
-    }
+function selectDocsForScope(
+  allDocs: string[],
+  options: DocsLintOptions,
+  env: NodeJS.ProcessEnv,
+): string[] {
+  if (options.scope === "all") {
+    return allDocs;
   }
-  const allDocsSet = new Set(allDocs);
+
+  const baseRef = tryResolveChangedBaseRef(env);
+  const headRef = resolveChangedHeadRef(env);
+  const existingDocs = new Set(allDocs);
+  const worktreeDocs = options.includeWorktree ? tryGetWorkingTreeMarkdownDocs() : [];
+  const untrackedDocs = options.includeUntracked ? tryGetUntrackedMarkdownDocs() : [];
+  const changedDocs = uniqueSortedPaths([
+    ...tryGetChangedMarkdownDocs(baseRef, headRef),
+    ...tryGetStagedMarkdownDocs(),
+    ...worktreeDocs,
+    ...untrackedDocs,
+  ]).filter((file) => existingDocs.has(file));
+
+  return changedDocs;
+}
+
+async function validateDocs(docs: string[], allDocsSet: Set<string>) {
   let hadError = false;
 
   for (const file of docs) {
@@ -202,7 +358,7 @@ async function main() {
       content = await readDocFile(file);
     } catch (error) {
       if (isMissingFileError(error)) {
-        console.warn(`[docs-lint] Skipping missing tracked doc: ${rel}`);
+        console.warn(`[docs-lint] Skipping missing doc: ${rel}`);
         continue;
       }
       throw error;
@@ -233,10 +389,7 @@ async function main() {
       hadError = true;
     }
 
-    if (
-      (type === "Charter" || type === "Contract") &&
-      !hasCodePointers
-    ) {
+    if ((type === "Charter" || type === "Contract") && !hasCodePointers) {
       console.warn(
         `[docs-lint] Missing Primary code entrypoints/Canonical code section in ${rel}`,
       );
@@ -475,16 +628,53 @@ async function main() {
     }
   }
 
-  await buildRegistry(allDocs);
+  return hadError;
+}
+
+async function main() {
+  const options = resolveCliOptions(process.argv);
+  const allDocs = uniqueSortedPaths(await walk(DOCS_DIR));
+
+  if (options.writeRegistry) {
+    const entryCount = await buildRegistry(allDocs);
+    console.log(`[docs-lint] Wrote docs/registry.json with ${entryCount} entries.`);
+  }
+
+  if (options.mode === "registry") {
+    return;
+  }
+
+  const docs = selectDocsForScope(allDocs, options, process.env);
+  if (docs.length === 0) {
+    console.log(
+      options.scope === "changed"
+        ? "[docs-lint] No changed docs detected; skipping checks."
+        : "[docs-lint] No docs detected; skipping checks.",
+    );
+    return;
+  }
+
+  const allDocsSet = new Set(allDocs);
+  const hadError = await validateDocs(docs, allDocsSet);
 
   if (hadError) {
     process.exitCode = 1;
   } else {
-    console.log("[docs-lint] All docs passed header checks.");
+    console.log(
+      options.scope === "changed"
+        ? "[docs-lint] Changed docs passed header checks."
+        : "[docs-lint] All docs passed header checks.",
+    );
   }
 }
 
-main().catch((err) => {
-  console.error("[docs-lint] Unexpected error:", err);
-  process.exitCode = 1;
-});
+const isMainModule =
+  process.argv[1] !== undefined &&
+  path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isMainModule) {
+  main().catch((err) => {
+    console.error("[docs-lint] Unexpected error:", err);
+    process.exitCode = 1;
+  });
+}

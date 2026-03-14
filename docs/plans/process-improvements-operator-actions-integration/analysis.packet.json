@@ -1,0 +1,206 @@
+{
+  "schema_version": "do-stage-handoff.v1",
+  "stage": "analysis",
+  "feature_slug": "process-improvements-operator-actions-integration",
+  "source_artifact_path": "docs/plans/process-improvements-operator-actions-integration/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": null,
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/process-improvements-operator-actions-integration/fact-find.md",
+    "plan": "docs/plans/process-improvements-operator-actions-integration/plan.md"
+  },
+  "outcome_contract": {
+    "why": "The operator now has two separate places to look for work that should really be managed together: the process-improvements inbox and the output-registry operator card. That splits attention, hides overdue actions, and leaves the app unable to show the most important operator decisions. Fixing this should create one integrated inbox backed by a canonical structured operator-actions source, not a fragile HTML scrape.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Business OS has an analysis-ready fact-find for one integrated operator inbox that can show both process improvements and structured operator actions from startup-loop sources, with distinct card styling and no runtime HTML parsing.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Straightforward typed card branching and warning-surface styling",
+      "current_or_option_state": "UI waits on inferred runtime data quality",
+      "gap_or_implication": "Use typed card rendering with warning-soft/danger-soft treatment",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Keeps queue actions stable and allows read-only operator cards first",
+      "current_or_option_state": "Mixed semantics hidden behind one inferred runtime path",
+      "gap_or_implication": "Separate sections and badges by item type",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Read-only file load plus existing admin queue APIs unchanged",
+      "current_or_option_state": "More runtime parsing surface in the app",
+      "gap_or_implication": "No new mutation path in tranche 1",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Structured operator-action IDs can be logged later",
+      "current_or_option_state": "Runtime parsing failures would be opaque to operators",
+      "gap_or_implication": "Start with additive structured IDs and source paths",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Projection/component tests can target a stable JSON fixture",
+      "current_or_option_state": "Markdown/runtime parsing would need fragile fixture coverage",
+      "gap_or_implication": "Add deterministic projection/component coverage around the new contract",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Explicit typed union for queue vs operator items",
+      "current_or_option_state": "Implicit inferred shape from docs",
+      "gap_or_implication": "Add one canonical contract and keep queue contract intact",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Small JSON load, deterministic branching",
+      "current_or_option_state": "Runtime markdown parsing on every request",
+      "gap_or_implication": "Favor additive JSON load with empty-safe fallback",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive route change; fallback is empty operator-action set",
+      "current_or_option_state": "Runtime parser entangles load failures with route rendering",
+      "gap_or_implication": "Ship additive support first and keep existing queue path untouched",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Choose the first credible architecture for moving operator work out of the startup-loop registry surface and into the authenticated Business OS `/process-improvements` route without runtime HTML parsing. The decision now is not whether to integrate. It is which structured source and app contract should become the foundation for that integrated inbox.",
+    "goals": [
+      "Introduce one canonical structured source for operator-action items.",
+      "Let the app render queue-backed process improvements and operator-action items together without collapsing their semantics.",
+      "Make operator-action cards visually distinct enough to spot instantly.",
+      "Preserve existing queue-backed `Do`, `Defer`, and `Decline` behavior unchanged in the first tranche."
+    ],
+    "non_goals": [
+      "Reworking the queue-backed process-improvements write path.",
+      "Parsing registry HTML at runtime or treating it as an app source of truth.",
+      "Solving operator-action completion/snooze mutations in the first build slice.",
+      "Migrating the registry page to the new source in the same first task."
+    ],
+    "constraints": [
+      "Runtime HTML parsing is out of scope.",
+      "Queue-backed process-improvement actions remain authoritative and unchanged for the current runtime.",
+      "Operator-action cards must be visually distinct from process-improvement cards.",
+      "The integrated route must remain inside `apps/business-os`.",
+      "Current overdue dates visible in the registry are before 2026-03-11 and must not be hidden by the new model."
+    ],
+    "assumptions": [
+      "A structured operator-actions source can be added independently of the queue state.",
+      "A typed mixed inbox is simpler and safer than trying to coerce operator actions into the queue dispatch contract.",
+      "The first build slice can be useful even if operator-action mutations remain read-only."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Canonical source quality",
+        "Why it matters": "The app and registry need one stable source for operator work",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Semantic fit",
+        "Why it matters": "Operator actions do not behave like queue-backed improvement dispatches",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Buildability now",
+        "Why it matters": "The first task must be implementable without reopening discovery",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "UI clarity",
+        "Why it matters": "The operator must be able to spot action cards immediately",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Change isolation",
+        "Why it matters": "Queue-backed `Do` / `Defer` / `Decline` must stay reliable",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Future parity",
+        "Why it matters": "The chosen source should be reusable by the registry later",
+        "Weight/priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A",
+        "Description": "Add a canonical `operator-actions` JSON contract, have the app load it alongside queue state, and render typed mixed cards",
+        "Upside": "Clean separation between queue items and operator actions, immediately buildable, reusable by the registry later",
+        "Downside": "Requires introducing and maintaining a new structured source before generator parity exists",
+        "Key risks": "The new source could drift from the registry until parity work lands",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B",
+        "Description": "Parse startup-loop markdown sources directly at app request time and infer operator actions server-side",
+        "Upside": "Avoids a new stored dataset and stays closer to source docs",
+        "Downside": "Runtime parsing is brittle, source docs do not consistently carry IDs/due dates/status, and the app would own extraction logic",
+        "Key risks": "Silent drift, fragile parsing, missing overdue semantics",
+        "Viable?": "No"
+      },
+      {
+        "Option": "C",
+        "Description": "Convert operator actions into queue dispatches and let the existing inbox machinery handle everything",
+        "Upside": "Single app contract and one action transport",
+        "Downside": "Forces different semantics into the queue model, muddies `Do`/`Defer`/`Decline`, and would require API/ledger changes before basic surfacing works",
+        "Key risks": "Hidden behavioral regressions in the current queue path",
+        "Viable?": "No"
+      },
+      {
+        "Option": "D",
+        "Description": "Extract operator actions from the registry HTML into app data at build time",
+        "Upside": "Quick parity with what operators already see",
+        "Downside": "Leaves generated HTML as source-of-truth-adjacent and hardens the wrong layer",
+        "Key risks": "Build-time scrape tech debt and brittle selectors",
+        "Viable?": "No"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Introduce a canonical structured `operator-actions` source and have the Business OS route load it alongside the existing queue projection, using a typed mixed inbox that renders operator-action cards with a warning-tinted background and overdue escalation while keeping queue-backed decision semantics untouched.",
+      "Why this wins": "It fixes the architectural gap without pretending operator actions are queue dispatches. It is immediately buildable, it gives the user-visible integrated inbox now, and it creates the reusable contract the registry can adopt later.",
+      "What it depends on": "A stable JSON contract for operator-action items, app projection updates for typed mixed items, and UI branching that separates queue action controls from read-only operator-action context."
+    },
+    "rejected_approaches": [
+      "Option B — rejected because runtime markdown parsing would make the app responsible for fragile extraction from heterogeneous source docs that do not reliably carry operator IDs, due dates, or statuses.",
+      "Option C — rejected because queue dispatches and operator-action items have different lifecycle semantics, and forcing them together would risk breaking the existing queue-backed decision surface.",
+      "Option D — rejected because HTML extraction would keep the generated registry too close to being a source of truth and would harden the wrong contract."
+    ],
+    "planning_handoff": {
+      "planning_focus": [
+        "First build slice should add the canonical `operator-actions` source, app loader, typed projection, and visually distinct cards.",
+        "Later slices should add operator-action mutation semantics and registry parity against the same source."
+      ],
+      "validation_implications": [
+        "Projection tests need mixed item coverage.",
+        "Component tests need differentiated card rendering and section counts.",
+        "Targeted `typecheck` and `lint` for `@apps/business-os` are required; CI remains the test authority."
+      ],
+      "sequencing_constraints": [
+        "Lock the operator-actions contract before modifying the UI.",
+        "Add typed projection before rewriting the route header or summary cards.",
+        "Delay any new action API until after the mixed read model is stable."
+      ],
+      "risks_to_carry_forward": [
+        "The initial structured source may not yet cover every registry-visible operator block.",
+        "Existing dirty files in the Business OS inbox area require careful additive edits."
+      ]
+    }
+  }
+}

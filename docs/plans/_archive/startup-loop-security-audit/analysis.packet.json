@@ -1,0 +1,245 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "startup-loop-security-audit",
+  "source_artifact_path": "docs/plans/startup-loop-security-audit/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "mixed",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/startup-loop-security-audit/fact-find.md",
+    "plan": "docs/plans/startup-loop-security-audit/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Security audits are required before any site goes live. There is currently no security-audit domain in the S9B launch QA gate, no structured runtime/site-level security checklist in the startup loop, and the CI-level checks that exist are absent from app-specific deploy workflows.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Every site progressing through the startup loop to launch is checked against a structured security baseline (OWASP top 10 runtime/headers, dependency CVEs, secrets, auth hardening, cookie security) before it goes live, with a hard gate preventing S9B→SIGNALS advance when critical security failures are present.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — markdown skill files",
+      "current_or_option_state": "N/A — markdown skill files",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — CLI operator surface",
+      "current_or_option_state": "N/A but adds second CLI invocation",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Adds 8 OWASP runtime checks as a domain; hard blocks on critical failures",
+      "current_or_option_state": "Adds same checks but decoupled from report synthesis",
+      "gap_or_implication": "Domain model: checks + cross-domain synthesis in one pass",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Security checks emit into QA report alongside all other domains",
+      "current_or_option_state": "Security results in a separate report; must be manually cross-referenced",
+      "gap_or_implication": "Unified report; loop-state updated with security verdict",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Follows untested domain module convention; live QA run is integration test",
+      "current_or_option_state": "Same convention",
+      "gap_or_implication": "Integration-tested via live `/lp-launch-qa --domain security` run",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Domain output schema unchanged; loop-spec version bump; cmd-advance.md two-entry update",
+      "current_or_option_state": "Requires new skill contract, new S9B secondary_skills entry, separate go/no-go logic",
+      "gap_or_implication": "Minimal contract surface change; additive only",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — static markdown definitions",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive; gate only fires on new/re-run QA; existing loop-state checkpoints unaffected",
+      "current_or_option_state": "More complex — two skills to roll back if issues arise",
+      "gap_or_implication": "Clean rollback: revert domain-security.md, revert cmd-advance.md entries",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "The loop currently sends sites live without any structured security check. The S9B launch QA gate (`/lp-launch-qa`) has 6 domains (conversion, SEO, performance, legal, brand-copy, measurement) but no security domain. CI has dependency audit and secret scanning for core packages but brikette's standalone pipeline excludes both. The decision is **how to add security as a first-class gate** — whether as an extension of `lp-launch-qa`, as a standalone new skill, or purely in CI.",
+    "goals": [
+      "Security baseline verified before any site goes live (OWASP runtime controls, dependency CVEs, secrets, auth hardening, CSP/headers).",
+      "Hard gate at S9B→SIGNALS: critical security failures block advance.",
+      "CI dependency audit and secret scanning on every app-specific deploy pipeline.",
+      "Loop-wide (all businesses, not brikette-only)."
+    ],
+    "non_goals": [
+      "Penetration testing or manual red-team exercises.",
+      "Rewriting existing auth infrastructure.",
+      "Changing `ci.yml` core security jobs."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Runtime HTTP header checks can be performed by the QA subagent using curl against the deployed site URL (available from `latest.user.md`).",
+      "Pre-existing high/critical CVEs will be remediated as part of this plan before TASK-05 CI changes can pass."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Enforcement completeness",
+        "Why it matters": "Gate must actually block S9B→SIGNALS, not just document a check",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Architectural consistency",
+        "Why it matters": "New components must follow existing patterns (domain module schema, cmd-advance module pattern)",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Loop-wide coverage",
+        "Why it matters": "Must apply to all businesses, not just brikette",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "CI coverage",
+        "Why it matters": "Dependency audit and secret scanning must run on every app deploy",
+        "Weight": "High"
+      },
+      {
+        "Criterion": "Operator experience",
+        "Why it matters": "Launch QA report must be unified (one run, all domains including security)",
+        "Weight": "Medium"
+      },
+      {
+        "Criterion": "Minimal scope",
+        "Why it matters": "Avoid creating infrastructure or abstractions beyond what this plan needs",
+        "Weight": "Medium"
+      },
+      {
+        "Criterion": "Self-evolving integration",
+        "Why it matters": "Post-launch security debt should surface as IDEAS items",
+        "Weight": "Low (advisory, shadow mode)"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "**A: Extend lp-launch-qa**",
+        "Description": "Add `domain-security.md` as 7th domain; add `cmd-advance/s9b-gates.md` for enforcement; extend CI for brikette and reusable pipeline; loop-spec GATE-LAUNCH-SEC annotation.",
+        "Upside": "Consistent with existing architecture; unified QA report; proven pattern; cross-domain synthesis includes security.",
+        "Downside": "Enforcement requires four file changes: new gate module + cmd-advance.md two entries + SKILL.md modules table + SKILL.md version references.",
+        "Key risks": "Runtime HTTP checks require curl/tooling available in QA subagent context.",
+        "Viable?": "**Yes**"
+      },
+      {
+        "Option": "**B: Standalone /lp-security-audit skill**",
+        "Description": "Create a new dedicated skill separate from lp-launch-qa; S9B invokes both skills.",
+        "Upside": "Clean separation; independently versionable.",
+        "Downside": "Fragments the unified domain model; lp-launch-qa's cross-domain synthesis cannot see security signals; duplicates orchestration infrastructure; complicates loop-spec S9B definition.",
+        "Key risks": "Double-maintenance burden; go/no-go aggregation splits across two skills.",
+        "Viable?": "**No**"
+      },
+      {
+        "Option": "**C: CI-only gate**",
+        "Description": "Rely entirely on CI (pnpm audit, TruffleHog, OWASP header check in pipeline) with no lp-launch-qa changes.",
+        "Upside": "No skill changes required.",
+        "Downside": "CI runs before deployment; runtime site-level checks (headers, CSP, cookie flags) require a running site — structurally invalid for a pre-deploy CI check. No operator-facing security report. No loop gate.",
+        "Key risks": "Sites launch after CI passes but before runtime security is verified.",
+        "Viable?": "**No**"
+      },
+      {
+        "Option": "**D: Option A without self-evolving (deferred)**",
+        "Description": "Same as Option A but explicitly defer TASK-06 (self-evolving prescription) to a follow-on gap-fill dispatch.",
+        "Upside": "Tighter scope; no risk from incompletely understood prescription registry.",
+        "Downside": "Self-evolving stays blind to post-launch security debt.",
+        "Key risks": "Low — shadow mode means no live impact either way.",
+        "Viable?": "**Yes (preferred variant)**"
+      }
+    ],
+    "chosen_approach": {
+      "Option A is the only architecturally consistent choice": "it follows the proven `lp-launch-qa` domain module pattern across 6 existing reference implementations.",
+      "Enforcement is complete": "`cmd-advance/s9b-gates.md` (new gate module) + `cmd-advance.md` (Module Loading Order + Gate and Dispatch Map entries) + `startup-loop/SKILL.md` (internal modules table + spec_version references) constitute the full enforcement and contract-sync path identified in the fact-find critique loop.",
+      "Loop-wide coverage": "`reusable-app.yml` gets pnpm audit + TruffleHog (covers caryina including manual `workflow_dispatch` runs that bypass `ci.yml`); `brikette.yml` closes the brikette-specific gap (also excluded from `ci.yml`).",
+      "Unified operator experience": "one `/lp-launch-qa` run, one report, one go/no-go verdict.",
+      "Self-evolving deferral is correct": "shadow mode means no live impact either way, and a partial prescription registration without a confirmed schema adds noise without value.",
+      "**Option B (standalone skill)** — rejected": "fragments the unified domain model; lp-launch-qa cross-domain synthesis cannot see security signals; doubles orchestration infrastructure with no benefit over extending an existing well-established pattern.",
+      "**Option C (CI-only)** — rejected": "structurally invalid for runtime site-level checks; no operator-facing security gate; CI cannot check HTTP headers, CSP, or cookie flags against a live deployed site.",
+      "**TASK-06 in-scope** — deferred": "self-evolving is shadow mode; prescription registry schema not fully confirmed; deferral removes uncertainty with no live impact cost."
+    },
+    "rejected_approaches": [
+      "**Option B (standalone skill)** — rejected: fragments the unified domain model; lp-launch-qa cross-domain synthesis cannot see security signals; doubles orchestration infrastructure with no benefit over extending an existing well-established pattern.",
+      "**Option C (CI-only)** — rejected: structurally invalid for runtime site-level checks; no operator-facing security gate; CI cannot check HTTP headers, CSP, or cookie flags against a live deployed site.",
+      "**TASK-06 in-scope** — deferred: self-evolving is shadow mode; prescription registry schema not fully confirmed; deferral removes uncertainty with no live impact cost."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "**S9B launch QA gate**",
+          "current": "6 domain modules; no security domain; `/lp-launch-qa --domain all` dispatches 6 subagents",
+          "trigger": "Operator runs `/lp-launch-qa --business <BIZ>` after DO completes",
+          "future": "7 domain subagents dispatched in parallel (security added); security subagent checks HTTPS, headers, CSP, cookie flags, repo secrets, auth, CORS; result merged into unified QA report; GATE-LAUNCH-SEC failure = NO-GO",
+          "steady": "Domain module output schema, go/no-go aggregation, report artifact path, loop-state update",
+          "seams": "If site URL is unreachable: domain-security.md must set `status: fail` (not warn) — unverified security baseline is a failure."
+        },
+        {
+          "id": null,
+          "label": "**S9B→SIGNALS advance gate**",
+          "current": "No S9B gate family in cmd-advance; SIGNALS advance proceeds without security check",
+          "trigger": "Operator runs `/startup-loop advance --business <BIZ>` from S9B",
+          "future": "cmd-advance.md Module Loading Order includes s9b-gates.md for S9B→SIGNALS transition; GATE-LAUNCH-SEC checks for a passing QA report ≤30 days old with security domain `status: pass`; hard-blocks advance if security failed or no recent QA run",
+          "steady": "All other advance gate families unaffected",
+          "seams": "QA report age check (30-day window) must be defined in s9b-gates.md; check must be filesystem-only (no external HTTP call at advance time)"
+        },
+        {
+          "id": null,
+          "label": "**CI: brikette deploy pipeline**",
+          "current": "No pnpm audit, no TruffleHog in `brikette.yml`; `ci.yml` excludes brikette paths",
+          "trigger": "Push to `dev`, `staging`, or `main` with brikette-scoped changes",
+          "future": "`brikette.yml` runs `pnpm audit --audit-level=high` (hard fail) and TruffleHog (`--only-verified`) before the build/deploy jobs; pre-existing CVEs must be remediated before this step passes",
+          "steady": "Cloudflare Pages build/deploy jobs, health checks, lighthouserc tests",
+          "seams": "Any existing high/critical CVE in brikette dependencies will block deploys until remediated"
+        },
+        {
+          "id": null,
+          "label": "**CI: shared app pipeline**",
+          "current": "No pnpm audit, no TruffleHog in `reusable-app.yml`; caryina and future apps lack both",
+          "trigger": "Push to branches that trigger caryina (or future app) deploys; also `workflow_dispatch` on caryina which bypasses `ci.yml`",
+          "future": "`reusable-app.yml` runs `pnpm audit --audit-level=high` AND TruffleHog (`--only-verified`) as pre-deploy jobs; all callers benefit including manual workflow_dispatch runs",
+          "steady": "Build/deploy jobs, health checks",
+          "seams": "`--filter` scoping: the audit should cover the specific app's dependencies; TruffleHog checks full git history"
+        },
+        {
+          "id": null,
+          "label": "**Loop-spec stage definition**",
+          "current": "S9B has no gate annotation; GATE-LAUNCH-SEC undefined",
+          "trigger": "Loop-spec version bump (3.14.0 → 3.15.0)",
+          "future": "S9B stage annotates `GATE-LAUNCH-SEC` (Hard) as the security QA pass condition; ordering constraints unchanged",
+          "steady": "`[DO, S9B]` and `[S9B, SIGNALS]` ordering unchanged",
+          "seams": "Stage-operator-map.json derives from `stage-operator-dictionary.yaml` (not `loop-spec.yaml`); map regeneration is a parity check only — no new stage added here. If dictionary is also bumped, regeneration is required; otherwise note the parity gap."
+        }
+      ]
+    }
+  }
+}

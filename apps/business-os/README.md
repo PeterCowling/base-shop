@@ -29,11 +29,16 @@ Repo-native Business OS workflow console for ideas, plans, startup-loop executio
 # Install dependencies (from repo root)
 pnpm install
 
-# Run dev server
+# Run dev server (uses an external Next runtime cache)
 pnpm --filter @apps/business-os dev
 
-# Visit http://localhost:3020
+# Visit http://localhost:3022
 ```
+
+The default dev wrapper stores Next runtime artifacts under
+`node_modules/.cache/base-shop-next/business-os/ports/3022/` so the long-lived
+dev server no longer writes its `.next` output into an app-local `.next`
+directory.
 
 ### Cloudflare D1 Development (Phase 1+: D1-backed)
 

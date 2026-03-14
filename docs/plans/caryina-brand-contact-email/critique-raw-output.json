@@ -1,0 +1,42 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "docs/plans/caryina-brand-contact-email/fact-find.md",
+      "line": "251",
+      "message": "The generated-content fix is incomplete as written. The brief only tasks updating `data/shops/caryina/site-content.generated.json`, but Caryina has two tracked payload copies and both still contain the hostel email at line 164. `contentPacket.ts` resolves multiple candidate paths (`apps/caryina/src/lib/contentPacket.ts:108-113`), and Caryina package commands run with `process.cwd()` at `apps/caryina`, so `apps/caryina/data/shops/caryina/site-content.generated.json` is still a live candidate. Implementing the task seed as written can leave the old email visible on the support page."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/caryina-brand-contact-email/fact-find.md",
+      "line": "197",
+      "message": "The recommended `CARYINA_CONTACT_EMAIL` “required field, no default — fail loudly if unset” is a risky design recommendation, not a neutral fact-find conclusion. `CONTACT_EMAIL` is imported by customer-facing page routes via `legalContent.ts` (`apps/caryina/src/app/[lang]/terms/page.tsx:7`, `privacy/page.tsx:7`, `returns/page.tsx:8`, `shipping/page.tsx:7`, `cookie-policy/page.tsx:8`, `success/page.tsx:7`), so an unset env var would turn a copy/config issue into render-time failures across legal/support flows."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/caryina-brand-contact-email/fact-find.md",
+      "line": "53",
+      "message": "The brief frames the email as the customer-facing hostel-branding problem, but `legalContent.ts` also embeds `COMPANY_WEBSITE = \"https://hostel-positano.com\"` into the terms copy (`apps/caryina/src/lib/legalContent.ts:27`, `:45`). Changing only the email still leaves hostel-branded legal copy in place, which weakens the stated trust outcome."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/caryina-brand-contact-email/fact-find.md",
+      "line": "96",
+      "message": "The `MERCHANT_NOTIFY_EMAIL` inventory is incomplete. The personal-Gmail fallback also exists in `apps/caryina/src/lib/payments/notifications.server.ts:17` and is used for merchant order emails and checkout alerts (`:23`, `:57`), not just checkout reconciliation and notify-me."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 6,
+  "review": "Using `lp-do-critique` on this fact-find because the task is to audit a planning doc against the actual repo and surface only defensible findings. I’m checking the claimed occurrence list first, then the env-var and deployment assumptions.\nI’ve confirmed the core customer-facing surfaces, and there are two likely gaps now: the brief only names one generated JSON copy even though both tracked Caryina copies contain the hostel email, and it undercounts the `MERCHANT_NOTIFY_EMAIL` fallback sites. Pulling those files now.\nI’ve got two concrete documentation gaps already: the brief misses one of the two tracked Caryina generated payload copies, and it undercounts the personal-Gmail fallback sites for merchant notifications. I’m checking one more design-risk claim now: whether the proposed “required, no default” contact-email env var would make page rendering fail hard if unset.\n- CRITICAL: docs/plans/caryina-brand-contact-email/fact-find.md:251 The generated-content fix is incomplete as written. The brief only tasks updating `data/shops/caryina/site-content.generated.json`, but Caryina has two tracked payload copies and both still contain the hostel email at line 164. `contentPacket.ts` resolves multiple candidate paths (`apps/caryina/src/lib/contentPacket.ts:108-113`), and Caryina package commands run with `process.cwd()` at `apps/caryina`, so `apps/caryina/data/shops/caryina/site-content.generated.json` is still a live candidate. Implementing the task seed as written can leave the old email visible on the support page.\n\n- WARNING: docs/plans/caryina-brand-contact-email/fact-find.md:197 The recommended `CARYINA_CONTACT_EMAIL` “required field, no default — fail loudly if unset” is a risky design recommendation, not a neutral fact-find conclusion. `CONTACT_EMAIL` is imported by customer-facing page routes via `legalContent.ts` (`apps/caryina/src/app/[lang]/terms/page.tsx:7`, `privacy/page.tsx:7`, `returns/page.tsx:8`, `shipping/page.tsx:7`, `cookie-policy/page.tsx:8`, `su",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ceb8d-93ba-71c3-b121-ca08acf9a765",
+  "resumed": true,
+  "usage": {
+    "inputTokens": 20320286,
+    "outputTokens": 68006,
+    "totalTokens": 20388292,
+    "costUsd": 0
+  },
+  "durationMs": 180069
+}

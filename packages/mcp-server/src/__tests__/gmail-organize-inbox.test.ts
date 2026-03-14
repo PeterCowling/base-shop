@@ -512,6 +512,371 @@ describe("gmail_organize_inbox classification", () => {
     expect(payload.counts.labeledPromotional).toBe(1);
   });
 
+  it("routes obvious vendor promotional subjects to promotional even without list headers", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-7b": {
+          id: "thread-7b",
+          messages: [
+            {
+              id: "msg-7b",
+              threadId: "thread-7b",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Pest Control Napoli <info@servizi-example.it>"),
+                  createHeader("Subject", "🌡️ Il caldo arriva, gli infestanti anche. Proteggiti ora"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:12:00 +0000"),
+                ],
+              },
+              snippet: "Soluzioni professionali di disinfestazione per la tua struttura.",
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: true });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.labeledNeedsProcessing).toBe(0);
+    expect(payload.counts.labeledPromotional).toBe(1);
+  });
+
+  it("routes Google review notifications to promotional", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-google-review": {
+          id: "thread-google-review",
+          messages: [
+            {
+              id: "msg-google-review",
+              threadId: "thread-google-review",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Google Business Profile <maps-noreply@google.com>"),
+                  createHeader("Subject", "Ann left a review for Brikette Hostel"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:14:00 +0000"),
+                ],
+              },
+              snippet: "See what Ann wrote about your property.",
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: true });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.labeledNeedsProcessing).toBe(0);
+    expect(payload.counts.labeledPromotional).toBe(1);
+  });
+
+  it("routes SEO outreach from personal senders to promotional", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-seo-outreach": {
+          id: "thread-seo-outreach",
+          messages: [
+            {
+              id: "msg-seo-outreach",
+              threadId: "thread-seo-outreach",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Parker Sanchez <parkersanchez9dx@gmail.com>"),
+                  createHeader("Subject", "Quick question"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:16:00 +0000"),
+                ],
+              },
+              snippet: "Would you like to increase your website traffic? Our SEO strategies can help you rank higher and attract more customers.",
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: true });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.labeledNeedsProcessing).toBe(0);
+    expect(payload.counts.labeledPromotional).toBe(1);
+  });
+
+  it("routes influencer stay-swap outreach to promotional", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-influencer-outreach": {
+          id: "thread-influencer-outreach",
+          messages: [
+            {
+              id: "msg-influencer-outreach",
+              threadId: "thread-influencer-outreach",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Travel Creator <creator@example.com>"),
+                  createHeader("Subject", "Collaboration idea"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:18:00 +0000"),
+                ],
+              },
+              snippet: "I am an influencer and would love a free stay in exchange for photos and a feature on my blog and YouTube channel.",
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: true });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.labeledNeedsProcessing).toBe(0);
+    expect(payload.counts.labeledPromotional).toBe(1);
+  });
+});
+
+describe("gmail_organize_inbox classification (leave in inbox allowlist)", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it("leaves Hostelworld confirmed booking emails in the Gmail inbox and marks them read", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-hostelworld-confirmed": {
+          id: "thread-hostelworld-confirmed",
+          messages: [
+            {
+              id: "msg-hostelworld-confirmed",
+              threadId: "thread-hostelworld-confirmed",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Hostelworld <noreply@hostelworld.com>"),
+                  createHeader("Subject", "Hostelworld Confirmed Booking - Hostel Brikette, Positano"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:19:00 +0000"),
+                ],
+              },
+              snippet: "A booking has been confirmed.",
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.skippedNoAction).toBe(1);
+    expect(payload.counts.processedBookingReservations).toBe(0);
+    expect(payload.counts.labeledPromotional).toBe(0);
+    expect(payload.counts.labeledDeferred).toBe(0);
+    expect(messageStore["msg-hostelworld-confirmed"].labelIds).toEqual(["INBOX"]);
+  });
+
+  it("leaves Revolut no-reply emails in the Gmail inbox and marks them read", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-revolut-no-reply": {
+          id: "thread-revolut-no-reply",
+          messages: [
+            {
+              id: "msg-revolut-no-reply",
+              threadId: "thread-revolut-no-reply",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Revolut <no-reply@revolut.com>"),
+                  createHeader("Subject", "Security notice"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:21:00 +0000"),
+                ],
+              },
+              snippet: "We have updated your account information.",
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.skippedNoAction).toBe(1);
+    expect(payload.counts.labeledPromotional).toBe(0);
+    expect(payload.counts.labeledDeferred).toBe(0);
+    expect(messageStore["msg-revolut-no-reply"].labelIds).toEqual(["INBOX"]);
+  });
+
+  it("leaves Amalfi district infopoint emails in the Gmail inbox and marks them read", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-amalfi-infopoint": {
+          id: "thread-amalfi-infopoint",
+          messages: [
+            {
+              id: "msg-amalfi-infopoint",
+              threadId: "thread-amalfi-infopoint",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Distretto Costa d'Amalfi <infopoint@distrettocostadamalfi.it>"),
+                  createHeader("Subject", "Local tourism update"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:23:00 +0000"),
+                ],
+              },
+              snippet: "Please find the latest district information.",
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.skippedNoAction).toBe(1);
+    expect(payload.counts.labeledPromotional).toBe(0);
+    expect(payload.counts.labeledDeferred).toBe(0);
+    expect(messageStore["msg-amalfi-infopoint"].labelIds).toEqual(["INBOX"]);
+  });
+
+  it("leaves IKEA newsletter sender emails in the Gmail inbox and marks them read", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-ikea-news": {
+          id: "thread-ikea-news",
+          messages: [
+            {
+              id: "msg-ikea-news",
+              threadId: "thread-ikea-news",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "IKEA <ikea@news.email.ikea.it>"),
+                  createHeader("Subject", "Le ultime novita IKEA"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:25:00 +0000"),
+                ],
+              },
+              snippet: "Scopri le nuove offerte e idee per la casa.",
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.skippedNoAction).toBe(1);
+    expect(payload.counts.labeledPromotional).toBe(0);
+    expect(payload.counts.labeledDeferred).toBe(0);
+    expect(messageStore["msg-ikea-news"].labelIds).toEqual(["INBOX"]);
+  });
+
+  it("leaves Booking.com properties no-reply emails in the Gmail inbox and marks them read", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-booking-properties": {
+          id: "thread-booking-properties",
+          messages: [
+            {
+              id: "msg-booking-properties",
+              threadId: "thread-booking-properties",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Booking.com Properties <no-reply@properties.booking.com>"),
+                  createHeader("Subject", "Partner update"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:27:00 +0000"),
+                ],
+              },
+              snippet: "Important information for your property account.",
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.skippedNoAction).toBe(1);
+    expect(payload.counts.labeledPromotional).toBe(0);
+    expect(payload.counts.labeledDeferred).toBe(0);
+    expect(messageStore["msg-booking-properties"].labelIds).toEqual(["INBOX"]);
+  });
+
+  it("leaves 'A customer saved their research' emails in the Gmail inbox and marks them read", async () => {
+    const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
+    const { gmail, messageStore } = createGmailStub({
+      labels: [needsProcessing],
+      threads: {
+        "thread-customer-saved-research": {
+          id: "thread-customer-saved-research",
+          messages: [
+            {
+              id: "msg-customer-saved-research",
+              threadId: "thread-customer-saved-research",
+              labelIds: ["INBOX", "UNREAD"],
+              payload: {
+                headers: [
+                  createHeader("From", "Platform Notification <updates@example.com>"),
+                  createHeader("Subject", "A customer saved their research"),
+                  createHeader("Date", "Tue, 10 Feb 2026 15:29:00 +0000"),
+                ],
+              },
+              snippet: "A customer saved their research for later.",
+            },
+          ],
+        },
+      },
+    });
+    getGmailClientMock.mockResolvedValue({ success: true, client: gmail });
+
+    const result = await handleGmailTool("gmail_organize_inbox", { dryRun: false });
+    const payload = JSON.parse(result.content[0].text);
+
+    expect(payload.counts.skippedNoAction).toBe(1);
+    expect(payload.counts.labeledPromotional).toBe(0);
+    expect(payload.counts.labeledDeferred).toBe(0);
+    expect(messageStore["msg-customer-saved-research"].labelIds).toEqual(["INBOX"]);
+  });
+});
+
+describe("gmail_organize_inbox classification (booking and cancellation)", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it("routes Octorate cancellations to cancellation handler (not promotional)", async () => {
     const needsProcessing = { id: "label-needs", name: "Brikette/Queue/Needs-Processing" };
     const promotional = { id: "label-promo", name: "Brikette/Outcome/Promotional" };

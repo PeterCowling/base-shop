@@ -318,10 +318,8 @@ function SafeManagement(): JSX.Element {
         },
       ]);
       setActiveModal(null);
-    } catch (error) {
-      if ((error as Error).message !== "return failed") {
-        showToast("Failed to record keycard transfer.", "error");
-      }
+    } catch {
+      showToast("Failed to record keycard transfer.", "error");
     }
   };
 

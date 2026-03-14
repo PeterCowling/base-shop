@@ -2,7 +2,6 @@
 // Scenic day/night toggle — pill switch with animated sun/moon, clouds & stars.
 // Inspired by the Figma "Button 29" community toggle design.
 import { type CSSProperties,memo, useCallback } from "react";
-import { useTranslation } from "react-i18next";
 
 import { useTranslations } from "@acme/i18n";
 
@@ -97,41 +96,18 @@ function cloudStyle(c: Cloud, dark: boolean): CSSProperties {
 /* ── component ──────────────────────────────────────────────────────── */
 export const ThemeToggle = memo((): JSX.Element => {
   const { setTheme, isDark } = useTheme();
-  const tShared = useTranslations();
-  const { i18n, t: tApp } = useTranslation();
+  const t = useTranslations();
   const toggle = useCallback(
     () => setTheme(isDark ? "light" : "dark"),
     [isDark, setTheme],
-  );
-  const resolveLabel = useCallback(
-    (key: string): string => {
-      const sharedValue = tShared(key);
-      if (typeof sharedValue === "string" && sharedValue.trim() && sharedValue !== key) {
-        return sharedValue;
-      }
-
-      const activeLang = (i18n.resolvedLanguage || i18n.language || "").split("-")[0];
-      if (activeLang) {
-        const localizedResource = i18n.getResource(activeLang, "translation", key);
-        if (typeof localizedResource === "string" && localizedResource.trim()) {
-          return localizedResource;
-        }
-      }
-      const appValue = tApp(key);
-      if (typeof appValue === "string" && appValue.trim() && appValue !== key) {
-        return appValue;
-      }
-      return key;
-    },
-    [i18n, tApp, tShared],
   );
 
   return (
     <button
       type="button"
       onClick={toggle}
-      title={isDark ? resolveLabel("themeToggle.switchToLight") : resolveLabel("themeToggle.switchToDark")}
-      aria-label={isDark ? resolveLabel("themeToggle.enableLight") : resolveLabel("themeToggle.enableDark")}
+      title={isDark ? t("themeToggle.switchToLight") : t("themeToggle.switchToDark")}
+      aria-label={isDark ? t("themeToggle.enableLight") : t("themeToggle.enableDark")}
       className="scenic-toggle relative inline-flex shrink-0 cursor-pointer items-center rounded-full border-0 p-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-secondary min-h-11 min-w-11"
       style={{
         width: W,

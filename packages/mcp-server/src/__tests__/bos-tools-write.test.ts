@@ -22,7 +22,7 @@ describe("bos guarded write tool", () => {
   const originalApiKey = process.env.BOS_AGENT_API_KEY;
 
   beforeEach(() => {
-    process.env.BOS_AGENT_API_BASE_URL = "http://localhost:3020";
+    process.env.BOS_AGENT_API_BASE_URL = "http://localhost:3022";
     process.env.BOS_AGENT_API_KEY = "bos_test_key_1234567890";
     global.fetch = jest.fn() as unknown as typeof fetch;
   });
@@ -208,7 +208,7 @@ describe("experiment and ops guarded write contracts", () => {
   const originalApiKey = process.env.BOS_AGENT_API_KEY;
 
   beforeEach(() => {
-    process.env.BOS_AGENT_API_BASE_URL = "http://localhost:3020";
+    process.env.BOS_AGENT_API_BASE_URL = "http://localhost:3022";
     process.env.BOS_AGENT_API_KEY = "bos_test_key_1234567890";
     global.fetch = jest.fn() as unknown as typeof fetch;
   });

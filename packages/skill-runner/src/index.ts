@@ -1,12 +1,16 @@
 export * from "./check-archive-ready.js";
 export * from "./confidence-thresholds.js";
 export * from "./critique-gate.js";
+export * from "./generate-stage-handoff-packet.js";
 export * from "./markdown.js";
 export * from "./parse-parallelism-guide.js";
 export * from "./resolve-assessment-artifact.js";
 export * from "./sequence-plan.js";
 export * from "./stage-doc-keys.js";
+export type * from "./stage-handoff-packet-types.js";
 export * from "./startup-loop-stage-id-parity.js";
+export * from "./validate-analysis.js";
+export * from "./validate-engineering-coverage.js";
 export * from "./validate-fact-find.js";
 export * from "./validate-logo-brief.js";
 export * from "./validate-plan.js";

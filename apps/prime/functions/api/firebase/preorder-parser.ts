@@ -25,7 +25,7 @@ export interface ParsedOrder {
  *
  * Breakfast segment order (from buildBreakfastOrderValue):
  *   1. Food — "Eggs (EggStyle)" | "Pancakes (SyrupLabel)" | food label → lineType: "kds"
- *   2. Sides — comma-separated side values (Eggs only) → individual items, lineType: "bds"
+ *   2. Sides — comma-separated side values (Eggs only) → individual items, lineType: "kds"
  *   3. Drink — drink label + modifiers (comma-joined) → single item, lineType: "bds"
  *   4. Time — "HH:MM" (always last segment)
  *
@@ -40,9 +40,9 @@ export interface ParsedOrder {
  * parseBreakfastOrderString("Eggs (Scrambled) | Bacon, Ham, Toast | Americano, Oat Milk, No Sugar | 09:00")
  * // → { preorderTime: "09:00", items: [
  * //     { product: "Eggs (Scrambled)", count: 1, lineType: "kds", price: 0 },
- * //     { product: "Bacon", count: 1, lineType: "bds", price: 0 },
- * //     { product: "Ham", count: 1, lineType: "bds", price: 0 },
- * //     { product: "Toast", count: 1, lineType: "bds", price: 0 },
+ * //     { product: "Bacon", count: 1, lineType: "kds", price: 0 },
+ * //     { product: "Ham", count: 1, lineType: "kds", price: 0 },
+ * //     { product: "Toast", count: 1, lineType: "kds", price: 0 },
  * //     { product: "Americano, Oat Milk, No Sugar", count: 1, lineType: "bds", price: 0 },
  * //   ] }
  *
@@ -90,10 +90,10 @@ export function parseBreakfastOrderString(value: string): ParsedOrder {
   // If there are 3 content segments: [food, sides, drink]
   // If there are 2 content segments: [food, drink]
   if (contentSegments.length === 3) {
-    // Segment 1: sides (comma-separated) → individual bds items
+    // Segment 1: sides (comma-separated) → individual kds items (kitchen prepares them)
     const sidesSeg = contentSegments[1] ?? '';
     for (const side of sidesSeg.split(',').map((s) => s.trim()).filter(Boolean)) {
-      items.push({ product: side, count: 1, lineType: 'bds', price: 0 });
+      items.push({ product: side, count: 1, lineType: 'kds', price: 0 });
     }
     // Segment 2: drink + modifiers → single bds item
     const drinkSeg = contentSegments[2] ?? '';

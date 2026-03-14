@@ -27,9 +27,13 @@ function getNightIndex(nightKey: string): number {
 // TYPES
 // ----------------------------------------------------------------
 type NightData = {
-  breakfast?: string; // e.g. "txn_..." or "NA"
-  drink1?: string; // e.g. "txn_..." or "NA"
-  drink2?: string; // e.g. "txn_..." or "NA"
+  breakfast?: string;
+  drink1?: string;
+  drink2?: string;
+  /** txnId backref for breakfast — set by Prime bridge write; breakfast field keeps entitlement value */
+  breakfastTxnId?: string;
+  /** txnId backref for evening drink — set by Prime bridge write; drink1 field keeps entitlement value */
+  drink1Txn?: string;
 };
 
 interface CompletedOrderData {
@@ -81,12 +85,9 @@ const PreorderNightDetails: React.FC<{
     ? formatMonthNameDay(breakfastDateObj)
     : { day: "", month: "" };
 
-  const breakfastTxnId = nightValue.breakfast?.startsWith("txn_")
-    ? nightValue.breakfast
-    : null;
-  const drink1TxnId = nightValue.drink1?.startsWith("txn_")
-    ? nightValue.drink1
-    : null;
+  // Prime bridge write stores txnIds in breakfastTxnId / drink1Txn (not in breakfast / drink1).
+  const breakfastTxnId = nightValue.breakfastTxnId ?? null;
+  const drink1TxnId = nightValue.drink1Txn ?? null;
   const drink2TxnId = nightValue.drink2?.startsWith("txn_")
     ? nightValue.drink2
     : null;

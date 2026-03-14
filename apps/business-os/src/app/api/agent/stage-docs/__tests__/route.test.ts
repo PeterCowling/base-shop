@@ -13,7 +13,6 @@ import {
 } from "@acme/platform-core/repositories/businessOs.server";
 
 import { __resetAgentRateLimitForTests } from "../../../../../lib/auth/agent-auth";
-import { getContractMigrationConfig } from "../../../../../lib/contract-migration";
 import { getDb } from "../../../../../lib/d1.server";
 import { computeEntitySha } from "../../../../../lib/entity-sha";
 import { GET as getStageDoc, PATCH as patchStageDoc } from "../[cardId]/[stage]/route";
@@ -38,22 +37,10 @@ jest.mock("@acme/platform-core/repositories/businessOs.server", () => {
 });
 
 const VALID_KEY = `${"A".repeat(31)}!`;
-const { config: contractMigrationConfig } = getContractMigrationConfig();
 
-function getConfiguredStageAlias() {
-  const aliasEntry = Object.entries(contractMigrationConfig.stage_aliases)[0];
-  if (!aliasEntry) {
-    throw new Error("TC-09..TC-13 require at least one configured stage alias");
-  }
-
-  const [legacyStage, canonicalStage] = aliasEntry;
-  return {
-    legacyStage,
-    canonicalStage,
-    withinCutoff: new Date(contractMigrationConfig.timebox.alias_accept_until_utc.getTime()),
-    afterCutoff: new Date(contractMigrationConfig.timebox.alias_accept_until_utc.getTime() + 1),
-  };
-}
+// A valid kebab-case stage slug used in TC-09..TC-13 to verify that
+// arbitrary kebab-case stage keys are accepted directly (no alias layer).
+const KEBAB_STAGE_SLUG = "lp-do-fact-find";
 
 function createRequest(
   url: string,
@@ -291,46 +278,28 @@ describe("/api/agent/stage-docs", () => {
     );
   });
 
-  it("TC-09: stage filter accepts a kebab-case legacy alias as-is", async () => {
-    jest.useFakeTimers();
-    const { legacyStage, withinCutoff } = getConfiguredStageAlias();
-    jest.setSystemTime(withinCutoff);
-
+  it("TC-09: GET stage filter accepts an arbitrary kebab-case stage slug", async () => {
     (listStageDocsForCard as jest.Mock).mockResolvedValue([baseStageDoc]);
 
-    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
-
     const request = createRequest(
-      `http://localhost/api/agent/stage-docs?cardId=BRIK-ENG-0001&stage=${legacyStage}`,
+      `http://localhost/api/agent/stage-docs?cardId=BRIK-ENG-0001&stage=${KEBAB_STAGE_SLUG}`,
       undefined,
       { "x-agent-api-key": VALID_KEY }
     );
 
     const response = await listStageDocs(request);
     expect(response.status).toBe(200);
-    expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
 
     expect(listStageDocsForCard).toHaveBeenCalledWith(
       db,
       "BRIK-ENG-0001",
-      StageTypeSchema.parse(legacyStage)
+      StageTypeSchema.parse(KEBAB_STAGE_SLUG)
     );
-
-    expect(infoSpy).not.toHaveBeenCalled();
-
-    infoSpy.mockRestore();
-    jest.useRealTimers();
   });
 
-  it("TC-10: POST persists a kebab-case legacy alias stage as provided", async () => {
-    jest.useFakeTimers();
-    const { legacyStage, withinCutoff } = getConfiguredStageAlias();
-    jest.setSystemTime(withinCutoff);
-
+  it("TC-10: POST persists an arbitrary kebab-case stage slug as provided", async () => {
     (getCardById as jest.Mock).mockResolvedValue(baseCard);
     (upsertStageDoc as jest.Mock).mockResolvedValue({ success: true, stageDoc: baseStageDoc });
-
-    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
 
     const request = createRequest(
       "http://localhost/api/agent/stage-docs",
@@ -338,7 +307,7 @@ describe("/api/agent/stage-docs", () => {
         method: "POST",
         body: JSON.stringify({
           cardId: "BRIK-ENG-0001",
-          stage: legacyStage,
+          stage: KEBAB_STAGE_SLUG,
           content: "Fact-find content",
         }),
       },
@@ -350,61 +319,38 @@ describe("/api/agent/stage-docs", () => {
 
     const response = await createStageDoc(request);
     expect(response.status).toBe(201);
-    expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
 
     const [, createdStageDoc] = (upsertStageDoc as jest.Mock).mock.calls[0];
-    expect(createdStageDoc.Stage).toBe(legacyStage);
+    expect(createdStageDoc.Stage).toBe(KEBAB_STAGE_SLUG);
     expect(createdStageDoc.filePath).toBe(
-      `docs/business-os/cards/BRIK-ENG-0001/${legacyStage}.user.md`
+      `docs/business-os/cards/BRIK-ENG-0001/${KEBAB_STAGE_SLUG}.user.md`
     );
-
-    expect(infoSpy).not.toHaveBeenCalled();
-
-    infoSpy.mockRestore();
-    jest.useRealTimers();
   });
 
-  it("TC-11: path stage accepts a kebab-case legacy alias as-is", async () => {
-    jest.useFakeTimers();
-    const { legacyStage, withinCutoff } = getConfiguredStageAlias();
-    jest.setSystemTime(withinCutoff);
-
+  it("TC-11: GET path stage accepts an arbitrary kebab-case stage slug", async () => {
     (getLatestStageDoc as jest.Mock).mockResolvedValue(baseStageDoc);
 
-    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
-
     const request = createRequest(
-      `http://localhost/api/agent/stage-docs/BRIK-ENG-0001/${legacyStage}`,
+      `http://localhost/api/agent/stage-docs/BRIK-ENG-0001/${KEBAB_STAGE_SLUG}`,
       undefined,
       { "x-agent-api-key": VALID_KEY }
     );
-    const params = Promise.resolve({ cardId: "BRIK-ENG-0001", stage: legacyStage });
+    const params = Promise.resolve({ cardId: "BRIK-ENG-0001", stage: KEBAB_STAGE_SLUG });
 
     const response = await getStageDoc(request, { params });
     expect(response.status).toBe(200);
-    expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
 
-    expect(getLatestStageDoc).toHaveBeenCalledWith(db, "BRIK-ENG-0001", legacyStage);
-    expect(infoSpy).not.toHaveBeenCalled();
-
-    infoSpy.mockRestore();
-    jest.useRealTimers();
+    expect(getLatestStageDoc).toHaveBeenCalledWith(db, "BRIK-ENG-0001", KEBAB_STAGE_SLUG);
   });
 
-  it("TC-12: PATCH path stage accepts a kebab-case legacy alias as-is", async () => {
-    jest.useFakeTimers();
-    const { legacyStage, withinCutoff } = getConfiguredStageAlias();
-    jest.setSystemTime(withinCutoff);
-
+  it("TC-12: PATCH path stage accepts an arbitrary kebab-case stage slug", async () => {
     (getLatestStageDoc as jest.Mock).mockResolvedValue(baseStageDoc);
     (upsertStageDoc as jest.Mock).mockResolvedValue({ success: true, stageDoc: baseStageDoc });
-
-    const infoSpy = jest.spyOn(console, "info").mockImplementation(() => undefined);
 
     const baseEntitySha = await computeEntityShaFor(baseStageDoc);
 
     const request = createRequest(
-      `http://localhost/api/agent/stage-docs/BRIK-ENG-0001/${legacyStage}`,
+      `http://localhost/api/agent/stage-docs/BRIK-ENG-0001/${KEBAB_STAGE_SLUG}`,
       {
         method: "PATCH",
         body: JSON.stringify({
@@ -417,44 +363,27 @@ describe("/api/agent/stage-docs", () => {
         "x-agent-api-key": VALID_KEY,
       }
     );
-    const params = Promise.resolve({ cardId: "BRIK-ENG-0001", stage: legacyStage });
+    const params = Promise.resolve({ cardId: "BRIK-ENG-0001", stage: KEBAB_STAGE_SLUG });
 
     const response = await patchStageDoc(request, { params });
     expect(response.status).toBe(200);
-    expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
 
     const [, updatedStageDoc] = (upsertStageDoc as jest.Mock).mock.calls[0];
-    expect(updatedStageDoc.Stage).toBe(legacyStage);
+    expect(updatedStageDoc.Stage).toBe(KEBAB_STAGE_SLUG);
     expect(updatedStageDoc.filePath).toBe(
-      `docs/business-os/cards/BRIK-ENG-0001/${legacyStage}.user.md`
+      `docs/business-os/cards/BRIK-ENG-0001/${KEBAB_STAGE_SLUG}.user.md`
     );
-
-    expect(infoSpy).not.toHaveBeenCalled();
-
-    infoSpy.mockRestore();
-    jest.useRealTimers();
   });
 
-  it("TC-13: after cutoff, kebab-case legacy alias is still accepted as a plain stage slug", async () => {
-    jest.useFakeTimers();
-    const { legacyStage, afterCutoff } = getConfiguredStageAlias();
-    jest.setSystemTime(afterCutoff);
-
-    (getLatestStageDoc as jest.Mock).mockResolvedValue(baseStageDoc);
-
+  it("TC-13: invalid stage slug (not kebab-case) returns 400", async () => {
     const request = createRequest(
-      `http://localhost/api/agent/stage-docs/BRIK-ENG-0001/${legacyStage}`,
+      "http://localhost/api/agent/stage-docs/BRIK-ENG-0001/INVALID_STAGE",
       undefined,
       { "x-agent-api-key": VALID_KEY }
     );
-    const params = Promise.resolve({ cardId: "BRIK-ENG-0001", stage: legacyStage });
+    const params = Promise.resolve({ cardId: "BRIK-ENG-0001", stage: "INVALID_STAGE" });
 
     const response = await getStageDoc(request, { params });
-    expect(response.status).toBe(200);
-
-    expect(getLatestStageDoc).toHaveBeenCalledWith(db, "BRIK-ENG-0001", legacyStage);
-    expect(response.headers.get("x-bos-stage-normalized")).toBeNull();
-
-    jest.useRealTimers();
+    expect(response.status).toBe(400);
   });
 });

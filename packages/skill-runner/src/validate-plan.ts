@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 
 import {
   getFrontmatterString,
+  hasSection,
   parseConfidencePercent,
   parseFrontmatter,
   parseTaskBlocks,
@@ -50,6 +51,17 @@ const VALID_DELIVERABLE_TYPES = new Set([
   "spreadsheet",
   "multi-deliverable",
 ]);
+
+/* eslint-disable ds/no-hardcoded-copy -- SKILL-2401 [ttl=2026-12-31] Internal markdown section labels for deterministic artifact validation. */
+const REQUIRED_SECTION_ALIASES: ReadonlyArray<readonly string[]> = [
+  ["Summary"],
+  ["Task Summary"],
+  ["Delivered Processes"],
+  ["Tasks"],
+  ["Rehearsal Trace"],
+  ["Risks & Mitigations", "Risks and Mitigations"],
+];
+/* eslint-enable ds/no-hardcoded-copy */
 
 export function validatePlanFile(planPath: string): PlanValidationResult {
   const content = readFileSync(planPath, "utf8");
@@ -101,6 +113,15 @@ export function validatePlanMarkdown(planMarkdown: string): PlanValidationResult
       field: "Deliverable-Type",
       message: `Invalid Deliverable-Type "${deliverableType}".`,
     });
+  }
+
+  for (const aliases of REQUIRED_SECTION_ALIASES) {
+    if (!aliases.some((section) => hasSection(planMarkdown, section))) {
+      errors.push({
+        field: aliases[0],
+        message: `Missing required section: ${aliases[0]}.`,
+      });
+    }
   }
 
   const tasks = parseTaskBlocks(planMarkdown);

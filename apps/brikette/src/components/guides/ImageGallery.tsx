@@ -22,9 +22,8 @@ export type ImageGalleryItem = {
 type Props = { items: ImageGalleryItem[]; className?: string };
 
 function ImageGallery({ items, className = "" }: Props): JSX.Element | null {
-  if (!items?.length) return null;
-  // eslint-disable-next-line react-hooks/rules-of-hooks -- CFL-99 pre-existing: early return guard before hook
   const lang = useCurrentLanguage();
+  if (!items?.length) return null;
   return (
     <div
       data-cy={TEST_IDS.root}

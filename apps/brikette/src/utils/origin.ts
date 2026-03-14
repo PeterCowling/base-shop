@@ -3,7 +3,7 @@
 // Helpers for working with browser origins consistently across runtimes.
 // -----------------------------------------------------------------------------
 
-const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "0.0.0.0", "::1", "[::1]"]);
+export const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "0.0.0.0", "::1", "[::1]"]);
 
 /**
  * Normalise a browser origin for use in canonical URLs and meta tags.

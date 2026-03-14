@@ -121,6 +121,39 @@ describe("Agent write-session guards", () => {
     expect(result.stderr).toContain("--interactive-write-shell");
   });
 
+  test("integrator blocks dev server commands in write mode", () => {
+    const result = runScript(INTEGRATOR_SCRIPT, [
+      "--",
+      "pnpm",
+      "--filter",
+      "@apps/business-os",
+      "dev",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(
+      "long-lived non-write commands are forbidden in integrator write mode",
+    );
+    expect(result.stderr).toContain(
+      "scripts/agents/integrator-shell.sh --read-only -- pnpm --filter @apps/business-os dev",
+    );
+  });
+
+  test("integrator blocks shell-command dev server wrappers in write mode", () => {
+    const result = runScript(INTEGRATOR_SCRIPT, [
+      "--",
+      "bash",
+      "-lc",
+      "pnpm --filter @apps/business-os dev",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(
+      "long-lived non-write commands are forbidden in integrator write mode",
+    );
+    expect(result.stderr).toContain("--read-only -- bash -lc");
+  });
+
   test("integrator blocks wrapped interactive bash in command mode", () => {
     const result = runScript(INTEGRATOR_SCRIPT, [
       "--",
@@ -207,6 +240,39 @@ describe("Agent write-session guards", () => {
       "command-mode interactive shells are forbidden while holding the writer lock",
     );
     expect(result.stderr).toContain("--interactive-shell");
+  });
+
+  test("with-writer-lock blocks dev server commands", () => {
+    const result = runScript(WRITER_LOCK_SCRIPT, [
+      "--",
+      "pnpm",
+      "--filter",
+      "@apps/business-os",
+      "dev",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(
+      "long-lived non-write commands are forbidden while holding the writer lock",
+    );
+    expect(result.stderr).toContain(
+      "scripts/agents/integrator-shell.sh --read-only -- pnpm --filter @apps/business-os dev",
+    );
+  });
+
+  test("with-writer-lock blocks shell-command dev server wrappers", () => {
+    const result = runScript(WRITER_LOCK_SCRIPT, [
+      "--",
+      "bash",
+      "-lc",
+      "pnpm --filter @apps/business-os dev",
+    ]);
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(
+      "long-lived non-write commands are forbidden while holding the writer lock",
+    );
+    expect(result.stderr).toContain("--read-only -- bash -lc");
   });
 
   test("with-writer-lock blocks wrapped interactive bash in command mode", () => {

@@ -1,13 +1,5 @@
-import Providers from "@/components/ClientProviders";
-import ReconciliationWorkbench from "@/components/till/ReconciliationWorkbench";
-
-// Prevent static prerendering — Firebase RTDB requires runtime env vars
-export const dynamic = "force-dynamic";
+import { redirect } from "next/navigation";
 
 export default function ReconciliationWorkbenchPage() {
-  return (
-    <Providers>
-      <ReconciliationWorkbench />
-    </Providers>
-  );
+  redirect("/cash");
 }

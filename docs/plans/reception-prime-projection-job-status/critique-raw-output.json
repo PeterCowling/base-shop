@@ -1,0 +1,52 @@
+{
+  "latest_round": 3,
+  "rounds": [
+    {
+      "round": 1,
+      "mode": "file",
+      "score": 6,
+      "lp_score": 3.0,
+      "verdict": "needs_revision",
+      "findings_summary": "1 Critical + 3 Warnings",
+      "findings": [
+        { "severity": "critical", "message": "Missing direct-thread-only constraint on replayPrimeProjectionJob — batch processor option blocked for activity-channel jobs" },
+        { "severity": "warning", "message": "Index idx_message_projection_jobs_status_updated already exists — stale 'no index' claim" },
+        { "severity": "warning", "message": "sendPrimeReviewThread INSERT status IS tested in review-threads.test.ts:2848,3195 — stated coverage gap was inaccurate" },
+        { "severity": "warning", "message": "activity-message.test.ts has same missing status assertion as TC-08 — test-gap section too narrow" }
+      ],
+      "sessionId": "Q1qNA84XAQMYM94_",
+      "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1"
+    },
+    {
+      "round": 2,
+      "mode": "file",
+      "score": 6,
+      "lp_score": 3.0,
+      "verdict": "needs_revision",
+      "findings_summary": "1 Critical + 2 Warnings",
+      "findings": [
+        { "severity": "critical", "message": "Path B materially misdiagnosed — direct-message.ts and activity-message.ts already write Firebase inline before shadow-write; inline-vs-batch question is on wrong premise" },
+        { "severity": "warning", "message": "Residual 'no index' claim in Data & Contracts section — internally inconsistent with Engineering Coverage Matrix fix" },
+        { "severity": "warning", "message": "Scope bounded to 'three files' — direct-message.ts and activity-message.ts are load-bearing and must be in scope" }
+      ],
+      "sessionId": "Q1qNA84XAQMYM94_",
+      "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1"
+    },
+    {
+      "round": 3,
+      "mode": "file",
+      "score": 6,
+      "lp_score": 3.0,
+      "verdict": "needs_revision",
+      "findings_summary": "1 Critical + 3 Warnings — final round, all addressed",
+      "findings": [
+        { "severity": "critical", "message": "Outcome contract still describes 'jobs picked up by a processor' — wrong problem given verified inline Firebase write design" },
+        { "severity": "warning", "message": "Coverage-gap section stale — still says assert 'pending' while task seeds say fix to 'projected'" },
+        { "severity": "warning", "message": "Default recommendation overstates replay benefit for activity-channel jobs — replay API rejects non-direct threads" },
+        { "severity": "warning", "message": "Analysis handoff inconsistent — said 'open architectural question' but inline-vs-batch already resolved as moot" }
+      ],
+      "sessionId": "Q1qNA84XAQMYM94_",
+      "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1"
+    }
+  ]
+}

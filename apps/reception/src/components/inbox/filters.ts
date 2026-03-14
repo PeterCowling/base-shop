@@ -26,7 +26,7 @@ export const THREAD_FILTER_OPTIONS: ThreadFilterOption[] = [
   { key: "stale-sync", label: "Stale sync" },
 ];
 
-function matchesFilter(
+export function matchesFilter(
   thread: InboxThreadSummary,
   filter: ThreadFilterKey,
   now: number = Date.now(),
@@ -62,6 +62,21 @@ function matchesFilter(
     default:
       return false;
   }
+}
+
+/**
+ * Count threads matching each filter key.
+ * Useful for displaying badge counts on filter tabs.
+ */
+export function countThreadsByFilter(
+  threads: InboxThreadSummary[],
+  now: number = Date.now(),
+): Record<ThreadFilterKey, number> {
+  const counts = {} as Record<ThreadFilterKey, number>;
+  for (const option of THREAD_FILTER_OPTIONS) {
+    counts[option.key] = threads.filter((t) => matchesFilter(t, option.key, now)).length;
+  }
+  return counts;
 }
 
 /**

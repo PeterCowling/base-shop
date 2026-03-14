@@ -1278,7 +1278,7 @@ async function run(): Promise<void> {
   const baseUrl = normalizeBaseUrl(
     getArgValue("--base-url") ??
       process.env["PIPELINE_BASE_URL"] ??
-      "http://localhost:3012",
+      "http://localhost:3014",
   );
   const runnerId =
     getArgValue("--runner-id") ??

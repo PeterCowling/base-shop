@@ -2,10 +2,24 @@
 
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { useThemeMode } from "@acme/platform-core";
 
 export function ThemeModeToggle() {
   const { isDark, setMode } = useThemeMode();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
+
+  if (!mounted) {
+    return (
+      <button
+        type="button"
+        aria-label="Toggle theme"
+        className="inline-flex min-h-9 min-w-9 items-center justify-center rounded-md text-muted-foreground"
+      />
+    );
+  }
 
   return (
     <button

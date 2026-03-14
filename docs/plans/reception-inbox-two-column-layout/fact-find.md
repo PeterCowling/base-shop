@@ -1,6 +1,6 @@
 # Fact Find: Reception Inbox Two-Column Layout
 
-**Status: Ready-for-planning**
+**Status: Complete**
 **Date:** 2026-03-12
 
 ---

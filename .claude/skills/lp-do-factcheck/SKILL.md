@@ -352,7 +352,7 @@ The API is designed to respond within 200ms (performance varies by load).
 
 **Not appropriate for:**
 - Gathering new information about a system (use `/lp-do-fact-find`)
-- Planning a feature (use `/lp-do-fact-find` then `/lp-do-plan`)
+- Planning a feature (use `/lp-do-fact-find`, then `/lp-do-analysis`, then `/lp-do-plan`)
 - Verifying external documentation (only for this repo's docs)
 - Real-time validation during builds (too slow)
 

@@ -1,7 +1,8 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { isUploaderIpAllowedByHeaders, uploaderAccessDeniedJsonResponse } from "./lib/accessControl";
+import { getRequesterIpFromHeaders, isUploaderIpAllowedByHeaders, uploaderAccessDeniedJsonResponse } from "./lib/accessControl";
+import { uploaderLog } from "./lib/uploaderLogger";
 
 /* eslint-disable ds/no-hardcoded-copy -- XAUP-0001 [ttl=2026-12-31] protocol security header literals */
 const BASE_SECURITY_HEADERS = {
@@ -33,6 +34,10 @@ function deniedResponseFor(request: NextRequest): Response {
 
 export function middleware(request: NextRequest) {
   if (!isUploaderIpAllowedByHeaders(request.headers)) {
+    uploaderLog("warn", "ip_denied", {
+      ip: getRequesterIpFromHeaders(request.headers),
+      path: request.nextUrl.pathname,
+    });
     return deniedResponseFor(request);
   }
   return applySecurityHeaders(NextResponse.next());

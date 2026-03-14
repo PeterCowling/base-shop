@@ -92,7 +92,7 @@ For naming, metadata, and classification rules, see `.claude/skills/tools-standa
 - **Description:** Capture session learnings and propose targeted improvements to docs, skills, or core agent instructions. Evidence-based only — closes the feedback loop directly by updating existing files.
 - **operating_mode:** `ANALYSIS + RECOMMENDATIONS`
 - **trigger_conditions:** session review, capture learnings, improve skill, update instructions, post-build reflection, close feedback loop
-- **related_skills:** `lp-do-build`, `lp-do-fact-find`, `lp-do-plan`
+- **related_skills:** `lp-do-build`, `lp-do-fact-find`, `lp-do-analysis`, `lp-do-plan`
 
 ---
 

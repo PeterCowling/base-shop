@@ -9,6 +9,7 @@ import Link from "next/link";
 import { Section } from "@acme/design-system/atoms";
 
 import FitCheck from "@/components/apartment/FitCheck";
+import { WHATSAPP_URL } from "@/config/hotel";
 import { usePagePreload } from "@/hooks/usePagePreload";
 import type { AppLanguage } from "@/i18n.config";
 import { getPrivateBookingPath } from "@/utils/localizedRoutes";
@@ -19,8 +20,6 @@ type Props = {
   lang: AppLanguage;
   preloadedNamespaceBundles?: AppNamespaceBundles;
 };
-
-const WHATSAPP_URL = "https://wa.me/393287073695";
 
 function PrivateStayContent({ lang, preloadedNamespaceBundles }: Props) {
   primeAppI18nBundles(lang, preloadedNamespaceBundles);

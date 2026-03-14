@@ -38,6 +38,7 @@ interface NewIdeasInboxProps {
   initialItems: ProcessImprovementsInboxItem[];
   initialRecentActions: ProcessImprovementsRecentAction[];
   initialInProgressDispatchIds: string[];
+  initialCompletedIdeasCount: number;
 }
 
 interface PendingState {
@@ -392,10 +393,12 @@ function useProcessImprovementsDerivedItems(items: ProcessImprovementsInboxItem[
 
 function useNewIdeasInboxState(
   initialItems: ProcessImprovementsInboxItem[],
-  initialRecentActions: ProcessImprovementsRecentAction[]
+  initialRecentActions: ProcessImprovementsRecentAction[],
+  initialCompletedIdeasCount: number
 ) {
   const [items, setItems] = useState(initialItems);
   const [recentActions, setRecentActions] = useState(initialRecentActions);
+  const [completedIdeasCount, setCompletedIdeasCount] = useState(initialCompletedIdeasCount);
   const [pendingState, setPendingState] = useState<PendingState | null>(null);
   const [errorByKey, setErrorByKey] = useState<Record<string, string>>({});
   const [isPending, startTransition] = useTransition();
@@ -564,11 +567,13 @@ function useNewIdeasInboxState(
   const refreshFromServer = useCallback(
     (
       nextItems: ProcessImprovementsInboxItem[],
-      nextRecentActions: ProcessImprovementsRecentAction[]
+      nextRecentActions: ProcessImprovementsRecentAction[],
+      nextCompletedIdeasCount: number
     ) => {
       if (pendingState) return;
       setItems(nextItems);
       setRecentActions(nextRecentActions);
+      setCompletedIdeasCount(nextCompletedIdeasCount);
     },
     [pendingState]
   );
@@ -582,6 +587,7 @@ function useNewIdeasInboxState(
     operatorActionActiveItems,
     ideasQueueActiveItems,
     recentActions,
+    completedIdeasCount,
     pendingState,
     errorByKey,
     isPending,
@@ -633,7 +639,8 @@ const AUTO_REFRESH_INTERVAL_MS = 30_000;
 function useAutoRefresh(
   refreshFromServer: (
     items: ProcessImprovementsInboxItem[],
-    recentActions: ProcessImprovementsRecentAction[]
+    recentActions: ProcessImprovementsRecentAction[],
+    completedIdeasCount: number
   ) => void,
   setInProgressDispatchIds: (ids: Set<string>) => void,
   isPending: boolean
@@ -657,10 +664,11 @@ function useAutoRefresh(
         const data = (await response.json()) as {
           items: ProcessImprovementsInboxItem[];
           recentActions: ProcessImprovementsRecentAction[];
+          completedIdeasCount?: number;
           inProgressDispatchIds?: string[];
         };
         if (mounted) {
-          refreshRef.current(data.items, data.recentActions);
+          refreshRef.current(data.items, data.recentActions, data.completedIdeasCount ?? 0);
           if (data.inProgressDispatchIds) {
             dispatchIdsRef.current(new Set(data.inProgressDispatchIds));
           }
@@ -1026,17 +1034,21 @@ function WorkItemCard({
   return (
     <div
       className={cn(
-        "group relative rounded-xl border bg-surface-1/85 shadow-elevation-1 transition-all duration-200 hover:shadow-elevation-3",
+        "group relative rounded-2xl glass-card transition-all duration-200 hover:scale-[1.005]",
         item.isOverdue
-          ? "border-danger-soft"
+          ? "glow-danger"
           : isSelected
-          ? "border-primary"
+          ? "glow-info"
           : item.statusGroup === "deferred"
-          ? "border-border"
-          : "border-border-2"
+          ? ""
+          : isProcessImprovementQueueItem(item) && item.priority === "P1"
+          ? "glow-danger"
+          : isProcessImprovementQueueItem(item) && item.priority === "P2"
+          ? "glow-warning"
+          : ""
       )}
     >
-      <div className={cn("absolute inset-y-0 start-0 w-1 transition-all duration-200 group-hover:w-1.5", accentBgClass)} />
+      <div className={cn("absolute inset-y-0 start-0 w-1 rounded-s-2xl transition-all duration-200 group-hover:w-1.5", accentBgClass)} />
 
       <div className="flex min-h-14 w-full items-center gap-3 p-4 ps-5 md:px-5 md:ps-6">
         {onToggleSelected ? (
@@ -1338,7 +1350,7 @@ function SummaryPill({
       )}
     >
       <span className="font-semibold tabular-nums">{value}</span>
-      <span className="font-medium opacity-75">{label}</span>
+      <span className="font-medium">{label}</span>
     </div>
   );
 }
@@ -1559,23 +1571,23 @@ function NewIdeasHeaderStats({
         className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3 transition-colors hover:bg-hero-foreground/16"
       >
         <p className="text-2xl font-semibold tabular-nums">{inProgressCount}</p>
-        <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">In progress</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-secondary">In progress</p>
       </a>
       <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
         <p className="text-2xl font-semibold tabular-nums">{activeOperatorActionCount}</p>
-        <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Actions</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-secondary">Actions</p>
       </div>
       <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
         <p className="text-2xl font-semibold tabular-nums">{headerQueueIdeasCount}</p>
-        <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">New ideas</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-secondary">New ideas</p>
       </div>
       <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
         <p className="text-2xl font-semibold tabular-nums">{deferredCount}</p>
-        <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Deferred</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-secondary">Deferred</p>
       </div>
       <div className="flex min-w-28 flex-col items-center rounded-xl border border-hero-foreground/16 bg-hero-foreground/8 px-4 py-3">
         <p className="text-2xl font-semibold tabular-nums">{doneCount}</p>
-        <p className="text-xs font-medium uppercase tracking-wider text-hero-foreground/60">Done</p>
+        <p className="text-xs font-medium uppercase tracking-wider text-secondary">Done</p>
       </div>
     </div>
   );
@@ -1714,18 +1726,20 @@ export function NewIdeasInbox({
   initialItems,
   initialRecentActions,
   initialInProgressDispatchIds,
+  initialCompletedIdeasCount,
 }: NewIdeasInboxProps) {
   const {
     activeItems,
     deferredItems,
     activeOperatorActionCount,
     recentActions,
+    completedIdeasCount,
     pendingState,
     errorByKey,
     isPending,
     handleItemDecision,
     refreshFromServer,
-  } = useNewIdeasInboxState(initialItems, initialRecentActions);
+  } = useNewIdeasInboxState(initialItems, initialRecentActions, initialCompletedIdeasCount);
   const [inProgressDispatchIds, setInProgressDispatchIds] = useState(
     () => new Set(initialInProgressDispatchIds)
   );
@@ -1775,7 +1789,7 @@ export function NewIdeasInbox({
         activeOperatorActionCount={activeOperatorActionCount}
         headerQueueIdeasCount={headerQueueIdeasCount}
         deferredCount={deferredItems.length}
-        doneCount={recentActions.length}
+        doneCount={completedIdeasCount}
       />
       <div className="flex items-center justify-between">
         <ProcessImprovementsSummary

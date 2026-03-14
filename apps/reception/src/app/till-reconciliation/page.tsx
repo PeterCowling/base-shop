@@ -1,13 +1,5 @@
-import Providers from "@/components/ClientProviders";
-import TillReconciliation from "@/components/till/Till";
-
-// Prevent static prerendering — Firebase RTDB requires runtime env vars
-export const dynamic = "force-dynamic";
+import { redirect } from "next/navigation";
 
 export default function TillReconciliationPage() {
-  return (
-    <Providers>
-      <TillReconciliation />
-    </Providers>
-  );
+  redirect("/cash");
 }

@@ -1,0 +1,5 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-14T07:21:52.358Z",
+  "why": "The Payment Manager app had several correctness gaps introduced at initial build time — a broken refund currency field, a silent order sync failure due to an env var name mismatch, a missing auth guard on dashboard pages, and several code quality issues."
+}

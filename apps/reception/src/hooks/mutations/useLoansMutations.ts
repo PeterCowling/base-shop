@@ -1,6 +1,12 @@
 import { useCallback, useState } from "react";
 import { get, ref, remove, update } from "firebase/database";
 
+import {
+  loansOccupantPath,
+  loansTransactionPath,
+  loansTransactionsPath,
+} from "@acme/lib/hospitality";
+
 import { queueOfflineWrite } from "../../lib/offline/syncManager";
 import { useOnlineStatus } from "../../lib/offline/useOnlineStatus";
 import { useFirebaseDatabase } from "../../services/useFirebase";
@@ -38,7 +44,7 @@ export default function useLoansMutations() {
       loanData: LoanTransaction
     ) => {
       setError(null);
-      const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
+      const path = loansTransactionPath(bookingRef, occupantId, transactionId);
 
       if (!online) {
         const queued = await queueOfflineWrite(path, "update", loanData, {
@@ -84,7 +90,7 @@ export default function useLoansMutations() {
 
       // Fast path: context has already computed occupant emptiness
       if (isEmpty === true) {
-        const occupantPath = `loans/${bookingRef}/${occupantId}`;
+        const occupantPath = loansOccupantPath(bookingRef, occupantId);
         return update(ref(database), { [occupantPath]: null })
           .then(() => null)
           .catch((err) => {
@@ -107,7 +113,7 @@ export default function useLoansMutations() {
       // Fallback: read txns and conditionally remove (backward-compatible path)
       const occupantTxnsRef = ref(
         database,
-        `loans/${bookingRef}/${occupantId}/txns`
+        loansTransactionsPath(bookingRef, occupantId)
       );
 
       return get(occupantTxnsRef)
@@ -115,7 +121,7 @@ export default function useLoansMutations() {
           if (!snapshot.exists() || snapshot.size === 0) {
             const occupantRef = ref(
               database,
-              `loans/${bookingRef}/${occupantId}`
+              loansOccupantPath(bookingRef, occupantId)
             );
             return remove(occupantRef);
           }
@@ -167,10 +173,10 @@ export default function useLoansMutations() {
 
         const pathMap: Record<string, null> = {};
         for (const txnId of matchingTxnIds) {
-          pathMap[`loans/${bookingRef}/${occupantId}/txns/${txnId}`] = null;
+          pathMap[loansTransactionPath(bookingRef, occupantId, txnId)] = null;
         }
         if (isOccupantEmpty === true) {
-          pathMap[`loans/${bookingRef}/${occupantId}`] = null;
+          pathMap[loansOccupantPath(bookingRef, occupantId)] = null;
         }
 
         return update(ref(database), pathMap)
@@ -189,7 +195,7 @@ export default function useLoansMutations() {
       // Fallback: read txns, find matches, remove individually, then check emptiness
       const occupantTxnsRef = ref(
         database,
-        `loans/${bookingRef}/${occupantId}/txns`
+        loansTransactionsPath(bookingRef, occupantId)
       );
 
       try {
@@ -199,7 +205,11 @@ export default function useLoansMutations() {
           snapshot.forEach((txnSnap) => {
             const txn = txnSnap.val() as LoanTransaction;
             if (txn.item === itemName && txn.type === "Loan") {
-              const txnPath = `loans/${bookingRef}/${occupantId}/txns/${txnSnap.key}`;
+              const txnPath = loansTransactionPath(
+                bookingRef,
+                occupantId,
+                String(txnSnap.key),
+              );
               removals.push(remove(ref(database, txnPath)));
             }
           });
@@ -248,7 +258,7 @@ export default function useLoansMutations() {
         return Promise.resolve(null);
       }
 
-      const txnPath = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
+      const txnPath = loansTransactionPath(bookingRef, occupantId, transactionId);
 
       // Fast path: deposit value known from context — skip pre-read
       if (deposit !== undefined) {
@@ -258,7 +268,7 @@ export default function useLoansMutations() {
           [txnPath]: null,
         };
         if (isEmpty === true) {
-          pathMap[`loans/${bookingRef}/${occupantId}`] = null;
+          pathMap[loansOccupantPath(bookingRef, occupantId)] = null;
         }
 
         return update(ref(database), pathMap)
@@ -374,7 +384,7 @@ export default function useLoansMutations() {
       }
 
       const deposit = 10 * count;
-      const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
+      const path = loansTransactionPath(bookingRef, occupantId, transactionId);
       const loanRef = ref(database, path);
 
       return update(loanRef, { depositType: "CASH" as LoanMethod, deposit })
@@ -419,7 +429,7 @@ export default function useLoansMutations() {
         return Promise.resolve(null);
       }
 
-      const path = `loans/${bookingRef}/${occupantId}/txns/${transactionId}`;
+      const path = loansTransactionPath(bookingRef, occupantId, transactionId);
       const loanRef = ref(database, path);
 
       return get(loanRef)

@@ -121,7 +121,6 @@ Run Section H checks and monthly deep-audit trigger check; link signal-review an
 | Exception tickets / CAP state | Operator-provided or `run_root` artifacts |
 | Prior REM items | `docs/business-os/strategy/<BIZ>/` |
 | CAP-02 ledger | `docs/business-os/strategy/<BIZ>/message-variants.user.md` |
-| Signal review artifact | Emitted by `/lp-signal-review` sub-flow |
 | Feedback loop audit artifact | Emitted by GATE-LOOP-GAP-03 sub-flow |
 
 ### Sub-steps
@@ -148,15 +147,6 @@ If absent: dispatch sub-flow per GATE-LOOP-GAP-03 protocol:
 ```
 
 Record output path as `feedback_audit_ref`.
-
-#### 4.3 — Signal review sub-flow
-
-Invoke `/lp-signal-review`:
-```
-/lp-signal-review --biz <BIZ> --run-root docs/business-os/strategy/<BIZ>/ --as-of-date <as_of_date>
-```
-
-Record emitted artifact path as `signal_review_ref`.
 
 #### 4.4 — Section H weekly audit check
 
@@ -191,13 +181,41 @@ Check `docs/business-os/startup-loop/contracts/audit-cadence-contract-v1.md` mon
 - Record `monthly_audit_trigger: due | not-due | unknown`.
 - If `due` and no monthly audit artifact found for this month: emit REM task: `REM-<BIZ>-<YYYYMMDD>-3: Monthly deep-audit due. No audit artifact found for <YYYY-MM>. Schedule and complete before next weekly cycle.`
 
+#### 4.10 — Quarterly data hardening check
+
+**Trigger condition:** Run when any of the following is true:
+- This is the first weekly cycle of a new calendar quarter (Q1: week containing Jan 1; Q2: Apr 1; Q3: Jul 1; Q4: Oct 1 — use `as_of_date` to determine)
+- Significant new API routes or data-handling code has been merged since the last data hardening audit (heuristic: check `git log --since="<last-audit-date>" --name-only -- "apps/<app>/**/*.ts" | grep "api/"` for new route files)
+- No data hardening audit has ever been run for this business's app (`docs/audits/data-hardening/` contains no file matching `<app-name>-*.md`)
+
+**How to check last audit date:**
+```bash
+ls docs/audits/data-hardening/ 2>/dev/null | grep "^<app-name>-" | sort -r | head -1
+```
+Where `<app-name>` is the main customer-facing app for the business (`caryina` for CARY, `brikette` for BRIK, etc.). Resolve from the business's site baseline if uncertain.
+
+**When triggered:**
+
+Dispatch `/lp-do-data-audit <app-path>` as part of lane `a`.
+
+Record outcome in `lane_a_data_hardening`:
+- `triggered: true | false`
+- `trigger_reason: quarterly | new-routes | never-run | not-triggered`
+- `audit_report_ref: <path or null>`
+- `verdict: PASS | FAIL | not-run`
+
+If verdict is `FAIL`: emit REM task:
+```
+REM-<BIZ>-<YYYYMMDD>-4: Data hardening audit FAIL for <app-name>. CRITICAL/HIGH findings require remediation before next launch or experiment activation. See docs/audits/data-hardening/<app-name>-<YYYY-MM-DD>.md.
+```
+
+If verdict is `PASS` or trigger condition is not met: record outcome without emitting REM. A PASS or non-triggered state does not block the weekly cycle close.
+
+**Non-blocking:** This check does not block lane `a` exit regardless of verdict. It produces a REM task and records the verdict; the operator decides when to remediate.
+
 #### 4.7 — CI findings dedup
 
-Collect finding IDs from:
-- Signal review artifact (Finding Briefs).
-- Feedback loop audit artifact (if emitted).
-
-Apply dedup rule: if the same finding key appears in both artifacts (matched by process-artifact path or finding description), record it once in the REM delta. Do not emit duplicate REM tasks for the same root cause.
+Collect finding IDs from the feedback loop audit artifact (if emitted). Record each finding once in the REM delta — do not emit duplicate REM tasks for the same root cause.
 
 #### 4.8 — REM delta compilation
 
@@ -206,7 +224,7 @@ Compile all new REM tasks emitted in this step into a `rem_delta` block:
 rem_delta:
   new:
     - id: REM-<BIZ>-<YYYYMMDD>-<n>
-      source: <signal-review | feedback-audit | section-h | cap-02 | monthly-trigger>
+      source: <feedback-audit | section-h | cap-02 | monthly-trigger>
       description: <summary>
   resolved: []  # operator-confirmed closures from prior REM list
   carryover: <count of prior unresolved REM tasks not yet closed>
@@ -252,7 +270,7 @@ Failure handling: if scan cannot complete, emit warning and record `pending_revi
 
 | State | Condition |
 |---|---|
-| `complete` | All sub-steps ran; Section H verified; signal review emitted; REM delta compiled |
+| `complete` | All sub-steps ran; Section H verified; REM delta compiled |
 | `incomplete` | One or more sub-steps failed or skipped; warning + REM emitted per gap |
 
 ---
@@ -356,13 +374,13 @@ lane_b_status: ready | restricted
 lane_a_status: complete | incomplete
 lane_c_status: complete | carry-forward
 kpcs_decision_ref: <path or pending>
-signal_review_ref: <path or null>
 feedback_audit_ref: <path or null>
 measurement_summary: <block or restricted>
 rem_delta: <block>
 experiment_portfolio_summary: <block>
 next_cycle_backlog_delta: <block>
 pending_reviews_delta: <block>
+lane_a_data_hardening: <block or not-triggered>
 ```
 
 Pass all outputs to `modules/publish.md`.
@@ -370,5 +388,5 @@ Pass all outputs to `modules/publish.md`.
 ## Week-key and Rerun Handling
 
 - All sub-steps use `week_key` from preflight as the canonical grouping key.
-- On rerun: each sub-step re-checks for existing artifacts before invoking sub-flows. If a signal review or feedback audit was already emitted for the same `as_of_date`, do not re-invoke — record the existing artifact path and proceed.
+- On rerun: each sub-step re-checks for existing artifacts before invoking sub-flows. If a feedback audit was already emitted for the same `as_of_date`, do not re-invoke — record the existing artifact path and proceed.
 - Idempotency for experiment readouts: if a readout artifact already exists for this week and experiment, record it without re-invoking `/lp-experiment readout`.

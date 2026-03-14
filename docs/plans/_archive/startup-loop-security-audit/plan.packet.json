@@ -1,0 +1,267 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "startup-loop-security-audit",
+  "source_artifact_path": "docs/plans/startup-loop-security-audit/plan.md",
+  "source_artifact_status": "Draft",
+  "source_last_updated": "2026-03-13T00:00:00.000Z",
+  "execution_track": "mixed",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/startup-loop-security-audit/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Security audits are required before any site goes live. There is currently no security-audit domain in the S9B launch QA gate, no structured runtime/site-level security checklist in the startup loop, and the CI-level checks that exist are absent from app-specific deploy workflows.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Every site progressing through the startup loop to launch is checked against a structured security baseline (OWASP top 10 runtime/headers, dependency CVEs, secrets, auth hardening, cookie security) before it goes live, with a hard gate preventing S9B→SIGNALS advance when critical security failures are present.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — all changes are markdown skill files and YAML/workflow files",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No UI surface",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — CLI operator surface only; no UI state machine",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Operator-facing via `/lp-launch-qa` and `/startup-loop advance`",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Core deliverable: 8 OWASP runtime checks with hard-fail semantics; CI dependency audit + secret scanning",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03, TASK-04, TASK-05",
+      "gap_or_implication": "All tasks contribute to the security gate",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Security domain check results emitted into unified QA report; loop-state updated with security verdict; CI audit output logged",
+      "current_or_option_state": "TASK-01, TASK-02",
+      "gap_or_implication": "Domain schema includes evidence strings per check",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Integration-tested via live `/lp-launch-qa --domain security` run on brikette staging; cmd-advance gate tested via `/startup-loop advance` from S9B with no recent QA report",
+      "current_or_option_state": "TASK-01, TASK-04",
+      "gap_or_implication": "Follows untested domain module convention — live run is the test",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Domain output schema unchanged (additive only); loop-spec version bump to 3.15.0; cmd-advance.md two-entry update; SKILL.md spec_version sync",
+      "current_or_option_state": "TASK-02, TASK-03, TASK-04",
+      "gap_or_implication": "Additive; no downstream consumers affected",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — static markdown definitions and YAML; no runtime hot paths",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Domain modules are read by QA subagent at QA time",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Additive gate; existing loop state unaffected; rollback is revert of domain-security.md + cmd-advance.md entries",
+      "current_or_option_state": "TASK-01, TASK-03, TASK-04, TASK-05",
+      "gap_or_implication": "Gate only fires on new/re-run QA — not retroactive",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "The startup loop has no security audit gate: sites progress to launch without any check for OWASP runtime controls, dependency CVEs, secrets exposure, auth hardening, or HTTP headers. This plan adds a security domain to the S9B launch QA gate (`/lp-launch-qa`), enforces it via a new `cmd-advance/s9b-gates.md` module, registers the `GATE-LAUNCH-SEC` annotation in `loop-spec.yaml`, and adds `pnpm audit` + TruffleHog to the brikette and shared CI pipelines that currently bypass `ci.yml`'s security jobs. The chosen approach (Option D — extend `lp-launch-qa`, defer self-evolving) is architecturally",
+    "goals": [
+      "Add `domain-security.md` as the 7th domain in `lp-launch-qa` with 8 OWASP-focused checks as hard blockers.",
+      "Add `GATE-LAUNCH-SEC` to the S9B stage in `loop-spec.yaml` (version bump 3.14.0 → 3.15.0).",
+      "Create `cmd-advance/s9b-gates.md` + update `cmd-advance.md` Module Loading Order and Gate and Dispatch Map so GATE-LAUNCH-SEC is enforced (not just annotated) during S9B→SIGNALS advance.",
+      "Add `pnpm audit --audit-level=high` and TruffleHog to `brikette.yml`; add both to `reusable-app.yml` (shared pipeline for caryina + future apps).",
+      "Apply loop-wide: security gate is unconditional (`conditional: false` on S9B) — all businesses subject to it."
+    ],
+    "non_goals": [
+      "Penetration testing or manual red-team exercises.",
+      "Rewriting existing auth infrastructure.",
+      "Changing `ci.yml` core security jobs (they already work for non-brikette packages).",
+      "Self-evolving prescription registration (deferred to gap-fill dispatch after prescription registry schema is confirmed)."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Runtime HTTP header checks use `curl` against the deployed site URL (available from `latest.user.md`). Curl is standard in GitHub Actions and QA subagent contexts.",
+      "`stage-operator-map.json` is generated from `stage-operator-dictionary.yaml` (NOT `loop-spec.yaml`). No new stage is added by this plan, so regeneration is NOT automatically required. TASK-03 includes a parity check.",
+      "The QA report age window of 30 days (consistent with GATE-SELL-ACT-01 precedent) is appropriate for the security check freshness requirement."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Extend `lp-launch-qa` with `domain-security.md` (8 OWASP checks, hard-fail on critical failures).",
+      "Enforce via `cmd-advance/s9b-gates.md` (new) + `cmd-advance.md` (updated Module Loading Order and Gate and Dispatch Map).",
+      "Sync `startup-loop/SKILL.md` internal modules table and spec_version references.",
+      "Add `pnpm audit --audit-level=high` + TruffleHog to `brikette.yml` and `reusable-app.yml`.",
+      "Bump `loop-spec.yaml` to version 3.15.0 with GATE-LAUNCH-SEC annotation.",
+      "Why planning is not reopening option selection:",
+      "All three alternatives were eliminated in analysis with documented rationale.",
+      "No operator-only questions remain open.",
+      "The four-file enforcement path for TASK-04 was fully specified in the analysis critique loop."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Create `lp-launch-qa/modules/domain-security.md`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 89,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New file `.claude/skills/lp-launch-qa/modules/domain-security.md`",
+        "affects": "`.claude/skills/lp-launch-qa/modules/domain-security.md` (new)"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Update `lp-launch-qa/SKILL.md` to register security domain",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `.claude/skills/lp-launch-qa/SKILL.md`",
+        "affects": "`.claude/skills/lp-launch-qa/SKILL.md`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add `GATE-LAUNCH-SEC` to `loop-spec.yaml` (v3.14.0 → v3.15.0)",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 87,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `docs/business-os/startup-loop/specifications/loop-spec.yaml`",
+        "affects": "`docs/business-os/startup-loop/specifications/loop-spec.yaml`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Create `cmd-advance/s9b-gates.md` + 2 edits to `cmd-advance.md` + sync `startup-loop/SKILL.md`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 84,
+        "effort": "M",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New `.claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md`; modified `.claude/skills/startup-loop/modules/cmd-advance.md` (2 independent section edits: Module Loading Order AND Gate and Dispatch Map); modified `.claude/skills/startup-loop/SKILL.md` (2 independent edits: modules table AND spec_version refs). Scope: 3 files, 4 distinct edits.",
+        "affects": "`.claude/skills/startup-loop/modules/cmd-advance/s9b-gates.md` (new), `.claude/skills/startup-loop/modules/cmd-advance.md` (2 edits), `.claude/skills/startup-loop/SKILL.md` (2 edits)"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Add `pnpm audit` + TruffleHog to `brikette.yml` and `reusable-app.yml`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 84,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `.github/workflows/brikette.yml`; modified `.github/workflows/reusable-app.yml`",
+        "affects": "`.github/workflows/brikette.yml`, `.github/workflows/reusable-app.yml`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-03",
+      "TASK-05"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "**S9B launch QA gate**",
+          "trigger": "Operator runs `/lp-launch-qa --business <BIZ>` after DO completes",
+          "flow": "1. Skill dispatches 7 domain subagents in parallel (security added as 7th). 2. Security subagent runs 8 checks: HTTPS enforcement, HTTP security headers, CSP, cookie security flags, repository secrets exposure, auth hardening, CORS policy, dependency CVE audit. 3. If site URL unreachable → `status: fail` (hard). 4. Results merged into unified QA report. 5. GATE-LAUNCH-SEC failure → NO-GO verdict.",
+          "task_ids": [
+            "TASK-01",
+            "TASK-02"
+          ],
+          "dependency_note": null,
+          "seams": "Site unreachability must fail closed — `status: fail` not `status: warn`."
+        },
+        {
+          "id": null,
+          "label": "**S9B→SIGNALS advance gate**",
+          "trigger": "Operator runs `/startup-loop advance --business <BIZ>` from S9B",
+          "flow": "1. `cmd-advance.md` Module Loading Order rule 6 routes to `s9b-gates.md` for S9B→SIGNALS transition. 2. `s9b-gates.md` globs `docs/business-os/site-upgrades/<BIZ>/launch-qa-report-*.md`, parses YYYY-MM-DD from filename to determine age. 3. If no report or age >30 days → hard block. 4. If recent report has security domain `status: fail` → hard block with GATE-LAUNCH-SEC message. 5. If gate passes → advance proceeds normally. Consumer coupling: `s9b-gates.md` reads the QA report artifact written by `lp-launch-qa` (TASK-01/TASK-02); any schema change to the QA report requires updating `s9b-gates.",
+          "task_ids": [
+            "TASK-03",
+            "TASK-04"
+          ],
+          "dependency_note": null,
+          "seams": "30-day window uses filename date (not mtime); filesystem-only check (no HTTP call at advance time)."
+        },
+        {
+          "id": null,
+          "label": "**CI: brikette deploy pipeline**",
+          "trigger": "Push to `dev`, `staging`, or `main` with brikette-scoped changes",
+          "flow": "1. `brikette.yml` runs `pnpm audit --audit-level=high --filter brikette` (hard fail). 2. Runs TruffleHog `--only-verified` on git history. 3. Only if both pass → existing build/deploy/test jobs proceed.",
+          "task_ids": [
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "Pre-existing high/critical CVEs will block CI until remediated. TASK-05 must pre-check."
+        },
+        {
+          "id": null,
+          "label": "**CI: shared app pipeline**",
+          "trigger": "Push or `workflow_dispatch` triggering caryina (or future app) deploys",
+          "flow": "1. `reusable-app.yml` runs `pnpm audit --audit-level=high --filter <app-filter>` (hard fail). 2. Runs TruffleHog `--only-verified`. 3. Only if both pass → existing build/deploy jobs proceed.",
+          "task_ids": [
+            "TASK-05"
+          ],
+          "dependency_note": null,
+          "seams": "`app-filter` input from caller determines audit scope. TruffleHog covers full git history."
+        },
+        {
+          "id": null,
+          "label": "**Loop-spec stage definition**",
+          "trigger": "Loop-spec version bump to 3.15.0 (TASK-03)",
+          "flow": "1. `loop-spec.yaml` version bumped from 3.14.0 to 3.15.0. 2. S9B stage definition gains `GATE-LAUNCH-SEC: Hard` gate annotation. 3. Parity check: if `stage-operator-dictionary.yaml` spec_version also needs bumping, run regeneration of `stage-operator-map.json`; otherwise note advisory gap.",
+          "task_ids": [
+            "TASK-03"
+          ],
+          "dependency_note": null,
+          "seams": "`stage-operator-map.json` is NOT auto-regenerated from loop-spec changes — generator reads `stage-operator-dictionary.yaml`. No new stage added, so regeneration is conditional only."
+        }
+      ]
+    }
+  }
+}

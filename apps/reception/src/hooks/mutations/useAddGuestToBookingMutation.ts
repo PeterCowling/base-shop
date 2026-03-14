@@ -46,6 +46,8 @@
 import { useCallback } from "react";
 import { type Database, get, ref, update } from "firebase/database";
 
+import { roomsByDateGuestIdsPath, roomsByDateRoomPath } from "@acme/lib/hospitality";
+
 import { useFirebaseDatabase } from "../../services/useFirebase";
 import { getCurrentIsoTimestamp } from "../../utils/dateUtils";
 
@@ -410,8 +412,7 @@ async function addReplicatedGuest(
   // 14) read & merge occupant ID in /roomsByDate
   const roomsByDatePaths: Array<{ path: string; newGuestIds: string[] }> = [];
   for (const rNum of roomNumbers) {
-    const indexedRoom = `index_${rNum}`;
-    const rbdPath = `roomsByDate/${checkInDate}/${indexedRoom}/${rNum}`;
+    const rbdPath = roomsByDateRoomPath(checkInDate, rNum);
     const snapshot = await get(ref(database, rbdPath));
     const oldRecord = snapshot.exists()
       ? (snapshot.val() as Record<string, unknown>)
@@ -420,7 +421,10 @@ async function addReplicatedGuest(
       ? oldRecord.guestIds
       : [];
     const newGuestIds = Array.from(new Set([...oldGuestIds, newOccId]));
-    roomsByDatePaths.push({ path: `/${rbdPath}/guestIds`, newGuestIds });
+    roomsByDatePaths.push({
+      path: `/${roomsByDateGuestIdsPath(checkInDate, rNum)}`,
+      newGuestIds,
+    });
   }
 
   // 15) Build updates

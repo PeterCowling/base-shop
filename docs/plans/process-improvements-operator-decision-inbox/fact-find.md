@@ -5,7 +5,7 @@ Status: Ready-for-planning
 Domain: BOS | Startup Loop
 Workstream: Operations
 Created: 2026-03-10
-Last-updated: 2026-03-10
+Last-updated: 2026-03-11
 Feature-Slug: process-improvements-operator-decision-inbox
 Execution-Track: mixed
 Deliverable-Family: multi
@@ -304,6 +304,107 @@ None. The architecture pivot and action semantics are now specific enough to pla
 | Preserve route opacity while using existing routing machinery | Keeps operator UX simple without sacrificing precision |
 | Reuse Business OS API/auth/repo-write patterns | Reduces implementation risk and keeps the new surface consistent with the app |
 | Keep the generated report as read-only/reference mode during rollout | Lowers migration risk while the app becomes authoritative |
+
+## Operator Decision UX Findings
+### Current Decision-Surface Gap
+The current inbox card is still too system-shaped. It shows queue and artifact metadata clearly, but it does not yet give the operator the information needed to make a fast, confident `Do` / `Defer` / `Decline` decision.
+
+The operator-facing decision problem is simpler than the underlying workflow model. The operator needs enough context to answer three questions:
+
+1. What is the problem?
+2. Why should I care now?
+3. What will happen if I press `Do`?
+
+At present, the card over-emphasises dispatch identity, timestamps, and raw file paths. Those are useful evidence details, but they are not the primary inputs to the operator's decision.
+
+The primary reader must now be treated as potentially non-technical. The first read of the card should work for an operator or stakeholder who does not understand queue internals, route names, schema drift, or artifact filenames.
+
+### Evidence From Current UI
+- Current visible emphasis:
+  - Title
+  - repeated body sentence
+  - business / dispatch / created metadata
+  - raw provenance file paths
+  - `Do` / `Defer` / `Decline` buttons
+- Current missing decision support:
+  - why the item matters now
+  - expected effect of `Do`
+  - recommended action
+  - likely impact and likely effort
+  - what the confidence score actually means
+  - visible consequence text for `Defer` and `Decline`
+
+### Decision-Support Requirements
+- Replace the duplicated title/body pattern with a short operator brief:
+  - `Problem`
+  - `Why now`
+  - `Expected outcome if done`
+- Write the primary card copy for non-technical readers:
+  - no reliance on queue jargon, route labels, schema language, or raw file paths
+  - plain language first; system detail second
+- Show an operator-facing recommendation, even if the final choice remains human:
+  - Example shape: `Recommended: Do`
+  - Include one-sentence reasoning in plain language
+- Describe benefits in business-wide terms rather than local technical terms:
+  - examples: reduce repeat work, cut delivery delay, lower error risk, improve conversion reliability, prevent customer-facing confusion, protect team capacity
+  - avoid presenting the benefit only as a code or artifact cleanup
+- Translate machine confidence into human meaning:
+  - Keep the score if useful, but explain what is uncertain
+  - Example shape: `Confidence 57%: the issue is clear, but the exact remediation path still needs validation`
+- Make `Do` outcome explicit without exposing route choice as a control:
+  - Show the expected next step in plain language
+  - Example shape: `If you press Do, the system will hand this into the normal build/fact-find flow`
+- Explain button consequences on the card:
+  - `Do`: take this forward now through the normal process
+  - `Defer`: hide for 7 days, then return to the inbox
+  - `Decline`: close this idea and remove it from the active queue
+- Surface impact and effort in human terms:
+  - `Impact`
+  - `Effort`
+  - `Urgency`
+- Surface recurrence and recency together:
+  - Example shape: `Seen again today` / `Recurring issue`
+- Put provenance into plain English:
+  - Example shape: `Source: build review follow-up`
+- Demote system metadata and raw file paths into a collapsed evidence/details area:
+  - dispatch id
+  - raw artifact paths
+  - low-level provenance
+- Support an optional operator note:
+  - especially valuable for `Decline`
+  - useful for later audit and trust
+
+### Audience & Language Rules
+- Assume mixed readership:
+  - operators
+  - business stakeholders
+  - non-technical reviewers
+- The first screenful must be understandable without technical context.
+- Any technical source or artifact evidence should be translated into business meaning before it is shown raw.
+- Benefits must be phrased at the business level:
+  - what gets faster
+  - what gets safer
+  - what gets clearer
+  - what customer or team outcome improves
+- Raw technical evidence should remain available, but only as supporting detail behind the main decision brief.
+
+### Preferred Card Shape
+- Headline
+- Why this matters now
+- Recommended action and reason
+- Business-wide benefit if done
+- Expected next step if `Do`
+- Impact / Effort / Urgency / Recurrence
+- `Do` / `Defer` / `Decline` actions
+- Collapsed evidence details
+
+### Implications For Build Scope
+- The app cannot stop at wiring actions; it must also present decision-grade context.
+- Queue-native data is necessary but not sufficient. The projection/UI layer must transform system metadata into operator-readable decision support.
+- TASK-06 should be interpreted as a decision-support UI task, not only a list-and-buttons implementation.
+- Evidence details should remain available for trust and audit, but they should not dominate the primary card hierarchy.
+- UI copy and projection logic must explicitly translate technical findings into plain-English business impact.
+- Any recommendation model should justify `Do` in terms a non-technical stakeholder can evaluate, not only in terms an engineer would recognise.
 
 ## Scope Signal
 - **Signal:** right-sized

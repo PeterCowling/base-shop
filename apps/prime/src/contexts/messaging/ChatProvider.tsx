@@ -657,18 +657,49 @@ export function ChatProvider({ children }: ChatProviderProps) {
         return;
       }
 
-      const messageRef = push(ref(db, `${MSG_ROOT}/channels/${channelId}/messages`));
-      const message: Omit<Message, 'id'> = {
-        content: content.trim(),
-        senderId: session.uuid,
-        senderRole: 'guest',
-        senderName: session.firstName ?? undefined,
-        createdAt: Date.now(),
-      };
+      // Activity channels use raw UUIDs as channelId; direct channels use the dm_<uuid>_<uuid> format.
+      if (!channelId.startsWith('dm_')) {
+        // Activity channel send: route through server function for session validation and D1 shadow-write.
+        const activityResponse = await fetch('/api/activity-message', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          // prime_session HttpOnly cookie is sent automatically on this same-origin request
+          body: JSON.stringify({
+            activityId: channelId,
+            channelId,
+            content: content.trim(),
+          }),
+        });
 
-      await set(messageRef, message);
+        if (!activityResponse.ok) {
+          if (activityResponse.status === 429) {
+            const retryMs = parseRetryAfterMs(
+              activityResponse.headers,
+              DIRECT_MESSAGES_RETRY_FALLBACK_MS,
+            );
+            throw new Error(buildDirectRateLimitMessage(retryMs));
+          }
+
+          let errorMessage = 'Failed to send activity message.';
+          try {
+            const payload = await activityResponse.json() as { error?: string };
+            if (typeof payload.error === 'string' && payload.error.trim()) {
+              errorMessage = payload.error;
+            }
+          } catch {
+            // Keep default message for non-JSON or empty responses.
+          }
+          throw new Error(errorMessage);
+        }
+
+        return;
+      }
+
+      throw new Error('Unsupported channel type for sendMessage');
     },
-    [db],
+    [],
   );
 
   const value: ChatContextValue = {

@@ -1,0 +1,146 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "startup-loop-security-audit",
+  "source_artifact_path": "docs/plans/startup-loop-security-audit/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": null,
+    "intended_outcome_type": null,
+    "intended_outcome_statement": null,
+    "source": null
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "`UI / visual`",
+      "applicable": "N/A",
+      "current_or_option_state": "Domain modules are markdown files (no UI)",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "`UX / states`",
+      "applicable": "N/A",
+      "current_or_option_state": "Operator-facing via `/lp-launch-qa` CLI; no UI state machine",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "`Security / privacy`",
+      "applicable": "Required",
+      "current_or_option_state": "`ci.yml` has pnpm audit + TruffleHog; no runtime security checks in S9B",
+      "gap_or_implication": "**Primary gap**: OWASP headers, CSP, HTTPS, cookie flags, auth hardening missing from launch gate",
+      "carry_forward_or_notes": "Yes — core deliverable"
+    },
+    {
+      "coverage_area": "`Logging / observability / audit`",
+      "applicable": "Required",
+      "current_or_option_state": "QA report artifact written to `docs/business-os/site-upgrades/<BIZ>/`; loop state updated",
+      "gap_or_implication": "New security domain must produce a machine-readable check array (same as existing domains) for report inclusion",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "`Testing / validation`",
+      "applicable": "Required",
+      "current_or_option_state": "No automated tests for lp-launch-qa skill modules; domain-legal and domain-performance have no dedicated unit tests",
+      "gap_or_implication": "New domain module will follow same (untested) pattern; integration tested via a live QA run",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "`Data / contracts`",
+      "applicable": "Required",
+      "current_or_option_state": "Domain output schema is consistent across all 6 modules; loop-spec gate annotations follow a uniform pattern",
+      "gap_or_implication": "New module and gate must conform to existing schema; loop-spec version bump required",
+      "carry_forward_or_notes": "Yes"
+    },
+    {
+      "coverage_area": "`Performance / reliability`",
+      "applicable": "N/A",
+      "current_or_option_state": "Domain modules are static markdown check definitions; no runtime hot paths",
+      "gap_or_implication": "None",
+      "carry_forward_or_notes": "No"
+    },
+    {
+      "coverage_area": "`Rollout / rollback`",
+      "applicable": "Required",
+      "current_or_option_state": "Loop-spec version bump is additive; existing loop runs unaffected",
+      "gap_or_implication": "GATE-LAUNCH-SEC must not retroactively block businesses that have already passed S9B; gate applies only on new/re-run QA",
+      "carry_forward_or_notes": "Yes"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Add a security audit domain to the S9B launch QA gate (`/lp-launch-qa`) and integrate site-level security checks into the startup loop lifecycle. Security audits covering OWASP top-10 runtime controls, dependency CVEs, secrets exposure, auth hardening, and HTTP security headers must gate every site launch.",
+    "goals": [
+      "Add `domain-security.md` as the 7th domain module in `lp-launch-qa`, with OWASP-focused runtime checks as hard blockers.",
+      "Add GATE-LAUNCH-SEC to the loop-spec S9B stage definition.",
+      "Create `cmd-advance/s9b-gates.md` — a new advance gate module that enforces GATE-LAUNCH-SEC during the S9B→SIGNALS advance. Without this module, the gate is documented but not enforced by `/startup-loop advance`.",
+      "Extend CI to include `pnpm audit` and TruffleHog secret scanning in `.github/workflows/brikette.yml`. `ci.yml` explicitly excludes `apps/brikette/**` in `paths-ignore`, so brikette-only deploys bypass TruffleHog in `ci.yml` — this is a real gap. For `reusable-app.yml` (shared pipeline for caryina and future apps), add `pnpm audit` only; callers of the shared pipeline also trigger `ci.yml` which covers TruffleHog for non-brikette apps.",
+      "Register a self-evolving prescription candidate that periodically signals when security debt accumulates post-launch."
+    ],
+    "non_goals": [
+      "Penetration testing or manual red-team exercises (out of scope for an automated gate).",
+      "Rewriting auth infrastructure or implementing new auth systems (security gate checks existing implementation; does not rebuild it).",
+      "Changing the `ci.yml` core security jobs (they already exist and are correct)."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Site-level checks (headers, CSP) are done via automated HTTP request inspection using available tools (curl, online header checker APIs, or Lighthouse security audits where applicable).",
+      "The brikette app is the primary first consumer, but the gate is loop-wide (applies to caryina and future businesses too)."
+    ],
+    "key_entry_points": [],
+    "key_findings": [],
+    "analysis_readiness": {},
+    "rehearsal_issues": [
+      {
+        "Scope Area": "lp-launch-qa domain module structure",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Loop-spec S9B stage definition",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Gate annotation section is well-established; adding GATE-LAUNCH-SEC is straightforward",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "CI pipeline gaps",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "brikette.yml has no pnpm audit — confirmed by reading the workflow file",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Self-evolving prescription model",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "Policy state is shadow mode; prescription registry not fully investigated — no blocking risk",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Gate advance contract (cmd-advance modules)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "**Critical finding fixed**: cmd-advance has no S9B gate family. GATE-LAUNCH-SEC must be backed by a new `cmd-advance/s9b-gates.md` module AND registered in the startup-loop SKILL.md module routing table. TASK-04 added to address this.",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Existing S9B blocker/warning severity definitions",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Blocker: Conversion + Legal; blocker: P1–P3, M1/M2/M7. Security would add new blocker family",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

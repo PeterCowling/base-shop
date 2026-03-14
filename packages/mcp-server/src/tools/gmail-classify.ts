@@ -58,6 +58,8 @@ export const NON_CUSTOMER_FROM_PATTERNS = [
   "noreply@smtp.octorate.com",
   "noreply-apps-scripts-notifications@google.com",
   "cloudplatform-noreply@google.com",
+  "maps-noreply@google.com",
+  "noreply-local@google.com",
   "italoimpresa@mailing.italotreno.it",
   "cmcowling@me.com",
   "hostelpositano@gmail.com",
@@ -85,6 +87,58 @@ export const NON_CUSTOMER_SUBJECT_PATTERNS = [
   /\bprivacy policy\b/i,
   /\bannual report\b/i,
   /\bfattura\b/i,
+  /\bcashback\b/i,
+  /\bofferta\b/i,
+  /\bsconto\b/i,
+  /\bpromozione\b/i,
+  /\brisparmia\b/i,
+  /\bprotect yourself now\b/i,
+  /\bproteggiti ora\b/i,
+  /\bproteggiti\b/i,
+  /\binfestanti\b/i,
+  /\bdisinfestazione\b/i,
+  /\bleft a review\b/i,
+  /\bnew review\b/i,
+  /\bseo\b/i,
+  /\bwebsite traffic\b/i,
+  /\brank higher\b/i,
+  /\battract more customers\b/i,
+  /\binfluencer\b/i,
+  /\bcontent creator\b/i,
+  /\btravel guide\b/i,
+  /\byoutube channel\b/i,
+];
+
+export const LEAVE_IN_INBOX_SUBJECT_PATTERNS = [
+  /hostelworld confirmed booking - hostel brikette,\s*positano/i,
+  /^a customer saved their research$/i,
+];
+
+export const LEAVE_IN_INBOX_FROM_PATTERNS = [
+  "no-reply@revolut.com",
+  "infopoint@distrettocostadamalfi.it",
+  "ikea@news.email.ikea.it",
+  "no-reply@properties.booking.com",
+];
+
+export const NON_CUSTOMER_SNIPPET_PATTERNS = [
+  /\bincrease your website traffic\b/i,
+  /\bour seo strateg(?:y|ies)\b/i,
+  /\brank higher\b/i,
+  /\battract more customers\b/i,
+  /\bfree stay\b/i,
+  /\bcomplimentary stay\b/i,
+  /\bin exchange for\b/i,
+  /\bfeature (?:you|your hostel|your property)\b/i,
+  /\bfeature us on\b/i,
+  /\btravel guide\b/i,
+  /\byoutube channel\b/i,
+  /\bblog\/website\b/i,
+  /\binfluencer\b/i,
+  /\bcontent creator\b/i,
+  /\bcollaborat(?:e|ion)\b/i,
+  /\bseo strateg(?:y|ies)\b/i,
+  /\bwebsite traffic\b/i,
 ];
 
 export const CUSTOMER_SUBJECT_PATTERNS = [
@@ -160,6 +214,7 @@ export const CUSTOMER_DOMAIN_EXCEPTIONS = new Set([
 
 export type OrganizeDecision =
   | "needs_processing"
+  | "leave_in_inbox"
   | "booking_reservation"
   | "cancellation"
   | "promotional"
@@ -208,6 +263,14 @@ export function classifyOrganizeDecision(
     return { decision: "spam", reason: "matched-spam-pattern", senderEmail };
   }
 
+  if (LEAVE_IN_INBOX_FROM_PATTERNS.some(pattern => senderEmail === pattern)) {
+    return { decision: "leave_in_inbox", reason: "revolut-sender-leave-inbox", senderEmail };
+  }
+
+  if (LEAVE_IN_INBOX_SUBJECT_PATTERNS.some(pattern => pattern.test(subject))) {
+    return { decision: "leave_in_inbox", reason: "hostelworld-confirmed-booking-leave-inbox", senderEmail };
+  }
+
   const matchesBookingMonitorSender = BOOKING_MONITOR_FROM_PATTERNS.some((pattern) =>
     fromLower.includes(pattern)
   );
@@ -234,6 +297,9 @@ export function classifyOrganizeDecision(
   );
   const hasNonCustomerSubjectPattern = NON_CUSTOMER_SUBJECT_PATTERNS.some(pattern =>
     pattern.test(subject)
+  );
+  const hasNonCustomerSnippetPattern = NON_CUSTOMER_SNIPPET_PATTERNS.some(pattern =>
+    pattern.test(snippetLower)
   );
   const hasNonCustomerDomain =
     Boolean(senderDomain) &&
@@ -262,12 +328,14 @@ export function classifyOrganizeDecision(
     hasNoReplySender ||
     hasNonCustomerFromPattern ||
     hasNonCustomerSubjectPattern ||
+    hasNonCustomerSnippetPattern ||
     hasNonCustomerDomain ||
     hasListSignals;
 
   const hasStrongNonCustomerSignals =
     hasNoReplySender ||
     hasNonCustomerFromPattern ||
+    hasNonCustomerSnippetPattern ||
     hasNonCustomerDomain ||
     hasListSignals;
 

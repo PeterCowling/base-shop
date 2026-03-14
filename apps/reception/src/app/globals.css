@@ -3,7 +3,7 @@
 @config "../../tailwind.config.mjs";
 
 @import "@themes/base/tokens.css";
-@import "../../../../packages/themes/reception/tokens.css";
+@import "../styles/theme-tokens.generated.css";
 @import "tw-animate-css";
 @import "tailwindcss";
 

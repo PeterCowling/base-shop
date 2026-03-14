@@ -64,7 +64,8 @@
     "caryina:generate-theme-tokens": "node --import tsx ../scripts/caryina/generate-theme-tokens.ts",
     "xa-uploader:generate-theme-tokens": "node --import tsx ../scripts/xa-uploader/generate-theme-tokens.ts",
     "reception:generate-theme-tokens": "node --import tsx ../scripts/reception/generate-theme-tokens.ts",
-    "cochlearfit:generate-theme-tokens": "node --import tsx ../scripts/cochlearfit/generate-theme-tokens.ts"
+    "cochlearfit:generate-theme-tokens": "node --import tsx ../scripts/cochlearfit/generate-theme-tokens.ts",
+    "cover-me-pretty:generate-theme-tokens": "node --import tsx ../scripts/cover-me-pretty/generate-theme-tokens.ts"
   },
   "dependencies": {
     "@acme/lib": "workspace:*",

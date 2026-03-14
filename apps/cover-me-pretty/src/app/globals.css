@@ -1,6 +1,7 @@
 @config "../../../../tailwind.config.mjs";
 
 @import "@themes/base/tokens.css";
+@import "./theme-tokens.generated.css";
 @import "../../../../packages/ui/src/styles/builder.css";
 @import "../../../../packages/ui/src/styles/typography.css";
 @import "../../../../packages/ui/src/styles/forms.css";

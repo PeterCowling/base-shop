@@ -1,0 +1,47 @@
+/* ═══════════════════════════════════════════════════════════════════════
+ * AUTO-GENERATED — do not edit manually.
+ * Source: packages/themes/cover-me-pretty/src/ (assets.ts, design-profile.ts, theme-css-config.ts)
+ * Generator: scripts/cover-me-pretty/generate-theme-tokens.ts
+ * Regenerate: pnpm --filter scripts cover-me-pretty:generate-theme-tokens
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: light;
+
+  /* Profile */
+  --theme-transition-duration: 200ms;
+
+  /* Fonts */
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Geist", ui-sans-serif, system-ui, sans-serif;
+
+  /* Brand colors */
+  --color-brand-primary: #e8637a;
+  --color-brand-accent: #8fad8a;
+
+  /* Token overrides */
+  --color-bg: 0 0% 99%;
+  --color-fg: 340 10% 15%;
+  --color-fg-muted: 340 6% 45%;
+  --color-primary: 350 72% 65%;
+  --color-primary-fg: 0 0% 100%;
+  --color-primary-soft: 350 50% 95%;
+  --color-primary-hover: 350 72% 58%;
+  --color-primary-active: 350 72% 51%;
+  --color-accent: 120 16% 61%;
+  --color-accent-fg: 120 20% 18%;
+  --color-accent-soft: 120 12% 94%;
+  --color-border: 340 10% 88%;
+  --color-border-muted: 340 6% 93%;
+  --color-border-strong: 340 12% 76%;
+  --color-surface: 0 0% 100%;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+}
+
+.dark {
+  color-scheme: dark;
+
+}

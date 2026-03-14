@@ -167,8 +167,30 @@
   box-shadow: var(--elevation-5);
 }
 
-/* Command Centre scoped dark theme — process-improvements section only */
+/* Command Centre scoped theme — process-improvements section only */
+/* Light mode: inherit base tokens; only force hero foreground to dark text
+   (--hero-fg defaults to white in :root; must override for light surfaces) */
 .cmd-centre {
+  /* NOTE: do NOT use var(--color-fg-dark) here — it is near-white (0 0% 93%)
+     and would reproduce the contrast failure on light backgrounds */
+  --hero-fg: var(--color-fg);
+}
+
+/* Dark mode: restore dark-surface overrides */
+@media (prefers-color-scheme: dark) {
+  .cmd-centre {
+    --color-bg: 222 30% 10%;
+    --color-fg: 210 15% 92%;
+    --surface-1: 222 25% 12%;
+    --surface-2: 222 22% 14%;
+    --surface-3: 222 18% 16%;
+    --color-border: 222 20% 20%;
+    --color-border-muted: 222 18% 22%;
+    --color-fg-muted: 210 10% 60%;
+  }
+}
+
+html.theme-dark .cmd-centre {
   --color-bg: 222 30% 10%;
   --color-fg: 210 15% 92%;
   --surface-1: 222 25% 12%;

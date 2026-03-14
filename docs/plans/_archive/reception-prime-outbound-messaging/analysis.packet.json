@@ -1,0 +1,250 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-prime-outbound-messaging",
+  "source_artifact_path": "docs/plans/reception-prime-outbound-messaging/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-prime-outbound-messaging/fact-find.md",
+    "plan": "docs/plans/reception-prime-outbound-messaging/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Staff in Reception have no way to initiate a message to a guest through the Prime app. All threads today are created by shadow-write on inbound guest messages. `savePrimeReviewDraft` returns `not_found` when the thread row does not exist in D1.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Reception staff can compose a whole-hostel broadcast message (no prior guest message required) and have it appear in the Prime app for current guests. The guest Prime app provides an entry point to view broadcast messages from the `broadcast_whole_hostel` channel.",
+    "source": "dispatch"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Extends existing channel page JSX with a conditional block. Uses existing message list component. Adds a \"Staff messages\" link from the chat page.",
+      "current_or_option_state": "New page with own JSX. Potentially cleaner but requires duplicating the message list rendering pattern.",
+      "gap_or_implication": "**A1 chosen**: reuses existing render tree. Compose button in PrimeColumn header (B1).",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Leverages existing channel page loading/error states. Send form disabled via `channelMode === 'broadcast'` guard.",
+      "current_or_option_state": "Must re-implement loading/error states from scratch.",
+      "gap_or_implication": "A1: inherits states. Both options need send-disabled guard.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Guest cannot send to broadcast: conditional guard on `handleSendMessage` + send button disabled. `channelMode=broadcast` is URL-supplied — must validate `id` equals `'broadcast_whole_hostel'` exactly. Note: `WHOLE_HOSTEL_THREAD_ID` is not currently exported from `directMessageChannel.ts` (private to `prime-whole-hostel-campaigns.ts`); plan must export it or inline the string. Prefix-only check (`isBroadcastChannelId()`) is insufficient — would accept future `broadcast_booking_<id>` IDs.",
+      "current_or_option_state": "Hardcoded channel ID removes parameter forgery risk.",
+      "gap_or_implication": "A1: equality param validation required (export constant or inline string). A2: cleaner security. Chosen (A1) uses `id === 'broadcast_whole_hostel'` guard.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "No change to ChatProvider listener — same RTDB subscription as activity channels. Admission log via `recordPrimeMessageAdmission` on send path.",
+      "current_or_option_state": "Same.",
+      "gap_or_implication": "Both identical. Carry existing admission logging to new initiation endpoint.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Extends `page.test.tsx` with `mode=broadcast` cases. No new harness setup.",
+      "current_or_option_state": "New test file with new harness. Pattern established by `page.test.tsx` but requires duplication.",
+      "gap_or_implication": "A1: lower test setup cost.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No data model changes. `broadcast_whole_hostel` is the fixed thread ID.",
+      "current_or_option_state": "Same.",
+      "gap_or_implication": "Neither option requires schema changes.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "Single RTDB node `broadcast_whole_hostel/messages`. RTDB `onChildAdded` already handles this path. `upsertPrimeMessageThread` is idempotent — partial-completion (thread created, no draft) leaves system in recoverable state.",
+      "current_or_option_state": "Same.",
+      "gap_or_implication": "No fan-out needed. Synchronous Firebase projection acceptable. Rate limit on send path.",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "New `mode=broadcast` doesn't break existing `mode=activity` or `mode=direct` routes. Entire feature is additive (new endpoint, new mode, new compose button).",
+      "current_or_option_state": "Same additive characteristic. New route has no pre-existing users.",
+      "gap_or_implication": "Both fully additive. Rollback is file deletion. No DB migrations to revert.",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Reception staff need to initiate a whole-hostel broadcast message through the Prime guest app without requiring a prior inbound guest message. Two implementation forks exist: one for the guest-side broadcast display (new `mode=broadcast` branch in the existing channel page vs a standalone broadcast-viewer page), and one for the Reception compose UI (compose button in PrimeColumn header vs global floating action button). Both forks are resolved here so planning can begin with a decisive task decomposition.",
+    "goals": [
+      "Reception staff can compose and send a new whole-hostel broadcast message from the Inbox UI.",
+      "Sent messages appear in the Prime guest app for current guests navigating to a broadcast viewer.",
+      "Guests cannot post into broadcast channels (read-only for guests).",
+      "Auth chain is explicit: staff Firebase ID token → Reception API → Prime proxy token → Prime gate.",
+      "No schema migrations needed."
+    ],
+    "non_goals": [
+      "Per-booking or per-room audience targeting (Firebase occupancy lookup required — deferred to v2).",
+      "Push notifications to guests for new broadcast messages.",
+      "Guest-to-staff replies on broadcast channels.",
+      "Individual staff-to-guest DM initiation (requires `dm_*` channel creation with known guest UUID — different problem)."
+    ],
+    "constraints": [
+      "ChatProvider supports only one active `currentChannelId` at a time — auto-subscribe on session mount is not viable.",
+      "`upsertPrimeMessageThread` + `savePrimeReviewDraft` are sequential D1 writes within one HTTP request, not transactional.",
+      "All Prime staff endpoints must use `enforceStaffOwnerApiGate`.",
+      "Broadcast is a single shared RTDB node (`messaging/channels/broadcast_whole_hostel/messages`) — no fan-out required for v1."
+    ],
+    "assumptions": [
+      "`PRIME_STAFF_OWNER_GATE_TOKEN == RECEPTION_PRIME_ACCESS_TOKEN` in the production Prime deployment (confirmed indirectly via working review flow).",
+      "D1 schema migrations 0001–0004 are applied in production.",
+      "Reception Firebase auth (`requireStaffAuth`) is operational for the compose route."
+    ],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Minimal new surface area",
+        "Why it matters": "Fewer new files = lower defect introduction and simpler rollback",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Reuses existing patterns exactly",
+        "Why it matters": "Reduces implementation risk and review overhead",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Test seam quality",
+        "Why it matters": "New code must be independently testable at unit level",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "No disruption to existing chat UX",
+        "Why it matters": "Broadcast viewer must not interfere with activity/DM channels",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Rollout independence",
+        "Why it matters": "Prime CF function + guest app + Reception changes should deploy independently",
+        "Weight/priority": "Medium"
+      },
+      {
+        "Criterion": "Guest read-only enforcement",
+        "Why it matters": "Guests must not post into `broadcast_*` channels",
+        "Weight/priority": "High"
+      },
+      {
+        "Criterion": "Partial-failure behaviour",
+        "Why it matters": "Thread created but no draft is an acceptable transient state",
+        "Weight/priority": "Low"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A1: `mode=broadcast` branch in existing `chat/channel/page.tsx`",
+        "Description": "Add a third `ChannelMode` value `'broadcast'`. Skip `activity` requirement. Disable send form. Add nav entry point from chat page or nav.",
+        "Upside": "Zero new route files. Existing page.test.tsx harness reused directly. URL pattern consistent with activity/direct.",
+        "Downside": "Adds a third branch to an already branching page. Future per-booking channels would each need a URL param.",
+        "Key risks": "Must guard against guests using `?mode=broadcast` on non-broadcast channels.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "A2: Standalone `/chat/broadcast-viewer` page",
+        "Description": "New page at `apps/prime/src/app/(guarded)/chat/broadcast-viewer/page.tsx`. Hardcoded to `broadcast_whole_hostel`.",
+        "Upside": "Cleaner page with zero legacy branches. Channel ID doesn't need to be a URL param — can be hardcoded.",
+        "Downside": "New route file + new test file. Navigation from chat page requires a link to a different route.",
+        "Key risks": "No harness to inherit; new test from scratch (but straightforward).",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "Option",
+        "Description": "Description",
+        "Upside": "Upside",
+        "Downside": "Downside",
+        "Key risks": "Key risks",
+        "Viable?": "Viable?"
+      },
+      {
+        "Option": "---",
+        "Description": "---",
+        "Upside": "---",
+        "Downside": "---",
+        "Key risks": "---",
+        "Viable?": "---"
+      },
+      {
+        "Option": "B1: Compose button in PrimeColumn header",
+        "Description": "Small \"New broadcast\" button in the Prime column header alongside the column title, triggering a modal/drawer.",
+        "Upside": "Co-located with Prime threads — clear affordance. Consistent with the column's existing \"compose\" mental model. No InboxWorkspace changes needed.",
+        "Downside": "PrimeColumn header currently has icon + label + optional count badge — one additional element fits cleanly.",
+        "Key risks": "Minor layout constraint — manageable.",
+        "Viable?": "Yes"
+      },
+      {
+        "Option": "B2: Floating action button in InboxWorkspace",
+        "Description": "FAB positioned over the Prime column in the desktop layout.",
+        "Upside": "More visible. Common mobile pattern.",
+        "Downside": "InboxWorkspace is a wider-scope component — changes are harder to isolate. Requires z-index handling in 3-col layout.",
+        "Key risks": "Higher blast radius — touching the shared workspace layout is riskier.",
+        "Viable?": "Yes (less preferred)"
+      }
+    ],
+    "chosen_approach": {
+      "Recommendation": "Option A1 (`mode=broadcast` branch in `chat/channel/page.tsx`) + Option B1 (compose button in PrimeColumn header).",
+      "**Why this wins": "**",
+      "A1 over A2": "The existing `chat/channel/page.tsx` already has the correct test harness, the correct RTDB message rendering, and the correct ChatProvider integration. A `broadcast` mode adds one conditional branch and guards against the send form — the `direct` mode branch is the exact precedent. A new standalone page would duplicate 80% of the channel page code with no meaningful UX benefit. The URL param security risk (guest using `?mode=broadcast&id=broadcast_booking_<x>`) is mitigated by an equality check against the canonical string `'broadcast_whole_hostel'` — either via an exported constant added to ",
+      "B1 over B2": "PrimeColumn is a focused, isolated component that only concerns itself with Prime threads. Adding a \"New broadcast\" button to the column header is co-located with the relevant affordance and keeps `InboxWorkspace` unchanged. FAB approach (B2) would require z-index coordination in a shared 3-column layout and adds risk to the InboxWorkspace component which handles both mobile and desktop layouts.",
+      "**What it depends on": "**",
+      "A constant equal to `'broadcast_whole_hostel'` must be used for the equality security check in the `broadcast` mode branch. `WHOLE_HOSTEL_THREAD_ID` is currently a private constant in `apps/prime/functions/lib/prime-whole-hostel-campaigns.ts` and is NOT exported from `apps/prime/src/lib/chat/directMessageChannel.ts`. The plan must either": "(a) export this constant from `directMessageChannel.ts` (preferred — already the canonical channel naming module), or (b) inline the string `'broadcast_whole_hostel'` directly in the guard. Do not use `isBroadcastChannelId()` — it is a prefix-only check that would accept future `broadcast_booking_<id>` IDs.",
+      "PrimeColumn header currently renders": "an icon, the \"Prime\" label, and an optional thread count badge. Space is available for a small compose button alongside or below the header row."
+    },
+    "rejected_approaches": [
+      "**A2 (standalone broadcast-viewer page)** — rejected because it duplicates the channel page rendering logic without adding clarity. The `direct` mode branch in `chat/channel/page.tsx` is the exact precedent for a non-activity channel mode. Adding `broadcast` as a third mode is the lower-surface, lower-test-cost option.",
+      "**B2 (FAB in InboxWorkspace)** — rejected because it requires changes to `InboxWorkspace`, the shared 3-col layout root, which is a wider blast radius than needed. PrimeColumn-local compose button achieves the same goal with no shared component changes.",
+      "**Auto-subscribe on session mount** — rejected because ChatProvider maintains only one `currentChannelId`; setting it on mount would tear down any active activity or DM listener immediately. Must be an explicit navigation destination."
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": [
+        {
+          "id": null,
+          "label": "Staff broadcast initiation",
+          "current": "No path exists. `savePrimeReviewDraft` returns `not_found` for absent threads.",
+          "trigger": "Staff clicks \"New broadcast\" button in PrimeColumn header",
+          "future": "1. Staff clicks compose → modal/drawer opens with text area. 2. Staff enters message, clicks \"Send\". 3. Reception `POST /api/mcp/inbox/prime-compose` calls `requireStaffAuth` → extracts `actorUid`. 4. Route calls `initiatePrimeOutboundThread()` in `prime-review.server.ts` with text + actorUid. 5. Prime `POST /api/staff-initiate-thread` runs: `upsertPrimeMessageThread(db, { id: 'broadcast_whole_hostel', bookingId: '', channelType: 'broadcast', audience: 'whole_hostel' })` (note: `bookingId` is required at type level — plan must decide whether to use empty string or add a nullable variant to `Cr",
+          "steady": "Existing inbound-first flow unchanged. All prior review endpoints unaltered.",
+          "seams": "Partial completion (thread created, no draft): `upsertPrimeMessageThread` is idempotent — retry is safe. Draft creation failure leaves thread row but no draft; retry via same compose endpoint succeeds. Rate limit on send path should be KV-based per actorUid."
+        },
+        {
+          "id": null,
+          "label": "Guest broadcast viewing",
+          "current": "Channel page (`chat/channel/page.tsx`) renders \"Loading activity...\" indefinitely for broadcast channels. No guest-facing entry point exists.",
+          "trigger": "Guest navigates to \"Staff messages\" link in Prime chat page → `/chat/channel?mode=broadcast&id=broadcast_whole_hostel`",
+          "future": "1. Guest taps \"Staff messages\" link from the chat page. 2. Channel page loads with `mode=broadcast` (new third mode). 3. Page validates `id` param equals `'broadcast_whole_hostel'` exactly — if not, shows error (equality check, not prefix-only `isBroadcastChannelId()` which would accept future `broadcast_booking_<id>` IDs). 4. `useEffect` calls `setCurrentChannelId('broadcast_whole_hostel')`. 5. ChatProvider's existing non-dm_ branch subscribes to `messaging/channels/broadcast_whole_hostel/messages` via RTDB `onChildAdded`. 6. Messages render in the message list. 7. Send form is absent — guest",
+          "steady": "ChatProvider listener logic unchanged. Activity and DM channels unaffected. Page URL pattern consistent with existing channel routing.",
+          "seams": "Equality string check required. Note: `WHOLE_HOSTEL_THREAD_ID` is private in `prime-whole-hostel-campaigns.ts`; plan must export it from `directMessageChannel.ts` or inline `'broadcast_whole_hostel'`."
+        },
+        {
+          "id": null,
+          "label": "Reception compose capability",
+          "current": "No compose affordance in PrimeColumn. `InboxChannelCapabilities` has no compose flag.",
+          "trigger": "Staff arrives at Inbox page",
+          "future": "PrimeColumn header shows a \"New broadcast\" button (small `+` icon or labeled). Button is always visible in the column header — it is a column-level affordance, not gated by any thread capability flag. PrimeColumn does not receive channel descriptor objects, only thread summaries, so capability-flag gating is not applicable. Clicking the button opens a compose modal/drawer; state lives in PrimeColumn or a new `usePrimeCompose` hook. After send completes, modal closes. Thread list state is unchanged (sent threads are filtered out).",
+          "steady": "EmailColumn unchanged. InboxWorkspace unchanged. ThreadDetailPane unchanged. `InboxChannelCapabilities` type unchanged — no new `supportsCompose` flag needed.",
+          "seams": "Compose button is always rendered — ensure it is styled consistently with the column header and responsive on mobile."
+        }
+      ]
+    }
+  }
+}

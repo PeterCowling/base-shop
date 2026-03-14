@@ -1,6 +1,6 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: Platform
 Workstream: Engineering
 Created: 2026-03-14
@@ -10,6 +10,7 @@ Build-Wave-1: Complete (2026-03-14) — TASK-01 exported WHOLE_HOSTEL_BROADCAST_
 Build-Wave-2: Complete (2026-03-14) — TASK-02 new POST /api/staff-initiate-thread CF endpoint + 6 TCs; TASK-04 broadcast ChannelMode in chat/channel/page.tsx + 3 TCs. Commit 67d338b582. Lint/typecheck clean.
 Build-Wave-3: Complete (2026-03-14) — TASK-05 "Staff messages" Link in GuestDirectory.tsx (5 TCs); TASK-06 initiatePrimeOutboundThread in prime-review.server.ts (6 TCs). Commit e89101cadf. Typecheck + lint clean.
 Build-Wave-4: Complete (2026-03-14) — TASK-07 prime-compose route + prime_broadcast_initiated telemetry event (10 TCs). Commit 2522ba7a39. Typecheck + lint clean.
+Build-Wave-5: Complete (2026-03-14) — TASK-08 PrimeColumn compose button + broadcast modal (10 TCs). Commit 88bad52a9f. Lint + typecheck clean (ds/no-bare-rounded + ds/no-raw-tailwind-color fixed).
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-prime-outbound-messaging
 Dispatch-ID: IDEA-DISPATCH-20260314140001-BRIK-002
@@ -38,7 +39,7 @@ This plan delivers end-to-end whole-hostel broadcast messaging: Reception staff 
 - [x] TASK-05: "Staff messages" nav entry point in `GuestDirectory.tsx`
 - [x] TASK-06: Reception proxy function `initiatePrimeOutboundThread`
 - [x] TASK-07: Reception API route `POST /api/mcp/inbox/prime-compose`
-- [ ] TASK-08: PrimeColumn compose button + modal
+- [x] TASK-08: PrimeColumn compose button + modal
 
 ## Goals
 - Reception staff can compose and send a whole-hostel broadcast message with no prior inbound guest message required.
@@ -117,7 +118,7 @@ This plan delivers end-to-end whole-hostel broadcast messaging: Reception staff 
 | TASK-05 | IMPLEMENT | "Staff messages" nav entry point in `GuestDirectory.tsx` | 85% | S | Complete (2026-03-14) | TASK-01 | TASK-04 |
 | TASK-06 | IMPLEMENT | Reception proxy function `initiatePrimeOutboundThread` | 85% | S | Complete (2026-03-14) | TASK-02 | TASK-07 |
 | TASK-07 | IMPLEMENT | Reception API route `POST /api/mcp/inbox/prime-compose` | 85% | S | Complete (2026-03-14) | TASK-06 | TASK-08 |
-| TASK-08 | IMPLEMENT | PrimeColumn compose button + modal | 80% | M | Pending | TASK-07 | - |
+| TASK-08 | IMPLEMENT | PrimeColumn compose button + modal | 80% | M | Complete (2026-03-14) | TASK-07 | - |
 
 ## Engineering Coverage
 | Coverage Area | Planned handling | Tasks covering it | Notes |
@@ -572,10 +573,11 @@ This plan delivers end-to-end whole-hostel broadcast messaging: Reception staff 
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-14)
+- **Build evidence:** `PrimeColumn.tsx` extended with compose state (composeOpen/composeText/composeSending/composeError). "New broadcast" button (aria-label) in column header with Send + X icons. Modal uses `position: fixed` with `bg-surface/80 backdrop-blur-sm` overlay (ds/no-raw-tailwind-color compliant). Textarea `maxLength={2000}` with character count. `handleSend` calls `buildMcpAuthHeaders()` + `fetch('/api/mcp/inbox/prime-compose')`. Close button uses `rounded-lg` (ds/no-bare-rounded compliant). New test file `PrimeColumn.test.tsx` (10 TCs: TC-01 button present, TC-02 modal opens, TC-03 send disabled empty, TC-04 send enabled + fetch called, TC-05 200 closes modal, TC-06 503 error shown, TC-07 ESC/close, TC-08 thread list unaffected + email filter). All pass. Commit 88bad52a9f.
 - **Affects:**
   - `apps/reception/src/components/inbox/PrimeColumn.tsx`
-  - `apps/reception/src/components/inbox/PrimeColumn.test.tsx` (new or existing)
+  - `apps/reception/src/components/inbox/__tests__/PrimeColumn.test.tsx` (new)
 - **Depends on:** TASK-07
 - **Blocks:** -
 - **Confidence:** 80%

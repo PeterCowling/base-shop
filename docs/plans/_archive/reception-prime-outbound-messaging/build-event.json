@@ -1,0 +1,36 @@
+{
+  "event_type": "build_complete",
+  "emitted_at": "2026-03-14T10:40:00.000Z",
+  "feature_slug": "reception-prime-outbound-messaging",
+  "business": "BRIK",
+  "plan_path": "docs/plans/reception-prime-outbound-messaging/plan.md",
+  "build_record_path": "docs/plans/reception-prime-outbound-messaging/build-record.user.md",
+  "outcome_contract": {
+    "why": "Reception staff had no way to initiate a message to guests through the Prime app. All threads were created by shadow-write on inbound guest messages.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Reception staff can compose a whole-hostel broadcast message from the Reception inbox and have it appear in the Prime app for current guests.",
+    "source": "dispatch"
+  },
+  "dispatch_ids": [
+    "IDEA-DISPATCH-20260314140001-BRIK-002"
+  ],
+  "tasks_completed": [
+    "TASK-01",
+    "TASK-02",
+    "TASK-03",
+    "TASK-04",
+    "TASK-05",
+    "TASK-06",
+    "TASK-07",
+    "TASK-08"
+  ],
+  "commits": [
+    "5633aaebd5",
+    "67d338b582",
+    "e89101cadf",
+    "2522ba7a39",
+    "88bad52a9f"
+  ],
+  "execution_track": "code",
+  "deliverable_type": "code-change"
+}

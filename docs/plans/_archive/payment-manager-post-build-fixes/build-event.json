@@ -1,0 +1,13 @@
+{
+  "schema_version": "build-event.v1",
+  "build_id": "payment-manager-post-build-fixes-2026-03-14",
+  "feature_slug": "payment-manager-post-build-fixes",
+  "emitted_at": "2026-03-14T07:22:00.000Z",
+  "why": "The Payment Manager app had several correctness gaps introduced at initial build time — a broken refund currency field, a silent order sync failure due to an env var name mismatch, a missing auth guard on dashboard pages, and several code quality issues.",
+  "why_source": "operator",
+  "intended_outcome": {
+    "type": "operational",
+    "statement": "All identified correctness and security gaps in the Payment Manager initial build are resolved and verified against typecheck + lint before deploy.",
+    "source": "operator"
+  }
+}

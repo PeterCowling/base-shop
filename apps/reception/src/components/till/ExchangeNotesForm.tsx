@@ -100,7 +100,9 @@ export const ExchangeNotesForm = memo(function ExchangeNotesForm({
       >
         <p className="text-sm mb-4">{description}</p>
         <Button
-          className="mb-4 underline text-sm text-info-main"
+          color="info"
+          tone="ghost"
+          className="mb-4 text-sm"
           onClick={() =>
             setDirection((prev) =>
               prev === "drawerToSafe" ? "safeToDrawer" : "drawerToSafe"

@@ -142,7 +142,9 @@ function KeycardsModalComponent({
                     {current !== txn.depositType && (
                       <Button
                         onClick={() => handleSave(txn.id)}
-                        className="bg-primary-main hover:bg-primary-dark text-primary-fg px-2 py-1 rounded-lg"
+                        color="primary"
+                        tone="solid"
+                        className="px-2 py-1 rounded-lg"
                       >
                         Save
                       </Button>

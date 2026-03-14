@@ -118,7 +118,9 @@ function EodOverrideModalBase({ onConfirm, onCancel }: EodOverrideModalProps) {
           <Button
             type="button"
             onClick={onCancel}
-            className="min-h-11 min-w-11 rounded-lg bg-surface-3 px-4 py-2 text-foreground"
+            color="default"
+            tone="outline"
+            className="min-h-11 min-w-11 rounded-lg px-4 py-2"
             data-cy="eod-override-cancel"
           >
             Cancel

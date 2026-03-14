@@ -156,7 +156,7 @@ function VarianceBreakdownSection({
         <select
           id="variance-window"
           data-cy="variance-window-select"
-          className="border px-2 py-1 text-sm"
+          className="border border-border-2 rounded-md bg-surface px-2 py-1 text-sm text-foreground focus:outline-none focus:border-primary-main"
           value={varianceWindowDays}
           onChange={(e) => setVarianceWindowDays(Number(e.target.value))}
         >

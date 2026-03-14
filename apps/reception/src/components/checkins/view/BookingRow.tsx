@@ -82,7 +82,7 @@ const BookingRowView: FC<BookingRowViewProps> = ({
         <div className="flex items-center justify-center">
           <Input compatibilityMode="no-wrapper"
             type="text"
-            className="w-10 px-0.5 py-0.5 border-0 border-b border-border-2 text-center bg-transparent text-foreground text-sm font-mono focus:outline-none focus:border-primary-main/100"
+            className="w-10 px-0.5 py-0.5 border border-border-2 rounded-lg text-center bg-surface-2 text-foreground text-sm font-mono focus:outline-none focus:border-primary-main"
             value={draftValue}
             onChange={(e) => onDraftChange(e.target.value)}
             onBlur={onBlur}

@@ -67,7 +67,9 @@ function TenderRemovalModalBase({
           <Button
             onClick={onClose}
             aria-label="Close"
-            className="absolute right-0 top-0 h-7 w-7 rounded-full bg-error-main text-danger-fg transition-opacity hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-error-main"
+            color="danger"
+            tone="solid"
+            className="absolute right-0 top-0 h-7 w-7 rounded-full"
           >
             &times;
           </Button>
@@ -83,13 +85,13 @@ function TenderRemovalModalBase({
               compatibilityMode="no-wrapper"
               type="number"
               inputMode="decimal"
-              className="w-32 rounded-lg border px-3 py-2 text-sm"
+              className="w-32 rounded-lg border border-border-2 bg-surface px-3 py-2 text-sm text-foreground focus:outline-none focus:border-primary-main"
               placeholder="Amount"
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
             />
             <select
-              className="w-36 rounded-lg border px-2 py-2 text-sm"
+              className="w-36 rounded-lg border border-border-2 bg-surface px-2 py-2 text-sm text-foreground focus:outline-none focus:border-primary-main"
               value={removalType}
               onChange={(e) => setRemovalType(e.target.value as RemovalType)}
             >

@@ -1,0 +1,190 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-prime-shared-contract-layer",
+  "source_artifact_path": "docs/plans/reception-prime-shared-contract-layer/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-prime-shared-contract-layer/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Reception and the guest messaging app currently duplicate shared language in two places. If either side adds a field, renames a channel, or changes the security token format, the other side silently fails at runtime with no compile-time warning. Extracting to a shared package turns silent divergence into a build error.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Channel names, actor claims utilities, and the broadcast channel identifier are defined once in a shared package and imported by both apps. A mismatch between the two apps becomes a compile error, not a silent runtime failure.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A — no UI change",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Pure package refactor",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A — no user-facing state change",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Pure package refactor",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Actor claims algorithm shared from single source; `CLOCK_SKEW_SECONDS = 300` preserved; min-key-length assertion preserved; `serializePayload` fixed field order preserved; Web Crypto API only",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03, TASK-04",
+      "gap_or_implication": "Round-trip test in TASK-04 is the primary regression gate",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — no log/metric/audit path change",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Extract does not touch telemetry",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Round-trip sign→verify test; structural `satisfies` tests for complex types that stay per-app",
+      "current_or_option_state": "TASK-04",
+      "gap_or_implication": "Tests live in `packages/lib/__tests__/prime/` to prove cross-app accessibility",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "`./prime` export added to `packages/lib/package.json`; `PrimeReviewChannel` type moved from prime-review-api.ts to shared; `PRIME_CHANNELS` const drives `inboxChannels` composition",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "Wire formats unchanged; internal type graph unchanged",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — no hot path or latency change; actor claims sign/verify are already async per-request",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Identical implementation, identical runtime cost",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single PR; 8–10 file changes; Turborepo builds `@acme/lib` before apps by dependency order; rollback = revert PR",
+      "current_or_option_state": "TASK-01, TASK-02, TASK-03",
+      "gap_or_implication": "No feature flag needed; compile-time-only change visible to both apps simultaneously",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "This plan extracts the three highest-risk cross-app coupling points (Prime channel names, HMAC actor-claims utilities, and the whole-hostel broadcast channel ID) from their parallel per-app definitions into a new `@acme/lib/prime` sub-path. Both `apps/reception` and `apps/prime/functions` currently define these independently, meaning a field-order change or channel rename fails silently at runtime with no compile-time enforcement. After this change, both apps import from a single authoritative source, and any divergence becomes a build error. The extraction follows the exact structural pattern",
+    "goals": [
+      "Compile-time enforcement for the three highest-risk cross-app coupling points",
+      "No change to runtime behaviour",
+      "Minimum restructuring surface"
+    ],
+    "non_goals": [
+      "Extracting Prime's internal message-type graph (`MessageKind`, `MessageAudience`, etc.)",
+      "Unifying the full inbox API models (reception's intentional type widening stays)",
+      "Changing any API shape or wire format"
+    ],
+    "constraints": [],
+    "assumptions": [
+      "Prime functions tsconfig already supports `@acme/lib/prime` import (same pattern as `@acme/lib/hospitality` which Prime already uses)",
+      "`packages/lib` build config (`tsc -b`) handles new sub-directories automatically via `src/**/*.ts` glob in `tsconfig.json`",
+      "No new dependency edge is required — both apps already depend on `@acme/lib`"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "New `packages/lib/src/prime/` directory with three files: `channels.ts`, `actor-claims.ts`, `constants.ts`",
+      "`packages/lib/package.json` exports extended with `\"./prime\"` entry",
+      "Reception and Prime functions updated to import from `@acme/lib/prime`",
+      "Structural `satisfies` tests added in `packages/lib/__tests__/prime/`",
+      "Why planning is not reopening option selection:",
+      "Analysis evaluated three options with explicit criteria and rejected A (too broad) and B (insufficient for actor claims). Option C was decisive. No new facts have emerged since analysis."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass — three source files read, exact implementations verified, hospitality pattern confirmed",
+      "Sequenced": "Yes — TASK-01 is required before TASK-02/03; TASK-04 requires TASK-01",
+      "Edge-case review complete": "Yes — actor claims byte identity, inboxChannels type guard, Turborepo build order, Prime tsconfig",
+      "Auto-build eligible": "Yes — all tasks ≥80% confidence"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Create `packages/lib/src/prime/` sub-path",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "M",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New directory `packages/lib/src/prime/` with three TypeScript files; updated `packages/lib/package.json` exports",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Migrate reception to imports from `@acme/lib/prime`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated imports in three reception source files",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Migrate prime functions to imports from `@acme/lib/prime`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated imports in two prime functions source files",
+        "affects": null
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Add structural validation tests in `packages/lib/__tests__/prime/`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New test file `packages/lib/__tests__/prime/actor-claims-contract.test.ts`",
+        "affects": null
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. This is a compile-time refactor with no impact on runtime flows, CI/deploy lanes, operator runbooks, or approval paths.",
+      "areas": []
+    }
+  }
+}

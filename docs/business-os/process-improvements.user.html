@@ -359,7 +359,7 @@
   // ── Inline data extracted from results-review and build-record files ────────
   // Regenerate after each build cycle by re-running the extraction.
 
-  var GEN_TS = "2026-03-14T20:36:01.793Z";
+  var GEN_TS = "2026-03-14T20:41:02.810Z";
 
   var IDEA_ITEMS = [
     {
@@ -414,7 +414,7 @@
       "title": "Reception — A guest with no payment history shows as a free extension with no warning",
       "body": "If payment data hasn't been loaded for a booking, staff see a €0.00 price and might assume the extension is complimentary. They could process the extension and collect nothing when the guest should have been charged.",
       "source": "queue-state.json",
-      "date": "2026-03-14T20:36:01.845Z",
+      "date": "2026-03-14T20:41:02.850Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "591e2f0978f9ef8edc91e0c675ec6c4ba0a7926b",
       "priority_tier": "P4",
@@ -430,7 +430,7 @@
       "title": "Reception — Extension booking can be submitted with 0 extra nights, silently doing nothing",
       "body": "Staff can accidentally type 0 in the nights field and click Extend. The form accepts it without complaint, processes nothing, and gives no feedback. Fixing this ensures the form always requires at least 1 night before the Extend button is available.",
       "source": "queue-state.json",
-      "date": "2026-03-14T20:36:01.845Z",
+      "date": "2026-03-14T20:41:02.850Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "1e1e75c30e16dff9dde8d2e5fe04758aaf6a549c",
       "priority_tier": "P4",
@@ -628,25 +628,9 @@
       "title": "Reception — The city tax rate is buried in the code with no easy way to update it",
       "body": "Italian city tax rates are set by the municipality and change periodically. Having the number buried in the code means it can be missed in an update. A named constant makes it easy to find and change when the rate changes.",
       "source": "queue-state.json",
-      "date": "2026-03-14T20:36:01.846Z",
+      "date": "2026-03-14T20:41:02.851Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "532cb62ccb48840ac41896a493be7cb0908309f5",
-      "priority_tier": "P5",
-      "own_priority_rank": 10,
-      "urgency": "U2",
-      "effort": "M",
-      "proximity": null,
-      "reason_code": "RULE_P5_DEFAULT"
-    },
-    {
-      "type": "idea",
-      "business": "BRIK",
-      "title": "Reception — The extension page gets slower every month as the booking history grows",
-      "body": "As the hostel builds up booking history over months and years, the extension page will take increasingly longer to become usable. Limiting the scan to a sensible window keeps the page fast regardless of how much history has accumulated.",
-      "source": "queue-state.json",
-      "date": "2026-03-14T20:36:01.846Z",
-      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
-      "idea_key": "ca6e383c851c1a2a24984ac476377226782441aa",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",
@@ -660,7 +644,7 @@
       "title": "Reception — Extending an entire shared booking can leave some guests extended and others not if anything goes wrong mid-save",
       "body": "If a multi-guest extension is interrupted halfway through — by a network blip or any other error — some guests end up extended and others don't. The booking data is now inconsistent and staff have no easy way to know who was extended.",
       "source": "queue-state.json",
-      "date": "2026-03-14T20:36:01.845Z",
+      "date": "2026-03-14T20:41:02.850Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "d10abfcd09b81b44785f329eb462b6679a50a6a3",
       "priority_tier": "P5",
@@ -676,7 +660,7 @@
       "title": "Reception — Extension price is too low when some guests in a booking have already left",
       "body": "When a group booking has some guests leave early and others stay on, the extension price is split across everyone who was ever in the booking — including those who left. Staff collect less than the correct amount for the remaining guests.",
       "source": "queue-state.json",
-      "date": "2026-03-14T20:36:01.845Z",
+      "date": "2026-03-14T20:41:02.850Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "ff8ee2e7ea9c07961c97ac143883d217a10b7655",
       "priority_tier": "P5",
@@ -692,7 +676,7 @@
       "title": "Reception — Rooms not recognised by the system always appear available for extension",
       "body": "If a guest is assigned to a room that isn't set up in the system, the extension page shows them as available to extend — even if the room is full or fictional. Staff could extend a guest into a room that can't actually hold them.",
       "source": "queue-state.json",
-      "date": "2026-03-14T20:36:01.845Z",
+      "date": "2026-03-14T20:41:02.850Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "ef46cccefb21ca570219c701a11cb989c38e5589",
       "priority_tier": "P5",
@@ -708,9 +692,25 @@
       "title": "Reception — The button to extend an entire booking uses a nights value that isn't clearly linked to it",
       "body": "Staff might set different night counts in different rows expecting each person to get a different extension, then click the group Booking button and have everyone extended by the same number. The page gives no clue this is happening.",
       "source": "queue-state.json",
-      "date": "2026-03-14T20:36:01.845Z",
+      "date": "2026-03-14T20:41:02.850Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "45c732e1fcaaa123502ef8b7fb97d70b9ae2030a",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BRIK",
+      "title": "Reception — The extension page gets slower every month as the booking history grows",
+      "body": "As the hostel builds up booking history over months and years, the extension page will take increasingly longer to become usable. Limiting the scan to a sensible window keeps the page fast regardless of how much history has accumulated.",
+      "source": "queue-state.json",
+      "date": "2026-03-14T20:41:02.850Z",
+      "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
+      "idea_key": "ca6e383c851c1a2a24984ac476377226782441aa",
       "priority_tier": "P5",
       "own_priority_rank": 10,
       "urgency": "U2",
@@ -724,7 +724,7 @@
       "title": "Reception — The nights-to-extend number fields have no label for screen readers",
       "body": "Staff who use assistive technology see unlabelled number boxes on the extension page with no way to know what they're for. Adding a label fixes this immediately.",
       "source": "queue-state.json",
-      "date": "2026-03-14T20:36:01.845Z",
+      "date": "2026-03-14T20:41:02.850Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "0d81ae729d30ac718bb390e445e432126c9f6844",
       "priority_tier": "P5",
@@ -740,7 +740,7 @@
       "title": "Reception — When the extension page fails to load, staff can't tell what went wrong",
       "body": "When the extension page fails, staff see one unhelpful message and have no idea what to do. If the issue is with just one data source, partial information might still be usable. Specific error messages help staff decide whether to wait, retry, or call for support.",
       "source": "queue-state.json",
-      "date": "2026-03-14T20:36:01.845Z",
+      "date": "2026-03-14T20:41:02.850Z",
       "path": "docs/business-os/startup-loop/ideas/trial/queue-state.json",
       "idea_key": "19da8b3011df6898a21a237a0ca52290eedc5401",
       "priority_tier": "P5",
@@ -1912,6 +1912,16 @@
   var RISK_ITEMS = [];
 
   var PENDING_REVIEW_ITEMS = [
+    {
+      "type": "pending-review",
+      "business": "BOS",
+      "title": "Pending results review: caryina-theme-token-compiler",
+      "body": "Build is complete but no results review has been written yet.",
+      "suggested_action": "Write docs/plans/caryina-theme-token-compiler/results-review.user.md — four sections: what the build achieved, what needs updating in standing docs, new ideas spotted, and expansion opportunities.",
+      "source": "build-record.user.md",
+      "date": "2026-03-14T20:40:23.051Z",
+      "path": "docs/plans/caryina-theme-token-compiler/build-record.user.md"
+    },
     {
       "type": "pending-review",
       "business": "BOS",

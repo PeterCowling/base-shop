@@ -1,0 +1,169 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "analysis",
+  "feature_slug": "reception-prime-shared-contract-layer",
+  "source_artifact_path": "docs/plans/reception-prime-shared-contract-layer/analysis.md",
+  "source_artifact_status": "Ready-for-planning",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "fact_find": "docs/plans/reception-prime-shared-contract-layer/fact-find.md",
+    "plan": "docs/plans/reception-prime-shared-contract-layer/plan.md"
+  },
+  "outcome_contract": {
+    "why": "Reception and the guest messaging app currently duplicate shared language in two",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Channel names, actor claims utilities, and the broadcast",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Full — all auth types shared; large migration surface increases risk",
+      "current_or_option_state": "Partial — no enforcement for actor claims algorithm divergence",
+      "gap_or_implication": "**Full** — actor claims algorithm and payload contract shared; clock-skew window preserved",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Round-trip test possible; but heavy migration of message types creates many new test gaps",
+      "current_or_option_state": "Structural tests only; no round-trip test",
+      "gap_or_implication": "**Round-trip sign→verify test added; structural `satisfies` tests for remaining types**",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "All contracts enforced; but introduces prime message types as public API of @acme/lib",
+      "current_or_option_state": "No enforcement change",
+      "gap_or_implication": "**Channel + actor claims + broadcast ID enforced; complex types structurally tested**",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "N/A",
+      "gap_or_implication": "N/A",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Single PR; but larger migration surface increases conflict risk",
+      "current_or_option_state": "Single PR; trivial",
+      "gap_or_implication": "**Single PR; 5–7 files; rollback = revert**",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "decision_summary": "Reception and the Prime messaging app maintain parallel definitions of three coupling points that have no compile-time enforcement: Prime channel names, HMAC actor-claims utilities, and the whole-hostel broadcast channel ID. The decision is which extraction strategy gives the best compile-time safety with the lowest restructuring cost, given that both apps already depend on `@acme/lib`.",
+    "goals": [
+      "Compile-time enforcement for the three highest-risk cross-app coupling points",
+      "No change to runtime behaviour",
+      "Minimum restructuring surface"
+    ],
+    "non_goals": [
+      "Extracting Prime's internal message-type graph (`MessageKind`, `MessageAudience`, etc.)",
+      "Unifying the full inbox API models (reception's intentional type widening stays)",
+      "Changing any API shape or wire format"
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "evaluation_criteria": [
+      {
+        "Criterion": "Compile-time safety",
+        "Why it matters": "Divergence currently fails silently at runtime",
+        "Priority": "High"
+      },
+      {
+        "Criterion": "Restructuring surface",
+        "Why it matters": "Minimal disruption to both apps' internal type graphs",
+        "Priority": "High"
+      },
+      {
+        "Criterion": "Test coverage gain",
+        "Why it matters": "Round-trip test for actor claims is currently absent",
+        "Priority": "High"
+      },
+      {
+        "Criterion": "Migration risk",
+        "Why it matters": "Actor claims HMAC is load-bearing; regression = broken inbox",
+        "Priority": "Critical"
+      },
+      {
+        "Criterion": "Rollback simplicity",
+        "Why it matters": "Must be revertable in one PR",
+        "Priority": "Medium"
+      }
+    ],
+    "options_considered": [
+      {
+        "Option": "A — Full extraction",
+        "Description": "Move all Prime response types to `@acme/lib/prime`: channels, actor claims, `PrimeReviewThreadSummary`, `PrimeReviewThreadDetail`, `PrimeReviewCampaignDetail`, broadcast ID",
+        "Upside": "All shared language in one place; maximum compile-time coverage",
+        "Downside": "Requires importing prime-internal message types (`MessageKind`, `MessageAudience`, `MessageAttachment`, `MessageLink`, `MessageCard`) into `@acme/lib`; large surface increase",
+        "Key risks": "Complex deps in shared package; reception's intentional type widening would need to be abandoned or replicated via mapped types",
+        "Viable?": "No — complexity cost exceeds safety gain"
+      },
+      {
+        "Option": "B — Structural tests only",
+        "Description": "Keep all parallel definitions; add TypeScript `satisfies` assertions in a cross-app test file",
+        "Upside": "Zero refactoring risk; zero migration surface",
+        "Downside": "Does not give compile-time enforcement for actor claims (runtime HMAC breakage stays silent at compile time); structural tests only catch type drift, not algorithm drift",
+        "Key risks": "Algorithm divergence in actor claims would still compile",
+        "Viable?": "No — insufficient for the highest-risk coupling point (actor claims)"
+      },
+      {
+        "Option": "C — Targeted extraction + structural tests",
+        "Description": "Extract to `@acme/lib/prime`: channel const, actor claims sign+verify, broadcast ID constant. Add `satisfies` tests for complex types that stay in-app",
+        "Upside": "Compile-time guarantee for the three highest-risk points; follows existing `@acme/lib/hospitality` pattern; minimal restructuring",
+        "Downside": "Complex types (`PrimeReviewThreadSummary`, etc.) still duplicated (mitigated by structural tests)",
+        "Key risks": "Actor claims migration must preserve byte-identical serialization; one wrong change breaks all mutating Prime calls",
+        "Viable?": "**Yes — chosen**"
+      }
+    ],
+    "chosen_approach": {
+      "Actor claims are the highest-risk coupling point": "an algorithm divergence (field order change,"
+    },
+    "rejected_approaches": [
+      "**Option A (full extraction)** — extracting `PrimeReviewCampaignDetail` and detail types",
+      "**Option B (structural tests only)** — structural tests do not catch algorithm divergence in"
+    ],
+    "planning_handoff": {
+      "planning_focus": [],
+      "validation_implications": [],
+      "sequencing_constraints": [],
+      "risks_to_carry_forward": []
+    },
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "areas": []
+    }
+  }
+}

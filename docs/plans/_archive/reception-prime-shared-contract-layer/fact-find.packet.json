@@ -1,0 +1,228 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-prime-shared-contract-layer",
+  "source_artifact_path": "docs/plans/reception-prime-shared-contract-layer/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-prime-shared-contract-layer/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Reception and the guest messaging app currently duplicate shared language in two",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Channel names, actor claims utilities, and the broadcast",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "No UI changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "No UX changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "Actor claims HMAC is the auth mechanism for all mutating Prime ops",
+      "gap_or_implication": "Parallel implementations could diverge; shared module eliminates this",
+      "carry_forward_or_notes": "Plan must specify clock-skew window and key-length requirements in shared impl"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No logging changes",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "No tests currently verify reception→prime sign/verify round-trip",
+      "gap_or_implication": "Add round-trip test using shared sign+verify",
+      "carry_forward_or_notes": "Plan must include a test importing from both apps to prove round-trip works"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "Three cross-app contracts currently unchecked: channels, actor claims, broadcast ID",
+      "gap_or_implication": "Extraction replaces copy-paste with a single source; PrimeReviewThreadSummary structural test needed",
+      "carry_forward_or_notes": "Plan must specify structural test approach for types not extracted"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "No hot paths affected",
+      "gap_or_implication": "—",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Both apps must be updated atomically (or reception updated first since it just imports)",
+      "gap_or_implication": "Standard monorepo deploy; both apps redeploy from same commit",
+      "carry_forward_or_notes": "Ship in one PR; rollback is a revert"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Reception and the Prime messaging app define channel names, API response types, actor-claims utilities, and the whole-hostel broadcast channel ID as independent parallel definitions with no shared source. A change in either app compiles clean but can silently break the other at runtime. This fact-find maps every cross-app coupling point and identifies the minimum extraction that gives compile-time safety without restructuring either app's internal types.",
+    "goals": [
+      "Identify every coupling point between reception and prime that currently has no type",
+      "Determine the safest extraction strategy for each coupling point.",
+      "Assess whether `@acme/lib` is the right package for extraction (no cyclic deps, both apps",
+      "Produce a plan that gives compile-time guarantees for the highest-risk coupling points"
+    ],
+    "non_goals": [
+      "Rewriting prime's internal `MessageKind`, `MessageAudience`, `MessageAttachment` types.",
+      "Unifying the inbox API models (reception intentionally widens prime types to avoid importing",
+      "Changing any runtime behaviour."
+    ],
+    "constraints": [
+      "Prime functions run in Cloudflare Workers (Web Crypto API, no Node.js `crypto` module).",
+      "`@acme/lib` must not import from `apps/prime` or `apps/reception` (one-way dep only).",
+      "Turbopack resolveAlias constraints apply to reception — see CLAUDE.md."
+    ],
+    "assumptions": [
+      "Both apps import `@acme/lib` already. Reception uses `@acme/lib/hospitality`. Prime",
+      "The actor claims Web Crypto implementation is compatible across Next.js server and"
+    ],
+    "key_entry_points": [],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Primary blocker": "None",
+      "Confidence floor met": "Yes — Implementation ≥80, Delivery-Readiness ≥80",
+      "Open questions requiring operator input": "None",
+      "Recommended next step": "Proceed to `/lp-do-analysis reception-prime-shared-contract-layer`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "Actor claims sign contract (both apps)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Actor claims verify contract (Prime)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Channel names — reception side",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Channel names — Prime side",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Broadcast channel ID usage",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — string literal is stable; confirmed no BROADCAST_CHANNEL_PREFIX constant exists in production code",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "PrimeReviewThreadSummary structural parity",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "Confirmed: reception uses intentionally-widened types (string unions vs specific enums)",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Package dependency graph",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "No new deps needed — prime already imports @acme/lib/hospitality",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Turbopack/tsconfig paths impact",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "@acme/lib resolves via node_modules, not tsconfig paths — no paths entry needed",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Reception's inbox routes need to call Prime's HTTP API. To do so they send",
+      "end_condition": "Each coupling works today only because both implementations happen to",
+      "areas": [
+        {
+          "id": null,
+          "label": "Actor claims signing (Reception)",
+          "flow": null,
+          "owners": null,
+          "evidence": null,
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "Actor claims verification (Prime)",
+          "flow": null,
+          "owners": null,
+          "evidence": null,
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "Channel names (Reception)",
+          "flow": null,
+          "owners": null,
+          "evidence": null,
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "Channel names (Prime)",
+          "flow": null,
+          "owners": null,
+          "evidence": null,
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "PrimeReviewThreadSummary (Reception)",
+          "flow": null,
+          "owners": null,
+          "evidence": null,
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "PrimeReviewThreadSummary (Prime)",
+          "flow": null,
+          "owners": null,
+          "evidence": null,
+          "issues": null
+        },
+        {
+          "id": null,
+          "label": "Broadcast channel ID",
+          "flow": null,
+          "owners": null,
+          "evidence": null,
+          "issues": null
+        }
+      ]
+    }
+  }
+}

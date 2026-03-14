@@ -1,11 +1,11 @@
 ---
 Type: Plan
-Status: Active
+Status: Archived
 Domain: UI
 Workstream: Engineering
 Created: 2026-03-14
 Last-reviewed: 2026-03-14
-Last-updated: 2026-03-14T21:30:00Z
+Last-updated: 2026-03-14T22:00:00Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-theme-token-compiler
 Dispatch-ID: none
@@ -32,7 +32,7 @@ Reception is the last major app still using a hand-authored `tokens.css` generat
 - [x] TASK-02: Create generate script and produce `theme-tokens.generated.css`
 - [x] TASK-03: Write `generated-parity.test.ts`
 - [x] TASK-04: Write `coverage-parity.test.ts`
-- [ ] TASK-05: Swap `globals.css` import and update Tailwind shade bridge
+- [x] TASK-05: Swap `globals.css` import and update Tailwind shade bridge
 
 ## Goals
 
@@ -121,7 +121,7 @@ Reception is the last major app still using a hand-authored `tokens.css` generat
 | TASK-02 | IMPLEMENT | Create generate script and produce generated CSS file | 85% | M | Complete (2026-03-14) | TASK-01 | TASK-03, TASK-04, TASK-05 |
 | TASK-03 | IMPLEMENT | Write `generated-parity.test.ts` | 85% | M | Complete (2026-03-14) | TASK-02 | TASK-05 |
 | TASK-04 | IMPLEMENT | Write `coverage-parity.test.ts` | 85% | M | Complete (2026-03-14) | TASK-02 | TASK-05 |
-| TASK-05 | IMPLEMENT | Swap `globals.css` import + update Tailwind shade bridge | 90% | S | Pending | TASK-02, TASK-03, TASK-04 | - |
+| TASK-05 | IMPLEMENT | Swap `globals.css` import + update Tailwind shade bridge | 90% | S | Complete (2026-03-14) | TASK-02, TASK-03, TASK-04 | - |
 
 ## Engineering Coverage
 
@@ -472,10 +472,15 @@ Reception is the last major app still using a hand-authored `tokens.css` generat
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** S
-- **Status:** Pending
+- **Status:** Complete (2026-03-14)
 - **Affects:** `apps/reception/src/app/globals.css`, `apps/reception/tailwind.config.mjs`
 - **Depends on:** TASK-02, TASK-03, TASK-04
 - **Blocks:** -
+- **Build evidence:**
+  - Changed `apps/reception/src/app/globals.css` line 6 from `@import "../../../../packages/themes/reception/tokens.css"` to `@import "../styles/theme-tokens.generated.css"`.
+  - Changed all 35 `receptionShadeColors` entries in `apps/reception/tailwind.config.mjs` from `"hsl(var(--color-*Shades-*))"` to `"var(--color-*Shades-*)"`. Added explanatory comment.
+  - `npx tsc --project apps/reception/tsconfig.json --noEmit` — 0 errors.
+  - Post-build validation: typecheck passes; both file edits are targeted and correct.
 - **Confidence:** 90%
   - Implementation: 90% — two small targeted edits; exact change is clear.
   - Approach: 90% — confirmed from fact-find; double-wrapping bug analysis is correct.

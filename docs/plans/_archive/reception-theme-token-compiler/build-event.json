@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-14T22:00:00.000Z",
+  "feature_slug": "reception-theme-token-compiler",
+  "why": "Reception's theme was the last major app still using a hand-authored token file. Unifying both apps on the compiler pipeline eliminates a category of drift — colour changes now need one edit in tokens.ts and the generated file stays in sync.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "Reception's theme tokens are compiled by generateThemeCSS and the generated CSS file matches the current hand-authored tokens.css in both content and runtime behaviour. Both parity tests pass in CI.",
+  "source": "auto",
+  "completed_at": "2026-03-14T22:00:00.000Z",
+  "task_count": 5,
+  "tasks_completed": 5
+}

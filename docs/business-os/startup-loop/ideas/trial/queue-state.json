@@ -1,7 +1,7 @@
 {
-  "last_updated": "2026-03-14T20:44:51.275Z",
+  "last_updated": "2026-03-14T20:47:19.148Z",
   "counts": {
-    "enqueued": 73,
+    "enqueued": 74,
     "processed": 34,
     "declined": 2,
     "skipped": 1,
@@ -9,11 +9,11 @@
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 424,
-    "fact_find_ready": 46,
+    "fact_find_ready": 47,
     "plan_ready": 0,
     "micro_build_ready": 24,
     "briefing_ready": 1,
-    "total": 741
+    "total": 742
   },
   "dispatches": [
     {
@@ -36750,6 +36750,125 @@
             "fact-find.md"
           ],
           "expected_signal_change": "Address build-origin signal \"The token compiler retrofit pattern (theme-css-config + generate script + two parity tests) is now applied to two apps (brikette, caryina). A codified \"retrofit theme compiler\" skill could accelerate applying the same pattern to remaining packages (xa-uploader, reception) with lower research overhead. Trigger: second retrofit completed with minimal deviation from brikette pattern.\" through the canonical lp-do-fact-find queue path.",
+          "risk_class": "low",
+          "maturity": "unknown"
+        }
+      }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314204719-0001",
+      "mode": "trial",
+      "business": "BOS",
+      "trigger": "operator_idea",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "11be8d5a37e305171aafc5c8213266a0a63963b5",
+      "root_event_id": "build-origin:reception-theme-token-compiler:11be8d5a37e305171aafc5c8213266a0a63963b5",
+      "anchor_key": "theme-css-config-population-the-tokenvarmap-in-theme-css-config-ts-is-mechanical",
+      "cluster_key": "build-origin:bos:reception-theme-token-compiler:theme-css-config-population-the-tokenvarmap-in-theme-css-config-ts-is-mechanical",
+      "cluster_fingerprint": "fed702ea6388cc6221793eb6f499c976b2c3bf4537f57e057b3eb0f4c74ddef2",
+      "lineage_depth": 0,
+      "area_anchor": "theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically.",
+      "location_anchors": [
+        "docs/plans/reception-theme-token-compiler/results-review.user.md",
+        "docs/plans/reception-theme-token-compiler/results-review.signals.json",
+        "docs/plans/reception-theme-token-compiler/pattern-reflection.user.md"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "AI-to-mechanistic — theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically.",
+      "next_scope_now": "Fact-find the build-origin improvement candidate \"theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically.\" and validate the next action.",
+      "adjacent_later": [],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": "P3",
+      "confidence": 0.55,
+      "evidence_refs": [
+        "docs/plans/reception-theme-token-compiler/results-review.user.md",
+        "docs/plans/reception-theme-token-compiler/results-review.signals.json",
+        "docs/plans/reception-theme-token-compiler/pattern-reflection.user.md"
+      ],
+      "created_at": "2026-03-14T20:47:19.139Z",
+      "queue_state": "enqueued",
+      "why": "Build review surfaced \"theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically.\" with supporting narrative: AI-to-mechanistic — theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Produce a validated fact-find and next action for theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically..",
+        "source": "auto"
+      },
+      "build_origin": {
+        "schema_version": "dispatch-build-origin.v1",
+        "build_signal_id": "11be8d5a37e305171aafc5c8213266a0a63963b5",
+        "recurrence_key": "300000a2a3310fefebd5773c49eefcf341b8b4d6",
+        "review_cycle_key": "reception-theme-token-compiler",
+        "plan_slug": "reception-theme-token-compiler",
+        "canonical_title": "theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically.",
+        "primary_source": "results-review.signals.json",
+        "merge_state": "single_source",
+        "source_presence": {
+          "results_review_signal": true,
+          "pattern_reflection_entry": false
+        },
+        "results_review_path": "docs/plans/reception-theme-token-compiler/results-review.user.md",
+        "results_review_sidecar_path": "docs/plans/reception-theme-token-compiler/results-review.signals.json",
+        "pattern_reflection_path": "docs/plans/reception-theme-token-compiler/pattern-reflection.user.md",
+        "pattern_reflection_sidecar_path": null,
+        "gap_case": {
+          "schema_version": "gap-case.v1",
+          "gap_case_id": "gap-35e33d6e24e813b2",
+          "source_kind": "build_origin",
+          "business_id": "BOS",
+          "stage_id": null,
+          "capability_id": null,
+          "gap_type": "build_origin_rule_p4_process_quality",
+          "reason_code": "rule_p4_process_quality",
+          "severity": 0.5,
+          "evidence_refs": [
+            "docs/plans/reception-theme-token-compiler/results-review.user.md",
+            "docs/plans/reception-theme-token-compiler/results-review.signals.json",
+            "docs/plans/reception-theme-token-compiler/pattern-reflection.user.md"
+          ],
+          "recurrence_key": "300000a2a3310fefebd5773c49eefcf341b8b4d6",
+          "requirement_posture": "optional_improvement",
+          "blocking_scope": "degrades_quality",
+          "structural_context": {
+            "plan_slug": "reception-theme-token-compiler",
+            "review_cycle_key": "reception-theme-token-compiler",
+            "primary_source": "results-review.signals.json",
+            "merge_state": "single_source",
+            "source_presence": {
+              "results_review_signal": true,
+              "pattern_reflection_entry": false
+            },
+            "results_review_fields": {
+              "priority_tier": "P4",
+              "urgency": "U2",
+              "effort": "M",
+              "reason_code": "RULE_P4_PROCESS_QUALITY"
+            },
+            "reflection_fields": null
+          },
+          "runtime_binding": {
+            "binding_mode": "compiled_to_candidate",
+            "candidate_id": "cand-477275048050a985"
+          }
+        },
+        "prescription": {
+          "schema_version": "prescription.v1",
+          "prescription_id": "rx-9f8b44526057ed0c",
+          "prescription_family": "build_origin_fact_find_candidate",
+          "source": "build_origin",
+          "gap_types_supported": [
+            "build_origin_rule_p4_process_quality"
+          ],
+          "required_route": "lp-do-fact-find",
+          "required_inputs": [
+            "docs/plans/reception-theme-token-compiler/results-review.signals.json"
+          ],
+          "expected_artifacts": [
+            "fact-find.md"
+          ],
+          "expected_signal_change": "Address build-origin signal \"theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically.\" through the canonical lp-do-fact-find queue path.",
           "risk_class": "low",
           "maturity": "unknown"
         }

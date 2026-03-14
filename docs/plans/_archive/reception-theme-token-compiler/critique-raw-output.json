@@ -1,0 +1,29 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-theme-token-compiler/plan.md",
+      "line": "330",
+      "message": "The planned parity gate only proves \"committed generated file == current generator output.\" It does not verify the stated migration target at lines 40/72, namely matching the current `packages/themes/reception/tokens.css`, so an incorrect initial `tokenVarMap` or post-processing step can still ship with green CI."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-theme-token-compiler/plan.md",
+      "line": "65",
+      "message": "This assumption is wrong. `packages/themes/reception/tokens.css` does not currently contain `color-scheme` declarations, while `packages/themes/base/src/build-theme-css.ts` always emits them, and the plan also explicitly accepts a new `--theme-transition-duration` var at lines 94/532. That means this is not an \"identical semantic content\" retrofit as written; it introduces behavior deltas that need to be called out and validated explicitly."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-theme-token-compiler/plan.md",
+      "line": "542",
+      "message": "A required package-contract change is only buried in rehearsal notes. `packages/themes/reception/package.json` currently lacks `./theme-css-config`, but no active task or acceptance block owns that edit, so TASK-02 has a hidden prerequisite and the generator import path is left underspecified."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "round": 1,
+  "lp_score": 3.5,
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1"
+}

@@ -1,0 +1,53 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-14T20:46:36.643Z",
+  "plan_slug": "reception-theme-token-compiler",
+  "review_cycle_key": "reception-theme-token-compiler",
+  "source_path": "docs/plans/reception-theme-token-compiler/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New skill — theme-token-compiler retrofit: pattern of (1) authoring theme-css-config.ts → (2) running a generate script → (3) adding parity tests → (4) swapping CSS import has now been applied to brikette and reception. Three more apps remain (caryina, xa-uploader, others). This is a recurring, bounded, codifiable workflow. Candidate for a skill or at minimum a documented playbook to accelerate future migrations.",
+      "body": "New skill — theme-token-compiler retrofit: pattern of (1) authoring theme-css-config.ts → (2) running a generate script → (3) adding parity tests → (4) swapping CSS import has now been applied to brikette and reception. Three more apps remain (caryina, xa-uploader, others). This is a recurring, bounded, codifiable workflow. Candidate for a skill or at minimum a documented playbook to accelerate future migrations.",
+      "source": "results-review.user.md",
+      "date": "2026-03-14T00:00:00.000Z",
+      "path": "docs/plans/reception-theme-token-compiler/results-review.user.md",
+      "idea_key": "c0db4990015a86eb481ff7ca92f3ed03abb46ca1",
+      "review_cycle_key": "reception-theme-token-compiler",
+      "canonical_title": "theme-token-compiler retrofit: pattern of (1) authoring theme-css-config.ts → (2) running a generate script → (3) adding parity tests → (4) swapping CSS import has now been applied to brikette and reception. Three more apps remain (caryina, xa-uploader, others). This is a recurring, bounded, codifiable workflow. Candidate for a skill or at minimum a documented playbook to accelerate future migrations.",
+      "build_signal_id": "60ff4c4411c076b8546bb2155fda31c59a9ed41c",
+      "recurrence_key": "4c3bd8329ea94a2f995f220c5553319b5edb67cb",
+      "build_origin_status": "ready",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    },
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "AI-to-mechanistic — theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically.",
+      "body": "AI-to-mechanistic — theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically.",
+      "source": "results-review.user.md",
+      "date": "2026-03-14T00:00:00.000Z",
+      "path": "docs/plans/reception-theme-token-compiler/results-review.user.md",
+      "idea_key": "07db65b514175436cd78ed782fa84f6e96502994",
+      "review_cycle_key": "reception-theme-token-compiler",
+      "canonical_title": "theme-css-config population: the tokenVarMap in theme-css-config.ts is mechanically derivable from tokens.ts by a script (classify as shade vs. semantic by name, wrap shade light values in hsl(), emit dark swap aliases for tokens with dark: field). The current process requires an LLM to write this manually. A code generator could produce theme-css-config.ts from tokens.ts automatically.",
+      "build_signal_id": "11be8d5a37e305171aafc5c8213266a0a63963b5",
+      "recurrence_key": "300000a2a3310fefebd5773c49eefcf341b8b4d6",
+      "build_origin_status": "ready",
+      "priority_tier": "P4",
+      "own_priority_rank": 9,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P4_PROCESS_QUALITY"
+    }
+  ]
+}

@@ -40,7 +40,7 @@ const UnallocatedPanel: FC<UnallocatedPanelProps> = ({ occupants }) => {
             Unallocated Bookings
           </h2>
         </Inline>
-        <span className="rounded-full bg-error-main px-2 py-0.5 text-xs font-semibold text-white tabular-nums">
+        <span className="rounded-full bg-error-main px-2 py-0.5 text-xs font-semibold text-danger-fg tabular-nums">
           {occupants.length}
         </span>
       </Cluster>

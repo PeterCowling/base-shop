@@ -17,13 +17,23 @@ jest.mock("../../../hooks/client/checkin/useRoomConfigs", () => ({
   default: () => ({ knownRooms: mockKnownRooms }),
 }));
 
+let mockUnallocatedOccupants: unknown[] = [];
+
 jest.mock("../../../hooks/data/roomgrid/useGridData", () => ({
   __esModule: true,
   default: () => ({
     getReservationDataForRoom: mockGetReservationDataForRoom,
+    unallocatedOccupants: mockUnallocatedOccupants,
     loading: false,
     error: null,
   }),
+}));
+
+jest.mock("../UnallocatedPanel", () => ({
+  __esModule: true,
+  default: ({ occupants }: { occupants: unknown[] }) => (
+    <div data-testid="unallocated-panel">Unallocated: {occupants.length}</div>
+  ),
 }));
 
 type RoomGridProps = {
@@ -44,6 +54,7 @@ afterAll(() => {
 });
 
 beforeEach(() => {
+  mockUnallocatedOccupants = [];
   user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
   mockRoomGrid = jest.fn(
     ({ roomNumber, startDate, endDate, data }: RoomGridProps) => (
@@ -99,5 +110,30 @@ describe("RoomsGrid", () => {
     expect(
       screen.getByText("Room 101: 2025-01-01 - 2025-01-15 (0)")
     ).toBeInTheDocument();
+  });
+
+  // TC-07: UnallocatedPanel is rendered when there are unallocated occupants
+  it("TC-07: renders UnallocatedPanel when unallocated occupants are present", () => {
+    mockUnallocatedOccupants = [
+      {
+        bookingRef: "BR-U1",
+        occupantId: "OCC-U1",
+        firstName: "Jane",
+        lastName: "Doe",
+        checkInDate: "2025-01-05",
+        checkOutDate: "2025-01-10",
+        bookedRoom: "102",
+        status: "1",
+      },
+    ];
+    render(<RoomsGrid />);
+    expect(screen.getByTestId("unallocated-panel")).toBeInTheDocument();
+    expect(screen.getByText("Unallocated: 1")).toBeInTheDocument();
+  });
+
+  // TC-08: UnallocatedPanel is NOT rendered when there are no unallocated occupants
+  it("TC-08: does not render UnallocatedPanel when no unallocated occupants", () => {
+    render(<RoomsGrid />);
+    expect(screen.queryByTestId("unallocated-panel")).not.toBeInTheDocument();
   });
 });

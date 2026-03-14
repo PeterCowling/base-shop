@@ -32222,7 +32222,14 @@
       "status": "micro_build_ready",
       "priority": "P1",
       "confidence": 0.9,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-customer-qa-content",
+        "processed_at": "2026-03-14T18:45:00.000Z",
+        "route": "dispatch-routed"
+      },
       "evidence_refs": [
         "operator-stated: FAQ contains only 2 generic entries, missing all practical pre-purchase questions",
         "apps/caryina/data/shops/caryina/site-content.generated.json — faqItems array has 2 entries only",
@@ -32261,7 +32268,14 @@
       "status": "micro_build_ready",
       "priority": "P1",
       "confidence": 0.93,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-customer-qa-content",
+        "processed_at": "2026-03-14T18:45:00.000Z",
+        "route": "dispatch-routed"
+      },
       "evidence_refs": [
         "operator-stated: UK import VAT mention buried in shipping policy only, no pre-checkout warning",
         "apps/caryina/src/lib/legalContent.ts — shipping section mentions UK customs passingly but no UI hook exists",
@@ -32300,7 +32314,14 @@
       "status": "micro_build_ready",
       "priority": "P1",
       "confidence": 0.88,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-customer-qa-content",
+        "processed_at": "2026-03-14T18:45:00.000Z",
+        "route": "dispatch-routed"
+      },
       "evidence_refs": [
         "operator-stated: no payment methods listed anywhere on the site",
         "apps/caryina/src/app/[lang]/support/page.tsx — support page has no payment method section",
@@ -32340,7 +32361,14 @@
       "status": "micro_build_ready",
       "priority": "P2",
       "confidence": 0.9,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-customer-qa-content",
+        "processed_at": "2026-03-14T18:45:00.000Z",
+        "route": "dispatch-routed"
+      },
       "evidence_refs": [
         "operator-stated: no tracking info disclosed anywhere — DHL used but not mentioned to customers",
         "apps/caryina/src/app/[lang]/success/page.tsx — success page has no tracking guidance",
@@ -32379,7 +32407,14 @@
       "status": "micro_build_ready",
       "priority": "P2",
       "confidence": 0.91,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-customer-qa-content",
+        "processed_at": "2026-03-14T18:45:00.000Z",
+        "route": "dispatch-routed"
+      },
       "evidence_refs": [
         "operator-stated: refund timeline missing, returns address not public, exchange fallback unspecified, pre-dispatch cancellation path absent",
         "apps/caryina/src/lib/legalContent.ts — returns policy has 7 sections but omits all four items listed above",
@@ -32419,7 +32454,14 @@
       "status": "micro_build_ready",
       "priority": "P2",
       "confidence": 0.93,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-customer-qa-content",
+        "processed_at": "2026-03-14T18:45:00.000Z",
+        "route": "dispatch-routed"
+      },
       "evidence_refs": [
         "operator-stated: no VAT inclusion statement on PDP or shop listing",
         "risk_vector: legal-compliance — EU consumer law (Directive 2011/83/EU) requires VAT-inclusive pricing for retail consumers",
@@ -32575,7 +32617,14 @@
       "status": "micro_build_ready",
       "priority": "P3",
       "confidence": 0.88,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-customer-qa-content",
+        "processed_at": "2026-03-14T18:45:00.000Z",
+        "route": "dispatch-routed"
+      },
       "evidence_refs": [
         "operator-stated: no social media links in footer",
         "apps/caryina/src/components/SiteFooter.tsx — footer renders nav links from contentPacket, no social section",
@@ -32616,7 +32665,14 @@
       "status": "micro_build_ready",
       "priority": "P3",
       "confidence": 0.86,
-      "queue_state": "enqueued",
+      "queue_state": "processed",
+      "processed_by": {
+        "target_route": "lp-do-build",
+        "target_kind": "build",
+        "target_slug": "caryina-customer-qa-content",
+        "processed_at": "2026-03-14T18:45:00.000Z",
+        "route": "dispatch-routed"
+      },
       "evidence_refs": [
         "operator-stated: SLA only on support page; DHL undisclosed; no returns link on PDP; no guest checkout note; no confirmation email mention; cookie banner lacks data summary",
         "apps/caryina/src/components/ConsentBanner.client.tsx — banner has accept/reject only, no data description",

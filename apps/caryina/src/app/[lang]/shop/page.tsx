@@ -118,6 +118,14 @@ export default async function ShopPage({
             </p>
           </div>
 
+          <p className="text-xs text-muted-foreground">
+            {lang === "it"
+              ? "Prezzo IVA inclusa"
+              : lang === "de"
+              ? "Preis inkl. MwSt."
+              : "Price includes VAT"}
+          </p>
+
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
             <ul className="flex list-none flex-wrap gap-2">
               <li>

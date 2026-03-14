@@ -110,6 +110,12 @@ export default function CartPage() {
         normally include a 14-day cancellation right, and unused-item exchange requests may be
         handled within 30 days after delivery where stock allows.
       </p>
+      {/* UK import VAT notice — shown for en locale only */}
+      {lang === "en" ? (
+        <p className="max-w-2xl rounded border bg-muted/30 p-3 text-sm text-muted-foreground">
+          UK orders may incur import VAT and customs fees on delivery, charged by the carrier. These are not included in the price shown.
+        </p>
+      ) : null}
       <div className="flex flex-wrap gap-4">
         <Button
           asChild

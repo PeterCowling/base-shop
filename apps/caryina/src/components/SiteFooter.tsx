@@ -9,6 +9,7 @@ export function SiteFooter({ lang }: { lang: string }) {
   const footerLinks: Array<{ href: string; label: string }> = [
     { href: "terms", label: chrome.footer.terms },
     { href: "privacy", label: chrome.footer.privacy },
+    { href: "cookie-policy", label: chrome.footer.cookie },
     { href: "returns", label: chrome.footer.returnsRefunds },
     { href: "shipping", label: chrome.footer.shipping },
     { href: "support", label: chrome.footer.support },
@@ -39,6 +40,27 @@ export function SiteFooter({ lang }: { lang: string }) {
               </Link>
             ))}
           </nav>
+        </div>
+        {/* Social links — TODO: PLACEHOLDER replace with actual handles before deploy */}
+        <div className="flex items-center gap-4 text-xs">
+          {/* TODO: PLACEHOLDER — replace with actual Instagram handle */}
+          <a
+            href="https://instagram.com/caryina"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground hover:underline"
+          >
+            Instagram
+          </a>
+          {/* TODO: PLACEHOLDER — replace with actual TikTok handle */}
+          <a
+            href="https://tiktok.com/@caryina"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-foreground hover:underline"
+          >
+            TikTok
+          </a>
         </div>
         <div className="border-t pt-4 text-xs">
           <p>&copy; {new Date().getFullYear()} Caryina. {chrome.footer.copyright}</p>

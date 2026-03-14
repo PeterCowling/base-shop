@@ -127,7 +127,11 @@ export default async function ProductDetailPage({
             </div>
 
             <div className="space-y-4">
-              <p className="text-xl font-medium">{formatMoney(product.price, currency, lang)}</p>
+              <div>
+                <p className="text-xl font-medium">{formatMoney(product.price, currency, lang)}</p>
+                {/* VAT-inclusive label — locale-specific */}
+                <p className="text-xs text-muted-foreground">{lang === "it" ? "Prezzo IVA inclusa" : lang === "de" ? "Preis inkl. MwSt." : "Price includes VAT"}</p>
+              </div>
               <StockBadge stock={product.stock} lowStockThreshold={lowStockThreshold} />
               <div data-cy="pdp-checkout">
                 <AddToCartButton sku={product} disabled={product.stock === 0} />
@@ -148,13 +152,8 @@ export default async function ProductDetailPage({
 
             <NotifyMeForm productSlug={product.slug} strings={chrome.notifyMe} />
 
-            <section
-              className="space-y-3 border-t pt-5"
-              aria-label="Product proof points"
-            >
-              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
-                {productPageContent.proofHeading}
-              </h2>
+            <section className="space-y-3 border-t pt-5" aria-label="Product proof points">
+              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">{productPageContent.proofHeading}</h2>
               <ul className="list-none space-y-2 text-sm text-muted-foreground">
                 {productPageContent.proofBullets.map((bullet) => (
                   <li key={bullet} className="flex items-start gap-2">
@@ -163,15 +162,11 @@ export default async function ProductDetailPage({
                   </li>
                 ))}
               </ul>
+              <p className="text-xs text-muted-foreground"><Link href={`/${lang}/returns`} className="underline underline-offset-2 hover:text-foreground">See our returns policy</Link></p>
             </section>
 
-            <section
-              className="space-y-3 border-t pt-5"
-              aria-label="Product specifications"
-            >
-              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">
-                Specifications
-              </h2>
+            <section className="space-y-3 border-t pt-5" aria-label="Product specifications">
+              <h2 className="text-sm font-medium uppercase tracking-wider text-muted-foreground">Specifications</h2>
               <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
                 <dt className="shrink-0 font-medium text-foreground">Dimensions</dt>
                 <dd className="text-muted-foreground">{familySpec.dimensions}</dd>
@@ -221,6 +216,9 @@ export default async function ProductDetailPage({
             ) : null}
           </div>
         </div>
+
+        {/* UK import VAT notice — en locale only */}
+        {lang === "en" ? <p className="rounded border bg-muted/30 p-3 text-sm text-muted-foreground">UK orders may incur import VAT and customs fees on delivery, charged by the carrier. These are not included in the price shown.</p> : null}
 
         {relatedProducts.length > 0 ? (
           <section className="space-y-5" aria-label="Related products">

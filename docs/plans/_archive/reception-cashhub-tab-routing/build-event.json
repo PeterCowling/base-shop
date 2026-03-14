@@ -1,0 +1,8 @@
+{
+  "slug": "reception-cashhub-tab-routing",
+  "business": "BRIK",
+  "emitted_at": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "CashHub active tab is reflected in the URL (?tab=till/safe/workbench) so it survives refresh and is directly linkable.",
+  "source": "operator"
+}

@@ -23,6 +23,13 @@ import {
   parseLocalDate,
 } from "../../utils/dateUtils";
 
+function formatCalendarLabel(dateStr: string): string {
+  if (!dateStr) return "Select a date";
+  const d = parseLocalDate(dateStr);
+  if (!d) return dateStr;
+  return d.toLocaleDateString("en-GB", { weekday: "short", day: "numeric", month: "short" });
+}
+
 export const DAY_PICKER_CLASS_NAMES_WARNING = {
   root: "bg-surface border border-border-strong rounded-lg shadow-lg p-4 text-foreground",
   months: "relative",
@@ -87,6 +94,11 @@ export interface DateSelectorProps {
   calendarPlacement?: "popup" | "inline";
   calendarColorVariant?: "warning" | "primary";
   nonPrivQuickDays?: number;
+  /**
+   * Number of future quick-day shortcut buttons to show.
+   * Only applies when accessMode is "unrestricted". Defaults to 5.
+   */
+  quickDays?: number;
   showYesterday?: boolean;
   testMode?: boolean;
   onTestModeChange?: (val: boolean) => void;
@@ -101,6 +113,7 @@ function DateSelector({
   calendarPlacement = "popup",
   calendarColorVariant = "warning",
   nonPrivQuickDays = 1,
+  quickDays: quickDaysProp = 5,
   showYesterday = true,
   testMode,
   onTestModeChange,
@@ -119,7 +132,7 @@ function DateSelector({
       return {
         privileged: false,
         canUseCalendar: true,
-        quickDays: 5,
+        quickDays: quickDaysProp,
         showYesterdayButton: true,
       };
     }
@@ -144,7 +157,7 @@ function DateSelector({
       quickDays: 5,
       showYesterdayButton: showYesterday,
     };
-  }, [accessMode, nonPrivQuickDays, showYesterday, user]);
+  }, [accessMode, nonPrivQuickDays, quickDaysProp, showYesterday, user]);
 
   const { privileged, canUseCalendar, quickDays, showYesterdayButton } =
     privilegeState;
@@ -234,8 +247,9 @@ function DateSelector({
   );
 
   const renderQuickButton = useCallback(
-    (label: string, day: string): ReactElement => {
+    (label: string, day: string, showDateSub = false): ReactElement => {
       const isSelected = selectedDate === day;
+      const dateSub = showDateSub ? day.slice(5).replace("-", "/") : null;
 
       if (isInlineCalendar) {
         return (
@@ -248,7 +262,12 @@ function DateSelector({
             }`}
             onClick={() => handleQuickSelect(day)}
           >
-            {label}
+            {dateSub ? (
+              <span className="flex flex-col items-center leading-tight gap-0.5">
+                <span>{label}</span>
+                <span className="text-xs opacity-70">{dateSub}</span>
+              </span>
+            ) : label}
           </Button>
         );
       }
@@ -261,7 +280,12 @@ function DateSelector({
           size="sm"
           onClick={() => handleQuickSelect(day)}
         >
-          {label}
+          {dateSub ? (
+            <span className="flex flex-col items-center leading-tight gap-0.5">
+              <span>{label}</span>
+              <span className="text-xs opacity-70">{dateSub}</span>
+            </span>
+          ) : label}
         </Button>
       );
     },
@@ -273,7 +297,7 @@ function DateSelector({
       <>
         {showYesterdayButton ? renderQuickButton("Yesterday", yesterday) : null}
         {renderQuickButton("Today", today)}
-        {nextDays.map((day) => renderQuickButton(getWeekdayShortLabel(day), day))}
+        {nextDays.map((day) => renderQuickButton(getWeekdayShortLabel(day), day, true))}
       </>
     ),
     [nextDays, renderQuickButton, showYesterdayButton, today, yesterday],
@@ -288,6 +312,8 @@ function DateSelector({
       return (
         <Button
           ref={toggleRef}
+          aria-label="Open calendar"
+          aria-expanded={isCalendarOpen}
           className={`shrink-0 px-3 py-2 border rounded-lg text-sm font-medium transition-colors ${
             isCalendarOpen
               ? "bg-primary-main text-primary-fg border-primary-main"
@@ -295,7 +321,7 @@ function DateSelector({
           }`}
           onClick={handleToggleCalendar}
         >
-          {selectedDate || "Select a date"}
+          {formatCalendarLabel(selectedDate)}
         </Button>
       );
     }
@@ -304,12 +330,14 @@ function DateSelector({
       <div className="relative">
         <Button
           ref={toggleRef}
+          aria-label="Open calendar"
+          aria-expanded={isCalendarOpen}
           color="default"
           tone="outline"
           size="sm"
           onClick={handleToggleCalendar}
         >
-          {selectedDate || "Select a date"}
+          {formatCalendarLabel(selectedDate)}
         </Button>
         {isCalendarOpen ? (
           <div
@@ -318,6 +346,7 @@ function DateSelector({
             style={calendarDropdownStyle}
           >
             <DayPicker
+              aria-label="Date picker"
               mode="single"
               selected={parsedSelectedDate}
               onSelect={handleDayPickerSelect}
@@ -349,6 +378,7 @@ function DateSelector({
     return (
       <div className="border-t border-border-strong pt-3 flex justify-end">
         <DayPicker
+          aria-label="Date picker"
           mode="single"
           selected={parsedSelectedDate}
           onSelect={handleDayPickerSelect}

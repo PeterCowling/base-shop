@@ -39,6 +39,7 @@
     "startup-loop:lp-do-ideas-report-workflow-telemetry": "node --import tsx src/startup-loop/ideas/lp-do-ideas-workflow-telemetry-report.ts",
     "startup-loop:lp-do-ideas-synthetic-dispatch-backfill": "node --import tsx src/startup-loop/ideas/lp-do-ideas-synthetic-dispatch-backfill.ts",
     "startup-loop:lp-do-ideas-completion-reconcile": "node --import tsx src/startup-loop/ideas/lp-do-ideas-completion-reconcile.ts",
+    "startup-loop:lp-do-ideas-operator-review-reconcile": "node --import tsx src/startup-loop/ideas/lp-do-ideas-operator-review-reconcile.ts",
     "startup-loop:ideas-work-package-candidates": "node --import tsx src/startup-loop/ideas/lp-do-ideas-work-packages.ts",
     "startup-loop:self-evolving-from-build-output": "node --import tsx src/startup-loop/self-evolving/self-evolving-from-build-output.ts",
     "startup-loop:self-evolving-from-build-failure": "node --import tsx src/startup-loop/self-evolving/self-evolving-from-build-failure.ts",
@@ -58,7 +59,8 @@
     "startup-loop:pattern-reflection-extract": "node --import tsx src/startup-loop/build/lp-do-build-pattern-reflection-extract.ts",
     "startup-loop:health-check": "node --import tsx src/startup-loop/ideas/workflow-health-check.ts",
     "reception:blind-mode-variance-report": "node --import tsx src/reception/blind-mode-variance-report.ts",
-    "prime:apply-zone-hardening": "node --import tsx src/ops/apply-prime-zone-hardening.ts"
+    "prime:apply-zone-hardening": "node --import tsx src/ops/apply-prime-zone-hardening.ts",
+    "brikette:generate-theme-tokens": "node --import tsx ../scripts/brikette/generate-theme-tokens.ts"
   },
   "dependencies": {
     "@acme/lib": "workspace:*",

@@ -1,0 +1,55 @@
+Running node v22.16.0 (npm v10.9.2)
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-guest-ghost-mode/fact-find.md",
+      "line": "129",
+      "message": "The brief treats missing `ghostMode` as a safe `false` default, but `useFetchGuestProfile` uses an explicit runtime mapper. Unless the new field is added as `ghostMode: data.ghostMode ?? false`, existing profiles will yield `undefined`, not a real boolean, which weakens the `effectiveProfile` contract and the form toggle state."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-guest-ghost-mode/fact-find.md",
+      "line": "115",
+      "message": "The “changes to `canSendDirectMessage` propagate to both layers automatically” claim is inaccurate. [`GuestDirectory.tsx`] uses `isVisibleInDirectory`, not `canSendDirectMessage`, so ghost-mode directory hiding remains a separate required code change."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-guest-ghost-mode/fact-find.md",
+      "line": "167",
+      "message": "The test coverage table points to `apps/prime/src/hooks/data/__tests__/useGuestProfiles.test.tsx` as the relevant read-path seam, but that hook only covers booking-scoped directory profiles. There is no direct test today for `useFetchGuestProfile.effectiveProfile`, which is the actual silent-drop risk identified elsewhere in the brief."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-guest-ghost-mode/fact-find.md",
+      "line": "191",
+      "message": "The recommended tests omit the existing `apps/prime/functions/__tests__/direct-message.test.ts` suite, even though the acceptance contract requires `POST /api/direct-message` to return 403 for ghost recipients. The authoritative server gate should be covered directly, not only through pure-function tests."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/prime-guest-ghost-mode/fact-find.md",
+      "line": "242",
+      "message": "The open question about moving ghost mode to a separate privacy screen contradicts the scope and goals above, which already place the toggle in `GuestProfileForm` on `/account/profile`. Reopening that decision weakens readiness and introduces avoidable scope drift."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/prime-guest-ghost-mode/fact-find.md",
+      "line": "297",
+      "message": "`chat-optin-controls.test.tsx` tests `ChatOptInControls`, not `GuestProfileForm`. If the chosen UI surface is the profile form, the task seed should name a `GuestProfileForm` test seam instead."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 7,
+  "review": "Reviewing the ghost-mode fact-find against the Prime code paths now. I’m validating the profile type, DM policy, directory filtering, rules, and tests so the findings stay grounded in the repo rather than the document’s assumptions.\nThe first pass exposed the core Prime policy and profile hooks. I hit shell quoting on the `(guarded)` paths, so I’m reopening those files with explicit quoting to validate the form, directory, rules, and test claims.\nI’ve confirmed the main Prime paths and the current rules gap. One remaining thing matters for review quality: whether the document’s checkpoint about `activity-message.ts` is really needed, and whether the cited test seams actually exist where the brief says they do.\nThe remaining uncertainty is test strategy. I’m checking whether the brief points to the right existing tests, because using the wrong seam is a common planning failure even when the feature idea is sound.\nI’ve got one likely doc-quality issue already: the brief asks an open UI-placement question even though the scope already fixes the toggle to `GuestProfileForm` on the profile page. I’m doing one last search for all `guestProfiles/` write sites and DM-policy call sites before I lock the review.\nThe policy and form seams are clear now. I’m doing one last breadth check on `GuestProfile` usages, because adding a required field can widen the blast radius in tests even when the runtime change is simple.\n- WARNING: docs/plans/prime-guest-ghost-mode/fact-find.md:129 The brief treats missing `ghostMode` as a safe `false` default, but `useFetchGuestProfile` uses an explicit runtime mapper. Unless the new field is added as `ghostMode: data.ghostMode ?? false`, existing profiles will yield `undefined`, not a real boolean, which weakens the `effectiveProfile` contract and the form toggle state.\n\n- WARNING: docs/plans/prime-guest-ghost-mode/fact-find.md:115 The “changes to `canSendDirectMessage` propagate to both layers automatically” claim is inaccurate. [`GuestDirector",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1",
+  "resumed": true,
+  "usage": {
+    "inputTokens": 9629624,
+    "outputTokens": 53880,
+    "totalTokens": 9683504,
+    "costUsd": 0
+  },
+  "durationMs": 233664
+}

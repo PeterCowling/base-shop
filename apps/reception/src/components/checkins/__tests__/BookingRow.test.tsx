@@ -234,6 +234,60 @@ describe("BookingRow", () => {
     expect(onRowClick).toHaveBeenCalledWith(baseBooking);
   });
 
+  it("shows Clean chip when roomStatusMap marks room as clean", () => {
+    render(
+      <table>
+        <tbody>
+          <BookingRow
+            booking={baseBooking}
+            selectedDate="2025-01-01"
+            allGuests={[baseBooking]}
+            roomStatusMap={{ index_101: { clean: "Yes" } }}
+          />
+        </tbody>
+      </table>
+    );
+
+    expect(screen.getByText("Clean")).toBeInTheDocument();
+    expect(screen.queryByText("Dirty")).not.toBeInTheDocument();
+  });
+
+  it("shows Dirty chip when roomStatusMap marks room as dirty", () => {
+    render(
+      <table>
+        <tbody>
+          <BookingRow
+            booking={baseBooking}
+            selectedDate="2025-01-01"
+            allGuests={[baseBooking]}
+            roomStatusMap={{ index_101: { clean: false } }}
+          />
+        </tbody>
+      </table>
+    );
+
+    expect(screen.getByText("Dirty")).toBeInTheDocument();
+    expect(screen.queryByText("Clean")).not.toBeInTheDocument();
+  });
+
+  it("shows no chip when roomStatusMap has no entry for room", () => {
+    render(
+      <table>
+        <tbody>
+          <BookingRow
+            booking={baseBooking}
+            selectedDate="2025-01-01"
+            allGuests={[baseBooking]}
+            roomStatusMap={{}}
+          />
+        </tbody>
+      </table>
+    );
+
+    expect(screen.queryByText("Clean")).not.toBeInTheDocument();
+    expect(screen.queryByText("Dirty")).not.toBeInTheDocument();
+  });
+
   it("opens notes modal on name double click", async () => {
     render(
       <table>

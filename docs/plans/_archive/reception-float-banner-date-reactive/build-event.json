@@ -1,0 +1,8 @@
+{
+  "slug": "reception-float-banner-date-reactive",
+  "business": "BRIK",
+  "emitted_at": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "Float banner and cash count query use midnight-refreshing date bounds.",
+  "source": "operator"
+}

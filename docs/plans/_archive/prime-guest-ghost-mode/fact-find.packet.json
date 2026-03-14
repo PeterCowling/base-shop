@@ -1,0 +1,208 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "prime-guest-ghost-mode",
+  "source_artifact_path": "docs/plans/prime-guest-ghost-mode/fact-find.md",
+  "source_artifact_status": "Ready-for-analysis",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/prime-guest-ghost-mode/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Guests want a way to be in the chat system without being open to incoming DMs — useful for solo travellers who want to read broadcasts and send one-off messages without being reachable.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A guest can toggle ghost mode on their profile. While ghost mode is on, no other guest can initiate a DM with them, and they do not appear in other guests' directories.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "`GuestProfileForm.tsx` has toggle pattern for `chatOptIn` and `socialOptIn`",
+      "gap_or_implication": "No ghost mode toggle exists",
+      "carry_forward_or_notes": "Add ghost mode checkbox following chatOptIn pattern; include i18n label"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "Profile form has loading, error, success, and saving states",
+      "gap_or_implication": "Ghost mode toggle needs same disabled-while-saving and save-error handling as other fields",
+      "carry_forward_or_notes": "Ensure `ghostMode` is included in `handleSave` payload and gated by `isBusy`"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "Required",
+      "current_or_option_state": "`canSendDirectMessage` enforced server-side in `direct-message.ts`; Firebase rules currently allow any auth'd user to write any guest's profile",
+      "gap_or_implication": "(1) Ghost mode check missing from policy → blocked by adding to `canSendDirectMessage`. (2) RTDB rules gap → any guest could set another guest's `ghostMode: true` maliciously",
+      "carry_forward_or_notes": "Must fix `database.rules.json` to restrict `guestProfiles/$uuid` writes to `auth.uid == $uuid`"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "Required",
+      "current_or_option_state": "`recordDirectTelemetry(env, 'write.denied_policy')` is already called when `canSendDirectMessage` returns false in `direct-message.ts`",
+      "gap_or_implication": "Ghost mode rejections will be counted in `write.denied_policy` (no separate metric needed unless operator wants isolation)",
+      "carry_forward_or_notes": "No new telemetry required; `write.denied_policy` covers it"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "3 existing test suites cover messaging policy, directory, and form",
+      "gap_or_implication": "No ghost mode test cases in any suite",
+      "carry_forward_or_notes": "Add unit tests to `messagingPolicy.test.ts` and component tests to `guest-directory.test.tsx`"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`GuestProfile` type + `DEFAULT_GUEST_PROFILE` + RTDB `guestProfiles/{uuid}`",
+      "gap_or_implication": "`effectiveProfile` spread in `useFetchGuestProfile` does NOT auto-include new fields — silent drop risk",
+      "carry_forward_or_notes": "Add `ghostMode` to type, default, and explicit spread; RTDB is schemaless so no migration"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Ghost mode is a boolean field on an existing in-memory profile object; no new queries or network calls",
+      "gap_or_implication": "No performance concern",
+      "carry_forward_or_notes": "None"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "RTDB write is direct; no migration; `ghostMode` defaults to falsy for all existing profiles",
+      "gap_or_implication": "Rollback: remove field from type and form; existing RTDB nodes with `ghostMode: true` become dead data (safe)",
+      "carry_forward_or_notes": "No rollback tooling needed; additive change is inherently safe"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Guests currently have no way to prevent other guests from sending them direct messages without fully opting out of chat. The only option is `chatOptIn: false`, which also prevents the guest from sending DMs and hides them from the guest directory entirely. Ghost mode is a targeted privacy toggle: a guest who enables it stops receiving incoming DMs from other guests while remaining able to send messages. Ghost-mode guests also disappear from the visible directory, matching the \"ghost\" metaphor.",
+    "goals": [
+      "Add a `ghostMode: boolean` field to the `GuestProfile` type and Firebase RTDB schema.",
+      "Enforce ghost mode in `canSendDirectMessage` (server-side and client-side) so no DM can be sent to a ghost guest.",
+      "Hide ghost-mode guests from the guest directory (`isVisibleInDirectory`).",
+      "Surface the toggle in `GuestProfileForm` on the profile page.",
+      "Add i18n keys for the toggle label (EN + IT).",
+      "Fix the Firebase security rules gap: `guestProfiles/{uuid}` currently allows any authenticated user to write any profile; restrict to own profile only (required to prevent a guest ghost-flagging another guest)."
+    ],
+    "non_goals": [
+      "Staff-visible ghost mode indicators (not requested; no staff inbox implication).",
+      "Ghost mode persisting across stays (per-stay scope is already enforced via `bookingId` check).",
+      "Notifications or read-receipts changes (outside scope; no notification infrastructure today).",
+      "Push notification suppression for ghost guests (no push notification system in scope)."
+    ],
+    "constraints": [
+      "RTDB is the sole persistence layer for guest profiles; no D1 record is needed.",
+      "The write path is client-side Firebase SDK (`update()` via `useGuestProfileMutator`) — no new API endpoint required.",
+      "Policy enforcement against DMs must remain server-side in `direct-message.ts` (the authoritative gate); client-side filtering is advisory only.",
+      "i18n must cover both EN and IT locales (the two active locales in `apps/prime/public/locales/`)."
+    ],
+    "assumptions": [
+      "Ghost mode defaults to `false` for all guests (opt-in model — ghost is off unless the guest enables it)."
+    ],
+    "key_entry_points": [
+      "`apps/prime/src/app/(guarded)/account/profile/page.tsx` — profile settings page (the natural home for the ghost mode toggle)",
+      "`apps/prime/functions/api/direct-message.ts` — server-side DM write gate; the authoritative enforcement point for `canSendDirectMessage`"
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "none",
+      "Recommended next step": "`/lp-do-analysis prime-guest-ghost-mode` — confirm approach (single-field addition vs richer privacy model), resolve UI placement question via default assumption, produce plan."
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "`GuestProfile` type and defaults",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`canSendDirectMessage` — server enforcement",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`isVisibleInDirectory` — client directory",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "`useFetchGuestProfile.effectiveProfile` spread",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Type contract gap] [Major]: new field on `GuestProfile` silently dropped in `effectiveProfile` return value unless explicitly added to spread at lines 107-117",
+        "Resolution Required": "Yes — addressed in task seeds as TASK-01"
+      },
+      {
+        "Scope Area": "`GuestProfileForm` toggle and save",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None — pattern confirmed via `chatOptIn` checkbox; `handleSave` must include `ghostMode`",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "i18n — EN + IT locale keys",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Ordering inversion] [Minor]: if locales are updated in separate commits, `translations-completeness.test.ts` CI fails between commits",
+        "Resolution Required": "No — single-commit update resolves"
+      },
+      {
+        "Scope Area": "Firebase security rules",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "[Missing precondition] [Major]: `guestProfiles/$uuid` write rule absent — ghost mode flag can be written to any guest's profile by any auth'd user",
+        "Resolution Required": "Yes — addressed as TASK-05"
+      },
+      {
+        "Scope Area": "`activity-message.ts` (secondary DM path)",
+        "Coverage Confirmed": "Partial",
+        "Issues Found": "[Scope gap] [Minor]: not confirmed whether `activity-message.ts` calls `canSendDirectMessage`",
+        "Resolution Required": "No — flagged as CHECKPOINT task"
+      }
+    ],
+    "process_topology": {
+      "changed": true,
+      "note": null,
+      "trigger": "Guest A attempts to send a DM to Guest B.",
+      "end_condition": "Message is written to RTDB or request is rejected with 403.",
+      "areas": [
+        {
+          "id": null,
+          "label": "Guest profile write",
+          "flow": "Guest opens `/account/profile`, edits preferences, taps \"Save preferences\" → `GuestProfileForm.handleSave()` → `useGuestProfileMutator.updateProfile(partial)` → Firebase `update(ref(db, 'guestProfiles/{uuid}'), payload)`",
+          "owners": "Prime app + RTDB",
+          "evidence": "`apps/prime/src/app/(guarded)/account/profile/page.tsx`, `apps/prime/src/hooks/mutator/useGuestProfileMutator.ts`",
+          "issues": "No per-user write restriction in `database.rules.json` — any auth'd user can write any guest's profile"
+        },
+        {
+          "id": null,
+          "label": "Guest profile read",
+          "flow": "`useFetchGuestProfile` fetches `guestProfiles/{uuid}` via React Query (5min stale) → returns `effectiveProfile` with explicit field mapping",
+          "owners": "Prime app + RTDB",
+          "evidence": "`apps/prime/src/hooks/pureData/useFetchGuestProfile.ts`",
+          "issues": "`effectiveProfile` uses explicit field spread — new fields not added to the spread are silently dropped"
+        },
+        {
+          "id": null,
+          "label": "DM write enforcement",
+          "flow": "`POST /api/direct-message` → validates token → rate-limit → fetches sender/peer profiles from RTDB → calls `canSendDirectMessage(senderProfile, senderUuid, peerProfile, peerUuid)` → if false, returns 403",
+          "owners": "Cloudflare Pages Function + RTDB",
+          "evidence": "`apps/prime/functions/api/direct-message.ts:163`",
+          "issues": "No ghost mode check in `canSendDirectMessage` today"
+        },
+        {
+          "id": null,
+          "label": "Directory filtering",
+          "flow": "`GuestDirectory.tsx` renders list of guests → `isVisibleInDirectory(profile, uuid, currentProfile, currentUuid)` — filters on mutual `chatOptIn` + bilateral block list",
+          "owners": "Prime app",
+          "evidence": "`apps/prime/src/app/(guarded)/chat/GuestDirectory.tsx:72`",
+          "issues": "No ghost mode check in `isVisibleInDirectory` today"
+        }
+      ]
+    }
+  }
+}

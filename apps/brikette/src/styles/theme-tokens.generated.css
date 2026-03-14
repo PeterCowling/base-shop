@@ -1,0 +1,118 @@
+/* ═══════════════════════════════════════════════════════════════════════
+ * AUTO-GENERATED — do not edit manually.
+ * Source: packages/themes/brikette/src/ (assets.ts, design-profile.ts, theme-css-config.ts)
+ * Generator: scripts/brikette/generate-theme-tokens.ts
+ * Regenerate: pnpm --filter scripts brikette:generate-theme-tokens
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  color-scheme: light;
+
+  /* Profile */
+  --theme-transition-duration: 200ms;
+
+  /* Fonts */
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Franklin Gothic ATF", "Poppins", ui-sans-serif;
+
+  /* Brand colors */
+  --color-brand-primary: #005887;
+  --color-brand-secondary: #f4d35e;
+  --color-brand-terra: #c4572e;
+  --color-brand-bougainvillea: #9b1b33;
+  --color-brand-bg: #ffffff;
+  --color-brand-surface: #f2f3f4;
+  --color-brand-text: #1b1b1b;
+  --color-brand-heading: #1b1b1b;
+  --color-brand-on-primary: #ffffff;
+  --color-brand-on-accent: #1b1b1b;
+  --color-brand-gradient-start: #003d73;
+  --color-brand-gradient-mid: #005c9c;
+  --color-rating-hostelworld: #ff6a00;
+  --color-rating-booking: #003580;
+  --color-header-link: #ffffff;
+  --color-header-logo-text: #f7f7f7;
+
+  /* RGB triplets for alpha support */
+  --rgb-brand-bg: 255 255 255;
+  --rgb-brand-surface: 242 243 244;
+  --rgb-brand-text: 27 27 27;
+  --rgb-brand-heading: 27 27 27;
+  --rgb-brand-primary: 0 88 135;
+  --rgb-brand-secondary: 244 211 94;
+  --rgb-brand-terra: 196 87 46;
+  --rgb-brand-bougainvillea: 155 27 51;
+  --rgb-brand-on-primary: 255 255 255;
+  --rgb-brand-on-accent: 27 27 27;
+
+  /* Derived */
+  --color-brand-gradient-end: var(--color-brand-primary);
+  --color-brand-outline: var(--color-brand-text);
+  --z-modal: 80;
+  --layer-modal: 9999;
+  --layer-modal-backdrop: 9998;
+  --hospitality-ready: var(--color-success);
+  --hospitality-ready-fg: var(--color-success-fg);
+  --hospitality-warning: var(--color-warning);
+  --hospitality-warning-fg: var(--color-warning-fg);
+  --hospitality-info: var(--color-info);
+  --hospitality-info-fg: var(--color-info-fg);
+  --color-panel: 0 0% 100%;
+  --color-bg: 0 0% 100%;
+  --color-fg: 0 0% 11%;
+  --rgb-brand-outline: 27 27 27;
+  --rgb-brand-muted: 100 100 100;
+  --rgb-brand-paragraph: 60 60 60;
+}
+
+.dark {
+  color-scheme: dark;
+
+  /* Brand colors */
+  --color-brand-primary: #4da8d4;
+  --color-brand-secondary: #d2b53f;
+  --color-brand-terra: #ff5722;
+  --color-brand-bougainvillea: #e85070;
+  --color-brand-bg: #181818;
+  --color-brand-surface: #1f1f1f;
+  --color-brand-text: #f7f7f7;
+  --color-brand-heading: #ffffff;
+  --color-brand-on-primary: #1b1b1b;
+  --color-brand-on-accent: #1b1b1b;
+  --color-brand-gradient-start: #000000;
+  --color-brand-gradient-mid: #1b1b1b;
+
+  /* RGB triplets for alpha support */
+  --rgb-brand-bg: 24 24 24;
+  --rgb-brand-surface: 31 31 31;
+  --rgb-brand-text: 247 247 247;
+  --rgb-brand-heading: 255 255 255;
+  --rgb-brand-primary: 77 168 212;
+  --rgb-brand-secondary: 210 181 63;
+  --rgb-brand-terra: 255 87 34;
+  --rgb-brand-bougainvillea: 232 80 112;
+  --rgb-brand-on-primary: 27 27 27;
+  --rgb-brand-on-accent: 27 27 27;
+
+  /* Derived */
+  --color-brand-gradient-end: #2b2b2b;
+  --color-brand-outline: #626262;
+  --color-rating-hostelworld: #ff6a00;
+  --color-rating-booking: #003580;
+  --color-header-link: #f7f7f7;
+  --color-header-logo-text: #ffffff;
+  --layer-modal: 9999;
+  --layer-modal-backdrop: 9998;
+  --hospitality-ready: var(--color-success);
+  --hospitality-ready-fg: var(--color-success-fg);
+  --hospitality-warning: var(--color-warning);
+  --hospitality-warning-fg: var(--color-warning-fg);
+  --hospitality-info: var(--color-info);
+  --hospitality-info-fg: var(--color-info-fg);
+  --color-panel: 0 0% 12%;
+  --color-bg: 0 0% 9%;
+  --color-fg: 0 0% 97%;
+  --rgb-brand-outline: 98 98 98;
+  --rgb-brand-muted: 180 180 180;
+  --rgb-brand-paragraph: 210 210 210;
+}

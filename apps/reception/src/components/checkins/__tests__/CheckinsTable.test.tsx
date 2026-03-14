@@ -57,6 +57,11 @@ jest.mock("../../../utils/toastUtils", () => ({
     showToastMock(...args),
 }));
 
+jest.mock("../../../hooks/data/useRoomStatus", () => ({
+  __esModule: true,
+  default: () => ({ roomStatusMap: {}, loading: false, error: null }),
+}));
+
 jest.mock("../BookingRow", () => ({
   __esModule: true,
   default: ({

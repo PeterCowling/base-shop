@@ -1,0 +1,8 @@
+{
+  "slug": "reception-date-picker-a11y",
+  "business": "BRIK",
+  "emitted_at": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "Calendar toggle buttons expose aria-label and aria-expanded; DayPicker instances have aria-label.",
+  "source": "operator"
+}

@@ -2,6 +2,7 @@ import "@testing-library/jest-dom";
 
 import React from "react";
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 interface LoadOpts {
   prepareData?: Partial<ReturnType<typeof defaultPrepareData>>;
@@ -14,6 +15,7 @@ interface LoadOpts {
   occupantError?: unknown;
   checkoutError?: unknown;
   noData?: boolean;
+  saveRoomStatusImpl?: jest.Mock;
 }
 
 function defaultPrepareData() {
@@ -44,6 +46,13 @@ async function loadComp(opts: LoadOpts = {}) {
     getLocalYyyyMmDd: () => "2025-01-01",
     getLocalToday: () => "2025-01-01",
     isToday: (d: string) => d === "2025-01-01",
+    getItalyIsoString: () => "2025-01-01T10:00:00+01:00",
+  }));
+
+  const saveRoomStatus = opts.saveRoomStatusImpl ?? jest.fn().mockResolvedValue(undefined);
+  jest.doMock("../../../hooks/mutations/useRoomStatusMutations", () => ({
+    __esModule: true,
+    default: () => ({ saveRoomStatus }),
   }));
 
   const prepareReturn = { ...defaultPrepareData(), ...opts.prepareData };
@@ -143,5 +152,61 @@ describe("PrepareDashboard", () => {
     expect(screen.getByText("2", { selector: "td" })).toBeInTheDocument();
     expect(screen.getByText("1", { selector: "td" })).toBeInTheDocument();
     expect(screen.getByText("Clean", { selector: "span" })).toBeInTheDocument();
+  });
+
+  it("renders Mark Clean button when isToday is true", async () => {
+    const Comp = await loadComp({
+      prepareData: {
+        mergedData: [
+          { roomNumber: "3", occupantCount: 0, finalCleanliness: "Dirty" },
+        ],
+      },
+    });
+    render(<Comp />);
+    const btn = screen.getByRole("button", { name: /mark clean/i });
+    expect(btn).toBeInTheDocument();
+    expect(btn).not.toBeDisabled();
+  });
+
+  it("Mark Clean button calls saveRoomStatus with correct payload", async () => {
+    const saveRoomStatus = jest.fn().mockResolvedValue(undefined);
+    const Comp = await loadComp({
+      prepareData: {
+        mergedData: [
+          { roomNumber: "3", occupantCount: 0, finalCleanliness: "Dirty" },
+        ],
+      },
+      saveRoomStatusImpl: saveRoomStatus,
+    });
+    render(<Comp />);
+    await userEvent.click(screen.getByRole("button", { name: /mark clean/i }));
+    expect(saveRoomStatus).toHaveBeenCalledWith("index_3", {
+      clean: "Yes",
+      cleaned: "2025-01-01T10:00:00+01:00",
+    });
+  });
+
+  it("Mark Clean buttons disabled during pending write (global write lock)", async () => {
+    let resolveWrite: () => void;
+    const saveRoomStatus = jest.fn().mockReturnValue(
+      new Promise<void>((resolve) => { resolveWrite = resolve; })
+    );
+    const Comp = await loadComp({
+      prepareData: {
+        mergedData: [
+          { roomNumber: "3", occupantCount: 0, finalCleanliness: "Dirty" },
+          { roomNumber: "4", occupantCount: 0, finalCleanliness: "Dirty" },
+        ],
+      },
+      saveRoomStatusImpl: saveRoomStatus,
+    });
+    render(<Comp />);
+    const buttons = screen.getAllByRole("button", { name: /mark clean/i });
+    expect(buttons).toHaveLength(2);
+    await userEvent.click(buttons[0]);
+    // While write is pending, both buttons must be disabled
+    buttons.forEach((btn) => expect(btn).toBeDisabled());
+    // Resolve the write
+    resolveWrite!();
   });
 });

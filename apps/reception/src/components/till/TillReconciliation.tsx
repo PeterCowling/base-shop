@@ -1,6 +1,6 @@
 // src/components/till/TillReconciliation.tsx
 
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
 import { AlertTriangle, Info } from "lucide-react";
 
 import { useTillReconciliationUI } from "../../hooks/client/till/useTillReconciliationUI";
@@ -28,18 +28,38 @@ import TransactionModals from "./TransactionModals";
  *   and requires confirmation before opening/closing
  * - Displays a summary of the current open shift
  */
+/** Reactive today bounds — refreshes at midnight without a page reload. */
+function useTodayBounds() {
+  const [now, setNow] = useState(() => new Date());
+
+  useEffect(() => {
+    const nextMidnight = new Date(now);
+    nextMidnight.setHours(24, 0, 0, 0);
+    const ms = nextMidnight.getTime() - Date.now();
+    const id = setTimeout(() => setNow(new Date()), ms + 100);
+    return () => clearTimeout(id);
+  }, [now]);
+
+  return {
+    startAt: startOfDayIso(now),
+    endAt: endOfDayIso(now),
+    today: now,
+  };
+}
+
 function TillReconciliation(): JSX.Element {
   const ui = useTillReconciliationUI();
   const logic = useTillReconciliationLogic(ui);
   const props = { ...logic, ...ui };
 
+  const { startAt, endAt, today } = useTodayBounds();
   const { cashCounts } = useCashCountsData({
     orderByChild: "timestamp",
-    startAt: startOfDayIso(new Date()),
-    endAt: endOfDayIso(new Date()),
+    startAt,
+    endAt,
   });
   const floatDoneToday = cashCounts.some(
-    (c) => c.type === "openingFloat" && sameItalyDate(c.timestamp, new Date())
+    (c) => c.type === "openingFloat" && sameItalyDate(c.timestamp, today)
   );
 
   if (!props.user) {

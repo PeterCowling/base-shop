@@ -1,7 +1,7 @@
 // File: src/components/roomview/TableHeader.tsx
 
 import React from 'react'
-import { Bed, Clock, Coins, CreditCard, FileText, Key, User } from 'lucide-react'
+import { Bed, CheckCircle, Clock, Coins, CreditCard, FileText, Key, User } from 'lucide-react'
 
 import { TableHead, TableHeader as DSTableHeader, TableRow } from '@acme/design-system'
 
@@ -16,7 +16,8 @@ const TableHeader: React.FC = () => {
         {/* Guest Name */}
         <TableHead className='px-4 py-2 w-200px font-semibold' title='Guest Name'>
           <div className='flex justify-center items-center'>
-            <User size={16} />
+            <User size={16} aria-hidden='true' />
+            <span className='sr-only'>Guest Name</span>
           </div>
         </TableHead>
 
@@ -26,21 +27,24 @@ const TableHeader: React.FC = () => {
           title='Room Allocated'
         >
           <div className='flex justify-center items-center'>
-            <Bed size={16} />
+            <Bed size={16} aria-hidden='true' />
+            <span className='sr-only'>Room Allocated</span>
           </div>
         </TableHead>
 
         {/* Room Payment */}
         <TableHead className='px-4 py-2 w-125px font-semibold' title='Room Payment'>
           <div className='flex justify-center items-center'>
-            <CreditCard size={16} />
+            <CreditCard size={16} aria-hidden='true' />
+            <span className='sr-only'>Room Payment</span>
           </div>
         </TableHead>
 
         {/* City Tax */}
         <TableHead className='px-4 py-2 w-125px font-semibold' title='City Tax'>
           <div className='flex justify-center items-center'>
-            <Coins size={16} />
+            <Coins size={16} aria-hidden='true' />
+            <span className='sr-only'>City Tax</span>
           </div>
         </TableHead>
 
@@ -50,14 +54,16 @@ const TableHeader: React.FC = () => {
           title='Keycard Deposit'
         >
           <div className='flex justify-center items-center'>
-            <Key size={16} />
+            <Key size={16} aria-hidden='true' />
+            <span className='sr-only'>Keycard Deposit</span>
           </div>
         </TableHead>
 
         {/* Status */}
         <TableHead className='px-4 py-2 w-120px font-semibold' title='Status'>
           <div className='flex justify-center items-center'>
-            <Clock size={16} />
+            <Clock size={16} aria-hidden='true' />
+            <span className='sr-only'>Status</span>
           </div>
         </TableHead>
 
@@ -67,7 +73,19 @@ const TableHeader: React.FC = () => {
           title='Document Insert'
         >
           <div className='flex justify-center items-center'>
-            <FileText size={16} />
+            <FileText size={16} aria-hidden='true' />
+            <span className='sr-only'>Document Insert</span>
+          </div>
+        </TableHead>
+
+        {/* Room Ready */}
+        <TableHead
+          className='px-4 py-2 w-120px font-semibold'
+          title='Room Ready'
+        >
+          <div className='flex justify-center items-center'>
+            <CheckCircle size={16} aria-hidden='true' />
+            <span className='sr-only'>Room Ready</span>
           </div>
         </TableHead>
 

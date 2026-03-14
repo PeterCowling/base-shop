@@ -1,0 +1,8 @@
+{
+  "slug": "reception-workbench-pms-terminal-delta",
+  "business": "BRIK",
+  "emitted_at": "2026-03-14",
+  "outcome_type": "operational",
+  "outcome_statement": "Workbench shows a \"PMS vs Terminal\" delta row so staff can spot CC discrepancies at a glance.",
+  "source": "operator"
+}

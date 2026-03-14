@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-14T17:04:09.499Z",
+  "plan_slug": "prime-guest-ghost-mode",
+  "review_cycle_key": "prime-guest-ghost-mode",
+  "source_path": "docs/plans/prime-guest-ghost-mode/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

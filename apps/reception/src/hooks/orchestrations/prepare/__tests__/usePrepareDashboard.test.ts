@@ -119,4 +119,63 @@ describe("usePrepareDashboard", () => {
     expect(result.current.error).toBe(err);
     expect(result.current.noRoomsData).toBe(true);
   });
+
+  it("exposes roomStatusMap in return value", () => {
+    statusResult = {
+      roomStatusMap: { index_3: { clean: "Yes" as const, cleaned: "2024-06-02T10:00:00Z" } },
+      loading: false,
+      error: null,
+    };
+    const { result } = renderHook(() => usePrepareDashboardData("2024-06-02"));
+    expect(result.current.roomStatusMap).toEqual(statusResult.roomStatusMap);
+  });
+
+  it("auto-sync guard: does NOT overwrite clean when cleaned timestamp is today", () => {
+    // Room 3 has occupants (auto-sync would normally set clean: false)
+    // But cleaned timestamp is today — guard should preserve the clean status
+    statusResult = {
+      roomStatusMap: {
+        index_3: { clean: "Yes" as const, cleaned: "2024-06-02T10:00:00Z" },
+      },
+      loading: false,
+      error: null,
+    };
+    renderHook(() => usePrepareDashboardData("2024-06-02"));
+    expect(saveRoomStatus).not.toHaveBeenCalledWith(
+      "index_3",
+      expect.objectContaining({ clean: false })
+    );
+  });
+
+  it("auto-sync guard: DOES overwrite clean when cleaned timestamp is stale (yesterday)", () => {
+    // cleaned is from yesterday — stale, should still trigger dirty overwrite
+    statusResult = {
+      roomStatusMap: {
+        index_3: { clean: "Yes" as const, cleaned: "2024-06-01T10:00:00Z" },
+      },
+      loading: false,
+      error: null,
+    };
+    renderHook(() => usePrepareDashboardData("2024-06-02"));
+    expect(saveRoomStatus).toHaveBeenCalledWith(
+      "index_3",
+      expect.objectContaining({ clean: false })
+    );
+  });
+
+  it("auto-sync guard: DOES overwrite clean when cleaned is missing (no timestamp)", () => {
+    // cleaned is false — typeof !== 'string' — guard does not apply
+    statusResult = {
+      roomStatusMap: {
+        index_3: { clean: "Yes" as const, cleaned: false as const },
+      },
+      loading: false,
+      error: null,
+    };
+    renderHook(() => usePrepareDashboardData("2024-06-02"));
+    expect(saveRoomStatus).toHaveBeenCalledWith(
+      "index_3",
+      expect.objectContaining({ clean: false })
+    );
+  });
 });

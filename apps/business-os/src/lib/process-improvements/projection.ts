@@ -9,7 +9,7 @@ import {
   type CanonicalOperatorActionKind,
   OPERATOR_ACTIONS_RELATIVE_PATH,
   parseCanonicalOperatorActionItemsFromJson,
-} from "../../../../../scripts/src/startup-loop/operator-actions-contract.js";
+} from "../../../../../scripts/src/startup-loop/operator-actions-contract";
 
 import { type DecisionBrief, projectDecisionBrief } from "./decision-brief";
 import {
@@ -131,6 +131,7 @@ export interface ProcessImprovementsProjectionResult {
   operatorActionsSourcePath: string;
   items: ProcessImprovementsWorkItem[];
   recentActions: ProcessImprovementsRecentAction[];
+  completedIdeasCount: number;
 }
 
 export interface ProcessImprovementsRecentAction {
@@ -646,6 +647,8 @@ export async function loadProcessImprovementsProjection(
     OPERATOR_ACTIONS_RELATIVE_PATH
   );
 
+  const completedIdeasCount = await loadCompletedIdeasCount(repoRoot);
+
   let raw: string;
   try {
     raw = (await readFileWithinRoot(
@@ -670,6 +673,7 @@ export async function loadProcessImprovementsProjection(
         operatorActionDecisionStates,
         new Map()
       ),
+      completedIdeasCount,
     };
   }
 
@@ -693,6 +697,7 @@ export async function loadProcessImprovementsProjection(
         operatorActionDecisionStates,
         new Map()
       ),
+      completedIdeasCount,
     };
   }
 
@@ -713,6 +718,7 @@ export async function loadProcessImprovementsProjection(
         operatorActionDecisionStates,
         new Map()
       ),
+      completedIdeasCount,
     };
   }
 
@@ -741,6 +747,7 @@ export async function loadProcessImprovementsProjection(
       operatorActionDecisionStates,
       buildAllDispatchTitleMap(parsed, queuePath.relativePath)
     ),
+    completedIdeasCount,
   };
 }
 
@@ -888,12 +895,38 @@ async function loadCombinedRecentDecisions(
 
   const combined = [...queueDecisions, ...operatorCompletions];
 
-  return combined
-    .sort((left, right) => {
-      return (
-        right.actedAt.localeCompare(left.actedAt) ||
-        right.itemKey.localeCompare(left.itemKey)
-      );
-    })
-    .slice(0, 20);
+  const sorted = combined.sort((left, right) => {
+    return (
+      right.actedAt.localeCompare(left.actedAt) ||
+      right.itemKey.localeCompare(left.itemKey)
+    );
+  });
+
+  const seen = new Set<string>();
+  const deduplicated = sorted.filter((action) => {
+    if (seen.has(action.itemKey)) return false;
+    seen.add(action.itemKey);
+    return true;
+  });
+
+  return deduplicated.slice(0, 20);
+}
+
+async function loadCompletedIdeasCount(repoRoot: string): Promise<number> {
+  try {
+    const absolutePath = path.join(repoRoot, "docs/business-os/_data/completed-ideas.json");
+    const raw = (await readFileWithinRoot(repoRoot, absolutePath, "utf-8")) as string;
+    const parsed = JSON.parse(raw) as unknown;
+    if (
+      parsed !== null &&
+      typeof parsed === "object" &&
+      "entries" in parsed &&
+      Array.isArray((parsed as { entries: unknown }).entries)
+    ) {
+      return (parsed as { entries: unknown[] }).entries.length;
+    }
+    return 0;
+  } catch {
+    return 0;
+  }
 }

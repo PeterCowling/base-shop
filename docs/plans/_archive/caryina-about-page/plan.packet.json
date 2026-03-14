@@ -1,0 +1,219 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "caryina-about-page",
+  "source_artifact_path": "docs/plans/caryina-about-page/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "mixed",
+  "deliverable_type": "multi-deliverable",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/caryina-about-page/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "The \"Designed in Positano\" claim is the heart of Caryina's brand. Without an About page, the claim feels thin and unsubstantiated. A short brand story reinforces trust and differentiates from generic dropshippers.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Brand story page live at `/about` in all three locales, linked from header nav and site footer, with copy derived from the strategy dossier. Page ships as text-only with a `{/* TODO: PLACEHOLDER — operator to supply hero image */}` comment in the JSX marking where photography can be inserted later.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "`support/page.tsx` card structure; `max-w-3xl` layout; TODO comment for hero image",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "All brand tokens already in globals.css; no new tokens needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Static SSR; no new states; `resolveLocale()` fallback handles invalid locale params",
+      "current_or_option_state": "TASK-02",
+      "gap_or_implication": "No loading/error states on content pages",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "—",
+      "gap_or_implication": "No user input; no auth; no PII",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A for this plan",
+      "current_or_option_state": "—",
+      "gap_or_implication": "GA4 page-view emitters are page-specific in this app (not in shared layout); `/about` will not be auto-tracked; adding a page_view emitter is adjacent scope — deferred to post-launch",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Extend `contentPacket.test.ts` + create `about/page.test.tsx`",
+      "current_or_option_state": "TASK-05",
+      "gap_or_implication": "Follow `support/page.test.tsx` pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "JSON `about` section + `AboutContent` type + `SAFE_DEFAULTS.about` fallback + `parsePayloadFromPath()` gate update + `getAboutContent()` + `CHROME_DEFAULTS` extension",
+      "current_or_option_state": "TASK-01, TASK-03",
+      "gap_or_implication": "TypeScript enforces SAFE_DEFAULTS shape; JSON content validated by required-field gate at runtime (not by typecheck)",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "—",
+      "gap_or_implication": "Static server component; existing `readPayload()` call; no new data fetching",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Purely additive; rollback = revert commit",
+      "current_or_option_state": "All tasks",
+      "gap_or_implication": "No migration; no existing routes modified",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Adds a `/[lang]/about` brand story page to the Caryina e-commerce app across all three locales (en/de/it). The page substantiates the \"Designed in Positano, Italy\" claim that currently appears everywhere but has no backing page. Five sequential-then-parallel tasks: content schema + JSON copy, page component, nav chrome updates, sitemap update, and tests. All patterns are established (support/page.tsx template, contentPacket accessor, CHROME_DEFAULTS). Build time: ~1–2 hours. Fully additive — rollback is reverting the commit.",
+    "goals": [
+      "Brand story page live at `/en/about`, `/de/about`, `/it/about`",
+      "About link in header nav (Shop / About / Support) and site footer",
+      "Copy derived from HBAG strategy dossier; \"Designed in Positano, Italy\" claim substantiated",
+      "Text-only layout at launch; JSX TODO comment marking hero image insertion point",
+      "TypeScript typecheck passes; accessor tests pass; page render test passes"
+    ],
+    "non_goals": [
+      "Custom photography (deferred; TODO comment in JSX)",
+      "Deep founder biography or press kit",
+      "Changes to homepage, product pages, or checkout flow",
+      "New sitemap test file (no existing test file; out of scope)"
+    ],
+    "constraints": [
+      "Chrome/nav microcopy in `CHROME_DEFAULTS` TypeScript constant only — not in JSON"
+    ],
+    "assumptions": [
+      "Three-item header nav (Shop / About / Support) is on-brand",
+      "`LocalizedText` type accepts `de?`/`it?` as optional — fallback to `en` is safe for launch",
+      "Brand copy can be drafted fully from `docs/business-os/strategy/HBAG/assessment/` without operator input"
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "New `/[lang]/about` server component inheriting `support/page.tsx` structure",
+      "`AboutContent` type + `getAboutContent()` accessor added to `contentPacket.ts` (same pattern as `getSupportContent`, `getShippingContent`, etc.)",
+      "About nav labels added to `CHROME_DEFAULTS` + `ChromeContent.header.about` / `ChromeContent.footer.about`",
+      "Sitemap `STATIC_PATHS` updated",
+      "Why planning is not reopening option selection:",
+      "Analysis settled all three options decisively; no operator fork outstanding"
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Add `AboutContent` type and content data",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 92,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `contentPacket.ts` (new `AboutContent` interface, `SiteContentPayload.about` field, `getAboutContent()` accessor, `SAFE_DEFAULTS.about` hardcoded fallback, `parsePayloadFromPath()` required-field gate updated to check `parsed.about`); updated `data/shops/caryina/site-content.generated.json` (new `about` section with en/de/it copy)",
+        "affects": "`apps/caryina/src/lib/contentPacket.ts` (SiteContentPayload, AboutContent, SAFE_DEFAULTS, parsePayloadFromPath, getAboutContent), `data/shops/caryina/site-content.generated.json`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Create About page component",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New file `apps/caryina/src/app/[lang]/about/page.tsx` — server component with `generateMetadata()` and locale-aware brand story page",
+        "affects": "`apps/caryina/src/app/[lang]/about/page.tsx` (new file)"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Add About nav to CHROME_DEFAULTS and Header/Footer components",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `contentPacket.ts` (add `about: LocalizedText` to `ChromeContent.header` and `ChromeContent.footer` interfaces + `CHROME_DEFAULTS` values + `getChromeContent()` return mapper at lines 492–507 updated to include `header.about` and `footer.about`); updated `Header.tsx` (add About nav link); updated `SiteFooter.tsx` (add About footer link)",
+        "affects": "`apps/caryina/src/lib/contentPacket.ts`, `apps/caryina/src/components/Header.tsx`, `apps/caryina/src/components/SiteFooter.tsx`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Update sitemap STATIC_PATHS",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Updated `apps/caryina/src/app/sitemap.ts` with `/about` added to `STATIC_PATHS`",
+        "affects": "`apps/caryina/src/app/sitemap.ts`"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Write accessor unit test and page render test",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 88,
+        "effort": "S",
+        "depends_on": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Extended `apps/caryina/src/lib/contentPacket.test.ts` (new `getAboutContent` test cases); new `apps/caryina/src/app/[lang]/about/page.test.tsx`",
+        "affects": "`apps/caryina/src/lib/contentPacket.test.ts`, `apps/caryina/src/app/[lang]/about/page.test.tsx` (new file)"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. The plan adds a static content route to the site catalogue. No CI/deploy lane, operator runbook, approval path, or multi-step workflow is altered.",
+      "areas": []
+    }
+  }
+}

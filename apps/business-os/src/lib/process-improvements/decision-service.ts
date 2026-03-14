@@ -4,7 +4,7 @@ import { getRepoRoot } from "@/lib/get-repo-root";
 import {
   declineQueuedIdea,
   handoffQueuedIdeaToRegularProcess,
-} from "../../../../../scripts/src/startup-loop/ideas/lp-do-ideas-operator-actions.js";
+} from "../../../../../scripts/src/startup-loop/ideas/lp-do-ideas-operator-actions";
 
 import {
   appendProcessImprovementsDecisionEvent,

@@ -1,0 +1,10 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-14T11:56:56.599Z",
+  "plan_slug": "caryina-about-page",
+  "review_cycle_key": "caryina-about-page",
+  "source_path": "docs/plans/caryina-about-page/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": []
+}

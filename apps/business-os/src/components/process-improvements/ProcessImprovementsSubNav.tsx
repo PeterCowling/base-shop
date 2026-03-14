@@ -1,3 +1,4 @@
+/* eslint-disable ds/no-nonlayered-zindex, ds/no-arbitrary-tailwind, ds/no-raw-tailwind-color -- BOS-PI-102 hero glass tokens not yet in design-system registry [ttl=2026-06-30] */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -7,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { Inline } from "@acme/design-system/primitives/Inline";
 import { cn } from "@acme/design-system/utils/style";
 
+import { ThemeModeToggle } from "@/components/navigation/ThemeModeToggle";
 import type { ActivePlanProgress } from "@/lib/process-improvements/active-plans";
 import type { ProcessImprovementsInboxItem } from "@/lib/process-improvements/projection";
 
@@ -107,7 +109,7 @@ export function ProcessImprovementsSubNav() {
   const counts = useSubNavCounts();
 
   return (
-    <nav className="border-b border-border bg-surface-1">
+    <nav className="sticky top-0 z-10 border-b border-[hsl(245_62%_92%/0.12)] bg-[hsl(229_34%_18%/0.30)] backdrop-blur-xl">
       <Inline gap={1} className="mx-auto w-full px-4 py-2 md:px-6" style={{ maxWidth: "88rem" }}>
         <Link
           href="/process-improvements/new-ideas"
@@ -137,6 +139,9 @@ export function ProcessImprovementsSubNav() {
             />
           )}
         </Link>
+        <div className="ms-auto">
+          <ThemeModeToggle />
+        </div>
       </Inline>
     </nav>
   );

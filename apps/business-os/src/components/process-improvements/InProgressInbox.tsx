@@ -187,6 +187,7 @@ function ActivePlanActivitySummary({
   );
 }
 
+// eslint-disable-next-line complexity -- BOS-PI-103 plan card has rich conditional display; refactor deferred
 export function ActivePlanCard({
   plan,
   onSnooze,
@@ -212,8 +213,8 @@ export function ActivePlanCard({
   return (
     <div
       className={cn(
-        "group rounded-xl border bg-surface-1/85 shadow-elevation-1 transition-all duration-200 hover:shadow-elevation-2",
-        hasBlocked ? "border-warning-soft" : "border-border"
+        "group rounded-2xl glass-card transition-all duration-200 hover:scale-[1.005]",
+        plan.isActiveNow ? "glow-info" : hasBlocked ? "glow-warning" : ""
       )}
     >
       <div className="flex gap-4 p-4">

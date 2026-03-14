@@ -601,6 +601,8 @@ export async function initiatePrimeOutboundThread(input: {
       method: "POST",
       body: JSON.stringify({ plainText: input.text }),
       headers: buildPrimeActorHeaders(input.actorUid),
+      // 10-second hard timeout: prevents a slow Prime function from hanging the Reception API route.
+      signal: AbortSignal.timeout(10_000),
     },
   );
 

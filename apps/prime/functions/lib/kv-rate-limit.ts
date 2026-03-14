@@ -36,6 +36,10 @@ function buildRateLimitExceededResponse(options: KvRateLimitOptions): Response {
 
 export async function enforceKvRateLimit(options: KvRateLimitOptions): Promise<Response | null> {
   if (!options.kv) {
+    // KV binding is absent — rate limiting is disabled for this request.
+    // This is expected in local dev but should not occur in production.
+    // If this appears in CF logs, ensure the RATE_LIMIT KV namespace is bound to the Worker.
+    console.warn('[kv-rate-limit] KV binding absent — rate limiting disabled for key:', options.key); // i18n-exempt -- PRIME-101 operator log [ttl=2026-12-31]
     return null;
   }
 

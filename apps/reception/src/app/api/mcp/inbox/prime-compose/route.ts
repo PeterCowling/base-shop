@@ -70,6 +70,13 @@ export async function POST(request: Request) {
     );
   }
 
+  // Fire-and-forget: intentional. The broadcast was already sent successfully above.
+  // prime_broadcast_initiated is a CRITICAL_EVENT_TYPE so recordInboxEvent will
+  // await logInboxEvent (throws on DB failure). The void means a DB failure after
+  // the 200 response is returned will surface as an unhandled rejection in the
+  // Next.js runtime (logged to server stderr) but will NOT affect the caller.
+  // Acceptable trade-off: the operator already received the broadcast; a missed
+  // telemetry write should not surface as a 500 to the client.
   void recordInboxEvent({
     threadId: broadcastPrefixedId,
     eventType: "prime_broadcast_initiated",

@@ -95,6 +95,20 @@ export function getPrimeMessageChannelKind(
 }
 
 /**
+ * The canonical whole-hostel broadcast channel ID.
+ * Used as a fixed thread ID for the `broadcast_whole_hostel` Prime messaging channel.
+ * This constant must remain stable — it is both the RTDB channel key and the D1 thread ID.
+ *
+ * Computation: buildBroadcastChannelId('whole_hostel') → `broadcast_whole_hostel`
+ * The result is fully deterministic: it is pure string concatenation of
+ * BROADCAST_CHANNEL_PREFIX + '_' + audienceKey, with no random or timestamp
+ * component. The value 'broadcast_whole_hostel' is stable across all environments
+ * and process restarts. Do not change the audienceKey argument without a coordinated
+ * RTDB + D1 migration, as existing records are keyed on this value.
+ */
+export const WHOLE_HOSTEL_BROADCAST_CHANNEL_ID: string = buildBroadcastChannelId('whole_hostel');
+
+/**
  * Check whether a direct-message channel ID includes a specific guest UUID.
  */
 export function directMessageChannelIncludesGuest(

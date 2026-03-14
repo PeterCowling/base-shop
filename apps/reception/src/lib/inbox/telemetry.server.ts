@@ -52,6 +52,7 @@ const CRITICAL_EVENT_TYPES: ReadonlySet<InboxEventType> = new Set([
   "admitted",
   "approved",
   "sent",
+  "prime_broadcast_initiated",
 ]);
 const MAX_METADATA_JSON_LENGTH = 4096;
 

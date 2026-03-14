@@ -42,6 +42,29 @@ type BookingDateRange = {
   checkOutDate: string;
 };
 
+/**
+ * A booking occupant who has no valid room allocation.
+ *
+ * "Unallocated" means guestByRoomData[occId]?.allocated is absent, empty string,
+ * or a value not in knownRooms. These occupants are invisible on the rooms grid
+ * without the UnallocatedPanel.
+ */
+export interface UnallocatedOccupant {
+  bookingRef: string;
+  occupantId: string;
+  firstName: string;
+  lastName: string;
+  checkInDate: string;
+  checkOutDate: string;
+  /**
+   * The originally-booked room, used for informational display.
+   * Sourced from guestByRoomData[occId]?.booked, falling back to
+   * bookingsData[bookingRef][occId]?.roomNumbers[0]. Absent when neither is populated.
+   */
+  bookedRoom?: string;
+  status: MyLocalStatus;
+}
+
 function hasBookingDateRange(value: unknown): value is BookingDateRange {
   if (!value || typeof value !== "object") {
     return false;

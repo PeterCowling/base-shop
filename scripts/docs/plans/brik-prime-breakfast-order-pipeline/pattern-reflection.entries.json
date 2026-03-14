@@ -1,0 +1,15 @@
+{
+  "schema_version": "pattern-reflection.entries.v1",
+  "generated_at": "2026-03-14T12:44:21.094Z",
+  "plan_slug": "brik-prime-breakfast-order-pipeline",
+  "review_cycle_key": "brik-prime-breakfast-order-pipeline",
+  "source_path": "scripts/docs/plans/brik-prime-breakfast-order-pipeline/pattern-reflection.user.md",
+  "build_origin_status": "source_missing",
+  "failures": [
+    {
+      "code": "source_missing",
+      "message": "scripts/docs/plans/brik-prime-breakfast-order-pipeline/pattern-reflection.user.md not found"
+    }
+  ],
+  "entries": []
+}

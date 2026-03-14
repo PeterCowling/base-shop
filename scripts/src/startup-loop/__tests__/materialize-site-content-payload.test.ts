@@ -212,6 +212,55 @@ describe("materializeSiteContentPayload", () => {
     expect(result.diagnostics.join("\n")).toContain("Product Proof Bullets");
   });
 
+  it("TC-trust-strip-01: packet with ## Reusable Trust Blocks produces non-empty trustStrip", () => {
+    const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "materializer-trust-strip-"));
+    const sourcePath = "docs/business-os/startup-baselines/TEST/content-packet.md";
+
+    const packetWithTrustBlocks =
+      `${basePacket()}\n## Reusable Trust Blocks\n\n- Delivery estimate shown at checkout\n- Unused-item exchange requests up to 30 days\n- Designed in Positano, Italy\n`;
+
+    writeFile(repoRoot, sourcePath, packetWithTrustBlocks);
+
+    const result = materializeSiteContentPayload({
+      business: "TEST",
+      shop: "test-shop",
+      repoRoot,
+      sourcePacketPath: sourcePath,
+    });
+
+    expect(result.ok).toBe(true);
+    const payload = JSON.parse(fs.readFileSync(result.outputPath, "utf8")) as {
+      productPage: { trustStrip: { delivery: { en: string }; exchange: { en: string }; origin: { en: string }; securePayment: { en: string } } };
+    };
+
+    expect(payload.productPage.trustStrip.delivery.en).toBe("Delivery estimate shown at checkout");
+    expect(payload.productPage.trustStrip.exchange.en).toBe("Unused-item exchange requests up to 30 days");
+    expect(payload.productPage.trustStrip.origin.en).toBe("Designed in Positano, Italy");
+    expect(payload.productPage.trustStrip.securePayment.en).toBe("Secure checkout");
+  });
+
+  it("TC-trust-strip-02: packet without ## Reusable Trust Blocks still produces trustStrip with default values", () => {
+    const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "materializer-trust-strip-defaults-"));
+    const sourcePath = "docs/business-os/startup-baselines/TEST/content-packet.md";
+
+    writeFile(repoRoot, sourcePath, basePacket());
+
+    const result = materializeSiteContentPayload({
+      business: "TEST",
+      shop: "test-shop",
+      repoRoot,
+      sourcePacketPath: sourcePath,
+    });
+
+    expect(result.ok).toBe(true);
+    const payload = JSON.parse(fs.readFileSync(result.outputPath, "utf8")) as {
+      productPage: { trustStrip: { delivery: { en: string }; securePayment: { en: string } } };
+    };
+
+    expect(payload.productPage.trustStrip.delivery.en.length).toBeGreaterThan(0);
+    expect(payload.productPage.trustStrip.securePayment.en).toBe("Secure checkout");
+  });
+
   it("TC-proof-bullets-04: each proofBullets[i].en is a non-empty string", () => {
     const repoRoot = fs.mkdtempSync(path.join(os.tmpdir(), "materializer-bullets-content-"));
     const sourcePath = "docs/business-os/startup-baselines/TEST/content-packet.md";

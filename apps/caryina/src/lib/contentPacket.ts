@@ -114,6 +114,128 @@ const GENERATED_PAYLOAD_CANDIDATES = [
 
 let cachedPayload: SiteContentPayload | null = null;
 
+/**
+ * @visible-fallback
+ * Safe hardcoded payload returned when the generated content file is absent or malformed.
+ * This prevents SSR 500 errors during degraded operation.
+ * All text is real brand copy — not generator placeholders.
+ */
+const SAFE_DEFAULTS: SiteContentPayload = {
+  sourcePaths: [],
+  seoKeywords: [
+    "mini bag charm",
+    "handbag charm",
+    "Italian-designed bag accessory",
+    "micro bag charm",
+    "structured bag charm with turn lock",
+  ],
+  home: {
+    eyebrow: { en: "Designed in Positano" },
+    heading: { en: "Tiny bags, big character." },
+    summary: {
+      en: "Italian-designed mini bag charms that clip onto your favourite handbag. Structured silhouettes, polished hardware, and a little Positano sunshine in every colorway.",
+    },
+    ctaPrimary: { en: "Shop the launch" },
+    ctaSecondary: { en: "Explore product details" },
+    seoHeading: { en: "Mini bag charms designed in Positano, Italy" },
+    seoBody: {
+      en: "Caryina creates structured mini bag charms with turn-lock closures, textured finishes, and polished hardware. Each charm is designed in Positano and crafted to add personality to any handbag.",
+    },
+    faqHeading: { en: "Common questions" },
+    faqItems: [
+      {
+        question: { en: "What is this store?" },
+        answer: {
+          en: "Caryina is a micro-accessories brand designing mini bag charms in Positano, Italy.",
+        },
+      },
+    ],
+  },
+  shop: {
+    eyebrow: { en: "Launch collection" },
+    heading: { en: "Shop Caryina" },
+    summary: {
+      en: "Browse every colorway in the launch collection. Same structured silhouette, same polished hardware — pick the finish that speaks to you.",
+    },
+    trustBullets: [
+      { en: "Designed in Positano, Italy with polished hardware and textured finishes." },
+    ],
+  },
+  launchFamilies: {
+    "top-handle": {
+      label: { en: "Top Handle" },
+      description: { en: "The classic carry. A structured silhouette with a curved top handle and turn-lock closure." },
+    },
+    shoulder: {
+      label: { en: "Shoulder" },
+      description: { en: "A compact profile with a shoulder-strap detail, designed to swing from your bag." },
+    },
+    mini: {
+      label: { en: "Mini" },
+      description: { en: "The most compact charm in the collection — all the hardware and texture, scaled down to pocket size." },
+    },
+  },
+  productPage: {
+    proofHeading: { en: "What makes it special" },
+    proofBullets: [
+      { en: "Structured silhouette with side gussets — designed to hang from a bag strap, not fold into it." },
+      { en: "Turn-lock hardware closure with polished metal hardware." },
+      { en: "Designed in Positano, Italy. Manufactured to specification." },
+    ],
+    relatedHeading: { en: "You may also like" },
+    trustStrip: {
+      delivery: { en: "Delivery estimate shown at checkout" },
+      exchange: { en: "Unused-item exchange requests up to 30 days" },
+      origin: { en: "Designed in Positano, Italy" },
+      securePayment: { en: "Secure checkout" },
+    },
+  },
+  support: {
+    title: { en: "Support" },
+    summary: {
+      en: "Need a hand? We help with orders, delivery questions, exchange requests, and privacy requests.",
+    },
+    channels: [
+      { en: "Email us and include your order number for faster support." },
+    ],
+    responseSla: { en: "Usually within 48 hours" },
+  },
+  policies: {
+    privacy: {
+      title: { en: "Privacy" },
+      summary: { en: "Caryina explains what personal data is used, why it is used, and the rights available to customers." },
+      bullets: [
+        { en: "Only required checkout and fulfillment data are collected." },
+        { en: "Platform providers process payment and delivery data under their legal terms." },
+      ],
+      notice: { en: "See the full Privacy Policy for complete details." },
+    },
+    shipping: {
+      title: { en: "Shipping" },
+      summary: { en: "Dispatch and delivery timing shown at checkout is estimated." },
+      bullets: [
+        { en: "Delivery timing is estimated and not guaranteed unless Caryina states otherwise." },
+      ],
+    },
+    returns: {
+      title: { en: "Returns & Exchanges" },
+      summary: { en: "Eligible online orders normally include a 14-day cancellation right." },
+      bullets: [
+        { en: "14-day statutory cancellation rights apply to eligible online consumer orders." },
+        { en: "Unused-item exchange requests may be handled up to 30 days after delivery." },
+      ],
+    },
+    terms: {
+      title: { en: "Terms" },
+      summary: { en: "By placing an order you agree to our sales terms and support policies." },
+      bullets: [
+        { en: "Availability and delivery windows may vary depending on stock." },
+        { en: "Product photos and descriptions represent the items currently available." },
+      ],
+    },
+  },
+};
+
 function parsePayloadFromPath(payloadPath: string): SiteContentPayload | null {
   let parsed: Partial<SiteContentPayload> | null = null;
   for (let attempt = 0; attempt < 3; attempt += 1) {
@@ -154,13 +276,17 @@ function readPayload(): SiteContentPayload {
   }
 
   if (existingCandidates.length === 0) {
-    throw new Error(
-      `Missing generated site-content payload. Checked: ${GENERATED_PAYLOAD_CANDIDATES.join(", ")}. Run startup-loop materializer before starting the app.`,
+    console.warn(
+      `[contentPacket] Missing generated site-content payload. Checked: ${GENERATED_PAYLOAD_CANDIDATES.join(", ")}. Serving safe defaults. Run startup-loop materializer to restore full content.`,
     );
+    cachedPayload = SAFE_DEFAULTS;
+    return SAFE_DEFAULTS;
   }
-  throw new Error(
-    `Invalid generated site-content payload. Checked: ${existingCandidates.join(", ")}.`,
+  console.warn(
+    `[contentPacket] Invalid generated site-content payload. Checked: ${existingCandidates.join(", ")}. Serving safe defaults.`,
   );
+  cachedPayload = SAFE_DEFAULTS;
+  return SAFE_DEFAULTS;
 }
 
 function localizedText(value: LocalizedText, locale: Locale): string {

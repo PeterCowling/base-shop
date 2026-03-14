@@ -13,6 +13,13 @@ export type LocaleKey = "en" | "de" | "it";
 
 export type LocalizedText = Partial<Record<LocaleKey, string>> & { en: string };
 
+export interface TrustStripCopy {
+  delivery: LocalizedText;
+  exchange: LocalizedText;
+  origin: LocalizedText;
+  securePayment: LocalizedText;
+}
+
 export interface SiteContentPayload {
   generatedAt: string;
   sourcePacketPath: string;
@@ -47,6 +54,7 @@ export interface SiteContentPayload {
     proofHeading: LocalizedText;
     proofBullets: LocalizedText[];
     relatedHeading: LocalizedText;
+    trustStrip?: TrustStripCopy;
   };
   support: {
     title: LocalizedText;
@@ -93,6 +101,32 @@ function escapeRegExp(value: string): string {
 
 function extractBulletList(markdown: string, heading: string): string[] {
   const headingPattern = new RegExp(`^###\\s+${escapeRegExp(heading)}\\s*$`, "m");
+  const startMatch = markdown.match(headingPattern);
+  if (!startMatch || startMatch.index == null) {
+    return [];
+  }
+
+  const startIndex = startMatch.index + startMatch[0].length;
+  const rest = markdown.slice(startIndex);
+  // Stop at the next heading of any level (h2 or h3) to avoid spilling into subsequent sections.
+  const nextHeadingIndex = rest.search(/^#{2,}\s+/m);
+  const block = nextHeadingIndex >= 0 ? rest.slice(0, nextHeadingIndex) : rest;
+
+  return block
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.startsWith("- "))
+    .map((line) => line.slice(2).trim())
+    .filter(Boolean);
+}
+
+/**
+ * Extracts a bullet list from an h2 section (## Heading).
+ * Uses the same stop-condition as extractBulletList (stops at the next ## or ### heading).
+ * Required for sections that use h2 level, which extractBulletList (h3-only) cannot match.
+ */
+function extractH2BulletList(markdown: string, heading: string): string[] {
+  const headingPattern = new RegExp(`^##\\s+${escapeRegExp(heading)}\\s*$`, "m");
   const startMatch = markdown.match(headingPattern);
   if (!startMatch || startMatch.index == null) {
     return [];
@@ -188,6 +222,40 @@ function extractBusinessName(packetContent: string, fallback: string): string {
   return businessNameMatch[1].trim() || fallback;
 }
 
+/**
+ * Fallback values for trustStrip fields. Used when the content-packet's
+ * "## Reusable Trust Blocks" section is missing or has fewer than the expected
+ * number of bullet positions.
+ */
+const TRUST_STRIP_DEFAULTS: TrustStripCopy = {
+  delivery: { en: "Delivery estimate shown at checkout" },
+  exchange: { en: "Unused-item exchange requests up to 30 days" },
+  origin: { en: "Designed in Positano, Italy" },
+  // securePayment is always sourced from defaults — no matching bullet exists in content-packet.
+  securePayment: { en: "Secure checkout" },
+};
+
+/**
+ * Extracts the trustStrip object from the "## Reusable Trust Blocks" h2 section.
+ *
+ * Positional mapping (stable convention — do not reorder bullets in content-packet):
+ *   position 0 → delivery
+ *   position 1 → exchange
+ *   position 2 → origin
+ *   securePayment → always falls back to TRUST_STRIP_DEFAULTS (no matching bullet)
+ *
+ * If a bullet is absent at a given position, that key falls back to TRUST_STRIP_DEFAULTS.
+ */
+function extractTrustStrip(packetContent: string): TrustStripCopy {
+  const bullets = extractH2BulletList(packetContent, "Reusable Trust Blocks");
+  return {
+    delivery: bullets[0] ? { en: bullets[0] } : TRUST_STRIP_DEFAULTS.delivery,
+    exchange: bullets[1] ? { en: bullets[1] } : TRUST_STRIP_DEFAULTS.exchange,
+    origin: bullets[2] ? { en: bullets[2] } : TRUST_STRIP_DEFAULTS.origin,
+    securePayment: TRUST_STRIP_DEFAULTS.securePayment,
+  };
+}
+
 function buildPayload(args: {
   business: string;
   shop: string;
@@ -280,6 +348,9 @@ function buildPayload(args: {
         "Product Proof Bullets",
       ).map((line) => en(line)),
       relatedHeading: en("You may also like"),
+      // Extracted from the `## Reusable Trust Blocks` h2 section of the content packet.
+      // See extractTrustStrip() for positional mapping convention.
+      trustStrip: extractTrustStrip(args.packetContent),
     },
     support: {
       title: en("Support"),
@@ -445,6 +516,7 @@ export function materializeSiteContentPayload(
 type CliOptions = {
   business: string;
   shop: string;
+  repoRoot?: string;
   sourcePacketPath?: string;
   outputPath?: string;
   asOfDate?: string;
@@ -464,6 +536,11 @@ function parseCliArgs(argv: string[]): CliOptions {
     }
     if (token === "--shop") {
       options.shop = String(argv[i + 1] ?? "");
+      i += 1;
+      continue;
+    }
+    if (token === "--repo-root") {
+      options.repoRoot = String(argv[i + 1] ?? "");
       i += 1;
       continue;
     }
@@ -509,6 +586,7 @@ function runCli() {
   const result = materializeSiteContentPayload({
     business: args.business,
     shop: args.shop,
+    repoRoot: args.repoRoot,
     sourcePacketPath: args.sourcePacketPath,
     outputPath: args.outputPath,
     asOfDate: args.asOfDate,

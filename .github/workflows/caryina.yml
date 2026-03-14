@@ -55,7 +55,8 @@ jobs:
         pnpm exec turbo run build --filter=@apps/caryina^... &&
         if [ "${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && github.ref == 'refs/heads/main' }}" = "true" ]; then
           cd apps/caryina &&
-          pnpm exec opennextjs-cloudflare build;
+          pnpm exec opennextjs-cloudflare build &&
+          find .open-next -name "__next.*" -type f -delete;
         else
           echo "Skipping OpenNext build because deploy is disabled for this event/ref.";
         fi

@@ -331,6 +331,7 @@ export function buildThreadSummary(record: InboxThreadRecord): InboxThreadSummar
 
   return {
     id: record.thread.id,
+    source: "email",
     status: record.thread.status,
     channel: channelAdapter.channel,
     channelLabel: channelAdapter.channelLabel,
@@ -396,6 +397,7 @@ export function buildThreadSummaryFromRow(
 
   return {
     id: row.id,
+    source: "email",
     status: row.status,
     channel: channelAdapter.channel,
     channelLabel: channelAdapter.channelLabel,

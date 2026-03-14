@@ -1,5 +1,10 @@
-import { parseThreadMetadata, parseThreadMetadataFromRow } from "../api-models.server";
-import type { InboxThreadRow } from "../repositories.server";
+import {
+  buildThreadSummary,
+  buildThreadSummaryFromRow,
+  parseThreadMetadata,
+  parseThreadMetadataFromRow,
+} from "../api-models.server";
+import type { InboxThreadRecord, InboxThreadRow, ThreadWithLatestDraftRow } from "../repositories.server";
 
 /** Helper to build a minimal InboxThreadRow for testing. */
 function buildTestThreadRow(overrides: Partial<InboxThreadRow> = {}): InboxThreadRow {
@@ -139,5 +144,71 @@ describe("parseThreadMetadata (legacy string parser)", () => {
 
   it("returns empty object for malformed JSON", () => {
     expect(parseThreadMetadata("not-json")).toEqual({});
+  });
+});
+
+// TC-01: buildThreadSummary sets source: "email"
+describe("buildThreadSummary", () => {
+  it("TC-01: sets source: 'email' on the returned thread summary", () => {
+    const record: InboxThreadRecord = {
+      thread: {
+        id: "thread-summary-1",
+        status: "pending",
+        subject: "Test",
+        snippet: "snippet",
+        assigned_uid: null,
+        latest_message_at: "2026-03-14T10:00:00.000Z",
+        last_synced_at: "2026-03-14T10:00:00.000Z",
+        metadata_json: null,
+        created_at: "2026-03-14T10:00:00.000Z",
+        updated_at: "2026-03-14T10:00:00.000Z",
+      },
+      messages: [],
+      drafts: [],
+      events: [],
+      admissionOutcomes: [],
+    };
+
+    const result = buildThreadSummary(record);
+
+    expect(result.source).toBe("email");
+  });
+});
+
+// TC-02: buildThreadSummaryFromRow sets source: "email"
+describe("buildThreadSummaryFromRow", () => {
+  it("TC-02: sets source: 'email' on the returned thread summary", () => {
+    const row: ThreadWithLatestDraftRow = {
+      id: "thread-row-1",
+      status: "pending",
+      subject: "Test row",
+      snippet: "snippet row",
+      assigned_uid: null,
+      latest_message_at: "2026-03-14T10:00:00.000Z",
+      last_synced_at: "2026-03-14T10:00:00.000Z",
+      metadata_json: null,
+      created_at: "2026-03-14T10:00:00.000Z",
+      updated_at: "2026-03-14T10:00:00.000Z",
+      draft_id: null,
+      draft_thread_id: null,
+      draft_gmail_draft_id: null,
+      draft_status: null,
+      draft_subject: null,
+      draft_recipient_emails_json: null,
+      draft_plain_text: null,
+      draft_html: null,
+      draft_original_plain_text: null,
+      draft_original_html: null,
+      draft_template_used: null,
+      draft_quality_json: null,
+      draft_interpret_json: null,
+      draft_created_by_uid: null,
+      draft_created_at: null,
+      draft_updated_at: null,
+    };
+
+    const result = buildThreadSummaryFromRow(row);
+
+    expect(result.source).toBe("email");
   });
 });

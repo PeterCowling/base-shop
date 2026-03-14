@@ -32,6 +32,19 @@ import { SafeReconcileForm } from "./SafeReconcileForm";
 import { SafeResetForm } from "./SafeResetForm";
 import { SafeWithdrawalForm } from "./SafeWithdrawalForm";
 
+const SAFE_TYPE_LABEL: Record<string, string> = {
+  deposit: "Deposit",
+  withdrawal: "Withdrawal",
+  pettyWithdrawal: "Petty Cash",
+  exchange: "Exchange",
+  bankDeposit: "Bank Deposit",
+  bankWithdrawal: "Bank Withdrawal",
+  opening: "Opening",
+  safeReset: "Safe Reset",
+  reconcile: "Reconcile",
+  safeReconcile: "Safe Reconcile",
+};
+
 type SafeModal =
   | "deposit"
   | "withdrawal"
@@ -67,7 +80,7 @@ function SafeManagement(): JSX.Element {
   const { returnKeycardsToSafe } = useTillShiftContext();
   const recordKeycardTransfer = useKeycardTransfer();
   const [activeModal, setActiveModal] = useState<SafeModal>(null);
-  const [expandedRows, setExpandedRows] = useState<number[]>([]);
+  const [expandedRows, setExpandedRows] = useState<string[]>([]);
 
   useEffect(() => {
     if (error) {
@@ -312,9 +325,9 @@ function SafeManagement(): JSX.Element {
     }
   };
 
-  const toggleDetails = (idx: number) => {
+  const toggleDetails = (rowKey: string) => {
     setExpandedRows((prev) =>
-      prev.includes(idx) ? prev.filter((i) => i !== idx) : [...prev, idx]
+      prev.includes(rowKey) ? prev.filter((k) => k !== rowKey) : [...prev, rowKey]
     );
   };
 
@@ -516,8 +529,10 @@ function SafeManagement(): JSX.Element {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {safeCounts.map((s, idx) => (
-                  <Fragment key={s.id ?? `${s.timestamp}-${idx}`}>
+                {safeCounts.map((s, idx) => {
+                  const rowKey = s.id ?? s.timestamp;
+                  return (
+                  <Fragment key={rowKey}>
                     <TableRow
                       className={
                         idx % 2 === 0
@@ -528,7 +543,7 @@ function SafeManagement(): JSX.Element {
                       <TableCell className="p-2">
                         {formatEnGbDateTimeFromIso(s.timestamp)}
                       </TableCell>
-                      <TableCell className="p-2">{s.type}</TableCell>
+                      <TableCell className="p-2">{SAFE_TYPE_LABEL[s.type] ?? s.type}</TableCell>
                       <TableCell className="p-2">
                         {s.amount !== undefined
                           ? formatEuro(s.amount)
@@ -553,10 +568,10 @@ function SafeManagement(): JSX.Element {
                       <TableCell className="p-2">
                         {s.denomBreakdown ? (
                           <Button
-                            onClick={() => toggleDetails(idx)}
+                            onClick={() => toggleDetails(rowKey)}
                             className="text-primary-main underline"
                           >
-                            {expandedRows.includes(idx)
+                            {expandedRows.includes(rowKey)
                               ? "Hide Details"
                               : "View Details"}
                           </Button>
@@ -565,7 +580,7 @@ function SafeManagement(): JSX.Element {
                         )}
                       </TableCell>
                     </TableRow>
-                    {expandedRows.includes(idx) && s.denomBreakdown && (
+                    {expandedRows.includes(rowKey) && s.denomBreakdown && (
                       <TableRow
                         className={
                           idx % 2 === 0
@@ -579,7 +594,8 @@ function SafeManagement(): JSX.Element {
                       </TableRow>
                     )}
                   </Fragment>
-                ))}
+                  );
+                })}
               </TableBody>
             </Table>
           )}

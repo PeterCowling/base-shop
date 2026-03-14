@@ -22,6 +22,7 @@ export const Card = (
     elevated = false,
     shape,
     radius,
+    style,
     ...props
   }: CardProps & {
     ref?: React.Ref<HTMLDivElement>;
@@ -38,11 +39,20 @@ export const Card = (
   data-token="--color-bg"
   className={cn(
     // Default to card surface; allow elevated variant to opt into stronger surface
-    elevated ? "bg-surface-3 shadow-elevation-2" : "bg-card shadow",
+    elevated ? "bg-surface-3 shadow-elevation-2" : "bg-card",
     "text-card-foreground border border-border-2",
     shapeRadiusClass,
     className
   )}
+  style={{
+    // Profile-driven elevation overrides Tailwind shadow when the var is defined.
+    // Fallback reproduces Tailwind's default `shadow` utility so apps without
+    // profiles see no visual change.
+    ...(!elevated && {
+      boxShadow: "var(--profile-card-elevation, 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1))",
+    }),
+    ...style,
+  }}
   {...props}
 />);
 };
@@ -65,11 +75,20 @@ export const CardContent = (
   {
     ref,
     className,
+    style,
     ...props
   }: React.HTMLAttributes<HTMLDivElement> & {
     ref?: React.Ref<HTMLDivElement>;
   }
-) => (<div ref={ref} className={cn("p-6", className)} {...props} />);
+) => (<div
+  ref={ref}
+  className={cn("p-6", className)}
+  style={{
+    padding: "var(--profile-space-card-padding, 1.5rem)",
+    ...style,
+  }}
+  {...props}
+/>);
 
 export const CardFooter = (
   {

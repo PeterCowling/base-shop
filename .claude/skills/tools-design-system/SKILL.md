@@ -22,6 +22,36 @@ When sources disagree, use this order:
 
 For example, reception exposes utilities through `apps/reception/src/app/globals.css` using `@theme { --color-surface-2: var(--surface-2) ... }`, so classes like `bg-surface-2`, `text-muted-foreground`, and `border-border-strong` are valid even when they are not literal keys in `tokens.ts`.
 
+## Profile-Aware Defaults
+
+Before applying any default styling, read the design profile for the target theme at `packages/themes/<theme>/src/design-profile.ts`. Profile values are authoritative over the generic examples in this skill.
+
+### Conditional Rules
+
+- If `defaultElevation: "flat"` — do not add shadow classes (`shadow-sm`, `shadow-md`, `shadow-lg`) unless a page-level design spec explicitly overrides. Flat means flat.
+- If `defaultElevation: "subtle"` — use `shadow-sm` only. Do not escalate to `shadow-md` or `shadow-lg` without a design spec override.
+- If `defaultBorder: "none"` — do not add `border` or `border-border` classes to cards or surfaces. The brand intentionally uses borderless containers.
+- If `defaultBorder: "subtle"` — use `border-border-muted`, not `border-border-strong`.
+- If `defaultRadius: "sm"` — use `rounded-sm`, not `rounded-lg`. The brand uses small corners.
+- If `defaultRadius: "none"` — use `rounded-none`. The brand uses sharp edges.
+- If `defaultRadius: "xl"` — use `rounded-xl`. The brand uses large, soft corners.
+- If `colorStrategy: "monochromatic"` — do not use accent token (`bg-accent`, `text-accent-fg`). Stick to primary + neutrals only.
+- If `colorStrategy: "restrained"` — use accent sparingly (CTAs and 1-2 highlights per page maximum).
+
+**General rule:** Read the design profile before applying any default. The profile is more specific than the examples below and takes precedence when they conflict.
+
+### Theme Asset Awareness
+
+Before recommending specific token classes, check `packages/themes/<theme>/src/assets.ts` for available theme assets:
+
+- **Fonts:** If `assets.fonts.heading` is defined, use that font family for headings instead of defaulting to `font-sans`. If no heading font is defined, `font-heading` or `font-sans` remains correct.
+- **Gradients:** If `assets.gradients` defines named gradients (e.g., `hero`, `header`), these are available via CSS custom properties. Reference them rather than composing ad-hoc gradient values.
+- **Shadows:** If `assets.shadows` defines brand-colored shadows (e.g., `brandPrimary10`), prefer them over generic `shadow-sm`/`shadow-md` for branded surfaces.
+- **Keyframes:** If `assets.keyframes` defines animations (e.g., `fade-up`, `slide-down`), use them for motion instead of inventing new keyframes.
+- **Brand colors:** If `assets.brandColors` defines named colors beyond the semantic palette, they are available as CSS custom properties for brand-specific use cases.
+
+If `assets.ts` does not exist or exports empty collections, the brand has no custom assets. Use base tokens as documented below.
+
 ## Core Rules
 
 - Prefer public DS component props over class-level restyling when the component already exposes the contract.

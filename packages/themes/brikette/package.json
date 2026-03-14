@@ -1,21 +1,17 @@
 {
-  "name": "@themes/caryina",
+  "name": "@themes/brikette",
   "version": "0.0.0",
   "private": true,
   "type": "module",
   "files": [
-    "src",
-    "tokens.css"
+    "src"
   ],
-  "main": "./src/tokens.ts",
+  "main": "./src/index.ts",
   "exports": {
-    ".": "./src/tokens.ts",
-    "./tokens": "./src/tokens.ts",
-    "./tailwind-tokens": "./src/tailwind-tokens.ts",
+    ".": "./src/index.ts",
     "./assets": "./src/assets.ts",
     "./design-profile": "./src/design-profile.ts",
-    "./recipes": "./src/recipes.ts",
-    "./tokens.css": "./tokens.css"
+    "./recipes": "./src/recipes.ts"
   },
   "sideEffects": false,
   "scripts": {

@@ -13,5 +13,5 @@
   },
 
   "include": ["src/**/*"],
-  "exclude": ["dist", "__tests__", ".turbo", "node_modules"]
+  "exclude": ["dist", "__tests__", ".turbo", "node_modules", "src/assets.ts", "src/design-profile.ts", "src/recipes.ts"]
 }

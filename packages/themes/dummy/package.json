@@ -11,10 +11,16 @@
   "exports": {
     ".": "./src/tailwind-tokens.ts",
     "./tailwind-tokens": "./src/tailwind-tokens.ts",
+    "./assets": "./src/assets.ts",
+    "./design-profile": "./src/design-profile.ts",
+    "./recipes": "./src/recipes.ts",
     "./tokens.css": "./tokens.css"
   },
   "sideEffects": false,
   "scripts": {
     "lint": "eslint . --no-error-on-unmatched-pattern"
+  },
+  "dependencies": {
+    "@themes/base": "workspace:*"
   }
 }

@@ -1,15 +1,15 @@
 {
-  "last_updated": "2026-03-14T11:53:45.766Z",
+  "last_updated": "2026-03-14T12:00:53.447Z",
   "counts": {
-    "enqueued": 62,
+    "enqueued": 60,
     "processed": 33,
     "declined": 2,
     "skipped": 1,
     "error": 0,
     "suppressed": 196,
     "auto_executed": 0,
-    "completed": 385,
-    "fact_find_ready": 41,
+    "completed": 387,
+    "fact_find_ready": 39,
     "plan_ready": 0,
     "micro_build_ready": 18,
     "briefing_ready": 1,
@@ -82,14 +82,21 @@
         "coverage-hint: data-contracts",
         "coverage-hint: testing"
       ],
-      "status": "fact_find_ready",
+      "status": "completed",
       "recommended_route": "lp-do-fact-find",
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "enqueued_at": "2026-03-14T11:30:00.000Z",
       "processed_by": {
         "target_path": "docs/plans/reception-extension-city-tax-recording/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "reception-extension-city-tax-recording",
+        "fact_find_slug": "reception-extension-city-tax-recording"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/reception-extension-city-tax-recording/plan.md",
+        "completed_at": "2026-03-14T11:58:45.951Z",
+        "outcome": "Completed via reception-extension-city-tax-recording."
       }
     },
     {
@@ -33083,10 +33090,10 @@
         "docs/business-os/strategy/HBAG/ (brand dossier reference)"
       ],
       "recommended_route": "lp-do-fact-find",
-      "status": "fact_find_ready",
+      "status": "completed",
       "priority": "P2",
       "confidence": 0.85,
-      "queue_state": "enqueued",
+      "queue_state": "completed",
       "evidence_refs": [
         "operator-stated: no About page despite 'Designed in Positano' being the primary brand claim",
         "apps/caryina/src/app/[lang]/ — no /about route exists",
@@ -33096,7 +33103,14 @@
       "processed_by": {
         "target_path": "docs/plans/caryina-about-page/plan.md",
         "target_route": "lp-do-fact-find",
-        "target_kind": "fact-find"
+        "target_kind": "fact-find",
+        "target_slug": "caryina-about-page",
+        "fact_find_slug": "caryina-about-page"
+      },
+      "completed_by": {
+        "plan_path": "docs/plans/_archive/caryina-about-page/plan.md",
+        "completed_at": "2026-03-14T11:57:52.559Z",
+        "outcome": "Completed via caryina-about-page."
       }
     },
     {

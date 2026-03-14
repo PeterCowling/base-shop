@@ -1,0 +1,43 @@
+Running node v22.16.0 (npm v10.9.2)
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "critical",
+      "file": "docs/plans/reception-extension-city-tax-recording/fact-find.md",
+      "line": "73",
+      "message": "The brief incorrectly says the `balance > 0` path “Works correctly”. In [`apps/reception/src/components/man/modals/ExtensionPayModal.tsx`](apps/reception/src/components/man/modals/ExtensionPayModal.tsx):76-85 the modal shows only `record.balance`, and at lines 127-131 it clears that existing due with `totalPaid: record.totalDue` without adding `defaultCityTaxPerGuest`; `useChangeBookingDatesMutator` also does not touch `cityTax`, so extension tax is still unrecorded for positive-balance occupants."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-extension-city-tax-recording/fact-find.md",
+      "line": "160",
+      "message": "The proposed B/C write shapes assume every `cityTaxTargets` occupant should be updated, but [`apps/reception/src/components/man/Extension.tsx`](apps/reception/src/components/man/Extension.tsx):91-126 builds `occupantIds` from every occupant in the booking and the prior fix explicitly guarded against writing code 9 to other booking occupants (`apps/reception/src/constants/emailCodes.ts:4-8`). Expanding writes to `balance = 0` / `no record` without first narrowing the target set risks reintroducing that bug."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-extension-city-tax-recording/fact-find.md",
+      "line": "119",
+      "message": "The blast-radius assessment is incomplete. [`apps/reception/src/lib/inbox/pricing-queries.server.ts`](apps/reception/src/lib/inbox/pricing-queries.server.ts):114-137 reads `/cityTax/{bookingRef}` and sums `record.balance` into live guest payable totals, so extension city-tax changes affect inbox pricing output too, not just `useCityTax` consumers."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-extension-city-tax-recording/fact-find.md",
+      "line": "127",
+      "message": "The test-infrastructure section still lists `pnpm --filter reception test`, which conflicts with the repo’s CI-only governed test policy. The brief should point to the governed runner path instead of the local Jest command."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 6,
+  "review": "I’m checking the extension city-tax fact-find against the actual reception code now. First I’m verifying the cited mutation paths, the existing tests, and whether the proposed write shapes still match how the modal and city-tax readers behave.\nI’ve got the fact-find with line numbers and confirmed the cited files exist. Next I’m reading the modal, the mutation hook, the payment-button reference, and the modal tests to see where the brief overstates or misses actual behavior.\nThere’s a more fundamental gap in the brief than the current “balance=0/no record” narrative. I’m now tracing how `cityTax.totalDue` is actually maintained, because the modal code and the brief both look like they may be missing the extension-tax increment for guests who already have a positive balance.\n- CRITICAL: docs/plans/reception-extension-city-tax-recording/fact-find.md:73 The brief incorrectly says the `balance > 0` path “Works correctly”. In [`apps/reception/src/components/man/modals/ExtensionPayModal.tsx`](apps/reception/src/components/man/modals/ExtensionPayModal.tsx):76-85 the modal shows only `record.balance`, and at lines 127-131 it clears that existing due with `totalPaid: record.totalDue` without adding `defaultCityTaxPerGuest`; `useChangeBookingDatesMutator` also does not touch `cityTax`, so extension tax is still unrecorded for positive-balance occupants.\n\n- WARNING: docs/plans/reception-extension-city-tax-recording/fact-find.md:160 The proposed B/C write shapes assume every `cityTaxTargets` occupant should be updated, but [`apps/reception/src/components/man/Extension.tsx`](apps/reception/src/components/man/Extension.tsx):91-126 builds `occupantIds` from every occupant in the booking and the prior fix explicitly guarded against writing code 9 to other booking occupants (`apps/reception/src/constants/emailCodes.ts:4-8`). Expanding writes to `balance = 0` / `no record` without first narrowing the target set risks reintroducing that bug.\n\n- WARNING: docs/plans/reception-extension-",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019ceb8d-93ba-71c3-b121-ca08acf9a765",
+  "resumed": true,
+  "usage": {
+    "inputTokens": 42568271,
+    "outputTokens": 137040,
+    "totalTokens": 42705311,
+    "costUsd": 0
+  },
+  "durationMs": 223736
+}

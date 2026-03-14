@@ -227,33 +227,54 @@ type PrimeEnvelope<T> = {
   data: T;
 };
 
-async function primeRequest<T>(path: string, init: RequestInit = {}): Promise<T> {
-  let response: Response;
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+async function primeRequest<T>(
+  path: string,
+  init: RequestInit = {},
+  opts: { retry?: boolean } = {},
+): Promise<T> {
+  const attempt = async (): Promise<T> => {
+    let response: Response;
+    try {
+      response = await fetch(buildPrimeUrl(path), {
+        ...init,
+        headers: {
+          ...buildPrimeHeaders(),
+          ...(init.headers ?? {}),
+        },
+        cache: "no-store",
+      });
+    } catch {
+      throw new Error("Failed to reach Prime messaging service");
+    }
+
+    let payload: PrimeEnvelope<T>;
+    try {
+      payload = (await response.json()) as PrimeEnvelope<T>;
+    } catch {
+      throw new Error("Failed to load Prime threads");
+    }
+
+    if (!response.ok || !payload.success) {
+      throw new Error("Failed to load Prime threads");
+    }
+
+    return payload.data;
+  };
+
+  if (!opts.retry) {
+    return attempt();
+  }
+
   try {
-    response = await fetch(buildPrimeUrl(path), {
-      ...init,
-      headers: {
-        ...buildPrimeHeaders(),
-        ...(init.headers ?? {}),
-      },
-      cache: "no-store",
-    });
+    return await attempt();
   } catch {
-    throw new Error("Failed to reach Prime messaging service");
+    await delay(300);
+    return attempt();
   }
-
-  let payload: PrimeEnvelope<T>;
-  try {
-    payload = (await response.json()) as PrimeEnvelope<T>;
-  } catch {
-    throw new Error("Failed to load Prime threads");
-  }
-
-  if (!response.ok || !payload.success) {
-    throw new Error("Failed to load Prime threads");
-  }
-
-  return payload.data;
 }
 
 async function buildPrimeActorHeaders(
@@ -314,7 +335,7 @@ function mapPrimeSummaryToInboxThread(
     subject: summary.subject,
     snippet: summary.snippet,
     latestMessageAt: summary.latestMessageAt,
-    lastSyncedAt: null,
+    lastSyncedAt: summary.updatedAt,
     updatedAt: summary.updatedAt,
     needsManualDraft: false,
     draftFailureCode: null,
@@ -389,7 +410,7 @@ export async function listPrimeInboxThreadSummaries(status?: string): Promise<In
     ? `/api/review-threads?limit=50&status=${encodeURIComponent(status)}`
     : "/api/review-threads?limit=50";
   try {
-    const summaries = await primeRequest<PrimeReviewThreadSummary[]>(url);
+    const summaries = await primeRequest<PrimeReviewThreadSummary[]>(url, {}, { retry: true });
     return summaries.map(mapPrimeSummaryToInboxThread);
   } catch {
     // Re-throw with a safe message so callers can surface the failure.

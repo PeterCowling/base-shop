@@ -2520,6 +2520,12 @@ importers:
         specifier: workspace:*
         version: link:../base
 
+  packages/themes/xa-uploader:
+    dependencies:
+      '@themes/base':
+        specifier: workspace:*
+        version: link:../base
+
   packages/types:
     dependencies:
       zod:

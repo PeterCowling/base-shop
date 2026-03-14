@@ -1,7 +1,7 @@
 {
-  "last_updated": "2026-03-14T12:00:00.000Z",
+  "last_updated": "2026-03-14T14:00:01.000Z",
   "counts": {
-    "enqueued": 50,
+    "enqueued": 61,
     "processed": 25,
     "declined": 2,
     "skipped": 1,
@@ -9,13 +9,308 @@
     "suppressed": 196,
     "auto_executed": 0,
     "completed": 350,
-    "fact_find_ready": 32,
+    "fact_find_ready": 35,
     "plan_ready": 0,
-    "micro_build_ready": 16,
+    "micro_build_ready": 24,
     "briefing_ready": 0,
-    "total": 635
+    "total": 646
   },
   "dispatches": [
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314153000-PLAT-001",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314153000-PLAT-001",
+      "anchor_key": "plat-refund-auth-bearer-bypass",
+      "cluster_key": "plat-payment-integration-correctness",
+      "cluster_fingerprint": "caryina-pm-refund-broken",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina + Payment Manager \u2014 refunds always fail with 'unauthorized'",
+      "location_anchors": [
+        "apps/payment-manager/src/app/api/refunds/route.ts",
+        "apps/payment-manager/src/middleware.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "PM middleware correctly passes /api/refunds through when Caryina sends a valid bearer token. But the route handler then re-checks hasPmSession() which reads a session cookie \u2014 Caryina never sends one. Every refund call from Caryina returns 401.",
+      "next_scope_now": "Add bearer token check to the /api/refunds route handler (accept CARYINA_PM_TOKEN bearer in addition to session cookie), matching the middleware's exemption logic.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": 1,
+      "confidence": 95,
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:30:00.000Z",
+      "evidence_refs": [
+        "operator-stated: code audit confirmed middleware bypass is a no-op \u2014 route re-gates on the wrong credential",
+        "apps/payment-manager/src/middleware.ts:92 \u2014 bearer token exempts the redirect but not the route handler",
+        "apps/payment-manager/src/app/api/refunds/route.ts:70 \u2014 hasPmSession() reads cookie only"
+      ],
+      "why": "Any attempt to issue a refund fails with 'unauthorized' before even reaching the payment provider. Operators cannot refund customers through the Payment Manager dashboard at all.",
+      "intended_outcome": "Refund calls from Caryina are accepted by Payment Manager and reach the Stripe or Axerve refund logic."
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314153001-PLAT-002",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314153001-PLAT-002",
+      "anchor_key": "plat-order-status-never-completed",
+      "cluster_key": "plat-payment-integration-correctness",
+      "cluster_fingerprint": "caryina-pm-refund-broken",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina + Payment Manager \u2014 every order is permanently stuck as 'pending', making refunds impossible",
+      "location_anchors": [
+        "apps/caryina/src/lib/checkoutSession.server.ts",
+        "apps/caryina/src/lib/pmOrderDualWrite.server.ts",
+        "apps/caryina/src/app/api/stripe-webhook/route.ts",
+        "apps/payment-manager/src/app/api/refunds/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "pmOrderDualWrite always writes status: 'pending'. Nothing updates it to 'completed' after payment succeeds. PM refund route refuses to refund orders that aren't 'completed'. So even with auth fixed, every refund returns an error.",
+      "next_scope_now": "After Axerve checkout succeeds and after Stripe session finalises, call the PM internal orders endpoint again with status: 'completed'. Add the same update in the Stripe webhook handler so the completed status is set even if the checkout flow's dual-write was delayed.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": 1,
+      "confidence": 92,
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:30:00.000Z",
+      "evidence_refs": [
+        "operator-stated: no code path anywhere sets PM order status to 'completed' for either provider",
+        "apps/caryina/src/lib/checkoutSession.server.ts:707 \u2014 pmOrderDualWrite called with status: 'pending' only",
+        "apps/payment-manager/src/app/api/refunds/route.ts:117 \u2014 hard block: status !== 'completed' returns 400"
+      ],
+      "why": "Even after fixing the auth issue, operators still cannot issue any refund because every order in Payment Manager shows as 'pending payment'. The system has no way to know a customer actually paid.",
+      "intended_outcome": "Paid orders are marked as completed in Payment Manager, allowing refunds to proceed normally."
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314153002-PLAT-003",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314153002-PLAT-003",
+      "anchor_key": "plat-axerve-refund-timing-attack",
+      "cluster_key": "plat-payment-security",
+      "cluster_fingerprint": "caryina-timing-attack-surface",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina \u2014 Axerve refund security token can be guessed by a patient attacker",
+      "location_anchors": [
+        "apps/caryina/src/app/api/internal/axerve-refund/route.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "The Axerve refund endpoint compares the security token with a plain equals check. An attacker making many rapid requests can measure tiny timing differences to guess the token character by character. Payment Manager uses a secure comparison for the same pattern.",
+      "next_scope_now": "Replace the plain token comparison with the timingSafeEqual function already available in the codebase. One-line fix.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": 1,
+      "confidence": 98,
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:30:00.000Z",
+      "evidence_refs": [
+        "operator-stated: timing attack risk on internal refund endpoint token check",
+        "apps/caryina/src/app/api/internal/axerve-refund/route.ts:75 \u2014 token !== expectedToken (plain comparison)",
+        "risk_vector: security \u2014 token inference attack on financial endpoint"
+      ],
+      "why": "The security key protecting the Axerve refund system can be guessed over time through a timing attack. Once guessed, an attacker could trigger unauthorised refunds against any Axerve transaction.",
+      "intended_outcome": "Axerve refund endpoint token check is resistant to timing attacks, matching the security standard already used elsewhere in the system."
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314153003-PLAT-004",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314153003-PLAT-004",
+      "anchor_key": "plat-provider-fetch-no-timeout",
+      "cluster_key": "plat-checkout-reliability",
+      "cluster_fingerprint": "caryina-checkout-hangs",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina \u2014 checkout page can freeze for up to 2 minutes if payment service is slow",
+      "location_anchors": [
+        "apps/caryina/src/lib/payments/provider.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "When loading the checkout page, Caryina asks Payment Manager which payment method to show. This request has no timeout. If Payment Manager is slow or unresponsive, every customer's checkout page hangs silently until the connection times out \u2014 up to 2 minutes.",
+      "next_scope_now": "Add a 2-second timeout (AbortSignal.timeout(2000)) to the fetch call. If PM doesn't respond in time, fall back to the locally configured payment provider as already intended.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": 1,
+      "confidence": 97,
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:30:00.000Z",
+      "evidence_refs": [
+        "operator-stated: no timeout on PM fetch during checkout SSR",
+        "apps/caryina/src/lib/payments/provider.server.ts:29 \u2014 fetch with no AbortSignal",
+        "funnel_step: checkout, metric_name: page_load_time"
+      ],
+      "why": "If the payment service has any slowness, customers trying to reach the checkout page will see it hang or time out. This directly stops purchases from completing during any period of payment service instability.",
+      "intended_outcome": "Checkout page loads within 2 seconds regardless of payment service response time, by falling back gracefully when no quick response is available."
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314153004-PLAT-005",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314153004-PLAT-005",
+      "anchor_key": "plat-ip-allowlist-silent-404",
+      "cluster_key": "plat-ops-first-time-setup",
+      "cluster_fingerprint": "pm-xa-setup-failure-silent",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager + Inventory Uploader \u2014 entire app appears broken on fresh setup with no explanation",
+      "location_anchors": [
+        "apps/payment-manager/src/lib/auth/accessControl.ts",
+        "apps/payment-manager/.env.example",
+        "apps/xa-uploader/src/lib/accessControl.ts",
+        "apps/xa-uploader/.env.example"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Both Payment Manager and Inventory Uploader block all traffic with a silent 404 when the IP allowlist environment variable is not set. On a fresh deployment, a developer or operator will see only 404s everywhere with no indication of what's wrong or how to fix it.",
+      "next_scope_now": "Return a diagnostic response in non-production environments when the allowlist is empty. Add a clear comment to .env.example explaining the deny-all behaviour and providing an example value.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": 2,
+      "confidence": 90,
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:30:00.000Z",
+      "evidence_refs": [
+        "operator-stated: deny-all with 404 on empty allowlist gives no setup guidance",
+        "apps/payment-manager/src/lib/auth/accessControl.ts \u2014 if (!allowlisted.size) return false \u2192 404",
+        "apps/xa-uploader/src/lib/accessControl.ts \u2014 same pattern"
+      ],
+      "why": "Anyone setting up Payment Manager or the Inventory Uploader for the first time will see blank 404 pages on every URL with no explanation. This makes initial setup unnecessarily difficult and time-consuming to diagnose.",
+      "intended_outcome": "A developer setting up either app for the first time immediately understands what configuration is needed, rather than spending time debugging silent 404s."
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314153005-PLAT-006",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314153005-PLAT-006",
+      "anchor_key": "plat-shop-config-no-seed",
+      "cluster_key": "plat-payment-integration-correctness",
+      "cluster_fingerprint": "pm-first-time-setup-failure",
+      "lineage_depth": 0,
+      "area_anchor": "Payment Manager \u2014 shop configuration must be manually created before anything works, with no guidance",
+      "location_anchors": [
+        "apps/payment-manager/src/app/api/internal/shop-config/route.ts",
+        "apps/payment-manager/src/app/api/shops/[shopId]/page.tsx"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Payment Manager requires a per-shop configuration row in the database before it can tell Caryina which payment provider to use. This row must be manually created. There is no seed, no auto-create, and no startup warning. A fresh deployment silently returns 404 on the provider-config endpoint until someone manually creates the row.",
+      "next_scope_now": "Auto-upsert a default ShopPaymentConfig row (activeProvider: 'axerve') when the shop-config endpoint is first called and no row exists. This removes the manual setup step and makes the integration work out of the box.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": 2,
+      "confidence": 88,
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:30:00.000Z",
+      "evidence_refs": [
+        "operator-stated: no ShopPaymentConfig row means 404 on first use \u2014 no seed or auto-create exists",
+        "apps/payment-manager/src/app/api/internal/shop-config/route.ts \u2014 findUnique returns null \u2192 404"
+      ],
+      "why": "Payment Manager is effectively broken on a new deployment until someone manually inserts a database row \u2014 a step that isn't documented anywhere. Caryina falls back to its local environment variable setting, but this means the central payment management system isn't actually in control.",
+      "intended_outcome": "Payment Manager works correctly from first deployment without requiring manual database setup steps."
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314153006-PLAT-007",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314153006-PLAT-007",
+      "anchor_key": "plat-dual-write-silent-failure",
+      "cluster_key": "plat-payment-observability",
+      "cluster_fingerprint": "pm-dual-write-no-visibility",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina \u2014 failed order syncs to Payment Manager go completely unnoticed",
+      "location_anchors": [
+        "apps/caryina/src/lib/checkoutSession.server.ts",
+        "apps/caryina/src/lib/pmOrderDualWrite.server.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "When Caryina fails to send an order to Payment Manager (wrong URL, wrong token, PM down), the error is caught and logged only as a low-priority warning to the console. No alert is triggered. The operator has no way to know orders are missing from Payment Manager unless they manually compare records.",
+      "next_scope_now": "Upgrade the dual-write failure from console.warn to a structured error log using pmLog so it appears in the observable log stream. Add a comment pointing operators to monitor for this log event.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": 2,
+      "confidence": 93,
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:30:00.000Z",
+      "evidence_refs": [
+        "operator-stated: dual-write failure swallowed with console.warn only \u2014 no structured log, no alert",
+        "apps/caryina/src/lib/checkoutSession.server.ts \u2014 void pmOrderDualWrite().catch(err => console.warn(...))"
+      ],
+      "why": "If there is a misconfiguration between Caryina and Payment Manager, orders from real customers will be missing from Payment Manager with no alert to the operator. This could mean refunds and reconciliation are silently broken for an extended period before anyone notices.",
+      "intended_outcome": "Any failure to sync an order to Payment Manager produces a visible, structured error log entry that operators can monitor and act on."
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314153007-PLAT-008",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314153007-PLAT-008",
+      "anchor_key": "plat-xa-coherence-warning-ephemeral",
+      "cluster_key": "plat-ops-observability",
+      "cluster_fingerprint": "xa-uploader-config-warning-lost",
+      "lineage_depth": 0,
+      "area_anchor": "Inventory Uploader \u2014 security configuration warnings can silently disappear and never reappear",
+      "location_anchors": [
+        "apps/xa-uploader/src/lib/accessControl.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "When the Inventory Uploader detects a potentially insecure configuration, it logs a warning once and then never logs it again \u2014 even if the server restarts (which can happen at any time on Cloudflare Workers). A misconfiguration that was noticed once could go unlogged for weeks.",
+      "next_scope_now": "Remove the once-per-process suppression flag so the coherence warning logs on every affected request, or log it at startup unconditionally. Accept the modest increase in log volume in exchange for reliable visibility.",
+      "recommended_route": "lp-do-build",
+      "status": "micro_build_ready",
+      "priority": 3,
+      "confidence": 85,
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:30:00.000Z",
+      "evidence_refs": [
+        "operator-stated: coherenceWarningEmitted is a module-level boolean lost on Worker restart",
+        "apps/xa-uploader/src/lib/accessControl.ts \u2014 coherenceWarningEmitted flag"
+      ],
+      "why": "A security configuration mistake in the Inventory Uploader can go silently undetected for long periods after a server restart. Operators relying on logs to catch misconfigurations would miss it.",
+      "intended_outcome": "Security configuration warnings in the Inventory Uploader are reliably visible in logs regardless of how often the server restarts."
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314153008-PLAT-009",
+      "mode": "trial",
+      "business": "PLAT",
+      "trigger": "operator_idea",
+      "root_event_id": "IDEA-DISPATCH-20260314153008-PLAT-009",
+      "anchor_key": "plat-returns-operator-workflow",
+      "cluster_key": "plat-post-purchase-operations",
+      "cluster_fingerprint": "caryina-returns-no-operator-workflow",
+      "lineage_depth": 0,
+      "area_anchor": "Caryina \u2014 customers can request returns but staff have no way to manage or respond to them",
+      "location_anchors": [
+        "apps/caryina/src/app/api/returns-request/",
+        "apps/caryina/src/components/ReturnsRequestForm.client.tsx"
+      ],
+      "provisional_deliverable_family": "multi",
+      "current_truth": "Caryina has a returns request form that customers can submit. The submission sends an email but there is no queue, no status tracking, no way for staff to mark a return approved or rejected, and no return label generation.",
+      "next_scope_now": "Fact-find: understand the full post-purchase returns flow needed, what data must be captured at submission, how staff expect to manage returns (email-only vs dashboard), and whether this connects to Payment Manager's refund capability.",
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "priority": 3,
+      "confidence": 72,
+      "queue_state": "enqueued",
+      "created_at": "2026-03-14T15:30:00.000Z",
+      "evidence_refs": [
+        "operator-stated: returns request form exists but no operator workflow \u2014 no queue, no status, no label generation",
+        "apps/caryina/src/app/api/returns-request/ \u2014 accepts submissions, no further processing",
+        "apps/caryina/src/components/ReturnsRequestForm.client.tsx \u2014 customer-facing form exists"
+      ],
+      "why": "When customers request a return, their request goes into a void. Staff have no visibility into pending returns, no way to approve or reject them, and no process to issue a return label or trigger a refund. Every return requires manual intervention outside the system.",
+      "intended_outcome": "Staff can see all pending return requests in one place, respond to each with an approval or rejection, and trigger the associated refund when approved."
+    },
     {
       "schema_version": "dispatch.v2",
       "dispatch_id": "IDEA-DISPATCH-20260314120000-0001",
@@ -31330,6 +31625,99 @@
         "target_path": "docs/plans/reception-analytics-hub-tab-indicator/micro-build.md",
         "completed_at": "2026-03-14"
       }
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314140000-BRIK-001",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-reception-prime-activity-inbox",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-prime-activity-inbox:20260314",
+      "anchor_key": "reception-prime-activity-inbox",
+      "cluster_key": "reception-prime-messaging",
+      "cluster_fingerprint": "brik-reception-prime-activity-inbox-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "Reception \u2014 staff can't see what guests are saying in activity group chats",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/channels.ts",
+        "apps/prime/functions/lib/prime-messaging-shadow-write.ts",
+        "apps/prime/src/app/(guarded)/chat/activities/",
+        "apps/prime/functions/api/direct-message.ts"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Reception inbox only handles email and prime_direct channels. Activity channel messages written to Firebase RTDB are never shadow-written to D1, so staff have no way to see or respond to guest conversations in activity groups.",
+      "next_scope_now": "Investigate how activity messages reach (or fail to reach) Reception, what schema changes are needed in D1, and what the Reception inbox UI needs to show activity threads.",
+      "why": "When guests are in an activity \u2014 a group dinner, a yoga class \u2014 they can send messages in a group chat. But staff in Reception have no idea what's being said. If a guest has a problem, complains, or asks a question in that group, staff won't see it. Fixing this means every guest message reaches the right person, whether it's a direct chat or a group activity.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Reception inbox shows activity channel messages alongside emails and direct messages. Staff can read and respond to activity group conversations from the same inbox screen.",
+        "source": "operator"
+      },
+      "priority": "P2",
+      "confidence": 0.92,
+      "evidence_refs": [
+        "operator-stated: prime messaging audit found activity messages never shadow-written to D1",
+        "apps/reception/src/lib/inbox/channels.ts \u2014 only handles email and prime_direct",
+        "apps/prime/functions/lib/prime-messaging-shadow-write.ts \u2014 only direct messages are shadow-written"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "queue_state": "enqueued",
+      "feature_slug": "reception-prime-activity-inbox",
+      "created_at": "2026-03-14T14:00:00.000Z"
+    },
+    {
+      "schema_version": "dispatch.v2",
+      "dispatch_id": "IDEA-DISPATCH-20260314140001-BRIK-002",
+      "mode": "trial",
+      "business": "BRIK",
+      "trigger": "operator_idea",
+      "domain": "PRODUCTS",
+      "artifact_id": null,
+      "before_sha": null,
+      "after_sha": "operator-idea-20260314-reception-prime-outbound-messaging",
+      "root_event_id": "operator:BRIK:PRODUCTS:reception-prime-outbound-messaging:20260314",
+      "anchor_key": "reception-prime-outbound-messaging",
+      "cluster_key": "reception-prime-messaging",
+      "cluster_fingerprint": "brik-reception-prime-outbound-messaging-20260314",
+      "lineage_depth": 0,
+      "area_anchor": "Reception \u2014 staff have no way to message guests through the Prime app",
+      "location_anchors": [
+        "apps/reception/src/lib/inbox/",
+        "apps/prime/functions/api/",
+        "apps/prime/src/contexts/messaging/ChatProvider.tsx",
+        "apps/prime/src/types/"
+      ],
+      "provisional_deliverable_family": "code-change",
+      "current_truth": "Staff in Reception cannot initiate or send any message to a guest through Prime. The broadcast message types (whole_hostel, booking, room, individual guest) are defined in Prime's type system and D1 schema, but no API endpoint, no Reception send UI, and no guest-side pull of broadcast channels exists.",
+      "next_scope_now": "Investigate what broadcast infrastructure already exists in Prime types/D1, which audience targets to support first, what API endpoint is needed, what Reception UI changes are required, and how the Prime ChatProvider must change to pull broadcasts.",
+      "why": "Right now the only way staff can reach a guest is by email. The Prime app is supposed to be the direct line between guests and the hostel, but there's no send button. Staff can't message a guest who hasn't checked in yet, can't push a note to everyone in a room, and can't alert the whole hostel. Building this means staff and guests can actually talk to each other through the app.",
+      "intended_outcome": {
+        "type": "operational",
+        "statement": "Staff in Reception can compose and send messages to an individual guest, a room, or the whole hostel through the Prime app inbox. Guests see those messages in their Prime chat screen.",
+        "source": "operator"
+      },
+      "priority": "P2",
+      "confidence": 0.88,
+      "evidence_refs": [
+        "operator-stated: prime messaging audit found no outbound send mechanism in Reception",
+        "apps/prime/src/lib/chat/messageSchema.ts \u2014 MessageAudience values whole_hostel/booking/room defined but unenforced",
+        "apps/prime/src/contexts/messaging/ChatProvider.tsx \u2014 only polls direct channels, no broadcast pull",
+        "apps/prime/functions/api/ \u2014 no broadcast send endpoint exists"
+      ],
+      "adjacent_later": [
+        "Push notifications for incoming messages (Prime app currently has no push)",
+        "Scheduled/templated broadcast messages (e.g. check-in reminder 1h before arrival)"
+      ],
+      "recommended_route": "lp-do-fact-find",
+      "status": "fact_find_ready",
+      "queue_state": "enqueued",
+      "feature_slug": "reception-prime-outbound-messaging",
+      "created_at": "2026-03-14T14:00:01.000Z"
     }
   ]
 }

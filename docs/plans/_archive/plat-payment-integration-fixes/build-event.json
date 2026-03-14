@@ -1,0 +1,25 @@
+{
+  "schema_version": "build-event.v1",
+  "feature_slug": "plat-payment-integration-fixes",
+  "business": "PLAT",
+  "built_at": "2026-03-14T08:04:00Z",
+  "commit": "ec37a312cb",
+  "outcome_contract": {
+    "why": "Refunds were completely blocked — bearer-token auth passed middleware but was re-blocked at the route level, and orders were never updated to 'completed' so PM's refund guard rejected every request. A timing attack vulnerability existed in the Axerve internal endpoint.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "All 8 payment integration blockers remediated. Refunds now flow end-to-end for both Stripe and Axerve orders.",
+    "source": "operator"
+  },
+  "dispatch_ids": [
+    "IDEA-DISPATCH-20260314153000-PLAT-001",
+    "IDEA-DISPATCH-20260314153001-PLAT-002",
+    "IDEA-DISPATCH-20260314153002-PLAT-003",
+    "IDEA-DISPATCH-20260314153003-PLAT-004",
+    "IDEA-DISPATCH-20260314153004-PLAT-005",
+    "IDEA-DISPATCH-20260314153005-PLAT-006",
+    "IDEA-DISPATCH-20260314153006-PLAT-007",
+    "IDEA-DISPATCH-20260314153007-PLAT-008"
+  ],
+  "tasks_completed": 8,
+  "tasks_total": 8
+}

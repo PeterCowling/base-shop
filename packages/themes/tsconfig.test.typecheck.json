@@ -13,7 +13,8 @@
     "bcd/__tests__/**/*.ts",
     "brandx/__tests__/**/*.ts",
     "dark/__tests__/**/*.ts",
-    "prime/__tests__/**/*.ts"
+    "prime/__tests__/**/*.ts",
+    "reception/__tests__/**/*.ts"
   ],
   "exclude": ["**/node_modules/**", "**/dist/**"]
 }

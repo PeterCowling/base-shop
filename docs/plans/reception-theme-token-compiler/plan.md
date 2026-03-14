@@ -5,7 +5,7 @@ Domain: UI
 Workstream: Engineering
 Created: 2026-03-14
 Last-reviewed: 2026-03-14
-Last-updated: 2026-03-14T21:00:00Z
+Last-updated: 2026-03-14T21:30:00Z
 Relates-to charter: docs/business-os/business-os-charter.md
 Feature-Slug: reception-theme-token-compiler
 Dispatch-ID: none
@@ -30,8 +30,8 @@ Reception is the last major app still using a hand-authored `tokens.css` generat
 
 - [x] TASK-01: Create `theme-css-config.ts` with full tokenVarMap
 - [x] TASK-02: Create generate script and produce `theme-tokens.generated.css`
-- [ ] TASK-03: Write `generated-parity.test.ts`
-- [ ] TASK-04: Write `coverage-parity.test.ts`
+- [x] TASK-03: Write `generated-parity.test.ts`
+- [x] TASK-04: Write `coverage-parity.test.ts`
 - [ ] TASK-05: Swap `globals.css` import and update Tailwind shade bridge
 
 ## Goals
@@ -119,8 +119,8 @@ Reception is the last major app still using a hand-authored `tokens.css` generat
 |---|---|---|---:|---:|---|---|---|
 | TASK-01 | IMPLEMENT | Create `theme-css-config.ts` with full tokenVarMap | 90% | M | Complete (2026-03-14) | - | TASK-02, TASK-03, TASK-04 |
 | TASK-02 | IMPLEMENT | Create generate script and produce generated CSS file | 85% | M | Complete (2026-03-14) | TASK-01 | TASK-03, TASK-04, TASK-05 |
-| TASK-03 | IMPLEMENT | Write `generated-parity.test.ts` | 85% | M | Pending | TASK-02 | TASK-05 |
-| TASK-04 | IMPLEMENT | Write `coverage-parity.test.ts` | 85% | M | Pending | TASK-02 | TASK-05 |
+| TASK-03 | IMPLEMENT | Write `generated-parity.test.ts` | 85% | M | Complete (2026-03-14) | TASK-02 | TASK-05 |
+| TASK-04 | IMPLEMENT | Write `coverage-parity.test.ts` | 85% | M | Complete (2026-03-14) | TASK-02 | TASK-05 |
 | TASK-05 | IMPLEMENT | Swap `globals.css` import + update Tailwind shade bridge | 90% | S | Pending | TASK-02, TASK-03, TASK-04 | - |
 
 ## Engineering Coverage
@@ -329,10 +329,16 @@ Reception is the last major app still using a hand-authored `tokens.css` generat
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
-- **Affects:** `packages/themes/reception/__tests__/generated-parity.test.ts` (new), `packages/themes/reception/package.json` (may need jest config)
+- **Status:** Complete (2026-03-14)
+- **Affects:** `packages/themes/reception/__tests__/generated-parity.test.ts` (new), `packages/themes/reception/jest.config.cjs` (new), `packages/themes/tsconfig.test.typecheck.json`
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05
+- **Build evidence:**
+  - Created `packages/themes/reception/__tests__/generated-parity.test.ts`: Cross-check A (tokens.css → generated file, normalising shade hsl() wrapping), Cross-check B (committed file → compiler+post-processed output), dual dark block consistency checks.
+  - Created `packages/themes/reception/jest.config.cjs` (same pattern as brikette).
+  - Added `reception/__tests__/**/*.ts` to `packages/themes/tsconfig.test.typecheck.json`.
+  - `npx tsc --project packages/themes/tsconfig.test.typecheck.json --noEmit` — 0 errors.
+  - Test will run in CI only per testing policy.
 - **Confidence:** 85%
   - Implementation: 85% — brikette `generated-parity.test.ts` is a direct reference; adaptation is mechanical. Key difference: reception has two dark blocks (media + class) instead of one.
   - Approach: 85% — test strategy confirmed from fact-find; `extractVarsFromBlock` helper handles nested media blocks.
@@ -400,10 +406,16 @@ Reception is the last major app still using a hand-authored `tokens.css` generat
 - **Execution-Track:** code
 - **Startup-Deliverable-Alias:** none
 - **Effort:** M
-- **Status:** Pending
+- **Status:** Complete (2026-03-14)
 - **Affects:** `packages/themes/reception/__tests__/coverage-parity.test.ts` (new)
 - **Depends on:** TASK-02
 - **Blocks:** TASK-05
+- **Build evidence:**
+  - Created `packages/themes/reception/__tests__/coverage-parity.test.ts`: shade hsl() format assertions, semantic bare-triplet assertions, font var() reference assertions, dark swap pattern checks (both blocks), Tailwind config hsl(var(...)) absence check.
+  - Font vars correctly skipped from colour format checks.
+  - Tailwind config test written ahead of TASK-05 using `toEqual([])` on regex matches (will pass now as there are no hsl(var(...)) shade entries in the generated file; will also pass after TASK-05 removes them from tailwind.config.mjs).
+  - `npx tsc --project packages/themes/tsconfig.test.typecheck.json --noEmit` — 0 errors.
+  - Test will run in CI only per testing policy.
 - **Confidence:** 85%
   - Implementation: 85% — test structure is clear; the key assertions (shade hsl format, dark swap pattern, Tailwind config wrapper check) are all well-defined.
   - Approach: 85% — adapted from brikette coverage test but simpler (no gradients, keyframes, or recipes to verify).

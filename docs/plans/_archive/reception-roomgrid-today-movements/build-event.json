@@ -1,0 +1,26 @@
+{
+  "event_type": "build_complete",
+  "feature_slug": "reception-roomgrid-today-movements",
+  "dispatch_id": "IDEA-DISPATCH-20260314190000-BRIK-003",
+  "business": "BRIK",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "completed_at": "2026-03-14T13:45:00.000Z",
+  "commit": "071f1769e1",
+  "branch": "dev",
+  "tasks_completed": ["TASK-01"],
+  "files_created": [
+    "apps/reception/src/components/roomgrid/TodayMovements.tsx",
+    "apps/reception/src/components/roomgrid/__tests__/TodayMovements.test.tsx"
+  ],
+  "files_modified": [
+    "apps/reception/src/components/roomgrid/RoomsGrid.tsx",
+    "apps/reception/src/components/roomgrid/__tests__/RoomsGrid.test.tsx"
+  ],
+  "validation": {
+    "typecheck": "pass",
+    "lint": "pass",
+    "pre_commit_hooks": "pass"
+  },
+  "confidence_at_completion": "87%"
+}

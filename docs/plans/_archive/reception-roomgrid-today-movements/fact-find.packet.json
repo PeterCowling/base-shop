@@ -1,0 +1,163 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "fact-find",
+  "feature_slug": "reception-roomgrid-today-movements",
+  "source_artifact_path": "docs/plans/reception-roomgrid-today-movements/fact-find.md",
+  "source_artifact_status": null,
+  "source_last_updated": null,
+  "execution_track": null,
+  "deliverable_type": null,
+  "primary_execution_skill": null,
+  "supporting_skills": [],
+  "related_artifacts": {},
+  "outcome_contract": {
+    "why": "Staff must manually scan each room timeline to find today's check-ins and check-outs; there is no summary. This creates friction during busy arrival/departure windows.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A \"Today's Movements\" section on the rooms-grid page lists arrivals (check-in date = today) and departures (check-out date = today) with room numbers and guest names, eliminating manual timeline scanning.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required",
+      "current_or_option_state": "DS primitives used throughout roomgrid; `OccupancyStrip` is closest analogue for layout",
+      "gap_or_implication": "No gap — follows same Inline/Stack pattern",
+      "carry_forward_or_notes": "Confirm DS-only layout in component design"
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required",
+      "current_or_option_state": "`OccupancyStrip` only renders when `todayInWindow`; `UnallocatedPanel` hidden when empty",
+      "gap_or_implication": "Empty state (no arrivals/departures) must render gracefully — needs explicit text",
+      "carry_forward_or_notes": "Define empty-state copy (\"No arrivals today\", \"No departures today\")"
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "Reception app is internal, access-controlled by operator login; no new data surface",
+      "gap_or_implication": "No new exposure — reads existing in-memory data",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "No async operations, no mutations; pure read-only display derived from existing data",
+      "gap_or_implication": "No new observability needed",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required",
+      "current_or_option_state": "Jest + RTL pattern established; `OccupancyStrip.test.tsx` is the closest test pattern",
+      "gap_or_implication": "New component needs unit test file",
+      "carry_forward_or_notes": "Write `TodayMovements.test.tsx` covering 4 TCs"
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required",
+      "current_or_option_state": "`TBookingPeriod.start` / `.end` are stable YYYY-MM-DD strings; `getReservationDataForRoom` API stable",
+      "gap_or_implication": "No schema changes — reads existing period fields",
+      "carry_forward_or_notes": "Confirm `period.end === today` semantics (exclusive end means departure = today)"
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "Computation is O(rooms × beds × periods) — bounded by ~10 rooms × ~8 beds × few periods; no async",
+      "gap_or_implication": "No performance risk at this scale",
+      "carry_forward_or_notes": "—"
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required",
+      "current_or_option_state": "Reception app deploys as Cloudflare Worker; no feature flags present in codebase",
+      "gap_or_implication": "Rollback = revert commit; no migration or flag needed",
+      "carry_forward_or_notes": "Plan for direct revert as rollback path"
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "scope_summary": "Add a compact \"Today's Movements\" panel to the `/rooms-grid` page that shows which guests are checking in today and which are checking out today. All required data is already available in `useGridData` — no new data fetching is needed.",
+    "goals": [
+      "Surface today's arrivals (periods where `start === today`) and departures (periods where `end === today`) in one compact view.",
+      "Eliminate the need for staff to scan each room's timeline cell-by-cell.",
+      "Fit within the existing DS-primitive layout patterns used by `OccupancyStrip` and `UnallocatedPanel`."
+    ],
+    "non_goals": [
+      "No new Firebase queries or data fetching.",
+      "No edit/action capability — read-only display only.",
+      "No historical movements (not yesterday, not tomorrow)."
+    ],
+    "constraints": [
+      "The `ds/enforce-layout-primitives` lint rule disallows raw flex/grid layout classes on leaf div elements — `Cluster`, `Inline`, and `Stack` from `@acme/design-system/primitives` must be used for layout. Plain `div`, `span`, `label` elements are permitted for semantics/accessibility, consistent with the rest of the roomgrid codebase.",
+      "Tests must be written but NOT run locally (CI-only per testing policy).",
+      "All commits via `scripts/agents/with-writer-lock.sh`."
+    ],
+    "assumptions": [
+      "`period.start` = check-in date (YYYY-MM-DD, inclusive); `period.end` = check-out date (YYYY-MM-DD, exclusive per `OccupancyStrip` convention).",
+      "\"Departing today\" = `period.end === today` (the guest's last occupied night was yesterday; they leave today).",
+      "\"Arriving today\" = `period.start === today`.",
+      "Guest name can be absent (empty string); fall back to \"Unknown\"."
+    ],
+    "key_entry_points": [
+      "`apps/reception/src/components/roomgrid/RoomsGrid.tsx` — top-level rooms-grid page component; renders `StatusLegend`, `OccupancyStrip`, `UnallocatedPanel`, and one `RoomGrid` per room. This is the insertion point for `TodayMovements`.",
+      "`/rooms-grid` route — `apps/reception/src/app/rooms-grid/page.tsx` → `apps/reception/src/app/rooms-grid/RoomsGridClient.tsx` → `RoomsGrid`."
+    ],
+    "key_findings": [],
+    "analysis_readiness": {
+      "Status": "Ready-for-analysis",
+      "Blocking items": "None",
+      "Recommended next step": "`/lp-do-analysis`"
+    },
+    "rehearsal_issues": [
+      {
+        "Scope Area": "useGridData data shape",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "RoomsGrid wiring point",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "DS primitives constraint",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Period date semantics (start/end)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Empty state handling",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Test infrastructure",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      },
+      {
+        "Scope Area": "Blast radius (no existing tests broken)",
+        "Coverage Confirmed": "Yes",
+        "Issues Found": "None",
+        "Resolution Required": "No"
+      }
+    ],
+    "process_topology": {
+      "changed": false,
+      "note": "None: local code path only.",
+      "trigger": null,
+      "end_condition": null,
+      "areas": []
+    }
+  }
+}

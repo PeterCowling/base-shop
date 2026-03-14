@@ -1,0 +1,137 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-roomgrid-today-movements",
+  "source_artifact_path": "docs/plans/reception-roomgrid-today-movements/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "docs/plans/reception-roomgrid-today-movements/analysis.md"
+  },
+  "outcome_contract": {
+    "why": "Staff must manually scan each room timeline to find today's check-ins and check-outs; there is no summary.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "A \"Today's Movements\" section on the rooms-grid page lists arrivals (check-in date = today) and departures (check-out date = today) with room numbers and guest names, eliminating manual timeline scanning.",
+    "source": "operator"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "DS primitives (Cluster/Inline/Stack) only for layout; two-section layout: Arriving/Departing",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Follows OccupancyStrip visual pattern",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Empty state (\"No arrivals today\" / \"No departures today\"), populated state; panel guarded by todayInWindow",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "TC-03 covers empty state",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — reads in-memory data already loaded for the grid; no new data surface",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Internal tool, access-controlled by operator login",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — pure read-only display component; no mutations",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No logging needed",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Unit tests for TodayMovements (TC-01 to TC-04); RoomsGrid wiring test (TC-05)",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "CI-only; no local jest run",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "No schema change; `TodayMovementEntry = { room, occupantId, firstName, lastName }` type defined in component file",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Stable fields from TBookingPeriod",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "O(rooms × rows × periods) — bounded; no async; useMemo guards re-computation",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "No performance risk at ~10 rooms",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Direct commit deploy; rollback = revert commit; no migration or feature flag",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Reception Worker deploy",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Add a compact \"Today's Movements\" panel to the rooms-grid page (`RoomsGrid.tsx`) showing which guests are arriving and departing today. All data is derived from the existing `getReservationDataForRoom` hook by iterating known rooms and filtering periods where `start === today` (arrivals) or `end === today` (departures). A new `TodayMovements` component accepts typed arrays as props and renders two lists using DS layout primitives. The panel appears only when today is within the visible grid window, matching the `OccupancyStrip` guard pattern.",
+    "goals": [
+      "Render a \"Today's Movements\" panel on the rooms-grid page with arrivals and departures.",
+      "Follow the established DS-primitives pattern (Cluster, Inline, Stack).",
+      "Cover 4 unit TCs in a new test file + 1 RoomsGrid wiring assertion."
+    ],
+    "non_goals": [
+      "Edit/action capability on the panel.",
+      "Historical movements (yesterday, tomorrow).",
+      "Always-visible panel independent of grid window."
+    ],
+    "constraints": [],
+    "assumptions": [
+      "`period.end === today` means guest departs today (exclusive-end convention).",
+      "`occupantId` is unique per booking occupant — safe as React render key."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "New `TodayMovements.tsx` component accepting `arrivals: TodayMovementEntry[]` and `departures: TodayMovementEntry[]` props. Computation in `RoomsGrid` by iterating `knownRooms` + `getReservationDataForRoom`.",
+      "Why planning is not reopening option selection:",
+      "Analysis clearly rejected Option B (new Firebase query) as unnecessary overhead. Option A is unambiguously correct."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Create TodayMovements component, wire into RoomsGrid, write tests",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 87,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "New `apps/reception/src/components/roomgrid/TodayMovements.tsx`; modified `apps/reception/src/components/roomgrid/RoomsGrid.tsx`; new `apps/reception/src/components/roomgrid/__tests__/TodayMovements.test.tsx`",
+        "affects": "`apps/reception/src/components/roomgrid/TodayMovements.tsx` (new), `apps/reception/src/components/roomgrid/RoomsGrid.tsx` (modified), `apps/reception/src/components/roomgrid/__tests__/TodayMovements.test.tsx` (new)"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change.",
+      "areas": []
+    }
+  }
+}

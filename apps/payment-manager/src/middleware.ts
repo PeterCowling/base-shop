@@ -89,7 +89,7 @@ export function middleware(request: NextRequest) {
   }
 
   // /api/refunds — allow Caryina proxy calls via bearer token (Phase 2 dual-write).
-  if (pathname.startsWith("/api/refunds") && hasCaryinaPmBearerToken(request)) {
+  if ((pathname === "/api/refunds" || pathname.startsWith("/api/refunds/")) && hasCaryinaPmBearerToken(request)) {
     return response;
   }
 

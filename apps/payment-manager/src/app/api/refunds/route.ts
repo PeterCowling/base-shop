@@ -68,10 +68,13 @@ async function getTotalRefunded(orderId: string): Promise<number> {
 
 export async function POST(request: Request) {
   // Accept either a valid operator session cookie OR the Caryina machine-to-machine bearer token.
-  const authenticated = (await hasPmSession(request)) || hasCaryinaPmBearerToken(request);
+  // Determine caller identity for the audit trail before consuming the body.
+  const isCaryinaToken = hasCaryinaPmBearerToken(request);
+  const authenticated = (await hasPmSession(request)) || isCaryinaToken;
   if (!authenticated) {
     return NextResponse.json({ ok: false, error: "unauthorized" }, { status: 401 });
   }
+  const issuedBy: string = isCaryinaToken ? "caryina" : "operator";
 
   let rawBody: unknown;
   try {
@@ -132,11 +135,11 @@ export async function POST(request: Request) {
     }
 
     if (order.provider === "stripe") {
-      return await handleStripeRefund({ order, amountCents, reason, prismaAny });
+      return await handleStripeRefund({ order, amountCents, reason, issuedBy, prismaAny });
     }
 
     if (order.provider === "axerve") {
-      return await handleAxerveRefund({ order, amountCents, reason, prismaAny });
+      return await handleAxerveRefund({ order, amountCents, reason, issuedBy, prismaAny });
     }
 
     return NextResponse.json(
@@ -166,10 +169,11 @@ async function handleStripeRefund(params: {
   order: OrderRecord;
   amountCents: number;
   reason?: string;
+  issuedBy: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- PM-0004 Prisma client type varies
   prismaAny: any;
 }): Promise<NextResponse> {
-  const { order, amountCents, reason, prismaAny: db } = params;
+  const { order, amountCents, reason, issuedBy, prismaAny: db } = params;
 
   if (!order.providerOrderId) {
     return NextResponse.json({ ok: false, error: "Stripe payment_intent ID not found on order" }, { status: 400 });
@@ -200,9 +204,10 @@ async function handleStripeRefund(params: {
       provider: "stripe",
       amountCents,
       status: refundStatus,
-      issuedBy: "operator",
+      issuedBy,
       providerRefundId: stripeRefund.id,
       errorMessage: null,
+      reason: reason ?? null,
     },
   });
 
@@ -214,10 +219,11 @@ async function handleAxerveRefund(params: {
   order: OrderRecord;
   amountCents: number;
   reason?: string;
+  issuedBy: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- PM-0004 Prisma client type varies
   prismaAny: any;
 }): Promise<NextResponse> {
-  const { order, amountCents, prismaAny: db } = params;
+  const { order, amountCents, reason, issuedBy, prismaAny: db } = params;
 
   // Proxy to Caryina internal route
   let caryinaRes: Response;
@@ -249,9 +255,10 @@ async function handleAxerveRefund(params: {
         provider: "axerve",
         amountCents,
         status: "failed",
-        issuedBy: "operator",
+        issuedBy,
         providerRefundId: null,
         errorMessage: `Caryina proxy error: HTTP ${caryinaRes.status}`,
+        reason: reason ?? null,
       },
     });
 
@@ -271,9 +278,10 @@ async function handleAxerveRefund(params: {
         provider: "axerve",
         amountCents,
         status: "failed",
-        issuedBy: "operator",
+        issuedBy,
         providerRefundId: null,
         errorMessage: String(caryinaBody.error ?? "Refund declined"),
+        reason: reason ?? null,
       },
     });
 
@@ -287,9 +295,10 @@ async function handleAxerveRefund(params: {
       provider: "axerve",
       amountCents,
       status: "succeeded",
-      issuedBy: "operator",
+      issuedBy,
       providerRefundId: caryinaBody.transactionId ?? null,
       errorMessage: null,
+      reason: reason ?? null,
     },
   });
 

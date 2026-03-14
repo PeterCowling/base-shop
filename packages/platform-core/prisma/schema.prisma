@@ -440,6 +440,8 @@ model Refund {
   /// Provider-assigned refund id (Stripe refund id or Axerve transaction id)
   providerRefundId String?
   errorMessage     String?
+  /// Optional operator note or machine-caller reason supplied at refund time
+  reason           String?
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 

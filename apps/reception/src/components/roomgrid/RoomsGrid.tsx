@@ -15,6 +15,7 @@ import { PageShell } from "../common/PageShell";
 import OccupancyStrip, { computeOccupancyCount } from "./OccupancyStrip";
 import RoomGrid from "./RoomGrid";
 import StatusLegend from "./StatusLegend";
+import TodayMovements, { type TodayMovementEntry } from "./TodayMovements";
 import UnallocatedPanel from "./UnallocatedPanel";
 
 /**
@@ -44,6 +45,46 @@ const RoomsGrid: FC = () => {
         : 0,
     [todayInWindow, knownRooms, getReservationDataForRoom, today]
   );
+
+  const { arrivals, departures } = useMemo<{
+    arrivals: TodayMovementEntry[];
+    departures: TodayMovementEntry[];
+  }>(() => {
+    if (!todayInWindow) {
+      return { arrivals: [], departures: [] };
+    }
+    const arrivalList: TodayMovementEntry[] = [];
+    const departureList: TodayMovementEntry[] = [];
+    const seenArrivals = new Set<string>();
+    const seenDepartures = new Set<string>();
+
+    for (const room of knownRooms) {
+      const rows = getReservationDataForRoom(room);
+      for (const row of rows) {
+        for (const period of row.periods) {
+          if (period.start === today && !seenArrivals.has(period.occupantId)) {
+            seenArrivals.add(period.occupantId);
+            arrivalList.push({
+              room,
+              occupantId: period.occupantId,
+              firstName: period.firstName,
+              lastName: period.lastName,
+            });
+          }
+          if (period.end === today && !seenDepartures.has(period.occupantId)) {
+            seenDepartures.add(period.occupantId);
+            departureList.push({
+              room,
+              occupantId: period.occupantId,
+              firstName: period.firstName,
+              lastName: period.lastName,
+            });
+          }
+        }
+      }
+    }
+    return { arrivals: arrivalList, departures: departureList };
+  }, [todayInWindow, knownRooms, getReservationDataForRoom, today]);
 
   const handleStartChange = (e: ChangeEvent<HTMLInputElement>) => {
     const newStart = e.target.value;
@@ -104,6 +145,10 @@ const RoomsGrid: FC = () => {
 
       {!loading && error == null && todayInWindow && (
         <OccupancyStrip occupiedCount={occupiedCount} totalRooms={knownRooms.length} />
+      )}
+
+      {!loading && error == null && todayInWindow && (
+        <TodayMovements arrivals={arrivals} departures={departures} />
       )}
 
       <DndProvider backend={HTML5Backend}>

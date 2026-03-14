@@ -36,6 +36,19 @@ jest.mock("../UnallocatedPanel", () => ({
   ),
 }));
 
+type TodayMovementsProps = {
+  arrivals: Array<{ room: string; occupantId: string; firstName: string; lastName: string }>;
+  departures: Array<{ room: string; occupantId: string; firstName: string; lastName: string }>;
+};
+jest.mock("../TodayMovements", () => ({
+  __esModule: true,
+  default: ({ arrivals, departures }: TodayMovementsProps) => (
+    <div data-testid="today-movements">
+      arrivals:{arrivals.length} departures:{departures.length}
+    </div>
+  ),
+}));
+
 type RoomGridProps = {
   roomNumber: string;
   startDate: string;
@@ -135,5 +148,21 @@ describe("RoomsGrid", () => {
   it("TC-08: does not render UnallocatedPanel when no unallocated occupants", () => {
     render(<RoomsGrid />);
     expect(screen.queryByTestId("unallocated-panel")).not.toBeInTheDocument();
+  });
+
+  // TC-05: TodayMovements is rendered when today is within the grid window
+  // System time is set to 2025-01-02 (via jest.setSystemTime) and startDate defaults
+  // to 2025-01-01, endDate to 2025-01-15, so today (2025-01-02) is within the window.
+  it("TC-05: renders TodayMovements when today is within the grid window", () => {
+    render(<RoomsGrid />);
+    expect(screen.getByTestId("today-movements")).toBeInTheDocument();
+  });
+
+  // TC-05b: TodayMovements passes computed arrivals and departures as props.
+  // The mock getReservationDataForRoom returns a period with start=2025-05-01 / end=2025-05-02,
+  // which is not today (2025-01-02), so both lists should be empty.
+  it("TC-05b: TodayMovements receives empty arrivals and departures when no movements today", () => {
+    render(<RoomsGrid />);
+    expect(screen.getByText("arrivals:0 departures:0")).toBeInTheDocument();
   });
 });

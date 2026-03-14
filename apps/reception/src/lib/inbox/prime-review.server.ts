@@ -583,6 +583,11 @@ export async function sendPrimeInboxThread(
  *
  * Returns null when Prime is not configured (graceful degrade — caller should 503).
  * Propagates throws from primeRequest for Prime 4xx/5xx errors (caller should 502).
+ *
+ * @deprecated Use `staffBroadcastSend` instead. This function only initiates the thread
+ * and draft; the caller must separately call `sendPrimeInboxThread`, which creates a race
+ * window between draft save and send. `staffBroadcastSend` collapses the entire pipeline
+ * into a single atomic hop via `/api/staff-broadcast-send`.
  */
 export async function initiatePrimeOutboundThread(input: {
   text: string;

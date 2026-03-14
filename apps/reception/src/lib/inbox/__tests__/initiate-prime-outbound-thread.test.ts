@@ -1,6 +1,11 @@
 /**
  * Tests for initiatePrimeOutboundThread (TASK-06)
  *
+ * NOTE: initiatePrimeOutboundThread is @deprecated. New broadcast sends should use
+ * staffBroadcastSend (tested in ../prime-compose/route.test.ts) which calls the
+ * single-hop /api/staff-broadcast-send endpoint. These tests are retained to ensure
+ * the legacy function contract remains stable while callers migrate.
+ *
  * TC-01: primeRequest returns 200 with detail → function returns { detail }.
  * TC-02: readPrimeReviewConfig() returns null → function returns null without calling fetch.
  * TC-03: primeRequest throws → function propagates throw.

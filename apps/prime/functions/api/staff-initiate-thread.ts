@@ -24,6 +24,13 @@ interface StaffInitiateThreadRequestBody {
   plainText?: string;
 }
 
+/**
+ * @deprecated Use `/api/staff-broadcast-send` instead. This endpoint performs only
+ * the first two steps (upsert + draft) of the broadcast pipeline; the caller must
+ * separately invoke review-thread-send, which creates a race window.
+ * `staff-broadcast-send` collapses the three-hop chain into a single atomic call.
+ * This endpoint is retained for backward compatibility only.
+ */
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const gateResponse = enforceStaffOwnerApiGate(request, env);
   if (gateResponse) {

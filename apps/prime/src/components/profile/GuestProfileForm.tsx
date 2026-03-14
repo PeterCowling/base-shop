@@ -31,6 +31,7 @@ export function GuestProfileForm({ effectiveProfile, currentBookingId }: GuestPr
   const [pace, setPace] = useState<GuestPace>(effectiveProfile.pace);
   const [socialOptIn, setSocialOptIn] = useState<boolean>(effectiveProfile.socialOptIn);
   const [chatOptIn, setChatOptIn] = useState<boolean>(effectiveProfile.chatOptIn);
+  const [ghostMode, setGhostMode] = useState<boolean>(effectiveProfile.ghostMode);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [pendingAction, setPendingAction] = useState<'save' | 'skip' | null>(null);
 
@@ -70,6 +71,7 @@ export function GuestProfileForm({ effectiveProfile, currentBookingId }: GuestPr
       pace,
       socialOptIn,
       chatOptIn,
+      ghostMode,
       profileStatus,
       bookingId: currentBookingId ?? '',
     });
@@ -223,6 +225,22 @@ export function GuestProfileForm({ effectiveProfile, currentBookingId }: GuestPr
             checked={chatOptIn}
             disabled={isBusy}
             onChange={(e) => setChatOptIn(e.target.checked)}
+            className="h-4 w-4 accent-primary"
+          />
+        </label>
+      </section>
+
+      {/* Ghost Mode */}
+      <section>
+        <label className="flex cursor-pointer items-center justify-between rounded-lg border border-border bg-card px-4 py-3">
+          <span className="text-sm font-medium text-foreground">
+            {t('guestProfile.ghostModeLabel')}
+          </span>
+          <input
+            type="checkbox"
+            checked={ghostMode}
+            disabled={isBusy}
+            onChange={(e) => setGhostMode(e.target.checked)}
             className="h-4 w-4 accent-primary"
           />
         </label>

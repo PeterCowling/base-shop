@@ -1,6 +1,7 @@
 {
   "guestProfile": {
     "chatOptInLabel": "Unisciti alla chat degli ospiti",
+    "ghostModeLabel": "Diventa invisibile — nasconditi dalla directory ospiti e blocca i messaggi in arrivo",
     "goalsLabel": "Quali sono i tuoi obiettivi per questo soggiorno?",
     "intentLabel": "Qual è il tuo stile?",
     "interestsLabel": "Cosa ti interessa?",

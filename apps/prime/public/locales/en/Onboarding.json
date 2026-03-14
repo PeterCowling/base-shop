@@ -1,6 +1,7 @@
 {
   "guestProfile": {
     "chatOptInLabel": "Join the guest chat",
+    "ghostModeLabel": "Go invisible — hide from guest directory and stop incoming messages",
     "goalsLabel": "What are your goals for this stay?",
     "intentLabel": "What's your vibe?",
     "interestsLabel": "What are you interested in?",

@@ -1,0 +1,12 @@
+{
+  "schema_version": "build-event.v1",
+  "emitted_at": "2026-03-14T20:40:46.931Z",
+  "feature_slug": "caryina-theme-token-compiler",
+  "completed_date": "2026-03-14",
+  "why": "Consistency — brikette token system is compiler-driven, eliminating hand-edit drift bugs. Caryina benefits from the same guarantee.",
+  "intended_outcome_type": "operational",
+  "intended_outcome_statement": "Caryina theme tokens are generated from structured source files. A committed theme-tokens.generated.css file exists, two parity test suites pass in CI, and global.css imports the generated file.",
+  "source": "auto",
+  "plan_path": "docs/plans/caryina-theme-token-compiler/plan.md",
+  "build_record_path": "docs/plans/caryina-theme-token-compiler/build-record.user.md"
+}

@@ -1,0 +1,244 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "caryina-theme-token-compiler",
+  "source_artifact_path": "docs/plans/caryina-theme-token-compiler/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "none"
+  },
+  "outcome_contract": {
+    "why": "Consistency — brikette's token system is compiler-driven, eliminating hand-edit drift bugs. Caryina should benefit from the same guarantee: any drift between structured source files and deployed tokens becomes a failing CI test, not a silent inconsistency.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Caryina's theme tokens are generated from structured source files, identical to the brikette pattern. A committed `theme-tokens.generated.css` file exists, two parity test suites pass in CI, and `global.css` imports the generated file rather than hand-authoring the token values.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "Required — generated values must round-trip exactly to current `tokens.css`; parity tests enforce this",
+      "current_or_option_state": "TASK-03, TASK-04, TASK-06",
+      "gap_or_implication": "Value format (bare HSL triplets) confirmed correct; `--color-*-dark` companion vars eliminated, dark values moved to `html.theme-dark` block",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "Required — dark mode must continue working after import change: (1) first-paint OS dark mode via `@media` block; (2) explicit toggle via `html.theme-dark` class; (3) explicit-light-override via `not(.theme-dark)`",
+      "current_or_option_state": "TASK-06",
+      "gap_or_implication": "TASK-06 adds `@media (prefers-color-scheme: dark) :root {}` with direct dark values; existing `not(.theme-dark)` block preserved; `html.theme-dark {}` in generated file handles JS-toggle path",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A — CSS-only change, no auth or data handling",
+      "current_or_option_state": null,
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A — static CSS generation, no runtime surface",
+      "current_or_option_state": null,
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — two parity test suites, new jest infrastructure",
+      "current_or_option_state": "TASK-02, TASK-04, TASK-05",
+      "gap_or_implication": "Tests run in CI only; deterministic string comparison",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required — `ThemeCSSConfig` type contract; `package.json` export; `tsconfig.json` `include` may need `__tests__` handling",
+      "current_or_option_state": "TASK-07",
+      "gap_or_implication": "Note: `tsconfig.json` currently excludes `__tests__` — this is correct; jest config handles test compilation separately",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A — static CSS, no runtime impact",
+      "current_or_option_state": null,
+      "gap_or_implication": null,
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "Required — `global.css` import change is the deploy boundary; rollback = revert the import line",
+      "current_or_option_state": "TASK-06",
+      "gap_or_implication": "Old `tokens.css` in package root is not deleted; it remains as fallback until CI passes",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "Retrofit `packages/themes/caryina` with the same compiler-driven token system brikette already uses. A `theme-css-config.ts` file will wire `tokens.ts` (the existing structured token map) into `generateThemeCSS()` via `tokenVarMap` (all 20 token vars as flat map entries — fonts included — with `fontVarMap` left empty), producing a committed generated CSS file `apps/caryina/src/styles/theme-tokens.generated.css`. The `global.css` import is updated to reference the generated file; a `@media (prefers-color-scheme: dark)` block is added to `global.css` to preserve first-paint dark mode for OS-dark",
+    "goals": [
+      "Produce `apps/caryina/src/styles/theme-tokens.generated.css` (committed output)",
+      "Write `packages/themes/caryina/src/theme-css-config.ts` following brikette pattern",
+      "Add jest infrastructure to `packages/themes/caryina` and write two parity test suites",
+      "Update `apps/caryina/src/styles/global.css` to import the generated file",
+      "Expose `./theme-css-config` export from `packages/themes/caryina/package.json`"
+    ],
+    "non_goals": [
+      "Changes to `packages/themes/base/src/build-theme-css.ts`",
+      "Changes to brikette",
+      "Migrating caryina to class-based `.dark` dark mode (no React component changes)",
+      "Adding recipes — `recipes.ts` is empty and stays that way",
+      "Modifying `assets.ts` — `tokenVarMap` approach does not require it"
+    ],
+    "constraints": [],
+    "assumptions": [],
+    "selected_approach": [
+      "What was chosen:",
+      "`theme-css-config.ts` uses `tokenVarMap` sourced directly from all 20 entries in `tokens.ts` (15 color + 3 radius + 2 font vars); `fontVarMap: {}` (empty); `darkSelector: \"html.theme-dark\"`; no `rgbVarMap`.",
+      "Font vars in `tokenVarMap` use `var(--font-dm-sans)` / `var(--font-cormorant-garamond)` values, matching current `tokens.css` output exactly.",
+      "TASK-06 adds a `@media (prefers-color-scheme: dark) :root {}` block to `global.css` to preserve first-paint dark mode (direct dark HSL values — no `--color-*-dark` var references).",
+      "Generate script mirrors `scripts/brikette/generate-theme-tokens.ts` exactly but targets caryina paths.",
+      "Parity tests mirror brikette tests but target `html.theme-dark` selector and caryina's token bridge.",
+      "Why planning is not reopening option selection:",
+      "The `tokenVarMap` approach is the purpose-built path for this use case (flat token maps not originating from `assets.brandColors`). The fact-find identified `colorVarMap` + `assets.brandColors` extension as the approach, but `tokenVarMap` is strictly simpler and equally correct. No architectural fork exists."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Write `theme-css-config.ts` with tokenVarMap and fontVarMap",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-03",
+          "TASK-04",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`packages/themes/caryina/src/theme-css-config.ts` (new file)",
+        "affects": "`packages/themes/caryina/src/theme-css-config.ts` (new), `[readonly] packages/themes/caryina/src/tokens.ts`, `[readonly] packages/themes/caryina/src/assets.ts`, `[readonly] packages/themes/caryina/src/design-profile.ts`, `[readonly] packages/themes/base/src/build-theme-css.ts`"
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Add jest infrastructure to `packages/themes/caryina`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [
+          "TASK-04",
+          "TASK-05"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`packages/themes/caryina/jest.config.cjs` (new file)",
+        "affects": "`packages/themes/caryina/jest.config.cjs` (new), `[readonly] packages/themes/brikette/jest.config.cjs`, `[readonly] packages/config/jest.preset.cjs`"
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Generate `theme-tokens.generated.css` via script",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01"
+        ],
+        "blocks": [
+          "TASK-04",
+          "TASK-06"
+        ],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`scripts/caryina/generate-theme-tokens.ts` (new file) + `apps/caryina/src/styles/theme-tokens.generated.css` (new committed file)",
+        "affects": "`scripts/caryina/generate-theme-tokens.ts` (new), `apps/caryina/src/styles/theme-tokens.generated.css` (new), `scripts/package.json`"
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Write `generated-parity.test.ts`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`packages/themes/caryina/__tests__/generated-parity.test.ts` (new file)",
+        "affects": "`packages/themes/caryina/__tests__/generated-parity.test.ts` (new)"
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Write `coverage-parity.test.ts`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 85,
+        "effort": "S",
+        "depends_on": [
+          "TASK-01",
+          "TASK-02",
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "`packages/themes/caryina/__tests__/coverage-parity.test.ts` (new file)",
+        "affects": "`packages/themes/caryina/__tests__/coverage-parity.test.ts` (new)"
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Update `global.css` import and dark-mode alias",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 90,
+        "effort": "S",
+        "depends_on": [
+          "TASK-03"
+        ],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `apps/caryina/src/styles/global.css`",
+        "affects": "`apps/caryina/src/styles/global.css`"
+      },
+      {
+        "task_id": "TASK-07",
+        "title": "Add `./theme-css-config` export to `package.json` and update `tsconfig.json`",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "Modified `packages/themes/caryina/package.json` and `packages/themes/caryina/tsconfig.json`",
+        "affects": "`packages/themes/caryina/package.json`, `packages/themes/caryina/tsconfig.json`"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01",
+      "TASK-02",
+      "TASK-07"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change. This is a build-time code-generation retrofit. The token files are consumed at CSS import time only; no CI lane, approval path, or operator runbook changes.",
+      "areas": []
+    }
+  }
+}

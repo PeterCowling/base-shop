@@ -1,0 +1,32 @@
+{
+  "schema_version": "results-review.signals.v1",
+  "generated_at": "2026-03-14T20:41:56.288Z",
+  "plan_slug": "caryina-theme-token-compiler",
+  "review_cycle_key": "caryina-theme-token-compiler",
+  "source_path": "docs/plans/caryina-theme-token-compiler/results-review.user.md",
+  "build_origin_status": "ready",
+  "failures": [],
+  "items": [
+    {
+      "type": "idea",
+      "business": "BOS",
+      "title": "New skill — The token compiler retrofit pattern (theme-css-config + generate script + two parity tests) is now applied to two apps (brikette, caryina). A codified \"retrofit theme compiler\" skill could accelerate applying the same pattern to remaining packages (xa-uploader, reception) with lower research overhead. Trigger: second retrofit completed with minimal deviation from brikette pattern.",
+      "body": "New skill — The token compiler retrofit pattern (theme-css-config + generate script + two parity tests) is now applied to two apps (brikette, caryina). A codified \"retrofit theme compiler\" skill could accelerate applying the same pattern to remaining packages (xa-uploader, reception) with lower research overhead. Trigger: second retrofit completed with minimal deviation from brikette pattern.",
+      "source": "results-review.user.md",
+      "date": "2026-03-14T00:00:00.000Z",
+      "path": "docs/plans/caryina-theme-token-compiler/results-review.user.md",
+      "idea_key": "459e8b557a3d3554af5a8c1655658bc1af0c409f",
+      "review_cycle_key": "caryina-theme-token-compiler",
+      "canonical_title": "The token compiler retrofit pattern (theme-css-config + generate script + two parity tests) is now applied to two apps (brikette, caryina). A codified \"retrofit theme compiler\" skill could accelerate applying the same pattern to remaining packages (xa-uploader, reception) with lower research overhead. Trigger: second retrofit completed with minimal deviation from brikette pattern.",
+      "build_signal_id": "a099cbd7a39c9dcfeb1e3f44e3eb9498081d2c2c",
+      "recurrence_key": "11a3b5ba4f879b9be665ba5767b26f752679593a",
+      "build_origin_status": "ready",
+      "priority_tier": "P5",
+      "own_priority_rank": 10,
+      "urgency": "U2",
+      "effort": "M",
+      "proximity": null,
+      "reason_code": "RULE_P5_DEFAULT"
+    }
+  ]
+}

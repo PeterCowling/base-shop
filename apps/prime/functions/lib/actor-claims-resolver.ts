@@ -21,7 +21,7 @@
 
 import { verifyActorClaims } from './actor-claims';
 
-/** Minimum secret length enforced at request time. */
+/** Minimum secret length enforced at request time and at startup validation. */
 const MIN_SECRET_LENGTH = 32;
 
 export interface ActorClaimsEnv {
@@ -146,4 +146,72 @@ export function isActorClaimsResponse(
   result: ResolvedActorClaims | Response,
 ): result is Response {
   return result instanceof Response;
+}
+
+/**
+ * Validate the Prime actor-claims secret configuration at deploy time.
+ *
+ * Call this at startup (e.g. in a health-check handler) to surface misconfiguration
+ * before the first real request arrives. CF Pages Functions have no traditional startup
+ * hook, so this is also called inline by `resolveActorClaims` (which returns 503 on
+ * per-request failure). Use this helper for explicit startup-level checking.
+ *
+ * Rules:
+ *  - `PRIME_ACTOR_CLAIMS_SECRET` must be present.
+ *  - Must be at least 32 characters.
+ *  - Must NOT be equal to `PRIME_STAFF_OWNER_GATE_TOKEN` (secret independence).
+ *
+ * In non-production environments the function warns via `console.warn` rather than
+ * throwing, to allow test environments with minimal configuration to proceed.
+ *
+ * @param env - Object containing the relevant env vars.
+ * @param isProduction - When true, throws on misconfiguration; when false, only warns.
+ * @returns `{ valid: true }` if config is valid; `{ valid: false, reason: string }` if not.
+ */
+export interface ActorClaimsConfigValidation {
+  valid: boolean;
+  reason?: string;
+}
+
+export interface ActorClaimsConfigEnv extends ActorClaimsEnv {
+  PRIME_STAFF_OWNER_GATE_TOKEN?: string;
+  NODE_ENV?: string;
+}
+
+export function validatePrimeActorClaimsConfig(
+  env: ActorClaimsConfigEnv,
+  isProduction?: boolean,
+): ActorClaimsConfigValidation {
+  const secret = env.PRIME_ACTOR_CLAIMS_SECRET?.trim();
+  const gatewayToken = env.PRIME_STAFF_OWNER_GATE_TOKEN?.trim();
+  const isProd = isProduction ?? env.NODE_ENV === 'production';
+
+  if (!secret) {
+    const msg = '[actor-claims-config] PRIME_ACTOR_CLAIMS_SECRET is not set — actor claims will be rejected at request time (503)'; // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    if (isProd) {
+      throw new Error(msg);
+    }
+    console.warn(msg);
+    return { valid: false, reason: 'missing' };
+  }
+
+  if (secret.length < MIN_SECRET_LENGTH) {
+    const msg = `[actor-claims-config] PRIME_ACTOR_CLAIMS_SECRET is too short (${secret.length} chars; minimum is ${MIN_SECRET_LENGTH})`; // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    if (isProd) {
+      throw new Error(msg);
+    }
+    console.warn(msg);
+    return { valid: false, reason: 'too-short' };
+  }
+
+  if (gatewayToken && secret === gatewayToken) {
+    const msg = '[actor-claims-config] PRIME_ACTOR_CLAIMS_SECRET must not equal PRIME_STAFF_OWNER_GATE_TOKEN — use a distinct secret for actor claims'; // i18n-exempt -- PRIME-101 developer log [ttl=2026-12-31]
+    if (isProd) {
+      throw new Error(msg);
+    }
+    console.warn(msg);
+    return { valid: false, reason: 'same-as-gateway-token' };
+  }
+
+  return { valid: true };
 }

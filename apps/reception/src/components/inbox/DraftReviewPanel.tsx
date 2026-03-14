@@ -58,6 +58,7 @@ function isValidEmail(value: string): boolean {
     && !value.includes("..");
 }
 
+// eslint-disable-next-line complexity -- BOS-PI-104 pre-existing high-complexity component; refactor tracked separately
 export default function DraftReviewPanel({
   threadDetail,
   savingDraft,

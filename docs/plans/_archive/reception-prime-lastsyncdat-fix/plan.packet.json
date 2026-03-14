@@ -1,0 +1,143 @@
+{
+  "schema_version": "do-stage-handoff.v2",
+  "stage": "plan",
+  "feature_slug": "reception-prime-lastsyncdat-fix",
+  "source_artifact_path": "docs/plans/reception-prime-lastsyncdat-fix/plan.md",
+  "source_artifact_status": "Active",
+  "source_last_updated": "2026-03-14T00:00:00.000Z",
+  "execution_track": "code",
+  "deliverable_type": "code-change",
+  "primary_execution_skill": "lp-do-build",
+  "supporting_skills": [
+    "none"
+  ],
+  "related_artifacts": {
+    "analysis": "none"
+  },
+  "outcome_contract": {
+    "why": "The stale-sync inbox filter is unreliable for Prime threads because `lastSyncedAt` is always null, causing every Prime thread to match the filter regardless of freshness. Fixing this makes the filter useful for its intended purpose: surfacing threads that genuinely need attention.",
+    "intended_outcome_type": "operational",
+    "intended_outcome_statement": "Stale-sync inbox filter correctly excludes Prime threads whose `updatedAt` is within the freshness window; the filter is only triggered for genuinely stale Prime threads.",
+    "source": "auto"
+  },
+  "engineering_coverage": [
+    {
+      "coverage_area": "UI / visual",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No rendering path touched",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "UX / states",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Filter behaviour is a data concern, not a UI state machine",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Security / privacy",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "`updatedAt` is a non-PII timestamp already present in the thread object",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Logging / observability / audit",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "No logging change needed for a mapping fix",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Testing / validation",
+      "applicable": "Required — new `prime-review-mapper.test.ts` exercises mapper via `listPrimeInboxThreadSummaries()` with mocked fetch; `filters.test.ts` extended with supplemental Prime fresh-thread case",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "`prime-activity-contracts.test.ts` is NOT the target for runtime assertions",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Data / contracts",
+      "applicable": "Required — `InboxThreadSummaryApiModel.lastSyncedAt` changes from always-null to always-non-null for Prime threads",
+      "current_or_option_state": "TASK-01",
+      "gap_or_implication": "Type is already `string \\",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Performance / reliability",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Single string assignment; negligible",
+      "carry_forward_or_notes": null
+    },
+    {
+      "coverage_area": "Rollout / rollback",
+      "applicable": "N/A",
+      "current_or_option_state": "-",
+      "gap_or_implication": "Pure code change; deploy is instant; rollback is a revert",
+      "carry_forward_or_notes": null
+    }
+  ],
+  "open_operator_questions": [],
+  "stage_payload": {
+    "summary": "`mapPrimeSummaryToInboxThread()` in `apps/reception/src/lib/inbox/prime-review.server.ts` hard-codes `lastSyncedAt: null` for every Prime thread it produces. The `stale-sync` inbox filter in `apps/reception/src/components/inbox/filters.ts` treats `null` as stale, so every Prime thread unconditionally matches the stale-sync filter, making the filter unreliable. The fix is a single-line change: populate `lastSyncedAt` from `summary.updatedAt`, which is already present on `PrimeReviewThreadSummary` and is the correct proxy for Prime's own sync freshness. The guard for the `prime_activity` sentine",
+    "goals": [
+      "Fix `lastSyncedAt: null` so Prime threads are excluded from stale-sync filter when their `updatedAt` is recent.",
+      "Add targeted test coverage confirming the fix and filter behaviour."
+    ],
+    "non_goals": [
+      "Changes to the `prime_activity` sentinel logic (bookingId / guestBookingRef).",
+      "Changes to `STALE_SYNC_THRESHOLD_MS` value.",
+      "Any other inbox filter changes.",
+      "Refactoring `mapPrimeSummaryToInboxThread` beyond the single field fix."
+    ],
+    "constraints": [
+      "`mapPrimeSummaryToInboxThread` is not exported. Tests must exercise the fix via an exported function (`listPrimeInboxThreadSummaries`) with a mocked `fetch` — this is the established pattern in `send-prime-inbox-thread.test.ts`.",
+      "Stale-sync filter assertions belong in `apps/reception/src/components/inbox/__tests__/filters.test.ts`, which already has TC-06 covering the `null` branch and the full stale/fresh spectrum.",
+      "`updatedAt` is typed as `string` (non-nullable) on `PrimeReviewThreadSummary` — no null-guard needed."
+    ],
+    "assumptions": [
+      "Prime's `updatedAt` is a valid ISO-8601 string whenever a thread is returned by the API.",
+      "Using `updatedAt` as a proxy for last-synced time is appropriate because Prime manages its own state and the reception inbox does not perform a separate sync step for Prime threads."
+    ],
+    "selected_approach": [
+      "What was chosen:",
+      "Single-line change: `lastSyncedAt: null` → `lastSyncedAt: summary.updatedAt`.",
+      "New test file `apps/reception/src/lib/inbox/__tests__/prime-review-mapper.test.ts` exercising the mapper via `listPrimeInboxThreadSummaries()` with mocked `fetch`.",
+      "Extension of `apps/reception/src/components/inbox/__tests__/filters.test.ts` with a Prime-flavoured fresh-thread stale-sync case.",
+      "Why planning is not reopening option selection:",
+      "The source field is unambiguous; `updatedAt` is the only timestamp on the summary that reflects when Prime last updated the thread. No other approach is warranted."
+    ],
+    "plan_gates": {
+      "Foundation Gate": "Pass",
+      "Sequenced": "Yes",
+      "Edge-case review complete": "Yes",
+      "Auto-build eligible": "Yes"
+    },
+    "task_briefs": [
+      {
+        "task_id": "TASK-01",
+        "title": "Populate `lastSyncedAt` from `updatedAt` in `mapPrimeSummaryToInboxThread` and update test",
+        "type": "IMPLEMENT",
+        "status": "Pending",
+        "confidence": 95,
+        "effort": "S",
+        "depends_on": [],
+        "blocks": [],
+        "execution_skill": "lp-do-build",
+        "deliverable": "code-change — `apps/reception/src/lib/inbox/prime-review.server.ts` (1-line fix); `apps/reception/src/lib/inbox/__tests__/prime-review-mapper.test.ts` (new — mapper test via mocked fetch on `listPrimeInboxThreadSummaries`); `apps/reception/src/components/inbox/__tests__/filters.test.ts` (extended — Prime fresh-thread stale-sync assertion)",
+        "affects": "`apps/reception/src/lib/inbox/prime-review.server.ts`, `apps/reception/src/lib/inbox/__tests__/prime-review-mapper.test.ts` (new file), `apps/reception/src/components/inbox/__tests__/filters.test.ts` (extended)"
+      }
+    ],
+    "next_runnable_task_ids": [
+      "TASK-01"
+    ],
+    "validation_contracts": [],
+    "open_decisions": [],
+    "process_topology": {
+      "changed": false,
+      "note": "None: no material process topology change",
+      "areas": []
+    }
+  }
+}

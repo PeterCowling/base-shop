@@ -1,0 +1,36 @@
+{
+  "mode": "file",
+  "findings": [
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-lastsyncdat-fix/plan.md",
+      "line": "141",
+      "message": "The planned test method does not actually verify the runtime fix. Constructing a `PrimeReviewThreadSummary`-shaped object or an `InboxThreadSummary` inline and passing it to `matchesFilter` bypasses `mapPrimeSummaryToInboxThread()`, so TC-01 at [plan.md](/Users/petercowling/base-shop/docs/plans/reception-prime-lastsyncdat-fix/plan.md#L146) and the overall acceptance claim at [plan.md](/Users/petercowling/base-shop/docs/plans/reception-prime-lastsyncdat-fix/plan.md#L182) are not provable with the proposed seam. Use an exported Prime function with mocked `fetch`/env, or export the mapper for testing."
+    },
+    {
+      "severity": "warning",
+      "file": "docs/plans/reception-prime-lastsyncdat-fix/plan.md",
+      "line": "69",
+      "message": "The chosen test target is weak. The repo already has a dedicated stale-sync filter suite in [filters.test.ts](/Users/petercowling/base-shop/apps/reception/src/components/inbox/__tests__/filters.test.ts#L177) and established runtime tests for [prime-review.server.ts](/Users/petercowling/base-shop/apps/reception/src/lib/inbox/prime-review.server.ts). Extending only [prime-activity-contracts.test.ts](/Users/petercowling/base-shop/apps/reception/src/lib/inbox/__tests__/prime-activity-contracts.test.ts#L30) mixes an unrelated type-contract file with filter behavior and still leaves the mapper change under-tested."
+    },
+    {
+      "severity": "info",
+      "file": "docs/plans/reception-prime-lastsyncdat-fix/plan.md",
+      "line": "52",
+      "message": "The outcome contract still has `Why: TBD`, so the plan artifact is technically incomplete even though the implementation direction is clear."
+    }
+  ],
+  "verdict": "needs_revision",
+  "score": 8,
+  "review": "Reviewing the Prime `lastSyncedAt` plan against the actual inbox mapper, filter, and existing tests now. I’m checking whether the proposed one-line fix and the test strategy both match the current code shape.\nI’ve confirmed the mapper, filter, and current test file. The remaining question is whether the plan’s proposed test strategy can actually prove the runtime fix without exporting the private mapper.\nI’ve confirmed the private mapper really is private, and the current `prime-activity-contracts` test is only a type-level sentinel check. I’m scanning the surrounding Prime server tests now to see whether the plan overlooked a stronger existing runtime seam.\nThere is already an established runtime-testing pattern for `prime-review.server.ts`: the inbox tests mock `fetch` and call exported Prime functions directly. I’m checking whether the plan’s proposed `prime-activity-contracts` extension misses that simpler seam.\nThere’s already a dedicated filter test file covering stale-sync semantics. I’m opening that now because it may make the plan’s chosen test target obsolete.\nI found the main mismatch: the repo already has a dedicated stale-sync filter test seam, and the plan’s proposed contract test file does not actually exercise the private mapper. I’m pulling the plan line numbers now so the findings are precise.\nThe mapper can be tested cleanly through exported Prime functions with mocked `fetch`, and stale-sync behavior already has its own unit-test file. The plan currently picks a weaker seam than the codebase already provides.\n- WARNING: docs/plans/reception-prime-lastsyncdat-fix/plan.md:141 The planned test method does not actually verify the runtime fix. Constructing a `PrimeReviewThreadSummary`-shaped object or an `InboxThreadSummary` inline and passing it to `matchesFilter` bypasses `mapPrimeSummaryToInboxThread()`, so TC-01 at [plan.md](/Users/petercowling/base-shop/docs/plans/reception-prime-lastsyncdat-fix/plan.md#L146) and the overall acceptance claim at [",
+  "sessionId": "Q1qNA84XAQMYM94_",
+  "codexThreadId": "019cec82-d71f-7031-b005-75bda903e0f1",
+  "resumed": true,
+  "usage": {
+    "inputTokens": 25376996,
+    "outputTokens": 96532,
+    "totalTokens": 25473528,
+    "costUsd": 0
+  },
+  "durationMs": 156643
+}

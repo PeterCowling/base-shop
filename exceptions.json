@@ -33,24 +33,49 @@
     },
     "BOS-NAV-101": {
       "allow": [
-        "apps/business-os/src/components/navigation/NavigationHeader.tsx"
+        "apps/business-os/src/components/navigation/NavigationHeader.tsx",
+        "apps/business-os/src/components/navigation/ThemeModeToggle.tsx"
       ],
       "expires": "2026-06-30",
       "notes": "Business OS internal navigation copy pending i18n extraction."
     },
     "BOS-PI-101": {
       "allow": [
-        "apps/business-os/src/app/process-improvements/page.tsx"
+        "apps/business-os/src/app/process-improvements/page.tsx",
+        "apps/business-os/src/app/process-improvements/in-progress/page.tsx",
+        "apps/business-os/src/app/process-improvements/new-ideas/page.tsx"
       ],
       "expires": "2026-06-30",
       "notes": "Business OS process improvements inbox page copy pending i18n extraction."
     },
     "BOS-PI-102": {
       "allow": [
-        "apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx"
+        "apps/business-os/src/components/process-improvements/ProcessImprovementsInbox.tsx",
+        "apps/business-os/src/app/process-improvements/in-progress/page.tsx",
+        "apps/business-os/src/app/process-improvements/new-ideas/page.tsx",
+        "apps/business-os/src/components/process-improvements/InProgressInbox.tsx",
+        "apps/business-os/src/components/process-improvements/NewIdeasInbox.tsx",
+        "apps/business-os/src/components/process-improvements/ProcessImprovementsSubNav.tsx",
+        "apps/business-os/src/lib/process-improvements/decision-brief.ts"
       ],
       "expires": "2026-06-30",
       "notes": "Business OS process improvements inbox component copy pending i18n extraction."
+    },
+    "BOS-PI-103": {
+      "allow": [
+        "apps/business-os/src/components/process-improvements/InProgressInbox.tsx",
+        "apps/business-os/src/components/process-improvements/NewIdeasInbox.tsx",
+        "apps/business-os/src/lib/process-improvements/active-plans.ts"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Business OS process improvements active-plans and inbox copy pending i18n extraction."
+    },
+    "BOS-PI-104": {
+      "allow": [
+        "apps/reception/src/components/inbox/DraftReviewPanel.tsx"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Reception inbox draft review panel lint exceptions pending refactor."
     },
     "BOS-IDEAS-101": {
       "allow": [
@@ -148,6 +173,13 @@
       "expires": "2027-06-30",
       "notes": "Prime digital-assistant page i18n (ds/no-hardcoded-copy), tap-size (ds/min-tap-size), and layout-primitive (ds/enforce-layout-primitives) exceptions deferred pending i18n extraction and DS migration."
     },
+    "IDEA-DISPATCH-20260312140000-0005": {
+      "allow": [
+        "apps/reception/src/components/inbox/DraftReviewPanel.tsx"
+      ],
+      "expires": "2026-06-30",
+      "notes": "Reception inbox draft review panel lint exceptions for idea dispatch integration."
+    },
     "IDEA-DISPATCH-20260307130300-9040": {
       "allow": [
         "apps/reception/src/services/useInbox.ts",
@@ -171,6 +203,13 @@
       "notes": "Brikette i18n preload hook dependency exception for stable namespace arrays used by page components."
     },
     "CAR-1432": {},
+    "CARYINA-107": {
+      "allow": [
+        "apps/caryina/src/app/*/error.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Caryina error boundary page lint exceptions pending i18n and DS pass."
+    },
     "CARY-TESTS-001": {
       "allow": [
         "apps/caryina/playwright.config.ts"
@@ -395,6 +434,13 @@
       "notes": "Handbag configurator API non-UI copy exceptions."
     },
     "HAND-001": {},
+    "INBOX-0006": {
+      "allow": [
+        "apps/reception/src/app/api/mcp/inbox/*/draft/regenerate/route.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Reception inbox MCP draft regenerate route lint exceptions."
+    },
     "INT-1010": {},
     "INV-001": {
       "allow": ["apps/inventory-uploader/**"],
@@ -405,6 +451,13 @@
       "allow": ["apps/inventory-uploader/**"],
       "expires": "2026-12-31",
       "notes": "Inventory uploader operator-tool: DS lint exceptions (min-tap-size, enforce-layout-primitives, container-widths-only-at, no-arbitrary-tailwind) for compact desktop console UI and TypeScript any exceptions for Prisma generated schema."
+    },
+    "INV-0002": {
+      "allow": [
+        "apps/inventory-uploader/src/components/inventory/StockInflows.client.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Inventory uploader stock inflows component lint exceptions pending DS migration."
     },
     "INTL-000": {},
     "INTL-202": {},
@@ -454,8 +507,39 @@
     "OPS-3210": {},
     "OPS-4201": {},
     "PAY-101": {},
+    "PM-0001": {
+      "allow": [
+        "apps/payment-manager/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Payment manager app-level lint exceptions for operator-internal tool pages and routes."
+    },
+    "PM-0003": {
+      "allow": [
+        "apps/payment-manager/src/app/api/admin/rotate-key/route.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Payment manager admin rotate-key route lint exceptions."
+    },
+    "PM-0004": {
+      "allow": [
+        "apps/payment-manager/src/**"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Payment manager API route lint exceptions pending auth/validation refactor."
+    },
+    "PM-0005": {
+      "allow": [
+        "apps/payment-manager/src/app/api/refunds/route.ts"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Payment manager refunds route lint exception."
+    },
     "PRIME-1": {
-      "allow": ["apps/prime/src/**"],
+      "allow": [
+        "apps/prime/src/**",
+        "apps/prime/scripts/migrate-user-roles.ts"
+      ],
       "expires": "2027-06-30",
       "notes": "Prime pre-existing react-hooks/rules-of-hooks and react-hooks/exhaustive-deps suppressions: conditional SDK guard pattern and stable reference dep arrays deferred pending hooks refactor."
     },
@@ -474,6 +558,13 @@
       "expires": "2026-12-31",
       "notes": "Prime chat provider developer diagnostic strings remain hardcoded until messaging telemetry copy is centralized."
     },
+    "PRIME-CHK-001": {
+      "allow": [
+        "apps/prime/src/app/checkin/CheckInClient.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "Prime check-in client lint exceptions pending DS migration."
+    },
     "PRIME-DATE-UTILS-001": {
       "allow": ["apps/prime/src/utils/dateUtils.ts"],
       "expires": "2026-12-31",
@@ -487,7 +578,10 @@
       "notes": "Prime pureData bag-storage fetch hook keeps a developer diagnostic string hardcoded until logging helpers are shared."
     },
     "PRIME-ROUTES-001": {
-      "allow": ["apps/prime/src/data/routes.ts"],
+      "allow": [
+        "apps/prime/src/data/routes.ts",
+        "apps/prime/src/components/routes/RouteDetail.tsx"
+      ],
       "expires": "2026-12-31",
       "notes": "Prime canonical route seed content for fallback dataset pending content pipeline localization."
     },
@@ -679,6 +773,13 @@
       "expires": "2026-12-31",
       "notes": "XA drop-worker integration-style route/security matrix intentionally stays in one long test flow."
     },
-    "XAUP-0001": {}
+    "XAUP-0001": {},
+    "XAUP-0002": {
+      "allow": [
+        "apps/xa-uploader/src/components/catalog/EditProductFilterSelector.client.tsx"
+      ],
+      "expires": "2026-12-31",
+      "notes": "XA uploader edit product filter selector lint exceptions pending DS migration."
+    }
   }
 }

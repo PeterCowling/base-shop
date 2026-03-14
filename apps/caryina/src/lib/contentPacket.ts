@@ -28,6 +28,13 @@ interface PolicyCopy {
   notice?: LocalizedText;
 }
 
+interface AboutContent {
+  title: LocalizedText;
+  eyebrow: LocalizedText;
+  summary: LocalizedText;
+  paragraphs: LocalizedText[];
+}
+
 interface ChromeContent {
   header: {
     shop: LocalizedText;
@@ -102,6 +109,7 @@ interface SiteContentPayload {
     responseSla: LocalizedText;
   };
   policies: Record<"privacy" | "shipping" | "returns" | "terms", PolicyCopy>;
+  about: AboutContent;
   chrome?: ChromeContent;
 }
 
@@ -234,6 +242,36 @@ const SAFE_DEFAULTS: SiteContentPayload = {
       ],
     },
   },
+  about: {
+    title: { en: "About Caryina", de: "Über Caryina", it: "Chi siamo" },
+    eyebrow: {
+      en: "Designed in Positano, Italy",
+      de: "Entworfen in Positano, Italien",
+      it: "Progettato a Positano, Italia",
+    },
+    summary: {
+      en: "Caryina designs bag charms in Positano on the Amalfi Coast — small accessories that turn a simple bag into something personal.",
+      de: "Caryina entwirft Taschenanhänger in Positano an der Amalfiküste — kleine Accessoires, die eine schlichte Tasche zu etwas Persönlichem machen.",
+      it: "Caryina progetta ciondoli per borse a Positano, sulla Costiera Amalfitana — piccoli accessori che trasformano una borsa semplice in qualcosa di personale.",
+    },
+    paragraphs: [
+      {
+        en: "Caryina is a collection of bag charms designed in Positano on the Amalfi Coast. Each piece is created to turn a simple bag into something personal — a small detail that's entirely your own.",
+        de: "Caryina ist eine Kollektion von Taschenanhängern, die in Positano an der Amalfiküste entworfen wurden. Jedes Stück wurde geschaffen, um eine schlichte Tasche zu etwas Persönlichem zu machen — ein kleines Detail, das ganz dir gehört.",
+        it: "Caryina è una collezione di ciondoli per borse progettati a Positano, sulla Costiera Amalfitana. Ogni pezzo è stato creato per trasformare una borsa semplice in qualcosa di personale — un piccolo dettaglio che è interamente tuo.",
+      },
+      {
+        en: "We work with one carefully chosen supplier to bring our designs to life. Every hardware finish, material, and proportion is specified by us. Nothing reaches the collection that we wouldn't carry ourselves.",
+        de: "Wir arbeiten mit einem sorgfältig ausgewählten Lieferanten zusammen, um unsere Entwürfe zum Leben zu erwecken. Jede Hardwareoberfläche, jedes Material und jede Proportion wird von uns festgelegt. Nichts gelangt in die Kollektion, was wir nicht selbst tragen würden.",
+        it: "Lavoriamo con un unico fornitore scelto con cura per dare vita ai nostri design. Ogni finitura hardware, materiale e proporzione viene specificata da noi. Niente raggiunge la collezione che non porteremmo noi stessi.",
+      },
+      {
+        en: "Caryina is a brand of Skylar SRL, registered in Positano, Italy.",
+        de: "Caryina ist eine Marke der Skylar SRL mit Sitz in Positano, Italien.",
+        it: "Caryina è un marchio di Skylar SRL, registrata a Positano, Italia.",
+      },
+    ],
+  },
 };
 
 function parsePayloadFromPath(payloadPath: string): SiteContentPayload | null {
@@ -254,7 +292,7 @@ function parsePayloadFromPath(payloadPath: string): SiteContentPayload | null {
   }
 
   if (!parsed) return null;
-  if (!parsed.home || !parsed.shop || !parsed.productPage || !parsed.support || !parsed.policies) {
+  if (!parsed.home || !parsed.shop || !parsed.productPage || !parsed.support || !parsed.policies || !parsed.about) {
     return null;
   }
 
@@ -385,6 +423,20 @@ export function getSupportContent(locale: Locale) {
     summary: localizedText(support.summary, locale),
     channels: localizedList(support.channels, locale),
     responseSla: localizedText(support.responseSla, locale),
+  };
+}
+
+export function getAboutContent(locale: Locale) {
+  const payload = readPayload();
+  // Defensive optional chaining: a malformed `about: {}` passes the presence gate in
+  // parsePayloadFromPath() but may have undefined fields. Fall back to SAFE_DEFAULTS.about
+  // for any missing field so the page never throws at runtime.
+  const about = payload.about;
+  return {
+    title: localizedText(about?.title ?? SAFE_DEFAULTS.about.title, locale),
+    eyebrow: localizedText(about?.eyebrow ?? SAFE_DEFAULTS.about.eyebrow, locale),
+    summary: localizedText(about?.summary ?? SAFE_DEFAULTS.about.summary, locale),
+    paragraphs: localizedList(about?.paragraphs ?? SAFE_DEFAULTS.about.paragraphs, locale),
   };
 }
 

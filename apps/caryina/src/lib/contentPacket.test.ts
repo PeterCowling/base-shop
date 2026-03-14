@@ -1,4 +1,4 @@
-import { getChromeContent } from "./contentPacket";
+import { getAboutContent, getChromeContent } from "./contentPacket";
 
 /**
  * Locale-resolution tests for getChromeContent.
@@ -67,6 +67,86 @@ describe("readPayload — fallback paths", () => {
   });
 });
 
+describe("getAboutContent", () => {
+  test("en locale — title is About Caryina", () => {
+    expect(getAboutContent("en").title).toBe("About Caryina");
+  });
+
+  test("en locale — eyebrow contains Designed in Positano", () => {
+    expect(getAboutContent("en").eyebrow).toBe("Designed in Positano, Italy");
+  });
+
+  test("en locale — summary is non-empty string", () => {
+    const result = getAboutContent("en");
+    expect(typeof result.summary).toBe("string");
+    expect(result.summary.length).toBeGreaterThan(0);
+  });
+
+  test("en locale — paragraphs is array of strings", () => {
+    const result = getAboutContent("en");
+    expect(Array.isArray(result.paragraphs)).toBe(true);
+    expect(result.paragraphs.length).toBeGreaterThan(0);
+    result.paragraphs.forEach((p) => expect(typeof p).toBe("string"));
+  });
+
+  test("de locale — title is Über Caryina", () => {
+    expect(getAboutContent("de").title).toBe("Über Caryina");
+  });
+
+  test("de locale — eyebrow is German Positano phrase", () => {
+    expect(getAboutContent("de").eyebrow).toBe("Entworfen in Positano, Italien");
+  });
+
+  test("it locale — title is Chi siamo", () => {
+    expect(getAboutContent("it").title).toBe("Chi siamo");
+  });
+
+  test("it locale — eyebrow is Italian Positano phrase", () => {
+    expect(getAboutContent("it").eyebrow).toBe("Progettato a Positano, Italia");
+  });
+
+  test("all locales — no 'Made in Italy' phrase appears", () => {
+    for (const locale of ["en", "de", "it"] as const) {
+      const result = getAboutContent(locale);
+      const allText = [result.title, result.eyebrow, result.summary, ...result.paragraphs].join(" ");
+      expect(allText.toLowerCase()).not.toContain("made in italy");
+    }
+  });
+});
+
+describe("getAboutContent — malformed about: {} degraded path", () => {
+  test("returns SAFE_DEFAULTS values when about fields are undefined", () => {
+    jest.isolateModules(() => {
+      const jsonWithEmptyAbout = JSON.stringify({
+        sourcePaths: [],
+        seoKeywords: [],
+        home: { eyebrow: { en: "x" }, heading: { en: "x" }, summary: { en: "x" }, ctaPrimary: { en: "x" }, ctaSecondary: { en: "x" }, seoHeading: { en: "x" }, seoBody: { en: "x" }, faqHeading: { en: "x" }, faqItems: [] },
+        shop: { eyebrow: { en: "x" }, heading: { en: "x" }, summary: { en: "x" }, trustBullets: [] },
+        launchFamilies: { "top-handle": { label: { en: "x" }, description: { en: "x" } }, shoulder: { label: { en: "x" }, description: { en: "x" } }, mini: { label: { en: "x" }, description: { en: "x" } } },
+        productPage: { proofHeading: { en: "x" }, proofBullets: [], relatedHeading: { en: "x" } },
+        support: { title: { en: "x" }, summary: { en: "x" }, channels: [], responseSla: { en: "x" } },
+        policies: { privacy: { title: { en: "x" }, summary: { en: "x" }, bullets: [] }, shipping: { title: { en: "x" }, summary: { en: "x" }, bullets: [] }, returns: { title: { en: "x" }, summary: { en: "x" }, bullets: [] }, terms: { title: { en: "x" }, summary: { en: "x" }, bullets: [] } },
+        about: {},
+      });
+      jest.mock("node:fs", () => ({
+        existsSync: (p: string) => p.includes("data/shops/caryina"),
+        readFileSync: () => jsonWithEmptyAbout,
+        mkdirSync: jest.fn(),
+        writeFileSync: jest.fn(),
+      }));
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const mod = require("./contentPacket") as typeof import("./contentPacket");
+      const result = mod.getAboutContent("en");
+      expect(typeof result.title).toBe("string");
+      expect(result.title.length).toBeGreaterThan(0);
+      expect(typeof result.eyebrow).toBe("string");
+      expect(result.eyebrow.length).toBeGreaterThan(0);
+      expect(Array.isArray(result.paragraphs)).toBe(true);
+      expect(result.paragraphs.length).toBeGreaterThan(0);
+    });
+  });
+});
+
 describe("getChromeContent — DE locale", () => {
   const de = getChromeContent("de");
 
@@ -74,8 +154,16 @@ describe("getChromeContent — DE locale", () => {
     expect(de.header.navAriaLabel).toBe("Hauptnavigation");
   });
 
+  test("header: about is Über uns", () => {
+    expect(de.header.about).toBe("Über uns");
+  });
+
   test("header: support is German", () => {
     expect(de.header.support).toBe("Support");
+  });
+
+  test("footer: about is Über uns", () => {
+    expect(de.footer.about).toBe("Über uns");
   });
 
   // TC-01
@@ -145,8 +233,16 @@ describe("getChromeContent — IT locale", () => {
     expect(it.header.navAriaLabel).toBe("Navigazione principale");
   });
 
+  test("header: about is Chi siamo", () => {
+    expect(it.header.about).toBe("Chi siamo");
+  });
+
   test("header: support is Supporto", () => {
     expect(it.header.support).toBe("Supporto");
+  });
+
+  test("footer: about is Chi siamo", () => {
+    expect(it.footer.about).toBe("Chi siamo");
   });
 
   // TC-03
@@ -211,6 +307,14 @@ describe("getChromeContent — IT locale", () => {
 
 describe("getChromeContent — EN locale (unchanged)", () => {
   const en = getChromeContent("en");
+
+  test("header: about is About", () => {
+    expect(en.header.about).toBe("About");
+  });
+
+  test("footer: about is About", () => {
+    expect(en.footer.about).toBe("About");
+  });
 
   // TC-05
   test("footer: terms is Terms", () => {

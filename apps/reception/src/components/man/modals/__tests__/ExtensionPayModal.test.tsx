@@ -76,7 +76,7 @@ describe("ExtensionPayModal", () => {
     expect(screen.getByLabelText(/extend only this guest/i)).toBeChecked();
     expect(screen.getByLabelText(/extend all guests/i)).not.toBeChecked();
     expect(screen.getByText(/collect:/i)).toHaveTextContent("10,00");
-    expect(screen.getByText(/collect city tax:/i)).toHaveTextContent("5,00");
+    expect(screen.getByText(/collect city tax:/i)).toHaveTextContent("7,50");
     expect(
       screen.getByLabelText(/mark city tax as paid/i)
     ).not.toBeChecked();
@@ -147,8 +147,9 @@ describe("ExtensionPayModal", () => {
     await userEvent.click(screen.getByRole("button", { name: /extend/i }));
 
     expect(saveCityTaxMock).toHaveBeenCalledWith("B1", "o1", {
+      totalDue: 7.5,
+      totalPaid: 7.5,
       balance: 0,
-      totalPaid: 5,
     });
     expect(saveActivityMock).toHaveBeenNthCalledWith(1, "o1", {
       code: 9,
@@ -179,25 +180,57 @@ describe("ExtensionPayModal", () => {
     );
   });
 
-  it("does not write city tax activity for occupant whose balance is already zero", async () => {
+  it("writes city tax for all occupants including those with balance=0 (case B)", async () => {
     const onClose = jest.fn();
-    // defaultProps has o1: balance=5, o2: balance=0
-    // Selecting "extend all" puts both in cityTaxTargets
+    // defaultProps has o1: balance=5 totalDue=5, o2: balance=0 totalDue=5
+    // Selecting "extend all" puts both in cityTaxTargets; unified formula covers both
     render(<ExtensionPayModal {...defaultProps} onClose={onClose} />);
     await userEvent.click(screen.getByLabelText(/extend all guests/i));
     await userEvent.click(screen.getByLabelText(/mark city tax as paid/i));
     await userEvent.click(screen.getByRole("button", { name: /extend/i }));
 
-    // saveCityTax only called for o1 (balance > 0)
-    expect(saveCityTaxMock).toHaveBeenCalledTimes(1);
-    expect(saveCityTaxMock).toHaveBeenCalledWith("B1", "o1", { balance: 0, totalPaid: 5 });
+    // saveCityTax called for both o1 and o2 with unified formula (totalDue + 2.5 ext)
+    expect(saveCityTaxMock).toHaveBeenCalledTimes(2);
+    expect(saveCityTaxMock).toHaveBeenCalledWith("B1", "o1", {
+      totalDue: 7.5,
+      totalPaid: 7.5,
+      balance: 0,
+    });
+    expect(saveCityTaxMock).toHaveBeenCalledWith("B1", "o2", {
+      totalDue: 7.5,
+      totalPaid: 7.5,
+      balance: 0,
+    });
 
-    // saveActivity(code 9) only called for o1 — not for o2 whose balance was 0
+    // saveActivity(code 9) called for both o1 and o2
     const ctCalls = saveActivityMock.mock.calls.filter(
       ([, payload]) => payload.code === 9
     );
-    expect(ctCalls).toHaveLength(1);
+    expect(ctCalls).toHaveLength(2);
     expect(ctCalls[0][0]).toBe("o1");
+    expect(ctCalls[1][0]).toBe("o2");
+    expect(onClose).toHaveBeenCalled();
+  });
+
+  it("creates a city tax record from scratch when occupant has no prior record (case C)", async () => {
+    const onClose = jest.fn();
+    render(
+      <ExtensionPayModal
+        {...defaultProps}
+        cityTaxRecords={{}}
+        onClose={onClose}
+      />
+    );
+    await userEvent.click(screen.getByLabelText(/mark city tax as paid/i));
+    await userEvent.click(screen.getByRole("button", { name: /extend/i }));
+
+    // No prior record: totalDue = 0 + 2.5 extension = 2.5
+    expect(saveCityTaxMock).toHaveBeenCalledWith("B1", "o1", {
+      totalDue: 2.5,
+      totalPaid: 2.5,
+      balance: 0,
+    });
+    expect(saveActivityMock).toHaveBeenCalledWith("o1", { code: 9 });
     expect(onClose).toHaveBeenCalled();
   });
 

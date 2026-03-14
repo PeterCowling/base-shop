@@ -76,10 +76,7 @@ function ExtensionPayModalBase({
   const displayedCityTaxTotal = useMemo(() => {
     const total = cityTaxTargets.reduce((sum, id) => {
       const record = cityTaxRecords[id];
-      if (record && record.balance > 0) {
-        return sum + record.balance;
-      }
-      return sum + defaultCityTaxPerGuest;
+      return sum + (record?.balance ?? 0) + defaultCityTaxPerGuest;
     }, 0);
     return Number(total.toFixed(2));
   }, [cityTaxTargets, cityTaxRecords, defaultCityTaxPerGuest]);
@@ -123,22 +120,20 @@ function ExtensionPayModalBase({
         await Promise.all(
           cityTaxTargets.map(async (id) => {
             const record = cityTaxRecords[id];
-            if (record) {
-              if (record.balance > 0) {
-                await saveCityTax(bookingRef, id, {
-                  balance: 0,
-                  totalPaid: record.totalDue,
-                });
-                const cityTaxActivityResult = await saveActivity(id, {
-                  code: ActivityCode.CITY_TAX_PAYMENT,
-                });
-                if (!cityTaxActivityResult.success) {
-                  throw new Error(
-                    cityTaxActivityResult.error ??
-                      `Failed to save city tax activity for occupant ${id}.`
-                  );
-                }
-              }
+            const ext = defaultCityTaxPerGuest;
+            await saveCityTax(bookingRef, id, {
+              totalDue: (record?.totalDue ?? 0) + ext,
+              totalPaid: (record?.totalDue ?? 0) + ext,
+              balance: 0,
+            });
+            const cityTaxActivityResult = await saveActivity(id, {
+              code: ActivityCode.CITY_TAX_PAYMENT,
+            });
+            if (!cityTaxActivityResult.success) {
+              throw new Error(
+                cityTaxActivityResult.error ??
+                  `Failed to save city tax activity for occupant ${id}.`
+              );
             }
           })
         );
@@ -189,6 +184,7 @@ function ExtensionPayModalBase({
     markKeyExtended,
     cityTaxTargets,
     cityTaxRecords,
+    defaultCityTaxPerGuest,
     saveCityTax,
     saveActivity,
   ]);

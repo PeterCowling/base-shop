@@ -104,3 +104,14 @@ const parsedHotel = hotelSchema.parse(hotel) as Hotel & { ratingsSnapshotDate: s
 parsedHotel.ratingsSnapshotDate = RATINGS_SNAPSHOT_DATE;
 
 export default parsedHotel;
+
+/* ── WhatsApp helpers ──────────────────────────────────────── */
+const WHATSAPP_NUMBER = "393287073695";
+export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}` as const;
+
+/**
+ * Builds a WhatsApp click-to-chat URL with a pre-filled message.
+ */
+export function buildWhatsappMessageUrl(message: string): string {
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
